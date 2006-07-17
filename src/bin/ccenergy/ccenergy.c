@@ -78,12 +78,11 @@ void cc2_Wabei_build(void);
 void cc2_t2_build(void);
 void one_step(void);
 
+void checkpoint(void);
+
 /* local correlation functions */
 void local_init(void);
 void local_done(void);
-
-/* temporary */
-/* void sort_B(void); */
 
 int main(int argc, char *argv[])
 {
@@ -191,6 +190,7 @@ int main(int argc, char *argv[])
   moinfo.d1diag = d1diag();
   moinfo.new_d1diag = new_d1diag();
   update();
+  checkpoint();
   for(moinfo.iter=1; moinfo.iter <= params.maxiter; moinfo.iter++) {
 
     sort_amps();
@@ -283,6 +283,7 @@ int main(int argc, char *argv[])
     moinfo.d1diag = d1diag();
     moinfo.new_d1diag = new_d1diag();
     update();
+    checkpoint();
   }
   fprintf(outfile, "\n");
   if(!done) {
@@ -489,35 +490,13 @@ void init_ioff(void)
   for(i=1; i < IOFF_MAX; i++) ioff[i] = ioff[i-1] + i;
 }
 
-void sort_B(void)
+
+void checkpoint(void)
 {
-  dpdbuf4 B, B_s, B_a;
-  int h, nirreps;
+  int i;
 
-  nirreps = moinfo.nirreps;
-
-  dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
-  dpd_buf4_copy(&B, CC_TMP0, "B(+) <ab|cd> + <ab|dc>");
-  dpd_buf4_copy(&B, CC_TMP0, "B(-) <ab|cd> - <ab|dc>");
-  dpd_buf4_sort_axpy(&B, CC_TMP0, pqsr, 5, 5, "B(+) <ab|cd> + <ab|dc>", 1);
-  dpd_buf4_sort_axpy(&B, CC_TMP0, pqsr, 5, 5, "B(-) <ab|cd> - <ab|dc>", -1);
-  dpd_buf4_close(&B);
-
-  dpd_buf4_init(&B, CC_TMP0, 0, 8, 8, 5, 5, 0, "B(+) <ab|cd> + <ab|dc>");
-  dpd_buf4_copy(&B, CC_BINTS, "B(+) <ab|cd> + <ab|dc>");
-  dpd_buf4_close(&B);
-
-  dpd_buf4_init(&B, CC_TMP0, 0, 9, 9, 5, 5, 0, "B(-) <ab|cd> - <ab|dc>");
-  dpd_buf4_copy(&B, CC_BINTS, "B(-) <ab|cd> - <ab|dc>");
-  dpd_buf4_close(&B);
-
-  dpd_buf4_init(&B, CC_BINTS, 0, 8, 8, 8, 8, 0, "B(+) <ab|cd> + <ab|dc>");
-  dpd_buf4_print(&B, outfile, 1);
-  dpd_buf4_close(&B);
-
-  dpd_buf4_init(&B, CC_BINTS, 0, 9, 9, 9, 9, 0, "B(-) <ab|cd> - <ab|dc>");
-  dpd_buf4_print(&B, outfile, 1);
-  dpd_buf4_close(&B);
+  for(i=CC_MIN; i <= CC_MAX; i++) psio_close(i,1);
+  for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);
 }
 
 /* just use T's on disk and don't iterate */

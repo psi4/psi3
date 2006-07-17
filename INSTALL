@@ -5,7 +5,7 @@ I. Compilation Prerequisites:
 
    * ANSI C compiler
    * C++ Compiler
-   * F77 Compiler
+   * F77 Compiler (the F95 compiler, gfortran, with gcc-4.0.0 will work)
    * Optimized BLAS library (try http://math-atlas.sourceforge.net)
    * Optimized LAPACK library (try http://www.netlib.org/netlib)
    * POSIX threads (Pthreads) library
@@ -245,7 +245,7 @@ IV. Miscellaneous architecture-specific notes
    http://www.opensource.apple.com/darwinsource/ under the 10.2.8 source 
    directory.)  Then add -lcompat to the configure flag --with-libs.
 
-   (3) If you compiled compilers yourself from GNU source code (the most 
+   (3) If you built the compilers yourself from GNU source code (the most 
    likely scenario) you must specify explicitly the location of vecLib for 
    optimized BLAS and LAPACK:
 
@@ -265,6 +265,18 @@ IV. Miscellaneous architecture-specific notes
    Increase your shell's stacksize limit before running "make".  For csh,
    for example, this is done using "unlimit stacksize".  [NB: This limit 
    appears to have been lifted in Mac OS 10.3.X (Panther).]
+
+ * Mac OS 10.4:
+
+   First, read the remarks above for Mac OS 10.2 and 10.3.
+
+   (1) Xcode 2, which is provided with Mac OS 10.4 (Tiger), still does not
+   include a Fortran compiler.  We have had success in building gcc-4.0.0
+   (which includes gfortran) and gcc-3.3.5 (which includes g77) under Mac
+   OS 10.4, but NOT gcc-3.4.3 (the last stable gcc release prior to 4.0.0.
+
+   (2) If you use the F95 compiler (needed only by the "configure" script)
+   from gcc-4.0.0, set "--with-fc=gfortran" on the configure commandline.
 
  * SGI IRIX 6.x:
 

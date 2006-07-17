@@ -715,3 +715,37 @@ your input file as described above, or place the results into a global {\tt
 basis.dat} file.  Be sure to surround the basis-set definition with the
 {\tt basis:()} keyword (as shown in the above examples) or input parsing
 errors will result.
+
+\subsection{Specification of Ghost Atoms}
+
+To specify ghost atoms, use atom symbol \keyword{G} in
+\keyword{zmat} or \keyword{geometry} keywords:
+\begin{verbatim}
+  zmat = (
+    he
+    g 1 r
+  )
+  basis = "aug-cc-pVTZ"
+\end{verbatim}
+Basis sets for ghost atoms
+must be defined explicitly using \keyword{GHOST} as the element name:
+\begin{verbatim}
+  basis:GHOST:"aug-cc-pVTZ": (
+    ....
+  )
+\end{verbatim}
+This method leads to replication of existing basis set
+definitions.
+It is usually more convenient to specify ghost atoms as regular atoms
+with zero charge:
+\begin{verbatim}
+  zmat = (
+    he
+    he 1 r
+  )
+  charges = (2.0 0.0)
+  basis = "aug-cc-pVTZ"
+\end{verbatim}
+In this example, the second helium atom is a ``ghost'' atom which carries
+helium's aug-cc-pVTZ basis set.
+

@@ -29,12 +29,14 @@
 \vspace{2.0in}
 {\bf {\Large Installation Manual for the \PSIthree\ Program Package}} \\
 \vspace{0.5in}
-T.\ Daniel Crawford,$^a$ C.\ David Sherrill,$^b$ and Edward F.\ Valeev$^b$ \\
+T.\ Daniel Crawford,$^a$ C.\ David Sherrill,$^b$ and Edward F.\ Valeev.$^{b,c}$   \\
 \ \\
 {\em $^a$Department of Chemistry, Virginia Tech, Blacksburg, Virginia 24061-0001} \\
 \vspace{0.1in}
-{\em $^b$Center for Computational Molecular Science and Technology, \mbox{Georgia 
-Institute of Technology,} Atlanta, Georgia 30332-0400} 
+{\em $^c$Center for Computational Molecular Science and Technology, \mbox{Georgia 
+Institute of Technology,} Atlanta, Georgia 30332-0400} \\
+\vspace{0.1in}
+{\em $^b$\mbox{Oak Ridge National Laboratory,} Oak Ridge, Tennessee 37831-6367}\\
 \ \\
 \vspace{0.3in}
 \PSIthree\ Version: \PSIversion \\
@@ -48,6 +50,8 @@ Created on: \today
 
 The following external software packages are needed to complile \PSIthree:
 \begin{itemize}
+\item C, C++, and FORTRAN77 compilers. The FORTRAN77 compiler is only used to determine
+the symbol convention of BLAS and LAPACK libraries.
 \item A well-optimized basic linear algebra subroutine (BLAS) library
   for vital matrix-matrix and matrix-vector multiplication routines.
   We recommend the excellent ATLAS package developed at the University
@@ -275,19 +279,32 @@ The final line will enable the use of the \PSIthree\ man pages.
 \section{Miscellaneous architecture-specific notes}
 \begin{itemize}
 
+\item Linux on x86 and x86\_64:
+  \begin{itemize}
+   \item {\tt gcc} compiler: versions 3.2, 3.3, and 3.4 have been tested.
+   \item Intel compilers: version 9.0 has been tested. We do not recommend
+   using version 8.1.
+   \item Portland Group compilers: version 6.0-5 has been tested.
+  \end{itemize}
+
+\item Linux on Intel Itanium:
+  \begin{itemize}
+   \item Intel compilers version 9.0 have been tested and work. Version 8.1
+   does not work.
+  \end{itemize}
+
 \item AIX 4.3/5.$x$ in 64-bit environment:
 if IBM VisualAge C++ and IBM XL Fortran are used,
 one has to manually specify
 the {\tt -q64} compiler flag
 that enables production of 64-bit executables.
-The following configure options should be used:
-{\tt -}{\tt -with-cc='cc\_r -q64 -DFCLINK=2' -}{\tt -with-cxx='xlC\_r -q64
--DFCLINK=2' -}{\tt -with-fc='xlf\_r -q64'}. Note that
+The following configure options have been tested on an AIX5.2
+system with IBM VisualAge C++ 6.0 compiler and IBM XL Fortran 8.1 compiler:
+{\tt -}{\tt -with-cc='xlc\_r -q64' -}{\tt -with-cxx='xlC\_r -q64'
+ -}{\tt -with-fc='xlf\_r -q64' -}{\tt -with-blas=-lessl
+ -}{\tt -with-lapack=<your NETLIB LAPACK library>}. Note that
 the reentrant versions of the compilers
-are used. Also, we haven't had much luck
-using {\tt xlc\_r} because of its
-handling of functions with variable argument lists,
-use {\tt cc\_r} instead.
+are used.
 
 \item Compaq Alpha/OSF 5.1: default shell ({\tt /bin/sh})
 is not POSIX-compliant which causes some \PSIthree\ makefiles
