@@ -41,7 +41,7 @@ $PSITEST_TEST_SCRIPT = "runtest.pl";
 "OEPROP", "DBOC");
 @PSITEST_WFNS = ("SCF", "MP2", "MP2R12", "DETCI", "DETCAS", "CASSCF", 
 "BCCD", "BCCD_T", "CC2", "CCSD", "CCSD_T", "CC3", "EOM_CC2", "LEOM_CC2",
-"EOM_CCSD", "LEOM_CCSD", "OOCCD", "CIS");
+"EOM_CCSD", "LEOM_CCSD", "OOCCD", "CIS", "EOM_CC3");
 @PSITEST_REFTYPES = ("RHF", "ROHF", "UHF", "TWOCON");
 @PSITEST_DERTYPES = ("NONE", "FIRST", "SECOND", "RESPONSE");
 
@@ -155,6 +155,7 @@ sub do_tests
           if ($wfn eq "CC3")      { $fail |= compare_cc3_energy(); last SWITCH2; }
           if ($wfn eq "EOM_CC2")  { $fail |= compare_eomcc2_energy(); last SWITCH2; }
           if ($wfn eq "EOM_CCSD") { $fail |= compare_eomccsd_energy(); last SWITCH2; }
+          if ($wfn eq "EOM_CC3")  { $fail |= compare_eomcc3_energy(); last SWITCH2; }
           if ($wfn eq "BCCD")     { $fail |= compare_bccd_energy(); last SWITCH2; }
           if ($wfn eq "BCCD_T")   { $fail |= compare_bccd_t_energy(); last SWITCH2; }
           if ($wfn eq "CASSCF")   { $fail |= compare_casscf_energy(); last SWITCH2; }
@@ -442,6 +443,25 @@ sub compare_eomccsd_energy
   
   return $fail;
 }
+
+sub compare_eomcc3_energy
+{
+  my $fail = 0;  
+  my $REF_FILE = "$SRC_PATH/output.ref";
+  my $TEST_FILE = "output.dat";   
+
+  @eom_ref = seek_eomcc($REF_FILE);   
+  @eom_test = seek_eomcc($TEST_FILE);
+
+  if(!compare_arrays(\@eom_ref,\@eom_test,($#eom_ref+1),$PSITEST_EEOMTOL)) {
+    fail_test("EOM-CC3 energy"); $fail = 1;
+  }  
+  else {
+    pass_test("EOM-CC3 energy");
+  }       
+  return $fail;
+}         
+
 
 sub compare_bccd_energy
 {
