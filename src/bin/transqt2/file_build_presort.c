@@ -123,7 +123,7 @@ int file_build_presort(dpdfile4 *File, int inputfile, double tolerance,
 
       idx_permute_presort(File,n,bucket_map,bucket_offset,p,q,r,s,value,outfile);
 
-      if(fzc) { /* build frozen-core operator */
+      if(fzc && !n) { /* build frozen-core operator only on first pass*/
 	if(ref==0 || ref==1) { /* RHF/ROHF */
 	  pq = INDEX(p,q);
 	  rs = INDEX(r,s);
@@ -211,7 +211,7 @@ int file_build_presort(dpdfile4 *File, int inputfile, double tolerance,
 
 	idx_permute_presort(File,n,bucket_map,bucket_offset,p,q,r,s,value,outfile);
       
-	if(fzc) { /* build frozen-core operator */
+	if(fzc && !n) { /* build frozen-core operator only on first pass */
 	  if(ref==0 || ref==1) { /* RHF/ROHF */
 	    pq = INDEX(p,q);
 	    rs = INDEX(r,s);

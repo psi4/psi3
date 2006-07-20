@@ -55,6 +55,7 @@ main(int argc, char *argv[])
   int *offset;
   double efzc;
   double **scratch;
+  int memfree, rows_per_bucket, rows_left, nbuckets, n;
 
   init_io(argc,argv);
   init_ioff();
@@ -182,7 +183,7 @@ main(int argc, char *argv[])
     C_DGEMM('t','n',nrows,ncols,nlinks,1.0,C[0][0],ncols,TMP[0],moinfo.nso,
 	    0.0,F[0],nlinks);
 
-  if(params.print_lvl > 1) {
+  if(params.print_lvl > 2) {
     fprintf(outfile, "\tFrozen-core operator (MO basis):\n");
     mat_print(F, moinfo.nmo, moinfo.nmo, outfile);
   }
@@ -229,37 +230,71 @@ main(int argc, char *argv[])
   dpd_buf4_init(&J, PSIF_SO_PRESORT, 0, 3, 0, 3, 3, 0, "SO Ints (pq,rs)");
   dpd_buf4_init(&K, PSIF_HALFT0, 0, 3, 5, 3, 8, 0, "Half-Transformed Ints (pq,ij)");
   for(h=0; h < moinfo.nirreps; h++) {
-    dpd_buf4_mat_irrep_row_init(&J, h);
-    dpd_buf4_mat_irrep_row_init(&K, h);
 
-    for(pq=0; pq < J.params->rowtot[h]; pq++) {
-      dpd_buf4_mat_irrep_row_rd(&J, h, pq);
+    memfree = dpd_memfree() - J.params->coltot[h] - K.params->coltot[h];
+    rows_per_bucket = memfree/(2 * J.params->coltot[h]);
+    if(rows_per_bucket > J.params->rowtot[h]) rows_per_bucket = J.params->rowtot[h];
+    nbuckets = ceil(((double) J.params->rowtot[h])/((double) rows_per_bucket));
+    rows_left = J.params->rowtot[h] % rows_per_bucket;
+    fprintf(outfile, "h = %d; nbuckets = %d\n", h, nbuckets);
+    fflush(outfile);
 
-      for(Gr=0; Gr < moinfo.nirreps; Gr++) {
-	Gs = h^Gr;
+    dpd_buf4_mat_irrep_init_block(&J, h, rows_per_bucket);
+    dpd_buf4_mat_irrep_init_block(&K, h, rows_per_bucket);
 
-	nrows = moinfo.sopi[Gr];
-	ncols = moinfo.mopi[Gs];
-	nlinks = moinfo.sopi[Gs];
-	rs = J.col_offset[h][Gr];
-	if(nrows && ncols && nlinks)
-	  C_DGEMM('n','n',nrows,ncols,nlinks,1.0,&J.matrix[h][0][rs],nlinks,
-		  C[Gs][0],ncols,0.0,TMP[0],moinfo.nso);
+    for(n=0; n < (rows_left ? nbuckets-1 : nbuckets); n++) {
+      dpd_buf4_mat_irrep_rd_block(&J, h, n*rows_per_bucket, rows_per_bucket);
+      for(pq=0; pq < rows_per_bucket; pq++) {
+	for(Gr=0; Gr < moinfo.nirreps; Gr++) {
+	  Gs = h^Gr;
+	  nrows = moinfo.sopi[Gr];
+	  ncols = moinfo.mopi[Gs];
+	  nlinks = moinfo.sopi[Gs];
+	  rs = J.col_offset[h][Gr];
+	  if(nrows && ncols && nlinks)
+	    C_DGEMM('n','n',nrows,ncols,nlinks,1.0,&J.matrix[h][pq][rs],nlinks,
+		    C[Gs][0],ncols,0.0,TMP[0],moinfo.nso);
 
-	nrows = moinfo.mopi[Gr];
-	ncols = moinfo.mopi[Gs];
-	nlinks = moinfo.sopi[Gr];
-	rs = K.col_offset[h][Gr];
-	if(nrows && ncols && nlinks)
-	  C_DGEMM('t','n',nrows,ncols,nlinks,1.0,C[Gr][0],nrows,TMP[0],moinfo.nso,
-		  0.0,&K.matrix[h][0][rs],ncols);
-      }
+	  nrows = moinfo.mopi[Gr];
+	  ncols = moinfo.mopi[Gs];
+	  nlinks = moinfo.sopi[Gr];
+	  rs = K.col_offset[h][Gr];
+	  if(nrows && ncols && nlinks)
+	    C_DGEMM('t','n',nrows,ncols,nlinks,1.0,C[Gr][0],nrows,TMP[0],moinfo.nso,
+		    0.0,&K.matrix[h][pq][rs],ncols);
+	} /* Gr */
+      } /* pq */
+      dpd_buf4_mat_irrep_wrt_block(&K, h, n*rows_per_bucket, rows_per_bucket);
+    }
+    if(rows_left) {
+      dpd_buf4_mat_irrep_rd_block(&J, h, n*rows_per_bucket, rows_left);
+      for(pq=0; pq < rows_left; pq++) {
+	for(Gr=0; Gr < moinfo.nirreps; Gr++) {
+	  Gs = h^Gr;
 
-      dpd_buf4_mat_irrep_row_wrt(&K, h, pq);
+	  nrows = moinfo.sopi[Gr];
+	  ncols = moinfo.mopi[Gs];
+	  nlinks = moinfo.sopi[Gs];
+	  rs = J.col_offset[h][Gr];
+	  if(nrows && ncols && nlinks)
+	    C_DGEMM('n','n',nrows,ncols,nlinks,1.0,&J.matrix[h][pq][rs],nlinks,
+		    C[Gs][0],ncols,0.0,TMP[0],moinfo.nso);
+
+	  nrows = moinfo.mopi[Gr];
+	  ncols = moinfo.mopi[Gs];
+	  nlinks = moinfo.sopi[Gr];
+	  rs = K.col_offset[h][Gr];
+	  if(nrows && ncols && nlinks)
+	    C_DGEMM('t','n',nrows,ncols,nlinks,1.0,C[Gr][0],nrows,TMP[0],moinfo.nso,
+		    0.0,&K.matrix[h][pq][rs],ncols);
+	} /* Gr */
+      } /* pq */
+
+      dpd_buf4_mat_irrep_wrt_block(&K, h, n*rows_per_bucket, rows_left);
     }
 
-    dpd_buf4_mat_irrep_row_close(&J, h);
-    dpd_buf4_mat_irrep_row_close(&K, h);
+    dpd_buf4_mat_irrep_close_block(&J, h, rows_per_bucket);
+    dpd_buf4_mat_irrep_close_block(&K, h, rows_per_bucket);
   }
   dpd_buf4_close(&K);
   dpd_buf4_close(&J);
@@ -281,48 +316,88 @@ main(int argc, char *argv[])
   dpd_buf4_init(&J, PSIF_HALFT1, 0, 8, 0, 8, 3, 0, "Half-Transformed Ints (ij,pq)");
   dpd_buf4_init(&K, CC_MISC, 0, 8, 5, 8, 8, 0, "MO Ints (ij,kl)");
   for(h=0; h < moinfo.nirreps; h++) {
-    dpd_buf4_mat_irrep_row_init(&J, h);
-    dpd_buf4_mat_irrep_row_init(&K, h);
 
-    for(pq=0; pq < J.params->rowtot[h]; pq++) {
-      dpd_buf4_mat_irrep_row_rd(&J, h, pq);
+    memfree = dpd_memfree() - J.params->coltot[h] - K.params->coltot[h];
+    rows_per_bucket = memfree/(2 * J.params->coltot[h]);
+    if(rows_per_bucket > J.params->rowtot[h]) rows_per_bucket = J.params->rowtot[h];
+    nbuckets = ceil(((double) J.params->rowtot[h])/((double) rows_per_bucket));
+    rows_left = J.params->rowtot[h] % rows_per_bucket;
+    fprintf(outfile, "h = %d; nbuckets = %d\n", h, nbuckets);
+    fflush(outfile);
 
-      for(Gr=0; Gr < moinfo.nirreps; Gr++) {
-	Gs = h^Gr;
+    dpd_buf4_mat_irrep_init_block(&J, h, rows_per_bucket);
+    dpd_buf4_mat_irrep_init_block(&K, h, rows_per_bucket);
 
-	nrows = moinfo.sopi[Gr];
-	ncols = moinfo.mopi[Gs];
-	nlinks = moinfo.sopi[Gs];
-	rs = J.col_offset[h][Gr];
-	if(nrows && ncols && nlinks)
-	  C_DGEMM('n','n',nrows,ncols,nlinks,1.0,&J.matrix[h][0][rs],nlinks,
-		  C[Gs][0],ncols,0.0,TMP[0],moinfo.nso);
+    for(n=0; n < (rows_left ? nbuckets-1 : nbuckets); n++) {
+      dpd_buf4_mat_irrep_rd_block(&J, h, n*rows_per_bucket, rows_per_bucket);
+      for(pq=0; pq < rows_per_bucket; pq++) {
+	for(Gr=0; Gr < moinfo.nirreps; Gr++) {
+	  Gs = h^Gr;
+	  nrows = moinfo.sopi[Gr];
+	  ncols = moinfo.mopi[Gs];
+	  nlinks = moinfo.sopi[Gs];
+	  rs = J.col_offset[h][Gr];
+	  if(nrows && ncols && nlinks)
+	    C_DGEMM('n','n',nrows,ncols,nlinks,1.0,&J.matrix[h][pq][rs],nlinks,
+		    C[Gs][0],ncols,0.0,TMP[0],moinfo.nso);
 
-	nrows = moinfo.mopi[Gr];
-	ncols = moinfo.mopi[Gs];
-	nlinks = moinfo.sopi[Gr];
-	rs = K.col_offset[h][Gr];
-	if(nrows && ncols && nlinks)
-	  C_DGEMM('t','n',nrows,ncols,nlinks,1.0,C[Gr][0],nrows,TMP[0],moinfo.nso,
-		  0.0,&K.matrix[h][0][rs],ncols);
-      }
+	  nrows = moinfo.mopi[Gr];
+	  ncols = moinfo.mopi[Gs];
+	  nlinks = moinfo.sopi[Gr];
+	  rs = K.col_offset[h][Gr];
+	  if(nrows && ncols && nlinks)
+	    C_DGEMM('t','n',nrows,ncols,nlinks,1.0,C[Gr][0],nrows,TMP[0],moinfo.nso,
+		    0.0,&K.matrix[h][pq][rs],ncols);
+	} /* Gr */
 
-      p = moinfo.act2qt[K.params->roworb[h][pq][0]];
-      q = moinfo.act2qt[K.params->roworb[h][pq][1]];
-      PQ = INDEX(p,q);
-      for(rs=0; rs < K.params->coltot[h]; rs++) {
-	r = moinfo.act2qt[K.params->colorb[h][rs][0]];
-	s = moinfo.act2qt[K.params->colorb[h][rs][1]];
-	RS = INDEX(r,s);
-	if(r >= s && RS <= PQ)
-	  iwl_buf_wrt_val(&MBuff, p, q, r, s, K.matrix[h][0][rs], (params.print_lvl>10), outfile, 0);
-      }
-
-      /*       dpd_buf4_mat_irrep_row_wrt(&K, h, pq); */
+	p = moinfo.act2qt[K.params->roworb[h][pq+n*rows_per_bucket][0]];
+	q = moinfo.act2qt[K.params->roworb[h][pq+n*rows_per_bucket][1]];
+	PQ = INDEX(p,q);
+	for(rs=0; rs < K.params->coltot[h]; rs++) {
+	  r = moinfo.act2qt[K.params->colorb[h][rs][0]];
+	  s = moinfo.act2qt[K.params->colorb[h][rs][1]];
+	  RS = INDEX(r,s);
+	  if(r >= s && RS <= PQ)
+	    iwl_buf_wrt_val(&MBuff, p, q, r, s, K.matrix[h][pq][rs], (params.print_lvl>10), outfile, 0);
+	} /* rs */
+      } /* pq */
     }
+    if(rows_left) {
+      dpd_buf4_mat_irrep_rd_block(&J, h, n*rows_per_bucket, rows_left);
+      for(pq=0; pq < rows_left; pq++) {
+	for(Gr=0; Gr < moinfo.nirreps; Gr++) {
+	  Gs = h^Gr;
+	  nrows = moinfo.sopi[Gr];
+	  ncols = moinfo.mopi[Gs];
+	  nlinks = moinfo.sopi[Gs];
+	  rs = J.col_offset[h][Gr];
+	  if(nrows && ncols && nlinks)
+	    C_DGEMM('n','n',nrows,ncols,nlinks,1.0,&J.matrix[h][pq][rs],nlinks,
+		    C[Gs][0],ncols,0.0,TMP[0],moinfo.nso);
 
-    dpd_buf4_mat_irrep_row_close(&J, h);
-    dpd_buf4_mat_irrep_row_close(&K, h);
+	  nrows = moinfo.mopi[Gr];
+	  ncols = moinfo.mopi[Gs];
+	  nlinks = moinfo.sopi[Gr];
+	  rs = K.col_offset[h][Gr];
+	  if(nrows && ncols && nlinks)
+	    C_DGEMM('t','n',nrows,ncols,nlinks,1.0,C[Gr][0],nrows,TMP[0],moinfo.nso,
+		    0.0,&K.matrix[h][pq][rs],ncols);
+	} /* Gr */
+
+	p = moinfo.act2qt[K.params->roworb[h][pq+n*rows_per_bucket][0]];
+	q = moinfo.act2qt[K.params->roworb[h][pq+n*rows_per_bucket][1]];
+	PQ = INDEX(p,q);
+	for(rs=0; rs < K.params->coltot[h]; rs++) {
+	  r = moinfo.act2qt[K.params->colorb[h][rs][0]];
+	  s = moinfo.act2qt[K.params->colorb[h][rs][1]];
+	  RS = INDEX(r,s);
+	  if(r >= s && RS <= PQ)
+	    iwl_buf_wrt_val(&MBuff, p, q, r, s, K.matrix[h][pq][rs], (params.print_lvl>10), outfile, 0);
+	} /* rs */
+      } /* pq */
+    }
+    dpd_buf4_mat_irrep_close_block(&J, h, rows_per_bucket);
+    dpd_buf4_mat_irrep_close_block(&K, h, rows_per_bucket);
   }
   dpd_buf4_close(&K);
   dpd_buf4_close(&J);
