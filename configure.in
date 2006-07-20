@@ -744,6 +744,7 @@ AC_CONFIG_FILES([include/sizeof.h include/Makefile
           src/bin/optking/Makefile
           src/bin/psiclean/Makefile
           src/bin/transqt/Makefile
+          src/bin/transqt2/Makefile
           src/bin/mvo/Makefile
           src/bin/dboc/Makefile
           src/bin/cusp/Makefile

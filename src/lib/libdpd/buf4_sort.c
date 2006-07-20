@@ -76,10 +76,11 @@
 ** -RAK, Nov. 2005*/
 
 int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
-  int pqnum, int rsnum, char *label)
+		  int pqnum, int rsnum, char *label)
 {
   int h,nirreps, row, col, my_irrep, r_irrep;
   int p, q, r, s, P, Q, R, S, pq, rs, sr, pr, qs, qp, rq, qr, ps, sp, rp, sq;
+  int PQ, RS;
   int Gp, Gq, Gr, Gs, Gpq, Grs, Gpr, Gqs, Grq, Gqr, Gps, Gsp, Grp, Gsq;
   dpdbuf4 OutBuf;
   int incore;
@@ -97,7 +98,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #endif
 
   dpd_buf4_init(&OutBuf, outfilenum, my_irrep, pqnum, rsnum,
-       pqnum, rsnum, 0, label);
+		pqnum, rsnum, 0, label);
 
   /* select in-core vs. out-of-core algorithms */
   incore = 1;
@@ -124,23 +125,23 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
   if (incore == 0) {
     switch(index) {
-      case(pqsr): printf("Doing out-of-core pqsr sort.\n"); break; 
-      case(prqs): printf("Doing out-of-core prqs sort.\n"); break;   
-      case(prsq): printf("Doing out-of-core prsq sort.\n"); break;
-      case(qprs): printf("Doing out-of-core qprs sort.\n"); break;
-      case(qpsr): printf("Doing out-of-core qpsr sort.\n"); break;
-      case(sqpr): printf("Doing out-of-core sqpr sort.\n"); break;
+    case(pqsr): printf("Doing out-of-core pqsr sort.\n"); break; 
+    case(prqs): printf("Doing out-of-core prqs sort.\n"); break;   
+    case(prsq): printf("Doing out-of-core prsq sort.\n"); break;
+    case(qprs): printf("Doing out-of-core qprs sort.\n"); break;
+    case(qpsr): printf("Doing out-of-core qpsr sort.\n"); break;
+    case(sqpr): printf("Doing out-of-core sqpr sort.\n"); break;
     }
   }
 
 #ifdef ALL_BUF4_SORT_OOC
   switch(index) {
-    case(pqsr): incore = 0; break; 
-    case(prqs): incore = 0; break;   
-    case(prsq): incore = 0; break;
-    case(qprs): incore = 0; break;
-    case(qpsr): incore = 0; break;
-    case(sqpr): incore = 0; break;
+  case(pqsr): incore = 0; break; 
+  case(prqs): incore = 0; break;   
+  case(prsq): incore = 0; break;
+  case(qprs): incore = 0; break;
+  case(qpsr): incore = 0; break;
+  case(sqpr): incore = 0; break;
   }
 #endif
 
@@ -1598,8 +1599,90 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
       }
     }
     else {
-      fprintf(stderr, "LIBDPD: Out-of-core algorithm not yet coded for rspq sort.\n");
-      dpd_error("buf4_sort", stderr);
+      for(Gpq=0; Gpq < nirreps; Gpq++) {
+	Grs = Gpq ^ my_irrep;
+
+	out_rows_per_bucket = (dpd_memfree() - OutBuf.params->coltot[Grs])/(2 * OutBuf.params->coltot[Grs]);
+        if(out_rows_per_bucket > OutBuf.params->rowtot[Gpq])
+          out_rows_per_bucket = OutBuf.params->rowtot[Gpq];
+        out_nbuckets = ceil((double) OutBuf.params->rowtot[Gpq]/(double) out_rows_per_bucket);
+        out_rows_left = OutBuf.params->rowtot[Gpq] % out_rows_per_bucket;
+
+	in_rows_per_bucket = (dpd_memfree() - InBuf->params->coltot[Gpq])/(2 * InBuf->params->coltot[Gpq]);
+	if(in_rows_per_bucket > InBuf->params->rowtot[Grs])
+	  in_rows_per_bucket = InBuf->params->rowtot[Grs];
+	in_nbuckets = ceil((double) InBuf->params->rowtot[Grs]/(double) in_rows_per_bucket);
+	in_rows_left = InBuf->params->rowtot[Grs] % in_rows_per_bucket;
+
+        dpd_buf4_mat_irrep_init_block(&OutBuf, Gpq, out_rows_per_bucket);
+        dpd_buf4_mat_irrep_init_block(InBuf, Grs, in_rows_per_bucket);
+
+        for(n=0; n < (out_rows_left ? out_nbuckets-1 : out_nbuckets); n++) {
+	  out_row_start = n*out_rows_per_bucket;
+
+	  for(m=0; m < (in_rows_left ? in_nbuckets-1 : in_nbuckets); m++) {
+	    in_row_start = m * in_rows_per_bucket;
+	    dpd_buf4_mat_irrep_rd_block(InBuf, Grs, in_row_start, in_rows_per_bucket);
+
+	    for(pq=0; pq < out_rows_per_bucket; pq++) {
+	      PQ = pq + n*out_rows_per_bucket;
+	      for(RS=0; RS < in_rows_per_bucket; RS++) {
+		rs = RS + m*in_rows_per_bucket;
+		OutBuf.matrix[Gpq][pq][rs] = InBuf->matrix[Grs][RS][PQ];
+	      }
+	    }
+	  }
+	  if(in_rows_left) {
+	    in_row_start = m * in_rows_per_bucket;
+	    dpd_buf4_mat_irrep_rd_block(InBuf, Grs, in_row_start, in_rows_left);
+
+	    for(pq=0; pq < out_rows_per_bucket; pq++) {
+	      PQ = pq + n*out_rows_per_bucket;
+	      for(RS=0; RS < in_rows_left; RS++) {
+		rs = RS + m*in_rows_per_bucket;
+		OutBuf.matrix[Gpq][pq][rs] = InBuf->matrix[Grs][RS][PQ];
+	      }
+	    }
+	  }
+
+	  dpd_buf4_mat_irrep_wrt_block(&OutBuf, Gpq, out_row_start, out_rows_per_bucket);
+
+	}
+	if(out_rows_left) {
+	  out_row_start = n*out_rows_per_bucket;
+
+	  for(m=0; m < (in_rows_left ? in_nbuckets-1 : in_nbuckets); m++) {
+	    in_row_start = m * in_rows_per_bucket;
+	    dpd_buf4_mat_irrep_rd_block(InBuf, Grs, in_row_start, in_rows_per_bucket);
+
+	    for(pq=0; pq < out_rows_left; pq++) {
+	      PQ = pq + n*out_rows_per_bucket;
+	      for(RS=0; RS < in_rows_per_bucket; RS++) {
+		rs = RS + m*in_rows_per_bucket;
+		OutBuf.matrix[Gpq][pq][rs] = InBuf->matrix[Grs][RS][PQ];
+	      }
+	    }
+	  }
+	  if(in_rows_left) {
+	    in_row_start = m * in_rows_per_bucket;
+	    dpd_buf4_mat_irrep_rd_block(InBuf, Grs, in_row_start, in_rows_left);
+
+	    for(pq=0; pq < out_rows_left; pq++) {
+	      PQ = pq + n*out_rows_per_bucket;
+	      for(RS=0; RS < in_rows_left; RS++) {
+		rs = RS + m*in_rows_per_bucket;
+		OutBuf.matrix[Gpq][pq][rs] = InBuf->matrix[Grs][RS][PQ];
+	      }
+	    }
+	  }
+
+	  dpd_buf4_mat_irrep_wrt_block(&OutBuf, Gpq, out_row_start, out_rows_left);
+	}
+
+	dpd_buf4_mat_irrep_close_block(&OutBuf, Gpq, out_rows_per_bucket);
+	dpd_buf4_mat_irrep_close_block(InBuf, Grs, in_rows_per_bucket);
+
+      } /* Gpq */
     }
 
 #ifdef DPD_TIMER
