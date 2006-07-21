@@ -69,7 +69,7 @@
 ** qspr: IC     ** qsrp: IC
 ** rqps: IC     ** rqsp: IC
 ** rpqs: IC     ** rpsq: IC
-** rsqp: IC     ** rspq: IC
+** rsqp: IC     ** rspq: IC/OOC
 ** sqrp: IC     ** sqpr: none
 ** srqp: IC     ** srpq: IC
 ** spqr: IC     ** sprq: IC
@@ -131,6 +131,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
     case(qprs): printf("Doing out-of-core qprs sort.\n"); break;
     case(qpsr): printf("Doing out-of-core qpsr sort.\n"); break;
     case(sqpr): printf("Doing out-of-core sqpr sort.\n"); break;
+    case(rspq): printf("Doing out-of-core rspq sort.\n"); break;
     }
   }
 
@@ -142,6 +143,7 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
   case(qprs): incore = 0; break;
   case(qpsr): incore = 0; break;
   case(sqpr): incore = 0; break;
+  case(rspq): incore = 0; break;
   }
 #endif
 
