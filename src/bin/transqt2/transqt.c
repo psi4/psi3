@@ -55,7 +55,8 @@ main(int argc, char *argv[])
   int *offset;
   double efzc;
   double **scratch;
-  int memfree, rows_per_bucket, rows_left, nbuckets, n;
+  unsigned long int memfree, rows_per_bucket, rows_left; 
+  int nbuckets, n;
 
   init_io(argc,argv);
   init_ioff();
@@ -231,11 +232,11 @@ main(int argc, char *argv[])
   dpd_buf4_init(&K, PSIF_HALFT0, 0, 3, 5, 3, 8, 0, "Half-Transformed Ints (pq,ij)");
   for(h=0; h < moinfo.nirreps; h++) {
 
-    memfree = dpd_memfree() - J.params->coltot[h] - K.params->coltot[h];
+    memfree = (unsigned long int) (dpd_memfree() - J.params->coltot[h] - K.params->coltot[h]);
     rows_per_bucket = memfree/(2 * J.params->coltot[h]);
-    if(rows_per_bucket > J.params->rowtot[h]) rows_per_bucket = J.params->rowtot[h];
-    nbuckets = ceil(((double) J.params->rowtot[h])/((double) rows_per_bucket));
-    rows_left = J.params->rowtot[h] % rows_per_bucket;
+    if(rows_per_bucket > J.params->rowtot[h]) rows_per_bucket = (unsigned long int) J.params->rowtot[h];
+    nbuckets = (int) ceil(((double) J.params->rowtot[h])/((double) rows_per_bucket));
+    rows_left = (unsigned long int) (J.params->rowtot[h] % rows_per_bucket);
     fprintf(outfile, "h = %d; nbuckets = %d\n", h, nbuckets);
     fflush(outfile);
 
@@ -317,11 +318,11 @@ main(int argc, char *argv[])
   dpd_buf4_init(&K, CC_MISC, 0, 8, 5, 8, 8, 0, "MO Ints (ij,kl)");
   for(h=0; h < moinfo.nirreps; h++) {
 
-    memfree = dpd_memfree() - J.params->coltot[h] - K.params->coltot[h];
+    memfree = (unsigned long int) (dpd_memfree() - J.params->coltot[h] - K.params->coltot[h]);
     rows_per_bucket = memfree/(2 * J.params->coltot[h]);
-    if(rows_per_bucket > J.params->rowtot[h]) rows_per_bucket = J.params->rowtot[h];
-    nbuckets = ceil(((double) J.params->rowtot[h])/((double) rows_per_bucket));
-    rows_left = J.params->rowtot[h] % rows_per_bucket;
+    if(rows_per_bucket > J.params->rowtot[h]) rows_per_bucket = (unsigned long int) J.params->rowtot[h];
+    nbuckets = (int) ceil(((double) J.params->rowtot[h])/((double) rows_per_bucket));
+    rows_left = (unsigned long int) (J.params->rowtot[h] % rows_per_bucket);
     fprintf(outfile, "h = %d; nbuckets = %d\n", h, nbuckets);
     fflush(outfile);
 
