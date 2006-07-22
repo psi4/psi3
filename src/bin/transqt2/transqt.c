@@ -237,9 +237,9 @@ main(int argc, char *argv[])
     if(rows_per_bucket > J.params->rowtot[h]) rows_per_bucket = (unsigned long int) J.params->rowtot[h];
     nbuckets = (int) ceil(((double) J.params->rowtot[h])/((double) rows_per_bucket));
     rows_left = (unsigned long int) (J.params->rowtot[h] % rows_per_bucket);
-    fprintf(outfile, "\th = %d; memfree         = %ul\n", h, memfree);
-    fprintf(outfile, "\th = %d; rows_per_bucket = %ul\n", h, rows_per_bucket);
-    fprintf(outfile, "\th = %d; rows_left       = %ul\n", h, rows_left);
+    fprintf(outfile, "\th = %d; memfree         = %lu\n", h, memfree);
+    fprintf(outfile, "\th = %d; rows_per_bucket = %lu\n", h, rows_per_bucket);
+    fprintf(outfile, "\th = %d; rows_left       = %lu\n", h, rows_left);
     fprintf(outfile, "\th = %d; nbuckets        = %d\n", h, nbuckets);
     fflush(outfile);
 
@@ -327,9 +327,9 @@ main(int argc, char *argv[])
     nbuckets = (int) ceil(((double) J.params->rowtot[h])/((double) rows_per_bucket));
     rows_left = (unsigned long int) (J.params->rowtot[h] % rows_per_bucket);
 
-    fprintf(outfile, "\th = %d; memfree         = %ul\n", h, memfree);
-    fprintf(outfile, "\th = %d; rows_per_bucket = %ul\n", h, rows_per_bucket);
-    fprintf(outfile, "\th = %d; rows_left       = %ul\n", h, rows_left);
+    fprintf(outfile, "\th = %d; memfree         = %lu\n", h, memfree);
+    fprintf(outfile, "\th = %d; rows_per_bucket = %lu\n", h, rows_per_bucket);
+    fprintf(outfile, "\th = %d; rows_left       = %lu\n", h, rows_left);
     fprintf(outfile, "\th = %d; nbuckets        = %d\n", h, nbuckets);
     fflush(outfile);
 

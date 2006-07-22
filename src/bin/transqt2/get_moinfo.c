@@ -29,7 +29,8 @@ void get_moinfo(void)
   moinfo.labels = chkpt_rd_irr_labs();
   moinfo.enuc = chkpt_rd_enuc();
   escf = chkpt_rd_escf();
-  moinfo.sopi = chkpt_rd_orbspi();
+  moinfo.sopi = chkpt_rd_sopi();
+  moinfo.mopi = chkpt_rd_orbspi();
   moinfo.clsdpi = chkpt_rd_clsdpi();
   moinfo.openpi = chkpt_rd_openpi();
   chkpt_close();
@@ -43,10 +44,9 @@ void get_moinfo(void)
     moinfo.nfzv += moinfo.fruocc[i];
   }
 
-  /* MOs per irrep */
-  moinfo.mopi = init_int_array(moinfo.nirreps);
+  /* We want mopi to include only active orbitals */
   for(h=0; h < moinfo.nirreps; h++)
-    moinfo.mopi[h] = moinfo.sopi[h] - moinfo.frdocc[h] - moinfo.fruocc[h];
+    moinfo.mopi[h] = moinfo.mopi[h] - moinfo.frdocc[h] - moinfo.fruocc[h];
 
   /* SO and MO symmetry arrays */
   moinfo.sosym = init_int_array(moinfo.nso);
@@ -87,9 +87,7 @@ void get_moinfo(void)
 
   moinfo.uoccpi = init_int_array(moinfo.nirreps);
   for(i=0; i < moinfo.nirreps; i++)
-    moinfo.uoccpi[i] = moinfo.sopi[i] - moinfo.clsdpi[i] -
-      moinfo.openpi[i] - moinfo.fruocc[i] -
-      moinfo.frdocc[i];
+    moinfo.uoccpi[i] = moinfo.mopi[i] - moinfo.clsdpi[i] - moinfo.openpi[i];
 
   nclsd = nopen = nuocc = 0;
   for(i=0; i < moinfo.nirreps; i++) {
@@ -135,10 +133,11 @@ void get_moinfo(void)
   fprintf(outfile,"\n\tChkpt Parameters:\n");
   fprintf(outfile,"\t--------------------\n");
   fprintf(outfile,"\tNumber of irreps     = %d\n",moinfo.nirreps);
+  fprintf(outfile,"\tNumber of SOs        = %d\n",moinfo.nso);
   fprintf(outfile,"\tNumber of MOs        = %d\n",moinfo.nmo);
   fprintf(outfile,"\tNumber of active MOs = %d\n\n",moinfo.nactive);
   fprintf(outfile,
-	  "\tLabel\t# MOs\t# FZDC\t# DOCC\t# SOCC\t# VIRT\t# FZVR\n");
+	  "\tLabel\t# SOs\t# FZDC\t# DOCC\t# SOCC\t# VIRT\t# FZVR\n");
   fprintf(outfile,
 	  "\t-----\t-----\t------\t------\t------\t------\t------\n");
   for(i=0; i < moinfo.nirreps; i++) {
