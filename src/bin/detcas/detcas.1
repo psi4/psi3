@@ -5,6 +5,7 @@
 .  \"   man page created by David Sherrill, 8 May 1998
 .  \"   streamlined by CDS, updated        20 Jul 1998
 .  \"   updated with new keywords by JSS   20 Jun 2004
+.  \"   updated with new keywords by CDS   24 Jul 2006
 .  \"
 .  \"
 .SH NAME
@@ -28,15 +29,13 @@ more general wavefunctions that do not necessarily feature a
 full CI treatment of the active space.  In particular, any
 restricted active space (RAS) CI wavefunction supported by DETCI
 can be used, allowing MCSCF wavefunctions of the RASSCF type.
-This would only require changes to the subroutine which 
-calculates the approximate orbital Hessian.
 
 .SH REFERENCES
 .LP
 Approximate Orbital Hessian:
 .IP "1."
-G. Chaban, M. W. Schmidt, and M. S. Gordon, Theor. Chim. Acta, 
-xxx.
+G. Chaban, M. W. Schmidt, and M. S. Gordon, Theor. Chim. Acta
+97, 88-95 (1997).
 .LP
 Restricted Active Space CI:
 .IP "1."
@@ -59,7 +58,7 @@ PhD thesis, University of Georgia, Athens, GA, 1996.
 .IP "2."
 C. D. Sherrill and H. F. Schaefer,
 The Configuration Interaction Method: Advances in Highly
-Correlated Approaches, Adv. Quantum Chem., in press.
+Correlated Approaches, Adv. Quantum Chem. 34, 143-269 (1999).
 
 .SH FILES REQUIRED
 .nf
@@ -86,13 +85,67 @@ This gives the same result as \fBPRINT=0\fP.
 .IP "\fI-o fname\fP"
 Gives the filename for the output file.  Defaults to output.dat.
 
+.LP
 Additional input for this program is read from the file input.dat.
-The following keywords are valid:
+The more commonly used keywords are:
+
+.IP "\fBWFN =\fP \fIstring\fP"
+The supported wave function types are CASSCF and RASSCF.
 
 .IP "\fBCONVERGENCE =\fP \fIinteger\fP"
 Convergence desired on the orbital gradient.  Convergence is achieved when the
 RMS of the error in the orbital gradient is less than 10**(-n).  The default 
 is 4 for energy calculations and 7 for gradients.  
+
+.IP "\fBDOCC =\fP \fIinteger_array\fP"
+This vector gives the number of doubly occupied orbitals in each irrep.
+There is no default.
+
+.IP "\fBSOCC =\fP \fIinteger_array\fP"
+This vector gives the number of singly occupied orbitals in each irrep.
+There is no default.
+
+.IP "\fBENERGY_CONVERGENCE =\fP \fIinteger\fP"
+Convergence desired on the total MCSCF energy.  The default is 7.
+
+.IP "\fBFROZEN_DOCC =\fP \fIinteger_array\fP"
+The number of lowest energy doubly occupied orbitals in each irreducible
+representation which will literally be frozen (not updated
+in the MCSCF).
+The Cotton ordering of the irredicible representations is used.
+The default is the zero vector. 
+
+.IP "\fBFROZEN_UOCC =\fP \fIinteger_vector\fP"
+The number of highest energy unoccupied orbitals in each irreducible
+representation which will literally be frozen (not updated
+in the MCSCF).
+The default is the zero vector.
+
+.IP "\fBRESTRICTED_DOCC =\fP \fIinteger_array\fP"
+The number of lowest energy doubly occupied orbitals in each irreducible
+representation which will be optimized but kept doubly occupied
+in the MCSCF.  These orbitals come after the \fBFROZEN_DOCC\fP orbitals.
+The default is the zero vector. 
+
+.IP "\fBRESTRICTED_UOCC =\fP \fIinteger_array\fP"
+The number of highest energy unoccupied orbitals in each irreducible
+representation which will be optimized but kept unoccupied
+in the MCSCF.  These orbitals come before the \fBFROZEN_UOCC\fP orbitals.
+The default is the zero vector. 
+
+.IP "\fBNCASITER =\fP \fIinteger\fP"
+Maximum number of iterations to optimize the orbitals.  This option
+\fBshould be specified in the DEFAULT section of input\fP, because
+it needs to be visible to the control program PSI.  Defaults to 1.
+
+.IP "\fBPRINT =\fP \fIinteger\fP"
+This option determines the verbosity of the output.  A value of 1 or
+2 specifies minimal printing, a value of 3 specifies verbose printing.
+Values of 4 or 5 are used for debugging.  Do not use level 5 unless
+the test case is very small (e.g. STO H2O CISD).
+
+.LP
+The less commonly used keywords are:
 
 .IP "\fBDIIS_FREQ =\fP \fIinteger\fP"
 The DIIS extrapolation procedure will be attempted every \fIn\fP
@@ -115,59 +168,13 @@ turned on.  The default is 3.  Prior to this iteration, vectors are
 not added to the DIIS subspace.  The first DIIS step will not be taken until 
 \fBDIIS_MIN_VECS\fP vectors are in the DIIS subspace. 
 
-.IP "\fBDOCC =\fP \fIinteger_array\fP"
-This vector gives the number of doubly occupied orbitals in each irrep.
-There is no default.
-
-.IP "\fBSOCC =\fP \fIinteger_array\fP"
-This vector gives the number of singly occupied orbitals in each irrep.
-There is no default.
-
-.IP "\fBENERGY_CONVERGENCE =\fP \fIinteger\fP"
-Convergence desired on the total MCSCF energy.  The default is 7.
-
-.IP "\fBFCI =\fP \fIboolean\fP"
-If this flag is set to \fBTRUE\fP, then rotations of orbitals within
-the active space are not considered.  Currently, the program will
-not work unless this is \fBTRUE\fP.  The default is \fBTRUE\fP.
-
-.IP "\fBFROZEN_DOCC =\fP \fIinteger_array\fP"
-The number of lowest energy doubly occupied orbitals in each irreducible
-representation from which there will be no excitations.
-The Cotton ordering of the irredicible representations is used.
-The default is the zero vector.  These orbitals are not really
-\fBfrozen\fP in an MCSCF procedure...they are optimized.
-
-.IP "\fBFROZEN_UOCC =\fP \fIinteger_vector\fP"
-The number of highest energy unoccupied orbitals in each irreducible
-representation into which there will be no excitations.
-The default is the zero vector.  These orbitals are not really
-\fBfrozen\fP in an MCSCF procedure...they are optimized.
-
-.IP "\fBFREEZE_CORE = \fP \fIboolean\fP"
-This option determines whether the frozen core orbitals are to be
-frozen in their SCF form (\fBTRUE\fP) or optimized by the MCSCF 
-(\fBFALSE\fP).  Currently, only \fBFALSE\fP is supported.  The
-default is \fBFALSE\fP.
-
 .IP "\fBLAG_FILE =\fP \fIinteger\fP"
 File (unit number) for reading the lagrangian matrix.
 The default value is currently 75.
 
-.IP "\fBNCASITER =\fP \fIinteger\fP"
-Maximum number of iterations to optimize the orbitals.  This option
-\fBshould be specified in the DEFAULT section of input\fP, because
-it needs to be visible to the control program PSI.  Defaults to 1.
-
 .IP "\fBOPDM_FILE =\fP \fIinteger\fP"
 File (unit number) for reading the one-particle density matrix.
 The default value is currently 73.
-
-.IP "\fBPRINT =\fP \fIinteger\fP"
-This option determines the verbosity of the output.  A value of 1 or
-2 specifies minimal printing, a value of 3 specifies verbose printing.
-Values of 4 or 5 are used for debugging.  Do not use level 5 unless
-the test case is very small (e.g. STO H2O CISD).
 
 .IP "\fBSCALE_GRAD =\fP \fIboolean\fP"
 Tells whether to scale the orbital gradient by the approximate 
