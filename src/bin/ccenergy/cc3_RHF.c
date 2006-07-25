@@ -10,7 +10,7 @@
 double ***init_3d_array(int p, int q, int r);
 void free_3d_array(double ***A, int p, int q);
 
-void cc3_RHF(void)
+void cc3_RHF_obsolete(void)
 {
   int h, nirreps;
   int *occpi, *virtpi, *occ_off, *vir_off;

@@ -59,7 +59,4 @@ double dotval;
     FT2_CC2();
   }
 
-	if (params.just_residuals) return;
-
-  dijabT2();
 }

@@ -77,6 +77,7 @@ void cc2_Wmbij_build(void);
 void cc2_Wabei_build(void);
 void cc2_t2_build(void);
 void one_step(void);
+void denom(void);
 
 void checkpoint(void);
 
@@ -244,17 +245,20 @@ int main(int argc, char *argv[])
 
       if( (!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3"))) {
 
-	/* step1: build cc3 intermediates, Wabei, Wmnie, Wmbij, Wamef */
-	cc3_Wmnij();
-	cc3_Wmbij();
-	cc3_Wmnie();
-	cc3_Wamef();
-	cc3_Wabei();
+        /* step1: build cc3 intermediates, Wabei, Wmnie, Wmbij, Wamef */
+        cc3_Wmnij();
+        cc3_Wmbij();
+        cc3_Wmnie();
+        cc3_Wamef();
+        cc3_Wabei();
 
-	/* step2: loop over T3's and add contributions to T1 and T2 as you go */
-	cc3();
+        /* step2: loop over T3's and add contributions to T1 and T2 as you go */
+        cc3();
       }
     }
+    
+    if (!params.just_residuals)
+      denom(); /* apply denominators to T1 and T2 */
 
     if(converged()) {
       done = 1;

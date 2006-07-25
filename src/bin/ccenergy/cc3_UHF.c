@@ -7,7 +7,7 @@
 #define EXTERN
 #include "globals.h"
 
-void cc3_UHF_AAA(void)
+void cc3_UHF_AAA_obsolete(void)
 {
   int h, nirreps;
   int *occ_off, *occpi;
@@ -245,7 +245,7 @@ void cc3_UHF_AAA(void)
   dpd_buf4_close(&T2new);
 }
 
-void cc3_UHF_BBB(void)
+void cc3_UHF_BBB_obsolete(void)
 {
   int h, nirreps;
   int *occ_off, *occpi;
@@ -483,7 +483,7 @@ void cc3_UHF_BBB(void)
   dpd_buf4_close(&T2new);
 }
 
-void cc3_UHF_AAB(void)
+void cc3_UHF_AAB_obsolete(void)
 {
   int h, nirreps;
   int *aocc_off, *aoccpi;
@@ -1074,7 +1074,7 @@ void cc3_UHF_AAB(void)
   dpd_buf4_close(&T2ABnew);
 }
 
-void cc3_UHF_BBA(void)
+void cc3_UHF_BBA_obsolete(void)
 {
   int h, nirreps;
   int *aocc_off, *aoccpi;

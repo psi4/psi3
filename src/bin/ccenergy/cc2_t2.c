@@ -32,6 +32,4 @@ void cc2_t2_build(void)
   if(params.print & 2) status("Wabei -> T2", outfile);
   timer_off("WabeiT2", outfile);
 
-  dijabT2();
-
 }

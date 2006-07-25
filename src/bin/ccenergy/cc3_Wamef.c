@@ -29,6 +29,7 @@ void cc3_Wamef(void)
     dpd_contract244(&t1, &D, &W, 0, 0, 0, -1, 1);
     dpd_file2_close(&t1);
     dpd_buf4_close(&D);
+    dpd_buf4_sort(&W, CC3_HET1, qprs, 10, 5, "CC3 WAmEf (mA,Ef)");
     dpd_buf4_close(&W);
   }
 
