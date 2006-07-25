@@ -107,6 +107,7 @@ int* get_frzcpi();
 int* get_frzvpi();
 int cc_excited(char *wfn);
 int cc_wfn(char *wfn);
+int ci_wfn(char *wfn);
 
 #define MAX_RAS_SPACES 4
 
