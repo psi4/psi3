@@ -468,7 +468,7 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
                tmpi = 1; 
                }
             tval = H0block.H0b_diag[l][i];
-            if (Parameters.S % 2) tval = -tval;
+            if ((int) Parameters.S % 2) tval = -tval;
             if (fabs(H0block.H0b_diag[j][i] - tval) > 1.0E-8) {
               tmpi = 1;
               fprintf(outfile,"(sem_iter): H0block.H0b_diag[%d][%d]" 

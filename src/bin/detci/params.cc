@@ -74,7 +74,6 @@ void get_parameters(void)
    Parameters.num_roots = 1;
    Parameters.istop = 0;
    Parameters.print_ciblks = 0;
-   Parameters.S = 0;
    Parameters.opentype = PARM_OPENTYPE_UNKNOWN;
    Parameters.ref_sym = -1;
    Parameters.oei_file = PSIF_OEI;  /* always need fzc operator */
@@ -196,6 +195,11 @@ void get_parameters(void)
    Parameters.sf_restrict = 0;
    Parameters.print_sigma_overlap = 0;
 
+   tval = 0;
+   errcod = ip_data("MULTP","%d",&tval,0);
+   Parameters.S = (((double) tval) - 1.0) / 2.0;
+   errcod = ip_data("S","%lf",&(Parameters.S),0);
+
    errcod = ip_data("EX_LVL","%d",&(Parameters.ex_lvl),0);
    errcod = ip_data("VAL_EX_LVL","%d",&(Parameters.val_ex_lvl),0);
    errcod = ip_data("MAX_DET","%d",&(Parameters.max_dets),0);
@@ -207,7 +211,6 @@ void get_parameters(void)
    errcod = ip_data("CONVERGENCE","%d",&(Parameters.convergence),0);
    errcod = ip_data("ENERGY_CONVERGENCE","%d",
                &(Parameters.energy_convergence),0);
-   errcod = ip_data("S","%d",&(Parameters.S),0);
 
    /* this handles backwards compatibility for PSI2 */
    errcod = ip_data("OPENTYPE","%s",line1,0);
@@ -489,8 +492,6 @@ void get_parameters(void)
    errcod = ip_data("ORBSFILE","%d",&(Parameters.opdm_orbsfile),0);
    errcod = ip_data("ORBS_ROOT","%d",&(Parameters.opdm_orbs_root),0);
    errcod = ip_boolean("OPDM_KE",&(Parameters.opdm_ke),0);
-   errcod = ip_data("ROOT","%d",&(Parameters.root),0);
-   Parameters.root -= 1;
    
    if (Parameters.opdm_orbs_root != -1) Parameters.opdm_orbs_root -= 1;
    if (Parameters.opdm_orbs_root < 0) Parameters.opdm_orbs_root = 0;
@@ -502,6 +503,24 @@ void get_parameters(void)
    errcod = ip_boolean("OPDM_WRITE",&(Parameters.opdm_write),0);
    errcod = ip_boolean("OPDM_PRINT",&(Parameters.opdm_print),0);
    errcod = ip_data("OPDM_DIAG","%d",&(Parameters.opdm_diag),0);
+
+   /* transition density matrices */
+   Parameters.tdm_print = 0; Parameters.tdm_write = 0;
+   Parameters.transdens = 0;
+   errcod = ip_boolean("TDM_PRINT",&(Parameters.tdm_print),0);
+   errcod = ip_boolean("TDM_WRITE",&(Parameters.tdm_write),0);
+   if (Parameters.tdm_print || Parameters.tdm_write || 
+       (Parameters.num_roots > 1))
+     Parameters.transdens = 1;
+   else 
+     Parameters.transdens = 0;
+   errcod = ip_boolean("TRANSITION_DENSITY",&(Parameters.transdens),0);
+   if (Parameters.transdens) Parameters.tdm_write = 1;
+   errcod = ip_boolean("TDM_WRITE",&(Parameters.tdm_write),0);
+  
+ 
+   errcod = ip_data("ROOT","%d",&(Parameters.root),0);
+   Parameters.root -= 1;
 
    errcod = ip_boolean("TPDM",&(Parameters.tpdm),0);
    if (Parameters.tpdm) Parameters.tpdm_write = 1;
@@ -561,7 +580,7 @@ void get_parameters(void)
    
    errcod = ip_boolean("SF_RESTRICT",&(Parameters.sf_restrict),0);
    errcod = ip_boolean("SIGMA_OVERLAP",&(Parameters.print_sigma_overlap),0);
-   
+
    Parameters.ex_type = (int *)malloc(Parameters.ex_lvl*sizeof(int));
    if (ip_exist("EX_TYPE",0)) {
      ip_count("EX_TYPE", &i, 0);
@@ -858,7 +877,7 @@ void print_parameters(void)
        break;
       }
 
-   fprintf(outfile, "   S             =   %6d      Ms0          =   %6s\n",
+   fprintf(outfile, "   S             =   %6lf     Ms0          =   %6s\n",
       Parameters.S, Parameters.Ms0 ? "yes" : "no");           
    fprintf(outfile, "   TEI ERASE     =   %6s      MAXNVECT     =   %6d\n", 
       Parameters.tei_erase ? "yes" : "no", Parameters.maxnvect);
@@ -944,6 +963,9 @@ void print_parameters(void)
    fprintf(outfile, "   FILTER_GUESS  =   %6s      SF_RESTRICT  =   %6s\n",
            Parameters.filter_guess ?  "yes":"no",
 	   Parameters.sf_restrict ? "yes":"no");
+   fprintf(outfile, "   OPDM          =   %6s      TRANS DENSITY=   %6s\n",
+           Parameters.opdm ?  "yes":"no",
+	   Parameters.transdens ? "yes":"no");
    fprintf(outfile, "\n   FILES         = %3d %2d %2d %2d\n",
       Parameters.first_hd_tmp_unit, Parameters.first_c_tmp_unit,
       Parameters.first_s_tmp_unit, Parameters.first_d_tmp_unit);

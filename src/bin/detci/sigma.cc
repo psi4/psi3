@@ -400,6 +400,10 @@ void sigma_a(struct stringwr **alplist, struct stringwr **betlist,
    int do_cblock, do_cblock2;
    int cairr, cbirr, sbirr;
    int did_sblock = 0;
+   int phase;
+
+   if (!Parameters.Ms0) phase = 1;
+   else phase = ((int) Parameters.S % 2) ? -1 : 1;
 
    /* this does a sigma subblock at a time: icore==0 */
    for (buf=0; buf<S.buf_per_vect; buf++) {
@@ -467,13 +471,12 @@ void sigma_a(struct stringwr **alplist, struct stringwr **betlist,
          }
 
       if (S.Ms0 && (sac==sbc)) 
-         transp_sigma(S.blocks[sblock], nas, nbs, (Parameters.S % 2) ? -1 : 1);
+         transp_sigma(S.blocks[sblock], nas, nbs, phase);
 
-      H0block_gather(S.blocks[sblock], sac, sbc, 1, Parameters.Ms0, 
-         (Parameters.S % 2) ? -1 : 1);
+      H0block_gather(S.blocks[sblock], sac, sbc, 1, Parameters.Ms0, phase);
 
       if (S.Ms0) {
-         if (Parameters.S % 2) S.symmetrize(-1.0, sblock);
+         if ((int) Parameters.S % 2) S.symmetrize(-1.0, sblock);
          else S.symmetrize(1.0, sblock);
          }
       S.write(ivec, buf);
@@ -511,6 +514,10 @@ void sigma_b(struct stringwr **alplist, struct stringwr **betlist,
    int cac, cbc, cnas, cnbs;
    int sbirr, cbirr;
    int did_sblock = 0;
+   int phase;
+
+   if (!Parameters.Ms0) phase = 1;
+   else phase = ((int) Parameters.S % 2) ? -1 : 1;
 
    S.zero(); 
    C.read(C.cur_vect, 0);
@@ -548,13 +555,13 @@ void sigma_b(struct stringwr **alplist, struct stringwr **betlist,
       if (did_sblock) S.set_zero_block(sblock, 0);
 
       if (S.Ms0 && (sac==sbc)) 
-         transp_sigma(S.blocks[sblock], nas, nbs, (Parameters.S % 2) ? -1 : 1);
+         transp_sigma(S.blocks[sblock], nas, nbs, phase);
       H0block_gather(S.blocks[sblock], sac, sbc, 1, Parameters.Ms0, 
-         (Parameters.S % 2) ? -1 : 1);
+         phase);
       } /* end loop over sigma blocks */
 
       if (S.Ms0) {
-         if (Parameters.S % 2) S.symmetrize(-1.0, 0);
+         if ((int) Parameters.S % 2) S.symmetrize(-1.0, 0);
          else S.symmetrize(1.0, 0);
          }
 
@@ -594,6 +601,10 @@ void sigma_c(struct stringwr **alplist, struct stringwr **betlist,
    int sac, sbc, nas, nbs;
    int cac, cbc, cnas, cnbs;
    int did_sblock = 0;
+   int phase;
+
+   if (!Parameters.Ms0) phase = 1;
+   else phase = ((int) Parameters.S % 2) ? -1 : 1;
 
 
    for (buf=0; buf<S.buf_per_vect; buf++) {
@@ -663,17 +674,17 @@ void sigma_c(struct stringwr **alplist, struct stringwr **betlist,
          nas = S.Ia_size[sblock];
          nbs = S.Ib_size[sblock];
          if (S.Ms0 && (sac==sbc)) transp_sigma(S.blocks[sblock], nas, nbs, 
-            (Parameters.S % 2) ? -1 : 1);
+            phase);
 
          /* also gather the contributions from sigma to the H0block */
          if (!S.Ms0 || sac >= sbc) {
             H0block_gather(S.blocks[sblock], sac, sbc, 1, Parameters.Ms0,
-               (Parameters.S % 2) ? -1 : 1);
+               phase);
             }
          }
 
       if (S.Ms0) {
-         if (Parameters.S % 2) S.symmetrize(-1.0, sairr);
+         if ((int) Parameters.S % 2) S.symmetrize(-1.0, sairr);
          else S.symmetrize(1.0, sairr);
          }
      S.write(ivec, buf);

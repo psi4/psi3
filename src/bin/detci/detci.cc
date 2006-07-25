@@ -124,6 +124,7 @@ extern void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
 extern void mpn_generator(CIvect &Hd, struct stringwr **alplist, 
           struct stringwr **betlist);
 extern void opdm(struct stringwr **alplist, struct stringwr **betlist, 
+          int transdens,
           int Inroots, int Iroot, int Inunits, int Ifirstunit,
           int Jnroots, int Jroot, int Jnunits, int Jfirstunit,
           int targetfile, int writeflag, int printflag);
@@ -190,9 +191,9 @@ main(int argc, char *argv[])
      diag_h(alplist, betlist);
    }
 
-   if (Parameters.print_lvl) print_time_new(detci_time);
-   if (Parameters.opdm) form_opdm();
+   if (Parameters.opdm || Parameters.transdens) form_opdm();
    if (Parameters.tpdm) form_tpdm();
+   if (Parameters.print_lvl) print_time_new(detci_time);
    if (Parameters.pthreads) tpool_destroy(thread_pool, 1);
    if (Parameters.print_lvl > 0) quote();
    close_io();
@@ -721,7 +722,7 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
                exit(1);
                }
             tval = sm_evecs[l][i];
-            if (Parameters.S%2) tval = -tval;
+            if ((int) Parameters.S%2) tval = -tval;
             if (sm_evecs[j][i] - tval > 1.0E-12) tmpi=1;
             }
          if (tmpi) continue;
@@ -1057,11 +1058,23 @@ void form_opdm(void)
 {
 
    /* don't need Parameters.root since it writes all opdm's */
-   opdm(alplist, betlist, Parameters.num_roots, 0,
-      Parameters.num_d_tmp_units, Parameters.first_d_tmp_unit, 
-      Parameters.num_roots, 0,
-      Parameters.num_d_tmp_units, Parameters.first_d_tmp_unit, 
-      Parameters.opdm_file, Parameters.opdm_write, Parameters.opdm_print);
+   if (Parameters.transdens) {
+     opdm(alplist, betlist, 1,
+       Parameters.num_roots, 0,
+       Parameters.num_d_tmp_units, Parameters.first_d_tmp_unit, 
+       Parameters.num_roots, 0,
+       Parameters.num_d_tmp_units, Parameters.first_d_tmp_unit, 
+       Parameters.opdm_file, Parameters.tdm_write, Parameters.tdm_print);
+   }
+   if (Parameters.opdm) {
+     opdm(alplist, betlist, 0,
+       Parameters.num_roots, 0,
+       Parameters.num_d_tmp_units, Parameters.first_d_tmp_unit, 
+       Parameters.num_roots, 0,
+       Parameters.num_d_tmp_units, Parameters.first_d_tmp_unit, 
+       Parameters.opdm_file, Parameters.opdm_write, Parameters.opdm_print);
+   }
+
 }
 
 

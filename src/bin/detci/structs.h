@@ -318,7 +318,7 @@ struct params {
    int fci_strings;  /* do a FULL ci calc?  (affects string storage) */
    int fzc;          /* do implicit frozen core (remove those orbs)? */
                      /* the alternative is a "restricted core" calc  */
-   int S;            /* the value of quantum number S */
+   double S;         /* the value of quantum number S */
    int Ms0;          /* 1 if Ms=0, 0 otherwise */
    int ref_sym;      /* irrep for CI vectors;  -1 = find automatically */
    int opentype;     /* closed, highspin, or open-shell singlet; see #define */
@@ -421,6 +421,9 @@ struct params {
                               roots and irreps of opdm in opdmfile */ 
    int **orbs_idxmat;      /* matrix of index values for various
                               roots and irreps of orbitals in orbsfile */ 
+   int transdens;          /* compute transition densities? */
+   int tdm_write;          /* write the transition density matrix/matrices? */
+   int tdm_print;          /* print the transition density matrix/matrices? */
    int tpdm;               /* call the tpdm subroutine? */
    int tpdm_write;         /* write the tpdm? */
    int tpdm_print;         /* print the tpdm? */

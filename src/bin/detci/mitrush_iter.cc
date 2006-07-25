@@ -182,7 +182,7 @@ void mitrush_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
             l = H0block.pair[j];
             if (l == -1) { tmpi = 1; break; }
             tval = H0block.H0b_diag[l][i];
-            if (Parameters.S % 2) tval = -tval;
+            if ((int) Parameters.S % 2) tval = -tval;
             if (H0block.H0b_diag[j][i] - tval > 1.0E-8) tmpi = 1;
             }
          if (tmpi) continue;

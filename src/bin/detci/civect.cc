@@ -821,7 +821,8 @@ double CIvect::blk_max_abs_vals(int i, int offdiag, int nval, int *iac,
             minval = coeff[nval-1];
             }
          if (offdiag) {
-            if ((Parameters.S % 2) && (!neg_only)) value -= value;
+            if (Parameters.Ms0 && ((int) Parameters.S % 2) && 
+                (!neg_only)) value -= value;
             if (abs_value >= minval) {
                for (m=0; m<nval; m++) {
                   if (abs_value > fabs(coeff[m])) {
@@ -1442,7 +1443,8 @@ void CIvect::symnorm(double a, int vecode, int gather_vec)
       return;
       }
 
-   phase = pow(-1.0, Parameters.S);
+   if (!Parameters.Ms0) phase = 1.0;
+   else phase = ((int) Parameters.S % 2) ? -1.0 : 1.0;
 
    if (icore == 1) {
 
@@ -2509,7 +2511,7 @@ void CIvect::construct_kth_order_wf(CIvect &Hd, CIvect &S, CIvect &C,
 
         if (Ms0) {
           block = buf2blk[buf];  
-          if (Parameters.S % 2) symmetrize(-1.0, block);
+          if ((int) Parameters.S % 2) symmetrize(-1.0, block);
           else symmetrize(1.0, block);
          }
         copy_zero_blocks(S);
@@ -3444,9 +3446,7 @@ void CIvect::h0block_buf_init(void)
 void CIvect::h0block_buf_ols(double *nx, double *ox, double *c1norm,double E_est)
 {
    int i, j, k, blk, al, bl;
-   double c, cn, tval, phase, c1;
-
-   phase = (Parameters.S % 2) ? -1.0 : 1.0;
+   double c, cn, tval, c1;
 
    for (i=0; i<H0block.buf_num[cur_buf]; i++) {
       j = H0block.buf_member[cur_buf][i];
@@ -3491,7 +3491,8 @@ void CIvect::h0block_gather_vec(int vecode)
    int buf, i, j, k, blk, al, bl;
    double c, cn, tval, phase, norm = 0.0;
 
-   phase = (Parameters.S % 2) ? -1.0 : 1.0;
+   if (!Parameters.Ms0) phase = 1.0;
+   else phase = ((int) Parameters.S % 2) ? -1.0 : 1.0;
 
    for (i=0; i<H0block.buf_num[cur_buf]; i++) {
       j = H0block.buf_member[cur_buf][i];
@@ -3531,7 +3532,8 @@ void CIvect::h0block_gather_multivec(double *vec)
    int buf, i, j, k, blk, al, bl;
    double c, cn, tval, phase, norm = 0.0;
 
-   phase = (Parameters.S % 2) ? -1.0 : 1.0;
+   if (!Parameters.Ms0) phase = 1.0;
+   else phase = ((int) Parameters.S % 2) ? -1.0 : 1.0;
 
    for (i=0; i<H0block.buf_num[cur_buf]; i++) {
       j = H0block.buf_member[cur_buf][i];
@@ -3563,7 +3565,8 @@ void CIvect::h0block_buf_precon(double *nx, int root)
    int i, j, k, blk, al, bl, buf;
    double c, cn, tval, phase, norm = 0.0;
 
-   phase = (Parameters.S % 2) ? -1.0 : 1.0;
+   if (!Parameters.Ms0) phase = 1.0;
+   else phase = ((int) Parameters.S % 2) ? -1.0 : 1.0;
 
    for (buf=0; buf<buf_per_vect; buf++) {
       read(root,buf);
@@ -3601,7 +3604,8 @@ void mitrush_update(CIvect &C, CIvect &S, double norm, double acur,
    int i, j, k, buf, blk, al, bl;
    double phase, tval; 
 
-   phase = (Parameters.S % 2) ? -1.0 : 1.0;
+   if (!Parameters.Ms0) phase = 1.0;
+   else phase = ((int) Parameters.S % 2) ? -1.0 : 1.0;
 
    for (buf=0; buf<C.buf_per_vect; buf++) {
       C.buf_lock(buffer1);
@@ -3777,7 +3781,7 @@ double CIvect::calc_ssq(double *buffer1, double *buffer2,
    int ket_birr, bra_birr;
    double tval = 0.0;
    double tval2 = 0.0;
-   double S2, Ms, S2true; 
+   double S2, Ms; 
    int i; 
 
    buf_lock(buffer1);
@@ -3827,13 +3831,7 @@ double CIvect::calc_ssq(double *buffer1, double *buffer2,
     fprintf(outfile,"<S_S+> = %lf\n", tval);
     #endif
     S2 = CalcInfo.num_bet_expl + tval + Ms + Ms*Ms;
-    S2true = Parameters.S * (Parameters.S + 1);
     
-    /* 
-    fprintf(outfile, 
-            "The expectation value of S^2 for the converged CI vector\n"); 
-    fprintf(outfile,"Should be %lf\n", S2true); 
-    */
     fprintf(outfile,"Computed <S^2> vector %d = %20.15f\n\n", vec_num, S2);
 
   buf_unlock();

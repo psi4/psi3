@@ -218,6 +218,7 @@ class CIvect {
          acur, double alast, double *buffer1, double *buffer2, int curr,
          int next);
       friend void opdm(struct stringwr **alplist, struct stringwr **betlist,
+          int transdens,
           int Inroots, int Iroot, int Inunits, int Ifirstunit,
           int Jnroots, int Jroot, int Jnunits, int Jfirstunit,
           int targetfile, int writeflag, int printflag);

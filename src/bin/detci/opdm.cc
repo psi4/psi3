@@ -13,6 +13,7 @@ extern "C" {
    #include <libchkpt/chkpt.h>
    #include <libiwl/iwl.h>
    #include <psifiles.h>
+   #include <physconst.h>
    #include "structs.h"
    #include "globals.h"
 }
@@ -24,6 +25,7 @@ extern "C" {
 
 #define MIN0(a,b) (((a)<(b)) ? (a) : (b))
 #define MAX0(a,b) (((a)>(b)) ? (a) : (b))
+#define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 
 void orbsfile_rd_blk(int targetfile, int root, int irrep, double **orbs_vector);
 void orbsfile_wt_blk(int targetfile, int root, int irrep, double **orbs_vector);
@@ -33,8 +35,17 @@ void opdm_block(struct stringwr **alplist, struct stringwr **betlist,
 		int Jb_list, int Jnas, int Jnbs, int Ia_list, int Ib_list, 
 		int Inas, int Inbs);
 void opdm_ke(double **onepdm);
+void get_mo_dipmom_ints(double **mux_mo, double **muy_mo, double **muz_mo);
+void get_dipmom_nuc(double *mu_x_n, double *mu_y_n, double *mu_z_n);
 
+
+/*
+** Computes the one-particle density matrix for all n roots.  If
+** transdens is set, then will compute the transition densities
+** from Iroot to Jroot where Jroot will run over all roots
+*/ 
 void opdm(struct stringwr **alplist, struct stringwr **betlist, 
+          int transdens,
           int Inroots, int Iroot, int Inunits, int Ifirstunit, 
 	  int Jnroots, int Jroot, int Jnunits, int Jfirstunit, 
 	  int targetfile, int writeflag, int printflag)
@@ -57,6 +68,16 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   double **tmp_mat, **opdmso;
   double overlap, max_overlap;
   char opdm_key[80]; /* libpsio TOC entry name for OPDM for each root */
+  double **mux_mo, **muy_mo, **muz_mo, mu_x, mu_y, mu_z, mu_tot;
+  double mux_n, muy_n, muz_n; /* nuclear parts of dipole moments */
+  int dipmom = 1;
+
+  if (!transdens) Iroot = 0;
+  if (transdens) 
+    Jroot = 1;
+  else
+    Jroot = 0; 
+  if (Jroot > Jnroots) return;
   
   Ivec.set(CIblks.vectlen, CIblks.num_blocks, Parameters.icore, Parameters.Ms0,
            CIblks.Ia_code, CIblks.Ib_code, CIblks.Ia_size, CIblks.Ib_size,
@@ -69,7 +90,6 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
            CIblks.offset, CIblks.num_alp_codes, CIblks.num_bet_codes,
            CalcInfo.nirreps, AlphaG->subgr_per_irrep, Jnroots, Jnunits,
            Jfirstunit, CIblks.first_iablk, CIblks.last_iablk, CIblks.decode);
-
 
   populated_orbs = CalcInfo.num_ci_orbs + CalcInfo.num_fzc_orbs;
   for (irrep=0; irrep<CalcInfo.nirreps; irrep++) {
@@ -91,6 +111,7 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   tmp_mat = block_matrix(max_orb_per_irrep, max_orb_per_irrep);
 
   /* this index stuff is probably irrelevant now ... CDS 6/03 */
+  /*
   Parameters.opdm_idxmat =
     init_int_matrix(Parameters.num_roots+2, CalcInfo.nirreps);
   Parameters.orbs_idxmat = 
@@ -110,6 +131,7 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
           sizeof(double);
         } 
      } 
+  */
 
   buffer1 = Ivec.buf_malloc();
   buffer2 = Jvec.buf_malloc();
@@ -142,7 +164,7 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
 
   /* if we're trying to follow a root, figure out which one here */
   
-  if (Parameters.follow_vec_num > 0) {
+  if (Parameters.follow_vec_num > 0 && !transdens) {
     max_overlap = 0.0;
     for (i=0,j=0; i<Parameters.num_roots; i++) {
 
@@ -179,10 +201,18 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   
   }
     
+  /* if getting (transition) moments, need to read in the AO dip mom ints */
+  if (dipmom) {
+    mux_mo = block_matrix(CalcInfo.nmo, CalcInfo.nmo);
+    muy_mo = block_matrix(CalcInfo.nmo, CalcInfo.nmo);
+    muz_mo = block_matrix(CalcInfo.nmo, CalcInfo.nmo);
+    get_mo_dipmom_ints(mux_mo, muy_mo, muz_mo);
+    get_dipmom_nuc(&mux_n, &muy_n, &muz_n);
+  } 
 
-  for (k=0; k<Parameters.num_roots; k++) {
+  for (; Jroot<Parameters.num_roots; Jroot++) {
    
-    if (k != 0) zero_mat(onepdm, populated_orbs, populated_orbs); 
+    zero_mat(onepdm, populated_orbs, populated_orbs); 
 
     for (i=0; i<CalcInfo.num_fzc_orbs; i++)
       onepdm[i][i] = 2.0;
@@ -382,36 +412,86 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
 
     /* write and/or print the opdm */
     if (printflag) {
-      fprintf(outfile, 
-              "\n\nOne-particle density matrix MO basis for root %d\n",Iroot+1);
+      fprintf(outfile, "\n\nOne-particle ");
+      if (transdens)
+        fprintf(outfile, "transition ");
+      fprintf(outfile, "density matrix MO basis for root %d\n", Jroot+1);
       print_mat(onepdm, populated_orbs, populated_orbs, outfile);
       fprintf(outfile, "\n");
     }
 
 
     if (writeflag) {
-      sprintf(opdm_key,"MO-basis OPDM Root %d",k);
+      sprintf(opdm_key,"MO-basis %s %d", transdens ? "TDM" : "OPDM", Jroot);
       psio_write_entry(targetfile, opdm_key, (char *) onepdm[0], 
         populated_orbs * populated_orbs * sizeof(double));
+      if (Parameters.print_lvl) 
+        fprintf(outfile, "Wrote MO-basis %s %d to disk\n", 
+          transdens ? "TDM" : "OPDM", Jroot+1);
 
       /* write it without the "Root n" part if it's the desired root      */
       /* plain old "MO-basis OPDM" is what is searched by the rest of PSI */
-      if (k==Parameters.root) {
-        psio_write_entry(targetfile, "MO-basis OPDM", (char *) onepdm[0],
+      if (Jroot==Parameters.root) {
+        sprintf(opdm_key,"MO-basis %s", transdens ? "TDM" : "OPDM");
+        psio_write_entry(targetfile, opdm_key, (char *) onepdm[0],
           populated_orbs * populated_orbs * sizeof(double));
+        if (Parameters.print_lvl) 
+          fprintf(outfile, "Wrote MO-basis %s to disk\n", 
+            transdens ? "TDM" : "OPDM");
       }
     }
 
     /* Get the kinetic energy if requested */
-    if (Parameters.opdm_ke) {
+    if (Parameters.opdm_ke && !transdens) {
       opdm_ke(onepdm);
     }
 
-    fflush(outfile);
-    Iroot++; Jroot++;
-  } /* end loop over num_roots k */  
+    /* get the (transition) dipole moment */
+    if (dipmom) {
+      mu_x = 0.0; mu_y = 0.0; mu_z = 0.0; 
+      /* should I be including nuclear contributions to TM's ??? */
+      /* mu_x = mux_n; mu_y = muy_n; mu_z = muz_n; */
+      for (i=0; i<populated_orbs; i++) {
+        for (j=0; j<populated_orbs; j++) {
+          mu_x += mux_mo[i][j] * onepdm[i][j];
+          mu_y += muy_mo[i][j] * onepdm[i][j];
+          mu_z += muz_mo[i][j] * onepdm[i][j];
+        }
+      }
+      fprintf(outfile, "%sipole moment root %d \n", 
+        transdens ? "\nTransition d" : "\nD", Jroot+1); 
+      fprintf(outfile, "Nuclear:    %9.5lf x, %9.5lf y, %9.5lf z au\n",
+        mux_n, muy_n, muz_n);
+      fprintf(outfile, "            %9.5lf x, %9.5lf y, %9.5lf z D\n",
+        mux_n*_dipmom_au2debye, muy_n*_dipmom_au2debye, muz_n*_dipmom_au2debye);
+      fprintf(outfile, "Electronic: %9.5lf x, %9.5lf y, %9.5lf z au\n",
+        mu_x, mu_y, mu_z);
+      fprintf(outfile, "            %9.5lf x, %9.5lf y, %9.5lf z D\n",
+        mu_x*_dipmom_au2debye, mu_y*_dipmom_au2debye, mu_z*_dipmom_au2debye);
+      fprintf(outfile, "Total:      %9.5lf x, %9.5lf y, %9.5lf z au\n",
+        mu_x+mux_n, mu_y+muy_n, mu_z+muz_n);
+      fprintf(outfile, "            %9.5lf x, %9.5lf y, %9.5lf z D\n",
+        (mu_x+mux_n)*_dipmom_au2debye, (mu_y+muy_n)*_dipmom_au2debye, 
+        (mu_z+muz_n)*_dipmom_au2debye);
+      mu_tot = sqrt(mu_x * mu_x + mu_y * mu_y + mu_z * mu_z);
+      fprintf(outfile, "|mu|  =     %9.5lf au %9.5lf D\n", mu_tot,
+        mu_tot * _dipmom_au2debye);
+       
+      if (Jroot + 1 == Parameters.num_roots) fprintf(outfile, "\n");
+    }
 
-  if (writeflag) psio_close(targetfile, 1);
+
+    fflush(outfile);
+    if (!transdens) Iroot++;
+  } /* end loop over num_roots Jroot */  
+
+  if (writeflag) {
+    sprintf(opdm_key,"Num MO-basis %s", transdens ? "TDM" : "OPDM");
+    i = Parameters.num_roots; /* num max index, not the number for TDM
+                                 b/c we don't write transition 0->0 */
+    psio_write_entry(targetfile, opdm_key, (char *) &i, sizeof(int));
+    psio_close(targetfile, 1);
+  }
 
   if (transp_tmp != NULL) free_block(transp_tmp);
   if (transp_tmp2 != NULL) free_block(transp_tmp2);
@@ -419,6 +499,18 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   Jvec.buf_unlock();
   free(buffer1);
   free(buffer2);
+
+  if (dipmom) {
+    free_block(mux_mo);
+    free_block(muy_mo);
+    free_block(muz_mo);
+  }
+
+  if (transdens) {
+    fflush(outfile);
+    free_block(opdm_blk);
+    return;
+  }
 
   /* Average the opdm's */
   /* if (Parameters.opdm_diag) rfile(targetfile); */
@@ -461,7 +553,7 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
       mo_offset = 0;
 
       if (!Parameters.opdm_ave)
-        sprintf(opdm_key, "MO-basis OPDM Root %d", k);
+        sprintf(opdm_key, "MO-basis OPDM %d", k);
       else 
         sprintf(opdm_key, "MO-basis OPDM Ave");
 
@@ -676,7 +768,7 @@ void ave(int targetfile)
 
     root = Parameters.average_states[root_count];
 
-    sprintf(opdm_key, "MO-basis OPDM Root %d", root);
+    sprintf(opdm_key, "MO-basis OPDM %d", root);
 
     if (root_count==0) {
       psio_read_entry(targetfile, opdm_key, (char *) tmp_mat1[0],
@@ -827,4 +919,153 @@ void opdm_ke(double **onepdm)
   fprintf(outfile, "\nTotal correlation kinetic energy = %15.10lf\n", ke);
 
 }
+
+/*
+** This function will read in the dipole moment integrals from AO basis
+** off disk (obtained from cints --oeprop) and transform them to the MO
+** basis (CI ordering) for subsequent contraction with the density or
+** transition density matrices.  Some code adapted from ccdensity/dipole.c
+*/
+void get_mo_dipmom_ints(double **MUX_MO, double **MUY_MO, double **MUZ_MO)
+{
+  int nao, nso, nmo, noei;
+  int i, j, I, stat;
+  double *mu_x_ints, *mu_y_ints, *mu_z_ints;
+  double **usotao, **scf_pitzer, **scf_mo;
+  double **MUX_AO, **MUY_AO, **MUZ_AO;
+  double **MUX_SO, **MUY_SO, **MUZ_SO;
+  double **X;
+
+  /* Run dip mom ints if needed */
+  stat = 0;
+  psio_open(PSIF_OEI, PSIO_OPEN_OLD);
+  if (psio_tocscan(PSIF_OEI, PSIF_AO_MX) == NULL) 
+    stat = 1; /* not on disk yet */
+  psio_close(PSIF_OEI, 1);  
+
+  if (stat && system("cints --oeprop")) {
+    fprintf(outfile, "DETCI (get_mo_dipmom_ints): Can't run cints --oeprop\n");
+    exit(1);
+  }
+
+  chkpt_init(PSIO_OPEN_OLD);
+  nso = chkpt_rd_nso();
+  nao = chkpt_rd_nao();
+  nmo = chkpt_rd_nmo();
+  usotao = chkpt_rd_usotao();
+  scf_pitzer = chkpt_rd_scf();                                                         
+  chkpt_close();
+
+  /* reorder SCF eigenvectors to MO (correlated CI) ordering */
+  scf_mo = block_matrix(nso, nmo);
+  for (i=0; i<nmo; i++) {
+    I = CalcInfo.reorder[i]; /* Pitzer -> MO ordering */
+    for (j=0; j<nso; j++) {
+      scf_mo[j][I] = scf_pitzer[j][i];
+    }
+  }
+  free_block(scf_pitzer);
+
+  /* Read in dipole moment integrals in the AO basis */
+  noei = nao * (nao + 1)/2;
+                                                                                
+  mu_x_ints = init_array(noei);
+  stat = iwl_rdone(PSIF_OEI,PSIF_AO_MX,mu_x_ints,noei,0,0,outfile);
+  mu_y_ints = init_array(noei);
+  stat = iwl_rdone(PSIF_OEI,PSIF_AO_MY,mu_y_ints,noei,0,0,outfile);
+  mu_z_ints = init_array(noei);
+  stat = iwl_rdone(PSIF_OEI,PSIF_AO_MZ,mu_z_ints,noei,0,0,outfile);
+                                                                                
+  MUX_AO = block_matrix(nao,nao);
+  MUY_AO = block_matrix(nao,nao);
+  MUZ_AO = block_matrix(nao,nao);
+
+  MUX_SO = block_matrix(nso,nso);
+  MUY_SO = block_matrix(nso,nso);
+  MUZ_SO = block_matrix(nso,nso);
+
+  for(i=0; i<nao; i++) {
+    for(j=0; j<nao; j++) {
+      MUX_AO[i][j] = mu_x_ints[INDEX(i,j)];
+      MUY_AO[i][j] = mu_y_ints[INDEX(i,j)];
+      MUZ_AO[i][j] = mu_z_ints[INDEX(i,j)];
+    }
+  }
+
+  /*** Transform the AO dipole integrals to the SO basis ***/
+  X = block_matrix(nso,nao); /* just a temporary matrix */
+                                                                                
+  C_DGEMM('n','n',nso,nao,nao,1.0,&(usotao[0][0]),nao,&(MUX_AO[0][0]),nao,
+          0,&(X[0][0]),nao);
+  C_DGEMM('n','t',nso,nso,nao,1.0,&(X[0][0]),nao,&(usotao[0][0]),nao,
+          0,&(MUX_SO[0][0]),nso);
+                                                                                
+  C_DGEMM('n','n',nso,nao,nao,1.0,&(usotao[0][0]),nao,&(MUY_AO[0][0]),nao,
+          0,&(X[0][0]),nao);
+  C_DGEMM('n','t',nso,nso,nao,1.0,&(X[0][0]),nao,&(usotao[0][0]),nao,
+          0,&(MUY_SO[0][0]),nso);
+                                                                                
+  C_DGEMM('n','n',nso,nao,nao,1.0,&(usotao[0][0]),nao,&(MUZ_AO[0][0]),nao,
+          0,&(X[0][0]),nao);
+  C_DGEMM('n','t',nso,nso,nao,1.0,&(X[0][0]),nao,&(usotao[0][0]),nao,
+          0,&(MUZ_SO[0][0]),nso);
+                                                                                
+  free(mu_x_ints); free(mu_y_ints); free(mu_z_ints);
+  free_block(MUX_AO); free_block(MUY_AO); free_block(MUZ_AO);
+  free_block(X);
+
+
+  /*** Transform the SO dipole integrals to the MO basis ***/
+                                                                                
+  X = block_matrix(nmo,nso); /* just a temporary matrix */
+                                                                                
+  C_DGEMM('t','n',nmo,nso,nso,1.0,&(scf_mo[0][0]),nmo,&(MUX_SO[0][0]),nso,
+          0,&(X[0][0]),nso);
+  C_DGEMM('n','n',nmo,nmo,nso,1.0,&(X[0][0]),nso,&(scf_mo[0][0]),nmo,
+          0,&(MUX_MO[0][0]),nmo);
+                                                                                
+  C_DGEMM('t','n',nmo,nso,nso,1.0,&(scf_mo[0][0]),nmo,&(MUY_SO[0][0]),nso,
+          0,&(X[0][0]),nso);
+  C_DGEMM('n','n',nmo,nmo,nso,1.0,&(X[0][0]),nso,&(scf_mo[0][0]),nmo,
+          0,&(MUY_MO[0][0]),nmo);
+
+  C_DGEMM('t','n',nmo,nso,nso,1.0,&(scf_mo[0][0]),nmo,&(MUZ_SO[0][0]),nso,
+          0,&(X[0][0]),nso);
+  C_DGEMM('n','n',nmo,nmo,nso,1.0,&(X[0][0]),nso,&(scf_mo[0][0]),nmo,
+          0,&(MUZ_MO[0][0]),nmo);
+
+  free_block(scf_mo);
+  free_block(MUX_SO); free_block(MUY_SO); free_block(MUZ_SO);
+  free_block(X);
+
+  return;
+}
+
+
+/*
+** get the nuclear part of the dipole moment 
+*/
+void get_dipmom_nuc(double *mu_x_n, double *mu_y_n, double *mu_z_n)
+{
+  int i, natom;
+  double *zvals, **geom;
+  double x, y, z;
+
+  chkpt_init(PSIO_OPEN_OLD);
+  natom = chkpt_rd_natom();
+  zvals = chkpt_rd_zvals();
+  geom = chkpt_rd_geom();
+  chkpt_close();
+
+  *mu_x_n = 0.0; *mu_y_n = 0.0; *mu_z_n = 0.0;
+  for(i=0;i<natom;i++) {
+    *mu_x_n += zvals[i]*geom[i][0];
+    *mu_y_n += zvals[i]*geom[i][1];
+    *mu_z_n += zvals[i]*geom[i][2];
+  }
+
+  free(zvals);
+  free_block(geom);
+
+}  
 
