@@ -33,6 +33,9 @@
 ** WAmEf         (Am,Ef)       "WAmEf"
 ** WaMeF         (aM,eF)       "WaMeF"
 ** RAK, April 2004
+**
+** For CC3, these are computed by ccenergy in file CC_HET1
+** RAK, July 2006
 */
 
 void Wamef_build(void) {
