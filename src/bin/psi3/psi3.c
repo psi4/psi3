@@ -69,14 +69,15 @@ int main(int argc, char *argv[])
   int nexec_input;
 
   enum CalcCode {
-    SP,               /* single-point */
-    OPT,              /* optimization */
-    DISP,             /* displacements */
-    FREQ,             /* frequencies */
-    SYMM_FC,        /* force constants in internal coordinates, symmetric modes */
-    FC,             /* force constants in internal coordinates, all modes */
-    OEPROP,           /* one-electron properties */
-    DBOC              /* compute Diagonal Born-Oppenheimer Correction (DBOC) by finite difference */
+    SP,           /* single-point */
+    OPT,          /* optimization */
+    DISP,         /* displacements */
+    FREQ,         /* frequencies */
+    SYMM_FC,      /* force constants in internal coordinates, symmetric modes */
+    FC,           /* force constants in internal coordinates, all modes */
+    OEPROP,       /* one-electron properties */
+    DBOC          /* compute Diagonal Born-Oppenheimer Correction (DBOC) 
+                     by finite difference */
   } JobType;
 
   // Set these to a known value
@@ -88,7 +89,8 @@ int main(int argc, char *argv[])
 
   fprintf(outfile, "\n\n The PSI3 Execution Driver \n");
 
-  /* To find psi.dat first check the environment, then its location after installation */
+  /* To find psi.dat first check the environment, then its location 
+     after installation */
   psidat_dirname = getenv("PSIDATADIR");
   if (psidat_dirname != NULL) {
     char* tmpstr = (char *) malloc(sizeof(char)*(strlen(psidat_dirname)+9));
@@ -289,7 +291,8 @@ int main(int argc, char *argv[])
     fprintf(outfile, "one-electron properties computation.\n");
   }
   else if (JobType == DBOC) {
-    fprintf(outfile, "Diagonal Born-Oppenheimer Correction (DBOC) computation.\n");
+    fprintf(outfile, 
+      "Diagonal Born-Oppenheimer Correction (DBOC) computation.\n");
   }
   else { 
     fprintf(outfile, "calculation of unrecognized type.\n");
@@ -349,7 +352,8 @@ int main(int argc, char *argv[])
       fprintf(outfile, "Reference               = %s\n", reftyp);
       fprintf(outfile, "Jobtype                 = %s\n", jobtype);
       fprintf(outfile, "Dertype                 = %s\n", dertyp);
-      fprintf(outfile, "Direct                  = %s\n", (direct ? "true" : "false"));
+      fprintf(outfile, "Direct                  = %s\n", 
+        (direct ? "true" : "false"));
     }
 
     if (!ip_exist(proced,0)) {
@@ -372,7 +376,8 @@ int main(int argc, char *argv[])
     fprintf(outfile,"\nThe following programs will be executed:\n\n");
 
   if(auto_input) {
-    /* set up the "input" program execution, which should occur before the rest of the procedure */
+    /* set up the "input" program execution, which should occur before the 
+       rest of the procedure */
     input_exec = parse_var(&nexec_input, MXEXEC, "INPUT");
     fprintf(outfile, " %s\n", input_exec[0]);
   }
@@ -448,7 +453,8 @@ int execut(char **exec, int nexec, int depth)
       /* fprintf(stderr,"%serrcod after filter is %d\n",spaces,errcod); */
 
       /* if we're getting ndisp from optking */
-      if ( !(strncmp("optking --disp_irrep",exec[i],strlen("optking --disp_irrep")))
+      if ( !(strncmp("optking --disp_irrep",exec[i],
+           strlen("optking --disp_irrep")))
         || !(strcmp(exec[i],"optking --disp_nosymm"))
         || !(strcmp(exec[i],"optking --disp_freq_grad_cart")) 
         || !(strcmp(exec[i],"optking --disp_freq_energy_cart")) 
@@ -598,7 +604,8 @@ int parse_cmdline(int argc, char *argv[])
     return(0);
   }
 
-  /* if some arguments were not specified on command-line - check the environment */
+  /* if some arguments were not specified on command-line - 
+     check the environment */
   if (ifname == NULL)
     ifname = getenv("PSI_INPUT");
   if (ofname == NULL)
@@ -677,10 +684,11 @@ int get_ndisp(void) {
   /* need to remove psi_start */
   psio_init();
   psio_open(PSIF_OPTKING, PSIO_OPEN_OLD);
-  psio_read_entry(PSIF_OPTKING, "OPT: Num. of disp.", (char *) &(ndisp), sizeof(int));
+  psio_read_entry(PSIF_OPTKING, "OPT: Num. of disp.", (char *) &(ndisp), 
+    sizeof(int));
   psio_close(PSIF_OPTKING,1);
   psio_done();
-printf("ndisp: %d\n",ndisp);
+  printf("ndisp: %d\n",ndisp);
   outfile = outfile_psi3;
   return ndisp;
 }
