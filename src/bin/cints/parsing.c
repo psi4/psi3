@@ -229,6 +229,7 @@ void parsing_cmdline(int argc, char *argv[])
 	   UserOptions.make_fock = 0;
 	   UserOptions.make_oeprop = 1;
 	   UserOptions.symm_ints = 0;
+           UserOptions.print_lvl = 0;
 #else
 	   punt("--oeprop option is not supported by your CINTS executable.\nRecompile the code including files in OEProp_Ints subdirectory.");
 #endif
