@@ -41,7 +41,7 @@ void get_td_params(void)
   fflush(outfile);
   */
 
-  td_params = (struct TD_params *)malloc(params.nstates*sizeof(struct TD_Params));
+  td_params = (struct TD_Params *)malloc(params.nstates*sizeof(struct TD_Params));
 
   l=0; 
   if(ip_exist("PROP_SYM",0) && ip_exist("PROP_ROOT",0)) {
