@@ -1,0 +1,56 @@
+% 
+% Compute the transition density matrix between the 
+% ^2\Sigma_u and ^2\Sigma_g states of He2+
+% 
+% Don't need to run oeprop, but will do that also just as an example
+%
+% FCI/cc-pVDZ
+%
+
+psi: (
+  check = false
+  jobtype = sp 
+  exec = ($input $ints $scf $transqt $detci $oeprop)
+)
+
+default: (
+  label = "He2+"
+  memory = (50.0 MB)
+  wfn = detci
+  subgroup = c2v
+  unique_axis = z
+  opentype = highspin
+  reference = rohf
+  multp = 2
+  charge = 1
+  puream = true
+  docc = (1 0 0 0)
+  socc = (1 0 0 0)
+)
+
+input: (
+  basis = "cc-pVDZ"
+  units = angstrom
+  geometry = (
+    (He        .000000         .000000        .000000)
+    (He        .000000         .000000       3.000000)
+  )
+)
+
+scf: (
+  convergence = 7
+  maxiter = 100
+)
+
+detci: (
+  fci = true
+  ex_lvl = 3
+  num_roots = 2
+  transition_density = true
+)
+
+oeprop: (
+  transition_density = true
+)
+
+
