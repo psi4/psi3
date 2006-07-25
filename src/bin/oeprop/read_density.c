@@ -14,7 +14,7 @@ void read_density()
   int *locs;
   double **psq_so, *tmp_arr, **tmp_mat, **psq_ao;
   int irrep, mo_offset, so_offset, i_ci, j_ci, max_opi, errcod;
-  int fzc, populated_orbs, root;
+  int fzc, populated_orbs;
   int *docc, *socc, *frozen_docc, *frozen_uocc, *reorder, **ras_opi; 
   int *reorder_a, *reorder_b;
   double **scfvec, **opdm_blk, **onepdm;
@@ -125,18 +125,6 @@ void read_density()
 
     onepdm = block_matrix(populated_orbs, populated_orbs);
 
-    root = 1;
-    if (ip_exist("ROOT",0)) {
-      errcod = ip_data("ROOT","%d",&root,0);
-      if (errcod != IPE_OK) {
-	fprintf(outfile,"(oeprop): error parsing ROOT keyword\n");
-	abort();
-      }
-      sprintf(opdm_key,"MO-basis OPDM Root %d",root);
-    }
-    else
-      strcpy(opdm_key,"MO-basis OPDM");   
-
     psio_open(opdm_file, PSIO_OPEN_OLD);
     psio_read_entry(opdm_file, opdm_lbl[irho], (char *) onepdm[0],
     populated_orbs * populated_orbs * sizeof(double));
@@ -144,10 +132,9 @@ void read_density()
     populated_orbs * populated_orbs * sizeof(double)); */
     psio_close(opdm_file, 1);
 
-    if (print_lvl > 2) {
-      fprintf(outfile, "  Density matrix read");
-      if (root != 1) fprintf(outfile, " for root %d:\n", root);
-      else fprintf(outfile, ":\n");
+    if (print_lvl > 2) { 
+      fprintf(outfile, "\n  Density matrix read");
+      fprintf(outfile, " for label %s:\n", opdm_lbl[irho]);
       print_mat(onepdm,populated_orbs,populated_orbs,outfile);
       fprintf(outfile, "\n");
     }

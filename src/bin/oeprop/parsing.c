@@ -17,6 +17,7 @@ void parsing()
   if (errcod == IPE_OK) {
     if (!strcmp(wfn, "CI") || !strcmp(wfn, "DETCI") ||
         !strcmp(wfn, "CCSD") || !strcmp(wfn, "DETCAS") ||
+        !strcmp(wfn, "CASSCF") || !strcmp(wfn, "RASSCF") ||
 	!strcmp(wfn, "MP2") || !strcmp(wfn, "EOM_CCSD") ||
         !strcmp(wfn, "CC2") || !strcmp(wfn, "EOM_CC2"))  {
       read_opdm = 1;
@@ -32,6 +33,13 @@ void parsing()
     fprintf(outfile,"Incorrect wave function type!\n");
     abort();
   }
+
+  transdens = 0;
+  errcod = ip_boolean("TRANSITION_DENSITY", &transdens, 0);
+  if (transdens)
+    asymm_opdm = 1;
+  else
+    asymm_opdm = 0;
 
   errcod = ip_string("REFERENCE", &ref, 0);
 

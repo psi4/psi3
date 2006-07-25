@@ -112,12 +112,20 @@ int main(int argc, char* argv[]) {
  read_basset_info();
  init_xyz(); 
 
- /* RAK Determine number of densities to analyze */
  chkpt_close();
+
+ /* RAK and CDS: Determine number of densities to analyze */
  get_opdm_lbl();
 
-for (irho=0;irho<nrho;++irho) {
- fprintf(outfile,"\t** Analyzing density number %d...\n", irho+1);
+for (irho=0;irho<nrho;irho++) {
+
+ if (transdens && irho == 0) continue;
+
+ fprintf(outfile,"\t** Analyzing ");
+ if (transdens)
+   fprintf(outfile, "transition ");
+ fprintf(outfile, "density number %d **\n", irho+1);
+
  chkpt_init(PSIO_OPEN_OLD);
 
  /* Obtain a density matrix */

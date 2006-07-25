@@ -72,6 +72,7 @@ EXTERN int read_opdm;		/* Flag for reading density from disk */
 EXTERN int opdm_file;		/* Density matrix file number */	
 EXTERN char *opdm_basis;	/* In what basis a onepdm to be read */
 EXTERN char *opdm_format;	/* Format of onepdm file (lower triangle or square) */
+EXTERN int transdens;           /* Read transition densities vs reg dens?  */
 EXTERN int asymm_opdm;		/* Flag for symmetrization of opdm read in from a file */
 EXTERN int wrtnos;		/* Flag for writing NOs to file30 */
 EXTERN int print_lvl;		/* Overall printing level */
