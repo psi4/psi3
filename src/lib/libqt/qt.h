@@ -107,6 +107,8 @@ int* get_frzcpi();
 int* get_frzvpi();
 int cc_excited(char *wfn);
 int cc_wfn(char *wfn);
+void free_3d_array(double ***A, int p, int q);
+double ***init_3d_array(int p, int q, int r);
 int ci_wfn(char *wfn);
 
 #define MAX_RAS_SPACES 4
