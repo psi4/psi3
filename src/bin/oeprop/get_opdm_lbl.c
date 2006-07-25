@@ -68,11 +68,12 @@ void get_opdm_lbl(void) {
     if ( !strcmp(ref,"RHF") || !strcmp(ref,"ROHF") ) {
       opdm_lbl = (char **) malloc(sizeof(char *) * nrho);
       opdm_lbl[0] = (char *) malloc(32*sizeof(char));
-      sprintf(opdm_lbl[i], "MO-basis %s", transdens ? "TDM" : "OPDM");
+      sprintf(opdm_lbl[0], "MO-basis %s", transdens ? "TDM" : "OPDM");
     }
     else {
       opdm_a_lbl = (char **) malloc(sizeof(char *) * nrho);
       opdm_a_lbl[0] = (char *) malloc(32*sizeof(char));
+      opdm_b_lbl = (char **) malloc(sizeof(char *) * nrho);
       opdm_b_lbl[0] = (char *) malloc(32*sizeof(char));
       sprintf(opdm_a_lbl[0], "MO-basis Alpha %s", transdens ? "TDM" : "OPDM");
       sprintf(opdm_b_lbl[0], "MO-basis Beta %s", transdens ? "TDM" : "OPDM");
