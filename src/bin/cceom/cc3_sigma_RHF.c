@@ -9,14 +9,18 @@
 #include "globals.h"
 
 /* 
- used for making X3 quantity in T3_RHF: CIjAb, WAbEi, WMbIj, fIJ2, fAB2, omega
- computes SIA   <--  <S| (Dints)           <T| (Wmbij,Wabei) CMNEF |0> |T> / (w-wt) 
- computes SIjAb <--  <D| (FME,WAmEf,WMnIe) <T| (Wmbij,Wabei) CMNEF |0> |T> / (w-wt) 
- irreps are Sirr <--      Wirr                  WX3irr   ^   Cirr
-                                             (           X3irr          )
+  This function computes contributions to singles and doubles of
+  matrix elements of triples:
+    SIA   <-- <S|(Dints)           <T|(Wmbij,Wabei) CMNEF |0> |T> / (w-wt) 
+    SIjAb <-- <D|(FME,WAmEf,WMnIe) <T|(Wmbij,Wabei) CMNEF |0> |T> / (w-wt) 
+  Irrep variables are:
+    Sirr <--       Wirr                  WX3irr  ^ Cirr
+                                  (           X3irr            )
+  These are used to make X3 quantity in T3_RHF:
+    CIjAb, WAbEi, WMbIj, fIJ2, fAB2, omega
 */
 
-void cc3_sigma_RHF(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
+void cc3_sigma_RHF_obsolete(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
     int do_singles, dpdbuf4 *Dints, dpdfile2 *SIA,
     int do_doubles, dpdfile2 *FME, dpdbuf4 *WAmEf, dpdbuf4 *WMnIe, 
     dpdbuf4 *SIjAb, double energy)

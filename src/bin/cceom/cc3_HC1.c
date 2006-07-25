@@ -129,6 +129,7 @@ void HC1_Wamef(int i, int C_irr) {
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
     dpd_contract244(&CME, &D, &W, 0, 0, 0, -1, 0.0);
     dpd_buf4_close(&D);
+    dpd_buf4_sort(&W, CC3_HC1, qprs, 10, 5, "HC1 WAmEf (mA,Ef)");
     dpd_buf4_close(&W);
 
     dpd_file2_close(&CME);
@@ -254,34 +255,8 @@ void HC1_Wmnie(int i, int C_irr) {
     dpd_file2_close(&CME);
     dpd_buf4_close(&D);
     /* W(Mn,Ie) --> W(Mn,eI) */
-    dpd_buf4_sort(&WMnIe, CC3_HC1, pqsr, 0, 11, "HC1 WMnIe (Mn,eI)");
+    /* dpd_buf4_sort(&WMnIe, CC3_HC1, pqsr, 0, 11, "HC1 WMnIe (Mn,eI)"); */
     dpd_buf4_close(&WMnIe);
-
-    /* make spin-combinations */
-/*
-    dpd_buf4_init(&WMnIe, CC3_HC1, C_irr, 0, 10, 0, 10, 0, "HC1 WMnIe (Mn,Ie)");
-    dpd_buf4_copy(&WMnIe, CC3_HC1, "HC1 WMnIe - 2WnMIe (Mn,Ie)");
-    dpd_buf4_copy(&WMnIe, CC3_HC1, "HC1 2WMnIe - WnMIe (Mn,Ie)");
-    dpd_buf4_close(&WMnIe);
-
-    dpd_buf4_init(&WMnIe, CC3_HC1, C_irr, 0, 10, 0, 10, 0, "HC1 WMnIe (Mn,Ie)");
-    dpd_buf4_sort_axpy(&WMnIe, CC3_HC1, qprs, 0, 10, "HC1 WMnIe - 2WnMIe (Mn,Ie)", -2.0);
-    dpd_buf4_close(&WMnIe);
-
-    dpd_buf4_init(&W, CC3_HC1, C_irr, 0, 10, 0, 10, 0, "HC1 2WMnIe - WnMIe (Mn,Ie)");
-    dpd_buf4_scm(&W, 2.0);
-    dpd_buf4_close(&W);
-    dpd_buf4_init(&WMnIe, CC3_HC1, C_irr, 0, 10, 0, 10, 0, "HC1 WMnIe");
-    dpd_buf4_sort_axpy(&WMnIe, CC3_HC1, qprs, 0, 10, "HC1 2WMnIe - WnMIe (Mn,Ie)", -1.0);
-    dpd_buf4_close(&WMnIe);
-
-    dpd_buf4_init(&W, CC3_HC1, C_irr, 0, 10, 0, 10, 0, "HC1 2WMnIe - WnMIe (Mn,Ie)");
-    dpd_buf4_sort(&W, CC3_HC1, pqsr, 0, 11, "HC1 2WMnIe - WnMIe (Mn,eI)");
-    dpd_buf4_close(&W);
-    dpd_buf4_init(&W, CC3_HC1, C_irr, 0, 10, 0, 10, 0, "HC1 WMnIe - 2WnMIe (Mn,Ie)");
-    dpd_buf4_sort(&W, CC3_HC1, pqsr, 0, 11, "HC1 WMnIe - 2WnMIe (Mn,eI)");
-    dpd_buf4_close(&W);
-*/
   }
 
   else if(params.ref == 1) { /** ROHF **/

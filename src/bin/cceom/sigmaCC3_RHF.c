@@ -28,15 +28,16 @@
  * - RHF case modifed from ccenergy cc3 code, RAK 2006
  * */
 
-extern void cc3_sigma_RHF(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
+/* extern void cc3_sigma_RHF(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
     int do_singles, dpdbuf4 *Dints, dpdfile2 *SIA,
     int do_doubles, dpdfile2 *FME, dpdbuf4 *WAmEf, dpdbuf4 *WMnIe,
-    dpdbuf4 *SIjAb, double energy);
+    dpdbuf4 *SIjAb, double energy); */
 
-void sigmaCC3_RHF(int i, int C_irr, double omega)
+void sigmaCC3_RHF_obsolete(int i, int C_irr, double omega)
 {
+  int ii,j,a,b,A,B,Ga,Gb,Gij=0,ab,ab0,ab1;
   dpdfile2 SIA, FME;
-  dpdbuf4 CMnEf, WAbEi, WMbIj, Dints, WAmEf, WMnIe, SIjAb;
+  dpdbuf4 CMnEf, WAbEi, WMbIj, Dints, WmAEf, WMnIe, SIjAb;
   dpdbuf4 tIjAb;
   char lbl[32];
 
@@ -54,21 +55,22 @@ void sigmaCC3_RHF(int i, int C_irr, double omega)
   /* quantities to compute sigma */
   dpd_buf4_init(&Dints, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
   dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
-  dpd_buf4_init(&WAmEf, CC3_HET1, 0, 11, 5, 11, 5, 0, "CC3 WAmEf (Am,Ef)");
+  dpd_buf4_init(&WmAEf, CC3_HET1, 0, 10, 5, 10, 5, 0, "CC3 WAmEf (mA,Ef)");
   dpd_buf4_init(&WMnIe, CC3_HET1, 0, 0, 10, 0, 10, 0, "CC3 WMnIe (Mn,Ie)");
 
        /* * <S| H    <T| (Uhat C2)c   |0> |T> / (w-wt) -> sigma_1
           * <D| Hhat <T| (Uhat C2)c   |0> |T> / (w-wt) -> sigma_2 */
 
   cc3_sigma_RHF(&CMnEf, &WAbEi, &WMbIj, 1,  &Dints, &SIA, 
-    1, &FME, &WAmEf, &WMnIe, &SIjAb, omega);
+    1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
+    moinfo.virtpi, moinfo.vir_off, omega, outfile);
 
   dpd_buf4_close(&CMnEf);
   dpd_buf4_close(&WAbEi);
   dpd_buf4_close(&WMbIj);
   dpd_buf4_close(&Dints);
   dpd_file2_close(&FME);
-  dpd_buf4_close(&WAmEf);
+  dpd_buf4_close(&WmAEf);
   dpd_buf4_close(&WMnIe);
 
 #ifdef EOM_DEBUG
@@ -88,21 +90,22 @@ void sigmaCC3_RHF(int i, int C_irr, double omega)
 
   dpd_buf4_init(&Dints, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
   dpd_file2_init(&FME, CC_OEI, 0, 0, 1, "FME");
-  dpd_buf4_init(&WAmEf, CC3_HET1, 0, 11, 5, 11, 5, 0, "CC3 WAmEf (Am,Ef)");
+  dpd_buf4_init(&WmAEf, CC3_HET1, 0, 10, 5, 10, 5, 0, "CC3 WAmEf (mA,Ef)");
   dpd_buf4_init(&WMnIe, CC3_HET1, 0, 0, 10, 0, 10, 0, "CC3 WMnIe (Mn,Ie)");
 
          /* * <S| H    <T| (Utilde T2)c |0> |T> / (w-wt) -> sigma_1
             * <D| Hhat <T| (Utilde T2)c |0> |T> / (w-wt) -> sigma_2 */
 
   cc3_sigma_RHF(&tIjAb, &WAbEi, &WMbIj, 1,  &Dints, &SIA,
-     1, &FME, &WAmEf, &WMnIe, &SIjAb, omega);
+     1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
+     moinfo.virtpi, moinfo.vir_off, omega, outfile);
 
   dpd_buf4_close(&tIjAb);
   dpd_buf4_close(&WAbEi);
   dpd_buf4_close(&WMbIj);
   dpd_buf4_close(&Dints);
   dpd_file2_close(&FME);
-  dpd_buf4_close(&WAmEf);
+  dpd_buf4_close(&WmAEf);
   dpd_buf4_close(&WMnIe);
 
 #ifdef EOM_DEBUG
@@ -121,19 +124,20 @@ void sigmaCC3_RHF(int i, int C_irr, double omega)
   dpd_buf4_init(&WMbIj, CC3_HET1, 0, 0, 10, 0, 10, 0, "CC3 WMbIj (Ij,Mb)");
 
   dpd_file2_init(&FME, CC3_HC1, C_irr, 0, 1, "HC1 FME");
-  dpd_buf4_init(&WAmEf, CC3_HC1, C_irr, 11, 5, 11, 5, 0, "HC1 WAmEf (Am,Ef)");
+  dpd_buf4_init(&WmAEf, CC3_HC1, C_irr, 10, 5, 10, 5, 0, "HC1 WAmEf (mA,Ef)");
   dpd_buf4_init(&WMnIe, CC3_HC1, C_irr, 0, 10, 0, 10, 0, "HC1 WMnIe (Mn,Ie)");
 
          /* <D| H'   <T| (Uhat T2)c   |0> |T> / (-wt) -> sigma_2 */
 
   cc3_sigma_RHF(&tIjAb, &WAbEi, &WMbIj, 0, NULL, NULL,
-     1, &FME, &WAmEf, &WMnIe, &SIjAb, 0.0);
+     1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
+     moinfo.virtpi, moinfo.vir_off, 0.0, outfile);
 
   dpd_buf4_close(&tIjAb); 
   dpd_buf4_close(&WAbEi);
   dpd_buf4_close(&WMbIj);
   dpd_file2_close(&FME);
-  dpd_buf4_close(&WAmEf);
+  dpd_buf4_close(&WmAEf);
   dpd_buf4_close(&WMnIe);
 
 #ifdef EOM_DEBUG

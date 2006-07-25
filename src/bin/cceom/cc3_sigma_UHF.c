@@ -10,7 +10,7 @@
 /* computes < S | (Dints)           <T| (Wmbij,Wabei) CMNEF |0> |T> / (w-wt) */
 /* computes < D | (Fme,Wamef,Wmnie) <T| (Wmbij,Wabei) CMNEF |0> |T> / (w-wt) */
 
-void cc3_sigma_UHF_AAA(dpdbuf4 *CMNEF, dpdbuf4 *WABEI, dpdbuf4 *WMBIJ,
+void cc3_sigma_UHF_AAA_obsolete(dpdbuf4 *CMNEF, dpdbuf4 *WABEI, dpdbuf4 *WMBIJ,
     int do_singles, dpdbuf4 *Dints_anti, dpdfile2 *SIA, int do_doubles, dpdfile2 *FME,
     dpdbuf4 *WMAFE, dpdbuf4 *WMNIE, dpdbuf4 *SIJAB, double energy)
 {
@@ -241,7 +241,7 @@ void cc3_sigma_UHF_AAA(dpdbuf4 *CMNEF, dpdbuf4 *WABEI, dpdbuf4 *WMBIJ,
   }
 }
 
-void cc3_sigma_UHF_BBB(dpdbuf4 *Cmnef, dpdbuf4 *Wabei, dpdbuf4 *Wmbij,
+void cc3_sigma_UHF_BBB_obsolete(dpdbuf4 *Cmnef, dpdbuf4 *Wabei, dpdbuf4 *Wmbij,
      int do_singles, dpdbuf4 *Dijab_anti, dpdfile2 *Sia, int do_doubles, dpdfile2 *Fme,
      dpdbuf4 *Wmafe, dpdbuf4 *Wmnie, dpdbuf4 *Sijab, double energy)
 {
@@ -473,7 +473,7 @@ void cc3_sigma_UHF_BBB(dpdbuf4 *Cmnef, dpdbuf4 *Wabei, dpdbuf4 *Wmbij,
   }
 }
 
-void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
+void cc3_sigma_UHF_AAB_obsolete(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
     dpdbuf4 *FAA, dpdbuf4 *FAB, dpdbuf4 *FBA,
     dpdbuf4 *EAA, dpdbuf4 *EAB, dpdbuf4 *EBA, 
     int do_singles, dpdbuf4 *DAA, dpdbuf4 *DAB, dpdfile2 *SIA, dpdfile2 *Sia,
@@ -1013,7 +1013,7 @@ void cc3_sigma_UHF_AAB(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
   }
 }
 
-void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
+void cc3_sigma_UHF_BBA_obsolete(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
     dpdbuf4 *FBB, dpdbuf4 *FAB, dpdbuf4 *FBA,  
     dpdbuf4 *EBB, dpdbuf4 *EAB, dpdbuf4 *EBA,
     int do_singles, dpdbuf4 *DBB, dpdbuf4 *DBA, dpdfile2 *SIA, dpdfile2 *Sia,

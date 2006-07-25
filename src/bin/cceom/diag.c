@@ -849,7 +849,7 @@ timer_off("INIT GUESS");
                ( (cc3_stage == 1) || fabs(cc3_eval-cc3_last_converged_eval)>eom_params.eval_tol)) {
           /* for CC3: restart one time if no cc3_restarts have yet been done */
           if (cc3_stage == 1) fprintf(outfile, "Forcing one restart with sigma recomputation.\n");
-          else fprintf(outfile,"Forcing restart due to CC3 eval not yet converged.\n");
+          else fprintf(outfile,"Forcing restart to make sure new sigma vectors give same eigenvalue.\n");
           fprintf(outfile,"Collapsing to only %d vector(s).\n", cc3_index+1);
           restart(alpha, L, cc3_index+1, C_irr, 0);
           if (cc3_index > 0) restart_with_root(cc3_index, C_irr);
