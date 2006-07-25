@@ -32,6 +32,14 @@ int psio_open(unsigned int unit, int status)
   char name[PSIO_MAXSTR],path[PSIO_MAXSTR],fullpath[PSIO_MAXSTR];
   psio_ud *this_unit;
 
+  if (unit > PSIO_MAXUNIT) {
+    fprintf(stderr, "PSIO_ERROR: Open failed because unit %d exceeds ", unit);
+    fprintf(stderr, "PSIO_MAXUNIT = %d.\n", PSIO_MAXUNIT);
+    fprintf(stderr, "Use a smaller unit number or recompile with larger ");
+    fprintf(stderr, "MAXUNIT\n");
+    return(0);
+  }
+
   this_unit = &(psio_unit[unit]);
 
   /* First check to see if this unit is aleady open */
