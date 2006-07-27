@@ -9,6 +9,7 @@ PSILIBS = -lPSI_dpd -lPSI_iwl -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_
 
 CSRC = \
 transqt.c cache.c file_build_presort.c get_moinfo.c get_params.c idx_error.c idx_permute_presort.c \
+transone.c transtwo_rhf.c transtwo_uhf.c semicanonical.c \
 
 BINOBJ = $(CSRC:%.c=%.o)
 

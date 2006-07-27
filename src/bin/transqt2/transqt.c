@@ -1,7 +1,27 @@
 /*
 ** TRANSQT:
-** Program to transform one- and two-electron integrals over
-** symmetry-orbitals to integrals over molecular orbitals.
+**
+** A program to transform one- and two-electron integrals from the
+** symmetry-orbital basis to the molecular-orbital basis.
+**
+** This code replaces the original transqt code developed initially
+** in 1995 by TDC, CDS, and JTF.  This version is designed to take
+** advantage of libdpd's ability to handle easily four-index
+** quantities, including symmetry.  This version requires
+** significantly less disk space (ca. 1/2) than the original code,
+** and is often much faster because of its reduced I/O requirements.
+**
+** This version of the code can do RHF, ROHF, and UHF transformations
+** that are compatible with all the coupled cluster codes, including
+** frozen orbitals.  
+**
+** Remaining tasks to achieve full replacement of transqt v.1:
+**   (1) Add reordering arrays needed for DETCI.
+**   (2) Add partial transforms for MP2 and MP2-R12.
+**   (3) Replace the backtransformation.  (I want to do this with
+**       symmetry, though, so there's no hurry here.)
+**
+** TDC, 7/06
 */
 
 #include <stdio.h>
@@ -27,406 +47,268 @@ void get_moinfo(void);
 void cleanup(void);
 void exit_io(void);
 
-int **cacheprep_uhf(int level, int *cachefiles);
 int **cacheprep_rhf(int level, int *cachefiles);
-void cachedone_uhf(int **cachelist);
-void cachedone_rhd(int **cachelist);
+void cachedone_rhf(int **);
 
 int file_build_presort(dpdfile4 *, int, double, long int, int, 
-		       int, double **, double **, double **, double **, int);
-
-void transform_two_rhf(void);
-#define PSIF_HALFT0 91
-#define PSIF_HALFT1 92
-
-#define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
+		       int, double *, double *, double *, double *, int);
+void transtwo_rhf(void);
+void transone(int m, int n, double *input, double *output, double **C, int nc, int *order, int *ioff);
+void semicanonical_fock(void);
 
 main(int argc, char *argv[])
 {
+  int nso, nmo, ntri_so, ntri_mo, nirreps;
   int **cachelist, *cachefiles;
   dpdfile4 I;
-  dpdbuf4 J, K;
-  int h, pq, rs, p, q, r, s, Gs, Gr, PQ, RS, i;
-  int nrows, ncols, nlinks;
-  double **TMP, **H, **D, **F, *oei;
-  double ***C;
-  struct iwlbuf MBuff;
-  int stat, noei;
+  int h, pq, p, q, i;
+  double *H, *D, *F, *oei;
+  double *H_a, *H_b, *D_a, *D_b, *F_a, *F_b;
+  double ***C, ***C_a, ***C_b;
+  int stat;
   int *offset;
   double efzc;
-  double **scratch;
-  unsigned long int memfree, rows_per_bucket, rows_left; 
-  int nbuckets, n;
 
   init_io(argc,argv);
   init_ioff();
   title();
   get_params();
   get_moinfo();
+  if(params.semicanonical) semicanonical_fock();
 
-  TMP = block_matrix(moinfo.nso,moinfo.nso);
+  nso = moinfo.nso;
+  nmo = moinfo.nmo;
+  ntri_so = nso*(nso+1)/2;
+  ntri_mo = nmo*(nmo+1)/2;
+  nirreps = moinfo.nirreps;
 
   cachefiles = init_int_array(PSIO_MAXUNIT);
-  if(params.ref == 2) cachelist = cacheprep_uhf(params.cachelev, cachefiles);
-  else cachelist = cacheprep_rhf(params.cachelev, cachefiles);
+  cachelist = cacheprep_rhf(params.cachelev, cachefiles); /* really just a placeholder */
 
-  dpd_init(0, moinfo.nirreps, params.memory, 0, cachefiles, cachelist,
+  dpd_init(0, nirreps, params.memory, 0, cachefiles, cachelist,
 	   NULL, 2, moinfo.sopi, moinfo.sosym, moinfo.mopi, moinfo.mosym);
 
-  psio_open(PSIF_SO_PRESORT, 0);
-  psio_open(PSIF_HALFT0, 0);
-  psio_open(PSIF_HALFT1, 0);
-
-  /*** Starting one-electron transforms ***/
+  /*** Starting one-electron transforms and presort ***/
 
   /* For the one-electron integral transform, the full MO list is best */
-  C = (double ***) malloc(1 * sizeof(double **));
-  chkpt_init(PSIO_OPEN_OLD);
-  C[0] = chkpt_rd_scf();
-  chkpt_close();
+  if(params.ref == 0 || params.ref == 1) {
+    C = (double ***) malloc(1 * sizeof(double **));
+    chkpt_init(PSIO_OPEN_OLD);
+    C[0] = chkpt_rd_scf();
+    chkpt_close();
+  }
+  else {
+    C_a = (double ***) malloc(1 * sizeof(double **));
+    C_b = (double ***) malloc(1 * sizeof(double **));
+    chkpt_init(PSIO_OPEN_OLD);
+    C_a[0] = chkpt_rd_alpha_scf();
+    C_b[0] = chkpt_rd_beta_scf();
+    chkpt_close();
+  }
 
   /* build the frozen-core density (RHF) */
-  offset = init_int_array(moinfo.nirreps);
-  for(h=1; h < moinfo.nirreps; h++)
+  offset = init_int_array(nirreps);
+  for(h=1; h < nirreps; h++)
     offset[h] = offset[h-1] + moinfo.sopi[h-1];
 
-  D = block_matrix(moinfo.nso,moinfo.nso);
-  for(h=0; h < moinfo.nirreps; h++)
-    for(p=offset[h]; p < offset[h]+moinfo.sopi[h]; p++)
-      for(q=offset[h]; q < offset[h]+moinfo.sopi[h]; q++)
-	for(i=offset[h]; i < offset[h]+moinfo.frdocc[h]; i++)
-	  D[p][q] += C[0][p][i] * C[0][q][i];
+  if(params.ref == 0 || params.ref == 1) { /* RHF/ROHF */
+    D = init_array(ntri_so);
+    for(h=0; h < nirreps; h++)
+      for(p=offset[h]; p < offset[h]+moinfo.sopi[h]; p++)
+	for(q=offset[h]; q <=p; q++) {
+	  pq = INDEX(p,q);
+	  for(i=offset[h]; i < offset[h]+moinfo.frdocc[h]; i++)
+	    D[pq] += C[0][p][i] * C[0][q][i];
+	}
+    if(params.print_lvl > 2) {
+      fprintf(outfile, "\n\tFrozen-core density (SO):\n");
+      print_array(D, nso, outfile);
+    }
+  }
+  else { /* UHF */
+    D_a = init_array(ntri_so);
+    D_b = init_array(ntri_so);
+    for(h=0; h < nirreps; h++)
+      for(p=offset[h]; p < offset[h]+moinfo.sopi[h]; p++)
+	for(q=offset[h]; q <=p; q++) {
+	  pq = INDEX(p,q);
+	  for(i=offset[h]; i < offset[h]+moinfo.frdocc[h]; i++) {
+	    D_a[pq] += C_a[0][p][i] * C_a[0][q][i];
+	    D_b[pq] += C_b[0][p][i] * C_b[0][q][i];
+	  }
+	}
+    if(params.print_lvl > 2) {
+      fprintf(outfile, "\n\tAlpha Frozen-core density (SO):\n");
+      print_array(D_a, nso, outfile);
+      fprintf(outfile, "\n\tBeta Frozen-core density (SO):\n");
+      print_array(D_b, nso, outfile);
+    }
+  }
 
   free(offset);
 
-  /* pre-sort the SO-basis two-electron integrals and generate the fzc operator */
-  F = block_matrix(moinfo.nso,moinfo.nso);
-  fprintf(outfile, "\n\tPresorting SO-basis two-electron integrals.\n");
-  fflush(outfile);
+  /* pre-sort the SO-basis two-electron integrals and generate the fzc operator(s) */
+  if(params.ref == 0 || params.ref == 1)
+    F = init_array(ntri_so);
+  else {
+    F_a = init_array(ntri_so);
+    F_b = init_array(ntri_so);
+  }
+
+  if(params.print_lvl) {
+    fprintf(outfile, "\n\tPresorting SO-basis two-electron integrals.\n");
+    fflush(outfile);
+  }
+  psio_open(PSIF_SO_PRESORT, 0);
   dpd_file4_init(&I, PSIF_SO_PRESORT, 0, 3, 3, "SO Ints (pq,rs)");
-  file_build_presort(&I, PSIF_SO_TEI, params.tolerance, params.memory, 1, 
-		     moinfo.nfzc, D, NULL, F, NULL, 0);
+  if(params.ref == 0 || params.ref == 1) 
+    file_build_presort(&I, PSIF_SO_TEI, params.tolerance, params.memory, 1, 
+		       moinfo.nfzc, D, NULL, F, NULL, params.ref);
+  else 
+    file_build_presort(&I, PSIF_SO_TEI, params.tolerance, params.memory, 1, 
+		       moinfo.nfzc, D_a, D_b, F_a, F_b, params.ref);
   dpd_file4_close(&I);
+  psio_close(PSIF_SO_PRESORT, 1);
 
   /* read the bare one-electron integrals */
-  noei = moinfo.nso*(moinfo.nso+1)/2;
-  oei = init_array(noei);
-  H = block_matrix(moinfo.nso,moinfo.nso);
-  stat = iwl_rdone(PSIF_OEI, PSIF_SO_T, oei, noei, 0, 0, outfile);
-  for(p=0,pq=0; p < moinfo.nso; p++)
-    for(q=0; q <= p; q++,pq++)
-      H[p][q] = H[q][p] = oei[pq];
-  stat = iwl_rdone(PSIF_OEI, PSIF_SO_V, oei, noei, 0, 0, outfile);
-  for(p=0,pq=0; p < moinfo.nso; p++)
-    for(q=0; q <= p; q++,pq++) {
-      H[p][q] += oei[pq];
-      if(p!=q) H[q][p] += oei[pq];
-    }
+  oei = init_array(ntri_so);
+  H = init_array(ntri_so);
+  stat = iwl_rdone(PSIF_OEI, PSIF_SO_T, H, ntri_so, 0, 0, outfile);
+  stat = iwl_rdone(PSIF_OEI, PSIF_SO_V, oei, ntri_so, 0, 0, outfile);
+  for(pq=0; pq < ntri_so; pq++)
+    H[pq] += oei[pq];
 
-  /* add the remaining one-electron terms to the fzc operator */
-  for(p=0; p < moinfo.nso; p++)
-    for(q=0; q < moinfo.nso; q++)
-      F[p][q] += H[p][q];
+  /* add the remaining one-electron terms to the fzc operator(s) */
+  if(params.ref == 0 || params.ref == 1) {
+    for(pq=0; pq < ntri_so; pq++)
+      F[pq] += H[pq];
+  }
+  else {
+    for(pq=0; pq < ntri_so; pq++) {
+      F_a[pq] += H[pq];
+      F_b[pq] += H[pq];
+    }
+  }
 
   /* compute the frozen-core energy and write it to the chkpt file*/
   efzc = 0.0;
-  if(params.ref == 0 || params.ref == 1) {
-    for(p=0; p < moinfo.nso; p++)
-      for(q=0; q < moinfo.nso; q++)
-	efzc += D[p][q] * (H[p][q] + F[p][q]);
+  if(params.ref == 0 || params.ref == 1) { /* RHF/ROHF */
+    for(p=0; p < nso; p++) {
+      pq = INDEX(p,p);
+      efzc += D[pq] * (H[pq] + F[pq]);
+      for(q=0; q < p; q++) {
+	pq = INDEX(p,q);
+	efzc += 2.0 * D[pq] * (H[pq] + F[pq]);
+      }
+    }
   }
-  fprintf(outfile, "\tFrozen-core energy = %20.15f\n", efzc);
+  else { /* UHF */
+    for(p=0; p < nso; p++) {
+      pq = INDEX(p,p);
+      efzc += 0.5 * D_a[pq] * (H[pq] + F_a[pq]);
+      efzc += 0.5 * D_b[pq] * (H[pq] + F_b[pq]);
+      for(q=0; q < p; q++) {
+	pq = INDEX(p,q);
+	efzc += D_a[pq] * (H[pq] + F_a[pq]);
+	efzc += D_b[pq] * (H[pq] + F_b[pq]);
+      }
+    }
+  }
+  if(params.print_lvl) {
+    fprintf(outfile, "\tFrozen-core energy = %20.15f\n", efzc);
+    fflush(outfile);
+  }
   chkpt_init(PSIO_OPEN_OLD);
   chkpt_wt_efzc(efzc);
   chkpt_close();
 
   /* transform the bare one-electron integrals */
-  nrows = moinfo.nso;
-  ncols = moinfo.nmo;
-  nlinks = moinfo.nso;
-  if(nrows && ncols && nlinks)
-    C_DGEMM('n','n',nrows,ncols,nlinks,1.0,H[0],nlinks,C[0][0],ncols,
-	    0.0,TMP[0],moinfo.nso);
-
-  nrows = moinfo.nmo;
-  ncols = moinfo.nmo;
-  nlinks = moinfo.nso;
-  if(nrows && ncols && nlinks)
-    C_DGEMM('t','n',nrows,ncols,nlinks,1.0,C[0][0],ncols,TMP[0],moinfo.nso,
-	    0.0,H[0],nlinks);
-
-  if(params.print_lvl > 2) {
-    fprintf(outfile, "\tOne-electron integrals (MO basis):\n");
-    mat_print(H, moinfo.nmo, moinfo.nmo, outfile);
-  }
-
-  for(p=0; p < moinfo.nmo; p++)
-    for(q=0; q < moinfo.nmo; q++) {
-      pq = INDEX(moinfo.pitzer2qt[p],moinfo.pitzer2qt[q]);
-      oei[pq] = H[p][q];
+  if(params.ref == 0 || params.ref == 1) {
+    transone(nso, nmo, H, oei, C[0], nmo, moinfo.pitzer2qt, ioff);
+    if(params.print_lvl > 2) {
+      fprintf(outfile, "\n\tOne-electron integrals (MO basis):\n");
+      print_array(oei, nmo, outfile);
     }
+    iwl_wrtone(PSIF_OEI, PSIF_MO_OEI, ntri_mo, oei);
+  }
+  else { /* UHF */
+    /* alpha */
+    transone(nso, nmo, H, oei, C_a[0], nmo, moinfo.pitzer2qt_A, ioff);
+    if(params.print_lvl > 2) {
+      fprintf(outfile, "\n\tAlpha one-electron integrals (MO basis):\n");
+      print_array(oei, nmo, outfile);
+    }
+    iwl_wrtone(PSIF_OEI, PSIF_MO_A_OEI, ntri_mo, oei);
 
-  noei = moinfo.nmo*(moinfo.nmo+1)/2;
-  iwl_wrtone(PSIF_OEI, PSIF_MO_OEI, noei, oei);
+    /* beta */
+    transone(nso, nmo, H, oei, C_b[0], nmo, moinfo.pitzer2qt_B, ioff);
+    if(params.print_lvl > 2) {
+      fprintf(outfile, "\n\tBeta one-electron integrals (MO basis):\n");
+      print_array(oei, nmo, outfile);
+    }
+    iwl_wrtone(PSIF_OEI, PSIF_MO_B_OEI, ntri_mo, oei);
+  }
 
   /* transform the frozen-core operator */
-  nrows = moinfo.nso;
-  ncols = moinfo.nmo;
-  nlinks = moinfo.nso;
-  if(nrows && ncols && nlinks)
-    C_DGEMM('n','n',nrows,ncols,nlinks,1.0,F[0],nlinks,C[0][0],ncols,
-	    0.0,TMP[0],moinfo.nso);
+  if(params.ref == 0 || params.ref == 1) { /* RHF/ROHF */
+    transone(nso, nmo, F, oei, C[0], nmo, moinfo.pitzer2qt, ioff);
+    if(params.print_lvl > 2) {
+      fprintf(outfile, "\n\tFrozen-core operator (MO basis):\n");
+      print_array(oei, nmo, outfile);
+    }
+    iwl_wrtone(PSIF_OEI, PSIF_MO_FZC, ntri_mo, oei);
+  }
+  else { /* UHF */
 
-  nrows = moinfo.nmo;
-  ncols = moinfo.nmo;
-  nlinks = moinfo.nso;
-  if(nrows && ncols && nlinks)
-    C_DGEMM('t','n',nrows,ncols,nlinks,1.0,C[0][0],ncols,TMP[0],moinfo.nso,
-	    0.0,F[0],nlinks);
+    /* alpha */
+    transone(nso, nmo, F_a, oei, C_a[0], nmo, moinfo.pitzer2qt_A, ioff);
+    if(params.print_lvl > 2) {
+      fprintf(outfile, "\n\tAlpha frozen-core operator (MO basis):\n");
+      print_array(oei, nmo, outfile);
+    }
+    iwl_wrtone(PSIF_OEI, PSIF_MO_A_FZC, ntri_mo, oei);
 
-  if(params.print_lvl > 2) {
-    fprintf(outfile, "\tFrozen-core operator (MO basis):\n");
-    mat_print(F, moinfo.nmo, moinfo.nmo, outfile);
+    /* beta */
+    transone(nso, nmo, F_b, oei, C_b[0], nmo, moinfo.pitzer2qt_B, ioff);
+    if(params.print_lvl > 2) {
+      fprintf(outfile, "\n\tBeta frozen-core operator (MO basis):\n");
+      print_array(oei, nmo, outfile);
+    }
+    iwl_wrtone(PSIF_OEI, PSIF_MO_B_FZC, ntri_mo, oei);
   }
 
-  for(p=0; p < moinfo.nmo; p++)
-    for(q=0; q < moinfo.nmo; q++) {
-      pq = INDEX(moinfo.pitzer2qt[p],moinfo.pitzer2qt[q]);
-      oei[pq] = F[p][q];
-    }
-
-  iwl_wrtone(PSIF_OEI, PSIF_MO_FZC, noei, oei);
-
   free(oei);
-  free_block(H);
-  free_block(F);
-  free_block(D);
-
-  free_block(C[0]);
-  free(C);
+  free(H);
+  if(params.ref == 0 || params.ref == 1) {
+    free(F);
+    free(D);
+    free_block(C[0]);
+    free(C);
+  }
+  else {
+    free(F_a);
+    free(F_b);
+    free(D_a);
+    free(D_b);
+    free_block(C_a[0]);
+    free(C_a);
+    free_block(C_b[0]);
+    free(C_b);
+  }
 
   /*** One-electron transforms complete ***/
 
   /*** Starting two-electron transforms ***/
 
-  /* For the two-electron integral transform, symmetry-blocked MOs are best */
-  C = (double ***) malloc(moinfo.nirreps * sizeof(double **));
-  chkpt_init(PSIO_OPEN_OLD);
-  for(h=0; h < moinfo.nirreps; h++) {
-    scratch = chkpt_rd_scf_irrep(h);
-    C[h] = block_matrix(moinfo.sopi[h],moinfo.mopi[h]);
-    for(q=0; q < moinfo.mopi[h]; q++)
-      for(p=0; p < moinfo.sopi[h]; p++)
-	C[h][p][q] = scratch[p][q+moinfo.frdocc[h]];
-    if(params.print_lvl > 2) {
-      fprintf(outfile, "\tMOs for irrep %d:\n",h);
-      mat_print(C[h], moinfo.sopi[h], moinfo.mopi[h], outfile);
-    }
-    free_block(scratch);
-  }
-  chkpt_close();
-
-  fprintf(outfile, "\tStarting first half-transformation.\n");
-  fflush(outfile);
-  dpd_buf4_init(&J, PSIF_SO_PRESORT, 0, 3, 0, 3, 3, 0, "SO Ints (pq,rs)");
-  dpd_buf4_init(&K, PSIF_HALFT0, 0, 3, 5, 3, 8, 0, "Half-Transformed Ints (pq,ij)");
-  for(h=0; h < moinfo.nirreps; h++) {
-
-    memfree = (unsigned long int) (dpd_memfree() - J.params->coltot[h] - K.params->coltot[h]);
-    rows_per_bucket = memfree/(2 * J.params->coltot[h]);
-    if(rows_per_bucket > J.params->rowtot[h]) rows_per_bucket = (unsigned long int) J.params->rowtot[h];
-    nbuckets = (int) ceil(((double) J.params->rowtot[h])/((double) rows_per_bucket));
-    rows_left = (unsigned long int) (J.params->rowtot[h] % rows_per_bucket);
-    fprintf(outfile, "\th = %d; memfree         = %lu\n", h, memfree);
-    fprintf(outfile, "\th = %d; rows_per_bucket = %lu\n", h, rows_per_bucket);
-    fprintf(outfile, "\th = %d; rows_left       = %lu\n", h, rows_left);
-    fprintf(outfile, "\th = %d; nbuckets        = %d\n", h, nbuckets);
-    fflush(outfile);
-
-    dpd_buf4_mat_irrep_init_block(&J, h, rows_per_bucket);
-    dpd_buf4_mat_irrep_init_block(&K, h, rows_per_bucket);
-
-    for(n=0; n < (rows_left ? nbuckets-1 : nbuckets); n++) {
-      dpd_buf4_mat_irrep_rd_block(&J, h, n*rows_per_bucket, rows_per_bucket);
-      for(pq=0; pq < rows_per_bucket; pq++) {
-	for(Gr=0; Gr < moinfo.nirreps; Gr++) {
-	  Gs = h^Gr;
-	  nrows = moinfo.sopi[Gr];
-	  ncols = moinfo.mopi[Gs];
-	  nlinks = moinfo.sopi[Gs];
-	  rs = J.col_offset[h][Gr];
-	  if(nrows && ncols && nlinks)
-	    C_DGEMM('n','n',nrows,ncols,nlinks,1.0,&J.matrix[h][pq][rs],nlinks,
-		    C[Gs][0],ncols,0.0,TMP[0],moinfo.nso);
-
-	  nrows = moinfo.mopi[Gr];
-	  ncols = moinfo.mopi[Gs];
-	  nlinks = moinfo.sopi[Gr];
-	  rs = K.col_offset[h][Gr];
-	  if(nrows && ncols && nlinks)
-	    C_DGEMM('t','n',nrows,ncols,nlinks,1.0,C[Gr][0],nrows,TMP[0],moinfo.nso,
-		    0.0,&K.matrix[h][pq][rs],ncols);
-	} /* Gr */
-      } /* pq */
-      dpd_buf4_mat_irrep_wrt_block(&K, h, n*rows_per_bucket, rows_per_bucket);
-    }
-    if(rows_left) {
-      dpd_buf4_mat_irrep_rd_block(&J, h, n*rows_per_bucket, rows_left);
-      for(pq=0; pq < rows_left; pq++) {
-	for(Gr=0; Gr < moinfo.nirreps; Gr++) {
-	  Gs = h^Gr;
-
-	  nrows = moinfo.sopi[Gr];
-	  ncols = moinfo.mopi[Gs];
-	  nlinks = moinfo.sopi[Gs];
-	  rs = J.col_offset[h][Gr];
-	  if(nrows && ncols && nlinks)
-	    C_DGEMM('n','n',nrows,ncols,nlinks,1.0,&J.matrix[h][pq][rs],nlinks,
-		    C[Gs][0],ncols,0.0,TMP[0],moinfo.nso);
-
-	  nrows = moinfo.mopi[Gr];
-	  ncols = moinfo.mopi[Gs];
-	  nlinks = moinfo.sopi[Gr];
-	  rs = K.col_offset[h][Gr];
-	  if(nrows && ncols && nlinks)
-	    C_DGEMM('t','n',nrows,ncols,nlinks,1.0,C[Gr][0],nrows,TMP[0],moinfo.nso,
-		    0.0,&K.matrix[h][pq][rs],ncols);
-	} /* Gr */
-      } /* pq */
-
-      dpd_buf4_mat_irrep_wrt_block(&K, h, n*rows_per_bucket, rows_left);
-    }
-
-    dpd_buf4_mat_irrep_close_block(&J, h, rows_per_bucket);
-    dpd_buf4_mat_irrep_close_block(&K, h, rows_per_bucket);
-  }
-  dpd_buf4_close(&K);
-  dpd_buf4_close(&J);
-
-  psio_close(PSIF_SO_PRESORT, 0);
-
-  fprintf(outfile, "\tSorting half-transformed integrals.\n");
-  fflush(outfile);
-  dpd_buf4_init(&K, PSIF_HALFT0, 0, 3, 8, 3, 8, 0, "Half-Transformed Ints (pq,ij)");
-  dpd_buf4_sort(&K, PSIF_HALFT1, rspq, 8, 3, "Half-Transformed Ints (ij,pq)");
-  dpd_buf4_close(&K);
-
-  psio_close(PSIF_HALFT0, 0);
-
-  fprintf(outfile, "\tStarting second half-transformation.\n");
-  fflush(outfile);
-  iwl_buf_init(&MBuff, PSIF_MO_TEI, params.tolerance, 0, 0);
-
-  dpd_buf4_init(&J, PSIF_HALFT1, 0, 8, 0, 8, 3, 0, "Half-Transformed Ints (ij,pq)");
-  dpd_buf4_init(&K, CC_MISC, 0, 8, 5, 8, 8, 0, "MO Ints (ij,kl)");
-  for(h=0; h < moinfo.nirreps; h++) {
-
-    memfree = (unsigned long int) (dpd_memfree() - J.params->coltot[h] - K.params->coltot[h]);
-    rows_per_bucket = memfree/(2 * J.params->coltot[h]);
-    if(rows_per_bucket > J.params->rowtot[h]) rows_per_bucket = (unsigned long int) J.params->rowtot[h];
-    nbuckets = (int) ceil(((double) J.params->rowtot[h])/((double) rows_per_bucket));
-    rows_left = (unsigned long int) (J.params->rowtot[h] % rows_per_bucket);
-
-    fprintf(outfile, "\th = %d; memfree         = %lu\n", h, memfree);
-    fprintf(outfile, "\th = %d; rows_per_bucket = %lu\n", h, rows_per_bucket);
-    fprintf(outfile, "\th = %d; rows_left       = %lu\n", h, rows_left);
-    fprintf(outfile, "\th = %d; nbuckets        = %d\n", h, nbuckets);
-    fflush(outfile);
-
-    dpd_buf4_mat_irrep_init_block(&J, h, rows_per_bucket);
-    dpd_buf4_mat_irrep_init_block(&K, h, rows_per_bucket);
-
-    for(n=0; n < (rows_left ? nbuckets-1 : nbuckets); n++) {
-      dpd_buf4_mat_irrep_rd_block(&J, h, n*rows_per_bucket, rows_per_bucket);
-      for(pq=0; pq < rows_per_bucket; pq++) {
-	for(Gr=0; Gr < moinfo.nirreps; Gr++) {
-	  Gs = h^Gr;
-	  nrows = moinfo.sopi[Gr];
-	  ncols = moinfo.mopi[Gs];
-	  nlinks = moinfo.sopi[Gs];
-	  rs = J.col_offset[h][Gr];
-	  if(nrows && ncols && nlinks)
-	    C_DGEMM('n','n',nrows,ncols,nlinks,1.0,&J.matrix[h][pq][rs],nlinks,
-		    C[Gs][0],ncols,0.0,TMP[0],moinfo.nso);
-
-	  nrows = moinfo.mopi[Gr];
-	  ncols = moinfo.mopi[Gs];
-	  nlinks = moinfo.sopi[Gr];
-	  rs = K.col_offset[h][Gr];
-	  if(nrows && ncols && nlinks)
-	    C_DGEMM('t','n',nrows,ncols,nlinks,1.0,C[Gr][0],nrows,TMP[0],moinfo.nso,
-		    0.0,&K.matrix[h][pq][rs],ncols);
-	} /* Gr */
-
-	p = moinfo.act2qt[K.params->roworb[h][pq+n*rows_per_bucket][0]];
-	q = moinfo.act2qt[K.params->roworb[h][pq+n*rows_per_bucket][1]];
-	PQ = INDEX(p,q);
-	for(rs=0; rs < K.params->coltot[h]; rs++) {
-	  r = moinfo.act2qt[K.params->colorb[h][rs][0]];
-	  s = moinfo.act2qt[K.params->colorb[h][rs][1]];
-	  RS = INDEX(r,s);
-	  if(r >= s && RS <= PQ)
-	    iwl_buf_wrt_val(&MBuff, p, q, r, s, K.matrix[h][pq][rs], (params.print_lvl>10), outfile, 0);
-	} /* rs */
-      } /* pq */
-    }
-    if(rows_left) {
-      dpd_buf4_mat_irrep_rd_block(&J, h, n*rows_per_bucket, rows_left);
-      for(pq=0; pq < rows_left; pq++) {
-	for(Gr=0; Gr < moinfo.nirreps; Gr++) {
-	  Gs = h^Gr;
-	  nrows = moinfo.sopi[Gr];
-	  ncols = moinfo.mopi[Gs];
-	  nlinks = moinfo.sopi[Gs];
-	  rs = J.col_offset[h][Gr];
-	  if(nrows && ncols && nlinks)
-	    C_DGEMM('n','n',nrows,ncols,nlinks,1.0,&J.matrix[h][pq][rs],nlinks,
-		    C[Gs][0],ncols,0.0,TMP[0],moinfo.nso);
-
-	  nrows = moinfo.mopi[Gr];
-	  ncols = moinfo.mopi[Gs];
-	  nlinks = moinfo.sopi[Gr];
-	  rs = K.col_offset[h][Gr];
-	  if(nrows && ncols && nlinks)
-	    C_DGEMM('t','n',nrows,ncols,nlinks,1.0,C[Gr][0],nrows,TMP[0],moinfo.nso,
-		    0.0,&K.matrix[h][pq][rs],ncols);
-	} /* Gr */
-
-	p = moinfo.act2qt[K.params->roworb[h][pq+n*rows_per_bucket][0]];
-	q = moinfo.act2qt[K.params->roworb[h][pq+n*rows_per_bucket][1]];
-	PQ = INDEX(p,q);
-	for(rs=0; rs < K.params->coltot[h]; rs++) {
-	  r = moinfo.act2qt[K.params->colorb[h][rs][0]];
-	  s = moinfo.act2qt[K.params->colorb[h][rs][1]];
-	  RS = INDEX(r,s);
-	  if(r >= s && RS <= PQ)
-	    iwl_buf_wrt_val(&MBuff, p, q, r, s, K.matrix[h][pq][rs], (params.print_lvl>10), outfile, 0);
-	} /* rs */
-      } /* pq */
-    }
-    dpd_buf4_mat_irrep_close_block(&J, h, rows_per_bucket);
-    dpd_buf4_mat_irrep_close_block(&K, h, rows_per_bucket);
-  }
-  dpd_buf4_close(&K);
-  dpd_buf4_close(&J);
-
-  iwl_buf_flush(&MBuff, 1);
-  iwl_buf_close(&MBuff, 1);
-
-  for(h=0; h < moinfo.nirreps; h++)
-    free_block(C[h]);
-  free(C);
-
-  psio_close(PSIF_HALFT1, 0);
-
-  fprintf(outfile, "\tTwo-electron integral transformation complete.\n");
-  fflush(outfile);
+  if(params.ref == 0 || params.ref == 1) transtwo_rhf();
+  else transtwo_uhf();
 
   /*** Two-electron transforms complete ***/
 
   dpd_close(0);
 
-  free_block(TMP);
+  cachedone_rhf(cachelist);
+  free(cachefiles);
 
   cleanup();
   free(ioff);
@@ -441,39 +323,50 @@ void init_io(int argc, char *argv[])
   int i;
   extern char *gprgid(void);
   char *progid;
+  int num_extra_args = 0;
+  char **extra_args;
+  extra_args = (char **) malloc(argc*sizeof(char *));
 
-  psi_start(argc-1,argv+1,0);
+  params.print_lvl = 1;
+  for (i=1; i<argc; i++) {
+    if (!strcmp(argv[i], "--quiet"))
+      params.print_lvl = 0;
+    else
+      extra_args[num_extra_args++] = argv[i];
+  }
+
+  psi_start(num_extra_args, extra_args, 0);
 
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s", gprgid());
   ip_cwk_add(progid);
   free(progid);
 
-  tstart(outfile);
+  if(params.print_lvl) tstart(outfile);
   psio_init();
 
   psio_open(CC_INFO, PSIO_OPEN_NEW);
-  psio_open(CC_MISC, PSIO_OPEN_NEW);
 }
 
 void title(void)
 {
-  fprintf(outfile, "\n");
-  fprintf(outfile,"\t**************************************************\n");
-  fprintf(outfile,"\t* TRANSQT:  Program to transform integrals from  *\n");
-  fprintf(outfile,"\t*           the SO basis to the MO basis.        *\n");
-  fprintf(outfile,"\t*                                                *\n");
-  fprintf(outfile,"\t*            Daniel, David, & Justin             *\n");
-  fprintf(outfile,"\t**************************************************\n");
-  fprintf(outfile, "\n");
+  if(params.print_lvl) {
+    fprintf(outfile, "\n");
+    fprintf(outfile,"\t**************************************************\n");
+    fprintf(outfile,"\t* TRANSQT:  Program to transform integrals from  *\n");
+    fprintf(outfile,"\t*           the SO basis to the MO basis.        *\n");
+    fprintf(outfile,"\t*                                                *\n");
+    fprintf(outfile,"\t*            Daniel, David, & Justin             *\n");
+    fprintf(outfile,"\t**************************************************\n");
+    fprintf(outfile, "\n");
+  }
 }
 
 void exit_io(void)
 {
   psio_close(CC_INFO,1);
-  psio_close(CC_MISC,1);
   psio_done();
-  tstop(outfile);
+  if(params.print_lvl) tstop(outfile);
   psi_stop();
 }
 

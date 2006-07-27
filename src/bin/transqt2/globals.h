@@ -1,3 +1,4 @@
+#include <psifiles.h>
 #include <ccfiles.h>
 #include "MOInfo.h"
 #include "Params.h"
@@ -20,3 +21,6 @@ EXTERN struct MOInfo moinfo;
 EXTERN struct Params params;
 
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
+
+#define PSIF_HALFT0 91
+#define PSIF_HALFT1 92

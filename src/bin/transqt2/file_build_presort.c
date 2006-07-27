@@ -10,6 +10,9 @@
 #define EXTERN
 #include "globals.h"
 
+void frozen_core(int p, int q, int r, int s, double value, double *D_a, double *D_b,
+		 double *fock_a, double *fock_b, int ref);
+
 void idx_permute_presort(dpdfile4 *File, int this_bucket,
 			   int **bucket_map, int **bucket_offset,
 			   int p, int q, int r, int s,
@@ -17,7 +20,7 @@ void idx_permute_presort(dpdfile4 *File, int this_bucket,
 
 int file_build_presort(dpdfile4 *File, int inputfile, double tolerance, 
 		       long int memoryb, int keep, int fzc, 
-		       double **Da, double **Db, double **fock_a, double **fock_b, int ref)
+		       double *D_a, double *D_b, double *fock_a, double *fock_b, int ref)
 {
   struct iwlbuf InBuf;
   int lastbuf;
@@ -31,7 +34,6 @@ int file_build_presort(dpdfile4 *File, int inputfile, double tolerance,
   double value;
   struct iwlbuf *SortBuf;
   psio_address next;
-  double **D, **fock;
 
   nirreps = File->params->nirreps;
 
@@ -91,13 +93,10 @@ int file_build_presort(dpdfile4 *File, int inputfile, double tolerance,
     }
   }
 
-  if(fzc && (ref==0 || ref==1)) { /* for convenience in RHF/ROHF cases */
-    D = Da; 
-    fock = fock_a;
+  if(params.print_lvl) {
+    fprintf(outfile, "\tSorting File: %s nbuckets = %d\n", File->label, nbuckets);
+    fflush(outfile);
   }
-
-  fprintf(outfile, "\tSorting File: %s nbuckets = %d\n", File->label, nbuckets);
-  fflush(outfile);
 
   next = PSIO_ZERO;
   for(n=0; n < nbuckets; n++) { /* nbuckets = number of passes */
@@ -123,76 +122,8 @@ int file_build_presort(dpdfile4 *File, int inputfile, double tolerance,
 
       idx_permute_presort(File,n,bucket_map,bucket_offset,p,q,r,s,value,outfile);
 
-      if(fzc && !n) { /* build frozen-core operator only on first pass*/
-	if(ref==0 || ref==1) { /* RHF/ROHF */
-	  pq = INDEX(p,q);
-	  rs = INDEX(r,s);
-	  /* (pq|rs) */
-	  fock[p][q] += 2.0 * D[r][s] * value;
-	  fock[p][r] -= D[q][s] * value;
-	  if(pq!=rs && p!=q && r!=s) {
-	    /* (pq|sr) */
-	    fock[p][q] += 2.0 * D[s][r] * value;
-	    fock[p][s] -= D[q][r] * value;
-	    /* (qp|rs) */
-	    fock[q][p] += 2.0 * D[r][s] * value;
-	    fock[q][r] -= D[p][s] * value;
-	    /* (qp|sr) */
-	    fock[q][p] += 2.0 * D[s][r] * value;
-	    fock[q][s] -= D[p][r] * value;
-	    /* (rs|pq) */
-	    fock[r][s] += 2.0 * D[p][q] * value;
-	    fock[r][p] -= D[s][q] * value;
-	    /* (rs|qp) */
-	    fock[r][s] += 2.0 * D[q][p] * value;
-	    fock[r][q] -= D[s][p] * value;
-	    /* (sr|pq) */
-	    fock[s][r] += 2.0 * D[p][q] * value;
-	    fock[s][p] -= D[r][q] * value;
-	    /* (sr|qp) */
-	    fock[s][r] += 2.0 * D[q][p] * value;
-	    fock[s][q] -= D[r][p] * value;
-	  }
-	  else if(p!=q && r!=s && pq==rs) {
-	    /* (pq|sr) */
-	    fock[p][q] += 2.0 * D[s][r] * value;
-	    fock[p][s] -= D[q][r] * value;
-	    /* (qp|rs) */
-	    fock[q][p] += 2.0 * D[r][s] * value;
-	    fock[q][r] -= D[p][s] * value;
-	    /* (qp|sr) */
-	    fock[q][p] += 2.0 * D[s][r] * value;
-	    fock[q][s] -= D[p][r] * value;
-	  }
-	  else if(p!=q && r==s) {
-	    /* (qp|rs) */
-	    fock[q][p] += 2.0 * D[r][s] * value;
-	    fock[q][r] -= D[p][s] * value;
-	    /* (rs|pq) */
-	    fock[r][s] += 2.0 * D[p][q] * value;
-	    fock[r][p] -= D[s][q] * value;
-	    /* (rs|qp) */
-	    fock[r][s] += 2.0 * D[q][p] * value;
-	    fock[r][q] -= D[s][p] * value;
-	  }
-	  else if(p==q && r!=s) {
-	    /* (pq|sr) */
-	    fock[p][q] += 2.0 * D[s][r] * value;
-	    fock[p][s] -= D[q][r] * value;
-	    /* (rs|pq) */
-	    fock[r][s] += 2.0 * D[p][q] * value;
-	    fock[r][p] -= D[s][q] * value;
-	    /* (sr|pq) */
-	    fock[s][r] += 2.0 * D[p][q] * value;
-	    fock[s][p] -= D[r][q] * value;
-	  }
-	  else if(p==q && r==s && pq!=rs) {
-	    /* (rs|pq) */
-	    fock[r][s] += 2.0 * D[p][q] * value;
-	    fock[r][p] -= D[s][q] * value;
-	  }
-	} /* if(ref==0||ref==1) */
-      } /* if(fzc) */
+      if(fzc && !n) /* build frozen-core operator only on first pass*/
+	frozen_core(p,q,r,s,value,D_a,D_b,fock_a,fock_b,ref);
 
     } /* end loop through current buffer */
 
@@ -211,76 +142,8 @@ int file_build_presort(dpdfile4 *File, int inputfile, double tolerance,
 
 	idx_permute_presort(File,n,bucket_map,bucket_offset,p,q,r,s,value,outfile);
       
-	if(fzc && !n) { /* build frozen-core operator only on first pass */
-	  if(ref==0 || ref==1) { /* RHF/ROHF */
-	    pq = INDEX(p,q);
-	    rs = INDEX(r,s);
-	    /* (pq|rs) */
-	    fock[p][q] += 2.0 * D[r][s] * value;
-	    fock[p][r] -= D[q][s] * value;
-	    if(pq!=rs && p!=q && r!=s) {
-	      /* (pq|sr) */
-	      fock[p][q] += 2.0 * D[s][r] * value;
-	      fock[p][s] -= D[q][r] * value;
-	      /* (qp|rs) */
-	      fock[q][p] += 2.0 * D[r][s] * value;
-	      fock[q][r] -= D[p][s] * value;
-	      /* (qp|sr) */
-	      fock[q][p] += 2.0 * D[s][r] * value;
-	      fock[q][s] -= D[p][r] * value;
-	      /* (rs|pq) */
-	      fock[r][s] += 2.0 * D[p][q] * value;
-	      fock[r][p] -= D[s][q] * value;
-	      /* (rs|qp) */
-	      fock[r][s] += 2.0 * D[q][p] * value;
-	      fock[r][q] -= D[s][p] * value;
-	      /* (sr|pq) */
-	      fock[s][r] += 2.0 * D[p][q] * value;
-	      fock[s][p] -= D[r][q] * value;
-	      /* (sr|qp) */
-	      fock[s][r] += 2.0 * D[q][p] * value;
-	      fock[s][q] -= D[r][p] * value;
-	    }
-	    else if(p!=q && r!=s && pq==rs) {
-	      /* (pq|sr) */
-	      fock[p][q] += 2.0 * D[s][r] * value;
-	      fock[p][s] -= D[q][r] * value;
-	      /* (qp|rs) */
-	      fock[q][p] += 2.0 * D[r][s] * value;
-	      fock[q][r] -= D[p][s] * value;
-	      /* (qp|sr) */
-	      fock[q][p] += 2.0 * D[s][r] * value;
-	      fock[q][s] -= D[p][r] * value;
-	    }
-	    else if(p!=q && r==s) {
-	      /* (qp|rs) */
-	      fock[q][p] += 2.0 * D[r][s] * value;
-	      fock[q][r] -= D[p][s] * value;
-	      /* (rs|pq) */
-	      fock[r][s] += 2.0 * D[p][q] * value;
-	      fock[r][p] -= D[s][q] * value;
-	      /* (rs|qp) */
-	      fock[r][s] += 2.0 * D[q][p] * value;
-	      fock[r][q] -= D[s][p] * value;
-	    }
-	    else if(p==q && r!=s) {
-	      /* (pq|sr) */
-	      fock[p][q] += 2.0 * D[s][r] * value;
-	      fock[p][s] -= D[q][r] * value;
-	      /* (rs|pq) */
-	      fock[r][s] += 2.0 * D[p][q] * value;
-	      fock[r][p] -= D[s][q] * value;
-	      /* (sr|pq) */
-	      fock[s][r] += 2.0 * D[p][q] * value;
-	      fock[s][p] -= D[r][q] * value;
-	    }
-	    else if(p==q && r==s && pq!=rs) {
-	      /* (rs|pq) */
-	      fock[r][s] += 2.0 * D[p][q] * value;
-	      fock[r][p] -= D[s][q] * value;
-	    }
-	  } /* if(ref==0||ref==1) */
-	} /* if(fzc) */
+	if(fzc && !n) /* build frozen-core operator only on first pass */
+	  frozen_core(p,q,r,s,value,D_a,D_b,fock_a,fock_b,ref);
 
       } /* end loop through current buffer */
     } /* end loop over reading buffers */
@@ -312,4 +175,289 @@ int file_build_presort(dpdfile4 *File, int inputfile, double tolerance,
   free(bucket_size);
 
   return 0;
+}
+
+void frozen_core(int p, int q, int r, int s, double value, double *D_a, double *D_b,
+		 double *fock_a, double *fock_b, int ref)
+{
+  int a, b, c, d, ab, cd, ad, bc;
+  int dum,found=0;
+  int al[8], bl[8], cl[8], dl[8];
+
+  if(ref==0 || ref==1) { /* RHF/ROHF */
+    a = al[0] = p;
+    b = bl[0] = q;
+    c = cl[0] = r;
+    d = dl[0] = s;
+    ab = INDEX(a,b);
+    cd = INDEX(c,d);
+    bc = INDEX(b,c);
+    ad = INDEX(a,d);
+    fock_a[cd] += 2.0 * D_a[ab] * value;
+    if(b>=c) fock_a[bc] -= D_a[ad] * value;
+
+    a = al[1] = q;
+    b = bl[1] = p;
+    c = cl[1] = r;
+    d = dl[1] = s;
+    if(!(a==al[0] && b==bl[0] && c==cl[0] && d==dl[0])) {
+      ab = INDEX(a,b);
+      cd = INDEX(c,d);
+      bc = INDEX(b,c);
+      ad = INDEX(a,d);
+      if(c>=d) fock_a[cd] += 2.0 * D_a[ab] * value;
+      if(b>=c) fock_a[bc] -= D_a[ad] * value;
+    }
+
+    a = al[2] = p;
+    b = bl[2] = q;
+    c = cl[2] = s;
+    d = dl[2] = r;
+    for(dum=0,found=0; dum < 2 && !found; dum++)
+      if(a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+    if(!found) {
+      ab = INDEX(a,b);
+      cd = INDEX(c,d);
+      bc = INDEX(b,c);
+      ad = INDEX(a,d);
+      if(c>=d) fock_a[cd] += 2.0 * D_a[ab] * value;
+      if(b>=c) fock_a[bc] -= D_a[ad] * value;
+    }
+
+    a = al[3] = q;
+    b = bl[3] = p;
+    c = cl[3] = s;
+    d = dl[3] = r;
+    for(dum=0,found=0; dum < 3 && !found; dum++)
+      if(a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+    if(!found) {
+      ab = INDEX(a,b);
+      cd = INDEX(c,d);
+      bc = INDEX(b,c);
+      ad = INDEX(a,d);
+      if(c>=d) fock_a[cd] += 2.0 * D_a[ab] * value;
+      if(b>=c) fock_a[bc] -= D_a[ad] * value;
+    }
+
+    a = al[4] = r;
+    b = bl[4] = s;
+    c = cl[4] = p;
+    d = dl[4] = q;
+    for(dum=0,found=0; dum < 4 && !found; dum++)
+      if(a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+    if(!found) {
+      ab = INDEX(a,b);
+      cd = INDEX(c,d);
+      bc = INDEX(b,c);
+      ad = INDEX(a,d);
+      if(c>=d) fock_a[cd] += 2.0 * D_a[ab] * value;
+      if(b>=c) fock_a[bc] -= D_a[ad] * value;
+    }
+
+    a = al[5] = r;
+    b = bl[5] = s;
+    c = cl[5] = q;
+    d = dl[5] = p;
+    for(dum=0,found=0; dum < 5 && !found; dum++)
+      if(a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+    if(!found) {
+      ab = INDEX(a,b);
+      cd = INDEX(c,d);
+      bc = INDEX(b,c);
+      ad = INDEX(a,d);
+      if(c>=d) fock_a[cd] += 2.0 * D_a[ab] * value;
+      if(b>=c) fock_a[bc] -= D_a[ad] * value;
+    }
+
+    a = al[6] = s;
+    b = bl[6] = r;
+    c = cl[6] = p;
+    d = dl[6] = q;
+    for(dum=0,found=0; dum < 6 && !found; dum++)
+      if(a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+    if(!found) {
+      ab = INDEX(a,b);
+      cd = INDEX(c,d);
+      bc = INDEX(b,c);
+      ad = INDEX(a,d);
+      if(c>=d) fock_a[cd] += 2.0 * D_a[ab] * value;
+      if(b>=c) fock_a[bc] -= D_a[ad] * value;
+    }
+
+    a = al[7] = s;
+    b = bl[7] = r;
+    c = cl[7] = q;
+    d = dl[7] = p;
+    for(dum=0,found=0; dum < 7 && !found; dum++)
+      if(a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+    if(!found) {
+      ab = INDEX(a,b);
+      cd = INDEX(c,d);
+      bc = INDEX(b,c);
+      ad = INDEX(a,d);
+      if(c>=d) fock_a[cd] += 2.0 * D_a[ab] * value;
+      if(b>=c) fock_a[bc] -= D_a[ad] * value;
+    }
+  }
+  else { /* UHF */
+    a = al[0] = p;
+    b = bl[0] = q;
+    c = cl[0] = r;
+    d = dl[0] = s;
+    ab = INDEX(a,b);
+    cd = INDEX(c,d);
+    bc = INDEX(b,c);
+    ad = INDEX(a,d);
+    fock_a[cd] += (D_a[ab] + D_b[ab]) * value;
+    fock_b[cd] += (D_a[ab] + D_b[ab]) * value;
+    if(b>=c) {
+      fock_a[bc] -= D_a[ad] * value;
+      fock_b[bc] -= D_b[ad] * value;
+    }
+
+    a = al[1] = q;
+    b = bl[1] = p;
+    c = cl[1] = r;
+    d = dl[1] = s;
+    if(!(a==al[0] && b==bl[0] && c==cl[0] && d==dl[0])) {
+      ab = INDEX(a,b);
+      cd = INDEX(c,d);
+      bc = INDEX(b,c);
+      ad = INDEX(a,d);
+      if(c>=d) {
+	fock_a[cd] += (D_a[ab] + D_b[ab]) * value;
+	fock_b[cd] += (D_a[ab] + D_b[ab]) * value;
+      }
+      if(b>=c) {
+	fock_a[bc] -= D_a[ad] * value;
+	fock_b[bc] -= D_b[ad] * value;
+      }
+    }
+
+    a = al[2] = p;
+    b = bl[2] = q;
+    c = cl[2] = s;
+    d = dl[2] = r;
+    for(dum=0,found=0; dum < 2 && !found; dum++)
+      if(a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+    if(!found) {
+      ab = INDEX(a,b);
+      cd = INDEX(c,d);
+      bc = INDEX(b,c);
+      ad = INDEX(a,d);
+      if(c>=d) {
+	fock_a[cd] += (D_a[ab] + D_b[ab]) * value;
+	fock_b[cd] += (D_a[ab] + D_b[ab]) * value;
+      }
+      if(b>=c) {
+	fock_a[bc] -= D_a[ad] * value;
+	fock_b[bc] -= D_b[ad] * value;
+      }
+    }
+
+    a = al[3] = q;
+    b = bl[3] = p;
+    c = cl[3] = s;
+    d = dl[3] = r;
+    for(dum=0,found=0; dum < 3 && !found; dum++)
+      if(a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+    if(!found) {
+      ab = INDEX(a,b);
+      cd = INDEX(c,d);
+      bc = INDEX(b,c);
+      ad = INDEX(a,d);
+      if(c>=d) {
+	fock_a[cd] += (D_a[ab] + D_b[ab]) * value;
+	fock_b[cd] += (D_a[ab] + D_b[ab]) * value;
+      }
+      if(b>=c) {
+	fock_a[bc] -= D_a[ad] * value;
+	fock_b[bc] -= D_b[ad] * value;
+      }
+    }
+
+    a = al[4] = r;
+    b = bl[4] = s;
+    c = cl[4] = p;
+    d = dl[4] = q;
+    for(dum=0,found=0; dum < 4 && !found; dum++)
+      if(a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+    if(!found) {
+      ab = INDEX(a,b);
+      cd = INDEX(c,d);
+      bc = INDEX(b,c);
+      ad = INDEX(a,d);
+      if(c>=d) {
+	fock_a[cd] += (D_a[ab] + D_b[ab]) * value;
+	fock_b[cd] += (D_a[ab] + D_b[ab]) * value;
+      }
+      if(b>=c) {
+	fock_a[bc] -= D_a[ad] * value;
+	fock_b[bc] -= D_b[ad] * value;
+      }
+    }
+
+    a = al[5] = r;
+    b = bl[5] = s;
+    c = cl[5] = q;
+    d = dl[5] = p;
+    for(dum=0,found=0; dum < 5 && !found; dum++)
+      if(a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+    if(!found) {
+      ab = INDEX(a,b);
+      cd = INDEX(c,d);
+      bc = INDEX(b,c);
+      ad = INDEX(a,d);
+      if(c>=d) {
+	fock_a[cd] += (D_a[ab] + D_b[ab]) * value;
+	fock_b[cd] += (D_a[ab] + D_b[ab]) * value;
+      }
+      if(b>=c) {
+	fock_a[bc] -= D_a[ad] * value;
+	fock_b[bc] -= D_b[ad] * value;
+      }
+    }
+
+    a = al[6] = s;
+    b = bl[6] = r;
+    c = cl[6] = p;
+    d = dl[6] = q;
+    for(dum=0,found=0; dum < 6 && !found; dum++)
+      if(a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+    if(!found) {
+      ab = INDEX(a,b);
+      cd = INDEX(c,d);
+      bc = INDEX(b,c);
+      ad = INDEX(a,d);
+      if(c>=d) {
+	fock_a[cd] += (D_a[ab] + D_b[ab]) * value;
+	fock_b[cd] += (D_a[ab] + D_b[ab]) * value;
+      }
+      if(b>=c) {
+	fock_a[bc] -= D_a[ad] * value;
+	fock_b[bc] -= D_b[ad] * value;
+      }
+    }
+
+    a = al[7] = s;
+    b = bl[7] = r;
+    c = cl[7] = q;
+    d = dl[7] = p;
+    for(dum=0,found=0; dum < 7 && !found; dum++)
+      if(a==al[dum] && b==bl[dum] && c==cl[dum] && d==dl[dum]) found=1;
+    if(!found) {
+      ab = INDEX(a,b);
+      cd = INDEX(c,d);
+      bc = INDEX(b,c);
+      ad = INDEX(a,d);
+      if(c>=d) {
+	fock_a[cd] += (D_a[ab] + D_b[ab]) * value;
+	fock_b[cd] += (D_a[ab] + D_b[ab]) * value;
+      }
+      if(b>=c) {
+	fock_a[bc] -= D_a[ad] * value;
+	fock_b[bc] -= D_b[ad] * value;
+      }
+    }
+  }
 }

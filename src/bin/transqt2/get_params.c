@@ -12,7 +12,7 @@ void get_params()
 {
   int errcod, tol;
   char *junk;
-  int *mu_irreps;
+  int *mu_irreps, tmp;
   
   errcod = ip_string("WFN", &(params.wfn), 0);
   if(strcmp(params.wfn, "MP2") && strcmp(params.wfn, "CCSD") && 
@@ -22,7 +22,7 @@ void get_params()
      strcmp(params.wfn,"CIS") && strcmp(params.wfn,"RPA") &&
      strcmp(params.wfn,"CC2") && strcmp(params.wfn,"CC3") &&
      strcmp(params.wfn,"EOM_CC3") && strcmp(params.wfn,"EOM_CC2")) {
-    fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
+    printf("Invalid value of input keyword WFN: %s\n", params.wfn);
     exit(PSI_RETURN_FAILURE);
   }
 
@@ -72,8 +72,11 @@ void get_params()
     }
   }
 
-  params.print_lvl = 1;
+  /*   params.print_lvl = 1; */ /* default set in init_io() */
   errcod = ip_data("PRINT","%d",&(params.print_lvl),0);
+
+  params.print_tei = 0;
+  errcod = ip_boolean("PRINT_TEI", &params.print_tei, 0);
 
   params.tolerance = 1e-14;
   errcod = ip_data("TOLERANCE", "%d", &(tol),0);
@@ -84,21 +87,25 @@ void get_params()
   params.cachelev = 2;
   errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
 
-  fprintf(outfile, "\n\tInput parameters:\n");
-  fprintf(outfile, "\t-----------------\n");
-  fprintf(outfile, "\tWave function   =\t%s\n", params.wfn);
-  if(params.semicanonical) {
-    fprintf(outfile, "\tReference wfn   =\tROHF changed to UHF for Semicanonical Orbitals\n"); 
+  if(params.print_lvl) {
+    fprintf(outfile, "\n\tInput parameters:\n");
+    fprintf(outfile, "\t-----------------\n");
+    fprintf(outfile, "\tWave function   =\t%s\n", params.wfn);
+    fprintf(outfile, "\tPrint Level     =\t%d\n", params.print_lvl);
+    fprintf(outfile, "\tPrint TEIs      =\t%s\n", params.print_tei ? "Yes" : "No");
+    if(params.semicanonical) {
+      fprintf(outfile, "\tReference wfn   =\tROHF (using UHF for semicanonical orbitals)\n"); 
+    }
+    else {
+      fprintf(outfile, "\tReference wfn   =\t%s\n", 
+	      (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
+    }	  
+    if(params.dertype == 0) fprintf(outfile, "\tDerivative      =\tNone\n");
+    else if(params.dertype == 1) fprintf(outfile, "\tDerivative      =\tFirst\n");
+    else if(params.dertype == 3) fprintf(outfile, "\tDerivative      =\tResponse\n");
+    fprintf(outfile, "\tMemory (Mbytes) =\t%.1f\n", params.memory/1e6);
+    fprintf(outfile, "\tCache Level     =\t%d\n", params.cachelev);
+    fprintf(outfile, "\tCache Type      =\t%s\n", "LRU");
+    fflush(outfile);
   }
-  else {
-    fprintf(outfile, "\tReference wfn   =\t%s\n", 
-	    (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
-  }	  
-  if(params.dertype == 0) fprintf(outfile, "\tDerivative      =\tNone\n");
-  else if(params.dertype == 1) fprintf(outfile, "\tDerivative      =\tFirst\n");
-  else if(params.dertype == 3) fprintf(outfile, "\tDerivative      =\tResponse\n");
-  fprintf(outfile, "\tMemory (Mbytes) =\t%.1f\n", params.memory/1e6);
-  fprintf(outfile, "\tCache Level     =\t%d\n", params.cachelev);
-  fprintf(outfile, "\tCache Type      =\t%s\n", "LRU");
-  fflush(outfile);
 }

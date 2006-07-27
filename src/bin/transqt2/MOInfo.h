@@ -21,17 +21,11 @@ struct MOInfo {
   double efzc;           /* Frozen core energy */
   double eref;           /* The reference energy (computed here) */
 
-  int *pitzer2qt;        /* orbital reordering array (RHF) */
-  int *qt2pitzer;        /* orbital reordering array (RHF) */
-  int *pitzer2qt_A;      /* orbital reordering array (UHF) */
-  int *pitzer2qt_B;      /* orbital reordering array (UHF) */
-  int *qt2pitzer_A;      /* orbital reordering array (UHF) */
-  int *qt2pitzer_B;      /* orbital reordering array (UHF) */
+  int *pitzer2qt;        /* reordering array (RHF): Pitzer MO -> QT */
+  int *pitzer2qt_A;      /* reordering array (UHF): Pitzer MO -> QT (alpha) */
+  int *pitzer2qt_B;      /* reordering array (UHF): Pitzer MO -> QT (beta) */
 
-  int *act2qt;           /* orbital reordering array (RHF) */
-  int *qt2act;           /* orbital reordering array (RHF) */
-  int *act2qt_A;         /* orbital reordering array (UHF) */
-  int *act2qt_B;         /* orbital reordering array (UHF) */
-  int *qt2act_A;         /* orbital reordering array (UHF) */
-  int *qt2act_B;         /* orbital reordering array (UHF) */
+  int *act2qt;           /* reordering array (RHF): active MO -> QT */
+  int *act2qt_A;         /* reordering array (UHF): active MO -> QT (alpha) */
+  int *act2qt_B;         /* reordering array (UHF): active MO -> QT (beta) */
 };

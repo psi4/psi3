@@ -62,23 +62,14 @@ void get_moinfo(void)
   /* Compute spatial-orbial reordering arrays */
   if(params.ref == 0 || params.ref == 1) {
     moinfo.pitzer2qt = init_int_array(moinfo.nmo);
-    moinfo.qt2pitzer = init_int_array(moinfo.nmo);
     reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
 	       moinfo.pitzer2qt, moinfo.sopi, moinfo.nirreps);
-    for(i=0; i < moinfo.nmo; i++)
-      moinfo.qt2pitzer[moinfo.pitzer2qt[i]] = i;
   }
   else if(params.ref == 2) {
     moinfo.pitzer2qt_A = init_int_array(moinfo.nmo);
     moinfo.pitzer2qt_B = init_int_array(moinfo.nmo);
-    moinfo.qt2pitzer_A = init_int_array(moinfo.nmo);
-    moinfo.qt2pitzer_B = init_int_array(moinfo.nmo);
     reorder_qt_uhf(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
 		   moinfo.pitzer2qt_A, moinfo.pitzer2qt_B, moinfo.sopi, moinfo.nirreps);
-    for(i=0; i < moinfo.nmo; i++) {
-      moinfo.qt2pitzer_A[moinfo.pitzer2qt_A[i]] = i;
-      moinfo.qt2pitzer_B[moinfo.pitzer2qt_B[i]] = i;
-    }
   }
 
   /* Adjust clsdpi array for frozen orbitals */
@@ -100,13 +91,13 @@ void get_moinfo(void)
   moinfo.nactive = nclsd + nopen + nuocc;
 
   /* more orbital reordering arrays */
+  offset = init_int_array(moinfo.nirreps);
+  for(h=1; h < moinfo.nirreps; h++)
+    offset[h] = offset[h-1] + moinfo.mopi[h-1];
+
   if(params.ref == 0 || params.ref == 1) {
-    offset = init_int_array(moinfo.nirreps);
-    for(h=1; h < moinfo.nirreps; h++)
-      offset[h] = offset[h-1] + moinfo.mopi[h-1];
 
     moinfo.act2qt = init_int_array(moinfo.nactive);
-    moinfo.qt2act = init_int_array(moinfo.nactive);
 
     count = 0;
     for(h=0; h < moinfo.nirreps; h++) {
@@ -124,31 +115,58 @@ void get_moinfo(void)
       for(p=0; p < moinfo.uoccpi[h]; p++)
 	moinfo.act2qt[this_offset+p] = count++;
     }
-    free(offset);
   }
   else if(params.ref == 2) {
+    moinfo.act2qt_A = init_int_array(moinfo.nactive);
+    moinfo.act2qt_B = init_int_array(moinfo.nactive);
 
+    count = 0;
+    for(h=0; h < moinfo.nirreps; h++) {
+      this_offset = offset[h];
+      for(p=0; p < moinfo.clsdpi[h] + moinfo.openpi[h]; p++)
+	moinfo.act2qt_A[this_offset+p] = count++;
+    }
+    for(h=0; h < moinfo.nirreps; h++) {
+      this_offset = offset[h] + moinfo.clsdpi[h] + moinfo.openpi[h];
+      for(p=0; p < moinfo.uoccpi[h]; p++)
+	moinfo.act2qt_A[this_offset+p] = count++;
+    }
+
+    count = 0;
+    for(h=0; h < moinfo.nirreps; h++) {
+      this_offset = offset[h];
+      for(p=0; p < moinfo.clsdpi[h]; p++)
+	moinfo.act2qt_B[this_offset+p] = count++;
+    }
+    for(h=0; h < moinfo.nirreps; h++) {
+      this_offset = offset[h] + moinfo.clsdpi[h];
+      for(p=0; p < moinfo.openpi[h]+moinfo.uoccpi[h]; p++)
+	moinfo.act2qt_B[this_offset+p] = count++;
+    }
   }
+  free(offset);
 
-  fprintf(outfile,"\n\tChkpt Parameters:\n");
-  fprintf(outfile,"\t--------------------\n");
-  fprintf(outfile,"\tNumber of irreps     = %d\n",moinfo.nirreps);
-  fprintf(outfile,"\tNumber of SOs        = %d\n",moinfo.nso);
-  fprintf(outfile,"\tNumber of MOs        = %d\n",moinfo.nmo);
-  fprintf(outfile,"\tNumber of active MOs = %d\n\n",moinfo.nactive);
-  fprintf(outfile,
-	  "\tLabel\t# SOs\t# FZDC\t# DOCC\t# SOCC\t# VIRT\t# FZVR\n");
-  fprintf(outfile,
-	  "\t-----\t-----\t------\t------\t------\t------\t------\n");
-  for(i=0; i < moinfo.nirreps; i++) {
+  if(params.print_lvl) {
+    fprintf(outfile,"\tChkpt Parameters:\n");
+    fprintf(outfile,"\t--------------------\n");
+    fprintf(outfile,"\tNumber of irreps     = %d\n",moinfo.nirreps);
+    fprintf(outfile,"\tNumber of SOs        = %d\n",moinfo.nso);
+    fprintf(outfile,"\tNumber of MOs        = %d\n",moinfo.nmo);
+    fprintf(outfile,"\tNumber of active MOs = %d\n\n",moinfo.nactive);
     fprintf(outfile,
-	    "\t %s\t   %d\t    %d\t    %d\t    %d\t    %d\t    %d\n",
-	    moinfo.labels[i],moinfo.sopi[i],moinfo.frdocc[i],
-	    moinfo.clsdpi[i],moinfo.openpi[i],moinfo.uoccpi[i],
-	    moinfo.fruocc[i]);
+	    "\tLabel\t# SOs\t# FZDC\t# DOCC\t# SOCC\t# VIRT\t# FZVR\n");
+    fprintf(outfile,
+	    "\t-----\t-----\t------\t------\t------\t------\t------\n");
+    for(i=0; i < moinfo.nirreps; i++) {
+      fprintf(outfile,
+	      "\t %s\t   %d\t    %d\t    %d\t    %d\t    %d\t    %d\n",
+	      moinfo.labels[i],moinfo.sopi[i],moinfo.frdocc[i],
+	      moinfo.clsdpi[i],moinfo.openpi[i],moinfo.uoccpi[i],
+	      moinfo.fruocc[i]);
+    }
+    fprintf(outfile,"\n\tNuclear Rep. energy (chkpt) =  %20.14f\n", moinfo.enuc);
+    fprintf(outfile,  "\tSCF energy          (chkpt) =  %20.14f\n", escf);
   }
-  fprintf(outfile,"\n\tNuclear Rep. energy (chkpt) =  %20.14f\n", moinfo.enuc);
-  fprintf(outfile,  "\tSCF energy          (chkpt) =  %20.14f\n", escf);
 }
 
 void cleanup(void)
@@ -168,12 +186,12 @@ void cleanup(void)
   free(moinfo.labels);
   if(params.ref == 0 || params.ref == 1) {
     free(moinfo.pitzer2qt);
-    free(moinfo.qt2pitzer);
+    free(moinfo.act2qt);
   }
   else if(params.ref == 2) {
     free(moinfo.pitzer2qt_A);
     free(moinfo.pitzer2qt_B);
-    free(moinfo.qt2pitzer_A);
-    free(moinfo.qt2pitzer_B);
+    free(moinfo.act2qt_A);
+    free(moinfo.act2qt_B);
   }
 }
