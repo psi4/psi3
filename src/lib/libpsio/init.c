@@ -58,8 +58,6 @@ int psio_init(void)
       psio_unit[i].vol[j].path = NULL;
       psio_unit[i].vol[j].stream = -1;
     }
-    psio_unit[i].tocaddress.page = 0;
-    psio_unit[i].tocaddress.offset = 0;
     psio_unit[i].toclen = 0;
     psio_unit[i].toc = NULL;
   }
@@ -76,7 +74,7 @@ int psio_init(void)
   /* Set library's state variable to initialized value (1) */
   _psi3_libpsio_state_ = 1;
 
-  return(0);
+  return(1);
 }
 
 /*!

@@ -19,6 +19,8 @@ psio_tocentry *psio_tocscan(unsigned int unit, char *key)
 
   if(key == NULL) return(NULL);
 
+  if((strlen(key)+1) > PSIO_KEYLEN) psio_error(unit,PSIO_ERROR_KEYLEN);
+
   this_entry = psio_unit[unit].toc;
 
   while(this_entry != NULL) {

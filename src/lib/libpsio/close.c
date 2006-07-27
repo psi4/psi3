@@ -59,8 +59,6 @@ int psio_close(unsigned int unit, int keep)
   /* Reset the global page stats to zero */
   this_unit->numvols = 0;
   this_unit->toclen = 0;
-  this_unit->tocaddress.page = 0;
-  this_unit->tocaddress.offset = 0;
 
-  return(0);
+  return(1);
 }

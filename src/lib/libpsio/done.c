@@ -55,5 +55,5 @@ int psio_done(void)
 
   _psi3_libpsio_state_ = 0;
 
-  return(0);
+  return(1);
 }

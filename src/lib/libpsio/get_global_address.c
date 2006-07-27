@@ -21,9 +21,9 @@ psio_address psio_get_global_address(psio_address entry_start,
   address.page = entry_start.page + rel_address.page;
   address.offset = entry_start.offset + rel_address.offset;
   if((entry_start.offset + rel_address.offset) >= PSIO_PAGELEN) {
-     address.offset -= PSIO_PAGELEN;
-     address.page++;
-     }
+    address.offset -= PSIO_PAGELEN;
+    address.page++;
+  }
 
   return(address);
 }

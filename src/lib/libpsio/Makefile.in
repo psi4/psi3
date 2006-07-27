@@ -9,13 +9,13 @@ PSITARGET = $(top_objdir)/lib/libPSI_psio.a
 TRUESRC = \
 close.c          get_global_address.c  tocdel.c    tocwrite.c \
 done.c           get_length.c          read.c        toclast.c   volseek.c \
-error.c          get_numvols.c         read_block.c  toclen.c    write.c \
+error.c          get_numvols.c         toclen.c    write.c \
 get_address.c    get_volpath.c         read_entry.c  tocprint.c \
-write_block.c    get_entry_end.c       init.c        rw.c \
+get_entry_end.c       init.c        rw.c \
 tocread.c        write_entry.c         get_filename.c   open.c \
 tocclean.c    tocscan.c open_check.c
 
-DEPENDINCLUDE = psio.h psio.gbl
+DEPENDINCLUDE = psio.h
 
 LIBOBJ = $(TRUESRC:%.c=%.o)
 
@@ -25,7 +25,7 @@ ifneq ($(DODEPEND),no)
 include $(LIBOBJ:%.o=%.d)
 endif
 
-install_inc:: psio.h psio.gbl
+install_inc:: psio.h
 	$(MKDIRS) $(incdir)/libpsio
 	$(INSTALL_INCLUDE) $^ $(incdir)/libpsio
 

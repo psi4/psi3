@@ -1,3 +1,12 @@
+07/27/06: Significant changes to libpsio designed to avoid corruption of
+files in cases of program crashes due to external problems (e.g. power
+failures).  The old file structure placed the entire table-of-contents (TOC)
+at the end of the file (usually only when the file was closed).  The new
+structure stores the TOC data for each entry/record as a header to the data
+itself.  This header is updated if necessary just before a given write.
+Thus, if the program crashes, the TOC data should still be accessible and
+recovery of the calculation may be possible. -TDC
+
 07/21/06: Added transqt2 to the repository.  This will soon be a full
 replacement for transqt with substantially reduced disk-space requirements
 and better speed.  -TDC

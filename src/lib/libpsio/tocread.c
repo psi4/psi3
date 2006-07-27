@@ -9,6 +9,8 @@
 
 /*!
 ** PSIO_TOCREAD(): Read the table of contents for file number 'unit'.
+**
+** \params unit = The PSI unit number from which to read the TOC.
 ** 
 ** \ingroup (PSIO)
 */
@@ -18,57 +20,38 @@ int psio_tocread(unsigned int unit)
   int errcod, stream, volume, entry_size;
   psio_ud *this_unit;
   psio_tocentry *last_entry, *this_entry; 
+  psio_address address;
 
   this_unit = &(psio_unit[unit]);
   entry_size = sizeof(psio_tocentry) - 2*sizeof(psio_tocentry *);
 
-  /* Check that this unit is actually open */
-  if(this_unit->vol[0].stream == -1) return(0);
+  if(!psio_open_check(unit)) return(1);
 
-  /* Seek vol[0] to its beginning */
-  stream = this_unit->vol[0].stream;
-  errcod = lseek(stream, 0L, SEEK_SET);
-  if(errcod == -1) psio_error(unit,PSIO_ERROR_LSEEK);
-
-  /* Read the TOC from disk */
-  errcod = read(stream, (char *) &(this_unit->tocaddress.page),
-                sizeof(ULI));
-  if(errcod != sizeof(ULI)) return(1);
-  errcod = read(stream, (char *) &(this_unit->tocaddress.offset),
-                sizeof(ULI));
-  if(errcod != sizeof(ULI)) return(1);
-  errcod = read(stream, (char *) &(this_unit->toclen), sizeof(ULI));
-  if(errcod != sizeof(ULI)) return(1);
+  /* grab the number of records */
+  this_unit->toclen = psio_rd_toclen(unit);
 
   /* Malloc room for the TOC */
-  this_unit->toc = (psio_tocentry *) malloc(sizeof(psio_tocentry));
-  this_entry = this_unit->toc;
-  this_entry->last = NULL;
-  for(i=1; i < this_unit->toclen; i++) {
+  if(this_unit->toclen) {
+    this_unit->toc = (psio_tocentry *) malloc(sizeof(psio_tocentry));
+    this_entry = this_unit->toc;
+    this_entry->last = NULL;
+    for(i=1; i < this_unit->toclen; i++) {
       last_entry = this_entry;
       this_entry = (psio_tocentry *) malloc(sizeof(psio_tocentry));
       last_entry->next = this_entry;
       this_entry->last = last_entry;
     }
-  this_entry->next = NULL;
-
-  /* Seek the TOC volume to the correct position */
-  volume = (this_unit->tocaddress.page) % (this_unit->numvols);
-  errcod = psio_volseek(&(this_unit->vol[volume]), this_unit->tocaddress.page,
-	                this_unit->tocaddress.offset, this_unit->numvols);
-  if(errcod == -1) psio_error(unit,PSIO_ERROR_LSEEK);
+    this_entry->next = NULL;
+  }
 
   /* Read the TOC entry-by-entry */
   this_entry = this_unit->toc;
+  address = psio_get_address(PSIO_ZERO, sizeof(ULI)); /* start one ULI after the top of the file */
   for(i=0; i < this_unit->toclen; i++) {
+    psio_rw(unit, (char *) this_entry, address, entry_size, 0);
+    address = this_entry->eadd;
+    this_entry = this_entry->next;
+  }
 
-      /* This read() assumes a fixed ordering on the members of this_entry */
-      errcod = read(this_unit->vol[volume].stream, (char *) this_entry,
-		    entry_size);
-      if(errcod != entry_size) psio_error(unit,PSIO_ERROR_READ);
-
-      this_entry = this_entry->next;
-    }
-
-  return(0);
+  return(1);
 }

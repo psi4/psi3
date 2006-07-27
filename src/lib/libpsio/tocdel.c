@@ -20,13 +20,10 @@ int psio_tocdel(unsigned int unit, char *key)
 {
   psio_tocentry *this_entry, *last_entry, *next_entry;
 
-  /* Check the key length first */
-  if((strlen(key)+1) > PSIO_KEYLEN) psio_error(unit,PSIO_ERROR_KEYLEN);
-
   this_entry = psio_tocscan(unit, key);
   if(this_entry == NULL) {
-      fprintf(stderr, "PSIO_ERROR: Can't find TOC Entry %s\n", key);
-      psio_error(unit,PSIO_ERROR_NOTOCENT);
+    fprintf(stderr, "PSIO_ERROR: Can't find TOC Entry %s\n", key);
+    psio_error(unit,PSIO_ERROR_NOTOCENT);
   }
 
   last_entry = this_entry->last;
@@ -37,5 +34,8 @@ int psio_tocdel(unsigned int unit, char *key)
 
   free(this_entry);
 
-  return(0);
+  /* Dump the new TOC to the file */
+  psio_tocwrite(unit);
+
+  return(1);
 }

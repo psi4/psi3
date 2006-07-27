@@ -3,6 +3,7 @@
    \ingroup (PSIO)
 */
 
+#include <stdio.h>
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
@@ -10,8 +11,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include "psio.h"
-
-
 
 /*!
 ** PSIO_OPEN(): Opens a multivolume PSI direct access file for
@@ -32,17 +31,13 @@ int psio_open(unsigned int unit, int status)
   char name[PSIO_MAXSTR],path[PSIO_MAXSTR],fullpath[PSIO_MAXSTR];
   psio_ud *this_unit;
 
-  if (unit > PSIO_MAXUNIT) {
-    fprintf(stderr, "PSIO_ERROR: Open failed because unit %d exceeds ", unit);
-    fprintf(stderr, "PSIO_MAXUNIT = %d.\n", PSIO_MAXUNIT);
-    fprintf(stderr, "Use a smaller unit number or recompile with larger ");
-    fprintf(stderr, "MAXUNIT\n");
-    return(0);
-  }
+  /* check for too large unit */
+  if (unit > PSIO_MAXUNIT)
+    psio_error(unit,PSIO_ERROR_MAXUNIT);
 
   this_unit = &(psio_unit[unit]);
 
-  /* First check to see if this unit is aleady open */
+  /* Check to see if this unit is aleady open */
   if(this_unit->vol[0].stream != -1) psio_error(unit,PSIO_ERROR_REOPEN);
 
   /* Get number of volumes to stripe across */
@@ -88,29 +83,12 @@ int psio_open(unsigned int unit, int status)
 
   if (status == PSIO_OPEN_OLD) tocstat = psio_tocread(unit);
   else if (status == PSIO_OPEN_NEW) {
-      
     /* Init the TOC stats and write them to disk */
-    this_unit->tocaddress.page = 0;
-    this_unit->tocaddress.offset = 3*sizeof(ULI);
     this_unit->toclen = 0;
     this_unit->toc = NULL;
-
-    /* Seek vol[0] to its beginning */
-    stream = this_unit->vol[0].stream;
-    errcod = lseek(stream, 0L, SEEK_SET);
-    if(errcod == -1) psio_error(unit,PSIO_ERROR_LSEEK);
-  
-    errcod = write(stream, (char *) &(this_unit->tocaddress.page),
-		   sizeof(ULI));
-    if(errcod != sizeof(ULI)) psio_error(unit,PSIO_ERROR_WRITE);
-    errcod = write(stream, (char *) &(this_unit->tocaddress.offset),
-		   sizeof(ULI));
-    if(errcod != sizeof(ULI)) psio_error(unit,PSIO_ERROR_WRITE);
-    errcod = write(stream, (char *) &(this_unit->toclen), sizeof(ULI));
-    if(errcod != sizeof(ULI)) psio_error(unit,PSIO_ERROR_WRITE);
-
+    psio_wt_toclen(unit, 0);
   }
   else psio_error(unit,PSIO_ERROR_OSTAT);
 
-  return(0);
+  return(1);
 }
