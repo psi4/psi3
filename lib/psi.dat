@@ -19,7 +19,8 @@ psi: (
   deriv      = "cints --deriv1"
   deriv2     = "cints --deriv2"
   propint    = "cints --oeprop"
-  transqt    = "transqt"
+  transqt    = "transqt"  
+  cctrans    = "transqt2"  %testing with CC modules; eventually will replace transqt
   backtransqt = "transqt --backtr"
   cphf        = "cphf"
   response    = "response"
@@ -302,7 +303,7 @@ psi: (
 
   % -------------------------------- CCSD Procedures
   % Procedures for the CCSD energy
-  CCSDEnergy = ($ints $scf $transqt $ccsort $ccenergy)
+  CCSDEnergy = ($ints $scf $cctrans $ccsort $ccenergy)
   CCSDRHFEnergy = ($CCSDEnergy $done)
   CCSDROHFEnergy = ($CCSDEnergy $done)
   CCSDUHFEnergy = ($CCSDEnergy $done)
@@ -317,7 +318,7 @@ psi: (
   CCSDTwoConFirst = ERROR
 
   %Procedures for the CCSD gradient with no restart
-  CCSDFirstReset = ($ints $scf $transqt $ccreset $ccenergy $cchbar
+  CCSDFirstReset = ($ints $scf $cctrans $ccreset $ccenergy $cchbar
       $cclambda $ccdensity $oeprop $backtransqt $deriv)
   CCSDRHFFirstReset = $CCSDFirstReset
   CCSDROHFFirstReset = $CCSDFirstReset
@@ -410,7 +411,7 @@ psi: (
 
   % -------------------------------- CCSD(T) Procedures
   % Procedures for the CCSD(T) energy
-  CCSD_TEnergy = ($ints $scf $transqt $ccsort $ccenergy $cctriples)
+  CCSD_TEnergy = ($ints $scf $cctrans $ccsort $ccenergy $cctriples)
   CCSD_TRHFEnergy = ($CCSD_TEnergy $done)
   CCSD_TROHFEnergy = ($CCSD_TEnergy $done) 
   CCSD_TUHFEnergy = ($CCSD_TEnergy $done)
@@ -446,7 +447,7 @@ psi: (
 
   % -------------------------------- CC2 Procedures
   % Procedures for the CC2 energy
-  CC2Energy = ($ints $scf $transqt $ccsort $ccenergy)
+  CC2Energy = ($ints $scf $cctrans $ccsort $ccenergy)
   CC2RHFEnergy = ($CC2Energy $done)
   CC2UHFEnergy = ($CC2Energy $done)
   CC2ROHFEnergy = ($CC2Energy $done)
@@ -467,7 +468,7 @@ psi: (
 
   % -------------------------------- CC3 Procedures
   % Procedures for the CC3 energy
-  CC3Energy = ($ints $scf $transqt $ccsort $ccenergy)
+  CC3Energy = ($ints $scf $cctrans $ccsort $ccenergy)
   CC3RHFEnergy = ($CC3Energy $done) 
   CC3ROHFEnergy = ($CC3Energy $done) 
   CC3UHFEnergy = ($CC3Energy $done)
@@ -494,7 +495,7 @@ psi: (
 
   % -------------------------------- EOM CC2 Procedures
   % Procedure for the EOM_CC2 energy
-  EOM_CC2Energy = ($ints $scf $transqt $ccsort $ccenergy $cchbar $cceom)
+  EOM_CC2Energy = ($ints $scf $cctrans $ccsort $ccenergy $cchbar $cceom)
   EOM_CC2RHFEnergy = ($EOM_CC2Energy $done)
   EOM_CC2ROHFEnergy = ERROR 
   EOM_CC2UHFEnergy = ERROR 
@@ -570,7 +571,7 @@ psi: (
 
   % -------------------------------- EOM CCSD Procedures
   % Procedure for the EOM_CCSD energy
-  EOM_CCSDEnergy = ($ints $scf $transqt $ccsort $ccenergy $cchbar $cceom)
+  EOM_CCSDEnergy = ($ints $scf $cctrans $ccsort $ccenergy $cchbar $cceom)
   EOM_CCSDRHFEnergy = ($EOM_CCSDEnergy $done)
   EOM_CCSDROHFEnergy = ($EOM_CCSDEnergy $done) 
   EOM_CCSDUHFEnergy = ($EOM_CCSDEnergy $done) 
@@ -655,7 +656,7 @@ psi: (
 
   % -------------------------------- EOM CC3 Procedures
   % Procedure for the EOM_CC3 energy
-  EOM_CC3Energy = ($ints $scf $transqt $ccsort $ccenergy $cchbar $cceom)
+  EOM_CC3Energy = ($ints $scf $cctrans $ccsort $ccenergy $cchbar $cceom)
   EOM_CC3RHFEnergy = ($EOM_CC3Energy $done)
   EOM_CC3ROHFEnergy = ($EOM_CC3Energy $done)
   EOM_CC3UHFEnergy = ($EOM_CC3Energy $done) 
@@ -711,7 +712,7 @@ psi: (
 
   % -------------------------------- BCCD Procedures
   % Procedures for the BCCD energy
-  BCCDEnergy = ($ints $scf repeat $nbrueckner $transqt $ccsort $ccenergy end)
+  BCCDEnergy = ($ints $scf repeat $nbrueckner $cctrans $ccsort $ccenergy end)
   BCCDRHFEnergy = ($BCCDEnergy $done)
   BCCDROHFEnergy = ERROR
   BCCDUHFEnergy = ($BCCDEnergy $done)
@@ -719,7 +720,7 @@ psi: (
 
   % -------------------------------- BCCD(T) Procedures
   % Procedures for the BCCD(T) energy
-  BCCD_TEnergy = ($ints $scf repeat $nbrueckner $transqt $ccsort $ccenergy end $cctriples)
+  BCCD_TEnergy = ($ints $scf repeat $nbrueckner $cctrans $ccsort $ccenergy end $cctriples)
   BCCD_TRHFEnergy = ($BCCD_TEnergy $done)
   BCCD_TROHFEnergy = ERROR
   BCCD_TUHFEnergy = ($BCCD_TEnergy $done)
@@ -1013,7 +1014,7 @@ psi: (
   DirectMP2R12TwoConEnergyOpt = ERROR
 
   % Procedure for the CIS energy
-  CISEnergy = ($ints $scf $transqt $ccsort $cis)
+  CISEnergy = ($ints $scf $cctrans $ccsort $cis)
   CISRHFEnergy = ($CISEnergy $done)
   CISROHFEnergy = ERROR
   CISUHFEnergy = ($CISEnergy $done)
