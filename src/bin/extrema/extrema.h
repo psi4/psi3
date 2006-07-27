@@ -22,7 +22,6 @@ extern "C" {
 #include <libipv1/ip_lib.h>
 #include <libchkpt/chkpt.h>
 #include <libpsio/psio.h>
-#include <libpsio/psio.gbl>
 #include <physconst.h>
 } 
 
