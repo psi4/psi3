@@ -22,6 +22,7 @@ void dipole(void)
   double *zvals, **geom;
   double *mu_x_ints, *mu_y_ints, *mu_z_ints;
   double **MUX_AO, **MUY_AO, **MUZ_AO;
+  double **MUX_SO, **MUY_SO, **MUZ_SO;
   double **MUX_MO, **MUY_MO, **MUZ_MO;
   double mu_x, mu_y, mu_z, mu;
   double mu_x_n, mu_y_n, mu_z_n;
@@ -120,26 +121,31 @@ void dipole(void)
 /*   fprintf(outfile, "MUZ_AOs\n"); */
 /*   print_mat(MUZ_AO, nao, nao, outfile); */
 
-  MUX_MO = block_matrix(nso,nso);
-  MUY_MO = block_matrix(nso,nso);
-  MUZ_MO = block_matrix(nso,nso);
+  MUX_SO = block_matrix(nso,nso);
+  MUY_SO = block_matrix(nso,nso);
+  MUZ_SO = block_matrix(nso,nso);
+
+  MUX_MO = block_matrix(nmo,nmo);
+  MUY_MO = block_matrix(nmo,nmo);
+  MUZ_MO = block_matrix(nmo,nmo);
+
 
   /*** Transform the AO dipole integrals to the SO basis ***/
   X = block_matrix(nso,nao); /* just a temporary matrix */
 
-  C_DGEMM('n','n',nso,nao,nao,1,&(usotao[0][0]),nao,&(MUX_AO[0][0]),nao,
+  C_DGEMM('n','n',nso,nao,nao,1.0,&(usotao[0][0]),nao,&(MUX_AO[0][0]),nao,
 	  0,&(X[0][0]),nao);
-  C_DGEMM('n','t',nso,nso,nao,1,&(X[0][0]),nao,&(usotao[0][0]),nao,
+  C_DGEMM('n','t',nso,nso,nao,1.0,&(X[0][0]),nao,&(usotao[0][0]),nao,
 	  0,&(MUX_MO[0][0]),nso);
 
-  C_DGEMM('n','n',nso,nao,nao,1,&(usotao[0][0]),nao,&(MUY_AO[0][0]),nao,
+  C_DGEMM('n','n',nso,nao,nao,1.0,&(usotao[0][0]),nao,&(MUY_AO[0][0]),nao,
 	  0,&(X[0][0]),nao);
-  C_DGEMM('n','t',nso,nso,nao,1,&(X[0][0]),nao,&(usotao[0][0]),nao,
+  C_DGEMM('n','t',nso,nso,nao,1.0,&(X[0][0]),nao,&(usotao[0][0]),nao,
 	  0,&(MUY_MO[0][0]),nso);
 
-  C_DGEMM('n','n',nso,nao,nao,1,&(usotao[0][0]),nao,&(MUZ_AO[0][0]),nao,
+  C_DGEMM('n','n',nso,nao,nao,1.0,&(usotao[0][0]),nao,&(MUZ_AO[0][0]),nao,
 	  0,&(X[0][0]),nao);
-  C_DGEMM('n','t',nso,nso,nao,1,&(X[0][0]),nao,&(usotao[0][0]),nao,
+  C_DGEMM('n','t',nso,nso,nao,1.0,&(X[0][0]),nao,&(usotao[0][0]),nao,
 	  0,&(MUZ_MO[0][0]),nso);
 
   free(mu_x_ints); free(mu_y_ints); free(mu_z_ints);
@@ -151,24 +157,26 @@ void dipole(void)
 
   /*** Transform the SO dipole integrals to the MO basis ***/
 
-  X = block_matrix(nmo,nmo); /* just a temporary matrix */
+  X = block_matrix(nmo,nso); /* just a temporary matrix */
 
-  C_DGEMM('t','n',nmo,nmo,nmo,1,&(scf_qt[0][0]),nmo,&(MUX_MO[0][0]),nmo,
-	  0,&(X[0][0]),nmo);
-  C_DGEMM('n','n',nmo,nmo,nmo,1,&(X[0][0]),nmo,&(scf_qt[0][0]),nmo,
+  C_DGEMM('t','n',nmo,nso,nso,1.0,&(scf_qt[0][0]),nmo,&(MUX_SO[0][0]),nso,
+	  0,&(X[0][0]),nso);
+  C_DGEMM('n','n',nmo,nmo,nso,1.0,&(X[0][0]),nso,&(scf_qt[0][0]),nmo,
 	  0,&(MUX_MO[0][0]),nmo);
 
-  C_DGEMM('t','n',nmo,nmo,nmo,1,&(scf_qt[0][0]),nmo,&(MUY_MO[0][0]),nmo,
-	  0,&(X[0][0]),nmo);
-  C_DGEMM('n','n',nmo,nmo,nmo,1,&(X[0][0]),nmo,&(scf_qt[0][0]),nmo,
+  C_DGEMM('t','n',nmo,nso,nso,1.0,&(scf_qt[0][0]),nmo,&(MUY_SO[0][0]),nso,
+	  0,&(X[0][0]),nso);
+  C_DGEMM('n','n',nmo,nmo,nso,1.0,&(X[0][0]),nso,&(scf_qt[0][0]),nmo,
 	  0,&(MUY_MO[0][0]),nmo);
 
-  C_DGEMM('t','n',nmo,nmo,nmo,1,&(scf_qt[0][0]),nmo,&(MUZ_MO[0][0]),nmo,
-	  0,&(X[0][0]),nmo);
-  C_DGEMM('n','n',nmo,nmo,nmo,1,&(X[0][0]),nmo,&(scf_qt[0][0]),nmo,
+  C_DGEMM('t','n',nmo,nso,nso,1.0,&(scf_qt[0][0]),nmo,&(MUZ_SO[0][0]),nso,
+	  0,&(X[0][0]),nso);
+  C_DGEMM('n','n',nmo,nmo,nso,1.0,&(X[0][0]),nso,&(scf_qt[0][0]),nmo,
 	  0,&(MUZ_MO[0][0]),nmo);
 
+
   free_block(scf_qt);
+  free_block(MUX_SO); free_block(MUY_SO); free_block(MUZ_SO);
   free_block(X);
 
 /*   fprintf(outfile, "MUX_MOs\n"); */
