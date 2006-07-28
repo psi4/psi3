@@ -157,14 +157,8 @@ int main(int argc, char *argv[])
     if(!strcmp(local.weakp,"MP2")) lmp2();
   }
 
-  /* temporary */
-  /*   sort_B(); */
-
   init_amps();
-  /*
-    if (params.analyze != 0)
-    analyze();
-  */
+
   if(params.print_mp2_amps) amp_write();
   tau_build();
   taut_build();
