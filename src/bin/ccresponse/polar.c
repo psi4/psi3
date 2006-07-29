@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <libciomr/libciomr.h>
+#include <libpsio/psio.h>
 #include <libqt/qt.h>
 #include <physconst.h>
 #define EXTERN
@@ -23,6 +24,7 @@ void polar(void)
   char **cartcomp;
   int alpha, beta, i;
   double omega_nm, omega_ev, omega_cm, *trace;
+  char lbl[32];
 
   cartcomp = (char **) malloc(3 * sizeof(char *));
   cartcomp[0] = strdup("X");
@@ -37,22 +39,32 @@ void polar(void)
 
   for(i=0; i < params.nomega; i++) {
 
-    transpert("Mu");
-    sort_pert("Mu", moinfo.MUX, moinfo.MUY, moinfo.MUZ, moinfo.irrep_x,
-	      moinfo.irrep_y, moinfo.irrep_z);
-    pertbar("Mu", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 0);
+    sprintf(lbl, "<<Mu;Mu>_(%5.3f)", params.omega[i]);
+    if(!params.restart || !psio_tocscan(CC_INFO, lbl)) {
 
-    /* Compute the electric-dipole-perturbed CC wave functions */
-    for(alpha=0; alpha < 3; alpha++) {
-      compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i]);
-      if(params.omega[i] != 0.0) compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i]);
+      transpert("Mu");
+      sort_pert("Mu", moinfo.MUX, moinfo.MUY, moinfo.MUZ, moinfo.irrep_x,
+		moinfo.irrep_y, moinfo.irrep_z);
+      pertbar("Mu", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 0);
+
+      /* Compute the electric-dipole-perturbed CC wave functions */
+      for(alpha=0; alpha < 3; alpha++) {
+	compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i]);
+	if(params.omega[i] != 0.0) compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i]);
+      }
+
+      fprintf(outfile, "\n\tComputing %s tensor.\n", lbl); fflush(outfile);
+      linresp(tensor[i], -1.0, 0.0, "Mu", moinfo.mu_irreps, -params.omega[i],
+	      "Mu", moinfo.mu_irreps, params.omega[i]);
+      psio_write_entry(CC_INFO, lbl, (char *) tensor[i][0], 9*sizeof(double));
+
+      psio_close(CC_LR, 0);
+      psio_open(CC_LR, 0);
     }
-
-    linresp(tensor[i], -1.0, 0.0, "Mu", moinfo.mu_irreps, -params.omega[i],
-	    "Mu", moinfo.mu_irreps, params.omega[i]);
-
-    psio_close(CC_LR, 0);
-    psio_open(CC_LR, 0);
+    else {
+      fprintf(outfile, "Using %s tensor found on disk.\n", lbl);
+      psio_read_entry(CC_INFO, lbl, (char *) tensor[i], 9*sizeof(double));
+    }
 
     if (!strcmp(params.wfn,"CC2"))
       fprintf(outfile, "\n                 CC2 Dipole Polarizability [(e^2 a0^2)/E_h]:\n");
