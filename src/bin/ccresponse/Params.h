@@ -7,6 +7,7 @@ struct Params {
   int nomega;            /* number of field energies desired */
   int maxiter;           /* maximum number of iterations allowed to converge perturbed amp eqns. */
   double convergence;    /* convergence criterion for perturbed wfns */
+  int restart;           /* boolean for allowing a restart from on-disk amps */
   int diis;              /* boolean for using DIIS extrapolation */
   char *prop;            /* user-selected property */
   int local;             /* boolean for simluation of local correlation */

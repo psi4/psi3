@@ -170,6 +170,9 @@ void get_params()
   }
   else params.abcd = strdup("NEW");
 
+  params.restart = 1;
+  errcod = ip_boolean("RESTART", &params.restart, 0);
+
   params.local = 0;
   errcod = ip_boolean("LOCAL", &(params.local),0);
   local.cutoff = 0.02;
@@ -251,6 +254,7 @@ void get_params()
   fprintf(outfile, "\tPrint Level      =    %1d\n",  params.print);
   fprintf(outfile, "\tMaxiter          =    %3d\n",  params.maxiter);
   fprintf(outfile, "\tConvergence      = %3.1e\n", params.convergence);
+  fprintf(outfile, "\tRestart          =     %s\n", params.restart ? "Allowed" : "Not Allowed");
   fprintf(outfile, "\tDIIS             =     %s\n", params.diis ? "Yes" : "No");
   fprintf(outfile, "\tModel III        =     %s\n", params.sekino ? "Yes" : "No");
   fprintf(outfile, "\tABCD             =     %s\n", params.abcd);

@@ -32,10 +32,10 @@ void compute_X(char *pert, char *cart, int irrep, double omega)
   dpdbuf4 X2;
 
   fprintf(outfile, "\n\tComputing %s-%1s-Perturbed Wave Function (%5.3f E_h).\n", pert, cart, omega);
+  init_X(pert, cart, irrep, omega);
   fprintf(outfile, "\tIter   Pseudopolarizability       RMS \n");
   fprintf(outfile, "\t----   --------------------   -----------\n");
   fflush(outfile);
-  init_X(pert, cart, irrep, omega);
 
   if (!strcmp(params.wfn,"CC2"))
     cc2_sort_X(pert, cart, irrep, omega);

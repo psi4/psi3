@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <libciomr/libciomr.h>
+#include <libpsio/psio.h>
 #include <physconst.h>
 #include <masses.h>
 #define EXTERN
@@ -19,10 +20,17 @@ void linresp(double **tensor, double A, double B,
 void optrot(void)
 {
   double ***tensor_rl, ***tensor_pl, ***tensor_rp, **tensor0;
+  double **tensor_rl0, **tensor_rl1, **tensor_pl0, **tensor_pl1;
   char **cartcomp;
   int alpha, i, j, k;
   double TrG_rl, TrG_pl, M, nu, bohr2a4, m2a, hbar, prefactor;
   double *rotation_rl, *rotation_pl, *rotation_rp, *rotation_mod, **delta;
+  char lbl1[32], lbl2[32], lbl3[32];
+  int compute_rl=0, compute_pl=0;
+
+  /* Booleans for convenience */
+  if(!strcmp(params.gauge,"LENGTH") || !strcmp(params.gauge,"BOTH")) compute_rl=1;
+  if(!strcmp(params.gauge,"VELOCITY") || !strcmp(params.gauge,"BOTH")) compute_pl=1;
 
   cartcomp = (char **) malloc(3 * sizeof(char *));
   cartcomp[0] = strdup("X");
@@ -38,13 +46,17 @@ void optrot(void)
     tensor_rp[i] = block_matrix(3,3);
   }
   tensor0 = block_matrix(3,3);
+  tensor_rl0 = block_matrix(3,3);
+  tensor_rl1 = block_matrix(3,3);
+  tensor_pl0 = block_matrix(3,3);
+  tensor_pl1 = block_matrix(3,3);
   rotation_rl = init_array(params.nomega);
   rotation_pl = init_array(params.nomega);
   rotation_rp = init_array(params.nomega);
   rotation_mod = init_array(params.nomega);
   delta = block_matrix(params.nomega,3);
 
-  if(!strcmp(params.gauge,"VELOCITY") || !strcmp(params.gauge,"BOTH")) {
+  if(compute_pl) {
 
     /* compute the zero-frequency Rosenfeld tensor for Koch's modified
        velocity optical rotation */
@@ -57,139 +69,225 @@ void optrot(void)
        giving an identical contribution to the total *zero-frequency*
        Rosenfeld tensor as the original non-complex-conjugate term. */
 
-    fprintf(outfile, "\n\tComputing zero-frequency velocty-gauge linear response function...\n");
+    sprintf(lbl1, "<<P;L>>_(%5.3f)", 0.0);
+    if(!params.restart || !psio_tocscan(CC_INFO, lbl1)) {
 
-    transpert("P");
-    sort_pert("P", moinfo.PX, moinfo.PY, moinfo.PZ,
-	      moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
-    pertbar("P", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 1);
-
-    /* prepare the magnetic-dipole integrals */
-    transpert("L");
-    sort_pert("L", moinfo.LX, moinfo.LY, moinfo.LZ,
-	      moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz);
-    pertbar("L", moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz, 1);
-
-    /* Compute the magnetic-dipole and electric-dipole CC wave functions */
-    for(alpha=0; alpha < 3; alpha++) {
-      compute_X("P", cartcomp[alpha], moinfo.mu_irreps[alpha], 0);
-      compute_X("L", cartcomp[alpha], moinfo.l_irreps[alpha], 0);
-    }
-
-    linresp(tensor0, -1.0, 0.0, "P", moinfo.mu_irreps, 0.0, "L", moinfo.l_irreps, 0.0);
-  }
-
-  /* Clean up disk space */
-  psio_close(CC_LR, 0);
-  psio_open(CC_LR, 0);
-
-  for(j=CC_TMP; j <= CC_TMP11; j++) {
-    psio_close(j,0);
-    psio_open(j,0);
-  }
-
-  for(i=0; i < params.nomega; i++) {
-
-    /* prepare the dipole-length or dipole-velocity integrals */
-    if(!strcmp(params.gauge,"LENGTH") || !strcmp(params.gauge,"BOTH")) {
-      transpert("Mu");
-      sort_pert("Mu", moinfo.MUX, moinfo.MUY, moinfo.MUZ,
-		moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
-      pertbar("Mu", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 0);
-    }
-    if(!strcmp(params.gauge,"VELOCITY") || !strcmp(params.gauge,"BOTH")) {
       transpert("P");
       sort_pert("P", moinfo.PX, moinfo.PY, moinfo.PZ,
 		moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
       pertbar("P", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 1);
-    }
 
-    /* prepare the magnetic-dipole integrals */
-    transpert("L");
-    sort_pert("L", moinfo.LX, moinfo.LY, moinfo.LZ,
-	      moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz);
-    pertbar("L", moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz, 1);
+      /* prepare the magnetic-dipole integrals */
+      transpert("L");
+      sort_pert("L", moinfo.LX, moinfo.LY, moinfo.LZ,
+		moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz);
+      pertbar("L", moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz, 1);
 
-    /* Compute the +omega magnetic-dipole and -omega electric-dipole CC wave functions */
-    for(alpha=0; alpha < 3; alpha++) {
-      if(!strcmp(params.gauge,"LENGTH") || !strcmp(params.gauge,"BOTH"))
-	compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i]);
-      if(!strcmp(params.gauge,"VELOCITY") || !strcmp(params.gauge,"BOTH"))
-	compute_X("P", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i]);
+      /* Compute the magnetic-dipole and electric-dipole CC wave functions */
+      for(alpha=0; alpha < 3; alpha++) {
+	compute_X("P", cartcomp[alpha], moinfo.mu_irreps[alpha], 0);
+	compute_X("L", cartcomp[alpha], moinfo.l_irreps[alpha], 0);
+      }
 
-      compute_X("L", cartcomp[alpha], moinfo.l_irreps[alpha], params.omega[i]);
-    }
+      fprintf(outfile, "\n\tComputing %s tensor.\n", lbl1); fflush(outfile);
+      linresp(tensor0, -1.0, 0.0, "P", moinfo.mu_irreps, 0.0, "L", moinfo.l_irreps, 0.0);
+      psio_write_entry(CC_INFO, lbl1, (char *) tensor0[0], 9*sizeof(double));
 
-    if(!strcmp(params.gauge,"LENGTH") || !strcmp(params.gauge, "BOTH"))
-      linresp(tensor_rl[i], -0.5, 0.0, "Mu", moinfo.mu_irreps, -params.omega[i],
-	      "L", moinfo.l_irreps, params.omega[i]);
-    if(!strcmp(params.gauge,"VELOCITY") || !strcmp(params.gauge, "BOTH"))
-      linresp(tensor_pl[i], -0.5, 0.0, "P", moinfo.mu_irreps, -params.omega[i],
-	      "L", moinfo.l_irreps, params.omega[i]);
-
-    /* Clean up disk space */
-    if(strcmp(params.gauge,"BOTH")) { /* don't clean up if we want both gauges */
+      /* Clean up disk space */
       psio_close(CC_LR, 0);
       psio_open(CC_LR, 0);
+
+      for(j=CC_TMP; j <= CC_TMP11; j++) {
+	psio_close(j,0);
+	psio_open(j,0);
+      }
+    }
+    else {
+      fprintf(outfile, "Using %s tensor found on disk.\n", lbl1);
+      psio_read_entry(CC_INFO, lbl1, (char *) tensor0[0], 9*sizeof(double));
     }
 
-    for(j=CC_TMP; j <= CC_TMP11; j++) {
-      psio_close(j,0);
-      psio_open(j,0);
+    if (!strcmp(params.wfn,"CC2")) 
+      fprintf(outfile, "\n     CC2 Optical Rotation Tensor (Velocity Gauge): %s\n", lbl1);
+    else if(!strcmp(params.wfn,"CCSD"))
+      fprintf(outfile, "\n    CCSD Optical Rotation Tensor (Velocity Gauge): %s\n", lbl1);
+
+    fprintf(outfile, "  -------------------------------------------------------------------------\n");
+    fprintf(outfile,   "   Evaluated at omega = 0.00 E_h (Inf nm, 0.0 eV, 0.0 cm-1)\n");
+    fprintf(outfile, "  -------------------------------------------------------------------------\n");
+    mat_print(tensor0, 3, 3, outfile);
+
+  }
+
+  for(i=0; i < params.nomega; i++) {
+    zero_mat(tensor_rl0, 3, 3);
+    zero_mat(tensor_rl1, 3, 3);
+    zero_mat(tensor_pl0, 3, 3);
+    zero_mat(tensor_pl1, 3, 3);
+
+    sprintf(lbl1, "1/2 <<Mu;L>>_(%5.3f)", params.omega[i]);
+    sprintf(lbl2, "1/2 <<P;L>>_(%5.3f)", params.omega[i]);
+    if(!params.restart || ((compute_rl && !psio_tocscan(CC_INFO,lbl1)) || (compute_pl && !psio_tocscan(CC_INFO,lbl2)))) {
+
+      /* prepare the dipole-length and/or dipole-velocity integrals */
+      if(compute_rl) {
+	transpert("Mu");
+	sort_pert("Mu", moinfo.MUX, moinfo.MUY, moinfo.MUZ,
+		  moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
+	pertbar("Mu", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 0);
+      }
+      if(compute_pl) {
+	transpert("P");
+	sort_pert("P", moinfo.PX, moinfo.PY, moinfo.PZ,
+		  moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
+	pertbar("P", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 1);
+      }
+
+      /* prepare the magnetic-dipole integrals */
+      transpert("L");
+      sort_pert("L", moinfo.LX, moinfo.LY, moinfo.LZ,
+		moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz);
+      pertbar("L", moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz, 1);
+
+      /* Compute the +omega magnetic-dipole and -omega electric-dipole CC wave functions */
+      for(alpha=0; alpha < 3; alpha++) {
+	if(compute_rl)
+	  compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i]);
+
+	if(compute_pl)
+	  compute_X("P", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i]);
+
+	compute_X("L", cartcomp[alpha], moinfo.l_irreps[alpha], params.omega[i]);
+      }
+
+      fprintf(outfile, "\n");
+      if(compute_rl) {
+        fprintf(outfile, "\tComputing %s tensor.\n", lbl1); fflush(outfile);
+	linresp(tensor_rl0, -0.5, 0.0, "Mu", moinfo.mu_irreps, -params.omega[i],
+		"L", moinfo.l_irreps, params.omega[i]);
+	psio_write_entry(CC_INFO, lbl1, (char *) tensor_rl0[0], 9*sizeof(double));
+      }
+      if(compute_pl) {
+        fprintf(outfile, "\tComputing %s tensor.\n", lbl2); fflush(outfile);
+	linresp(tensor_pl0, -0.5, 0.0, "P", moinfo.mu_irreps, -params.omega[i],
+		"L", moinfo.l_irreps, params.omega[i]);
+	psio_write_entry(CC_INFO, lbl2, (char *) tensor_pl0[0], 9*sizeof(double));
+      }
+
+      /* Clean up disk space */
+      if(strcmp(params.gauge,"BOTH")) { /* don't clean up if we want both gauges */
+	psio_close(CC_LR, 0);
+	psio_open(CC_LR, 0);
+      }
+
+      for(j=CC_TMP; j <= CC_TMP11; j++) {
+	psio_close(j,0);
+	psio_open(j,0);
+      }
+    }
+    else {
+      fprintf(outfile, "\n");
+      if(compute_rl) {
+	fprintf(outfile, "\tUsing %s tensor found on disk.\n", lbl1); fflush(outfile);
+	psio_read_entry(CC_INFO, lbl1, (char *) tensor_rl0[0], 9*sizeof(double));
+      }
+      if(compute_pl) {
+	fprintf(outfile, "\tUsing %s tensor found on disk.\n", lbl2); fflush(outfile);
+	psio_read_entry(CC_INFO, lbl2, (char *) tensor_pl0[0], 9*sizeof(double));
+      }
+
     }
 
-    /* prepare the dipole-length or dipole-velocity integrals */
-    if(!strcmp(params.gauge,"LENGTH") || !strcmp(params.gauge,"BOTH")) {
-      transpert("Mu");
-      sort_pert("Mu", moinfo.MUX, moinfo.MUY, moinfo.MUZ,
-		moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
-      pertbar("Mu", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 0);
+    sprintf(lbl1, "1/2 <<Mu;L*>>_(%5.3f)", params.omega[i]);
+    sprintf(lbl2, "1/2 <<P*;L*>>_(%5.3f)", params.omega[i]);
+    sprintf(lbl3, "<<P;Mu>>_(%5.3f)", params.omega[i]);
+    if(!params.restart || ((compute_rl && !psio_tocscan(CC_INFO,lbl1)) || (compute_pl && !psio_tocscan(CC_INFO,lbl2)))) {
+
+      /* prepare the dipole-length or dipole-velocity integrals */
+      if(compute_rl) {
+	transpert("Mu");
+	sort_pert("Mu", moinfo.MUX, moinfo.MUY, moinfo.MUZ,
+		  moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
+	pertbar("Mu", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 0);
+      }
+      if(compute_pl) {
+	transpert("P*");
+	sort_pert("P*", moinfo.PX, moinfo.PY, moinfo.PZ,
+		  moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
+	pertbar("P*", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 1);
+      }
+
+      /* prepare the complex-conjugate of the magnetic-dipole integrals */
+      transpert("L*");
+      sort_pert("L*", moinfo.LX, moinfo.LY, moinfo.LZ,
+		moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz);
+      pertbar("L*", moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz, 1);
+
+      /* Compute the -omega magnetic-dipole and +omega electric-dipole CC wave functions */
+      for(alpha=0; alpha < 3; alpha++) {
+	if(compute_rl)
+	  compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i]);
+	if(compute_pl)
+	  compute_X("P*", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i]);
+
+	compute_X("L*", cartcomp[alpha], moinfo.l_irreps[alpha], -params.omega[i]);
+      }
+
+      fprintf(outfile, "\n");
+      if(compute_rl) {
+	fprintf(outfile, "\tComputing %s tensor.\n", lbl1); fflush(outfile);
+	linresp(tensor_rl1, -0.5, 0.0, "Mu", moinfo.mu_irreps, params.omega[i],
+		"L*", moinfo.l_irreps, -params.omega[i]);
+	psio_write_entry(CC_INFO, lbl1, (char *) tensor_rl1[0], 9*sizeof(double));
+      }
+      if(compute_pl) {
+	fprintf(outfile, "\tComputing %s tensor.\n", lbl2); fflush(outfile);
+	linresp(tensor_pl1, -0.5, 0.0, "P*", moinfo.mu_irreps, params.omega[i],
+		"L*", moinfo.l_irreps, -params.omega[i]);
+	psio_write_entry(CC_INFO, lbl2, (char *) tensor_pl1[0], 9*sizeof(double));
+      }
+
+      if(!strcmp(params.gauge,"BOTH")) {
+	fprintf(outfile, "\tComputing %s tensor.\n", lbl3); fflush(outfile);
+	linresp(tensor_rp[i], 0.5, 0.0, "P", moinfo.mu_irreps, -params.omega[i],
+		"Mu", moinfo.l_irreps, params.omega[i]);
+	linresp(tensor_rp[i], 0.5, 1.0, "P*", moinfo.mu_irreps, params.omega[i],
+		"Mu", moinfo.l_irreps, -params.omega[i]);
+	psio_write_entry(CC_INFO, lbl3, (char *) tensor_rp[i][0], 9*sizeof(double));
+      }
+
+      /* Clean up disk space */
+      psio_close(CC_LR, 0);
+      psio_open(CC_LR, 0);
+
+      for(j=CC_TMP; j <= CC_TMP11; j++) {
+	psio_close(j,0);
+	psio_open(j,0);
+      }
+
     }
-    if(!strcmp(params.gauge,"VELOCITY") || !strcmp(params.gauge,"BOTH")) { 
-      transpert("P*");
-      sort_pert("P*", moinfo.PX, moinfo.PY, moinfo.PZ,
-		moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
-      pertbar("P*", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 1);
+    else {
+      fprintf(outfile, "\n");
+      if(compute_rl) {
+	fprintf(outfile, "\tUsing %s tensor found on disk.\n", lbl1); fflush(outfile);
+	psio_read_entry(CC_INFO, lbl1, (char *) tensor_rl1[0], 9*sizeof(double));
+      }
+      if(compute_pl) {
+	fprintf(outfile, "\tUsing %s tensor found on disk.\n", lbl2); fflush(outfile);
+	psio_read_entry(CC_INFO, lbl2, (char *) tensor_pl1[0], 9*sizeof(double));
+      }
+      if(!strcmp(params.gauge,"BOTH")) {
+	fprintf(outfile, "\tUsing %s tensor found on disk.\n", lbl3); fflush(outfile);
+	psio_read_entry(CC_INFO, lbl3, (char *) tensor_rp[i][0], 9*sizeof(double));
+      }
     }
 
-    /* prepare the complex-conjugate of the magnetic-dipole integrals */
-    transpert("L*");
-    sort_pert("L*", moinfo.LX, moinfo.LY, moinfo.LZ,
-	      moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz);
-    pertbar("L*", moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz, 1);
-
-    /* Compute the -omega magnetic-dipole and +omega electric-dipole CC wave functions */
-    for(alpha=0; alpha < 3; alpha++) {
-      if(!strcmp(params.gauge,"LENGTH") || !strcmp(params.gauge,"BOTH"))
-	compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i]);
-      if(!strcmp(params.gauge,"VELOCITY") || !strcmp(params.gauge, "BOTH"))
-	compute_X("P*", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i]);
-
-      compute_X("L*", cartcomp[alpha], moinfo.l_irreps[alpha], -params.omega[i]);
-    }
-
-    if(!strcmp(params.gauge,"LENGTH") || !strcmp(params.gauge, "BOTH"))
-      linresp(tensor_rl[i], -0.5, 1.0, "Mu", moinfo.mu_irreps, params.omega[i],
-	      "L*", moinfo.l_irreps, -params.omega[i]);
-    if(!strcmp(params.gauge,"VELOCITY") || !strcmp(params.gauge, "BOTH"))
-      linresp(tensor_pl[i], -0.5, 1.0, "P*", moinfo.mu_irreps, params.omega[i],
-	      "L*", moinfo.l_irreps, -params.omega[i]);
-
-    if(!strcmp(params.gauge,"BOTH")) {
-      linresp(tensor_rp[i], 0.5, 0.0, "P", moinfo.mu_irreps, -params.omega[i],
-	      "Mu", moinfo.l_irreps, params.omega[i]);
-      linresp(tensor_rp[i], 0.5, 1.0, "P*", moinfo.mu_irreps, params.omega[i],
-	      "Mu", moinfo.l_irreps, -params.omega[i]);
-    }
-
-    /* Clean up disk space */
-    psio_close(CC_LR, 0);
-    psio_open(CC_LR, 0);
-
-    for(j=CC_TMP; j <= CC_TMP11; j++) {
-      psio_close(j,0);
-      psio_open(j,0);
-    }
+    /* sum the two 1/2 tensors */
+    for(j=0; j < 3; j++)
+      for(k=0; k < 3; k++) {
+	if(compute_rl) tensor_rl[i][j][k] = tensor_rl0[j][k] + tensor_rl1[j][k];
+	if(compute_pl) tensor_pl[i][j][k] = tensor_pl0[j][k] + tensor_pl1[j][k];
+      }
 
     /* compute the specific rotation */
     for(j=0,M=0.0; j < moinfo.natom ;j++) M += an2masses[(int) moinfo.zvals[j]]; /* amu */
@@ -201,11 +299,11 @@ void optrot(void)
     prefactor *= prefactor;
     prefactor *= 288.0e-30 * _pi * _pi * _na * bohr2a4;
 
-    if(!strcmp(params.gauge,"LENGTH") || !strcmp(params.gauge,"BOTH")) {
+    if(compute_rl) {
       if (!strcmp(params.wfn,"CC2")) 
-        fprintf(outfile, "\n            CC2 Optical Rotation Tensor (Length Gauge):\n");
+	fprintf(outfile, "\n            CC2 Optical Rotation Tensor (Length Gauge):\n");
       else if(!strcmp(params.wfn,"CCSD"))
-    	fprintf(outfile, "\n           CCSD Optical Rotation Tensor (Length Gauge):\n");
+	fprintf(outfile, "\n           CCSD Optical Rotation Tensor (Length Gauge):\n");
 
       fprintf(outfile, "  -------------------------------------------------------------------------\n");
       fprintf(outfile,   "   Evaluated at omega = %8.6f E_h (%6.2f nm, %5.3f eV, %8.2f cm-1)\n", params.omega[i],
@@ -221,12 +319,12 @@ void optrot(void)
       fprintf(outfile, "\t[alpha]_(%5.3f) = %10.5f deg/[dm (g/cm^3)]\n", params.omega[i], rotation_rl[i]);
     }
 
-    if(!strcmp(params.gauge,"VELOCITY") || !strcmp(params.gauge,"BOTH")) {
+    if(compute_pl) {
 
       if (!strcmp(params.wfn,"CC2")) 
-        fprintf(outfile, "\n          CC2 Optical Rotation Tensor (Velocity Gauge):\n");
+	fprintf(outfile, "\n          CC2 Optical Rotation Tensor (Velocity Gauge):\n");
       else if(!strcmp(params.wfn,"CCSD"))
-    	fprintf(outfile, "\n         CCSD Optical Rotation Tensor (Velocity Gauge):\n");
+	fprintf(outfile, "\n         CCSD Optical Rotation Tensor (Velocity Gauge):\n");
 
       fprintf(outfile, "  -------------------------------------------------------------------------\n");
       fprintf(outfile,   "   Evaluated at omega = %8.6f E_h (%6.2f nm, %5.3f eV, %8.2f cm-1)\n", params.omega[i],
@@ -283,7 +381,7 @@ void optrot(void)
 
   if(params.nomega > 1) {  /* print a summary table for multi-wavelength calcs */
 
-    if(!strcmp(params.gauge,"LENGTH") || !strcmp(params.gauge,"BOTH")) {
+    if(compute_rl) {
       fprintf(outfile, "\n   ------------------------------------------\n");
       if (!strcmp(params.wfn,"CC2"))
 	fprintf(outfile,   "       CC2 Length-Gauge Optical Rotation\n");
@@ -310,7 +408,7 @@ void optrot(void)
       }
     }
 
-    if(!strcmp(params.gauge,"VELOCITY") || !strcmp(params.gauge,"BOTH")) {
+    if(compute_pl) {
       fprintf(outfile, "\n   ------------------------------------------------------\n");
       if (!strcmp(params.wfn,"CC2"))
 	fprintf(outfile,   "            CC2 Velocity-Gauge Optical Rotation\n");
@@ -340,6 +438,10 @@ void optrot(void)
   free(tensor_pl);
   free(tensor_rp);
   free_block(tensor0);
+  free_block(tensor_rl0);
+  free_block(tensor_rl1);
+  free_block(tensor_pl0);
+  free_block(tensor_pl1);
 
   free(cartcomp[0]);
   free(cartcomp[1]);
