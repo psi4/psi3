@@ -90,7 +90,8 @@ void moment_ints()
   OIZ = block_matrix(BasisSet.max_am+1,BasisSet.max_am+1);
   
   C = UserOptions.origin;
-  fprintf(outfile, "    Reference point for elec. mom. ints. = (%5.3f, %5.3f, %5.3f)\n", C.x, C.y, C.z);
+  if(UserOptions.print_lvl >= PRINT_OEI) 
+    fprintf(outfile, "    Reference point for elec. mom. ints. = (%5.3f, %5.3f, %5.3f)\n", C.x, C.y, C.z);
 
   for (si=0; si<BasisSet.num_shells; si++){
     am_i = BasisSet.shells[si].am-1;

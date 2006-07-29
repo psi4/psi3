@@ -57,7 +57,8 @@ void angmom_ints(void)
   scratch_z = init_array(ioff[BasisSet.num_ao]);
 
   C = UserOptions.origin;
-  fprintf(outfile, "    Reference point for ang. mom. ints. = (%5.3f, %5.3f, %5.3f)\n", C.x, C.y, C.z);
+  if(UserOptions.print_lvl >= PRINT_OEI)
+    fprintf(outfile, "    Reference point for ang. mom. ints. = (%5.3f, %5.3f, %5.3f)\n", C.x, C.y, C.z);
 
   for (si=0; si<BasisSet.num_shells; si++){
     am_i = BasisSet.shells[si].am-1;
