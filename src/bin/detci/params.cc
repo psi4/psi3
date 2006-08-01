@@ -195,8 +195,10 @@ void get_parameters(void)
    Parameters.sf_restrict = 0;
    Parameters.print_sigma_overlap = 0;
 
-   tval = 0;
-   errcod = ip_data("MULTP","%d",&tval,0);
+   tval = 1;
+   if (ip_exist("MULTP",0)) {
+     errcod = ip_data("MULTP","%d",&tval,0);
+   }
    Parameters.S = (((double) tval) - 1.0) / 2.0;
    errcod = ip_data("S","%lf",&(Parameters.S),0);
 
