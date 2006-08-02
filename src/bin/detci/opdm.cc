@@ -214,8 +214,10 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
    
     zero_mat(onepdm, populated_orbs, populated_orbs); 
 
-    for (i=0; i<CalcInfo.num_fzc_orbs; i++)
-      onepdm[i][i] = 2.0;
+    if (!transdens) {
+      for (i=0; i<CalcInfo.num_fzc_orbs; i++)
+        onepdm[i][i] = 2.0;
+    }
 
     if (Parameters.icore == 0) {
  
@@ -450,7 +452,9 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
     if (dipmom) {
       mu_x = 0.0; mu_y = 0.0; mu_z = 0.0; 
       /* should I be including nuclear contributions to TM's ??? */
-      /* mu_x = mux_n; mu_y = muy_n; mu_z = muz_n; */
+      if (!transdens) {
+        mu_x = mux_n; mu_y = muy_n; mu_z = muz_n; 
+      }
       for (i=0; i<populated_orbs; i++) {
         for (j=0; j<populated_orbs; j++) {
           mu_x += mux_mo[i][j] * onepdm[i][j];
@@ -460,19 +464,24 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
       }
       fprintf(outfile, "%sipole moment root %d \n", 
         transdens ? "\nTransition d" : "\nD", Jroot+1); 
-      fprintf(outfile, "Nuclear:    %9.5lf x, %9.5lf y, %9.5lf z au\n",
-        mux_n, muy_n, muz_n);
-      fprintf(outfile, "            %9.5lf x, %9.5lf y, %9.5lf z D\n",
-        mux_n*_dipmom_au2debye, muy_n*_dipmom_au2debye, muz_n*_dipmom_au2debye);
+      if (!transdens) {
+        fprintf(outfile, "Nuclear:    %9.5lf x, %9.5lf y, %9.5lf z au\n",
+          mux_n, muy_n, muz_n);
+        fprintf(outfile, "            %9.5lf x, %9.5lf y, %9.5lf z D\n",
+          mux_n*_dipmom_au2debye,muy_n*_dipmom_au2debye,muz_n*_dipmom_au2debye);
+      }
       fprintf(outfile, "Electronic: %9.5lf x, %9.5lf y, %9.5lf z au\n",
         mu_x, mu_y, mu_z);
       fprintf(outfile, "            %9.5lf x, %9.5lf y, %9.5lf z D\n",
         mu_x*_dipmom_au2debye, mu_y*_dipmom_au2debye, mu_z*_dipmom_au2debye);
-      fprintf(outfile, "Total:      %9.5lf x, %9.5lf y, %9.5lf z au\n",
-        mu_x+mux_n, mu_y+muy_n, mu_z+muz_n);
-      fprintf(outfile, "            %9.5lf x, %9.5lf y, %9.5lf z D\n",
-        (mu_x+mux_n)*_dipmom_au2debye, (mu_y+muy_n)*_dipmom_au2debye, 
-        (mu_z+muz_n)*_dipmom_au2debye);
+      if (!transdens) {
+        mu_x += mux_n;  mu_y += muy_n;  mu_z += muz_n;
+        fprintf(outfile, "Total:      %9.5lf x, %9.5lf y, %9.5lf z au\n",
+          mu_x+mux_n, mu_y+muy_n, mu_z+muz_n);
+        fprintf(outfile, "            %9.5lf x, %9.5lf y, %9.5lf z D\n",
+          mu_x*_dipmom_au2debye, mu_y*_dipmom_au2debye, 
+          mu_z*_dipmom_au2debye);
+      }
       mu_tot = sqrt(mu_x * mu_x + mu_y * mu_y + mu_z * mu_z);
       fprintf(outfile, "|mu|  =     %9.5lf au %9.5lf D\n", mu_tot,
         mu_tot * _dipmom_au2debye);
