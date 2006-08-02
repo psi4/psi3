@@ -34,7 +34,7 @@ void form_appx_diag_mo_hess(int npairs, int *ppair, int *qpair,
   int qv,puvw,quvw,pv,pu,qu,pupv,quqv,ppuv,qquv,pvqu,puqv,pquv;
   double value;
 
-  fprintf(outfile, "Forming approximate diagonal orbital Hessian (CASSCF)\n");
+  fprintf(outfile, "Forming approximate diagonal orbital Hessian\n");
 
   /* loop over the independent pairs */
   for (pair=0; pair<npairs; pair++) {
