@@ -422,7 +422,7 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
 
 
     if (writeflag) {
-      sprintf(opdm_key,"MO-basis %s %d", transdens ? "TDM" : "OPDM", Jroot);
+      sprintf(opdm_key,"MO-basis %s Root %d", transdens ? "TDM" : "OPDM",Jroot);
       psio_write_entry(targetfile, opdm_key, (char *) onepdm[0], 
         populated_orbs * populated_orbs * sizeof(double));
       if (Parameters.print_lvl) 
@@ -553,7 +553,7 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
       mo_offset = 0;
 
       if (!Parameters.opdm_ave)
-        sprintf(opdm_key, "MO-basis OPDM %d", k);
+        sprintf(opdm_key, "MO-basis OPDM Root %d", k);
       else 
         sprintf(opdm_key, "MO-basis OPDM Ave");
 
@@ -768,7 +768,7 @@ void ave(int targetfile)
 
     root = Parameters.average_states[root_count];
 
-    sprintf(opdm_key, "MO-basis OPDM %d", root);
+    sprintf(opdm_key, "MO-basis OPDM Root %d", root);
 
     if (root_count==0) {
       psio_read_entry(targetfile, opdm_key, (char *) tmp_mat1[0],

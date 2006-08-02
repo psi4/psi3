@@ -172,11 +172,11 @@ void get_rho_params(void)
 
     if (params.ref == 0) {
       if (i == 0) sprintf(rho_params[i].opdm_lbl, "MO-basis OPDM");
-      else sprintf(rho_params[i].opdm_lbl, "MO-basis OPDM %d", i);
+      else sprintf(rho_params[i].opdm_lbl, "MO-basis OPDM Root %d", i);
     } 
     else if (params.ref == 1) { /* ROHF */
       if (i == 0) sprintf(rho_params[i].opdm_lbl, "MO-basis OPDM");
-      else sprintf(rho_params[i].opdm_lbl, "MO-basis OPDM %d", i);
+      else sprintf(rho_params[i].opdm_lbl, "MO-basis OPDM Root %d", i);
     }
     else if (params.ref == 2) { /* UHF */
       if (i == 0) {
@@ -184,8 +184,8 @@ void get_rho_params(void)
 	sprintf(rho_params[i].opdm_b_lbl, "MO-basis Beta OPDM");
       }
       else {
-	sprintf(rho_params[i].opdm_a_lbl, "MO-basis Alpha OPDM %d", i);
-	sprintf(rho_params[i].opdm_b_lbl, "MO-basis Beta OPDM %d", i);
+	sprintf(rho_params[i].opdm_a_lbl, "MO-basis Alpha OPDM Root %d", i);
+	sprintf(rho_params[i].opdm_b_lbl, "MO-basis Beta OPDM Root %d", i);
       }
     }
   }

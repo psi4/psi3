@@ -57,9 +57,9 @@ void get_opdm_lbl(void) {
     opdm_lbl[0] = (char *) malloc(32*sizeof(char));
 
     if (transdens)
-      sprintf(opdm_lbl[0],"MO-basis TDM %d",root);
+      sprintf(opdm_lbl[0],"MO-basis TDM Root %d",root);
     else
-      sprintf(opdm_lbl[0],"MO-basis OPDM %d",root);
+      sprintf(opdm_lbl[0],"MO-basis OPDM Root %d",root);
   } /* end ROOT exists */
 
   /* if ROOT is not given and only one density specified, 
@@ -93,7 +93,7 @@ void get_opdm_lbl(void) {
       opdm_lbl[i] = (char *) malloc(32*sizeof(char));
       if (i==0 && cc_wfn(wfn)) sprintf(opdm_lbl[i], "MO-basis %s",
         transdens ? "TDM" : "OPDM");
-      else sprintf(opdm_lbl[i], "MO-basis %s %d", 
+      else sprintf(opdm_lbl[i], "MO-basis %s Root %d", 
         transdens ? "TDM" : "OPDM", i);
     }
   }
@@ -110,9 +110,9 @@ void get_opdm_lbl(void) {
           transdens ? "TDM" : "OPDM");
       }
       else {
-        sprintf(opdm_a_lbl[i], "MO-basis Alpha %s %d", 
+        sprintf(opdm_a_lbl[i], "MO-basis Alpha %s Root %d", 
           transdens ? "TDM" : "OPDM", i);
-        sprintf(opdm_b_lbl[i], "MO-basis Beta %s %d", 
+        sprintf(opdm_b_lbl[i], "MO-basis Beta %s Root %d", 
           transdens ? "TDM" : "OPDM", i);
       }
     }
