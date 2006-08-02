@@ -2,15 +2,12 @@
 % Compute the transition density matrix between the 
 % ^2\Sigma_u and ^2\Sigma_g states of He2+
 % 
-% Don't need to run oeprop, but will do that also just as an example
-%
 % FCI/cc-pVDZ
 %
 
 psi: (
   check = false
   jobtype = sp 
-  exec = ($input $ints $scf $transqt $detci $oeprop)
 )
 
 default: (
@@ -48,9 +45,4 @@ detci: (
   num_roots = 2
   transition_density = true
 )
-
-oeprop: (
-  transition_density = true
-)
-
 
