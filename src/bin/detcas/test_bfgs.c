@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <libciomr/libciomr.h>
 
 void test_bfgs(void)
