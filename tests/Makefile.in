@@ -13,7 +13,7 @@ scf-opt-numer scf-opt2-numer mp2-opt-numer cisd-opt-numer \
 scf-freq-first-3 scf-freq-first-5 scf-freq-none-3 scf-freq-none-5 \
 scf-symm-fc-numer scf-fc-numer \
 scf-freq scf-polar rhf-stab uhf-stab rohf-stab mp2-sp mp2-direct-sp cis-sp \
-cisd-sp fci-h2o casscf-sp casscf-sa-sp \
+cisd-sp fci-h2o casscf-sp casscf-sa-sp casscf-fzc-sp rasscf-sp \
 $(cc_subdirs) \
 dboc-rhf1 dboc-rohf1 dboc-uhf1 dboc-rcisd1 dboc-rocisd1 \
 rhf-oeprop mp2-oeprop \

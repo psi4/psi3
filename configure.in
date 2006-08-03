@@ -787,7 +787,11 @@ AC_CONFIG_FILES([include/sizeof.h include/Makefile
           tests/cis-sp/Makefile
           tests/cisd-sp/Makefile
           tests/cisd-opt-numer/Makefile
+          tests/fci-h2o/Makefile
           tests/casscf-sp/Makefile
+          tests/casscf-sa-sp/Makefile
+          tests/casscf-fzc-sp/Makefile
+          tests/rasscf-sp/Makefile
           tests/mp2-sp/Makefile
           tests/mp2-direct-sp/Makefile
           tests/mp2-oeprop/Makefile
