@@ -159,6 +159,7 @@ sub do_tests
           if ($wfn eq "BCCD")     { $fail |= compare_bccd_energy(); last SWITCH2; }
           if ($wfn eq "BCCD_T")   { $fail |= compare_bccd_t_energy(); last SWITCH2; }
           if ($wfn eq "CASSCF")   { $fail |= compare_casscf_energy(); last SWITCH2; }
+          if ($wfn eq "RASSCF")   { $fail |= compare_rasscf_energy(); last SWITCH2; }
           if ($wfn eq "DETCI")    { $fail |= compare_ci_energy(); last SWITCH2; }
           if ($wfn eq "CIS")      { $fail |= compare_cis_energy(); last SWITCH2; }
           if ($wfn eq "MP2" && $direct == 1)
@@ -623,6 +624,22 @@ sub compare_casscf_energy
   }
   else {
     pass_test("CASSCF energy");
+  }
+  
+  return $fail;
+}
+
+sub compare_rasscf_energy
+{
+  my $fail = 0;
+  my $REF_FILE = "$SRC_PATH/output.ref";
+  my $TEST_FILE = "output.dat";
+
+  if(abs(seek_rasscf($REF_FILE) - seek_rasscf($TEST_FILE)) > $PSITEST_ETOL) {
+    fail_test("RASSCF energy"); $fail = 1;
+  }
+  else {
+    pass_test("RASSCF energy");
   }
   
   return $fail;
@@ -1413,6 +1430,23 @@ sub seek_casscf
   }
 
   printf "Error: Could not find CASSCF energy in $_[0].\n";
+  exit 1;
+}
+
+sub seek_rasscf
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+
+#Added to handle David's new RASSCF output format
+  while (<OUT>) {
+      if (/Final RASSCF Energy/) {
+	  @data = split(/=/, $_);
+	  $casscf = $data[2];
+	  return $casscf;
+      }
+  }
+
+  printf "Error: Could not find RASSCF energy in $_[0].\n";
   exit 1;
 }
   
