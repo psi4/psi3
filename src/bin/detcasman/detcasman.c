@@ -50,6 +50,7 @@ main(int argc, char *argv[])
   char *wfn;                   /* wavefunction type                        */
   int ncasiter = 0;            /* max cas iterations */
   char detci_string[80];       /* string containing system call for DETCI  */
+  char rmstring[100];          /* remove command for diis.dat, etc         */
   double ci_conv;              /* desired CI convergence 
                                   (changes dynamically during CAS opt)     */
   double scale_conv;           /* CI convergence threshold = 
@@ -109,8 +110,9 @@ main(int argc, char *argv[])
     fprintf(outfile,"               ORBITALS DID NOT CONVERGE\n");
 
   if (converged) {
-    system("rm -f detci_cfile.dat detci_sfile.dat");
-    system("rm -f diis.dat orbs.dat thetas.dat");
+    sprintf(rmstring, "rm -f %s.%s %s.%s %s.%s", psi_file_prefix, "diis.dat",
+      psi_file_prefix, "orbs.dat", psi_file_prefix, "thetas.dat");
+    system(rmstring);
   }
 
   quote();
