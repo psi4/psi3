@@ -1,0 +1,36 @@
+From Daniel Crawford (8/2/06):
+
+(1) Create the directory in your working copy under psi3/tests.
+                                                                                
+(2) Copy the input.dat and output.ref files (as well as any other files
+needed for checking the correctness of the calculation) into that
+directory.
+                                                                                
+(3) Copy a Makefile.in from another test.  (They're all identical, so it
+doesn't matter which one.)
+                                                                                
+(4) Edit psi3/tests/Makefile.in to add your subdirectory to the tests rule.
+                                                                                
+(5) Edit psi3/configure.in to add your subdirectory to the list of subdirs
+configure uses to generate Makefiles in the compilation directories.
+                                                                                
+(6) Depending on what information needs to be checked, you may also have to
+edit psi3/tests/psitest.pl.  This is the main testing perl script, which
+examines the input.dat file and determines what kinds of quantities have to
+be compared.  There are individual perl functions for checking various
+quantities.  For example, edit psitest.pl and search for
+"compare_casscf_energy" and "seek_casscf".
+                                                                                
+Updating for automated preparation of the test:
+                                                                                
+(1) Run "autoconf" in your top-level psi3 directory.
+                                                                                
+(2) Go into your compilation directory and run "./config.status --recheck"
+and then "config.status".  The first command re-runs your original
+configure command, and the second regenerates all the Makefiles and other 
+files from their .in counterparts.
+                                                                                
+(3) You should be able to go into the tests subdir of your compilation
+directory and run your test case in its own directory with the "make"
+command.
+
