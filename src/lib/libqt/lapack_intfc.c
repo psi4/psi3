@@ -329,7 +329,8 @@ int C_DGESVD(char jobu, char jobvt, int m, int n, double *A, int lda, double *s,
 **          >0 = the algorithm failed to converge.
 **
 ** Interface written by TDC, 10/2002
-** \ingroup(QT)
+**
+** \ingroup (QT)
 */
 int C_DSYEV(char jobz, char uplo, int n, double *A, int lda, double *w, 
   double *work, int lwork)
