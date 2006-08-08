@@ -1,3 +1,7 @@
+08/02/06: Added dipole moment and transition dipole moment analysis 
+within DETCI.  Unified CI and CC code to analyze multiple density
+matrices in OEPROP. -CDS
+
 07/28/06: Given the improvements to libpsio to avoid file corruption, I
 added restart options to ccresponse.  The code can now recover almost
 exactly where it left off (to within an iteration of each perturbed wave
@@ -23,8 +27,8 @@ and better speed.  -TDC
 06/21/06: DBOC now uses MEMORY keyword and can do RCI DBOC calculations where
 string overlaps are kept on disk.  -EFV
 
-06/14/06: Modified DETCI, DETCAS, and DETCASMAN to prepend prefix to names of all
-intermediate files.  -EFV
+06/14/06: Modified DETCI, DETCAS, and DETCASMAN to prepend prefix to names of 
+all intermediate files.  -EFV
 
 06/12/06: Modified DBOC code to avoid computation of the wave function at the
 reference (non-displaced) geometry. This should simplify computations in
@@ -41,9 +45,9 @@ calculations for CC2 and CCSD.  Also extended the perl testing scripts to
 check these types of calcs as well as multi-wavelength calcs.  -TDC
 
 11/12/05: Implemented code to compute and write to disk symmetry-adapted
-first-order derivative integrals with respect to Cartesian nuclear displacements.
-Symmetry-adapted linear combinations are computed by input and stored in
-checkpoint file. -EFV
+first-order derivative integrals with respect to Cartesian nuclear 
+displacements.  Symmetry-adapted linear combinations are computed by input 
+and stored in checkpoint file. -EFV
 
 09/10/05: Major improvements to <0|L*(HBAR*X1*Y1)c|0> terms of the linear
 response function in ccresponse.  Most contractions are now taken from
