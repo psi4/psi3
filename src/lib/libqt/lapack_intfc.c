@@ -98,6 +98,7 @@
 ** compute all the eigenvalues, and no eigenvectors have been computed.
 ** Elements i+1:n of wr and wi contain eigenvalues which have converged. 
 ** 
+** \ingroup (QT)
 */
 int C_DGEEV(int n, double **a, int lda,
   double *wr, double *wi, double **vl, int ldvl, double **vr,
@@ -163,8 +164,9 @@ int C_DGESV(int n, int nrhs, double *a, int lda, int *ipiv, double *b, int ldb)
 
 
 /* 
-   lda >= ncol
- */
+** lda >= ncol
+** \ingroup (QT)
+*/
 int C_DGETRF(int nrow, int ncol, double *a, int lda, int *ipiv)
 {
   int info;
@@ -175,6 +177,10 @@ int C_DGETRF(int nrow, int ncol, double *a, int lda, int *ipiv)
 }
 
 
+/*
+**
+** \ingroup (QT)
+*/
 int C_DGETRI(int n, double *a, int lda, int *ipiv, double *work, int lwork)
 {
   int info;
@@ -268,6 +274,7 @@ int C_DGETRI(int n, double *a, int lda, int *ipiv, double *work, int lwork)
 **                      manual for additiona information.
 **
 ** Interface written by TDC, July 2001, updated April 2004
+** \ingroup (QT)
 */
 int C_DGESVD(char jobu, char jobvt, int m, int n, double *A, int lda, double *s, 
 	     double *u, int ldu, double *vt, int ldvt, double *work, int lwork)
