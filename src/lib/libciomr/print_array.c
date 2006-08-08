@@ -9,6 +9,11 @@
 ** print_array: Prints a lower-triangle of a symmetric matrix packed as
 **  an array of doubles.
 **
+** Arguments:
+** \param a     = array (packed lower triangle of matrix) to print
+** \param m     = dimension of matrix (mxm)
+** \param out   = file pointer for output
+**
 ** \ingroup (CIOMR)
 */
 void print_array(double *a, int m, FILE *out)

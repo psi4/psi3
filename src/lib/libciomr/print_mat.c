@@ -5,8 +5,14 @@
 
 #include "includes.h"
 
-/*
+/*!
 ** print_mat: Print a matrix a of dimensions mxn to file pointer out.
+**
+** Arguments:
+**  \param a   = matrix to print
+**  \param m   = number of rows in matrix
+**  \param n   = number of columns in matrix
+**  \param out = file pointer for output
 **
 ** \ingroup (CIOMR)
 */
