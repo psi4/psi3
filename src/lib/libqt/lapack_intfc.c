@@ -42,7 +42,63 @@
 #endif
 
 
-/* this should be a diagonalizer */
+/*!
+** C_DGEEV()
+** 
+** This function computes the eigenvalues and the left and right
+** right eigenvectors of a real, nonsymmetric matrix A.  For 
+** symmetric matrices, refer to C_DSYEV().
+**
+** Arguments:
+** \param int n: The order of the matrix A.  n >= 0.
+**
+** \param double **a: The n-by-n matrix A.  As with all other lapack
+** routines, must be allocated by contiguous memory (i.e., block_matrix()).
+**
+** \param int lda: The leading dimension of matrix A.  lda >= max(1,n).
+**
+** \param double *wr: array of length n containing the real parts of 
+** computed eigenvalues.
+**
+** \param double *wi: array of length n containing the imaginary parts of 
+** computed eigenvalues.
+**
+** \param double **vl: matrix of dimensions ldvl*n.  The columns store
+** the left eigenvectors u(j).  If the j-th eigenvalues is real, then
+** u(j) = vl(:,j), the j-th column of vl.  If the j-th and (j+1)-st 
+** eigenvalues form a complex conjugate pair, then u(j) = vl(:,j) +
+** i*vl(:,j+1) and u(j+1) = vl(:,j) - i*vl(:,j+1).  Note: this is
+** the Fortran documentation, may need to change cols <-> rows.
+**
+** \param int ldvl: THe leading dimension of matrix vl.
+**
+** \param double **vr: matrix of dimensions ldvr*n.  The columns store
+** the right eigenvectors v(j).  If the j-th eigenvalues is real, then
+** v(j) = vr(:,j), the j-th column of vr.  If the j-th and (j+1)-st
+** eigenvalues form a complex conjugate pair, then v(j) = vr(:,j) +
+** i*vr(:,j+1) and v(j+1) = vr(:,j) - i*vr(:,j+1).  Note: this is
+** the Fortran documentation, may need to change cols <-> rows.
+**
+** \param int ldvr: The leading dimension of matrix vr.
+**
+** \param double *work: Array for scratch computations, of dimension
+** lwork.  On successful exit, work[0] returns the optimal value of lwork.
+**
+** \param int lwork: The dimension of the array work.  lwork >= max(1,3*n),
+** and if eigenvectors are required (default for this wrapper at present)
+** then actually lwork >= 4*n.  For good performance, lwork must generally
+** be larger.  If lwork = -1, then a workspace query is assumed.  The 
+** routine only calculates the optimal size of the work array, returns
+** this value ans the first entry of the work array, and no error
+** message related to lword is issued by xerbla.
+**
+** \param int info: On output (returned by C_DGEEV), a status flag.
+** info = 0 for successful exit, if info = -i, the ith argument had
+** an illegal value.  If info = i, the QR algorithm failed to
+** compute all the eigenvalues, and no eigenvectors have been computed.
+** Elements i+1:n of wr and wi contain eigenvalues which have converged. 
+** 
+*/
 int C_DGEEV(int n, double **a, int lda,
   double *wr, double *wi, double **vl, int ldvl, double **vr,
   int ldvr, double *work, int lwork, int info)
@@ -55,6 +111,7 @@ int C_DGEEV(int n, double **a, int lda,
 
   return info;
 }
+
 
 /*!
 ** C_DGESV()
@@ -104,6 +161,7 @@ int C_DGESV(int n, int nrhs, double *a, int lda, int *ipiv, double *b, int ldb)
   return info;
 }
 
+
 /* 
    lda >= ncol
  */
@@ -116,6 +174,7 @@ int C_DGETRF(int nrow, int ncol, double *a, int lda, int *ipiv)
   return info;
 }
 
+
 int C_DGETRI(int n, double *a, int lda, int *ipiv, double *work, int lwork)
 {
   int info;
@@ -125,10 +184,12 @@ int C_DGETRI(int n, double *a, int lda, int *ipiv, double *work, int lwork)
   return info;
 }
 
+
 /*!
 ** C_DGESVD()
-** This function computes the singular value decomposition (SVD) of a real mxn matrix A,
-** optionally computing the left and/or right singular vectors.  The SVD is written
+** This function computes the singular value decomposition (SVD) of a 
+** real mxn matrix A, ** optionally computing the left and/or right 
+** singular vectors.  The SVD is written
 **
 **  A = U * S * transpose(V)
 **
@@ -208,44 +269,53 @@ int C_DGETRI(int n, double *a, int lda, int *ipiv, double *work, int lwork)
 **
 ** Interface written by TDC, July 2001, updated April 2004
 */
-
 int C_DGESVD(char jobu, char jobvt, int m, int n, double *A, int lda, double *s, 
 	     double *u, int ldu, double *vt, int ldvt, double *work, int lwork)
 {
   int info;
 
-  F_DGESVD(&jobvt, &jobu, &n, &m, A, &lda, s, vt, &ldvt, u, &ldu, work, &lwork, &info);
+  F_DGESVD(&jobvt, &jobu, &n, &m, A, &lda, s, vt, &ldvt, u, &ldu, work, 
+    &lwork, &info);
 
   return info;
 }
 
+
 /*!
 ** C_DSYEV()
-** This function computes all eigenvalues and, optionally, eigenvectors of a real 
-** symmetric matrix A.
+** This function computes all eigenvalues and, optionally, eigenvectors of 
+** a real symmetric matrix A.
 **
 ** These arguments mimic their Fortran counterparts.
 **
 ** \param char jobz:    'N' or 'n' = compute eigenvalues only;
 **                      'V' or 'v' = compute both eigenvalues and eigenvectors.
 **
-** \param char uplo:    'U' or 'u' = A contains the upper triangular part of the matrix;
-**                      'L' or 'l' = A contains the lower triangular part of the matrix.
+** \param char uplo:    'U' or 'u' = A contains the upper triangular part 
+**                      of the matrix;
+**                      'L' or 'l' = A contains the lower triangular part 
+**                      of the matrix.
 **
 ** \param int n:        The order of the matrix A.
 **
-** \param double *A:    On entry, the two-dimensional array with dimensions n by lda.
-**                      On exit, if jobz = 'V', the rows of the matrix contain the eigenvectors of A, 
-**                      but if jobz = 'N', the contents of the matrix are destroyed.
+** \param double *A:    On entry, the two-dimensional array with dimensions 
+**                      n by lda.
+**                      On exit, if jobz = 'V', the rows of the matrix contain 
+**                      the eigenvectors of A, 
+**                      but if jobz = 'N', the contents of the matrix are 
+**                      destroyed.
 **
-** \param int lda:      The second dimension of A (i.e., the number of columns allocated for A).
+** \param int lda:      The second dimension of A (i.e., the number of columns 
+**                      allocated for A).
 **
 ** \param double *w:    The computed eigenvalues in ascending order.
 **
-** \param double *work: An array of length lwork.  On exit, if the return value is 0, work[0]
+** \param double *work: An array of length lwork.  On exit, if the return 
+**                      value is 0, work[0]
 **                      contains the optimal value of lwork.
 **
-** \param int lwork:    The length of the array work.  A useful value of lwork seems to be 3*N.
+** \param int lwork:    The length of the array work.  A useful value of 
+**                      lwork seems to be 3*N.
 **
 ** Returns:  0 = successful exit
 **          <0 = the value of the i-th argument to the function was illegal
@@ -254,8 +324,8 @@ int C_DGESVD(char jobu, char jobvt, int m, int n, double *A, int lda, double *s,
 ** Interface written by TDC, 10/2002
 ** \ingroup(QT)
 */
-
-int C_DSYEV(char jobz, char uplo, int n, double *A, int lda, double *w, double *work, int lwork)
+int C_DSYEV(char jobz, char uplo, int n, double *A, int lda, double *w, 
+  double *work, int lwork)
 {
   int info;
 
