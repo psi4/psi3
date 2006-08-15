@@ -76,6 +76,8 @@ main(int argc, char *argv[])
   get_moinfo();
   if(params.semicanonical) semicanonical_fock();
 
+  timer_init();
+
   nso = moinfo.nso;
   nmo = moinfo.nmo;
   ntri_so = nso*(nso+1)/2;
@@ -155,6 +157,7 @@ main(int argc, char *argv[])
     F_b = init_array(ntri_so);
   }
 
+  timer_on("presort");
   if(params.print_lvl) {
     fprintf(outfile, "\n\tPresorting SO-basis two-electron integrals.\n");
     fflush(outfile);
@@ -169,6 +172,7 @@ main(int argc, char *argv[])
 		       moinfo.nfzc, D_a, D_b, F_a, F_b, params.ref);
   dpd_file4_close(&I);
   psio_close(PSIF_SO_PRESORT, 1);
+  timer_off("presort");
 
   /* read the bare one-electron integrals */
   oei = init_array(ntri_so);
@@ -309,6 +313,8 @@ main(int argc, char *argv[])
 
   cachedone_rhf(cachelist);
   free(cachefiles);
+
+  timer_done();
 
   cleanup();
   free(ioff);

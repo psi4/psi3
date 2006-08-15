@@ -53,6 +53,7 @@ void transtwo_rhf(void)
   psio_open(PSIF_SO_PRESORT, PSIO_OPEN_OLD);
   psio_open(PSIF_HALFT0, PSIO_OPEN_NEW);
 
+  timer_on("RHF:1sthalf");
   dpd_buf4_init(&J, PSIF_SO_PRESORT, 0, 3, 0, 3, 3, 0, "SO Ints (pq,rs)");
   dpd_buf4_init(&K, PSIF_HALFT0, 0, 3, 5, 3, 8, 0, "Half-Transformed Ints (pq,ij)");
   for(h=0; h < nirreps; h++) {
@@ -132,6 +133,8 @@ void transtwo_rhf(void)
 
   psio_close(PSIF_SO_PRESORT, 0);
 
+  timer_off("RHF:1sthalf");
+  timer_on("RHF:midsort");
   if(params.print_lvl) {
     fprintf(outfile, "\tSorting half-transformed integrals.\n");
     fflush(outfile);
@@ -144,6 +147,8 @@ void transtwo_rhf(void)
   dpd_buf4_close(&K);
 
   psio_close(PSIF_HALFT0, 0);
+  timer_off("RHF:midsort");
+  timer_on("RHF:2ndhalf");
 
   if(params.print_lvl) {
     fprintf(outfile, "\tStarting second half-transformation.\n");
@@ -248,6 +253,8 @@ void transtwo_rhf(void)
 
   iwl_buf_flush(&MBuff, 1);
   iwl_buf_close(&MBuff, 1);
+
+  timer_off("RHF:2ndhalf");
 
   free_block(TMP);
 
