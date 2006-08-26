@@ -228,6 +228,9 @@ void get_params()
   params.spinadapt_energies = 0;
   errcod = ip_boolean("SPINADAPT_ENERGIES", &(params.spinadapt_energies), 0);
 
+  params.t3_Ws_incore = 0;
+  errcod = ip_boolean("T3_WS_INCORE", &(params.t3_Ws_incore),0);
+
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tWave function   =    %6s\n", params.wfn);
@@ -260,6 +263,10 @@ void get_params()
   if (params.print_pair_energies)
     fprintf(outfile, "\tSpinadapt Ener. =    %s\n",  params.spinadapt_energies ? "Yes" : "No" );
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
+
+  if ( !strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC3") )
+    fprintf(outfile, "\tT3 Ws incore    =     %s\n", params.t3_Ws_incore ? "Yes" : "No");
+
   if(params.local) {
     fprintf(outfile, "\tLocal Cutoff       = %3.1e\n", local.cutoff);
     fprintf(outfile, "\tLocal Method      =    %s\n", local.method);

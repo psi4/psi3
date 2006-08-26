@@ -117,8 +117,8 @@ void cc3_RHF_obsolete(void)
 	      jk = T2.params->rowidx[J][K];
 	      kj = T2.params->rowidx[K][J];
 
-              T3_RHF(W3, nirreps, I, Gi, J, Gj, K, Gk, &T2, &F, &E,
-                     &fIJ2, &fAB2, occpi, occ_off, virtpi, vir_off, 0.0);
+             /* T3_RHF(W3, nirreps, I, Gi, J, Gj, K, Gk, &T2, &F, &E,
+                     &fIJ2, &fAB2, occpi, occ_off, virtpi, vir_off, 0.0); */
 
 
               /* sort (ab,c) into T3[A][B][C] */

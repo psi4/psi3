@@ -90,8 +90,8 @@ void cc3_UHF_AAA_obsolete(void)
 	    for(k=0; k < occpi[Gk]; k++) {
 	      K = occ_off[Gk] + k;
 
-	      T3_AAA(W1, nirreps, I, Gi, J, Gj, K, Gk, &T2, &F, &E, &fIJ, &fAB, 
-		     occpi, occ_off, virtpi, vir_off, 0.0);
+	      /* T3_AAA(W1, nirreps, I, Gi, J, Gj, K, Gk, &T2, &F, &E, &fIJ, &fAB, 
+		     occpi, occ_off, virtpi, vir_off, 0.0); */
 
 	      /* t_KC <-- 1/4 t_IJKABC <IJ||AB> */
 
@@ -328,8 +328,8 @@ void cc3_UHF_BBB_obsolete(void)
 	    for(k=0; k < occpi[Gk]; k++) {
 	      K = occ_off[Gk] + k;
 
-	      T3_AAA(W1, nirreps, I, Gi, J, Gj, K, Gk, &T2, &F, &E, &fIJ, &fAB, 
-		     occpi, occ_off, virtpi, vir_off, 0.0);
+	      /* T3_AAA(W1, nirreps, I, Gi, J, Gj, K, Gk, &T2, &F, &E, &fIJ, &fAB, 
+		     occpi, occ_off, virtpi, vir_off, 0.0); */
 
 	      /* t_kc <-- 1/4 t_ijkabc <ij||ab> */
 
@@ -630,9 +630,10 @@ void cc3_UHF_AAB_obsolete(void)
 	    for(k=0; k < boccpi[Gk]; k++) {
 	      K = bocc_off[Gk] + k;
 
-	      T3_AAB(W1, nirreps, I, Gi, J, Gj, K, Gk, &T2AA, &T2AB, &T2BA, 
+	     /* T3_AAB(W1, nirreps, I, Gi, J, Gj, K, Gk, &T2AA, &T2AB, &T2BA, 
 		     &FAA, &FAB, &FBA, &EAA, &EAB, &EBA, &fIJ, &fij, &fAB, &fab,
 		     aoccpi, aocc_off, boccpi, bocc_off, avirtpi, avir_off, bvirtpi, bvir_off, 0.0);
+*/
 
 	      /* t_kc <-- 1/4 t_IJkABc <IJ||AB> */
 
@@ -1222,9 +1223,11 @@ void cc3_UHF_BBA_obsolete(void)
 	    for(k=0; k < aoccpi[Gk]; k++) {
 	      K = aocc_off[Gk] + k;
 
+/*
 	      T3_AAB(W1, nirreps, I, Gi, J, Gj, K, Gk, &T2BB, &T2BA, &T2AB, 
 		     &FBB, &FBA, &FAB, &EBB, &EBA, &EAB, &fij, &fIJ, &fab, &fAB,
 		     boccpi, bocc_off, aoccpi, aocc_off, bvirtpi, bvir_off, avirtpi, avir_off, 0.0);
+*/
 
 	      /* t_KC <-- 1/4 t_ijKabC <ij||ab> */
 

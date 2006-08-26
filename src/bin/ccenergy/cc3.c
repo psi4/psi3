@@ -34,9 +34,14 @@ void cc3(void)
     dpd_buf4_init(&WAmEf, CC3_HET1, 0, 10, 5, 10, 5, 0, "CC3 WAmEf (mA,Ef)");
     dpd_buf4_init(&WMnIe, CC3_HET1, 0, 0, 10, 0, 10, 0, "CC3 WMnIe (Mn,Ie)");
 
-    cc3_sigma_RHF(&TIjAb, &WAbEi, &WMbIj, 1, &Dints, &TIA_new, 1, &FME, &WAmEf,
-      &WMnIe, &TIjAb_new, moinfo.occpi, moinfo.occ_off, moinfo.virtpi,
-      moinfo.vir_off, 0.0, outfile);
+    if (params.t3_Ws_incore)
+      cc3_sigma_RHF_ic(&TIjAb, &WAbEi, &WMbIj, 1, &Dints, &TIA_new, 1, &FME, &WAmEf,
+        &WMnIe, &TIjAb_new, moinfo.occpi, moinfo.occ_off, moinfo.virtpi,
+        moinfo.vir_off, 0.0, outfile);
+    else 
+      cc3_sigma_RHF(&TIjAb, &WAbEi, &WMbIj, 1, &Dints, &TIA_new, 1, &FME, &WAmEf,
+        &WMnIe, &TIjAb_new, moinfo.occpi, moinfo.occ_off, moinfo.virtpi,
+        moinfo.vir_off, 0.0, outfile);
 
     dpd_buf4_close(&TIjAb);
     dpd_buf4_close(&WAbEi);

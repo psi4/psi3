@@ -27,4 +27,5 @@ struct Params {
   int just_energy; /* just compute energy from T amplitudes on disk and quit */
 	int just_residuals; /* just compute residuals from T amplitudes on disk and quit */
   char *abcd;
+  int t3_Ws_incore;
 };
