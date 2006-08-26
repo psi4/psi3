@@ -25,10 +25,6 @@ void schmidt_add(dpdfile2 *RIA, dpdfile2 *Ria,
   dpdbuf4 CMnEf_buf;
   char CME_lbl[32], Cme_lbl[32], CMNEF_lbl[32], Cmnef_lbl[32], CMnEf_lbl[32];
 
-#ifdef TIME_CCEOM
-timer_on("SCHMIDT_ADD");
-#endif
-
   for (i=0; i<*numCs; i++) {
     sprintf(CME_lbl, "%s %d", "CME", i);
     sprintf(Cme_lbl, "%s %d", "Cme", i);
@@ -93,9 +89,6 @@ timer_on("SCHMIDT_ADD");
 
     ++(*numCs);
   }
-#ifdef TIME_CCEOM
-timer_off("SCHMIDT_ADD");
-#endif
   return;
 }
 
@@ -108,10 +101,6 @@ void schmidt_add_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, int *numCs, int irrep)
   dpdfile2 R1;
   dpdbuf4 R2a, R2b;
   char CME_lbl[32], Cme_lbl[32], CMNEF_lbl[32], Cmnef_lbl[32], CMnEf_lbl[32], C0_lbl[32];
-
-#ifdef TIME_CCEOM
-timer_on("SCHMIDT_ADD");
-#endif
 
   if (params.full_matrix) psio_read_entry(EOM_R, "R0", (char *) &R0, sizeof(double));
 
@@ -207,8 +196,5 @@ timer_on("SCHMIDT_ADD");
 		}
     ++(*numCs);
   }
-#ifdef TIME_CCEOM
-timer_off("SCHMIDT_ADD");
-#endif
   return;
 }

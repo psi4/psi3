@@ -77,6 +77,9 @@ void get_eom_params()
   eom_params.vectors_per_root = 12;
   errcod = ip_data("VECTORS_PER_ROOT","%d",&(eom_params.vectors_per_root),0);
 
+  eom_params.vectors_cc3 = 8;
+  errcod = ip_data("VECTORS_CC3","%d",&(eom_params.vectors_cc3),0);
+
   eom_params.restart_vectors_per_root = 1;
   errcod = ip_data("RESTART_VECTORS_PER_ROOT","%d",&(eom_params.restart_vectors_per_root),0);
 
@@ -84,7 +87,7 @@ void get_eom_params()
   errcod = ip_data("COMPLEX_TOL","%d",&(iconv),0);
   if(errcod == IPE_OK) eom_params.complex_tol = 1.0*pow(10.0,(double) -iconv);
 
-  eom_params.residual_tol = 1E-7;
+  eom_params.residual_tol = 1E-6;
   errcod = ip_data("RESIDUAL_TOL","%d",&(iconv),0);
   if(errcod == IPE_OK) eom_params.residual_tol = 1.0*pow(10.0,(double) -iconv);
 
@@ -92,7 +95,7 @@ void get_eom_params()
   errcod = ip_data("RESIDUAL_TOL_SS","%d",&(iconv),0);
   if(errcod == IPE_OK) eom_params.residual_tol_SS = 1.0*pow(10.0,(double) -iconv);
 
-  eom_params.eval_tol = 1E-6;
+  eom_params.eval_tol = 1E-8;
   errcod = ip_data("EVAL_TOL","%d",&(iconv),0);
   if(errcod == IPE_OK) eom_params.eval_tol = 1.0*pow(10.0,(double) -iconv);
 

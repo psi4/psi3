@@ -85,7 +85,7 @@ void diag(void) {
   dpdbuf4 CMnEf1, CMnfE1, CMnfE, CMneF, C2;
   char lbl[32];
   int num_converged, num_converged_index=0, *converged, keep_going, already_sigma;
-  int irrep, numCs, iter, lwork, info;
+  int irrep, numCs, iter, lwork, info, vectors_per_root;
   int get_right_ev = 1, get_left_ev = 0;
   int L,h,i,j,k,a,nirreps,errcod,C_irr;
   double norm, tval, **G, *work, *evals_complex, **alpha, **evectors_left;
@@ -249,8 +249,13 @@ timer_off("INIT GUESS");
     converged = init_int_array(eom_params.cs_per_irrep[C_irr]);
     lambda_old = init_array(eom_params.cs_per_irrep[C_irr]);
     L = eom_params.cs_per_irrep[C_irr];
-		G_old = block_matrix( (1+eom_params.vectors_per_root)*eom_params.cs_per_irrep[C_irr],
-		                      (1+eom_params.vectors_per_root)*eom_params.cs_per_irrep[C_irr]);
+    /* allocate G_old just once */
+    i = eom_params.vectors_per_root*eom_params.cs_per_irrep[C_irr];
+    if ( !strcmp(params.wfn,"EOM_CC3") && (eom_params.vectors_cc3 > i) )
+      i = eom_params.vectors_cc3;
+    G_old = block_matrix(i+1,i+1);
+
+    vectors_per_root = eom_params.vectors_per_root; /* used for CCSD */
 
     while ((keep_going == 1) && (iter < eom_params.max_iter)) {
       fprintf(outfile,"Iter=%-4d L=%-4d", iter+1, L); fflush(outfile);
@@ -690,8 +695,9 @@ timer_off("INIT GUESS");
 #ifdef TIME_CCEOM
       timer_off("CALC RES");
 #endif /* timing */
+    /* moved back down 8-06 why was this ever before residual norm? 
 	if(params.eom_ref == 0) precondition_RHF(&RIA, &RIjAb, lambda[k]);
-	else precondition(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, lambda[k]);
+	else precondition(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, lambda[k]); */
 
         if (params.eom_ref == 0) {
           dpd_buf4_sort(&RIjAb, EOM_TMP, pqsr, 0, 5, "RIjbA");
@@ -713,12 +719,11 @@ timer_off("INIT GUESS");
 		lambda[k]-lambda_old[k], norm);
 
         /* Check for convergence and add new vector if not converged */
-        if ( (norm > eom_params.residual_tol) ||
-	     (fabs(lambda[k]-lambda_old[k]) > eom_params.eval_tol) ) {
+        if ( (norm > eom_params.residual_tol) || (fabs(lambda[k]-lambda_old[k]) > eom_params.eval_tol) ) {
           fprintf(outfile,"%7s\n","N");
 
-	  /*  if(params.eom_ref == 0) precondition_RHF(&RIA, &RIjAb, lambda[k]);
-	      else precondition(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, lambda[k]); */
+	    if(params.eom_ref == 0) precondition_RHF(&RIA, &RIjAb, lambda[k]);
+	    else precondition(&RIA, &Ria, &RIJAB, &Rijab, &RIjAb, lambda[k]);
 
 	  if(params.eom_ref == 0) {
 
@@ -787,22 +792,20 @@ timer_off("INIT GUESS");
       }
 
       /* restart with new B vectors if there are too many */
-      if (L >= eom_params.vectors_per_root * eom_params.cs_per_irrep[C_irr]) {
-        /* For CC3, collapse to only 1 root - the prop_root */
+      if (L >= vectors_per_root * eom_params.cs_per_irrep[C_irr]) {
         if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) ) {
           fprintf(outfile,"Collapsing to %d vector(s).\n",cc3_index+1);
-          restart(alpha, L, cc3_index+1, C_irr, 0);
-          if (cc3_index > 0) restart_with_root(cc3_index, C_irr);
-          L = 1;
+          restart(alpha, L, cc3_index+1, C_irr, 1);
+          L = cc3_index+1;
           already_sigma = 0;
-					ignore_G_old = 1;
+          ignore_G_old = 1;
         }
         else {
            restart(alpha, L, eom_params.restart_vectors_per_root*
-					   eom_params.cs_per_irrep[C_irr], C_irr, 1);
+             eom_params.cs_per_irrep[C_irr], C_irr, 1);
            L = eom_params.restart_vectors_per_root * eom_params.cs_per_irrep[C_irr];
           already_sigma = L;
-					ignore_G_old = 1;
+          ignore_G_old = 1;
         }
         keep_going = 1;
         /* keep track of number of triples restarts */
@@ -829,21 +832,22 @@ timer_off("INIT GUESS");
         if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage == 0) ) {
           fprintf(outfile, "Completed EOM_CCSD\n");
           fprintf(outfile,"Collapsing to only %d vector(s).\n", eom_params.cs_per_irrep[C_irr]);
-          restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 0);
+          restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 1);
           save_C_ccsd(eom_params.prop_root, C_irr);
-          if (eom_params.prop_root > 0) restart_with_root(eom_params.prop_root, C_irr);
 
           cc3_last_converged_eval = cc3_eval = lambda_old[eom_params.prop_root];
           fprintf(outfile,"Setting initial CC3 eigenvalue to %15.10lf\n",cc3_eval);
 
+          L = eom_params.cs_per_irrep[C_irr];
           eom_params.cs_per_irrep[C_irr] = 1; /* only get 1 CC3 solution */
           keep_going = 1;
           already_sigma = 0;
-          /* for 1 CC3 iteration testing: eom_params.max_iter = 1;*/
-					ignore_G_old = 1; /* should be redundant given that already_sigma=0 */
-          L = 1 ;
+          ignore_G_old = 1; 
           iter = 0;
           cc3_stage = 1;
+          vectors_per_root = eom_params.vectors_cc3;
+          if (vectors_per_root < eom_params.prop_root+2)
+            vectors_per_root = eom_params.prop_root+2;
         }
         else if( (!strcmp(params.wfn,"EOM_CC3")) && /* can't trust sigmas yet */
                ( (cc3_stage == 1) || fabs(cc3_eval-cc3_last_converged_eval)>eom_params.eval_tol)) {
@@ -851,8 +855,7 @@ timer_off("INIT GUESS");
           if (cc3_stage == 1) fprintf(outfile, "Forcing one restart with sigma recomputation.\n");
           else fprintf(outfile,"Forcing restart to make sure new sigma vectors give same eigenvalue.\n");
           fprintf(outfile,"Collapsing to only %d vector(s).\n", cc3_index+1);
-          restart(alpha, L, cc3_index+1, C_irr, 0);
-          if (cc3_index > 0) restart_with_root(cc3_index, C_irr);
+          restart(alpha, L, cc3_index+1, C_irr, 1);
           cc3_eval = lambda_old[cc3_index];
           if (cc3_stage == 1)
             fprintf(outfile,"Change in CC3 energy from last iterated value %15.10lf\n", cc3_eval - 0.0);
@@ -863,8 +866,8 @@ timer_off("INIT GUESS");
           fprintf(outfile,"Setting old CC3 eigenvalue to %15.10lf\n",cc3_eval);
           keep_going = 1;
           already_sigma = 0;
-					ignore_G_old = 1; /* should be redundant given that already_sigma=0 */
-          L = 1;
+          ignore_G_old = 1;
+          L = cc3_index+1;
           cc3_stage = 2;
         }
         else if (!strcmp(params.wfn,"EOM_CC3")) {

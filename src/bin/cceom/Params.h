@@ -11,6 +11,7 @@ struct Params {
   int semicanonical;
   int full_matrix; /* include reference rows/cols in diagonalization */
   char *abcd;
+  int t3_Ws_incore;
 };
 
 struct Eom_params {
@@ -37,6 +38,7 @@ struct Eom_params {
   int follow_root;
   int restart_vectors_per_root;
   int skip_diagSS;
+  int vectors_cc3;
 
   /* compute overlap of normalized R with L (must run cclambda first) */
   int dot_with_L;

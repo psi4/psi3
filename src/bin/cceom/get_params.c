@@ -127,6 +127,9 @@ void get_params(void)
   }
   else params.abcd = strdup("NEW");
 
+  params.t3_Ws_incore = 0;
+  errcod = ip_boolean("T3_WS_INCORE", &(params.t3_Ws_incore),0);
+
   params.local = 0;
   errcod = ip_boolean("LOCAL", &(params.local),0);
 
@@ -194,6 +197,8 @@ void get_params(void)
 	  params.cachelev);
   fprintf(outfile, "\tCache Type      =    %4s\n", 
 	  params.cachetype ? "LOW" : "LRU");
+  if ( !strcmp(params.wfn,"EOM_CC3") )
+    fprintf(outfile, "\tT3 Ws incore    =    %4s\n", params.t3_Ws_incore ? "Yes" : "No");
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
   if(params.local) {
     fprintf(outfile, "\tLocal Cutoff    = %3.1e\n", local.cutoff);
