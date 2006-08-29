@@ -307,8 +307,8 @@ int C_DGESVD(char jobu, char jobvt, int m, int n, double *A, int lda, double *s,
 **
 ** \param double *A:    On entry, the two-dimensional array with dimensions 
 **                      n by lda.
-**                      On exit, if jobz = 'V', the rows of the matrix contain 
-**                      the eigenvectors of A, 
+**                      On exit, if jobz = 'V', the columns of the matrix 
+**                      contain the eigenvectors of A, 
 **                      but if jobz = 'N', the contents of the matrix are 
 **                      destroyed.
 **
