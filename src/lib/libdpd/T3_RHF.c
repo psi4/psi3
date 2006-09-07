@@ -91,19 +91,6 @@ void T3_RHF(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
   GF = GE =  F->file.my_irrep;
   GX3 = GC^GF;
 
-  dpd_file2_mat_init(fIJ);
-  dpd_file2_mat_init(fAB);
-  dpd_file2_mat_rd(fIJ);
-  dpd_file2_mat_rd(fAB);
-
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_init(T2, h);
-    dpd_buf4_mat_irrep_rd(T2, h);
-
-    dpd_buf4_mat_irrep_init(E, h);
-    dpd_buf4_mat_irrep_rd(E, h);
-  }
-
   i = I - occ_off[Gi];
   j = J - occ_off[Gj];
   k = K - occ_off[Gk];
@@ -503,11 +490,4 @@ void T3_RHF(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
   }
   free(W2);
 
-  for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_close(T2, h);
-    dpd_buf4_mat_irrep_close(E, h);
-  }
-
-  dpd_file2_mat_close(fIJ);
-  dpd_file2_mat_close(fAB);
 }

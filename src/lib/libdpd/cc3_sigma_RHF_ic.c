@@ -19,7 +19,7 @@
     CIjAb, WAbEi, WMbIj, fIJ2, fAB2, omega
 */
 
-void cc3_sigma_RHF(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
+void cc3_sigma_RHF_ic(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
     int do_singles, dpdbuf4 *Dints, dpdfile2 *SIA,
     int do_doubles, dpdfile2 *FME, dpdbuf4 *WmAEf, dpdbuf4 *WMnIe,
     dpdbuf4 *SIjAb, int *occpi, int *occ_off, int *virtpi, int *vir_off,
@@ -88,6 +88,10 @@ void cc3_sigma_RHF(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
     dpd_buf4_mat_irrep_rd(CIjAb, h);
     dpd_buf4_mat_irrep_init(WMbIj, h);
     dpd_buf4_mat_irrep_rd(WMbIj, h);
+    dpd_buf4_mat_irrep_init(WAbEi, h);
+    dpd_buf4_mat_irrep_rd(WAbEi, h);
+    dpd_buf4_mat_irrep_init(WmAEf, h);
+    dpd_buf4_mat_irrep_rd(WmAEf, h);
 
     if (do_singles) {
       dpd_buf4_mat_irrep_init(Dints, h);
@@ -137,7 +141,7 @@ void cc3_sigma_RHF(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
 #ifdef T3_TIMER_ON              
   timer_on("T3_RHF");
 #endif
-              T3_RHF(W3, nirreps, I, Gi, J, Gj, K, Gk, CIjAb, WAbEi, WMbIj, 
+              T3_RHF_ic(W3, nirreps, I, Gi, J, Gj, K, Gk, CIjAb, WAbEi, WMbIj, 
                      &fIJ2, &fAB2, occpi, occ_off, virtpi, vir_off, omega);
 #ifdef T3_TIMER_ON              
   timer_off("T3_RHF");
@@ -364,12 +368,12 @@ void cc3_sigma_RHF(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
 
                   if(nrows && ncols && nlinks) {
                     kd = WmAEf->row_offset[Gkd][K];
-                    WmAEf->matrix[Gkd] = dpd_block_matrix(virtpi[Gd], WmAEf->params->coltot[Gkd^GW]);
-                    dpd_buf4_mat_irrep_rd_block(WmAEf, Gkd, kd, virtpi[Gd]);
+                 /*   WmAEf->matrix[Gkd] = dpd_block_matrix(virtpi[Gd], WmAEf->params->coltot[Gkd^GW]);
+                    dpd_buf4_mat_irrep_rd_block(WmAEf, Gkd, kd, virtpi[Gd]); */
 
                     Z = block_matrix(virtpi[Ga], virtpi[Gd]);
                     C_DGEMM('n', 't', nrows, ncols, nlinks, 1.0, W3a[Ga][0], nlinks,
-                      WmAEf->matrix[Gkd][0], nlinks, 1.0, Z[0], ncols);
+                      WmAEf->matrix[Gkd][kd], nlinks, 1.0, Z[0], ncols);
 
                     for(a=0; a < virtpi[Ga]; a++) {
                       A = vir_off[Ga] + a;
@@ -383,7 +387,7 @@ void cc3_sigma_RHF(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
                     }
 
                     free_block(Z);
-                    dpd_free_block(WmAEf->matrix[Gkd], virtpi[Gd], WmAEf->params->coltot[Gkd^GW]);
+                    /* dpd_free_block(WmAEf->matrix[Gkd], virtpi[Gd], WmAEf->params->coltot[Gkd^GW]); */
                   }
                 }
 
@@ -399,12 +403,12 @@ void cc3_sigma_RHF(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
 
                   if(nrows && ncols && nlinks) {
                     id = WmAEf->row_offset[Gid][I];
-                    WmAEf->matrix[Gid] = dpd_block_matrix(virtpi[Gd], WmAEf->params->coltot[Gid^GW]);
-                    dpd_buf4_mat_irrep_rd_block(WmAEf, Gid, id, virtpi[Gd]);
+                   /* WmAEf->matrix[Gid] = dpd_block_matrix(virtpi[Gd], WmAEf->params->coltot[Gid^GW]);
+                    dpd_buf4_mat_irrep_rd_block(WmAEf, Gid, id, virtpi[Gd]); */
 
                     Z = block_matrix(virtpi[Ga], virtpi[Gd]);
                     C_DGEMM('n', 't', nrows, ncols, nlinks, 1.0, W3a[Ga][0], nlinks,
-                      WmAEf->matrix[Gid][0], nlinks, 1.0, Z[0], ncols);
+                      WmAEf->matrix[Gid][id], nlinks, 1.0, Z[0], ncols);
 
                     for(a=0; a < virtpi[Ga]; a++) {
                       A = vir_off[Ga] + a;
@@ -418,7 +422,7 @@ void cc3_sigma_RHF(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
                     }
 
                     free_block(Z);
-                    dpd_free_block(WmAEf->matrix[Gid], virtpi[Gd], WmAEf->params->coltot[Gid^GW]);
+                    /* dpd_free_block(WmAEf->matrix[Gid], virtpi[Gd], WmAEf->params->coltot[Gid^GW]); */
                   }
                 }
 
@@ -434,12 +438,12 @@ void cc3_sigma_RHF(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
 
                   if(nrows && ncols && nlinks) {
                     jd = WmAEf->row_offset[Gjd][J];
-                    WmAEf->matrix[Gjd] = dpd_block_matrix(virtpi[Gd], WmAEf->params->coltot[Gjd^GW]);
-                    dpd_buf4_mat_irrep_rd_block(WmAEf, Gjd, jd, virtpi[Gd]);
+                    /* WmAEf->matrix[Gjd] = dpd_block_matrix(virtpi[Gd], WmAEf->params->coltot[Gjd^GW]);
+                    dpd_buf4_mat_irrep_rd_block(WmAEf, Gjd, jd, virtpi[Gd]); */
 
                     Z = block_matrix(virtpi[Ga], virtpi[Gd]);
                     C_DGEMM('n', 't', nrows, ncols, nlinks, 1.0, W3a[Ga][0], nlinks,
-                      WmAEf->matrix[Gjd][0], nlinks, 1.0, Z[0], ncols);
+                      WmAEf->matrix[Gjd][jd], nlinks, 1.0, Z[0], ncols);
 
                     for(a=0; a < virtpi[Ga]; a++) {
                       A = vir_off[Ga] + a;
@@ -452,7 +456,7 @@ void cc3_sigma_RHF(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
                       }
                     }
                     free_block(Z);
-                    dpd_free_block(WmAEf->matrix[Gjd], virtpi[Gd], WmAEf->params->coltot[Gjd^GW]);
+                    /* dpd_free_block(WmAEf->matrix[Gjd], virtpi[Gd], WmAEf->params->coltot[Gjd^GW]); */
                   }
                 }
 #ifdef T3_TIMER_ON              
@@ -486,6 +490,11 @@ timer_off("X3*Wamef");
   dpd_file2_mat_close(&fAB2);
   dpd_file2_close(&fIJ2);
   dpd_file2_close(&fAB2);
+
+  for(h=0; h < nirreps; h++) {
+    dpd_buf4_mat_irrep_close(WAbEi, h);
+    dpd_buf4_mat_irrep_close(WmAEf, h);
+  }
 
   if (do_singles) {
     for(h=0; h < nirreps; h++)

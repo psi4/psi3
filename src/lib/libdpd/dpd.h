@@ -11,7 +11,7 @@
 #include <dmalloc.h>
 #endif
 
-/* #define T3_TIMER_ON (1) */
+#define T3_TIMER_ON (1)
 
 #define DPD_BIGNUM 2147483647 /* the four-byte signed int limit */
 /* #define ALL_BUF4_SORT_OOC */
@@ -364,7 +364,17 @@ void T3_RHF(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int 
                 dpdbuf4 *T2, dpdbuf4 *F, dpdbuf4 *E, dpdfile2 *fIJ, dpdfile2 *fAB,
                 int *occpi, int *occ_off, int *virtpi, int *vir_off, double omega);
 
+void T3_RHF_ic(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int Gk,
+                dpdbuf4 *T2, dpdbuf4 *F, dpdbuf4 *E, dpdfile2 *fIJ, dpdfile2 *fAB,
+                int *occpi, int *occ_off, int *virtpi, int *vir_off, double omega);
+
 void cc3_sigma_RHF(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
+    int do_singles, dpdbuf4 *Dints, dpdfile2 *SIA,
+    int do_doubles, dpdfile2 *FME, dpdbuf4 *WAmEf, dpdbuf4 *WMnIe,
+    dpdbuf4 *SIjAb, int *occpi, int *occ_off, int *virtpi, int *vir_off,
+    double omega, FILE *outfile);
+
+void cc3_sigma_RHF_ic(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
     int do_singles, dpdbuf4 *Dints, dpdfile2 *SIA,
     int do_doubles, dpdfile2 *FME, dpdbuf4 *WAmEf, dpdbuf4 *WMnIe,
     dpdbuf4 *SIjAb, int *occpi, int *occ_off, int *virtpi, int *vir_off,
