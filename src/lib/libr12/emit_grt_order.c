@@ -7,6 +7,7 @@
 #include <libint/libint.h>
 #include "mem_man.h"
 #include "build_libr12.h"
+#include <libint/constants.h>
 #define MAXNODE 3000
 #define NONODE -1000000
 #define SSR12SSNODE -1111 /* This is a special node - (ss||ss) */
@@ -73,13 +74,11 @@ int emit_grt_order()
   int num_hrr_targets;
   int target_vrr_nodes[1000];
   int num_vrr_targets;
-  const char am_letter[] = "0pdfghiklmnoqrtuvwxyz";
   char hrr_code_name[] = "hrr_grt_order_0000.cc";
   char hrr_function_name[] = "hrr_grt_order_0000";
   char vrr_code_name[] = "vrr_grt_order_0000.cc";
   char vrr_function_name[] = "vrr_grt_order_0000";
   FILE *hrr_code, *vrr_code;
-  static int io[] = {1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153,171,190,210};
 
 
   for(la=0;la<=new_am;la++) {
@@ -311,13 +310,13 @@ int emit_grt_order()
 	    if (hrr_nodes[j].grt_type == 3)
 	      fprintf(hrr_code, " %d, %d);\n", hrr_nodes[j].A,hrr_nodes[j].B);
 	    else
-	      fprintf(hrr_code, " %d);\n", io[hrr_nodes[j].A]*io[hrr_nodes[j].B]);
+	      fprintf(hrr_code, " %d);\n", io[1+hrr_nodes[j].A]*io[1+hrr_nodes[j].B]);
 	  }
 	  else if (hrr_nodes[j].B != 0) {
 	    if (hrr_nodes[j].grt_type == 2)
 	      fprintf(hrr_code, " %d, %d);\n", hrr_nodes[j].C,hrr_nodes[j].D);
 	    else
-	      fprintf(hrr_code, " %d);\n", io[hrr_nodes[j].C]*io[hrr_nodes[j].D]);
+	      fprintf(hrr_code, " %d);\n", io[1+hrr_nodes[j].C]*io[1+hrr_nodes[j].D]);
 	  }
 	}
 	
@@ -552,7 +551,6 @@ int mk_hrr_node(class node, class *allnodes, int new)
   int thisnode;
   int rlink, llink;
   int made = 0;
-  static int io[] = {1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153,171,190,210};
 
 /*  if (node.A == 0 && node.B == 0 && node.C == 0 && node.D == 0)
     return -1;*/
@@ -583,7 +581,7 @@ int mk_hrr_node(class node, class *allnodes, int new)
     memset(allnodes[thisnode].parents,0,NUMPARENTS*sizeof(int));
     for(i=0;i<NUMCHILDREN;i++)
       allnodes[thisnode].children[i] = NONODE;
-    allnodes[thisnode].size = io[node.A]*io[node.B]*io[node.C]*io[node.D];
+    allnodes[thisnode].size = io[1+node.A]*io[1+node.B]*io[1+node.C]*io[1+node.D];
     allnodes[thisnode].target = 0;
     /* We just added a node ..*/
     last_hrr_node++;
@@ -705,7 +703,6 @@ int mk_vrr_node(class node, class *allnodes, int new)
   int subnodes = 0;
   int thisnode;
   int made = 0;
-  static int io[] = {1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153,171,190,210};
 
   /* If it's not a derivative class - do some checks to see if need to proceed */
   if (node.grt_type == 0 && node.A + node.B + node.C + node.D == 0)
@@ -740,7 +737,7 @@ int mk_vrr_node(class node, class *allnodes, int new)
     memset(allnodes[thisnode].parents,0,NUMPARENTS*sizeof(int));
     for(i=0;i<NUMCHILDREN;i++)
       allnodes[thisnode].children[i] = NONODE;
-    allnodes[thisnode].size = io[node.A]*io[node.B]*io[node.C]*io[node.D];
+    allnodes[thisnode].size = io[1+node.A]*io[1+node.B]*io[1+node.C]*io[1+node.D];
     allnodes[thisnode].llink = -1;
     allnodes[thisnode].rlink = -1;
     /* We just added a node ..*/
@@ -1110,7 +1107,6 @@ int alloc_mem_hrr(class *nodes)
   int size;
   int child;
   int free_it;
-  static int io[] = {1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153,171,190,210};
 
   j = first_hrr_to_compute;
   do{
@@ -1149,7 +1145,6 @@ int alloc_mem_vrr(class *nodes)
   int size;
   int child;
   int free_it;
-  static int io[] = {1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153,171,190,210};
 
   /* Mark all nodes as not computed */
   for(i=0; i<last_vrr_node; i++)

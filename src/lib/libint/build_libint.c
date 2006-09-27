@@ -29,6 +29,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include "build_libint.h"
+#include <libint/constants.h>
 
 #include "libint_config.h"
 
@@ -55,8 +56,6 @@ int main()
   int max_class_size = DEFAULT_MAX_CLASS_SIZE;
   int long_double = 0;     /*--- Whether to use long doubles ---*/
   int stack_size;
-  const int io[] = {0,1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
-  const char am_letter[] = "0pdfghiklmnoqrtuvwxyz";
 
   /*-------------------------------
     Initialize files and libraries

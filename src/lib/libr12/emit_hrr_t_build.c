@@ -1,12 +1,12 @@
 #include <math.h>
 #include <stdio.h>
 #include "build_libr12.h"
+#include <libint/constants.h>
 
 extern FILE *outfile, *hrr_header;
 extern Libr12Params_t Params;
 
 extern void punt(char *);
-static int hash(int a[2][3], int b[2]);
 
 int emit_hrr_t_build()
 {
@@ -32,8 +32,6 @@ int emit_hrr_t_build()
   int curr_count,curr_subfunction;
   int num_subfunctions, subbatch_length;
   int f;
-  static int io[] = {1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
-  static const char am_letter[] = "0pdfghiklmnoqrtuvwxyz";
   char code_name[21];
   char function_name[18];
   char **subfunction_name;
@@ -428,28 +426,3 @@ int emit_hrr_t_build()
 }
 
 
-/*----------------------------------------------------------------------------------
-  hash(a,b) returns a number of the (a[0] a[1]) type product within a doublet.
-  a contains x y and z exponents of functions on centers A and B, and b contains
-  their angular momenta
- ----------------------------------------------------------------------------------*/
-
-int hash(a, b)
-  int a[2][3];
-  int b[2];
-{
-  int c[2] = {0,0};
-  int i;
-  static int io[] = {0,1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
-
-  if(b[0]){
-    i=b[0]-a[0][0];
-    c[0]=i+io[i]-a[0][1];
-    }
-  if(b[1]){
-    i=b[1]-a[1][0];
-    c[1]=i+io[i]-a[1][1];
-    }
-
-  return c[0]*io[b[1]+1]+c[1];
-}

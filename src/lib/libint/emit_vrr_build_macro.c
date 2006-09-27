@@ -2,12 +2,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "build_libint.h"
+#include <libint/constants.h>
 
 extern FILE *outfile, *vrr_header;
 extern void punt(char *);
 extern LibintParams_t Params;
 
-static int hash(int a[2][3], int b[2]);
 static void declare_localv();
 static void define_localv();
 
@@ -38,11 +38,7 @@ int emit_vrr_build_macro()
   int k1max, k2max, k3max;
   int split,num_subfunctions,subbatch_length;
   int curr_count,curr_subfunction;
-  static int io[] = {0,1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
   static char *k4[] = {"lpoz","lpon"};
-  const char am_letter[] = "0pdfghiklmnoqrtuvwxyz";
-  static const char *number[] = {"zero","one","two","three","four","five","six","seven","eight","nine","ten","eleven",
-			       "twelve","thirteen","fourteen","fifteen","sixteen","seventeen","eighteen","nineteen","twenty"};
   static const char *k1_suff = "o2z";
   static const char *k2_suff = "o2zn";
   static const char *k3_suff = "o2n";
@@ -191,27 +187,6 @@ int emit_vrr_build_macro()
   }
   free(function_name);
   free(code_name);
-}
-
-
-int hash(a, b)
-  int a[2][3];
-  int b[2];
-{
-  int c[2] = {0,0};
-  int i;
-  static int io[] = {0,1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
-
-  if(b[0]){
-    i=b[0]-a[0][0];
-    c[0]=i+io[i]-a[0][1];
-    }
-  if(b[1]){
-    i=b[1]-a[1][0];
-    c[1]=i+io[i]-a[1][1];
-    }
-
-  return c[0]*io[b[1]+1]+c[1];
 }
 
 

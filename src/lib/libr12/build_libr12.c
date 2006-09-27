@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <libint/libint.h>
 #include "build_libr12.h"
+#include <libint/constants.h>
 
 #include "libr12_config.h"
 
@@ -44,9 +45,6 @@ int main()
   int class_size;
   int num_subfunctions;
   int max_class_size = DEFAULT_MAX_CLASS_SIZE;
-  const int io[] = {0,1,3,6,10,15,21,28,36,45,55,66,78,91,105,120,136,153};
-  const char am_letter[] = "0pdfghiklmnoqrtuvwxyz";
-
 
   /*-------------------------------
     Initialize files and libraries
