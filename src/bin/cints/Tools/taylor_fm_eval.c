@@ -52,7 +52,7 @@ void init_Taylor_Fm_Eval(unsigned int mmax, double epsilon)
   /*--- Figure out T_crit for each m and put into the T_crit ---*/
   for(m=Taylor_Fm_Eval.max_m;m>=0;m--) {
     /*------------------------------------------
-      Newton-Raphson method to solve
+      Damped Newton-Raphson method to solve
       T^{m-0.5}*exp(-T) = epsilon*Gamma(m+0.5)
       The solution is the max T for which to do
       the interpolation
@@ -61,16 +61,23 @@ void init_Taylor_Fm_Eval(unsigned int mmax, double epsilon)
     egamma = epsilon*sqrt(M_PI)*df[2*m]/pow(2,m);
     T_new = T;
     do {
+      const double damping_factor = 0.2;
+      double deltaT, max_deltaT, sign_deltaT;
       T = T_new;
+      /* f(T) = the difference between LHS and RHS of the equation above */
       func = pow(T,m-0.5) * exp(-T) - egamma;
       dfuncdT = ((m-0.5) * pow(T,m-1.5) - pow(T,m-0.5)) * exp(-T);
-      if (dfuncdT >= 0.0) {
-	T_new *= 2.5;
-	continue;
-      }
-      T_new = T - func/dfuncdT;
-      if ( T_new <= 0.0 ) {
-	T_new = T / 2.0;
+      /* f(T) has 2 roots and has a maximum in between. If f'(T) > 0 we are to the left of the hump. Make a big step to the right. */
+      if (dfuncdT > 0.0)
+	T_new *= 2.0;
+      else {
+	/* damp the step */
+	deltaT = -func/dfuncdT;
+	sign_deltaT = (deltaT > 0.0) ? 1.0 : -1.0;
+	max_deltaT = damping_factor * T;
+	if (fabs(deltaT) > max_deltaT)
+	  deltaT = sign_deltaT * max_deltaT;
+	T_new = T + deltaT;
       }
     } while (fabs(func/egamma) >= SOFT_ZERO);
     Taylor_Fm_Eval.T_crit[m] = T_new;
