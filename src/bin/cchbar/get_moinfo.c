@@ -17,6 +17,7 @@
 void get_moinfo(void)
 {
   int i, h, errcod, nactive, nirreps;
+  char *read_eom_ref;
 
   chkpt_init(PSIO_OPEN_OLD);
   moinfo.nirreps = chkpt_rd_nirreps();
@@ -33,6 +34,13 @@ void get_moinfo(void)
 
   psio_read_entry(CC_INFO, "Reference Wavefunction", (char *) &(params.ref), 
 		  sizeof(int));
+
+  /* allow ROHF EOM calculation after RHF energy */
+  errcod = ip_string("EOM_REFERENCE", &(read_eom_ref),0);
+  if (errcod == IPE_OK) {
+    if(!strcmp(read_eom_ref, "ROHF")) params.ref = 1;
+    free(read_eom_ref);
+  }
 
   /* Get frozen and active orbital lookups from CC_INFO */
   moinfo.frdocc = init_int_array(moinfo.nirreps);
