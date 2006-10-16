@@ -56,6 +56,7 @@ void get_params()
     free(junk);
   }
 
+
   params.dertype = 0;
   if(ip_exist("DERTYPE",0)) {
     errcod = ip_string("DERTYPE", &(junk),0);
@@ -188,6 +189,11 @@ void get_params()
        !strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC3")) {
       params.make_unpacked_abcd = 1;
     }
+    errcod = ip_string("EOM_REFERENCE", &(junk), 0);
+    if (errcod == IPE_OK) {
+      if(!strcmp(junk,"ROHF")) params.make_unpacked_abcd = 1;
+      free(junk);
+    }
   }
 
   /* for now, generate <ai|bc> ordering if CC gradient, ROHF-CC, CC2, or CC3 */
@@ -196,7 +202,11 @@ void get_params()
      !strcmp(params.wfn,"EOM_CC2"))
     params.make_aibc = 1;
   else params.make_aibc = 0;
-
+  errcod = ip_string("EOM_REFERENCE", &(junk), 0);
+  if (errcod == IPE_OK) {
+    if(!strcmp(junk,"ROHF")) params.make_aibc = 1;
+    free(junk);
+  }
   
   params.print_lvl = 1;
   errcod = ip_data("PRINT","%d",&(params.print_lvl),0);
