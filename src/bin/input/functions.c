@@ -174,9 +174,10 @@ void calc_oop_angles(double ***E, double ***BondAngles, double **R)
 
 void calc_tors_angles(double ***E, double ***BondAngles, double **R)
 {
-  int i, j, k, l ;
-  double cross1[3], cross2[3] ;
+  int i, j, k, l, xyz ;
+  double cross1[3], cross2[3], cross3[3] ;
   double tval, angle, phi2, phi3 ;
+  double sign, norm3;
   
   fprintf(outfile, "\n  -Torsional Angles:\n\n");
   for (i=0; i<num_atoms; i++) {
@@ -199,10 +200,23 @@ void calc_tors_angles(double ***E, double ***BondAngles, double **R)
 	    if (tval > 0.99999) angle = 0.0000 ;
 	    else if (tval < -0.99999) angle = _pi ;
 	    else angle = acos(tval) ;
+
+	    /* compute the sign */
+	    cross_prod(cross1, cross2, cross3);
+	    norm3 = sqrt(dot_prod(cross3,cross3));
+	    sign = 1.0;
+	    if (fabs(norm3) > 0.00001) {
+	      for(xyz=0; xyz<3; ++xyz)
+		cross3[xyz] *= 1.0/norm3;
+	      tval = dot_prod(cross3, E[j][k]);
+	      if (tval < 0.0)
+		sign = -1.0;
+	    }
+
 	    if ( ((R[i][j] < 3.0) && (R[j][k] < 3.0) &&
 		  (R[k][l] < 3.0))) {
 	      fprintf(outfile, "   %2d -%2d -%2d -%2d    %13.8lf\n",
-		      i+1, j+1, k+1, l+1, angle * 180.0/_pi) ;
+		      i+1, j+1, k+1, l+1, sign * angle * 180.0/_pi) ;
 	    }
 	  }
 	}
