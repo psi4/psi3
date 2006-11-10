@@ -689,6 +689,17 @@ double dot_vect(double *a, double *b, int n)
   return(tval);     
 }
 
+/*
+   Function to compute the cross product of 2 Cartesian vectors
+*/
+
+void cross_prod(double *v1, double *v2, double *out)
+{
+   out[0] =     v1[1]*v2[2]-v1[2]*v2[1];
+   out[1] =    -v1[0]*v2[2]+v1[2]*v2[0];
+   out[2] =     v1[0]*v2[1]-v1[1]*v2[0];
+   return;
+}
 
 /*
 ** CALC_TORS_ANGLES(): This function calculates the torsional angles
@@ -736,12 +747,12 @@ void calc_tors_angles(int natom, double E[MAXATOM][MAXATOM][3],
 
 	    /* compute the sign */
 	    cross_prod(cross1, cross2, cross3);
-	    norm3 = sqrt(dot_prod(cross3,cross3));
+	    norm3 = sqrt(dot_vect(cross3,cross3,3));
 	    sign = 1.0;
 	    if (fabs(norm3) > 0.00001) {
 	      for(xyz=0; xyz<3; ++xyz)
 		cross3[xyz] *= 1.0/norm3;
-	      tval = dot_prod(cross3, E[j][k]);
+	      tval = dot_vect(cross3, E[j][k],3);
 	      if (tval < 0.0)
 		sign = -1.0;
 	    }
