@@ -45,7 +45,7 @@ void get_dipmom_nuc(double *mu_x_n, double *mu_y_n, double *mu_z_n);
 ** from Iroot to Jroot where Jroot will run over all roots
 */ 
 void opdm(struct stringwr **alplist, struct stringwr **betlist, 
-          int transdens,
+          int transdens, int dipmom,
           int Inroots, int Iroot, int Inunits, int Ifirstunit, 
 	  int Jnroots, int Jroot, int Jnunits, int Jfirstunit, 
 	  int targetfile, int writeflag, int printflag)
@@ -70,7 +70,6 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   char opdm_key[80]; /* libpsio TOC entry name for OPDM for each root */
   double **mux_mo, **muy_mo, **muz_mo, mu_x, mu_y, mu_z, mu_tot;
   double mux_n, muy_n, muz_n; /* nuclear parts of dipole moments */
-  int dipmom = 1;
 
   if (!transdens) Iroot = 0;
   if (transdens) 
@@ -452,9 +451,6 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
     if (dipmom) {
       mu_x = 0.0; mu_y = 0.0; mu_z = 0.0; 
       /* should I be including nuclear contributions to TM's ??? */
-      if (!transdens) {
-        mu_x = mux_n; mu_y = muy_n; mu_z = muz_n; 
-      }
       for (i=0; i<populated_orbs; i++) {
         for (j=0; j<populated_orbs; j++) {
           mu_x += mux_mo[i][j] * onepdm[i][j];
@@ -475,9 +471,9 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
       fprintf(outfile, "            %9.5lf x, %9.5lf y, %9.5lf z D\n",
         mu_x*_dipmom_au2debye, mu_y*_dipmom_au2debye, mu_z*_dipmom_au2debye);
       if (!transdens) {
-        mu_x += mux_n;  mu_y += muy_n;  mu_z += muz_n;
+        mu_x += mux_n; mu_y += muy_n; mu_z += muz_n; 
         fprintf(outfile, "Total:      %9.5lf x, %9.5lf y, %9.5lf z au\n",
-          mu_x+mux_n, mu_y+muy_n, mu_z+muz_n);
+          mu_x, mu_y, mu_z);
         fprintf(outfile, "            %9.5lf x, %9.5lf y, %9.5lf z D\n",
           mu_x*_dipmom_au2debye, mu_y*_dipmom_au2debye, 
           mu_z*_dipmom_au2debye);

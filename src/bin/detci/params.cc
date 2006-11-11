@@ -520,6 +520,15 @@ void get_parameters(void)
    if (Parameters.transdens) Parameters.tdm_write = 1;
    errcod = ip_boolean("TDM_WRITE",&(Parameters.tdm_write),0);
   
+   /* dipole or transition dipole moment? */
+   if (Parameters.opdm) Parameters.dipmom = 1;
+   else Parameters.dipmom = 0;
+   if (strcmp(Parameters.wfn, "RASSCF")==0 || 
+       strcmp(Parameters.wfn, "CASSCF")==0 ||
+       strcmp(Parameters.wfn, "DETCAS")==0)
+   Parameters.dipmom = 0;
+   if (Parameters.transdens) Parameters.dipmom = 1;
+   errcod = ip_boolean("DIPMOM",&(Parameters.dipmom),0);
  
    errcod = ip_data("ROOT","%d",&(Parameters.root),0);
    Parameters.root -= 1;

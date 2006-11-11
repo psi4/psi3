@@ -124,7 +124,7 @@ extern void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
 extern void mpn_generator(CIvect &Hd, struct stringwr **alplist, 
           struct stringwr **betlist);
 extern void opdm(struct stringwr **alplist, struct stringwr **betlist, 
-          int transdens,
+          int transdens, int dipmom,
           int Inroots, int Iroot, int Inunits, int Ifirstunit,
           int Jnroots, int Jroot, int Jnunits, int Jfirstunit,
           int targetfile, int writeflag, int printflag);
@@ -1059,7 +1059,7 @@ void form_opdm(void)
 
    /* don't need Parameters.root since it writes all opdm's */
    if (Parameters.transdens) {
-     opdm(alplist, betlist, 1,
+     opdm(alplist, betlist, 1, Parameters.dipmom,
        Parameters.num_roots, 0,
        Parameters.num_d_tmp_units, Parameters.first_d_tmp_unit, 
        Parameters.num_roots, 0,
@@ -1067,7 +1067,7 @@ void form_opdm(void)
        Parameters.opdm_file, Parameters.tdm_write, Parameters.tdm_print);
    }
    if (Parameters.opdm) {
-     opdm(alplist, betlist, 0,
+     opdm(alplist, betlist, 0, Parameters.dipmom,
        Parameters.num_roots, 0,
        Parameters.num_d_tmp_units, Parameters.first_d_tmp_unit, 
        Parameters.num_roots, 0,

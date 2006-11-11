@@ -422,6 +422,7 @@ struct params {
    int **orbs_idxmat;      /* matrix of index values for various
                               roots and irreps of orbitals in orbsfile */ 
    int transdens;          /* compute transition densities? */
+   int dipmom;             /* compute dipole moment or transition dip mom?  */
    int tdm_write;          /* write the transition density matrix/matrices? */
    int tdm_print;          /* print the transition density matrix/matrices? */
    int tpdm;               /* call the tpdm subroutine? */
