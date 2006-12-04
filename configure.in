@@ -163,6 +163,32 @@ case $withval in
 esac
 ])
 
+FC_SYMBOL=2
+AC_ARG_WITH(f77symbol,[  --with-f77symbol        FORTRAN77 symbol convention (if no Fortran compiler). Allowed values are:
+                            lc  (lower-case)
+                            lcu (lower-case with underscore; default, if not given)
+                            uc  (upper-case)
+                            ucu (upper-case with underscore)],[
+case $withval in
+  lc)
+    FC_SYMBOL=1
+    ;;
+  lcu)
+    FC_SYMBOL=2
+    ;;
+  uc)
+    FC_SYMBOL=3
+    ;;
+  ucu)
+    FC_SYMBOL=4
+    ;;
+  *)
+    AC_MSG_WARN([did not recognize value $withval. will assume lower-case with underscore])
+    ;;
+esac
+])
+
+
 AC_ARG_WITH(ranlib,
 [  --with-ranlib           Gives the name of the ranlib program.],
 RANLIB=$withval
@@ -227,7 +253,7 @@ PERL=$withval
 AC_SUBST(PERL)
 
 # Find out which compilers are available.
-if test -z "$FC"; then
+if test ! -z "$FC"; then
   AC_CHECK_PROGS([FC],[$FC_LIST],[f77])
 fi
 
@@ -242,7 +268,9 @@ if test -z "$CXX"; then
 fi
 
 # Figure out libraries needed to link Fortran programs in C ..
-AC_F77_LIBRARY_LDFLAGS
+if test ! -z "$F77"; then
+  AC_F77_LIBRARY_LDFLAGS
+fi
 # .. and check if they work
 AC_CHECK_LIB(c,exit,[],[
 FLIBS=
@@ -327,8 +355,59 @@ AC_MSG_RESULT(c++ libs: $CXXLIBS)
 
 AC_SUBST(CXXLIBS)
 
+# check Fortran symbol convention
+if test ! -z "$F77"; then
+  AC_MSG_CHECKING(fortran symbols)
+  if test -n "$FC" ; then
+    /bin/rm -f ffunc.f flink.c
+    echo "      subroutine ffunc()" > ffunc.f
+    echo "      return" >> ffunc.f
+    echo "      end" >> ffunc.f
+    $F77 -c ffunc.f 1>/dev/null 2>/dev/null
+    echo "main(){ FF(); return 0; }" > flink.c
+    if $CC -o flink -DFF=ffunc flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+      AC_MSG_RESULT(same as C)
+      FC_SYMBOL=1
+    elif $CC -o flink -DFF=ffunc_ flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+      AC_MSG_RESULT(lowercase with underscore)
+      FC_SYMBOL=2
+    elif $CC -o flink -DFF=FFUNC flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+      AC_MSG_RESULT(uppercase)
+      FC_SYMBOL=3
+    elif $CC -o flink -DFF=FFUNC_ flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+      AC_MSG_RESULT(uppercase with underscore)
+      FC_SYMBOL=4
+    else
+      AC_MSG_RESULT(giving up)
+      AC_MSG_ERROR(could not determine fortran symbol names)
+    fi
+    /bin/rm -f ffunc.f ffunc.o flink flink.c flink.o ffunc
+  else
+    FC_SYMBOL=2
+    AC_MSG_RESULT(guessing lowercase with underscore)
+  fi
+  AC_SUBST(FC_SYMBOL)
+fi
+
 # find BLAS and LAPACK libraries
-AC_LANG_PUSH(Fortran 77)
+case $FC_SYMBOL in
+  1)
+    DGEMM_SYMBOL=dgemm
+    DGEEV_SYMBOL=dgeev
+    ;;
+  2)
+    DGEMM_SYMBOL=dgemm_
+    DGEEV_SYMBOL=dgeev_
+    ;;
+  3)
+    DGEMM_SYMBOL=DGEMM
+    DGEEV_SYMBOL=DGEEV
+    ;;
+  4)
+    DGEMM_SYMBOL=DGEMM_
+    DGEEV_SYMBOL=DGEEV_
+    ;;
+esac
 AC_ARG_WITH(blas,[  --with-blas             which blas library to use],[
 case $withval in
   yes)
@@ -343,16 +422,16 @@ case $withval in
 esac
 ])
 if test "X$BLAS" = X; then
-  AC_CHECK_LIB(essl, DGEMM, BLAS="-lessl")
+  AC_CHECK_LIB(essl, $DGEMM_SYMBOL, BLAS="-lessl")
 fi
 if test "X$BLAS" = X; then
-  AC_CHECK_LIB(scs, DGEMM, BLAS="-lscs")
+  AC_CHECK_LIB(scs, $DGEMM_SYMBOL, BLAS="-lscs")
 fi
 if test "X$BLAS" = X; then
-  AC_CHECK_LIB(atlas, DGEMM, BLAS="-latlas")
+  AC_CHECK_LIB(atlas, $DGEMM_SYMBOL, BLAS="-latlas")
 fi
 if test "X$BLAS" = X; then
-  AC_CHECK_LIB(blas, DGEMM, BLAS="-lblas")
+  AC_CHECK_LIB(blas, $DGEMM_SYMBOL, BLAS="-lblas")
 fi
 if test "X$BLAS" = X; then
  AC_MSG_ERROR("Did not find a BLAS library")
@@ -372,22 +451,25 @@ case $withval in
     ;;
 esac
 ])
-# first test if BLAS-containing library contains LAPACK as well
+dnl first test if BLAS-containing library contains LAPACK as well
 if test "X$LAPACK" = X; then
   CURRENT_LIBS=$LIBS
   LIBS="$BLAS $LIBS"
-  AC_MSG_CHECKING(whether BLAS library contains LAPACK)
-  AC_TRY_LINK_FUNC(DGEEV,[LAPACK=" ";AC_MSG_RESULT(yes)],AC_MSG_RESULT(no))
+  AC_CHECK_FUNC($DGEEV_SYMBOL,LAPACK_IN_BLAS=yes)
   LIBS=$CURRENT_LIBS
 fi
-if test "X$LAPACK" = X; then
-  AC_CHECK_LIB(lapack,DGEEV, LAPACK="-llapack",,$BLAS)
-fi
-if test "X$LAPACK" = X; then
- AC_MSG_ERROR("Did not find a LAPACK library")
+if test X$LAPACK_IN_BLAS = X; then
+  if test "X$LAPACK" = X; then
+    AC_CHECK_LIB(lapack,$DGEEV_SYMBOL, LAPACK="-llapack",,$BLAS)
+  fi
+  if test "X$LAPACK" = X; then
+    AC_MSG_ERROR("Did not find a LAPACK library")
+  fi
+  AC_MSG_RESULT([LAPACK library is $LAPACK])
+else
+  AC_MSG_RESULT([LAPACK library is included in BLAS+LIBS])
 fi
 AC_SUBST(LAPACK)
-AC_LANG_POP(Fortran 77)
 
 ############################################################################
 # Set up compiler flags:
@@ -613,38 +695,6 @@ esac
 ])
 AC_MSG_RESULT([C extra flags: $COTH])
 AC_MSG_RESULT([C++ extra flags: $CXXOTH])
-
-# check Fortran symbol convention
-AC_MSG_CHECKING(fortran symbols)
-if test -n "$FC" ; then
-  /bin/rm -f ffunc.f flink.c
-  echo "      subroutine ffunc()" > ffunc.f
-  echo "      return" >> ffunc.f
-  echo "      end" >> ffunc.f
-  $FC -c ffunc.f 1>/dev/null 2>/dev/null
-  echo "main(){ FF(); return 0; }" > flink.c
-  if $CC -o flink -DFF=ffunc flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
-    AC_MSG_RESULT(same as C)
-    FC_SYMBOL=1
-  elif $CC -o flink -DFF=ffunc_ flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
-    AC_MSG_RESULT(lowercase with underscore)
-    FC_SYMBOL=2
-  elif $CC -o flink -DFF=FFUNC flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
-    AC_MSG_RESULT(uppercase)
-    FC_SYMBOL=3
-  elif $CC -o flink -DFF=FFUNC_ flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
-    AC_MSG_RESULT(uppercase with underscore)
-    FC_SYMBOL=4
-  else
-    AC_MSG_RESULT(giving up)
-    AC_MSG_ERROR(could not determine fortran symbol names)
-  fi
-  /bin/rm -f ffunc.f ffunc.o flink flink.c flink.o ffunc
-else
-  FC_SYMBOL=2
-  AC_MSG_RESULT(guessing lowercase with underscore)
-fi
-AC_SUBST(FC_SYMBOL)
 
 #
 # Check for LaTeX, DVIPS, and LaTeX2HTML
