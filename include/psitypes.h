@@ -25,6 +25,10 @@ typedef int_least64_t PSI_INT_LEAST64;
 #    define ULLONG_MAX ULONGLONG_MAX
 #endif
 
+#if defined(ULLONG_MAX) && !defined(ULONGLONG_MAX)
+#    define ULONGLONG_MAX ULLONG_MAX
+#endif
+
 # ifdef ULLONG_MAX
 #   if ULONGLONG_MAX == (0xffffffffffffffffuLL) /* uLL reqd for xlC */
      typedef long long PSI_INT_LEAST64; 
