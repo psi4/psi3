@@ -67,9 +67,12 @@ double eval_rci_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
   int nfzc = ssetm->nfzc;
   int nact = ndocc - nfzc;
 
-  // Overlap matrix can be very large, especially for low excitation levels. Must handle a block of strings at a time.
-  // How many strings can handle at once? Need to hold 2 blocks of overlap at the same time.
-  const double nstr_per_block_float = std::sqrt(Params.memory/(2*sizeof(FLOAT)));
+  // Overlap matrix can be very large, especially for low excitation levels. 
+  // Must handle a block of strings at a time.
+  // How many strings can handle at once? Need to hold 2 blocks of overlap 
+  // at the same time.
+  const double nstr_per_block_float = 
+    std::sqrt((double)Params.memory/(2*sizeof(FLOAT)));
   int nstr_per_block = (int)std::floor(nstr_per_block_float);
   {
     if (nstr_per_block > nstr_a)
