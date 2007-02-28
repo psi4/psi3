@@ -16,7 +16,7 @@ scf-freq scf-polar rhf-stab uhf-stab rohf-stab mp2-sp mp2-direct-sp cis-sp \
 cisd-sp fci-h2o casscf-sp casscf-sa-sp casscf-fzc-sp rasscf-sp \
 $(cc_subdirs) \
 dboc-rhf1 dboc-rohf1 dboc-uhf1 dboc-rcisd1 dboc-rocisd1 \
-rhf-oeprop mp2-oeprop \
+rhf-oeprop mp2-oeprop mp2-opt \
 extrema-deloc extrema-zmat mp2r12-sp1 \
 rhf-lindep1 rohf-lindep1 uhf-lindep1  psi_start \
 

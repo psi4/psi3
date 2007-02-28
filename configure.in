@@ -905,6 +905,7 @@ AC_CONFIG_FILES([include/sizeof.h include/Makefile
           tests/extrema-deloc/extrema-deloc.pl
 	  tests/mp2r12-sp1/Makefile
 	  tests/mp2-opt-numer/Makefile
+          tests/mp2-opt/Makefile
           tests/rhf-lindep1/Makefile
           tests/rohf-lindep1/Makefile
           tests/uhf-lindep1/Makefile
