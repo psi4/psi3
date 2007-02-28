@@ -107,7 +107,7 @@ void rotational_strength(struct TD_Params *S)
   rs_y = 0.5 * ( rs_ly + rs_ry);
   rs_z = 0.5 * ( rs_lz + rs_rz);
 
-  rs = 0.5 * (rs_x + rs_y + rs_z);
+  rs = rs_x + rs_y + rs_z;
   S->RS_length = rs;
 
   fprintf(outfile,"\n");
@@ -195,9 +195,9 @@ void rotational_strength(struct TD_Params *S)
   fprintf(outfile,"\t<n|mu_e|0>*             %11.8lf \t %11.8lf \t %11.8lf\n",
           rt_x,rt_y,rt_z);
 
-  rs_x = (0.5 * rs_x) / S->cceom_energy;
-  rs_y = (0.5 * rs_y) / S->cceom_energy;
-  rs_z = (0.5 * rs_z) / S->cceom_energy;
+  rs_x = rs_x / S->cceom_energy;
+  rs_y = rs_y / S->cceom_energy;
+  rs_z = rs_z / S->cceom_energy;
 
   rs = rs_x + rs_y + rs_z;
   S->RS_velocity = rs;
