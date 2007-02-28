@@ -1,0 +1,3930 @@
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:17 2007
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	6-31G** MP2 H2O
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /Users/micahabrams/Software/testing/psi3-bin/share/pbasis.dat
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN      0.000000000000     0.000000000000     1.889725988579
+        HYDROGEN      1.840547697619     0.000000000000    -0.428308866009
+
+
+  -Rotational constants (cm-1) :
+    A =   24.35463  B =   13.63610  C =    8.74166
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000000000000    -0.131510165098    -0.000000000000
+        HYDROGEN      1.479940996653     1.043580877476     0.000000000000
+        HYDROGEN     -1.479940996653     1.043580877476     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  5484.67166000     0.00183107)
+           (   825.23494600     0.01395017)
+           (   188.04695800     0.06844508)
+           (    52.96450000     0.23271434)
+           (    16.89757040     0.47019290)
+           (     5.79963534     0.35852085) )
+        (S (    15.53961625    -0.11077755)
+           (     3.59993359    -0.14802626)
+           (     1.01376175     1.13076701) )
+        (S (     0.27000582     1.00000000) )
+        (P (    15.53961625     0.07087427)
+           (     3.59993359     0.33975284)
+           (     1.01376175     0.72715858) )
+        (P (     0.27000582     1.00000000) )
+        (D (     0.80000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    18.73113696     0.03349460)
+           (     2.82539437     0.23472695)
+           (     0.64012169     0.81375733) )
+        (S (     0.16127776     1.00000000) )
+        (P (     1.10000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 20
+    Number of AO           = 25
+    Number of SO           = 25
+
+    Irrep    Number of SO
+    -----    ------------
+      1           12
+      2            2
+      3            4
+      4            7
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000000000000    -0.000000000000    -0.131510165098
+        HYDROGEN      0.000000000000     1.479940996653     1.043580877476
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000000000000    -0.000000000000    -0.131510165098
+        HYDROGEN      0.000000000000     1.479940996653     1.043580877476
+        HYDROGEN      0.000000000000    -1.479940996653     1.043580877476
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000000000000    -0.000000000000    -0.069592187382
+        HYDROGEN      0.000000000000     0.783151105291     0.552239257852
+        HYDROGEN      0.000000000000    -0.783151105291     0.552239257852
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000000000000    -0.000000000000    -0.131510165098
+        HYDROGEN      0.000000000000     1.479940996653     1.043580877476
+        HYDROGEN      0.000000000000    -1.479940996653     1.043580877476
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       8.804687290999
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   1.0000000   0.0000000
+    3   1.0000000   1.5663022   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:17 2007
+
+user time   =       0.15 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:17 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** MP2 H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:17 2007
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:17 2007
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = 6-31G** MP2 H2O
+  wfn          = MP2
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        8.8046872909987
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.424690e-02
+
+  Using core guess to determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -68.3548843162    7.715957e+01    0.000000e+00    0.000000e+00
+    2       -71.3777628421    3.022879e+00    1.130296e-01    1.175783e+00
+    3       -75.8950385812    4.517276e+00    1.036435e-01    8.860959e-01
+    4       -76.0105072924    1.154687e-01    3.026496e-03    1.777807e-01
+    5       -76.0171082477    6.600955e-03    9.746678e-04    3.660637e-02
+    6       -76.0172750266    1.667789e-04    1.541154e-04    1.105642e-02
+    7       -76.0172961424    2.111579e-05    7.769737e-05    3.795642e-03
+    8       -76.0172965569    4.145116e-07    9.936256e-06    3.044370e-04
+    9       -76.0172965711    1.418179e-08    2.507429e-06    6.058786e-05
+   10       -76.0172965718    7.222951e-10    6.336629e-07    1.135728e-05
+   11       -76.0172965718    1.452349e-11    6.963182e-08    1.414942e-06
+   12       -76.0172965718    2.245315e-12    3.927837e-08    5.031535e-07
+   13       -76.0172965718    2.842171e-14    3.518255e-09    3.847156e-08
+   14       -76.0172965718   -5.684342e-14    4.321532e-10    9.017731e-09
+   15       -76.0172965718   -1.421085e-14    9.781882e-11    4.425818e-09
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.568999     2A1     -1.320609     1B2     -0.678724  
+   3A1     -0.563930     1B1     -0.495004  
+
+
+  Unoccupied orbitals
+   4A1      0.202466     2B2      0.292719     3B2      0.981164  
+   5A1      1.056318     6A1      1.129179     2B1      1.168639  
+   4B2      1.294985     7A1      1.413596     1A2      1.802875  
+   8A1      1.806916     3B1      1.918871     9A1      2.513249  
+   5B2      2.537822     6B2      2.713577     2A2      2.921065  
+   4B1      2.947486    10A1      3.291755    11A1      3.620730  
+   7B2      3.874917    12A1      4.077741  
+
+
+        SCF total energy   =     -76.017296571842
+        kinetic energy     =      75.657182107040
+        nuc. attr. energy  =    -198.046615219797
+        elec. rep. energy  =      46.372136540916
+        potential energy   =    -151.674478678881
+        virial theorem     =       1.995262729918
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:17 2007
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:18 2007
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  MP2
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  Yes
+	Do All TEI             =  Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         8.8046872910
+	Total SCF Energy            =       -76.0172965718
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:20 2007
+
+user time   =       0.37 seconds =       0.01 minutes
+system time =       2.77 seconds =       0.05 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:20 2007
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	MP2
+	Reference wfn   =	RHF
+	Derivative      =	First
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	False
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Applied field  0 =  0.000
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 25
+	Number of active MOs = 25
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   12	    0	    3	    0	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      8.80468729099867
+	SCF energy          (chkpt) =    -76.01729657184154
+
+	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.006 (MW) /      0.049 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.014 (MW) /      0.115 (MB)
+	Total:                                     0.043 (MW) /      0.341 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.005 (MW) /      0.037 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.012 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.003 (MW) /      0.028 (MB)
+	Total:                                     0.011 (MW) /      0.086 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.001 (MW) /      0.011 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.000 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.022 (MB)
+
+
+	One-electron energy          =   -122.38943311275705
+	Two-electron (AA) energy     =     14.32515340696211
+	Two-electron (BB) energy     =     14.32515340696211
+	Two-electron (AB) energy     =     23.24229584295472
+	Two-electron energy          =     37.56744924991683
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.01729657184156
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:20 2007
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.13 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:20 2007
+
+			*************************
+			*                       *
+			*          MP2          *
+			*                       *
+			*************************
+
+	Nuclear rep. energy     =    8.804687290998672
+	SCF energy              =  -76.017296571841541
+
+	Input parameters:
+	-----------------
+	Wave function 	=	MP2
+	Reference WFN 	=	RHF
+	Derivative    	=	FIRST
+	Cache Level   	=	2
+	Cache Type    	=	LOW
+	Memory (MB)   	=	256.0
+	Print Level   	=	0
+	OPDM          	=	NO
+
+	MP2 correlation energy  =   -0.202428539139652
+	MP2 total energy        =  -76.219725110981187
+
+	Trace of onepdm =    0.000000000000000
+
+	Energies re-computed from Fock-adjusted CC density:
+	---------------------------------------------------
+	One-electron energy        =    0.226556388430717
+	IJKL energy                =   -0.660829285605300
+	IJKA energy                =   -0.048691691358588
+	IJAB energy                =   -0.404857078279305
+	IBJA energy                =    0.685393127717756
+	MP2 correlation energy    =   -0.202428539094721
+	Total MP2 energy          =  -76.219725110936267
+
+	Energies re-computed from Mulliken density:
+	-------------------------------------------
+	One-electron energy        =    0.226556388430717
+	IJKL energy                =   -0.660829285605300
+	IJKA energy                =   -0.048691691358588
+	IJAB energy                =   -0.436216637736921
+	IBJA energy                =    0.716752687175373
+	Total two-electron energy  =   -0.428984927525437
+	MP2 correlation energy    =   -0.202428539094720
+	Total MP2 energy          =  -76.219725110936267
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:20 2007
+
+user time   =       0.12 seconds =       0.00 minutes
+system time =       0.22 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:20 2007
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density in MO basis in SQUARE form will be read from file73.
+    $Only electric dipole moment will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+
+  Title : '6-31G** MP2 H2O'
+
+  List of PARAMETERS :
+    # of atoms                 =      3
+    # of molecular orbitals    =     25
+    # of basis functions       =     25
+    # of atomic orbitals       =     25
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     12
+    # of primitives            =     20
+    Print level                =      1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
+    NIX                        =	  11
+    NIY                        =	  11
+    GRID_ZMIN                  =	   0.00000
+    GRID_ZMAX                  =	   3.00000
+
+	Densities available up to root 1
+	** Analyzing density number 1 **
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     1      1          0        1.99512700
+     1      2          0        0.90671737
+     1      3          0        0.92675536
+     1      4          1        1.12288830
+     1      5          1        0.79536269
+     1      6          1        0.91179561
+     1      7          1        0.84657142
+     1      8          1        0.46167010
+     1      9          1        0.64019770
+     1     10          2        0.00071285
+     1     11          2        0.00442313
+     1     12          2        0.00630444
+     1     13          2        0.00820885
+     1     14          2        0.01690758
+     1     15          2        0.00142011
+     2     16          0        0.46703629
+     2     17          0        0.17223003
+     2     18          1        0.01037084
+     2     19          1        0.01513890
+     2     20          1        0.01269267
+     3     21          0        0.46703629
+     3     22          0        0.17223003
+     3     23          1        0.01037084
+     3     24          1        0.01513890
+     3     25          1        0.01269267
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   7.1569771   0.2732817   0.2732817
+    2   0.2732817   0.3543583  -0.0242389
+    3   0.2732817  -0.0242389   0.3543583
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            8.645063        -0.645063
+       2            0.677469        +0.322531
+       3            0.677469        +0.322531
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000         -0.0000000000          0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   9.42097091e-46 C*m  =   0.00000000 a.u.
+    mu(Y)  =   0.00000 D  =   5.64772090e-45 C*m  =   0.00000000 a.u.
+    mu(Z)  =   2.13913 D  =   7.13537397e-30 C*m  =   0.84159858 a.u.
+    |mu|   =   2.13913 D  =   7.13537397e-30 C*m  =   0.84159858 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+         -0.0000000000          0.0000000000         -0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      8           -0.0000000000         -0.0000000000         -0.1315101651
+    2      1            0.0000000000          1.4799409967          1.0435808775
+    3      1            0.0000000000         -1.4799409967          1.0435808775
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1      -22.29491549    -0.00000000   -0.00000000   -0.12065621
+       2       -1.00038651     0.00000000   -0.01306456   -0.01658669
+       3       -1.00038651     0.00000000    0.01306456   -0.01658669
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1          -1215.13211292        -1218.47043660        -1217.30325449
+       2             -1.35743275           -1.75973597           -1.62181029
+       3             -1.35743275           -1.75973597           -1.62181029
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1             -0.00000000            0.00000000           -0.00000000
+       2             -0.00000000           -0.00000000            1.47359623
+       3              0.00000000           -0.00000000           -1.47359623
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              1.83648841           -1.50183526           -0.33465315
+       2              0.22222692           -0.18007630           -0.04215062
+       3              0.22222692           -0.18007630           -0.04215062
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1             -0.00000000            0.00000000           -0.00000000
+       2             -0.00000000           -0.00000000            1.47359623
+       3              0.00000000           -0.00000000           -1.47359623
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1            290.52985274
+       2              0.37711597
+       3              0.37711597
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.245509070717586
+    One-electron Darwin term     :   0.194478795755422
+    Total one-electron MVD terms :   -0.051030274962164
+
+
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:20 2007
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:20 2007
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  MP2
+	Reference orbitals     =  RHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            =  No
+	Delete Restricted Docc =  No
+	Do All TEI             =  No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         8.8046872910
+	Total SCF Energy            =       -76.0172965718
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:23 2007
+
+user time   =       0.47 seconds =       0.01 minutes
+system time =       2.80 seconds =       0.05 minutes
+total time  =          3 seconds =       0.05 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:23 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** MP2 H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -MP2 forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.041723782026
+       2        0.000000000000     0.028509698101     0.020861891013
+       3        0.000000000000    -0.028509698101     0.020861891013
+
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:23 2007
+
+user time   =       0.42 seconds =       0.01 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462  -0.0000000000  -0.0000000000  -0.1315101651
+  1.0     1.00782503   0.0000000000   1.4799409967   1.0435808775
+  1.0     1.00782503   0.0000000000  -1.4799409967   1.0435808775
+                       0.0000000000   0.0000000000  -0.0417237820
+                       0.0000000000   0.0285096981   0.0208618910
+                       0.0000000000  -0.0285096981   0.0208618910
+
+Generating simple internals
+Searching for geometrical constraints...
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (1.00000000)
+    (2 1 3) (1.00000000)
+Bends
+    (3 2 1 3) (103.10000000)
+
+Putting simple, possibly redundant, internal coordinates in intco.dat.
+ 
+ ** Taking normal optimization step. **
+
+Current MP2 energy before step       -76.2197251110
+
+Taking geometry step number 1
+
+BuB^t Determinant: 2.370024e+00
+
+Generating empirical Hessian.
+
+Force Constants read from PSIF_OPTKING
+
+No BFGS update performed.
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    1.00000000   -0.29082670   -0.03917089    0.96082911
+ 2    1.00000000   -0.29082670   -0.03917089    0.96082911
+ 3    1.79943446   -0.01145358   -0.01641952    1.78301494
+   MAX force:    0.2908267046   RMS force:    0.2375510674
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.018474328984  0.000387291250
+    3  0.000140911504  0.000000046094
+    4  0.000000025395  0.000000000000
+Convergence to displaced geometry took 4 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000   0.0000000000  -0.1276610204
+  1.0   0.0000000000   1.4126532533   1.0130365180
+  1.0   0.0000000000  -1.4126532533   1.0130365180
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:23 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** MP2 H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:23 2007
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:23 2007
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = 6-31G** MP2 H2O
+  wfn          = MP2
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.1659541440473
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.01729657
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.283450e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0217403928    8.518769e+01    0.000000e+00    0.000000e+00
+    2       -76.0225766406    8.362478e-04    4.300716e-04    1.039989e-02
+    3       -76.0226518818    7.524122e-05    1.469666e-04    5.413033e-03
+    4       -76.0226678096    1.592774e-05    5.994196e-05    1.698024e-03
+    5       -76.0226691432    1.333591e-06    2.360132e-05    4.860820e-04
+    6       -76.0226692365    9.333816e-08    7.975990e-06    1.146970e-04
+    7       -76.0226692393    2.804896e-09    1.346017e-06    1.840602e-05
+    8       -76.0226692394    5.546497e-11    1.340094e-07    2.381965e-06
+    9       -76.0226692394    2.955858e-12    3.125828e-08    5.632383e-07
+   10       -76.0226692394    5.684342e-14    4.618276e-09    5.384244e-08
+   11       -76.0226692394   -1.421085e-14    4.091907e-10    1.389876e-08
+   12       -76.0226692394    1.421085e-14    1.582934e-10    3.842911e-09
+   13       -76.0226692394    2.842171e-14    2.376936e-11    7.225467e-10
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.562589     2A1     -1.340523     1B2     -0.697094  
+   3A1     -0.572938     1B1     -0.497855  
+
+
+  Unoccupied orbitals
+   4A1      0.210954     2B2      0.303608     3B2      0.993938  
+   5A1      1.089771     6A1      1.133075     2B1      1.168273  
+   4B2      1.294623     7A1      1.423211     8A1      1.798874  
+   1A2      1.808536     3B1      1.916984     9A1      2.568002  
+   5B2      2.587115     6B2      2.798745     2A2      2.961657  
+   4B1      3.002088    10A1      3.364591    11A1      3.700853  
+   7B2      3.929680    12A1      4.095911  
+
+
+        SCF total energy   =     -76.022669239353
+        kinetic energy     =      75.800405470879
+        nuc. attr. energy  =    -198.835652989865
+        elec. rep. energy  =      47.012578279632
+        potential energy   =    -151.823074710233
+        virial theorem     =       1.997076348796
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:23 2007
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:23 2007
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  MP2
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  Yes
+	Do All TEI             =  Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.1659541440
+	Total SCF Energy            =       -76.0226692394
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:25 2007
+
+user time   =       0.37 seconds =       0.01 minutes
+system time =       2.78 seconds =       0.05 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:25 2007
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	MP2
+	Reference wfn   =	RHF
+	Derivative      =	First
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	False
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Applied field  0 =  0.000
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 25
+	Number of active MOs = 25
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   12	    0	    3	    0	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.16595414404733
+	SCF energy          (chkpt) =    -76.02266923935319
+
+	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.006 (MW) /      0.049 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.014 (MW) /      0.115 (MB)
+	Total:                                     0.043 (MW) /      0.341 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.005 (MW) /      0.037 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.012 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.003 (MW) /      0.028 (MB)
+	Total:                                     0.011 (MW) /      0.086 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.001 (MW) /      0.011 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.000 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.022 (MB)
+
+
+	One-electron energy          =   -123.03524751898524
+	Two-electron (AA) energy     =     14.44415810110666
+	Two-electron (BB) energy     =     14.44415810110666
+	Two-electron (AB) energy     =     23.40246603447802
+	Two-electron energy          =     37.84662413558468
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.02266923935322
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:26 2007
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.13 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:26 2007
+
+			*************************
+			*                       *
+			*          MP2          *
+			*                       *
+			*************************
+
+	Nuclear rep. energy     =    9.165954144047330
+	SCF energy              =  -76.022669239353192
+
+	Input parameters:
+	-----------------
+	Wave function 	=	MP2
+	Reference WFN 	=	RHF
+	Derivative    	=	FIRST
+	Cache Level   	=	2
+	Cache Type    	=	LOW
+	Memory (MB)   	=	256.0
+	Print Level   	=	0
+	OPDM          	=	NO
+
+	MP2 correlation energy  =   -0.199703044551634
+	MP2 total energy        =  -76.222372283904832
+
+	Trace of onepdm =    0.000000000000000
+
+	Energies re-computed from Fock-adjusted CC density:
+	---------------------------------------------------
+	One-electron energy        =    0.230228537102684
+	IJKL energy                =   -0.639672835617676
+	IJKA energy                =   -0.051543220222711
+	IJAB energy                =   -0.399406089103268
+	IBJA energy                =    0.660690563293433
+	MP2 correlation energy    =   -0.199703044547537
+	Total MP2 energy          =  -76.222372283900725
+
+	Energies re-computed from Mulliken density:
+	-------------------------------------------
+	One-electron energy        =    0.230228537102684
+	IJKL energy                =   -0.639672835617676
+	IJKA energy                =   -0.051543220222711
+	IJAB energy                =   -0.429307028891950
+	IBJA energy                =    0.690591503082115
+	Total two-electron energy  =   -0.429931581650222
+	MP2 correlation energy    =   -0.199703044547537
+	Total MP2 energy          =  -76.222372283900725
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:26 2007
+
+user time   =       0.12 seconds =       0.00 minutes
+system time =       0.22 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:26 2007
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density in MO basis in SQUARE form will be read from file73.
+    $Only electric dipole moment will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+
+  Title : '6-31G** MP2 H2O'
+
+  List of PARAMETERS :
+    # of atoms                 =      3
+    # of molecular orbitals    =     25
+    # of basis functions       =     25
+    # of atomic orbitals       =     25
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     12
+    # of primitives            =     20
+    Print level                =      1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
+    NIX                        =	  11
+    NIY                        =	  11
+    GRID_ZMIN                  =	   0.00000
+    GRID_ZMAX                  =	   3.00000
+
+	Densities available up to root 1
+	** Analyzing density number 1 **
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     1      1          0        1.99508538
+     1      2          0        0.90130303
+     1      3          0        0.91054903
+     1      4          1        1.12167348
+     1      5          1        0.81214267
+     1      6          1        0.92755162
+     1      7          1        0.84485393
+     1      8          1        0.45038083
+     1      9          1        0.63652699
+     1     10          2        0.00142310
+     1     11          2        0.00442518
+     1     12          2        0.00655108
+     1     13          2        0.00697117
+     1     14          2        0.01760704
+     1     15          2        0.00049714
+     2     16          0        0.48764539
+     2     17          0        0.15153349
+     2     18          1        0.01175273
+     2     19          1        0.01627334
+     2     20          1        0.01402422
+     3     21          0        0.48764539
+     3     22          0        0.15153349
+     3     23          1        0.01175273
+     3     24          1        0.01627334
+     3     25          1        0.01402422
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   7.1311489   0.2877588   0.2877588
+    2   0.2877588   0.3507301  -0.0274326
+    3   0.2877588  -0.0274326   0.3507301
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            8.637542        -0.637542
+       2            0.681229        +0.318771
+       3            0.681229        +0.318771
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000         -0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -3.76514727e-45 C*m  =  -0.00000000 a.u.
+    mu(Z)  =   2.13760 D  =   7.13024494e-30 C*m  =   0.84099362 a.u.
+    |mu|   =   2.13760 D  =   7.13024494e-30 C*m  =   0.84099362 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000         -0.0000000000          0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      8            0.0000000000          0.0000000000         -0.1276610204
+    2      1            0.0000000000          1.4126532533          1.0130365180
+    3      1            0.0000000000         -1.4126532533          1.0130365180
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1      -22.29985715     0.00000000    0.00000000   -0.12545491
+       2       -1.00555899     0.00000000    0.01839414    0.00371534
+       3       -1.00555899     0.00000000   -0.01839414    0.00371534
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1          -1214.99670770        -1218.21806862        -1217.05147643
+       2             -1.40338302           -1.91894103           -1.74554033
+       3             -1.40338302           -1.91894103           -1.74554033
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000            0.00000000
+       2              0.00000000            0.00000000            1.61676165
+       3              0.00000000            0.00000000           -1.61676165
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              1.75870988           -1.46265104           -0.29605884
+       2              0.28590511           -0.22965291           -0.05625220
+       3              0.28590511           -0.22965291           -0.05625220
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000            0.00000000
+       2              0.00000000            0.00000000            1.61676165
+       3              0.00000000            0.00000000           -1.61676165
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1            290.47895886
+       2              0.40328783
+       3              0.40328783
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.245484045004516
+    One-electron Darwin term     :   0.194449117178942
+    Total one-electron MVD terms :   -0.051034927825574
+
+
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:26 2007
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:26 2007
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  MP2
+	Reference orbitals     =  RHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            =  No
+	Delete Restricted Docc =  No
+	Do All TEI             =  No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.1659541440
+	Total SCF Energy            =       -76.0226692394
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:28 2007
+
+user time   =       0.47 seconds =       0.01 minutes
+system time =       2.82 seconds =       0.05 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:28 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** MP2 H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -MP2 forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.003155935008
+       2        0.000000000000    -0.002543049845     0.001577967504
+       3        0.000000000000     0.002543049845     0.001577967504
+
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:29 2007
+
+user time   =       0.42 seconds =       0.01 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1276610204
+  1.0     1.00782503   0.0000000000   1.4126532533   1.0130365180
+  1.0     1.00782503   0.0000000000  -1.4126532533   1.0130365180
+                       0.0000000000   0.0000000000  -0.0031559350
+                       0.0000000000  -0.0025430498   0.0015779675
+                       0.0000000000   0.0025430498   0.0015779675
+Searching for geometrical constraints...
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.96082911)
+    (2 1 3) (0.96082911)
+Bends
+    (3 2 1 3) (102.15923084)
+ 
+ ** Taking normal optimization step. **
+
+Current MP2 energy before step       -76.2223722839
+
+Taking geometry step number 2
+
+BuB^t Determinant: 2.564798e+00
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 1 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    0.96082911    0.00813327    0.00001292    0.96084203
+ 2    0.96082911    0.00813327    0.00001292    0.96084203
+ 3    1.78301494    0.02236536    0.02947103    1.81248597
+   MAX force:    0.0223653620   RMS force:    0.0145202114
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.006247040410  0.000085179618
+    3  0.000047158682  0.000000000159
+    4  0.000000000058  0.000000000000
+Convergence to displaced geometry took 4 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000   0.0000000000  -0.1253192903
+  1.0   0.0000000000   1.4293272642   0.9944540397
+  1.0   0.0000000000  -1.4293272642   0.9944540397
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:29 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** MP2 H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:29 2007
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:29 2007
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = 6-31G** MP2 H2O
+  wfn          = MP2
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.1617066882952
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.02266924
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.286926e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0228534012    8.518456e+01    0.000000e+00    0.000000e+00
+    2       -76.0228829389    2.953773e-05    9.868330e-05    2.301952e-03
+    3       -76.0228845500    1.611097e-06    2.346311e-05    5.868743e-04
+    4       -76.0228846370    8.704690e-08    4.935482e-06    1.375026e-04
+    5       -76.0228846545    1.749299e-08    2.386247e-06    6.691273e-05
+    6       -76.0228846558    1.223711e-09    8.575471e-07    1.379128e-05
+    7       -76.0228846558    6.123457e-11    2.209371e-07    2.584931e-06
+    8       -76.0228846558    1.165290e-12    1.788656e-08    3.441520e-07
+    9       -76.0228846558    0.000000e+00    5.038183e-09    9.100123e-08
+   10       -76.0228846558    4.263256e-14    5.198358e-10    1.162939e-08
+   11       -76.0228846558   -4.263256e-14    1.304832e-10    4.147978e-09
+   12       -76.0228846558    4.263256e-14    3.037646e-11    7.359165e-10
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.561640     2A1     -1.339035     1B2     -0.700265  
+   3A1     -0.569458     1B1     -0.497167  
+
+
+  Unoccupied orbitals
+   4A1      0.211242     2B2      0.303745     3B2      1.000140  
+   5A1      1.085619     6A1      1.132377     2B1      1.168755  
+   4B2      1.294674     7A1      1.416370     1A2      1.804715  
+   8A1      1.812355     3B1      1.922882     9A1      2.566541  
+   5B2      2.576763     6B2      2.799232     2A2      2.971763  
+   4B1      2.990689    10A1      3.369491    11A1      3.701730  
+   7B2      3.923617    12A1      4.103317  
+
+
+        SCF total energy   =     -76.022884655820
+        kinetic energy     =      75.797438305959
+        nuc. attr. energy  =    -198.831490823522
+        elec. rep. energy  =      47.011167861742
+        potential energy   =    -151.820322961780
+        virial theorem     =       1.997034493615
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:29 2007
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:29 2007
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  MP2
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  Yes
+	Do All TEI             =  Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.1617066883
+	Total SCF Energy            =       -76.0228846558
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:31 2007
+
+user time   =       0.37 seconds =       0.01 minutes
+system time =       2.78 seconds =       0.05 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:31 2007
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	MP2
+	Reference wfn   =	RHF
+	Derivative      =	First
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	False
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Applied field  0 =  0.000
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 25
+	Number of active MOs = 25
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   12	    0	    3	    0	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.16170668829522
+	SCF energy          (chkpt) =    -76.02288465582038
+
+	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.006 (MW) /      0.049 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.014 (MW) /      0.115 (MB)
+	Total:                                     0.043 (MW) /      0.341 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.005 (MW) /      0.037 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.012 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.003 (MW) /      0.028 (MB)
+	Total:                                     0.011 (MW) /      0.086 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.001 (MW) /      0.011 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.000 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.022 (MB)
+
+
+	One-electron energy          =   -123.03405251756242
+	Two-electron (AA) energy     =     14.44546538962237
+	Two-electron (BB) energy     =     14.44546538962237
+	Two-electron (AB) energy     =     23.40399578382441
+	Two-electron energy          =     37.84946117344678
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.02288465582041
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:31 2007
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.13 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:31 2007
+
+			*************************
+			*                       *
+			*          MP2          *
+			*                       *
+			*************************
+
+	Nuclear rep. energy     =    9.161706688295221
+	SCF energy              =  -76.022884655820377
+
+	Input parameters:
+	-----------------
+	Wave function 	=	MP2
+	Reference WFN 	=	RHF
+	Derivative    	=	FIRST
+	Cache Level   	=	2
+	Cache Type    	=	LOW
+	Memory (MB)   	=	256.0
+	Print Level   	=	0
+	OPDM          	=	NO
+
+	MP2 correlation energy  =   -0.199563979486568
+	MP2 total energy        =  -76.222448635306947
+
+	Trace of onepdm =   -0.000000000000000
+
+	Energies re-computed from Fock-adjusted CC density:
+	---------------------------------------------------
+	One-electron energy        =    0.230459204481536
+	IJKL energy                =   -0.638797896068537
+	IJKA energy                =   -0.051732129099353
+	IJAB energy                =   -0.399127958973135
+	IBJA energy                =    0.659634800168055
+	MP2 correlation energy    =   -0.199563979491434
+	Total MP2 energy          =  -76.222448635311807
+
+	Energies re-computed from Mulliken density:
+	-------------------------------------------
+	One-electron energy        =    0.230459204481536
+	IJKL energy                =   -0.638797896068537
+	IJKA energy                =   -0.051732129099353
+	IJAB energy                =   -0.428962916791395
+	IBJA energy                =    0.689469757986314
+	Total two-electron energy  =   -0.430023183972970
+	MP2 correlation energy    =   -0.199563979491434
+	Total MP2 energy          =  -76.222448635311807
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:32 2007
+
+user time   =       0.12 seconds =       0.00 minutes
+system time =       0.22 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:32 2007
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density in MO basis in SQUARE form will be read from file73.
+    $Only electric dipole moment will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+
+  Title : '6-31G** MP2 H2O'
+
+  List of PARAMETERS :
+    # of atoms                 =      3
+    # of molecular orbitals    =     25
+    # of basis functions       =     25
+    # of atomic orbitals       =     25
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     12
+    # of primitives            =     20
+    Print level                =      1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
+    NIX                        =	  11
+    NIY                        =	  11
+    GRID_ZMIN                  =	   0.00000
+    GRID_ZMAX                  =	   3.00000
+
+	Densities available up to root 1
+	** Analyzing density number 1 **
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     1      1          0        1.99507276
+     1      2          0        0.90004594
+     1      3          0        0.90925373
+     1      4          1        1.12127663
+     1      5          1        0.81045022
+     1      6          1        0.93171284
+     1      7          1        0.84533564
+     1      8          1        0.44802258
+     1      9          1        0.64266140
+     1     10          2        0.00134254
+     1     11          2        0.00443434
+     1     12          2        0.00649012
+     1     13          2        0.00723635
+     1     14          2        0.01733055
+     1     15          2        0.00030659
+     2     16          0        0.48694555
+     2     17          0        0.15059813
+     2     18          1        0.01173206
+     2     19          1        0.01642697
+     2     20          1        0.01381120
+     3     21          0        0.48694555
+     3     22          0        0.15059813
+     3     23          1        0.01173206
+     3     24          1        0.01642697
+     3     25          1        0.01381120
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   7.1324546   0.2883076   0.2883076
+    2   0.2883076   0.3482687  -0.0265143
+    3   0.2883076  -0.0265143   0.3482687
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            8.640972        -0.640972
+       2            0.679514        +0.320486
+       3            0.679514        +0.320486
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000         -0.0000000000         -0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Z)  =   2.11210 D  =   7.04520664e-30 C*m  =   0.83096358 a.u.
+    |mu|   =   2.11210 D  =   7.04520664e-30 C*m  =   0.83096358 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000          0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      8            0.0000000000          0.0000000000         -0.1253192903
+    2      1            0.0000000000          1.4293272642          0.9944540397
+    3      1            0.0000000000         -1.4293272642          0.9944540397
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1      -22.30030746     0.00000000    0.00000000   -0.12510857
+       2       -1.00543972     0.00000000    0.01591943    0.00505388
+       3       -1.00543972     0.00000000   -0.01591943    0.00505388
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1          -1214.91681169        -1218.15828129        -1216.92070945
+       2             -1.40034706           -1.92243945           -1.73366326
+       3             -1.40034706           -1.92243945           -1.73366326
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000            1.60527080
+       3              0.00000000            0.00000000           -1.60527080
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              1.74845578           -1.49301381           -0.25544197
+       2              0.28513619           -0.23695619           -0.04818000
+       3              0.28513619           -0.23695619           -0.04818000
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000            1.60527080
+       3              0.00000000            0.00000000           -1.60527080
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1            290.45743711
+       2              0.40237949
+       3              0.40237949
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.245463057355761
+    One-electron Darwin term     :   0.194434563369873
+    Total one-electron MVD terms :   -0.051028493985888
+
+
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:32 2007
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:32 2007
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  MP2
+	Reference orbitals     =  RHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            =  No
+	Delete Restricted Docc =  No
+	Do All TEI             =  No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.1617066883
+	Total SCF Energy            =       -76.0228846558
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:34 2007
+
+user time   =       0.47 seconds =       0.01 minutes
+system time =       2.82 seconds =       0.05 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:34 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** MP2 H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -MP2 forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.000124242346
+       2        0.000000000000     0.000016991880     0.000062121173
+       3        0.000000000000    -0.000016991880     0.000062121173
+
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:34 2007
+
+user time   =       0.42 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1253192903
+  1.0     1.00782503   0.0000000000   1.4293272642   0.9944540397
+  1.0     1.00782503   0.0000000000  -1.4293272642   0.9944540397
+                       0.0000000000   0.0000000000  -0.0001242423
+                       0.0000000000   0.0000169919   0.0000621212
+                       0.0000000000  -0.0000169919   0.0000621212
+Searching for geometrical constraints...
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.96084203)
+    (2 1 3) (0.96084203)
+Bends
+    (3 2 1 3) (103.84779672)
+ 
+ ** Taking normal optimization step. **
+
+Current MP2 energy before step       -76.2224486353
+
+Taking geometry step number 3
+
+BuB^t Determinant: 2.569041e+00
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 2 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    0.96084203   -0.00042583   -0.00007424    0.96076779
+ 2    0.96084203   -0.00042583   -0.00007424    0.96076779
+ 3    1.81248597    0.00030416    0.00046342    1.81294940
+   MAX force:    0.0004258305   RMS force:    0.0003895183
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.000100067966  0.000000029511
+    3  0.000000014607  0.000000000000
+Convergence to displaced geometry took 3 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000   0.0000000000  -0.1252725413
+  1.0   0.0000000000   1.4294762278   0.9940830692
+  1.0   0.0000000000  -1.4294762278   0.9940830692
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:34 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** MP2 H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:34 2007
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:34 2007
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = 6-31G** MP2 H2O
+  wfn          = MP2
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.1623511710154
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.02288466
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.286718e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0228920352    8.518524e+01    0.000000e+00    0.000000e+00
+    2       -76.0228920469    1.167118e-08    1.955005e-06    4.116186e-05
+    3       -76.0228920479    9.898713e-10    5.801757e-07    1.572207e-05
+    4       -76.0228920481    1.970477e-10    2.170789e-07    6.033816e-06
+    5       -76.0228920481    1.645617e-11    9.118117e-08    1.550529e-06
+    6       -76.0228920481    6.394885e-13    2.171156e-08    2.821263e-07
+    7       -76.0228920481   -1.421085e-14    2.946498e-09    3.516154e-08
+    8       -76.0228920481    2.842171e-14    4.554336e-10    8.412192e-09
+    9       -76.0228920481   -5.684342e-14    8.656502e-11    1.756856e-09
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.561612     2A1     -1.339049     1B2     -0.700354  
+   3A1     -0.569417     1B1     -0.497162  
+
+
+  Unoccupied orbitals
+   4A1      0.211262     2B2      0.303767     3B2      1.000274  
+   5A1      1.085602     6A1      1.132383     2B1      1.168762  
+   4B2      1.294678     7A1      1.416279     1A2      1.804665  
+   8A1      1.812566     3B1      1.922978     9A1      2.566619  
+   5B2      2.576674     6B2      2.799425     2A2      2.972013  
+   4B1      2.990598    10A1      3.369691    11A1      3.701917  
+   7B2      3.923634    12A1      4.103491  
+
+
+        SCF total energy   =     -76.022892048117
+        kinetic energy     =      75.797679176486
+        nuc. attr. energy  =    -198.832978680115
+        elec. rep. energy  =      47.012407455513
+        potential energy   =    -151.820571224603
+        virial theorem     =       1.997037565060
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:35 2007
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:35 2007
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  MP2
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  Yes
+	Do All TEI             =  Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.1623511710
+	Total SCF Energy            =       -76.0228920481
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:37 2007
+
+user time   =       0.37 seconds =       0.01 minutes
+system time =       2.75 seconds =       0.05 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:37 2007
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	MP2
+	Reference wfn   =	RHF
+	Derivative      =	First
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	False
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Applied field  0 =  0.000
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 25
+	Number of active MOs = 25
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   12	    0	    3	    0	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.16235117101543
+	SCF energy          (chkpt) =    -76.02289204811721
+
+	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.006 (MW) /      0.049 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.014 (MW) /      0.115 (MB)
+	Total:                                     0.043 (MW) /      0.341 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.005 (MW) /      0.037 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.012 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.003 (MW) /      0.028 (MB)
+	Total:                                     0.011 (MW) /      0.086 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.001 (MW) /      0.011 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.000 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.022 (MB)
+
+
+	One-electron energy          =   -123.03529950362972
+	Two-electron (AA) energy     =     14.44572083395209
+	Two-electron (BB) energy     =     14.44572083395209
+	Two-electron (AB) energy     =     23.40433545054499
+	Two-electron energy          =     37.85005628449708
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.02289204811720
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:37 2007
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.13 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:37 2007
+
+			*************************
+			*                       *
+			*          MP2          *
+			*                       *
+			*************************
+
+	Nuclear rep. energy     =    9.162351171015427
+	SCF energy              =  -76.022892048117214
+
+	Input parameters:
+	-----------------
+	Wave function 	=	MP2
+	Reference WFN 	=	RHF
+	Derivative    	=	FIRST
+	Cache Level   	=	2
+	Cache Type    	=	LOW
+	Memory (MB)   	=	256.0
+	Print Level   	=	0
+	OPDM          	=	NO
+
+	MP2 correlation energy  =   -0.199556609393155
+	MP2 total energy        =  -76.222448657510370
+
+	Trace of onepdm =   -0.000000000000000
+
+	Energies re-computed from Fock-adjusted CC density:
+	---------------------------------------------------
+	One-electron energy        =    0.230470272411896
+	IJKL energy                =   -0.638744879771169
+	IJKA energy                =   -0.051740806164861
+	IJAB energy                =   -0.399113218786309
+	IBJA energy                =    0.659572022936370
+	MP2 correlation energy    =   -0.199556609374072
+	Total MP2 energy          =  -76.222448657491285
+
+	Energies re-computed from Mulliken density:
+	-------------------------------------------
+	One-electron energy        =    0.230470272411896
+	IJKL energy                =   -0.638744879771169
+	IJKA energy                =   -0.051740806164861
+	IJAB energy                =   -0.428944432617492
+	IBJA energy                =    0.689403236767553
+	Total two-electron energy  =   -0.430026881785968
+	MP2 correlation energy    =   -0.199556609374072
+	Total MP2 energy          =  -76.222448657491285
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:37 2007
+
+user time   =       0.12 seconds =       0.00 minutes
+system time =       0.22 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:37 2007
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density in MO basis in SQUARE form will be read from file73.
+    $Only electric dipole moment will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+
+  Title : '6-31G** MP2 H2O'
+
+  List of PARAMETERS :
+    # of atoms                 =      3
+    # of molecular orbitals    =     25
+    # of basis functions       =     25
+    # of atomic orbitals       =     25
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     12
+    # of primitives            =     20
+    Print level                =      1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
+    NIX                        =	  11
+    NIY                        =	  11
+    GRID_ZMIN                  =	   0.00000
+    GRID_ZMAX                  =	   3.00000
+
+	Densities available up to root 1
+	** Analyzing density number 1 **
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     1      1          0        1.99507247
+     1      2          0        0.90001393
+     1      3          0        0.90919807
+     1      4          1        1.12126804
+     1      5          1        0.81045604
+     1      6          1        0.93181245
+     1      7          1        0.84533974
+     1      8          1        0.44796020
+     1      9          1        0.64275501
+     1     10          2        0.00134252
+     1     11          2        0.00443449
+     1     12          2        0.00648956
+     1     13          2        0.00723855
+     1     14          2        0.01732712
+     1     15          2        0.00030169
+     2     16          0        0.48697412
+     2     17          0        0.15054448
+     2     18          1        0.01173451
+     2     19          1        0.01643178
+     2     20          1        0.01381018
+     3     21          0        0.48697412
+     3     22          0        0.15054448
+     3     23          1        0.01173451
+     3     24          1        0.01643178
+     3     25          1        0.01381018
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   7.1324223   0.2883449   0.2883449
+    2   0.2883449   0.3482229  -0.0265053
+    3   0.2883449  -0.0265053   0.3482229
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            8.641010        -0.641010
+       2            0.679495        +0.320505
+       3            0.679495        +0.320505
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000         -0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -1.88257363e-45 C*m  =  -0.00000000 a.u.
+    mu(Z)  =   2.11166 D  =   7.04373494e-30 C*m  =   0.83079000 a.u.
+    |mu|   =   2.11166 D  =   7.04373494e-30 C*m  =   0.83079000 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000         -0.0000000000          0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      8            0.0000000000          0.0000000000         -0.1252725413
+    2      1            0.0000000000          1.4294762278          0.9940830692
+    3      1            0.0000000000         -1.4294762278          0.9940830692
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1      -22.30032506     0.00000000    0.00000000   -0.12511245
+       2       -1.00544498     0.00000000    0.01594714    0.00512113
+       3       -1.00544498     0.00000000   -0.01594714    0.00512113
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1          -1214.91526269        -1218.15683592        -1216.91809243
+       2             -1.40038225           -1.92283167           -1.73371317
+       3             -1.40038225           -1.92283167           -1.73371317
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000            1.60534975
+       3              0.00000000            0.00000000           -1.60534975
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              1.74813432           -1.49343890           -0.25469542
+       2              0.28526011           -0.23718931           -0.04807080
+       3              0.28526011           -0.23718931           -0.04807080
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000            1.60534975
+       3              0.00000000            0.00000000           -1.60534975
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1            290.45699057
+       2              0.40241747
+       3              0.40241747
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.245462674145851
+    One-electron Darwin term     :   0.194434270910167
+    Total one-electron MVD terms :   -0.051028403235684
+
+
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:37 2007
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:37 2007
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  MP2
+	Reference orbitals     =  RHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            =  No
+	Delete Restricted Docc =  No
+	Do All TEI             =  No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.1623511710
+	Total SCF Energy            =       -76.0228920481
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:40 2007
+
+user time   =       0.47 seconds =       0.01 minutes
+system time =       2.83 seconds =       0.05 minutes
+total time  =          3 seconds =       0.05 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:40 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** MP2 H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -MP2 forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.000011797588
+       2        0.000000000000    -0.000008237770    -0.000005898794
+       3        0.000000000000     0.000008237770    -0.000005898794
+
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:40 2007
+
+user time   =       0.42 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1252725413
+  1.0     1.00782503   0.0000000000   1.4294762278   0.9940830692
+  1.0     1.00782503   0.0000000000  -1.4294762278   0.9940830692
+                       0.0000000000   0.0000000000   0.0000117976
+                       0.0000000000  -0.0000082378  -0.0000058988
+                       0.0000000000   0.0000082378  -0.0000058988
+Searching for geometrical constraints...
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.96076779)
+    (2 1 3) (0.96076779)
+Bends
+    (3 2 1 3) (103.87434890)
+ 
+ ** Taking normal optimization step. **
+
+Current MP2 energy before step       -76.2224486575
+
+Taking geometry step number 4
+
+BuB^t Determinant: 2.569505e+00
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 3 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    0.96076779    0.00008340    0.00001022    0.96077801
+ 2    0.96076779    0.00008340    0.00001022    0.96077801
+ 3    1.81294940    0.00000344   -0.00000127    1.81294813
+   MAX force:    0.0000833976   RMS force:    0.0000681228
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.000004604068  0.000000000008
+    3  0.000000000003  0.000000000000
+Convergence to displaced geometry took 3 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000   0.0000000000  -0.1252739752
+  1.0   0.0000000000   1.4294907237   0.9940944482
+  1.0   0.0000000000  -1.4294907237   0.9940944482
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:40 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** MP2 H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:40 2007
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:40 2007
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = 6-31G** MP2 H2O
+  wfn          = MP2
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.1622538849049
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.02289205
+
+  level shift                      = 0.100000
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.286755e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0228913188    8.518515e+01    0.000000e+00    0.000000e+00
+    2       -76.0228913188    6.137668e-11    1.197108e-07    2.925973e-06
+    3       -76.0228913188    5.755396e-12    4.043934e-08    1.462149e-06
+    4       -76.0228913188    1.222134e-12    1.706606e-08    4.709536e-07
+    5       -76.0228913188    9.947598e-14    6.673757e-09    1.306164e-07
+    6       -76.0228913188    1.421085e-14    2.143350e-09    3.062136e-08
+    7       -76.0228913188    0.000000e+00    3.827378e-10    4.608896e-09
+    8       -76.0228913188   -2.842171e-14    3.603337e-11    6.514823e-10
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.561614     2A1     -1.339044     1B2     -0.700348  
+   3A1     -0.569415     1B1     -0.497161  
+
+
+  Unoccupied orbitals
+   4A1      0.211260     2B2      0.303764     3B2      1.000269  
+   5A1      1.085594     6A1      1.132382     2B1      1.168762  
+   4B2      1.294678     7A1      1.416277     1A2      1.804664  
+   8A1      1.812565     3B1      1.922978     9A1      2.566605  
+   5B2      2.576662     6B2      2.799402     2A2      2.972001  
+   4B1      2.990586    10A1      3.369671    11A1      3.701894  
+   7B2      3.923619    12A1      4.103484  
+
+
+        SCF total energy   =     -76.022891318830
+        kinetic energy     =      75.797639811420
+        nuc. attr. energy  =    -198.832765822338
+        elec. rep. energy  =      47.012234692088
+        potential energy   =    -151.820531130250
+        virial theorem     =       1.997037056819
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:40 2007
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:40 2007
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  MP2
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  Yes
+	Do All TEI             =  Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.1622538849
+	Total SCF Energy            =       -76.0228913188
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:42 2007
+
+user time   =       0.37 seconds =       0.01 minutes
+system time =       2.78 seconds =       0.05 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:42 2007
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	MP2
+	Reference wfn   =	RHF
+	Derivative      =	First
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	False
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Applied field  0 =  0.000
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 25
+	Number of active MOs = 25
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   12	    0	    3	    0	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.16225388490492
+	SCF energy          (chkpt) =    -76.02289131883023
+
+	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.006 (MW) /      0.049 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.014 (MW) /      0.115 (MB)
+	Total:                                     0.043 (MW) /      0.341 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.005 (MW) /      0.037 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.012 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.003 (MW) /      0.028 (MB)
+	Total:                                     0.011 (MW) /      0.086 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.001 (MW) /      0.011 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.000 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.022 (MB)
+
+
+	One-electron energy          =   -123.03512601091778
+	Two-electron (AA) energy     =     14.44568865508091
+	Two-electron (BB) energy     =     14.44568865508091
+	Two-electron (AB) energy     =     23.40429215210177
+	Two-electron energy          =     37.84998080718268
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.02289131883018
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:42 2007
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.13 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:42 2007
+
+			*************************
+			*                       *
+			*          MP2          *
+			*                       *
+			*************************
+
+	Nuclear rep. energy     =    9.162253884904915
+	SCF energy              =  -76.022891318830233
+
+	Input parameters:
+	-----------------
+	Wave function 	=	MP2
+	Reference WFN 	=	RHF
+	Derivative    	=	FIRST
+	Cache Level   	=	2
+	Cache Type    	=	LOW
+	Memory (MB)   	=	256.0
+	Print Level   	=	0
+	OPDM          	=	NO
+
+	MP2 correlation energy  =   -0.199557338837372
+	MP2 total energy        =  -76.222448657667599
+
+	Trace of onepdm =   -0.000000000000000
+
+	Energies re-computed from Fock-adjusted CC density:
+	---------------------------------------------------
+	One-electron energy        =    0.230469279712508
+	IJKL energy                =   -0.638750379835160
+	IJKA energy                =   -0.051740031429516
+	IJAB energy                =   -0.399114677674744
+	IBJA energy                =    0.659578470380935
+	MP2 correlation energy    =   -0.199557338845977
+	Total MP2 energy          =  -76.222448657676210
+
+	Energies re-computed from Mulliken density:
+	-------------------------------------------
+	One-electron energy        =    0.230469279712508
+	IJKL energy                =   -0.638750379835159
+	IJKA energy                =   -0.051740031429516
+	IJAB energy                =   -0.428946269140489
+	IBJA energy                =    0.689410061846680
+	Total two-electron energy  =   -0.430026618558484
+	MP2 correlation energy    =   -0.199557338845976
+	Total MP2 energy          =  -76.222448657676210
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:43 2007
+
+user time   =       0.12 seconds =       0.00 minutes
+system time =       0.22 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:43 2007
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density in MO basis in SQUARE form will be read from file73.
+    $Only electric dipole moment will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+
+  Title : '6-31G** MP2 H2O'
+
+  List of PARAMETERS :
+    # of atoms                 =      3
+    # of molecular orbitals    =     25
+    # of basis functions       =     25
+    # of atomic orbitals       =     25
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     12
+    # of primitives            =     20
+    Print level                =      1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
+    NIX                        =	  11
+    NIY                        =	  11
+    GRID_ZMIN                  =	   0.00000
+    GRID_ZMAX                  =	   3.00000
+
+	Densities available up to root 1
+	** Analyzing density number 1 **
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     1      1          0        1.99507249
+     1      2          0        0.90001563
+     1      3          0        0.90920293
+     1      4          1        1.12126837
+     1      5          1        0.81045176
+     1      6          1        0.93180754
+     1      7          1        0.84534019
+     1      8          1        0.44796384
+     1      9          1        0.64275507
+     1     10          2        0.00134236
+     1     11          2        0.00443449
+     1     12          2        0.00648951
+     1     13          2        0.00723882
+     1     14          2        0.01732699
+     1     15          2        0.00030196
+     2     16          0        0.48696869
+     2     17          0        0.15054987
+     2     18          1        0.01173414
+     2     19          1        0.01643147
+     2     20          1        0.01380987
+     3     21          0        0.48696869
+     3     22          0        0.15054987
+     3     23          1        0.01173414
+     3     24          1        0.01643147
+     3     25          1        0.01380987
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   7.1324296   0.2883409   0.2883409
+    2   0.2883409   0.3482241  -0.0265047
+    3   0.2883409  -0.0265047   0.3482241
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            8.641012        -0.641012
+       2            0.679494        +0.320506
+       3            0.679494        +0.320506
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000         -0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =   0.00000 D  =   9.41286816e-45 C*m  =   0.00000000 a.u.
+    mu(Z)  =   2.11167 D  =   7.04375472e-30 C*m  =   0.83079233 a.u.
+    |mu|   =   2.11167 D  =   7.04375472e-30 C*m  =   0.83079233 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000         -0.0000000000          0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      8            0.0000000000          0.0000000000         -0.1252739752
+    2      1            0.0000000000          1.4294907237          0.9940944482
+    3      1            0.0000000000         -1.4294907237          0.9940944482
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1      -22.30032361     0.00000000    0.00000000   -0.12511117
+       2       -1.00544387     0.00000000    0.01593821    0.00511477
+       3       -1.00544387     0.00000000   -0.01593821    0.00511477
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1          -1214.91530441        -1218.15690477        -1216.91817330
+       2             -1.40037082           -1.92278511           -1.73368096
+       3             -1.40037082           -1.92278511           -1.73368096
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000            1.60531293
+       3              0.00000000            0.00000000           -1.60531293
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              1.74815642           -1.49344395           -0.25471247
+       2              0.28524147           -0.23717281           -0.04806866
+       3              0.28524147           -0.23717281           -0.04806866
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000            1.60531293
+       3              0.00000000            0.00000000           -1.60531293
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1            290.45700580
+       2              0.40241029
+       3              0.40241029
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.245462681856875
+    One-electron Darwin term     :   0.194434279903538
+    Total one-electron MVD terms :   -0.051028401953337
+
+
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:43 2007
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:43 2007
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  MP2
+	Reference orbitals     =  RHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            =  No
+	Delete Restricted Docc =  No
+	Do All TEI             =  No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    0
+	 A2 	   2	   2	    0	    0	    0	    2	    0
+	 B1 	   4	   4	    0	    1	    0	    3	    0
+	 B2 	   7	   7	    0	    1	    0	    6	    0
+
+	Nuclear Repulsion Energy    =         9.1622538849
+	Total SCF Energy            =       -76.0228913188
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:45 2007
+
+user time   =       0.47 seconds =       0.01 minutes
+system time =       2.82 seconds =       0.05 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on chofreephra.local
+Wed Feb 28 16:14:45 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** MP2 H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -MP2 forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.000000376600
+       2        0.000000000000     0.000000525778     0.000000188300
+       3        0.000000000000    -0.000000525778     0.000000188300
+
+******************************************************************************
+tstop called on chofreephra.local
+Wed Feb 28 16:14:45 2007
+
+user time   =       0.42 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1252739752
+  1.0     1.00782503   0.0000000000   1.4294907237   0.9940944482
+  1.0     1.00782503   0.0000000000  -1.4294907237   0.9940944482
+                       0.0000000000   0.0000000000  -0.0000003766
+                       0.0000000000   0.0000005258   0.0000001883
+                       0.0000000000  -0.0000005258   0.0000001883
+Searching for geometrical constraints...
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.96077801)
+    (2 1 3) (0.96077801)
+Bends
+    (3 2 1 3) (103.87427625)
+ 
+ ** Taking normal optimization step. **
+
+Current MP2 energy before step       -76.2224486577
+
+Taking geometry step number 5
+
+BuB^t Determinant: 2.569450e+00
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 4 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    0.96077801   -0.00000437   -0.00000046    0.96077755
+ 2    0.96077801   -0.00000437   -0.00000046    0.96077755
+ 3    1.81294813   -0.00000139   -0.00000157    1.81294656
+   MAX force:    0.0000043670   RMS force:    0.0000036551
+
+MAX force is < 1.0e-05.  Optimization is complete.
+Final MP2 energy is  -76.2224486577
+The Optimized geometry in a.u.
+  (  O   0.0000000000   0.0000000000  -0.1252739752 )
+  (  H   0.0000000000   1.4294907237   0.9940944482 )
+  (  H   0.0000000000  -1.4294907237   0.9940944482 )
+
+******** OPTKING execution completed ********
+
