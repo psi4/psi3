@@ -13,6 +13,9 @@ describes how to carry out coupled cluster calculations within \PSIthree.
 \hline
 Reference & Method & Energy    & Gradient  &  Exc. Energies & LR Props \\
 \hline
+RHF       & CC2     & Y & N & Y & Y  \\
+UHF       & CC2     & Y & N & Y & N  \\
+ROHF      & CC2     & Y & N & Y & N  \\
 RHF       & CCSD    & Y & Y & Y & Y  \\
 RHF       & CCSD(T) & Y & N & --& -- \\
 ROHF      & CCSD    & Y & Y & Y & N  \\
@@ -42,8 +45,8 @@ Brueckner-orbital-based CCSD(T)] There is no default.
 Acceptable values are {\tt reference = rhf}, {\tt rohf}, or {\tt uhf}.
 There is no default.
 \item[JOBTYPE = string]\mbox{}\\
-Acceptable values are {\tt sp}, {\tt opt}, {\tt freq}, or {\tt response}
-(for coupled cluster linear response calculations).  There is no default.
+Acceptable values are {\tt sp}, {\tt opt}, {\tt freq}, {\tt oeprop}, or 
+{\tt response}.  There is no default. 
 \item[CONVERGENCE = integer]\mbox{}\\
 Sets the order of magnitude on the convergence of the CC wave function,
 perturbed wave function, and/or lambda parameters.  The root-mean-square of
@@ -132,7 +135,7 @@ memory bottlenecks or other errors exist in the event of a crash.
 significantly on disk space.
 \end{enumerate}
 
-\subsubsection{Excited State (EOM-CCSD) Calculations}
+\subsubsection{Excited State Coupled Cluster Calculations}
 
 The most important keywords associated with EOM-CC calculations are:
 \begin{description}
@@ -158,6 +161,10 @@ index (in coupled cluster ordering), a virtual orbital index, a weighting
 factor, and a spin (0 for $\alpha$ and 1 for $\beta$).  The guess vector
 will be normalized after it is read, so only the relative magnitudes of the
 weight factors are important.
+\item[JOBTYPE = string]\mbox{}\\
+A value of {\tt oeprop} will result in the calculation of oscillator 
+strengths, rotational strengths, and dipole moments for an RHF reference
+and all but the rotational strengths for an ROHF or UHF reference.
 \end{description}
 
 \subsubsection{Linear Response (CCLR) Calculations}
