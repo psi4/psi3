@@ -221,6 +221,10 @@ sub do_tests
         }
       }
 
+      if ($jobtype eq "OEPROP" && ($wfn eq "EOM_CC2" || $wfn eq "EOM_CCSD")) {
+        $fail |= compare_eomcc_oeprop();
+      }
+
       last SWITCH1;
     }
 
@@ -608,6 +612,60 @@ sub compare_cc_response
 	      pass_test("$wfn Polarizability @ $polar_freqs[$i]");
 	  }
       }
+  }
+
+  return $fail;
+}
+
+sub compare_eomcc_oeprop
+{
+  my $fail = 0;
+  my $REF_FILE = "$SRC_PATH/output.ref";
+  my $TEST_FILE = "output.dat";
+
+  $NSREF = seek_nstates($REF_FILE);
+  $NSTEST = seek_nstates($TEST_FILE);
+
+  $LABEL = "Number of States";
+  if($NSREF != $NSTEST) {
+    fail_test("$LABEL"); $fail = 1;
+  }  
+  else {
+    pass_test("$LABEL");
+    $NSTATES = $NSREF;
+  } 
+
+  @int_ref = seek_excitation_energy($REF_FILE,"OS       RS",$NSTATES);
+  @int_test = seek_excitation_energy($TEST_FILE,"OS       RS",$NSTATES);
+
+  $LABEL = "Excitation Energy";
+  if(!compare_arrays(\@int_ref, \@int_test, $NSTATES, $TOL)) {
+    fail_test("$LABEL"); $fail = 1;
+  }
+  else {
+    pass_test("$LABEL");
+  }
+
+  @int_ref = seek_osc_str($REF_FILE,"OS       RS",$NSTATES);
+  @int_test = seek_osc_str($TEST_FILE,"OS       RS",$NSTATES);
+
+  $LABEL = "Oscillator Strength";
+  if(!compare_arrays(\@int_ref, \@int_test, $NSTATES, $TTOL)) {
+    fail_test("$LABEL"); $fail = 1;
+  }
+  else {
+    pass_test("$LABEL");
+  }
+
+  @int_ref = seek_rot_str($REF_FILE,"OS       RS",$NSTATES);
+  @int_test = seek_rot_str($TEST_FILE,"OS       RS",$NSTATES);
+
+  $LABEL = "Rotational Strength";
+  if(!compare_arrays(\@int_ref, \@int_test, $NSTATES, $TTOL)) {
+    fail_test("$LABEL"); $fail = 1;
+  }
+  else {
+    pass_test("$LABEL");
   }
 
   return $fail;
