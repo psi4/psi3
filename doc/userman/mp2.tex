@@ -17,9 +17,10 @@ MP2 and MP2-R12/A energies using integral-direct techniques and a
 multithreaded algorithm, which lends itself perfectly for execution 
 on symmetric multiprocessor (SMP) machines. \PSIthree\ is also
 capable of computing RHF, UHF, and ROHF (using semicanonical orbitals)
-MP2 energies and one-particle density matrices.  Occupied and virtual
-orbitals can be frozen during the energy calculation, but not for the 
-calculation of the one-particle density matrix.
+MP2 energies and one-particle density matrices, and RHF MP2 analytic 
+gradients.  Occupied and virtual orbitals can be frozen during the 
+energy calculation, but not for the calculation of the 
+one-particle density matrix or the analytic gradient.
 
 Table \ref{table:mp2summary} summarizes these capabilities.
 \begin{table}[h]
@@ -29,7 +30,7 @@ Table \ref{table:mp2summary} summarizes these capabilities.
 \hline
 Reference & Method    & Energy (conv) & Energy (integral-direct) & Gradient  \\
 \hline
-RHF       & MP2       & Y             & Y                        & N \\
+RHF       & MP2       & Y             & Y                        & Y \\
 UHF       & MP2       & Y             & N                        & N \\
 ROHF      & MP2       & Y             & N                        & N \\
 RHF       & MP2-R12/A & N             & Y                        & N \\
