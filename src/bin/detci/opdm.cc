@@ -427,7 +427,7 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
       psio_write_entry(targetfile, opdm_key, (char *) onepdm[0], 
         populated_orbs * populated_orbs * sizeof(double));
       if (Parameters.print_lvl) 
-        fprintf(outfile, "Wrote MO-basis %s %d to disk\n", 
+        fprintf(outfile, "\nWrote MO-basis %s %d to disk\n", 
           transdens ? "TDM" : "OPDM", Jroot+1);
 
       /* write it without the "Root n" part if it's the desired root      */
