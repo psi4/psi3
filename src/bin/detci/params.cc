@@ -473,12 +473,14 @@ void get_parameters(void)
      Parameters.num_d_tmp_units = 1;
 
    errcod = ip_boolean("RESTART",&(Parameters.restart),0);
+ /* obsolete due to new restart procedure
    errcod = ip_data("RESTART_ITER","%d",&(Parameters.restart_iter),0);
    errcod = ip_data("RESTART_VECS","%d",&(Parameters.restart_vecs),0);
    if (Parameters.restart && (errcod!=IPE_OK || Parameters.restart_vecs==0)) {
       fprintf(outfile, "For RESTART must specify nonzero RESTART_VECS\n");
       exit(0);
       }
+ */ 
    errcod = ip_boolean("BENDAZZOLI",&(Parameters.bendazzoli),0) ;
    if (Parameters.bendazzoli & !Parameters.fci) Parameters.bendazzoli=0;
 
