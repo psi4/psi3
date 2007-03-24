@@ -39,6 +39,7 @@ struct Eom_params {
   int restart_vectors_per_root;
   int skip_diagSS;
   int vectors_cc3;
+  int restart_eom_cc3;
 
   /* compute overlap of normalized R with L (must run cclambda first) */
   int dot_with_L;

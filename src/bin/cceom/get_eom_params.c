@@ -112,6 +112,11 @@ void get_eom_params()
   errcod = ip_boolean("SKIP_DIAGSS",&(i),0);
   if (i) eom_params.skip_diagSS = 1;
 
+  eom_params.restart_eom_cc3 = 0;
+  i = 0;
+  errcod = ip_boolean("RESTART_EOM_CC3",&(i),0);
+  if (i) eom_params.restart_eom_cc3 = 1;
+
   eom_params.max_iter_SS = 500;
 
   if(eom_params.guess == NULL) { /* we didn't use the cmdline arg --reuse */
@@ -143,6 +148,7 @@ void get_eom_params()
   fprintf(outfile, "\tRoot for properties         = %5d\n", eom_params.prop_root + 1);
   fprintf(outfile, "\tSym of state for properties = %6s\n", moinfo.labels[eom_params.prop_sym]);
   fprintf(outfile, "\tGuess vectors taken from    = %s\n", eom_params.guess);
+  fprintf(outfile, "\tRestart EOM CC3             = %s\n", eom_params.restart_eom_cc3?"YES":"NO");
   if (eom_params.follow_root)
     fprintf(outfile, "\tRoot following for CC3 turned on.\n");
   fprintf(outfile, "\n\n");

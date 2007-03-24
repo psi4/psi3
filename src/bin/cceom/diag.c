@@ -133,6 +133,7 @@ timer_on("INIT GUESS");
 
     /* zero out files between irreps */
     for (i=EOM_D; i<=EOM_R; ++i) {
+      if (eom_params.restart_eom_cc3 && (i >= EOM_CME) && (i<= EOM_CMnEf)) continue;
       psio_close(i,0);
       psio_open(i,0);
     }
@@ -142,7 +143,9 @@ timer_on("INIT GUESS");
     /* Store approximate diagonal elements of Hbar */
     form_diagonal(C_irr);
 
-    if(params.local) {
+    if (eom_params.restart_eom_cc3) {
+    }
+    else if(params.local) {
       if(!strcmp(eom_params.guess,"DISK")) { /* only do this if we don't already have guesses on disk */
 	fprintf(outfile, "\n\tUsing C1 vectors on disk as initial guesses.\n");
       }
@@ -237,7 +240,7 @@ timer_off("INIT GUESS");
     for (i=0;i<eom_params.cs_per_irrep[C_irr];++i) {
       /* init_S1(i, C_irr); gets done at first iteration anyway */
       init_S1(i, C_irr);
-      init_C2(i, C_irr);
+      if (!eom_params.restart_eom_cc3) init_C2(i, C_irr);
       if (params.full_matrix) { init_C0(i); init_S0(i); }
       /* init_S2(i, C_irr); */
     }
@@ -287,7 +290,7 @@ timer_off("INIT GUESS");
           timer_on("sigmaSD"); sigmaSD(i,C_irr); timer_off("sigmaSD");
           timer_on("sigmaDS"); sigmaDS(i,C_irr); timer_off("sigmaDS");
           timer_on("sigmaDD"); sigmaDD(i,C_irr); timer_off("sigmaDD");
-          if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) ) {
+          if ( ((!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0)) || eom_params.restart_eom_cc3) {
             timer_on("cc3_HC1"); cc3_HC1(i,C_irr); timer_off("cc3_HC1");
             timer_on("cc3_HC1ET1"); cc3_HC1ET1(i,C_irr); timer_off("cc3_HC1ET1");
             timer_on("sigmaCC3"); sigmaCC3(i,C_irr,cc3_eval); timer_off("sigmaCC3");
@@ -302,7 +305,7 @@ timer_off("INIT GUESS");
           sigmaDS(i,C_irr);
           sigmaDD(i,C_irr);
         }
-        if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) ) {
+        if ( ((!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0)) || eom_params.restart_eom_cc3) {
           cc3_HC1(i,C_irr);
           cc3_HC1ET1(i,C_irr);
           sigmaCC3(i,C_irr,cc3_eval);
@@ -826,14 +829,20 @@ timer_off("INIT GUESS");
       }
 
       ++iter;
-      if ( (keep_going == 0) && (iter < eom_params.max_iter) ) {
+      if (eom_params.restart_eom_cc3 && (cc3_stage==0)) {
+        fprintf(outfile,"Jumping to EOM CC3 iterations\n");
+        keep_going = 0;
+      }
+      if ((keep_going == 0) && (iter < eom_params.max_iter)) {
 
         /* for CC3: done with EOM CCSD - now do EOM CC3 */
         if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage == 0) ) {
           fprintf(outfile, "Completed EOM_CCSD\n");
           fprintf(outfile,"Collapsing to only %d vector(s).\n", eom_params.cs_per_irrep[C_irr]);
-          restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 1);
-          save_C_ccsd(eom_params.prop_root, C_irr);
+          if (!eom_params.restart_eom_cc3) {
+            restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 1);
+            save_C_ccsd(eom_params.prop_root, C_irr);
+          }
 
           cc3_last_converged_eval = cc3_eval = lambda_old[eom_params.prop_root];
           fprintf(outfile,"Setting initial CC3 eigenvalue to %15.10lf\n",cc3_eval);
