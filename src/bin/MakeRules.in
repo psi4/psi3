@@ -83,7 +83,7 @@ depend::
 	$(CCDEPEND) $(CDEF) $(CINC) $< | sed 's/$*.o/$*.o $*.d/g' > $@
 
 %.u: %.c
-        $(CCDEPEND) $(CDEF) $(CINC) $< > /dev/null
+	$(CCDEPEND) $(CDEF) $(CINC) $< > /dev/null
 
 %.d: %.C
 	$(CXXDEPEND) $(CXXDEF) $(CXXINC) $< | sed 's/$*.o/$*.o $*.d/g' > $@
