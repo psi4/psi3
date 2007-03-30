@@ -191,7 +191,7 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
   free_block(G);
 
   //fprintf(outfile,"FG Matrix\n");
-  //print_mat2(FG,salcs.get_num(),salcs.get_num(),outfile);
+  //print_mat2(FG,nsalcs,nsalcs,outfile);
   //fflush(outfile);
 
   evals  = init_array(nsalcs);
