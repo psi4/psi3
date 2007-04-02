@@ -254,8 +254,6 @@ timer_off("INIT GUESS");
     L = eom_params.cs_per_irrep[C_irr];
     /* allocate G_old just once */
     i = eom_params.vectors_per_root*eom_params.cs_per_irrep[C_irr];
-    if ( !strcmp(params.wfn,"EOM_CC3") && (eom_params.vectors_cc3 > i) )
-      i = eom_params.vectors_cc3;
     G_old = block_matrix(i+1,i+1);
 
     vectors_per_root = eom_params.vectors_per_root; /* used for CCSD */
@@ -855,8 +853,6 @@ timer_off("INIT GUESS");
           iter = 0;
           cc3_stage = 1;
           vectors_per_root = eom_params.vectors_cc3;
-          if (vectors_per_root < eom_params.prop_root+2)
-            vectors_per_root = eom_params.prop_root+2;
         }
         else if( (!strcmp(params.wfn,"EOM_CC3")) && /* can't trust sigmas yet */
                ( (cc3_stage == 1) || fabs(cc3_eval-cc3_last_converged_eval)>eom_params.eval_tol)) {
