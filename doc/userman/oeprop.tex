@@ -45,8 +45,11 @@ To compute one-electron properties at a fixed geometry,
 the following keywords are common:
 \begin{description}
 \item[JOBTYPE = string]\mbox{}\\
-This keyword must be set to {\tt oeprop} for \PSIthree\
+This keyword should be set to {\tt oeprop} for \PSIthree\
 to compute electron properties. There is no default.
+For CI wavefunctions, limited properties such as dipole and 
+transition moments may be evaluated directly
+in {\tt detci} without having to specify {\tt JOBTYPE = oeprop}.
 \item[WFN = string]\mbox{}\\
 Acceptable values are {\tt scf} for HF, {\tt mp2} for MP2,
 {\tt detci} for CI, {\tt detcas} for CASSCF, and {\tt ccsd}
