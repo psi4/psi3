@@ -307,14 +307,6 @@ void get_params()
 	  (params.make_abcd == 1) ? "True" : "False");
   fprintf(outfile, "\tCache Level     =\t%d\n", params.cachelev);
   fprintf(outfile, "\tCache Type      =\t%s\n", "LRU");
-  for(i=0; i < params.nomega; i++) {
-    if(params.omega[i] == 0.0) 
-      fprintf(outfile, "\tApplied field %2d =  0.000\n", i);
-    else 
-      fprintf(outfile, "\tApplied field %2d =    %5.3f E_h (%6.2f nm, %5.3f eV, %8.2f cm-1)\n", i, params.omega[i],
-	      (_c*_h*1e9)/(_hartree2J*params.omega[i]), _hartree2ev*params.omega[i],
-	      _hartree2wavenumbers*params.omega[i]);
-  }
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
   if(params.local) {
     fprintf(outfile, "\tLocal Cutoff       = %3.1e\n", local.cutoff);
