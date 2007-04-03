@@ -17,7 +17,7 @@ extern "C" {
   #include <physconst.h>
   #include <psifiles.h>
 
-  extern FILE *outfile;
+//  extern FILE *outfile;
 };
 
 extern InternalCoordinates gIntCo;

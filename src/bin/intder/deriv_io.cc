@@ -15,8 +15,8 @@ extern "C" {
   #include <libpsio/psio.h>
   #include <psifiles.h>
 
-  extern FILE *fp_ider;
-  extern FILE *outfile;
+//  extern FILE *fp_ider;
+//  extern FILE *outfile;
 };
 
 extern Params gParams;

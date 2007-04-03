@@ -15,9 +15,9 @@ extern "C" {
   #include <psifiles.h>
   #include <physconst.h>
 
-  extern FILE *outfile; 
+//  extern FILE *outfile; 
   extern Params gParams;
-  extern char *psi_file_prefix;
+//  extern char *psi_file_prefix;
 
   extern double atomic_masses[];
   extern char *mass_labels[];

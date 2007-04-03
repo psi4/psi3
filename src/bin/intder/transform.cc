@@ -17,7 +17,7 @@ extern "C" {
   #include <libipv1/ip_lib.h>
   #include <physconst.h>
 
-  extern FILE *outfile;
+//  extern FILE *outfile;
 };
 
 extern InternalCoordinates gIntCo;

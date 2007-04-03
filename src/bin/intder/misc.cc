@@ -13,7 +13,7 @@ extern Params gParams;
 extern "C" {
 #include <libciomr/libciomr.h>
 #include <physconst.h>
-  extern FILE *input, *outfile;
+//  extern FILE *input, *outfile;
 };
 
 

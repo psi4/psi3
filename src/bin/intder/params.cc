@@ -16,7 +16,7 @@ extern "C" {
   #include <libpsio/psio.h>
   #include <psifiles.h>
 
-  extern FILE *fp_intco;
+//  extern FILE *fp_intco;
   extern double atomic_masses[];
   extern char *mass_labels[];
   extern char *atomic_labels[];

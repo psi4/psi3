@@ -18,7 +18,7 @@ extern "C" {
   #include <libpsio/psio.h>
   #include <psifiles.h>
 
-  extern FILE *outfile;
+//  extern FILE *outfile;
 };
 
 extern InternalCoordinates gIntCo;
