@@ -10,6 +10,7 @@ psi: (
   socc = (1 0 0 0)
   freeze_core = true
 
+  delete_tei = false
   ao_basis = disk
   print = 2
 
