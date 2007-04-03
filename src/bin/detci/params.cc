@@ -37,6 +37,15 @@ void get_parameters(void)
    char line1[133];
    double junk;
    
+   if (ip_exist(":DETCI:FROZEN_DOCC",0) &&
+      !(ip_exist(":DEFAULT:FROZEN_DOCC",0) || 
+        ip_exist(":PSI:FROZEN_DOCC",0)) ) {
+     fprintf(outfile, "\nDETCI: Warning - FROZEN_DOCC needs to be readable\n");
+     fprintf(outfile, "by the transformation program also!  Move it to\n");
+     fprintf(outfile, "the psi: or default: sections of input.\n\n");
+     exit(PSI_RETURN_FAILURE);
+   }
+
    /* default value of Ms0 depends on iopen but is modified below 
     * depending on value of opentype
     */
