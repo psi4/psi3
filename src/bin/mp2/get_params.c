@@ -118,6 +118,26 @@ void get_params()
     free(cachetype);
   }
   
+  /* get parameters related to SCS-MP2 or SCS-N-MP2 */
+  /* see papers by S. Grimme or J. Platz */
+  params.scs = 0;
+  params.scs_scale_s = 1.0;
+  params.scs_scale_t = 1.0;
+  errcod = ip_boolean("SCS_N",&(params.scs),0);
+  if (params.scs == 1) {
+    params.scs_scale_s = 0.0;
+    params.scs_scale_t = 1.76;
+  }
+  else {
+    errcod = ip_boolean("SCS",&(params.scs),0);
+    if (params.scs == 1) {
+      params.scs_scale_s = 6.0/5.0;
+      params.scs_scale_t = 1.0/3.0;
+      errcod = ip_data("SCS_SCALE_S","%lf",&(params.scs_scale_s),0); 
+      errcod = ip_data("SCS_SCALE_T","%lf",&(params.scs_scale_t),0); 
+    }
+  }
+
   fndcor(&(params.memory),infile,outfile);
  
   fprintf(outfile, "\n");
@@ -136,4 +156,14 @@ void get_params()
   fprintf(outfile, "\tMemory (MB)   \t=\t%.1f\n",params.memory/1e6);
   fprintf(outfile, "\tPrint Level   \t=\t%d\n", params.print);
   fprintf(outfile, "\tOPDM          \t=\t%s\n", params.opdm ? "YES":"NO");
+  fprintf(outfile, "\tSCS           \t=\t%s\n", params.scs ? "TRUE":"FALSE");
+  fprintf(outfile, "\tSCS_SCALE_S   \t=\t%.3f\n",params.scs_scale_s);
+  fprintf(outfile, "\tSCS_SCALE_T   \t=\t%.3f\n",params.scs_scale_t);
+
+  if (params.scs && (strcmp(params.dertype,"NONE")!=0)) {
+    fprintf(outfile,"\nWarning: SCS-MP2 computation requested but\n");
+    fprintf(outfile,"derivative will be evaluated for standard MP2 energy.\n");
+  }
+
 }
+

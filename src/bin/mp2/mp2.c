@@ -75,8 +75,8 @@ int main(int argc, char *argv[])
   mo.Emp2 = energy();
   
   fprintf(outfile,"\n");
-  fprintf(outfile,"\tMP2 correlation energy  = %20.15f\n",mo.Emp2);
-  fprintf(outfile,"\tMP2 total energy        = %20.15f\n",mo.Escf+mo.Emp2);
+  fprintf(outfile,"\tMP2 correlation energy      = %20.15f\n",mo.Emp2);
+  fprintf(outfile,"\tMP2 total energy            = %20.15f\n",mo.Escf+mo.Emp2);
   fflush(outfile);
 
   chkpt_init(PSIO_OPEN_OLD);

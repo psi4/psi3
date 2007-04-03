@@ -13,4 +13,7 @@ struct params {
   int gradient;
   long int memory;
   int semicanonical;
+  int scs;
+  double scs_scale_s;
+  double scs_scale_t;
 };
