@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <libciomr/libciomr.h>
+#include <libpsio/psio.h>
 #define EXTERN
 #include "globals.h"
 
@@ -24,7 +25,7 @@ void linresp(double **tensor, double A, double B,
 	     char *pert_x, int *x_irreps, double omega_x,
 	     char *pert_y, int *y_irreps, double omega_y)
 {
-  int alpha, beta;
+  int alpha, beta, j;
   double polar, polar_LCX, polar_HXY, polar_LHX1Y1, polar_LHX1Y2, polar_LHX2Y2;
   char **cartcomp;
 
@@ -35,6 +36,11 @@ void linresp(double **tensor, double A, double B,
 
   for(alpha=0; alpha < 3; alpha++) {
     for(beta=0; beta < 3; beta++) {
+
+      /* clear out scratch space */
+      for(j=CC_TMP; j <= CC_TMP11; j++) {
+         psio_close(j,0); psio_open(j,0);
+      }
 
       polar_LCX = 0.0;
       polar_HXY = 0.0;
