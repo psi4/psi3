@@ -11,4 +11,5 @@ struct Params {
   double tolerance;   /* Cutoff value for integrals in IWL Buffers */
   long int memory;    /* Memory available (in bytes) */
   int semicanonical;  /* Boolean for semicanonical orbitals */
+  int delete_tei;     /* Boolean for the TEI integral file */
 };

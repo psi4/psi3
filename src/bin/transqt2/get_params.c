@@ -87,6 +87,9 @@ void get_params()
   params.cachelev = 2;
   errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
 
+  params.delete_tei = 1;
+  errcod = ip_boolean("DELETE_TEI", &params.delete_tei, 0);
+
   if(params.print_lvl) {
     fprintf(outfile, "\n\tInput parameters:\n");
     fprintf(outfile, "\t-----------------\n");
@@ -103,6 +106,7 @@ void get_params()
     if(params.dertype == 0) fprintf(outfile, "\tDerivative      =\tNone\n");
     else if(params.dertype == 1) fprintf(outfile, "\tDerivative      =\tFirst\n");
     else if(params.dertype == 3) fprintf(outfile, "\tDerivative      =\tResponse\n");
+    fprintf(outfile, "\tDelete TEI File =\t%s\n", params.delete_tei ? "Yes" : "No");
     fprintf(outfile, "\tMemory (Mbytes) =\t%.1f\n", params.memory/1e6);
     fprintf(outfile, "\tCache Level     =\t%d\n", params.cachelev);
     fprintf(outfile, "\tCache Type      =\t%s\n", "LRU");

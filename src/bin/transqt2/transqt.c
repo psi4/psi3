@@ -165,11 +165,11 @@ main(int argc, char *argv[])
   psio_open(PSIF_SO_PRESORT, 0);
   dpd_file4_init(&I, PSIF_SO_PRESORT, 0, 3, 3, "SO Ints (pq,rs)");
   if(params.ref == 0 || params.ref == 1) 
-    file_build_presort(&I, PSIF_SO_TEI, params.tolerance, params.memory, 1, 
-		       moinfo.nfzc, D, NULL, F, NULL, params.ref);
+    file_build_presort(&I, PSIF_SO_TEI, params.tolerance, params.memory, 
+	!params.delete_tei, moinfo.nfzc, D, NULL, F, NULL, params.ref);
   else 
-    file_build_presort(&I, PSIF_SO_TEI, params.tolerance, params.memory, 1, 
-		       moinfo.nfzc, D_a, D_b, F_a, F_b, params.ref);
+    file_build_presort(&I, PSIF_SO_TEI, params.tolerance, params.memory, 
+	!params.delete_tei, moinfo.nfzc, D_a, D_b, F_a, F_b, params.ref);
   dpd_file4_close(&I);
   psio_close(PSIF_SO_PRESORT, 1);
   timer_off("presort");

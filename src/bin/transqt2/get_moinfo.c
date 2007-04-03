@@ -44,6 +44,19 @@ void get_moinfo(void)
     moinfo.nfzv += moinfo.fruocc[i];
   }
 
+  /* Compute spatial-orbial reordering arrays */
+  if(params.ref == 0 || params.ref == 1) {
+    moinfo.pitzer2qt = init_int_array(moinfo.nmo);
+    reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
+	       moinfo.pitzer2qt, moinfo.mopi, moinfo.nirreps);
+  }
+  else if(params.ref == 2) {
+    moinfo.pitzer2qt_A = init_int_array(moinfo.nmo);
+    moinfo.pitzer2qt_B = init_int_array(moinfo.nmo);
+    reorder_qt_uhf(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
+		   moinfo.pitzer2qt_A, moinfo.pitzer2qt_B, moinfo.mopi, moinfo.nirreps);
+  }
+
   /* We want mopi to include only active orbitals */
   for(h=0; h < moinfo.nirreps; h++)
     moinfo.mopi[h] = moinfo.mopi[h] - moinfo.frdocc[h] - moinfo.fruocc[h];
@@ -58,19 +71,6 @@ void get_moinfo(void)
   for(h=0,count=0; h < moinfo.nirreps; h++)
     for(i=0; i < moinfo.mopi[h]; i++,count++)
       moinfo.mosym[count] = h;
-
-  /* Compute spatial-orbial reordering arrays */
-  if(params.ref == 0 || params.ref == 1) {
-    moinfo.pitzer2qt = init_int_array(moinfo.nmo);
-    reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
-	       moinfo.pitzer2qt, moinfo.sopi, moinfo.nirreps);
-  }
-  else if(params.ref == 2) {
-    moinfo.pitzer2qt_A = init_int_array(moinfo.nmo);
-    moinfo.pitzer2qt_B = init_int_array(moinfo.nmo);
-    reorder_qt_uhf(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
-		   moinfo.pitzer2qt_A, moinfo.pitzer2qt_B, moinfo.sopi, moinfo.nirreps);
-  }
 
   /* Adjust clsdpi array for frozen orbitals */
   for(i=0; i < moinfo.nirreps; i++)
