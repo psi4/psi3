@@ -38,34 +38,48 @@ void compute_zmat(cartesians &carts, int *unique_zvars) {
   zmat = chkpt_rd_zmat();
   chkpt_close();
 
+/*
+  for (i=0;i<nallatom;++i) {
+    fprintf(outfile,"%d %d %d %d\n",  i, zmat[i].bond_atom, zmat[i].angle_atom, zmat[i].tors_atom);
+    fprintf(outfile,"%20.10lf %20.10lf %20.10lf\n", zmat[i].bond_val, zmat[i].angle_val, zmat[i].tors_val);
+    fprintf(outfile,"%s %s %s \n", zmat[i].bond_label, zmat[i].angle_label, zmat[i].tors_label);
+   }
+*/
+
   /* determine and save the unique variables */
   cnt = -1;
   for (i=1; i<nallatom; ++i) {
-    unique_zvars[++cnt] = 1;
-    strcpy(sym, zmat[i].bond_label);
-    for (a=0;a<i;++a) {
-      if (strcmp(sym, zmat[a].bond_label) == 0) {
-        unique_zvars[cnt] = 0;
-        break;
-      }
-    }
-    if (i>1) {
+    if (zmat[i].bond_label[0] != '\0') {
       unique_zvars[++cnt] = 1;
-      strcpy(sym, zmat[i].angle_label);
+      strcpy(sym, zmat[i].bond_label);
       for (a=0;a<i;++a) {
-        if (strcmp(sym, zmat[a].angle_label) == 0) {
+        if (strcmp(sym, zmat[a].bond_label) == 0) {
           unique_zvars[cnt] = 0;
           break;
         }
       }
     }
+    if (i>1) {
+      if (zmat[i].angle_label[0] != '\0') {
+        unique_zvars[++cnt] = 1;
+        strcpy(sym, zmat[i].angle_label);
+        for (a=0;a<i;++a) {
+          if (strcmp(sym, zmat[a].angle_label) == 0) {
+            unique_zvars[cnt] = 0;
+            break;
+          }
+        }
+      }
+    }
     if (i>2) {
-      unique_zvars[++cnt] = 1;
-      strcpy(sym, zmat[i].tors_label);
-      for (a=0;a<i;++a) {
-        if (strcmp(sym, zmat[a].tors_label) == 0) {
-          unique_zvars[cnt] = 0;
-          break;
+      if (zmat[i].tors_label[0] != '\0') {
+        unique_zvars[++cnt] = 1;
+        strcpy(sym, zmat[i].tors_label);
+        for (a=0;a<i;++a) {
+          if (strcmp(sym, zmat[a].tors_label) == 0) {
+            unique_zvars[cnt] = 0;
+            break;
+          }
         }
       }
     }
@@ -77,6 +91,7 @@ void compute_zmat(cartesians &carts, int *unique_zvars) {
   nints[1] = nallatom-2;
   nints[2] = nallatom-3;
   nints[3] = 0;
+  nints[4] = 0;
   internals zints(nints);
   /* compute the value of the unique variables */
   zints.stre.set_num(nallatom-1);
@@ -109,7 +124,6 @@ void compute_zmat(cartesians &carts, int *unique_zvars) {
   // compute value of the zmatrix coordinates
   opt_fgeom = carts.get_coord();
   zints.compute_internals(nallatom, opt_fgeom);
-  // zints.print(outfile, 1);
 
   // insert computed values into zmatrix object
   for (i=0;i<nallatom;++i) {
@@ -168,7 +182,7 @@ void print_zmat(FILE *outfile, int *unique_zvars) {
     }
     if (i > 2) {
       fprintf(outfile," %d", zmat[i].tors_atom);
-      fprintf(outfile," %s$", zmat[i].tors_label);
+      fprintf(outfile," %s", zmat[i].tors_label);
     }
     fprintf(outfile,")\n");
   }

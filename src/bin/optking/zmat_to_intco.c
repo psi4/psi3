@@ -27,6 +27,14 @@ void zmat_to_intco() {
   zmat = chkpt_rd_zmat();
   chkpt_close();
 
+/*
+  for (i=0;i<natom;++i) {
+    fprintf(outfile,"%d %d %d %d\n",  i, zmat[i].bond_atom, zmat[i].angle_atom, zmat[i].tors_atom);
+    fprintf(outfile,"%20.10lf %20.10lf %20.10lf\n", zmat[i].bond_val, zmat[i].angle_val, zmat[i].tors_val);
+    fprintf(outfile,"%s %s %s \n", zmat[i].bond_label, zmat[i].angle_label, zmat[i].tors_label);
+   }
+*/
+
   ffile(&fp_intco,"intco.dat",0);
   fprintf(fp_intco,"intco: (\n");
 

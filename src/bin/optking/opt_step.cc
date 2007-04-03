@@ -289,7 +289,6 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     carts.print(12,outfile,0,disp_label,0);
     fflush(outfile);
 
-    /* not quite working yet - sometimes gives odd abort error
     if (optinfo.zmat) {
       int *unique_zvars;
       unique_zvars = (int *) malloc(MAX_ZVARS*sizeof(int));
@@ -298,7 +297,6 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
       free(unique_zvars);
       fprintf(outfile,"\n");
     }
-    */
 
     fflush(outfile);
     fprintf(stderr,"\n  Returning code %d\n", PSI_RETURN_ENDLOOP);
