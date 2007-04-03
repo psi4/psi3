@@ -253,8 +253,8 @@ timer_off("INIT GUESS");
     lambda_old = init_array(eom_params.cs_per_irrep[C_irr]);
     L = eom_params.cs_per_irrep[C_irr];
     /* allocate G_old just once */
-    i = eom_params.vectors_per_root*eom_params.cs_per_irrep[C_irr];
-    G_old = block_matrix(i+1,i+1);
+    i = (eom_params.vectors_per_root+1)*eom_params.cs_per_irrep[C_irr];
+    G_old = block_matrix(i,i);
 
     vectors_per_root = eom_params.vectors_per_root; /* used for CCSD */
 
