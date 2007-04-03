@@ -65,32 +65,38 @@ input, such as {\tt detcas: ( convergence = x )}.
 \item[ENERGY\_CONVERGENCE = integer]\mbox{}\\
 Convergence desired on the total MCSCF energy.  The default is 7.
 \item[RESTRICTED\_DOCC = (integer array)]\mbox{}\\
+Should be in {\tt psi:()} or {\tt default:()} sections of input.
 The number of lowest energy doubly occupied orbitals in each irreducible
 representation from which there will be no excitations.  
 These orbitals are optimized in the MCSCF.
 The Cotton ordering of the irredicible representations is used.
 The default is the zero vector.
 \item[RESTRICTED\_UOCC = (integer array)]\mbox{}\\
+Should be in {\tt psi:()} or {\tt default:()} sections of input.
 The number of highest energy unoccupied orbitals in each irreducible
 representation into which there will be no excitations.
 These orbitals are optimized in the MCSCF.
 The default is the zero vector.
 \item[FROZEN\_DOCC = (integer array)]\mbox{}\\
+Should be in {\tt psi:()} or {\tt default:()} sections of input.
 The number of lowest energy doubly occupied orbitals in each irreducible
 representation from which there will be no excitations.  
 These orbitals are literally frozen and are not optimized in the MCSCF;
 usually one wishes to use {\tt RESTRICTED\_DOCC} instead.
 The current version of the program does not allow both
 {\tt RESTRICTED\_DOCC} and {\tt FROZEN\_DOCC}.
+Should be in {\tt psi:()} or {\tt default:()} sections of input.
 The Cotton ordering of the irredicible representations is used.
 The default is the zero vector.
 \item[FROZEN\_UOCC = (integer array)]\mbox{}\\
+Should be in {\tt psi:()} or {\tt default:()} sections of input.
 The number of highest energy unoccupied orbitals in each irreducible
 representation into which there will be no excitations.
 These orbitals are literally frozen and are not optimized in the MCSCF;
 usually one wishes to use {\tt RESTRICTED\_UOCC} instead.
 The current version of the program does not allow both
 {\tt RESTRICTED\_UOCC} and {\tt FROZEN\_UOCC}.
+Should be in {\tt psi:()} or {\tt default:()} sections of input.
 The default is the zero vector.
 \item[NCASITER = integer]\mbox{}\\
 Maximum number of iterations to optimize the orbitals.  This option
