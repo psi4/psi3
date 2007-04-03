@@ -157,8 +157,10 @@ void get_params()
   fprintf(outfile, "\tPrint Level   \t=\t%d\n", params.print);
   fprintf(outfile, "\tOPDM          \t=\t%s\n", params.opdm ? "YES":"NO");
   fprintf(outfile, "\tSCS           \t=\t%s\n", params.scs ? "TRUE":"FALSE");
-  fprintf(outfile, "\tSCS_SCALE_S   \t=\t%.3f\n",params.scs_scale_s);
-  fprintf(outfile, "\tSCS_SCALE_T   \t=\t%.3f\n",params.scs_scale_t);
+  if (params.scs) {
+    fprintf(outfile, "\tSCS_SCALE_S   \t=\t%.3f\n",params.scs_scale_s);
+    fprintf(outfile, "\tSCS_SCALE_T   \t=\t%.3f\n",params.scs_scale_t);
+  }
 
   if (params.scs && (strcmp(params.dertype,"NONE")!=0)) {
     fprintf(outfile,"\nWarning: SCS-MP2 computation requested but\n");
