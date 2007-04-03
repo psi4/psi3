@@ -40,11 +40,61 @@ void get_parameters(void)
    if (ip_exist(":DETCI:FROZEN_DOCC",0) &&
       !(ip_exist(":DEFAULT:FROZEN_DOCC",0) || 
         ip_exist(":PSI:FROZEN_DOCC",0)) ) {
-     fprintf(outfile, "\nDETCI: Warning - FROZEN_DOCC needs to be readable\n");
+     fprintf(outfile, "\nDETCI: Error - FROZEN_DOCC needs to be readable\n");
      fprintf(outfile, "by the transformation program also!  Move it to\n");
      fprintf(outfile, "the psi: or default: sections of input.\n\n");
      exit(PSI_RETURN_FAILURE);
    }
+
+   if (ip_exist(":DETCI:FROZEN_UOCC",0) &&
+      !(ip_exist(":DEFAULT:FROZEN_UOCC",0) || 
+        ip_exist(":PSI:FROZEN_UOCC",0)) ) {
+     fprintf(outfile, "\nDETCI: Error - FROZEN_UOCC needs to be readable\n");
+     fprintf(outfile, "by the transformation program also!  Move it to\n");
+     fprintf(outfile, "the psi: or default: sections of input.\n\n");
+     exit(PSI_RETURN_FAILURE);
+   }
+
+   if (ip_exist(":DETCI:RAS1",0) &&
+      !(ip_exist(":DEFAULT:RAS1",0) || 
+        ip_exist(":PSI:RAS1",0)) ) {
+     fprintf(outfile, "\nDETCI: Warning - RAS1 needs to be readable\n");
+     fprintf(outfile, "by the transformation program also!  Move it to\n");
+     fprintf(outfile, "the psi: or default: sections of input.\n\n");
+   }
+
+   if (ip_exist(":DETCI:RAS2",0) &&
+      !(ip_exist(":DEFAULT:RAS2",0) || 
+        ip_exist(":PSI:RAS2",0)) ) {
+     fprintf(outfile, "\nDETCI: Warning - RAS2 needs to be readable\n");
+     fprintf(outfile, "by the transformation program also!  Move it to\n");
+     fprintf(outfile, "the psi: or default: sections of input.\n\n");
+   }
+
+   if (ip_exist(":DETCI:RAS3",0) &&
+      !(ip_exist(":DEFAULT:RAS3",0) || 
+        ip_exist(":PSI:RAS3",0)) ) {
+     fprintf(outfile, "\nDETCI: Warning - RAS3 needs to be readable\n");
+     fprintf(outfile, "by the transformation program also!  Move it to\n");
+     fprintf(outfile, "the psi: or default: sections of input.\n\n");
+   }
+
+   if (ip_exist(":DETCI:RESTRICTED_DOCC",0) &&
+      !(ip_exist(":DEFAULT:RESTRICTED_DOCC",0) || 
+        ip_exist(":PSI:RESTRICTED_DOCC",0)) ) {
+     fprintf(outfile,"\nDETCI: Warning-RESTRICTED_DOCC needs to be readable\n");
+     fprintf(outfile, "by the transformation program also!  Move it to\n");
+     fprintf(outfile, "the psi: or default: sections of input.\n\n");
+   }
+
+   if (ip_exist(":DETCI:RESTRICTED_UOCC",0) &&
+      !(ip_exist(":DEFAULT:RESTRICTED_UOCC",0) || 
+        ip_exist(":PSI:RESTRICTED_UOCC",0)) ) {
+     fprintf(outfile,"\nDETCI: Warning-RESTRICTED_UOCC needs to be readable\n");
+     fprintf(outfile, "by the transformation program also!  Move it to\n");
+     fprintf(outfile, "the psi: or default: sections of input.\n\n");
+   }
+
 
    /* default value of Ms0 depends on iopen but is modified below 
     * depending on value of opentype
