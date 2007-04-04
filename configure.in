@@ -439,6 +439,7 @@ if test "X$BLAS" = X; then
  AC_MSG_ERROR("Did not find a BLAS library")
 fi
 AC_SUBST(BLAS)
+AC_MSG_RESULT([BLAS library is $BLAS])
 
 AC_ARG_WITH(lapack,[  --with-lapack           which lapack library to use],[
 case $withval in
@@ -702,8 +703,9 @@ AC_MSG_RESULT([C++ extra flags: $CXXOTH])
 # Check for LaTeX, DVIPS, and LaTeX2HTML
 #
 AC_PROG_LATEX()
-AC_PROG_DVIPS()
 AC_PROG_LATEX2HTML()
+AC_PROG_DVIPS()
+AC_PROG_BIBTEX()
 
 #
 # Support for dependency rules
