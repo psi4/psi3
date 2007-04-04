@@ -155,7 +155,7 @@ case $withval in
     FC='fc'
     ;;
   no)
-    FC=''
+    FC='no'
     ;;
   *)
     FC=$withval
@@ -187,7 +187,6 @@ case $withval in
     ;;
 esac
 ])
-
 
 AC_ARG_WITH(ranlib,
 [  --with-ranlib           Gives the name of the ranlib program.],
@@ -253,11 +252,14 @@ PERL=$withval
 AC_SUBST(PERL)
 
 # Find out which compilers are available.
-if test ! -z "$FC"; then
-  AC_CHECK_PROGS([FC],[$FC_LIST],[f77])
+if test "$FC" != no; then
+  if test -z "$FC"; then
+    AC_CHECK_PROGS([FC],[$FC_LIST],[f77])
+  fi
+  F77=$FC
+else
+  F77=
 fi
-
-F77=$FC
 
 if test -z "$CC"; then
   AC_CHECK_PROGS([CC],[$CC_LIST],[cc])
