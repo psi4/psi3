@@ -411,12 +411,12 @@ void Wmbej_build(void)
     dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbEj");
     dpd_buf4_init(&t2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIAjb");
     dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D 2<ij|ab> - <ij|ba> (ia,jb)");
-    dpd_contract444(&D, &t2, &W, 0, 0, 0.5, 1);
+    dpd_contract444(&D, &t2, &W, 0, 1, 0.5, 1);
     dpd_buf4_close(&D);
     dpd_buf4_close(&t2);
     dpd_buf4_init(&t2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tjAIb");
     dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D <ij|ab> (ia,jb)");
-    dpd_contract444(&D, &t2, &W, 0, 0, -0.5, 1);
+    dpd_contract444(&D, &t2, &W, 0, 1, -0.5, 1);
     dpd_buf4_close(&D);
     dpd_buf4_close(&t2);
     dpd_buf4_close(&W);
@@ -435,7 +435,7 @@ void Wmbej_build(void)
     dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbeJ");
     dpd_buf4_init(&t2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIbjA");
     dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D <ij|ab> (ib,ja)");
-    dpd_contract444(&D, &t2, &W, 0, 0, 0.5, 1);
+    dpd_contract444(&D, &t2, &W, 0, 1, 0.5, 1);
     dpd_buf4_close(&D);
     dpd_buf4_close(&t2);
     dpd_buf4_close(&W);
