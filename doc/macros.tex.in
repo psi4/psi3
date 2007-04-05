@@ -1,9 +1,9 @@
 
 \newcommand{\PSItwo}{{\tt PSI2}}
 \newcommand{\PSIthree}{{\tt PSI3}}
-\newcommand{\PSIversion}{@PSI_MMM_VERSION@ (@PSI_BUILDID@)}
-\newcommand{\PSImmmversion}{@PSI_MMM_VERSION@}
-\newcommand{\PSIbuildid}{@PSI_BUILDID@}
+\newcommand{\PSIversion}{@PSI_VERSION@}
+\newcommand{\PSImmmversion}{@PSI_VERSION@}
+\newcommand{\PSIemail}{@PSI_BUGREPORT@}
 
 %
 % Psi Modules

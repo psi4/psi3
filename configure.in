@@ -1,14 +1,14 @@
 # Definitions
-define([psi_mmm_version],[3.3.0])
+define([psi_version],[3.3.0])
 define([psi_buildid],[alpha])
 define([psi_so_version],[1:0:0])
-define([psi_email],[psicode@users.sourceforge.net])
+define([psi_bugreport],[psicode@users.sourceforge.net])
 
 # Process this file with autoconf to produce a configure script.
 define([AC_CACHE_LOAD], )dnl for debugging configure.in
 define([AC_CACHE_SAVE], )dnl for debugging configure.in
 AC_PREREQ(2.57)
-AC_INIT([psi],[psi_mmm_version],[psi_email])
+AC_INIT([psi],[psi_version],[psi_bugreport])
 AC_CONFIG_SRCDIR(aclocal.m4)
 AC_CONFIG_HEADER(include/psiconfig.h)
 AC_PROG_MAKE_SET([])
@@ -17,7 +17,7 @@ AC_PROG_MAKE_SET([])
 srcdir=`(cd $srcdir; pwd)`
 
 # That's where extra scripts necessary for configuration (config.guess, etc.) are located
-AC_CONFIG_AUX_DIR(bin)
+#AC_CONFIG_AUX_DIR(bin)
 
 # Set up the default paths.
 AC_PREFIX_DEFAULT(/usr/local/psi)
@@ -48,10 +48,11 @@ AC_SUBST(datadir)
 AC_SUBST(incdir)
 AC_SUBST(top_objdir)
 
-PSI_MMM_VERSION=psi_mmm_version
+PSI_VERSION=psi_version
 PSI_BUILDID=psi_buildid
-AC_SUBST(PSI_MMM_VERSION)
+AC_SUBST(PSI_VERSION)
 AC_SUBST(PSI_BUILDID)
+AC_SUBST(PSI_BUGREPORT)
 
 # get the target
 AC_CANONICAL_TARGET
@@ -252,6 +253,14 @@ PERL=$withval
 AC_SUBST(PERL)
 
 # Find out which compilers are available.
+if test -z "$CC"; then
+  AC_CHECK_PROGS([CC],[$CC_LIST],[cc])
+fi
+
+if test -z "$CXX"; then
+  AC_CHECK_PROGS([CXX],[$CXX_LIST],[c++])
+fi
+
 if test "$FC" != no; then
   if test -z "$FC"; then
     AC_CHECK_PROGS([FC],[$FC_LIST],[f77])
@@ -259,14 +268,6 @@ if test "$FC" != no; then
   F77=$FC
 else
   F77=
-fi
-
-if test -z "$CC"; then
-  AC_CHECK_PROGS([CC],[$CC_LIST],[cc])
-fi
-
-if test -z "$CXX"; then
-  AC_CHECK_PROGS([CXX],[$CXX_LIST],[c++])
 fi
 
 # Figure out libraries needed to link Fortran programs in C ..

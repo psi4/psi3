@@ -1,3 +1,4 @@
+SHELL = /bin/sh
 
 .PHONY:	default all install install_man install_inc install_host depend clean targetclean tests doc
 
@@ -7,6 +8,7 @@ subdirs = lib include src
 
 top_srcdir = @top_srcdir@
 srcdir = @srcdir@
+datarootdir = @datarootdir@
 VPATH = @srcdir@
 top_objdir = .
 

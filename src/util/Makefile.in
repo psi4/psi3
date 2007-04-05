@@ -49,6 +49,7 @@ targetclean:
 
 top_srcdir = @top_srcdir@
 srcdir = @srcdir@
+datarootdir = @datarootdir@
 top_objdir = ../..
 
 $(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
