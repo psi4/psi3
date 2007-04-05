@@ -274,6 +274,7 @@ option.  The overall print option should be specified by a keyword
 \end{table}
 
 \subsection{Commenting Source Code}
+\label{code-commenting}
 It is absolutely mandatory that each source file contains a reasonable
 number of comments. When a significant variable, data type, or
 function is declared, it must be accompanied with some descriptive
@@ -334,4 +335,9 @@ int psio_close(ULI unit, int keep)
 \end{verbatim}
 This will add the function {\tt psio\_close} to the list, associate it with
 the {\tt PSIO} module, and define the various arguments.
+
+{\em Please note:} In addition to listing all the parameters and return
+values, it is very valuable to explain what the function actually does.
+Add this explanation immediately after the function name (see above).  This
+explanation might be a few words, or an entire paragraph, as necessary.
 
