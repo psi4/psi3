@@ -57,7 +57,7 @@ void get_fzc_operator(void);
 void get_mvos(void);
 void get_canonical(void);
 void get_mp2nos(void);
-void get_unos(void);
+/* void get_unos(void); */
 
 main(int argc, char *argv[])
 {
@@ -73,7 +73,7 @@ main(int argc, char *argv[])
     get_mp2nos();
   }
   else if (params.unos) {
-    get_unos();
+    /* get_unos(); */
   }
   else if (params.canonical) {
     get_canonical();
@@ -124,7 +124,7 @@ void title(void)
     fprintf(outfile,"\t*                  March  2001                   *\n");
     fprintf(outfile,"\t**************************************************\n");
     fprintf(outfile, "\n");
-    }
+  }
 }
 
 void init_ioff(void)
@@ -132,13 +132,13 @@ void init_ioff(void)
   int i;
   ioff = (int *) malloc(IOFF_MAX * sizeof(int));
   if(ioff == NULL) {
-      fprintf(stderr, "(transqt): error malloc'ing ioff array\n");
-      exit(0);
-          }
+    fprintf(stderr, "(transqt): error malloc'ing ioff array\n");
+    exit(0);
+  }
   ioff[0] = 0;
   for(i=1; i < IOFF_MAX; i++) {
-      ioff[i] = ioff[i-1] + i;
-    }
+    ioff[i] = ioff[i-1] + i;
+  }
 }
 
 void exit_io(void)
@@ -174,6 +174,10 @@ void get_parameters(void)
   params.fzc = 1;
   errcod = ip_boolean("FZC",&(params.fzc),0);
 
+  /* remove restricted docc from RAS 1 ? */
+  params.del_restr_docc = 1;
+  errcod = ip_boolean("DELETE_RESTR_DOCC",&(params.del_restr_docc),0);
+
   params.mp2nos = 0;
   errcod = ip_boolean("MP2NOS",&(params.mp2nos),0);
 
@@ -183,10 +187,10 @@ void get_parameters(void)
   if (strcmp(params.wfn, "CI")==0 || strcmp(params.wfn, "DETCAS")==0 ||
       strcmp(params.wfn, "DETCI")==0) {
     params.ras_type = 1;
-    }
+  }
   else {
     params.ras_type = 0;
-    }
+  }
 
   params.fzc_fock_coeff = 1.0;
   errcod = ip_data("FZC_FOCK_COEFF", "%lf", &(params.fzc_fock_coeff),0);
@@ -208,28 +212,31 @@ void print_parameters(void)
 {
 
   if (params.print_lvl) {
-      fprintf(outfile,"\tInput Parameters:\n");
-      fprintf(outfile,"\t-----------------\n");
-      fprintf(outfile,"\tWavefunction           =  %s\n", params.wfn);
-      fprintf(outfile,"\tPrint MOs              =  %s\n", 
-                                  (params.print_mos ? "Yes": "No"));
-      fprintf(outfile,"\tErase OEI file         =  %s\n", 
-                                  (params.oei_erase ? "Yes": "No"));
-      fprintf(outfile,"\tFrozen core            =  %s\n", 
-                                  (params.fzc ? "Yes": "No"));
-      fprintf(outfile,"\tIVO                    =  %s\n", 
-                                  (params.ivo ? "Yes": "No"));
-      fprintf(outfile,"\tCanonical              =  %s\n",
+    fprintf(outfile,"\n");
+    fprintf(outfile,"\tInput Parameters:\n");
+    fprintf(outfile,"\t-----------------\n");
+    fprintf(outfile,"\tWavefunction           =  %s\n", params.wfn);
+    fprintf(outfile,"\tPrint MOs              =  %s\n", 
+                                (params.print_mos ? "Yes": "No"));
+    fprintf(outfile,"\tErase OEI file         =  %s\n", 
+                                (params.oei_erase ? "Yes": "No"));
+    fprintf(outfile,"\tFrozen core            =  %s\n", 
+                                (params.fzc ? "Yes": "No"));
+    fprintf(outfile,"\tDelete Restricted Docc =  %s\n",
+                                (params.del_restr_docc ? "Yes" : "No"));
+    fprintf(outfile,"\tIVO                    =  %s\n", 
+                                (params.ivo ? "Yes": "No"));
+    fprintf(outfile,"\tCanonical              =  %s\n",
 		                  (params.canonical ? "Yes": "No"));
-      fprintf(outfile,"\tFrozen Core OEI file   =  %d\n", 
-                                  params.h_fzc_file);
-      fprintf(outfile,"\tfzc_fock_coeff         =  %lf\n", 
-                                  params.fzc_fock_coeff);
-      fprintf(outfile,"\tfock_coeff             =  %lf\n", 
-                                  params.fock_coeff);
-      fprintf(outfile,"\tPrint Level            =  %d\n", params.print_lvl);
-      fflush(outfile);
-    }
+    fprintf(outfile,"\tFrozen Core OEI file   =  %d\n", 
+                                params.h_fzc_file);
+    fprintf(outfile,"\tfzc_fock_coeff         =  %lf\n", 
+                                params.fzc_fock_coeff);
+    fprintf(outfile,"\tfock_coeff             =  %lf\n", 
+                                params.fock_coeff);
+    fprintf(outfile,"\tPrint Level            =  %d\n", params.print_lvl);
+    fflush(outfile);
+  }
   
   return;
 }
@@ -274,49 +281,63 @@ void get_moinfo(void)
 
   moinfo.sosym = init_int_array(moinfo.nso);
   for (i=0,k=0; i<moinfo.nirreps; i++) {
-      for (j=0; j<moinfo.sopi[i]; j++,k++) {
-          moinfo.sosym[k] = i;
-        }
+    for (j=0; j<moinfo.sopi[i]; j++,k++) {
+      moinfo.sosym[k] = i;
     }
+  }
   
   moinfo.orbsym = init_int_array(moinfo.nmo);
   for (i=0,k=0; i<moinfo.nirreps; i++) {
-      for (j=0; j<moinfo.orbspi[i]; j++,k++) {
-          moinfo.orbsym[k] = i;
-        }
+    for (j=0; j<moinfo.orbspi[i]; j++,k++) {
+      moinfo.orbsym[k] = i;
     }
+  }
 
   moinfo.frdocc = init_int_array(moinfo.nirreps);
   moinfo.fruocc = init_int_array(moinfo.nirreps);
   errcod = ip_int_array("FROZEN_DOCC", moinfo.frdocc, moinfo.nirreps);
   errcod = ip_int_array("FROZEN_UOCC", moinfo.fruocc, moinfo.nirreps);
 
-  if (!params.fzc) {
-      for (i=0; i<moinfo.nirreps; i++) {
-          moinfo.frdocc[i] = 0;
-        }
+  moinfo.rstrdocc = init_int_array(moinfo.nirreps);
+  moinfo.rstruocc = init_int_array(moinfo.nirreps);
+  errcod = ip_int_array("RESTRICTED_DOCC",moinfo.rstrdocc,moinfo.nirreps);
+  errcod = ip_int_array("RESTRICTED_UOCC",moinfo.rstruocc,moinfo.nirreps);
+                                                                                
+  /*
+  if (params.treat_cor_as_fzc) {
+    for (i=0; i<moinfo.nirreps; i++) {
+      moinfo.frdocc[i] += moinfo.rstrdocc[i];
+      moinfo.rstrdocc[i] = 0;
     }
+  }
+  */
+
+  if (!params.fzc) {
+    for (i=0; i<moinfo.nirreps; i++) {
+      moinfo.frdocc[i] = 0;
+    }
+  }
 
   moinfo.nfzc = 0;
   moinfo.nfzv = 0;
   for (i=0; i<moinfo.nirreps; i++) {
-      moinfo.nfzc += moinfo.frdocc[i];
-      moinfo.nfzv += moinfo.fruocc[i];
-    }
+    moinfo.nfzc += moinfo.frdocc[i];
+    moinfo.nfzv += moinfo.fruocc[i];
+  }
 
   moinfo.ndocc = 0;
   tmpi = init_int_array(moinfo.nirreps);
   errcod = ip_int_array("DOCC", tmpi, moinfo.nirreps);
   if (errcod == IPE_OK) {
-      for (i=0,warned=0; i<moinfo.nirreps; i++) {
-          if (tmpi[i] != moinfo.clsdpi[i] && !warned) {
-              fprintf(outfile, "\tWarning: DOCC doesn't match PSIF_CHKPT\n");
-              warned = 1;
-            }
-          moinfo.clsdpi[i] = tmpi[i];
-          moinfo.ndocc += tmpi[i];
-        }
+    for (i=0,warned=0; i<moinfo.nirreps; i++) {
+      if (tmpi[i] != moinfo.clsdpi[i] && !warned) {
+        fprintf(outfile, "\tWarning: DOCC doesn't match PSIF_CHKPT\n");
+        warned = 1;
+      }
+      moinfo.clsdpi[i] = tmpi[i];
+      moinfo.ndocc += tmpi[i];
     }
+  }
   else {
     for (i=0; i<moinfo.nirreps; i++) {
       moinfo.ndocc += moinfo.clsdpi[i];
@@ -326,40 +347,40 @@ void get_moinfo(void)
   moinfo.nsocc = 0;
   errcod = ip_int_array("SOCC", tmpi, moinfo.nirreps);
   if (errcod == IPE_OK) {
-      for (i=0,warned=0; i<moinfo.nirreps; i++) {
-          if (tmpi[i] != moinfo.openpi[i] && !warned) {
-              fprintf(outfile, "\tWarning: SOCC doesn't match PSIF_CHKPT\n");
-              warned = 1;
-            }
-          moinfo.openpi[i] = tmpi[i];
-          moinfo.nsocc += tmpi[i];
-        }
+    for (i=0,warned=0; i<moinfo.nirreps; i++) {
+      if (tmpi[i] != moinfo.openpi[i] && !warned) {
+        fprintf(outfile, "\tWarning: SOCC doesn't match PSIF_CHKPT\n");
+        warned = 1;
+      }
+      moinfo.openpi[i] = tmpi[i];
+      moinfo.nsocc += tmpi[i];
     }
+  }
 
   moinfo.virtpi = init_int_array(moinfo.nirreps);
   for(i=0; i < moinfo.nirreps; i++) {
-      moinfo.virtpi[i] = moinfo.orbspi[i]-moinfo.clsdpi[i]-moinfo.openpi[i];
-    }
+    moinfo.virtpi[i] = moinfo.orbspi[i]-moinfo.clsdpi[i]-moinfo.openpi[i];
+  }
 
   if (params.print_lvl) {
-      fprintf(outfile,"\n\tCheckpoint file parameters:\n");
-      fprintf(outfile,"\t------------------\n");
-      fprintf(outfile,"\tNumber of irreps = %d\n",moinfo.nirreps);
-      fprintf(outfile,"\tNumber of SOs    = %d\n",moinfo.nso);
-      fprintf(outfile,"\tNumber of MOs    = %d\n\n",moinfo.nmo);
-      fprintf(outfile,
-          "\tLabel\t# SOs\t# MOs\t# FZDC\t# DOCC\t# SOCC\t# VIRT\t# FZVR\n");
-      fprintf(outfile,
-          "\t-----\t-----\t-----\t------\t------\t------\t------\t------\n");
-      for(i=0; i < moinfo.nirreps; i++) {
-          fprintf(outfile,
-             "\t %s\t   %d\t   %d\t    %d\t    %d\t    %d\t    %d\t    %d\n",
-             moinfo.labels[i],moinfo.sopi[i],moinfo.orbspi[i],moinfo.frdocc[i],
-             moinfo.clsdpi[i],moinfo.openpi[i],moinfo.virtpi[i],
-             moinfo.fruocc[i]);
-        }
-      fflush(outfile);
+    fprintf(outfile,"\n\tCheckpoint file parameters:\n");
+    fprintf(outfile,"\t------------------\n");
+    fprintf(outfile,"\tNumber of irreps = %d\n",moinfo.nirreps);
+    fprintf(outfile,"\tNumber of SOs    = %d\n",moinfo.nso);
+    fprintf(outfile,"\tNumber of MOs    = %d\n\n",moinfo.nmo);
+    fprintf(outfile,
+        "\tLabel\t# SOs\t# MOs\t# FZDC\t# DOCC\t# SOCC\t# VIRT\t# FZVR\n");
+    fprintf(outfile,
+        "\t-----\t-----\t-----\t------\t------\t------\t------\t------\n");
+    for(i=0; i < moinfo.nirreps; i++) {
+        fprintf(outfile,
+           "\t %s\t   %d\t   %d\t    %d\t    %d\t    %d\t    %d\t    %d\n",
+           moinfo.labels[i],moinfo.sopi[i],moinfo.orbspi[i],moinfo.frdocc[i],
+           moinfo.clsdpi[i],moinfo.openpi[i],moinfo.virtpi[i],
+           moinfo.fruocc[i]);
     }
+    fflush(outfile);
+  }
 
 
   /*
@@ -373,21 +394,21 @@ void get_moinfo(void)
   moinfo.first_so = init_int_array(moinfo.nirreps);
   moinfo.last_so = init_int_array(moinfo.nirreps);
   for(h=0; h < moinfo.nirreps; h++) {
-      moinfo.first_so[h] = -1;
-      moinfo.last_so[h] = -2;
-    }
+    moinfo.first_so[h] = -1;
+    moinfo.last_so[h] = -2;
+  }
   first_offset = 0;
   last_offset = moinfo.sopi[0] - 1; 
   moinfo.first_so[0] = first_offset;
   moinfo.last_so[0] = last_offset;
   for(h=1; h < moinfo.nirreps; h++) {
-      first_offset += moinfo.sopi[h-1];
-      last_offset += moinfo.sopi[h];
-      if(moinfo.sopi[h]) {
-          moinfo.first_so[h] = first_offset;
-          moinfo.last_so[h] = last_offset;
-        }
+    first_offset += moinfo.sopi[h-1];
+    last_offset += moinfo.sopi[h];
+    if(moinfo.sopi[h]) {
+        moinfo.first_so[h] = first_offset;
+        moinfo.last_so[h] = last_offset;
     }
+  }
   
   /*
      Construct first and last index arrays: this defines the first
@@ -399,21 +420,21 @@ void get_moinfo(void)
   moinfo.first = init_int_array(moinfo.nirreps);
   moinfo.last = init_int_array(moinfo.nirreps);
   for(h=0; h < moinfo.nirreps; h++) {
-      moinfo.first[h] = -1;
-      moinfo.last[h] = -2;
-    }
+    moinfo.first[h] = -1;
+    moinfo.last[h] = -2;
+  }
   first_offset = 0;
   last_offset = moinfo.orbspi[0] - 1; 
   moinfo.first[0] = first_offset;
   moinfo.last[0] = last_offset;
   for(h=1; h < moinfo.nirreps; h++) {
-      first_offset += moinfo.orbspi[h-1];
-      last_offset += moinfo.orbspi[h];
-      if(moinfo.orbspi[h]) {
-          moinfo.first[h] = first_offset;
-          moinfo.last[h] = last_offset;
-        }
+    first_offset += moinfo.orbspi[h-1];
+    last_offset += moinfo.orbspi[h];
+    if(moinfo.orbspi[h]) {
+      moinfo.first[h] = first_offset;
+      moinfo.last[h] = last_offset;
     }
+  }
   /*
      Construct first and last active index arrays: this defines the first
      absolute orbital index (Pitzer ordering) and last absolute orbital
@@ -425,27 +446,27 @@ void get_moinfo(void)
   moinfo.fstact = init_int_array(moinfo.nirreps);
   moinfo.lstact = init_int_array(moinfo.nirreps);
   for(h=0; h < moinfo.nirreps; h++) {
-      moinfo.fstact[h] = -1;
-      moinfo.lstact[h] = -2;
-    }
+    moinfo.fstact[h] = -1;
+    moinfo.lstact[h] = -2;
+  }
   first_offset = moinfo.frdocc[0];
   last_offset = moinfo.orbspi[0] - moinfo.fruocc[0] - 1; 
   moinfo.fstact[0] = first_offset;
   moinfo.lstact[0] = last_offset;
   for(h=1; h < moinfo.nirreps; h++) {
-      first_offset += moinfo.orbspi[h-1]+moinfo.frdocc[h]-moinfo.frdocc[h-1];
-      last_offset += moinfo.orbspi[h] - moinfo.fruocc[h] + moinfo.fruocc[h-1];
-      if(moinfo.orbspi[h]) {
-          moinfo.fstact[h] = first_offset;
-          moinfo.lstact[h] = last_offset;
-        }
+    first_offset += moinfo.orbspi[h-1]+moinfo.frdocc[h]-moinfo.frdocc[h-1];
+    last_offset += moinfo.orbspi[h] - moinfo.fruocc[h] + moinfo.fruocc[h-1];
+    if(moinfo.orbspi[h]) {
+      moinfo.fstact[h] = first_offset;
+      moinfo.lstact[h] = last_offset;
     }
+  }
 
   /* Now define active[] such that frozen orbitals are taken into account */
   moinfo.active = init_int_array(moinfo.nirreps);
   for(h=0; h < moinfo.nirreps; h++) {
-      moinfo.active[h] = moinfo.orbspi[h]-moinfo.frdocc[h]-moinfo.fruocc[h];
-    }
+    moinfo.active[h] = moinfo.orbspi[h]-moinfo.frdocc[h]-moinfo.fruocc[h];
+  }
 
   chkpt_close();
 
@@ -480,38 +501,45 @@ void get_reorder_array(void)
   int i, errcod;
   int j, k, l, fzv_offset;
 
-  moinfo.order = init_int_array(moinfo.nmo);
-
   /* the following will only be set nonzero if it is a CI related WFN */
-  moinfo.ras_opi = init_int_matrix(4,moinfo.nirreps);
+  moinfo.ras_opi = init_int_matrix(MAX_RAS_SPACES,moinfo.nirreps);
+  moinfo.order = init_int_array(moinfo.nmo);
 
   if (strcmp(params.wfn, "CI") == 0 || strcmp(params.wfn, "DETCI") == 0
        || strcmp(params.wfn, "QDPT") == 0 
        || strcmp(params.wfn, "OOCCD") == 0 
        || strcmp(params.wfn, "DETCAS") == 0) {
     
-    moinfo.ras_opi = init_int_matrix(4,moinfo.nirreps); 
+    moinfo.ras_opi = init_int_matrix(MAX_RAS_SPACES,moinfo.nirreps); 
     
+    /*
     if (!ras_set(moinfo.nirreps, moinfo.nmo, params.fzc, moinfo.orbspi,
                  moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
 		 moinfo.ras_opi, moinfo.order, params.ras_type)) {
       fprintf(outfile, "Error in ras_set().  Aborting.\n");
       exit(1);
     }
+    */
+    if (!ras_set2(moinfo.nirreps, moinfo.nmo, params.fzc, 
+         params.del_restr_docc, moinfo.orbspi, moinfo.clsdpi, moinfo.openpi,
+         moinfo.frdocc, moinfo.fruocc, moinfo.rstrdocc, moinfo.rstruocc,
+         moinfo.ras_opi, moinfo.order, params.ras_type, 0)) {
+      fprintf(outfile, "Error in ras_set2().  Aborting.\n");
+      exit(1);
+    } 
   } 
-  
   else { /* default (CC, MP2, other) */
     reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
 	       moinfo.order, moinfo.orbspi, moinfo.nirreps);
   }
   
-   /* construct an array to map the other direction, i.e., from correlated */
-   /* to Pitzer order */
-   moinfo.corr2pitz = init_int_array(moinfo.nmo);
-   for (i=0; i<moinfo.nmo; i++) {
-     j = moinfo.order[i];
-     moinfo.corr2pitz[j] = i;
-   }
+  /* construct an array to map the other direction, i.e., from correlated */
+  /* to Pitzer order */
+  moinfo.corr2pitz = init_int_array(moinfo.nmo);
+  for (i=0; i<moinfo.nmo; i++) {
+    j = moinfo.order[i];
+    moinfo.corr2pitz[j] = i;
+  }
 
 }
 
@@ -519,7 +547,7 @@ void get_reorder_array(void)
 void cleanup(void)
 {
   free(moinfo.fzc_operator);
-  free_int_matrix(moinfo.ras_opi, 4);
+  free_int_matrix(moinfo.ras_opi, MAX_RAS_SPACES);
 }
 
 void get_mvos(void)

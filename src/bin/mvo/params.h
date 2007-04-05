@@ -20,6 +20,8 @@ struct Params {
    int h_fzc_file;          /* filenum for frozen core operator             */
    int oei_erase;           /* if 1, erase the frozen core operator file    */
    int fzc;                 /* do an implicit frozen core                   */
+   int del_restr_docc;      /* delete the restricted docc orbs? 1/0         */
+
    int ras_type;            /* define ras I to include 0 or excluded 1 socc */
    /* the next two entries allow for mixing the frozen core fock matrix 
       with the regular fock matrix.  I assume that the regular fock matrix

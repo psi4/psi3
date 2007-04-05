@@ -31,8 +31,11 @@
 ** This ignores coupling between active and frozen virtuals, but since
 ** the virtuals are deleted, any coupling is ignored, too!  (Should be...)
 **
-** TODO: Need to write the function form_fock_full(double **F) to generate
-** the Fock matrix
+** Revisions:
+**  15 May 2006 by C. David Sherrill 
+**  - Cleaned up this routine and added ability to handle restricted orbitals
+**  - Tested on canonical SCF orbitals and appear to just get them back,
+**    which is what should happen
 */
 
 #include <stdio.h>
@@ -66,10 +69,11 @@ void get_canonical(void)
 {
   int ras_space, irrep, size, ntri;
   int i,j,ij,i2,j2,offset;
-  double *evals;
+  double *evals, *new_evals;
   double **evecs;
   double **C, **C_new, **C_sub, **C_sub_new;
   double **F, *F_sub;
+  double **tras;
   void form_fock_full(double **);
 
   /* Form the full Fock matrix */
@@ -86,7 +90,7 @@ void get_canonical(void)
   chkpt_close();
 
   if (params.print_lvl) {
-    fprintf(outfile, "Full C matrix\n");
+    fprintf(outfile, "\nFull C matrix\n");
     print_mat(C, moinfo.nso, moinfo.nmo, outfile);
   } 
 
@@ -100,15 +104,32 @@ void get_canonical(void)
   F_sub = init_array(ntri);
   evals = init_array(moinfo.nmo);
   evecs = block_matrix(moinfo.nmo,moinfo.nmo);
+  new_evals = init_array(moinfo.nmo);
 
-  for (ras_space=0,offset=0; ras_space<4; ras_space++) {
+  /* put the orbs per subspace into a big array "tras".
+     frozen docc, then restricted docc, then the RAS spaces,
+     then restricted uocc, then frozen uocc */
+  tras = block_matrix(MAX_RAS_SPACES+3,moinfo.nirreps);
+  for (i=0; i<moinfo.nirreps; i++) {
+    tras[0][i] = params.fzc ? 0 : moinfo.frdocc[i];
+    tras[1][i] = moinfo.rstrdocc[i];
+    tras[2+MAX_RAS_SPACES][i] = moinfo.rstruocc[i];
+    /* don't think we need frozen uocc actually */
+  }
+  for (ras_space=0; ras_space<MAX_RAS_SPACES; ras_space++) {
+    for (i=0; i<moinfo.nirreps; i++) {
+      tras[2+ras_space][i] = moinfo.ras_opi[ras_space][i];
+    }
+  }
+
+  for (ras_space=0,offset=0; ras_space<MAX_RAS_SPACES+3; ras_space++) {
     for (i=0,j=0; i<moinfo.nirreps; i++) {
-      j += moinfo.ras_opi[ras_space][i];
+      j += tras[ras_space][i];
     }
     if (j<1) continue; /* no orbitals in this ras space */
     for (irrep=0; irrep<moinfo.nirreps; 
-		  offset+=moinfo.ras_opi[ras_space][irrep],irrep++) {
-      size = moinfo.ras_opi[ras_space][irrep];
+		  offset+=tras[ras_space][irrep],irrep++) {
+      size = tras[ras_space][irrep];
       if (size < 1) continue;
 
       /* copy the sub-block of the full Fock matrix into F_sub */
@@ -119,7 +140,7 @@ void get_canonical(void)
 	}
       } 
       if (params.print_lvl) {
-        fprintf(outfile, "Old F_sub matrix for RAS %d, irrep %d\n",
+        fprintf(outfile, "\nOld F_sub matrix for subspace %d, irrep %d\n",
                 ras_space, irrep);
 	print_array(F_sub, size, outfile);
       }
@@ -128,6 +149,12 @@ void get_canonical(void)
         fprintf(outfile, "\nDiagonalization of matrix F_sub\n");
 	eivout(evecs, evals, size, size, outfile);
       }
+      /* place the eigenvalues where they go */
+      for (j=0; j<size; j++) {
+        j2 = moinfo.corr2pitz[j+offset];
+        new_evals[j2] = evals[j];
+      }
+
       /* load up the corresponding block of the SCF matrix C */
       for (i=0; i<moinfo.sopi[irrep]; i++) {
         i2 = moinfo.first_so[irrep] + i;
@@ -137,7 +164,7 @@ void get_canonical(void)
 	}
       }
       if (params.print_lvl) {
-        fprintf(outfile, "Old C_sub for RAS %d, irrep %d\n", ras_space,
+        fprintf(outfile, "Old C_sub for subspace %d, irrep %d\n", ras_space,
                 irrep);
 	print_mat(C_sub, moinfo.sopi[irrep], size, outfile);
       }
@@ -146,7 +173,7 @@ void get_canonical(void)
             size, 0);
 
       if (params.print_lvl) {
-        fprintf(outfile, "C_sub_new for RAS %d, irrep %d\n", ras_space,
+        fprintf(outfile, "C_sub_new for subspace %d, irrep %d\n", ras_space,
                 irrep);
 	print_mat(C_sub_new, moinfo.sopi[irrep], size, outfile);
       }
@@ -165,22 +192,33 @@ void get_canonical(void)
 
   /* write out the new C matrix */
   if (params.print_lvl) {
-    fprintf(outfile, "Full new C matrix\n");
+    fprintf(outfile, "\nFull new C matrix\n");
     print_mat(C_new, moinfo.nso, moinfo.nmo, outfile);
   } 
 
+  if (params.print_lvl) {
+    fprintf(outfile, "\nNew orbital eigenvalues\n");
+    for (i=0; i<moinfo.nmo; i++) {
+      fprintf(outfile, "%12.6lf  ", new_evals[i]);
+      if ((i+1)%5 == 0) fprintf(outfile, "\n");
+    }
+    fprintf(outfile, "\n");
+  }
+
   chkpt_init(PSIO_OPEN_OLD);
   chkpt_wt_scf(C_new);
+  chkpt_wt_evals(new_evals);
   chkpt_close();
 
   free_block(F);
   free(F_sub);
   free(evals);
+  free(new_evals);
   free_block(evecs);
   free_block(C_sub);
   free_block(C_sub_new);
   free_block(C_new);
   free_block(C);
-
+  free_block(tras);
 }
 

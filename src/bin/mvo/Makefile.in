@@ -8,7 +8,7 @@ LD = $(CXX)
 PSILIBS = libPSI_qt.a libPSI_chkpt.a libPSI_iwl.a libPSI_psio.a libPSI_ciomr.a libPSI_ipv1.a
 
 CSRC = mvo.c gprgid.c transform.c get_mp2nos.c get_canonical.c \
-  form_fock_full.c get_unos.c
+  form_fock_full.c 
 
 CXXSRC = 
 
