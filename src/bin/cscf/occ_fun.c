@@ -59,51 +59,55 @@ void occ_init(void){
     }
 	    
     
-    reference = strdup("RHF");
-    refnum = ref_rhf; /* RHF for file30 flag */
-    ksdft = 0;  /* do Kohn-Sham DFT? Default - no */
-    errcod = ip_string("REFERENCE",&reference,0);
-    if(!strcmp(reference,"ROHF")){
-	refnum = ref_rohf; /* ROHF for file30 flag */
-	iopen = 1;
-	if(multp == 1)
-	    singlet = 1;
-	else if(multp > 1)
-	    hsos = 1;
-	
+    if(!ip_exist("REFERENCE",0)) {
+      reference = strdup("RHF");
+      refnum = ref_rhf; /* RHF for file30 flag */
+      ksdft = 0;  /* do Kohn-Sham DFT? Default - no */
     }
-    else if(!strcmp(reference,"TWOCON")){
-	refnum = ref_tcscf; /*TCSCF for file30 flag */
-	iopen = 2;
-	twocon = 1;
-    }
-    else if(!strcmp(reference,"SPECIAL")){
-	/* NO FILE30 flag for Special */
-	iopen = 1;
-	special = 1;
-    }
-    else if(!strcmp(reference,"UHF")){
-	refnum = ref_uhf; /* UHF for file30 flag */
-	uhf = 1;
-    }
-    else if(!strcmp(reference,"RKS")){
-	refnum = ref_rks; /* flag for spin-restricted Kohn-Sham DFT */
-	ksdft = 1;
-    }
-    else if(!strcmp(reference,"UKS")){
-	refnum = ref_uks; /* flag for spin-unrestricted Kohn-Sham DFT */
-	uhf = 1;
-	ksdft = 1;
-    }
-    else{
-	if(multp != 1){
-	    fprintf(outfile,
-		    "\n Please specify an open shell reference\n");
-	    fprintf(outfile," with multpicity > 1\n");
-	    fprintf(outfile," multiplicity = %d\n",multp);
-	    fprintf(outfile," reference    = %s\n",reference);
-	    exit(PSI_RETURN_FAILURE);
-	}
+    else {
+      errcod = ip_string("REFERENCE",&reference,0);
+      if(!strcmp(reference,"ROHF")){
+  	refnum = ref_rohf; /* ROHF for file30 flag */
+  	iopen = 1;
+  	if(multp == 1)
+  	    singlet = 1;
+  	else if(multp > 1)
+  	    hsos = 1;
+  	
+      }
+      else if(!strcmp(reference,"TWOCON")){
+  	refnum = ref_tcscf; /*TCSCF for file30 flag */
+  	iopen = 2;
+  	twocon = 1;
+      }
+      else if(!strcmp(reference,"SPECIAL")){
+  	/* NO FILE30 flag for Special */
+  	iopen = 1;
+  	special = 1;
+      }
+      else if(!strcmp(reference,"UHF")){
+  	refnum = ref_uhf; /* UHF for file30 flag */
+  	uhf = 1;
+      }
+      else if(!strcmp(reference,"RKS")){
+  	refnum = ref_rks; /* flag for spin-restricted Kohn-Sham DFT */
+  	ksdft = 1;
+      }
+      else if(!strcmp(reference,"UKS")){
+  	refnum = ref_uks; /* flag for spin-unrestricted Kohn-Sham DFT */
+  	uhf = 1;
+  	ksdft = 1;
+      }
+      else{
+  	if(multp != 1){
+  	    fprintf(outfile,
+  		    "\n Please specify an open shell reference\n");
+  	    fprintf(outfile," with multpicity > 1\n");
+  	    fprintf(outfile," multiplicity = %d\n",multp);
+  	    fprintf(outfile," reference    = %s\n",reference);
+  	    exit(PSI_RETURN_FAILURE);
+  	}
+      }
     }
 	
 /* Read Charge same as above */

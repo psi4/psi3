@@ -1,9 +1,12 @@
 /* $Log$
- * Revision 1.4  2002/12/06 15:50:32  crawdad
- * Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
- * necessary.  This is new for the PSI3 execution driver.
- * -TDC
+ * Revision 1.5  2007/04/05 15:45:25  crawdad
+ * Fixed a few memory leaks identified by valgrind. -TDC
  *
+/* Revision 1.4  2002/12/06 15:50:32  crawdad
+/* Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as
+/* necessary.  This is new for the PSI3 execution driver.
+/* -TDC
+/*
 /* Revision 1.3  2001/06/29 20:39:29  evaleev
 /* Modified cscf to use libpsio to store supermatrix files.
 /*
@@ -125,6 +128,7 @@ void packit_open(lbij,lbkl,endflg)
       for(k=joff=0; k < num_ir ; k++) {
          if(nn=scf_info[k].num_so) {
             for(i=0; i < nn ; i++)
+//	      printf("uhf = %d\n", uhf);
 		   if(!uhf){
 		       for(j=0; j <= i ; j++) {
 			   ptmp[ioff[i+joff]+j+joff] = 

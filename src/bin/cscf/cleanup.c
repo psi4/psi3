@@ -1,7 +1,10 @@
 /* $Log$
- * Revision 1.31  2005/11/10 16:37:50  evaleev
- * Added CHECK_MO_ORTHONORMALITY input keyword. Useful for debugging.
+ * Revision 1.32  2007/04/05 15:45:25  crawdad
+ * Fixed a few memory leaks identified by valgrind. -TDC
  *
+/* Revision 1.31  2005/11/10 16:37:50  evaleev
+/* Added CHECK_MO_ORTHONORMALITY input keyword. Useful for debugging.
+/*
 /* Revision 1.30  2004/08/12 19:13:32  crawdad
 /* Corrected computation of <S^2> for UHF references.  The equations were
 /* coded correctly, but variable types screwed up results for doublets,
@@ -514,6 +517,8 @@ void cleanup()
 	  }
 	}
       }
+      free_matrix(scr1,nsfmax);
+      free_matrix(scr2,nsfmax);
     }
        
     else {
@@ -583,7 +588,9 @@ void cleanup()
   /*if(print & 1){
     print_mos_new();
     }*/
-      
+
+  /* TDC (04/04/07) -- some old cleanups */
+  free(reference);
       
   fprintf(outfile,"\n%8cSCF total energy   = %20.12f\n",' ',etot);
       

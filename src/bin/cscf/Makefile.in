@@ -20,6 +20,10 @@ BINOBJ = $(TRUESRC:%.c=%.o)
 
 include ../MakeRules
 
+# Problems with optimization on with gcc-4.1.X compilers (TDC,4/4/07)
+packit_o.o: packit_o.c
+	$(CC) $(CDBG) $(CDEF) $(COTH) $(CINC) -c $< $(OUTPUT_OPTION)
+
 ifneq ($(DODEPEND),no)
 $(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
 include $(BINOBJ:%.o=%.d)

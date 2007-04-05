@@ -59,12 +59,17 @@ void scf_input(ipvalue)
      1                - use old vector in file30
      2 (GUESS=CORE)   - use core guess
     -----------------------------------------------------*/
-   guess = strdup("AUTO");
-   errcod = ip_string("GUESS",&guess,0);
-   if (!strcmp(guess,"AUTO"))
-       inflg=0;
-   else if (!strcmp(guess,"CORE"))
-       inflg=2;
+   if(!ip_exist("GUESS",0))  {
+     guess = strdup("AUTO");
+     inflg=0;
+   }
+   else {
+     errcod = ip_string("GUESS",&guess,0);
+     if (!strcmp(guess,"AUTO"))
+         inflg=0;
+     else if (!strcmp(guess,"CORE"))
+         inflg=2;
+   }
 
    reordr = 0;
    norder = 0;
@@ -165,7 +170,7 @@ void scf_input(ipvalue)
    fprintf(outfile,"  dertype      = %s\n",dertype);
    fprintf(outfile,"  convergence  = %d\n",scf_conv);
    fprintf(outfile,"  maxiter      = %d\n",itmax);
-   fprintf(outfile,"  guess        = %s\n",guess);
+   fprintf(outfile,"  guess        = %s\n",guess); free(guess);
    if(print) fprintf(outfile,"  iprint       = %d\n",print);
    if (second_root)
      fprintf(outfile,"  second_root = TRUE\n");

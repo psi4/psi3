@@ -1,10 +1,13 @@
 /* $Log$
- * Revision 1.4  2004/05/03 04:32:40  crawdad
- * Major mods based on merge with stable psi-3-2-1 release.  Note that this
- * version has not been fully tested and some scf-optn test cases do not run
- * correctly beccause of changes in mid-March 2004 to optking.
- * -TDC
+ * Revision 1.5  2007/04/05 15:45:25  crawdad
+ * Fixed a few memory leaks identified by valgrind. -TDC
  *
+/* Revision 1.4  2004/05/03 04:32:40  crawdad
+/* Major mods based on merge with stable psi-3-2-1 release.  Note that this
+/* version has not been fully tested and some scf-optn test cases do not run
+/* correctly beccause of changes in mid-March 2004 to optking.
+/* -TDC
+/*
 /* Revision 1.3.6.4  2004/04/21 15:45:07  evaleev
 /* Modified DIIS algorithm for RHF and ROHF to work in OSO basis rather than in
 /* AO basis, to avoid difficulties of transforming between MO and AO bases
@@ -148,7 +151,7 @@ void shalf(void)
   }
 
   free(eig_vals);
-  free(eig_vecs);
+  free_matrix(eig_vecs,nsfmax);
 
   fprintf(outfile,"\n  The lowest eigenvalue of the overlap matrix was %e\n\n",
 	  min_eval);
