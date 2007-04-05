@@ -843,6 +843,7 @@ AC_CONFIG_FILES([include/sizeof.h include/Makefile
           tests/cisd-sp/Makefile
           tests/cisd-opt-numer/Makefile
           tests/fci-h2o/Makefile
+          tests/fci-dipole/Makefile
           tests/casscf-sp/Makefile
           tests/casscf-sa-sp/Makefile
           tests/casscf-fzc-sp/Makefile

@@ -57,8 +57,7 @@ $PSITEST_POLARTOL = 10**-5;       # Default test criterion for polarizabilities
 $PSITEST_OPTROTTOL = 10**-3;      # Default test criterion for optical rotation
 $PSITEST_STABTOL = 10**-4;        # Default test criterion for Hessian eigenvalues
 $PSITEST_MPOPTOL = 10**-5;        # Default test criterion for Mulliken populations
-
-##################################################################
+$PSITEST_CIDIPTOL = 10**-4;       # Default test criterion for CI dipoleCI dipoles##################################################
 #
 # This is a "smart" tester -- it parses the input and figures out
 # what kinds of tests to run
@@ -734,8 +733,49 @@ sub compare_ci_energy
   else {
     pass_test("CI energy");
   }
+
+  if($fail == 0 && dip_check($REF_FILE) == 1) {
+    if(abs(seek_ci_dip($REF_FILE) - seek_ci_dip($TEST_FILE)) > $PSITEST_CIDIPTOL) {
+      fail_test("CI dipole"); $fail = 1;
+    }
+    else {
+      pass_test("CI dipole");
+    }
+  }
   
   return $fail;
+}
+
+sub dip_check
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/Dipole moment root/) {
+      close(OUT);
+      return 1;
+    }
+  }
+
+  close(OUT);
+  return 0;
+}
+
+sub seek_ci_dip
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/\|mu\|/) {
+      @data = split(/ +/, $_);
+      $ci_dip = $data[4];
+      return $ci_dip;
+    }
+  }
+  close(OUT);
+
+  printf "Error: Could not find CI dipole moment in $_[0].\n";
+  exit 1;
 }
 
 sub compare_dboc
@@ -793,23 +833,6 @@ sub scs_check
   
   close(OUT);
   return 0;
-}
-
-sub seek_scs_mp2
-{
-  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
-  seek(OUT,0,0);
-  while(<OUT>) {
-    if (/SCS-MP2 total energy/) {
-      @data = split(/ +/, $_);
-      $scs_mp2 = $data[4];
-      return $scs_mp2;
-    }
-  }
-  close(OUT);
-
-  printf "Error: Could not find SCS-MP2 energy in $_[0].\n";
-  exit 1;
 }
 
 sub compare_direct_mp2_energy
@@ -1365,6 +1388,23 @@ sub seek_mp2_direct
   close(OUT);
 
   printf "Error: Could not find MP2 energy in $_[0].\n";
+  exit 1;
+}
+
+sub seek_scs_mp2
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/SCS-MP2 total energy/) {
+      @data = split(/ +/, $_);
+      $scs_mp2 = $data[4];
+      return $scs_mp2;
+    }
+  }
+  close(OUT);
+
+  printf "Error: Could not find SCS-MP2 energy in $_[0].\n";
   exit 1;
 }
 

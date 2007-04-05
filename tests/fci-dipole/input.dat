@@ -1,0 +1,29 @@
+% H2O FCI/6-31G
+
+psi: (
+  jobtype = sp
+)
+
+default: (
+  label = "H2O"
+  memory = (50.0 MB)
+  reference = rhf
+  charge = 0
+  multp = 1
+
+  wfn = detci
+  fci = true
+  docc = (3 0 1 1)
+  opdm = true
+)
+
+input: (
+  basis = "6-31G"
+  units = bohr
+  geometry = (
+    (  O   0.0000000000   0.0000000000  -0.1252739752 )
+    (  H   0.0000000000   1.4294907237   0.9940944482 )
+    (  H   0.0000000000  -1.4294907237   0.9940944482 )
+  )
+)
+
