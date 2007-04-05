@@ -25,8 +25,8 @@ static char *fprefix = NULL;
 ** psi_start()
 **
 ** This function initializes the input, output files, file prefix, etc.,
-** by checking command line arguments and environmental variables. It also initializes
-** Input Parsing library.
+** by checking command line arguments and environmental variables. It also 
+** initializes the Input Parsing library.
 **
 ** Arguments: 
 **  \param argc       = number of command-line arguments passed
@@ -267,7 +267,7 @@ char* psi_ofname()
 }
 
 /*!
-** psi_ifname()
+** psi_fprefix()
 **
 ** This function returns the PSI file prefix
 **
