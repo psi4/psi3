@@ -322,7 +322,8 @@ esac
 ## Check for library functions
 ########
 
-LIBS="$LIBS $CLIBS"
+SAVE_LIBS=$LIBS
+LIBS="$LIBS $CLIBS $FLIBS"
 echo "LIBS = $LIBS"
 
 # If the user didn't give us a BLAS lib, see if we can find one
@@ -346,6 +347,8 @@ if test -z "$BLAS"; then
 fi
 AC_SUBST(BLAS)
 AC_MSG_RESULT([BLAS library is $BLAS])
+
+LIBS=$SAVE_LIBS
 
 # Similar checks for LAPACK, except that sometimes BLAS includes LAPACK
 if test -z "$LAPACK"; then
