@@ -272,12 +272,19 @@ fi
 # Figure out libraries needed to link Fortran programs in C ..
 if test ! -z "$F77"; then
   AC_F77_LIBRARY_LDFLAGS
+  AC_ARG_WITH(flibs,
+   [  --with-flibs            Fortran linking libraries.],
+   [ FLIBS=$withval
+     echo "Using user-specified value of FLIBS."
+   ]
+  )
 fi
 # .. and check if they work
 AC_CHECK_LIB(c,exit,[],[
 FLIBS=
 AC_MSG_WARN([F77 libraries don't seem to link with C programs])
 ],$FLIBS)
+AC_SUBST(FLIBS)
 
 # Get info on the utility programs.
 AC_PROG_CPP()
@@ -668,9 +675,9 @@ case $withval in
     FOPT=''
     ;;
   *)
-    COPT="$withval"
-    CXXOPT="$withval"
-    FOPT="$withval"
+    COPT="$COPT $withval"
+    CXXOPT="$CXXOPT $withval"
+    FOPT="$FOPT $withval"
     ;;
 esac
 ])
@@ -698,6 +705,44 @@ esac
 ])
 AC_MSG_RESULT([C extra flags: $COTH])
 AC_MSG_RESULT([C++ extra flags: $CXXOTH])
+
+# check Fortran symbol convention
+AC_MSG_CHECKING(fortran symbols)
+if test -n "$FC" ; then
+  /bin/rm -f ffunc.f flink.c
+  echo "      subroutine ffunc()" > ffunc.f
+  echo "      return" >> ffunc.f
+  echo "      end" >> ffunc.f
+  $FC -c ffunc.f 1>/dev/null 2>/dev/null
+  echo "main(){ FF(); return 0; }" > flink.c
+  if $CC -o flink -DFF=ffunc flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+    AC_MSG_RESULT(same as C)
+    FC_SYMBOL=1
+  elif $CC -o flink -DFF=ffunc_ flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+    AC_MSG_RESULT(lowercase with underscore)
+    FC_SYMBOL=2
+  elif $CC -o flink -DFF=FFUNC flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+    AC_MSG_RESULT(uppercase)
+    FC_SYMBOL=3
+  elif $CC -o flink -DFF=FFUNC_ flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+    AC_MSG_RESULT(uppercase with underscore)
+    FC_SYMBOL=4
+  else
+    AC_MSG_RESULT(giving up)
+    AC_MSG_ERROR(could not determine fortran symbol names)
+  fi
+  /bin/rm -f ffunc.f ffunc.o flink flink.c flink.o ffunc
+else
+  FC_SYMBOL=2
+  AC_MSG_RESULT(guessing lowercase with underscore)
+fi
+AC_SUBST(FC_SYMBOL)
+
+AC_ARG_WITH(ldflags,
+[  --with-ldflags          Specifies additional linking options.],
+LDFLAGS="$LDFLAGS $withval"
+echo Using additional linking flags: $withval
+)
 
 #
 # Check for LaTeX, DVIPS, and LaTeX2HTML
