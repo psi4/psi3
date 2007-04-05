@@ -29,14 +29,14 @@
 \vspace{2.0in}
 {\bf {\Large Installation Manual for the \PSIthree\ Program Package}} \\
 \vspace{0.5in}
-T.\ Daniel Crawford,$^a$ C.\ David Sherrill,$^b$ and Edward F.\ Valeev.$^{b,c}$   \\
-\ \\
-{\em $^a$Department of Chemistry, Virginia Tech, Blacksburg, Virginia 24061-0001} \\
+T.\ Daniel Crawford,$^a$ C.\ David Sherrill,$^b$ and Edward F.\ Valeev$^{a}$ 
+\\ \  \\
+{\em $^a$Department of Chemistry, Virginia Tech, Blacksburg, 
+Virginia 24061-0001} \\
 \vspace{0.1in}
-{\em $^c$Center for Computational Molecular Science and Technology, \mbox{Georgia 
-Institute of Technology,} Atlanta, Georgia 30332-0400} \\
+{\em $^b$Center for Computational Molecular Science and Technology, 
+\mbox{Georgia Institute of Technology,} Atlanta, Georgia 30332-0400} \\
 \vspace{0.1in}
-{\em $^b$\mbox{Oak Ridge National Laboratory,} Oak Ridge, Tennessee 37831-6367}\\
 \ \\
 \vspace{0.3in}
 \PSIthree\ Version: \PSIversion \\
@@ -97,16 +97,13 @@ package and install the executables in /usr/local/psi/bin:
 \item {\tt autoconf}
 \item {\tt mkdir objdir}
 \item {\tt cd objdir}
-\item {\tt ../configure}
+\item {\tt ../configure} (may need some of the options below, esp.~if
+  {\tt blas} or {\tt lapack} are in non-standard locations)
 \item {\tt make}
 \item {\tt make tests} (optional, but recommended)
 \item {\tt make install}
 \item {\tt make doc} (optional)
 \end{enumerate}
-
-There is also a perl script, {\tt INSTALL.pl}, in the top-level 
-{\tt \$PSI3} source directory which provides an interactive interface 
-for installation.
 
 \noindent
 You may need to make use of one or more of the following options to
@@ -240,7 +237,7 @@ If you desire to run the entire testing suit without interruption, execute
 {\tt \$objdir} to run the test suite again.
 
 Testing \PSIthree\ from the source directory, which was possible in
-prerelease version of \PSIthree\ ({\tt rc1} and {\tt rc2}), is no longer
+prerelease versions of \PSIthree\ ({\tt rc1} and {\tt rc2}), is no longer
 recommended.
 
 \subsection{Step 4: Installation}
