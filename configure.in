@@ -849,6 +849,7 @@ AC_CONFIG_FILES([include/sizeof.h include/Makefile
           tests/mp2-sp/Makefile
           tests/mp2-direct-sp/Makefile
           tests/mp2-oeprop/Makefile
+          tests/mp2-scs/Makefile
           tests/cc1/Makefile
           tests/cc2/Makefile
           tests/cc3/Makefile

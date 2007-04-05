@@ -766,8 +766,50 @@ sub compare_mp2_energy
   else {
     pass_test("MP2 Energy");
   }
-  
+
+  if($fail == 0 && scs_check($REF_FILE) == 1) {
+    
+    if(abs(seek_scs_mp2($REF_FILE) - seek_scs_mp2($TEST_FILE)) > $PSITEST_ETOL) {
+      fail_test("SCS-MP2 Energy"); $fail = 1;
+    }
+    else {
+      pass_test("SCS-MP2 Energy");
+    }
+  } 
+ 
   return $fail;
+}
+
+sub scs_check
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/SCS\s+=\s+TRUE/) {
+      close(OUT);
+      return 1;
+    }
+  }
+  
+  close(OUT);
+  return 0;
+}
+
+sub seek_scs_mp2
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/SCS-MP2 total energy/) {
+      @data = split(/ +/, $_);
+      $scs_mp2 = $data[4];
+      return $scs_mp2;
+    }
+  }
+  close(OUT);
+
+  printf "Error: Could not find SCS-MP2 energy in $_[0].\n";
+  exit 1;
 }
 
 sub compare_direct_mp2_energy
@@ -1297,7 +1339,7 @@ sub seek_mp2
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   seek(OUT,0,0);
   while(<OUT>) {
-    if (/MP2 total energy/) {
+    if (/\s+MP2 total energy/) {
       @data = split(/ +/, $_);
       $mp2 = $data[4];
       return $mp2;

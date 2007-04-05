@@ -1,0 +1,35 @@
+psi: (
+  jobtype = sp 
+
+  label = "H2O"
+  memory = (50.0 MB)
+  wfn = mp2 
+  reference = rhf 
+  multp = 1
+  charge = 0
+  docc = (3 0 1 1)
+  frozen_docc = (1 0 0 0)
+)
+
+input: (
+  basis = "aug-cc-pVDZ"
+  units = angstrom
+  zmat = (
+    (o)
+    (h 1 1.0)
+    (h 1 1.0 2 104.5)
+ )
+)
+
+mp2: (
+  scs = true
+% scs_n = true (to implement scs_n scaling factors)
+  scs_scale_s = 1.200000 
+  scs_scale_t = 0.333333
+
+%Default scalings for scs: scs_scale_s = 1.20000 and scs_scale_t = 0.333333
+%Refer to S. Grimme  J. Chem. Phys.  118, 9095 (2003) 
+
+%Default scalings for scs_n: scs_scale_s = 0.00 and scs_scale_t = 1.76 
+%Refer to J. G. Hill and J. A. Platts J. Chem. Theory Comput. 3, 80 (2007) 
+)
