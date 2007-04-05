@@ -8,7 +8,9 @@
 ** repeatedly during the course of program execution, the timer
 ** functions will report the block's cumulative execution time and
 ** the number of calls. In addition, one may time multiple code blocks
-** simultaneously, and even ``overlap'' timers.
+** simultaneously, and even ``overlap'' timers.  Timing data is
+** written to the file "timer.dat" at the end of timer execution,
+** i.e., when timer_done() is called.
 **
 ** To use the timer functions defined here:
 **
@@ -22,14 +24,6 @@
 **
 ** (4) When all timer calls are complete, dump the linked list of
 ** timing data to the output file, "timer.dat": timer_done();
-**
-** Note that timing data is written to timer.dat only at the end of
-** the timer execution, i.e., when timer_done() is called. If a code
-** block is called repeatedly during the course of program execution,
-** the timer functions will report the block's cumulative execution
-** time and the number of calls. In addition, one may time multiple
-** code blocks simultaneously, and even ``overlap'' timers (i.e., one
-** timer does not need to be off when a second is started).
 **
 ** NB this code uses system functions ctime(), time(), and times(),
 ** which may not quite be standard on all machines.
@@ -46,7 +40,12 @@
 
 #include <psifiles.h>
 
-#define TIMER_KEYLEN 12
+/* guess for HZ, if missing */
+#ifndef HZ
+#define HZ 60
+#endif
+
+#define TIMER_KEYLEN 32
 #define TIMER_OFF 0
 #define TIMER_ON 1
 
@@ -229,8 +228,8 @@ void timer_off(char *key)
 
   times(&offtime);
 
-  this_timer->utime += ((double) (offtime.tms_utime-ontime.tms_utime))/CLOCKS_PER_SEC;
-  this_timer->stime += ((double) (offtime.tms_stime-ontime.tms_stime))/CLOCKS_PER_SEC;
+  this_timer->utime += ((double) (offtime.tms_utime-ontime.tms_utime))/HZ;
+  this_timer->stime += ((double) (offtime.tms_stime-ontime.tms_stime))/HZ;
 
   wall_stop = time(NULL);
   this_timer->wtime += ((double) (wall_stop - this_timer->wall_start));
