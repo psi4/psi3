@@ -5,11 +5,11 @@ I. Compilation Prerequisites:
 
    * ANSI C compiler
    * C++ Compiler
-   * F77 Compiler (the F95 compiler, gfortran, with gcc-4.0.0 will work)
+   * F77 Compiler (the F95 compiler, gfortran, with gcc-4.X will work)
    * Optimized BLAS library (try http://math-atlas.sourceforge.net)
    * Optimized LAPACK library (try http://www.netlib.org/netlib)
-   * POSIX threads (Pthreads) library
-   * Perl interpreter (version 5.005 or higher)
+   * POSIX threads (Pthreads) library (optional)
+   * Perl interpreter (5.005 or higher; needed for running test cases)
    * GNU utilities: (see http://www.gnu.org)
       ** make
       ** flex
@@ -30,11 +30,10 @@ It should also not have any periods in the path, e.g., /usr/local/psi3.2,
 because of a bug in dvips which will cause the compilation of documentation
 to fail.
 
-The following series of steps will configure and build the PSI3
-package and install the executables in /usr/local/psi/bin:
+The following series of steps will configure and build the PSI3 package
+and install the executables in /usr/local/psi/bin:
 
    * cd $PSI3 (the top-level PSI3 source directory -- probably THIS directory)
-   * autoconf
    * mkdir objdir
    * cd objdir
    * ../configure
@@ -42,9 +41,6 @@ package and install the executables in /usr/local/psi/bin:
    * make tests (optional, but recommended)
    * make install
    * make doc (optional)
-
-There is also a perl script, INSTALL.pl, in the top-level PSI3 source
-directory which provides an interactive interface for installation.
 
 You may need to make use of one or more of the following options to
 the configure script:
@@ -144,7 +140,7 @@ script from configure.in.  It is best to keep the source code separate
 from the compilation area, so you must first choose a subdirectory for
 compilation of the codes.  A simple option is $PSI3/objdir, which should
 work for most environments.  However, if you need executables for several
-architectures, choose more meaningful subdirectory names.
+architectures, you should choose more meaningful subdirectory names.
 
    * The compilation directory will be referred to as $objdir for the
    remainder of these instructions.
@@ -200,7 +196,7 @@ All object files and libraries can be removed to save disk space by running
 III.G. Step 7: User Configuration
 
 After the PSI3 package has been successfullly installed, the user will need
-to add the installation directory into their path.  If the package has
+to add the installation directory into his/her path.  If the package has
 been installed in the default location /usr/local/psi, then in C shell,
 the user should add something like the following to their .cshrc file:
 
