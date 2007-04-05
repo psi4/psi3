@@ -16562,6 +16562,23 @@ HYDROGEN:"D-AUG-CC-PVTZ" = (
 (D (           0.05770000           1.00000000))
 )
 
+HELIUM:"D-AUG-CC-PVTZ" = (
+(GET "AUG-CC-PVTZ")
+(S (           0.01260000           1.00000000))
+(P (           0.05240000           1.00000000))
+(D (           0.10700000           1.00000000))
+)
+
+%%%%%%%%%%%  ALIAS d-aug-cc-pVTZ=> D-AUG-CC-PVTZ"  %%%%%%%%%%%%%%%%%%
+
+  "d-aug-cc-pVTZ":puream = true
+  HYDROGEN:"d-aug-cc-pVTZ" = (
+        (GET "D-AUG-CC-PVTZ")
+        )
+  HELIUM:"d-aug-cc-pVTZ" = (
+        (GET "D-AUG-CC-PVTZ")
+        )
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %			D-AUG-CC-PVQZ
