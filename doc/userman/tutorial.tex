@@ -1,392 +1,227 @@
 \section{A \PSIthree\ Tutorial} \label{tutorial}
 
-Before going into all the details of the \PSIthree\ input format, 
-we will begin with a tutorial on how to run some very simple 
-computations.
+\subsection{Before Getting Started: A Warning about Scratch Files}
+Generally, electronic structure programs like \PSIthree\ make
+significant use of disk drives.  Therefore, it is very important
+to ensure that PSI3 is writing its temporary files to a disk drive
+phsyically attached to the computer running the computation.  If it
+is not, it will significantly slow down the program and the network.
+By default, PSI3 will write temporary files to \file{/tmp}, but you
+will want to set up a default scratch path (as described in sections
+\ref{scratchfiles} and \ref{psirc}) because the \file{/tmp} directory
+is usually not large enough except for small test cases.
 
-The first thing to point out is that electronic structure programs
-like \PSIthree\ make significant use of disk drives.  Therefore, 
-for any but the smallest calculations, {\em it is very important 
-to be sure that \PSIthree\ is writing its temporary files to a 
-disk drive physically attached to the computer running the computation}.
-If a user's directory is remotely mounted by NFS, and if \PSIthree\
-tries to write its temporary files to this directory, it will slow 
-the program and the network down dramatically.  To avoid this
-situation, by default \PSIthree\ will write temporary files to 
-\file{/tmp}.  This will work for the small examples in this tutorial,
-but for real computations you will want to set up a default scratch
-file path as described in sections \ref{scratchfiles} and \ref{psirc},
-since your \file{/tmp} directory may not be large enough.
+\subsection{Basic Input File Structure} 
 
-The \PSIthree\ suite of codes is built around a modular design which 
-allows it great power and flexibility. Any module can be run 
-independently (provided suitable datafiles, of course). There also exists a
-master program, appropriately called \PSIdriver, which will parse 
-an input file, recognize the overall calculation desired, 
-and run all the necessary modules in the correct order.  As we will
-see later, it is possible to define entirely new calculation types simply 
-by editing a text file.
+PSI3 reads input from a text file, which can be prepared in any standard
+text editor.  The default input file name is input.dat and the default
+output file name is output.dat.  So that you can give your files meaningful
+names, these defaults can be changed by specifying the input file name and
+output file name on the the command line.  The syntax is:
 
-By default, the \PSIdriver\ program reads its input from a text file
-called \inputdat, and output from \PSIthree\ is written to 
-\outputdat.  However, it is also possible to specify different input
-and output filenames by adding these to the command line, like this:
+{\tt psi3 input-name output-name}
+
+PSI3 is a modular program, with each module performing specific tasks
+and computations during your calculation.  Which modules are run for
+a particular computation depends on the type of computation and the
+particular keywords specified in the input file.  All keywords in PSI3
+use the structure {\tt keyword = value}, where values may be strings,
+booleans, integers or real numbers.  You can give keywords in the
+input file for specific modules; however, in the first few examples,
+we will place all our keywords in one section of our input file called
+{\tt psi}.  Generally, every module you run during your computation will
+read the keywords in {\tt psi}, so you can place all your keywords in
+this section if you choose to do so.
+
+\subsection{Running a basic SCF calculation}
+In our first example, we will consider a Hartree-Fock SCF computation
+for the water molecule using a cc-pVDZ basis set.  We will specify the
+geometry of our water molecule using a standard z-matrix.
+
 \begin{verbatim}
-  psi3 input-name output-name
+psi:(
+ label = "cc-pVDZ SCF H2O"
+ jobtype = sp
+ wfn = scf
+ reference = rhf
+ basis = "cc-pVDZ"
+ zmat = (
+   o
+   h 1 0.957
+   h 1 0.957 2 104.5
+  )
+ )
+
 \end{verbatim}
 
-What does a \PSIthree\ input file look like?  First of all, due to
-the modular nature of the program, the input may be split into different
-sections, each beginning with a keyword and enclosed in parentheses.
-For now, we will ignore this flexibility and simply put all of the 
-input into a default area called \keyword{psi}:
+In each computation, you can specify the type of wavefunction (keyword
+{\tt wfn}), the reference wavefunction (keyword {\tt reference}), and
+the type of calculation you want to perform (keyword {\tt jobtype}).
+In the example above, we used a restricted Hartree-Fock (RHF) reference
+in an SCF computation of a single-point energy.  To change the level
+of electron correlation, you change the type of wavefunction using the
+keyword {\tt wfn}.  In the example above, to perform an
+MP2 computation, simply set {\tt wfn = mp2}.
+
+\subsection{Geometry Optimization and Vibrational Frequency Analysis}
+The above example was a simple single-point energy computation.
+To perform a different type of computation, change the keyword {\tt
+jobtype}.  In the example below, we will set up
+a CCSD geometry optimization.  To illustrate a more flexible z-matrix
+input, we will now define variables for the bond length and bond angle
+(in the {\tt zvars} section).
 
 \begin{verbatim}
-% This is a sample PSI3 input file.
-% Anything after a percent sign is treated as a comment.
+% 6-31G** H2O Test optimization calculation
 
 psi: (
-  label = "cc-pVDZ SCF H2O"
-  jobtype = sp
-  wfn = scf
+  label = "6-31G** SCF H2O"
+  jobtype = opt
+  wfn = ccsd
   reference = rhf
-  basis = "cc-pVDZ"
+  dertype = first
+  basis = "6-31G**"
   zmat = (
     o
-    h 1 0.957
-    h 1 0.957 2 104.5
+    h 1 roh
+    h 1 roh 2 ahoh
+  )
+  zvars = (
+    roh     0.96031231
+    ahoh  104.09437511
   )
 )
 \end{verbatim}
 
-As you can see, the input is made up of \keyword{keyword = value} pairs.  
-Values can be strings (like \keyword{"cc-pVDZ"}), booleans 
-(\keyword{true/false, 1/0, yes/no}), integers, or real numbers.  One can 
-also have arrays of data (as in the the \keyword{zmat} entry).  Generally
-speaking, input is not case-sensitive.  Anything following a percent sign
-is treated as a comment, and white space of more than a single space is
-ignored.  
+Once you have optimized the geometry of a molecule, you might wish to
+perform a frequency analysis to determine the nature of the stationary
+point.  To do this, change the value of {\tt jobtype} to {\tt
+freq}.  For an SCF frequeny calculation, you would also set {\tt
+dertype = second} to compute the second derivatives analytically.
+Unfortunately, analytical second derivitives are not available 
+in \PSIthree\ for wavefunctions beyond SCF,
+so instead use the highest order analytical derivitives
+that are available for the type of wavefunction you have chosen.  This
+information is given in Table \ref{table:methods}.  For our CCSD example, the
+highest-order derivitives available are first, so {\tt dertype = first}.
 
-The above input is for a Hartree-Fock SCF (\keyword{wfn = scf})
-calculation of water using a cc-pVDZ basis set 
-(\keyword{basis = "cc-pVDZ"}).  This is a 
-single-point calculation (\keyword{jobtype = sp}) at the experimental 
-geometry.  Since the ground state of water is closed shell, restricted 
-Hatree-Fock (RHF) orbitals are used (\keyword{reference = rhf}).  
-The geometry is specified in the \keyword{zmat} array using the
-standard quantum chemistry Z-matrix input format (for beginners, a short
-tutorial on Z-matrix inputs is available at
-\htmladdnormallink{{\tt www-rcf.usc.edu/$\sim$krylov/AbInitioCourse/zmat.html}}{
-http://www-rcf.usc.edu/~krylov/AbInitioCourse/zmat.html}).  Geometries
-may also be input in Cartesian coordinates, as we will see later.
-
-Why are some strings in quotation marks (e.g., \keyword{label = "cc-pVDZ
-SCF H2O"}), while others are not (e.g., \keyword{wfn = scf})?  Any
-string containing spaces or other special characters like asterisks
-must be placed in double quotes.  Anything between double quotes is 
-considered one token; there is no change of case, and special characters 
-and white space are maintained as part of the token but otherwise ignored.
-Since basis sets often contain special characters, it is a good idea to 
-specify the basis in quotes always.
-
-Let's run this calculation.  Assuming the input is given in a file
-\file{sp.in}, we can run \PSIthree\ as:
 \begin{verbatim}
-psi3 sp.in sp.out
+% 6-31G** H2O Test computation of frequencies
+
+psi: (
+  label = "6-31G** SCF H2O"
+  jobtype = freq
+  wfn = ccsd
+  reference = rhf
+  dertype = first
+  basis = "6-31G**"
+  zmat = (
+    o
+    h 1 roh
+    h 1 roh 2 ahoh
+  )
+  zvars = (
+    roh     0.96031231
+    ahoh  104.09437511
+  )
+)
 \end{verbatim}
 
-This will run the driver program \PSIdriver\, which will read the
-input from \file{sp.in} and write the output to \file{sp.out}.  
-The driver program will print something like this:
-\begin{verbatim}
- The PSI3 Execution Driver
- 
-PSI3 will perform a RHF SCF energy computation.
- 
-The following programs will be executed:
- 
- input
- cints
- cscf
- 
-input
-cints
-cscf
-\end{verbatim}
-The \PSIdriver\ program figures out what type of calculation it is
-(a restricted Hartree-Fock self-consistent-field energy computation)
-and it runs the appropriate \PSIthree\ modules, which are 
-\PSIinput, \PSIcints, and \PSIcscf.  The \PSIinput\ program reads
-the geometry and basis set information from the input file and
-places this information in a ``checkpoint file'' (with a filename
-ending in \file {.32}) which is used
-during the calculation.  The \PSIcints\ module computes the one- and
-two-electron integrals, and the \PSIcscf\ module computes the 
-SCF energy.  Since this is all we requested, the program stops here.
+\subsection{More Advanced Input Options}
+If you wish to add comments to your input file, you can start any line
+with \% and the line will be a comment line.  This can make the input
+file easier to understand because you can provide explainations about
+each keyword.  Another way to make the input file more organized is
+to seperate it into sections that correspond to particular modules
+the calculation will use.  This can be particularly helpful for more
+complicated calculations which utilize a lot of keywords.  In the example
+below, a CCSD(T) calculation for the BH molecule is performed using a
+cc-pVDZ basis set.  The keywords are divided into sections and several
+new keywords are introduced, including ones to specify symmetry and
+orbital occupations.  All keywords which specify orbitial occupations
+are a list of integers enclosed in parenthesis.  These integers give the
+number of orbitials which belong to each irreducible representation in
+the point group.  The ordering of the irreps are those given by Cotton
+in {\em Chemical Applications of Group Theory}.  In this example,
+comment lines will be included to explain the new keywords used.
 
-What does the output of the program look like?  There is quite a lot
-in the output, so we will focus only on the most pertinent portions.
-The first part should look something like this:
 \begin{verbatim}
-******************************************************************************
-tstart called on aurelius.chemistry.gatech.edu
-Tue Aug 26 17:35:10 2003
-                                                                                
-                                --------------
-                                  WELCOME TO
-                                    PSI  3
-                                --------------
-                                                                                
-  LABEL       = cc-pVDZ SCF H2O
-  SHOWNORM    = 0
-  PUREAM      = 1
-  PRINT_LVL   = 1
-                                                                                
-  -Geometry before Center-of-Mass shift (a.u.):
-       Center              X                  Y                   Z
-    ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000     0.000000000000
-        HYDROGEN      0.000000000000     0.000000000000     1.808467771070
-        HYDROGEN      1.750863805261     0.000000000000    -0.452804167853
-                                                                                
-...
-\end{verbatim}
+psi: (
+  wfn = ccsd_t
+  reference = rhf
+)
 
-This first section corresponds to the output from the \PSIinput\ program,
-which translates the basis set and geometry information from the user's
-input file.  At the beginning of each module, timing information is
-printed which gives the time and date the module is started and the name
-of the computer running the computation.  After parsing the geometry, the
-program shifts the molecule so that the origin is at the center of mass,
-and it may also rotate the molecule so that any spatial symmetry in the 
-molecule may be easier to detect.  The program then prints out the 
-detected point group of the molecule, which in this case is C2v:
-\begin{verbatim}
-  -SYMMETRY INFORMATION:
-    Computational point group is C2v
-    Number of irr. rep.      = 4
-    Number of atoms          = 3
-    Number of unique atoms   = 2
-\end{verbatim}
-You should double-check that the program correctly identifies the symmetry
-of your molecule; the \PSIthree\ program is not tolerant of any rounding 
-errors in the user input of geometry.
+default: (
+  label = "BH cc-pVDZ CCSD(T)"
 
-Next, the basis set information is printed out explicitly in a format
-identical to that used for customized input of basis sets, as described
-in section \ref{custom-basis}.  After this, the program prints a summary
-of the basis set information, including the number of basis functions
-in atomic orbitals (AO's) and symmetry-adapted orbitals (SO's), and
-the number of SO's per irredicible representation (irrep) of the point group:
-\begin{verbatim}
-  -BASIS SET INFORMATION:
-    Total number of shells = 12
-    Number of primitives   = 31
-    Number of AO           = 25
-    Number of SO           = 24
-                                                                                
-    Irrep    Number of SO
-    -----    ------------
-      1           11
-      2            2
-      3            4
-      4            7
-\end{verbatim}
-The number of SO's can be very useful to check to verify that the
-correct type of Gaussian basis functions are used; for example, using 
-6 Cartesian d functions or 5 spherical harmonics 
-d functions will 
-give the same number of AO's, but a different number of SO's.
-In this case, we are using Dunning and co-workers' correlation consistent
-{\tt cc-pVDZ} basis set, which always utilize spherical harmonics
-Gaussians, hence the number of SO's is smaller than the number
-of AO's.
+% Allocating memory for the calculation
+  memory = (600.0 MB)
 
-After some additional geometry information, the \PSIinput\ program
-prints the nuclear repulsion energy and then a list of internuclear
-distances:
-\begin{verbatim}
-    Nuclear Repulsion Energy (a.u.) =       9.196934380445
-                                                                                
-  -The Interatomic Distances in angstroms:
-                                                                                
-           1           2           3
-                                                                                
-    1   0.0000000
-    2   0.9570000   0.0000000
-    3   0.9570000   1.5133798   0.0000000
+% charge and multp default to values of 0 and 1, respectively
+  charge = 0
+  multp = 1
+
+% The program will generally guess the symmetry of the molecule, but
+% it can be overridden.  Here we specify c2v because only d2h and its
+% subgroups can be used by the program.
+  symmetry = c2v
+
+% Number of orbitals per irrep can be specified manually, if desired
+  docc = (3 0 0 0)
+
+% Freeze the 1A1 orbital (B 1s-like) in the CCSD(T) computation
+  frozen_docc = (1 0 0 0)
+)
+
+% The input section contains information about the molecule and the basis
+% set.  The geometry here is specified by cartesian coordinates, therefore
+% the keyword units must also be included.
+input: (
+  basis = "cc-pVDZ"
+  units = angstroms
+  geometry = (
+    ( b      0.0000        0.0000        0.0000)
+    ( h      0.0000        0.0000        0.8000)
+      )
+  origin = (0.0 0.0 0.0)
+)
+% The modular input structure lets you specify convergence criteria for
+% each part of the calcultion.  
+scf: (
+  maxiter = 100
+  convergence = 11
+)
 \end{verbatim}
 
-The nuclear repulsion energy is another very useful diagnostic; when
-comparing the results of two different calculations, if the calculations
-are really performed at the same geometry, the nuclear repulsion energies
-should match.
+The final example of this tutorial demonstrates an example of a CAS-SCF
+calculation.  CAS calculations require specification of several additional
+keywords because you must specify which orbitals you wish to be in the
+active space.  The notation and ordering for specifying CAS orbitals is the
+same as for occupied orbitals.
 
-Once the \PSIinput\ program completes, a file ending in \file{.32} should
-be created.  This is the ``checkpoint file'' which is used to communicate
-basic information (the basis set, the geometry, etc) between modules
-in \PSIthree.  By default, this file will be placed in the current working
-directory when the program is run.  The name and location of the file can
-be modified by the user as described later in sections \ref{scratchfiles}
-and \ref{psirc}.
+\begin{verbatim}
 
-Now that \PSIthree\ knows about the molecule and basis set, the next
-module to execute is the \PSIcints\ module.  
-\begin{verbatim}
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-                                                                                
-                                                                                
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-...
-\end{verbatim}
-This program computes
-integrals over symmetry orbitals.  By default, these integrals are
-written to disk unless the user has specified an integrals-direct
-computation.  The integrals file can be very large, and its size grows
-rapidly with the size of the molecule and basis set.  When \PSIcints\ 
-is finished, it prints the number of two-electron integrals:
-\begin{verbatim}
-    Wrote 11412 two-electron integrals to IWL file 33
-\end{verbatim}
+% 6-31G** H2O Test CASSCF Energy Point
 
-Once the integrals have been written, it is time to perform the 
-Hartree-Fock SCF computation using the \PSIcscf\ module.  
-\begin{verbatim}
-             ------------------------------------------
-                                                                                
-                CSCF3.0: An SCF program written in C
-                                                                                
-              Written by too many people to mention here
-                                                                                
-             ------------------------------------------
-                                                                                
-  I think the multiplicity is 1.
-  If this is wrong, please specify the MULTP keyword
-                                                                                
-  label       = cc-pVDZ SCF H2O
-  wfn          = SCF
-  reference    = RHF
-  multiplicity = 1
-  charge       = 0
-  direct       = false
-  dertype      = NONE
-  convergence  = 7
-  maxiter      = 40
-  guess        = AUTO
-                                                                                
-  nuclear repulsion energy        9.1969343804448
-  first run, so defaulting to core-hamiltonian guess
+psi: (
+  label = "6-31G** CASSCF H2O"
+  jobtype = sp
+  wfn = casscf
+  reference = rhf
+% The restricted_docc orbitals are those which are optimized, but are not
+% in the active space.
+  restricted_docc = (1 0 0 0)
 
-...
-\end{verbatim}
+% The active space orbitals; this combination of restricted and active
+% orbitals makes a valence active space for the water molecule.
+  active          = (3 0 1 2)
 
-The first few lines print out information about the spin multiplicity
-specified by the user, the convergence level, maximum number of iterations,
-etc.  After this, the program attempts to figure out the symmetries
-of the occupied orbitals using a core Hamiltonian guess.  The \PSIcscf\
-program sometimes guesses occupations wrong, especially for highly strained
-molecules, radicals, unusual bonding situations, or large basis sets
-(particularly with diffuse functions).  Unfortunately, this is a common 
-problem with programs which have point-group symmetry built in throughout the 
-program; however, the user can override the guess by specifying these
-occupations explicitly using the \keyword{docc} and \keyword{socc} keywords.
-In this case, the program determines these occupations correctly, as
-below.
-\begin{verbatim}
-  Using core guess to determine occupations
-                                                                                
-                                                                                
-  Symmetry block:   A1    A2    B1    B2
-  DOCC:              3     0     1     1
-  SOCC:              0     0     0     0
+  basis = "6-31G**"
+  zmat = (
+    o
+    h 1 1.00
+    h 1 1.00 2 103.1
+  )
+)
 \end{verbatim}
-The \keyword{DOCC} array lists number of doubly-occupied orbitals per
-irrep, and the \keyword{SOCC} array lists the number of singly-occupied
-orbitals per irrep (unnecessary for closed-shell molecules).  These
-occupations could have been specified explicitly in user input as:
-\begin{verbatim}
-docc = (3 0 1 1)
-socc = (0 0 0 0)
-\end{verbatim}
-
-Once the occupations are available, the self-consistent-field procedure
-begins to solve the Hatree-Fock equations.  
-\begin{verbatim}
-  iter       total energy        delta E         delta P          diiser
-    1       -68.8728484552    7.806978e+01    0.000000e+00    0.000000e+00
-    2       -71.2986301202    2.425782e+00    2.008202e-01    9.307684e-01
-    3       -73.8237872940    2.525157e+00    1.056816e-01    9.960987e-01
-    4       -75.8742610925    2.050474e+00    5.205943e-02    7.105479e-01
-    5       -76.0217491034    1.474880e-01    1.313776e-02    1.898892e-01
-    6       -76.0263470429    4.597939e-03    1.920732e-03    5.155862e-02
-    7       -76.0267968846    4.498417e-04    8.594423e-04    1.595832e-02
-    8       -76.0268077609    1.087637e-05    1.063540e-04    1.111887e-03
-    9       -76.0268081461    3.851364e-07    1.914348e-05    2.419943e-04
-   10       -76.0268081747    2.867948e-08    4.819477e-06    6.654983e-05
-   11       -76.0268081769    2.160775e-09    1.655548e-06    1.348540e-05
-   12       -76.0268081769    1.818989e-11    1.534696e-07    1.509549e-06
-   13       -76.0268081769    1.264766e-12    4.735582e-08    4.720895e-07
-\end{verbatim}
-For each iteration, the program lists the total electronic energy, the
-change in energy from the previous iteration, the RMS change in the
-density matrix, and the maximum element in the DIIS error array.  Once
-the delta P has dropped below $10^{-n}$, where $n$ is the number specified
-as the convergence criterion (by default, 7), the self-consistent-field
-procedure is considered complete.  
-
-At the end of the computation, the orbital energies are reported (in 
-Hartrees), along with their symmetry labels:
-\begin{verbatim}
-Orbital energies (a.u.):
-                                                                                
-  Doubly occupied orbitals
-   1A1    -20.550390     2A1     -1.336826     1B2     -0.699406
-   3A1     -0.566646     1B1     -0.493169
-                                                                                
-                                                                                
-  Unoccupied orbitals
-   4A1      0.185609     2B2      0.256291     3B2      0.789452
-   5A1      0.854627     6A1      1.163500     2B1      1.200384
-   4B2      1.253301     7A1      1.444438     1A2      1.476370
-   3B1      1.674656     8A1      1.867219     5B2      1.935269
-   6B2      2.453470     9A1      2.491061     4B1      3.285961
-   2A2      3.339124    10A1      3.510949    11A1      3.866084
-   7B2      4.147878
-
-\end{verbatim}
-For typical closed-shell molecules, the occupied orbitals should have
-negative energies, and the unoccupied orbitals should have positive
-energies, as in this case.  The highest occupied orbital (HOMO) is
-a 1B$_1$ orbital with an energy of -0.493169 Hartree, and the lowest
-unoccupied orbital (LUMO) is the 4A$_1$ orbital with energy 0.185609 Hartree.
-
-Frequently, more specialized input will be required.  For example,
-maybe you wish to compute the energy of a radical anion using a large,
-diffuse basis set.  It may be difficult to converge the Hatree-Fock 
-wavefuction for a case like this, and it might require a different
-initial guess, more iterations, etc.  Special keywords for accomplishing
-such tasks are described later in this user's manual.  It is also
-possible to find this information through the use of the \PSIthree\
-manual pages and the {\tt man} command.  For the man pages to be accessible,
-the user must add them to their {\tt MANPATH} environmental variable (as
-described in the installation manual).  For C shell, this can be 
-accomplished using
-\begin{verbatim}
-setenv MANPATH $psipath/doc/man:$MANPATH
-\end{verbatim}
-where {\tt psipath} is the path to your installed version of 
-\PSIthree (e.g., \file{/usr/local/psi3}).  The manual for the \PSIcscf\
-module can then be accessed simply by typing
-\begin{verbatim}
-man cscf
-\end{verbatim}
-which will display a summary of the module and a list of user options.
 
