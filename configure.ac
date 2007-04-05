@@ -2,7 +2,7 @@
 
 define([psi_version],[3.3.0])
 define([psi_bugreport],[psicode@users.sourceforge.net])
-AC_PREREQ(2.60)
+AC_PREREQ(2.57)
 AC_INIT([psi],[psi_version],[psi_bugreport])
 
 PSI_VERSION=psi_version
@@ -236,6 +236,7 @@ AC_CHECK_LIB(m,exit,CXXLIBS="$CXXLIBS -lm")
 AC_MSG_RESULT(c++ libs: $CXXLIBS)
 AC_SUBST(CXXLIBS)
 
+
 ## Fortran-C linking convention tests
 
 AC_ARG_WITH(f77symbol,[  --with-f77symbol        FORTRAN77 symbol convention (if no Fortran compiler). Allowed values are:
@@ -320,6 +321,9 @@ esac
 ########
 ## Check for library functions
 ########
+
+LIBS="$LIBS $CLIBS"
+echo "LIBS = $LIBS"
 
 # If the user didn't give us a BLAS lib, see if we can find one
 if test -z "$BLAS"; then
