@@ -8,6 +8,7 @@ define([psi_version],[3.3.0])
 define([psi_bugreport],[psicode@users.sourceforge.net])
 AC_PREREQ(2.57)
 AC_INIT([psi],[psi_version],[psi_bugreport])
+AC_CONFIG_HEADER(include/psiconfig.h)
 
 PSI_VERSION=psi_version
 PSI_BUGREPORT=psi_bugreport
@@ -754,6 +755,7 @@ AC_CONFIG_FILES([include/Makefile
           tests/cisd-opt-numer/Makefile
           tests/fci-h2o/Makefile
           tests/fci-dipole/Makefile
+	  tests/fci-trans/Makefile
           tests/casscf-sp/Makefile
           tests/casscf-sa-sp/Makefile
           tests/casscf-fzc-sp/Makefile
