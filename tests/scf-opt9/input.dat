@@ -6,11 +6,13 @@ psi: (
   dertype = first
   docc = (5 4)
   basis = DZP
+% optimize with frozen O-O bond length
+  zmat_simples=true
   zmat = (
     H
-    O 1 OH
-    O 2 OO 1 HOO
-    H 3 OH 2 HOO 1 HOOH
+    O 1 OH$
+    O 2 OO 1 HOO$
+    H 3 OH$ 2 HOO$ 1 HOOH$
   )
   zvars = (
     OH 0.9
