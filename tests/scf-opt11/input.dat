@@ -6,16 +6,14 @@ psi: (
   multp = 1
   reference = rhf
   basis = 3-21G
-  zmat = (
-    H
-    O 1 R1
-    H 2 R1 1 A1
-  )
-  zvars = (
-    R1 1.0
-    A1 90.0
+  units = bohr
+  geometry = (
+    H   0.0  -1.336   1.186
+    O   0.0   0.000  -0.149
+    H   0.0   1.336   1.186
   )
 )
+% example of fixed coordinates without z-matrix
 fixed_intco: (
   bend = (
     (1 2 3)
