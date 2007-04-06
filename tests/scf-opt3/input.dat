@@ -5,6 +5,7 @@ psi: (
   jobtype = opt
   dertype = first
   basis = "DZP"
+% uses z-matrix to indicate which coordinates are optimized
   zmat_simples =true
   zmat = (
     B
