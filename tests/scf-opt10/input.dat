@@ -5,6 +5,7 @@ psi: (
   jobtype = opt
   dertype = first
   basis = DZ
+%optimization in delocalized coordinates
   delocalize = true
   geometry = (
     H -0.6   0.6  0.0
