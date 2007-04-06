@@ -6,6 +6,8 @@ psi: (
   dertype = first
   docc = (4 1 1 3)
   basis = "DZP"
+% uses z-matrix to specify which coordinates are optimized
+  zmat_simples = true
   zmat = (
     H
     C 1 CH$
