@@ -5,6 +5,7 @@ psi: (
   jobtype = opt
   dertype = first
   basis = "DZP"
+  zmat_simples =true
   zmat = (
     B
     H 1 BH$
