@@ -1,6 +1,6 @@
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:17 2007
+tstart called on mac4704.local
+Fri Apr  6 13:12:52 2007
 
                                 --------------
                                   WELCOME TO
@@ -12,7 +12,7 @@ Wed Feb 28 16:14:17 2007
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /Users/micahabrams/Software/testing/psi3-bin/share/pbasis.dat
+  Parsed basis sets from /usr/local/psi/share/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -132,15 +132,15 @@ Wed Feb 28 16:14:17 2007
 
 
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:17 2007
+tstop called on mac4704.local
+Fri Apr  6 13:12:52 2007
 
-user time   =       0.15 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.12 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:17 2007
+tstart called on mac4704.local
+Fri Apr  6 13:12:52 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -169,15 +169,15 @@ Wed Feb 28 16:14:17 2007
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:17 2007
+tstop called on mac4704.local
+Fri Apr  6 13:12:52 2007
 
-user time   =       0.07 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:17 2007
+tstart called on mac4704.local
+Fri Apr  6 13:12:52 2007
 
 
              ------------------------------------------
@@ -229,13 +229,13 @@ Wed Feb 28 16:14:17 2007
     6       -76.0172750266    1.667789e-04    1.541154e-04    1.105642e-02
     7       -76.0172961424    2.111579e-05    7.769737e-05    3.795642e-03
     8       -76.0172965569    4.145116e-07    9.936256e-06    3.044370e-04
-    9       -76.0172965711    1.418179e-08    2.507429e-06    6.058786e-05
-   10       -76.0172965718    7.222951e-10    6.336629e-07    1.135728e-05
-   11       -76.0172965718    1.452349e-11    6.963182e-08    1.414942e-06
+    9       -76.0172965711    1.418182e-08    2.507429e-06    6.058786e-05
+   10       -76.0172965718    7.222667e-10    6.336629e-07    1.135728e-05
+   11       -76.0172965718    1.449507e-11    6.963182e-08    1.414942e-06
    12       -76.0172965718    2.245315e-12    3.927837e-08    5.031535e-07
-   13       -76.0172965718    2.842171e-14    3.518255e-09    3.847156e-08
-   14       -76.0172965718   -5.684342e-14    4.321532e-10    9.017731e-09
-   15       -76.0172965718   -1.421085e-14    9.781882e-11    4.425818e-09
+   13       -76.0172965718    0.000000e+00    3.518255e-09    3.847156e-08
+   14       -76.0172965718   -2.842171e-14    4.321533e-10    9.017730e-09
+   15       -76.0172965718    2.842171e-14    9.781878e-11    4.425819e-09
 
 Orbital energies (a.u.):
 
@@ -262,15 +262,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.995262729918
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:17 2007
+tstop called on mac4704.local
+Fri Apr  6 13:12:52 2007
 
 user time   =       0.02 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:18 2007
+tstart called on mac4704.local
+Fri Apr  6 13:12:52 2007
 
 
 	**************************************************
@@ -357,15 +357,15 @@ Wed Feb 28 16:14:18 2007
 	One-electron integrals written to file 35.
 	Frozen-core operator written to file 35.
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:20 2007
+tstop called on mac4704.local
+Fri Apr  6 13:12:54 2007
 
-user time   =       0.37 seconds =       0.01 minutes
-system time =       2.77 seconds =       0.05 minutes
+user time   =       0.32 seconds =       0.01 minutes
+system time =       2.03 seconds =       0.03 minutes
 total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:20 2007
+tstart called on mac4704.local
+Fri Apr  6 13:12:54 2007
 
 
 			**************************
@@ -403,7 +403,7 @@ Wed Feb 28 16:14:20 2007
 	 B2 	   7	    0	    1	    0	    6	    0
 
 	Nuclear Rep. energy (chkpt) =      8.80468729099867
-	SCF energy          (chkpt) =    -76.01729657184154
+	SCF energy          (chkpt) =    -76.01729657184156
 
 	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
 	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
@@ -424,23 +424,23 @@ Wed Feb 28 16:14:20 2007
 	Total:                                     0.003 (MW) /      0.022 (MB)
 
 
-	One-electron energy          =   -122.38943311275705
-	Two-electron (AA) energy     =     14.32515340696211
-	Two-electron (BB) energy     =     14.32515340696211
-	Two-electron (AB) energy     =     23.24229584295472
-	Two-electron energy          =     37.56744924991683
+	One-electron energy          =   -122.38943311275706
+	Two-electron (AA) energy     =     14.32515340696210
+	Two-electron (BB) energy     =     14.32515340696210
+	Two-electron (AB) energy     =     23.24229584295471
+	Two-electron energy          =     37.56744924991681
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -76.01729657184156
+	Reference energy             =    -76.01729657184157
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:20 2007
+tstop called on mac4704.local
+Fri Apr  6 13:12:54 2007
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.13 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.10 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:20 2007
+tstart called on mac4704.local
+Fri Apr  6 13:12:54 2007
 
 			*************************
 			*                       *
@@ -449,7 +449,7 @@ Wed Feb 28 16:14:20 2007
 			*************************
 
 	Nuclear rep. energy     =    8.804687290998672
-	SCF energy              =  -76.017296571841541
+	SCF energy              =  -76.017296571841555
 
 	Input parameters:
 	-----------------
@@ -463,40 +463,40 @@ Wed Feb 28 16:14:20 2007
 	OPDM          	=	NO
 
 	MP2 correlation energy  =   -0.202428539139652
-	MP2 total energy        =  -76.219725110981187
+	MP2 total energy        =  -76.219725110981202
 
-	Trace of onepdm =    0.000000000000000
+	Trace of onepdm =   -0.000000000000000
 
 	Energies re-computed from Fock-adjusted CC density:
 	---------------------------------------------------
-	One-electron energy        =    0.226556388430717
-	IJKL energy                =   -0.660829285605300
-	IJKA energy                =   -0.048691691358588
+	One-electron energy        =    0.226556388430715
+	IJKL energy                =   -0.660829285605299
+	IJKA energy                =   -0.048691691358587
 	IJAB energy                =   -0.404857078279305
-	IBJA energy                =    0.685393127717756
-	MP2 correlation energy    =   -0.202428539094721
-	Total MP2 energy          =  -76.219725110936267
+	IBJA energy                =    0.685393127717755
+	MP2 correlation energy    =   -0.202428539094720
+	Total MP2 energy          =  -76.219725110936281
 
 	Energies re-computed from Mulliken density:
 	-------------------------------------------
-	One-electron energy        =    0.226556388430717
-	IJKL energy                =   -0.660829285605300
-	IJKA energy                =   -0.048691691358588
+	One-electron energy        =    0.226556388430715
+	IJKL energy                =   -0.660829285605299
+	IJKA energy                =   -0.048691691358587
 	IJAB energy                =   -0.436216637736921
-	IBJA energy                =    0.716752687175373
-	Total two-electron energy  =   -0.428984927525437
+	IBJA energy                =    0.716752687175371
+	Total two-electron energy  =   -0.428984927525435
 	MP2 correlation energy    =   -0.202428539094720
-	Total MP2 energy          =  -76.219725110936267
+	Total MP2 energy          =  -76.219725110936281
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:20 2007
+tstop called on mac4704.local
+Fri Apr  6 13:12:54 2007
 
-user time   =       0.12 seconds =       0.00 minutes
-system time =       0.22 seconds =       0.00 minutes
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.18 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:20 2007
+tstart called on mac4704.local
+Fri Apr  6 13:12:55 2007
 
     **********************************************
     *                    OEPROP                  *
@@ -603,7 +603,7 @@ Wed Feb 28 16:14:20 2007
  -Electric dipole moment (expectation values) :
 
     mu(X)  =   0.00000 D  =   9.42097091e-46 C*m  =   0.00000000 a.u.
-    mu(Y)  =   0.00000 D  =   5.64772090e-45 C*m  =   0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -3.76514727e-45 C*m  =  -0.00000000 a.u.
     mu(Z)  =   2.13913 D  =   7.13537397e-30 C*m  =   0.84159858 a.u.
     |mu|   =   2.13913 D  =   7.13537397e-30 C*m  =   0.84159858 a.u.
 
@@ -640,7 +640,7 @@ Wed Feb 28 16:14:20 2007
 
     Center         phi            Ex             Ey           Ez
     ------    ------------   ------------  ------------  ------------
-       1      -22.29491549    -0.00000000   -0.00000000   -0.12065621
+       1      -22.29491549    -0.00000000    0.00000000   -0.12065621
        2       -1.00038651     0.00000000   -0.01306456   -0.01658669
        3       -1.00038651     0.00000000    0.01306456   -0.01658669
 
@@ -696,15 +696,15 @@ Wed Feb 28 16:14:20 2007
 
 
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:20 2007
+tstop called on mac4704.local
+Fri Apr  6 13:12:55 2007
 
 user time   =       0.02 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:20 2007
+tstart called on mac4704.local
+Fri Apr  6 13:12:55 2007
 
 
 	**************************************************
@@ -788,15 +788,15 @@ Wed Feb 28 16:14:20 2007
 	Transforming one-electron integrals...
 	One-pdm and lagrangian written to file76.
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:23 2007
+tstop called on mac4704.local
+Fri Apr  6 13:12:56 2007
 
-user time   =       0.47 seconds =       0.01 minutes
-system time =       2.80 seconds =       0.05 minutes
-total time  =          3 seconds =       0.05 minutes
+user time   =       0.38 seconds =       0.01 minutes
+system time =       2.05 seconds =       0.03 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:23 2007
+tstart called on mac4704.local
+Fri Apr  6 13:12:56 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -834,11 +834,11 @@ Wed Feb 28 16:14:23 2007
        3        0.000000000000    -0.028509698101     0.020861891013
 
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:23 2007
+tstop called on mac4704.local
+Fri Apr  6 13:12:56 2007
 
-user time   =       0.42 seconds =       0.01 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.33 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
@@ -854,7 +854,8 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000000000  -0.0285096981   0.0208618910
 
 Generating simple internals
-Searching for geometrical constraints...
+Searching for geometrical constraints...none found.
+
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (1.00000000)
@@ -904,8 +905,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:23 2007
+tstart called on mac4704.local
+Fri Apr  6 13:12:57 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -934,15 +935,15 @@ Wed Feb 28 16:14:23 2007
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:23 2007
+tstop called on mac4704.local
+Fri Apr  6 13:12:57 2007
 
-user time   =       0.07 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:23 2007
+tstart called on mac4704.local
+Fri Apr  6 13:12:57 2007
 
 
              ------------------------------------------
@@ -963,7 +964,7 @@ Wed Feb 28 16:14:23 2007
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy        9.1659541440473
+  nuclear repulsion energy        9.1659541440474
 
   using old vector from file30 as initial guess
   energy from old vector:   -76.01729657
@@ -993,14 +994,14 @@ Wed Feb 28 16:14:23 2007
     3       -76.0226518818    7.524122e-05    1.469666e-04    5.413033e-03
     4       -76.0226678096    1.592774e-05    5.994196e-05    1.698024e-03
     5       -76.0226691432    1.333591e-06    2.360132e-05    4.860820e-04
-    6       -76.0226692365    9.333816e-08    7.975990e-06    1.146970e-04
-    7       -76.0226692393    2.804896e-09    1.346017e-06    1.840602e-05
-    8       -76.0226692394    5.546497e-11    1.340094e-07    2.381965e-06
-    9       -76.0226692394    2.955858e-12    3.125828e-08    5.632383e-07
-   10       -76.0226692394    5.684342e-14    4.618276e-09    5.384244e-08
-   11       -76.0226692394   -1.421085e-14    4.091907e-10    1.389876e-08
-   12       -76.0226692394    1.421085e-14    1.582934e-10    3.842911e-09
-   13       -76.0226692394    2.842171e-14    2.376936e-11    7.225467e-10
+    6       -76.0226692365    9.333822e-08    7.975990e-06    1.146970e-04
+    7       -76.0226692393    2.804867e-09    1.346017e-06    1.840602e-05
+    8       -76.0226692394    5.543654e-11    1.340094e-07    2.381965e-06
+    9       -76.0226692394    2.998490e-12    3.125828e-08    5.632383e-07
+   10       -76.0226692394    2.842171e-14    4.618276e-09    5.384244e-08
+   11       -76.0226692394    8.526513e-14    4.091906e-10    1.389876e-08
+   12       -76.0226692394   -5.684342e-14    1.582935e-10    3.842910e-09
+   13       -76.0226692394    7.105427e-14    2.376941e-11    7.225474e-10
 
  Correcting phases of orbitals.
 
@@ -1029,15 +1030,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.997076348796
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:23 2007
+tstop called on mac4704.local
+Fri Apr  6 13:12:57 2007
 
 user time   =       0.02 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:23 2007
+tstart called on mac4704.local
+Fri Apr  6 13:12:57 2007
 
 
 	**************************************************
@@ -1124,15 +1125,15 @@ Wed Feb 28 16:14:23 2007
 	One-electron integrals written to file 35.
 	Frozen-core operator written to file 35.
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:25 2007
+tstop called on mac4704.local
+Fri Apr  6 13:12:58 2007
 
-user time   =       0.37 seconds =       0.01 minutes
-system time =       2.78 seconds =       0.05 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.32 seconds =       0.01 minutes
+system time =       2.05 seconds =       0.03 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:25 2007
+tstart called on mac4704.local
+Fri Apr  6 13:12:58 2007
 
 
 			**************************
@@ -1169,8 +1170,8 @@ Wed Feb 28 16:14:25 2007
 	 B1 	   4	    0	    1	    0	    3	    0
 	 B2 	   7	    0	    1	    0	    6	    0
 
-	Nuclear Rep. energy (chkpt) =      9.16595414404733
-	SCF energy          (chkpt) =    -76.02266923935319
+	Nuclear Rep. energy (chkpt) =      9.16595414404739
+	SCF energy          (chkpt) =    -76.02266923935322
 
 	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
 	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
@@ -1191,23 +1192,23 @@ Wed Feb 28 16:14:25 2007
 	Total:                                     0.003 (MW) /      0.022 (MB)
 
 
-	One-electron energy          =   -123.03524751898524
-	Two-electron (AA) energy     =     14.44415810110666
-	Two-electron (BB) energy     =     14.44415810110666
-	Two-electron (AB) energy     =     23.40246603447802
-	Two-electron energy          =     37.84662413558468
+	One-electron energy          =   -123.03524751898527
+	Two-electron (AA) energy     =     14.44415810110667
+	Two-electron (BB) energy     =     14.44415810110667
+	Two-electron (AB) energy     =     23.40246603447805
+	Two-electron energy          =     37.84662413558472
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -76.02266923935322
+	Reference energy             =    -76.02266923935315
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:26 2007
+tstop called on mac4704.local
+Fri Apr  6 13:12:59 2007
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.13 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.10 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:26 2007
+tstart called on mac4704.local
+Fri Apr  6 13:12:59 2007
 
 			*************************
 			*                       *
@@ -1215,8 +1216,8 @@ Wed Feb 28 16:14:26 2007
 			*                       *
 			*************************
 
-	Nuclear rep. energy     =    9.165954144047330
-	SCF energy              =  -76.022669239353192
+	Nuclear rep. energy     =    9.165954144047387
+	SCF energy              =  -76.022669239353220
 
 	Input parameters:
 	-----------------
@@ -1229,41 +1230,41 @@ Wed Feb 28 16:14:26 2007
 	Print Level   	=	0
 	OPDM          	=	NO
 
-	MP2 correlation energy  =   -0.199703044551634
-	MP2 total energy        =  -76.222372283904832
+	MP2 correlation energy  =   -0.199703044551632
+	MP2 total energy        =  -76.222372283904846
 
 	Trace of onepdm =    0.000000000000000
 
 	Energies re-computed from Fock-adjusted CC density:
 	---------------------------------------------------
-	One-electron energy        =    0.230228537102684
-	IJKL energy                =   -0.639672835617676
-	IJKA energy                =   -0.051543220222711
-	IJAB energy                =   -0.399406089103268
-	IBJA energy                =    0.660690563293433
+	One-electron energy        =    0.230228537102681
+	IJKL energy                =   -0.639672835617667
+	IJKA energy                =   -0.051543220222709
+	IJAB energy                =   -0.399406089103265
+	IBJA energy                =    0.660690563293423
 	MP2 correlation energy    =   -0.199703044547537
-	Total MP2 energy          =  -76.222372283900725
+	Total MP2 energy          =  -76.222372283900754
 
 	Energies re-computed from Mulliken density:
 	-------------------------------------------
-	One-electron energy        =    0.230228537102684
-	IJKL energy                =   -0.639672835617676
-	IJKA energy                =   -0.051543220222711
-	IJAB energy                =   -0.429307028891950
-	IBJA energy                =    0.690591503082115
-	Total two-electron energy  =   -0.429931581650222
+	One-electron energy        =    0.230228537102681
+	IJKL energy                =   -0.639672835617667
+	IJKA energy                =   -0.051543220222709
+	IJAB energy                =   -0.429307028891947
+	IBJA energy                =    0.690591503082105
+	Total two-electron energy  =   -0.429931581650218
 	MP2 correlation energy    =   -0.199703044547537
-	Total MP2 energy          =  -76.222372283900725
+	Total MP2 energy          =  -76.222372283900754
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:26 2007
+tstop called on mac4704.local
+Fri Apr  6 13:12:59 2007
 
-user time   =       0.12 seconds =       0.00 minutes
-system time =       0.22 seconds =       0.00 minutes
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.17 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:26 2007
+tstart called on mac4704.local
+Fri Apr  6 13:12:59 2007
 
     **********************************************
     *                    OEPROP                  *
@@ -1370,7 +1371,7 @@ Wed Feb 28 16:14:26 2007
  -Electric dipole moment (expectation values) :
 
     mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
-    mu(Y)  =  -0.00000 D  =  -3.76514727e-45 C*m  =  -0.00000000 a.u.
+    mu(Y)  =   0.00000 D  =   5.64772090e-45 C*m  =   0.00000000 a.u.
     mu(Z)  =   2.13760 D  =   7.13024494e-30 C*m  =   0.84099362 a.u.
     |mu|   =   2.13760 D  =   7.13024494e-30 C*m  =   0.84099362 a.u.
 
@@ -1407,7 +1408,7 @@ Wed Feb 28 16:14:26 2007
 
     Center         phi            Ex             Ey           Ez
     ------    ------------   ------------  ------------  ------------
-       1      -22.29985715     0.00000000    0.00000000   -0.12545491
+       1      -22.29985715     0.00000000   -0.00000000   -0.12545491
        2       -1.00555899     0.00000000    0.01839414    0.00371534
        3       -1.00555899     0.00000000   -0.01839414    0.00371534
 
@@ -1422,7 +1423,7 @@ Wed Feb 28 16:14:26 2007
 
     Center           XY                    XZ                    YZ
     ------  --------------------  --------------------  --------------------
-       1              0.00000000            0.00000000            0.00000000
+       1              0.00000000            0.00000000           -0.00000000
        2              0.00000000            0.00000000            1.61676165
        3              0.00000000            0.00000000           -1.61676165
 
@@ -1437,7 +1438,7 @@ Wed Feb 28 16:14:26 2007
 
     Center           XY                    XZ                    YZ
     ------  --------------------  --------------------  --------------------
-       1              0.00000000            0.00000000            0.00000000
+       1              0.00000000            0.00000000           -0.00000000
        2              0.00000000            0.00000000            1.61676165
        3              0.00000000            0.00000000           -1.61676165
 
@@ -1463,15 +1464,15 @@ Wed Feb 28 16:14:26 2007
 
 
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:26 2007
+tstop called on mac4704.local
+Fri Apr  6 13:12:59 2007
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:26 2007
+tstart called on mac4704.local
+Fri Apr  6 13:12:59 2007
 
 
 	**************************************************
@@ -1555,15 +1556,15 @@ Wed Feb 28 16:14:26 2007
 	Transforming one-electron integrals...
 	One-pdm and lagrangian written to file76.
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:28 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:01 2007
 
-user time   =       0.47 seconds =       0.01 minutes
-system time =       2.82 seconds =       0.05 minutes
+user time   =       0.38 seconds =       0.01 minutes
+system time =       2.10 seconds =       0.04 minutes
 total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:28 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:01 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1601,12 +1602,12 @@ Wed Feb 28 16:14:28 2007
        3        0.000000000000     0.002543049845     0.001577967504
 
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:29 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:01 2007
 
-user time   =       0.42 seconds =       0.01 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.32 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -1619,7 +1620,8 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000000000   0.0000000000  -0.0031559350
                        0.0000000000  -0.0025430498   0.0015779675
                        0.0000000000   0.0025430498   0.0015779675
-Searching for geometrical constraints...
+Searching for geometrical constraints...none found.
+
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (0.96082911)
@@ -1665,8 +1667,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:29 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:01 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1695,15 +1697,15 @@ Wed Feb 28 16:14:29 2007
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:29 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:01 2007
 
-user time   =       0.07 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:29 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:01 2007
 
 
              ------------------------------------------
@@ -1752,15 +1754,15 @@ Wed Feb 28 16:14:29 2007
     1       -76.0228534012    8.518456e+01    0.000000e+00    0.000000e+00
     2       -76.0228829389    2.953773e-05    9.868330e-05    2.301952e-03
     3       -76.0228845500    1.611097e-06    2.346311e-05    5.868743e-04
-    4       -76.0228846370    8.704690e-08    4.935482e-06    1.375026e-04
-    5       -76.0228846545    1.749299e-08    2.386247e-06    6.691273e-05
-    6       -76.0228846558    1.223711e-09    8.575471e-07    1.379128e-05
-    7       -76.0228846558    6.123457e-11    2.209371e-07    2.584931e-06
-    8       -76.0228846558    1.165290e-12    1.788656e-08    3.441520e-07
-    9       -76.0228846558    0.000000e+00    5.038183e-09    9.100123e-08
-   10       -76.0228846558    4.263256e-14    5.198358e-10    1.162939e-08
-   11       -76.0228846558   -4.263256e-14    1.304832e-10    4.147978e-09
-   12       -76.0228846558    4.263256e-14    3.037646e-11    7.359165e-10
+    4       -76.0228846370    8.704687e-08    4.935482e-06    1.375026e-04
+    5       -76.0228846545    1.749302e-08    2.386247e-06    6.691273e-05
+    6       -76.0228846558    1.223697e-09    8.575471e-07    1.379128e-05
+    7       -76.0228846558    6.126299e-11    2.209371e-07    2.584931e-06
+    8       -76.0228846558    1.122658e-12    1.788656e-08    3.441520e-07
+    9       -76.0228846558    9.947598e-14    5.038183e-09    9.100123e-08
+   10       -76.0228846558   -2.842171e-14    5.198358e-10    1.162939e-08
+   11       -76.0228846558   -1.421085e-14    1.304832e-10    4.147979e-09
+   12       -76.0228846558   -2.842171e-14    3.037651e-11    7.359164e-10
 
  Correcting phases of orbitals.
 
@@ -1789,15 +1791,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.997034493615
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:29 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:01 2007
 
 user time   =       0.02 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:29 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:01 2007
 
 
 	**************************************************
@@ -1884,15 +1886,15 @@ Wed Feb 28 16:14:29 2007
 	One-electron integrals written to file 35.
 	Frozen-core operator written to file 35.
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:31 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:03 2007
 
-user time   =       0.37 seconds =       0.01 minutes
-system time =       2.78 seconds =       0.05 minutes
+user time   =       0.32 seconds =       0.01 minutes
+system time =       2.05 seconds =       0.03 minutes
 total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:31 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:03 2007
 
 
 			**************************
@@ -1930,7 +1932,7 @@ Wed Feb 28 16:14:31 2007
 	 B2 	   7	    0	    1	    0	    6	    0
 
 	Nuclear Rep. energy (chkpt) =      9.16170668829522
-	SCF energy          (chkpt) =    -76.02288465582038
+	SCF energy          (chkpt) =    -76.02288465582029
 
 	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
 	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
@@ -1951,23 +1953,23 @@ Wed Feb 28 16:14:31 2007
 	Total:                                     0.003 (MW) /      0.022 (MB)
 
 
-	One-electron energy          =   -123.03405251756242
-	Two-electron (AA) energy     =     14.44546538962237
-	Two-electron (BB) energy     =     14.44546538962237
-	Two-electron (AB) energy     =     23.40399578382441
-	Two-electron energy          =     37.84946117344678
+	One-electron energy          =   -123.03405251756234
+	Two-electron (AA) energy     =     14.44546538962234
+	Two-electron (BB) energy     =     14.44546538962234
+	Two-electron (AB) energy     =     23.40399578382438
+	Two-electron energy          =     37.84946117344673
 	Frozen-core energy (transqt) =      0.00000000000000
 	Reference energy             =    -76.02288465582041
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:31 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:03 2007
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.13 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.10 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:31 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:03 2007
 
 			*************************
 			*                       *
@@ -1975,8 +1977,8 @@ Wed Feb 28 16:14:31 2007
 			*                       *
 			*************************
 
-	Nuclear rep. energy     =    9.161706688295221
-	SCF energy              =  -76.022884655820377
+	Nuclear rep. energy     =    9.161706688295219
+	SCF energy              =  -76.022884655820292
 
 	Input parameters:
 	-----------------
@@ -1989,41 +1991,41 @@ Wed Feb 28 16:14:31 2007
 	Print Level   	=	0
 	OPDM          	=	NO
 
-	MP2 correlation energy  =   -0.199563979486568
-	MP2 total energy        =  -76.222448635306947
+	MP2 correlation energy  =   -0.199563979486567
+	MP2 total energy        =  -76.222448635306861
 
 	Trace of onepdm =   -0.000000000000000
 
 	Energies re-computed from Fock-adjusted CC density:
 	---------------------------------------------------
-	One-electron energy        =    0.230459204481536
-	IJKL energy                =   -0.638797896068537
-	IJKA energy                =   -0.051732129099353
-	IJAB energy                =   -0.399127958973135
-	IBJA energy                =    0.659634800168055
+	One-electron energy        =    0.230459204481532
+	IJKL energy                =   -0.638797896068532
+	IJKA energy                =   -0.051732129099351
+	IJAB energy                =   -0.399127958973134
+	IBJA energy                =    0.659634800168050
 	MP2 correlation energy    =   -0.199563979491434
-	Total MP2 energy          =  -76.222448635311807
+	Total MP2 energy          =  -76.222448635311721
 
 	Energies re-computed from Mulliken density:
 	-------------------------------------------
-	One-electron energy        =    0.230459204481536
-	IJKL energy                =   -0.638797896068537
-	IJKA energy                =   -0.051732129099353
-	IJAB energy                =   -0.428962916791395
-	IBJA energy                =    0.689469757986314
-	Total two-electron energy  =   -0.430023183972970
+	One-electron energy        =    0.230459204481532
+	IJKL energy                =   -0.638797896068532
+	IJKA energy                =   -0.051732129099351
+	IJAB energy                =   -0.428962916791393
+	IBJA energy                =    0.689469757986309
+	Total two-electron energy  =   -0.430023183972966
 	MP2 correlation energy    =   -0.199563979491434
-	Total MP2 energy          =  -76.222448635311807
+	Total MP2 energy          =  -76.222448635311721
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:32 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:03 2007
 
-user time   =       0.12 seconds =       0.00 minutes
-system time =       0.22 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.17 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:32 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:03 2007
 
     **********************************************
     *                    OEPROP                  *
@@ -2125,12 +2127,12 @@ Wed Feb 28 16:14:32 2007
  -Coordinates of the reference point (a.u.) :
            x                     y                     z
   --------------------  --------------------  --------------------
-          0.0000000000         -0.0000000000         -0.0000000000
+          0.0000000000          0.0000000000         -0.0000000000
 
  -Electric dipole moment (expectation values) :
 
     mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
-    mu(Y)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -9.41286816e-45 C*m  =  -0.00000000 a.u.
     mu(Z)  =   2.11210 D  =   7.04520664e-30 C*m  =   0.83096358 a.u.
     |mu|   =   2.11210 D  =   7.04520664e-30 C*m  =   0.83096358 a.u.
 
@@ -2142,7 +2144,7 @@ Wed Feb 28 16:14:32 2007
  -Coordinates of the reference point (a.u.) :
            x                     y                     z
   --------------------  --------------------  --------------------
-          0.0000000000          0.0000000000          0.0000000000
+          0.0000000000         -0.0000000000          0.0000000000
 
  -Electronic angular momentum (expectation values) :
 
@@ -2167,7 +2169,7 @@ Wed Feb 28 16:14:32 2007
 
     Center         phi            Ex             Ey           Ez
     ------    ------------   ------------  ------------  ------------
-       1      -22.30030746     0.00000000    0.00000000   -0.12510857
+       1      -22.30030746     0.00000000   -0.00000000   -0.12510857
        2       -1.00543972     0.00000000    0.01591943    0.00505388
        3       -1.00543972     0.00000000   -0.01591943    0.00505388
 
@@ -2182,7 +2184,7 @@ Wed Feb 28 16:14:32 2007
 
     Center           XY                    XZ                    YZ
     ------  --------------------  --------------------  --------------------
-       1              0.00000000            0.00000000           -0.00000000
+       1              0.00000000            0.00000000            0.00000000
        2              0.00000000            0.00000000            1.60527080
        3              0.00000000            0.00000000           -1.60527080
 
@@ -2197,7 +2199,7 @@ Wed Feb 28 16:14:32 2007
 
     Center           XY                    XZ                    YZ
     ------  --------------------  --------------------  --------------------
-       1              0.00000000            0.00000000           -0.00000000
+       1              0.00000000            0.00000000            0.00000000
        2              0.00000000            0.00000000            1.60527080
        3              0.00000000            0.00000000           -1.60527080
 
@@ -2223,15 +2225,15 @@ Wed Feb 28 16:14:32 2007
 
 
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:32 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:04 2007
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:32 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:04 2007
 
 
 	**************************************************
@@ -2315,15 +2317,15 @@ Wed Feb 28 16:14:32 2007
 	Transforming one-electron integrals...
 	One-pdm and lagrangian written to file76.
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:34 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:05 2007
 
-user time   =       0.47 seconds =       0.01 minutes
-system time =       2.82 seconds =       0.05 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.38 seconds =       0.01 minutes
+system time =       2.07 seconds =       0.03 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:34 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:05 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2361,10 +2363,10 @@ Wed Feb 28 16:14:34 2007
        3        0.000000000000    -0.000016991880     0.000062121173
 
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:34 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:05 2007
 
-user time   =       0.42 seconds =       0.01 minutes
+user time   =       0.32 seconds =       0.01 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
@@ -2379,7 +2381,8 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000000000   0.0000000000  -0.0001242423
                        0.0000000000   0.0000169919   0.0000621212
                        0.0000000000  -0.0000169919   0.0000621212
-Searching for geometrical constraints...
+Searching for geometrical constraints...none found.
+
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (0.96084203)
@@ -2424,8 +2427,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:34 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:06 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2454,15 +2457,15 @@ Wed Feb 28 16:14:34 2007
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:34 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:06 2007
 
-user time   =       0.07 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:34 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:06 2007
 
 
              ------------------------------------------
@@ -2509,14 +2512,14 @@ Wed Feb 28 16:14:34 2007
 
   iter       total energy        delta E         delta P          diiser
     1       -76.0228920352    8.518524e+01    0.000000e+00    0.000000e+00
-    2       -76.0228920469    1.167118e-08    1.955005e-06    4.116186e-05
-    3       -76.0228920479    9.898713e-10    5.801757e-07    1.572207e-05
-    4       -76.0228920481    1.970477e-10    2.170789e-07    6.033816e-06
-    5       -76.0228920481    1.645617e-11    9.118117e-08    1.550529e-06
-    6       -76.0228920481    6.394885e-13    2.171156e-08    2.821263e-07
-    7       -76.0228920481   -1.421085e-14    2.946498e-09    3.516154e-08
-    8       -76.0228920481    2.842171e-14    4.554336e-10    8.412192e-09
-    9       -76.0228920481   -5.684342e-14    8.656502e-11    1.756856e-09
+    2       -76.0228920469    1.167119e-08    1.955005e-06    4.116186e-05
+    3       -76.0228920479    9.898145e-10    5.801757e-07    1.572207e-05
+    4       -76.0228920481    1.970761e-10    2.170789e-07    6.033816e-06
+    5       -76.0228920481    1.642775e-11    9.118117e-08    1.550529e-06
+    6       -76.0228920481    6.252776e-13    2.171156e-08    2.821263e-07
+    7       -76.0228920481    5.684342e-14    2.946498e-09    3.516154e-08
+    8       -76.0228920481   -1.421085e-14    4.554335e-10    8.412191e-09
+    9       -76.0228920481    1.421085e-14    8.656495e-11    1.756856e-09
 
  Correcting phases of orbitals.
 
@@ -2539,21 +2542,21 @@ Orbital energies (a.u.):
 
         SCF total energy   =     -76.022892048117
         kinetic energy     =      75.797679176486
-        nuc. attr. energy  =    -198.832978680115
+        nuc. attr. energy  =    -198.832978680116
         elec. rep. energy  =      47.012407455513
         potential energy   =    -151.820571224603
         virial theorem     =       1.997037565060
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:35 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:06 2007
 
 user time   =       0.02 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:35 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:06 2007
 
 
 	**************************************************
@@ -2640,15 +2643,15 @@ Wed Feb 28 16:14:35 2007
 	One-electron integrals written to file 35.
 	Frozen-core operator written to file 35.
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:37 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:07 2007
 
-user time   =       0.37 seconds =       0.01 minutes
-system time =       2.75 seconds =       0.05 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.32 seconds =       0.01 minutes
+system time =       2.05 seconds =       0.03 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:37 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:07 2007
 
 
 			**************************
@@ -2685,8 +2688,8 @@ Wed Feb 28 16:14:37 2007
 	 B1 	   4	    0	    1	    0	    3	    0
 	 B2 	   7	    0	    1	    0	    6	    0
 
-	Nuclear Rep. energy (chkpt) =      9.16235117101543
-	SCF energy          (chkpt) =    -76.02289204811721
+	Nuclear Rep. energy (chkpt) =      9.16235117101544
+	SCF energy          (chkpt) =    -76.02289204811726
 
 	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
 	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
@@ -2707,23 +2710,23 @@ Wed Feb 28 16:14:37 2007
 	Total:                                     0.003 (MW) /      0.022 (MB)
 
 
-	One-electron energy          =   -123.03529950362972
-	Two-electron (AA) energy     =     14.44572083395209
-	Two-electron (BB) energy     =     14.44572083395209
-	Two-electron (AB) energy     =     23.40433545054499
-	Two-electron energy          =     37.85005628449708
+	One-electron energy          =   -123.03529950362980
+	Two-electron (AA) energy     =     14.44572083395210
+	Two-electron (BB) energy     =     14.44572083395210
+	Two-electron (AB) energy     =     23.40433545054501
+	Two-electron energy          =     37.85005628449711
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -76.02289204811720
+	Reference energy             =    -76.02289204811726
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:37 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:08 2007
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.13 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.10 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:37 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:08 2007
 
 			*************************
 			*                       *
@@ -2731,8 +2734,8 @@ Wed Feb 28 16:14:37 2007
 			*                       *
 			*************************
 
-	Nuclear rep. energy     =    9.162351171015427
-	SCF energy              =  -76.022892048117214
+	Nuclear rep. energy     =    9.162351171015439
+	SCF energy              =  -76.022892048117257
 
 	Input parameters:
 	-----------------
@@ -2746,40 +2749,40 @@ Wed Feb 28 16:14:37 2007
 	OPDM          	=	NO
 
 	MP2 correlation energy  =   -0.199556609393155
-	MP2 total energy        =  -76.222448657510370
+	MP2 total energy        =  -76.222448657510412
 
 	Trace of onepdm =   -0.000000000000000
 
 	Energies re-computed from Fock-adjusted CC density:
 	---------------------------------------------------
-	One-electron energy        =    0.230470272411896
-	IJKL energy                =   -0.638744879771169
-	IJKA energy                =   -0.051740806164861
+	One-electron energy        =    0.230470272411900
+	IJKL energy                =   -0.638744879771170
+	IJKA energy                =   -0.051740806164862
 	IJAB energy                =   -0.399113218786309
-	IBJA energy                =    0.659572022936370
-	MP2 correlation energy    =   -0.199556609374072
-	Total MP2 energy          =  -76.222448657491285
+	IBJA energy                =    0.659572022936371
+	MP2 correlation energy    =   -0.199556609374071
+	Total MP2 energy          =  -76.222448657491327
 
 	Energies re-computed from Mulliken density:
 	-------------------------------------------
-	One-electron energy        =    0.230470272411896
-	IJKL energy                =   -0.638744879771169
-	IJKA energy                =   -0.051740806164861
+	One-electron energy        =    0.230470272411900
+	IJKL energy                =   -0.638744879771170
+	IJKA energy                =   -0.051740806164862
 	IJAB energy                =   -0.428944432617492
 	IBJA energy                =    0.689403236767553
-	Total two-electron energy  =   -0.430026881785968
-	MP2 correlation energy    =   -0.199556609374072
-	Total MP2 energy          =  -76.222448657491285
+	Total two-electron energy  =   -0.430026881785971
+	MP2 correlation energy    =   -0.199556609374071
+	Total MP2 energy          =  -76.222448657491327
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:37 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:08 2007
 
-user time   =       0.12 seconds =       0.00 minutes
-system time =       0.22 seconds =       0.00 minutes
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.17 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:37 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:08 2007
 
     **********************************************
     *                    OEPROP                  *
@@ -2886,7 +2889,7 @@ Wed Feb 28 16:14:37 2007
  -Electric dipole moment (expectation values) :
 
     mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
-    mu(Y)  =  -0.00000 D  =  -1.88257363e-45 C*m  =  -0.00000000 a.u.
+    mu(Y)  =   0.00000 D  =   5.64772090e-45 C*m  =   0.00000000 a.u.
     mu(Z)  =   2.11166 D  =   7.04373494e-30 C*m  =   0.83079000 a.u.
     |mu|   =   2.11166 D  =   7.04373494e-30 C*m  =   0.83079000 a.u.
 
@@ -2923,7 +2926,7 @@ Wed Feb 28 16:14:37 2007
 
     Center         phi            Ex             Ey           Ez
     ------    ------------   ------------  ------------  ------------
-       1      -22.30032506     0.00000000    0.00000000   -0.12511245
+       1      -22.30032506     0.00000000   -0.00000000   -0.12511245
        2       -1.00544498     0.00000000    0.01594714    0.00512113
        3       -1.00544498     0.00000000   -0.01594714    0.00512113
 
@@ -2938,7 +2941,7 @@ Wed Feb 28 16:14:37 2007
 
     Center           XY                    XZ                    YZ
     ------  --------------------  --------------------  --------------------
-       1              0.00000000            0.00000000           -0.00000000
+       1              0.00000000            0.00000000            0.00000000
        2              0.00000000            0.00000000            1.60534975
        3              0.00000000            0.00000000           -1.60534975
 
@@ -2953,7 +2956,7 @@ Wed Feb 28 16:14:37 2007
 
     Center           XY                    XZ                    YZ
     ------  --------------------  --------------------  --------------------
-       1              0.00000000            0.00000000           -0.00000000
+       1              0.00000000            0.00000000            0.00000000
        2              0.00000000            0.00000000            1.60534975
        3              0.00000000            0.00000000           -1.60534975
 
@@ -2979,15 +2982,15 @@ Wed Feb 28 16:14:37 2007
 
 
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:37 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:08 2007
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:37 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:08 2007
 
 
 	**************************************************
@@ -3071,15 +3074,15 @@ Wed Feb 28 16:14:37 2007
 	Transforming one-electron integrals...
 	One-pdm and lagrangian written to file76.
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:40 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:10 2007
 
-user time   =       0.47 seconds =       0.01 minutes
-system time =       2.83 seconds =       0.05 minutes
-total time  =          3 seconds =       0.05 minutes
+user time   =       0.38 seconds =       0.01 minutes
+system time =       2.07 seconds =       0.03 minutes
+total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:40 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:10 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -3117,10 +3120,10 @@ Wed Feb 28 16:14:40 2007
        3        0.000000000000     0.000008237770    -0.000005898794
 
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:40 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:10 2007
 
-user time   =       0.42 seconds =       0.01 minutes
+user time   =       0.32 seconds =       0.01 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
@@ -3135,7 +3138,8 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000000000   0.0000000000   0.0000117976
                        0.0000000000  -0.0000082378  -0.0000058988
                        0.0000000000   0.0000082378  -0.0000058988
-Searching for geometrical constraints...
+Searching for geometrical constraints...none found.
+
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (0.96076779)
@@ -3180,8 +3184,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:40 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:10 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -3210,15 +3214,15 @@ Wed Feb 28 16:14:40 2007
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:40 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:10 2007
 
-user time   =       0.07 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:40 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:10 2007
 
 
              ------------------------------------------
@@ -3239,7 +3243,7 @@ Wed Feb 28 16:14:40 2007
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy        9.1622538849049
+  nuclear repulsion energy        9.1622538849048
 
   using old vector from file30 as initial guess
   energy from old vector:   -76.02289205
@@ -3265,13 +3269,13 @@ Wed Feb 28 16:14:40 2007
 
   iter       total energy        delta E         delta P          diiser
     1       -76.0228913188    8.518515e+01    0.000000e+00    0.000000e+00
-    2       -76.0228913188    6.137668e-11    1.197108e-07    2.925973e-06
-    3       -76.0228913188    5.755396e-12    4.043934e-08    1.462149e-06
-    4       -76.0228913188    1.222134e-12    1.706606e-08    4.709536e-07
+    2       -76.0228913188    6.144774e-11    1.197108e-07    2.925973e-06
+    3       -76.0228913188    5.712764e-12    4.043934e-08    1.462149e-06
+    4       -76.0228913188    1.250555e-12    1.706606e-08    4.709536e-07
     5       -76.0228913188    9.947598e-14    6.673757e-09    1.306164e-07
-    6       -76.0228913188    1.421085e-14    2.143350e-09    3.062136e-08
-    7       -76.0228913188    0.000000e+00    3.827378e-10    4.608896e-09
-    8       -76.0228913188   -2.842171e-14    3.603337e-11    6.514823e-10
+    6       -76.0228913188    1.421085e-14    2.143351e-09    3.062136e-08
+    7       -76.0228913188    0.000000e+00    3.827379e-10    4.608896e-09
+    8       -76.0228913188    0.000000e+00    3.603326e-11    6.514825e-10
 
  Correcting phases of orbitals.
 
@@ -3300,15 +3304,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.997037056819
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:40 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:10 2007
 
 user time   =       0.02 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:40 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:10 2007
 
 
 	**************************************************
@@ -3395,15 +3399,15 @@ Wed Feb 28 16:14:40 2007
 	One-electron integrals written to file 35.
 	Frozen-core operator written to file 35.
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:42 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:12 2007
 
-user time   =       0.37 seconds =       0.01 minutes
-system time =       2.78 seconds =       0.05 minutes
+user time   =       0.30 seconds =       0.01 minutes
+system time =       2.02 seconds =       0.03 minutes
 total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:42 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:12 2007
 
 
 			**************************
@@ -3440,8 +3444,8 @@ Wed Feb 28 16:14:42 2007
 	 B1 	   4	    0	    1	    0	    3	    0
 	 B2 	   7	    0	    1	    0	    6	    0
 
-	Nuclear Rep. energy (chkpt) =      9.16225388490492
-	SCF energy          (chkpt) =    -76.02289131883023
+	Nuclear Rep. energy (chkpt) =      9.16225388490485
+	SCF energy          (chkpt) =    -76.02289131883025
 
 	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
 	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
@@ -3462,23 +3466,23 @@ Wed Feb 28 16:14:42 2007
 	Total:                                     0.003 (MW) /      0.022 (MB)
 
 
-	One-electron energy          =   -123.03512601091778
-	Two-electron (AA) energy     =     14.44568865508091
-	Two-electron (BB) energy     =     14.44568865508091
-	Two-electron (AB) energy     =     23.40429215210177
-	Two-electron energy          =     37.84998080718268
+	One-electron energy          =   -123.03512601091764
+	Two-electron (AA) energy     =     14.44568865508088
+	Two-electron (BB) energy     =     14.44568865508088
+	Two-electron (AB) energy     =     23.40429215210174
+	Two-electron energy          =     37.84998080718261
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -76.02289131883018
+	Reference energy             =    -76.02289131883019
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:42 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:12 2007
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.13 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.10 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:42 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:12 2007
 
 			*************************
 			*                       *
@@ -3486,8 +3490,8 @@ Wed Feb 28 16:14:42 2007
 			*                       *
 			*************************
 
-	Nuclear rep. energy     =    9.162253884904915
-	SCF energy              =  -76.022891318830233
+	Nuclear rep. energy     =    9.162253884904848
+	SCF energy              =  -76.022891318830247
 
 	Input parameters:
 	-----------------
@@ -3501,40 +3505,40 @@ Wed Feb 28 16:14:42 2007
 	OPDM          	=	NO
 
 	MP2 correlation energy  =   -0.199557338837372
-	MP2 total energy        =  -76.222448657667599
+	MP2 total energy        =  -76.222448657667613
 
 	Trace of onepdm =   -0.000000000000000
 
 	Energies re-computed from Fock-adjusted CC density:
 	---------------------------------------------------
-	One-electron energy        =    0.230469279712508
-	IJKL energy                =   -0.638750379835160
-	IJKA energy                =   -0.051740031429516
+	One-electron energy        =    0.230469279712503
+	IJKL energy                =   -0.638750379835163
+	IJKA energy                =   -0.051740031429513
 	IJAB energy                =   -0.399114677674744
-	IBJA energy                =    0.659578470380935
+	IBJA energy                =    0.659578470380940
 	MP2 correlation energy    =   -0.199557338845977
-	Total MP2 energy          =  -76.222448657676210
+	Total MP2 energy          =  -76.222448657676225
 
 	Energies re-computed from Mulliken density:
 	-------------------------------------------
-	One-electron energy        =    0.230469279712508
-	IJKL energy                =   -0.638750379835159
-	IJKA energy                =   -0.051740031429516
-	IJAB energy                =   -0.428946269140489
-	IBJA energy                =    0.689410061846680
-	Total two-electron energy  =   -0.430026618558484
-	MP2 correlation energy    =   -0.199557338845976
-	Total MP2 energy          =  -76.222448657676210
+	One-electron energy        =    0.230469279712503
+	IJKL energy                =   -0.638750379835163
+	IJKA energy                =   -0.051740031429513
+	IJAB energy                =   -0.428946269140490
+	IBJA energy                =    0.689410061846685
+	Total two-electron energy  =   -0.430026618558480
+	MP2 correlation energy    =   -0.199557338845977
+	Total MP2 energy          =  -76.222448657676225
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:43 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:12 2007
 
-user time   =       0.12 seconds =       0.00 minutes
-system time =       0.22 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.17 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:43 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:12 2007
 
     **********************************************
     *                    OEPROP                  *
@@ -3636,12 +3640,12 @@ Wed Feb 28 16:14:43 2007
  -Coordinates of the reference point (a.u.) :
            x                     y                     z
   --------------------  --------------------  --------------------
-          0.0000000000          0.0000000000         -0.0000000000
+          0.0000000000         -0.0000000000         -0.0000000000
 
  -Electric dipole moment (expectation values) :
 
     mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
-    mu(Y)  =   0.00000 D  =   9.41286816e-45 C*m  =   0.00000000 a.u.
+    mu(Y)  =   0.00000 D  =   7.53029453e-45 C*m  =   0.00000000 a.u.
     mu(Z)  =   2.11167 D  =   7.04375472e-30 C*m  =   0.83079233 a.u.
     |mu|   =   2.11167 D  =   7.04375472e-30 C*m  =   0.83079233 a.u.
 
@@ -3653,7 +3657,7 @@ Wed Feb 28 16:14:43 2007
  -Coordinates of the reference point (a.u.) :
            x                     y                     z
   --------------------  --------------------  --------------------
-          0.0000000000         -0.0000000000          0.0000000000
+          0.0000000000          0.0000000000          0.0000000000
 
  -Electronic angular momentum (expectation values) :
 
@@ -3693,7 +3697,7 @@ Wed Feb 28 16:14:43 2007
 
     Center           XY                    XZ                    YZ
     ------  --------------------  --------------------  --------------------
-       1              0.00000000            0.00000000           -0.00000000
+       1              0.00000000            0.00000000            0.00000000
        2              0.00000000            0.00000000            1.60531293
        3              0.00000000            0.00000000           -1.60531293
 
@@ -3708,7 +3712,7 @@ Wed Feb 28 16:14:43 2007
 
     Center           XY                    XZ                    YZ
     ------  --------------------  --------------------  --------------------
-       1              0.00000000            0.00000000           -0.00000000
+       1              0.00000000            0.00000000            0.00000000
        2              0.00000000            0.00000000            1.60531293
        3              0.00000000            0.00000000           -1.60531293
 
@@ -3734,15 +3738,15 @@ Wed Feb 28 16:14:43 2007
 
 
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:43 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:12 2007
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:43 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:12 2007
 
 
 	**************************************************
@@ -3826,15 +3830,15 @@ Wed Feb 28 16:14:43 2007
 	Transforming one-electron integrals...
 	One-pdm and lagrangian written to file76.
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:45 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:14 2007
 
-user time   =       0.47 seconds =       0.01 minutes
-system time =       2.82 seconds =       0.05 minutes
+user time   =       0.38 seconds =       0.01 minutes
+system time =       2.08 seconds =       0.03 minutes
 total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on chofreephra.local
-Wed Feb 28 16:14:45 2007
+tstart called on mac4704.local
+Fri Apr  6 13:13:14 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -3872,10 +3876,10 @@ Wed Feb 28 16:14:45 2007
        3        0.000000000000    -0.000000525778     0.000000188300
 
 ******************************************************************************
-tstop called on chofreephra.local
-Wed Feb 28 16:14:45 2007
+tstop called on mac4704.local
+Fri Apr  6 13:13:14 2007
 
-user time   =       0.42 seconds =       0.01 minutes
+user time   =       0.32 seconds =       0.01 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
@@ -3890,7 +3894,8 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000000000   0.0000000000  -0.0000003766
                        0.0000000000   0.0000005258   0.0000001883
                        0.0000000000  -0.0000005258   0.0000001883
-Searching for geometrical constraints...
+Searching for geometrical constraints...none found.
+
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (0.96077801)
@@ -3925,6 +3930,14 @@ The Optimized geometry in a.u.
   (  O   0.0000000000   0.0000000000  -0.1252739752 )
   (  H   0.0000000000   1.4294907237   0.9940944482 )
   (  H   0.0000000000  -1.4294907237   0.9940944482 )
+  zmat = ( 
+    ( O )
+    ( H  1    0.96078)
+    ( H  1    0.96078 2  103.87428)
+  )
+  zvars = ( 
+  )
+
 
 ******** OPTKING execution completed ********
 
