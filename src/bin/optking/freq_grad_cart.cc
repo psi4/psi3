@@ -54,7 +54,6 @@ void freq_grad_cart(cartesians &carts) {
   int print;
   char *line1;
   print = optinfo.print_cartesians;
-  print = 1;
 
   nirreps = syminfo.nirreps;
   natom = carts.get_natom();

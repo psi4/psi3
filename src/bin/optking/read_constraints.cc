@@ -211,6 +211,9 @@ int *read_constraints(internals &simples) {
   if (optinfo.nconstraints > 0)
     optinfo.constraints_present = 1;
 
+  if (optinfo.constraints_present == 0)
+    fprintf(outfile,"none found.\n");
+
   /* fixed?
   if ( (optinfo.constraints_present) && (optinfo.delocalize == 1) ) {
     fprintf(outfile,"Constraints may only be imposed on simple internal coordinates,");

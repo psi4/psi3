@@ -105,9 +105,10 @@ void zmat_to_intco() {
   fprintf(fp_intco,")");
   fclose(fp_intco);
 
-  /* write out coordinates to be frozen */
   ffile(&fp_intco,"fintco.dat",0);
-  fprintf(fp_intco,"intco: (\n");
+
+  /* write out coordinates to be frozen */
+  fprintf(fp_intco,"fixed_intco: (\n");
   cnt = 0;
 
   fprintf(fp_intco,"  stre = (\n");
@@ -116,7 +117,7 @@ void zmat_to_intco() {
     b = zmat[i].bond_atom;
     swap(&a, &b);
     if (zmat[i].bond_opt == 0)
-      fprintf(fp_intco, "    (%d %d %d)\n",++cnt, a, b);
+      fprintf(fp_intco, "    ( %d %d)\n", a, b);
   }
   fprintf(fp_intco,"  )\n");
 
@@ -128,7 +129,7 @@ void zmat_to_intco() {
     swap(&a, &c);
     if (zmat[i].angle_val != 180.0) {
       if (zmat[i].angle_opt == 0)
-        fprintf(fp_intco, "    (%d %d %d %d)\n",++cnt, a, b, c);
+        fprintf(fp_intco, "    ( %d %d %d)\n", a, b, c);
     }
   }
   fprintf(fp_intco,"  )\n");
@@ -142,7 +143,7 @@ void zmat_to_intco() {
     swap_tors(&a, &b, &c, &d);
     if (zmat[i].angle_val != 180.0) {
       if (zmat[i].tors_opt == 0)
-        fprintf(fp_intco, "    (%d %d %d %d %d)\n",++cnt, a, b, c, d);
+        fprintf(fp_intco, "    ( %d %d %d %d)\n", a, b, c, d);
     }
   }
   fprintf(fp_intco,"  )\n");
@@ -159,7 +160,7 @@ void zmat_to_intco() {
           fprintf(fp_intco,"  lin1 = (\n");
           first = 0;
         }
-        fprintf(fp_intco, "    (%d %d %d %d)\n",++cnt, a, b, c);
+        fprintf(fp_intco, "    ( %d %d %d)\n", a, b, c);
       }
     }
   }
@@ -177,7 +178,7 @@ void zmat_to_intco() {
           fprintf(fp_intco,"  lin2 = (\n");
           first = 0;
         }
-        fprintf(fp_intco, "    (%d %d %d %d)\n",++cnt, a, b, c);
+        fprintf(fp_intco, "    ( %d %d %d)\n", a, b, c);
       }
     }
   }

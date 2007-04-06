@@ -263,7 +263,13 @@ int main(int argc, char **argv) {
     fflush(outfile);
 
     internals simples(carts, optinfo.simples_present);
+
+    /* read in constraints */
+    ffile_noexit(&fp_fintco, "fintco.dat", 2);
+    if (fp_fintco != NULL) ip_append(fp_fintco, outfile) ;
     if (optinfo.mode == MODE_OPT_STEP) optinfo.constraints = read_constraints(simples);
+    if (fp_fintco != NULL) fclose(fp_fintco);
+
     coord = carts.get_coord();
     simples.compute_internals(carts.get_natom(), coord);
     simples.compute_s(carts.get_natom(), coord);

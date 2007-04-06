@@ -45,7 +45,7 @@
 
 EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
-EXTERN FILE *fp_input, *fp_intco, *fp_fconst, *fp_opt_aux, *fp_11;
+EXTERN FILE *fp_input, *fp_intco, *fp_fconst, *fp_opt_aux, *fp_11, *fp_fintco;
 EXTERN int *ops_in_class;
 EXTERN int nirreps, *irr;
 EXTERN int num_nonzero;      /* number of non-redundant di coordinates (eigenvectors of G with nonzero eigenvalues) */

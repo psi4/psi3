@@ -64,6 +64,8 @@ void get_optinfo() {
   if ( optinfo.numerical_dertype == 1 )
     { optinfo.redundant = 0; optinfo.delocalize =1; }
   ip_boolean("DELOCALIZE", &(optinfo.delocalize),0);
+  if (optinfo.delocalize)
+    optinfo.redundant = 0;
 
   /* print options */
   optinfo.print_simples = 0;
