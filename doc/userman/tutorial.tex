@@ -26,7 +26,9 @@ and computations during your calculation.  Which modules are run for
 a particular computation depends on the type of computation and the
 particular keywords specified in the input file.  All keywords in PSI3
 use the structure {\tt keyword = value}, where values may be strings,
-booleans, integers or real numbers.  You can give keywords in the
+booleans, integers or real numbers.  If the value is a string which
+contains a special character (such as a space or a dash) you must enclose
+the string in double quotation marks.  You can give keywords in the
 input file for specific modules; however, in the first few examples,
 we will place all our keywords in one section of our input file called
 {\tt psi}.  Generally, every module you run during your computation will
