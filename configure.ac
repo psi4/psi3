@@ -1,4 +1,8 @@
 # Process this file with autoconf to produce a configure script.
+#
+#
+#
+#
 
 define([psi_version],[3.3.0])
 define([psi_bugreport],[psicode@users.sourceforge.net])
@@ -12,6 +16,10 @@ AC_SUBST(PSI_BUGREPORT)
 
 AC_CANONICAL_TARGET
 AC_PREFIX_DEFAULT(/usr/local/psi)
+
+AC_PROG_MAKE_SET([])
+
+srcdir=`(cd $srcdir; pwd)`
 
 objincdir='$(top_objdir)/include'
 AC_SUBST(objincdir)
@@ -151,16 +159,129 @@ else
 fi
 AC_SUBST(FC,[$F77])
 
+## Fortran-C linking convention tests
+
+AC_ARG_WITH(f77symbol,[  --with-f77symbol        FORTRAN77 symbol convention (if no Fortran compiler). Allowed values are:
+                            lc  (lower-case)
+                            lcu (lower-case with underscore; default, if not given)
+                            uc  (upper-case)                            ucu (upper-case with underscore)],[
+case $withval in            
+  lc)
+    FC_SYMBOL=1
+    ;;
+  lcu)
+    FC_SYMBOL=2
+    ;;
+  uc)
+    FC_SYMBOL=3
+    ;;
+  ucu)
+    FC_SYMBOL=4
+    ;;
+  *)
+    AC_MSG_WARN([did not recognize value $withval. will assume lower-case with underscore])    
+    FC_SYMBOL=2
+    ;;
+esac
+])
+
+if test -z "$FC_SYMBOL"; then
+  AC_MSG_CHECKING(Fortran symbols)
+if test -n "$F77" ; then
+  /bin/rm -f ffunc.f flink.c
+  echo "      subroutine ffunc()" > ffunc.f
+  echo "      return" >> ffunc.f
+  echo "      end" >> ffunc.f 
+  $F77 -c ffunc.f 1>/dev/null 2>/dev/null
+  echo "main(){ FF(); return 0; }" > flink.c   
+  if $CC -o flink -DFF=ffunc flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+    AC_MSG_RESULT(same as C)
+    FC_SYMBOL=1  
+  elif $CC -o flink -DFF=ffunc_ flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+    AC_MSG_RESULT(lowercase with underscore)
+    FC_SYMBOL=2  
+  elif $CC -o flink -DFF=FFUNC flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+    AC_MSG_RESULT(uppercase)
+    FC_SYMBOL=3  
+  elif $CC -o flink -DFF=FFUNC_ flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+    AC_MSG_RESULT(uppercase with underscore)
+    FC_SYMBOL=4
+  else
+    AC_MSG_RESULT(giving up)
+    AC_MSG_ERROR(could not determine fortran symbol names)
+  fi
+  /bin/rm -f ffunc.f ffunc.o flink flink.c flink.o ffunc
+else
+  FC_SYMBOL=2
+  AC_MSG_RESULT(No Fortran compiler provided; guessing lowercase with underscore)
+fi
+fi
+AC_SUBST(FC_SYMBOL)
+
 AC_PROG_RANLIB
-AC_CHECK_PROGS(AR,ar,ar) AC_SUBST(AR)
 AC_PROG_CPP
 AC_PROG_CXXCPP
+AC_PROG_LEX
 AC_PROG_YACC
 AC_PROG_INSTALL
 AC_PROG_LN_S
+AC_CHECK_PROGS(AR,ar,ar) 
+AC_ARG_WITH(ar,
+[  --with-ar               Names the archive creator.],
+AR=$withval
+)
+AC_SUBST(AR)
+
+ARFLAGS=r
+AC_ARG_WITH(ar-flags,
+[  --with-ar-flags         Flags for the the archive creator.],
+ARFLAGS=$withval
+)
+case $os in
+  aix*)
+    ARFLAGS="-X32_64 $ARFLAGS"
+    ;;
+esac
+AC_SUBST(ARFLAGS)
+
+AC_ARG_WITH(ld,
+[  --with-ld               Names the object linker.],
+LD=$withval
+)
+AC_SUBST(LD)
+
+EXTRAINCDIRS=
+CPPFLAGS=
+AC_ARG_WITH(incdirs,
+[  --with-incdirs          Specifies include directories (-Idir1 -Idir2).],
+EXTRAINCDIRS=$withval
+CPPFLAGS=$withval
+AC_MSG_RESULT([Using extra include directories: $withval])
+)
+
+AC_ARG_WITH(libs,
+[  --with-libs             Specifies libraries (-llib1 -llib2).],
+LDLIBS=$withval
+AC_MSG_RESULT([Using extra libraries: $withval])
+)
+AC_SUBST(LDLIBS)
+
+LDFLAGS=
+LIBDIRS=
+AC_ARG_WITH(libdirs,
+[  --with-libdirs          Specifies library directories (-Ldir1 -Ldir2).],
+LIBDIRS=$withval
+LDFLAGS=$withval
+AC_MSG_RESULT([Using extra library directories: $withval])
+)
+AC_SUBST(LDFLAGS)
 
 AC_CHECK_PROGS(PERL,perl,perl) AC_SUBST(PERL)
 
+AC_PROG_LATEX
+AC_PROG_LATEX2HTML
+AC_PROG_DVIPS
+AC_PROG_BIBTEX
 
 ########
 ## Check for libraries
@@ -203,13 +324,113 @@ case $withval in
 esac
 ])
 
+# Set strings for particular BLAS and LAPACK functions for later testing
+case $FC_SYMBOL in
+  1)
+    DGEMM_SYMBOL=dgemm
+    DGEEV_SYMBOL=dgeev
+    ;;
+  2)
+    DGEMM_SYMBOL=dgemm_
+    DGEEV_SYMBOL=dgeev_
+    ;;
+  3)
+    DGEMM_SYMBOL=DGEMM
+    DGEEV_SYMBOL=DGEEV
+    ;;
+  4)
+    DGEMM_SYMBOL=DGEMM_
+    DGEEV_SYMBOL=DGEEV_
+    ;;
+esac
+
+SAVE_LIBS=$LIBS
+LIBS="$LIBS $CLIBS $FLIBS"
+echo "LIBS = $LIBS"
+
+# If the user didn't give us a BLAS lib, see if we can find one
+if test -z "$BLAS"; then
+  AC_CHECK_LIB(essl, $DGEMM_SYMBOL, BLAS="-lessl")
+fi
+if test -z "$BLAS"; then
+  AC_CHECK_LIB(scs, $DGEMM_SYMBOL, BLAS="-lscs")
+fi
+if test -z "$BLAS"; then
+  AC_CHECK_LIB(goto, $DGEMM_SYMBOL, BLAS="-lgoto")
+fi
+if test -z "$BLAS"; then
+  SAVE_LIBS2=$LIBS
+  LIBS="-latlas $LIBS"
+  echo "$LIBS"
+  AC_CHECK_LIB(f77blas, $DGEMM_SYMBOL, BLAS="-lf77blas -latlas")
+  LIBS=$SAVE_LIBS2
+fi  
+if test -z "$BLAS"; then
+  AC_CHECK_LIB(blas, $DGEMM_SYMBOL, BLAS="-lblas")
+fi
+if test -z "$BLAS"; then
+  AC_MSG_ERROR("Did not find a BLAS library.")
+fi
+AC_SUBST(BLAS)
+AC_MSG_RESULT([BLAS library is $BLAS])
+LIBS=$SAVE_LIBS
+
+# Similar checks for LAPACK, except that sometimes BLAS includes LAPACK
+# Also note that LAPACK often (always?) depends on BLAS
+SAVE_LIBS=$LIBS
+LIBS="$BLAS $LIBS $CLIBS $FLIBS"
+if test -z "$LAPACK"; then
+  AC_CHECK_FUNC($DGEEV_SYMBOL,LAPACK_IN_BLAS=yes)
+fi 
+if test -z "$LAPACK_IN_BLAS"; then
+  if test -z "$LAPACK"; then
+    AC_CHECK_LIB(lapack,$DGEEV_SYMBOL,LAPACK="-llapack")
+  fi
+  if test -z "$LAPACK"; then
+    AC_MSG_ERROR("Did not find a LAPACK library.");
+  fi
+  AC_MSG_RESULT([LAPACK library is $LAPACK])
+else
+  AC_MSG_RESULT([LAPACK library is included in BLAS+LIBS])
+fi
+AC_SUBST(LAPACK)
+LIBS=$SAVE_LIBS
+
 ########
 ## Check for header files
 ########
 
+# check for header files
+AC_CHECK_HEADERS([errno.h fcntl.h unistd.h stdint.h sys/types.h sys/times.h sys/param.h])
+# check for C++ headers
+AC_CXX_PROCESS_CHECK([cmath],[#include <cmath>],,[HAVE_CMATH=1],[HAVE_CMATH=0]) 
+CXXDEF="$CXXDEF -DHAVE_CMATH=$HAVE_CMATH"
+AC_CXX_PROCESS_CHECK([cstdio],[#include <cstdio>],,[HAVE_CSTDIO=1],[HAVE_CSTDIO=0]) 
+CXXDEF="$CXXDEF -DHAVE_CSTDIO=$HAVE_CSTDIO"
+AC_CXX_PROCESS_CHECK([cstdlib],[#include <cstdlib>],,[HAVE_CSTDLIB=1],[HAVE_CSTDLIB=0]) 
+CXXDEF="$CXXDEF -DHAVE_CSTDLIB=$HAVE_CSTDLIB"
+AC_CXX_PROCESS_CHECK([cstring],[#include <cstring>],,[HAVE_CSTRING=1],[HAVE_CSTRING=0]) 
+CXXDEF="$CXXDEF -DHAVE_CSTRING=$HAVE_CSTRING"
+AC_CXX_PROCESS_CHECK([cstddef],[#include <cstddef>],,[HAVE_CSTDDEF=1],[HAVE_CSTDDEF=0]) 
+CXXDEF="$CXXDEF -DHAVE_CSTDDEF=$HAVE_CSTDDEF"
+
+/bin/rm -f a.out
+
 ########
 ## Check for types
 ########
+
+#check to see if void* is allowed
+AC_MSG_CHECKING(for void pointers)
+psi_ac_voidptr=yes
+AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
+;}
+void *func(void*ptr) { return ptr;
+]])],[],[psi_ac_voidptr=no])
+AC_MSG_RESULT($psi_ac_voidptr)
+if test $psi_ac_voidptr = "no"; then
+  CDEF="$CDEF -DNO_VOID_PTR"
+fi
 
 ########
 ## Check for compiler characteristics
@@ -236,145 +457,200 @@ AC_CHECK_LIB(m,exit,CXXLIBS="$CXXLIBS -lm")
 AC_MSG_RESULT(c++ libs: $CXXLIBS)
 AC_SUBST(CXXLIBS)
 
+PSICPPFLAGS='-I. -I$(objincdir) -I$(top_srcdir)/include -I$(top_srcdir)/src/lib -I$(top_objdir)/src/lib' AC_SUBST(PSICPPFLAGS)
 
-## Fortran-C linking convention tests
+#default compiler flags
+FDBG='-g' AC_SUBST(FDBG)
+FOPT='-O' AC_SUBST(FOPT)
+FDEF='' AC_SUBST(FDEF)
+FOTH='' AC_SUBST(FOTH)
+FSTATIC='' AC_SUBST(FSTATIC)
+FINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(FINC)
+CDBG='-g' AC_SUBST(CDBG)
+COPT='-O2' AC_SUBST(COPT)
+CDEF='' AC_SUBST(CDEF)
+COTH='' AC_SUBST(COTH)
+CINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(CINC)
+CXXDBG='-g' AC_SUBST(CXXDBG)
+CXXOPT='-O2' AC_SUBST(CXXOPT)
+CXXDEF='' AC_SUBST(CXXDEF)
+CXXOTH='' AC_SUBST(CXXOTH)
+CXXINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(CXXINC)
 
-AC_ARG_WITH(f77symbol,[  --with-f77symbol        FORTRAN77 symbol convention (if no Fortran compiler). Allowed values are:
-                            lc  (lower-case)
-                            lcu (lower-case with underscore; default, if
-not given)
-                            uc  (upper-case)
-                            ucu (upper-case with underscore)],[
+AC_C_CONST
+
+AC_CHECK_DECLS([putenv],[extradef="-DHAVE_DECL_PUTENV=1"])
+CDEF="$CDEF $extradef"
+CXXDEF="$CXXDEF $extradef"
+AC_CHECK_FUNC(putenv,[extradef="-DHAVE_PUTENV=1"])
+CDEF="$CDEF $extradef"
+CXXDEF="$CXXDEF $extradef"
+
+AC_CHECK_DECLS([setenv],[extradef="-DHAVE_DECL_SETENV=1"])
+CDEF="$CDEF $extradef"
+CXXDEF="$CXXDEF $extradef"
+AC_CHECK_FUNC(setenv,[extradef="-DHAVE_SETENV=1"])
+CDEF="$CDEF $extradef"
+CXXDEF="$CXXDEF $extradef"
+
+AC_CHECK_LIB(m,isinf,[extradef="-DHAVE_FUNC_ISINF=1"],[extradef=""])
+if test X$extradef = X; then
+  AC_CHECK_LIB(m,finite,[extradef="-DHAVE_FUNC_FINITE=1"],[extradef=""])
+fi
+if test X$extradef = X; then
+  AC_MSG_ERROR([Did not find isinf() or finite() functions.])
+else
+  CDEF="$CDEF $extradef"
+  CXXDEF="$CXXDEF $extradef"
+fi
+
+# set up cpu specific flags
+AC_MSG_CHECKING([for architecture/compiler specific optimization flags])
+case $target_cpu in
+  rs6000)
+    if test "$FC" = xlf_r ; then
+      FOPT="-O2 -qarch=com -qxflag=xalias -qdpc -qfloat=fold -qfloat=maf -qmaxmem=-1"
+    fi
+    if test "$CC" = xlc_r -o "$CC" = cc_r ; then
+      COPT="-O2 -qarch=com -qfloat=maf -qfloat=fold -qmaxmem=-1"
+    fi
+    if test "$CXX" = xlC_r ; then
+      CXXOPT="-O2 -qarch=com -qfloat=maf -qfloat=fold -qmaxmem=-1"
+    fi
+    ;;
+  powerpc)
+    if test "$FC" = xlf_r ; then
+      FOPT="-O2 -qarch=ppc -qxflag=xalias -qdpc -qfloat=fold -qmaxmem=-1 -qfloat=maf"
+    fi
+    if test "$CC" = xlc_r -o "$CC" = cc_r ; then
+      COPT="-O2 -qarch=ppc -qfloat=maf -qfloat=fold -qmaxmem=-1"
+    fi
+    if test "$CXX" = xlC_r ; then
+      CXXOPT="-O2 -qarch=ppc -qfloat=maf -qfloat=fold -qmaxmem=-1"
+    fi
+    ;;
+  i686)
+    if test "$FC" = g77 ; then
+      FOPT="-O2 -march=pentiumpro"
+    fi
+    if test "$CC" = gcc -o "$CC" = cc ; then
+      COPT="-O2 -march=pentiumpro"    
+    fi
+    if test "$CXX" = g++ -o "$CXX" = c++ -o "$CXX" = gcc ; then
+      CXXOPT="-O2 -march=pentiumpro"
+    fi
+    ;;
+  x86_64)
+    if test "$CC" = gcc -o "$CC" = cc ; then
+      COPT="-O3 -m64"
+    fi
+    if test "$CXX" = g++ -o "$CXX" = c++ -o "$CXX" = gcc ; then
+      CXXOPT="-O3 -m64"
+    fi
+    ;;
+esac
+AC_MSG_RESULT([C optimization flags: $COPT])
+AC_MSG_RESULT([C++ optimization flags: $CXXOPT])
+
+AC_MSG_CHECKING([for OS specific flags])
+case $target_os in
+  aix*)
+# _ALL_SOURCE is required because some include files on AIX don't seem to work with pure POSIX
+    EXTRADEFS="-DAIX -D_LARGE_FILES -D_ALL_SOURCE"
+    FDEF="$FDEF $EXTRADEFS"
+    CDEF="$CDEF $EXTRADEFS"
+    CXXDEF="$CXXDEF $EXTRADEFS"
+    ;;
+  linux*)
+    EXTRADEFS="-DLinux -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"
+    FDEF="$FDEF $EXTRADEFS"
+    CDEF="$CDEF $EXTRADEFS"
+    CXXDEF="$CXXDEF $EXTRADEFS"
+    ;;
+esac
+AC_MSG_RESULT([C preprocessor directives: $CDEF])
+AC_MSG_RESULT([C++ preprocessor directives: $CXXDEF])
+
+# Set up CFLAGS and FFLAGS.
+
+CFLAGS='$(CDBG) $(COPT) $(CDEF) $(COTH) $(CINC)' AC_SUBST(CFLAGS)
+CXXFLAGS='$(CXXDBG) $(CXXOPT) $(CXXDEF) $(CXXOTH) $(CXXINC)' AC_SUBST(CXXFLAGS)
+FFLAGS='$(FDBG) $(FOPT) $(FOTH) $(FSTATIC)' AC_SUBST(FFLAGS)
+
+# Adjust the debug flags.
+# The default is to not debug.  --with-debug will turn on debugging.
+AC_ARG_WITH(debug,[  --with-debug            will turn on debugging],[
 case $withval in
-  lc)
-    FC_SYMBOL=1
+  yes)
     ;;
-  lcu)
-    FC_SYMBOL=2
-    ;;
-  uc)
-    FC_SYMBOL=3
-    ;;
-  ucu)
-    FC_SYMBOL=4
+  no)
+    CDBG=''
+    CXXDBG=''
+    FDBG=''
     ;;
   *)
-    AC_MSG_WARN([did not recognize value $withval. will assume lower-case with underscore])
-    FC_SYMBOL=2
+    CDBG="$withval"
+    CXXDBG="$withval"
+    FDBG="$withval"
+    ;;
+esac
+],CDBG='' CXXDBG='' FDBG='')
+
+# Adjust the optimize flags.
+# The default is to optimize.  --with-opt=no or --without-opt will turn
+# off optimization.
+AC_ARG_WITH(opt,[  --with-opt              --with-opt=no will turn off optimization],[
+case $withval in
+  yes)
+    ;;
+  no)
+    COPT=''
+    CXXOPT=''
+    FOPT=''
+    ;;
+  *)
+    COPT="$withval"
+    CXXOPT="$withval"
+    FOPT="$withval"
     ;;
 esac
 ])
 
-if test -z "$FC_SYMBOL"; then
-  AC_MSG_CHECKING(Fortran symbols)
-if test -n "$F77" ; then
-  /bin/rm -f ffunc.f flink.c
-  echo "      subroutine ffunc()" > ffunc.f
-  echo "      return" >> ffunc.f
-  echo "      end" >> ffunc.f
-  $F77 -c ffunc.f 1>/dev/null 2>/dev/null
-  echo "main(){ FF(); return 0; }" > flink.c
-  if $CC -o flink -DFF=ffunc flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
-    AC_MSG_RESULT(same as C)
-    FC_SYMBOL=1
-  elif $CC -o flink -DFF=ffunc_ flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
-    AC_MSG_RESULT(lowercase with underscore)
-    FC_SYMBOL=2
-  elif $CC -o flink -DFF=FFUNC flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
-    AC_MSG_RESULT(uppercase)
-    FC_SYMBOL=3
-  elif $CC -o flink -DFF=FFUNC_ flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
-    AC_MSG_RESULT(uppercase with underscore)
-    FC_SYMBOL=4
-  else
-    AC_MSG_RESULT(giving up)
-    AC_MSG_ERROR(could not determine fortran symbol names)
-  fi
-  /bin/rm -f ffunc.f ffunc.o flink flink.c flink.o ffunc
-else
-  FC_SYMBOL=2
-  AC_MSG_RESULT(No Fortran compiler provided; guessing lowercase with underscore)
-fi
-fi
-AC_SUBST(FC_SYMBOL)
-
-# Set strings for particular BLAS and LAPACK functions for later testing
-case $FC_SYMBOL in
-  1)
-    DGEMM_SYMBOL=dgemm
-    DGEEV_SYMBOL=dgeev
+# Adjust the flags dealing with strictness of the compilers.
+# The default is to disable strict language checks.  --with-opt=no or 
+# --without-opt will turn off optimization.
+AC_ARG_WITH(strict,[  --with-strict           --with-strict=yes will turn
+on strict compiler warnings],[
+case $withval in
+  yes)
+    # "Strict" flags only known for GNU compilers
+    if test "$G77" = yes ; then      
+      FOTH="$FOTH -Wall"
+    fi
+    if test "$GCC" = yes ; then
+      COTH="$COTH -Wall -ansi"
+    fi
+    if test "$GXX" = yes ; then
+      CXXOTH="$CXXOTH -Wall -ansi"
+    fi
     ;;
-  2)
-    DGEMM_SYMBOL=dgemm_
-    DGEEV_SYMBOL=dgeev_
-    ;;
-  3)
-    DGEMM_SYMBOL=DGEMM
-    DGEEV_SYMBOL=DGEEV
-    ;;
-  4)
-    DGEMM_SYMBOL=DGEMM_
-    DGEEV_SYMBOL=DGEEV_
+  no)
     ;;
 esac
+])
+AC_MSG_RESULT([C extra flags: $COTH])
+AC_MSG_RESULT([C++ extra flags: $CXXOTH])
 
 ########
 ## Check for library functions
 ########
 
-SAVE_LIBS=$LIBS
-LIBS="$LIBS $CLIBS $FLIBS"
-echo "LIBS = $LIBS"
-
-# If the user didn't give us a BLAS lib, see if we can find one
-if test -z "$BLAS"; then
-  AC_CHECK_LIB(essl, $DGEMM_SYMBOL, BLAS="-lessl")
-fi
-if test -z "$BLAS"; then
-  AC_CHECK_LIB(scs, $DGEMM_SYMBOL, BLAS="-lscs")
-fi
-if test -z "$BLAS"; then
-  AC_CHECK_LIB(goto, $DGEMM_SYMBOL, BLAS="-lgoto")
-fi
-if test -z "$BLAS"; then
-  AC_CHECK_LIB(f77blas, $DGEMM_SYMBOL, BLAS="-lf77blas -latlas")
-fi
-if test -z "$BLAS"; then
-  AC_CHECK_LIB(blas, $DGEMM_SYMBOL, BLAS="-lblas")
-fi
-if test -z "$BLAS"; then
-  AC_MSG_ERROR("Did not find a BLAS library.")
-fi
-AC_SUBST(BLAS)
-AC_MSG_RESULT([BLAS library is $BLAS])
-
-LIBS=$SAVE_LIBS
-
-# Similar checks for LAPACK, except that sometimes BLAS includes LAPACK
-if test -z "$LAPACK"; then
-  CURRENT_LIBS=$LIBS
-  LIBS="$BLAS $LIBS"
-  AC_CHECK_FUNC($DGEEV_SYMBOL,LAPACK_IN_BLAS=yes)
-  LIBS=$CURRENT_LIBS
-fi
-if test -z "$LAPACK_IN_BLAS"; then
-  if test -z "$LAPACK"; then
-    AC_CHECK_LIB(lapack,$DGEEV_SYMBOL,LAPACK="-llapack")
-  fi
-  if test -z "$LAPACK"; then
-    AC_MSG_ERROR("Did not find a LAPACK library.");
-  fi
-  AC_MSG_RESULT([LAPACK library is $LAPACK])
-else
-  AC_MSG_RESULT([LAPACK library is included in BLAS+LIBS])
-fi
-AC_SUBST(LAPACK)
 
 ########
 ## Output
 ########
 
-AC_CONFIG_FILES([include/sizeof.h include/Makefile
+AC_CONFIG_FILES([include/Makefile
           include/chkpt_params.h
           Makefile lib/Makefile src/Makefile
           src/lib/Makefile src/lib/MakeRules src/lib/MakeVars
@@ -385,6 +661,15 @@ AC_CONFIG_FILES([include/sizeof.h include/Makefile
           doc/installation/Makefile
           doc/progman/Makefile doc/userman/Makefile
 
+          src/lib/libdpd/Makefile
+          src/lib/libiwl/Makefile
+          src/lib/libpsio/Makefile
+          src/lib/libqt/Makefile
+          src/lib/libbasis/Makefile
+          src/lib/libciomr/Makefile
+          src/lib/libciomr/iomrparam.h
+          src/lib/libipv1/Makefile
+          src/lib/libchkpt/Makefile
           src/lib/libderiv/Makefile
           src/lib/libderiv/MakeVars
           src/lib/libderiv/libderiv_config.h
@@ -394,166 +679,156 @@ AC_CONFIG_FILES([include/sizeof.h include/Makefile
           src/lib/libr12/Makefile
           src/lib/libr12/MakeVars
           src/lib/libr12/libr12_config.h
+          src/util/tocprint/Makefile
+          src/util/psi2molden/Makefile
+
+          src/bin/cphf/Makefile
+          src/bin/psi3/Makefile
+          src/bin/ccdensity/Makefile
+          src/bin/ccenergy/Makefile
+          src/bin/cchbar/Makefile
+          src/bin/cclambda/Makefile
+          src/bin/ccsort/Makefile
+          src/bin/cctriples/Makefile
+          src/bin/cceom/Makefile
+          src/bin/ccresponse/Makefile
+          src/bin/cints/Makefile
+          src/bin/cis/Makefile
+          src/bin/clag/Makefile
+          src/bin/cscf/Makefile
+          src/bin/detci/Makefile
+          src/bin/detcas/Makefile
+          src/bin/detcasman/Makefile
+          src/bin/extrema/Makefile
+          src/bin/geom/Makefile
+          src/bin/input/Makefile
+          src/bin/intder/Makefile
+          src/bin/mp2/Makefile
+          src/bin/mp2r12/Makefile
+          src/bin/oeprop/Makefile
+          src/bin/optking/Makefile
+          src/bin/psiclean/Makefile
+          src/bin/transqt/Makefile
+          src/bin/transqt2/Makefile
+          src/bin/mvo/Makefile
+          src/bin/dboc/Makefile
+          src/bin/cusp/Makefile
+          src/bin/mocube/Makefile
+          src/bin/localize/Makefile
+          src/bin/stable/Makefile
+          src/bin/response/Makefile
+          tests/Makefile
+          tests/MakeVars
+          tests/MakeRules
+          tests/runtest.pl
+          tests/scf-opt/Makefile
+          tests/scf-opt2/Makefile
+          tests/scf-opt3/Makefile
+          tests/scf-opt4/Makefile
+          tests/scf-opt5/Makefile
+          tests/scf-opt6/Makefile
+          tests/scf-opt7/Makefile
+          tests/scf-opt9/Makefile
+          tests/scf-opt10/Makefile
+          tests/scf-opt11/Makefile
+          tests/scf-opt12/Makefile
+          tests/scf-opt-numer/Makefile
+          tests/scf-opt2-numer/Makefile
+          tests/scf-freq/Makefile
+          tests/scf-freq-first-3/Makefile
+          tests/scf-freq-first-5/Makefile
+          tests/scf-freq-none-3/Makefile
+          tests/scf-freq-none-5/Makefile
+          tests/scf-symm-fc-numer/Makefile
+          tests/scf-fc-numer/Makefile
+          tests/scf-polar/Makefile
+          tests/rhf-oeprop/Makefile
+          tests/rhf-stab/Makefile
+          tests/rhf-stab/rhf-stab.pl
+          tests/uhf-stab/Makefile
+          tests/uhf-stab/uhf-stab.pl
+          tests/rohf-stab/Makefile
+          tests/rohf-stab/rohf-stab.pl
+          tests/cis-sp/Makefile
+          tests/cisd-sp/Makefile
+          tests/cisd-opt-numer/Makefile
+          tests/fci-h2o/Makefile
+          tests/fci-dipole/Makefile
+          tests/casscf-sp/Makefile
+          tests/casscf-sa-sp/Makefile
+          tests/casscf-fzc-sp/Makefile
+          tests/rasscf-sp/Makefile
+          tests/mp2-sp/Makefile
+          tests/mp2-direct-sp/Makefile
+          tests/mp2-oeprop/Makefile
+          tests/mp2-scs/Makefile
+          tests/cc1/Makefile
+          tests/cc2/Makefile
+          tests/cc3/Makefile
+          tests/cc4/Makefile
+          tests/cc5/Makefile
+          tests/cc6/Makefile
+          tests/cc7/Makefile
+          tests/cc8/Makefile
+          tests/cc9/Makefile
+          tests/cc10/Makefile
+          tests/cc11/Makefile
+          tests/cc12/Makefile
+          tests/cc13/Makefile
+          tests/cc14/Makefile
+          tests/cc15/Makefile
+          tests/cc16/Makefile
+          tests/cc17/Makefile
+          tests/cc18/Makefile
+          tests/cc19/Makefile
+          tests/cc21/Makefile
+          tests/cc22/Makefile
+          tests/cc23/Makefile
+          tests/cc24/Makefile
+          tests/cc25/Makefile
+          tests/cc26/Makefile
+          tests/cc27/Makefile
+          tests/cc28/Makefile
+          tests/cc29/Makefile
+          tests/cc30/Makefile
+          tests/cc31/Makefile
+          tests/cc32/Makefile
+          tests/cc33/Makefile
+          tests/cc34/Makefile
+          tests/cc35/Makefile
+          tests/cc36/Makefile
+          tests/cc37/Makefile
+          tests/cc38/Makefile
+          tests/cc39/Makefile
+          tests/cc40/Makefile
+          tests/cc41/Makefile
+          tests/cc42/Makefile
+          tests/cc43/Makefile
+          tests/cc44/Makefile
+          tests/cc45/Makefile
+          tests/cc46/Makefile
+          tests/cc47/Makefile
+          tests/cc48/Makefile
+          tests/cc49/Makefile
+          tests/cc50/Makefile
+          tests/dboc-rhf1/Makefile
+          tests/dboc-rohf1/Makefile
+          tests/dboc-uhf1/Makefile
+          tests/dboc-rcisd1/Makefile
+          tests/dboc-rocisd1/Makefile
+          tests/extrema-zmat/Makefile
+          tests/extrema-zmat/extrema-zmat.pl
+          tests/extrema-deloc/Makefile
+          tests/extrema-deloc/extrema-deloc.pl
+          tests/mp2r12-sp1/Makefile
+          tests/mp2-opt-numer/Makefile
+          tests/mp2-opt/Makefile
+          tests/rhf-lindep1/Makefile
+          tests/rohf-lindep1/Makefile
+          tests/uhf-lindep1/Makefile
+          tests/psi_start/Makefile
+          tests/psi_start/psi_start.pl
+          src/bin/giao/Makefile
 ])
-          
-#          src/util/tocprint/Makefile
-#          src/util/psi2molden/Makefile
-#
-#          src/lib/libciomr/Makefile
-#          src/lib/libciomr/iomrparam.h
-#          src/lib/libipv1/Makefile
-#          src/lib/libchkpt/Makefile
-#
-#          src/lib/libdpd/Makefile
-#          src/lib/libiwl/Makefile
-#          src/lib/libpsio/Makefile
-#          src/lib/libqt/Makefile
-#          src/lib/libbasis/Makefile
-#
-#          src/bin/cphf/Makefile
-#          src/bin/psi3/Makefile
-#          src/bin/ccdensity/Makefile
-#          src/bin/ccenergy/Makefile
-#          src/bin/cchbar/Makefile
-#          src/bin/cclambda/Makefile
-#          src/bin/ccsort/Makefile
-#          src/bin/cctriples/Makefile
-#          src/bin/cceom/Makefile
-#          src/bin/ccresponse/Makefile
-#          src/bin/cints/Makefile
-#          src/bin/cis/Makefile
-#          src/bin/clag/Makefile
-#          src/bin/cscf/Makefile
-#          src/bin/detci/Makefile
-#          src/bin/detcas/Makefile
-#          src/bin/detcasman/Makefile
-#          src/bin/extrema/Makefile
-#          src/bin/geom/Makefile
-#          src/bin/input/Makefile
-#          src/bin/intder/Makefile
-#          src/bin/mp2/Makefile
-#          src/bin/mp2r12/Makefile
-#          src/bin/oeprop/Makefile
-#          src/bin/optking/Makefile
-#          src/bin/psiclean/Makefile
-#          src/bin/transqt/Makefile
-#          src/bin/transqt2/Makefile
-#          src/bin/mvo/Makefile
-#          src/bin/dboc/Makefile
-#          src/bin/cusp/Makefile
-#          src/bin/mocube/Makefile
-#          src/bin/localize/Makefile
-#          src/bin/stable/Makefile
-#          src/bin/response/Makefile
-#          tests/Makefile
-#          tests/MakeVars
-#          tests/MakeRules
-#          tests/runtest.pl
-#          tests/scf-opt/Makefile
-#          tests/scf-opt2/Makefile
-#          tests/scf-opt3/Makefile
-#          tests/scf-opt4/Makefile
-#          tests/scf-opt5/Makefile
-#          tests/scf-opt6/Makefile
-#          tests/scf-opt7/Makefile
-#          tests/scf-opt9/Makefile
-#          tests/scf-opt10/Makefile
-#          tests/scf-opt11/Makefile
-#          tests/scf-opt12/Makefile
-#          tests/scf-opt-numer/Makefile
-#          tests/scf-opt2-numer/Makefile
-#          tests/scf-freq/Makefile
-#          tests/scf-freq-first-3/Makefile
-#          tests/scf-freq-first-5/Makefile
-#          tests/scf-freq-none-3/Makefile
-#          tests/scf-freq-none-5/Makefile
-#          tests/scf-symm-fc-numer/Makefile
-#          tests/scf-fc-numer/Makefile
-#          tests/scf-polar/Makefile
-#          tests/rhf-oeprop/Makefile
-#          tests/rhf-stab/Makefile
-#          tests/rhf-stab/rhf-stab.pl
-#          tests/uhf-stab/Makefile
-#          tests/uhf-stab/uhf-stab.pl
-#          tests/rohf-stab/Makefile
-#          tests/rohf-stab/rohf-stab.pl
-#          tests/cis-sp/Makefile
-#          tests/cisd-sp/Makefile
-#          tests/cisd-opt-numer/Makefile
-#          tests/fci-h2o/Makefile
-#          tests/casscf-sp/Makefile
-#          tests/casscf-sa-sp/Makefile
-#          tests/casscf-fzc-sp/Makefile
-#          tests/rasscf-sp/Makefile
-#          tests/mp2-sp/Makefile
-#          tests/mp2-direct-sp/Makefile
-#          tests/mp2-oeprop/Makefile
-#          tests/cc1/Makefile
-#          tests/cc2/Makefile
-#          tests/cc3/Makefile
-#          tests/cc4/Makefile
-#          tests/cc5/Makefile
-#          tests/cc6/Makefile
-#          tests/cc7/Makefile
-#          tests/cc8/Makefile
-#          tests/cc9/Makefile
-#          tests/cc10/Makefile
-#          tests/cc11/Makefile
-#          tests/cc12/Makefile
-#          tests/cc13/Makefile
-#          tests/cc14/Makefile
-#          tests/cc15/Makefile
-#          tests/cc16/Makefile
-#          tests/cc17/Makefile
-#          tests/cc18/Makefile
-#          tests/cc19/Makefile
-#          tests/cc21/Makefile
-#          tests/cc22/Makefile
-#          tests/cc23/Makefile
-#          tests/cc24/Makefile
-#          tests/cc25/Makefile
-#          tests/cc26/Makefile
-#          tests/cc27/Makefile
-#          tests/cc28/Makefile
-#          tests/cc29/Makefile
-#          tests/cc30/Makefile
-#          tests/cc31/Makefile
-#          tests/cc32/Makefile
-#          tests/cc33/Makefile
-#          tests/cc34/Makefile
-#          tests/cc35/Makefile
-#          tests/cc36/Makefile
-#          tests/cc37/Makefile
-#          tests/cc38/Makefile
-#          tests/cc39/Makefile
-#          tests/cc40/Makefile
-#          tests/cc41/Makefile
-#          tests/cc42/Makefile
-#          tests/cc43/Makefile
-#          tests/cc44/Makefile
-#          tests/cc45/Makefile
-#          tests/cc46/Makefile
-#          tests/cc47/Makefile
-#          tests/cc48/Makefile
-#          tests/cc49/Makefile
-#          tests/cc50/Makefile
-#          tests/dboc-rhf1/Makefile
-#          tests/dboc-rohf1/Makefile
-#          tests/dboc-uhf1/Makefile
-#          tests/dboc-rcisd1/Makefile
-#          tests/dboc-rocisd1/Makefile
-#          tests/extrema-zmat/Makefile
-#          tests/extrema-zmat/extrema-zmat.pl
-#          tests/extrema-deloc/Makefile
-#          tests/extrema-deloc/extrema-deloc.pl
-#          tests/mp2r12-sp1/Makefile
-#          tests/mp2-opt-numer/Makefile
-#          tests/mp2-opt/Makefile
-#          tests/rhf-lindep1/Makefile
-#          tests/rohf-lindep1/Makefile
-#          tests/uhf-lindep1/Makefile
-#          tests/psi_start/Makefile
-#          tests/psi_start/psi_start.pl
-#          src/bin/giao/Makefile
 
 AC_OUTPUT

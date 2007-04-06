@@ -13,7 +13,7 @@ targetclean:
 top_srcdir = @top_srcdir@
 prefix = @prefix@
 srcdir = @srcdir@
-incdir = @incdir@
+incdir = @includedir@
 VPATH = @srcdir@
 top_objdir = ..
 MKDIRS = @MKDIRS@
