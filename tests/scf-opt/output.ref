@@ -1,6 +1,6 @@
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:33 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:12 2007
 
                                 --------------
                                   WELCOME TO
@@ -29,7 +29,7 @@ Mon Sep 13 15:37:33 2004
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000    -0.131510165098     0.000000000000
+          OXYGEN     -0.000000000000    -0.131510165098    -0.000000000000
         HYDROGEN      1.479940996653     1.043580877476     0.000000000000
         HYDROGEN     -1.479940996653     1.043580877476     0.000000000000
 
@@ -87,14 +87,14 @@ Mon Sep 13 15:37:33 2004
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.131510165098
+          OXYGEN     -0.000000000000    -0.000000000000    -0.131510165098
         HYDROGEN      0.000000000000     1.479940996653     1.043580877476
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.131510165098
+          OXYGEN     -0.000000000000    -0.000000000000    -0.131510165098
         HYDROGEN      0.000000000000     1.479940996653     1.043580877476
         HYDROGEN      0.000000000000    -1.479940996653     1.043580877476
 
@@ -102,7 +102,7 @@ Mon Sep 13 15:37:33 2004
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.069592187382
+          OXYGEN     -0.000000000000    -0.000000000000    -0.069592187382
         HYDROGEN      0.000000000000     0.783151105291     0.552239257852
         HYDROGEN      0.000000000000    -0.783151105291     0.552239257852
 
@@ -110,7 +110,7 @@ Mon Sep 13 15:37:33 2004
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.131510165098
+          OXYGEN     -0.000000000000    -0.000000000000    -0.131510165098
         HYDROGEN      0.000000000000     1.479940996653     1.043580877476
         HYDROGEN      0.000000000000    -1.479940996653     1.043580877476
 
@@ -132,15 +132,15 @@ Mon Sep 13 15:37:33 2004
 
 
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:33 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:12 2007
 
-user time   =       0.06 seconds =       0.00 minutes
+user time   =       0.12 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:33 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:12 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -169,15 +169,15 @@ Mon Sep 13 15:37:33 2004
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:33 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:12 2007
 
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:33 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:12 2007
 
 
              ------------------------------------------
@@ -232,14 +232,14 @@ Mon Sep 13 15:37:33 2004
     5       -76.0171082477    6.600955e-03    9.746678e-04    3.660637e-02
     6       -76.0172750266    1.667789e-04    1.541154e-04    1.105642e-02
     7       -76.0172961424    2.111579e-05    7.769737e-05    3.795642e-03
-    8       -76.0172965569    4.145115e-07    9.936256e-06    3.044370e-04
-    9       -76.0172965711    1.418189e-08    2.507429e-06    6.058786e-05
-   10       -76.0172965718    7.222525e-10    6.336629e-07    1.135728e-05
-   11       -76.0172965718    1.452349e-11    6.963182e-08    1.414942e-06
-   12       -76.0172965718    2.160050e-12    3.927837e-08    5.031535e-07
+    8       -76.0172965569    4.145116e-07    9.936256e-06    3.044370e-04
+    9       -76.0172965711    1.418182e-08    2.507429e-06    6.058786e-05
+   10       -76.0172965718    7.222667e-10    6.336629e-07    1.135728e-05
+   11       -76.0172965718    1.449507e-11    6.963182e-08    1.414942e-06
+   12       -76.0172965718    2.245315e-12    3.927837e-08    5.031535e-07
    13       -76.0172965718    0.000000e+00    3.518255e-09    3.847156e-08
-   14       -76.0172965718    1.421085e-14    4.321533e-10    9.017730e-09
-   15       -76.0172965718    1.421085e-14    9.781872e-11    4.425818e-09
+   14       -76.0172965718   -2.842171e-14    4.321533e-10    9.017730e-09
+   15       -76.0172965718    2.842171e-14    9.781878e-11    4.425819e-09
 
 Orbital energies (a.u.):
 
@@ -261,20 +261,20 @@ Orbital energies (a.u.):
         SCF total energy   =     -76.017296571842
         kinetic energy     =      75.657182107040
         nuc. attr. energy  =    -198.046615219797
-        elec. rep. energy  =      46.372136540915
+        elec. rep. energy  =      46.372136540916
         potential energy   =    -151.674478678881
         virial theorem     =       1.995262729918
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:33 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:12 2007
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:33 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:12 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -312,19 +312,19 @@ Mon Sep 13 15:37:33 2004
        3        0.000000000000    -0.041734158526     0.034958827105
 
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:34 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:12 2007
 
-user time   =       0.34 seconds =       0.01 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.28 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  8.0    15.99491462   0.0000000000   0.0000000000  -0.1315101651
+  8.0    15.99491462  -0.0000000000  -0.0000000000  -0.1315101651
   1.0     1.00782503   0.0000000000   1.4799409967   1.0435808775
   1.0     1.00782503   0.0000000000  -1.4799409967   1.0435808775
                        0.0000000000   0.0000000000  -0.0699176542
@@ -332,7 +332,8 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000000000  -0.0417341585   0.0349588271
 
 Generating simple internals
-Searching for geometrical constraints...
+Searching for geometrical constraints...none found.
+
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (1.00000000)
@@ -382,8 +383,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:34 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:12 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -412,15 +413,15 @@ Mon Sep 13 15:37:34 2004
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:34 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:12 2007
 
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:34 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:12 2007
 
 
              ------------------------------------------
@@ -445,7 +446,7 @@ Mon Sep 13 15:37:34 2004
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy        9.3682050308840
+  nuclear repulsion energy        9.3682050308841
 
   using old vector from file30 as initial guess
   energy from old vector:   -76.01729657
@@ -476,13 +477,13 @@ Mon Sep 13 15:37:34 2004
     4       -76.0234712533    4.227251e-05    1.022952e-04    2.718513e-03
     5       -76.0234747828    3.529446e-06    4.059289e-05    7.518118e-04
     6       -76.0234749951    2.123622e-07    1.243029e-05    1.746879e-04
-    7       -76.0234750016    6.495213e-09    2.124340e-06    2.804027e-05
-    8       -76.0234750017    1.171543e-10    1.881850e-07    3.522972e-06
-    9       -76.0234750018    6.139089e-12    4.241602e-08    8.096328e-07
-   10       -76.0234750018    5.684342e-14    6.865957e-09    8.082856e-08
-   11       -76.0234750018    0.000000e+00    6.833693e-10    2.124410e-08
-   12       -76.0234750018    4.263256e-14    2.617682e-10    4.798797e-09
-   13       -76.0234750018   -1.421085e-14    3.158439e-11    1.012608e-09
+    7       -76.0234750016    6.495242e-09    2.124340e-06    2.804027e-05
+    8       -76.0234750017    1.171117e-10    1.881850e-07    3.522972e-06
+    9       -76.0234750018    6.096457e-12    4.241602e-08    8.096328e-07
+   10       -76.0234750018    9.947598e-14    6.865958e-09    8.082856e-08
+   11       -76.0234750018    5.684342e-14    6.833692e-10    2.124410e-08
+   12       -76.0234750018    0.000000e+00    2.617681e-10    4.798798e-09
+   13       -76.0234750018    0.000000e+00    3.158432e-11    1.012608e-09
 
  Correcting phases of orbitals.
 
@@ -511,15 +512,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.998141461845
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:34 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:12 2007
 
-user time   =       0.03 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:34 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:12 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -557,12 +558,12 @@ Mon Sep 13 15:37:34 2004
        3        0.000000000000     0.006325782612    -0.000336576585
 
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:34 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:13 2007
 
-user time   =       0.35 seconds =       0.01 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.28 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -575,7 +576,8 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000000000   0.0000000000   0.0006731532
                        0.0000000000  -0.0063257826  -0.0003365766
                        0.0000000000   0.0063257826  -0.0003365766
-Searching for geometrical constraints...
+Searching for geometrical constraints...none found.
+
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (0.93960950)
@@ -621,8 +623,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:34 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:13 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -651,15 +653,15 @@ Mon Sep 13 15:37:34 2004
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:35 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:13 2007
 
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:35 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:13 2007
 
 
              ------------------------------------------
@@ -712,14 +714,14 @@ Mon Sep 13 15:37:35 2004
     1       -76.0235588370    8.534540e+01    0.000000e+00    0.000000e+00
     2       -76.0236104396    5.160255e-05    1.224798e-04    3.180850e-03
     3       -76.0236123425    1.902909e-06    2.562806e-05    7.186841e-04
-    4       -76.0236125059    1.634057e-07    5.371189e-06    2.337837e-04
-    5       -76.0236125139    7.995325e-09    1.436998e-06    4.832160e-05
-    6       -76.0236125142    3.331451e-10    3.423168e-07    6.405451e-06
+    4       -76.0236125059    1.634056e-07    5.371189e-06    2.337837e-04
+    5       -76.0236125139    7.995240e-09    1.436998e-06    4.832160e-05
+    6       -76.0236125142    3.332019e-10    3.423168e-07    6.405451e-06
     7       -76.0236125142    3.075229e-11    1.537888e-07    2.155455e-06
-    8       -76.0236125142    6.679102e-13    1.942422e-08    2.704192e-07
-    9       -76.0236125142    0.000000e+00    4.135827e-09    5.403723e-08
-   10       -76.0236125142    8.526513e-14    3.963022e-10    7.483340e-09
-   11       -76.0236125142   -2.842171e-14    6.358337e-11    1.425359e-09
+    8       -76.0236125142    6.821210e-13    1.942422e-08    2.704192e-07
+    9       -76.0236125142    4.263256e-14    4.135827e-09    5.403723e-08
+   10       -76.0236125142   -1.421085e-14    3.963022e-10    7.483340e-09
+   11       -76.0236125142   -2.842171e-14    6.358347e-11    1.425358e-09
 
  Correcting phases of orbitals.
 
@@ -748,15 +750,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.997864613800
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:35 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:13 2007
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:35 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:13 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -794,11 +796,11 @@ Mon Sep 13 15:37:35 2004
        3        0.000000000000    -0.001003562439     0.000268064759
 
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:35 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:13 2007
 
-user time   =       0.35 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.28 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
@@ -812,7 +814,8 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000000000   0.0000000000  -0.0005361295
                        0.0000000000   0.0010035624   0.0002680648
                        0.0000000000  -0.0010035624   0.0002680648
-Searching for geometrical constraints...
+Searching for geometrical constraints...none found.
+
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (0.94378077)
@@ -858,8 +861,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:35 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:13 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -888,15 +891,15 @@ Mon Sep 13 15:37:35 2004
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:35 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:13 2007
 
-user time   =       0.07 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:35 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:13 2007
 
 
              ------------------------------------------
@@ -948,14 +951,14 @@ Mon Sep 13 15:37:35 2004
   iter       total energy        delta E         delta P          diiser
     1       -76.0236143668    8.535339e+01    0.000000e+00    0.000000e+00
     2       -76.0236149824    6.155508e-07    1.220876e-05    2.925539e-04
-    3       -76.0236150079    2.557604e-08    3.013708e-06    8.712421e-05
-    4       -76.0236150133    5.396529e-09    9.294865e-07    3.512925e-05
+    3       -76.0236150079    2.557610e-08    3.013708e-06    8.712421e-05
+    4       -76.0236150133    5.396473e-09    9.294865e-07    3.512925e-05
     5       -76.0236150135    1.290488e-10    1.817107e-07    5.789794e-06
-    6       -76.0236150135    1.035971e-11    7.165470e-08    1.255414e-06
-    7       -76.0236150135    8.668621e-13    2.541051e-08    3.229178e-07
-    8       -76.0236150135    0.000000e+00    2.095166e-09    3.204339e-08
-    9       -76.0236150135    2.842171e-14    3.979338e-10    6.709086e-09
-   10       -76.0236150135    2.842171e-14    6.738687e-11    1.164302e-09
+    6       -76.0236150135    1.038813e-11    7.165470e-08    1.255414e-06
+    7       -76.0236150135    8.952838e-13    2.541051e-08    3.229178e-07
+    8       -76.0236150135   -7.105427e-14    2.095166e-09    3.204339e-08
+    9       -76.0236150135    2.842171e-14    3.979338e-10    6.709085e-09
+   10       -76.0236150135    2.842171e-14    6.738687e-11    1.164303e-09
 
  Correcting phases of orbitals.
 
@@ -984,15 +987,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.997909836046
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:35 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:13 2007
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:35 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:13 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1030,12 +1033,12 @@ Mon Sep 13 15:37:35 2004
        3        0.000000000000     0.000017224792    -0.000036313026
 
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:36 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:13 2007
 
-user time   =       0.35 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.28 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -1048,7 +1051,8 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000000000   0.0000000000   0.0000726261
                        0.0000000000  -0.0000172248  -0.0000363130
                        0.0000000000   0.0000172248  -0.0000363130
-Searching for geometrical constraints...
+Searching for geometrical constraints...none found.
+
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (0.94302134)
@@ -1093,8 +1097,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:36 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:13 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1123,15 +1127,15 @@ Mon Sep 13 15:37:36 2004
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:36 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:13 2007
 
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:36 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:14 2007
 
 
              ------------------------------------------
@@ -1182,14 +1186,14 @@ Mon Sep 13 15:37:36 2004
 
   iter       total energy        delta E         delta P          diiser
     1       -76.0236150156    8.535303e+01    0.000000e+00    0.000000e+00
-    2       -76.0236150189    3.229957e-09    1.034800e-06    2.147118e-05
-    3       -76.0236150191    2.724221e-10    3.069284e-07    8.415398e-06
-    4       -76.0236150192    5.266543e-11    1.136179e-07    3.198269e-06
-    5       -76.0236150192    4.263256e-12    4.729237e-08    7.890467e-07
-    6       -76.0236150192    9.947598e-14    1.098160e-08    1.449848e-07
-    7       -76.0236150192    2.842171e-14    1.674572e-09    1.871039e-08
-    8       -76.0236150192    1.421085e-14    2.314801e-10    4.553563e-09
-    9       -76.0236150192   -2.842171e-14    4.489877e-11    8.677678e-10
+    2       -76.0236150189    3.229985e-09    1.034800e-06    2.147118e-05
+    3       -76.0236150191    2.725074e-10    3.069284e-07    8.415398e-06
+    4       -76.0236150192    5.260858e-11    1.136179e-07    3.198269e-06
+    5       -76.0236150192    4.206413e-12    4.729237e-08    7.890467e-07
+    6       -76.0236150192    1.989520e-13    1.098160e-08    1.449848e-07
+    7       -76.0236150192   -5.684342e-14    1.674572e-09    1.871039e-08
+    8       -76.0236150192    2.842171e-14    2.314802e-10    4.553563e-09
+    9       -76.0236150192    2.842171e-14    4.489874e-11    8.677671e-10
 
  Correcting phases of orbitals.
 
@@ -1218,15 +1222,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.997907975311
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:36 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:14 2007
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:36 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:14 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1264,11 +1268,11 @@ Mon Sep 13 15:37:36 2004
        3        0.000000000000    -0.000002510767     0.000005039131
 
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:36 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:14 2007
 
-user time   =       0.34 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.28 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
@@ -1282,7 +1286,8 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000000000   0.0000000000  -0.0000100783
                        0.0000000000   0.0000025108   0.0000050391
                        0.0000000000  -0.0000025108   0.0000050391
-Searching for geometrical constraints...
+Searching for geometrical constraints...none found.
+
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (0.94306160)
@@ -1327,8 +1332,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:36 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:14 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1357,15 +1362,15 @@ Mon Sep 13 15:37:36 2004
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:36 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:14 2007
 
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:36 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:14 2007
 
 
              ------------------------------------------
@@ -1416,13 +1421,13 @@ Mon Sep 13 15:37:36 2004
 
   iter       total energy        delta E         delta P          diiser
     1       -76.0236150193    8.535307e+01    0.000000e+00    0.000000e+00
-    2       -76.0236150193    4.699530e-11    1.247085e-07    2.598412e-06
-    3       -76.0236150193    4.021672e-12    3.709375e-08    1.017697e-06
-    4       -76.0236150193    7.389644e-13    1.386827e-08    3.890720e-07
-    5       -76.0236150193    1.421085e-13    5.732940e-09    9.554975e-08
-    6       -76.0236150193   -5.684342e-14    1.331133e-09    1.767255e-08
-    7       -76.0236150193    0.000000e+00    2.103375e-10    2.303708e-09
-    8       -76.0236150193    8.526513e-14    2.805988e-11    5.539077e-10
+    2       -76.0236150193    4.705214e-11    1.247085e-07    2.598412e-06
+    3       -76.0236150193    4.064304e-12    3.709375e-08    1.017697e-06
+    4       -76.0236150193    7.958079e-13    1.386827e-08    3.890720e-07
+    5       -76.0236150193    4.263256e-14    5.732940e-09    9.554975e-08
+    6       -76.0236150193    1.421085e-14    1.331133e-09    1.767255e-08
+    7       -76.0236150193    1.421085e-14    2.103375e-10    2.303707e-09
+    8       -76.0236150193    1.421085e-14    2.805989e-11    5.539081e-10
 
  Correcting phases of orbitals.
 
@@ -1445,21 +1450,21 @@ Orbital energies (a.u.):
 
         SCF total energy   =     -76.023615019311
         kinetic energy     =      75.864589267610
-        nuc. attr. energy  =    -199.203693546001
+        nuc. attr. energy  =    -199.203693546000
         elec. rep. energy  =      47.315489259079
         potential energy   =    -151.888204286921
         virial theorem     =       1.997908205869
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:36 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:14 2007
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Mon Sep 13 15:37:36 2004
+tstart called on mac4704.local
+Fri Apr  6 12:10:14 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1497,12 +1502,12 @@ Mon Sep 13 15:37:36 2004
        3        0.000000000000    -0.000000000369     0.000000000132
 
 ******************************************************************************
-tstop called on boromir.chem
-Mon Sep 13 15:37:37 2004
+tstop called on mac4704.local
+Fri Apr  6 12:10:14 2007
 
-user time   =       0.34 seconds =       0.01 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.28 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -1515,7 +1520,8 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000000000   0.0000000000  -0.0000000003
                        0.0000000000   0.0000000004   0.0000000001
                        0.0000000000  -0.0000000004   0.0000000001
-Searching for geometrical constraints...
+Searching for geometrical constraints...none found.
+
 Simple Internal Coordinates and Values
 Stretches
     (1 1 2) (0.94305664)
@@ -1550,6 +1556,14 @@ The Optimized geometry in a.u.
   (  O   0.0000000000   0.0000000000  -0.1200727522 )
   (  H   0.0000000000   1.4229708877   0.9528208558 )
   (  H   0.0000000000  -1.4229708877   0.9528208558 )
+  zmat = ( 
+    ( O )
+    ( H  1    0.94306)
+    ( H  1    0.94306 2  105.96877)
+  )
+  zvars = ( 
+  )
+
 
 ******** OPTKING execution completed ********
 
