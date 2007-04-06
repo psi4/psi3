@@ -742,7 +742,7 @@ AC_SUBST(CXXDEPENDSUF)
 AC_SUBST(CCDEPENDFLAGS)
 AC_SUBST(CXXDEPENDFLAGS)
 
-AC_CONFIG_FILES([include/sizeof.h include/Makefile
+AC_CONFIG_FILES([include/Makefile
           include/chkpt_params.h
           Makefile lib/Makefile src/Makefile
           src/lib/Makefile src/lib/MakeRules src/lib/MakeVars

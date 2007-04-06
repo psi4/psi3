@@ -14,6 +14,7 @@ PSI_VERSION=psi_version
 PSI_BUGREPORT=psi_bugreport
 AC_SUBST(PSI_VERSION)
 AC_SUBST(PSI_BUGREPORT)
+AC_CONFIG_AUX_DIR(bin)
 
 AC_CANONICAL_TARGET
 AC_PREFIX_DEFAULT(/usr/local/psi)
@@ -21,6 +22,7 @@ AC_PREFIX_DEFAULT(/usr/local/psi)
 AC_PROG_MAKE_SET([])
 
 srcdir=`(cd $srcdir; pwd)`
+
 
 objincdir='$(top_objdir)/include'
 AC_SUBST(objincdir)
@@ -84,17 +86,17 @@ case $target_os in
   aix*)
     CC_LIST="cc_r gcc cc"
     CXX_LIST="xlC_r g++ c++"
-    F77_LIST="xlf_r gfortran g77 ifort f77 fc f2c"
+    F77_LIST="xlf_r gfortran g77 ifort f77"
     ;;
   irix*)
     CC_LIST="cc gcc"
     CXX_LIST="CC g++ c++"
-    F77_LIST="f77 gfortran g77 ifort fc f2c"
+    F77_LIST="f77 gfortran g77 ifort"
     ;;
   *)
     CC_LIST="gcc icc cc"
     CXX_LIST="g++ c++ icpc cxx"
-    F77_LIST="gfortran g77 ifort f77 fc f2c"
+    F77_LIST="gfortran g77 ifort f77"
     ;;
 esac
 
@@ -162,10 +164,12 @@ AC_SUBST(FC,[$F77])
 
 ## Fortran-C linking convention tests
 
-AC_ARG_WITH(f77symbol,[  --with-f77symbol        FORTRAN77 symbol convention (if no Fortran compiler). Allowed values are:
-                            lc  (lower-case)
-                            lcu (lower-case with underscore; default, if not given)
-                            uc  (upper-case)                            ucu (upper-case with underscore)],[
+AC_ARG_WITH(f77symbol,[  --with-f77symbol        FORTRAN77 symbol convention
+                          Allowed values are:
+                            lc  : lower-case
+                            lcu : lower-case with underscore (default)
+                            uc  : upper-case                            
+                            ucu : upper-case with underscore],[
 case $withval in            
   lc)
     FC_SYMBOL=1
@@ -370,6 +374,15 @@ if test -z "$BLAS"; then
   AC_CHECK_LIB(blas, $DGEMM_SYMBOL, BLAS="-lblas")
 fi
 if test -z "$BLAS"; then
+case $target_vendor in
+  apple)
+    BLAS="-altivec -framework vecLib"
+    AUTOAPPLE="yes"
+    AC_MSG_RESULT([No BLAS specified and vendor is Apple: Assuming vecLib is available!])
+    ;;
+esac
+fi
+if test -z "$BLAS"; then
   AC_MSG_ERROR("Did not find a BLAS library.")
 fi
 AC_SUBST(BLAS)
@@ -381,7 +394,13 @@ LIBS=$SAVE_LIBS
 SAVE_LIBS=$LIBS
 LIBS="$BLAS $LIBS $CLIBS $FLIBS"
 if test -z "$LAPACK"; then
-  AC_CHECK_FUNC($DGEEV_SYMBOL,LAPACK_IN_BLAS=yes)
+  if test ! -z "$AUTOAPPLE"; then
+    AC_MSG_RESULT([Assuming vecLib for LAPACK])
+    LAPACK="$BLAS"
+    LAPACK_IN_BLAS=yes
+  else
+    AC_CHECK_FUNC($DGEEV_SYMBOL,LAPACK_IN_BLAS=yes)
+  fi
 fi 
 if test -z "$LAPACK_IN_BLAS"; then
   if test -z "$LAPACK"; then
@@ -396,6 +415,14 @@ else
 fi
 AC_SUBST(LAPACK)
 LIBS=$SAVE_LIBS
+
+# Check for libcompat.a availability
+case $target_vendor in
+  apple)
+    AC_HAVE_LIBRARY(compat,CLIBS="-lcompat $CLIBS",AC_MSG_ERROR([Missing libcompat.a: See http://www.opensource.apple.com/ for more information]))
+    echo "$CLIBS"
+  ;;
+esac
 
 ########
 ## Check for header files
@@ -600,7 +627,7 @@ esac
 # Adjust the optimize flags.
 # The default is to optimize.  --with-opt=no or --without-opt will turn
 # off optimization.
-AC_ARG_WITH(opt,[  --with-opt              --with-opt=no will turn off optimization],[
+AC_ARG_WITH(opt,[  --with-opt              --with-opt=no to turn off optimization],[
 case $withval in
   yes)
     ;;
@@ -620,8 +647,7 @@ esac
 # Adjust the flags dealing with strictness of the compilers.
 # The default is to disable strict language checks.  --with-opt=no or 
 # --without-opt will turn off optimization.
-AC_ARG_WITH(strict,[  --with-strict           --with-strict=yes will turn
-on strict compiler warnings],[
+AC_ARG_WITH(strict,[  --with-strict           --with-strict=yes to turn on strict compiler warnings],[
 case $withval in
   yes)
     # "Strict" flags only known for GNU compilers

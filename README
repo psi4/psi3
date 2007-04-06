@@ -4,21 +4,25 @@
 PSI3 is a suite of ab initio quantum chemistry programs designed to compute
 various molecular properties.  A few highlights of the package include:
 
-   * Coupled cluster (CC) methods, including CCSD and CCSD(T).  
+   * Coupled cluster (CC) methods, including CCSD, CCSD(T), and CC3.  
    * Determinant-based configuration interaction (CI) methods, including
      full CI and various flavors of multireference CI.
    * Integrals and derivative integrals over Gaussian functions of 
-     arbitrary angular momentum (up to k-type functions have been tested).
+     arbitrary angular momentum (up to m-type functions have been tested).
    * Linear R12 methods, including MP2-R12.
-   * Excited-state methods, including CIS(D), RPA, and EOM-CCSD.
+   * Excited-state methods, including CIS(D), RPA, CCSD, and CC3.
 
 ------------------------------------------------------------------------------
 
 AUTHORS:
 ========
 T. Daniel Crawford, C. David Sherrill, Edward F. Valeev, Justin T. Fermann,
-Rollin A. King, Matthew L. Leininger, Shawn T. Brown, Curtis L. Janssen,
-Edward T. Seidl, Joseph P. Kenny, and Wesley D. Allen, PSI 3.2, 2003.
+Rollin A. King, Matthew L. Leininger, Micah L. Abrams, Nicholas J. Russ, 
+Shawn T. Brown, Curtis L. Janssen, Edward T. Seidl, Joseph P. Kenny, and 
+Wesley D. Allen, PSI 3.3, 2007.
+
+A manuscript describing the PSI programs is in press in the Journal of
+Computational Chemistry.
 
 ------------------------------------------------------------------------------
 

@@ -18,8 +18,9 @@ I. Compilation Prerequisites:
       ** fileutils (esp. install)
    * For documentation:
       ** latex
-      ** latex2html (either v0.99_1 or 1.62 but you must apply the patch 
-	             supplied in psi3/misc)
+      ** latex2html 
+           (for generating web-based documentation only; either v0.99_1 or 
+            1.62, but you must apply the patch supplied in psi3/misc)
 
 II. Basic Code Configuration, Compilation, and Installation
 
@@ -48,32 +49,38 @@ the configure script:
    * --prefix=directory --- Use this option if you wish to install the
    PSI3 package somewhere other than the default directory, /usr/local/psi.
 
-   * --with-cc=compiler --- Use this option to specify a C compiler.
-   The default search order for compilers is: gcc, cc, ccc.  (NB: On AIX
-   systems, the search order is cc_r,  gcc.)
+   * --with-cc=compiler --- Use this option to specify a C compiler.  The
+   default search order for compilers is: cc_r (AIX only), gcc, icc, cc.
 
-   * --with-cxx=compiler --- Use this option to specify a C++ compiler.
-   The default search order for compilers is: g++, c++, cxx.  (NB: On AIX
-   systems, the search order is xlC_r,  c++,  g++.)
+   * --with-cxx=compiler --- Use this option to specify a C++ compiler.  The
+   default search order for compilers is: xlC_r (AIX only), g++, c++, icpc,
+   cxx.
 
-   * --with-fc=compiler --- Use this option to specify a Fortran-77 compiler.
-   The default search order for compilers is: g77, f77, fc, f2c.  (NB:
-   On AIX systems, the search order is xlf_r, g77, f77, fc, f2c.)
+   * --with-fc=compiler --- Use this option to specify a Fortran-77 compiler,
+   which is used to determine linking coventions for BLAS and LAPACK libraries
+   and to provide system routines for those libraries.  Note that no fortran
+   compiler is necessary on Mac OS X systems (see below).  The default search
+   order for compilers is: xlf_r (AIX only), gfortran, g77, ifort, f77, fc,
+   f2c.
+
+   * --with-f77symbol=value --- This option allows manual assignment of the 
+   FORTRAN77 symbol convention, which is necessary for C programs to link
+   Fortran-interface libraries such as BLAS and LAPACK. This option should
+   only be used by experts and even then should almost never be necessary. 
+   Allowed values are:
+                            lc  : lower-case
+                            lcu : lower-case with underscore (default)
+                            uc  : upper-case
+                            ucu : upper-case with underscore
 
    * --with-ld=linker --- Use this option to specify a linker.  The
    default is 'ld'.
-
-   * --with-ranlib=ranlib --- Use this option to specify the ranlib program.  
-   The default is to look for 'ranlib' automatically.
 
    * --with-ar=archiver --- Use this option to specify an archiver.  The
    default is to look for 'ar' automatically.
 
    * --with-ar-flags=flags --- Use this option to specify additional archiver 
    flags. The default is 'r'.
-
-   * --with-perl=perl --- Use this option to specify a Perl interpreter.  The
-   default is to look for 'perl' automatically.
 
    * --with-incdirs=directories --- Use this option to specify extra
    directories where to look for header files. Directories should be specified
@@ -96,11 +103,14 @@ the configure script:
 
    * --with-blas=library --- Use this option to specify a BLAS library.
    If your BLAS library has multiple components, enclose the file list
-   with single right-quotes, e.g., --with-blas='-lf77blas -latlas'.
+   with single right-quotes, e.g., --with-blas='-lf77blas -latlas'.  Note
+   that many BLAS libraries can be detected automatically in this release.
 
    * --with-lapack=library --- Use this option to specify a LAPACK library.
    If your LAPACK library has multiple components, enclose the file list
    with single right-quotes, e.g., --with-lapack='-llapack -lcblas -latlas'.
+   Note that many LAPACK libraries can be detected automatically in this 
+   release.
 
    * --with-max-am-eri=integer --- Specifies the maximum angular momentum
    level for the primitive Gaussian basis functions when computing
@@ -119,11 +129,13 @@ the configure script:
    level for primitive Gaussian basis functions used in r_12 explicitly
    correlated methods.  This is set to f-type functions (AM=3) by default.
 
-   * --with-debug=option --- This option turns on debugging options.
-   If the argument is omitted, `` -g'' will be used by default.
+   * --with-debug=yes/no --- Turns on debugging flags (-g) if yes.  This is
+   set to no by default.
 
-   * --with-opt=options --- This option may be used to select special
-   optimization flags, overriding defaults.
+   * --with-opt=yes/no --- Turns off compiler optimizations (-OX) if no.
+   This is set to yes by default.
+
+   * --with-strict=yes -- Turns on strict compiler warnings.
 
 III. Detailed Installation Instructions
 
@@ -208,6 +220,47 @@ The final line will enable the use of the PSI3 man pages.
 
 IV. Miscellaneous architecture-specific notes
 
+ * Mac OS 10.X:
+
+   (1) The compilation requires a developer's toolkit (Xcode) from apple.com.
+   Note that a fortran compiler is not needed for PSI 3.3 on Mac OS X systems.
+
+   (2) The libcompat.a library is also needed, but it is not provided in
+   the Xcode toolkit. As of 6 April 2007, it can be obtained from Apple's 
+   website at:
+
+http://www.opensource.apple.com/darwinsource/tarballs/apsl/Libcompat-14.1.tar.gz
+
+   You must sign up for a free developer's account to access the above
+   library.
+
+   (3) For apple systems, the latest configure script assumes that the vecLib
+   will be used for the optimized BLAS and LAPACK libraries, unless the
+   user indicates otherwise using the --with-blas and --with-lapack flags
+   to configure.  If you encounter difficulty with configure, you may have
+   success explicitly indicating the vecLib using:
+
+      --with-blas='-altivec -framework vecLib' --with-lapack=' '
+
+   (4) Pre Mac OS 10.4: Certain PSI3 codes require significant stackspace for
+   compilation.  Increase your shell's stacksize limit before running "make".
+   For csh, for example, this is done using "unlimit stacksize".  [NB: This
+   limit appears to have been lifted in Mac OS 10.3.X (Panther).]
+
+ * SGI IRIX 6.x:
+
+   (1) MIPSpro C++ compilers prior to version 7.4 require a command-line flag
+   '-LANG:std' in order to compile PSI3 properly.
+
+   (2) Use command-line flag '-64' in order to produce 64-bit executables with
+   MIPSpro compilers. The following is an example of appropriate configure 
+   options:
+
+    --with-cc='cc -64' --with-cxx='CC -64 -LANG:std' --with-fc='f77 -64'
+
+   (3) Under IRIX, configure will attempt to detect automatically and use
+   the optimized SGI Scientific Computing Software Library (SCSL).
+
  * AIX 4.3/5.x in 64-bit environment:
 
     If IBM VisualAge C++ and IBM XL Fortran are used, one has to manually
@@ -226,64 +279,3 @@ IV. Miscellaneous architecture-specific notes
    causes some PSI3 makefiles to fail. Set environmental variable BIN_SH to 
    xpg4.
 
- * Mac OS 10.2.X and 10.3.X (recommended):
-
-   For Apple systems, several issues arise that we hope to address with the 
-   configure script in the near future:
-
-   (1) The compilation requires a developer's toolkit (Xcode) from apple.com.  
-   However, you should probably install the latest gcc package, because the 
-   Xcode toolkit doesn't include a Fortran compiler (which is needed 
-   for determining how to link BLAS and LAPACK codes into PSI3).
-
-   (2) For OS 10.2.X, you'll also need the libcompat library. (As of 
-   23 April 2004, it can be obtained from Apple's website at 
-   http://www.opensource.apple.com/darwinsource/ under the 10.2.8 source 
-   directory.)  Then add -lcompat to the configure flag --with-libs.
-
-   (3) If you built the compilers yourself from GNU source code (the most 
-   likely scenario) you must specify explicitly the location of vecLib for 
-   optimized BLAS and LAPACK:
-
-      --with-blas='/System/Library/Frameworks/vecLib.framework/vecLib'
-
-   If you are using compilers from the developer's kit, then you can instead 
-   use the Apple-specific extensions:
-
-      --with-blas='-altivec -framework vecLib' --with-lapack=' '
-
-   (4) The Fortran compiler in gcc version 3.3 and higher requires the latest
-   assembler, as. It can be obtained as a part of cctools from 
-   http://www.opensource.apple.com/.  Mac OS X 10.3 (Panther) should come 
-   with cctools recent enough to compile PSI3.
-
-   (5) Certain PSI3 codes require significant stackspace for compilation.
-   Increase your shell's stacksize limit before running "make".  For csh,
-   for example, this is done using "unlimit stacksize".  [NB: This limit 
-   appears to have been lifted in Mac OS 10.3.X (Panther).]
-
- * Mac OS 10.4:
-
-   First, read the remarks above for Mac OS 10.2 and 10.3.
-
-   (1) Xcode 2, which is provided with Mac OS 10.4 (Tiger), still does not
-   include a Fortran compiler.  We have had success in building gcc-4.0.0
-   (which includes gfortran) and gcc-3.3.5 (which includes g77) under Mac
-   OS 10.4, but NOT gcc-3.4.3 (the last stable gcc release prior to 4.0.0.
-
-   (2) If you use the F95 compiler (needed only by the "configure" script)
-   from gcc-4.0.0, set "--with-fc=gfortran" on the configure commandline.
-
- * SGI IRIX 6.x:
-
-   (1) MIPSpro C++ compilers prior to version 7.4 require a command-line flag
-   '-LANG:std' in order to compile PSI3 properly.
-
-   (2) Use command-line flag '-64' in order to produce 64-bit executables with
-   MIPSpro compilers. The following is an example of appropriate configure 
-   options:
-
-    --with-cc='cc -64' --with-cxx='CC -64 -LANG:std' --with-fc='f77 -64'
-
-   (3) Under IRIX, configure will attempt to detect automatically and use
-   the optimized SGI Scientific Computing Software Library (SCSL).
