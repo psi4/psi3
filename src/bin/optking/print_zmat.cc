@@ -49,8 +49,9 @@ void compute_zmat(cartesians &carts, int *unique_zvars) {
   /* determine and save the unique variables */
   cnt = -1;
   for (i=1; i<nallatom; ++i) {
+    ++cnt;
     if (zmat[i].bond_label[0] != '\0') {
-      unique_zvars[++cnt] = 1;
+      unique_zvars[cnt] = 1;
       strcpy(sym, zmat[i].bond_label);
       for (a=0;a<i;++a) {
         if (strcmp(sym, zmat[a].bond_label) == 0) {
@@ -59,9 +60,11 @@ void compute_zmat(cartesians &carts, int *unique_zvars) {
         }
       }
     }
+    else unique_zvars[cnt] = 0;
     if (i>1) {
+      ++cnt;
       if (zmat[i].angle_label[0] != '\0') {
-        unique_zvars[++cnt] = 1;
+        unique_zvars[cnt] = 1;
         strcpy(sym, zmat[i].angle_label);
         for (a=0;a<i;++a) {
           if (strcmp(sym, zmat[a].angle_label) == 0) {
@@ -70,10 +73,12 @@ void compute_zmat(cartesians &carts, int *unique_zvars) {
           }
         }
       }
+      else unique_zvars[cnt] = 0;
     }
     if (i>2) {
+      ++cnt;
       if (zmat[i].tors_label[0] != '\0') {
-        unique_zvars[++cnt] = 1;
+        unique_zvars[cnt] = 1;
         strcpy(sym, zmat[i].tors_label);
         for (a=0;a<i;++a) {
           if (strcmp(sym, zmat[a].tors_label) == 0) {
@@ -82,6 +87,7 @@ void compute_zmat(cartesians &carts, int *unique_zvars) {
           }
         }
       }
+      else unique_zvars[cnt] = 0;
     }
   }
 
@@ -172,17 +178,27 @@ void print_zmat(FILE *outfile, int *unique_zvars) {
     fprintf(outfile,"    ( %s ", sym);
     if (i > 0) {
       fprintf(outfile," %d", zmat[i].bond_atom);
-      fprintf(outfile," %s", zmat[i].bond_label);
-      if (zmat[i].bond_opt) fprintf(outfile,"$");
+      if (zmat[i].bond_label[0] != '\0') {
+        fprintf(outfile," %s", zmat[i].bond_label);
+        if (zmat[i].bond_opt) fprintf(outfile,"$");
+      }
+      else fprintf(outfile," %10.5lf", zmat[i].bond_val);
     }
     if (i > 1) {
       fprintf(outfile," %d", zmat[i].angle_atom);
-      fprintf(outfile," %s", zmat[i].angle_label);
-      if (zmat[i].angle_opt) fprintf(outfile,"$");
+      if (zmat[i].angle_label[0] != '\0') {
+        fprintf(outfile," %s", zmat[i].angle_label);
+        if (zmat[i].angle_opt) fprintf(outfile,"$");
+      }
+      else fprintf(outfile," %10.5lf", zmat[i].angle_val);
     }
     if (i > 2) {
       fprintf(outfile," %d", zmat[i].tors_atom);
-      fprintf(outfile," %s", zmat[i].tors_label);
+      if (zmat[i].tors_label[0] != '\0') {
+        fprintf(outfile," %s", zmat[i].tors_label);
+        if (zmat[i].tors_opt) fprintf(outfile,"$");
+      }
+      else fprintf(outfile," %10.5lf", zmat[i].tors_val);
     }
     fprintf(outfile,")\n");
   }
