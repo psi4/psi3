@@ -9,31 +9,34 @@ is not, it will significantly slow down the program and the network.
 By default, PSI3 will write temporary files to \file{/tmp}, but you
 will want to set up a default scratch path (as described in sections
 \ref{scratchfiles} and \ref{psirc}) because the \file{/tmp} directory
-is usually not large enough except for small test cases.
+is usually not large enough except for small test cases.  In any 
+event, you want to be very careful that you are not writing scratch
+files to an NFS-mounted directory that is physically attached to a 
+fileserver elsewhere on the network.
 
 \subsection{Basic Input File Structure} 
 
 PSI3 reads input from a text file, which can be prepared in any standard
-text editor.  The default input file name is input.dat and the default
-output file name is output.dat.  So that you can give your files meaningful
-names, these defaults can be changed by specifying the input file name and
-output file name on the the command line.  The syntax is:
+text editor.  The default input file name is \file{input.dat} and the
+default output file name is \file{output.dat}.  So that you can give your
+files meaningful names, these defaults can be changed by specifying
+the input file name and output file name on the the command line.
+The syntax is:
 
 {\tt psi3 input-name output-name}
 
 PSI3 is a modular program, with each module performing specific tasks
-and computations during your calculation.  Which modules are run for
-a particular computation depends on the type of computation and the
-particular keywords specified in the input file.  All keywords in PSI3
-use the structure {\tt keyword = value}, where values may be strings,
-booleans, integers or real numbers.  If the value is a string which
-contains a special character (such as a space or a dash) you must enclose
-the string in double quotation marks.  You can give keywords in the
-input file for specific modules; however, in the first few examples,
-we will place all our keywords in one section of our input file called
-{\tt psi}.  Generally, every module you run during your computation will
-read the keywords in {\tt psi}, so you can place all your keywords in
-this section if you choose to do so.
+and computations.  Which modules are run for a particular computation
+depends on the type of computation and the particular keywords specified
+in the input file.  All keywords in PSI3 use the structure {\tt keyword =
+value}, where values may be strings, booleans, integers, or real numbers.
+If the value is a string which contains a special character (such as a
+space or a dash) you must enclose the string in double quotation marks.
+You can give keywords in the input file for specific modules; however,
+in the first few examples, we will place all our keywords in one section
+of our input file called {\tt psi}.  Generally, every module you run
+during your computation will read the keywords in {\tt psi}, so you
+can place all your keywords in this section if you choose to do so.
 
 \subsection{Running a basic SCF calculation}
 In our first example, we will consider a Hartree-Fock SCF computation
@@ -57,13 +60,14 @@ psi:(
 \end{verbatim}
 
 In each computation, you can specify the type of wavefunction (keyword
-{\tt wfn}), the reference wavefunction (keyword {\tt reference}), and
-the type of calculation you want to perform (keyword {\tt jobtype}).
-In the example above, we used a restricted Hartree-Fock (RHF) reference
-in an SCF computation of a single-point energy.  To change the level
-of electron correlation, you change the type of wavefunction using the
-keyword {\tt wfn}.  In the example above, to perform an
-MP2 computation, simply set {\tt wfn = mp2}.
+{\tt wfn}), the reference wavefunction for post-Hartree-Fock computations
+(keyword {\tt reference}), and the type of computation you want to
+perform (keyword {\tt jobtype}).  In the example above, we used a
+restricted Hartree-Fock (RHF) reference in an SCF computation of a
+single-point energy.  To change the level of electron correlation, one
+would specify a different wavefunction type using the keyword {\tt wfn}.
+In the example above, to perform an MP2 computation, simply set {\tt
+wfn = mp2}.
 
 \subsection{Geometry Optimization and Vibrational Frequency Analysis}
 The above example was a simple single-point energy computation.
@@ -97,15 +101,15 @@ psi: (
 
 Once you have optimized the geometry of a molecule, you might wish to
 perform a frequency analysis to determine the nature of the stationary
-point.  To do this, change the value of {\tt jobtype} to {\tt
-freq}.  For an SCF frequeny calculation, you would also set {\tt
-dertype = second} to compute the second derivatives analytically.
-Unfortunately, analytical second derivitives are not available 
-in \PSIthree\ for wavefunctions beyond SCF,
-so instead use the highest order analytical derivitives
-that are available for the type of wavefunction you have chosen.  This
-information is given in Table \ref{table:methods}.  For our CCSD example, the
-highest-order derivitives available are first, so {\tt dertype = first}.
+point.  To do this, change the value of {\tt jobtype} to {\tt freq}.
+For an SCF frequeny calculation, you would also set {\tt dertype =
+second} to compute the second derivatives analytically.  Unfortunately,
+analytical second derivitives are not available in \PSIthree\ for
+wavefunctions beyond SCF, so instead use the highest order analytical
+derivitives that are available for the type of wavefunction you
+have chosen.  This information is given in Table \ref{table:methods}.
+For our CCSD example, the highest-order derivitives available are first,
+so {\tt dertype = first}.
 
 \begin{verbatim}
 % 6-31G** H2O Test computation of frequencies
@@ -136,12 +140,12 @@ file easier to understand because you can provide explainations about
 each keyword.  Another way to make the input file more organized is
 to seperate it into sections that correspond to particular modules
 the calculation will use.  This can be particularly helpful for more
-complicated calculations which utilize a lot of keywords.  In the example
-below, a CCSD(T) calculation for the BH molecule is performed using a
+complicated computations which can utilize many of keywords.  In the example
+below, a CCSD(T) computation for the BH molecule is performed using a
 cc-pVDZ basis set.  The keywords are divided into sections and several
 new keywords are introduced, including ones to specify symmetry and
-orbital occupations.  All keywords which specify orbitial occupations
-are a list of integers enclosed in parenthesis.  These integers give the
+orbital occupations.  Orbitial occupations are specified by
+a list of integers enclosed in parentheses.  These integers give the
 number of orbitials which belong to each irreducible representation in
 the point group.  The ordering of the irreps are those given by Cotton
 in {\em Chemical Applications of Group Theory}.  In this example,
@@ -159,25 +163,25 @@ default: (
 % Allocating memory for the calculation
   memory = (600.0 MB)
 
-% charge and multp default to values of 0 and 1, respectively
+% charge and multiplicity (2S+1) default to values of 0 and 1, respectively
   charge = 0
   multp = 1
 
 % The program will generally guess the symmetry of the molecule, but
-% it can be overridden.  Here we specify c2v because only d2h and its
+% it can be overridden.  Here we specify C2V because only D2H and its
 % subgroups can be used by the program.
   symmetry = c2v
 
-% Number of orbitals per irrep can be specified manually, if desired
+% Number of doubly-occupied orbitals per irrep can be specified manually
+% if desired
   docc = (3 0 0 0)
 
-% Freeze the 1A1 orbital (B 1s-like) in the CCSD(T) computation
+% Freeze the 1A1 orbital (Boron 1s-like) in the CCSD(T) computation
   frozen_docc = (1 0 0 0)
 )
 
 % The input section contains information about the molecule and the basis
-% set.  The geometry here is specified by cartesian coordinates, therefore
-% the keyword units must also be included.
+% set.  The geometry here is specified by cartesian coordinates.
 input: (
   basis = "cc-pVDZ"
   units = angstroms
@@ -188,15 +192,16 @@ input: (
   origin = (0.0 0.0 0.0)
 )
 % The modular input structure lets you specify convergence criteria for
-% each part of the calcultion.  
+% each part of the computation separately
 scf: (
   maxiter = 100
   convergence = 11
 )
 \end{verbatim}
 
-The final example of this tutorial demonstrates an example of a CAS-SCF
-calculation.  CAS calculations require specification of several additional
+The final example of this tutorial demonstrates an example of a
+complete-active-space self-consistent-field (CASSCF)
+computation.  CAS computations require specification of several additional
 keywords because you must specify which orbitals you wish to be in the
 active space.  The notation and ordering for specifying CAS orbitals is the
 same as for occupied orbitals.
@@ -214,8 +219,7 @@ psi: (
 % in the active space.
   restricted_docc = (1 0 0 0)
 
-% The active space orbitals; this combination of restricted and active
-% orbitals makes a valence active space for the water molecule.
+% The active space orbitals; here, the valence orbitals are chosen
   active          = (3 0 1 2)
 
   basis = "6-31G**"
