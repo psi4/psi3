@@ -590,6 +590,7 @@ void get_parameters(void)
    Parameters.dipmom = 0;
    if (Parameters.transdens) Parameters.dipmom = 1;
    errcod = ip_boolean("DIPMOM",&(Parameters.dipmom),0);
+   if (Parameters.dipmom == 1) Parameters.opdm = 1; 
  
    errcod = ip_data("ROOT","%d",&(Parameters.root),0);
    Parameters.root -= 1;
