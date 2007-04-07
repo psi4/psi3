@@ -14,7 +14,7 @@ default: (
   wfn = detci
   fci = true
   docc = (3 0 1 1)
-  opdm = true
+  dipmom = true
 )
 
 input: (
