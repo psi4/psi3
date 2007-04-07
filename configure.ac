@@ -411,6 +411,12 @@ if test -z "$LAPACK"; then
 fi 
 if test -z "$LAPACK_IN_BLAS"; then
   if test -z "$LAPACK"; then
+    if test $CC = icc; then
+      # Intel's libmkl_lapack64 contains the double-precision routines
+      AC_CHECK_LIB(mkl_lapack64,$DGEEV_SYMBOL,LAPACK="-lmkl_lapack64")
+    fi
+  fi
+  if test -z "$LAPACK"; then
     AC_CHECK_LIB(lapack,$DGEEV_SYMBOL,LAPACK="-llapack")
   fi
   if test -z "$LAPACK"; then

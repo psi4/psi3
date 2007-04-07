@@ -1,10 +1,7 @@
 % H2O FCI/6-31G
-
 psi: (
   jobtype = sp
-)
 
-default: (
   label = "H2O"
   memory = (50.0 MB)
   reference = rhf
@@ -15,9 +12,7 @@ default: (
   fci = true
   docc = (3 0 1 1)
   dipmom = true
-)
 
-input: (
   basis = "6-31G"
   units = bohr
   geometry = (
