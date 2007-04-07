@@ -3,6 +3,9 @@
   \ingroup (CHKPT)
 */
 
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 #include <psifiles.h>
 #include <libpsio/psio.h>
 
@@ -21,7 +24,7 @@ double chkpt_rd_e_labeled(char *label)
   char *s;
   double E;
 
-  s = (char *) malloc (strlen(label)+3);
+  s = (char *) malloc((strlen(label)+3)*sizeof(char));
   strcpy(s,"::");
   strcat(s,label);
   /* printf("chkpt_rd_e_labeled using label %s\n",s); */
@@ -47,7 +50,7 @@ void chkpt_wt_e_labeled(char *label, double E)
 {
   char *s;
 
-  s = (char *) malloc (strlen(label)+3);
+  s = (char *) malloc((strlen(label)+3)*sizeof(char));
   strcpy(s,"::");
   strcat(s,label);
   /* printf("chkpt_wt_e_labeled using label %s\n",s); */
