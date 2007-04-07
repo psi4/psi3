@@ -11,7 +11,7 @@ torsion, and linear bend coordinates may be read from the intco.dat file
 or determined completely by distance criteria using the input geometry.
 By default, optimization is performed in redundant internal coordinates
 regardless of how the geometry was provided in the input.  Alternatively,
-the user may specify zmat_simples=true, in which case the simple internal
+the user may specify zmat\_simples=true, in which case the simple internal
 coordinates will be taken from the ZMAT given in the input file.  Also,
 the user may specify optimization in delocalized internal coordinates
 with delocalize=true.  
@@ -20,7 +20,7 @@ Geometrical constraints may be imposed by the addition of a section
 with nearly the same format as intco.dat.  For example, to fix the distance
 between atoms 1 and 2, as well as the angle between atoms 2, 1 and 3
 in an optimization, add the following to your input file.
-fixed_intco: (
+fixed\_intco: (
   stre = (
     (1 2)
   )
@@ -31,7 +31,7 @@ fixed_intco: (
 The constrained simple internals must be ones present (either manually or
 automatically) among the simple internals in intco.dat.  Alternatively,
 the z-matrix input format may be used to specify constrained optimizations.
-If zmat_simples=true, then variables in the z-matrix which end in
+If zmat\_simples=true, then variables in the z-matrix which end in
 a dollar sign will be taken as simple internals to be optimized, and
 all other variables will be taken as simple internals to keep frozen.
 
