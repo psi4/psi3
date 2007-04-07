@@ -17,7 +17,7 @@ AC_PROG_MAKE_SET([])
 srcdir=`(cd $srcdir; pwd)`
 
 # That's where extra scripts necessary for configuration (config.guess, etc.) are located
-#AC_CONFIG_AUX_DIR(bin)
+AC_CONFIG_AUX_DIR(bin)
 
 # Set up the default paths.
 AC_PREFIX_DEFAULT(/usr/local/psi)

@@ -8,6 +8,7 @@ define([psi_version],[3.3.0])
 define([psi_bugreport],[psicode@users.sourceforge.net])
 AC_PREREQ(2.57)
 AC_INIT([psi],[psi_version],[psi_bugreport])
+
 AC_CONFIG_HEADER(include/psiconfig.h)
 
 PSI_VERSION=psi_version
@@ -104,59 +105,51 @@ esac
 AC_ARG_WITH(cc,[  --with-cc               which C compiler to use],[
 case $withval in
   yes)
-    CC='gcc'
+    CC_LIST="$CC_LIST"
     ;;
   no)
-    CC=''
+    CC_LIST="$CC_LIST"
     ;;
   *)
-    CC=$withval
+    CC_LIST="$withval $CC_LIST"
     ;;
 esac
 ])
 
-if test -z "$CC"; then
-  AC_PROG_CC([$CC_LIST])
-fi
-AC_SUBST(CC)
+AC_PROG_CC([$CC_LIST])
 
 AC_ARG_WITH(cxx,[  --with-cxx              which C++ compiler to use],[
 case $withval in           
   yes)
-    CXX='g++'
+    CXX_LIST="$CXX_LIST"
     ;;
   no)
-    CXX=''
+    CXX_LIST="$CXX_LIST"
     ;;
   *)
-    CXX=$withval
+    CXX_LIST="$withval $CXX_LIST"
     ;;
 esac
 ])
 
-if test -z "$CXX"; then
-  AC_PROG_CXX([$CXX_LIST])
-fi
-AC_SUBST(CXX)
+AC_PROG_CXX([$CXX_LIST])
 
 AC_ARG_WITH(fc,[  --with-fc               which Fortran compiler to use],[
 case $withval in
   yes)
-    F77='g77'
+    F77_LIST="$F77_LIST"
     ;;
   no)
-    F77='no'
+    F77_LIST='no'
     ;;
   *)
-    F77=$withval
+    F77_LIST="$withval $F77_LIST"
     ;;
 esac
 ])
 
-if test "$F77" != no; then
-  if test -z "$F77"; then
-    AC_PROG_F77([$F77_LIST])
-  fi
+if test "$F77_LIST" != no; then
+  AC_PROG_F77([$F77_LIST])
 else
   F77=
 fi
@@ -351,25 +344,39 @@ esac
 
 SAVE_LIBS=$LIBS
 LIBS="$LIBS $CLIBS $FLIBS"
-echo "LIBS = $LIBS"
 
-# If the user didn't give us a BLAS lib, see if we can find one
+### If the user didn't give us a BLAS lib, see if we can find one
+
+# If were using the Intel compilers, we prefer MKL as well
+if test -z "$BLAS"; then
+  if test $CC = icc; then
+    AC_CHECK_LIB(mkl, $DGEMM_SYMBOL, BLAS="-lmkl")
+  fi
+fi
+# Otherwise, run through a list of possibilities
 if test -z "$BLAS"; then
   AC_CHECK_LIB(essl, $DGEMM_SYMBOL, BLAS="-lessl")
 fi
 if test -z "$BLAS"; then
   AC_CHECK_LIB(scs, $DGEMM_SYMBOL, BLAS="-lscs")
 fi
+
 if test -z "$BLAS"; then
-  AC_CHECK_LIB(goto, $DGEMM_SYMBOL, BLAS="-lgoto")
+  SAVE_LIBS2=$LIBS
+  LIBS="-lpthread $LIBS"
+  AC_CHECK_LIB(goto, $DGEMM_SYMBOL, BLAS="-lgoto -lpthread")
+  LIBS=$SAVE_LIBS2
 fi
 if test -z "$BLAS"; then
   SAVE_LIBS2=$LIBS
   LIBS="-latlas $LIBS"
-  echo "$LIBS"
   AC_CHECK_LIB(f77blas, $DGEMM_SYMBOL, BLAS="-lf77blas -latlas")
   LIBS=$SAVE_LIBS2
 fi  
+if test -z "$BLAS"; then
+  echo "$LD_LIBRARY_PATH"
+  AC_CHECK_LIB(mkl, $DGEMM_SYMBOL, BLAS="-lmkl")
+fi
 if test -z "$BLAS"; then
   AC_CHECK_LIB(blas, $DGEMM_SYMBOL, BLAS="-lblas")
 fi

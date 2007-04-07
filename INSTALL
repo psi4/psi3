@@ -1,13 +1,21 @@
 Installation Instructions for PSI3
 ----------------------------------
 
+  I. Compilation Prerequisites
+  II. Brief Summary of Configruation, Compilation, and Installation
+  III. Detailed Installation Instructions
+  IV. Recommendations for BLAS and LAPACK libraries
+  V. Miscellaneous architecture-specific notes
+
+----------------------------------
+
 I. Compilation Prerequisites:
 
    * ANSI C compiler
    * C++ Compiler
    * F77 Compiler (the F95 compiler, gfortran, with gcc-4.X will work)
-   * Optimized BLAS library (try http://math-atlas.sourceforge.net)
-   * Optimized LAPACK library (try http://www.netlib.org/netlib)
+   * Optimized BLAS library (see recommendations below)
+   * Optimized LAPACK library (see recommendations below)
    * POSIX threads (Pthreads) library (optional)
    * Perl interpreter (5.005 or higher; needed for running test cases)
    * GNU utilities: (see http://www.gnu.org)
@@ -22,7 +30,7 @@ I. Compilation Prerequisites:
            (for generating web-based documentation only; either v0.99_1 or 
             1.62, but you must apply the patch supplied in psi3/misc)
 
-II. Basic Code Configuration, Compilation, and Installation
+II. Brief Summary of Configruation, Compilation, and Installation
 
 A good directory for the PSI3 source code is /usr/local/src/psi3.
 The directory should NOT be named /usr/local/psi, as that is the default
@@ -148,7 +156,7 @@ First, we recommend that you choose for the top-level $PSI3 source
 directory something other than /usr/local/psi; your $HOME directory or
 /usr/local/src/psi3 are convenient choices.  Next, in the top-level $PSI3
 source directory you've chosen, first run autoconf to generate the configure
-script from configure.in.  It is best to keep the source code separate
+script from configure.ac.  It is best to keep the source code separate
 from the compilation area, so you must first choose a subdirectory for
 compilation of the codes.  A simple option is $PSI3/objdir, which should
 work for most environments.  However, if you need executables for several
@@ -218,21 +226,75 @@ setenv MANPATH $PSI/doc/man:$MANPATH
 
 The final line will enable the use of the PSI3 man pages.
 
-IV. Miscellaneous architecture-specific notes
+IV. Recommendations for BLAS and LAPACK libraries
+
+Much of the speed and efficiency of the PSI3 programs depends on the
+corresponding speed and efficiency of the available BLAS and LAPACK libraries
+(especially the former).  In addition, the most common compilation problems
+involve these libraries.  Users may therefore wish to consider the following
+BLAS and LAPACK recommendations when building PSI3:
+
+  (1) It is NOT wise to use the stock BLAS library provided with many
+  Linux distributions like RedHat.  This library is usually just the
+  netlib distribution and is completely unoptimized.  PSI3's performance
+  will suffer if you choose this route.  The choice of LAPACK is less
+  critical, and so the unoptimized netlib distribution is acceptable.
+
+  (2) Perhaps the best choices for BLAS are Kazushige Goto's hand-optimized
+  BLAS (http://www.tacc.utexas.edu/resources/software/) and ATLAS
+  (http://math-atlas.sourceforge.net/).  These work well on nearly every
+  achitecture to which the PSI3 developers have access.  On Mac OS X systems,
+  however, the vecLib package that comes with Xcode works well.
+
+  (3) PSI3 does not require a Fortran compiler, unless the resident BLAS
+  and LAPACK libraries require Fortran-based system libraries.  If you see
+  compiler complaints about missing symbols like "do_fio" or "e_wsfe", then
+  your libraries were most likely compiled with g77 or gfortran, which
+  require -lg2c to resolve the Fortran I/O calls.  Use of the same gcc
+  compilers for PSI3 should normally resolve this problem.
+
+  (4) The PSI3 configure scripts can conveniently identify and use
+  several different BLAS and LAPACK libraries, but its ability to do this
+  automatically depends on a number of factors, including correspondence
+  between the compiler used for PSI3 and the compiler used to build
+  BLAS/LAPACK, and placement of the libraries in commonly searched
+  directories, among others.
+
+  (5) If configure cannot identify your BLAS and LAPACK libraries
+  automatically, you can specify them on the command-line using the
+  --with-blas and --with-lapack arguments described above.  Here are a few
+  examples that work on the PSI3 developers' systems:
+
+    (a) Linux with ATLAS:
+
+    --with-blas='-lf77blas -latlas' --with-lapack='-llapack -lcblas'
+
+    (b) Mac OS X with vecLib:
+
+    --with-blas='-altivec -framework vecLib' --with-lapack=' '
+
+    (c) Linux with MKL and icc/icpc/ifort:
+
+    --with-libdirs=-L/usr/local/opt/intel/mkl/8.0.2/lib/32 --with-blas=-lmkl --with-lapack=-lmkl_lapack32
+
+
+V. Miscellaneous architecture-specific notes
 
  * Mac OS 10.X:
 
    (1) The compilation requires a developer's toolkit (Xcode) from apple.com.
    Note that a fortran compiler is not needed for PSI 3.3 on Mac OS X systems.
 
-   (2) The libcompat.a library is also needed, but it is not provided in
-   the Xcode toolkit. As of 6 April 2007, it can be obtained from Apple's 
-   website at:
+   (2) The libcompat.a library is also needed, but it is not provided in the
+   Xcode toolkit. If you see compiler complaints about missing symbols like
+   "re_comp" or "re_exec", then your -lcompat is missing or PSI3 is not aware
+   of it.  As of 6 April 2007, it can be obtained from Apple's website at:
 
 http://www.opensource.apple.com/darwinsource/tarballs/apsl/Libcompat-14.1.tar.gz
 
-   You must sign up for a free developer's account to access the above
-   library.
+   You must sign up for a free developer's account to access the
+   above library.  You can identify the library to configure by adding
+   "--with-libs=-lcompat" to the command line.
 
    (3) For apple systems, the latest configure script assumes that the vecLib
    will be used for the optimized BLAS and LAPACK libraries, unless the
