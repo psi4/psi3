@@ -284,6 +284,12 @@ The final line will enable the use of the \PSIthree\ man pages.
    \item Intel compilers: version 9.0 has been tested. We do not recommend
    using version 8.1.
    \item Portland Group compilers: version 6.0-5 has been tested.
+   \item Some versions of RedHat/Fedora Core RPM packages for the 
+   blas and lapack libraries fail to make all the required symlinks.  
+   For example, you may have {\tt /usr/lib/libblas.so.3.1.0} but not
+   {\tt /usr/lib/libblas.so}.  If this happens, create the link as, e.g.,
+   {\tt ln -s /usr/lib/libblas.so.3.1.0 /usr/lib/libblas.so}.  You
+   may need to do similarly for lapack.
   \end{itemize}
 
 \item Linux on Intel Itanium:
