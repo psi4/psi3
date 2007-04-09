@@ -697,9 +697,10 @@ AC_CONFIG_FILES([include/Makefile
           src/util/Makefile src/util/MakeRules src/util/MakeVars
           src/bin/Makefile src/bin/MakeRules src/bin/MakeVars
           doc/MakeVars doc/MakeRules doc/Makefile
-          doc/macros.tex
+          doc/macros.tex 
           doc/installation/Makefile
           doc/progman/Makefile doc/userman/Makefile
+          doc/userman/prsty.bst
 
           src/lib/libdpd/Makefile
           src/lib/libiwl/Makefile
