@@ -9,5 +9,5 @@ PERL = @PERL@
 TESTFLAGS = -q
 TEST_SCRIPT = ../runtest.pl
 
-GARBAGE = output.dat psi.* timer.dat file14.dat dboc.findif.out
+GARBAGE = output.dat psi.* timer.dat file14.dat *dboc.findif.out
 
