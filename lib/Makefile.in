@@ -30,7 +30,7 @@ install_man: macro.psi
 	$(MKDIRS) $(datadir)
 	$(INSTALL_DATA) $< $(datadir)
 
-$(top_srcdir)/configure: $(top_srcdir)/configure.in $(top_srcdir)/aclocal.m4
+$(top_srcdir)/configure: $(top_srcdir)/configure.ac $(top_srcdir)/aclocal.m4
 	cd $(top_srcdir) && autoconf
 
 $(top_objdir)/config.status: $(top_srcdir)/configure

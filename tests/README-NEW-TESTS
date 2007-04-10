@@ -11,7 +11,7 @@ doesn't matter which one.)
                                                                                 
 (4) Edit psi3/tests/Makefile.in to add your subdirectory to the tests rule.
                                                                                 
-(5) Edit psi3/configure.in to add your subdirectory to the list of subdirs
+(5) Edit psi3/configure.ac to add your subdirectory to the list of subdirs
 configure uses to generate Makefiles in the compilation directories.
                                                                                 
 (6) Depending on what information needs to be checked, you may also have to
