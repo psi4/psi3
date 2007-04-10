@@ -50,17 +50,16 @@ Created on: \today
 
 The following external software packages are needed to complile \PSIthree:
 \begin{itemize}
-\item C, C++, and FORTRAN77 compilers. The FORTRAN77 compiler is only used to determine
-the symbol convention of BLAS and LAPACK libraries.
+\item C, C++, and FORTRAN77 compilers. The FORTRAN77 compiler is only
+  used to determine the symbol-naming convention of and some system
+  routines for the BLAS and LAPACK libraries on some architectures. It
+  is optional in a few cases (e.g. Mac OS X systems).
 \item A well-optimized basic linear algebra subroutine (BLAS) library
-  for vital matrix-matrix and matrix-vector multiplication routines.
-  We recommend the excellent ATLAS package developed at the University
-  of Tennessee.  \htmladdnormallink{{\tt
-  math-atlas.sourceforge.net}}{http://math-atlas.sourceforge.net}
-\item The linear algebra package (LAPACK), also available from
-  netlib.org.  \PSIthree\ makes use of LAPACK's eigenvalue/eigenvector
-  and matrix inversion routines.  \htmladdnormallink{{\tt
-  www.netlib.org/netlib}}{http://www.netlib.org/netlib}
+  for vital matrix-matrix and matrix-vector multiplication
+  routines. (See recommendations below.)
+\item The linear algebra package (LAPACK).  \PSIthree\ makes use of
+  LAPACK's eigenvalue/eigenvector and matrix inversion routines.  (See
+  recommendations below)
 \item POSIX threads (Pthreads) library
 \item Perl interpreter (version 5.005 or higher)
 \item Various GNU utilies: \htmladdnormallink{{\tt
@@ -72,7 +71,7 @@ www.gnu.org}}{http://www.gnu.org}
 \item {\tt bison}
 \item {\tt fileutils} (esp.\ {\tt install})
 \end{itemize}
-\item For documentation:
+\item For documentation only:
 \begin{itemize}
 \item {\tt LaTeX}
 \item {\tt LaTeX2html} (v0.99.1 or 1.62, including the patch supplied in
@@ -80,7 +79,7 @@ psi3/misc)
 \end{itemize}
 \end{itemize}
 
-\section{Basic Configuration and Installation}
+\section{Brief Summary of Configuration, Compilation, and Installation}
 
 A good directory for the \PSIthree\ source code is /usr/local/src/psi3.
 The directory should {\em not} be named {\tt /usr/local/psi}, as that is
@@ -94,7 +93,6 @@ package and install the executables in /usr/local/psi/bin:
 
 \begin{enumerate}
 \item {\tt cd \$PSI3} (your top-level \PSIthree\ source directory)
-\item {\tt autoconf}
 \item {\tt mkdir objdir}
 \item {\tt cd objdir}
 \item {\tt ../configure} (may need some of the options below, esp.~if
@@ -114,22 +112,32 @@ the {\tt configure} script:
   directory, {\tt /usr/local/psi}.  This directory will contain
   subdirectories with the final installed binaries, libraries, 
   documentation, and shared data files.
-\item {\tt -}{\tt -with-cc=compiler} --- Use this option to specify a C
-  compiler.  One should use compilers that generate reentrant code,
-  if possible. The default search order for compilers is: {\tt gcc},
-  {\tt cc}.  (NB: On AIX systems, the search order is {\tt
-  cc\_r}, {\tt gcc}.)
-\item {\tt -}{\tt -with-cxx=compiler} --- Use this option to specify a C++
-  compiler.  One should use compilers that generate reentrant code,
-  if possible. The default search order for compilers is: {\tt g++},
-  {\tt c++}, {\tt cxx}.  (NB: On AIX systems, the search order is {\tt
-  xlC\_r}, {\tt c++}, {\tt g++}.)
+\item {\tt -}{\tt -with-cc=compiler} --- Use this option to specify a
+  C compiler.  One should use compilers that generate reentrant code,
+  if possible.  The default search order for compilers is: {\tt cc_r} (AIX
+  only), {\tt gcc}, {\tt icc}, {\tt cc}.
+\item {\tt -}{\tt -with-cxx=compiler} --- Use this option to specify a
+  C++ compiler.  One should use compilers that generate reentrant
+  code, if possible. The default search order for compilers is: {\tt xlC_r}
+  (AIX only), {\tt g++}, {\tt c++}, {\tt icpc}, {\tt cxx}.
 \item {\tt -}{\tt -with-fc=compiler} --- Use this option to specify a
-  Fortran-77 compiler.  One should use compilers that generate reentrant code,
-  if possible. The default search order for compilers is:
-  {\tt g77}, {\tt f77}, {\tt fc}, {\tt f2c}.  (NB: On AIX systems, the
-  search order is {\tt xlf\_r}, {\tt g77}, {\tt f77}, {\tt
-  fc}, {\tt f2c}.)
+  Fortran-77 compiler, which is used to determine linking coventions
+  for BLAS and LAPACK libraries and to provide system routines for
+  those libraries.  Note that no fortran compiler is necessary on Mac
+  OS X systems (see below).  The default search order for compilers
+  is: {\tt xlf_r} (AIX only), {\tt gfortran}, {\tt g77}, {\tt ifort},
+  {\tt f77}, {\tt f2c}.
+\item {\tt -}{\tt -with-f77-symbol=value} --- This option allows manual
+  assignment of the F77 symbol convention, which is necessary for C
+  programs to link Fortran-interface libraries such as BLAS and
+  LAPACK. This option should only be used by experts and even then
+  should almost never be necessary.  Allowed values are:
+\begin{itemize}                            
+\item[lc] lower-case
+\item[lcu]lower-case with underscore (default)
+\item[uc] upper-case
+\item[ucu] upper-case with underscore
+\end{itemize}
 \item {\tt -}{\tt -with-ld=linker} --- Use this option to specify
   a linker program. The default is {\tt ld}.
 \item {\tt -}{\tt -with-ranlib=ranlib} --- Use this option to specify
@@ -139,31 +147,34 @@ the {\tt configure} script:
   archiver.  The default is to look for {\tt ar} automatically.
 \item {\tt -}{\tt -with-ar-flags=options} --- Use this option to specify
   archiver command-line flags. The default is {\tt r}.
-\item {\tt -}{\tt -with-perl=perl} --- Use this option to specify a
-  Perl interpreter.  The default is to look for {\tt perl} automatically.
-\item {\tt -}{\tt -with-incdirs=directories} --- Use this option to specify extra
-  directories where to look for header files. Directories should be specified
-  prepended by {\tt -I}, i.e. {\tt -Idir1 -Idir2}, etc. If several directories are specified,
-  enclose the list with single right-quotes, e.g., {\tt
-  -}{\tt -with-incdirs='-I/usr/local/include -I/home/psi3/include'}.
-\item {\tt -}{\tt -with-libs=libraries} --- Use this option to specify extra
-  libraries which should be used during linking. Libraries should be specified by
-  their full names or in the usual {\tt -l} notation, i.e. {\tt -lm /usr/lib/libm.a}, etc.
-  If several libraries are specified, enclose the list with single right-quotes, e.g., {\tt
-  -}{\tt -with-libs='-lcompat /usr/local/lib/libm.a'}.
-\item {\tt -}{\tt -with-libdirs=directories} --- Use this option to specify extra
-  directories where to look for libraries. Directories should be specified
-  prepended by {\tt -L}, i.e. {\tt -Ldir1 -Ldir2}, etc. If several directories are specified,
-  enclose the list with single right-quotes, e.g., {\tt
-  -}{\tt -with-libdirs='-L/usr/local/lib -I/home/psi3/lib'}.
-\item {\tt -}{\tt -with-blas=library} --- Use this option to specify a BLAS
-  library.  If your BLAS library has multiple components, enclose the
-  file list with single right-quotes, e.g., {\tt
-  -}{\tt -with-blas='-lf77blas -latlas'}.
-\item {\tt -}{\tt -with-lapack=library} --- Use this option to specify a
-  LAPACK library.  If your LAPACK library has multiple components,
-  enclose the file list with single right-quotes, e.g., {\tt
-  -}{\tt -with-lapack='-llapack -lcblas -latlas'}.
+\item {\tt -}{\tt -with-incdirs=directories} --- Use this option to
+  specify extra directories where to look for header
+  files. Directories should be specified prepended by {\tt -I},
+  i.e. {\tt -Idir1 -Idir2}, etc. If several directories are specified,
+  enclose the list with single right-quotes, e.g., {\tt -}{\tt
+    -with-incdirs='-I/usr/local/include -I/home/psi3/include'}.
+\item {\tt -}{\tt -with-libs=libraries} --- Use this option to specify
+  extra libraries which should be used during linking. Libraries
+  should be specified by their full names or in the usual {\tt -l}
+  notation, i.e. {\tt -lm /usr/lib/libm.a}, etc.  If several libraries
+  are specified, enclose the list with single right-quotes, e.g., {\tt
+    -}{\tt -with-libs='-lcompat /usr/local/lib/libm.a'}.
+\item {\tt -}{\tt -with-libdirs=directories} --- Use this option to
+  specify extra directories where to look for libraries. Directories
+  should be specified prepended by {\tt -L}, i.e. {\tt -Ldir1 -Ldir2},
+  etc. If several directories are specified, enclose the list with
+  single right-quotes, e.g., {\tt -}{\tt
+    -with-libdirs='-L/usr/local/lib -I/home/psi3/lib'}.
+\item {\tt -}{\tt -with-blas=library} --- Use this option to specify a
+  BLAS library.  If your BLAS library has multiple components, enclose
+  the file list with single right-quotes, e.g., {\tt -}{\tt
+    -with-blas='-lf77blas -latlas'}.  Note that many BLAS libraries
+  can be detected automatically.
+\item {\tt -}{\tt -with-lapack=library} --- Use this option to specify
+  a LAPACK library.  If your LAPACK library has multiple components,
+  enclose the file list with single right-quotes, e.g., {\tt -}{\tt
+    -with-lapack='-llapack -lcblas -latlas'}.  note that many LAPACK
+  libraries can be detected automatically.
 \item {\tt -}{\tt -with-max-am-eri=integer} --- Specifies the maximum
   angular momentum level for the primitive Gaussian basis functions
   when computing electron repulsion integrals.  This is set to
@@ -180,10 +191,11 @@ the {\tt configure} script:
   angular momentum level for primitive Gaussian basis functions used
   in $r_{12}$ explicitly correlated methods.  This is set to $f$-type
   functions (AM=3) by default.
-\item {\tt -}{\tt -with-debug=option} --- This option turns on debugging
-  options.  If the argument is omitted, ``{\tt -g}'' will be used by default.
-\item {\tt -}{\tt -with-opt=options} --- This option may be used to select
-  special optimization flags, overriding defaults.
+\item {\tt -}{\tt -with-debug=yes/no} --- This option turns on debugging
+  options.  This is set to {\tt no} by default.
+\item {\tt -}{\tt -with-opt=options} --- Turn off compiler
+  optimizations if {\tt no}.  This is set to {\tt yes} by default.
+\item {\tt -}{\tt --with-strict=yes} -- Turns on strict compiler warnings.
 \end{itemize}
 
 \section{Detailed Installation Instructions}
@@ -193,16 +205,17 @@ installing the \PSIthree\ package.
 
 \subsection{Step 1: Configuration}
 
-First, we recommend that you choose for the top-level {\tt \$PSI3} source
-directory something other than {\tt /usr/local/psi}; your {\tt \$HOME}
-directory or {\tt /usr/local/src/psi3} are convenient choices.  Next,
-in the top-level {\tt \$PSI3} source directory you've chosen, first run
-{\tt autoconf} to generate the configure script from {\tt configure.in}.
-It is best to keep the source code separate from the compilation area,
-so you must choose a subdirectory for compilation of the codes.  A simple
-option is {\tt \$PSI3/objdir}, which should work for most environments.
-However, if you need executables for several architectures, choose more
-meaningful subdirectory names.
+First, we recommend that you choose for the top-level {\tt \$PSI3}
+source directory something other than {\tt /usr/local/psi}; your {\tt
+  \$HOME} directory or {\tt /usr/local/src/psi3} are convenient
+choices.  Next, in the top-level {\tt \$PSI3} source directory you've
+chosen, first run {\tt autoconf} to generate the configure script from
+{\tt configure.ac}.  It is best to keep the source code separate from
+the compilation area, so you must choose a subdirectory for
+compilation of the codes.  A simple option is {\tt \$PSI3/objdir},
+which should work for most environments.  However, if you need
+executables for several architectures, choose more meaningful
+subdirectory names.
 
 $\bullet$ The compilation directory will be referred to as {\tt \$objdir}
 for the remainder of these instructions.
@@ -227,18 +240,15 @@ modules.
 
 \subsection{Step 3: Testing}
 
-To automatically execute the ever-growing number of test cases after
-compilation, simply execute "make tests" in the {\tt \$objdir} directory.
-This will run each (relatively small) test case and report the results.
-Failure of any of the test cases should be reported to the developers at
-psi3@psicode.org. By default, any such failure will stop the testing process.
-If you desire to run the entire testing suit without interruption, execute
-"make tests TESTFLAGS='-u -q'". Note that you must do a "make testsclean" in 
-{\tt \$objdir} to run the test suite again.
-
-Testing \PSIthree\ from the source directory, which was possible in
-prerelease versions of \PSIthree\ ({\tt rc1} and {\tt rc2}), is no longer
-recommended.
+To execute automatically the ever-growing number of test cases after
+compilation, simply execute "make tests" in the {\tt \$objdir}
+directory.  This will run each (relatively small) test case and report
+the results.  Failure of any of the test cases should be reported to
+the developers at \PSIemail. By default, any such failure will stop
+the testing process.  If you desire to run the entire testing suit
+without interruption, execute "make tests TESTFLAGS='-u -q'". Note
+that you must do a "make testsclean" in {\tt \$objdir} to run the test
+suite again.
 
 \subsection{Step 4: Installation}
 
@@ -274,33 +284,145 @@ The final line will enable the use of the \PSIthree\ man pages.
 \begin{verbatim}
 \end{verbatim}
 
+\section{Recommendations for BLAS and LAPACK Libraries}
+
+Much of the speed and efficiency of the PSI3 programs depends on the
+corresponding speed and efficiency of the available BLAS and LAPACK
+libraries (especially the former).  In addition, the most common
+compilation problems involve these libraries.  Users may therefore
+wish to consider the following BLAS and LAPACK recommendations when
+building PSI3:
+
+\begin{itemize}
+\item It is NOT wise to use the stock BLAS library provided with many
+  Linux distributions like RedHat.  This library is usually just the
+  netlib ({http://netlib.org/}distribution and is completely
+  unoptimized.  PSI3's performance will suffer if you choose this
+  route.  The choice of LAPACK is less critical, and so the
+  unoptimized netlib distribution is acceptable.  If you do choose to
+  use the RedHat/Fedora stock BLAS and LAPACK, be aware that some
+  RPM's do not make the correct symbolic links.  For example, you may
+  have {\tt /usr/lib/libblas.so.3.1.0} but not {\tt
+    /usr/lib/libblas.so}.  If this happens, create the link as, e.g.,
+  {\tt ln -s /usr/lib/libblas.so.3.1.0 /usr/lib/libblas.so}.  You may
+  need to do similarly for lapack.
+
+\item Perhaps the best choices for BLAS are Kazushige Goto's
+  hand-optimized BLAS ({\tt
+    http://www.tacc.utexas.edu/resources/software/}) and ATLAS ({\tt
+    http://math-atlas.sourceforge.net/}).  These work well on nearly
+  every achitecture to which the PSI3 developers have access.  On Mac
+  OS X systems, however, the {\tt vecLib} package that comes with
+  Xcode works well.
+
+\item PSI3 does not require a Fortran compiler, unless the resident
+  BLAS and LAPACK libraries require Fortran-based system libraries.
+  If you see compiler complaints about missing symbols like "{\tt
+    do_fio}" or "{\tt e_wsfe}", then your libraries were most likely
+  compiled with g77 or gfortran, which require {\tt -lg2c} to resolve
+  the Fortran I/O calls.  Use of the same gcc package for PSI3 should
+  normally resolve this problem.
+
+\item The PSI3 configure script can conveniently identify and use
+  several different BLAS and LAPACK libraries, but its ability to do
+  this automatically depends on a number of factors, including
+  correspondence between the compiler used for PSI3 and the compiler
+  used to build BLAS/LAPACK, and placement of the libraries in
+  commonly searched directories, among others.  PSI3's configure
+  script will find your BLAS and LAPACK if any of the the following
+  are installed in standard locations (e.g. {\tt /usr/local/lib}):
+
+\begin{itemize}  
+    \item ATLAS: {\tt libf77blas.a} and {\tt libatlas.a}, plus netlib's
+    {\tt liblapack.a}
+    \item MKL: {\tt libmkl.so} and {\tt libmkl_lapack64.a} (with the Intel compilers)
+    \item Goto: {\tt libgoto.a} and netlib's {\tt liblapack.a}
+    \item Cray SCSL (e.g. on SGI Altix): {\tt libscs.so} (NB: No Fortran compiler
+      is necessary in this case, so {\tt -}{\tt -with-fc=no} should work.)
+    \item ESSL (e.g. on AIX systems): {\tt libessl.a}
+    \end{itemize}  
+  \item If configure cannot identify your BLAS and LAPACK libraries
+    automatically, you can specify them on the command-line using the
+    {\tt -}{\tt -with-blas} and {\tt -}{\tt -with-lapack} arguments
+    described above.  Here are a few examples that work on the PSI3
+    developers' systems:
+  
+    (a) Linux with ATLAS:
+  
+    {\tt -}{\tt -with-blas='-lf77blas -latlas'} {\tt -}{\tt -with-lapack='-llapack -lcblas'}
+
+    (b) Mac OS X with vecLib: 
+  
+    {\tt -}{\tt -with-blas='-altivec -framework vecLib'} {\tt -}{\tt -with-lapack=' '}
+  
+    (c) Linux with MKL and {\tt icc/icpc/ifort}: 
+  
+    {\tt -}{\tt -with-libdirs=-L/usr/local/opt/intel/mkl/8.0.2/lib/32} {\tt -}{\tt -with-blas=-lmkl} {\tt -}{\tt -with-lapack=-lmkl_lapack32}
 
 \section{Miscellaneous architecture-specific notes}
 \begin{itemize}
 
 \item Linux on x86 and x86\_64:
   \begin{itemize}
-   \item {\tt gcc} compiler: versions 3.2, 3.3, and 3.4 have been tested.
+   \item {\tt gcc} compiler: versions 3.2, 3.3, 3.4, 4.0, and 4.1 have been tested.
    \item Intel compilers: version 9.0 has been tested. We do not recommend
    using version 8.1.
    \item Portland Group compilers: version 6.0-5 has been tested.
    \item Some versions of RedHat/Fedora Core RPM packages for the 
-   blas and lapack libraries fail to make all the required symlinks.  
+   BLAS and LAPACK libraries fail to make all the required symlinks.  
    For example, you may have {\tt /usr/lib/libblas.so.3.1.0} but not
    {\tt /usr/lib/libblas.so}.  If this happens, create the link as, e.g.,
    {\tt ln -s /usr/lib/libblas.so.3.1.0 /usr/lib/libblas.so}.  You
    may need to do similarly for lapack.
   \end{itemize}
 
-\item Linux on Intel Itanium:
+\item Linux on Itanium2 (IA64):
   \begin{itemize}
    \item Intel compilers version 9.0 have been tested and work. Version 8.1
    does not work.
+   \item {\tt gcc} compilers work.
+  \end{itemize}
+
+\item Mac OS 10.$x$:
+
+  \begin{itemize}
+  \item The compilation requires a developer's toolkit (Xcode) from
+    {\tt apple.com}.  Note that a fortran compiler is not needed for
+    PSI 3.3 on Mac OS X systems.
+
+  \item The {\tt libcompat.a} library is also needed, but it is not
+    provided in the Xcode toolkit. If you see compiler complaints
+    about missing symbols like {\tt re_comp} or{\tt re_exec} then your
+    {\tt -lcompat} is missing or PSI3 is not aware of it.  As of 6
+    April 2007, it can be obtained from Apple's website at:
+
+{\tt http://www.opensource.apple.com/darwinsource/tarballs/apsl/Libcompat-14.1.tar.gz}
+
+You must sign up for a free developer's account to access the above
+library.  You can identify the library to configure by adding {\tt
+  -}{\tt -with-libs=-lcompat} to the command line.
+
+\item For apple systems, the latest configure script assumes that the
+  {\tt vecLib} will be used for the optimized BLAS and LAPACK
+  libraries, unless the user indicates otherwise using the {\tt -}{\tt
+    -with-blas} and {\tt -}{\tt -with-lapack} flags to configure.  If
+  you encounter difficulty with configure, you may have success
+  explicitly indicating the vecLib using:
+
+      {\tt -}{\tt -with-blas='-altivec -framework vecLib'} {\tt -}{\tt
+        -with-lapack=' '}
+
+    \item Pre Mac OS 10.4: Certain PSI3 codes require significant
+      stackspace for compilation.  Increase your shell's stacksize
+      limit before running {\tt make}.  For csh, for example, this is
+      done using "unlimit stacksize".  [NB: This limit appears to have
+      been lifted starting with Mac OS 10.3.X (Panther).]
+
   \end{itemize}
 
 \item AIX 4.3/5.$x$ in 64-bit environment:
 if IBM VisualAge C++ and IBM XL Fortran are used,
-one has to manually specify
+one has to specify manually
 the {\tt -q64} compiler flag
 that enables production of 64-bit executables.
 The following configure options have been tested on an AIX5.2
@@ -310,41 +432,6 @@ system with IBM VisualAge C++ 6.0 compiler and IBM XL Fortran 8.1 compiler:
  -}{\tt -with-lapack=<your NETLIB LAPACK library>}. Note that
 the reentrant versions of the compilers
 are used.
-
-\item Compaq Alpha/OSF 5.1: default shell ({\tt /bin/sh})
-is not POSIX-compliant which causes some \PSIthree\ makefiles
-to fail. Set environmental variable {\tt BIN\_SH} to {\tt xpg4}.
-
-\item Mac OS 10.$x$:
-
-  \begin{itemize}
-   \item The compilation requires a developer's toolkit from {\tt apple.com}.
-
-   \item You need the {\tt libcompat} library. It can be obtained from Apple's 
-   website at {\tt http://www.opensource.apple.com/}. Then add {\tt -lcompat} to the
-   {\tt configure} flag {\tt --with-libs}.
-
-   \item If you are using compilers from the developer's kit then for
-   BLAS and LAPACK, use the configure options:
-   \begin{verbatim}
-   --with-blas='-altivec -framework vecLib'
-   \end{verbatim}
-   If you compiled compilers yourself from GNU source code then
-   Apple-specific extensions will not work and you will have to specify
-   the location of {\tt vecLib} manually:
-   \begin{verbatim}
-   --with-blas='/System/Library/Frameworks/vecLib.framework/vecLib'
-   \end{verbatim}
-
-   \item The Fortran compiler in GCC version 3.3 and higher requires the latest
-   assembler, as. It can be obtained as a part of {\tt cctools} from 
-   {\tt http://www.opensource.apple.com/}.  Mac OS X 10.3 (Panther) should come 
-   with cctools recent enough to compile \PSIthree.
-
-   \item Certain \PSIthree\ codes require significant stackspace for compilation.
-   Increase your shell's stacksize limit before running '{\tt make}'.  For csh,
-   for example, this is done using '{\tt unlimit stacksize}'.
-  \end{itemize}
 
 \item SGI IRIX 6.$x$:
   \begin{itemize}
@@ -360,6 +447,10 @@ to fail. Set environmental variable {\tt BIN\_SH} to {\tt xpg4}.
    \item Under IRIX configure will attempt to detect automatically and use
    the optimized SGI Scientific Computing Software Library (SCSL).
   \end{itemize}
+
+\item Compaq Alpha/OSF 5.1: default shell ({\tt /bin/sh})
+is not POSIX-compliant which causes some \PSIthree\ makefiles
+to fail. Set environmental variable {\tt BIN\_SH} to {\tt xpg4}.
 
 \end{itemize}
 
