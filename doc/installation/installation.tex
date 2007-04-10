@@ -114,18 +114,18 @@ the {\tt configure} script:
   documentation, and shared data files.
 \item {\tt -}{\tt -with-cc=compiler} --- Use this option to specify a
   C compiler.  One should use compilers that generate reentrant code,
-  if possible.  The default search order for compilers is: {\tt cc_r} (AIX
+  if possible.  The default search order for compilers is: {\tt cc\_r} (AIX
   only), {\tt gcc}, {\tt icc}, {\tt cc}.
 \item {\tt -}{\tt -with-cxx=compiler} --- Use this option to specify a
   C++ compiler.  One should use compilers that generate reentrant
-  code, if possible. The default search order for compilers is: {\tt xlC_r}
+  code, if possible. The default search order for compilers is: {\tt xlC\_r}
   (AIX only), {\tt g++}, {\tt c++}, {\tt icpc}, {\tt cxx}.
 \item {\tt -}{\tt -with-fc=compiler} --- Use this option to specify a
   Fortran-77 compiler, which is used to determine linking coventions
   for BLAS and LAPACK libraries and to provide system routines for
   those libraries.  Note that no fortran compiler is necessary on Mac
   OS X systems (see below).  The default search order for compilers
-  is: {\tt xlf_r} (AIX only), {\tt gfortran}, {\tt g77}, {\tt ifort},
+  is: {\tt xlf\_r} (AIX only), {\tt gfortran}, {\tt g77}, {\tt ifort},
   {\tt f77}, {\tt f2c}.
 \item {\tt -}{\tt -with-f77-symbol=value} --- This option allows manual
   assignment of the F77 symbol convention, which is necessary for C
@@ -318,7 +318,7 @@ building PSI3:
 \item PSI3 does not require a Fortran compiler, unless the resident
   BLAS and LAPACK libraries require Fortran-based system libraries.
   If you see compiler complaints about missing symbols like "{\tt
-    do_fio}" or "{\tt e_wsfe}", then your libraries were most likely
+    do\_fio}" or "{\tt e\_wsfe}", then your libraries were most likely
   compiled with g77 or gfortran, which require {\tt -lg2c} to resolve
   the Fortran I/O calls.  Use of the same gcc package for PSI3 should
   normally resolve this problem.
@@ -335,7 +335,7 @@ building PSI3:
 \begin{itemize}  
     \item ATLAS: {\tt libf77blas.a} and {\tt libatlas.a}, plus netlib's
     {\tt liblapack.a}
-    \item MKL: {\tt libmkl.so} and {\tt libmkl_lapack64.a} (with the Intel compilers)
+    \item MKL: {\tt libmkl.so} and {\tt libmkl\_lapack64.a} (with the Intel compilers)
     \item Goto: {\tt libgoto.a} and netlib's {\tt liblapack.a}
     \item Cray SCSL (e.g. on SGI Altix): {\tt libscs.so} (NB: No Fortran compiler
       is necessary in this case, so {\tt -}{\tt -with-fc=no} should work.)
@@ -357,7 +357,8 @@ building PSI3:
   
     (c) Linux with MKL and {\tt icc/icpc/ifort}: 
   
-    {\tt -}{\tt -with-libdirs=-L/usr/local/opt/intel/mkl/8.0.2/lib/32} {\tt -}{\tt -with-blas=-lmkl} {\tt -}{\tt -with-lapack=-lmkl_lapack32}
+    {\tt -}{\tt -with-libdirs=-L/usr/local/opt/intel/mkl/8.0.2/lib/32} {\tt -}{\tt -with-blas=-lmkl} {\tt -}{\tt -with-lapack=-lmkl\_lapack32}
+\end{itemize}
 
 \section{Miscellaneous architecture-specific notes}
 \begin{itemize}
@@ -392,7 +393,7 @@ building PSI3:
 
   \item The {\tt libcompat.a} library is also needed, but it is not
     provided in the Xcode toolkit. If you see compiler complaints
-    about missing symbols like {\tt re_comp} or{\tt re_exec} then your
+    about missing symbols like {\tt re\_comp} or{\tt re\_exec} then your
     {\tt -lcompat} is missing or PSI3 is not aware of it.  As of 6
     April 2007, it can be obtained from Apple's website at:
 

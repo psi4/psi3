@@ -9,7 +9,7 @@ TEX = progman.tex
 
 SUBTEX = \
 checkpointfile.tex  files.tex            io.tex         c_program.tex \
-ip.tex              qt.tex               cvs.tex        fundamental_psi.tex \
+ip.tex              qt.tex               svn.tex        fundamental_psi.tex \
 iwl.tex             style.tex            debugging.tex  introduction.tex \
 makefiles.tex       documentation.tex    io_new.tex     other_libs.tex \
 testing.tex
