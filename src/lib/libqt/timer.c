@@ -185,11 +185,12 @@ void timer_on(char *key)
       if(this_timer->last != NULL) this_timer->last->next = this_timer;
       else global_timer = this_timer;
     }
-
-  if((this_timer->status == TIMER_ON) && (this_timer->calls)) {
-      fprintf(stderr, "Timer %s is already on.\n", key);
-      exit(PSI_RETURN_FAILURE);
+  else {
+    if((this_timer->status == TIMER_ON) && (this_timer->calls)) {
+        fprintf(stderr, "Timer %s is already on.\n", key);
+        exit(PSI_RETURN_FAILURE);
     }
+  }
 
   this_timer->status = TIMER_ON;
   this_timer->calls++;

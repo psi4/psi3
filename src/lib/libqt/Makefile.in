@@ -25,6 +25,11 @@ LIBOBJ = $(CSRC:%.c=%.o)
 
 include ../MakeRules
 
+# Problems with optimization with gcc-4.X compilers (TDC,5/3/07)
+newmm_rking.o: newmm_rking.c
+	$(CC) $(CDBG) $(CDEF) $(COTH) $(CINC) -c $< $(OUTPUT_OPTION)
+
+
 ifneq ($(DODEPEND),no)
 include $(LIBOBJ:%.o=%.d)
 endif
