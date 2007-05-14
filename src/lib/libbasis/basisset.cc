@@ -55,10 +55,10 @@ BasisSet::~BasisSet()
   //dealloc_pairs();
   for(int s=0; s<num_shells_; s++)
     shells_[s]->~GaussianShell();
-  free(shells_);
-  delete[] shell_center_;
-  delete[] shell_fao_;
-  delete[] shell_fbf_;
+  delete[] shells_;
+  free(shell_center_);
+  free(shell_fao_);
+  free(shell_fbf_);
   free_block(coords_);
 }
 
@@ -116,9 +116,9 @@ void BasisSet::init_shells()
 
    free_block(ccoeffs);
    free(exponents);
-   delete[] shell_am;
-   delete[] shell_num_prims;
-   delete[] shell_fprim;
+   free(shell_am);
+   free(shell_num_prims);
+   free(shell_fprim);
 }
 
 void BasisSet::check_shell_index(int si) const {

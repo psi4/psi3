@@ -116,7 +116,7 @@ void parsing()
     Params.reftype = Params_t::uhf;
   else
     done("This HF reference is not supported at the moment");
-  delete[] reftype;
+  free(reftype);
 
   Params.delta = 0.0005;
   errcod = ip_data(":DBOC:DISPLACEMENT","%lf",&Params.delta,0);
@@ -573,7 +573,7 @@ void init_io(int argc, char *argv[])
   // Psi modules called by dboc should write to a different output file
   // reset the value of PSI_OUTPUT for the duration of this run
   orig_psi_output_env = getenv("PSI_OUTPUT");
-  char* ofname = (char*) malloc(strlen(psi_ofname())+1+strlen("dboc.findif.out"));
+  char* ofname = (char*) malloc(strlen(psi_ofname())+2+strlen("dboc.findif.out"));
   sprintf(ofname, "%s.dboc.findif.out", psi_ofname());
 #if HAVE_PUTENV
   char* tmpstr2 = (char *) malloc(12+strlen(ofname));

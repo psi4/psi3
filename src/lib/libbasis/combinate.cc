@@ -33,5 +33,5 @@ StatCombData::~StatCombData()
 {
   delete[] Fact_;
   delete[] Fact2_;
-  delete[] BinomC_;
+  free_block(BinomC_);
 }
