@@ -12,6 +12,7 @@ struct Params {
   int full_matrix; /* include reference rows/cols in diagonalization */
   char *abcd;
   int t3_Ws_incore;
+  int nthreads;
 };
 
 struct Eom_params {

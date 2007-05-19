@@ -101,7 +101,6 @@ void get_params(void)
   errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
 
   params.cachetype = 0;
-
   errcod = ip_string("CACHETYPE", &(cachetype),0);
   if(cachetype != NULL && strlen(cachetype)) {
     if(!strcmp(cachetype,"LOW")) params.cachetype = 1;
@@ -116,7 +115,9 @@ void get_params(void)
   if(params.ref == 2) /* No LRU cacheing yet for UHF references */
     params.cachetype = 0;
 
-  params.cachetype = 0;
+  params.nthreads = 1;
+  errcod = ip_data("NTHREADS", "%d", &(params.nthreads),0);
+  if (params.nthreads > 1) params.cachelev = 0;
 
   if(ip_exist("ABCD",0)) {
     errcod = ip_string("ABCD", &(params.abcd), 0);
@@ -198,7 +199,8 @@ void get_params(void)
   fprintf(outfile, "\tCache Type      =    %4s\n", 
 	  params.cachetype ? "LOW" : "LRU");
   if ( !strcmp(params.wfn,"EOM_CC3") )
-    fprintf(outfile, "\tT3 Ws incore    =    %4s\n", params.t3_Ws_incore ? "Yes" : "No");
+    fprintf(outfile, "\tT3 Ws incore  =    %4s\n", params.t3_Ws_incore ? "Yes" : "No");
+  fprintf(outfile, "\tNum. of threads =     %d\n",params.nthreads);
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
   if(params.local) {
     fprintf(outfile, "\tLocal Cutoff    = %3.1e\n", local.cutoff);

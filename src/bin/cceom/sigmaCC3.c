@@ -57,7 +57,7 @@ void sigmaCC3(int i, int C_irr, double omega) {
     if (params.t3_Ws_incore)
       cc3_sigma_RHF_ic(&CMnEf, &WAbEi, &WMbIj, 1,  &Dints, &SIA, 
         1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
-        moinfo.virtpi, moinfo.vir_off, omega, outfile);
+        moinfo.virtpi, moinfo.vir_off, omega, outfile, params.nthreads);
     else
       cc3_sigma_RHF(&CMnEf, &WAbEi, &WMbIj, 1,  &Dints, &SIA, 
         1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
