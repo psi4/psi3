@@ -15,6 +15,8 @@
 #include <dmalloc.h>
 #endif
 
+/* #define TIME_CCENERGY */
+
 EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
 EXTERN int *ioff;

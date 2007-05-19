@@ -83,7 +83,6 @@ void get_params()
 
   params.print = 0;
   errcod = ip_data("PRINT", "%d", &(params.print),0);
-
   params.maxiter = 50;
   errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
   params.convergence = 1e-7;
@@ -128,6 +127,10 @@ void get_params()
   }
   if(params.ref == 2) /* No LOW cacheing yet for UHF references */
     params.cachetype = 0;
+
+  params.nthreads = 1;
+  errcod = ip_data("NTHREADS","%d",&(params.nthreads),0);
+  if (params.nthreads > 1) params.cachelev = 0;
 
   params.diis = 1;
   errcod = ip_boolean("DIIS", &(params.diis),0);
@@ -255,6 +258,7 @@ void get_params()
   fprintf(outfile, "\tCache Type      =    %4s\n", 
 	  params.cachetype ? "LOW" : "LRU");
   fprintf(outfile, "\tPrint Level     =    %1d\n",  params.print);
+  fprintf(outfile, "\tNum. of threads =     %d\n",  params.nthreads);
   fprintf(outfile, "\t# Amps to Print =    %1d\n",  params.num_amps);
   fprintf(outfile, "\tPrint MP2 Amps? =    %s\n",  params.print_mp2_amps ?
 	  "Yes" : "No" );

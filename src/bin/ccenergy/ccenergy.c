@@ -103,8 +103,10 @@ int main(int argc, char *argv[])
   init_ioff();
   title();
 
+#ifdef TIME_CCENERGY
   timer_init();
   timer_on("CCEnergy");
+#endif
   
   get_moinfo();
   get_params();
@@ -190,10 +192,14 @@ int main(int argc, char *argv[])
 
     sort_amps();
 
+#ifdef TIME_CCENERGY
     timer_on("F build");
+#endif
     Fme_build(); Fae_build(); Fmi_build();
     if(params.print & 2) status("F intermediates", outfile);
+#ifdef TIME_CCENERGY
     timer_off("F build");
+#endif
 
     t1_build();
     if(params.print & 2) status("T1 amplitudes", outfile);
@@ -203,39 +209,59 @@ int main(int argc, char *argv[])
       cc2_Wmnij_build();
       if(params.print & 2) status("Wmnij", outfile);
 
+#ifdef TIME_CCENERGY
       timer_on("Wmbij build");
+#endif
       cc2_Wmbij_build();
       if(params.print & 2) status("Wmbij", outfile);
+#ifdef TIME_CCENERGY
       timer_off("Wmbij build");
+#endif
 
+#ifdef TIME_CCENERGY
       timer_on("Wabei build");
+#endif
       cc2_Wabei_build();
       if(params.print & 2) status("Wabei", outfile);
+#ifdef TIME_CCENERGY
       timer_off("Wabei build");
+#endif
 
+#ifdef TIME_CCENERGY
       timer_on("T2 Build");
+#endif
       cc2_t2_build();
       if(params.print & 2) status("T2 amplitudes", outfile);
+#ifdef TIME_CCENERGY
       timer_off("T2 Build");
+#endif
 
     }
 
     else {
 
+#ifdef TIME_CCENERGY
       timer_on("Wmbej build");
+#endif
       Wmbej_build();
       if(params.print & 2) status("Wmbej", outfile);
+#ifdef TIME_CCENERGY
       timer_off("Wmbej build");
+#endif
 
       Z_build();
       if(params.print & 2) status("Z", outfile);
       Wmnij_build();
       if(params.print & 2) status("Wmnij", outfile);
 
+#ifdef TIME_CCENERGY
       timer_on("T2 Build");
+#endif
       t2_build();
       if(params.print & 2) status("T2 amplitudes", outfile);
+#ifdef TIME_CCENERGY
       timer_off("T2 Build");
+#endif
 
       if( (!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3"))) {
 
@@ -291,8 +317,10 @@ int main(int argc, char *argv[])
     if(strcmp(params.aobasis,"NONE")) dpd_close(1);
     dpd_close(0);
     cleanup();
+#ifdef TIME_CCENERGY
     timer_off("CCEnergy");
     timer_done();
+#endif
     exit_io();
     exit(PSI_RETURN_FAILURE);
   }
@@ -393,8 +421,10 @@ int main(int argc, char *argv[])
 
   cleanup();
 
+#ifdef TIME_CCENERGY
   timer_off("CCEnergy");
   timer_done();
+#endif
   
   exit_io();
   if(params.brueckner && brueckner_done) 

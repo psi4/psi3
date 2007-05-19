@@ -37,7 +37,7 @@ void cc3(void)
     if (params.t3_Ws_incore)
       cc3_sigma_RHF_ic(&TIjAb, &WAbEi, &WMbIj, 1, &Dints, &TIA_new, 1, &FME, &WAmEf,
         &WMnIe, &TIjAb_new, moinfo.occpi, moinfo.occ_off, moinfo.virtpi,
-        moinfo.vir_off, 0.0, outfile);
+        moinfo.vir_off, 0.0, outfile, params.nthreads);
     else 
       cc3_sigma_RHF(&TIjAb, &WAbEi, &WMbIj, 1, &Dints, &TIA_new, 1, &FME, &WAmEf,
         &WMnIe, &TIjAb_new, moinfo.occpi, moinfo.occ_off, moinfo.virtpi,

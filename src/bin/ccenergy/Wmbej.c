@@ -25,7 +25,9 @@ void Wmbej_build(void)
   dpdfile2 tIA, tia;
   int Gmb, mb, Gj, Ge, Gf, nrows, ncols, nlinks;
 
+#ifdef TIME_CCENERGY
   timer_on("C->Wmbej");
+#endif
 
   /* W(mb,je) <-- <mb||ej> */
 
@@ -84,9 +86,10 @@ void Wmbej_build(void)
 
   }
 
+#ifdef TIME_CCENERGY
   timer_off("C->Wmbej");
-
   timer_on("F->Wmbej");
+#endif
   
   if(params.ref == 0) { /** RHF **/
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
@@ -231,9 +234,10 @@ void Wmbej_build(void)
     dpd_file2_close(&tia);
   }
 
+#ifdef TIME_CCENERGY
   timer_off("F->Wmbej");
-
   timer_on("E->Wmbej");
+#endif
 
   if(params.ref == 0) { /** RHF **/
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
@@ -332,8 +336,9 @@ void Wmbej_build(void)
     dpd_file2_close(&tia);
   }
 
+#ifdef TIME_CCENERGY
   timer_off("E->Wmbej");
-
+#endif
 
   /* Convert to (ME,JB) for remaining terms */
 
@@ -401,7 +406,9 @@ void Wmbej_build(void)
     dpd_buf4_close(&W);
   }
 
+#ifdef TIME_CCENERGY
   timer_on("X->Wmbej");
+#endif
 
   if(params.ref == 0) { /** RHF **/
     dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
@@ -737,5 +744,7 @@ void Wmbej_build(void)
 
   }
 
+#ifdef TIME_CCENERGY
   timer_off("X->Wmbej");
+#endif
 }

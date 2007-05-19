@@ -11,7 +11,9 @@ void Z_build(void)
   dpdbuf4 tauIJAB, tauijab, tauIjAb, tauIjbA, F_anti, F, tau;
   int Gmb, Gij, mb, nrows, ncols;
 
+#ifdef TIME_CCENERGY
   timer_on("Z");
+#endif
 
   if(params.ref == 0) { /** RHF **/
     /* ZMbIj = <Mb|Ef> * tau(Ij,Ef) */
@@ -125,6 +127,8 @@ void Z_build(void)
 
   }
 
+#ifdef TIME_CCENERGY
   timer_off("Z");
+#endif
 }
 

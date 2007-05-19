@@ -29,7 +29,9 @@ void cc2_Wabei_build(void)
   dpdbuf4 Z, Z1, Z2, Z3;
   dpdbuf4 B, C, D, F, W;
 
+#ifdef TIME_CCENERGY
   timer_on("F->Wabei");
+#endif
   if(params.ref == 0) { /** RHF **/
     dpd_buf4_init(&F, CC_FINTS, 0, 11, 5, 11, 5, 0, "F <ai|bc>");
     dpd_buf4_copy(&F, CC_TMP0, "CC2 WAbEi (Ei,Ab)");
@@ -76,9 +78,10 @@ void cc2_Wabei_build(void)
     dpd_buf4_sort(&F, CC_TMP0, psrq, 29, 25, "CC2 WaBeI (aB,eI)");
     dpd_buf4_close(&F);
   }
+#ifdef TIME_CCENERGY
   timer_off("F->Wabei");
-
   timer_on("B->Wabei");
+#endif
   if(params.ref == 0) { /** RHF **/
 
     dpd_file2_init(&t1, CC_OEI, 0, 0, 1, "tIA");
@@ -229,9 +232,10 @@ void cc2_Wabei_build(void)
     dpd_file2_close(&tIA);
     dpd_file2_close(&tia);
   }
+#ifdef TIME_CCENERGY
   timer_off("B->Wabei");
-
   timer_on("Wabei_sort");
+#endif
   if (params.ref == 0) { /* RHF */
 
     dpd_buf4_init(&W, CC2_HET1, 0, 5, 11, 5, 11, 0, "CC2 WAbEi");
@@ -279,7 +283,9 @@ void cc2_Wabei_build(void)
     dpd_buf4_sort(&W, CC2_HET1, rspq, 25, 29, "CC2 WaBeI (eI,aB)");
     dpd_buf4_close(&W);
   }
+#ifdef TIME_CCENERGY
   timer_off("Wabei_sort");
+#endif
 
 }
 

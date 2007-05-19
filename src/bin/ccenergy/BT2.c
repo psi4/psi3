@@ -26,7 +26,9 @@ void BT2(void)
 
   if(params.ref == 0) { /** RHF **/
     if(!strcmp(params.abcd,"OLD")) {
+#ifdef TIME_CCENERGY
       timer_on("ABCD:old");
+#endif
       dpd_buf4_init(&tauIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
       dpd_buf4_init(&B, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
       dpd_buf4_init(&Z1, CC_TMP0, 0, 5, 0, 5, 0, 0, "Z(Ab,Ij)");
@@ -35,11 +37,15 @@ void BT2(void)
       dpd_buf4_close(&Z1);
       dpd_buf4_close(&B);
       dpd_buf4_close(&tauIjAb);
+#ifdef TIME_CCENERGY
       timer_off("ABCD:old");
+#endif
     }
     else if(!strcmp(params.abcd,"NEW")) {
 
+#ifdef TIME_CCENERGY
       timer_on("ABCD:new");
+#endif
       /* tau(-)(ij,ab) (i>j, a>b) = tau(ij,ab) - tau(ij,ba) */
       dpd_buf4_init(&tau_a, CC_TAMPS, 0, 4, 9, 0, 5, 1, "tauIjAb");
       dpd_buf4_copy(&tau_a, CC_TAMPS, "tau(-)(ij,ab)");
@@ -54,7 +60,9 @@ void BT2(void)
       dpd_buf4_copy(&tau_a, CC_TAMPS, "tau(+)(ij,ab)");
       dpd_buf4_close(&tau_a);
 
+#ifdef TIME_CCENERGY
       timer_on("ABCD:S");
+#endif
       dpd_buf4_init(&tau_s, CC_TAMPS, 0, 3, 8, 3, 8, 0, "tau(+)(ij,ab)");
       dpd_buf4_init(&B_s, CC_BINTS, 0, 8, 8, 8, 8, 0, "B(+) <ab|cd> + <ab|dc>");
       dpd_buf4_init(&S, CC_TMP0, 0, 8, 3, 8, 3, 0, "S(ab,ij)");
@@ -62,7 +70,9 @@ void BT2(void)
       dpd_buf4_close(&S);
       dpd_buf4_close(&B_s);
       dpd_buf4_close(&tau_s);
+#ifdef TIME_CCENERGY
       timer_off("ABCD:S");
+#endif
 
       /* tau_diag(ij,c)  = 2 * tau(ij,cc)*/
       dpd_buf4_init(&tau, CC_TAMPS, 0, 3, 8, 3, 8, 0, "tau(+)(ij,ab)");
@@ -119,7 +129,9 @@ void BT2(void)
       dpd_free_block(tau_diag, tau.params->rowtot[0], moinfo.nvirt);
       dpd_buf4_close(&tau);
 
+#ifdef TIME_CCENERGY
       timer_on("ABCD:A");
+#endif
       dpd_buf4_init(&tau_a, CC_TAMPS, 0, 4, 9, 4, 9, 0, "tau(-)(ij,ab)");
       dpd_buf4_init(&B_a, CC_BINTS, 0, 9, 9, 9, 9, 0, "B(-) <ab|cd> - <ab|dc>");
       dpd_buf4_init(&A, CC_TMP0, 0, 9, 4, 9, 4, 0, "A(ab,ij)");
@@ -127,17 +139,23 @@ void BT2(void)
       dpd_buf4_close(&A);
       dpd_buf4_close(&B_a);
       dpd_buf4_close(&tau_a);
+#ifdef TIME_CCENERGY
       timer_off("ABCD:A");
+#endif
 
+#ifdef TIME_CCENERGY
       timer_on("ABCD:axpy");
+#endif
       dpd_buf4_init(&S, CC_TMP0, 0, 5, 0, 8, 3, 0, "S(ab,ij)");
       dpd_buf4_sort_axpy(&S, CC_TAMPS, rspq, 0, 5, "New tIjAb", 1);
       dpd_buf4_close(&S);
       dpd_buf4_init(&A, CC_TMP0, 0, 5, 0, 9, 4, 0, "A(ab,ij)");
       dpd_buf4_sort_axpy(&A, CC_TAMPS, rspq, 0, 5, "New tIjAb", 1);
       dpd_buf4_close(&A);
+#ifdef TIME_CCENERGY
       timer_off("ABCD:axpy");
       timer_off("ABCD:new");
+#endif
     }
   }
   else if(params.ref == 1) { /** ROHF **/
