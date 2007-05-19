@@ -44,7 +44,7 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
   double value;
   long int size;
 
-#if 1
+#ifdef DPD_TIMER
   timer_on("buf_rd");
 #endif
 
@@ -625,7 +625,7 @@ int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep)
       break;
     }
 
-#if 1
+#ifdef DPD_TIMER
   timer_off("buf_rd");
 #endif
   

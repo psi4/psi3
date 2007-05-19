@@ -36,7 +36,7 @@ double **dpd_block_matrix(int n, int m)
   double **A, *B;
   long int size;  /* rows * cols */
 
-#if 1
+#ifdef DPD_TIMER
   timer_on("block_mat");
 #endif
 
@@ -69,7 +69,7 @@ double **dpd_block_matrix(int n, int m)
   }
 
   if(!m || !n) {
-#if 1
+#ifdef DPD_TIMER
     timer_off("block_mat");
 #endif
     return(NULL);
@@ -112,7 +112,7 @@ double **dpd_block_matrix(int n, int m)
   /* Increment the global memory counter */
   dpd_main.memused += n*m;
 
-#if 1
+#ifdef DPD_TIMER
   timer_off("block_mat");
 #endif
 

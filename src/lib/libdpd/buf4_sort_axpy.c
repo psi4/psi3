@@ -103,7 +103,9 @@ int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
   if(core_total > dpd_memfree()) incore = 0;
 
   /* Init input and output buffers and read in all blocks of both */
+#ifdef DPD_TIMER
   if(index == rspq) timer_on("axpy:alloc");
+#endif
   if(incore) {
     for(h=0; h < nirreps; h++) {
 
@@ -114,7 +116,9 @@ int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
       dpd_buf4_mat_irrep_rd(InBuf, h);
     }
   }
+#ifdef DPD_TIMER
   if(index == rspq) timer_off("axpy:alloc");
+#endif
 
   switch(index) {
   case pqrs:
@@ -1620,7 +1624,9 @@ int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
     /* loop over row irreps of OutBuf */
     if(incore) {
+#ifdef DPD_TIMER
       timer_on("axpy:sort");
+#endif
       for(h=0; h < nirreps; h++) {
 	r_irrep = h^my_irrep;
 	  
@@ -1640,7 +1646,9 @@ int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	  }
 	}
       }
+#ifdef DPD_TIMER
       timer_off("axpy:sort");
+#endif
     }
     else {
 
@@ -2120,7 +2128,9 @@ int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
    break;
 }
 
+#ifdef DPD_TIMER
   if(index == rspq) timer_on("axpy:alloc");
+#endif
   if(incore) {
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_wrt(&OutBuf, h);
@@ -2128,7 +2138,9 @@ int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
       dpd_buf4_mat_irrep_close(InBuf, h);
     }
   }
+#ifdef DPD_TIMER
   if(index == rspq) timer_off("axpy:alloc");
+#endif
 
   dpd_buf4_close(&OutBuf);
 

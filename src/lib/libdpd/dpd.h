@@ -11,7 +11,7 @@
 #include <dmalloc.h>
 #endif
 
-#define T3_TIMER_ON (1)
+#define T3_TIMER_ON (0)
 
 #define DPD_BIGNUM 2147483647 /* the four-byte signed int limit */
 /* #define ALL_BUF4_SORT_OOC */
@@ -378,7 +378,7 @@ void cc3_sigma_RHF_ic(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
     int do_singles, dpdbuf4 *Dints, dpdfile2 *SIA,
     int do_doubles, dpdfile2 *FME, dpdbuf4 *WAmEf, dpdbuf4 *WMnIe,
     dpdbuf4 *SIjAb, int *occpi, int *occ_off, int *virtpi, int *vir_off,
-    double omega, FILE *outfile);
+    double omega, FILE *outfile, int nthreads);
 
 void cc3_sigma_UHF_AAA(dpdbuf4 *CMNEF, dpdbuf4 *WABEI, dpdbuf4 *WMBIJ,
     int do_singles, dpdbuf4 *Dints_anti, dpdfile2 *SIA, int do_doubles,
