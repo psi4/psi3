@@ -130,7 +130,6 @@ void get_params()
 
   params.nthreads = 1;
   errcod = ip_data("NTHREADS","%d",&(params.nthreads),0);
-  if (params.nthreads > 1) params.cachelev = 0;
 
   params.diis = 1;
   errcod = ip_boolean("DIIS", &(params.diis),0);
