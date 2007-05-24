@@ -94,9 +94,14 @@ void sigmaCC3(int i, int C_irr, double omega) {
            /* * <S| H    <T| (Utilde T2)c |0> |T> / (w-wt) -> sigma_1
               * <D| Hhat <T| (Utilde T2)c |0> |T> / (w-wt) -> sigma_2 */
   
-    cc3_sigma_RHF(&tIjAb, &WAbEi, &WMbIj, 1,  &Dints, &SIA,
-       1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
-       moinfo.virtpi, moinfo.vir_off, omega, outfile);
+    if (params.t3_Ws_incore)
+      cc3_sigma_RHF_ic(&tIjAb, &WAbEi, &WMbIj, 1,  &Dints, &SIA, 
+        1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
+        moinfo.virtpi, moinfo.vir_off, omega, outfile, params.nthreads);
+    else
+      cc3_sigma_RHF(&tIjAb, &WAbEi, &WMbIj, 1,  &Dints, &SIA,
+         1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
+         moinfo.virtpi, moinfo.vir_off, omega, outfile);
   
     dpd_buf4_close(&tIjAb);
     dpd_buf4_close(&WAbEi);
@@ -127,6 +132,11 @@ void sigmaCC3(int i, int C_irr, double omega) {
   
            /* <D| H'   <T| (Uhat T2)c   |0> |T> / (-wt) -> sigma_2 */
   
+    if (params.t3_Ws_incore)
+      cc3_sigma_RHF_ic(&tIjAb, &WAbEi, &WMbIj, 0, NULL, NULL, 
+        1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
+        moinfo.virtpi, moinfo.vir_off, 0.0, outfile, params.nthreads);
+    else
     cc3_sigma_RHF(&tIjAb, &WAbEi, &WMbIj, 0, NULL, NULL,
        1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
        moinfo.virtpi, moinfo.vir_off, 0.0, outfile);

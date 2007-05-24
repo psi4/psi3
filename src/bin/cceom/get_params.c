@@ -117,7 +117,6 @@ void get_params(void)
 
   params.nthreads = 1;
   errcod = ip_data("NTHREADS", "%d", &(params.nthreads),0);
-  if (params.nthreads > 1) params.cachelev = 0;
 
   if(ip_exist("ABCD",0)) {
     errcod = ip_string("ABCD", &(params.abcd), 0);
