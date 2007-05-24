@@ -60,6 +60,7 @@
 #include <math.h>
 #include <libdpd/dpd.h>
 #include <ccfiles.h>
+#include <pthread.h>
 
 void T3_RHF_ic(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, int Gk, 
 		dpdbuf4 *T2, dpdbuf4 *F, dpdbuf4 *E, dpdfile2 *fIJ, dpdfile2 *fAB, 
@@ -459,11 +460,9 @@ void T3_RHF_ic(double ***W1, int nirreps, int I, int Gi, int J, int Gj, int K, i
     } /* ab */
   } /* Gab */
 
-
   for(Gab=0; Gab < nirreps; Gab++) {
     Gc = Gab ^ Gijk ^ GX3;
     dpd_free_block(W2[Gab], F->params->coltot[Gab], virtpi[Gc]);
   }
   free(W2);
-
 }

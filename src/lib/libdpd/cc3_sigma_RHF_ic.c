@@ -26,11 +26,9 @@ struct thread_data {
  dpdbuf4 *SIjAb; int *occpi; int *occ_off; int *virtpi; int *vir_off;
  double omega; dpdfile2 *fIJ; dpdfile2 *fAB; int Gi; int Gj; int Gk;
  int start_i; int start_j; int start_k; int end_i; int end_j; int end_k;
- FILE *outfile; int thr_id;
+ FILE *outfile; int thr_id; dpdfile2 SIA_local; dpdbuf4 SIjAb_local;
 };
 
-pthread_mutex_t SIA_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_mutex_t SIjAb_mutex = PTHREAD_MUTEX_INITIALIZER;
 void *cc3_sigma_RHF_ic_thread(void *thread_data);
 
 void cc3_sigma_RHF_ic(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
@@ -39,27 +37,28 @@ void cc3_sigma_RHF_ic(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
     dpdbuf4 *SIjAb, int *occpi, int *occ_off, int *virtpi, int *vir_off,
     double omega, FILE *outfile, int nthreads)
 {
-  int h, nirreps, thread, ijk_tot, ijk_part;
+  int h, nirreps, thread, ijk_tot, ijk_part, errcod=0;
   int Gi, Gj, Gk, Gl, Ga, Gb, Gc, Gd;
-  int i, j, k, l, a, b, c, d;
+  int i, j, k, l, a, b, c, d, row, col;
   int I, J, K, L, A, B, C, D;
   int kj, jk, ji, ij, ik, ki;
   int Gkj, Gjk, Gji, Gij, Gik, Gki, Gkd;
-  int Gijk, GS, GC, GWX3, GW, GX3, nrows,ncols;
+  int Gijk, GS, GC, GWX3, GW, GX3, nrows,ncols,nlinks;
   int ab, ba, ac, ca, bc, cb;
   int Gab, Gba, Gac, Gca, Gbc, Gcb, Gid, Gjd;
   int id, jd, kd, ad, bd, cd;
-  int il, jl, kl, la, lb, lc, li, lk, start_i_extra, start_j_extra, start_k_extra;
+  int il, jl, kl, la, lb, lc, li, lk;
   int da, di, dj, dk, thr_id;
-  int Gad, Gdi, Gdj, Gdk, Glc, Gli, Glk,cnt;
-  int nlinks;
+  int Gad, Gdi, Gdj, Gdk, Glc, Gli, Glk,cnt,cnt2;
+  long int length;
   double value, F_val, t_val, E_val;
   double dijk, denom, *tvect, **Z;
   double value_ia, value_ka, denom_ia, denom_ka;
-  dpdfile2 fIJ, fAB;
-  dpdbuf4 buf4_tmp;
+  dpdfile2 fIJ, fAB, *SIA_local;
+  dpdbuf4 buf4_tmp, *SIjAb_local;
   pthread_t  *p_thread;
   struct thread_data *thread_data_array;
+  char lbl[32];
 
   thread_data_array = (struct thread_data *) malloc(nthreads*sizeof(struct thread_data));
   p_thread = (pthread_t *) malloc(nthreads*sizeof(pthread_t));
@@ -86,6 +85,11 @@ void cc3_sigma_RHF_ic(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
     exit(1);
   }
 
+  if (do_singles) {
+    dpd_file2_mat_init(SIA);
+    dpd_file2_mat_rd(SIA);
+  }
+
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(CIjAb, h);
     dpd_buf4_mat_irrep_rd(CIjAb, h);
@@ -103,6 +107,26 @@ void cc3_sigma_RHF_ic(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
     if (do_doubles) {
       dpd_buf4_mat_irrep_init(WMnIe, h);
       dpd_buf4_mat_irrep_rd(WMnIe, h);
+      dpd_buf4_mat_irrep_init(SIjAb, h);
+      dpd_buf4_mat_irrep_rd(SIjAb, h);
+    }
+  }
+
+  SIA_local = (dpdfile2 *) malloc(nthreads*sizeof(dpdfile2));
+  SIjAb_local = (dpdbuf4 *) malloc(nthreads*sizeof(dpdbuf4));
+
+  for (i=0;i<nthreads;++i) {
+    if (do_singles) {
+      sprintf(lbl, "%s %d", "CC3 SIA", i);
+      dpd_file2_init(&(SIA_local[i]), CC_TMP1, GS, 0, 1, lbl);
+      dpd_file2_mat_init(&(SIA_local[i]));
+    }
+    if (do_doubles) {
+      sprintf(lbl, "%s %d", "CC3 SIjAb", i);
+      dpd_buf4_init(&(SIjAb_local[i]), CC_TMP1, GS, 0, 5, 0, 5, 0, lbl);
+      for (h=0;h<nirreps;++h) {
+        dpd_buf4_mat_irrep_init(&(SIjAb_local[i]),h);
+      }
     }
   }
 
@@ -127,6 +151,8 @@ void cc3_sigma_RHF_ic(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
     thread_data_array[thread].fAB = &fAB;
     thread_data_array[thread].outfile = outfile;
     thread_data_array[thread].thr_id = thread;
+    thread_data_array[thread].SIA_local = SIA_local[thread];
+    thread_data_array[thread].SIjAb_local = SIjAb_local[thread];
   }
 
   for(Gi=0; Gi < nirreps; Gi++) {
@@ -145,64 +171,100 @@ void cc3_sigma_RHF_ic(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
           thread_data_array[thread].Gi = Gi;
           thread_data_array[thread].Gj = Gj;
           thread_data_array[thread].Gk = Gk;
+          if (do_singles) { /* zero S's */
+            for (h=0; h<nirreps;++h) 
+              zero_mat(SIA_local[thread].matrix[h], SIA_local[thread].params->rowtot[h],
+                SIA_local[thread].params->coltot[h^GS]);
+          }
+          if (do_doubles) {
+            for (h=0;h<nirreps;++h)
+              zero_mat( SIjAb_local[thread].matrix[h], SIjAb_local[thread].params->rowtot[h],
+                SIjAb_local[thread].params->coltot[h^GS]);
+          }
         }
 
-        if (ijk_part) { /* thread at least 2 ijk */
-          thread = 0; cnt = 1;
+        if (ijk_part) { /* at least one ijk for each thread */
+          thread = 0; cnt = 0;
           for (i=0; i < occpi[Gi]; i++)
             for (j=0; j < occpi[Gj]; j++)
               for (k=0; k < occpi[Gk]; k++) {
-                if ((cnt == 1) && (thread < nthreads)) {
-                  thread_data_array[thread].start_i = i;
-                  thread_data_array[thread].start_j = j;
-                  thread_data_array[thread].start_k = k;
+                if (thread < nthreads) {
+                  ++cnt;
+                  if (cnt == 1) {
+                    thread_data_array[thread].start_i = i;
+                    thread_data_array[thread].start_j = j;
+                    thread_data_array[thread].start_k = k;
+                  }
+                  if (cnt == ijk_part) {
+                    thread_data_array[thread].end_i = i;
+                    thread_data_array[thread].end_j = j;
+                    thread_data_array[thread].end_k = k;
+                    ++thread;
+                    cnt=0;
+                  }
                 }
-                else if ((cnt == 1) && (thread == nthreads)) {
-                  start_i_extra = i;
-                  start_j_extra = j;
-                  start_k_extra = k;
-                }
-                if (cnt == ijk_part) {
-                  thread_data_array[thread].end_i = i;
-                  thread_data_array[thread].end_j = j;
-                  thread_data_array[thread].end_k = k;
-                  ++thread;
-                  cnt = 0;
-                }
-                ++cnt;
-              } /* end ijk */
-  
-          for (thread=0;thread<nthreads;++thread)
-            thr_id = pthread_create(&(p_thread[thread]), NULL, cc3_sigma_RHF_ic_thread,
-                       (void *) &thread_data_array[thread]);
-
-          for (thread=0; thread<nthreads;++thread)
-            pthread_join(p_thread[thread], NULL);
-
-          /* cleanup leftover ijk */
-          if (ijk_tot != (nthreads * ijk_part)) {
-            thread_data_array[0].start_i = start_i_extra;
-            thread_data_array[0].start_j = start_j_extra;
-            thread_data_array[0].start_k = start_k_extra;
-            thread_data_array[0].end_i = occpi[Gi];
-            thread_data_array[0].end_j = occpi[Gj];
-            thread_data_array[0].end_k = occpi[Gk];
-            thr_id = pthread_create(&(p_thread[0]), NULL, cc3_sigma_RHF_ic_thread,
-                       (void *) &thread_data_array[0]);
-            pthread_join(p_thread[0], NULL);
-          }
-        } /* endif at least 2 ijk */
-        else { /* there's only one ijk - so no threading */
-            thread_data_array[0].start_i = 0;
-            thread_data_array[0].start_j = 0;
-            thread_data_array[0].start_k = 0;
-            thread_data_array[0].end_i = occpi[Gi];
-            thread_data_array[0].end_j = occpi[Gj];
-            thread_data_array[0].end_k = occpi[Gk];
-            thr_id = pthread_create(&(p_thread[0]), NULL, cc3_sigma_RHF_ic_thread,
-                       (void *) &thread_data_array[0]);
-            pthread_join(p_thread[0], NULL);
+              }
+          /* last thread does the extra ijk's too */
+          thread_data_array[nthreads-1].end_i = occpi[Gi];
+          thread_data_array[nthreads-1].end_j = occpi[Gj];
+          thread_data_array[nthreads-1].end_k = occpi[Gk];
         }
+        else { /* there'll only be one thread */
+          thread_data_array[0].start_i = 0;
+          thread_data_array[0].start_j = 0;
+          thread_data_array[0].start_k = 0;
+          thread_data_array[0].end_i = occpi[Gi];
+          thread_data_array[0].end_j = occpi[Gj];
+          thread_data_array[0].end_k = occpi[Gk];
+        }
+
+        if (ijk_part) { /* start nthreads */
+          for (thread=0;thread<nthreads;++thread) {
+            errcod = pthread_create(&(p_thread[thread]), NULL, cc3_sigma_RHF_ic_thread,
+                       (void *) &thread_data_array[thread]);
+            if (errcod) {
+              fprintf(stderr,"pthread_create in cc3_sigma_RHF_ic failed\n");
+              exit(PSI_RETURN_FAILURE);
+            }
+          }
+          for (thread=0; thread<nthreads;++thread) {
+            errcod = pthread_join(p_thread[thread], NULL);
+            if (errcod) {
+              fprintf(stderr,"pthread_join in cc3_sigma_RHF_ic failed\n");
+              exit(PSI_RETURN_FAILURE);
+            }
+          }
+        }
+        else { /* only one thread */
+          errcod = pthread_create(&(p_thread[0]), NULL, cc3_sigma_RHF_ic_thread,
+                     (void *) &thread_data_array[0]);
+          if (errcod) {
+            fprintf(stderr,"pthread_create in cc3_sigma_RHF_ic failed\n");
+            exit(PSI_RETURN_FAILURE);
+          }
+          errcod = pthread_join(p_thread[0], NULL);
+          if (errcod) {
+            fprintf(stderr,"pthread_join in cc3_sigma_RHF_ic failed\n");
+            exit(PSI_RETURN_FAILURE);
+          }
+        }
+
+        for (thread=0;thread<nthreads;++thread) {
+          if (do_singles) {
+            for(h=0;h<nirreps;++h)
+              for(row=0; row < SIA->params->rowtot[h]; row++)
+                for(col=0; col < SIA->params->coltot[h^GS]; col++)
+                  SIA->matrix[h][row][col] += SIA_local[thread].matrix[h][row][col];
+          }
+          if (do_doubles) {
+            for (h=0;h<nirreps;++h) {
+              length = ((long) SIjAb->params->rowtot[h])*((long) SIjAb->params->coltot[h^GS]);
+              if(length)
+                C_DAXPY(length, 1.0, &(SIjAb_local[thread].matrix[h][0][0]), 1,
+                  &(SIjAb->matrix[h][0][0]), 1);
+            }
+          }
+        } /* end adding up S's */
       } /* Gk */
     } /* Gj */
   } /* Gi */
@@ -214,12 +276,28 @@ void cc3_sigma_RHF_ic(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
   dpd_file2_close(&fAB);
   dpd_file2_mat_close(FME);
 
+  for (i=0;i<nthreads;++i) {
+    if (do_singles) {
+      sprintf(lbl, "%s %d", "CC3 SIA", i);
+      dpd_file2_mat_close(&(SIA_local[i]));
+      dpd_file2_close(&(SIA_local[i]));
+    }
+    if (do_doubles) {
+      sprintf(lbl, "%s %d", "CC3 SIjAb", i);
+      for (h=0;h<nirreps;++h)
+        dpd_buf4_mat_irrep_close(&(SIjAb_local[i]),h);
+      dpd_buf4_close(&(SIjAb_local[i]));
+    }
+  }
+
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_close(WAbEi, h);
     dpd_buf4_mat_irrep_close(WmAEf, h);
   }
 
   if (do_singles) {
+    dpd_file2_mat_wrt(SIA);
+    dpd_file2_mat_close(SIA);
     for(h=0; h < nirreps; h++)
       dpd_buf4_mat_irrep_close(Dints, h);
   }
@@ -227,6 +305,8 @@ void cc3_sigma_RHF_ic(dpdbuf4 *CIjAb, dpdbuf4 *WAbEi, dpdbuf4 *WMbIj,
   if (do_doubles) {
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_close(WMnIe, h);
+      dpd_buf4_mat_irrep_wrt(SIjAb, h);
+      dpd_buf4_mat_irrep_close(SIjAb, h);
     }
   }
 }
@@ -282,11 +362,10 @@ void* cc3_sigma_RHF_ic_thread(void* thread_data_in)
   end_k = data.end_k;
   outfile = data.outfile;
   thr_id = data.thr_id;
+  SIA_local = data.SIA_local;
+  SIjAb_local = data.SIjAb_local;
 
   nirreps = CIjAb->params->nirreps;
-  W3 = (double ***) malloc(nirreps * sizeof(double **));
-  W3a = (double ***) malloc(nirreps * sizeof(double **));
-
   Gij = Gji = Gi ^ Gj; 
   Gkj = Gjk = Gk ^ Gj;
   Gik = Gki = Gi ^ Gk;
@@ -298,20 +377,8 @@ void* cc3_sigma_RHF_ic_thread(void* thread_data_in)
   GW = WmAEf->file.my_irrep;
   GS = SIjAb->file.my_irrep;
 
-  if (do_singles) {
-    sprintf(lbl, "%s %d", "CC3 SIA", thr_id);
-    dpd_file2_init(&SIA_local, CC_TMP0, GS, 0, 1, lbl);
-    dpd_file2_scm(&SIA_local, 0.0);
-    dpd_file2_mat_init(&SIA_local);
-  }
-  if (do_doubles) {
-    sprintf(lbl, "%s %d", "CC3 SIjAb", thr_id);
-    dpd_buf4_init(&SIjAb_local, CC_TMP0, GS, 0, 5, 0, 5, 0, lbl);
-    dpd_buf4_scm(&SIjAb_local, 0);
-    for (h=0; h<nirreps; ++h)
-      dpd_buf4_mat_irrep_init(&SIjAb_local, h);
-  }
-
+  W3 = (double ***) malloc(nirreps * sizeof(double **));
+  W3a = (double ***) malloc(nirreps * sizeof(double **));
   /* allocate memory for all irrep blocks of (ab,c) */
   for(Gab=0; Gab < nirreps; Gab++) {
     Gc = Gab ^ Gijk ^ GX3;
@@ -648,25 +715,6 @@ void* cc3_sigma_RHF_ic_thread(void* thread_data_in)
     } /* j */
   } /* i */
 
-  if (do_singles) {
-    dpd_file2_mat_wrt(&SIA_local);
-    dpd_file2_mat_close(&SIA_local);
-pthread_mutex_lock(&SIA_mutex);
-    dpd_file2_axpy(&SIA_local, SIA, 1.0, 0);
-pthread_mutex_unlock(&SIA_mutex);
-    dpd_file2_close(&SIA_local);
-  }
-  if (do_doubles) {
-    for (h=0;h<nirreps;++h) {
-      dpd_buf4_mat_irrep_wrt(&SIjAb_local, h);
-      dpd_buf4_mat_irrep_close(&SIjAb_local, h);
-    }
-pthread_mutex_lock(&SIjAb_mutex);
-    dpd_buf4_axpy(&SIjAb_local, SIjAb, 1.0);
-pthread_mutex_unlock(&SIjAb_mutex);
-    dpd_buf4_close(&SIjAb_local);
-  }
-
   for(Gab=0; Gab < nirreps; Gab++) {
     Gc = Gab ^ Gijk ^ GX3;
     dpd_free_block(W3[Gab], WAbEi->params->coltot[Gab], virtpi[Gc]);
@@ -677,4 +725,6 @@ pthread_mutex_unlock(&SIjAb_mutex);
   }
   free(W3);
   free(W3a);
+
+  pthread_exit(NULL);
 }
