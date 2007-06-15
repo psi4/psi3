@@ -39,7 +39,7 @@ extern int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
 int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs) 
 {
   int i,j,a,b, cnt,dim, dim_carts, ndisps, nsalcs, *irrep_salcs, irrep;
-  int *irrep_per_disp;
+  int *irrep_per_disp, success;
   double *fgeom, energy, **micro_geoms, **displacements;
   double *f, *q, tval, **fgeom2D;
   char *disp_label, **disp_irrep_lbls, *salc_lbl;
@@ -131,8 +131,13 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
   micro_geoms = block_matrix(ndisps, dim_carts);
   for (i=0;i<ndisps;++i)  {
     sprintf(disp_label,"Displaced geometry %d in a.u.\n",i+1);
-    new_geom(carts,simples,all_salcs,displacements[i],0,
+    success = new_geom(carts,simples,all_salcs,displacements[i],0,
         0, disp_label, i, 0, micro_geoms[i]);
+    if (!success) {
+      fprintf(outfile,"Unable to generate displaced geometry.\n");
+      fclose(outfile);
+      exit(PSI_RETURN_FAILURE);
+    }
   }
   free_block(displacements);
 
@@ -189,7 +194,7 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
 
 int make_disp_nosymm(cartesians &carts, internals &simples, salc_set &all_salcs) 
 {
-  int i,j,a,b, dim, dim_carts, ndisps, nsalcs, *irrep_per_disp, cnt;
+  int i,j,a,b, dim, dim_carts, ndisps, nsalcs, *irrep_per_disp, cnt, success;
   double *fgeom, energy, **micro_geoms, **displacements;
   double *f, *q, tval, **fgeom2D;
   char *disp_label, **disp_irrep_lbls, *lbl;
@@ -242,8 +247,13 @@ int make_disp_nosymm(cartesians &carts, internals &simples, salc_set &all_salcs)
   micro_geoms = block_matrix(ndisps, dim_carts);
   for (i=0;i<ndisps;++i)  {
     sprintf(disp_label,"Displaced geometry %d in a.u.\n",i+1);
-    new_geom(carts,simples,all_salcs,displacements[i],0,
+    success = new_geom(carts,simples,all_salcs,displacements[i],0,
         0, disp_label, i, 0, micro_geoms[i]);
+    if (!success) {
+      fprintf(outfile,"Unable to generate displaced geometry.\n");
+      fclose(outfile);
+      exit(PSI_RETURN_FAILURE);
+    }
   }
   free_block(displacements);
 

@@ -32,7 +32,7 @@ int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs, double 
     char *disp_label, int disp_num, int last_disp, double *return_geom);
 
 void disp_user(cartesians &carts, internals &simples, salc_set &all_salcs) {
-  int i,j,a,b;
+  int i,j,a,b,success;
   int  num_disps = 0, disp_length = 0, restart_geom_file, line_length_count;
   double *geom, *djunk, *dq, **displacements, disp = 0;
   char *disp_label, *ch_temp;
@@ -91,8 +91,13 @@ void disp_user(cartesians &carts, internals &simples, salc_set &all_salcs) {
     }
     restart_geom_file = 0;
     if (i == 0) restart_geom_file = 1;
-    new_geom(carts,simples,all_salcs,displacements[i],PRINT_TO_GEOM,
+    success = new_geom(carts,simples,all_salcs,displacements[i],PRINT_TO_GEOM,
         restart_geom_file,disp_label,i, (i==(num_disps-1)?1:0), djunk);
+    if (!success) {
+      fprintf(outfile,"Unable to generate displaced geometry.\n");
+      fclose(outfile);
+      exit(PSI_RETURN_FAILURE);
+    }
   }
   free_block(displacements);
   free(disp_label);

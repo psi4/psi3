@@ -184,12 +184,8 @@ double **symm_matrix_invert(double **A, int dim, int print_det, int redundant) {
     }
     if (print_det)
       fprintf(outfile,"Determinant: %10.6e\n",det);
-    if (fabs(det) < 1E-10) {
-      fprintf(outfile,"Determinant: %10.6e\n",det);
-      fprintf(outfile,"Determinant is too small...aborting.\n");
-      fclose(outfile);
-      exit(2);
-    }
+    if (fabs(det) < 1E-10)
+      fprintf(outfile,"Warning, determinant is small: %10.6e\n",det);
   }
   else {
     for (i=0;i<dim;++i) {

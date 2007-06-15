@@ -35,7 +35,7 @@ void opt_energies(cartesians &carts, internals &simples, salc_set &symm);
 
 void opt_energies(cartesians &carts, internals &simples, salc_set &symm) {
 
-  int i,j,a,b, dim, dim_carts, num_disps;
+  int i,j,a,b, dim, dim_carts, num_disps, success;
   double **B, *geom, *forces;
   double energy, *energies, **micro_geoms, **displacements;
   double *f, *f_q, *dq, *q, tval, **geom2D;
@@ -78,8 +78,13 @@ void opt_energies(cartesians &carts, internals &simples, salc_set &symm) {
     micro_geoms = block_matrix(num_disps, dim_carts);
     for (i=0;i<num_disps;++i)  {
       sprintf(disp_label,"Displaced geometry %d in a.u.\n",i+1);
-      new_geom(carts,simples,symm,displacements[i],0,
+      success = new_geom(carts,simples,symm,displacements[i],0,
           0, disp_label, i, 0, micro_geoms[i]);
+      if (!success) {
+        fprintf(outfile,"Unable to generate displaced geometry.\n");
+        fclose(outfile);
+        exit(PSI_RETURN_FAILURE);
+      }
     }
     free_block(displacements);
 

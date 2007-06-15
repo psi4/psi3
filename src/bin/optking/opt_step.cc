@@ -316,13 +316,18 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   if (!success) {
     int retry = 1;
     for (retry=1; retry<5; ++retry) {
-      fprintf(outfile,"Scaling back displacements by half\n");
+      fprintf(outfile,"Scaling back displacements by half...\n");
       for (i=0;i<symm.get_num();++i) {
         dq[i] = dq[i] / 2.0;
         dq_to_new_geom[i] = dq[i];
       }
       success = new_geom(carts,simples,symm,dq_to_new_geom,32,0,disp_label,0,0,djunk);
       if (success) break;
+    }
+    if (retry == 5) {
+      fprintf(outfile,"Giving up - unable to back-transform to new cartesian coordinates.\n");
+      fclose(outfile);
+      exit(PSI_RETURN_FAILURE);
     }
   }
 
