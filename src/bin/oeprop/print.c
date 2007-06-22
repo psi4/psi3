@@ -411,12 +411,12 @@ void print_misc()
   fprintf(outfile,"\n\n");
 
   if (update_energy_with_MVD) {
-    fprintf(outfile," -Updating total energy in chkpt file with MVD correction\n\n");
     chkpt_init(PSIO_OPEN_OLD);
     energy = chkpt_rd_etot();
     energy = energy + massveloc + darw;
     chkpt_wt_etot(energy);
     chkpt_close();
+    fprintf(outfile," -Updating total energy (%15.10lf) in chkpt file with MVD correction\n\n", energy);
   }
 
   if (mpmax > 1) {
