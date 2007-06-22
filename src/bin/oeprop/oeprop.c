@@ -12,7 +12,7 @@ void compute_oeprops()
   int ixm, iym, izm, jxm, jym, jzm, iind, jind;
   int eq_shell, eq_atoms, indmax;
   int ix, iy, iz;
-  double ax, ay, az, bx, by, bz, xab, yab, zab, rab2;
+  double ax, ay, az, bx, by, bz, xab, yab, zab, rab2, energy;
   double ai, bj, gamma, over_pf, norm_pf, prod_pf, dens_pf, sdens_pf, zvec_pf;
   double px, py, pz, pax, pay, paz, pbx, pby, pbz, pcx, pcy, pcz;
   double cax, cax2, cay, cay2, caz, caz2, cbx, cbx2, cby, cby2, cbz, cbz2, rca2, rcb2;
@@ -777,10 +777,13 @@ void compute_oeprops()
     darw += zvals[i]*edens[i];
   darw *= M_PI_2/(_c_au*_c_au); 
 
+    /* allow user to increase fine stucture constant by a factor */
+  massveloc *= fine_structure_alpha * fine_structure_alpha;
+  darw *= fine_structure_alpha * fine_structure_alpha;
+
   free(Lx_ao);
   free(Ly_ao);
   free(Lz_ao);
-
 
   /* Cleaning up */
   

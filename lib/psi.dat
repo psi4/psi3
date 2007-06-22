@@ -127,6 +127,15 @@ psi: (
   SCFUHFEnergyOpt = $SCFEnergyOpt
   SCFTwoConEnergyOpt = $SCFEnergyOpt
 
+  % Optimizing geometries with SCF_MVD energies
+  SCF_MVDEnergyOpt = (repeat $nopt $SCFEnergy $oeprop $findif_disp_symm 
+    repeat NUM_DISP $findif_next $findif_input $SCFEnergy $oeprop
+    $findif_energy_save end $findif_grad_energy $geomupdate end $done)
+  SCF_MVDRHFEnergyOpt = $SCF_MVDEnergyOpt
+  SCF_MVDROHFEnergyOpt = $SCF_MVDEnergyOpt
+  SCF_MVDUHFEnergyOpt = ERROR
+  SCF_MVDTwoConEnergyOpt = ERROR
+
   % Procedures for the finite displacements of SCF gradients
   SCFFirstDisp  = 
     ($findif_disp repeat $ndisp 
@@ -162,6 +171,16 @@ psi: (
   SCFROHFEnergyFreq  = $SCFEnergyFreq
   SCFUHFEnergyFreq  = $SCFEnergyFreq
   SCFTwoConEnergyFreq  = $SCFEnergyFreq
+
+  % *** SCF_MVD Frequencies by finite differences of energies ***
+  SCF_MVDEnergyFreq  =
+    ($SCF_MVDEnergy $findif_disp_freq_energy_cart repeat NUM_DISP
+     $findif_next $findif_input $SCF_MVDEnergy $findif_energy_save end
+     $findif_freq_energy_cart $done)
+  SCF_MVDRHFEnergyFreq  = $SCF_MVDEnergyFreq
+  SCF_MVDROHFEnergyFreq  = $SCF_MVDEnergyFreq
+  SCF_MVDUHFEnergyFreq  = ERROR
+  SCF_MVDTwoConEnergyFreq  = ERROR
 
   % Procedures for symm force constants via differences of analytic gradients
   SCFFirstSymm_FC  = 
@@ -200,6 +219,13 @@ psi: (
   SCFUHFEnergyOEPROP = ERROR
   SCFROHFEnergyOEPROP = ($SCFROHFEnergy $oeprop $done)
   SCFTwoConEnergyOEPROP = ERROR
+
+  % *** SCF_MVD energy ***
+  SCF_MVDEnergy = $SCFEnergyOEPROP
+  SCF_MVDRHFEnergy = $SCF_MVDEnergy
+  SCF_MVDROHFEnergy = $SCF_MVDEnergy
+  SCF_MVDUHFEnergy = ERROR
+  SCF_MVDTwoConEnergy = ERROR
 
   % Procedure for an SCF DBOC computation
   SCFDBOC = ($input $dboc)
@@ -333,6 +359,17 @@ psi: (
   CCSDUHFEnergyOpt = $CCSDEnergyOpt
   CCSDTwoConEnergyOpt = ERROR
 
+  % Procedures for optimization via energy points with CCSD_MVD
+  CCSD_MVDEnergyOpt = (repeat $nopt
+    $CCSDEnergy $cchbar $cclambda $ccdensity $oeprop
+    $findif_disp_symm repeat NUM_DISP $findif_next $findif_input
+    $CCSDEnergy $cchbar $cclambda $ccdensity $oeprop
+    $findif_energy_save end $findif_grad_energy $geomupdate end $done)
+  CCSD_MVDRHFEnergyOpt = $CCSD_MVDEnergyOpt
+  CCSD_MVDROHFEnergyOpt = $CCSD_MVDEnergyOpt
+  CCSD_MVDUHFEnergyOpt = $CCSD_MVDEnergyOpt
+  CCSD_MVDTwoConEnergyOpt = ERROR
+
   % Procedures for the optimizing geomtries with CCSD gradients
   CCSDRHFFirstOpt = (repeat $nopt $CCSDRHFFirst $geomupdate end $done)
   CCSDROHFFirstOpt = (repeat $nopt $CCSDROHFFirst $geomupdate end $done)
@@ -401,6 +438,23 @@ psi: (
   CCSDUHFFirstOEPROP = $CCSDFirstOEPROP
   CCSDROHFFirstOEPROP = $CCSDFirstOEPROP
   CCSDTwoConFirstOEPROP = ERROR
+
+  % Procedures for the CCSD_MVD energy
+  CCSD_MVDEnergy = $CCSDFirstOEPROP
+  CCSD_MVDRHFEnergy = $CCSD_MVDEnergy
+  CCSD_MVDROHFEnergy = $CCSD_MVDEnergy
+  CCSD_MVDUHFEnergy = $CCSD_MVDEnergy
+  CCSDTwoConEnergy = ERROR
+
+  % CCSD_MVD Freqs via differences of energies
+  CCSD_MVDEnergyFreq  =
+    ($CCSD_MVDEnergy $findif_disp_freq_energy_cart repeat NUM_DISP
+     $findif_next $findif_input $CCSD_MVDEnergy $findif_energy_save end
+     $findif_freq_energy_cart $done)
+  CCSD_MVDRHFEnergyFreq  = $CCSD_MVDEnergyFreq
+  CCSD_MVDROHFEnergyFreq  = $CCSD_MVDEnergyFreq
+  CCSD_MVDUHFEnergyFreq  = $CCSD_MVDEnergyFreq
+  CCSD_MVDTwoConEnergyFreq  = $CCSD_MVDEnergyFreq
 
   % Procedure for a non-(orbital-relaxed) CCSD one-electron property computation
   CCSDEnergyOEPROP = ($CCSDEnergy $cchbar $cclambda $ccdensity_onepdm $oeprop $done)

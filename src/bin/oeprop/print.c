@@ -120,6 +120,8 @@ void print_params()
    fprintf(outfile,"    # of unique shells         = %6d\n",nshell);
    fprintf(outfile,"    # of primitives            = %6d\n",nprim);
    fprintf(outfile,"    Print level                = %6d\n",print_lvl);
+   if (fine_structure_alpha != 1.0)
+     fprintf(outfile,"    Fine-structure a/a_0       =\t  %8.5lf\n",fine_structure_alpha);
    if (grid3d == 0) {
      fprintf(outfile,"\n  List of GRID PARAMETERS :\n");
      fprintf(outfile,"    GRID_ORIGIN                =\t( %8.5lf %8.5lf %8.5lf )\n",grid_origin[0],grid_origin[1],grid_origin[2]);
@@ -396,6 +398,7 @@ void print_esp()
 void print_misc()
 {
   int i,j,k;
+  double energy;
 
   fprintf(outfile," --------------------------------------------------------------\n");
   fprintf(outfile,"                *** Miscellaneous properties ***\n");
@@ -406,6 +409,15 @@ void print_misc()
   fprintf(outfile,"    One-electron Darwin term     :   %13.15lf\n",darw);
   fprintf(outfile,"    Total one-electron MVD terms :   %12.15lf\n",massveloc+darw);
   fprintf(outfile,"\n\n");
+
+  if (update_energy_with_MVD) {
+    fprintf(outfile," -Updating total energy in chkpt file with MVD correction\n\n");
+    chkpt_init(PSIO_OPEN_OLD);
+    energy = chkpt_rd_etot();
+    energy = energy + massveloc + darw;
+    chkpt_wt_etot(energy);
+    chkpt_close();
+  }
 
   if (mpmax > 1) {
     fprintf(outfile,"  NOTE : Spatial extents are computed with respect to the same reference point\n");

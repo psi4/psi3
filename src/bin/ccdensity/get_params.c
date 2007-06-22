@@ -88,8 +88,8 @@ void get_params()
     free(junk);
   }
 
-  if (params.dertype == 1)
-    params.relax_opdm = 1;  /* default for gradients, relax_opdm on */
+  if ( (params.dertype == 1) || (!strcmp(params.wfn, "CCSD_MVD")) )
+    params.relax_opdm = 1;  /* default for gradients, or MVD correction */
   else
     params.relax_opdm = 0;  /* otherwise, default is relax_opdm off */
 
@@ -119,8 +119,6 @@ void get_params()
 	  params.onepdm ? "Yes" : "No");
   fprintf(outfile, "\tRelax OPDM       = %s\n", 
           params.relax_opdm ? "Yes" : "No");
-  fprintf(outfile, "\tExcited State    = %s\n", 
-          (!params.ground) ? "Yes" : "No");
   fprintf(outfile, "\tCompute Xi       = %s\n", 
           (params.calc_xi) ? "Yes" : "No");
   fprintf(outfile, "\tUse Zeta         = %s\n", 

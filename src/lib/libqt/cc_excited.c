@@ -20,7 +20,8 @@ int cc_excited(char *wfn)
 {
 
   if ( !strcmp(wfn, "CCSD")   || !strcmp(wfn, "CCSD_T") || !strcmp(wfn, "BCCD") ||
-	     !strcmp(wfn, "BCCD_T") || !strcmp(wfn, "CC2")    || !strcmp(wfn, "CC3")  ) {
+       !strcmp(wfn, "BCCD_T") || !strcmp(wfn, "CC2")    || !strcmp(wfn, "CC3")  ||
+       !strcmp(wfn, "CCSD_MVD") ) {
 			 return 0;
   }
 	else if ( !strcmp(wfn, "EOM_CCSD") || !strcmp(wfn, "LEOM_CCSD") ||

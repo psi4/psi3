@@ -98,11 +98,13 @@ void compute_zmat(cartesians &carts, int *unique_zvars) {
   nints[2] = nallatom-3;
   nints[3] = 0;
   nints[4] = 0;
+  for (i=0; i<4; ++i)
+    if (nints[i] < 0) nints[i] = 0;
   internals zints(nints);
   /* compute the value of the unique variables */
-  zints.stre.set_num(nallatom-1);
-  zints.bend.set_num(nallatom-2);
-  zints.tors.set_num(nallatom-3);
+  zints.stre.set_num(nints[0]);
+  zints.bend.set_num(nints[1]);
+  zints.tors.set_num(nints[2]);
   zints.out.set_num(0);
   zints.lin_bend.set_num(0);
 

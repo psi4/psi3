@@ -11,6 +11,7 @@ void parsing()
   double xmin,xmax,ymin,ymax,zmin,zmax;
 
   /* Set some defaults for certain wavefunctions */
+  update_energy_with_MVD = 0;
 
   errcod = ip_string("WFN", &wfn, 0);
 
@@ -18,8 +19,9 @@ void parsing()
     if (!strcmp(wfn, "CI") || !strcmp(wfn, "DETCI") ||
         !strcmp(wfn, "CCSD") || !strcmp(wfn, "DETCAS") ||
         !strcmp(wfn, "CASSCF") || !strcmp(wfn, "RASSCF") ||
-	!strcmp(wfn, "MP2") || !strcmp(wfn, "EOM_CCSD") ||
-        !strcmp(wfn, "CC2") || !strcmp(wfn, "EOM_CC2"))  {
+        !strcmp(wfn, "MP2") || !strcmp(wfn, "EOM_CCSD") ||
+        !strcmp(wfn, "CC2") || !strcmp(wfn, "EOM_CC2") ||
+        !strcmp(wfn, "CCSD_MVD"))  {
       read_opdm = 1;
       opdm_file = PSIF_MO_OPDM;
       corr = 0;
@@ -28,6 +30,8 @@ void parsing()
       opdm_format = (char *) malloc(7*sizeof(char));
       strcpy(opdm_format,"SQUARE");
     }
+    if (!strcmp(wfn, "SCF_MVD") || !strcmp(wfn, "CCSD_MVD"))
+      update_energy_with_MVD = 1;
   }
   else {
     fprintf(outfile,"Incorrect wave function type!\n");
@@ -136,4 +140,6 @@ void parsing()
   if (spin_prop)
     nuc_esp = 1;
 
+  fine_structure_alpha = 1.0;
+  errcod = ip_data("FINE_STRUCTURE_ALPHA","%lf",&fine_structure_alpha,0,0);
 }

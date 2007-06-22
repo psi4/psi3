@@ -209,3 +209,5 @@ EXTERN double **nmo_ao;		/* Natural orbitals in the AO basis */
 EXTERN int **connectivity;    /* A matrix of flags whether a bong exists between two atoms */
 EXTERN char *wfn;             /* wavefunction type */
 EXTERN char *ref;             /* reference type */
+EXTERN int update_energy_with_MVD; /* update energy in file 1? for SCF_MVD optimizations */
+EXTERN double fine_structure_alpha; /* multiply relativisitic terms by this */
