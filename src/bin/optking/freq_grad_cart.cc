@@ -48,8 +48,8 @@ void freq_grad_cart(cartesians &carts) {
   double *f, *f_q, *temp_arr, *temp_arr2, tval, **geom2D, **B_inv;
   double **evects, *evals, **FG, tmp, **force_constants_x, **tmp_mat_inv;
   double *micro_e, **micro_geom, **disp_grad, *grad, **grads_adapted, **tmp_mat;
-  double *evals_all, **cartrep, **disp_grad_all;
-  int *nsalc, *ndisp, ndisp_all, nsalc_all, **ict;
+  double *evals_all, **cartrep, **disp_grad_all, **force_constants_all;
+  int *nsalc, *ndisp, ndisp_all, nsalc_all, **ict, dim_all=0, *start_irr;
   double ***salc, ***disp;
   int print;
   char *line1;
@@ -182,6 +182,15 @@ void freq_grad_cart(cartesians &carts) {
   evals_all = init_array(nsalc_all);
   evals_all_irrep = init_int_array(nsalc_all);
 
+  /* just for printing out force constants */
+  start_irr = init_int_array(nirreps);
+  for (h=0; h<nirreps; ++h) {
+    dim_all += nsalc[h];
+    for (i=0;i<h;++i)
+      start_irr[h] += nsalc[i];
+  }
+  force_constants_all = block_matrix(dim_all,dim_all);
+
   /**** loop over irreps of salcs and vibrations ****/
   start_salc = 0;
   start_disp = 0;
@@ -267,6 +276,10 @@ void freq_grad_cart(cartesians &carts) {
     print_mat(force_constants, nsalc[h], nsalc[h], outfile);
     fflush(outfile);
 
+    for (i=0; i<nsalc[h]; ++i)
+      for (j=0; j<nsalc[h]; ++j)
+        force_constants_all[start_irr[h]+i][start_irr[h]+j] = force_constants[i][j]; 
+
     start_salc += nsalc[h];
     start_disp += ndisp[h];
 
@@ -299,6 +312,11 @@ void freq_grad_cart(cartesians &carts) {
   free(masses);
   free_block(u);
   free_block(disp_grad_all);
+
+  fprintf(outfile,"\t ** Writing force constants to PSIF_OPTKING ** \n");
+  psio_write_entry(PSIF_OPTKING, "Force Constants",
+    (char *) &(force_constants_all[0][0]),dim_all*dim_all*sizeof(double));
+  free_block(force_constants_all);
 
   sort_evals_all(nsalc_all,evals_all, evals_all_irrep);
 
