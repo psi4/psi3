@@ -67,3 +67,21 @@ gradients are available.
 the number of gradient step for the BFGS update of the Hessian.  The default
 is six.  
 \end{description}
+
+\begin{em}
+Note: In some situations, vibrational frequency analysis via finite
+differences may fail if the full point group symmetry is specified via 
+the {\tt symmetry} keyword.  This happens because the user-given
+{\tt symmetry} value can become incompatible with the actual symmetry
+of the molecule when energies or gradients are evaluated for 
+symmetry-lowering displacements.  In such situations, the user is 
+advised to let the program determine the symmetry automatically, rather
+than specifying {\tt symmetry} manually.  Otherwise, an error such as the
+following may result:
+\end{em}
+
+\begin{verbatim}
+error: problem assigning number of operations per class
+         *** stopping execution ***
+\end{verbatim}
+

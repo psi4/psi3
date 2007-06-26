@@ -94,18 +94,21 @@ a matter of convenience.
 \subsection{Molecular Symmetry}
 \PSIthree\ can determine automatically the largest Abelian point group
 for a valid framework of centers (the framework also includes ghost
-atoms, but it does not include dummy atoms).
-It will then use the symmetry porperties of the system in computing energy,
-forces, and other properties.
-However, in certain instances it is desirable to use a lower than the
-full symmetry. The keyword \keyword{subgroup} is used to specify a subgroup of
-the full molecular point group. The allowed values are \keyword{c2v},
-\keyword{c2h}, \keyword{d2}, \keyword{c2}, \keyword{cs}, \keyword{ci},
-and \keyword{c1}. For certain combinations of a group and
-its subgroup there is no unique way to determine which subgroup is
-implied. For example, $D_{\rm 2h}$ has 3 non-equivalent $C_{\rm 2v}$ subgroups,
-e.g. $C_{\rm 2v}(X)$ consists of symmetry operations $\hat{E}$, $\hat{C}_2(x)$,
-$\hat{\sigma}_{xy}$, and $\hat{\sigma_{xz}}$. 
+atoms, but it does not include dummy atoms).  It will then use the
+symmetry properties of the system in computing energy, forces, and
+other properties.  It is recommended that the user let the program
+determine the point group symmetry of the molecule automatically,
+although it can be specified manually via the \keyword{symmetry} keyword.
+In certain instances, even if the molecule has a certain symmetry, it may
+be desirable to only use a lower-symmetry point group for the computation
+of the wave function.  The keyword \keyword{subgroup} is used to specify
+a subgroup of the full molecular point group. The allowed values are
+\keyword{c2v}, \keyword{c2h}, \keyword{d2}, \keyword{c2}, \keyword{cs},
+\keyword{ci}, and \keyword{c1}. For certain combinations of a group
+and its subgroup there is no unique way to determine which subgroup
+is implied. For example, $D_{\rm 2h}$ has 3 non-equivalent $C_{\rm
+2v}$ subgroups, e.g. $C_{\rm 2v}(X)$ consists of symmetry operations
+$\hat{E}$, $\hat{C}_2(x)$, $\hat{\sigma}_{xy}$, and $\hat{\sigma_{xz}}$.
 To specify subgroups precisely one has to use the \keyword{unique\_axis}
 keyword. E.g. the following input will specify the $C_{\rm 2v}(X)$
 subgroup of $D_{\rm 2h}$ to be the computational point group:
@@ -113,10 +116,7 @@ subgroup of $D_{\rm 2h}$ to be the computational point group:
   input: (
     geometry = (
       ........
-    )
-    units = angstrom
-    subgroup = c2v
-    unique_axis = x
+    ) units = angstrom subgroup = c2v unique_axis = x
   )
 \end{verbatim}
 
