@@ -43,11 +43,11 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
   double **all_f_q; // internal coordinate forces for all unique displacements
   double **full_all_f_q; // internal coordinate forces for all displacements
   double **evects, *evals, **FG;
-  double *micro_e, *micro_geom, *micro_grad, *grad, tmp;
+  double *micro_e, *micro_geom, *micro_grad, *grad, tmp, **force_constants_symm;
   char *salc_lbl;
 
   dim_carts = 3*carts.get_natom();
-  irrep_salcs = new int[all_salcs.get_num()];
+  irrep_salcs = new int[all_salcs.get_num()]; /* irrep -> total salc list lookup */
   irrep = optinfo.irrep;
   nsalcs = all_salcs.get_num();
 
@@ -61,20 +61,17 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
       irrep_salcs[cnt++] = i;
     }
   }
-  if (nirr_salcs == 0) {
-    fprintf(outfile,"No coordinates of irrep %d\n.", irrep);
-  }
 
-fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
+  if (nirr_salcs == 0) { fprintf(outfile,"No coordinates of irrep %d\n.", irrep); }
+  fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
 
   open_PSIF();
   psio_read_entry(PSIF_OPTKING, "OPT: Num. of disp.",
       (char *) &(ndisps), sizeof(int));
 
-  // needed?
-  micro_e = new double[ndisps];
+  /* micro_e = new double[ndisps];
   psio_read_entry(PSIF_OPTKING, "OPT: Displaced energies",
-      (char *) &(micro_e[0]), ndisps*sizeof(double));
+      (char *) &(micro_e[0]), ndisps*sizeof(double)); */
 
   micro_grad = new double [ndisps*3*carts.get_natom()];
   psio_read_entry(PSIF_OPTKING, "OPT: Displaced gradients",
@@ -83,7 +80,6 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
   micro_geom = new double [ndisps*3*carts.get_natom()];
   psio_read_entry(PSIF_OPTKING, "OPT: Displaced geometries",
       (char *) &(micro_geom[0]), ndisps*3*carts.get_natom()*sizeof(double));
-
   close_PSIF();
 
   // compute forces in internal coordinates for all disps, f_q = G_inv B u f
@@ -98,7 +94,6 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
     simples.compute_internals(carts.get_natom(), &(micro_geom[i*dim_carts]));
     simples.compute_s(carts.get_natom(), &(micro_geom[i*dim_carts]));
     q = compute_q(simples, all_salcs);
-
     /* fprintf(outfile,"Values of internal coordinates, displacement %d\n",i);
      for (j=0; j<salcs.get_num();++j) fprintf(outfile,"%15.10lf",all_q[i][j]);
      fprintf(outfile,"\n"); */
@@ -108,10 +103,8 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
     fprintf(outfile,"BuB^t ");
     G_inv = symm_matrix_invert(G, nsalcs, 1, optinfo.redundant);
 
-    // load up cartesian forces
     for (j=0;j<dim_carts;++j)
-      f[j] = micro_grad[i*dim_carts+j] * -1.0 * _hartree2J * 1.0E18 /
-        _bohr2angstroms;
+      f[j] = micro_grad[i*dim_carts+j] * -1.0 * _hartree2J * 1.0E18 / _bohr2angstroms;
 
     mmult(u,0,&f,1,&temp_arr2,1,dim_carts,dim_carts,1,0);
     mmult(B,0,&temp_arr2,1,&temp_arr,1, nsalcs,dim_carts,1,0);
@@ -132,7 +125,7 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
   /* expand unique displacements to redundant displacements */
   full_all_f_q = block_matrix( 2*all_salcs.get_num(), all_salcs.get_num());
   if (irrep == 0) {
-    for (i=0; i<ndisps; ++i) // loop over displacements
+    for (i=0; i<ndisps; ++i)
       for (j=0; j<nsalcs; ++j)
         full_all_f_q[i][j] = all_f_q[i][j];
   }
@@ -150,16 +143,6 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
   }
   free_block(all_f_q);
 
-  /*
-  for (i=0;i<2*nsalcs;++i) {
-    fprintf(outfile,
-        "Redundant values of internal coordinate forces, displacement %d\n",i);
-    for (j=0; j<nsalcs;++j)
-      fprintf(outfile,"%15.10lf",full_all_f_q[i][j]);
-    fprintf(outfile,"\n");
-  }
-  */
-
   // apply three point formula - to generate force constants in this irrep block
   fprintf(outfile,"Applying %d-point formula\n",optinfo.points_freq);
   force_constants = block_matrix(nsalcs,nsalcs);
@@ -174,9 +157,24 @@ fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
   //print_mat2(full_all_f_q, num_disps, salcs.get_num(), outfile);
   free_block(full_all_f_q);
 
-  fprintf(outfile,"\nForce Constants\n");
+  fprintf(outfile,"\n** Force constants for irrep %s\n", syminfo.clean_irrep_lbls[irrep]);
   print_mat(force_constants, nsalcs, nsalcs, outfile);
   fflush(outfile);
+
+  if (irrep == 0) {
+    force_constants_symm = block_matrix(nirr_salcs,nirr_salcs);
+    for (i=0;i<nirr_salcs;++i)
+      for (j=0;j<nirr_salcs;++j) {
+        ii = irrep_salcs[i];
+        jj = irrep_salcs[j];
+        force_constants_symm[i][j] = force_constants[ii][jj];
+      }
+    fprintf(outfile,"\t ** Writing symmetric force constants to PSIF_OPTKING ** \n");
+    open_PSIF();
+    psio_write_entry(PSIF_OPTKING, "Symmetric Force Constants",
+      (char *) &(force_constants_symm[0][0]),nirr_salcs*nirr_salcs*sizeof(double));
+    close_PSIF();
+  }
 
   // build G = BuB^t
   B = compute_B(simples, all_salcs);
@@ -339,6 +337,11 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
   fprintf(outfile,"\nForce Constants\n");
   print_mat(force_constants, nsalcs, nsalcs, outfile);
   fflush(outfile);
+  fprintf(outfile,"\t ** Writing force constants to PSIF_OPTKING ** \n");
+  open_PSIF();
+  psio_write_entry(PSIF_OPTKING, "Symmetric Force Constants",
+    (char *) &(force_constants[0][0]),nsalcs*nsalcs*sizeof(double));
+  close_PSIF();
 
   // build G = BuB^t
   B = block_matrix(nsalcs, 3*carts.get_natom());

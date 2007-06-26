@@ -357,7 +357,7 @@ void fconst_init(cartesians &carts, internals &simples, salc_set &symm) {
 
   open_PSIF();
   constants_in_PSIF=1;
-  if (psio_tocscan(PSIF_OPTKING, "Force Constants") == NULL)
+  if (psio_tocscan(PSIF_OPTKING, "Symmetric Force Constants") == NULL)
     constants_in_PSIF = 0;
   close_PSIF();
   if (!constants_in_PSIF) {
@@ -365,15 +365,6 @@ void fconst_init(cartesians &carts, internals &simples, salc_set &symm) {
     if (fp_fconst == NULL) {
       fprintf(outfile, "\nGenerating empirical Hessian.\n");
       empirical_H(simples,symm,carts);
-      /*
-      fprintf(outfile, "\nUsing unit Hessian.\n");
-      F = unit_mat(symm.get_num());
-      open_PSIF();
-      psio_write_entry(PSIF_OPTKING, "Force Constants",
-        (char *) &(F[0][0]),symm.get_num()*symm.get_num()*sizeof(double));
-      close_PSIF();
-      free_block(F);
-      */
     }
     else {
       /*** transfer force constants from fconst.dat to PSIF_OPTKING ***/
@@ -402,7 +393,7 @@ void fconst_init(cartesians &carts, internals &simples, salc_set &symm) {
           temp_mat[j][i] = temp_mat[i][j];
       /*** write to PSIF_OPTKING ***/
       open_PSIF();
-      psio_write_entry(PSIF_OPTKING, "Force Constants",
+      psio_write_entry(PSIF_OPTKING, "Symmetric Force Constants",
           (char *) &(temp_mat[0][0]),dim*dim*sizeof(double));
       close_PSIF();
       free_block(temp_mat);

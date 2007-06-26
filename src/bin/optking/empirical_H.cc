@@ -195,7 +195,7 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
 
   /*** write to PSIF_OPTKING ***/
    open_PSIF();
-   psio_write_entry(PSIF_OPTKING, "Force Constants",
+   psio_write_entry(PSIF_OPTKING, "Symmetric Force Constants",
        (char *) &(f_new[0][0]),symm.get_num()*symm.get_num()*sizeof(double));
    close_PSIF();
 

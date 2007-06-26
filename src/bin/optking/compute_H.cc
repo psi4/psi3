@@ -41,7 +41,7 @@ double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &c
 
   /*** Read in force constants from PSIF_OPTKING ***/
   open_PSIF();
-  psio_read_entry(PSIF_OPTKING, "Force Constants",
+  psio_read_entry(PSIF_OPTKING, "Symmetric Force Constants",
       (char *) &(H[0][0]),dim*dim*sizeof(double));
   close_PSIF();
   fprintf(outfile,"\nForce Constants read from PSIF_OPTKING\n");
@@ -84,7 +84,7 @@ double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &c
 
   /*** write new force constants H to PSIF_OPTKING ***/
   open_PSIF();
-  psio_write_entry(PSIF_OPTKING, "Force Constants",
+  psio_write_entry(PSIF_OPTKING, "Symmetric Force Constants",
       (char *) &(H[0][0]),dim*dim*sizeof(double));
   close_PSIF();
   free_block(H);

@@ -173,7 +173,8 @@ void freq_energy_cart(cartesians &carts) {
       }
     }
 
-    fprintf(outfile,"Force Constants\n");
+    fprintf(outfile,"\t ** Force Constants for irrep %s in symmetry-adapted cartesian coordinates **\n",
+      syminfo.clean_irrep_lbls[h]);
     print_mat(force_constants, nsalc[h], nsalc[h], outfile);
     fflush(outfile);
 
