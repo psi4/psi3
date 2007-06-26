@@ -157,7 +157,7 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
   //print_mat2(full_all_f_q, num_disps, salcs.get_num(), outfile);
   free_block(full_all_f_q);
 
-  fprintf(outfile,"\n** Force constants for irrep %s\n", syminfo.clean_irrep_lbls[irrep]);
+  fprintf(outfile,"\n\t** Force Constants\n");
   print_mat(force_constants, nsalcs, nsalcs, outfile);
   fflush(outfile);
 
@@ -169,11 +169,13 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
         jj = irrep_salcs[j];
         force_constants_symm[i][j] = force_constants[ii][jj];
       }
-    fprintf(outfile,"\t ** Writing symmetric force constants to PSIF_OPTKING ** \n");
+    fprintf(outfile,"\n\t ** Writing symmetric force constants to PSIF_OPTKING ** \n");
     open_PSIF();
     psio_write_entry(PSIF_OPTKING, "Symmetric Force Constants",
       (char *) &(force_constants_symm[0][0]),nirr_salcs*nirr_salcs*sizeof(double));
     close_PSIF();
+    if (optinfo.print_hessian)
+      print_mat(force_constants_symm, nirr_salcs, nirr_salcs, outfile);
   }
 
   // build G = BuB^t
