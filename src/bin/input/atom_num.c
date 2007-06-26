@@ -10,6 +10,7 @@
 
 void atom_num(char *A,  double *C)
 {
+ int i=0;
  if(!strcmp(A,"GHOST") || !strcmp(A,"G")){
   *C = 0.00;
   }
@@ -334,8 +335,9 @@ else if(!strcmp(A,"UNH")){
 else if(!strcmp(A,"UNS")){
   *C = 107.00;
  }
+else if (i = atoi(A)) {
+  *C = (double) i;
+ }
 else
   punt("Unrecognized atom symbol/name!");
-
-
 }
