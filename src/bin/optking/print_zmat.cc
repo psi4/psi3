@@ -130,7 +130,7 @@ void compute_zmat(cartesians &carts, int *unique_zvars) {
     }
   }
   // compute value of the zmatrix coordinates
-  opt_fgeom = carts.get_coord();
+  opt_fgeom = carts.get_fcoord();
   zints.compute_internals(nallatom, opt_fgeom);
 
   // insert computed values into zmatrix object
