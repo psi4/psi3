@@ -406,9 +406,17 @@ void print_misc()
 
   fprintf(outfile," -Relativistic MVD one-electron corrections to the energy (a.u.):\n\n");
   fprintf(outfile,"    Mass-velocity (p^4) term     :   %12.15lf\n",massveloc);
-  fprintf(outfile,"    One-electron Darwin term     :   %13.15lf\n",darw);
+  fprintf(outfile,"    One-electron Darwin term     :   %12.15lf\n",darw);
   fprintf(outfile,"    Total one-electron MVD terms :   %12.15lf\n",massveloc+darw);
-  fprintf(outfile,"\n\n");
+  fprintf(outfile,"\n");
+
+  if (print_lvl >= PRINTDARWINCOMPLEVEL ) {
+    fprintf(outfile," -One-electron Darwin term per atom : \n\n");
+    for (i=0; i<natom; ++i)
+      fprintf(outfile,"    Atom %d: %12.15lf\n", i+1, darw_per_atom[i]);
+    free(darw_per_atom);
+    fprintf(outfile,"\n");
+  }
 
   if (update_energy_with_MVD) {
     chkpt_init(PSIO_OPEN_OLD);

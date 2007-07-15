@@ -25,6 +25,8 @@
 				   vectors */
 #define PRINTDIPCOMPLEVEL 2	/* Printing level to print out contributions
 				   to electric dipole moment */
+#define PRINTDARWINCOMPLEVEL 2	/* Printing level to print out contributions
+				   to Darwin term */
 #define MAXDENSGRAD 3.0		/* Cutoff on the density gradient */
 
 #ifdef EXTERN
@@ -195,6 +197,7 @@ EXTERN double *ahfsxx, *ahfsyy, *ahfszz,
               *ahfsxy, *ahfsxz, *ahfsyz;  /* Dipole-dipole contributions to the hyperfine coupling constants */
 EXTERN double *edens, *sdens;   /* Electron and spin densities at the nuclei */
 EXTERN double massveloc, darw;  /* First-order relativistic corrections to the energy */
+EXTERN double *darw_per_atom; /* atomic contributions to one-electron Darwin term */
 EXTERN double **grid_pts;	/* Scalar property (electrostatic potential, electron density, density gradient magnitude, Laplacian)
 				   values on a 2d grid */
 EXTERN double **grid_vecX, **grid_vecY, **grid_vecZ;    /* Components of vector properties (density gradient,

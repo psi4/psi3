@@ -781,6 +781,15 @@ void compute_oeprops()
   massveloc *= fine_structure_alpha * fine_structure_alpha;
   darw *= fine_structure_alpha * fine_structure_alpha;
 
+  if (print_lvl >= PRINTDARWINCOMPLEVEL ) {
+    darw_per_atom = init_array(natom);
+    for(i=0;i<natom;i++) {
+      darw_per_atom[i] = zvals[i]*edens[i];
+      darw_per_atom[i] *= M_PI_2/(_c_au*_c_au); 
+      darw_per_atom[i] *= fine_structure_alpha * fine_structure_alpha;
+    }
+  }
+
   free(Lx_ao);
   free(Ly_ao);
   free(Lz_ao);
