@@ -475,9 +475,9 @@ void parse_zmat(int i, int position, double *value, struct definition
    }
    
    if( isdigit( temp_string[0] ) ||
-       temp_string[0] == '-' ||
-       temp_string[0] == '+' ||
-       temp_string[0] == '.') { 
+       ( (temp_string[0] == '-') && isdigit(temp_string[1]) )  ||
+       ( (temp_string[0] == '+') && isdigit(temp_string[1]) )  ||
+       ( (temp_string[0] == '.') && isdigit(temp_string[1]) ) ) { 
      *value = atof( temp_string );
      ++value_set;
    }
@@ -545,8 +545,10 @@ void parse_zmat_simple(int i, int position, double *value, struct definition *ar
     else if(position == 6) z_geom[i].tors_opt = 0;
    }
 
-  if(isdigit(temp_string[0]) || temp_string[0] == '-' ||
-     temp_string[0] == '+' || temp_string[0] == '.') {
+  if ( isdigit(temp_string[0]) || 
+       ( (temp_string[0] == '-') && isdigit(temp_string[1]) )  ||
+       ( (temp_string[0] == '+') && isdigit(temp_string[1]) )  ||
+       ( (temp_string[0] == '.') && isdigit(temp_string[1]) ) ) { 
     *value = atof(temp_string);
     ++value_set;
   }
