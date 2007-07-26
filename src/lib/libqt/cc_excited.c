@@ -25,7 +25,7 @@ int cc_excited(char *wfn)
 			 return 0;
   }
 	else if ( !strcmp(wfn, "EOM_CCSD") || !strcmp(wfn, "LEOM_CCSD") ||
-						!strcmp(wfn, "EOM_CC2")) {
+              !strcmp(wfn, "EOM_CC2")  || !strcmp(wfn, "EOM_CC3") ) {
 			 return 1;
 	}
 	else {

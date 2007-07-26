@@ -83,7 +83,8 @@ disp_irrep.c \
 cdsalcpi.c \
 cdsalc2cd.c \
 exist.c \
-override_occ.c
+override_occ.c \
+statespi.c
 
 DEPENDINCLUDE = chkpt.h
 

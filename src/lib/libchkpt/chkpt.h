@@ -284,4 +284,7 @@ int chkpt_exist(char *);
 int chkpt_rd_override_occ(void);
 void chkpt_wt_override_occ(int);
 
+int *chkpt_rd_statespi(void);
+void chkpt_wt_statespi(int *);
+
 #endif
