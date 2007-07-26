@@ -691,15 +691,15 @@ psi: (
   EOM_CCSDUHFFirstFreq  = ($EOM_CCSDFirstFreq $done)
   EOM_CCSDTwoConFirstFreq  = ERROR
 
-  % Procedures for symm force constants via differences of analytic gradients
-  EOM_CCSDFirstSymm_FC  =
+  % Procedures for symmetric force constants via differences of analytic gradients
+  EOM_CCSDFirstSymm_FC =
     ($EOM_CCSDEnergy $findif_disp_symm repeat NUM_DISP
      $findif_next $findif_input $EOM_CCSDFirst $findif_grad_save end
-     $findif_freq_grad_symm)
-  EOM_CCSDRHFFirstSymm_FC  = ($EOM_CCSDFirstSymm_FC $done)
-  EOM_CCSDROHFFirstSymm_FC  = ($EOM_CCSDFirstSymm_FC $done)
-  EOM_CCSDUHFFirstSymm_FC  = ($EOM_CCSDFirstSymm_FC $done)
-  EOM_CCSDTwoConFirstSymm_FC  = ERROR
+     $findif_freq_grad_symm $done)
+  EOM_CCSDRHFFirstSymm_FC  = $EOM_CCSDFirstSymm_FC
+  EOM_CCSDROHFFirstSymm_FC  = $EOM_CCSDFirstSymm_FC
+  EOM_CCSDUHFFirstSymm_FC  = $EOM_CCSDFirstSymm_FC
+  EOM_CCSDTwoConFirstSymm_FC  = $EOM_CCSDFirstSymm_FC
 
   % Procedure for an CCSD one-electron property computation
   EOM_CCSDFirstOEPROP = ($EOM_CCSDEnergy $cclambda_excited $ccdensity_calc_xi
