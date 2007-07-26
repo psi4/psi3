@@ -95,19 +95,27 @@ void read_density()
 		   frozen_docc, frozen_uocc, ras_opi, reorder, 1) )
         punt("Error in ras_set()");
     }
-    else {
-      errcod = ip_int_array("DOCC",docc,nirreps);
-      if (errcod != IPE_OK) {
-        free(docc);
-	docc = chkpt_rd_clsdpi();
+    else { /* CC densities */
+      if (chkpt_rd_override_occ()) { /* ignore input occupations */
+        docc = chkpt_rd_clsdpi();
+        socc = chkpt_rd_openpi();
+        frozen_docc = chkpt_rd_frzcpi();
+        frozen_uocc = chkpt_rd_frzvpi();
       }
-      errcod = ip_int_array("SOCC",socc,nirreps);
-      if (errcod != IPE_OK) {
-        free(socc);
-	socc = chkpt_rd_openpi();
+      else { /* try to read input occupations if you can */
+        errcod = ip_int_array("DOCC",docc,nirreps);
+        if (errcod != IPE_OK) {
+          free(docc);
+          docc = chkpt_rd_clsdpi();
+        }
+        errcod = ip_int_array("SOCC",socc,nirreps);
+        if (errcod != IPE_OK) {
+          free(socc);
+          socc = chkpt_rd_openpi();
+        }
+        frozen_docc = get_frzcpi();
+        frozen_uocc = get_frzvpi();
       }
-      frozen_docc = get_frzcpi();
-      frozen_uocc = get_frzvpi();
 
       reorder_qt(docc, socc, frozen_docc, frozen_uocc,
                reorder, orbspi, nirreps);

@@ -4,6 +4,7 @@
 #include <math.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
+#include <libchkpt/chkpt.h>
 #define EXTERN
 #include "globals.h"
 
@@ -11,8 +12,12 @@ void get_eom_params()
 {
   int errcod, i, j, sym, iconv,exist, state_irrep, c_irrep;
 
-  eom_params.states_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
-  if (ip_exist("STATES_PER_IRREP",0)) {
+  chkpt_init(PSIO_OPEN_OLD);
+  if (chkpt_rd_override_occ()) {
+    eom_params.states_per_irrep = chkpt_rd_statespi();
+  }
+  else if (ip_exist("STATES_PER_IRREP",0)) {
+    eom_params.states_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
     ip_count("STATES_PER_IRREP", &i, 0);
     if (i != moinfo.nirreps) {
       fprintf(outfile,"Dim. of states_per_irrep vector must be %d\n", moinfo.nirreps) ;
@@ -22,6 +27,7 @@ void get_eom_params()
       errcod = ip_data("STATES_PER_IRREP","%d",&(eom_params.states_per_irrep[i]),1,i);
   }
   else { fprintf(outfile,"Must have states_per_irrep vector in input.\n"); exit(PSI_RETURN_FAILURE); } 
+  chkpt_close();
 
   eom_params.cs_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
   for (state_irrep=0; state_irrep<moinfo.nirreps; ++state_irrep) {

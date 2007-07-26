@@ -6,6 +6,7 @@
 #include <libciomr/libciomr.h>
 #include <psifiles.h>
 #include <libqt/qt.h>
+#include <libchkpt/chkpt.h>
 #define EXTERN
 #include "globals.h"
 
@@ -192,10 +193,17 @@ void get_params(void)
 
   /* setup property variables for excited states */
   if (cc_excited(params.wfn)) {
-    ip_count("STATES_PER_IRREP", &i, 0);
-	  states_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
-    for (i=0;i<moinfo.nirreps;++i)
-      errcod = ip_data("STATES_PER_IRREP","%d",&(states_per_irrep[i]),1,i);
+    chkpt_init(PSIO_OPEN_OLD);
+    if (chkpt_rd_override_occ()) {
+      states_per_irrep = chkpt_rd_statespi();
+    }
+    else {
+      ip_count("STATES_PER_IRREP", &i, 0);
+	    states_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
+      for (i=0;i<moinfo.nirreps;++i)
+        errcod = ip_data("STATES_PER_IRREP","%d",&(states_per_irrep[i]),1,i);
+    }
+    chkpt_close();
 
 	  prop_all = 0;
 	  if (ip_exist("PROP_ALL",0)) ip_boolean("PROP_ALL",&prop_all,0);

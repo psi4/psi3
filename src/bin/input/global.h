@@ -30,6 +30,7 @@ EXTERN char *psi_file_prefix;
 EXTERN int *ioff;
 EXTERN double *df;                  /*df[i] = (i-1)!!*/
 EXTERN char **elem_name;            /*Element names*/
+EXTERN char *wfn;
 
 /*Calculation options*/
 EXTERN int cartOn;                  /*Cartesian input flag*/

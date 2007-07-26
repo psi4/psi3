@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
+#include <libchkpt/chkpt.h>
 #define EXTERN
 #include "globals.h"
 
@@ -18,10 +19,17 @@ void get_rho_params(void)
 
   /* setup propery variables for excited states */
   if (!params.ground) {
-    ip_count("STATES_PER_IRREP", &i, 0);
-    states_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
-    for (i=0;i<moinfo.nirreps;++i)
-      errcod = ip_data("STATES_PER_IRREP","%d",&(states_per_irrep[i]),1,i);
+    chkpt_init(PSIO_OPEN_OLD);
+    if (chkpt_rd_override_occ()) {
+      states_per_irrep = chkpt_rd_statespi();
+    }
+    else {
+      ip_count("STATES_PER_IRREP", &i, 0);
+      states_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
+      for (i=0;i<moinfo.nirreps;++i)
+        errcod = ip_data("STATES_PER_IRREP","%d",&(states_per_irrep[i]),1,i);
+    }
+    chkpt_close();
 
     prop_all = 0;
     if (ip_exist("PROP_ALL",0)) ip_boolean("PROP_ALL",&prop_all,0);
@@ -79,9 +87,9 @@ void get_rho_params(void)
     if (params.prop_all)  { /* do all roots */
       params.nstates = 1;
       for(i=0; i<moinfo.nirreps; i++) {
-	cnt = 0;
-        ip_data("STATES_PER_IRREP","%d",&cnt, 1, i);
-	params.nstates += cnt;
+//        cnt = 0;
+//        ip_data("STATES_PER_IRREP","%d",&cnt, 1, i);
+        params.nstates += states_per_irrep[i];
       }
       rho_params = (struct RHO_Params *) malloc(params.nstates * sizeof(struct RHO_Params));
       rho_params[0].L_irr = 0;
@@ -91,17 +99,18 @@ void get_rho_params(void)
       rho_params[0].L_ground = 1;
       rho_params[0].R_ground = 1;
 
-      cnt = 0;
+//      cnt = 0;
       for(i=0; i<moinfo.nirreps; i++) { /* loop over irrep of R */
-        ip_data("STATES_PER_IRREP","%d",&j, 1, i);
-	for (k=0; k<j; ++k) {
-	  ++cnt;
+//        ip_data("STATES_PER_IRREP","%d",&j, 1, i);
+//        for (k=0; k<j; ++k) {
+        for (k=0; k<states_per_irrep[i]; ++k) {
+          ++cnt;
           rho_params[cnt].L_irr = i^moinfo.sym;
           rho_params[cnt].R_irr = i^moinfo.sym;
           rho_params[cnt].L_root = k;
           rho_params[cnt].R_root = k;
-	  rho_params[cnt].L_ground = 0;
-	  rho_params[cnt].R_ground = 0;
+          rho_params[cnt].L_ground = 0;
+          rho_params[cnt].R_ground = 0;
         }
       }
     }

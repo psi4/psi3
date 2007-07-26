@@ -13,7 +13,7 @@ extern int *correlate(char *ptgroup, int irrep, int *nirreps_ref, int *nirreps);
 void read_chkpt_geom()
 {
   int i, j, errcod, disp_irrep, *correlation, *clsdpi_ref, *clsdpi, mm;
-  int atom, nirreps_ref, nirreps, h, *openpi, *openpi_ref;
+  int atom, nirreps_ref, nirreps, h, *openpi, *openpi_ref, *states_per_irrep;
   int nso, nmo, h_ref, cnt, *cnt_orb_irr, *orbspi, *orbspi_ref, *orbs_off_ref, *so_off;
   int ref, *sopi, *sopi_ref, *orbs_off;
   double Z = 0.0, **scf, **scf_col, **scf_ref, escf_ref;
@@ -86,6 +86,24 @@ void read_chkpt_geom()
   chkpt_wt_nirreps(nirreps);
   chkpt_wt_clsdpi(clsdpi);
   chkpt_wt_openpi(openpi);
+
+  if (cc_wfn(wfn)) {
+    if (cc_excited(wfn)) {
+      states_per_irrep = init_int_array(nirreps);
+      for (h=0; h < nirreps_ref; ++h) {
+        errcod = ip_data("STATES_PER_IRREP","%d",&(i),1,h);
+        states_per_irrep[ correlation[h] ] += i;
+      }
+      chkpt_wt_statespi(states_per_irrep);
+      if (print_lvl > 2) {
+        fprintf(outfile,"states_per_irrep");
+        for (h=0; h < nirreps; ++h)
+          fprintf(outfile, " %d",states_per_irrep[h]);
+        fprintf(outfile,"\n");
+      }
+      free(states_per_irrep);
+    }
+  }
 
   if (print_lvl > 2) {
     fprintf(outfile,"clsdpi");
