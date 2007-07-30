@@ -53,6 +53,10 @@ void start_io(int argc, char *argv[])
       cartOn = 1;
       overwrite_output = 0;
     }
+	else if (strcmp(argv[i], "--keepoutput") == 0) {
+		/* Don't overwrite the output file. This was added for the new psirb driver module. -Jet 30 Jul 07 */
+		overwrite_output = 0;
+	}
     /*--- read geometry from geom.dat file (in findif calculations) ---*/
     else if (strcmp(argv[i], "--geomdat") == 0) {
       geomdat_geom = 1;
