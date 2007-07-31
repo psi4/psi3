@@ -46,6 +46,7 @@ int main(int argc, char *argv[])
   double **geom, *zvals, value;
   FILE *efile;
   int i, errcod, natom;
+  char *keyw = NULL;
   
   init_io(argc, argv);
   title();
@@ -126,9 +127,13 @@ int main(int argc, char *argv[])
 
   fprintf(outfile, "\n");
 
-  /* Write total energy to the checkpoint file */
+  /* Write total energy and (T) contribution to the checkpoint file */
   chkpt_init(PSIO_OPEN_OLD);
   chkpt_wt_etot(ET+moinfo.ecc+moinfo.eref);
+  keyw = chkpt_build_keyword("(T) Energy");
+  psio_write_entry(PSIF_CHKPT, keyw, (char *) &(ET),
+		     sizeof(double));
+  free(keyw);
   chkpt_close();
 
   /* Write pertinent data to energy.dat */
