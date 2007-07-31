@@ -5,6 +5,7 @@
 #include <libchkpt/chkpt.h>
 #include <libpsio/psio.h>
 #include <libqt/qt.h>
+#include <psifiles.h>
 #define EXTERN
 #include "globals.h"
 
@@ -264,19 +265,38 @@ void get_moinfo(void)
 void cleanup(void)
 {
   int i, h;
+  char *keyw=NULL;
 
+  /* Save the energy to PSIF_CHKPT as well */
+  chkpt_init(PSIO_OPEN_OLD);
   if( (!strcmp(params.wfn,"CC2")) || (!strcmp(params.wfn,"EOM_CC2"))) {
     psio_write_entry(CC_INFO, "CC2 Energy", (char *) &(moinfo.ecc),
   		     sizeof(double));
+
+	keyw = chkpt_build_keyword("CC2 Energy");
+    psio_write_entry(PSIF_CHKPT, keyw, (char *) &(moinfo.ecc),
+  		     sizeof(double));
+	free(keyw);
   }
   else if( (!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3"))) {
     psio_write_entry(CC_INFO, "CC3 Energy", (char *) &(moinfo.ecc),
   		     sizeof(double));
+
+    keyw = chkpt_build_keyword("CC3 Energy");
+	psio_write_entry(PSIF_CHKPT, keyw, (char *) &(moinfo.ecc),
+  		     sizeof(double));
+	free(keyw);
   }
   else {
     psio_write_entry(CC_INFO, "CCSD Energy", (char *) &(moinfo.ecc),
   		     sizeof(double));
+
+	keyw = chkpt_build_keyword("CCSD Energy");
+    psio_write_entry(PSIF_CHKPT, keyw, (char *) &(moinfo.ecc),
+  		     sizeof(double));
+	free(keyw);
   }
+  chkpt_close();
 
   if(params.ref == 0 || params.ref == 1) {
     for(h=0; h < moinfo.nirreps; h++)
