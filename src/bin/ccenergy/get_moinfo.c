@@ -273,28 +273,28 @@ void cleanup(void)
     psio_write_entry(CC_INFO, "CC2 Energy", (char *) &(moinfo.ecc),
   		     sizeof(double));
 
-	keyw = chkpt_build_keyword("CC2 Energy");
+    keyw = chkpt_build_keyword("CC2 Energy");
     psio_write_entry(PSIF_CHKPT, keyw, (char *) &(moinfo.ecc),
   		     sizeof(double));
-	free(keyw);
+    free(keyw);
   }
   else if( (!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3"))) {
     psio_write_entry(CC_INFO, "CC3 Energy", (char *) &(moinfo.ecc),
   		     sizeof(double));
 
     keyw = chkpt_build_keyword("CC3 Energy");
-	psio_write_entry(PSIF_CHKPT, keyw, (char *) &(moinfo.ecc),
+    psio_write_entry(PSIF_CHKPT, keyw, (char *) &(moinfo.ecc),
   		     sizeof(double));
-	free(keyw);
+    free(keyw);
   }
   else {
     psio_write_entry(CC_INFO, "CCSD Energy", (char *) &(moinfo.ecc),
   		     sizeof(double));
 
-	keyw = chkpt_build_keyword("CCSD Energy");
+    keyw = chkpt_build_keyword("CCSD Energy");
     psio_write_entry(PSIF_CHKPT, keyw, (char *) &(moinfo.ecc),
   		     sizeof(double));
-	free(keyw);
+    free(keyw);
   }
   chkpt_close();
 

@@ -90,6 +90,7 @@ int rotate(void)
   if(fabs(max) <= params.bconv) {
     fprintf(outfile, "\tBrueckner orbitals converged.  Maximum T1 = %15.12f\n",
 	    fabs(max));
+    chkpt_close();
     return(1);
   }
   else 
