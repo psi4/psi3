@@ -1,3 +1,7 @@
+/*! \file cc2_sigma.c
+    \ingroup (CCEOM)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

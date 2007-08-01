@@ -1,3 +1,7 @@
+/*! \file defines.h
+    \ingroup (INPUT)
+    \brief Enter brief description of file here 
+*/
 /*---------------------------------
   Definitions of general constants
  ---------------------------------*/

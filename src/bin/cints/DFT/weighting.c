@@ -1,3 +1,7 @@
+/*! \file weighting.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 /* -----------------------------------------------
    
    weighting.c

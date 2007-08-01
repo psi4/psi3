@@ -1,3 +1,7 @@
+/*! \file params.h
+    \ingroup (MP2)
+    \brief Enter brief description of file here 
+*/
 struct params {
   int ref;
   char *wfn;

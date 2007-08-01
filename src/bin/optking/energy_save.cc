@@ -1,3 +1,7 @@
+/*! \file energy_save.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /*** ENERGY_SAVE.CC Rollin King, 2002 ***/
 // function executes if optinfo.mode == MODE_GRAD_SAVE
 

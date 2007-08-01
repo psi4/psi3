@@ -1,5 +1,6 @@
 /*###########################################################################*/
 /*! \file deloc.h
+    \ingroup (EXTREMA)
   \brief Header file for the deloc (delocalized internals) class. */
 
 /*! \class deloc

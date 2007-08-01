@@ -1,3 +1,10 @@
+/*! \file bend.h
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup OPTKING Add a description of the group OPTKING */
+
 
 class bend_class {
     int id;

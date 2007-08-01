@@ -1,3 +1,7 @@
+/*! \file file2_mat_wrt.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 #include "dpd.h"
 
 int dpd_file2_mat_wrt(dpdfile2 *File)

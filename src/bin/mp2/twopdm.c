@@ -1,3 +1,7 @@
+/*! \file twopdm.c
+    \ingroup (MP2)
+    \brief Enter brief description of file here 
+*/
 #include <math.h>
 #include <libdpd/dpd.h>
 #define EXTERN

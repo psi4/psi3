@@ -1,3 +1,7 @@
+/*! \file eigsort2.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 void eigsort2(double *d, double **v, int n)
    {
       int i,j,k;

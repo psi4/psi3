@@ -1,3 +1,10 @@
+/*! \file Fab.c
+    \ingroup (CIS)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup CIS Add a description of the group CIS */
+
 #include <libdpd/dpd.h>
 #define EXTERN
 #include "globals.h"

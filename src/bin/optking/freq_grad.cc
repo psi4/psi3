@@ -1,3 +1,7 @@
+/*! \file freq_grad.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /** FREQ_GRAD computes frequencies from gradients */
 
 #if HAVE_CMATH

@@ -1,3 +1,7 @@
+/*! \file globals.h
+    \ingroup (CCHBAR)
+    \brief Enter brief description of file here 
+*/
 #include <ccfiles.h>
 #include <libdpd/dpd.h>
 #include "MOInfo.h"

@@ -1,3 +1,7 @@
+/*! \file oe_osrr.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 
 void OI_OSrecurs(double **OIX, double **OIY, double **OIZ, struct coordinates PA, struct coordinates PB,
 		 double gamma, int lmaxi, int lmaxj);

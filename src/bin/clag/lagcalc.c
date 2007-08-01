@@ -1,3 +1,7 @@
+/*! \file lagcalc.c
+    \ingroup (CLAG)
+    \brief Enter brief description of file here 
+*/
 /*****************************************************************************/
 /*lagcalc - This is a program to calculate the lagrangian matrix for a CI    */
 /*         or MCSCF wavefunction given the one- and two-particle density     */

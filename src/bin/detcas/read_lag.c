@@ -1,3 +1,7 @@
+/*! \file read_lag.c
+    \ingroup (DETCAS)
+    \brief Enter brief description of file here 
+*/
 /*
 ** READ_LAG.C
 **

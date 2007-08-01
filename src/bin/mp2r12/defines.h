@@ -1,3 +1,7 @@
+/*! \file defines.h
+    \ingroup (MP2R12)
+    \brief Enter brief description of file here 
+*/
 /*--- Useful and not-so-useful macro definitions ---*/
 #define USE_BLAS 1
 

@@ -1,3 +1,7 @@
+/*! \file tpool.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /********************************************************
  * An example source module to accompany...
  *

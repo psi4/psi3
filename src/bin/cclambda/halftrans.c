@@ -1,3 +1,7 @@
+/*! \file halftrans.c
+    \ingroup (CCLAMBDA)
+    \brief Enter brief description of file here 
+*/
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 

@@ -1,3 +1,7 @@
+/*! \file bmat.cc
+    \ingroup (INTDER)
+    \brief Enter brief description of file here 
+*/
 #include "intco.h"
 #include "params.h"
 #include "displacements.h"

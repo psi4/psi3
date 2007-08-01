@@ -1,3 +1,7 @@
+/*! \file compute_scf_opdm.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #include<stdio.h>
 #include<string.h>
 #include<libciomr/libciomr.h>

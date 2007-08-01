@@ -1,3 +1,10 @@
+/*! \file geom.c
+    \ingroup (GEOM)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup GEOM Add a description of the group GEOM */
+
 /*
 ** GEOM.C : Program  calculate geometrical parameters from data provided
 **          in format of PSI's FILE11.DAT or GEOM.DAT

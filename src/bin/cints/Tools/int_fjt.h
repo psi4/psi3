@@ -1,3 +1,7 @@
+/*! \file int_fjt.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 
 void init_fjt(int max);
 void free_fjt();

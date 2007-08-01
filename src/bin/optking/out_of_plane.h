@@ -1,3 +1,7 @@
+/*! \file out_of_plane.h
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 class out_class {
     int id;
     int A;

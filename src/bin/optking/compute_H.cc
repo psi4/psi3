@@ -1,3 +1,7 @@
+/*! \file compute_H.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 // This function reads in 
 // Force Constants H from PSIF_OPTKING (in redundant internal coodinates)
 // does a BFGS update on H

@@ -1,3 +1,7 @@
+/*! \file yoshimine.h
+    \ingroup (TRANSQT)
+    \brief Enter brief description of file here 
+*/
 #ifndef YOSHIMINE_H
 #define YOSHIMINE_H
 

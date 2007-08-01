@@ -1,3 +1,7 @@
+/*! \file functional.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 /* ------------------------------------------
    
    functionals go here

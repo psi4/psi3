@@ -1,3 +1,7 @@
+/*! \file ip_karray.c
+    \ingroup (IPV1)
+    \brief Enter brief description of file here 
+*/
 /* These routines manipulate keyword arrays.  A keyword
  * array differs from a data array in that its indices are indicated
  * by a keyword segment.  For example: array:0:1 = 6 is a keyword

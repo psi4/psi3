@@ -1,3 +1,7 @@
+/*! \file orb_mix.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /*-----------------------------------------------------------
 
   orb_mix(); - A function to take the alpha and beta orbitals

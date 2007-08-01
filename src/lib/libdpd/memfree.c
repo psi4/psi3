@@ -1,3 +1,7 @@
+/*! \file memfree.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 /*
 ** Function to return number of double words available for allocation.
 */

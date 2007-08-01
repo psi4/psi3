@@ -1,3 +1,7 @@
+/*! \file file2_copy.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <string.h>
 #include "dpd.h"

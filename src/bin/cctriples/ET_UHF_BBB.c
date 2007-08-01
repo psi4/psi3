@@ -1,3 +1,7 @@
+/*! \file ET_UHF_BBB.c
+    \ingroup (CCTRIPLES)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

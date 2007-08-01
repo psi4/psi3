@@ -1,3 +1,10 @@
+/*! \file build_dipder.c
+    \ingroup (CPHF)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup CPHF Add a description of the group CPHF */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

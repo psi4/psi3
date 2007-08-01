@@ -1,3 +1,7 @@
+/*! \file diis.c
+    \ingroup (DETCAS)
+    \brief Enter brief description of file here 
+*/
 /*
 ** DIIS.C
 ** 

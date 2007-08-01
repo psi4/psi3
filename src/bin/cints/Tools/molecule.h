@@ -1,3 +1,7 @@
+/*! \file molecule.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 
 void init_molecule();
 void cleanup_molecule();

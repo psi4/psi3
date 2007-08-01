@@ -1,3 +1,7 @@
+/*! \file Params.h
+    \ingroup (TRANSQT)
+    \brief Enter brief description of file here 
+*/
 /* Struct for input parameters */
 
 struct Params {

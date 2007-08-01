@@ -1,3 +1,7 @@
+/*! \file L3_AAA.c
+    \ingroup (CCLAMBDA)
+    \brief Enter brief description of file here 
+*/
 
 /* L3_RHF_AAA(): Computes all T3(IJK,ABC) amplitudes for a given I, J,
 ** K combination for input T2, F, and E intermediates.  This function

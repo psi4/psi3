@@ -1,3 +1,7 @@
+/*! \file stringblocks.cc
+    \ingroup (DBOC)
+    \brief Enter brief description of file here 
+*/
 
 #include <iostream>
 #include <stdexcept>

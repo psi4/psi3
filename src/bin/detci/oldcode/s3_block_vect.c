@@ -1,3 +1,7 @@
+/*! \file s3_block_vect.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <libciomr/libciomr.h>
 #include "structs.h"

@@ -1,3 +1,7 @@
+/*! \file hash.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 /*-----------------------------------
   Declarations of htable_entry, etc.
  -----------------------------------*/

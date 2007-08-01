@@ -1,3 +1,7 @@
+/*! \file mem_man.c
+    \ingroup (INT)
+    \brief Enter brief description of file here 
+*/
 #include<stdio.h>
 #include"mem_man.h"
 #define MAXALLOC 10000

@@ -1,3 +1,7 @@
+/*! \file b_sort.c
+    \ingroup (CCSORT)
+    \brief Enter brief description of file here 
+*/
 #include <math.h>
 #include <libpsio/psio.h>
 #include <libdpd/dpd.h>

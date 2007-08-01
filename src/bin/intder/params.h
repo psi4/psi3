@@ -1,3 +1,7 @@
+/*! \file params.h
+    \ingroup (INTDER)
+    \brief Enter brief description of file here 
+*/
 #ifndef __params_h_
 #define __params_h_
 #include "3dmatrix.h"

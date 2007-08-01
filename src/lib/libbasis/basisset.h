@@ -1,3 +1,7 @@
+/*! \file basisset.h
+    \ingroup (BASIS)
+    \brief Enter brief description of file here 
+*/
 
 #ifndef _psi_src_lib_libbasis_basisset_h_
 #define _psi_src_lib_libbasis_basisset_h_

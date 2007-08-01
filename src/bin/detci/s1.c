@@ -1,3 +1,7 @@
+/*! \file s1.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** S1.C
 ** 

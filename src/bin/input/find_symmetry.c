@@ -1,3 +1,7 @@
+/*! \file find_symmetry.c
+    \ingroup (INPUT)
+    \brief Enter brief description of file here 
+*/
 #define EXTERN
 #include <stdio.h>
 #include <libciomr/libciomr.h>

@@ -1,3 +1,7 @@
+/*! \file char_table.c
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /*** This file contains functions which provide information
 **  from the group character tables as given in Cotton 
 */

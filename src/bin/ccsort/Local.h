@@ -1,3 +1,10 @@
+/*! \file Local.h
+    \ingroup (CCSORT)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup CCSORT Add a description of the group CCSORT */
+
 struct Local {
   int natom;
   int nso;

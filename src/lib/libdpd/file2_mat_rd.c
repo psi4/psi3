@@ -1,3 +1,7 @@
+/*! \file file2_mat_rd.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 #include <libpsio/psio.h>
 #include "dpd.h"
 

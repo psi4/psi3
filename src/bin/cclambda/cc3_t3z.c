@@ -1,3 +1,7 @@
+/*! \file cc3_t3z.c
+    \ingroup (CCLAMBDA)
+    \brief Enter brief description of file here 
+*/
 /* cc3_t3z(): Builds the following intermediates, which are required
 ** for the T3-->L1 contributions in the CC3 model:
 **

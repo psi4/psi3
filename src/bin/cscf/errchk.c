@@ -1,3 +1,7 @@
+/*! \file errchk.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /* $Log$
  * Revision 1.2  2002/03/25 02:17:36  janssen
  * Get rid of tmpl.  Use new naming scheme for libipv1 includes.

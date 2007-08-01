@@ -1,3 +1,7 @@
+/*! \file defines.h
+    \ingroup (DBOC)
+    \brief Enter brief description of file here 
+*/
 
 #ifndef _psi3_dboc_defines_h_
 #define _psi3_dboc_defines_h_

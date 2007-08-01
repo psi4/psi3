@@ -1,3 +1,7 @@
+/*! \file 3dmatrix.h
+    \ingroup (INTDER)
+    \brief Enter brief description of file here 
+*/
 #ifndef __3dmatrix_h
 #define __3dmatrix_h
 

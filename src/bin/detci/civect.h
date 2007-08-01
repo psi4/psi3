@@ -1,3 +1,7 @@
+/*! \file civect.h
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 #ifndef CIVECT_H
 #define CIVECT_H
 

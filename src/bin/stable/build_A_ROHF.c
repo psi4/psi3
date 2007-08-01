@@ -1,3 +1,7 @@
+/*! \file build_A_ROHF.c
+    \ingroup (STABLE)
+    \brief Enter brief description of file here 
+*/
 #include <libdpd/dpd.h>
 #include <psifiles.h>
 #define EXTERN

@@ -1,3 +1,7 @@
+/*! \file x_xi_check.c
+    \ingroup (CCDENSITY)
+    \brief Enter brief description of file here 
+*/
 /*
 **  X_XI_CHECK: check sum for xi
 */

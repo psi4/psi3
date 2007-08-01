@@ -1,3 +1,7 @@
+/*! \file freq_grad_cart.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /** FREQ_GRAD_CART computes frequencies from gradients and cartesian disps */
 
 #if HAVE_CMATH

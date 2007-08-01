@@ -1,3 +1,7 @@
+/*! \file slaterd.cc
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 extern "C" {
    #include <stdio.h>
    #include <stdlib.h> /* was libc.h */

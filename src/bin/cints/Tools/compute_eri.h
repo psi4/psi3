@@ -1,3 +1,7 @@
+/*! \file compute_eri.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #ifndef __cplusplus
 #error "Tools/compute_eri.h cannot be used in C programs"
 #endif

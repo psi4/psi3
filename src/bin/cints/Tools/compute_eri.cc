@@ -1,3 +1,7 @@
+/*! \file compute_eri.cc
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 
 extern "C" {
 #include <stdio.h>

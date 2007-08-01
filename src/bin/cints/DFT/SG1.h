@@ -1,3 +1,7 @@
+/*! \file SG1.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 /* These are the first Partitioning parameters for the SG-1 Grid
  It is in this format so that I don't have to use if statements */
 

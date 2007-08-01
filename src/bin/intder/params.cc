@@ -1,3 +1,7 @@
+/*! \file params.cc
+    \ingroup (INTDER)
+    \brief Enter brief description of file here 
+*/
 #include "params.h"
 #include "displacements.h"
 #include "intco.h"

@@ -1,3 +1,7 @@
+/*! \file dft_inputs.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 #define EXTERN
 #include "includes.h"
 #include "common.h"

@@ -1,3 +1,7 @@
+/*! \file analyze.c
+    \ingroup (CCRESPONSE)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libdpd/dpd.h>

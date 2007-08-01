@@ -1,3 +1,7 @@
+/*! \file quartet_permutations.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 
 #ifdef __cplusplus
 extern "C" {

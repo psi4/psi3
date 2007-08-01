@@ -1,3 +1,7 @@
+/*! \file get_params.c
+    \ingroup (RESPONSE)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>

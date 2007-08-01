@@ -1,3 +1,7 @@
+/*! \file cdsalc.cc
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

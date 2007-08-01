@@ -1,3 +1,7 @@
+/*! \file combinate.cc
+    \ingroup (BASIS)
+    \brief Enter brief description of file here 
+*/
 
 extern "C" {
 #include <libciomr/libciomr.h>

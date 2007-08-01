@@ -1,3 +1,7 @@
+/*! \file odometer.h
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** ODOMETER(): Generalized odometer object.  Each `digit' can have its
 **   own min and max values (and actually each position can be filled by an

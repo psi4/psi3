@@ -1,3 +1,7 @@
+/*! \file ip_lib.h
+    \ingroup (IPV1)
+    \brief Enter brief description of file here 
+*/
 
 #include <libipv1/tmpl.h>
 #include <libipv1/ip_types.h>

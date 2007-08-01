@@ -1,3 +1,7 @@
+/*! \file parse_var.c
+    \ingroup (PSI3)
+    \brief Enter brief description of file here 
+*/
 /*
  * parse_var.c
  *

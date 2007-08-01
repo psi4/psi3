@@ -1,3 +1,7 @@
+/*! \file ssq.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** SSQ.C
 **

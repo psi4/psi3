@@ -1,3 +1,7 @@
+/*! \file sigma.cc
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** SIGMA.CC
 **

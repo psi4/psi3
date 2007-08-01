@@ -1,3 +1,7 @@
+/*! \file molecule.h
+    \ingroup (INTDER)
+    \brief Enter brief description of file here 
+*/
 #ifndef __molecule_h
 #define __molecule_h
 

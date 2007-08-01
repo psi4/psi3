@@ -1,3 +1,7 @@
+/*! \file idx_error.c
+    \ingroup (CCSORT)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <psifiles.h>

@@ -1,3 +1,10 @@
+/*! \file MOInfo.h
+    \ingroup (TRANSQT)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup TRANSQT Add a description of the group TRANSQT */
+
 /* Struct for chkpt file molecular orbital information */
 struct MOInfo {
   int nmo;               /* number of molecular orbitals                   */

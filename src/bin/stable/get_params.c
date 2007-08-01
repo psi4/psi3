@@ -1,3 +1,7 @@
+/*! \file get_params.c
+    \ingroup (STABLE)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libipv1/ip_lib.h>

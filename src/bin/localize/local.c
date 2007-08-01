@@ -1,3 +1,10 @@
+/*! \file local.c
+    \ingroup (LOCALIZE)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup LOCALIZE Add a description of the group LOCALIZE */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

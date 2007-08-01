@@ -1,3 +1,7 @@
+/*! \file bmat.h
+    \ingroup (INTDER)
+    \brief Enter brief description of file here 
+*/
 #ifndef __bmat_h
 #define __bmat_h
 

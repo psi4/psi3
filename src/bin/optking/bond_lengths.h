@@ -1,3 +1,7 @@
+/*! \file bond_lengths.h
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /* atomic covalent radii in picometers*/
 
 static float radii[55] = {

@@ -1,3 +1,10 @@
+/*! \file build_libderiv.c
+    \ingroup (DERIV)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup DERIV Add a description of the group DERIV */
+
 #include <math.h>
 #include <stdio.h>
 #include <libint/libint.h>

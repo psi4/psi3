@@ -1,3 +1,7 @@
+/*! \file new_geom.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 // NEW_GEOM performs the back-transformation to cartesian coordinates.
 // It computes a new cartesian geometry from an old cartesian geometry
 // and a set of internal coordinate displacements

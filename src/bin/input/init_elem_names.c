@@ -1,3 +1,7 @@
+/*! \file init_elem_names.c
+    \ingroup (INPUT)
+    \brief Enter brief description of file here 
+*/
 #define EXTERN
 #include <stdio.h>
 #include <string.h>

@@ -1,3 +1,7 @@
+/*! \file tmpl.h
+    \ingroup (IPV1)
+    \brief Enter brief description of file here 
+*/
 #ifndef _TMPL_H
 #define _TMPL_H
 

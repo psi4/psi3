@@ -1,3 +1,7 @@
+/*! \file x_oe_intermediates_rhf.c
+    \ingroup (CCDENSITY)
+    \brief Enter brief description of file here 
+*/
 #define EXTERN
 #include "globals.h"
 

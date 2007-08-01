@@ -1,3 +1,7 @@
+/*! \file new_d1diag.c
+    \ingroup (CCENERGY)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

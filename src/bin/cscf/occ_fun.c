@@ -1,3 +1,7 @@
+/*! \file occ_fun.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /*****************************************************/
 /*                                                   */
 /*      occ_init - This function will take care of   */

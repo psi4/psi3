@@ -1,3 +1,7 @@
+/*! \file scf_iter_2.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /* $Log$
  * Revision 1.3  2003/08/09 17:39:56  crawdad
  * I added the ability to determine frozen core orbitals for UHF references to

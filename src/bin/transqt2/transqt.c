@@ -1,3 +1,7 @@
+/*! \file transqt.c
+    \ingroup (TRANSQT2)
+    \brief Enter brief description of file here 
+*/
 /*
 ** TRANSQT:
 **

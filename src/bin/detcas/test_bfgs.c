@@ -1,3 +1,7 @@
+/*! \file test_bfgs.c
+    \ingroup (DETCAS)
+    \brief Enter brief description of file here 
+*/
 /*
 ** test_bfgs.c
 **

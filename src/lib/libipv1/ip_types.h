@@ -1,3 +1,7 @@
+/*! \file ip_types.h
+    \ingroup (IPV1)
+    \brief Enter brief description of file here 
+*/
 
 #define IP_UNDEFINED  0
 #define IP_ARRAY      1

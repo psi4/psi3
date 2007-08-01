@@ -1,3 +1,7 @@
+/*! \file atom.cc
+    \ingroup (INTDER)
+    \brief Enter brief description of file here 
+*/
 #include "atom.h"
 
 Atom::Atom(int an, double aw, double ax, double ay, double az) 

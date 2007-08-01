@@ -1,3 +1,7 @@
+/*! \file sigmaDD.c
+    \ingroup (CCEOM)
+    \brief Enter brief description of file here 
+*/
 #define EXTERN
 #include "globals.h"
 

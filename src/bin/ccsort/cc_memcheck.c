@@ -1,3 +1,7 @@
+/*! \file cc_memcheck.c
+    \ingroup (CCSORT)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <libdpd/dpd.h>
 #include "Params.h"

@@ -1,3 +1,7 @@
+/*! \file salc.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 // SALC.CC : constructor functions for salc_set
 
 #if HAVE_CMATH

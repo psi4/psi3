@@ -1,3 +1,7 @@
+/*! \file restart.c
+    \ingroup (CCEOM)
+    \brief Enter brief description of file here 
+*/
 /* restart() collapses L vectors down to num vectors */
 
 #include <stdio.h>

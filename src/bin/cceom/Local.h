@@ -1,3 +1,7 @@
+/*! \file Local.h
+    \ingroup (CCEOM)
+    \brief Enter brief description of file here 
+*/
 struct Local {
   int natom;
   int nso;

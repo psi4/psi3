@@ -1,5 +1,6 @@
 /*###########################################################################*/
 /*! \file char_table.cc
+    \ingroup (EXTREMA)
   \brief Character table class. */
 /*
 ** This file contains functions which provide information

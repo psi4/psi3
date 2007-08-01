@@ -1,3 +1,7 @@
+/*! \file mitrush_update.cc
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /* need to fix to add phase.  should probably move most of code
 ** to a mitrush_blk_upd() function in C
 */

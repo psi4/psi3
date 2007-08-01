@@ -1,3 +1,7 @@
+/*! \file build_usotao.c
+    \ingroup (INPUT)
+    \brief Enter brief description of file here 
+*/
 #define EXTERN
 #include <stdio.h>
 #include <stdlib.h>

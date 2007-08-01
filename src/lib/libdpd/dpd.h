@@ -1,3 +1,7 @@
+/*! \file dpd.h
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 #ifndef DPD_H
 #define DPD_H
 

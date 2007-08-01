@@ -1,6 +1,6 @@
-/*!
-  \file local.c
-  \ingroup (CIS)
+/*! \file local.c
+    \ingroup (CIS)
+    \brief Enter brief description of file here 
 */
 
 #include <stdio.h>

@@ -1,3 +1,7 @@
+/*! \file free_grid_structs.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #include "data_structs.h"
 
 void cleanup_sphere(leb_sphere_t sphere);

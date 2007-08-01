@@ -1,3 +1,7 @@
+/*! \file emit_grt_order.c
+    \ingroup (R12)
+    \brief Enter brief description of file here 
+*/
 /*------------------------------------------------------------------------------------------------------
   Builds a library of functions-calls for applying HRR and VRR
  ------------------------------------------------------------------------------------------------------*/

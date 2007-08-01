@@ -1,3 +1,7 @@
+/*! \file get_params.c
+    \ingroup (CCRESPONSE)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <string.h>
 #include <math.h>

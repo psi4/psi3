@@ -1,3 +1,10 @@
+/*! \file 3d_sort.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup DPD Add a description of the group DPD */
+
 /* dpd_3d_sort(): Sorts a 3-index array stored as a two-by-one index
 ** array, (ab,c), into any desired ordering.
 **

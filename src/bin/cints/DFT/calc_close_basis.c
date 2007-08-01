@@ -1,3 +1,7 @@
+/*! \file calc_close_basis.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>

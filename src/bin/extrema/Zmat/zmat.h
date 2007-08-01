@@ -1,5 +1,6 @@
 /*###########################################################################*/
 /*! \file zmat.h
+    \ingroup (EXTREMA)
   \brief Header file for the zmat class. */
 
 /*! \class zmat

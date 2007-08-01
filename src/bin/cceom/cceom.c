@@ -1,3 +1,7 @@
+/*! \file cceom.c
+    \ingroup (CCEOM)
+    \brief Enter brief description of file here 
+*/
 /*
 **  CCEOM: Program to calculate the EOM CCSD right-hand eigenvector and  energy
 */

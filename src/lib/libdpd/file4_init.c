@@ -1,3 +1,7 @@
+/*! \file file4_init.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

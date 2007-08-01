@@ -1,3 +1,7 @@
+/*! \file opdm.c
+    \ingroup (MP2)
+    \brief Enter brief description of file here 
+*/
 #include <math.h>
 #include <stdlib.h>
 #include <libdpd/dpd.h>

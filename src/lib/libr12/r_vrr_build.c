@@ -1,3 +1,7 @@
+/*! \file r_vrr_build.c
+    \ingroup (R12)
+    \brief Enter brief description of file here 
+*/
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,6 +1,6 @@
-/*!
-  \file local.c
-  \ingroup (CCENERGY)
+/*! \file local.c
+    \ingroup (CCRESPONSE)
+    \brief Enter brief description of file here 
 */
 
 #include <stdio.h>

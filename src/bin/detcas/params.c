@@ -1,3 +1,7 @@
+/*! \file params.c
+    \ingroup (DETCAS)
+    \brief Enter brief description of file here 
+*/
 /*
 ** PARAMS.C
 **

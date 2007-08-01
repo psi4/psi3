@@ -1,3 +1,10 @@
+/*! \file ci_energy.c
+    \ingroup (CLAG)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup CLAG Add a description of the group CLAG */
+
 /*****************************************************************************/
 /*ci_energy - This is a program to calculate the CI energy for a CI          */
 /*         or MCSCF wavefunction given the one- and two-particle density     */

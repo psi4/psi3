@@ -1,3 +1,7 @@
+/*! \file calc_grad_fast.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 /*----------------------------------------------------
   
   By Shawn Brown

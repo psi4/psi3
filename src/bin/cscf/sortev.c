@@ -1,3 +1,7 @@
+/*! \file sortev.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /*-------------------------------------------------------------
 
   sortev.c-a routine for sorting the energies and symmetries of

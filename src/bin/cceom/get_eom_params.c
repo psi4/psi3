@@ -1,3 +1,7 @@
+/*! \file get_eom_params.c
+    \ingroup (CCEOM)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

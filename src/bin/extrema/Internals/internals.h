@@ -1,5 +1,6 @@
 /*###########################################################################*/
 /*! \file internals.h
+    \ingroup (EXTREMA)
   \brief Derived class <b>internals</b> declaration. */
 
 /*! \class internals

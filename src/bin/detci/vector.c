@@ -1,3 +1,7 @@
+/*! \file vector.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** VECTOR.C
 **

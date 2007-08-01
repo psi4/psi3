@@ -1,3 +1,7 @@
+/*! \file globals.h
+    \ingroup (TRANSQT2)
+    \brief Enter brief description of file here 
+*/
 #include <psifiles.h>
 #include <ccfiles.h>
 #include "MOInfo.h"

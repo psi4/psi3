@@ -1,3 +1,7 @@
+/*! \file setup_io.c
+    \ingroup (DETCASMAN)
+    \brief Enter brief description of file here 
+*/
 /*
 ** SETUP_IO.C
 **

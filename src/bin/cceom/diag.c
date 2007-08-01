@@ -1,3 +1,7 @@
+/*! \file diag.c
+    \ingroup (CCEOM)
+    \brief Enter brief description of file here 
+*/
 /*
  *   diag() diagonalized Hbar with Davidson-Liu algorithm to obtain
  *    right-hand eigenvector and eigenvalue

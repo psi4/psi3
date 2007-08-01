@@ -1,3 +1,7 @@
+/*! \file invert_RPA_RHF.c
+    \ingroup (RESPONSE)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <libciomr/libciomr.h>

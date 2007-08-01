@@ -1,3 +1,7 @@
+/*! \file restart_with_root.c
+    \ingroup (CCEOM)
+    \brief Enter brief description of file here 
+*/
 /*
  restart_with_root: copies C's from position prop_root to position 0 
  in EOM_Cxxx files 

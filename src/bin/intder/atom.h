@@ -1,3 +1,7 @@
+/*! \file atom.h
+    \ingroup (INTDER)
+    \brief Enter brief description of file here 
+*/
 #ifndef __atom_h
 #define __atom_h
 

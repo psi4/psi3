@@ -1,3 +1,10 @@
+/*! \file ci_overlap.cc
+    \ingroup (DBOC)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup DBOC Add a description of the group DBOC */
+
 
 extern "C" {
 #include <pthread.h>

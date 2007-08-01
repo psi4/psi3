@@ -1,3 +1,7 @@
+/*! \file compute_G.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 // This function computes G via BuB^t where u is a diagonal matrix
 // of inverse masses.
 

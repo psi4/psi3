@@ -1,3 +1,7 @@
+/*! \file guess.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /*--------------------------------------------------------
 
   guess.c: Function that reads the guessing 

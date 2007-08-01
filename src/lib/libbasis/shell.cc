@@ -1,3 +1,7 @@
+/*! \file shell.cc
+    \ingroup (BASIS)
+    \brief Enter brief description of file here 
+*/
 
 #include <stdexcept>
 #include <stdio.h>

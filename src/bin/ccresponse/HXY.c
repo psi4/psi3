@@ -1,3 +1,10 @@
+/*! \file HXY.c
+    \ingroup (CCRESPONSE)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup CCRESPONSE Add a description of the group CCRESPONSE */
+
 #include <stdio.h>
 #include <string.h>
 #include <libdpd/dpd.h>

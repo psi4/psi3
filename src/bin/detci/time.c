@@ -1,3 +1,7 @@
+/*! \file time.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*** INCLUDES ***/
 
 #include <unistd.h>

@@ -1,3 +1,7 @@
+/*! \file globals.h
+    \ingroup (OEPROP)
+    \brief Enter brief description of file here 
+*/
 #define MAXMP 3         /* Up to octopole moments can be computed */
 #define EPS 1.0E-17     /* Absolute precision in computing Fm(t)
                            (see recursion:calc_fij() ) */

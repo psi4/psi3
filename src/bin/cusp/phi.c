@@ -1,3 +1,7 @@
+/*! \file phi.c
+    \ingroup (CUSP)
+    \brief Enter brief description of file here 
+*/
 /*
 ** phi(): Compute the values of the atomic orbitals at a given point.
 ** -TDC, June 2001

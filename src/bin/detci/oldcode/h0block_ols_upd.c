@@ -1,3 +1,7 @@
+/*! \file h0block_ols_upd.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** H0block_ols_upd()
 **

@@ -1,3 +1,7 @@
+/*! \file prints.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 
 void print_intro();
 void print_scalars();

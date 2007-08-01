@@ -1,3 +1,7 @@
+/*! \file cchbar.c
+    \ingroup (CCHBAR)
+    \brief Enter brief description of file here 
+*/
 /*
 **  CCHBAR: Program to calculate the elements of the CCSD HBAR matrix.
 */

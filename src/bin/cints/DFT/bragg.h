@@ -1,3 +1,7 @@
+/*! \file bragg.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 
 /* These are the Slater-Bragg Radii in Angstoms */
 

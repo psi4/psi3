@@ -1,3 +1,7 @@
+/*! \file emit_hrr_t_build.c
+    \ingroup (R12)
+    \brief Enter brief description of file here 
+*/
 #include <math.h>
 #include <stdio.h>
 #include "build_libr12.h"

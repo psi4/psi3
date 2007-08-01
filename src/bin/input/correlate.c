@@ -1,3 +1,7 @@
+/*! \file correlate.c
+    \ingroup (INPUT)
+    \brief Enter brief description of file here 
+*/
 /** This function returns a lookup array that correlates irreps of a point group
  ** with irreps of a subgroup produced by a displacement of a particular
  ** irrep (in the higher point group). It returns an array that contains the

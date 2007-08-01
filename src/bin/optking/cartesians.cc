@@ -1,3 +1,7 @@
+/*! \file cartesians.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /*** cartesians.cc : contains member functions for cartesian class ***/
 
 #if HAVE_CMATH

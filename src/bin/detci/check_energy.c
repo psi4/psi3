@@ -1,3 +1,7 @@
+/*! \file check_energy.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <math.h>
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))

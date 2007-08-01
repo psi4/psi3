@@ -1,3 +1,7 @@
+/*! \file symmetrize.cc
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** CIvect::symmetrize(): This function symmetrizes the CI vector
 **    to maintain the appropriate spin symmetry.  It is the same

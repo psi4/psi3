@@ -1,3 +1,10 @@
+/*! \file detcasman.c
+    \ingroup (DETCASMAN)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup DETCASMAN Add a description of the group DETCASMAN */
+
 /*
 **
 ** DETCASMAN

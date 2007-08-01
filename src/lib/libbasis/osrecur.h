@@ -1,3 +1,7 @@
+/*! \file osrecur.h
+    \ingroup (BASIS)
+    \brief Enter brief description of file here 
+*/
 
 #ifndef _psi_src_lib_libbasis_osrecur_h_
 #define _psi_src_lib_libbasis_osrecur_h_

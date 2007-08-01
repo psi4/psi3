@@ -1,3 +1,7 @@
+/*! \file emit_deriv_build.c
+    \ingroup (DERIV)
+    \brief Enter brief description of file here 
+*/
 #include <math.h>
 #include <stdio.h>
 #include "build_libderiv.h"

@@ -1,3 +1,7 @@
+/*! \file follow_root.c
+    \ingroup (CCEOM)
+    \brief Enter brief description of file here 
+*/
 /*
  root_following: returns index of vector in EOM_Cxxx with maximum overlap with
  vector "CCSD Cxxx" in CC3_MISC

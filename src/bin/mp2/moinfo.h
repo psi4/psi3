@@ -1,3 +1,7 @@
+/*! \file moinfo.h
+    \ingroup (MP2)
+    \brief Enter brief description of file here 
+*/
 struct moinfo {
   int nmo;               /* no. of molecular orbitals */
   int nso;               /* no. of symmetry adapted atomic orbitals */

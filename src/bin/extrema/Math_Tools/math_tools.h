@@ -1,5 +1,6 @@
 /*###########################################################################*/
 /*! \file math_tools.h
+    \ingroup (EXTREMA)
   \brief Math tools concrete class header file. */
 
 /*! \class math_tools

@@ -1,3 +1,7 @@
+/*! \file ip_error.h
+    \ingroup (IPV1)
+    \brief Enter brief description of file here 
+*/
 
 #define IPE_OK            0  /* No problem. */
 #define IPE_KEY_NOT_FOUND 1  /* The keyword was not found. */

@@ -1,3 +1,7 @@
+/*! \file compute_X.c
+    \ingroup (CCRESPONSE)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

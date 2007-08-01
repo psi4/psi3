@@ -1,3 +1,7 @@
+/*! \file Params.h
+    \ingroup (CCLAMBDA)
+    \brief Enter brief description of file here 
+*/
 /* Input parameters for cclambda */
 struct Params {
   int maxiter;

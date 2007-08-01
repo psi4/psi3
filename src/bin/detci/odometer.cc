@@ -1,3 +1,7 @@
+/*! \file odometer.cc
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** ODOMETER.CC
 **

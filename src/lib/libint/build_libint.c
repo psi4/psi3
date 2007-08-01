@@ -1,3 +1,10 @@
+/*! \file build_libint.c
+    \ingroup (INT)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup INT Add a description of the group INT */
+
 /*------------------------------------------------------------------------------------------------------
                                            BUILD_LIBINT
   		       Written by Dr. Justin T. Fermann and Edward F. Valeev

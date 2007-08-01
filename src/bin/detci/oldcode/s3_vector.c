@@ -1,3 +1,7 @@
+/*! \file s3_vector.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** CALC_SIGMA3.C: This file contains the function needed to calculate
 **   the sigma1 contribution to sigma = H c, as given by Olsen, Roos,

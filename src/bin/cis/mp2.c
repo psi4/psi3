@@ -1,3 +1,7 @@
+/*! \file mp2.c
+    \ingroup (CIS)
+    \brief Enter brief description of file here 
+*/
 #include <math.h>
 #include <stdlib.h>
 #include <libdpd/dpd.h>

@@ -1,3 +1,7 @@
+/*! \file formg_direct.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 static char *rcsid = "$Id$";
 
 #define EXTERN

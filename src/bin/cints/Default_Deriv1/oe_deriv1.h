@@ -1,3 +1,7 @@
+/*! \file oe_deriv1.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 
 void oe_deriv(FILE *fpo, double **grad, double **Dens, double **WDens, int nirreps,
 	      int num_shells, struct shell_def *shells, struct shell_pair **shell_pairs, struct gaussian_function *cgtos,

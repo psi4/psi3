@@ -1,3 +1,7 @@
+/*! \file probable.c
+    \ingroup (CCDENSITY)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>

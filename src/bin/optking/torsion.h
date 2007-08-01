@@ -1,3 +1,7 @@
+/*! \file torsion.h
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 class torsion_class {
     int id;
     int A;

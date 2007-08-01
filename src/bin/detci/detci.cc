@@ -1,3 +1,7 @@
+/*! \file detci.cc
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** DETCI
 **

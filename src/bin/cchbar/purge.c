@@ -1,3 +1,7 @@
+/*! \file purge.c
+    \ingroup (CCHBAR)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <libdpd/dpd.h>
 #include <math.h>

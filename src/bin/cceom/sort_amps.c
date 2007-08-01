@@ -1,3 +1,7 @@
+/*! \file sort_amps.c
+    \ingroup (CCEOM)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <libdpd/dpd.h>
 #define EXTERN

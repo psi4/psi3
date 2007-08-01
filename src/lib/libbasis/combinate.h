@@ -1,3 +1,7 @@
+/*! \file combinate.h
+    \ingroup (BASIS)
+    \brief Enter brief description of file here 
+*/
 
 // I know "combinate" is not a word
 

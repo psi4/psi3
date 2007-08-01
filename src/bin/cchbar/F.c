@@ -1,3 +1,10 @@
+/*! \file F.c
+    \ingroup (CCHBAR)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup CCHBAR Add a description of the group CCHBAR */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

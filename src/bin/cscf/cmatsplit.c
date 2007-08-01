@@ -1,3 +1,7 @@
+/*! \file cmatsplit.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /* ------------------------------------
 
    cmatsplit - takes cmat and splits

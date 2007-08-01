@@ -1,3 +1,7 @@
+/*! \file WamefSD.c
+    \ingroup (CCEOM)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libqt/qt.h>

@@ -1,3 +1,7 @@
+/*! \file psi3.c
+    \ingroup (PSI3)
+    \brief Enter brief description of file here 
+*/
 /*
  * PSI3
  * 

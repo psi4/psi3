@@ -1,3 +1,7 @@
+/*! \file ref_orbs.c
+    \ingroup (DETCAS)
+    \brief Enter brief description of file here 
+*/
 /*
 ** REF_ORBS.C
 ** 

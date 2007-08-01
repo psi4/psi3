@@ -1,3 +1,7 @@
+/*! \file rmp2r12_energy.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #include<math.h>
 #include<stdio.h>
 #include<string.h>

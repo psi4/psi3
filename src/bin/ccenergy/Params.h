@@ -1,3 +1,7 @@
+/*! \file Params.h
+    \ingroup (CCENERGY)
+    \brief Enter brief description of file here 
+*/
 /* Input parameters */
 struct Params {
   int maxiter;

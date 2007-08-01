@@ -1,3 +1,10 @@
+/*! \file ip_alloc.c
+    \ingroup (IPV1)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup IPV1 Add a description of the group IPV1 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <tmpl.h>

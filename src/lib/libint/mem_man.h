@@ -1,3 +1,7 @@
+/*! \file mem_man.h
+    \ingroup (INT)
+    \brief Enter brief description of file here 
+*/
 void init_mem(int memory);
 void add_mem(int memory);
 int get_mem(int size);

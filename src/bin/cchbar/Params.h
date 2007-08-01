@@ -1,3 +1,7 @@
+/*! \file Params.h
+    \ingroup (CCHBAR)
+    \brief Enter brief description of file here 
+*/
 /* Input parameters for cchbar */
 struct Params {
   long int memory;

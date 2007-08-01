@@ -1,3 +1,7 @@
+/*! \file salc.h
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 
 class salc_class {
     int length;

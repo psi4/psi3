@@ -1,3 +1,7 @@
+/*! \file sem_test.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** Simultaneous Expansion Method for the Iterative Solution of
 ** Several of the Lowest Eigenvalues and Corresponding Eivenvectors of

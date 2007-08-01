@@ -1,3 +1,7 @@
+/*! \file ET_ABB.c
+    \ingroup (CCTRIPLES)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libdpd/dpd.h>

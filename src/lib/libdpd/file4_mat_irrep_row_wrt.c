@@ -1,3 +1,7 @@
+/*! \file file4_mat_irrep_row_wrt.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <libpsio/psio.h>
 #include "dpd.h"

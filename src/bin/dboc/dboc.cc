@@ -1,3 +1,7 @@
+/*! \file dboc.cc
+    \ingroup (DBOC)
+    \brief Enter brief description of file here 
+*/
 /*
 **
 **  DBOC: Driver program for computing the Diagonal Born-Oppenheimer Correction

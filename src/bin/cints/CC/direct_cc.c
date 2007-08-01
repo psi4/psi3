@@ -1,3 +1,7 @@
+/*! \file direct_cc.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #include<stdio.h>
 #include<libint/libint.h>
 

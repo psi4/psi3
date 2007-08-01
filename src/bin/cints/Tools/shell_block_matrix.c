@@ -1,3 +1,7 @@
+/*! \file shell_block_matrix.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #include<stdlib.h>
 #include<stdio.h>
 #include<libciomr/libciomr.h>

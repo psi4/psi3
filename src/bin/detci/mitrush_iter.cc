@@ -1,3 +1,7 @@
+/*! \file mitrush_iter.cc
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** MITRUSH_ITER.CC
 **

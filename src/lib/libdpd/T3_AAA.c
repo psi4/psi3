@@ -1,3 +1,7 @@
+/*! \file T3_AAA.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 
 /* T3_RHF_AAA(): Computes all T3(IJK,ABC) amplitudes for a given I, J,
 ** K combination for input C2, F, and E intermediates.  This function

@@ -1,3 +1,7 @@
+/*! \file int_fjt.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 
 /* These routines are based on the gamfun program of
  * Trygve Ulf Helgaker (fall 1984)

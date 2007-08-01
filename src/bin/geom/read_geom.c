@@ -1,3 +1,7 @@
+/*! \file read_geom.c
+    \ingroup (GEOM)
+    \brief Enter brief description of file here 
+*/
 /*
 ** READ_GEOM() : Function reads geometry (bohr) from file (usu. geom.dat)
 **

@@ -1,3 +1,10 @@
+/*! \file build_libr12.c
+    \ingroup (R12)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup R12 Add a description of the group R12 */
+
 /*---------------------------------------------------------------------------------------------
   This code generates Level 0 and 1 routines for computing non-standard two-electron integrals
   necessary in linear R12-methods. Evaluation is performed in Cartesian environment

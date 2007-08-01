@@ -1,3 +1,7 @@
+/*! \file internals.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /*** INTERNALS.CC member functions for internals class ***/ 
 
 #if HAVE_CMATH

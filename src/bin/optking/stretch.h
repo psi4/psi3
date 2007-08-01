@@ -1,3 +1,7 @@
+/*! \file stretch.h
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 
 class stretch_class {
     int id;

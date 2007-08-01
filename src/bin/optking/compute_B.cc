@@ -1,3 +1,7 @@
+/*! \file compute_B.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 // This function constructs the B matrix for a set of salcs
 
 #if HAVE_CMATH

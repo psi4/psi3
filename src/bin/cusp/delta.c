@@ -1,3 +1,7 @@
+/*! \file delta.c
+    \ingroup (CUSP)
+    \brief Enter brief description of file here 
+*/
 /* 
 ** delta(): Compute the MO-basis delta-function for a given point.
 ** TDC, June 2001

@@ -1,3 +1,7 @@
+/*! \file cc2_Wabei.c
+    \ingroup (CCHBAR)
+    \brief Enter brief description of file here 
+*/
 #include <string.h>
 #include <libdpd/dpd.h>
 #define EXTERN

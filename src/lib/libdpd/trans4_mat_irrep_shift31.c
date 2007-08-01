@@ -1,3 +1,7 @@
+/*! \file trans4_mat_irrep_shift31.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <libciomr/libciomr.h>

@@ -1,3 +1,7 @@
+/*! \file indpairs.h
+    \ingroup (DETCAS)
+    \brief Enter brief description of file here 
+*/
 #ifndef INDEPPAIRS_H
 #define INDEPPAIRS_H
 

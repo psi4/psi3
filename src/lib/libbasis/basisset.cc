@@ -1,3 +1,10 @@
+/*! \file basisset.cc
+    \ingroup (BASIS)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup BASIS Add a description of the group BASIS */
+
 #include <stdexcept>
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,3 +1,10 @@
+/*! \file b2brepl.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup DETCI Add a description of the group DETCI */
+
 #define EXTERN
 #include <stdio.h>
 #include <libqt/qt.h>

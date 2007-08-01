@@ -1,3 +1,10 @@
+/*! \file check_rot.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup CSCF Add a description of the group CSCF */
+
 /*
 ** CHECK_ROT.C
 ** 

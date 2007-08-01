@@ -1,3 +1,7 @@
+/*! \file ccenergy.c
+    \ingroup (CCENERGY)
+    \brief Enter brief description of file here 
+*/
 /*
 **  CCENERGY: Program to calculate coupled cluster energies.
 */

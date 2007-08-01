@@ -1,3 +1,7 @@
+/*! \file thetas.c
+    \ingroup (DETCAS)
+    \brief Enter brief description of file here 
+*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>

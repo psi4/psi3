@@ -1,3 +1,7 @@
+/*! \file internals.h
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /*** INTERNALS.H class declaration for internals ***/
 
 #include "stretch.h"

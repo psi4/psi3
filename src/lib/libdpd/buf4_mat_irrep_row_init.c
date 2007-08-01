@@ -1,3 +1,7 @@
+/*! \file buf4_mat_irrep_row_init.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <libqt/qt.h>
 #include <libciomr/libciomr.h>

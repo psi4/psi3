@@ -1,3 +1,7 @@
+/*! \file hfwfn.h
+    \ingroup (DBOC)
+    \brief Enter brief description of file here 
+*/
 
 #ifndef _psi3_bin_dboc_hfwfn_h_
 #define _psi3_bin_dboc_hfwfn_h_

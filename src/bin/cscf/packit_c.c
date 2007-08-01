@@ -1,3 +1,7 @@
+/*! \file packit_c.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /* $Log$
  * Revision 1.4  2003/04/10 20:36:01  crawdad
  * Modifications to cscf to account for *very* large cases.  Mainly converted

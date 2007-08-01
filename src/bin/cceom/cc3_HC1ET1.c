@@ -1,3 +1,7 @@
+/*! \file cc3_HC1ET1.c
+    \ingroup (CCEOM)
+    \brief Enter brief description of file here 
+*/
 #include <libdpd/dpd.h>
 #define EXTERN
 #include "globals.h"

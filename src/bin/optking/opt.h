@@ -1,3 +1,7 @@
+/*! \file opt.h
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 #ifdef EXTERN
 # undef EXTERN
 # define EXTERN extern

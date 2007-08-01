@@ -1,3 +1,7 @@
+/*! \file data_structs.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #ifndef DATA_STRUCTS_H
 #define DATA_STRUCTS_H
 /*-----------------------

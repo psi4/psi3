@@ -1,3 +1,7 @@
+/*! \file globals.h
+    \ingroup (DETCAS)
+    \brief Enter brief description of file here 
+*/
 /*
 ** GLOBALS.H
 **

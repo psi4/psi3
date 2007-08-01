@@ -1,3 +1,7 @@
+/*! \file scf_parsing.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #include<stdio.h>
 #include<math.h>
 #include<libipv1/ip_lib.h>

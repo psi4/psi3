@@ -1,3 +1,7 @@
+/*! \file main.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #include<stdio.h>
 #include<math.h>
 #include<stdlib.h>

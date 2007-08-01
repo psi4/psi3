@@ -1,3 +1,10 @@
+/*! \file atom_num.c
+    \ingroup (INPUT)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup INPUT Add a description of the group INPUT */
+
 /* This file contains the function to determine atomic number for atoms
    input by the user */
 

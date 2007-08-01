@@ -1,3 +1,7 @@
+/*! \file disp_freq_energy_cart.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /* DISP_FREQ_ENERGY_CART makes symmetry-adapted cartesian coordinates and displaces
    along them to setup frequencies by energy points */
 

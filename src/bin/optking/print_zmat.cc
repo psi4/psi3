@@ -1,3 +1,7 @@
+/*! \file print_zmat.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /*** PRINT_ZMAT() printout z-matrix ***/ 
 
 #if HAVE_CMATH

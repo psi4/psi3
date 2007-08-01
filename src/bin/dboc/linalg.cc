@@ -1,3 +1,7 @@
+/*! \file linalg.cc
+    \ingroup (DBOC)
+    \brief Enter brief description of file here 
+*/
 //
 // Local definitions for matrix operations: (de)allocation, product, LU decomposition
 //

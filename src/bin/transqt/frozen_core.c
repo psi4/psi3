@@ -1,3 +1,7 @@
+/*! \file frozen_core.c
+    \ingroup (TRANSQT)
+    \brief Enter brief description of file here 
+*/
 /*
 ** FZC.C: Source code to handle a few things associated with transforming
 **    integrals with frozen core orbitals.

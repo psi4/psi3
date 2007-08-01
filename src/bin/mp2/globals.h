@@ -1,3 +1,7 @@
+/*! \file globals.h
+    \ingroup (MP2)
+    \brief Enter brief description of file here 
+*/
 #include <ccfiles.h>
 #include "moinfo.h"
 #include "params.h"

@@ -1,5 +1,6 @@
 /*##########################################################################*/
 /*! \file extrema.h
+    \ingroup (EXTREMA)
   \brief Included header files, function declarations, and variables. */
 /*##########################################################################*/
 

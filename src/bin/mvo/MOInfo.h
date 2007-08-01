@@ -1,3 +1,10 @@
+/*! \file MOInfo.h
+    \ingroup (MVO)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup MVO Add a description of the group MVO */
+
 /* Struct for PSIF_CHKPT molecular orbital information */
 struct MOInfo {
   int nmo;               /* number of molecular orbitals                   */

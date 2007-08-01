@@ -1,3 +1,7 @@
+/*! \file h0block.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** H0BLOCK.C
 ** Contains some of the code associated with the H0block structure, which

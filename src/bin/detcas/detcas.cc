@@ -1,3 +1,7 @@
+/*! \file detcas.cc
+    \ingroup (DETCAS)
+    \brief Enter brief description of file here 
+*/
 /*
 **
 ** DETCAS

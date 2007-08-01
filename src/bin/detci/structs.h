@@ -1,3 +1,7 @@
+/*! \file structs.h
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** STRUCTS.H
 ** 

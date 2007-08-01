@@ -1,3 +1,7 @@
+/*! \file buf4_mat_irrep_wrt_block.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include "dpd.h"

@@ -1,3 +1,7 @@
+/*! \file misc.cc
+    \ingroup (INTDER)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

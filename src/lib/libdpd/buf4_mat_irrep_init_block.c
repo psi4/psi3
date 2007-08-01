@@ -1,3 +1,7 @@
+/*! \file buf4_mat_irrep_init_block.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <libciomr/libciomr.h>
 #include "dpd.h"

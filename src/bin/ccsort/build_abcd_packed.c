@@ -1,3 +1,7 @@
+/*! \file build_abcd_packed.c
+    \ingroup (CCSORT)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

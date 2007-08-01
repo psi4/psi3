@@ -1,3 +1,7 @@
+/*! \file c_sort.c
+    \ingroup (CCSORT)
+    \brief Enter brief description of file here 
+*/
 #include <libdpd/dpd.h>
 #include "MOInfo.h"
 #include "Params.h"

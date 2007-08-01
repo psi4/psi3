@@ -1,3 +1,7 @@
+/*! \file intco.h
+    \ingroup (INTDER)
+    \brief Enter brief description of file here 
+*/
 #ifndef __intco_h
 #define __intco_h
 

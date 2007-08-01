@@ -1,3 +1,7 @@
+/*! \file init_uhf.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /**************************************************
 
     init_uhf.c - separate code to initialize UHF

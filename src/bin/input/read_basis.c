@@ -1,3 +1,7 @@
+/*! \file read_basis.c
+    \ingroup (INPUT)
+    \brief Enter brief description of file here 
+*/
 #define EXTERN
 #include <stdio.h>
 #include <libipv1/ip_lib.h>

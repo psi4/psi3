@@ -1,3 +1,7 @@
+/*! \file genci.h
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 
 /*
 ** GENCI.H

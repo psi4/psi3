@@ -1,3 +1,7 @@
+/*! \file shell.h
+    \ingroup (BASIS)
+    \brief Enter brief description of file here 
+*/
 
 #ifndef _psi_src_lib_libbasis_shell_h_
 #define _psi_src_lib_libbasis_shell_h_

@@ -1,3 +1,7 @@
+/*! \file buf4_symm2.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include "dpd.h"
 

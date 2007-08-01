@@ -1,3 +1,7 @@
+/*! \file opdm.cc
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 #define EXTERN
 #define TOL 1E-14
 /* #define DEBUG */

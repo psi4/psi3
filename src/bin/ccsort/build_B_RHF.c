@@ -1,3 +1,7 @@
+/*! \file build_B_RHF.c
+    \ingroup (CCSORT)
+    \brief Enter brief description of file here 
+*/
 #include <libdpd/dpd.h>
 #include <psifiles.h>
 #include "MOInfo.h"

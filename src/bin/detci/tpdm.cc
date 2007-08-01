@@ -1,3 +1,7 @@
+/*! \file tpdm.cc
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 #define EXTERN
 
 #include <math.h>

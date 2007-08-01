@@ -1,3 +1,7 @@
+/*! \file linalg.c
+    \ingroup (INPUT)
+    \brief Enter brief description of file here 
+*/
 #include <stdlib.h>
 #include <math.h>
 #include "linalg.h"

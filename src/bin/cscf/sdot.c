@@ -1,3 +1,7 @@
+/*! \file sdot.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /* $Log$
  * Revision 1.1  2000/02/04 22:52:32  evaleev
  * Initial revision

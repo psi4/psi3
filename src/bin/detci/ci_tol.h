@@ -1,3 +1,7 @@
+/*! \file ci_tol.h
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 #define S_MAX 0.999995 /* Max overlap for mitrush vectors and collapsed vectors */
 #define HD_MIN 1.0E-4  /* Minimum diagonal element of preconditioner */
 #define ZERO 1e-10

@@ -1,3 +1,7 @@
+/*! \file te_deriv1_ints.cc
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #include <vector>
 #include <sstream>
 #include <algorithm>

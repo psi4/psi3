@@ -1,3 +1,7 @@
+/*! \file fold.c
+    \ingroup (CCDENSITY)
+    \brief Enter brief description of file here 
+*/
 #define EXTERN
 #include "globals.h"
 

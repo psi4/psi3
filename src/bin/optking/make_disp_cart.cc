@@ -1,3 +1,7 @@
+/*! \file make_disp_cart.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /** displaces + and - along all cartesian coordinates **/ 
 
 #if HAVE_CMATH

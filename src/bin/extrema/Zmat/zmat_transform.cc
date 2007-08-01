@@ -1,5 +1,6 @@
 /*###########################################################################*/
 /*! \file zmat_transform.cc
+    \ingroup (EXTREMA)
   \brief zmat transformation functions
 
   z-matrix derived class member functions for transformations between 

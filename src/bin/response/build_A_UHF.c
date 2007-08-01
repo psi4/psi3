@@ -1,3 +1,7 @@
+/*! \file build_A_UHF.c
+    \ingroup (RESPONSE)
+    \brief Enter brief description of file here 
+*/
 #include <libdpd/dpd.h>
 #include <psifiles.h>
 #define EXTERN

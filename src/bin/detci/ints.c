@@ -1,3 +1,7 @@
+/*! \file ints.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** INTS.C
 **

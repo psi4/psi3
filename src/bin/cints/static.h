@@ -1,3 +1,7 @@
+/*! \file static.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 
 /*------------------------------------------------
   Useful definitions for some arrays which should

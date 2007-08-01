@@ -1,3 +1,7 @@
+/*! \file get_opdm_lbl.c
+    \ingroup (OEPROP)
+    \brief Enter brief description of file here 
+*/
 #define EXTERN
 #include "includes.h"
 #include "globals.h"

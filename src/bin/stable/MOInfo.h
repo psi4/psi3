@@ -1,3 +1,10 @@
+/*! \file MOInfo.h
+    \ingroup (STABLE)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup STABLE Add a description of the group STABLE */
+
 struct MOInfo {
   int nirreps;        /* no. of irreducible representations */
   int nmo;            /* no. of molecular orbitals */

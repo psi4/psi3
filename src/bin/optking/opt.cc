@@ -1,3 +1,7 @@
+/*! \file opt.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /*** OPT.CC Rollin King, begun 1999 ***/
 
 /*

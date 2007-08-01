@@ -1,3 +1,7 @@
+/*! \file rdtwo.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /* $Log$
  * Revision 1.5  2004/01/02 06:37:12  crawdad
  * Merging psi-3-2 branch (from release tag psi-3-2-rc-2 to head at psi-3-2-0)

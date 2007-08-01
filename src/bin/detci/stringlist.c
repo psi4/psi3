@@ -1,3 +1,7 @@
+/*! \file stringlist.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** STRINGLIST.C: Code to form the CI space as strings with all
 **    single replacements.

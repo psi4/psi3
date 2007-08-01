@@ -1,3 +1,7 @@
+/*! \file ael.c
+    \ingroup (CCDENSITY)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <libqt/qt.h>
 #include <psifiles.h>

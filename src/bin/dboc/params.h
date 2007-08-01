@@ -1,3 +1,7 @@
+/*! \file params.h
+    \ingroup (DBOC)
+    \brief Enter brief description of file here 
+*/
 
 #ifndef _psi3_bin_dboc_params_h_
 #define _psi3_bin_dboc_params_h_

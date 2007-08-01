@@ -1,3 +1,7 @@
+/*! \file findit.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /* $Log$
  * Revision 1.2  2002/12/06 15:50:32  crawdad
  * Changed all exit values to PSI_RETURN_SUCCESS or PSI_RETURN_FAILURE as

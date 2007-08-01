@@ -1,3 +1,7 @@
+/*! \file fjt.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #include<math.h>
 #include<stdio.h>
 #include<libint/libint.h>

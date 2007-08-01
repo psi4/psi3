@@ -1,3 +1,7 @@
+/*! \file enuc_deriv2.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #include<stdio.h>
 #include<libipv1/ip_lib.h>
 #include<math.h>

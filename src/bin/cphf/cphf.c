@@ -1,3 +1,7 @@
+/*! \file cphf.c
+    \ingroup (CPHF)
+    \brief Enter brief description of file here 
+*/
 /*
 ** CPHF: Program to solve the Coupled Perturbed Hartree-Fock equations
 ** for nuclear and electric field perturbations and to compute

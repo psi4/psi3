@@ -1,3 +1,10 @@
+/*! \file Frozen.h
+    \ingroup (CCDENSITY)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup CCDENSITY Add a description of the group CCDENSITY */
+
 struct Frozen {
     int nfzc;           /* total no. of frozen core orbitals */
     int nfzv;           /* total no. of frozen virtual orbitals */

@@ -1,3 +1,7 @@
+/*! \file common.h
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /* $Id$ */
 /* $Log$
  * Revision 1.17  2005/11/10 16:37:50  evaleev

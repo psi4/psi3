@@ -1,3 +1,7 @@
+/*! \file ip_error.c
+    \ingroup (IPV1)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdarg.h>

@@ -1,5 +1,6 @@
 /*###########################################################################*/
 /*! \file deloc.cc
+    \ingroup (EXTREMA)
   \brief Member functions for deloc (delocalized internals) derived class
   
   Contains the deloc constructor, method driver functions, interfaces

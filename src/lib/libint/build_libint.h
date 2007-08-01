@@ -1,3 +1,7 @@
+/*! \file build_libint.h
+    \ingroup (INT)
+    \brief Enter brief description of file here 
+*/
 #define MAX_AM 22
 #define DEFAULT_NEW_AM 8
 #define DEFAULT_OPT_AM 8

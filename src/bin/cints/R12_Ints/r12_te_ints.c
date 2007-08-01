@@ -1,3 +1,7 @@
+/*! \file r12_te_ints.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #include<math.h>
 #include<stdio.h>
 #include<string.h>

@@ -1,3 +1,7 @@
+/*! \file quartet_permutations.cc
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 extern "C" {
 #include<stdio.h>
 #include<stdlib.h>

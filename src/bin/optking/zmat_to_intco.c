@@ -1,3 +1,7 @@
+/*! \file zmat_to_intco.c
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /*** ZMAT_TO_INTCO() determine simples from z-matrix coordinates 
   - not intended to work for dummy atoms ***/
 

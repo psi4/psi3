@@ -1,3 +1,7 @@
+/*! \file ip_read.c
+    \ingroup (IPV1)
+    \brief Enter brief description of file here 
+*/
 /* This file provides the routines to do the initial parse of the input
  * file. */
 

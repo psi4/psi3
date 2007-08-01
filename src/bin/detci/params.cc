@@ -1,3 +1,7 @@
+/*! \file params.cc
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** PARAMS.CC: File contains functions which get or print the running
 **    parameters for the CI calculation.

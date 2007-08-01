@@ -1,3 +1,7 @@
+/*! \file diis2_uhf.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /* diis_uhf(): DIIS extrapolation for the UHF SCF procedure.  This version
 ** uses Pulay's method [see P. Pulay, J. Comp. Chem. 3, 556-560 (1982)].
 **

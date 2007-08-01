@@ -1,3 +1,7 @@
+/*! \file get_moinfo.c
+    \ingroup (CCSORT)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

@@ -1,3 +1,7 @@
+/*! \file cc3_l3l2.c
+    \ingroup (CCLAMBDA)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

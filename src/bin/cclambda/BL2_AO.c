@@ -1,3 +1,10 @@
+/*! \file BL2_AO.c
+    \ingroup (CCLAMBDA)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup CCLAMBDA Add a description of the group CCLAMBDA */
+
 #include <stdio.h>
 #include <math.h>
 #include <libciomr/libciomr.h>

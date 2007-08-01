@@ -1,3 +1,7 @@
+/*! \file ip_cwk.c
+    \ingroup (IPV1)
+    \brief Enter brief description of file here 
+*/
 /* These routines manipulate the current working keyword.  This
  * is an ordered list of keyword_tree's.  When a relative
  * keyword is searched for we start looking under the first keyword

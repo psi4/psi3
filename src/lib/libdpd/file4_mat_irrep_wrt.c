@@ -1,3 +1,7 @@
+/*! \file file4_mat_irrep_wrt.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 #include "dpd.h"
 
 int dpd_file4_mat_irrep_wrt(dpdfile4 *File, int irrep)

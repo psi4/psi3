@@ -1,3 +1,7 @@
+/*! \file transform.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 
 void transform_i(double *data, double *puream_data, double **c2p, int am_i, int nj, int nk, int nl);
 void transform_j(double *data, double *puream_data, double **c2p, int am_j, int ni, int nk, int nl);

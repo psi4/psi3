@@ -1,3 +1,10 @@
+/*! \file calcinfo.h
+    \ingroup (DETCAS)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup DETCAS Add a description of the group DETCAS */
+
 /*
 ** CALCINFO.H
 ** 

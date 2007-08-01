@@ -1,3 +1,7 @@
+/*! \file globals.h
+    \ingroup (CPHF)
+    \brief Enter brief description of file here 
+*/
 
 /* Global variables */
 #ifdef EXTERN

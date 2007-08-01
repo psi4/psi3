@@ -1,3 +1,7 @@
+/*! \file diag_A_ROHF.c
+    \ingroup (STABLE)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <libipv1/ip_lib.h>

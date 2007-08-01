@@ -1,3 +1,7 @@
+/*! \file disp_user.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /*** DISP_USER only performs input-specified displacements ***/ 
 
 #if HAVE_CMATH

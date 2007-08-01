@@ -1,3 +1,7 @@
+/*! \file globals.h
+    \ingroup (CCENERGY)
+    \brief Enter brief description of file here 
+*/
 #include <ccfiles.h>
 #include "MOInfo.h"
 #include "Params.h"

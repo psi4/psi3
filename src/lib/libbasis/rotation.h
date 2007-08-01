@@ -1,3 +1,7 @@
+/*! \file rotation.h
+    \ingroup (BASIS)
+    \brief Enter brief description of file here 
+*/
 
 #ifndef _psi_src_lib_libbasis_rotation_h_
 #define _psi_src_lib_libbasis_rotation_h_

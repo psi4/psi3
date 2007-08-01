@@ -1,3 +1,7 @@
+/*! \file rdone.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /* $Log$
  * Revision 1.7  2004/10/08 17:33:41  nruss
  * Modified iwl_rdone() to acept boolean for deleteing one-electron ints. -NJR

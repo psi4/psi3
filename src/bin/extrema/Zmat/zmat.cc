@@ -1,5 +1,6 @@
 /*###########################################################################*/
 /*! \file zmat.cc
+    \ingroup (EXTREMA)
   \brief Member functions for z-matrix derived class
   
   Contains the zmat constructor, method driver functions, interfaces

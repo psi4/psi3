@@ -1,3 +1,7 @@
+/*! \file ccresponse.c
+    \ingroup (CCRESPONSE)
+    \brief Enter brief description of file here 
+*/
 /*
 **  CCRESPONSE: Program to compute CC linear response properties.
 */

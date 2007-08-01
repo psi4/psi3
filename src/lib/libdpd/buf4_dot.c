@@ -1,3 +1,7 @@
+/*! \file buf4_dot.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libqt/qt.h>

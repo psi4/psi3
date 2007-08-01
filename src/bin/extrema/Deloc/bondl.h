@@ -1,6 +1,8 @@
 /*##########################################################################*/
 /*! \file bondl.h
-  \brief Contains bond length array.  
+    \ingroup (EXTREMA)
+  \brief Contains bond length array. 
+*/ 
 /*                                                  J. Kenny 12/08/01
 ##########################################################################*/
 

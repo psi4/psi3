@@ -1,3 +1,7 @@
+/*! \file yoshimine.c
+    \ingroup (TRANSQT)
+    \brief Enter brief description of file here 
+*/
 /*
 ** YOSHIMINE.C: Functions for the Yoshimine Sort Object
 **

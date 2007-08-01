@@ -1,3 +1,7 @@
+/*! \file globals.h
+    \ingroup (TRANSQT)
+    \brief Enter brief description of file here 
+*/
 /* External global variables */
 extern FILE *infile, *outfile;
 extern int *ioff;

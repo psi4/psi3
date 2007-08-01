@@ -1,3 +1,10 @@
+/*! \file MOInfo.h
+    \ingroup (RESPONSE)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup RESPONSE Add a description of the group RESPONSE */
+
 struct MOInfo {
   int nirreps;        /* no. of irreducible representations */
   int nmo;            /* no. of molecular orbitals */

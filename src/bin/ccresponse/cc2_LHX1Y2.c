@@ -1,3 +1,7 @@
+/*! \file cc2_LHX1Y2.c
+    \ingroup (CCRESPONSE)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <string.h>
 #include <libciomr/libciomr.h>

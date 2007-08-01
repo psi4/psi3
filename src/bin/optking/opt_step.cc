@@ -1,3 +1,7 @@
+/*! \file opt_step.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /*** OPT_STEP.CC takes geometry steps using gradients -- optking's default operation ***/ 
 
 #if HAVE_CMATH

@@ -1,3 +1,10 @@
+/*! \file check_max_am.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup CINTS Add a description of the group CINTS */
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<libint/libint.h>

@@ -1,3 +1,7 @@
+/*! \file clag.h
+    \ingroup (CLAG)
+    \brief Enter brief description of file here 
+*/
 /****************************************************************************/
 /* lag.c header file including standard definitions and prototypes          */
 /****************************************************************************/

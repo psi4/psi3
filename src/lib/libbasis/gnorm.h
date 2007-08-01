@@ -1,3 +1,7 @@
+/*! \file gnorm.h
+    \ingroup (BASIS)
+    \brief Enter brief description of file here 
+*/
 
 #ifndef _psi_src_lib_libbasis_gnorm_h_
 #define _psi_src_lib_libbasis_gnorm_h_

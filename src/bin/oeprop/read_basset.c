@@ -1,3 +1,7 @@
+/*! \file read_basset.c
+    \ingroup (OEPROP)
+    \brief Enter brief description of file here 
+*/
 #define EXTERN
 #include "includes.h"
 #include "globals.h"

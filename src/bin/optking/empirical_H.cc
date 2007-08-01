@@ -1,3 +1,7 @@
+/*! \file empirical_H.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 // This function generates an empirical guess Hessian from a given set of
 //   salcs according to Schlegel, Theor. Chim. Acta, 66, 333 (1984).
 

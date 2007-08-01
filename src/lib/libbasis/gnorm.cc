@@ -1,3 +1,7 @@
+/*! \file gnorm.cc
+    \ingroup (BASIS)
+    \brief Enter brief description of file here 
+*/
 
 #include <stdexcept>
 #if HAVE_CMATH

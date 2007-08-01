@@ -1,3 +1,7 @@
+/*! \file scf_input.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 #define EXTERN
 #include "includes.h"
 #include "common.h"

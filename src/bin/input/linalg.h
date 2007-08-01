@@ -1,3 +1,7 @@
+/*! \file linalg.h
+    \ingroup (INPUT)
+    \brief Enter brief description of file here 
+*/
 
 #ifndef _psi3_dboc_linalg_h_
 #define _psi3_dboc_linalg_h_

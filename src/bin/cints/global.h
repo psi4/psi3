@@ -1,3 +1,7 @@
+/*! \file global.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 /*-----------------
   global variables
  -----------------*/

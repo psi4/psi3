@@ -1,3 +1,7 @@
+/*! \file functional.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #include "data_structs.h"
 
 struct fun_info_s slater_e(struct den_info_s den_info);

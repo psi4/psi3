@@ -1,3 +1,7 @@
+/*! \file phases.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <libciomr/libciomr.h>
 #define EXTERN

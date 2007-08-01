@@ -1,3 +1,10 @@
+/*! \file psiclean.c
+    \ingroup (PSICLEAN)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup PSICLEAN Add a description of the group PSICLEAN */
+
 /*
 ** PSICLEAN
 **

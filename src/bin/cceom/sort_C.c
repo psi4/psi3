@@ -1,3 +1,7 @@
+/*! \file sort_C.c
+    \ingroup (CCEOM)
+    \brief Enter brief description of file here 
+*/
 /* sorts C vectors each iteration to prepare for hbar contractions */
 
 #include <stdio.h>

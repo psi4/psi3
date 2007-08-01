@@ -1,3 +1,7 @@
+/*! \file cc_bt2_thread_symm.cc
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #if HAVE_CMATH
 # include <cmath>
 #else

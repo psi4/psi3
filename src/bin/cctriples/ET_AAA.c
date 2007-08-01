@@ -1,3 +1,10 @@
+/*! \file ET_AAA.c
+    \ingroup (CCTRIPLES)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup CCTRIPLES Add a description of the group CCTRIPLES */
+
 #include <stdio.h>
 #include <math.h>
 #include <libdpd/dpd.h>

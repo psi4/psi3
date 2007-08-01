@@ -1,3 +1,7 @@
+/*! \file mp2r12.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #include<stdio.h>
 #include<libint/libint.h>
 

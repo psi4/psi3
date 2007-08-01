@@ -1,3 +1,7 @@
+/*! \file hbar_extra.c
+    \ingroup (CCEOM)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <math.h>
 #define EXTERN

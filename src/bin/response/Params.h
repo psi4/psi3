@@ -1,3 +1,7 @@
+/*! \file Params.h
+    \ingroup (RESPONSE)
+    \brief Enter brief description of file here 
+*/
 struct Params {
   int print;             /* Output level control */
   long int memory;       /* Memory available (in bytes) */

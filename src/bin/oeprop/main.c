@@ -1,3 +1,7 @@
+/*! \file main.c
+    \ingroup (OEPROP)
+    \brief Enter brief description of file here 
+*/
 #include "includes.h"
 #include "prototypes.h"
 #include "globals.h"

@@ -1,3 +1,7 @@
+/*! \file write_Rs.c
+    \ingroup (CCEOM)
+    \brief Enter brief description of file here 
+*/
 /*
  *   write_Rs writes out all of the converged R's to RAMPS for the current irrep
  */

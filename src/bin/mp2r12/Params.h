@@ -1,3 +1,7 @@
+/*! \file Params.h
+    \ingroup (MP2R12)
+    \brief Enter brief description of file here 
+*/
 /* Struct for input parameters */
 struct Params {
     int print_lvl;          /* Printing level */

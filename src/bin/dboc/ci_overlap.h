@@ -1,3 +1,7 @@
+/*! \file ci_overlap.h
+    \ingroup (DBOC)
+    \brief Enter brief description of file here 
+*/
 
 #ifndef _psi3_bin_dboc_cioverlap_h_
 #define _psi3_bin_dboc_cioverlap_h_

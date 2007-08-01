@@ -1,3 +1,7 @@
+/*! \file build_libr12.h
+    \ingroup (R12)
+    \brief Enter brief description of file here 
+*/
 /*-------------------------------------------------------------------------
   This is not real DERIV_LVL, it is just a constant that reflects the fact
   that t-integrals require incremented angular momentum (effectively, 

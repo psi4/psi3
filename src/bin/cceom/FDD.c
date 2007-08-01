@@ -1,3 +1,10 @@
+/*! \file FDD.c
+    \ingroup (CCEOM)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup CCEOM Add a description of the group CCEOM */
+
 #include <stdio.h>
 #include <math.h>
 #define EXTERN

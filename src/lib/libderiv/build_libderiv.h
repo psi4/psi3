@@ -1,3 +1,7 @@
+/*! \file build_libderiv.h
+    \ingroup (DERIV)
+    \brief Enter brief description of file here 
+*/
 #define MAX_AM 16
 #define DERIV_LVL 2
 #define DEFAULT_NEW_AM1 6  /*--- first derivatives of up to f-functions ---*/

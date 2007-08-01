@@ -1,3 +1,7 @@
+/*! \file grad_energy.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /*** GRAD_ENERGY computes a file11 entry from energies in chkpt Rollin King, 2002 ***/ 
 
 #if HAVE_CMATH

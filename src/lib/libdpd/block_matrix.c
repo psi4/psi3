@@ -1,3 +1,7 @@
+/*! \file block_matrix.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 /*
 ** dpd_block_matrix(): Allocates a contiguous block of memory for use
 ** as a 2-dimensional array.

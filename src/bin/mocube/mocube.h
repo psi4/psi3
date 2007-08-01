@@ -1,3 +1,7 @@
+/*! \file mocube.h
+    \ingroup (MOCUBE)
+    \brief Enter brief description of file here 
+*/
 struct cube_struct {
   char title[80];
   char subtitle[80];

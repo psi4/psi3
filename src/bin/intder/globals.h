@@ -1,3 +1,7 @@
+/*! \file globals.h
+    \ingroup (INTDER)
+    \brief Enter brief description of file here 
+*/
 #ifndef globals_h
 #define globals_h
 #include "3dmatrix.h"

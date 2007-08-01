@@ -1,3 +1,7 @@
+/*! \file emit_hrr_build_macro.c
+    \ingroup (INT)
+    \brief Enter brief description of file here 
+*/
 #include <math.h>
 #include <stdio.h>
 #include "build_libint.h"

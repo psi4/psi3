@@ -1,3 +1,7 @@
+/*! \file opt_energies.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /*** OPT_ENERGIES handles opt by energy points, Rollin  King, 2002 ***/ 
 
 // this file should now be obseleted

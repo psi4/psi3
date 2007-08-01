@@ -1,3 +1,7 @@
+/*! \file buf4_dirprd.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <libqt/qt.h>
 #include "dpd.h"

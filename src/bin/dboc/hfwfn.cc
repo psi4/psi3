@@ -1,3 +1,7 @@
+/*! \file hfwfn.cc
+    \ingroup (DBOC)
+    \brief Enter brief description of file here 
+*/
 
 #include <stdexcept>
 #include <stdlib.h>

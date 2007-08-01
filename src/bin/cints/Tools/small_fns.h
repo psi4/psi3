@@ -1,3 +1,7 @@
+/*! \file small_fns.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 
 void setup();
 void start_io(int argc, char *argv[]);

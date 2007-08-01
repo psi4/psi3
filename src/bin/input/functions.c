@@ -1,3 +1,7 @@
+/*! \file functions.c
+    \ingroup (INPUT)
+    \brief Enter brief description of file here 
+*/
 /* This file contains functions such as Rotation, distance, and bond angle
 calculations */
 

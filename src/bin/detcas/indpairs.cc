@@ -1,3 +1,7 @@
+/*! \file indpairs.cc
+    \ingroup (DETCAS)
+    \brief Enter brief description of file here 
+*/
 /*
 ** INDPAIRS.C
 ** 

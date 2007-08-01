@@ -1,3 +1,7 @@
+/*! \file get_syminfo.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /*** GET_SYMINFO   gets symmetry info from chkpt and char_table.c ***/ 
 
 #if HAVE_CMATH

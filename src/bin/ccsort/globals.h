@@ -1,3 +1,7 @@
+/*! \file globals.h
+    \ingroup (CCSORT)
+    \brief Enter brief description of file here 
+*/
 #include <ccfiles.h>
 
 /* Global variables */

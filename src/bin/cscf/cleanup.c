@@ -1,3 +1,7 @@
+/*! \file cleanup.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /* $Log$
  * Revision 1.32  2007/04/05 15:45:25  crawdad
  * Fixed a few memory leaks identified by valgrind. -TDC

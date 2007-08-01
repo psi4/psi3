@@ -1,3 +1,10 @@
+/*! \file MOInfo.h
+    \ingroup (MP2R12)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup MP2R12 Add a description of the group MP2R12 */
+
 /* Struct for PSIF_CHKPT molecular orbital information */
 struct MOInfo {
     int nmo;

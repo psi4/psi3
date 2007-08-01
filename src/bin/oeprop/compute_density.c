@@ -1,3 +1,10 @@
+/*! \file compute_density.c
+    \ingroup (OEPROP)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup OEPROP Add a description of the group OEPROP */
+
 #define EXTERN
 #include "includes.h"
 #include "globals.h"

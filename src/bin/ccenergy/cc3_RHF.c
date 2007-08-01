@@ -1,3 +1,7 @@
+/*! \file cc3_RHF.c
+    \ingroup (CCENERGY)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

@@ -1,3 +1,7 @@
+/*! \file read_charges.c
+    \ingroup (INPUT)
+    \brief Enter brief description of file here 
+*/
 /*
 ** This functions gets an array of user specified charges (if it exists)
 ** Added to facilitate counterpoise corrections with ghost atoms

@@ -1,3 +1,7 @@
+/*! \file mp2r12_energy.c
+    \ingroup (MP2R12)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <libciomr/libciomr.h>

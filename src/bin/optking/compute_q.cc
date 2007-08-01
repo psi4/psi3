@@ -1,3 +1,7 @@
+/*! \file compute_q.cc
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 // returns the values of salcs given the simple internals and salc_set
 // the value of the simple internals must already be computed
 

@@ -1,3 +1,7 @@
+/*! \file transqt.c
+    \ingroup (TRANSQT)
+    \brief Enter brief description of file here 
+*/
 /*
 ** TRANSQT:
 ** Program to transform one- and two-electron integrals over

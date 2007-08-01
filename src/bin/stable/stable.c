@@ -1,3 +1,7 @@
+/*! \file stable.c
+    \ingroup (STABLE)
+    \brief Enter brief description of file here 
+*/
 /*
 **  STABLE: Program to calculate the eigenvalues and eigenvectors
 **  of the molecular orbital Hessian.

@@ -1,3 +1,7 @@
+/*! \file defines.h
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 /*---------------------
   Customizable values
  ---------------------*/

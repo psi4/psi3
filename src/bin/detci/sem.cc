@@ -1,3 +1,7 @@
+/*! \file sem.cc
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** Simultaneous Expansion Method Iterator
 **

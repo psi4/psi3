@@ -1,3 +1,7 @@
+/*! \file buf4_scm.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include "dpd.h"
 #include <libqt/qt.h>

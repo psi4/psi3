@@ -1,3 +1,7 @@
+/*! \file dmat.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /* $Log$
  * Revision 1.8  2002/04/03 02:06:01  janssen
  * Finish changes to use new include paths for libraries.

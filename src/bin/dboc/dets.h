@@ -1,3 +1,7 @@
+/*! \file dets.h
+    \ingroup (DBOC)
+    \brief Enter brief description of file here 
+*/
 
 #ifndef _psi3_dboc_dets_h_
 #define _psi3_dboc_dets_h_

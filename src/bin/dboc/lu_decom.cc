@@ -1,3 +1,7 @@
+/*! \file lu_decom.cc
+    \ingroup (DBOC)
+    \brief Enter brief description of file here 
+*/
 
 
 #include "defines.h"

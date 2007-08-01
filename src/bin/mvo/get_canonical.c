@@ -1,3 +1,7 @@
+/*! \file get_canonical.c
+    \ingroup (MVO)
+    \brief Enter brief description of file here 
+*/
 /*
 **  get_canonical.c
 **  

@@ -1,3 +1,7 @@
+/*! \file clag.c
+    \ingroup (CLAG)
+    \brief Enter brief description of file here 
+*/
 /****************************************************************************/
 /* clag: the main controlling program for calculating the lagrangian and CI */ 
 /*      energy. The lagrangian is written to file 75 and the Ci energy is   */

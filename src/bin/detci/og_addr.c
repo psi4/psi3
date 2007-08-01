@@ -1,3 +1,7 @@
+/*! \file og_addr.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** OG_ADDR.C: Code to calculate lexical addresses of strings for 
 **    olsen graph structures.

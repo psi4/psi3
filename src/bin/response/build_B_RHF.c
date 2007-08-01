@@ -1,3 +1,7 @@
+/*! \file build_B_RHF.c
+    \ingroup (RESPONSE)
+    \brief Enter brief description of file here 
+*/
 #include <libdpd/dpd.h>
 #include <psifiles.h>
 #define EXTERN

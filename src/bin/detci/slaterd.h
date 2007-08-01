@@ -1,3 +1,7 @@
+/*! \file slaterd.h
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /* Slater Determinant Class
 **
 ** Based on a previous implementation by David Sherrill using bitsrings 

@@ -1,3 +1,7 @@
+/*! \file params.h
+    \ingroup (MVO)
+    \brief Enter brief description of file here 
+*/
 /*
 ** PARAMS.H
 ** 

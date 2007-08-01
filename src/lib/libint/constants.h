@@ -1,3 +1,7 @@
+/*! \file constants.h
+    \ingroup (INT)
+    \brief Enter brief description of file here 
+*/
 
 #ifndef _psi3_src_lib_libint_constants_h_
 #define _psi3_src_lib_libint_constants_h_

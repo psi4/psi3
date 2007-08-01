@@ -1,3 +1,7 @@
+/*! \file diag_A_RHF.c
+    \ingroup (STABLE)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <libciomr/libciomr.h>

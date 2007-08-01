@@ -1,3 +1,7 @@
+/*! \file rad_extent.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libint/libint.h>

@@ -1,3 +1,7 @@
+/*! \file mpn.cc
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** Moeller Plesset Perturbation Series Generator
 **

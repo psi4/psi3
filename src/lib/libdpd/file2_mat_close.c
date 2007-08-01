@@ -1,3 +1,7 @@
+/*! \file file2_mat_close.c
+    \ingroup (DPD)
+    \brief Enter brief description of file here 
+*/
 #include "dpd.h"
 
 int dpd_file2_mat_close(dpdfile2 *File)

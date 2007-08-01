@@ -1,3 +1,7 @@
+/*! \file form_vec.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /* $Log$
  * Revision 1.9  2004/05/03 04:32:40  crawdad
  * Major mods based on merge with stable psi-3-2-1 release.  Note that this

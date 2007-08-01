@@ -1,3 +1,7 @@
+/*! \file get_optinfo.c
+    \ingroup (OPTKING)
+    \brief Enter brief description of file here 
+*/
 /* GET_OPTINFO   reads optimization parameters from input.dat */
 
 #include <stdio.h>

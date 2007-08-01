@@ -1,3 +1,7 @@
+/*! \file graphset.cc
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /* 
 ** GRAPHSET.CC
 **

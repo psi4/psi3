@@ -1,3 +1,7 @@
+/*! \file cc2_LHX1Y1.c
+    \ingroup (CCRESPONSE)
+    \brief Enter brief description of file here 
+*/
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>

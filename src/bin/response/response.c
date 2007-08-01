@@ -1,3 +1,7 @@
+/*! \file response.c
+    \ingroup (RESPONSE)
+    \brief Enter brief description of file here 
+*/
 /*
 **  RESPONSE: Program to compute various response properties.
 */

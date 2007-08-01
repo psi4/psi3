@@ -1,3 +1,7 @@
+/*! \file cusp.c
+    \ingroup (CUSP)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <string.h>
 #include <math.h>

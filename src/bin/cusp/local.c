@@ -1,3 +1,7 @@
+/*! \file local.c
+    \ingroup (CUSP)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <math.h>
 #include <libciomr/libciomr.h>

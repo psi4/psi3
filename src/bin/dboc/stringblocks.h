@@ -1,3 +1,7 @@
+/*! \file stringblocks.h
+    \ingroup (DBOC)
+    \brief Enter brief description of file here 
+*/
 
 #ifndef _psi3_dboc_stringblocks_h_
 #define _psi3_dboc_stringblocks_h_

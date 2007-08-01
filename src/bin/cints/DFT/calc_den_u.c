@@ -1,3 +1,7 @@
+/*! \file calc_den_u.c
+    \ingroup (CINTS)
+    \brief Enter brief description of file here 
+*/
 /*----------------------------------------------------
   
   get_density.c

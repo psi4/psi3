@@ -1,3 +1,10 @@
+/*! \file delta.c
+    \ingroup (MOCUBE)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup MOCUBE Add a description of the group MOCUBE */
+
 /* * returns values of mos at a grid point, RAK, Nov. 2002
 ** hacked from cusp: delta() ** TDC, June 2001
 */

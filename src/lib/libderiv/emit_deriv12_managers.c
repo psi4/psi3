@@ -1,3 +1,7 @@
+/*! \file emit_deriv12_managers.c
+    \ingroup (DERIV)
+    \brief Enter brief description of file here 
+*/
 /*------------------------------------------------------------------------------------------------------
   Builds a library of functions-calls for applying HRR and VRR
  ------------------------------------------------------------------------------------------------------*/

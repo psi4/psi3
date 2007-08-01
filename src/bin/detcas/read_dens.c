@@ -1,3 +1,7 @@
+/*! \file read_dens.c
+    \ingroup (DETCAS)
+    \brief Enter brief description of file here 
+*/
 /*
 ** READ_DENS.C
 **

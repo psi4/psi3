@@ -1,3 +1,7 @@
+/*! \file Params.h
+    \ingroup (CCSORT)
+    \brief Enter brief description of file here 
+*/
 struct Params {
   int print_lvl;         /* Output level control */
   int keep_TEIFile;      /* Should we keep the input two-elec. integrals? */

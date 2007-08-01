@@ -1,3 +1,7 @@
+/*! \file globals.h
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /* nice stuff to extern or not to extern properly */
 #ifdef EXTERN
 # undef EXTERN

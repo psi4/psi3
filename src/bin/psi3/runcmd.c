@@ -1,3 +1,7 @@
+/*! \file runcmd.c
+    \ingroup (PSI3)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>

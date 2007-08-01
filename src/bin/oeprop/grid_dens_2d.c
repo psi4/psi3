@@ -1,3 +1,7 @@
+/*! \file grid_dens_2d.c
+    \ingroup (OEPROP)
+    \brief Enter brief description of file here 
+*/
 #define EXTERN
 #include "includes.h"
 #include "globals.h"

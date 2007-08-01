@@ -1,3 +1,7 @@
+/*! \file s3.c
+    \ingroup (DETCI)
+    \brief Enter brief description of file here 
+*/
 /*
 ** S3.C
 ** 

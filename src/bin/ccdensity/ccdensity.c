@@ -1,3 +1,7 @@
+/*! \file ccdensity.c
+    \ingroup (CCDENSITY)
+    \brief Enter brief description of file here 
+*/
 /*
 **  CCDENSITY: Program to calculate the coupled-cluster one- and 
 **             two-particle densities.

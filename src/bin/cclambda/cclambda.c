@@ -1,3 +1,7 @@
+/*! \file cclambda.c
+    \ingroup (CCLAMBDA)
+    \brief Enter brief description of file here 
+*/
 /*
 **  CCLAMBDA: Program to calculate the coupled-cluster lambda vector.
 */

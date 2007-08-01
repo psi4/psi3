@@ -1,3 +1,7 @@
+/*! \file geom.cc
+    \ingroup (DBOC)
+    \brief Enter brief description of file here 
+*/
 #include <stdio.h>
 #include <stdlib.h>
 extern "C" {

@@ -1,3 +1,7 @@
+/*! \file formg2.c
+    \ingroup (CSCF)
+    \brief Enter brief description of file here 
+*/
 /* $Log$
  * Revision 1.2  2001/06/29 20:39:28  evaleev
  * Modified cscf to use libpsio to store supermatrix files.

@@ -1,3 +1,7 @@
+/*! \file MOInfo.h
+    \ingroup (CCRESPONSE)
+    \brief Enter brief description of file here 
+*/
 struct MOInfo {
   int nirreps;        /* no. of irreducible representations */
   int nmo;            /* no. of molecular orbitals */

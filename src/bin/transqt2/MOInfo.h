@@ -1,3 +1,10 @@
+/*! \file MOInfo.h
+    \ingroup (TRANSQT2)
+    \brief Enter brief description of file here 
+*/
+
+/*! \defgroup TRANSQT2 Add a description of the group TRANSQT2 */
+
 struct MOInfo {
   int nirreps;           /* no. of irreducible representations */
   int nmo;               /* no. of molecular orbitals */
