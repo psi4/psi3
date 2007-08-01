@@ -3,7 +3,7 @@
    \ingroup (PSIO)
 */
 
-#include "psio.h"
+#include <libpsio/psio.h>
 
 /*!
 ** PSIO_READ_ENTRY(): Reads an entire TOC entry from a PSI file.

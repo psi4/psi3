@@ -102,7 +102,6 @@ CXXFLAGS = $(CXXDBG) $(CXXOPT) $(CXXDEF_NOAIX) $(CXXOTH) $(CXXINC)
 CXXINC += -I$(srcdir) $(DIRS:%=-I$(srcdir)/%)
 CXXDEF += $(OPTIONS)
 
-LD = $(CXX)
 LDLIBS += $(BLAS) -lpthread
 PSILIBS = -lPSI_qt -lPSI_chkpt $(INTLIBS) -lPSI_iwl \
           -lPSI_psio -lPSI_ciomr -lPSI_ipv1

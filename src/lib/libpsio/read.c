@@ -6,32 +6,17 @@
 #include <stdlib.h> 
 #include <unistd.h>
 #include <string.h>
-#include "psio.h"
+#include <libpsio/psio.h>
 
-/*!
-** PSIO_READ(): Reads data from within a TOC entry from a PSI file.
-**
-**  \param unit   = The PSI unit number used to identify the file to all
-**                  read and write functions.
-**  \param key    = The TOC keyword identifying the desired entry.
-**  \param buffer = The buffer to store the data as it is read.
-**  \param size   = The number of bytes to read.
-**  \param start  = The entry-relative starting page/offset of the desired data.
-**  \param end    = A pointer to the entry-relative page/offset for the next
-**                  byte after the end of the read request.
-** 
-** \ingroup (PSIO)
-*/
-
-int psio_read(unsigned int unit, char *key, char *buffer, ULI size,
-	      psio_address start, psio_address *end)
+int __psio_read(psio_lib* Lib, unsigned int unit, char *key, char *buffer, ULI size,
+		psio_address start, psio_address *end)
 {
   psio_ud *this_unit;
   psio_tocentry *this_entry;
   psio_address start_toc, start_data, end_data; /* global addresses */
   ULI tocentry_size;
 
-  this_unit = &(psio_unit[unit]);
+  this_unit = &(Lib->psio_unit[unit]);
 
   /* Find the entry in the TOC */
   this_entry = psio_tocscan(unit, key);
@@ -75,4 +60,25 @@ int psio_read(unsigned int unit, char *key, char *buffer, ULI size,
 #endif  
 
   return(1);
+}
+
+/*!
+** PSIO_READ(): Reads data from within a TOC entry from a PSI file.
+**
+**  \param unit   = The PSI unit number used to identify the file to all
+**                  read and write functions.
+**  \param key    = The TOC keyword identifying the desired entry.
+**  \param buffer = The buffer to store the data as it is read.
+**  \param size   = The number of bytes to read.
+**  \param start  = The entry-relative starting page/offset of the desired data.
+**  \param end    = A pointer to the entry-relative page/offset for the next
+**                  byte after the end of the read request.
+** 
+** \ingroup (PSIO)
+*/
+
+int psio_read(unsigned int unit, char *key, char *buffer, ULI size,
+	      psio_address start, psio_address *end)
+{
+  return __psio_read(_default_psio_lib_,unit,key,buffer,size,start,end);
 }

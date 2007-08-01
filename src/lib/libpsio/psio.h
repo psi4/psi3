@@ -3,13 +3,16 @@
 
 #include <stdio.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define PSIO_OPEN_NEW 0
 #define PSIO_OPEN_OLD 1
 
 #define PSIO_KEYLEN 80
 #define PSIO_MAXVOL 8
 #define PSIO_MAXUNIT 300
-#define PSIO_MAXSTR 512
 #define PSIO_PAGELEN 65536
 
 typedef unsigned long int ULI;  /* For convenience */
@@ -18,9 +21,6 @@ typedef struct {
     ULI page;   /* First page of entry */
     ULI offset; /* Starting byte offset on fpage */
 } psio_address;
-
-/* A convenient address initialization struct */
-extern psio_address PSIO_ZERO;
 
 struct psio_entry {
     char key[PSIO_KEYLEN];
@@ -44,7 +44,24 @@ typedef struct {
     psio_tocentry *toc;
 } psio_ud;
 
-extern psio_ud *psio_unit;
+/**
+  default libpsio is globally visible
+*/
+typedef struct {
+  psio_ud *psio_unit;
+#ifdef PSIO_STATS
+  ULI *psio_readlen;
+  ULI *psio_writlen;
+#endif
+  /** Library state variable */
+  int state;
+} psio_lib;
+/** the default library */
+extern psio_lib* _default_psio_lib_;
+/** Upon catastrophic failure, the library will exit() with this code. The default is 1, but can be overridden. */
+extern int _psio_error_exit_code_;
+/** A convenient address initialization struct */
+extern psio_address PSIO_ZERO;
 
 #define PSIO_ERROR_INIT       1
 #define PSIO_ERROR_DONE       2
@@ -67,12 +84,8 @@ extern psio_ud *psio_unit;
 #define PSIO_ERROR_IDENTVOLPATH 19
 #define PSIO_ERROR_MAXUNIT   20
 
-#ifdef PSIO_STATS
-extern ULI *psio_readlen;
-extern ULI *psio_writlen;
-#endif
-
 int psio_init(void);
+int psio_init_ipfree(void);
 int psio_state(void);
 int psio_done(void);
 void psio_error(unsigned int unit, unsigned int errval);
@@ -81,10 +94,10 @@ int psio_close(unsigned int unit, int keep);
 
 unsigned int psio_get_numvols(unsigned int unit);
 unsigned int psio_get_numvols_default(void);
-int psio_get_volpath(unsigned int unit, unsigned int volume, char *path);
-int psio_get_volpath_default(unsigned int volume, char *path);
-int psio_get_filename(unsigned int unit, char *name);
-int psio_get_filename_default(char *name);
+int psio_get_volpath(unsigned int unit, unsigned int volume, char **path);
+int psio_get_volpath_default(unsigned int volume, char **path);
+int psio_get_filename(unsigned int unit, char **name);
+int psio_get_filename_default(char **name);
 psio_address psio_get_address(psio_address start, ULI shift);
 psio_address psio_get_global_address(psio_address entry_start,
                                      psio_address rel_address);
@@ -118,5 +131,12 @@ int psio_open_check(unsigned int unit);
 
 ULI psio_rd_toclen(unsigned int unit);
 void psio_wt_toclen(unsigned int unit, ULI toclen);
+
+int psio_set_filescfg_kwd(const char* kwdgrp, const char* kwd, int unit, const char* kwdval);
+const char* psio_get_filescfg_kwd(const char* kwdgrp, const char* kwd, int unit);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif    /* #ifndef PSIO_H */

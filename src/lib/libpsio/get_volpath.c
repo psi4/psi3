@@ -4,49 +4,38 @@
 */
 
 #include <stdio.h>
-#include <libipv1/ip_lib.h>
-#include <psifiles.h>
-#include "psio.h"
+#include <string.h>
+#include <libpsio/psio.h>
+
+static const char* default_path = "/tmp/";
+extern char *gprgid();
 
 /*
-** PSIO_GET_VOLPATH(): Get the path to a given volume for file number
-** 'unit'.
+** PSIO_GET_VOLPATH(): Copy the path to a given volume for file number
+** 'unit' into 'path' (storage is malloc'ed).
 **
 ** \ingroup (PSIO)
 */
-int psio_get_volpath(unsigned int unit, unsigned int volume, char *path)
+int psio_get_volpath(unsigned int unit, unsigned int volume, char **path)
 {
-  int errcod;
-  char ip_token[PSIO_MAXSTR];
-  char *gprgid();
+  const char* kval;
+  char volumeX[20];
+  sprintf(volumeX,"VOLUME%u",volume+1);
 
-  sprintf(ip_token,":%s:FILES:FILE%u:VOLUME%u",gprgid(),unit,volume+1);
-  errcod = ip_data(ip_token,"%s",path,0);
-  if(errcod == IPE_OK) return(0);
+  kval = psio_get_filescfg_kwd(gprgid(),volumeX,unit);
+  if(kval != 0) { *path = strdup(kval); return(0); }
+  kval = psio_get_filescfg_kwd(gprgid(),volumeX,-1);
+  if(kval != 0) { *path = strdup(kval); return(0); }
+  kval = psio_get_filescfg_kwd("PSI",volumeX,unit);
+  if(kval != 0) { *path = strdup(kval); return(0); }
+  kval = psio_get_filescfg_kwd("PSI",volumeX,-1);
+  if(kval != 0) { *path = strdup(kval); return(0); }
+  kval = psio_get_filescfg_kwd("DEFAULT",volumeX,unit);
+  if(kval != 0) { *path = strdup(kval); return(0); }
+  kval = psio_get_filescfg_kwd("DEFAULT",volumeX,-1);
+  if(kval != 0) { *path = strdup(kval); return(0); }
 
-  sprintf(ip_token,":%s:FILES:DEFAULT:VOLUME%u",gprgid(),volume+1);
-  errcod = ip_data(ip_token,"%s",path,0);
-  if(errcod == IPE_OK) return(0);
-
-  sprintf(ip_token,":PSI:FILES:FILE%u:VOLUME%u",unit,volume+1);
-  errcod = ip_data(ip_token,"%s",path,0);
-  if(errcod == IPE_OK) return(0);
-
-  sprintf(ip_token,":PSI:FILES:DEFAULT:VOLUME%u",volume+1);
-  errcod = ip_data(ip_token,"%s",path,0);
-  if(errcod == IPE_OK) return(0);
-
-  sprintf(ip_token,":DEFAULT:FILES:FILE%u:VOLUME%u",unit,volume+1);
-  errcod = ip_data(ip_token,"%s",path,0);
-  if(errcod == IPE_OK) return(0);
-
-  sprintf(ip_token,":DEFAULT:FILES:DEFAULT:VOLUME%u",volume+1);
-  errcod = ip_data(ip_token,"%s",path,0);
-  if(errcod == IPE_OK) return(0);
-
-  /* default to /tmp/ for everything but chkpt */
-  if(unit == PSIF_CHKPT) sprintf(path,  "./");
-  else sprintf(path, "/tmp/");
+  *path = strdup(default_path);
   return(1);
 }
 
@@ -57,21 +46,17 @@ int psio_get_volpath(unsigned int unit, unsigned int volume, char *path)
 **
 ** \ingroup (PSIO)
 */
-int psio_get_volpath_default(unsigned int volume, char *path)
+int psio_get_volpath_default(unsigned int volume, char **path)
 {
-  int errcod;
-  char ip_token[PSIO_MAXSTR];
+  const char* kval;
+  char volumeX[20];
+  sprintf(volumeX,"VOLUME%u",volume+1);
 
-  sprintf(ip_token,":PSI:FILES:DEFAULT:VOLUME%u",volume+1);
-  errcod = ip_data(ip_token,"%s",path,0);
-  if(errcod == IPE_OK) return(0);
+  kval = psio_get_filescfg_kwd("PSI",volumeX,-1);
+  if(kval != 0) { *path = strdup(kval); return(0); }
+  kval = psio_get_filescfg_kwd("DEFAULT",volumeX,-1);
+  if(kval != 0) { *path = strdup(kval); return(0); }
 
-  sprintf(ip_token,":DEFAULT:FILES:DEFAULT:VOLUME%u",volume+1);
-  errcod = ip_data(ip_token,"%s",path,0);
-  if(errcod == IPE_OK) return(0);
-
-  /* default to /tmp/ */
-  sprintf(path, "/tmp/");
-
+  *path = strdup(default_path);
   return(1);
 }

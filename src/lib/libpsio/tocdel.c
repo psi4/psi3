@@ -5,7 +5,7 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "psio.h"
+#include <libpsio/psio.h>
 
 /*!
 ** PSIO_TOCDEL(): Delete an entry with identifier key from TOC.

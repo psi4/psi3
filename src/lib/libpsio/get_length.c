@@ -3,7 +3,7 @@
    \ingroup (PSIO)
 */
 
-#include "psio.h"
+#include <libpsio/psio.h>
 
 /*!
 ** PSIO_GET_LENGTH(): Given a start page and offset for two data sets,

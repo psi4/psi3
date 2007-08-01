@@ -3,7 +3,7 @@
 ** \ingroup (PSIO)
 */
  
-#include "psio.h"
+#include <libpsio/psio.h>
 
 /*!
 ** PSIO_GET_ADDRESS(): Given a starting page/offset and a shift length

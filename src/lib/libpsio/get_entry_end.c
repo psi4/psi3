@@ -3,7 +3,7 @@
 ** \ingroup (PSIO)
 */
 
-#include "psio.h"
+#include <libpsio/psio.h>
 
 /*!
 ** PSIO_GET_ENTRY(): Returns the ending relative address of the tocentry

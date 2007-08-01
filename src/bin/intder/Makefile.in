@@ -2,7 +2,6 @@ srcdir = @srcdir@
 VPATH = @srcdir@
 
 include ../MakeVars
-LD = $(CXX)
 LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1

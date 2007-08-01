@@ -3,7 +3,7 @@
    \ingroup (PSIO)
 */
 
-#include "psio.h"
+#include <libpsio/psio.h>
 
 /*!
 ** PSIO_WRITE_ENTRY()

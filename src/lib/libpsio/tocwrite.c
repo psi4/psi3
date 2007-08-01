@@ -5,19 +5,9 @@
 
 #include <stdlib.h>
 #include <unistd.h>
-#include "psio.h"
-#include <psifiles.h>
+#include <libpsio/psio.h>
 
-/*!
-** PSIO_TOCWRITE(): Write the table of contents for file number 'unit'.
-**
-** \param unit  = The PSI unit to which we will write the TOC.
-**
-** NB: This function should NOT call psio_error because the latter calls it!
-**
-** \ingroup (PSIO)
-*/
-int psio_tocwrite(unsigned int unit)
+int __psio_tocwrite(psio_lib* Lib, unsigned int unit)
 {
   unsigned int i;
   int errcod, volume, stream;
@@ -26,7 +16,7 @@ int psio_tocwrite(unsigned int unit)
   ULI entry_size;
   psio_address address;
 
-  this_unit = &(psio_unit[unit]);
+  this_unit = &(Lib->psio_unit[unit]);
   entry_size = sizeof(psio_tocentry) - 2*sizeof(psio_tocentry *);
 
   if(!psio_open_check(unit)) return(1);
@@ -42,4 +32,18 @@ int psio_tocwrite(unsigned int unit)
   }
 
   return(1);
+}
+
+/*!
+** PSIO_TOCWRITE(): Write the table of contents for file number 'unit'.
+**
+** \param unit  = The PSI unit to which we will write the TOC.
+**
+** NB: This function should NOT call psio_error because the latter calls it!
+**
+** \ingroup (PSIO)
+*/
+int psio_tocwrite(unsigned int unit)
+{
+  return __psio_tocwrite(_default_psio_lib_,unit);
 }

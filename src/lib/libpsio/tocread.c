@@ -5,16 +5,9 @@
 
 #include <unistd.h>
 #include <stdlib.h>
-#include "psio.h"
+#include <libpsio/psio.h>
 
-/*!
-** PSIO_TOCREAD(): Read the table of contents for file number 'unit'.
-**
-** \params unit = The PSI unit number from which to read the TOC.
-** 
-** \ingroup (PSIO)
-*/
-int psio_tocread(unsigned int unit)
+int __psio_tocread(psio_lib* Lib, unsigned int unit)
 {
   unsigned int i;
   int errcod, stream, volume, entry_size;
@@ -22,7 +15,7 @@ int psio_tocread(unsigned int unit)
   psio_tocentry *last_entry, *this_entry; 
   psio_address address;
 
-  this_unit = &(psio_unit[unit]);
+  this_unit = &(Lib->psio_unit[unit]);
   entry_size = sizeof(psio_tocentry) - 2*sizeof(psio_tocentry *);
 
   if(!psio_open_check(unit)) return(1);
@@ -54,4 +47,16 @@ int psio_tocread(unsigned int unit)
   }
 
   return(1);
+}
+
+/*!
+** PSIO_TOCREAD(): Read the table of contents for file number 'unit'.
+**
+** \params unit = The PSI unit number from which to read the TOC.
+** 
+** \ingroup (PSIO)
+*/
+int psio_tocread(unsigned int unit)
+{
+  return __psio_tocread(_default_psio_lib_,unit);
 }

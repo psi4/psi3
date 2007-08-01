@@ -5,21 +5,14 @@
 
 #include <string.h>
 #include <stdlib.h>
-#include "psio.h"
+#include <libpsio/psio.h>
 
-/*!
-** PSIO_TOCCLEAN(): Delete all TOC entries after the given key.
-** If a blank key is given, the entire TOC will be wiped.
-**
-** \ingroup (PSIO)
-*/
-
-int psio_tocclean(unsigned int unit, char *key)
+int __psio_tocclean(psio_lib* Lib, unsigned int unit, char *key)
 {
   psio_tocentry *this_entry, *last_entry, *prev_entry;
   psio_ud *this_unit;
 
-  this_unit = &(psio_unit[unit]);
+  this_unit = &(Lib->psio_unit[unit]);
 
   this_entry = psio_tocscan(unit, key);
   if(this_entry == NULL) {
@@ -47,4 +40,16 @@ int psio_tocclean(unsigned int unit, char *key)
   psio_tocwrite(unit);
 
   return(0);
+}
+
+/*!
+** PSIO_TOCCLEAN(): Delete all TOC entries after the given key.
+** If a blank key is given, the entire TOC will be wiped.
+**
+** \ingroup (PSIO)
+*/
+
+int psio_tocclean(unsigned int unit, char *key)
+{
+  return __psio_tocclean(_default_psio_lib_,unit,key);
 }

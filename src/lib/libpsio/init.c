@@ -5,22 +5,51 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "psio.h"
-#include <libipv1/ip_lib.h>
-#include <libciomr/libciomr.h>
-#include <psifiles.h>
+#include <libpsio/psio.h>
 
-/* Definitions of global structs */
-psio_ud *psio_unit;
+/* Definition of global data */
+psio_lib* _default_psio_lib_ = NULL;
+int _psio_error_exit_code_ = 1;
 psio_address PSIO_ZERO = {0,0};
 
-/* Library state variable */
-int _psi3_libpsio_state_ = 0;
+extern int psio_ipv1_config();
 
+int __psio_init(psio_lib* Lib)
+{
+  int i,j;
+  char *userhome;
+  FILE *psirc;
+
+  Lib->psio_unit = (psio_ud *) malloc(sizeof(psio_ud)*PSIO_MAXUNIT);
 #ifdef PSIO_STATS
-ULI *psio_readlen;
-ULI *psio_writlen;
+  Lib->psio_readlen = (ULI *) malloc(sizeof(ULI) * PSIO_MAXUNIT);
+  Lib->psio_writlen = (ULI *) malloc(sizeof(ULI) * PSIO_MAXUNIT);
 #endif
+  Lib->state = 1;
+
+  /* if in PSI3 -- configure libpsio using libipv1 */
+  psio_ipv1_config();
+
+  if(Lib->psio_unit == NULL) {
+    fprintf(stderr, "Error in PSIO_INIT()!\n");
+    exit(_psio_error_exit_code_);
+  }
+
+  for(i=0; i < PSIO_MAXUNIT; i++) {
+#ifdef PSIO_STATS
+    Lib->psio_readlen[i] = Lib->psio_writlen[i] = 0;
+#endif      
+    Lib->psio_unit[i].numvols = 0;
+    for(j=0; j < PSIO_MAXVOL; j++) {
+      Lib->psio_unit[i].vol[j].path = NULL;
+      Lib->psio_unit[i].vol[j].stream = -1;
+    }
+    Lib->psio_unit[i].toclen = 0;
+    Lib->psio_unit[i].toc = NULL;
+  }
+
+  return(1);
+}
 
 /*!
 ** PSIO_INIT(): Allocates global memory needed by the I/O routines.
@@ -32,49 +61,15 @@ ULI *psio_writlen;
 
 int psio_init(void)
 {
-  int i,j;
-  char *userhome;
-  char filename[PSIO_MAXSTR];
-  FILE *psirc;
-
-  psio_unit = (psio_ud *) malloc(sizeof(psio_ud)*PSIO_MAXUNIT);
-
-#ifdef PSIO_STATS
-  psio_readlen = (ULI *) malloc(sizeof(ULI) * PSIO_MAXUNIT);
-  psio_writlen = (ULI *) malloc(sizeof(ULI) * PSIO_MAXUNIT);
-#endif
-
-  if(psio_unit == NULL) {
-    fprintf(stderr, "Error in PSIO_INIT()!\n");
-    exit(PSI_RETURN_FAILURE);
-  }
-
-  for(i=0; i < PSIO_MAXUNIT; i++) {
-#ifdef PSIO_STATS
-    psio_readlen[i] = psio_writlen[i] = 0;
-#endif      
-    psio_unit[i].numvols = 0;
-    for(j=0; j < PSIO_MAXVOL; j++) {
-      psio_unit[i].vol[j].path = NULL;
-      psio_unit[i].vol[j].stream = -1;
+  if (!_default_psio_lib_) {
+    _default_psio_lib_ = (psio_lib *)malloc(sizeof(psio_lib));
+    if (_default_psio_lib_ == NULL) {
+      fprintf(stderr,"LIBPSIO::init() -- failed to allocate the memory");
+      exit(_psio_error_exit_code_);
     }
-    psio_unit[i].toclen = 0;
-    psio_unit[i].toc = NULL;
   }
 
-  /* Open user's general .psirc file, if extant */
-  userhome = getenv("HOME");
-  sprintf(filename, "%s%s", userhome, "/.psirc");
-  psirc = fopen(filename, "r");
-  if(psirc != NULL) {
-    ip_append(psirc, stdout);
-    fclose(psirc);
-  }
-
-  /* Set library's state variable to initialized value (1) */
-  _psi3_libpsio_state_ = 1;
-
-  return(1);
+  return __psio_init(_default_psio_lib_);
 }
 
 /*!
@@ -87,6 +82,6 @@ int psio_init(void)
 
 int psio_state()
 {
-  return _psi3_libpsio_state_;
+  return _default_psio_lib_->state;
 }
 

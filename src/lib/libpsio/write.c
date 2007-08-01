@@ -5,25 +5,10 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include "psio.h"
+#include <libpsio/psio.h>
 
-/*!
-** PSIO_WRITE(): Writes data to a TOC entry in a PSI file.
-**
-**  \param unit    = The PSI unit number used to identify the file to all read
-**                   and write functions.
-**  \param key     = The TOC keyword identifying the desired entry.
-**  \param buffer  = The buffer from which the data is written.
-**  \param size    = The number of bytes to write.
-**  \param start   = The entry-relative starting page/offset to write the data.
-**  \param end     = A pointer to the entry-relative page/offset for the next
-**                   byte after the end of the write request.
-**
-** \ingroup (PSIO)
-*/
-
-int psio_write(unsigned int unit, char *key, char *buffer, ULI size,
-	       psio_address start, psio_address *end)
+int __psio_write(psio_lib* Lib, unsigned int unit, char *key, char *buffer, ULI size,
+		 psio_address start, psio_address *end)
 {
   psio_ud *this_unit;
   psio_tocentry *this_entry, *last_entry;
@@ -31,7 +16,7 @@ int psio_write(unsigned int unit, char *key, char *buffer, ULI size,
   ULI tocentry_size;
   int dirty = 0;
 
-  this_unit = &(psio_unit[unit]);
+  this_unit = &(Lib->psio_unit[unit]);
 
   /* Find the entry in the TOC */
   this_entry = psio_tocscan(unit, key);
@@ -127,4 +112,25 @@ int psio_write(unsigned int unit, char *key, char *buffer, ULI size,
 #endif
 
   return(1);
+}
+
+/*!
+** PSIO_WRITE(): Writes data to a TOC entry in a PSI file.
+**
+**  \param unit    = The PSI unit number used to identify the file to all read
+**                   and write functions.
+**  \param key     = The TOC keyword identifying the desired entry.
+**  \param buffer  = The buffer from which the data is written.
+**  \param size    = The number of bytes to write.
+**  \param start   = The entry-relative starting page/offset to write the data.
+**  \param end     = A pointer to the entry-relative page/offset for the next
+**                   byte after the end of the write request.
+**
+** \ingroup (PSIO)
+*/
+
+int psio_write(unsigned int unit, char *key, char *buffer, ULI size,
+	       psio_address start, psio_address *end)
+{
+  return __psio_write(_default_psio_lib_,unit,key,buffer,size,start,end);
 }

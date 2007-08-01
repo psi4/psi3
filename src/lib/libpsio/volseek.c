@@ -4,7 +4,7 @@
 */
 
 #include <unistd.h>
-#include "psio.h"
+#include <libpsio/psio.h>
 
 /* This is strictly used to avoid overflow errors on lseek() calls */
 #define PSIO_BIGNUM 10000

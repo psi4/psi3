@@ -6,8 +6,6 @@ include ../MakeVars
 DIRS = Math_Tools Coord_Base Internals Zmat Deloc
 VPATH += $(DIRS:%=$(srcdir)/%)
 
-LD = $(CXX)
-
 PSILIBS = -lPSI_chkpt -lPSI_ciomr -lPSI_ipv1 -lPSI_psio 
 
 CXXSRC = extrema.cc small_functions.cc $(DIRS:%=%/*.cc)

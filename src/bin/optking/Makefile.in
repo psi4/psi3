@@ -3,7 +3,6 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-LD = $(CXX)
 LDLIBS += $(LAPACK) $(BLAS)
 #LDLIBS += /home/users/rking/dmalloc-4.8.2/dmallocc.o
 #LDLIBS += /home/users/rking/dmalloc-4.8.2/libdmallocxx.a

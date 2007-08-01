@@ -8,25 +8,15 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdlib.h>
-#include "psio.h"
+#include <libpsio/psio.h>
 
-/*!
-** \ingroup (PSIO)
-** PSIO_CLOSE(): Closes a multivolume PSI direct access file.
-**
-**  \param unit = The PSI unit number used to identify the file to all read
-**                and write functions.
-**  \param keep = Boolean to indicate if the file should be deleted (0) or
-**                retained (1).
-*/
-
-int psio_close(unsigned int unit, int keep)
+int __psio_close(psio_lib* Lib, unsigned int unit, int keep)
 {
   unsigned int i;
   psio_ud *this_unit;
   psio_tocentry *this_entry, *next_entry;
 
-  this_unit = &(psio_unit[unit]);
+  this_unit = &(Lib->psio_unit[unit]);
 
   /* First check to see if this unit is already closed */
   if(this_unit->vol[0].stream == -1) psio_error(unit,PSIO_ERROR_RECLOSE);
@@ -61,4 +51,9 @@ int psio_close(unsigned int unit, int keep)
   this_unit->toclen = 0;
 
   return(1);
+}
+
+int psio_close(unsigned int unit, int keep)
+{
+  return __psio_close(_default_psio_lib_,unit,keep);
 }

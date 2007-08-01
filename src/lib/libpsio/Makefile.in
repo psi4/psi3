@@ -6,18 +6,20 @@ include ../MakeVars
 
 PSITARGET = $(top_objdir)/lib/libPSI_psio.a
 
-TRUESRC = \
+TRUECSRC = \
 close.c          get_global_address.c  tocdel.c    tocwrite.c \
 done.c           get_length.c          read.c        toclast.c   volseek.c \
 error.c          get_numvols.c         toclen.c    write.c \
 get_address.c    get_volpath.c         read_entry.c  tocprint.c \
 get_entry_end.c       init.c        rw.c \
 tocread.c        write_entry.c         get_filename.c   open.c \
-tocclean.c    tocscan.c open_check.c
+tocclean.c    tocscan.c open_check.c ipv1_config.c
+TRUECXXSRC = \
+filescfg.cc
 
 DEPENDINCLUDE = psio.h
 
-LIBOBJ = $(TRUESRC:%.c=%.o)
+LIBOBJ = $(TRUECSRC:%.c=%.o) $(TRUECXXSRC:%.cc=%.o)
 
 include ../MakeRules
 

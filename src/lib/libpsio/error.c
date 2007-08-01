@@ -5,8 +5,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include "psio.h"
-#include <psifiles.h>
+#include <libpsio/psio.h>
 
 /*!
 ** \ingroup (PSIO)
@@ -84,5 +83,5 @@ void psio_error(unsigned int unit, unsigned int errval)
     fprintf(stderr, "PSIO_MAXUNIT = %d.\n", PSIO_MAXUNIT);
     break;
   }
-  exit(PSI_RETURN_FAILURE);
+  exit(_psio_error_exit_code_);
 }

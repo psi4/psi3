@@ -10,32 +10,20 @@
 #include <string.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include "psio.h"
+#include <libpsio/psio.h>
 
-/*!
-** PSIO_OPEN(): Opens a multivolume PSI direct access file for
-** reading/writing data.
-**
-**  \param unit   = The PSI unit number used to identify the file to all
-**                  read and write functions.
-**  \param status = Indicates if the file is old (PSIO_OPEN_OLD) or new
-**                  (PSIO_OPEN_NEW). 
-**
-** \ingroup (PSIO)
-*/
-
-int psio_open(unsigned int unit, int status)
+int __psio_open(psio_lib* Lib, unsigned int unit, int status)
 {
   unsigned int i, j;
   int errcod, stream, tocstat;
-  char name[PSIO_MAXSTR],path[PSIO_MAXSTR],fullpath[PSIO_MAXSTR];
+  char *name, *path;
   psio_ud *this_unit;
 
   /* check for too large unit */
   if (unit > PSIO_MAXUNIT)
     psio_error(unit,PSIO_ERROR_MAXUNIT);
 
-  this_unit = &(psio_unit[unit]);
+  this_unit = &(Lib->psio_unit[unit]);
 
   /* Check to see if this unit is aleady open */
   if(this_unit->vol[0].stream != -1) psio_error(unit,PSIO_ERROR_REOPEN);
@@ -47,18 +35,20 @@ int psio_open(unsigned int unit, int status)
   if(!(this_unit->numvols)) this_unit->numvols = 1;
 
   /* Get the file name prefix */
-  errcod = psio_get_filename(unit,name);
+  errcod = psio_get_filename(unit,&name);
 
   /* Build the name for each volume and open the file */
   for(i=0; i < this_unit->numvols; i++) {
-    errcod = psio_get_volpath(unit, i, path);
+    char* fullpath;
+    errcod = psio_get_volpath(unit, i, &path);
 
     if(errcod && this_unit->numvols > 1)
       psio_error(unit,PSIO_ERROR_NOVOLPATH);
 
+    fullpath = (char*) malloc( (strlen(path)+strlen(name)+80)*sizeof(char) );
     sprintf(fullpath, "%s%s.%u", path, name, unit);
-    this_unit->vol[i].path = (char *) malloc(strlen(fullpath)+1);
-    strcpy(this_unit->vol[i].path,fullpath);
+    this_unit->vol[i].path = strdup(fullpath);
+    free(fullpath);
 
     /* Check if any previously opened volumes have the same path */
     for(j=0; j < i; j++)
@@ -79,6 +69,8 @@ int psio_open(unsigned int unit, int status)
 	psio_error(unit,PSIO_ERROR_OPEN);
     }
     else psio_error(unit,PSIO_ERROR_OSTAT);
+
+    free(path);
   }
 
   if (status == PSIO_OPEN_OLD) tocstat = psio_tocread(unit);
@@ -90,5 +82,23 @@ int psio_open(unsigned int unit, int status)
   }
   else psio_error(unit,PSIO_ERROR_OSTAT);
 
+  free(name);
+
   return(1);
+}
+
+/*!
+** PSIO_OPEN(): Opens a multivolume PSI direct access file for
+** reading/writing data.
+**
+**  \param unit   = The PSI unit number used to identify the file to all
+**                  read and write functions.
+**  \param status = Indicates if the file is old (PSIO_OPEN_OLD) or new
+**                  (PSIO_OPEN_NEW). 
+**
+** \ingroup (PSIO)
+*/
+int psio_open(unsigned int unit, int status)
+{
+  return __psio_open(_default_psio_lib_,unit,status);
 }

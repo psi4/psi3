@@ -32,8 +32,8 @@ int main(int argc, char *argv[])
 {
   ULI i, nvol;
   int errcod;
-  char vpath[MAX_STRING];
-  char basename[MAX_STRING];
+  char *vpath;
+  char *basename;
   char fileslist[MAX_STRING];
   char cmdstring[MAX_STRING];
 
@@ -45,10 +45,10 @@ int main(int argc, char *argv[])
   /* Get the number of volumes */
   nvol = psio_get_numvols_default();
 
-  errcod = psio_get_filename_default(basename);
+  errcod = psio_get_filename_default(&basename);
 
   for (i=0; i<nvol; i++) {
-    errcod = psio_get_volpath_default(i, vpath);
+    errcod = psio_get_volpath_default(i, &vpath);
 
     /* errcod == 1 now means that the default of /tmp/ is used for volpath 
     **  -TDC, 8/03 */
@@ -66,7 +66,9 @@ int main(int argc, char *argv[])
     system(cmdstring);
     sprintf(cmdstring,"/bin/rm %s",fileslist);
     system(cmdstring);
+    free(vpath);
   }
+  free(basename);
 
   /* we're done, clean up */
   psio_done();

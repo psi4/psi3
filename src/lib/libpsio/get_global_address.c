@@ -3,7 +3,7 @@
    \ingroup (PSIO)
 */
 
-#include "psio.h"
+#include <libpsio/psio.h>
 
 /*!
 ** PSIO_GET_GLOBAL_ADDRESS(): Given the global starting address for a
