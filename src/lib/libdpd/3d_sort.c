@@ -3,7 +3,7 @@
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup DPD Add a description of the group DPD */
+/*! \defgroup DPD libdpd: The Direct-Product Decomposition Library */
 
 /* dpd_3d_sort(): Sorts a 3-index array stored as a two-by-one index
 ** array, (ab,c), into any desired ordering.

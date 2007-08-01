@@ -3,7 +3,7 @@
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup PSI3 Add a description of the group PSI3 */
+/*! \defgroup PSI3 psi3: The Psi3 Driver */
 
 
 char *gprgid()

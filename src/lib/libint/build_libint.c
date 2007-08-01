@@ -3,7 +3,7 @@
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup INT Add a description of the group INT */
+/*! \defgroup INT libint: The Integral Library */
 
 /*------------------------------------------------------------------------------------------------------
                                            BUILD_LIBINT

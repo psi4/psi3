@@ -3,7 +3,7 @@
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup BASIS Add a description of the group BASIS */
+/*! \defgroup BASIS libbasis: The Basis Set Library */
 
 #include <stdexcept>
 #include <stdio.h>

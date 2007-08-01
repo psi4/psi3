@@ -3,7 +3,7 @@
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup R12 Add a description of the group R12 */
+/*! \defgroup R12 libr12: The R12 Library */
 
 /*---------------------------------------------------------------------------------------------
   This code generates Level 0 and 1 routines for computing non-standard two-electron integrals

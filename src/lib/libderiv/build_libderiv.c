@@ -3,7 +3,7 @@
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup DERIV Add a description of the group DERIV */
+/*! \defgroup DERIV libderiv: The Derivative Library */
 
 #include <math.h>
 #include <stdio.h>

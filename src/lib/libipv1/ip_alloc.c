@@ -3,7 +3,7 @@
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup IPV1 Add a description of the group IPV1 */
+/*! \defgroup IPV1 libipv1: The Input Parsing Library */
 
 #include <stdio.h>
 #include <stdlib.h>
