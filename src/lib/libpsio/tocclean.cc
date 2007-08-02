@@ -1,20 +1,24 @@
 /*!
-   \file tocclean.c
+   \file tocclean.cc
    \ingroup (PSIO)
 */
 
 #include <string.h>
 #include <stdlib.h>
 #include <libpsio/psio.h>
+#include <libpsio/psio.hpp>
 
-int __psio_tocclean(psio_lib* Lib, unsigned int unit, char *key)
+using namespace psi;
+
+void
+PSIO::tocclean(unsigned int unit, char *key)
 {
   psio_tocentry *this_entry, *last_entry, *prev_entry;
   psio_ud *this_unit;
 
-  this_unit = &(Lib->psio_unit[unit]);
+  this_unit = &(psio_unit[unit]);
 
-  this_entry = psio_tocscan(unit, key);
+  this_entry = tocscan(unit, key);
   if(this_entry == NULL) {
     if(!strcmp(key,"")) this_entry = this_unit->toc;
     else {
@@ -25,7 +29,7 @@ int __psio_tocclean(psio_lib* Lib, unsigned int unit, char *key)
   else this_entry = this_entry->next;
 
   /* Get the end of the TOC and work backwards */
-  last_entry = psio_toclast(unit);
+  last_entry = toclast(unit);
 
   while((last_entry != this_entry) && (last_entry != NULL)) { 
     /* Now free all the remaining members */
@@ -36,20 +40,21 @@ int __psio_tocclean(psio_lib* Lib, unsigned int unit, char *key)
   }
 
   /* Update on disk */
-  psio_wt_toclen(unit, this_unit->toclen);
-  psio_tocwrite(unit);
-
-  return(0);
+  wt_toclen(unit, this_unit->toclen);
+  tocwrite(unit);
 }
 
-/*!
-** PSIO_TOCCLEAN(): Delete all TOC entries after the given key.
-** If a blank key is given, the entire TOC will be wiped.
-**
-** \ingroup (PSIO)
-*/
-
-int psio_tocclean(unsigned int unit, char *key)
-{
-  return __psio_tocclean(_default_psio_lib_,unit,key);
+extern "C" {
+  /*!
+  ** PSIO_TOCCLEAN(): Delete all TOC entries after the given key.
+  ** If a blank key is given, the entire TOC will be wiped.
+  **
+  ** \ingroup (PSIO)
+  */
+  
+  int psio_tocclean(unsigned int unit, char *key)
+  {
+    _default_psio_lib_->tocclean(unit,key);
+    return 0;
+  }
 }

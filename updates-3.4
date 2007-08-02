@@ -1,4 +1,8 @@
-08/01/07  Insulated libpsio from psi3 to allow its use in programs that do not use Psi3 parsing and other infrastructure. It is now directly usable from C++ and can be made object-oriented easily.  -EFV
+08/02/07 Libpsio is now fully object-oriented. The current C-style interface is
+unchanged. Only the default single instance of the library can be accessed and
+configured from C programs in Psi3. Multiple instances of the library
+can now be created and configured from any C++ program without the need
+to use any Psi3-specific facilities, such as libipv1, etc.  -EFV
 
 08/01/07 Doxygen file and group stubs have been added to all source
 code files in src/bin and src/lib. In addition, a generic brief

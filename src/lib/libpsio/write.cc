@@ -1,14 +1,18 @@
 /*!
-   \file write.c
+   \file write.cc
    \ingroup (PSIO)
 */
 
 #include <stdlib.h>
 #include <string.h>
 #include <libpsio/psio.h>
+#include <libpsio/psio.hpp>
 
-int __psio_write(psio_lib* Lib, unsigned int unit, char *key, char *buffer, ULI size,
-		 psio_address start, psio_address *end)
+using namespace psi;
+
+void
+PSIO::write(unsigned int unit, char *key, char *buffer, ULI size,
+	    psio_address start, psio_address *end)
 {
   psio_ud *this_unit;
   psio_tocentry *this_entry, *last_entry;
@@ -16,10 +20,10 @@ int __psio_write(psio_lib* Lib, unsigned int unit, char *key, char *buffer, ULI 
   ULI tocentry_size;
   int dirty = 0;
 
-  this_unit = &(Lib->psio_unit[unit]);
+  this_unit = &(psio_unit[unit]);
 
   /* Find the entry in the TOC */
-  this_entry = psio_tocscan(unit, key);
+  this_entry = tocscan(unit, key);
 
   tocentry_size = sizeof(psio_tocentry) - 2*sizeof(psio_tocentry *);
 
@@ -40,7 +44,7 @@ int __psio_write(psio_lib* Lib, unsigned int unit, char *key, char *buffer, ULI 
       this_unit->toc = this_entry;
     }
     else {  /* Use ending address from last TOC entry */
-      last_entry = psio_toclast(unit);
+      last_entry = toclast(unit);
       this_entry->sadd = last_entry->eadd;
       last_entry->next = this_entry;
       this_entry->last = last_entry;
@@ -57,7 +61,7 @@ int __psio_write(psio_lib* Lib, unsigned int unit, char *key, char *buffer, ULI 
 
     /* Update the unit's TOC stats */
     this_unit->toclen++;
-    psio_wt_toclen(unit, this_unit->toclen);
+    wt_toclen(unit, this_unit->toclen);
 
     /* Update end (an entry-relative address) for the caller */
     *end = psio_get_address(start,size);
@@ -102,35 +106,37 @@ int __psio_write(psio_lib* Lib, unsigned int unit, char *key, char *buffer, ULI 
   }
 
   if(dirty) /* Need to first write/update the TOC header for this record */
-    psio_rw(unit, (char *) this_entry, start_toc, tocentry_size, 1);
+    rw(unit, (char *) this_entry, start_toc, tocentry_size, 1);
 
   /* Now write the actual data to the unit */
-  psio_rw(unit, buffer, start_data, size, 1);
+  rw(unit, buffer, start_data, size, 1);
 
 #ifdef PSIO_STATS
   psio_writlen[unit] += size;
 #endif
-
-  return(1);
 }
 
-/*!
-** PSIO_WRITE(): Writes data to a TOC entry in a PSI file.
-**
-**  \param unit    = The PSI unit number used to identify the file to all read
-**                   and write functions.
-**  \param key     = The TOC keyword identifying the desired entry.
-**  \param buffer  = The buffer from which the data is written.
-**  \param size    = The number of bytes to write.
-**  \param start   = The entry-relative starting page/offset to write the data.
-**  \param end     = A pointer to the entry-relative page/offset for the next
-**                   byte after the end of the write request.
-**
-** \ingroup (PSIO)
-*/
-
-int psio_write(unsigned int unit, char *key, char *buffer, ULI size,
-	       psio_address start, psio_address *end)
-{
-  return __psio_write(_default_psio_lib_,unit,key,buffer,size,start,end);
+extern "C" {
+  /*!
+  ** PSIO_WRITE(): Writes data to a TOC entry in a PSI file.
+  **
+  **  \param unit    = The PSI unit number used to identify the file to all read
+  **                   and write functions.
+  **  \param key     = The TOC keyword identifying the desired entry.
+  **  \param buffer  = The buffer from which the data is written.
+  **  \param size    = The number of bytes to write.
+  **  \param start   = The entry-relative starting page/offset to write the data.
+  **  \param end     = A pointer to the entry-relative page/offset for the next
+  **                   byte after the end of the write request.
+  **
+  ** \ingroup (PSIO)
+  */
+  
+  int psio_write(unsigned int unit, char *key, char *buffer, ULI size,
+		 psio_address start, psio_address *end)
+  {
+    _default_psio_lib_->write(unit,key,buffer,size,start,end);
+    return 1;
+  }
 }
+

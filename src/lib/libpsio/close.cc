@@ -1,7 +1,7 @@
 /*! \defgroup PSIO libpsio: The PSI I/O Library */
 
 /*!
-** \file close.c
+** \file close.cc
 ** \ingroup (PSIO)
 */
 
@@ -9,20 +9,24 @@
 #include <string.h>
 #include <stdlib.h>
 #include <libpsio/psio.h>
+#include <libpsio/psio.hpp>
 
-int __psio_close(psio_lib* Lib, unsigned int unit, int keep)
+using namespace psi;
+
+void
+PSIO::close(unsigned int unit, int keep)
 {
   unsigned int i;
   psio_ud *this_unit;
   psio_tocentry *this_entry, *next_entry;
 
-  this_unit = &(Lib->psio_unit[unit]);
+  this_unit = &(psio_unit[unit]);
 
   /* First check to see if this unit is already closed */
   if(this_unit->vol[0].stream == -1) psio_error(unit,PSIO_ERROR_RECLOSE);
 
   /* Dump the current TOC back out to disk */
-  psio_tocwrite(unit);
+  tocwrite(unit);
 
   /* Free the TOC */
   this_entry = this_unit->toc;
@@ -35,7 +39,7 @@ int __psio_close(psio_lib* Lib, unsigned int unit, int keep)
   /* Close each volume (remove if necessary) and free the path */
   for(i=0; i < this_unit->numvols; i++) {
 
-      if(close(this_unit->vol[i].stream) == -1)
+    if(::close(this_unit->vol[i].stream) == -1)
 	  psio_error(unit,PSIO_ERROR_CLOSE);
 
       /* Delete the file completely if requested */
@@ -49,11 +53,13 @@ int __psio_close(psio_lib* Lib, unsigned int unit, int keep)
   /* Reset the global page stats to zero */
   this_unit->numvols = 0;
   this_unit->toclen = 0;
-
-  return(1);
 }
 
-int psio_close(unsigned int unit, int keep)
-{
-  return __psio_close(_default_psio_lib_,unit,keep);
+extern "C" {
+  int psio_close(unsigned int unit, int keep)
+  {
+    _default_psio_lib_->close(unit,keep);
+    return 0;
+  }
 }
+

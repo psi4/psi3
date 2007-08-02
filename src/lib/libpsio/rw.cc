@@ -1,13 +1,17 @@
 /*!
-   \file rw.c
+   \file rw.cc
    \ingroup (PSIO)
 */
 
 #include <stdio.h>
 #include <unistd.h>
 #include <libpsio/psio.h>
+#include <libpsio/psio.hpp>
 
-int __psio_rw(psio_lib* Lib, unsigned int unit, char *buffer, psio_address address, ULI size, int wrt)
+using namespace psi;
+
+void
+PSIO::rw(unsigned int unit, char *buffer, psio_address address, ULI size, int wrt)
 {
   int errcod;
   unsigned int i;
@@ -19,7 +23,7 @@ int __psio_rw(psio_lib* Lib, unsigned int unit, char *buffer, psio_address addre
   ULI bytes_left, num_full_pages;
   psio_ud *this_unit;
 
-  this_unit = &(Lib->psio_unit[unit]);
+  this_unit = &(psio_unit[unit]);
   numvols = this_unit->numvols;
   page = address.page;
   offset = address.offset;
@@ -44,12 +48,12 @@ int __psio_rw(psio_lib* Lib, unsigned int unit, char *buffer, psio_address addre
 
   buf_offset = 0;
   if(wrt) {
-    errcod_uli = write(this_unit->vol[first_vol].stream, &(buffer[buf_offset]),
+    errcod_uli = ::write(this_unit->vol[first_vol].stream, &(buffer[buf_offset]),
 		       this_page_total);
     if(errcod_uli != this_page_total) psio_error(unit,PSIO_ERROR_WRITE);
   }
   else {
-    errcod_uli = read(this_unit->vol[first_vol].stream, &(buffer[buf_offset]),
+    errcod_uli = ::read(this_unit->vol[first_vol].stream, &(buffer[buf_offset]),
 		      this_page_total);
     if(errcod_uli != this_page_total) psio_error(unit,PSIO_ERROR_READ);
   }
@@ -64,12 +68,12 @@ int __psio_rw(psio_lib* Lib, unsigned int unit, char *buffer, psio_address addre
     this_vol = this_page % numvols;
     this_page_total = PSIO_PAGELEN;
     if(wrt) {
-      errcod_uli = write(this_unit->vol[this_vol].stream, &(buffer[buf_offset]),
+      errcod_uli = ::write(this_unit->vol[this_vol].stream, &(buffer[buf_offset]),
 			 this_page_total);
       if(errcod_uli != this_page_total) psio_error(unit,PSIO_ERROR_WRITE);
     }
     else {
-      errcod_uli = read(this_unit->vol[this_vol].stream, &(buffer[buf_offset]),
+      errcod_uli = ::read(this_unit->vol[this_vol].stream, &(buffer[buf_offset]),
 			this_page_total);
       if(errcod_uli != this_page_total) psio_error(unit,PSIO_ERROR_READ);
     }
@@ -81,32 +85,34 @@ int __psio_rw(psio_lib* Lib, unsigned int unit, char *buffer, psio_address addre
   this_vol = this_page % numvols;
   if(bytes_left) {
     if(wrt) {
-      errcod_uli = write(this_unit->vol[this_vol].stream, &(buffer[buf_offset]),
+      errcod_uli = ::write(this_unit->vol[this_vol].stream, &(buffer[buf_offset]),
 			 bytes_left);
       if(errcod_uli != bytes_left) psio_error(unit,PSIO_ERROR_WRITE);
     }
     else {
-      errcod_uli = read(this_unit->vol[this_vol].stream, &(buffer[buf_offset]),
+      errcod_uli = ::read(this_unit->vol[this_vol].stream, &(buffer[buf_offset]),
 			bytes_left);
       if(errcod_uli != bytes_left) psio_error(unit,PSIO_ERROR_READ);
     }
   }
-
-  return(1);
 }
 
-/*!
-** PSIO_RW(): Central function for all reads and writes on a PSIO unit.
-**
-** \params unit    = The PSI unit number.
-** \params buffer  = The buffer containing the bytes for the read/write event.
-** \params address = the PSIO global address for the start of the read/write.
-** \params size    = The number of bytes to read/write.
-** \params         = Indicates if the call is to read (0) or write (0) the input data.
-**
-** \ingroup (PSIO)
-*/
-int psio_rw(unsigned int unit, char *buffer, psio_address address, ULI size, int wrt)
-{
-  return __psio_rw(_default_psio_lib_,unit,buffer,address,size,wrt);
+extern "C" {
+  /*!
+  ** PSIO_RW(): Central function for all reads and writes on a PSIO unit.
+  **
+  ** \params unit    = The PSI unit number.
+  ** \params buffer  = The buffer containing the bytes for the read/write event.
+  ** \params address = the PSIO global address for the start of the read/write.
+  ** \params size    = The number of bytes to read/write.
+  ** \params         = Indicates if the call is to read (0) or write (0) the input data.
+  **
+  ** \ingroup (PSIO)
+  */
+  int psio_rw(unsigned int unit, char *buffer, psio_address address, ULI size, int wrt)
+  {
+    _default_psio_lib_->rw(unit,buffer,address,size,wrt);
+    return 1;
+  }
 }
+
