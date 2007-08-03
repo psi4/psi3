@@ -63,6 +63,12 @@ FDBG = @FDBG@
 FINC = @FINC@
 FSTATIC = @FSTATIC@
 
+# Flags for Ruby location
+RUBYLIB = @RUBYLIB@
+RUBYINC = @RUBYINC@
+RUBYLINK = @RUBYLINK@
+RUBYLDFLAGS = @RUBYLDFLAGS@
+
 # flags to be passed to compilers
 CFLAGS = @CFLAGS@
 CXXFLAGS = @CXXFLAGS@
