@@ -5,7 +5,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <libpsio/psio.h>
+extern "C" {
+  #include <libpsio/psio.h>
+}
 #include <libpsio/psio.hpp>
 
 using namespace psi;
