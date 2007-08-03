@@ -1,6 +1,8 @@
 
 .PHONY:	default all install depend clean targetclean
 
+subdirs = ruby
+
 default: all
 
 all:
@@ -25,6 +27,10 @@ install: pbasis.dat psi.dat
 	$(MKDIRS) $(datadir)
 	$(INSTALL_DATA) $(srcdir)/pbasis.dat $(datadir)
 	$(INSTALL_DATA) $(srcdir)/psi.dat $(datadir)
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo Making in $${dir}; $(MAKE) install) || exit 1; \
+          done
 
 install_man: macro.psi
 	$(MKDIRS) $(datadir)
