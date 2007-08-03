@@ -1,4 +1,4 @@
-/*! \file shell_block_matrix.c
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

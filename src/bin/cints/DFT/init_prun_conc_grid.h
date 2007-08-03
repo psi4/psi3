@@ -1,4 +1,4 @@
-/*! \file init_prun_conc_grid.h
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

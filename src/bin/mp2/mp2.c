@@ -1,4 +1,4 @@
-/*! \file mp2.c
+/*! \file 
     \ingroup (MP2)
     \brief Enter brief description of file here 
 */

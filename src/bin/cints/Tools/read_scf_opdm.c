@@ -1,4 +1,4 @@
-/*! \file read_scf_opdm.c
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

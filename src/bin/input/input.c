@@ -1,4 +1,4 @@
-/*! \file input.c
+/*! \file 
     \ingroup (INPUT)
     \brief Enter brief description of file here 
 */

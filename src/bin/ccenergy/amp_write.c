@@ -1,4 +1,4 @@
-/*! \file amp_write.c
+/*! \file 
     \ingroup (CCENERGY)
     \brief Enter brief description of file here 
 */

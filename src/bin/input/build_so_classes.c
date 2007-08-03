@@ -1,4 +1,4 @@
-/*! \file build_so_classes.c
+/*! \file 
     \ingroup (INPUT)
     \brief Enter brief description of file here 
 */

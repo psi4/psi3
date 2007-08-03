@@ -1,4 +1,4 @@
-/*! \file new_geom.cc
+/*! \file 
     \ingroup (OPTKING)
     \brief Enter brief description of file here 
 */

@@ -1,5 +1,5 @@
 /*##########################################################################*/
-/*! \file simple.h
+/*! \file 
     \ingroup (EXTREMA)
   \brief Simple coordinate concrete class declaration and definition.
   

@@ -1,4 +1,4 @@
-/*! \file count_ijk.c
+/*! \file 
     \ingroup (CCTRIPLES)
     \brief Enter brief description of file here 
 */

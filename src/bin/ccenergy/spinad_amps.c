@@ -1,4 +1,4 @@
-/*! \file spinad_amps.c
+/*! \file 
     \ingroup (CCENERGY)
     \brief Enter brief description of file here 
 */

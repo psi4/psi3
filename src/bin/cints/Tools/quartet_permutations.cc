@@ -1,4 +1,4 @@
-/*! \file quartet_permutations.cc
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

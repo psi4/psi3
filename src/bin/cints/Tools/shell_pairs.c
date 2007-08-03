@@ -1,4 +1,4 @@
-/*! \file shell_pairs.c
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

@@ -1,4 +1,4 @@
-/*! \file update_X.c
+/*! \file 
     \ingroup (CCRESPONSE)
     \brief Enter brief description of file here 
 */

@@ -1,4 +1,4 @@
-/*! \file char_table.c
+/*! \file 
     \ingroup (OPTKING)
     \brief Enter brief description of file here 
 */

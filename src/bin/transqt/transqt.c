@@ -1,4 +1,4 @@
-/*! \file transqt.c
+/*! \file 
     \ingroup (TRANSQT)
     \brief Enter brief description of file here 
 */

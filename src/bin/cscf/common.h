@@ -1,4 +1,4 @@
-/*! \file common.h
+/*! \file 
     \ingroup (CSCF)
     \brief Enter brief description of file here 
 */

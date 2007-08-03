@@ -1,4 +1,4 @@
-/*! \file check_energy.c
+/*! \file 
     \ingroup (MP2)
     \brief Enter brief description of file here 
 */

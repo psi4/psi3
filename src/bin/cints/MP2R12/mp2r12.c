@@ -1,4 +1,4 @@
-/*! \file mp2r12.c
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

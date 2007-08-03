@@ -1,4 +1,4 @@
-/*! \file enuc_deriv2.c
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

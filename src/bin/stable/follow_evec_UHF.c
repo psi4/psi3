@@ -1,4 +1,4 @@
-/*! \file follow_evec_UHF.c
+/*! \file 
     \ingroup (STABLE)
     \brief Enter brief description of file here 
 */

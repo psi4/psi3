@@ -1,4 +1,4 @@
-/*! \file c_clean.c
+/*! \file 
     \ingroup (CCLAMBDA)
     \brief Enter brief description of file here 
 */

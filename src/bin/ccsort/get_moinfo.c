@@ -1,4 +1,4 @@
-/*! \file get_moinfo.c
+/*! \file 
     \ingroup (CCSORT)
     \brief Enter brief description of file here 
 */

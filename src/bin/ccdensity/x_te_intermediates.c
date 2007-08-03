@@ -1,4 +1,4 @@
-/*! \file x_te_intermediates.c
+/*! \file 
     \ingroup (CCDENSITY)
     \brief Enter brief description of file here 
 */

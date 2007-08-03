@@ -1,4 +1,4 @@
-/*! \file grid_dens_2d.c
+/*! \file 
     \ingroup (OEPROP)
     \brief Enter brief description of file here 
 */

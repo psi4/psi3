@@ -1,4 +1,4 @@
-/*! \file cc2_hbar_extra.c
+/*! \file 
     \ingroup (CCRESPONSE)
     \brief Enter brief description of file here 
 */

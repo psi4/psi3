@@ -1,4 +1,4 @@
-/*! \file check_max_am.c
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

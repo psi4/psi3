@@ -1,5 +1,5 @@
 /*###########################################################################*/
-/*! \file coord_base.h
+/*! \file 
     \ingroup (EXTREMA)
   \brief Coordinate base class declarations 
   (coord_base and coord_base_carts).*/

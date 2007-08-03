@@ -1,4 +1,4 @@
-/*! \file psiclean.c
+/*! \file 
     \ingroup (PSICLEAN)
     \brief Enter brief description of file here 
 */

@@ -1,4 +1,4 @@
-/*! \file semicanonical.c
+/*! \file 
     \ingroup (TRANSQT)
     \brief Enter brief description of file here 
 */

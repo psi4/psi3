@@ -1,4 +1,4 @@
-/*! \file x_Gijka.c
+/*! \file 
     \ingroup (CCDENSITY)
     \brief Enter brief description of file here 
 */

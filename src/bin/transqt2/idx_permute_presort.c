@@ -1,4 +1,4 @@
-/*! \file idx_permute_presort.c
+/*! \file 
     \ingroup (TRANSQT2)
     \brief Enter brief description of file here 
 */

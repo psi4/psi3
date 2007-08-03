@@ -1,4 +1,4 @@
-/*! \file gprgid.c
+/*! \file 
     \ingroup (MP2R12)
     \brief Enter brief description of file here 
 */

@@ -1,4 +1,4 @@
-/*! \file vibration.c
+/*! \file 
     \ingroup (CPHF)
     \brief Enter brief description of file here 
 */

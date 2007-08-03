@@ -1,4 +1,4 @@
-/*! \file cc3_l3l2.c
+/*! \file 
     \ingroup (CCLAMBDA)
     \brief Enter brief description of file here 
 */

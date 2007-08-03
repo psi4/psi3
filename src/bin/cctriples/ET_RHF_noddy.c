@@ -1,4 +1,4 @@
-/*! \file ET_RHF_noddy.c
+/*! \file 
     \ingroup (CCTRIPLES)
     \brief Enter brief description of file here 
 */

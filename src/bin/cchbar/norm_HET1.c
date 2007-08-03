@@ -1,4 +1,4 @@
-/*! \file norm_HET1.c
+/*! \file 
     \ingroup (CCHBAR)
     \brief Enter brief description of file here 
 */

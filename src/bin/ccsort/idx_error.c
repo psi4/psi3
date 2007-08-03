@@ -1,4 +1,4 @@
-/*! \file idx_error.c
+/*! \file 
     \ingroup (CCSORT)
     \brief Enter brief description of file here 
 */

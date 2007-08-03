@@ -1,4 +1,4 @@
-/*! \file calc_pt_block.c
+/*! \file 
     \ingroup (DETCI)
     \brief Enter brief description of file here 
 */

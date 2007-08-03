@@ -1,4 +1,4 @@
-/*! \file zmat_to_intco.c
+/*! \file 
     \ingroup (OPTKING)
     \brief Enter brief description of file here 
 */

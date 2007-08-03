@@ -1,4 +1,4 @@
-/*! \file init_scf.c
+/*! \file 
     \ingroup (CSCF)
     \brief Enter brief description of file here 
 */

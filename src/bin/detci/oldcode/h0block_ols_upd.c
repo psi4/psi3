@@ -1,4 +1,4 @@
-/*! \file h0block_ols_upd.c
+/*! \file 
     \ingroup (DETCI)
     \brief Enter brief description of file here 
 */

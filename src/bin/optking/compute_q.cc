@@ -1,4 +1,4 @@
-/*! \file compute_q.cc
+/*! \file 
     \ingroup (OPTKING)
     \brief Enter brief description of file here 
 */

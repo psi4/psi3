@@ -1,4 +1,4 @@
-/*! \file buf4_dot.c
+/*! \file 
     \ingroup (DPD)
     \brief Enter brief description of file here 
 */

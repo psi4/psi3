@@ -1,4 +1,4 @@
-/*! \file bas_comp_functions.h
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

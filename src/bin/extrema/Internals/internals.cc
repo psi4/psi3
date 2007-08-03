@@ -1,5 +1,5 @@
 /*###########################################################################*/
-/*! \file internals.cc
+/*! \file 
     \ingroup (EXTREMA)
   \brief Member functions for <b>internals</b> derived base class. */
 /*						Joseph P. Kenny 11/29/01

@@ -1,4 +1,4 @@
-/*! \file s3_vector.c
+/*! \file 
     \ingroup (DETCI)
     \brief Enter brief description of file here 
 */

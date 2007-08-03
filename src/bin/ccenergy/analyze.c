@@ -1,4 +1,4 @@
-/*! \file analyze.c
+/*! \file 
     \ingroup (CCENERGY)
     \brief Enter brief description of file here 
 */

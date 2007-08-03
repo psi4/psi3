@@ -1,4 +1,4 @@
-/*! \file build_A_RHF.c
+/*! \file 
     \ingroup (STABLE)
     \brief Enter brief description of file here 
 */

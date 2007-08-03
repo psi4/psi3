@@ -1,4 +1,4 @@
-/*! \file sort_amps.c
+/*! \file 
     \ingroup (CCEOM)
     \brief Enter brief description of file here 
 */

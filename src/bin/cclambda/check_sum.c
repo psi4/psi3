@@ -1,4 +1,4 @@
-/*! \file check_sum.c
+/*! \file 
     \ingroup (CCLAMBDA)
     \brief Enter brief description of file here 
 */

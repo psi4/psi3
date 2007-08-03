@@ -1,4 +1,4 @@
-/*! \file purge_HET1.c
+/*! \file 
     \ingroup (CCENERGY)
     \brief Enter brief description of file here 
 */

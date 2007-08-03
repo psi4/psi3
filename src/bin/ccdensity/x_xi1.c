@@ -1,4 +1,4 @@
-/*! \file x_xi1.c
+/*! \file 
     \ingroup (CCDENSITY)
     \brief Enter brief description of file here 
 */

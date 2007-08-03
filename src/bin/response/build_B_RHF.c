@@ -1,4 +1,4 @@
-/*! \file build_B_RHF.c
+/*! \file 
     \ingroup (RESPONSE)
     \brief Enter brief description of file here 
 */

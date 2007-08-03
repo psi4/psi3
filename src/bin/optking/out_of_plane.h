@@ -1,4 +1,4 @@
-/*! \file out_of_plane.h
+/*! \file 
     \ingroup (OPTKING)
     \brief Enter brief description of file here 
 */

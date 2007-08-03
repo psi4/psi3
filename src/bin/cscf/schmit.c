@@ -1,4 +1,4 @@
-/*! \file schmit.c
+/*! \file 
     \ingroup (CSCF)
     \brief Enter brief description of file here 
 */

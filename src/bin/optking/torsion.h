@@ -1,4 +1,4 @@
-/*! \file torsion.h
+/*! \file 
     \ingroup (OPTKING)
     \brief Enter brief description of file here 
 */

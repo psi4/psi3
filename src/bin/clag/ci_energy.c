@@ -1,4 +1,4 @@
-/*! \file ci_energy.c
+/*! \file 
     \ingroup (CLAG)
     \brief Enter brief description of file here 
 */

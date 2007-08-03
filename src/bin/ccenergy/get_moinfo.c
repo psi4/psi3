@@ -1,4 +1,4 @@
-/*! \file get_moinfo.c
+/*! \file 
     \ingroup (CCENERGY)
     \brief Enter brief description of file here 
 */

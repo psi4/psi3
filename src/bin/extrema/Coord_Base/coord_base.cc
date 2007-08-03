@@ -1,5 +1,5 @@
 /*###########################################################################*/
-/*! \file coord_base.cc
+/*! \file 
     \ingroup (EXTREMA)
   \brief Constructor and member functions for coordinate base class. */
 /*						Joseph P. Kenny 11/29/01

@@ -1,4 +1,4 @@
-/*! \file G.c
+/*! \file 
     \ingroup (CCLAMBDA)
     \brief Enter brief description of file here 
 */

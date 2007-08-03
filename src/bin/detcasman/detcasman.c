@@ -1,4 +1,4 @@
-/*! \file detcasman.c
+/*! \file 
     \ingroup (DETCASMAN)
     \brief Enter brief description of file here 
 */

@@ -1,4 +1,4 @@
-/*! \file d_spinad.c
+/*! \file 
     \ingroup (CCSORT)
     \brief Enter brief description of file here 
 */

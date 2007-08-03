@@ -1,4 +1,4 @@
-/*! \file overlap_LAMPS.c
+/*! \file 
     \ingroup (CCLAMBDA)
     \brief Enter brief description of file here 
 */

@@ -1,4 +1,4 @@
-/*! \file pair_energies.c
+/*! \file 
     \ingroup (CCENERGY)
     \brief Enter brief description of file here 
 */

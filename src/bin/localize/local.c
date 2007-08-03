@@ -1,4 +1,4 @@
-/*! \file local.c
+/*! \file 
     \ingroup (LOCALIZE)
     \brief Enter brief description of file here 
 */

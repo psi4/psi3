@@ -1,4 +1,4 @@
-/*! \file check_ortho.c
+/*! \file 
     \ingroup (CCLAMBDA)
     \brief Enter brief description of file here 
 */

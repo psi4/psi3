@@ -1,4 +1,4 @@
-/*! \file rmp2r12_energy_thread.c
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

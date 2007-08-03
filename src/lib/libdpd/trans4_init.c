@@ -1,4 +1,4 @@
-/*! \file trans4_init.c
+/*! \file 
     \ingroup (DPD)
     \brief Enter brief description of file here 
 */

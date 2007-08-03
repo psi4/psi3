@@ -1,4 +1,4 @@
-/*! \file file4_mat_irrep_rd_block.c
+/*! \file 
     \ingroup (DPD)
     \brief Enter brief description of file here 
 */

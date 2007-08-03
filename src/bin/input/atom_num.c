@@ -1,4 +1,4 @@
-/*! \file atom_num.c
+/*! \file 
     \ingroup (INPUT)
     \brief Enter brief description of file here 
 */

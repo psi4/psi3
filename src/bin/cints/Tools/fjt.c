@@ -1,4 +1,4 @@
-/*! \file fjt.c
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

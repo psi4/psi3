@@ -1,4 +1,4 @@
-/*! \file restart_with_root.c
+/*! \file 
     \ingroup (CCEOM)
     \brief Enter brief description of file here 
 */

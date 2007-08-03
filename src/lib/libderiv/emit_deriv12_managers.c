@@ -1,4 +1,4 @@
-/*! \file emit_deriv12_managers.c
+/*! \file 
     \ingroup (DERIV)
     \brief Enter brief description of file here 
 */

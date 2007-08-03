@@ -1,4 +1,4 @@
-/*! \file ET_ABB.c
+/*! \file 
     \ingroup (CCTRIPLES)
     \brief Enter brief description of file here 
 */

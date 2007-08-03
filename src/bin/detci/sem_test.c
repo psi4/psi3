@@ -1,4 +1,4 @@
-/*! \file sem_test.c
+/*! \file 
     \ingroup (DETCI)
     \brief Enter brief description of file here 
 */

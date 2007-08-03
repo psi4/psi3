@@ -1,4 +1,4 @@
-/*! \file write_to_chkpt.c
+/*! \file 
     \ingroup (INPUT)
     \brief Enter brief description of file here 
 */

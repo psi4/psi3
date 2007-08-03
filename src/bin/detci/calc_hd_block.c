@@ -1,4 +1,4 @@
-/*! \file calc_hd_block.c
+/*! \file 
     \ingroup (DETCI)
     \brief Enter brief description of file here 
 */

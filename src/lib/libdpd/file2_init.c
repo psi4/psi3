@@ -1,4 +1,4 @@
-/*! \file file2_init.c
+/*! \file 
     \ingroup (DPD)
     \brief Enter brief description of file here 
 */

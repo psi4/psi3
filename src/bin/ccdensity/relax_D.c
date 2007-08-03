@@ -1,4 +1,4 @@
-/*! \file relax_D.c
+/*! \file 
     \ingroup (CCDENSITY)
     \brief Enter brief description of file here 
 */

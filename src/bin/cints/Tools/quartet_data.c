@@ -1,4 +1,4 @@
-/*! \file quartet_data.c
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

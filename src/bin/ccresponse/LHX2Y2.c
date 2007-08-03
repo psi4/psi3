@@ -1,4 +1,4 @@
-/*! \file LHX2Y2.c
+/*! \file 
     \ingroup (CCRESPONSE)
     \brief Enter brief description of file here 
 */

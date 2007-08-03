@@ -1,4 +1,4 @@
-/*! \file WijmbL2.c
+/*! \file 
     \ingroup (CCLAMBDA)
     \brief Enter brief description of file here 
 */

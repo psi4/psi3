@@ -1,4 +1,4 @@
-/*! \file init_3d_array.c
+/*! \file 
     \ingroup (CCTRIPLES)
     \brief Enter brief description of file here 
 */

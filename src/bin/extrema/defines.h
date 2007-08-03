@@ -1,7 +1,7 @@
 /*! \defgroup EXTREMA Add a description of the group EXTREMA */
 
 /*###########################################################################*/
-/*! \file defines.h
+/*! \file 
     \ingroup (EXTREMA)
   \brief #define parameters */
 /*###########################################################################*/

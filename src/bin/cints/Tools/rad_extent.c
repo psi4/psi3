@@ -1,4 +1,4 @@
-/*! \file rad_extent.c
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

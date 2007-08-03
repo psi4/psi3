@@ -1,4 +1,4 @@
-/*! \file get_optinfo.c
+/*! \file 
     \ingroup (OPTKING)
     \brief Enter brief description of file here 
 */

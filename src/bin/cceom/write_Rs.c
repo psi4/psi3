@@ -1,4 +1,4 @@
-/*! \file write_Rs.c
+/*! \file 
     \ingroup (CCEOM)
     \brief Enter brief description of file here 
 */

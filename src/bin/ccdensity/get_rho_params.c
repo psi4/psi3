@@ -1,4 +1,4 @@
-/*! \file get_rho_params.c
+/*! \file 
     \ingroup (CCDENSITY)
     \brief Enter brief description of file here 
 */

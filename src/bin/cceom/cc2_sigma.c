@@ -1,4 +1,4 @@
-/*! \file cc2_sigma.c
+/*! \file 
     \ingroup (CCEOM)
     \brief Enter brief description of file here 
 */

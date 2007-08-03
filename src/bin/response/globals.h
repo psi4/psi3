@@ -1,4 +1,4 @@
-/*! \file globals.h
+/*! \file 
     \ingroup (RESPONSE)
     \brief Enter brief description of file here 
 */

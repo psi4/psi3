@@ -1,4 +1,4 @@
-/*! \file eigsort2.c
+/*! \file 
     \ingroup (DETCI)
     \brief Enter brief description of file here 
 */

@@ -1,4 +1,4 @@
-/*! \file G_norm.c
+/*! \file 
     \ingroup (CCDENSITY)
     \brief Enter brief description of file here 
 */

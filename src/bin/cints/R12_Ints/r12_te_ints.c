@@ -1,4 +1,4 @@
-/*! \file r12_te_ints.c
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

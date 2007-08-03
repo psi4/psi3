@@ -1,4 +1,4 @@
-/*! \file deriv1_quartet_data.h
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

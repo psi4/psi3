@@ -1,4 +1,4 @@
-/*! \file MOInfo.h
+/*! \file 
     \ingroup (CCTRIPLES)
     \brief Enter brief description of file here 
 */

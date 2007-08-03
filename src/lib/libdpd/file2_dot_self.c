@@ -1,4 +1,4 @@
-/*! \file file2_dot_self.c
+/*! \file 
     \ingroup (DPD)
     \brief Enter brief description of file here 
 */

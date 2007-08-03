@@ -1,4 +1,4 @@
-/*! \file opt_energies.cc
+/*! \file 
     \ingroup (OPTKING)
     \brief Enter brief description of file here 
 */

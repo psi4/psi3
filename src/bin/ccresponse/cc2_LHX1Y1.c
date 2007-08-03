@@ -1,4 +1,4 @@
-/*! \file cc2_LHX1Y1.c
+/*! \file 
     \ingroup (CCRESPONSE)
     \brief Enter brief description of file here 
 */

@@ -1,4 +1,4 @@
-/*! \file calc_den.c
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

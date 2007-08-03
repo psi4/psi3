@@ -1,4 +1,4 @@
-/*! \file block_xy.c
+/*! \file 
     \ingroup (DETCI)
     \brief Enter brief description of file here 
 */

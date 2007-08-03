@@ -1,4 +1,4 @@
-/*! \file Wmbij.c
+/*! \file 
     \ingroup (CCHBAR)
     \brief Enter brief description of file here 
 */

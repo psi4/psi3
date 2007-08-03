@@ -1,4 +1,4 @@
-/*! \file free_grid_structs.h
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

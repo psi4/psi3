@@ -1,5 +1,5 @@
 /*###########################################################################*/
-/*! \file symmetry.cc
+/*! \file 
     \ingroup (EXTREMA)
   \brief Symmetry related functions. */
 /*						Joseph P. Kenny 12/10/01

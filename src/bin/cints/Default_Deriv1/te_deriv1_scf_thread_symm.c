@@ -1,4 +1,4 @@
-/*! \file te_deriv1_scf_thread_symm.c
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

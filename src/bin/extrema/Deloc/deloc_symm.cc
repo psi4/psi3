@@ -1,5 +1,5 @@
 /*###########################################################################*/
-/*! \file deloc_symm.cc
+/*! \file 
     \ingroup (EXTREMA)
   \brief Symmetry related functions. */
 /*						Joseph P. Kenny 12/06/01

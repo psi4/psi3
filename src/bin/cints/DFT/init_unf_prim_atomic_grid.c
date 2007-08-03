@@ -1,4 +1,4 @@
-/*! \file init_unf_prim_atomic_grid.c
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

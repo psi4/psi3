@@ -1,5 +1,5 @@
 /*##########################################################################*/
-/*! \file bondl.h
+/*! \file 
     \ingroup (EXTREMA)
   \brief Contains bond length array. 
 */ 

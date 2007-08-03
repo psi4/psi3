@@ -1,4 +1,4 @@
-/*! \file ints.c
+/*! \file 
     \ingroup (DETCAS)
     \brief Enter brief description of file here 
 */

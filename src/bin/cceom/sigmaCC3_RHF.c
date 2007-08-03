@@ -1,4 +1,4 @@
-/*! \file sigmaCC3_RHF.c
+/*! \file 
     \ingroup (CCEOM)
     \brief Enter brief description of file here 
 */

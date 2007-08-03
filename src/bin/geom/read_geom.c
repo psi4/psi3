@@ -1,4 +1,4 @@
-/*! \file read_geom.c
+/*! \file 
     \ingroup (GEOM)
     \brief Enter brief description of file here 
 */

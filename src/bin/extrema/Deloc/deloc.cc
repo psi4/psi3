@@ -1,5 +1,5 @@
 /*###########################################################################*/
-/*! \file deloc.cc
+/*! \file 
     \ingroup (EXTREMA)
   \brief Member functions for deloc (delocalized internals) derived class
   

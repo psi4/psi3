@@ -1,4 +1,4 @@
-/*! \file mocube.h
+/*! \file 
     \ingroup (MOCUBE)
     \brief Enter brief description of file here 
 */

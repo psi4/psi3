@@ -1,4 +1,4 @@
-/*! \file diag_A_ROHF.c
+/*! \file 
     \ingroup (STABLE)
     \brief Enter brief description of file here 
 */

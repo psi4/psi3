@@ -1,4 +1,4 @@
-/*! \file relax_I.c
+/*! \file 
     \ingroup (MP2)
     \brief Enter brief description of file here 
 */

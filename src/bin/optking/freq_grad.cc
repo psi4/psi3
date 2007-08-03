@@ -1,4 +1,4 @@
-/*! \file freq_grad.cc
+/*! \file 
     \ingroup (OPTKING)
     \brief Enter brief description of file here 
 */

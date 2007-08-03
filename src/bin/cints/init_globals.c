@@ -1,4 +1,4 @@
-/*! \file init_globals.c
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

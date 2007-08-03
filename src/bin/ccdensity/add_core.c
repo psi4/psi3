@@ -1,4 +1,4 @@
-/*! \file add_core.c
+/*! \file 
     \ingroup (CCDENSITY)
     \brief Enter brief description of file here 
 */

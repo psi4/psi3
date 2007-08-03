@@ -1,4 +1,4 @@
-/*! \file gprgid.c
+/*! \file 
     \ingroup (PSI3)
     \brief Enter brief description of file here 
 */

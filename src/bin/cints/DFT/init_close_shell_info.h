@@ -1,4 +1,4 @@
-/*! \file init_close_shell_info.h
+/*! \file 
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */

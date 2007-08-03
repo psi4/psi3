@@ -1,4 +1,4 @@
-/*! \file errchk.c
+/*! \file 
     \ingroup (CSCF)
     \brief Enter brief description of file here 
 */

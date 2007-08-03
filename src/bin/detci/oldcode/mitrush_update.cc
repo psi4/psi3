@@ -1,4 +1,4 @@
-/*! \file mitrush_update.cc
+/*! \file 
     \ingroup (DETCI)
     \brief Enter brief description of file here 
 */

@@ -1,4 +1,4 @@
-/*! \file read_basset.c
+/*! \file 
     \ingroup (OEPROP)
     \brief Enter brief description of file here 
 */

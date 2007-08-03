@@ -1,5 +1,5 @@
 /*###########################################################################*/
-/* \file internals_B.cc
+/*! \file 
    \ingroup (EXTREMA)
    \brief Member functions of internals derived class  
    associated with the B matrix. */

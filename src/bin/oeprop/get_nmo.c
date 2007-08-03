@@ -1,4 +1,4 @@
-/*! \file get_nmo.c
+/*! \file 
     \ingroup (OEPROP)
     \brief Enter brief description of file here 
 */
