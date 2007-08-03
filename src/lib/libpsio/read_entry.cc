@@ -4,6 +4,15 @@
 */
 
 #include <libpsio/psio.h>
+#include <libpsio/psio.hpp>
+
+using namespace psi;
+
+void PSIO::read_entry(unsigned int unit, char *key, char *buffer, ULI size)
+{
+	psio_address end;
+	read(unit, key, buffer, size, PSIO_ZERO, &end);
+}
 
 extern "C" {
   /*!

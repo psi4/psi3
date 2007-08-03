@@ -75,6 +75,10 @@ namespace psi {
      */
     void write(unsigned int unit, char *key, char *buffer, ULI size,
 	       psio_address start, psio_address *end);
+	
+	void read_entry(unsigned int unit, char *key, char *buffer, ULI size);
+	void write_entry(unsigned int unit, char *key, char *buffer, ULI size);
+	
     /** Central function for all reads and writes on a PSIO unit.
      **
      ** \params unit    = The PSI unit number.

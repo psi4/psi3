@@ -4,6 +4,15 @@
 */
 
 #include <libpsio/psio.h>
+#include <libpsio/psio.hpp>
+
+using namespace psi;
+
+void PSIO::write_entry(unsigned int unit, char *key, char *buffer, ULI size)
+{
+	psio_address end;
+	write(unit, key, buffer, size, PSIO_ZERO, &end);
+}
 
 extern "C" {
 
