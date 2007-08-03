@@ -1,0 +1,32 @@
+
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+LD = $(CXX) $(RUBYLDFLAGS)
+LDLIBS += $(RUBYLIB)
+
+# Hopefully one day I can remove -lPSI_ipv1 from below
+PSILIBS = -lPSI_psio -lPSI_ipv1
+
+CXXINC += $(RUBYINC) -DINSTALLEDPSIDATADIR=\"$(datadir)\"
+CXXSRC = psirb.cc ruby.cc chkpt.cc 
+
+BINOBJ = $(CXXSRC:%.cc=%.o)
+
+include ../MakeRules
+
+#$(PSITARGET): $(BINOBJ) $(PSILIBS)
+#	$(MKDIRS) `dirname $(PSITARGET)`
+#	$(LD) $(LDFLAGS) -o $@ $^ $(LDLIBS) $^
+	
+ifneq ($(DODEPEND),no)
+#$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+#include $(BINOBJ:%.o=%.d)
+endif
+
+#install_man:: psirb.1
+#	$(MKDIRS) $(mandir)/man1
+#	$(INSTALL_INCLUDE) $^ $(mandir)/man1
+
