@@ -457,6 +457,73 @@ CXXDEF="$CXXDEF -DHAVE_CSTDDEF=$HAVE_CSTDDEF"
 
 /bin/rm -f a.out
 
+####################
+#  Check for Ruby  #
+####################
+RUBYLIB=""
+CHECKRUBY="yes"
+AC_ARG_WITH(ruby-lib,[  --with-ruby-lib         which Ruby library to use],[
+case $withval in
+  yes)
+	CHECKRUBY="yes"
+    ;;
+  no)
+    RUBYLIB=''
+	RUBYLINK="no"
+	CHECKRUBY="no"
+    ;;
+  *)
+    RUBYLIB="$withval"
+	RUBYLINK="yes"
+	CHECKRUBY="no"
+    ;;
+esac
+])
+if test $CHECKRUBY = yes; then
+	AC_CHECK_LIB(ruby-static,ruby_init,[RUBYLIB="-lruby-static" RUBYLINK="yes"],[RUBYLIB="" RUBYLINK="no"])
+fi
+
+RUBYINC=""
+CHECKRUBY="yes"
+AC_ARG_WITH(ruby-include,[  --with-ruby-include     which Ruby header directory],[
+case $withval in
+  yes)
+	CHECKRUBY="yes"
+    ;;
+  no)
+    RUBYINC=""
+	RUBYLINK="no"
+	CHECKRUBY="no"
+    ;;
+  *)
+    RUBYINC="$withval"
+	RUBYLINK="yes"
+	CHECKRUBY="no"
+    ;;
+esac
+])
+if test $CHECKRUBY = yes; then
+	AC_CHECK_HEADER(ruby.h,[RUBYINC="" RUBYLINK="yes"],[RUBYINC="" RUBYLINK="no"])
+fi
+
+#########################################################################
+# Special linking flags for psirb, because it loads shared object files #
+#  This has to do with dlopen being "lazy" by default on Apple, but not #
+#  on Linux                                                             #
+#########################################################################
+case $target_vendor in
+	apple)
+		RUBYLDFLAGS=""
+		;;
+	*)
+		RUBYLDFLAGS="-rdynamic -Wl,-export-dynamic"
+		;;
+esac
+AC_SUBST(RUBYLIB)
+AC_SUBST(RUBYINC)
+AC_SUBST(RUBYLINK)
+AC_SUBST(RUBYLDFLAGS)
+
 ########
 ## Check for types
 ########
@@ -692,7 +759,7 @@ AC_MSG_RESULT([C++ extra flags: $CXXOTH])
 
 AC_CONFIG_FILES([include/Makefile
           include/chkpt_params.h
-          Makefile lib/Makefile src/Makefile
+          Makefile lib/Makefile lib/ruby/Makefile src/Makefile
           src/lib/Makefile src/lib/MakeRules src/lib/MakeVars
           src/util/Makefile src/util/MakeRules src/util/MakeVars
           src/bin/Makefile src/bin/MakeRules src/bin/MakeVars
@@ -758,6 +825,8 @@ AC_CONFIG_FILES([include/Makefile
           src/bin/localize/Makefile
           src/bin/stable/Makefile
           src/bin/response/Makefile
+          src/bin/psirb/Makefile
+
           tests/Makefile
           tests/MakeVars
           tests/MakeRules
@@ -874,3 +943,12 @@ AC_CONFIG_FILES([include/Makefile
 ])
 
 AC_OUTPUT
+
+if test $RUBYLINK = no; then
+	if test -z $RUBYLIB; then
+		AC_MSG_NOTICE([Unable to locate libruby-static.a will not link the psirb module.])
+	fi
+	if test -z $RUBYINC; then
+		AC_MSG_NOTICE([Unable to locate ruby.h will not link the psirb module.])
+	fi
+fi
