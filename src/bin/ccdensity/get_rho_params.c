@@ -103,7 +103,7 @@ void get_rho_params(void)
       rho_params[0].L_ground = 1;
       rho_params[0].R_ground = 1;
 
-//      cnt = 0;
+      cnt = 0;
       for(i=0; i<moinfo.nirreps; i++) { /* loop over irrep of R */
 //        ip_data("STATES_PER_IRREP","%d",&j, 1, i);
 //        for (k=0; k<j; ++k) {
