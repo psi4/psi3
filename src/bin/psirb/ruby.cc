@@ -13,15 +13,10 @@ void finalize_ruby();
 VALUE ruby_psi_print_version();
 VALUE ruby_psi_get_version_major();
 VALUE ruby_psi_get_version_minor();
-VALUE ruby_psi_prefix_get(VALUE);
-VALUE ruby_psi_prefix_set(VALUE, VALUE);
-VALUE ruby_psi_scratch_get(VALUE);
-VALUE ruby_psi_scratch_put(VALUE, VALUE);
 bool create_ruby_psi_module();
 
 // Defined elsewhere
 extern void print_version();
-extern void create_ruby_psi_chkpt_module();
 
 /*! Initializes the Ruby interpreter, sets the Ruby $: and $0 variables, 
 	adds the appropriate PSIDATADIR path to Ruby's search path,
@@ -68,7 +63,7 @@ bool initialize_ruby()
 	
 	// Add some basic functionality to Ruby
 	create_ruby_psi_module();
-	create_ruby_psi_chkpt_module();
+	Task::create_ruby_class();
 	
 	// Done
 	return true;
@@ -180,61 +175,6 @@ VALUE ruby_psi_puts(int argc, VALUE *argv)
 	return Qnil;
 }
 
-//! Ruby function: Psi::prefix
-/*! Returns the string containing the Psi file prefix. This is equivalent to psi_file_prefix. 
-	\return The current prefix value. */
-VALUE ruby_psi_prefix_get(VALUE self)
-{
-	return rb_str_new2(Globals::g_szFilePrefix.c_str());
-}
-
-//! Ruby function: Psi::prefix=
-/*! Sets the current Psi file prefix. This will soon be encapsulated by a C++ class.
-	\param self The Ruby object that this function is being called for.
-	\param newPrefix The new file prefix value.
-	\return The new prefix value.
-*/
-VALUE ruby_psi_prefix_set(VALUE self, VALUE newPrefix)
-{
-	// StringValue calls to_str on the object, if needed
-	VALUE str = StringValue(newPrefix);
-	// Set the prefix variable to this
-	Globals::g_szFilePrefix = RSTRING(str)->ptr;
-
-	// Set this for libpsio
-	Globals::g_psioDefault.filecfg_kwd("DEFAULT", "NAME", -1, RSTRING(str)->ptr);
-	
-	return newPrefix;
-}
-
-//! Ruby function: Psi::scratch
-/*! Returns the current location of the scratch area for Psi binary scratch files.
-	\param self The Ruby object that this function is being called for.
-	\return The current scratch path.
-*/
-VALUE ruby_psi_scratch_get(VALUE self)
-{
-	return rb_str_new2(Globals::g_szScratchPath.c_str());
-}
-
-//! Ruby function: Psi::scratch=
-/*! Sets the current Psi scratch file location. This will soon be encapsulated by a C++ class.
-	\param self The Ruby object that this function is being called for.
-	\param newScratch The new scratch file location.
-	\return The new scratch file location.
-*/
-VALUE ruby_psi_scratch_put(VALUE self, VALUE newScratch)
-{
-	// StringValue calls to_str on the object, if needed
-	VALUE str = StringValue(newScratch);
-	Globals::g_szScratchPath = RSTRING(str)->ptr;
-
-	// Set this to be the value for libpsio
-	Globals::g_psioDefault.filecfg_kwd("DEFAULT", "VOLUME1", -1, RSTRING(str)->ptr);
-	
-	return newScratch;
-}
-
 //! Creates a module in the Ruby address space named Psi.
 /*! All Psi objects/functions reside in this address space. Each function that is to be
 	available to a user in the input file must be registered with Ruby.
@@ -246,29 +186,25 @@ bool create_ruby_psi_module()
 	VALUE rubyVersion;
 	
 	// Define a Ruby module named Psi
-	Globals::rubyPsi = rb_define_module("Psi");
+	Globals::g_rbPsi = rb_define_module("Psi");
 	
 	// Override some commands to ensure output is redirected to where we want
 	// This redefines the global puts function to use our's
-	rb_define_global_function("puts", RUBYCAST(ruby_psi_puts), -1);
-	rb_define_global_function("indent_puts", RUBYCAST(ruby_psi_indent_puts), 0);
+	rb_define_global_function("puts",          RUBYCAST(ruby_psi_puts), -1);
+	rb_define_global_function("indent_puts",   RUBYCAST(ruby_psi_indent_puts), 0);
 	rb_define_global_function("unindent_puts", RUBYCAST(ruby_psi_unindent_puts), 0);
 	
 	// Define methods that belong to Psi
-	rb_define_module_function(Globals::rubyPsi, "indent_puts", RUBYCAST(ruby_psi_indent_puts), 0);
-	rb_define_module_function(Globals::rubyPsi, "unindent_puts", RUBYCAST(ruby_psi_unindent_puts), 0);
-	rb_define_module_function(Globals::rubyPsi, "prefix", RUBYCAST(ruby_psi_prefix_get), 0);
-	rb_define_module_function(Globals::rubyPsi, "prefix=", RUBYCAST(ruby_psi_prefix_set), 1);
-	rb_define_module_function(Globals::rubyPsi, "scratch", RUBYCAST(ruby_psi_scratch_get), 0);
-	rb_define_module_function(Globals::rubyPsi, "scratch=", RUBYCAST(ruby_psi_scratch_put), 1);
+	rb_define_module_function(Globals::g_rbPsi, "indent_puts",   RUBYCAST(ruby_psi_indent_puts), 0);
+	rb_define_module_function(Globals::g_rbPsi, "unindent_puts", RUBYCAST(ruby_psi_unindent_puts), 0);
 	
 	// Define a sub-module of Psi named Version
-	rubyVersion = rb_define_module_under(Globals::rubyPsi, "Version");
+	rubyVersion = rb_define_module_under(Globals::g_rbPsi, "Version");
 	
 	// Add methods to the new module: Version
 	rb_define_module_function(rubyVersion, "print_version", RUBYCAST(ruby_psi_print_version), 0);
-	rb_define_module_function(rubyVersion, "get_major", RUBYCAST(ruby_psi_get_version_major), 0);
-	rb_define_module_function(rubyVersion, "get_minor", RUBYCAST(ruby_psi_get_version_minor), 0);
+	rb_define_module_function(rubyVersion, "get_major",     RUBYCAST(ruby_psi_get_version_major), 0);
+	rb_define_module_function(rubyVersion, "get_minor",     RUBYCAST(ruby_psi_get_version_minor), 0);
 		
 	// Done
 	return true;

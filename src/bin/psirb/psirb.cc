@@ -33,7 +33,6 @@ void parse_command_line(int, char**);
 void redirect_output(char *szFilename, bool append=false);
 void print_version();
 void print_usage();
-void initialize_default_psio();
 
 int main(int argc, char *argv[])
 {
@@ -53,10 +52,7 @@ int main(int argc, char *argv[])
 	//  4. So far, some basic commands have been registered with Ruby
 	// Now have Ruby load in the input file and begin processing
 	load_input_file_into_ruby();
-	
-	// Initialize Psi's C++ input/output system
-	initialize_default_psio();
-	
+		
 	// Actually exist the input file.
 	process_input_file();
 		
@@ -64,16 +60,6 @@ int main(int argc, char *argv[])
 	finalize_ruby();
 	
 	return EXIT_SUCCESS;
-}
-
-/*! Initializes the new C++ libpsio to default settings.
-	Users can change the values via their input files. */
-void initialize_default_psio()
-{
-	Globals::g_psioDefault.filecfg_kwd("DEFAULT", "NAME",    -1, "psi");
-	Globals::g_psioDefault.filecfg_kwd("DEFAULT", "NVOLUME", -1, "1");
-	Globals::g_psioDefault.filecfg_kwd("DEFAULT", "VOLUME1", -1, "/tmp/");
-	Globals::g_psioDefault.filecfg_kwd("DEFAULT", "VOLUME1", 32, "./");
 }
 
 /*! Handles the command line arguments and stores them in global variables. In some cases
@@ -90,21 +76,14 @@ void parse_command_line(int argc, char *argv[])
 	Globals::g_bVerbose = false;
 	
 	// A string listing of valid short option letters
-	const char* const short_options = "hvVp:o:";
+	const char* const short_options = "hvV:o:";
 	const struct option long_options[] = {
 		{ "help",    0, NULL, 'h' },
 		{ "verbose", 0, NULL, 'v' },
 		{ "version", 0, NULL, 'V' },
-		{ "prefix",  1, NULL, 'p' },
 		{ "output",  1, NULL, 'o' },
 		{ NULL,      0, NULL,  0  }
 	};
-
-	// Set the system default values
-	Globals::g_szFilePrefix = "psi";
-	
-	// Set the scratch directory to be /tmp/   <- need an ability to set this via input file
-	Globals::g_szScratchPath = "/tmp/";
 	
 	// Check the command line arguments
 	do {
@@ -115,10 +94,6 @@ void parse_command_line(int argc, char *argv[])
 			print_usage();
 			break;
 			
-			case 'p': // -o or --prefix
-			Globals::g_szFilePrefix = optarg;
-			break;
-
 			case 'o': // -o or --output
 			output_filename = optarg;
 			break;
