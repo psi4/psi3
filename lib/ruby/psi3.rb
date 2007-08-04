@@ -209,7 +209,7 @@ module Psi
       @analytical_gradients
     end
     
-    def create(*args)
+    def self.create(*args)
       args_hash = args[0]
       t = Psi::Task.new args_hash
       if t == nil
