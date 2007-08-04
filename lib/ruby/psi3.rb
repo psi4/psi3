@@ -41,85 +41,188 @@ module Psi
     CCRESPONSE  = "ccresponse"
     CCDENSITY   = "ccdensity"
   end
+
+  # Access to the global task object. The first time it is retrieved the object is created.
+  def self.global_task=(val)
+    @global_task = val
+  end
+  def self.global_task
+    if @global_task == nil
+      # Creat the global task
+      @global_task = Psi::Task.new
+    end
+    @global_task
+  end
+
+  def self.prefix=(val)
+    Psi::global_task.prefix=val
+  end
+  def self.prefix
+    Psi::global_task.prefix
+  end
+  
+  def self.scratch=(val)
+    Psi::global_task.scratch=val
+  end
+  def self.scratch
+    Psi::global_task.scratch
+  end
   
   def self.check_commands=(val)
-    @check_commands = val
+    Psi::global_task.check_commands = val
   end
   
   def self.check_commands
-    @check_commands
+    Psi::global_task.check_commands
   end
   
   # Routines to set active geometry, referred to only by Input
   def self.geometry=(val)
-    @geometry = val
+    Psi::global_task.geometry = val
   end
   def self.geometry
-    @geometry
+    Psi::global_task.geometry
   end
   
   # Routines to set active zmat, referred to only by Input
   def self.zmat=(val)
-    $zmat = val
+    Psi::global_task.zmat = val
   end
   def self.zmat
-    $zmat
+    Psi::global_task.zmat
   end
   
   # Routines to remember basis
   def self.basis=(val)
-    @basis = val
+    Psi::global_task.basis = val
   end
   def self.basis
-    @basis
+    Psi::global_task.basis
   end
   
   # Set the label
   def self.label=(val)
-    @label = val
+    Psi::global_task.label = val
   end
   def self.label
-    @label
+    Psi::global_task.label
   end
   
   # Set the label
   def self.wavefunction=(val)
-    @wavefunction = val
+    Psi::global_task.wavefunction = val
   end
   def self.wavefunction
-    if @wavefunction == nil
-      # Was never set, assume SCF
-      puts "Warning: Wavefunction not set. Assuming SCF."
-      return "SCF"
-    end
-    @wavefunction
+    Psi::global_task.wavefunction
   end
   
   # Set the flag for analytical gradients
   def self.analytical_gradients=(val)
-    @analytical_gradients = val
+    Psi::global_task.analytical_gradients=val
   end
   def self.analytical_gradients
-    if @analytical_gradients == nil
-      return false
-    else
-      @analytical_gradients
-    end
+    Psi::global_task.analytical_gradients
   end
   
   # Set the global reference
   def self.reference=(val)
-    @reference = val
+    Psi::global_task.reference = val
   end
   def self.reference
-    if @reference == nil
-      # We don't know what the user wanted to do.
-      # Tell the user about it:
-      puts "Warning: Reference not set. Assuming RHF."
-      return "RHF"
-    end
-    @reference
+    Psi::global_task.reference
   end
+  
+  # Additions to the Task class
+  class Task
+    def check_commands=(val)
+      @check_commands = val
+    end
+    def check_commands
+      if @check_commands == nil
+        @check_commands = false
+      end
+      @check_commands
+    end
+    
+    def reference=(val)
+      @reference = val
+    end
+    def reference
+      if @reference == nil
+        puts "Warning: Reference not set. Assuming RHF."
+        return "RHF"
+      end
+      @reference
+    end
+
+    def wavefunction=(val)
+      @wavefunction = val
+    end
+    def wavefunction
+      if @wavefunction == nil
+        # Was never set, assume SCF
+        puts "Warning: Wavefunction not set. Assuming SCF."
+        return "SCF"
+      end
+      @wavefunction
+    end
+    
+    # Routines to set active geometry, referred to only by Input
+    def geometry=(val)
+      @geometry = val
+    end
+    def geometry
+      @geometry
+    end
+
+    # Routines to set active zmat, referred to only by Input
+    def zmat=(val)
+      @zmat = val
+    end
+    def zmat
+      @zmat
+    end
+
+    # Routines to remember basis
+    def basis=(val)
+      @basis = val
+    end
+    def basis
+      @basis
+    end
+
+    # Set the label
+    def label=(val)
+      @label = val
+    end
+    def label
+      @label
+    end
+    
+    def analytical_gradients=(val)
+      @analytical_gradients = val
+    end
+    def analytical_gradients
+      if @analytical_gradients == nil
+        return false
+      end
+      @analytical_gradients
+    end
+    
+    def create(*args)
+      args_hash = args[0]
+      t = Psi::Task.new args_hash
+      if t == nil
+        puts "Error: Unable to create Task object."
+        exit 1
+      end
+      if block_given?
+        yield t
+      else
+        t
+      end
+    end
+  end # of Task
   
   module InputGenerator
     def generate_value(item)
@@ -159,7 +262,7 @@ module Psi
       input.puts "  files:("
       input.puts "    default:("
       input.puts "      nvolume=1"
-      input.puts "      volume1=\\\"#{Psi::scratch}\\\""
+      input.puts "      volume1=\\\"#{@task.scratch}\\\""
       input.puts "    )"
       input.puts "    file32: (nvolume=1 volume1=\\\"./\\\")"
       input.puts "  )"
@@ -195,7 +298,7 @@ module Psi
       
       if Psi::check_commands != true
         prefix = ""
-        prefix = "-p #{Psi::prefix}" if Psi::prefix != nil
+        prefix = "-p #{@task.prefix}" if @task.prefix != nil
         
         if binary != nil
 #         `echo "#{input_file.string}" | #{binary} -f - >& /dev/null`
@@ -204,18 +307,16 @@ module Psi
 #         `echo "#{input_file.string}" | #{get_binary_command} -f - >& /dev/null`
           `echo "#{input_file.string}" | #{get_binary_command} #{prefix} -f -`
         else
-          # TODO: Add coloring commands to text
           puts "Error: Executor.execute: Unable to determine which module to run."
           exit 1
         end
         # Check to see if the above line worked
         status = $?
-#       puts "Program executed successfully." if status == 0
-#       puts "Program executed un-successfully." if status != 0
       
         # Note for optking a specialized execute is needed
         if status != 0
           puts "Module exited with an error."
+          puts "Error code: #{status}"
           puts "Used:\n#{input_file.string}"
           exit 1
         end
@@ -256,4 +357,4 @@ require 'ccsort'
 require 'ccenergy'
 require 'cctriples'
 require 'symbols'
-  
+require 'chkpt'

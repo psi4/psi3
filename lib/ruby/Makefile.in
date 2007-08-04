@@ -22,8 +22,9 @@ MKDIRS = @MKDIRS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 
-install: ccenergy.rb ccsort.rb cctriples.rb cints.rb clean.rb input.rb optking.rb pes.rb psi3.rb scf.rb symbols.rb transqt.rb
+install: ccenergy.rb ccsort.rb cctriples.rb cints.rb clean.rb input.rb optking.rb pes.rb psi3.rb scf.rb symbols.rb transqt.rb chkpt.rb
 	$(MKDIRS) $(rubydatadir)
+	$(INSTALL_DATA) $(srcdir)/chkpt.rb $(rubydatadir)
 	$(INSTALL_DATA) $(srcdir)/ccenergy.rb $(rubydatadir)
 	$(INSTALL_DATA) $(srcdir)/ccsort.rb $(rubydatadir)
 	$(INSTALL_DATA) $(srcdir)/cctriples.rb $(rubydatadir)
