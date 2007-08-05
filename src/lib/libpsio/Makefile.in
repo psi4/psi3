@@ -16,7 +16,7 @@ get_address.cc    get_volpath.cc         read_entry.cc  tocprint.cc \
 rw.cc             tocread.cc             write_entry.cc get_filename.cc  open.cc \
 tocclean.cc       tocscan.cc             open_check.cc  filescfg.cc      ipv1_config.cc
 
-DEPENDINCLUDE = psio.h psio.hpp config.h
+INC = psio.h psio.hpp config.h
 
 LIBOBJ = $(TRUECSRC:%.c=%.o) $(TRUECXXSRC:%.cc=%.o)
 
@@ -26,7 +26,7 @@ ifneq ($(DODEPEND),no)
 include $(LIBOBJ:%.o=%.d)
 endif
 
-install_inc:: psio.h
+install_inc:: $(INC)
 	$(MKDIRS) $(incdir)/libpsio
 	$(INSTALL_INCLUDE) $^ $(incdir)/libpsio
 
