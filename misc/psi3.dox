@@ -292,7 +292,7 @@ INPUT                  = src/lib/ src/bin/
 # and *.h) to filter out the source-files in the directories. If left 
 # blank all files are included. 
 
-FILE_PATTERNS          = *.c *.h *.cc 
+FILE_PATTERNS          = *.c *.h *.cc *.hpp 
 
 # The RECURSIVE tag can be used to turn specify whether or not subdirectories 
 # should be searched for input files as well. Possible values are YES and NO. 
