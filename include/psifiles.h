@@ -14,6 +14,9 @@
 ** Created by C. David Sherrill on 29 April 1998
 */
 
+#ifndef _psi_include_psifiles_h_
+#define _psi_include_psifiles_h_
+
 #define PSI_DEFAULT_FILE_PREFIX "psi"
 
 #define PSIF_CHKPT          32 /* new libpsio checkpoint file number */
@@ -147,3 +150,4 @@ integrals out (i.e. multiply by i=sqrt(-1) to get the integrals) */
 #define PSI_RETURN_FAILURE      1
 #define PSI_RETURN_ENDLOOP      2
 
+#endif /* header guard */

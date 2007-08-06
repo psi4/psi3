@@ -1,3 +1,7 @@
+
+#ifndef _psi_include_ccfiles_h_
+#define _psi_include_ccfiles_h_
+
 /* The miscellaneous CC information file */
 #define CC_INFO        100
 /* One-electron integral files */
@@ -81,3 +85,5 @@
 /* Markers for the first and last file numbers */
 #define CC_MIN  CC_INFO
 #define CC_MAX  CC2_HET1
+
+#endif /* header guard */
