@@ -51,7 +51,9 @@ PSIO::PSIO()
 
 extern "C" {
 
+#if !STANDALONE_LIBPSIO
   extern int psio_ipv1_config();
+#endif
 
   /*!
   ** PSIO_INIT(): Allocates global memory needed by the I/O routines.
@@ -71,8 +73,10 @@ extern "C" {
       }
     }
 
+#if !STANDALONE_LIBPSIO
     /* if in PSI3 -- configure libpsio using libipv1 */
     psio_ipv1_config();
+#endif
     
     return 1;
   }

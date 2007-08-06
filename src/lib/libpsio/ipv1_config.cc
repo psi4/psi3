@@ -6,6 +6,8 @@
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 
+#if !STANDALONE_LIBPSIO
+
 using namespace psi;
 
 extern "C" {
@@ -145,3 +147,4 @@ extern "C" {
 	}
 }
 
+#endif
