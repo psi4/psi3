@@ -574,7 +574,7 @@ extern "C" {
 */
 	double **chkpt_rd_scf_irrep(int irrep)
 	{
-		_default_chkpt_lib_->rd_scf_irrep(irrep);
+		return _default_chkpt_lib_->rd_scf_irrep(irrep);
 	}
 
 /*!
@@ -588,7 +588,7 @@ extern "C" {
 */
 	double **chkpt_rd_alpha_scf_irrep(int irrep)
 	{
-		_default_chkpt_lib_->rd_alpha_scf_irrep(irrep);
+		return _default_chkpt_lib_->rd_alpha_scf_irrep(irrep);
 	}
 
 /*!
@@ -601,11 +601,10 @@ extern "C" {
 ** 
 ** \ingroup (CHKPT)
 */
-double **chkpt_rd_beta_scf_irrep(int irrep)
-{
-	return _default_chkpt_lib_->rd_beta_scf_irrep(irrep);
-}
-
+	double **chkpt_rd_beta_scf_irrep(int irrep)
+	{
+		return _default_chkpt_lib_->rd_beta_scf_irrep(irrep);
+	}
 
 /*!
 ** chkpt_wt_scf_irrep(): Writes a single irrep of the SCF eigenvectors for 

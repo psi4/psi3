@@ -45,7 +45,7 @@ extern "C" {
 */
 	int chkpt_rd_num_unique_atom(void)
 	{
-		_default_chkpt_lib_->rd_num_unique_atom();
+		return _default_chkpt_lib_->rd_num_unique_atom();
 	}
 
 /*!
