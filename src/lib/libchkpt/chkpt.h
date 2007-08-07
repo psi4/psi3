@@ -8,7 +8,13 @@
 #define MAX_ELEMNAME 13
 
 #define CHKPT_PREFIX_LEN 32
-extern char chkpt_prefix[CHKPT_PREFIX_LEN];
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+/* Not needed anymore */
+/*extern char chkpt_prefix[CHKPT_PREFIX_LEN];*/
 
 /*--- Z-matrix entry type ---*/
 struct z_entry {
@@ -252,6 +258,15 @@ void chkpt_wt_ccvecs(double **);
 double chkpt_rd_ecorr(void);
 void chkpt_wt_ecorr(double);
 
+double chkpt_rd_eccsd(void);
+void chkpt_wt_eccsd(double);
+
+double chkpt_rd_e_t(void);
+void chkpt_wt_e_t(double);
+
+double chkpt_rd_emp2(void);
+void chkpt_wt_emp2(double);
+
 double chkpt_rd_eref(void);
 void chkpt_wt_eref(double);
 
@@ -286,5 +301,9 @@ void chkpt_wt_override_occ(int);
 
 int *chkpt_rd_statespi(void);
 void chkpt_wt_statespi(int *);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
