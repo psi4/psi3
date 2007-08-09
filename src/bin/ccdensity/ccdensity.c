@@ -399,6 +399,10 @@ void exit_io(void)
     psio_close(EOM_TMP,0);
     psio_open(EOM_TMP,PSIO_OPEN_NEW);
   }
+  if (params.use_zeta) { /* we're done with Xi amplitudes */
+    psio_close(EOM_XI,0);
+    psio_open(EOM_XI,PSIO_OPEN_NEW);
+  }
 
   /* Close all dpd data files here */
   for(i=CC_MIN; i <= CC_MAX; i++) psio_close(i,1);
