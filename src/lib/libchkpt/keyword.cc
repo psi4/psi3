@@ -38,7 +38,7 @@ extern "C" {
 	char *chkpt_build_keyword(char *key)
 	{
 		char *keyword;
-		_default_chkpt_lib_->build_keyword(key);
+		keyword = _default_chkpt_lib_->build_keyword(key);
 		return keyword;
 	}
 }
