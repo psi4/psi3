@@ -1,6 +1,8 @@
 #ifndef _psi_src_lib_libchkpt_chkpt_hpp_
 #define _psi_src_lib_libchkpt_chkpt_hpp_
 
+#include <libchkpt/config.h>
+
 namespace psi {
 	class PSIO;
 	
