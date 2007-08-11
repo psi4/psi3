@@ -49,6 +49,7 @@ int main(int argc, char *argv[])
 {
   int *cachefiles;
   int **cachelist;
+  char *keyw;
  
   struct dpd_file4_cache_entry *priority;
   
@@ -84,6 +85,8 @@ int main(int argc, char *argv[])
   fflush(outfile);
 
   chkpt_init(PSIO_OPEN_OLD);
+  // Save MP2 contribution to Chkpt
+  chkpt_wt_emp2(mo.Emp2);
   chkpt_wt_etot(mo.Escf+mo.Emp2);
   chkpt_close();
   
