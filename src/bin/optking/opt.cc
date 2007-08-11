@@ -205,8 +205,9 @@ int main(int argc, char **argv) {
         parsed++;
       }
       else {
-        printf("command line argument not understood.\n");
-        exit(1);
+        //printf("command line argument not understood.\n");
+        //exit(1);
+		break;
       }
     }
 
