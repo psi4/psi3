@@ -27,7 +27,7 @@ void parsing()
 
      errcod = ip_string("LABEL", &label,0);
      if(errcod != IPE_OK)
-       punt("Where is the label?");
+       label = "Default PSI label";
 
      /*Default = false*/
      /*Flag if the user wants to see that his/her basis set is normalized*/
