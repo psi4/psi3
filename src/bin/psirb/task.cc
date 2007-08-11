@@ -1,6 +1,9 @@
 #include <ruby.h>
 #include <libpsio/psio.hpp>
+#include <libchkpt/chkpt.hpp>
 #include "psirb.h"
+
+using namespace psi;
 
 //
 // class Task
@@ -84,6 +87,7 @@ void Task::create_ruby_class()
 	rb_define_method(Task::m_rbTask, "exist?",  RUBYCAST(Task::rb_chkpt_exist),     1);
 	rb_define_method(Task::m_rbTask, "exists?", RUBYCAST(Task::rb_chkpt_exist),     1);
 	rb_define_method(Task::m_rbTask, "label", 	RUBYCAST(Task::rb_chkpt_label_get), 0);
+	rb_define_method(Task::m_rbTask, "label=",  RUBYCAST(Task::rb_chkpt_label_set), 1); 
 	rb_define_method(Task::m_rbTask, "escf",	RUBYCAST(Task::rb_chkpt_escf_get),  0);
 	rb_define_method(Task::m_rbTask, "escf=",	RUBYCAST(Task::rb_chkpt_escf_set),  1);
 	rb_define_method(Task::m_rbTask, "eref",	RUBYCAST(Task::rb_chkpt_eref_get),  0);
@@ -100,6 +104,7 @@ void Task::create_ruby_class()
 	rb_define_method(Task::m_rbTask, "disp=", 	RUBYCAST(Task::rb_chkpt_disp_set),  1);
 	rb_define_method(Task::m_rbTask, "eccsd",   RUBYCAST(Task::rb_chkpt_eccsd_get), 0);
 	rb_define_method(Task::m_rbTask, "e_t",     RUBYCAST(Task::rb_chkpt_e_t_get),   0);
+	rb_define_method(Task::m_rbTask, "emp2",    RUBYCAST(Task::rb_chkpt_emp2_get),  0);
 }
 
 void Task::rb_free(void *p)
@@ -310,6 +315,30 @@ VALUE Task::rb_chkpt_label_get(VALUE self)
 	VALUE result = rb_str_new2(label);
 	
 	return result;
+}
+
+//! Ruby function: Psi::Task.label
+/*! Ruby interface to chkpt_wt_label. Writes the label to checkpoint.
+	\param self Ruby object calling this function.
+	\param label New label.
+*/
+VALUE Task::rb_chkpt_label_set(VALUE self, VALUE label)
+{
+	Task *task;	
+	Data_Get_Struct(self, Task, task);
+	
+	// Convert the given keyword to a C-string
+	VALUE str = StringValue(label);
+	char *p = RSTRING(str)->ptr;	
+	if (p == NULL) {
+		rb_raise(rb_eArgError, "wrong argument, expected a string");
+	}
+	
+	// Call the Psi chkpt function
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	chkpt.wt_label(p);
+	
+	return self;
 }
 
 //! Ruby function: Psi::Task.escf
@@ -570,10 +599,9 @@ VALUE Task::rb_chkpt_disp_set(VALUE self, VALUE ndisp)
 }
 
 //! Ruby function: Psi::Task.eccsd
-/*! Returns the CCSD energy contribution to the total energy.
+/*! Returns the CCSD contribution to the total energy.
 	\param self The Ruby object that is calling this function.
 	\return CCSD energy contribution as a Ruby object.
-	\note Would like for this value to be saved in Chkpt and read from there.
 */
 VALUE Task::rb_chkpt_eccsd_get(VALUE self)
 {
@@ -588,11 +616,10 @@ VALUE Task::rb_chkpt_eccsd_get(VALUE self)
 	return rb_float_new(energy);
 }
 
-//! Ruby function: Psi::Chkpt:e_t
-/*! Returns the (T) energy contribution to the total energy.
+//! Ruby function: Psi::Task.e_t
+/*! Returns the (T) contribution to the total energy.
 	\param self The Ruby object that is calling this function.
 	\return (T) energy contribution as a Ruby object.
-	\note Would like for this value to be saved in Chkpt and read from there.
 */
 VALUE Task::rb_chkpt_e_t_get(VALUE self)
 {
@@ -603,6 +630,24 @@ VALUE Task::rb_chkpt_e_t_get(VALUE self)
 	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
 	energy = chkpt.rd_e_t();
 	
+	// Return the value to the user
+	return rb_float_new(energy);
+}
+
+//! Ruby function: Psi::Task.emp2
+/*! Returns the MP2 contribution to the total energy.
+	\param self The Ruby object that is calling this function.
+	\return MP2 energy contribution as a Ruby object.
+*/
+VALUE Task::rb_chkpt_emp2_get(VALUE self)
+{
+	Task *task;	
+	Data_Get_Struct(self, Task, task);
+	double energy;
+
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	energy = chkpt.rd_emp2();
+
 	// Return the value to the user
 	return rb_float_new(energy);
 }

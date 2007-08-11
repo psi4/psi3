@@ -48,11 +48,12 @@ namespace Globals {
 #define RUBYPSIDATA(RObj, OType, OPtr) \
 	Data_Get_Object(RObj, OType, OPtr);
 
-#ifndef CHKPT_PREFIX_LEN
-#define CHKPT_PREFIX_LEN 32
-#endif
+//#ifndef CHKPT_PREFIX_LEN
+//#define CHKPT_PREFIX_LEN 32
+//#endif
 
 /*! A limited C++ implementation of libchkpt using C++ libpsio. */
+/*
 class Chkpt {
 	psi::PSIO *psio;
 	char chkpt_prefix[CHKPT_PREFIX_LEN];
@@ -101,7 +102,10 @@ public:
 	
 	double rd_e_t();
 	void wt_e_t(double e_t);
-};
+
+	double rd_emp2();
+	void wt_emp2(double emp2);
+}; */
 
 /*! A calculation will now be grouped into a Task object. Tasks provide a 
 	simple way of having several prefixes in a single input file.
@@ -176,6 +180,7 @@ public:
 	// Checkpoint interface
 	static VALUE rb_chkpt_exist(VALUE, VALUE);
 	static VALUE rb_chkpt_label_get(VALUE);
+	static VALUE rb_chkpt_label_set(VALUE self, VALUE label);
 	static VALUE rb_chkpt_escf_get(VALUE);
 	static VALUE rb_chkpt_escf_set(VALUE, VALUE);
 	static VALUE rb_chkpt_eref_get(VALUE);
@@ -192,6 +197,32 @@ public:
 	static VALUE rb_chkpt_disp_set(VALUE, VALUE);
 	static VALUE rb_chkpt_eccsd_get(VALUE);
 	static VALUE rb_chkpt_e_t_get(VALUE);
+	static VALUE rb_chkpt_emp2_get(VALUE);	
+};
+
+/*
+class ZEntry {
+private:
+	z_entry *m_zEntry;
+
+	//! Ruby reference to the Z-Matrix class descriptor
+	static VALUE m_rbZEntry;
+	
+public:
+	//! Default constructor
+	ZEntry();
+	~ZEntry();
+	
+	//
+	// Ruby framework for ZEntry
+	//
+	
+	//! Creates the Ruby class framework
+	static void create_ruby_class();
+	
+	//! Called by Ruby when it needs to delete a class.
 	
 };
+*/
+
 #endif // __PSIRB_H__

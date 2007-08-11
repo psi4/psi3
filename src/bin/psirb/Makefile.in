@@ -9,10 +9,10 @@ LDLIBS += $(RUBYLIB)
 
 # Hopefully one day I can remove -lPSI_ipv1 from below.
 # It's only there to fix some link references.
-PSILIBS = -lPSI_psio -lPSI_ipv1
+PSILIBS = -lPSI_chkpt -lPSI_psio -lPSI_ipv1
 
 CXXINC += $(RUBYINC) -DINSTALLEDPSIDATADIR=\"$(datadir)\"
-CXXSRC = psirb.cc ruby.cc chkpt.cc task.cc
+CXXSRC = psirb.cc ruby.cc task.cc
 
 BINOBJ = $(CXXSRC:%.cc=%.o)
 
