@@ -1,6 +1,25 @@
+08/13/07 Additional functionality has been added to psirb. Includes support for
+mp2, detci, and modules needed to compute gradients for both HF and CC. An 
+interface to optking for geometry optimization is included. The optking interface
+is able to determine if analytic gradients are available for a given level of 
+theory and use them, otherwise gradients by energy points are performed. If the 
+user freezes core orbitals they will need to tell the optking interface to use 
+energy points. Four test cases are included, they are prefixed with rb. -JMT
+
 08/13/07 Psi3 can be configured to follow CCA integrals standard outlined in
 an upcoming paper by Kenny et al. (the ordering of spherical harmonics
 is not yet determined)  -EFV
+
+08/07/07 Libchkpt is now fully object-oriented. The current C-style interface is
+unchanged. Only the default single instance of the library can be accessed and
+configured from C programs in Psi3. Multiple instances of the library can now
+be created and configured any C++ program given that you use the C++ version of
+libpsio. -JMT
+
+08/04/07 The new Psi driver is now in the repository. This version provides the
+same functionality as was shown at the Psi3 workshop at UGA. It was modified to
+make use of the C++ libpsio. A manual is in the works for the new driver. Until
+a manual is available please refer to the wiki. -JMT
 
 08/02/07 Libpsio is now fully object-oriented. The current C-style interface is
 unchanged. Only the default single instance of the library can be accessed and

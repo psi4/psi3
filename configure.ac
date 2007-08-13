@@ -957,6 +957,10 @@ AC_CONFIG_FILES([include/Makefile
           tests/uhf-lindep1/Makefile
           tests/psi_start/Makefile
           tests/psi_start/psi_start.pl
+          tests/rb-scf-opt-numer/Makefile
+          tests/rb-ccsd_t-sp/Makefile
+          tests/rb-fci-h2o/Makefile
+          tests/rb-ccsd-opt-grad/Makefile
           src/bin/giao/Makefile
 ])
 
