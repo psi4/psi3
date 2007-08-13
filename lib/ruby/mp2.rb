@@ -8,7 +8,7 @@ module Psi
     
     # Which references does this method support
     def self.supports_analytic_gradients
-      { "rhf" => true, "rohf" => false, "uhf" => false, "twocon" => false }
+      { "rhf" => false, "rohf" => false, "uhf" => false, "twocon" => false }
     end
     
     def initialize(task_obj)
