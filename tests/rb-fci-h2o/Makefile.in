@@ -1,0 +1,12 @@
+
+SRCDIR = @srcdir@
+
+include ../MakeVars
+
+$(TARGET):
+	@SRCDIR=$(SRCDIR) PSIDATADIR=$(SRC_PSIDATADIR) PATH=../../bin:$PATH psirb $(SRCDIR)/input.rb
+
+clean:
+	/bin/rm -f /tmp/psi.*
+	/bin/rm -f $(TARGET) $(GARBAGE)
+

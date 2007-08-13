@@ -6,6 +6,8 @@ cc17 cc18 cc19 cc21 cc22 cc23 cc24 cc25 cc26 cc27 cc28 cc29 cc30 cc31 cc32 \
 cc33 cc34 cc35 cc36 cc37 cc38 cc39 cc40 cc41 cc42 cc43 cc44 cc45 cc46 cc47 \
 cc48 cc49 cc50 \
 
+rb_subdirs = rb-scf-opt-numer rb-ccsd_t-sp rb-fci-h2o rb-ccsd-opt-grad
+
 subdirs = \
 scf-opt scf-opt2 scf-opt3 scf-opt4 scf-opt5 scf-opt6 scf-opt7 \
 scf-opt9 scf-opt10 scf-opt11 scf-opt12 \
@@ -21,6 +23,12 @@ rhf-oeprop mp2-oeprop mp2-opt \
 extrema-deloc extrema-zmat mp2r12-sp1 \
 rhf-lindep1 rohf-lindep1 uhf-lindep1  psi_start \
 
+# Only test if psirb was compiled
+RUBYLINK = @RUBYLINK@
+ifeq ($(RUBYLINK),yes)
+subdirs += $(rb_subdirs)
+endif
+
 tests:
 	for dir in $(subdirs); \
 	do \
@@ -29,6 +37,12 @@ tests:
 
 cc_tests:
 	for dir in $(cc_subdirs); \
+	do \
+	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
+	done
+
+psirb_tests:
+	for dir in $(rb_subdirs); \
 	do \
 	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
 	done
