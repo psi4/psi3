@@ -34,9 +34,11 @@ namespace Globals {
 	EXT VALUE g_rbPsi = Qnil;
 /*! How much to indent the Ruby puts output by. */
 	EXT int g_iPutsIndent = 0;
+	EXT bool g_bQuietRuby = false;
 #else
 	EXT VALUE g_rbPsi;
 	EXT int g_iPutsIndent;
+	EXT bool g_bQuietRuby;
 #endif
 };
 
@@ -47,65 +49,6 @@ namespace Globals {
 /*! Help the user get the Psi object from Ruby. Psi object MUST have an assign function */
 #define RUBYPSIDATA(RObj, OType, OPtr) \
 	Data_Get_Object(RObj, OType, OPtr);
-
-//#ifndef CHKPT_PREFIX_LEN
-//#define CHKPT_PREFIX_LEN 32
-//#endif
-
-/*! A limited C++ implementation of libchkpt using C++ libpsio. */
-/*
-class Chkpt {
-	psi::PSIO *psio;
-	char chkpt_prefix[CHKPT_PREFIX_LEN];
-public:
-	
-	Chkpt(psi::PSIO *psioObject, int status);
-	~Chkpt();
-	
-	char *rd_prefix();
-	void wt_prefix(char *prefix);
-	void set_prefix(char *prefix);
-	void commit_prefix();
-	void reset_prefix();
-	char *get_prefix();
-	
-	char *build_keyword(char *key);
-	
-	int exist(char *keyword);
-	
-	char *rd_label();
-	void wt_label(char *label);
-	
-	double rd_escf();
-	void wt_escf(double escf);
-
-	double rd_eref();
-	void wt_eref(double eref);
-	
-	double rd_ecorr();
-	void wt_ecorr(double ecorr);
-	
-	double rd_enuc();
-	void wt_enuc(double enuc);
-	
-	double rd_efzc();
-	void wt_efzc(double efzc);
-	
-	double rd_etot();
-	void wt_etot(double etot);
-	
-	int rd_disp();
-	void wt_disp(int disp);
-	
-	double rd_eccsd();
-	void wt_eccsd(double eccsd);
-	
-	double rd_e_t();
-	void wt_e_t(double e_t);
-
-	double rd_emp2();
-	void wt_emp2(double emp2);
-}; */
 
 /*! A calculation will now be grouped into a Task object. Tasks provide a 
 	simple way of having several prefixes in a single input file.

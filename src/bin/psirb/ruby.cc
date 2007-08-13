@@ -160,19 +160,44 @@ VALUE ruby_psi_puts(int argc, VALUE *argv)
 	int i;
 	VALUE str;
 	
-	for (i=0; i<Globals::g_iPutsIndent; i++)
-		fprintf(Globals::g_fOutput, " ");
-		
-	for (i=0; i<argc; ++i) {
+	// If we are supposed to be quiet don't print anything
+	if (Globals::g_bQuietRuby == false) {
+		for (i=0; i<Globals::g_iPutsIndent; i++)
+			fprintf(Globals::g_fOutput, " ");
+
+		for (i=0; i<argc; ++i) {
 		// StringValue calls to_str on the object, if needed, to convert the object to a string.
-		VALUE str = StringValue(argv[i]);
+			VALUE str = StringValue(argv[i]);
 		// Print the converted objected.
-		fprintf(Globals::g_fOutput, RSTRING(str)->ptr);
+			fprintf(Globals::g_fOutput, RSTRING(str)->ptr);
+		}
+		fprintf(Globals::g_fOutput, "\n");
+		fflush(Globals::g_fOutput);
 	}
-	fprintf(Globals::g_fOutput, "\n");
-	fflush(Globals::g_fOutput);
 	
 	return Qnil;
+}
+
+//! Ruby function: Psi::quiet=
+/*! If quiet=true then puts will not print anything when called */
+VALUE ruby_psi_quiet_set(VALUE self, VALUE value)
+{
+	if (value == Qtrue)
+		Globals::g_bQuietRuby = true;
+	else
+		Globals::g_bQuietRuby = false;
+		
+	return value;
+}
+
+//! Ruby function: Psi::quiet
+/*! Returns the quiet value */
+VALUE ruby_psi_quiet_get(VALUE self, VALUE value)
+{
+	if (Globals::g_bQuietRuby == true)
+		return Qtrue;
+	else
+		return Qfalse;
 }
 
 //! Creates a module in the Ruby address space named Psi.
@@ -197,6 +222,8 @@ bool create_ruby_psi_module()
 	// Define methods that belong to Psi
 	rb_define_module_function(Globals::g_rbPsi, "indent_puts",   RUBYCAST(ruby_psi_indent_puts), 0);
 	rb_define_module_function(Globals::g_rbPsi, "unindent_puts", RUBYCAST(ruby_psi_unindent_puts), 0);
+	rb_define_module_function(Globals::g_rbPsi, "quiet=",        RUBYCAST(ruby_psi_quiet_set), 1);
+	rb_define_module_function(Globals::g_rbPsi, "quiet",         RUBYCAST(ruby_psi_quiet_get), 0);
 	
 	// Define a sub-module of Psi named Version
 	rubyVersion = rb_define_module_under(Globals::g_rbPsi, "Version");
