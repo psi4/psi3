@@ -1,8 +1,7 @@
-# Handle access to Psi scf module
+# Handle access to Psi oeprop module
 
 module Psi
-  class CCSort
-    
+  class OEProp
     # Mixin the InputGenerator
     include InputGenerator
     include Executor
@@ -10,18 +9,18 @@ module Psi
     def initialize(task_obj)
       @task = task_obj
       # Set the generic command for this class
-      set_binary_command Psi::Commands::CCSORT
+      set_binary_command Psi::Commands::OEPROP
     end
   end
   
-  # Add ccsort ability to Task
+  # Add oeprop ability to Task
   class Task
-    def ccsort(*args)
+    def oeprop(*args)
       # convert to a hash
       args_hash = args[0]
 
-      # Create a new scf object
-      ccsort_obj = Psi::CCSort.new self
+      # Create a new cclambda object
+      oeprop_obj = Psi::OEProp.new self
 
       # Form the input hash and generate the input file
       input_hash = { }
@@ -32,7 +31,7 @@ module Psi
         input_hash["reference"] = reference
       end
 
-      # If we are doing analytic gradients make sure ccenergy knows
+      # If we are doing analytic gradients make sure cchbar knows
       if get_gradients == true
         input_hash["dertype"] = "first"
       else
@@ -47,17 +46,17 @@ module Psi
       # Merge what we've done with what the user wants
       input_hash = input_hash.merge(args_hash) unless args_hash == nil
 
-      # Run the scf module, sending the input file as keyboard input
-      puts "ccsort"
-      ccsort_obj.execute(input_hash)
+      # Run the ccenergy module, sending the input file as keyboard input
+      puts "oeprop"
+      oeprop_obj.execute(input_hash)
     end
   end
 end
 
 # Create some global functions
 # User can send additional input parameters to the function
-def ccsort(*args)
+def oeprop(*args)
   # convert to a hash
   args_hash = args[0]
-  Psi::global_task.ccsort(args_hash)
+  Psi::global_task.oeprop(args_hash)
 end

@@ -1,22 +1,19 @@
 # Handle access to Psi scf module
+require 'pp'
 
 module Psi
   class SCF
-    
-    # Mixin the InputGenerator
     include InputGenerator
     include Executor
-    include SupportsAnalyticalGradients
+    # Which references does this method support
+    def self.supports_analytic_gradients
+      { "rhf" => true, "rohf" => true, "uhf" => true, "twocon" => true }
+    end
     
     def initialize(task_obj)
       @task = task_obj
       # Set the generic command for this class
       set_binary_command Psi::Commands::SCF
-    end
-    
-    def analytical_gradients(*args)
-      # Need to call cints --deriv1
-      ints_derivative(args[0])
     end
   end
   
@@ -25,7 +22,7 @@ module Psi
     def scf(*args)
       # convert to a hash
       args_hash = args[0]
-
+      
       # Make sure cints is called
       if args_hash != nil 
         if args_hash.has_key?(:ints) == false or 
@@ -45,6 +42,8 @@ module Psi
       # Check to see if the user overrode the wavefunction
       if args_hash == nil or args_hash.has_key?("wfn") == false
         input_hash["wfn"] = wavefunction
+      else
+        input_hash["wfn"] = args_hash["wfn"]
       end
       args_hash.delete("wfn") unless args_hash == nil
 
@@ -52,12 +51,14 @@ module Psi
       # global setting
       if args_hash == nil or args_hash.has_key?("reference") == false
         input_hash["reference"] = reference
+      else
+        input_hash["reference"] = args_hash["reference"]
       end
       args_hash.delete("reference") unless args_hash == nil
 
-      # If we are doing analytical gradients need cscf to know
-      if analytical_gradients == true and scf_obj.supports_analytical_gradients == true
-        input_hash["dertype"] = 1
+      # If we are doing analytical gradients then cscf needs to know
+      if get_gradients == true and SCF.supports_analytic_gradients[reference] == true
+        input_hash["dertype"] = "first"
       else
         input_hash["dertype"] = "none"
       end
@@ -69,9 +70,14 @@ module Psi
       puts "scf"
       scf_obj.execute(input_hash)
 
-      # Check to see if we are supposed to compute analytical gradients
-      if analytical_gradients == true and scf_obj.supports_analytical_gradients == true
-        scf_obj.analytical_gradients(input_hash)
+      # Check to see if we are supposed to compute analytical gradients, only do if
+      #  1. It is supported
+      #  2. The user requested it
+      #  3. The wavefunction is SCF
+      if get_gradients == true and SCF.supports_analytic_gradients[reference] == true and wavefunction.casecmp("scf") == 0
+        # Make sure the wavefunction is set
+        input_hash["wfn" => "scf"]
+        deriv(input_hash)
       end
     end
 

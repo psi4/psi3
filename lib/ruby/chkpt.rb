@@ -95,5 +95,9 @@ module Psi
   	def self.e_t
   	  Psi::global_task.e_t
 	  end
+	  
+	  def self.emp2
+	    Psi::global_task.emp2
+    end
   end
 end

@@ -8,6 +8,18 @@ require 'stringio'
 # any Psi3 library function is implemented in the source for psirb.
 module Psi
   
+  module SupportsAnalyticalGradients
+    def supports_analytical_gradients
+      true
+    end
+  end
+  
+  module NoAnalyticalGradients
+    def supports_analytical_gradients
+      false
+    end
+  end
+  
   module Commands
     INPUT       = "input"
     INPUTKEEP   = "input --keepoutput"
@@ -40,6 +52,16 @@ module Psi
     CCEOM       = "cceom"
     CCRESPONSE  = "ccresponse"
     CCDENSITY   = "ccdensity"
+    MP2         = "mp2"
+    DETCI       = "detci"
+    
+    # Things for optimizations
+    FINDIF_DISP_SYMM   = "optking --disp_irrep --irrep 1"
+    FINDIF_NEXT        = "optking --disp_load"
+    FINDIF_INPUT       = "input --keepchkpt --chkptgeom --noreorient"
+    FINDIF_ENERGY_SAVE = "optking --energy_save"
+    FINDIF_GRAD_ENERGY = "optking --grad_energy"
+    GEOMUPDATE         = "optking --opt_step"
   end
 
   # Access to the global task object. The first time it is retrieved the object is created.
@@ -54,6 +76,13 @@ module Psi
     @global_task
   end
 
+  def self.memory=(val)
+    Psi::global_task.memory=val
+  end
+  def self.memory
+    Psi::global_task.memory
+  end
+  
   def self.prefix=(val)
     Psi::global_task.prefix=val
   end
@@ -199,14 +228,40 @@ module Psi
       @label
     end
     
-    def analytical_gradients=(val)
-      @analytical_gradients = val
+    def gradients=(val)
+      @gradients = val
     end
-    def analytical_gradients
-      if @analytical_gradients == nil
+    def set_gradients(val)
+      @gradients = val
+    end
+    def get_gradients
+      @gradients
+    end
+    def gradients
+      if @gradients == nil
         return false
       end
-      @analytical_gradients
+      @gradients
+    end
+    
+    # Memory is given in megabytes
+    def get_memory
+      if @memory == nil
+        return 256
+      end
+      @memory
+    end
+    def set_memory=(val)
+      @memory=val
+    end
+    def memory=(val)
+      @memory=val
+    end
+    def memory
+      if @memory == nil
+        return 256
+      end
+      @memory
     end
     
     def self.create(*args)
@@ -225,6 +280,24 @@ module Psi
   end # of Task
   
   module InputGenerator
+    def set_task(val)
+      @task = val
+    end
+    def get_task
+      @task
+    end
+    
+    def set_psi_module_name(val)
+      @psi_module_name = val
+    end
+    def get_psi_module_name
+      if @psi_module_name == nil
+        self.class.name.slice!(5..-1)
+      else
+        @psi_module_name
+      end
+    end
+    
     def generate_value(item)
       result = StringIO.new("", "w")
       if item.kind_of?(Array)
@@ -248,15 +321,7 @@ module Psi
       return result
     end
     
-    #
-    # Set the input parameters that are needed to run the given psi module
-    # Expects a hash containing properties to be set
-    #  { "jobtype" => "sp", "dertype" => "none" }
-    # Uses the name of the encompassing class to name the module for psi3 input file
-    def generate_input(input_hash)
-      input = StringIO.new("", "w")
-      psi_module_name = self.class.name.slice!(5..-1)
-      
+    def generate_scratch_input(input)
       # Make sure the scratch location stuff is included
       input.puts "psi:("
       input.puts "  files:("
@@ -267,13 +332,28 @@ module Psi
       input.puts "    file32: (nvolume=1 volume1=\\\"./\\\")"
       input.puts "  )"
       input.puts ")"
+    end
+    
+    # Set the input parameters that are needed to run the given psi module
+    # Expects a hash containing properties to be set
+    #  { "jobtype" => "sp", "dertype" => "none" }
+    # Uses the name of the encompassing class to name the module for psi3 input file
+    def generate_input(input_hash)
+      input = StringIO.new("", "w")
+      
+      # Generate file sections
+      generate_scratch_input(input)
       
       # Begin the input
-      input.puts "#{psi_module_name}:("
+      input.puts "#{get_psi_module_name}:("
       
       # Go through the hash and add entries into the input
       sub_result = generate_value(input_hash)
       input.puts(sub_result.string)
+      
+      # Put in the memory keyword
+      input.puts "memory = (#{@task.get_memory} MB)"
+      
       # Close off the input
       input.puts ")"
       
@@ -298,14 +378,20 @@ module Psi
       
       if Psi::check_commands != true
         prefix = ""
-        prefix = "-p #{@task.prefix}" if @task.prefix != nil
+        prefix = "-p #{get_task.prefix}" if get_task.prefix != nil
         
         if binary != nil
-#         `echo "#{input_file.string}" | #{binary} -f - >& /dev/null`
-          `echo "#{input_file.string}" | #{binary} #{prefix} -f -`
+          if Psi::quiet
+            `echo "#{input_file.string}" | #{binary} #{prefix} -f - >& /dev/null`
+          else
+            `echo "#{input_file.string}" | #{binary} #{prefix} -f -`
+          end
         elsif get_binary_command != nil
-#         `echo "#{input_file.string}" | #{get_binary_command} -f - >& /dev/null`
-          `echo "#{input_file.string}" | #{get_binary_command} #{prefix} -f -`
+          if Psi::quiet
+            `echo "#{input_file.string}" | #{get_binary_command} #{prefix} -f - >& /dev/null`
+          else
+            `echo "#{input_file.string}" | #{get_binary_command} #{prefix} -f -`
+          end
         else
           puts "Error: Executor.execute: Unable to determine which module to run."
           exit 1
@@ -332,20 +418,9 @@ module Psi
       execute_internal(input_file, binary)
     end
   end
-  
-  module SupportsAnalyticalGradients
-    def supports_analytical_gradients
-      true
-    end
-  end
-  
-  module NoAnalyticalGradients
-    def supports_analytical_gradients
-      false
-    end
-  end
 end
 
+require 'color'
 require 'input'
 require 'cints'
 require 'scf'
@@ -358,3 +433,10 @@ require 'ccenergy'
 require 'cctriples'
 require 'symbols'
 require 'chkpt'
+require 'mp2'
+require 'cchbar'
+require 'ccdensity'
+require 'cclambda'
+require 'oeprop'
+require 'deriv'
+require 'detci'

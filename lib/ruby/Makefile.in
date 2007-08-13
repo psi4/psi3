@@ -22,21 +22,16 @@ MKDIRS = @MKDIRS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 
-install: ccenergy.rb ccsort.rb cctriples.rb cints.rb clean.rb input.rb optking.rb pes.rb psi3.rb scf.rb symbols.rb transqt.rb chkpt.rb
+RUBYSRC = ccdensity.rb ccenergy.rb cchbar.rb cclambda.rb ccsort.rb cctriples.rb \
+cints.rb clean.rb input.rb optking.rb pes.rb psi3.rb scf.rb symbols.rb transqt.rb \
+chkpt.rb deriv.rb mp2.rb oeprop.rb detci.rb color.rb testcases.rb
+
+install: $(RUBYSRC)
 	$(MKDIRS) $(rubydatadir)
-	$(INSTALL_DATA) $(srcdir)/chkpt.rb $(rubydatadir)
-	$(INSTALL_DATA) $(srcdir)/ccenergy.rb $(rubydatadir)
-	$(INSTALL_DATA) $(srcdir)/ccsort.rb $(rubydatadir)
-	$(INSTALL_DATA) $(srcdir)/cctriples.rb $(rubydatadir)
-	$(INSTALL_DATA) $(srcdir)/cints.rb $(rubydatadir)
-	$(INSTALL_DATA) $(srcdir)/clean.rb $(rubydatadir)
-	$(INSTALL_DATA) $(srcdir)/input.rb $(rubydatadir)
-	$(INSTALL_DATA) $(srcdir)/optking.rb $(rubydatadir)
-	$(INSTALL_DATA) $(srcdir)/pes.rb $(rubydatadir)
-	$(INSTALL_DATA) $(srcdir)/psi3.rb $(rubydatadir)
-	$(INSTALL_DATA) $(srcdir)/scf.rb $(rubydatadir)
-	$(INSTALL_DATA) $(srcdir)/symbols.rb $(rubydatadir)
-	$(INSTALL_DATA) $(srcdir)/transqt.rb $(rubydatadir)
+	for rbfile in $(RUBYSRC); \
+          do \
+            ($(INSTALL_DATA) $(srcdir)/$${rbfile} $(rubydatadir)) || exit 1; \
+          done
 
 install_man: 
 

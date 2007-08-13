@@ -1,4 +1,4 @@
-# Handle access to Psi scf module
+# Handle access to Psi ccenergy module
 
 module Psi
   class CCEnergy
@@ -6,6 +6,10 @@ module Psi
     # Mixin the InputGenerator
     include InputGenerator
     include Executor
+    # Which references does this method support
+    def self.supports_analytic_gradients
+      { "rhf" => true, "rohf" => false, "uhf" => false, "twocon" => false }
+    end
     
     def initialize(task_obj)
       @task = task_obj
@@ -50,17 +54,44 @@ module Psi
         input_hash["reference"] = reference
       end
 
+      # If we are doing analytic gradients make sure ccenergy knows
+      if get_gradients == true and CCEnergy.supports_analytic_gradients[reference] == true
+        input_hash["dertype"] = "first"
+      else
+        input_hash["dertype"] = "none"
+      end
+      
       # Check the wavefunction
       if args_hash == nil or args_hash.has_key?("wfn") == false
         input_hash["wfn"] = wavefunction
       end
 
-      # Merge what we've done with what the user wants
+      # Merge what we've done with what the user wants, user settings should override
       input_hash = input_hash.merge(args_hash) unless args_hash == nil
 
-      # Run the scf module, sending the input file as keyboard input
+      # Run the ccenergy module, sending the input file as keyboard input
       puts "ccsd"
       ccsd_obj.execute(input_hash)
+      
+      # Check to see if we are supposed to compute analytical gradients, only do if
+      #  1. It is supported
+      #  2. The user requested it
+      #  3. The wavefunction is CCSD
+      if get_gradients == true and CCEnergy.supports_analytic_gradients[reference] == true and wavefunction.casecmp("ccsd") == 0
+        puts "gradient:"
+        Psi::indent_puts
+        cchbar(input_hash)
+        cclambda(input_hash)
+        ccdensity(input_hash)
+        oeprop(input_hash)
+        
+        # Tell transqt to do a back transformation
+        transqt_input_hash = input_hash
+        transqt_input_hash[:backtr] = true
+        transqt(transqt_input_hash)
+        deriv(input_hash)
+        Psi::unindent_puts
+      end
     end
   end
 end

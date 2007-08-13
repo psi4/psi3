@@ -30,15 +30,35 @@ module Psi
     def input(*args)
       # convert to a hash
       args_hash = args[0]
-
+      quiet = false
+      
       # Create a new input object
       input_obj = Psi::Input.new self
-
+      
       # Make sure some label is set
       @label = "Default PSIRB label" if @label == nil
 
+      # Check to see if the user passed a binary override
+      if args_hash != nil
+        if args_hash.has_key?(:binary)
+          input_obj.set_binary_command(args_hash[:binary])
+          args_hash.delete(:binary)
+        end
+        if args_hash.has_key?(:quiet)
+          quiet = args_hash[:quiet]
+          args_hash.delete(:quiet)
+        end
+      end
+      
+      # Check to see if @basis includes '*', if so wrap in ""
+      if @basis.include?("*")
+        basis_to_use = "\\\"#{@basis}\\\""
+      else
+        basis_to_use = @basis
+      end
+      
       # Form the input hash and generate the input file
-      input_hash = { "label" => "\\\"#{@label.to_str}\\\"", "basis" => @basis }
+      input_hash = { "label" => "\\\"#{@label.to_str}\\\"", "basis" => basis_to_use, "reference" => reference, "wfn" => wavefunction }
 
       # Handle the geometry
       if @zmat != nil and @geometry == nil
@@ -55,8 +75,11 @@ module Psi
       input_hash = input_hash.merge(args_hash) unless args_hash == nil
 
       # Run the input module, sending the input file as keyboard input
-      puts "input"
+      puts input_obj.get_binary_command if quiet == false
       input_obj.execute(input_hash)
+      
+      # Ensure label was written
+      self.label=@label.to_str
     end
   end
 end
