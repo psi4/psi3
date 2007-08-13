@@ -12,6 +12,8 @@
 #define EXTERN
 #include"global.h"
 
+static const int use_cca_integrals_standard = (INTEGRALS_STANDARD == 1);
+
 /*-------------------------------
   Explicit function declarations
  -------------------------------*/
@@ -68,7 +70,10 @@ double **init_bf_norm(int max_am)
       for(j=0; j<=i; j++) {
 	m1 = i-j;
 	n1 = j;
-	bf_norm[am][bf++] = sqrt(df[2*am]/(df[2*l1]*df[2*m1]*df[2*n1]));
+	if (use_cca_integrals_standard)
+	  bf_norm[am][bf++] = 1.0;
+	else
+	  bf_norm[am][bf++] = sqrt(df[2*am]/(df[2*l1]*df[2*m1]*df[2*n1]));
       }
     }
   }
@@ -85,13 +90,18 @@ double ***init_cart2pureang(int max_am)
   cart2pureang = (double ***) malloc(sizeof(double **)*(max_am));
   for(l=0;l<max_am;l++)
     cart2pureang[l] = block_matrix(2*l+1,ioff[l+1]);
-  for(l=0;l<max_am;l++)
+  for(l=0;l<max_am;l++) {
     for(m=-l;m<=l;m++) {
       bf = 0;
       for(i=0;i<=l;i++)
 	for(j=0;j<=i;j++)
 	  cart2pureang[l][m+l][bf++] = xyz2lm_Coeff(l,m,l-i,i-j,j);
     }
+    if (UserOptions.print_lvl >= PRINT_DEBUG) {
+      fprintf(outfile,"  -cart->sph.harm matrix (l = %d):\n",l);
+      print_mat(cart2pureang[l],2*l+1,ioff[l+1],outfile);
+    }
+  }
 
   return cart2pureang;
 }
@@ -310,6 +320,10 @@ double xyz2lm_Coeff(int l, int m, int lx, int ly, int lz)
       sum1 += bc[j][k]*bc[abs_m][lx-2*k]*parity(k);
     sum += pfac1*sum1;
   }
+
+  if (use_cca_integrals_standard)
+    sum *= sqrt(df[2*l]/(df[2*lx]*df[2*ly]*df[2*lz]));
+
   if (m == 0)
     return pfac*sum;
   else

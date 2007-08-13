@@ -110,6 +110,7 @@ void build_cart2pureang()
 
 double xyz2lm_Coeff(int l, int m, int lx, int ly, int lz)
 {
+  static int use_cca_integrals_standard = (INTEGRALS_STANDARD == 1);
   int i,j,k,i_max;
   int k_min, k_max;
   int abs_m;
@@ -156,6 +157,10 @@ double xyz2lm_Coeff(int l, int m, int lx, int ly, int lz)
       sum1 += bc[j][k]*bc[abs_m][lx-2*k]*parity(k);
     sum += pfac1*sum1;
   }
+
+  if (use_cca_integrals_standard)
+    sum *= sqrt(df[2*l]/(df[2*lx]*df[2*ly]*df[2*lz]));
+
   if (m == 0)
     return pfac*sum;
   else

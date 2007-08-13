@@ -19,7 +19,8 @@
 void init_xyz()
 {
   int l, i, j, bf;
-  
+  static int use_cca_integrals_standard = (INTEGRALS_STANDARD == 1);
+   
   /* allocate matrices, and generate the content */
   xpow_bf = init_int_matrix(lmax+1,(lmax+1)*(lmax+2)/2);
   ypow_bf = init_int_matrix(lmax+1,(lmax+1)*(lmax+2)/2);
@@ -32,7 +33,10 @@ void init_xyz()
 	xpow_bf[l][bf] = l - i;
         ypow_bf[l][bf] = i - j;
 	zpow_bf[l][bf] = j;
-	norm_bf[l][bf] = sqrt(df[2*l]/(df[2*(l-i)]*df[2*(i-j)]*df[2*j]));
+	if (use_cca_integrals_standard)
+	  norm_bf[l][bf] = 1.0;
+	else
+	  norm_bf[l][bf] = sqrt(df[2*l]/(df[2*(l-i)]*df[2*(i-j)]*df[2*j]));
 	bf++;
       }
     }

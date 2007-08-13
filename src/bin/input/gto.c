@@ -34,6 +34,7 @@ void cleanup_gto()
  ---------------------------------------------------------*/
 double **init_bf_norm(int max_am)
 {
+  static int use_cca_integrals_standard = (INTEGRALS_STANDARD == 1);
   double **bf_norm;
   int am,bf,i,j,l1,m1,n1;
 
@@ -46,7 +47,10 @@ double **init_bf_norm(int max_am)
       for(j=0; j<=i; j++) {
 	m1 = i-j;
 	n1 = j;
-	bf_norm[am][bf++] = sqrt(df[2*am]/(df[2*l1]*df[2*m1]*df[2*n1]));
+	if (use_cca_integrals_standard)
+	  bf_norm[am][bf++] = 1.0;
+	else
+	  bf_norm[am][bf++] = sqrt(df[2*am]/(df[2*l1]*df[2*m1]*df[2*n1]));
       }
     }
   }

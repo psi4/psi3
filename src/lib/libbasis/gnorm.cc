@@ -35,7 +35,10 @@ GaussianNormalization::GaussianNormalization(int am) :
       for(int j=0; j<=i; j++) {
 	int m1 = i-j;
 	int n1 = j;
-	norm_coeffs_[l][bf++] = sqrt(df_[2*l]/(df_[2*l1]*df_[2*m1]*df_[2*n1]));
+	if (use_cca_integrals_standard)
+	  norm_coeffs_[l][bf++] = 1.0;
+	else
+	  norm_coeffs_[l][bf++] = sqrt(df_[2*l]/(df_[2*l1]*df_[2*m1]*df_[2*n1]));
       }
     }
   }

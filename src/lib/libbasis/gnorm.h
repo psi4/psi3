@@ -10,6 +10,8 @@
 
 class GaussianNormalization {
 
+  static const bool use_cca_integrals_standard = (INTEGRALS_STANDARD == 1);
+
   int maxam_;
   PSI_FLOAT* df_;
   PSI_FLOAT** norm_coeffs_;

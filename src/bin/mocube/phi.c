@@ -24,6 +24,7 @@ int **xexp, **yexp, **zexp, *l_length;
 
 void setup_phi(void)
 {
+  static int use_cca_integrals_standard = (INTEGRALS_STANDARD == 1);
   static int done=0;
   int i,l,j,ao;
 
@@ -72,7 +73,10 @@ void setup_phi(void)
 	      yexp[l][ao] = i - j;
 	      zexp[l][ao] = j;
 
-	      norm[l][ao] = sqrt(df[2*l]/(df[2*(l-i)]*df[2*(i-j)]*df[2*j]));
+	      if (use_cca_integrals_standard)
+		norm[l][ao] = 1.0;
+	      else
+		norm[l][ao] = sqrt(df[2*l]/(df[2*(l-i)]*df[2*(i-j)]*df[2*j]));
 
 /*	      printf("%d %d %20.10f\n", l, ao, norm[l][ao]); */
 

@@ -43,6 +43,24 @@ AC_SUBST(txtdir)
 INSTALL_INCLUDE='$(top_srcdir)/bin/installinc.sh' AC_SUBST(INSTALL_INCLUDE)
 MKDIRS='$(top_srcdir)/bin/mkdirs.sh' AC_SUBST(MKDIRS)
 
+#default compiler flags
+FDBG='-g' AC_SUBST(FDBG)
+FOPT='-O' AC_SUBST(FOPT)
+FDEF='' AC_SUBST(FDEF)
+FOTH='' AC_SUBST(FOTH)
+FSTATIC='' AC_SUBST(FSTATIC)
+FINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(FINC)
+CDBG='-g' AC_SUBST(CDBG)
+COPT='-O2' AC_SUBST(COPT)
+CDEF='' AC_SUBST(CDEF)
+COTH='' AC_SUBST(COTH)
+CINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(CINC)
+CXXDBG='-g' AC_SUBST(CXXDBG)
+CXXOPT='-O2' AC_SUBST(CXXOPT)
+CXXDEF='' AC_SUBST(CXXDEF)
+CXXOTH='' AC_SUBST(CXXOTH)
+CXXINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(CXXINC)
+
 ########
 ## PSI-specific options
 ########
@@ -78,6 +96,24 @@ AC_ARG_WITH(max-am-r12,[  --with-max-am-r12       maximum AM in R12 integrals],[
 ])
 AC_SUBST(LIBR12_NEW_AM)
 AC_SUBST(LIBR12_OPT_AM)
+
+INTEGRALS_STANDARD=0
+AC_ARG_WITH(integrals-standard,[  --with-integrals-standard     specifies the standard for the basis normalization, etc.
+                                The allowed values are cca and psi (default).],[
+case $withval in
+  psi)
+    INTEGRALS_STANDARD=0
+    ;;
+  cca)
+    INTEGRALS_STANDARD=1
+    ;;
+  *)
+    AC_MSG_WARN([did not recognize value $withval. will assume the default]) 
+    ;;
+esac
+])
+CDEF="$CDEF -DINTEGRALS_STANDARD=$INTEGRALS_STANDARD"
+CXXDEF="$CXXDEF -DINTEGRALS_STANDARD=$INTEGRALS_STANDARD"
 
 ########
 ## Check for programs
@@ -566,24 +602,6 @@ AC_MSG_RESULT(c++ libs: $CXXLIBS)
 AC_SUBST(CXXLIBS)
 
 PSICPPFLAGS='-I. -I$(objincdir) -I$(top_srcdir)/include -I$(top_srcdir)/src/lib -I$(top_objdir)/src/lib' AC_SUBST(PSICPPFLAGS)
-
-#default compiler flags
-FDBG='-g' AC_SUBST(FDBG)
-FOPT='-O' AC_SUBST(FOPT)
-FDEF='' AC_SUBST(FDEF)
-FOTH='' AC_SUBST(FOTH)
-FSTATIC='' AC_SUBST(FSTATIC)
-FINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(FINC)
-CDBG='-g' AC_SUBST(CDBG)
-COPT='-O2' AC_SUBST(COPT)
-CDEF='' AC_SUBST(CDEF)
-COTH='' AC_SUBST(COTH)
-CINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(CINC)
-CXXDBG='-g' AC_SUBST(CXXDBG)
-CXXOPT='-O2' AC_SUBST(CXXOPT)
-CXXDEF='' AC_SUBST(CXXDEF)
-CXXOTH='' AC_SUBST(CXXOTH)
-CXXINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(CXXINC)
 
 AC_C_CONST
 
