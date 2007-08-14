@@ -9,6 +9,9 @@ module Psi
     def self.supports_analytic_gradients
       { "rhf" => true, "rohf" => true, "uhf" => true, "twocon" => true }
     end
+    def self.supports_analytic_second_derivatives
+      { "rhf" => true, "rohf" => false, "uhf" => false, "twocon" => false }
+    end
     
     def initialize(task_obj)
       @task = task_obj
@@ -59,6 +62,8 @@ module Psi
       # If we are doing analytical gradients then cscf needs to know
       if get_gradients == true and SCF.supports_analytic_gradients[reference] == true
         input_hash["dertype"] = "first"
+      elsif get_second_deriv == true and SCF.supports_analytic_second_derivatives[reference] == true
+        input_hash["dertype"] = "second"
       else
         input_hash["dertype"] = "none"
       end
@@ -76,8 +81,15 @@ module Psi
       #  3. The wavefunction is SCF
       if get_gradients == true and SCF.supports_analytic_gradients[reference] == true and wavefunction.casecmp("scf") == 0
         # Make sure the wavefunction is set
-        input_hash["wfn" => "scf"]
+        input_hash["wfn"] = "scf"
         deriv(input_hash)
+      elsif get_second_deriv == true and SCF.supports_analytic_second_derivatives[reference] == true and wavefunction.casecmp("scf") == 0
+        # Make sure the wavefunction is set
+        input_hash["wfn"] = "scf"
+        transqt(input_hash)
+        deriv2(input_hash)
+        propint(input_hash)
+        cphf(input_hash)
       end
     end
 
@@ -137,5 +149,5 @@ end
 
 def uhf(*args)
   args_hash = args[0]
-  Psi::global_tast.uhf(args_hash)
+  Psi::global_task.uhf(args_hash)
 end

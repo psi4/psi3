@@ -10,6 +10,9 @@ module Psi
     def self.supports_analytic_gradients
       { "rhf" => false, "rohf" => false, "uhf" => false, "twocon" => false }
     end
+    def self.supports_analytic_second_derivatives
+      { "rhf" => false, "rohf" => false, "uhf" => false, "twocon" => false }
+    end
     
     def initialize(task_obj)
       @task = task_obj

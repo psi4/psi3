@@ -88,6 +88,8 @@ module Psi
         set_gradients(true)
       elsif wavefunction.casecmp("mp2") == 0 and MP2.supports_analytic_gradients[reference] == true
         set_gradients(true)
+      elsif wavefunction.casecmp("detci") == 0 and DetCI.supports_analytic_gradients[reference] == true
+        set_gradients(true)
       end
       
       # Check to see if the user requested gradients, if they did and get_gradients is false
@@ -244,6 +246,7 @@ module Psi
           puts "Max cycles reached. Stopping optimization."
         else
           puts "Error during optimization."
+          exit 1
         end
       else
         # Optimizations by analytic gradients are much easier
@@ -275,10 +278,14 @@ module Psi
           puts "Max cycles reached. Stopping optimization."
         else
           puts "Error during optimization."
+          exit 1
         end
       end
       
       Psi::unindent_puts
+      
+      # Tell methods that follow that an optimization was completed.
+      set_optimization_complete true
     end
   end
 end

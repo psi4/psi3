@@ -24,14 +24,15 @@ module Psi
     INPUT       = "input"
     INPUTKEEP   = "input --keepoutput"
     UINPUT      = "input --chkptgeom"
+    INPUTCHKPT  = "input --keepchkpt --keepoutput"
     INIT        = INPUT
     DONE        = "psiclean"
     INTS        = "cints"
     SCF         = "cscf"
     LOCALIZE    = "localize"
     DERIV       = "cints --deriv1"
-    DERIV2      = "cints --oeprop"
-    PROPINT     = "cins --oeprop"
+    DERIV2      = "cints --deriv2"
+    PROPINT     = "cints --oeprop"
     TRANSQT     = "transqt"
     CCTRANS     = "transqt2"
     BACKTRANSQT = "transqt --backtr"
@@ -62,6 +63,13 @@ module Psi
     FINDIF_ENERGY_SAVE = "optking --energy_save"
     FINDIF_GRAD_ENERGY = "optking --grad_energy"
     GEOMUPDATE         = "optking --opt_step"
+    
+    # Things for frequencies
+    FINDIF_DISP_FREQ_ENERGY_CART = "optking --disp_freq_energy_cart"
+    FINDIF_FREQ_ENERGY_CART      = "optking --freq_energy_cart"
+    FINDIF_DISP_FREQ_GRAD_CART   = "optking --disp_freq_grad_cart"
+    FINDIF_GRAD_SAVE             = "optking --grad_save"
+    FINDIF_FREQ_GRAD_CART        = "optking --freq_grad_cart"
   end
 
   # Access to the global task object. The first time it is retrieved the object is created.
@@ -242,6 +250,32 @@ module Psi
         return false
       end
       @gradients
+    end
+
+    def second_deriv=(val)
+      @second_deriv = val
+    end
+    def set_second_deriv(val)
+      @second_deriv = val
+    end
+    def get_second_deriv
+      @second_deriv
+    end
+    def second_deriv
+      if @second_deriv == nil
+        return false
+      end
+      @second_deriv
+    end
+    
+    def set_optimization_complete(val)
+      @optimization_complete = val
+    end
+    def get_optimization_complete
+      if @optimization_complete == nil
+        return false
+      end
+      @optimization_complete
     end
     
     # Memory is given in megabytes
@@ -440,3 +474,7 @@ require 'cclambda'
 require 'oeprop'
 require 'deriv'
 require 'detci'
+require 'deriv2'
+require 'propint'
+require 'cphf'
+require 'frequencies'
