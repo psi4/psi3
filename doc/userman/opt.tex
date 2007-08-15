@@ -122,6 +122,11 @@ reused even if the binary PSIF\_OPTKING file is no longer present.
 The following when set to true, print additional information to the
 output file: PRINT\_SIMPLES, PRINT\_PARAMS, PRINT\_DELOCALIZE,
 PRINT\_SYMMETRY, PRINT\_HESSIAN, PRINT\_CARTESIANS.
+\item[DISPLACEMENTS = ( (integer float ...) ...)]\mbox{}\\
+A user may specify displacments along internal coordinates using this
+keyword.  For example, displacements = ( (2 0.01 3 0.01) ) will compute
+a new cartesian geometry with the second and third internal coordinates
+increased by 0.01.
 \end{description}
 
 
