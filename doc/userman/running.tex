@@ -536,18 +536,47 @@ Clearly, the list starts at the most
 approximate and gets more accurate. 
 
 \subsection{Frequency Analysis}
-Currently, analytic second derivatives are avaliable only for closed-shell
-Hartree-Fock (the preliminary implementation is not yet very efficient).  
-For methods with analytic gradients, one must carry out finite difference 
-calculations to obtain second derivatives. If one has the
-misfortune of needing frequencies for methods where only energies
-exist(e.g. FCI or MP2-R12), finite differences with gradients
-approximated by energy points must be used. At present, obtaining the
-Hessian numerically from energies or gradients is not automated by the
-program.  There are two types of frequency analysis programs available
-within \PSIthree, \PSInormco\ and \PSIintder.  For more details
-regarding these programs, see the manual pages for each program
-respectively.
+\PSIthree\ is also capable of computing harmonic vibrational frequencies
+for a number of different methods using energy points or analytic energy first or
+second derivatives.  (At present, only RHF-SCF analytic second derivatives
+are available.)  If analytic energy second derivatives are not available,
+\PSIthree\ will generate displaced geometries along symmetry adapted cartesian
+coordinates, compute the appropriate energies or first derivatives, and use
+finite-difference methods to compute the Hessian.
+
+The following keywords are pertinent for vibrational frequency analyses:
+\begin{description}
+\item[JOBTYPE = string]\mbox{}\\
+This keyword must be set to {\tt FREQ} for frequency analyses.
+\item[DERTYPE = string]\mbox{}\\
+This keyword may be set to {\tt NONE} if only energies are available
+for the chosen method, or {\tt FIRST} if analytic gradients are available. 
+\item[POINTS = 3 or 5]\mbox{}\\
+Specifies whether a 3-point or a 5-point formula is used to compute the
+vibrational frequencies by finite differences.
+\end{description}
+
+
+\begin{em}
+Note: In some situations, vibrational frequency analysis via finite
+differences may fail if the full point group symmetry is specified via
+the {\tt symmetry} keyword.  This happens because the user-given
+{\tt symmetry} value can become incompatible with the actual symmetry
+of the molecule when energies or gradients are evaluated for 
+symmetry-lowering displacements.  In such situations, the user is 
+advised to let the program determine the symmetry automatically, rather
+than specifying {\tt symmetry} manually.  Otherwise, an error such as the
+following may result:
+\end{em}
+
+\begin{verbatim}
+error: problem assigning number of operations per class
+         *** stopping execution ***
+\end{verbatim}
+
+The manual pages for the \PSInormco\ and \PSIintder\ modules contain
+information on additional tools useful in vibrational frequency analysis
+and coordinate transformation.
 
 \subsection{Evaluation of one-electron properties}
 For now, take a look at the available documentation for \PSIoeprop .
