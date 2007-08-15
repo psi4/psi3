@@ -70,8 +70,6 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
   // build G = BuB^t
   B = compute_B(simples,symm);
-  //fprintf(outfile,"B Matrix\n");
-  //print_mat(B, symm.get_num(), dim_carts, outfile );
   G = compute_G(B,symm.get_num(),carts);
 
   // compute G_inv
@@ -251,7 +249,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
       scale = temp;
     }
   }
-  // scale = 1.0;
+   //scale = 1.0;
   fprintf(outfile,"\nScaling displacements by %lf\n",scale); 
   for (i=0;i<symm.get_num();++i) {
     dq[i] = dq[i] * scale;   
@@ -350,29 +348,83 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
 /*** FCONST_INIT -- make sure there are _some_ force constants in PSIF_OPTKING
   1) Confirm PSIF_OPTKING has them
-  2) read them from fconst.dat
-  3) generate empirical force constants   ***/
+  2) read them from FCONST: section of input
+  3) read them from fconst.dat
+  4) generate empirical force constants   ***/
 
 void fconst_init(cartesians &carts, internals &simples, salc_set &symm) {
-  int i, j, dim, count, constants_in_PSIF;
+  int i, j, dim, count, constants_in_PSIF, cnt;
   char *buffer;
-  double **F;
+  double **F, **temp_mat;
   buffer = new char[MAX_LINELENGTH];
 
   open_PSIF();
-  constants_in_PSIF=1;
-  if (psio_tocscan(PSIF_OPTKING, "Symmetric Force Constants") == NULL)
-    constants_in_PSIF = 0;
+  if (psio_tocscan(PSIF_OPTKING, "Symmetric Force Constants") != NULL) {
+    close_PSIF();
+    return;
+  }
   close_PSIF();
-  if (!constants_in_PSIF) {
-    ffile_noexit(&fp_fconst, "fconst.dat",2);
-    if (fp_fconst == NULL) {
-      fprintf(outfile, "\nGenerating empirical Hessian.\n");
-      empirical_H(simples,symm,carts);
+
+   /* read force constants from fconst section of input */
+  if (ip_exist(":FCONST",0) ) {
+    ip_cwk_add(":FCONST");
+    fprintf(outfile,"Reading force constants from FCONST: \n");
+    dim = symm.get_num();
+    temp_mat = block_matrix(dim,dim);
+    ip_count("SYMM_FC",&i,0);
+    if (i != (dim*(dim+1))/2) {
+      fprintf(outfile,"fconst has wrong number of entries\n");
+      exit(2);
     }
-    else {
-      /*** transfer force constants from fconst.dat to PSIF_OPTKING ***/
-      double **temp_mat;
+    cnt = -1;
+    for (i=0;i<dim;++i) {
+      for (j=0;j<=i;++j) {
+        ++cnt;
+        ip_data("SYMM_FC","%lf",&(temp_mat[i][j]), 1, cnt);
+      }
+    }
+    for (i=0;i<dim;++i)
+      for (j=0;j<=i;++j)
+        temp_mat[j][i] = temp_mat[i][j];
+
+    /*** write to PSIF_OPTKING ***/
+    open_PSIF();
+    psio_write_entry(PSIF_OPTKING, "Symmetric Force Constants",
+        (char *) &(temp_mat[0][0]),dim*dim*sizeof(double));
+    close_PSIF();
+
+    free_block(temp_mat);
+    return;
+  }
+
+  ffile_noexit(&fp_fconst, "fconst.dat",2);
+  if (fp_fconst == NULL) { // generate empirical Hessian
+    fprintf(outfile, "\nGenerating empirical Hessian.\n");
+    empirical_H(simples,symm,carts);
+    return;
+  }
+  else { // read force constants from fconst.dat
+    ip_append(fp_fconst, outfile);
+    if (ip_exist(":FCONST",0) ) { // file has libipv1 format
+      ip_cwk_add(":FCONST");
+      fprintf(outfile,"Reading force constants from FCONST: \n");
+      dim = symm.get_num();
+      temp_mat = block_matrix(dim,dim);
+      ip_count("SYMM_FC",&i,0);
+      if (i != (dim*(dim+1))/2) {
+        fprintf(outfile,"fconst has wrong number of entries\n");
+        exit(2);
+      }
+      cnt = -1;
+      for (i=0;i<dim;++i) {
+        for (j=0;j<=i;++j) {
+          ++cnt;
+          ip_data("SYMM_FC","%lf",&(temp_mat[i][j]), 1, cnt);
+        }
+      }
+    }
+  
+/*    else {
       fprintf(outfile,"Reading force constants from fconst.dat\n");
       dim = symm.get_num();
       temp_mat = block_matrix(dim,dim);
@@ -391,17 +443,18 @@ void fconst_init(cartesians &carts, internals &simples, salc_set &symm) {
           count += 10;
         }
       }
-      fclose(fp_fconst);
-      for (i=0;i<dim;++i)
-        for (j=0;j<i;++j)
-          temp_mat[j][i] = temp_mat[i][j];
-      /*** write to PSIF_OPTKING ***/
-      open_PSIF();
-      psio_write_entry(PSIF_OPTKING, "Symmetric Force Constants",
-          (char *) &(temp_mat[0][0]),dim*dim*sizeof(double));
-      close_PSIF();
-      free_block(temp_mat);
-    }
+    } */
+    fclose(fp_fconst);
+
+    for (i=0;i<dim;++i)
+      for (j=0;j<i;++j)
+        temp_mat[j][i] = temp_mat[i][j];
+
+    open_PSIF();
+    psio_write_entry(PSIF_OPTKING, "Symmetric Force Constants",
+        (char *) &(temp_mat[0][0]),dim*dim*sizeof(double));
+    close_PSIF();
+    free_block(temp_mat);
   }
   delete [] buffer;
 }

@@ -97,7 +97,7 @@ double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &c
 
 /* This functions performs a BFGS update on H_inv */
 void bfgs(double **H, internals &simples, salc_set &symm, cartesians &carts) {
-  int i,j,dim,nbfgs,i_bfgs, natom, bfgs_start;
+  int i,j,dim,nbfgs,i_bfgs, natom, bfgs_start, skip;
   double a, *q, *f, *q_old, *f_old;
   double *dq, *df, **X, **temp_mat, tval, *x, *x_old;
   char force_string[30], x_string[30];
@@ -160,6 +160,17 @@ void bfgs(double **H, internals &simples, salc_set &symm, cartesians &carts) {
     simples.compute_internals(natom, x_old);
     q_old = compute_q(simples, symm);
 
+    skip=0;
+    for (i=0;i<dim;++i) {
+      if (q[i] * q_old[i] < 0.0)
+        skip = 1;
+    }
+    if (skip) {
+      fprintf(outfile,"Warning a coordinate has passed through 0. Skipping a BFGS update.\n");
+      skip = 0;
+      continue;
+    }
+
     for (i=0;i<dim;++i) {
       dq[i] = q[i] - q_old[i];
       df[i] = (-1.0) * (f[i] - f_old[i]); // gradients -- not forces!
@@ -188,6 +199,7 @@ void bfgs(double **H, internals &simples, salc_set &symm, cartesians &carts) {
       for (j=0;j<dim;++j)
         H[i][j] += (df[i] * df[j]) / a ; 
   }
+
   free(q);
   free(f);
   free(q_old);

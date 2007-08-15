@@ -15,6 +15,7 @@ extern "C" {
 #include <stdlib.h>
 #include <string.h>
 #include <libciomr/libciomr.h>
+#include <libqt/qt.h>
 #include <libipv1/ip_lib.h>
 #include <physconst.h>
 #include "bond_lengths.h"
@@ -43,6 +44,8 @@ int internals :: index_to_id(int index) {
     if (++count == index) {id = out.get_id(i); break;}
   for (i=0;i<lin_bend.get_num();++i)
     if (++count == index) {id = lin_bend.get_id(i); break;}
+  for (i=0;i<frag.get_num();++i)
+    if (++count == index) {id = frag.get_id(i); break;}
   //   fprintf(outfile,"index_to_id(%d): returning id = %d\n",index, id);
   return id;
 }
@@ -64,6 +67,8 @@ int internals :: id_to_index(int id) {
     if (id == out.get_id(i)) {index = count; ++found;}
   for (i=0;i<lin_bend.get_num();++i,++count)
     if (id == lin_bend.get_id(i)) {index = count; ++found;}
+  for (i=0;i<frag.get_num();++i,++count)
+    if (id == frag.get_id(i)) {index = count; ++found;}
   if (found == 0) {
     fprintf(outfile,"Error: Simple internal id not found.\n");
     exit(2);
@@ -105,6 +110,10 @@ void internals :: locate_id(int id, int *intco_type, int *sub_index) {
     if (lin_bend.get_id(i) == id) {
       ++found; *intco_type = LIN_BEND_TYPE; *sub_index = i;
     }
+  for (i=0;i<frag.get_num();++i)
+    if (frag.get_id(i) == id) {
+      ++found; *intco_type = FRAG_TYPE; *sub_index = i;
+    }
   if (found == 0) {
     fprintf(outfile,"Error: Simple internal id not found.\n");
     exit(2);
@@ -118,25 +127,24 @@ void internals :: locate_id(int id, int *intco_type, int *sub_index) {
 }
 
 internals :: ~internals() {
-  // fprintf(stdout,"destructing internals\n");
   // Destructors for stre, bend, tors, out are called automatically
 }
 
-// minimal constructor
+/*** INTERNALS::INTERNALS minimal class constructor */
 internals :: internals(int *size_arr) : stre(size_arr[0]), bend(size_arr[1]),
-  tors(size_arr[2]), out(size_arr[3]), lin_bend(size_arr[4]) {
+  tors(size_arr[2]), out(size_arr[3]), lin_bend(size_arr[4]), frag(size_arr[5]) {
 }
 
-/*** INTERNALS::INTERNALS class constructor for internals ***/ 
-
+/*** INTERNALS::INTERNALS constructs internals from ip parsing ***/
 internals :: internals(cartesians& carts, int user_intcos)
-           : stre(), bend(), tors(), out(), lin_bend() {
+           : stre(), bend(), tors(), out(), lin_bend(), frag() {
 
     int i,j,k,a,b,c,d,e,cnt,lin, type_count=0;
-    int cnt_stre, cnt_bend, cnt_tors, cnt_out, cnt_lin_bend;
-    int cnt_lin1_bend, cnt_lin2_bend;
+    int cnt_stre, cnt_bend, cnt_tors, cnt_out, cnt_lin_bend, cnt_frag;
+    int cnt_lin1_bend, cnt_lin2_bend, na, nb;
+    double *v, dot;
     cnt_stre = cnt_bend = cnt_tors = cnt_out = cnt_lin_bend = 0;
-    cnt_lin1_bend = cnt_lin2_bend = 0;
+    cnt_lin1_bend = cnt_lin2_bend = cnt_frag = 0;
 
     for (cnt=1; cnt>=0; --cnt) { /* 1st time through we are just counting */
 
@@ -146,12 +154,14 @@ internals :: internals(cartesians& carts, int user_intcos)
         tors.set_num(cnt_tors);
         out.set_num(cnt_out);
         lin_bend.set_num(cnt_lin_bend);
+        frag.set_num(cnt_frag);
 
         stre.allocate(cnt_stre);
         bend.allocate(cnt_bend);
         tors.allocate(cnt_tors);
         out.allocate(cnt_out);
         lin_bend.allocate(cnt_lin_bend);
+        frag.allocate(cnt_frag);
       }
 
     if (user_intcos) {
@@ -283,6 +293,7 @@ internals :: internals(cartesians& carts, int user_intcos)
         }
       }
 
+      cnt_out = 0;
       if (ip_exist("OUT",0)) {
         i = 0;
         ip_count("OUT",&i,0);
@@ -309,8 +320,88 @@ internals :: internals(cartesians& carts, int user_intcos)
           }
         }
       }
-      else if(!ip_exist("OUT",0))
-        cnt_out = 0;
+
+      if (ip_exist("FRAG",0)) {
+        i = 0;
+        ip_count("FRAG",&i,0);
+        cnt_frag = i;
+
+        for(i=0; i<cnt_frag; ++i) {
+          ip_count("FRAG",&j,1,i);
+          if (j != 6) {
+            fprintf(outfile,"Fragment %d is of wrong dimension.\n",i+1);
+            exit(2);
+          }
+        }
+        if (!cnt) { // allocate memory for fragments
+          for(i=0; i<cnt_frag; ++i) {
+            ip_data("FRAG","%d",&a,2,i,0);
+            frag.set_id(i,a);
+            ip_data("FRAG","%d",&a,2,i,1);
+            frag.set_J(i,a-1);
+            ip_count("FRAG",&na,2,i,2);
+            ip_count("FRAG",&nb,2,i,3);
+            frag.set_A_natom(i,na);
+            frag.set_B_natom(i,nb);
+            frag.allocate_one(i);
+          } 
+          for(i=0; i<cnt_frag; ++i) { // read atoms for fragments
+            na = frag.get_A_natom(i);
+            for (j=0;j<na;++j) {
+              ip_data("FRAG","%d",&a,3,i,2,j);
+              frag.set_A_atom(i,j,a-1);  
+            }
+            nb = frag.get_B_natom(i);
+            for (j=0;j<nb;++j) {
+              ip_data("FRAG","%d",&b,3,i,3,j);
+              frag.set_B_atom(i,j,b-1); 
+            }
+            ip_count("FRAG",&a,2,i,4);  // read weights for points
+            ip_count("FRAG",&b,2,i,5);
+            if ( (a != 3) || (b != 3)) {
+              fprintf(outfile,"Fragment %d has weights of wrong dimension\n", i+1);
+              exit(2);
+            }
+            v = new double[3*na];
+            for (j=0;j<3;++j) {
+              ip_count("FRAG",&a,3,i,4,j);
+              if (a != na) {
+                fprintf(outfile,"Fragment %d has weights of wrong dimension\n", i+1);
+                exit(2);
+              }
+              for (a=0;a<na;++a)
+                ip_data("FRAG","%lf",&(v[j*na+a]),4,i,4,j,a);
+            }
+            for (j=0;j<3;++j) {
+              dot = 0.0;
+              for (a=0;a<na;++a)
+                dot += fabs( v[j*na+a] );
+              for (a=0;a<na;++a)
+                v[j*na+a] /= dot;
+            }
+            frag.set_A_weight(i,v);
+
+            v = new double[3*nb];
+            for (j=0;j<3;++j) {
+              ip_count("FRAG",&b,3,i,5,j);
+              if (b != nb) {
+                fprintf(outfile,"Fragment %d has weights of wrong dimension\n", i+1);
+                exit(2);
+              }
+              for (b=0;b<nb;++b) 
+                ip_data("FRAG","%lf",&(v[j*nb+b]),4,i,5,j,b);
+            }
+            for (j=0;j<3;++j) {
+              dot = 0.0;
+              for (b=0;b<nb;++b)
+                dot += fabs( v[j*nb+b] );
+              for (b=0;b<nb;++b)
+                v[j*nb+b] /= dot;
+            }
+            frag.set_B_weight(i,v);
+          }
+        }
+      }
     }
     else {
 
@@ -654,7 +745,7 @@ internals :: internals(cartesians& carts, int user_intcos)
     } // end count, creation loop
 
     num = stre.get_num() + bend.get_num() + tors.get_num() +
-      out.get_num() + lin_bend.get_num();
+      out.get_num() + lin_bend.get_num() + frag.get_num();
     if (num == 0) {
       fprintf(outfile,"Error: No simple internals were generated and read.  You may ");
       fprintf(outfile,"have to increase the value of the scale_connectivity keyword.");
@@ -683,6 +774,7 @@ void internals :: print(FILE *fp_out, int print_flag) {
       tors.print(fp_out, print_flag);
       out.print(fp_out, print_flag);
       lin_bend.print(fp_out, print_flag);
+      frag.print(fp_out, print_flag, 0); /* last specifies whether to print weights */
       if (print_flag == 0) fprintf(fp_out, ")\n");
   return;
 }
@@ -700,6 +792,7 @@ void internals :: compute_internals(int natom, double *geom) {
   tors.compute(natom, geom);
   out.compute(natom, geom);
   lin_bend.compute(natom, geom);
+  frag.compute(geom);
   return;
 }
 
@@ -716,6 +809,7 @@ void internals :: compute_s(int natom, double *geom) {
   tors.compute_s(natom, geom);
   out.compute_s(natom, geom);
   lin_bend.compute_s(natom, geom);
+  frag.compute_s(natom, geom);
   return;
 }
 
@@ -732,6 +826,7 @@ void internals :: print_s() {
   tors.print_s();
   out.print_s();
   lin_bend.print_s();
+  frag.print_s();
   return;
 }
 

@@ -109,20 +109,26 @@ class stretch_set {
         tmp = SQR( geom[3*A+0] - geom[3*B+0] ) +
               SQR( geom[3*A+1] - geom[3*B+1] ) +
               SQR( geom[3*A+2] - geom[3*B+2] );
-
-        set_val(i, sqrt(tmp)*_bohr2angstroms);
+        tmp = sqrt(tmp)*_bohr2angstroms;
+        set_val(i, tmp);
       }
       return;
     }
+
     void compute_s(int natom, double *geom) {
       int i,j,A,B;
-      double eBA[3], norm;
+      double eBA[3], norm, *geom_ang;
+
+      geom_ang  = new double[3*natom];
+      for (i=0;i<3*natom;++i)
+        geom_ang[i] = geom[i] * _bohr2angstroms;
+
       for (i=0;i<num;++i) {
         A = get_A(i);
         B = get_B(i);
 
         for (j=0;j<3;++j)
-          eBA[j] = geom[3*A+j] - geom[3*B+j];
+          eBA[j] = geom_ang[3*A+j] - geom_ang[3*B+j];
 
         norm = sqrt( SQR(eBA[0]) + SQR(eBA[1]) + SQR(eBA[2]) );
         scalar_div(norm,eBA);
@@ -130,8 +136,10 @@ class stretch_set {
         set_s_A(i,eBA[0],eBA[1],eBA[2]);
         set_s_B(i, -1.0*eBA[0], -1.0*eBA[1], -1.0*eBA[2]);
       }
+      delete [] geom_ang;
       return;
     }
+
     void set_num(int i) { num = i;}
     int  get_num(void) { return num;}
     void set_id(int index, int new_id) { stre_array[index].set_id(new_id);}

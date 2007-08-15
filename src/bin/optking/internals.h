@@ -9,6 +9,7 @@
 #include "torsion.h"
 #include "out_of_plane.h"
 #include "lin_bend.h"
+#include "fragment.h"
 
 class internals {
 
@@ -21,6 +22,7 @@ class internals {
    torsion_set tors;
    out_set out;
    lin_bend_set lin_bend;
+   fragment_set frag;
   
     int stretch_count;
     void set_stretch_count(int i) { stretch_count = i;}

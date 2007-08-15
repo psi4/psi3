@@ -31,16 +31,16 @@ extern "C" {
 #include "salc.h"
 
 int *read_constraints(internals &simples) {
-  int num_type, i,j,a,b,c,d,cnt,*sign,id;
+  int num_type, i,j,a,b,c,d,cnt,*sign,id, intco_type, sub_index;
   int iconstraints, *constraints;
 
   optinfo.constraints_present = 0;
   optinfo.nconstraints = 0;
   iconstraints = 0;
 
-  fprintf(outfile,"Searching for geometrical constraints...");
+  fprintf(outfile,"\nSearching for geometrical constraints...");
 
-  if (ip_exist(":FIXED_INTCO",0)) {
+  if ((ip_exist(":FIXED_INTCO",0)) || (optinfo.fix_interfragment) || (optinfo.fix_intrafragment)) {
     ip_cwk_clear(); /* search only fixed_intco */
     ip_cwk_add(":FIXED_INTCO");
 
@@ -202,6 +202,54 @@ int *read_constraints(internals &simples) {
           }
         }
       }
+
+      if (optinfo.fix_interfragment) { /* freeze all interfragment coordinates */
+        for (i=0; i<simples.frag.get_num(); ++i) {
+          id = simples.frag.get_id(i);
+          if (!cnt) {
+            constraints[iconstraints++] = simples.id_to_index(id);
+            if (iconstraints == 1) fprintf(outfile,"Coordinates to be constrained:\n");
+            fprintf(outfile,"Fragment coordinate %d\n", id);
+          } 
+          else {
+            optinfo.nconstraints++;
+          } 
+        }
+      }
+      else if (ip_exist("FRAG",0)) { /* freeze user-specified interfragment coordinates */
+        num_type = 0;
+        ip_count("FRAG",&num_type,0);
+        for(i=0; i<num_type; ++i) {
+          ip_data("FRAG","%d",&(id),2,i,0);
+          if (!cnt) {
+            constraints[iconstraints++] = simples.id_to_index(id);
+            if (iconstraints == 1) fprintf(outfile,"Coordinates to be constrained:\n");
+            fprintf(outfile,"Fragment coordinate %d\n", id);
+          } 
+          else {
+            optinfo.nconstraints++;
+          } 
+        }
+      }
+
+      if (optinfo.fix_intrafragment) { /* fix everything EXCEPT interfragment coordinates */
+        for (i=0; i<simples.get_num(); ++i) {
+          id = simples.index_to_id(i);
+          simples.locate_id(id, &intco_type, &sub_index);
+          if (intco_type != FRAG_TYPE) {
+            if (!cnt) {
+              constraints[iconstraints++] = simples.id_to_index(id);
+              if (iconstraints == 1) fprintf(outfile,"Coordinates to be constrained:\n");
+              if (iconstraints == 1) fprintf(outfile,"Simple coordinates:\n");
+              fprintf(outfile," %d", id);
+            }
+            else { 
+              optinfo.nconstraints++;
+            } 
+          }
+        }
+      }
+
       if (cnt) fprintf(outfile,"%d found.\n",optinfo.nconstraints);
     } /* end cnt loop */
 

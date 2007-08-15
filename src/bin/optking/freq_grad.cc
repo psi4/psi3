@@ -180,6 +180,25 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
     close_PSIF();
     if (optinfo.print_hessian)
       print_mat(force_constants_symm, nirr_salcs, nirr_salcs, outfile);
+
+    if (optinfo.print_fconst) { // write force constants to fconst.dat
+      ffile_noexit(&fp_fconst, "fconst.dat",0);
+      fprintf(fp_fconst,"FCONST: (\n symm_fc = (\n");
+      for (i=0;i<nirr_salcs;++i) {
+        cnt = 0;
+        for (j=0;j<=i;++j) {
+          fprintf(fp_fconst, "%10.6f", force_constants_symm[i][j]);
+          if ( (++cnt > 7) && (j!=i) ) {
+            fprintf(fp_fconst,"\n");
+            cnt = 0;
+          }
+        }
+        fprintf(fp_fconst,"\n");
+        cnt = 0;
+      }
+      fprintf(fp_fconst," )\n)\n");
+      fclose(fp_fconst);
+    }
   }
 
   // build G = BuB^t

@@ -243,11 +243,12 @@ class torsion_set {
         if (dotprod > optinfo.cos_tors_near_1_tol) angle = 0.0000 ;
         else if (dotprod < optinfo.cos_tors_near_neg1_tol) angle = _pi ;
         else angle = acos(dotprod) ;
-        // set_val(i,angle*180.0/_pi);
 
         // determine sign of torsions
-        cross_product(tmp,tmp2,tmp3);
-        dot_arr(tmp3,eBC,3,&dotprod);
+        //cross_product(tmp,tmp2,tmp3);
+        //dot_arr(tmp3,eBC,3,&dotprod);
+        cross_product(eBC,eCD,tmp);
+        dot_arr(eAB,tmp,3,&dotprod);
         if (dotprod < 0) sign = -1; else sign = 1;
 
         // extend domain of torsions so delta(values) can be calculated

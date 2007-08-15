@@ -71,6 +71,14 @@ void get_optinfo() {
   if (optinfo.delocalize)
     optinfo.redundant = 0;
 
+  /* default for fragments is to is use 1/R */
+  optinfo.frag_dist_rho = 1;
+  ip_boolean("FRAGMENT_DISTANCE_INVERSE", &(optinfo.frag_dist_rho),0);
+  optinfo.fix_intrafragment = 0;
+  ip_boolean("FIX_INTRAFRAGMENT", &(optinfo.fix_intrafragment),0);
+  optinfo.fix_interfragment = 0;
+  ip_boolean("FIX_INTERFRAGMENT", &(optinfo.fix_interfragment),0);
+
   /* print options */
   optinfo.print_simples = 0;
   ip_boolean("PRINT_SIMPLES", &(optinfo.print_simples),0);
@@ -84,6 +92,8 @@ void get_optinfo() {
   ip_boolean("PRINT_HESSIAN", &(optinfo.print_hessian),0);
   optinfo.print_cartesians = 0;
   ip_boolean("PRINT_CARTESIANS", &(optinfo.print_cartesians),0);
+  optinfo.print_fconst = 0;
+  ip_boolean("PRINT_FCONST", &(optinfo.print_fconst),0);
 
   /* optimization parameters */
   optinfo.optimize = 1;
@@ -127,9 +137,11 @@ void get_optinfo() {
   optinfo.zmat_simples = 0;
   ip_boolean("ZMAT_SIMPLES",&(optinfo.zmat_simples),0);
 
+  optinfo.test_B = 0;
+  ip_boolean("TEST_B",&(optinfo.test_B),0);
+
   a = 5;
   ip_data("CONV","%d",&a,0);
-/*  ip_data("CONVERGENCE","%d",&a,0); */
   optinfo.conv = power(10.0, -1*a);
 
   a= 5;

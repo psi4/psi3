@@ -18,7 +18,7 @@ CXXSRC = opt.cc compute_B.cc compute_G.cc compute_H.cc compute_q.cc \
          opt_step.cc disp_user.cc make_disp.cc \
          grad_save.cc freq_grad.cc grad_energy.cc energy_save.cc \
          print_zmat.cc read_constraints.cc disp_freq_grad_cart.cc freq_grad_cart.cc \
-         freq_energy_cart.cc disp_freq_energy_cart.cc
+         freq_energy_cart.cc disp_freq_energy_cart.cc fragment.cc test_B.cc
 
 BINOBJ = $(CSRC:%.c=%.o) $(CXXSRC:%.cc=%.o)
 

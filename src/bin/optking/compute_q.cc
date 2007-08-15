@@ -33,6 +33,7 @@ double *compute_q(internals &simples,salc_set &symm) {
 
   q = init_array(symm.get_num());
 
+  /* q is build in angstroms and radians */
   for (i=0;i<symm.get_num();++i) {
     prefactor = symm.get_prefactor(i);
     for (j=0;j<symm.get_length(i);++j) {
@@ -53,8 +54,10 @@ double *compute_q(internals &simples,salc_set &symm) {
       }
       else if (intco_type == LIN_BEND_TYPE) {
         tval = simples.lin_bend.get_val(sub_index);
-        // if ( fabs(180.0-tval) < 0.001 ) tval = 180.0;
         q[i] += prefactor * coeff * tval*_pi/180.0;
+      }
+      else if (intco_type == FRAG_TYPE) {
+        q[i] += prefactor * coeff * simples.frag.get_val_A_or_rad(sub_index);
       }
     }
   }

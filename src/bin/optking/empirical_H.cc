@@ -40,7 +40,7 @@ static double cov_radii[37] = {
                          1.4,  1.3,  1.2,  1.2,  1.1,  1.1};
 
 void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
-   int i, j, k, atomA, atomB, atomC, atomD, simple, count = 0;
+   int i, j, k, atomA, atomB, atomC, atomD, simple, count = 0, J;
    int perA, perB, col;
    double A,B,C, rBC, r1[3], r2[3], r3[3];
    double *f, val, cov_radius, *coord, norm_r1, norm_r2, norm_r3;
@@ -164,9 +164,23 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
       val = 0.10;
       f[++count] = val * _hartree2J*1.0E18;
    }
+   for (i=0;i<simples.frag.get_num();++i) {
+      J = simples.frag.get_J(i);
+      if (J==0) {
+        if (optinfo.frag_dist_rho == 1)
+          val = 20.0;
+        else
+          val = 0.1;
+      }
+      else if ( (J==1) || (J==2) )
+        val = 0.05;
+      else
+        val = 0.01;
+      f[++count] = val;
+   }
    free(coord);
 
-  // Now transform into delocalized coordinates U^t H U
+  // Now transform into salc coordinates U^t H U
    double **intcos;
    double **f_new;
 
@@ -187,39 +201,12 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
        for (k=0;k<simples.get_num();++k)
          f_new[i][j] += intcos[i][k] * f[k] * intcos[j][k]; 
 
-/*
-   fprintf(outfile,"\nempirical force constants made\n");
-   for (i=0;i<symm.get_num();++i) {
-     for (j=0;j<symm.get_num();++j)
-        fprintf(outfile,"%15.8lf",f_new[i][j]);
-     fprintf(outfile,"\n");
-   }
-*/
-
-
   /*** write to PSIF_OPTKING ***/
    open_PSIF();
    psio_write_entry(PSIF_OPTKING, "Symmetric Force Constants",
        (char *) &(f_new[0][0]),symm.get_num()*symm.get_num()*sizeof(double));
    close_PSIF();
 
-/*
-  // Print out forces constants to fconst.dat 
-   fp_fconst = fopen("fconst.dat","w");
-   for (i=0;i<symm.get_num();++i) {
-     col = 0;
-     for (j=0; j<=i ; ++j) {
-       if (col == 8) {
-         fprintf(fp_fconst,"\n");
-         col = 0;
-       }
-       fprintf(fp_fconst,"%10.6f",f_new[i][j]);
-       ++col;
-     }
-     fprintf(fp_fconst,"\n");
-   }
-   fclose(fp_fconst);
-*/
    free(f);
    free_block(f_new);
    free_block(intcos);

@@ -850,6 +850,7 @@ AC_CONFIG_FILES([include/Makefile
           tests/MakeRules
           tests/runtest.pl
           tests/scf-opt/Makefile
+          tests/scf-opt-fragments/Makefile
           tests/scf-opt2/Makefile
           tests/scf-opt3/Makefile
           tests/scf-opt4/Makefile

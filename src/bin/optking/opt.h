@@ -24,7 +24,7 @@
 #define TORS_TYPE (2)
 #define OUT_TYPE (3)
 #define LIN_BEND_TYPE (4)
-#define NUM_INTCO_TYPES (4)
+#define FRAG_TYPE (5)
 #define PRINT_TO_GEOM (113)
 #define PRINT_TO_30 (114)
 /* Limits to hard-wired arrays */
@@ -35,9 +35,9 @@
 #define MAX_SALC_LENGTH (1000)
 #define MAX(I,J) ((I>J) ? I : J)
 #define MIN(I,J) ((I>J) ? J : I)
-#define EVAL_TOL (1.0E-14)                                     /* tolerance for eigenvalues (used in sq_rsp() and irrep() ) */
+#define EVAL_TOL (1.0E-14)               /* tolerance for eigenvalues (used in sq_rsp() and irrep() ) */
 #define REDUNDANT_EVAL_TOL (1.0E-10)
-#define SPANNED_IRREP_TOL (0.05)                               /* if character greater than this, irrep projected and kept */
+#define SPANNED_IRREP_TOL (0.05)         /* if character greater than this, irrep projected and kept */
 #define LABEL_LENGTH (4) // for point group and irrep labels
 /* step size limits */
 #define STEP_LIMIT (0.1)     /* max step size if coord has small value */
@@ -124,6 +124,7 @@ extern "C" void zval_to_symbol(double zval, char *sym);
 #define MODE_RESET_PREFIX      (26)
 #define MODE_DISP_NUM_PLUS      (27)
 #define MODE_DELETE_BINARIES    (28)
+#define MODE_TEST_BMAT    (29)
 
 struct OPTInfo {
 
@@ -138,6 +139,7 @@ struct OPTInfo {
   int constraints_present;
   int nconstraints;
   int *constraints;
+  int test_B;
 
 /* print options */
   int print_simples;
@@ -146,6 +148,7 @@ struct OPTInfo {
   int print_symmetry;
   int print_hessian;
   int print_cartesians;
+  int print_fconst;
 
 /* optimization parameters */
   int optimize;
@@ -176,6 +179,10 @@ struct OPTInfo {
   char *jobtype;
   int energy_dat;
   int grad_dat;
+/* parameters involving fragment coordinates */
+  int frag_dist_rho;
+  int fix_interfragment;
+  int fix_intrafragment;
 
 /* Back-transformation parameters */
   int bt_max_iter;

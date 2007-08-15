@@ -21,6 +21,7 @@ command-line      internal specifier   what it does
 --reset_prefix     MODE_RESET_PREFIX    only reset the prefix of PSIF
 --disp_num_plus    MODE_DISP_NUM_PLUS   only increment the current displacement number PSIF
 --delete_binaries  MODE_DELETE_BINARIES just delete binary files
+--test_B           MODE_TEST_BMAT       build B matrix and test numerically
 --points           optinfo.points       save the energy in chkpt to PSIF list
 --disp_num         optinfo.disp_num     displacement index (by default read from PSIF)
 --irrep            optinfo.irrep       the irrep (1,2,...) being displaced or computed
@@ -89,6 +90,7 @@ extern int disp_freq_grad_cart(cartesians &carts);
 extern void freq_grad_cart(cartesians &carts);
 extern int disp_freq_energy_cart(cartesians &carts);
 extern void freq_energy_cart(cartesians &carts);
+int test_B(cartesians &carts, internals &simples, salc_set &symm);
 
 void chkpt_restart(char *new_prefix);
 
@@ -183,6 +185,10 @@ int main(int argc, char **argv) {
         optinfo.mode = MODE_DELETE_BINARIES;
         parsed++;
       }
+      else if (!strcmp(argv[i],"--test_B")) {
+        optinfo.mode = MODE_TEST_BMAT;
+        parsed++;
+      }
       else if (!strcmp(argv[i],"--points")) {
         sscanf(argv[++i], "%d", &optinfo.points);
         parsed+=2;
@@ -223,18 +229,16 @@ int main(int argc, char **argv) {
     optinfo.simples_present = 0;
     optinfo.salcs_present = 0;
     ffile_noexit(&fp_intco, "intco.dat", 2);
-    if (fp_intco != NULL) {
+    if (fp_intco != NULL)
       ip_append(fp_intco, outfile) ;
-      if ( ip_exist(":INTCO",0) ) {
-        ip_cwk_add(":INTCO");
-        optinfo.simples_present = 1;
-      }
-      if ( ip_exist("SYMM",0) || ip_exist("ASYMM",0) )
-        optinfo.salcs_present = 1;
-      fclose(fp_intco);
+    if ( ip_exist(":INTCO",0) ) {
+      ip_cwk_add(":INTCO");
+      optinfo.simples_present = 1;
     }
-    //printf("simples_present already? %d\n",optinfo.simples_present);
-    //printf("salcs_present already? %d\n",optinfo.salcs_present);
+    if ( ip_exist("SYMM",0) || ip_exist("ASYMM",0) )
+      optinfo.salcs_present = 1;
+    if (fp_intco != NULL)
+      fclose(fp_intco);
 
     psio_init();
     get_optinfo();
@@ -261,7 +265,7 @@ int main(int argc, char **argv) {
            && (optinfo.mode != MODE_RESET_PREFIX) && (optinfo.mode != MODE_DISP_NUM_PLUS)
            && (optinfo.mode != MODE_DELETE_BINARIES) ) {
       fprintf(outfile,
-      "\nCartesian geometry and possibly gradient in a.u. with masses\n");
+      "\nCartesian geometry in a.u. with masses\n");
       carts.print(2,outfile,0,disp_label,0);
     }
     delete [] disp_label;
@@ -278,7 +282,7 @@ int main(int argc, char **argv) {
     coord = carts.get_coord();
     simples.compute_internals(carts.get_natom(), coord);
     simples.compute_s(carts.get_natom(), coord);
-    // simples.print_s();
+   // simples.print_s();
     free(coord);
     if ( (optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_LOAD_REF)
       && (optinfo.mode != MODE_RESET_PREFIX) && (optinfo.mode != MODE_DISP_NUM_PLUS)
@@ -297,7 +301,6 @@ int main(int argc, char **argv) {
     if (!(optinfo.salcs_present)) {
       if (optinfo.delocalize) {
         fprintf(outfile,"\nForming delocalized internal coordinates.\n");
-        // delocalize(carts.get_natom(),simples);
         delocalize(simples, carts);
       }
       else {
@@ -352,10 +355,15 @@ int main(int argc, char **argv) {
       salc_set symm_salcs("SYMM");
       if (!optinfo.redundant)
         symm_salcs.print();
+      if (optinfo.test_B) {
+        test_B(carts,simples,symm_salcs);
+        coord = carts.get_coord(); // restore internals to undisplaced state
+        simples.compute_internals(carts.get_natom(), coord);
+        simples.compute_s(carts.get_natom(), coord);
+      }
       a = opt_step(carts, simples, symm_salcs);
       free_info(simples.get_num());
       exit_io();
-      // fprintf(stderr,"Optking returning value %d\n", a);
       return a;
     }
 
@@ -523,6 +531,15 @@ int main(int argc, char **argv) {
       return(0);
     }
 
+    if (optinfo.mode == MODE_TEST_BMAT) {
+      fprintf(outfile," \n ** Testing B matrix **\n");
+      salc_set symm_salcs("SYMM");
+      test_B(carts,simples,symm_salcs);
+      free_info(simples.get_num());
+      exit_io();
+      return (0);
+    }
+
     if (optinfo.mode == MODE_RESET_PREFIX) {
       /* delete CC temporary files */
       if((strcmp(optinfo.wfn, "MP2")==0)       || (strcmp(optinfo.wfn, "CCSD")==0)  ||
@@ -592,7 +609,7 @@ int main(int argc, char **argv) {
       close_PSIF();
     }
     return(0);
-  }
+}
 
 /***  INTRO   prints into ***/
 void intro(int argc, char **argv) {

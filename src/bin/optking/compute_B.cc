@@ -28,7 +28,8 @@ extern "C" {
 
 double **compute_B(internals &simples,salc_set &symm) {
   int i,j,k,a,b,c,d, simple, intco_type, sub_index;
-  double **B, coeff, prefactor;
+  int J,K,atom,xyz;
+  double **B, coeff, prefactor, weight;
 
   B = block_matrix(symm.get_num(),3*optinfo.natom);
 
@@ -88,6 +89,22 @@ double **compute_B(internals &simples,salc_set &symm) {
           B[i][3*a+k] += prefactor * coeff * simples.lin_bend.get_s_A(sub_index,k);
           B[i][3*b+k] += prefactor * coeff * simples.lin_bend.get_s_B(sub_index,k);
           B[i][3*c+k] += prefactor * coeff * simples.lin_bend.get_s_C(sub_index,k);
+        }
+      }
+      else if (intco_type == FRAG_TYPE) {
+        for (K=0;K<3;++K) {                                       /* loop over reference atoms */
+          for (a=0; a<simples.frag.get_A_natom(sub_index); ++a) { /* loop over ref atoms in A */
+            atom   = simples.frag.get_A_atom(sub_index,a);        /* atom number of a'th atom in A */
+            weight = simples.frag.get_A_weight(sub_index,K,a);      /* weight of a'th atom in A for this K */
+              for (xyz=0;xyz<3;++xyz)
+                B[i][3*atom+xyz] += prefactor * coeff * weight * simples.frag.get_A_s(sub_index,3*K+xyz);
+          }
+          for (b=0; b<simples.frag.get_B_natom(sub_index); ++b) { /* loop over ref atoms in B */
+            atom   = simples.frag.get_B_atom(sub_index,b);        /* atom number of b'th atom in B */
+            weight = simples.frag.get_B_weight(sub_index,K,b);      /* weight of b'th atom in B for this K */
+              for (xyz=0;xyz<3;++xyz)
+                B[i][3*atom+xyz] += prefactor * coeff * weight * simples.frag.get_B_s(sub_index,3*K+xyz);
+          }
         }
       }
     }

@@ -96,13 +96,14 @@ void compute_zmat(cartesians &carts, int *unique_zvars) {
   }
 
   int *nints;
-  nints = (int *) malloc(5*sizeof(int));
-  nints[0] = nallatom-1;
-  nints[1] = nallatom-2;
-  nints[2] = nallatom-3;
-  nints[3] = 0;
-  nints[4] = 0;
-  for (i=0; i<4; ++i)
+  nints = (int *) malloc(6*sizeof(int));
+  nints[0] = nallatom-1; /* stre */
+  nints[1] = nallatom-2; /* bend */
+  nints[2] = nallatom-3; /* tors */
+  nints[3] = 0; /* oop */
+  nints[4] = 0; /* lin_bend */
+  nints[5] = 0; /* fragment */
+  for (i=0; i<6; ++i)
     if (nints[i] < 0) nints[i] = 0;
   internals zints(nints);
   /* compute the value of the unique variables */
@@ -111,6 +112,7 @@ void compute_zmat(cartesians &carts, int *unique_zvars) {
   zints.tors.set_num(nints[2]);
   zints.out.set_num(0);
   zints.lin_bend.set_num(0);
+  zints.frag.set_num(0);
 
   cnt = 0;
   for (i=0;i<nallatom;++i) {
