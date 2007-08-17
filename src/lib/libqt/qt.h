@@ -99,6 +99,7 @@ int C_DSYEV(char jobz, char uplo, int n, double *A, int lda, double *w,
 void print_block(double *, int, int, FILE *);
 
 void sort(double *A, double **B, int n);
+void sort_vector(double *A, int n);
 
 int david(double **A, int N, int M, double *eps, double **v, double cutoff, 
      int print);

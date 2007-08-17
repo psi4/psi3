@@ -20,6 +20,7 @@ extern "C" {
   #include <libipv1/ip_lib.h>
   #include <physconst.h>
   #include <libpsio/psio.h>
+  #include <libqt/qt.h>
   #include <psifiles.h>
 }
 
@@ -226,22 +227,19 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
   cm_convert = 1.0/(2.0 * _pi * _c * 100.0);
   for (i=0;i<nsalcs;++i) {
     evals[i] = evals[i] * 1.0E-18 / ( 1.0E-20 * _amu2kg );
-    evals[i] = cm_convert * sqrt( evals[i] );
+    if(evals[i] < 0.0) evals[i] = -1.0 * cm_convert * sqrt( -evals[i] );
+    else evals[i] = cm_convert * sqrt( evals[i] );
   }
 
   fprintf(outfile,"\n  Harmonic Vibrational Frequencies in cm^(-1) for Irrep %s\n",
       syminfo.irrep_lbls[irrep]) ;
   fprintf(outfile,"  -----------------------------------------------------------\n");
-  for (i=0; i<nirr_salcs; ++i) {
-    tmp = -9999;
-    for (j=0; j<nsalcs; ++j) {
-      if (evals[j] > tmp) {
-        tmp = evals[j];
-        ii = j;
-      }
-    }
-    fprintf(outfile,"%5d       %15.1lf\n",nirr_salcs-i,evals[ii]);
-    evals[ii] = -9999;
+  sort_vector(evals, nsalcs); /* ascending order */
+  for (i=nsalcs-1; i>=0; --i) { /* descending order */
+    if(evals[i] < 0.0) 
+      fprintf(outfile,"%5d       %15.1lfi\n",nirr_salcs-i,-1.0*evals[i]);
+    else
+      fprintf(outfile,"%5d       %15.1lf\n",nirr_salcs-i,evals[i]);
   }
   free(evals);
 
@@ -393,21 +391,18 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
   cm_convert = 1.0/(2.0 * _pi * _c * 100.0);
   for (i=0;i<nsalcs;++i) {
     evals[i] = evals[i] * 1.0E-18 / ( 1.0E-20 * _amu2kg );
-    evals[i] = cm_convert * sqrt( evals[i] );
+    if(evals[i] < 0.0) evals[i] = -1.0 * cm_convert * sqrt( -evals[i] );
+    else evals[i] = cm_convert * sqrt( evals[i] );
   }
 
   fprintf(outfile,"\nHarmonic Vibrational Frequencies\n");
   fprintf(outfile,"  -----------------------------------------------------------\n");
-  for (i=0; i<nsalcs; ++i) {
-    tmp = -9999;
-    for (j=0; j<nsalcs; ++j) {
-      if (evals[j] > tmp) {
-        tmp = evals[j];
-        ii = j;
-      }
-    }
-    fprintf(outfile,"%5d       %15.1lf\n",nsalcs-i,evals[ii]);
-    evals[ii] = -9999;
+  sort_vector(evals, nsalcs); /* ascending order */
+  for (i=nsalcs-1; i>= 0; --i) {  /* descending order */
+    if(evals[i] < 0.0) 
+      fprintf(outfile,"%5d       %15.1lfi\n",nsalcs-i,-1.0*evals[i]);
+    else
+      fprintf(outfile,"%5d       %15.1lf\n",nsalcs-i,evals[i]);
   }
   free(evals);
 
