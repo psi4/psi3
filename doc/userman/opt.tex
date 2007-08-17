@@ -64,8 +64,16 @@ linear angles, but have not been extensively tested.  For both analytic-
 and finite-difference-gradient optimization methods, Hessian updates are
 performed using the BFGS method.
 
-The following keywords are pertinent for geometry optimizations.
+The list below shows which coordinates are used by default for different types of jobs. \\
+jobtype=freq    dertype=first  symmetry-adapted cartesians \\
+jobtype=freq    dertype=none   symmetry-adapted cartesians \\
+jobtype=fc      dertype=first  delocalized internals (or user-defined SALCs) \\
+jobtype=symm\_fc dertype=first  delocalized internals (or user-defined SALCs) \\
+jobtype=opt     dertype=first  redundant internals \\
+jobtype=opt     dertype=none   delocalized internals (or user-defined SALCS) \\
+\\
 
+The following keywords are pertinent for geometry optimizations.
 \begin{description}
 \item[JOBTYPE = string]\mbox{}\\
 This keyword must be set to {\tt OPT} for geometry optimizations and
