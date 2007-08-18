@@ -12,7 +12,8 @@ subdirs = \
 scf-opt scf-opt-fragments scf-opt2 scf-opt3 scf-opt4 scf-opt5 scf-opt6 scf-opt7 \
 scf-opt9 scf-opt10 scf-opt11 scf-opt12 \
 scf-opt-numer scf-opt2-numer mp2-opt-numer cisd-opt-numer \
-scf-freq-first-3 scf-freq-first-5 scf-freq-none-3 scf-freq-none-5 \
+scf-freq-first-3 scf-freq-first-3a scf-freq-first-5 scf-freq-first-5a \
+scf-freq-none-3 scf-freq-none-5 \
 scf-symm-fc-numer scf-fc-numer \
 scf-freq scf-polar rhf-stab uhf-stab rohf-stab mp2-sp mp2-direct-sp mp2-scs \
 cis-sp cisd-sp fci-h2o fci-dipole fci-trans casscf-sp casscf-sa-sp \
