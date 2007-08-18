@@ -4,6 +4,22 @@
 */
 /* DISP_FREQ_ENERGY_CART makes symmetry-adapted cartesian coordinates and displaces
    along them to setup frequencies by energy points */
+/*
+Formulas for finite differences
+3-point - diagonal
+  O(1/h^2): [f(1,0) + f(-1,0) - 2f(0,0)]/(h^2)
+   [which is same as : [f(2,0) + f(-2,0) - 2f(0,0)]/(4h^2)
+3-point - off-diagonal
+  O(1/h^2): old-way: [f(1,1) - f(1,-1) - f(-1,1) + f(-1,-1)]/(4h^2)
+  O(1/h^2): new-way: [f(1,1)+f(-1,-1)+2f(0,0) -f(1,0) -f(-1,0) -f(0,1) -f(0,-1)]/(2h^2)
+
+5-point formula - diagonal
+  O(1/h^4): [-f(-2,0) + 16f(-1,0) + 16f(1,0) - f(2,0) - 30f(0,0)] / (12h^2)
+5-point formula - off-diagonal
+  O(1/h^4): [ 1f(-2,-2) - 8f(-1,-2) + 8f(+1,-2) - 1f(+2,-2) - 8f(-2,-1)
+  + 64f(-1,-1) - 64f(+1,-1) + 8f(+2,-1) + 8f(-2,+1) - 64f(-1,+1) + 64f(+1,+1)
+ - 8f(+2,+1) - 1f(-2,+2) + 8f(-1,+2) - 8f(+1,+2) + 1f(+2,+2) / (144h^2)
+*/
 
 #if HAVE_CMATH
 # include <cmath>
@@ -175,12 +191,6 @@ int disp_freq_energy_cart(cartesians &carts)
     }
   }
   nconstraints = cnt+1;
-  /*
-  if (print) {
-    fprintf(outfile,"Normalized constraints\n");
-    print_mat(constraints,nconstraints,3*natom,outfile);
-  }
-  */
 
   /* Orthogonalize rotations and translations exactly-is this ever necessary?*/
   constraints_ortho = block_matrix(nconstraints,3*natom);
@@ -191,12 +201,6 @@ int disp_freq_energy_cart(cartesians &carts)
     for (j=0; j<3*natom; ++j)
       constraints[i][j] = constraints_ortho[i][j];
   free_block(constraints_ortho);
-  /*
-  if (print) {
-    fprintf(outfile,"Orthogonal constraints\n");
-    print_mat(constraints,nconstraints,3*natom,outfile);
-  }
-  */
 
   /**** Form symmetry-adapted cartesian vectors ****/
   salc_orig = (double ***) malloc(nirreps*sizeof(double **));
@@ -294,7 +298,7 @@ int disp_freq_energy_cart(cartesians &carts)
   if (print) {
     for (irrep=0; irrep < nirreps; ++irrep)
       if (nsalc[irrep]) {
-        fprintf(outfile,"Projected Cartesian Displacements, irrep %d\n", irrep);
+        fprintf(outfile,"Symmetry Adapted Cartesian Coordinates, irrep %d\n", irrep);
         print_mat(salc[irrep], nsalc[irrep], 3*natom, outfile);
       }
   }
@@ -302,7 +306,6 @@ int disp_freq_energy_cart(cartesians &carts)
   check_coordinates(natom,coord,masses,Zvals,nsalc,salc);
 
   /* determine number of displacements */
-  /* 1/h^2 * (f(1,0) + f(-1,0) + 2f(0,0) ) */
   ndisp_all = 0;
   ndisp = init_int_array(nirreps);
   for (irrep=0; irrep<nirreps; ++irrep) {
@@ -323,7 +326,7 @@ int disp_freq_energy_cart(cartesians &carts)
 
     /* off-diagonal displacements */
     if (optinfo.points == 3)
-      ndisp[irrep] += 4 * nsalc[irrep] * (nsalc[irrep] - 1) / 2;
+      ndisp[irrep] += 2 * nsalc[irrep] * (nsalc[irrep] - 1) / 2;
     else if (optinfo.points == 5)
       ndisp[irrep] += 16 * nsalc[irrep] * (nsalc[irrep] - 1) / 2;
 
@@ -385,19 +388,15 @@ int disp_freq_energy_cart(cartesians &carts)
     /* add off-diagonal displacements */
 
     for (i=0; i<nsalc[irrep]; ++i) {
-      for (j=i+1; j<nsalc[irrep]; ++j) {
+      for (j=0; j<i; ++j) {
         if (optinfo.points == 3) {
           for (k=0; k < 3*natom; ++k) {
             geoms[irrep][cnt+0][k] += ( + salc[irrep][i][k] + salc[irrep][j][k] )
               * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+1][k] += ( + salc[irrep][i][k] - salc[irrep][j][k] )
-              * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+2][k] += ( - salc[irrep][i][k] + salc[irrep][j][k] )
-              * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+3][k] += ( - salc[irrep][i][k] - salc[irrep][j][k] )
+            geoms[irrep][cnt+1][k] += ( - salc[irrep][i][k] - salc[irrep][j][k] )
               * optinfo.disp_size / sqrt(masses[k]);
           }
-          cnt += 4;
+          cnt += 2;
         }
         else if (optinfo.points == 5) {
           for (k=0; k < 3*natom; ++k) {
@@ -458,8 +457,8 @@ int disp_freq_energy_cart(cartesians &carts)
     if (ndisp[irrep]) {
       psio_write(PSIF_OPTKING, "OPT: Displaced geometries",
           (char *) &(geoms[irrep][0][0]), ndisp[irrep]*3*natom*sizeof(double), next, &next);
-fprintf(outfile,"Displaced Geometries of irrep %d.\n",irrep);
-print_mat(geoms[irrep],ndisp[irrep],3*natom,outfile);
+//fprintf(outfile,"Displaced Geometries of irrep %d.\n",irrep);
+//print_mat(geoms[irrep],ndisp[irrep],3*natom,outfile);
     }
     free_block(geoms[irrep]);
   }
@@ -491,17 +490,6 @@ print_mat(geoms[irrep],ndisp[irrep],3*natom,outfile);
   optinfo.disp_num = 0;
   disp_e = init_array(ndisp_all);
   optinfo.micro_iteration = 0;
-
-  /*
-  ndisp_all = 8;
-  ndisp[1] = 0;
-  ndisp[2] = 0;
-  ndisp[3] = 0;
-  nsalc_all = 4;
-  nsalc[1] = 0;
-  nsalc[2] = 0;
-  nsalc[3] = 0;
-  */
 
   psio_write_entry(PSIF_OPTKING, "OPT: Displaced energies",
       (char *) &(disp_e[0]), ndisp_all*sizeof(double));

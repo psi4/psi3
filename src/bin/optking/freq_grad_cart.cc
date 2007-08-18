@@ -1,9 +1,7 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief freq_grad_cart(): computes frequencies from gradients and cartesian disps
 */
-/** FREQ_GRAD_CART computes frequencies from gradients and cartesian disps */
-
 #if HAVE_CMATH
 # include <cmath>
 #else
@@ -40,29 +38,21 @@ extern int get_irrep_xyz(double **cartrep, int xyz);
 void sort_evals_all(int nsalc_all, double *evals_all, int *evals_all_irrep);
 FILE *fp11;
 
-/**** FREQ_GRAD_CART compute frequencies from gradients for cartesian
-  displacements ****/
-
 void freq_grad_cart(cartesians &carts) {
   int i,j,k,l,a,b, ii, cnt, dim, natom, xyz, cnt_eval = -1, *evals_all_irrep,op_disp;
-  int xyzA, xyzB, atomA, atomB, row, col,h,nirreps,xyz_irr,I,cnt_all,match,sign;
-  int nsalcs,ncoord,start_disp, start_salc, atom, atom2, op, loner, natom_unique;
-  double **B, **G, **G_inv, *masses, **u, *geom, *forces, **force_constants;
-  double energy, *energies, **displacements, cm_convert, k_convert;
-  double *f, *f_q, *temp_arr, *temp_arr2, tval, **geom2D, **B_inv;
-  double **evects, *evals, **FG, tmp, **force_constants_x, **tmp_mat_inv;
-  double *micro_e, **micro_geom, **disp_grad, *grad, **grads_adapted, **tmp_mat;
+  int xyzA, xyzB, atomA, atomB, row, col,h,nirreps,xyz_irr,I,cnt_all,match;
+  int nsalcs,ncoord,start_disp, start_salc, atom, atom2, op, natom_unique;
+  double **B, *masses,  **force_constants, cm_convert, k_convert;
+  double *f, *f_q, *temp_arr, **evects, *evals, **force_constants_x;
+  double *micro_e, **disp_grad, *grad, **grads_adapted;
   double *evals_all, **cartrep, **disp_grad_all;
-  int *nsalc, *ndisp, ndisp_all, nsalc_all, **ict, *start_irr;
-  double ***salc, ***disp;
-  int print;
+  int *nsalc, *ndisp, ndisp_all, nsalc_all, **ict, *start_irr, print;
   char *line1;
   print = optinfo.print_cartesians;
 
   nirreps = syminfo.nirreps;
   natom = carts.get_natom();
   masses = carts.get_mass();
-  u = mass_mat(masses);
   ndisp = init_int_array(nirreps);
   nsalc = init_int_array(nirreps);
 
@@ -152,11 +142,6 @@ void freq_grad_cart(cartesians &carts) {
       fprintf(outfile,"\tOperation that takes plus displacement %d to minus is %s.\n",
           cnt+1, syminfo.op_lbls[op_disp]);
 
-      /* what is the parity of the irrep for this special operation ? */
-      //sign = syminfo.ct[h][op_disp];
-      //fprintf(outfile,"\tParity of irrep %s for this operation is %d.\n",
-      //syminfo.clean_irrep_lbls[h], sign);
-
       ++cnt_all;
       for (atom=0; atom<natom; ++atom) {
         for (xyz=0; xyz<3; ++xyz) {
@@ -200,14 +185,7 @@ void freq_grad_cart(cartesians &carts) {
 
     if (!nsalc[h]) continue;
 
-    /* construct B_inv = (BuBt)-1 B u = G-1 B u */
-    fprintf(outfile,"Computing B^-1: ");
-    G = compute_G(&(B[start_salc]),nsalc[h],carts);
-    G_inv = symm_matrix_invert(G,nsalc[h],1,0);
-    free_block(G);
-
     /* mass-weight gradients; g_xm = (1/sqrt(m)) * g_x */
-    /* works for H2 what is more general? */
     for (k=0; k<ndisp[h]; ++k)
       for (j=0;j<3*natom;++j)
         disp_grad_all[k+start_disp][j] /= sqrt(masses[j]);
@@ -219,35 +197,35 @@ void freq_grad_cart(cartesians &carts) {
     }
 
     // compute forces in internal coordinates, f_q = G_inv B u f_x
+   // In this case, B = c * masses^(1/2).  =>  G=I.
+   // Thus, f_q = c * f_x / sqrt(masses)
     f_q = init_array(nsalc[h]);
-    temp_arr = init_array(nsalc[h]);
-    temp_arr2 = init_array(3*natom);
     grads_adapted = block_matrix(ndisp[h],3*natom);
   
     if (print) fprintf(outfile,"Gradients recomputed from internal coordinate gradients\n");
     for (k=0; k<ndisp[h]; ++k) {
 
+      mmult(&(B[start_salc]),0,&(disp_grad_all[k+start_disp]),1,&f_q,1,nsalc[h],3*natom,1,0);
+
       if (print) fprintf(outfile,"ndisp[h]: %d, start_disp: %d\n", ndisp[h], start_disp);
-      mmult(u,0,&(disp_grad_all[k+start_disp]),1,&temp_arr2,1,3*natom,3*natom,1,0);
-      mmult(&(B[start_salc]),0,&temp_arr2,1,&temp_arr,1,nsalc[h],3*natom,1,0);
-      mmult(G_inv,0,&temp_arr,1,&f_q,1,nsalc[h],nsalc[h],1,0);
   
-    for (j=0;j<3*natom;++j)
-      grads_adapted[k][j] = f_q[j];
+      for (j=0;j<3*natom;++j)
+        grads_adapted[k][j] = f_q[j];
 
       /* test by transforming f_q back to cartesian forces and compare */
-      mmult(B,1,&(grads_adapted[k]),1,&temp_arr2,1,3*natom,nsalc[h],1,0);
-      if (print) print_mat2(&temp_arr2, 1, 3*natom, outfile);
+      if (print) {
+        temp_arr = init_array(3*natom);
+        mmult(B,1,&(grads_adapted[k]),1,&temp_arr,1,3*natom,nsalc[h],1,0);
+        print_mat2(&temp_arr, 1, 3*natom, outfile);
+        free(temp_arr);
+      }
+    }
+    if (print) {
+      fprintf(outfile,"Adapted gradients\n");
+      print_mat(grads_adapted,ndisp[h],3*natom,outfile);
     }
 
     free(f_q);
-    free(temp_arr);
-    free(temp_arr2);
-    free_block(G_inv);
-
-    /* fprintf(outfile,"Adapted gradients\n");
-    print_mat(grads_adapted,ndisps,ncoord,outfile);
-    fflush(outfile); */
 
     force_constants = block_matrix(nsalc[h],nsalc[h]);
 
@@ -256,6 +234,7 @@ void freq_grad_cart(cartesians &carts) {
     if (optinfo.points == 3) {
       for (i=0; i<nsalc[h]; ++i) {
         for (j=0; j<nsalc[h]; ++j) {
+          /* Fij = fj(i+1) - fj(i-1) / (2h) */
           force_constants[i][j] = 
             (grads_adapted[2*i+1][j] - grads_adapted[2*i][j])
               / (2.0 * optinfo.disp_size);
@@ -265,8 +244,8 @@ void freq_grad_cart(cartesians &carts) {
     else if (optinfo.points == 5) {
       for (i=0; i<nsalc[h]; ++i) {
         for (j=0; j<nsalc[h]; ++j) {
+            /* fj(i-2) - fj(i+2) - 8fj(i-1) + 8fj(i+1)  / (12h) */
           force_constants[i][j] = 
-            /* 1f(-2) - 1f(+2) - 8f(-1) + 8f(+1)  / 12h */
             (  1.0 * grads_adapted[4*i][j]   - 1.0 * grads_adapted[4*i+1][j]
              - 8.0 * grads_adapted[4*i+2][j] + 8.0 * grads_adapted[4*i+3][j] )
              / (12.0 * optinfo.disp_size);
@@ -300,7 +279,6 @@ void freq_grad_cart(cartesians &carts) {
     free(evals);
   }
   free(masses);
-  free_block(u);
   free_block(disp_grad_all);
 
   sort_evals_all(nsalc_all,evals_all, evals_all_irrep);

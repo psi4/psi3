@@ -132,7 +132,7 @@ struct OPTInfo {
   int disp_num;
   int points;
   int freq_irrep;
-  int points_freq;
+  int points_freq_grad_ints;
   int irrep;
   int simples_present;
   int salcs_present;

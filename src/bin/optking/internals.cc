@@ -406,7 +406,7 @@ internals :: internals(cartesians& carts, int user_intcos)
     else {
 
       /* Generate simple internal coordinates from a cartesian geometry */
-      int *ioff, count, Z1, Z2, natom;
+      int count, Z1, Z2, natom;
       double **atom_dist, **coord_2d, tval;
       int **bonds, id_count=0;
       int num_bonds, num_nobonds;

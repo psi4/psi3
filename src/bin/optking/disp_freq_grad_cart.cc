@@ -1,6 +1,6 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief disp_freq_grad_cart(): makes cartesian displacements for each atom
 */
 /** displaces + and - along all cartesian coordinates **/ 
 
@@ -32,8 +32,6 @@ extern "C" {
 #include "salc.h"
 #include "bond_lengths.h"
 
-/* DISP_FREQ_GRAD_CART makes cartesian displacements for each atom */
-/* symmetrize later: (+ and - if symmetric; otherwise, just +) */
 int get_irrep_xyz( double **cartrep, int xyz);
 int check_coordinates(int natom, double *coord, double *masses, double *Zvals,
     int *ndisp_small, double ***disp_small);
@@ -177,12 +175,6 @@ int disp_freq_grad_cart(cartesians &carts)
     }
   }
   nconstraints = cnt+1;
-  /*
-  if (print) {
-    fprintf(outfile,"Normalized constraints\n");
-    print_mat(constraints,nconstraints,3*natom,outfile);
-  }
-  */
 
   /* Orthogonalize rotations and translations exactly-is this ever necessary?*/
   constraints_ortho = block_matrix(nconstraints,3*natom);
@@ -193,12 +185,6 @@ int disp_freq_grad_cart(cartesians &carts)
     for (j=0; j<3*natom; ++j)
       constraints[i][j] = constraints_ortho[i][j];
   free_block(constraints_ortho);
-  /*
-  if (print) {
-    fprintf(outfile,"Orthogonal constraints\n");
-    print_mat(constraints,nconstraints,3*natom,outfile);
-  }
-  */
 
   /**** Form symmetry-adapted cartesian vectors ****/
   salc_orig = (double ***) malloc(nirreps*sizeof(double **));
@@ -434,17 +420,6 @@ int disp_freq_grad_cart(cartesians &carts)
   optinfo.disp_num = 0;
   disp_e = init_array(ndisp_all);
   optinfo.micro_iteration = 0;
-
-  /*
-  ndisp_all = 8;
-  ndisp[1] = 0;
-  ndisp[2] = 0;
-  ndisp[3] = 0;
-  nsalc_all = 4;
-  nsalc[1] = 0;
-  nsalc[2] = 0;
-  nsalc[3] = 0;
-  */
 
   psio_write_entry(PSIF_OPTKING, "OPT: Displaced energies",
       (char *) &(disp_e[0]), ndisp_all*sizeof(double));

@@ -105,7 +105,7 @@ int main(int argc, char **argv) {
     optinfo.mode = MODE_OPT_STEP;
     optinfo.disp_num = 0;
     optinfo.points = 3;
-    optinfo.points_freq = 3; // always 3 for now
+    optinfo.points_freq_grad_ints = 3; // always 3 for now
     optinfo.energy_dat = 0;
     optinfo.grad_dat = 0;
     for (i=1; i<argc; ++i) {

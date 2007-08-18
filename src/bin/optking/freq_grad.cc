@@ -1,9 +1,9 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief freq_grad_irrep(): computes frequencies from gradients for an irrep block
+           freq_grad_nosymm(): computes frequencies from gradients for all coordinates
+           ignoring symmetry
 */
-/** FREQ_GRAD computes frequencies from gradients */
-
 #if HAVE_CMATH
 # include <cmath>
 #else
@@ -36,8 +36,6 @@ extern double **compute_B(internals &simples, salc_set &salcs);
 extern double *compute_q(internals &simples, salc_set &symm);
 extern double **compute_G(double **B, int num_intcos, cartesians &carts);
 
-/* FREQ_GRAD_IRREP compute frequencies from gradients for irrep block IRREP */
-
 void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs) {
 
   int i,j,ii,jj,k,a,b, cnt, dim, dim_carts, ndisps,irrep;
@@ -48,7 +46,7 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
   double **all_f_q; // internal coordinate forces for all unique displacements
   double **full_all_f_q; // internal coordinate forces for all displacements
   double **evects, *evals, **FG;
-  double *micro_e, *micro_geom, *micro_grad, *grad, tmp, **force_constants_symm;
+  double *micro_geom, *micro_grad, *grad, tmp, **force_constants_symm;
   char *salc_lbl;
 
   dim_carts = 3*carts.get_natom();
@@ -73,10 +71,6 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
   open_PSIF();
   psio_read_entry(PSIF_OPTKING, "OPT: Num. of disp.",
       (char *) &(ndisps), sizeof(int));
-
-  /* micro_e = new double[ndisps];
-  psio_read_entry(PSIF_OPTKING, "OPT: Displaced energies",
-      (char *) &(micro_e[0]), ndisps*sizeof(double)); */
 
   micro_grad = new double [ndisps*3*carts.get_natom()];
   psio_read_entry(PSIF_OPTKING, "OPT: Displaced gradients",
@@ -149,7 +143,7 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
   free_block(all_f_q);
 
   // apply three point formula - to generate force constants in this irrep block
-  fprintf(outfile,"Applying %d-point formula\n",optinfo.points_freq);
+  fprintf(outfile,"Applying %d-point formula\n",optinfo.points_freq_grad_ints);
   force_constants = block_matrix(nsalcs,nsalcs);
   for (i=0;i<nirr_salcs;++i)
     for (j=0;j<nirr_salcs;++j) {
@@ -253,9 +247,6 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
 }
 
 
-/** FREQ_GRAD_NOSYMM compute frequencies from gradients for all
-* coordinates ignoring symmetry */
-
 void freq_grad_nosymm(cartesians &carts, internals &simples,
     salc_set &all_salcs) {
 
@@ -265,7 +256,7 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
   double energy, *energies, **displacements, cm_convert;
   double *f, **all_f_q, *f_q, *temp_arr, *temp_arr2, **all_q, tval, **geom2D;
   double **evects, *evals, **FG, tmp;
-  double *micro_e, *micro_geom, *micro_grad, *grad;
+  double *micro_geom, *micro_grad, *grad;
 
   dim_carts = 3*carts.get_natom();
   nsalcs = all_salcs.get_num();
@@ -275,11 +266,6 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
       (char *) &(ndisps), sizeof(int));
   if (ndisps != 2*nsalcs) 
     punt("Error: number of displacements is incorrect.");
-
-  // needed?
-  micro_e = new double[ndisps];
-  psio_read_entry(PSIF_OPTKING, "OPT: Displaced energies",
-      (char *) &(micro_e[0]), ndisps*sizeof(double));
 
   micro_grad = new double [ndisps*3*carts.get_natom()];
   psio_read_entry(PSIF_OPTKING, "OPT: Displaced gradients",
@@ -303,7 +289,6 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
     all_q[i] = compute_q(simples, all_salcs);
     B = compute_B(simples,all_salcs);
     G = compute_G(B,nsalcs,carts);
-    // fprintf(outfile,"BuB^t ");
     G_inv = symm_matrix_invert(G,nsalcs,0,optinfo.redundant);
     masses = carts.get_fmass();
     u = mass_mat(masses);
@@ -331,23 +316,8 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
 
   free(f);
 
-  /*
-  fprintf(outfile,"Values of intcos for each displacement\n");
-  for (i=0;i<ndisps;++i) {
-    for (j=0; j<nsalcs;++j)
-      fprintf(outfile,"%15.10lf",all_q[i][j]);
-    fprintf(outfile,"\n");
-  }
-  fprintf(outfile,"Values of intcos forces for each displacement\n");
-  for (i=0;i<ndisps;++i) {
-    for (j=0; j<nsalcs;++j)
-      fprintf(outfile,"%15.10lf",all_f_q[i][j]);
-    fprintf(outfile,"\n");
-  }
-  */
-
   // apply three point formula
-  fprintf(outfile,"Applying %d-point formula\n",optinfo.points_freq);
+  fprintf(outfile,"Applying %d-point formula\n",optinfo.points_freq_grad_ints);
   force_constants = block_matrix(nsalcs,nsalcs);
   for (i=0;i<nsalcs;++i)
     for (j=0;j<nsalcs;++j)
@@ -413,4 +383,3 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
   close_PSIF();
 
 }
-

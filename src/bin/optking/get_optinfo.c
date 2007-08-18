@@ -220,7 +220,7 @@ void get_optinfo() {
     fprintf(outfile,"zmat:          %d\n",optinfo.zmat);
     fprintf(outfile,"dummy_axis_1:    %d\n",optinfo.dummy_axis_1);
     fprintf(outfile,"dummy_axis_2:    %d\n",optinfo.dummy_axis_2);
-    fprintf(outfile,"points:        %d\n",optinfo.points);
+    fprintf(outfile,"sacc fd points:  %d\n",optinfo.points);
     fprintf(outfile,"zmat_simples:  %d\n",optinfo.zmat_simples);
     fprintf(outfile,"redundant:     %d\n",optinfo.redundant);
     fprintf(outfile,"bfgs:          %d\n",optinfo.bfgs);
