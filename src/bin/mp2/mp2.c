@@ -234,8 +234,6 @@ void exit_io(void)
 {
   int i;
 
-  for(i=CC_MIN; i <= CC_MAX; i++) 
-    psio_close(i,0);
   psio_done();
   tstop(outfile);
   psi_stop();
