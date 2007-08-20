@@ -99,7 +99,7 @@ void timer_done(void)
   gethostname(host, 40);
 
   /* Dump the timing data to timer.dat and free the timers */
-  timer_out = fopen("timer.dat", "a+");
+  ffile(&timer_out, "timer.dat", 1);
   fprintf(timer_out, "\n");
   fprintf(timer_out, "Host: %s\n", host);
   fprintf(timer_out, "\n");
