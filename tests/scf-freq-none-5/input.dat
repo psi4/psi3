@@ -1,6 +1,6 @@
 psi: (
   label = "DZ RHF Frequencies by Energies 5-pt"
-  memory = (50.0 MB)
+  memory = (500.0 MB)
   jobtype = freq
   dertype = none
   wfn = scf
