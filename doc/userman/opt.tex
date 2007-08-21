@@ -155,8 +155,10 @@ This keyword must be set to {\tt FREQ} for frequency analyses.
 This keyword may be set to {\tt NONE} if only energies are available
 for the chosen method, or {\tt FIRST} if analytic gradients are available.
 \item[POINTS = 3 or 5]\mbox{}\\
-Specifies whether a 3-point or a 5-point formula is used to compute the
-vibrational frequencies by finite differences.
+Specifies whether frequencies are determined by a 3-point or a 5-point
+formula of gradient differences.  If only energy points are used, more
+displacements are required, but the effect of this keyword in terms of
+accuracy is the same.
 \end{description}
 
 \begin{em}
