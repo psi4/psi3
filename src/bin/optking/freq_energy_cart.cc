@@ -174,23 +174,24 @@ void freq_energy_cart(cartesians &carts) {
         }
         else if (optinfo.points == 5) {
           force_constants[i][j] = force_constants[j][i] = (
-             +  1.0 * disp_E[iE(ndisp,nsalc,h,i,j,-2,-2)]
-             -  8.0 * disp_E[iE(ndisp,nsalc,h,i,j,-1,-2)]
-             +  8.0 * disp_E[iE(ndisp,nsalc,h,i,j,+1,-2)]
-             -  1.0 * disp_E[iE(ndisp,nsalc,h,i,j,+2,-2)]
-             -  8.0 * disp_E[iE(ndisp,nsalc,h,i,j,-2,-1)]
-             + 64.0 * disp_E[iE(ndisp,nsalc,h,i,j,-1,-1)]
-             - 64.0 * disp_E[iE(ndisp,nsalc,h,i,j,+1,-1)]
-             +  8.0 * disp_E[iE(ndisp,nsalc,h,i,j,+2,-1)]
-             +  8.0 * disp_E[iE(ndisp,nsalc,h,i,j,-2,+1)]
-             - 64.0 * disp_E[iE(ndisp,nsalc,h,i,j,-1,+1)]
-             + 64.0 * disp_E[iE(ndisp,nsalc,h,i,j,+1,+1)]
-             -  8.0 * disp_E[iE(ndisp,nsalc,h,i,j,+2,+1)]
-             -  1.0 * disp_E[iE(ndisp,nsalc,h,i,j,-2,+2)]
-             +  8.0 * disp_E[iE(ndisp,nsalc,h,i,j,-1,+2)]
-             -  8.0 * disp_E[iE(ndisp,nsalc,h,i,j,+1,+2)]
-             +  1.0 * disp_E[iE(ndisp,nsalc,h,i,j,+2,+2)]
-              )  / (144.0*SQR(disp_size)); 
+              - 1.0 * disp_E[iE(ndisp,nsalc,h,i,j,-1,-2)]
+              - 1.0 * disp_E[iE(ndisp,nsalc,h,i,j,-2,-1)]
+              + 9.0 * disp_E[iE(ndisp,nsalc,h,i,j,-1,-1)]
+              - 1.0 * disp_E[iE(ndisp,nsalc,h,i,j,+1,-1)]
+              - 1.0 * disp_E[iE(ndisp,nsalc,h,i,j,-1,1)]
+              + 9.0 * disp_E[iE(ndisp,nsalc,h,i,j,+1,+1)]
+              - 1.0 * disp_E[iE(ndisp,nsalc,h,i,j,+2,+1)]
+              - 1.0 * disp_E[iE(ndisp,nsalc,h,i,j,+1,+2)]
+              + 1.0 * disp_E[iE(ndisp,nsalc,h,i,0,-2,0)]
+              - 7.0 * disp_E[iE(ndisp,nsalc,h,i,0,-1,0)]
+              - 7.0 * disp_E[iE(ndisp,nsalc,h,i,0,+1,0)]
+              + 1.0 * disp_E[iE(ndisp,nsalc,h,i,0,+2,0)]
+              + 1.0 * disp_E[iE(ndisp,nsalc,h,j,0,-2,0)]
+              - 7.0 * disp_E[iE(ndisp,nsalc,h,j,0,-1,0)]
+              - 7.0 * disp_E[iE(ndisp,nsalc,h,j,0,+1,0)]
+              + 1.0 * disp_E[iE(ndisp,nsalc,h,j,0,+2,0)]
+              + 12.0 * energy_ref
+             ) / (12.0*SQR(disp_size));
         }
       }
     }
@@ -314,40 +315,24 @@ int iE(int *ndisp, int *nsalc, int irr, int ii, int jj, int disp_i, int disp_j) 
       else 
         ndiag = 2 * nsalc[irr];
   
-      ij_pair = irr_start[irr] + ndiag + 16*((ii*(ii-1))/2 + jj);
+      ij_pair = irr_start[irr] + ndiag + 8*((ii*(ii-1))/2 + jj);
   
-      if ((disp_i==-2) && (disp_j==-2)) // f(-2,-2) 
-        return(ij_pair + 0);
       if ((disp_i==-1) && (disp_j==-2)) // f(-1,-2) 
-        return(ij_pair + 1);
-      if ((disp_i==+1) && (disp_j==-2)) // f(+1,-2)
-        return(ij_pair + 2);
-      if ((disp_i==+2) && (disp_j==-2)) // f(+2,-2)
-        return(ij_pair + 3);
+        return(ij_pair + 0);
       if ((disp_i==-2) && (disp_j==-1)) // f(-2,-1)
-        return(ij_pair + 4);
+        return(ij_pair + 1);
       if ((disp_i==-1) && (disp_j==-1)) // f(-1,-1)
-        return(ij_pair + 5);
+        return(ij_pair + 2);
       if ((disp_i==+1) && (disp_j==-1)) // f(+1,-1)
-        return(ij_pair + 6);
-      if ((disp_i==+2) && (disp_j==-1)) // f(+2,-1)
-        return(ij_pair + 7);
-      if ((disp_i==-2) && (disp_j==+1)) // f(-2,+1)
-        return(ij_pair + 8);
+        return(ij_pair + 3);
       if ((disp_i==-1) && (disp_j==+1)) // f(-1,+1)
-        return(ij_pair + 9);
+        return(ij_pair + 4);
       if ((disp_i==+1) && (disp_j==+1)) // f(+1,+1)
-        return(ij_pair + 10);
+        return(ij_pair + 5);
       if ((disp_i==+2) && (disp_j==+1)) // f(+2,+1)
-        return(ij_pair + 11);
-      if ((disp_i==-2) && (disp_j==+2)) // f(-2,+2)
-        return(ij_pair + 12);
-      if ((disp_i==-1) && (disp_j==+2)) // f(-1,+2)
-        return(ij_pair + 13);
+        return(ij_pair + 6);
       if ((disp_i==+1) && (disp_j==+2)) // f(+1,+2)
-        return(ij_pair + 14);
-      if ((disp_i==+2) && (disp_j==+2)) // f(+2,+2)
-        return(ij_pair + 15);
+        return(ij_pair + 7);
     }
   }
   fprintf(outfile, "Problem finding displaced energy\n");

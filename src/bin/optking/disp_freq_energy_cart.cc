@@ -16,9 +16,13 @@ Formulas for finite differences
 5-point formula - diagonal
   O(1/h^4): [-f(-2,0) + 16f(-1,0) + 16f(1,0) - f(2,0) - 30f(0,0)] / (12h^2)
 5-point formula - off-diagonal
-  O(1/h^4): [ 1f(-2,-2) - 8f(-1,-2) + 8f(+1,-2) - 1f(+2,-2) - 8f(-2,-1)
+  O(1/h^4): old-way [ 1f(-2,-2) - 8f(-1,-2) + 8f(+1,-2) - 1f(+2,-2) - 8f(-2,-1)
   + 64f(-1,-1) - 64f(+1,-1) + 8f(+2,-1) + 8f(-2,+1) - 64f(-1,+1) + 64f(+1,+1)
  - 8f(+2,+1) - 1f(-2,+2) + 8f(-1,+2) - 8f(+1,+2) + 1f(+2,+2) / (144h^2)
+  O(1/h^4): new-way [ -1f(-1,-2) - 1f(-2,-1) + 9f(-1,-1) - 1f(+1,-1)
+    - 1f(-1,1) + 9f(+1,+1) - 1f(+2,+1) - 1f(1,2)
+    + 1f(-2,0) - 7f(-1,0)  - 7f(+1,0) + 1f(+2,0)
+    + 1f(0,-2) - 7f(0,-1)  - 7f(0,+1) + 1f(0,+2) + 12f(0,0)]/(12h^2)
 */
 
 #if HAVE_CMATH
@@ -328,7 +332,7 @@ int disp_freq_energy_cart(cartesians &carts)
     if (optinfo.points == 3)
       ndisp[irrep] += 2 * nsalc[irrep] * (nsalc[irrep] - 1) / 2;
     else if (optinfo.points == 5)
-      ndisp[irrep] += 16 * nsalc[irrep] * (nsalc[irrep] - 1) / 2;
+      ndisp[irrep] += 8 * nsalc[irrep] * (nsalc[irrep] - 1) / 2;
 
     ndisp_all += ndisp[irrep];
   }
@@ -400,40 +404,24 @@ int disp_freq_energy_cart(cartesians &carts)
         }
         else if (optinfo.points == 5) {
           for (k=0; k < 3*natom; ++k) {
-            geoms[irrep][cnt+0][k] += ( - 2.0 * salc[irrep][i][k] - 2.0 * salc[irrep][j][k] )
+            geoms[irrep][cnt+0][k] += ( - 1.0 * salc[irrep][i][k] - 2.0 * salc[irrep][j][k] )
               * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+1][k] += ( - 1.0 * salc[irrep][i][k] - 2.0 * salc[irrep][j][k] )
+            geoms[irrep][cnt+1][k] += ( - 2.0 * salc[irrep][i][k] - 1.0 * salc[irrep][j][k] )
               * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+2][k] += ( + 1.0 * salc[irrep][i][k] - 2.0 * salc[irrep][j][k] )
+            geoms[irrep][cnt+2][k] += ( - 1.0 * salc[irrep][i][k] - 1.0 * salc[irrep][j][k] )
               * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+3][k] += ( + 2.0 * salc[irrep][i][k] - 2.0 * salc[irrep][j][k] )
+            geoms[irrep][cnt+3][k] += ( + 1.0 * salc[irrep][i][k] - 1.0 * salc[irrep][j][k] )
               * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+4][k] += ( - 2.0 * salc[irrep][i][k] - 1.0 * salc[irrep][j][k] )
+            geoms[irrep][cnt+4][k] += ( - 1.0 * salc[irrep][i][k] + 1.0 * salc[irrep][j][k] )
               * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+5][k] += ( - 1.0 * salc[irrep][i][k] - 1.0 * salc[irrep][j][k] )
+            geoms[irrep][cnt+5][k] += ( + 1.0 * salc[irrep][i][k] + 1.0 * salc[irrep][j][k] )
               * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+6][k] += ( + 1.0 * salc[irrep][i][k] - 1.0 * salc[irrep][j][k] )
+            geoms[irrep][cnt+6][k] += ( + 2.0 * salc[irrep][i][k] + 1.0 * salc[irrep][j][k] )
               * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+7][k] += ( + 2.0 * salc[irrep][i][k] - 1.0 * salc[irrep][j][k] )
-              * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+8][k] += ( - 2.0 * salc[irrep][i][k] + 1.0 * salc[irrep][j][k] )
-              * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+9][k] += ( - 1.0 * salc[irrep][i][k] + 1.0 * salc[irrep][j][k] )
-              * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+10][k] += ( + 1.0 * salc[irrep][i][k] + 1.0 * salc[irrep][j][k] )
-              * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+11][k] += ( + 2.0 * salc[irrep][i][k] + 1.0 * salc[irrep][j][k] )
-              * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+12][k] += ( - 2.0 * salc[irrep][i][k] + 2.0 * salc[irrep][j][k] )
-              * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+13][k] += ( - 1.0 * salc[irrep][i][k] + 2.0 * salc[irrep][j][k] )
-              * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+14][k] += ( + 1.0 * salc[irrep][i][k] + 2.0 * salc[irrep][j][k] )
-              * optinfo.disp_size / sqrt(masses[k]);
-            geoms[irrep][cnt+15][k] += ( + 2.0 * salc[irrep][i][k] + 2.0 * salc[irrep][j][k] )
+            geoms[irrep][cnt+7][k] += ( + 1.0 * salc[irrep][i][k] + 2.0 * salc[irrep][j][k] )
               * optinfo.disp_size / sqrt(masses[k]);
           }
-          cnt += 16;
+          cnt += 8;
         }
       }
     }
