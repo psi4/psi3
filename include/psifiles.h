@@ -150,4 +150,33 @@ integrals out (i.e. multiply by i=sqrt(-1) to get the integrals) */
 #define PSI_RETURN_FAILURE      1
 #define PSI_RETURN_ENDLOOP      2
 
+//Added by ACS (01/06) for the UMP2R12 routines
+#define PSIF_MO_AA_R12      54
+#define PSIF_MO_BB_R12      55
+#define PSIF_MO_AB_R12      56
+#define PSIF_MO_AA_R12T1    57
+#define PSIF_MO_BB_R12T1    58
+#define PSIF_MO_AB_R12T1    59
+#define PSIF_MO_BA_R12T1    61
+#define PSIF_MO_AA_R12SQ    62
+#define PSIF_MO_BB_R12SQ    63
+#define PSIF_MO_AB_R12SQ    64
+#define PSIF_MO_R12SQ       65
+#define PSIF_MO_A_MX        "MO-basis Alpha Mu-X Ints"
+#define PSIF_MO_A_MY        "MO-basis Alpha Mu-Y Ints"
+#define PSIF_MO_A_MZ        "MO-basis Alpha Mu-Z Ints"
+#define PSIF_MO_B_MX        "MO-basis Beta Mu-X Ints"
+#define PSIF_MO_B_MY        "MO-basis Beta Mu-Y Ints"
+#define PSIF_MO_B_MZ        "MO-basis Beta Mu-Z Ints"
+#define PSIF_MO_A_QXX       "MO-basis Alpha Q-XX Ints"
+#define PSIF_MO_A_QYY       "MO-basis Alpha Q-YY Ints"
+#define PSIF_MO_A_QZZ       "MO-basis Alpha Q-ZZ Ints"
+#define PSIF_MO_B_QXX       "MO-basis Beta Q-XX Ints"
+#define PSIF_MO_B_QYY       "MO-basis Beta Q-YY Ints"
+#define PSIF_MO_B_QZZ       "MO-basis Beta Q-ZZ Ints"
+#define PSIF_AO_QRR         "AO-basis Q-XX + Q-YY + Q-ZZ Ints"
+#define PSIF_MO_QRR         "MO-basis Q-XX + Q-YY + Q-ZZ Ints"
+#define PSIF_MO_A_QRR       "MO-basis Alpha Q-XX + Q-YY + Q-ZZ Ints"
+#define PSIF_MO_B_QRR       "MO-basis Beta Q-XX + Q-YY + Q-ZZ Ints"
+// end ACS additions
 #endif /* header guard */
