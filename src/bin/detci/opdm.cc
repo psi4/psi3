@@ -616,6 +616,41 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
            opdm_eigval[i] = 0.0;
            }
         eigsort(opdm_eigval, opdm_eigvec, -(CalcInfo.orbs_per_irr[irrep]));
+
+
+
+// FAE
+// eigsort sometimes will swap the order of orbitals, for example
+// in frozen core computations the focc may be mixed with docc and 
+// change the final result
+
+//Loop over "populated"
+  for (i=0;i<CalcInfo.orbs_per_irr[irrep]-CalcInfo.frozen_uocc[irrep];i++){
+    max_overlap = 0;
+    int m       = 0;
+     for (j=i;j<CalcInfo.orbs_per_irr[irrep]-CalcInfo.frozen_uocc[irrep];j++){
+       overlap = opdm_eigvec[i][j] * opdm_eigvec[i][j];
+       if(overlap > max_overlap){
+         m = j;
+         max_overlap = overlap;
+       }
+     }
+     for (j=0;j<CalcInfo.orbs_per_irr[irrep];j++){
+         double temporary  = opdm_eigvec[j][i];
+         opdm_eigvec[j][i] = opdm_eigvec[j][m];
+         opdm_eigvec[j][m] = temporary;
+     }
+     double temporary = opdm_eigval[i];
+     opdm_eigval[i] = opdm_eigval[m];
+     opdm_eigval[m] = temporary;
+
+  }
+  // End FAE changes, May 3 2007
+
+
+
+
+
         if (Parameters.print_lvl > 0) {
           if (irrep==0) {
             if (Parameters.opdm_ave) { 
@@ -660,10 +695,11 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
                 CalcInfo.so_per_irr[irrep], CalcInfo.orbs_per_irr[irrep],
                 CalcInfo.orbs_per_irr[irrep], 0); 
           free_block(scfvec);
-
-          fprintf(outfile," %s Block (SO basis)\n", CalcInfo.labels[irrep]);
-          print_mat(opdm_blk, CalcInfo.so_per_irr[irrep],
-                    CalcInfo.orbs_per_irr[irrep], outfile);
+          if (Parameters.print_lvl > 0) {  // FAE
+            fprintf(outfile," %s Block (SO basis)\n", CalcInfo.labels[irrep]);
+            print_mat(opdm_blk, CalcInfo.so_per_irr[irrep],
+                      CalcInfo.orbs_per_irr[irrep], outfile);
+          }
           chkpt_wt_scf_irrep(opdm_blk, irrep);
           fprintf(outfile, "\n Warning: Natural Orbitals for the ");
 	  if (Parameters.opdm_ave)
