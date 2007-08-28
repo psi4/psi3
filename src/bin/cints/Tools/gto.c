@@ -5,6 +5,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<math.h>
+#include<psiconfig.h>
 #include<libciomr/libciomr.h>
 #include<libint/libint.h>
 
@@ -12,7 +13,7 @@
 #define EXTERN
 #include"global.h"
 
-static const int use_cca_integrals_standard = (INTEGRALS_STANDARD == 1);
+static const int use_cca_integrals_standard = (PSI_INTEGRALS_STANDARD == 1);
 
 /*-------------------------------
   Explicit function declarations

@@ -7,10 +7,11 @@
 #define _psi_src_lib_libbasis_gnorm_h_
 
 #include <psitypes.h>
+#include <psiconfig.h>
 
 class GaussianNormalization {
 
-  static const bool use_cca_integrals_standard = (INTEGRALS_STANDARD == 1);
+  static const bool use_cca_integrals_standard = (PSI_INTEGRALS_STANDARD == 1);
 
   int maxam_;
   PSI_FLOAT* df_;

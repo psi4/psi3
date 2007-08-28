@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <psiconfig.h>
 #include <libciomr/libciomr.h>
 
 #include "defines.h"
@@ -34,7 +35,7 @@ void cleanup_gto()
  ---------------------------------------------------------*/
 double **init_bf_norm(int max_am)
 {
-  static int use_cca_integrals_standard = (INTEGRALS_STANDARD == 1);
+  static int use_cca_integrals_standard = (PSI_INTEGRALS_STANDARD == 1);
   double **bf_norm;
   int am,bf,i,j,l1,m1,n1;
 

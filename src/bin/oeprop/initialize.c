@@ -3,6 +3,7 @@
     \brief Enter brief description of file here 
 */
 #define EXTERN
+#include <psiconfig.h>
 #include "includes.h"
 #include "prototypes.h"
 #include "globals.h"
@@ -19,7 +20,7 @@
 void init_xyz()
 {
   int l, i, j, bf;
-  static int use_cca_integrals_standard = (INTEGRALS_STANDARD == 1);
+  static int use_cca_integrals_standard = (PSI_INTEGRALS_STANDARD == 1);
    
   /* allocate matrices, and generate the content */
   xpow_bf = init_int_matrix(lmax+1,(lmax+1)*(lmax+2)/2);

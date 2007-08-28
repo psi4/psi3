@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <libciomr/libciomr.h>
 #include <math.h>
+#include <psiconfig.h>
 #include <libqt/qt.h>
 #include "input.h"
 #include "global.h"
@@ -110,7 +111,7 @@ void build_cart2pureang()
 
 double xyz2lm_Coeff(int l, int m, int lx, int ly, int lz)
 {
-  static int use_cca_integrals_standard = (INTEGRALS_STANDARD == 1);
+  static int use_cca_integrals_standard = (PSI_INTEGRALS_STANDARD == 1);
   int i,j,k,i_max;
   int k_min, k_max;
   int abs_m;

@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <math.h>
+#include <psiconfig.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
@@ -24,7 +25,7 @@ int **xexp, **yexp, **zexp, *l_length;
 
 void setup_phi(void)
 {
-  static int use_cca_integrals_standard = (INTEGRALS_STANDARD == 1);
+  static int use_cca_integrals_standard = (PSI_INTEGRALS_STANDARD == 1);
   static int done=0;
   int i,l,j,ao;
 
