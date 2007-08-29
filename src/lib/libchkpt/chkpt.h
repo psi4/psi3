@@ -175,6 +175,9 @@ void chkpt_wt_rottype(int);
 int chkpt_rd_max_am(void);
 void chkpt_wt_max_am(int);
 
+int chkpt_rd_puream(void);
+void chkpt_wt_puream(int);
+
 int chkpt_rd_nso(void);
 void chkpt_wt_nso(int);
 

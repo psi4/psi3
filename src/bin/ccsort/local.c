@@ -92,6 +92,7 @@ void local_init(void)
   C = chkpt_rd_scf();
   natom = chkpt_rd_natom();
   nshell = chkpt_rd_nshell();
+  puream = chkpt_rd_puream();
   eps_all = chkpt_rd_evals();
   stype = chkpt_rd_stype();
   snuc = chkpt_rd_snuc();
@@ -169,7 +170,6 @@ void local_init(void)
 
 
   /* Compute the length of each AM block */
-  ip_boolean("PUREAM", &(puream), 0);
   l_length = init_int_array(LIBINT_MAX_AM);
   l_length[0] = 1;
   for(l=1; l < LIBINT_MAX_AM; l++) {

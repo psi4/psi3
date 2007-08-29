@@ -29,7 +29,7 @@ void init_basisset()
   BasisSet.am2shell = chkpt_rd_am2canon_shell_order();
   BasisSet.shells_per_am = chkpt_rd_shells_per_am();
   BasisSet.max_am = chkpt_rd_max_am()+1;
-  BasisSet.puream = (Symmetry.num_so != BasisSet.num_ao) ? 1 : 0;  /* need to transform to pure. ang. mom. basis? */
+  BasisSet.puream = chkpt_rd_puream();
 /* BasisSet.cgtos = */ get_primitives();
 /* BasisSet.shells = */ get_shell_info();
 /* BasisSet.shell_pairs = */ init_shell_pairs();

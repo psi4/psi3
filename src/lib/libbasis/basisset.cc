@@ -24,7 +24,7 @@ BasisSet::BasisSet(int chkptfile)
   num_ao_ = chkpt_rd_nao();
   // Psi 3 only allows either all Cartesians or all Spherical harmonics only
   num_bf_ = chkpt_rd_nso();
-  puream_ = (num_bf_ != num_ao_);
+  puream_ = chkpt_rd_puream();
   max_am_ = chkpt_rd_max_am();
 
   shells_ = new GaussianShell*[num_shells_];

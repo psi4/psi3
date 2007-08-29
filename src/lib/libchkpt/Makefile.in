@@ -54,6 +54,7 @@ num_unique_atom.cc \
 num_unique_shell.cc \
 rottype.cc \
 max_am.cc \
+puream.cc \
 nso.cc \
 nao.cc \
 nshell.cc \

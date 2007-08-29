@@ -149,6 +149,9 @@ namespace psi {
 		int rd_max_am(void);
 		void wt_max_am(int);
 
+		bool rd_puream(void);
+		void wt_puream(bool);
+
 		int rd_nallatom(void);
 		void wt_nallatom(int);
 

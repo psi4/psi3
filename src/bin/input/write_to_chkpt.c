@@ -62,6 +62,7 @@ void write_to_chkpt(double repulsion)
   chkpt_wt_num_unique_shell(num_unique_shells);
   chkpt_wt_rottype(rotor);
   chkpt_wt_max_am(max_angmom);
+  chkpt_wt_puream(puream);
   chkpt_wt_nso(num_so);
   chkpt_wt_nao(num_ao);
   chkpt_wt_nshell(num_shells);

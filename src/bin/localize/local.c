@@ -43,6 +43,7 @@ int main(int argc, char *argv[])
   title();
 
   chkpt_init(PSIO_OPEN_OLD);
+  puream = chkpt_rd_puream();
   nao = chkpt_rd_nao();
   nmo = chkpt_rd_nmo();
   nso = chkpt_rd_nso();
@@ -75,7 +76,6 @@ int main(int argc, char *argv[])
   free(frdocc);
 
   /* Compute the length of each AM block */
-  ip_boolean("PUREAM", &(puream), 0);
   l_length = init_int_array(LIBINT_MAX_AM);
   l_length[0] = 1;
   for(l=1; l < (LIBINT_MAX_AM); l++) {
@@ -369,7 +369,6 @@ void init_io(int argc, char * argv[])
   sprintf(progid, ":%s",gprgid());
 
   psi_start(argc-1,argv+1,0);
-  ip_cwk_add(":INPUT"); /* for checking puream keyword */
   ip_cwk_add(progid);
   free(progid);
   tstart(outfile);

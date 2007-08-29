@@ -230,15 +230,6 @@ void read_basis()
       first_shell_unique_atom = last_shell_unique_atom;
    }
    fprintf(outfile,"\n\n");
-
-   /*------------------------------------------------
-     If only s- and p-functions are present - puream
-     is effectively off anyway. Turn it off because
-     CINTS and others to determine puream just check
-     num_ao and num_so
-    ------------------------------------------------*/
-   if (max_angmom < 2)
-     puream = 0;
    
    if (max_angmom+1 > MAXANGMOM) {
      fprintf(outfile,"  Angular momentum limit of %d exceeded\n",MAXANGMOM-1);
