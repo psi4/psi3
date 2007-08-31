@@ -45,7 +45,7 @@ void freq_grad_cart(cartesians &carts) {
   double **B, *masses,  **force_constants, cm_convert, k_convert;
   double *f, *f_q, *temp_arr, **evects, *evals, **force_constants_x;
   double *micro_e, **disp_grad, *grad, **grads_adapted;
-  double *evals_all, **cartrep, **disp_grad_all;
+  double *evals_all, **cartrep, **disp_grad_all, **normal;
   int *nsalc, *ndisp, ndisp_all, nsalc_all, **ict, *start_irr, print;
   char *line1;
   print = optinfo.print_cartesians;
@@ -230,7 +230,7 @@ void freq_grad_cart(cartesians &carts) {
     force_constants = block_matrix(nsalc[h],nsalc[h]);
 
     /*** Construct force constant matrix from finite differences of forces ***/
-    fprintf(outfile," ** Using %d-point formula.\n",optinfo.points);
+    fprintf(outfile,"\n ** Using %d-point formula.\n",optinfo.points);
     if (optinfo.points == 3) {
       for (i=0; i<nsalc[h]; ++i) {
         for (j=0; j<nsalc[h]; ++j) {
@@ -269,6 +269,12 @@ void freq_grad_cart(cartesians &carts) {
     dgeev_optking(dim, force_constants, evals, evects);
     free_block(force_constants);
     sort(evals, evects, dim);
+
+	fprintf(outfile,"\nNormal coordinates for irrep %s\n",syminfo.clean_irrep_lbls[h]);
+	normal = block_matrix(3*natom, dim);
+    mmult(&(B[start_irr[h]]),1,evects,0,normal,0,3*natom,dim,dim,0);
+    print_mat(normal, 3*natom, dim, outfile);
+	free_block(normal);
     free_block(evects);
 
     for (i=0; i<dim; ++i) {

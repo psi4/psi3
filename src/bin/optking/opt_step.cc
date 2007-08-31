@@ -293,7 +293,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
     if (optinfo.zmat) {
       int *unique_zvars;
-      unique_zvars = (int *) malloc(MAX_ZVARS*sizeof(int));
+      unique_zvars = init_int_array(MAX_ZVARS);
       compute_zmat(carts, unique_zvars);
       print_zmat(outfile, unique_zvars);
       free(unique_zvars);

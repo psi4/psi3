@@ -211,26 +211,32 @@ void print_zmat(FILE *outfile, int *unique_zvars) {
     fprintf(outfile,")\n");
   }
   fprintf(outfile,"  )\n");
-  cnt = -1;
-  fprintf(outfile,"  zvars = ( \n");
-  for (i=0; i<nallatom; ++i) {
-    if (i > 0) {
-      if (unique_zvars[++cnt])
-        fprintf(outfile,"    ( %s %10.5lf )\n",
-            zmat[i].bond_label, zmat[i].bond_val);
+  int cnt_vars = 0;
+  for (i=0;i<MAX_ZVARS;++i)
+    if (unique_zvars[i]) ++cnt_vars;
+
+  if (cnt_vars != 0) {
+    cnt = -1;
+    fprintf(outfile,"  zvars = ( \n");
+    for (i=0; i<nallatom; ++i) {
+      if (i > 0) {
+        if (unique_zvars[++cnt])
+          fprintf(outfile,"    ( %s %10.5lf )\n",
+              zmat[i].bond_label, zmat[i].bond_val);
+      }
+      if (i > 1) {
+        if (unique_zvars[++cnt])
+          fprintf(outfile,"    ( %s %10.5lf )\n",
+              zmat[i].angle_label, zmat[i].angle_val);
+      }
+      if (i > 2) {
+        if (unique_zvars[++cnt])
+          fprintf(outfile,"    ( %s %10.5lf )\n",
+              zmat[i].tors_label, zmat[i].tors_val);
+      }
     }
-    if (i > 1) {
-      if (unique_zvars[++cnt])
-        fprintf(outfile,"    ( %s %10.5lf )\n",
-            zmat[i].angle_label, zmat[i].angle_val);
-    }
-    if (i > 2) {
-      if (unique_zvars[++cnt])
-        fprintf(outfile,"    ( %s %10.5lf )\n",
-            zmat[i].tors_label, zmat[i].tors_val);
-    }
+    fprintf(outfile,"  )\n");
   }
-  fprintf(outfile,"  )\n");
   return;
 }
 

@@ -39,10 +39,10 @@ int iE(int *ndisp, int *nsalc, int irr, int ii, int jj, int disp_i, int disp_j);
 
 void freq_energy_cart(cartesians &carts) {
   int i, j, k, l, dim, natom, cnt_eval = -1, *evals_all_irrep;
-  int h, nirreps, *nsalc, *ndisp, ndisp_all, nsalc_all, **ict;
+  int h, nirreps, *nsalc, *ndisp, ndisp_all, nsalc_all, **ict, *start_irr;
   double **B, **force_constants, energy_ref, *energies, cm_convert, k_convert;
   double *f, tval, **evects, *evals, tmp, disp_size;
-  double *disp_E, *evals_all, **cartrep, ***salc, ***disp;
+  double *disp_E, *evals_all, **cartrep, ***salc, ***disp, **normal;
   int print;
   char *line1;
   print = optinfo.print_cartesians;
@@ -113,6 +113,13 @@ void freq_energy_cart(cartesians &carts) {
     fprintf(outfile,"\n\n");
     fprintf(outfile,"B matrix (adapted cartesians)\n");
     print_mat(B,nsalc_all,3*natom,outfile);
+  }
+
+  /* just for printing out force constants */
+  start_irr = init_int_array(nirreps);
+  for (h=0; h<nirreps; ++h) {
+    for (i=0;i<h;++i)
+      start_irr[h] += nsalc[i];
   }
 
   evals_all = init_array(nsalc_all);
@@ -196,7 +203,7 @@ void freq_energy_cart(cartesians &carts) {
       }
     }
 
-    fprintf(outfile,"\t ** Force Constants for irrep %s in symmetry-adapted cartesian coordinates **\n",
+    fprintf(outfile,"\n\t ** Force Constants for irrep %s in symmetry-adapted cartesian coordinates **\n",
       syminfo.clean_irrep_lbls[h]);
     print_mat(force_constants, nsalc[h], nsalc[h], outfile);
     fflush(outfile);
@@ -209,6 +216,12 @@ void freq_energy_cart(cartesians &carts) {
     dgeev_optking(dim, force_constants, evals, evects);
     free_block(force_constants);
     sort(evals, evects, dim);
+
+    fprintf(outfile,"\nNormal coordinates for irrep %s\n",syminfo.clean_irrep_lbls[h]);
+    normal = block_matrix(3*natom, dim);
+    mmult(&(B[start_irr[h]]),1,evects,0,normal,0,3*natom,dim,dim,0);
+    print_mat(normal, 3*natom, dim, outfile);
+    free_block(normal);
     free_block(evects);
 
     for (i=0; i<dim; ++i) {
@@ -237,6 +250,7 @@ void freq_energy_cart(cartesians &carts) {
     }
   fprintf(outfile,   "\t---------------------------------------------\n");
   fflush(outfile);
+  free(start_irr);
   free(evals_all);
   free(evals_all_irrep);
 
