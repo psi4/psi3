@@ -286,3 +286,37 @@ double **unit_mat(int dim) {
 
     return u;
 }
+
+void print_evects(double **evects, double *evals, int nrow, int ncol, FILE *out)
+{
+      int ii,jj,kk,nn;
+      int i,j;
+
+      ii=0;jj=0;
+L200:
+      ii++;
+      jj++;
+      kk=10*jj;
+      nn=ncol;
+      if (nn > kk) nn=kk;
+      fprintf (out,"\n");
+      for (i=ii; i <= nn; i++) fprintf(out,"       %5d",i);
+      fprintf (out,"\n");
+      for (i=0; i < nrow; i++) {
+         fprintf (out,"\n%5d",i+1);
+         for (j=ii-1; j < nn; j++) {
+            fprintf (out,"%12.7f",evects[i][j]);
+            }
+         }
+      fprintf (out,"\n");
+      fprintf (out,"\n     ");
+      for (j=ii-1; j < nn; j++) {
+         fprintf(out,"%12.7f",evals[j]);
+         }
+      fprintf (out,"\n");
+      if (ncol <= kk) {
+         fflush(out);
+         return;
+         }
+      ii=kk; goto L200;
+}

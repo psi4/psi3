@@ -95,6 +95,7 @@ extern "C" int div_int(int big, int little);
 extern "C" double **symm_matrix_invert(double **A, int dim, int print_det, int redundant);
 extern "C" double energy_chkpt(void);
 extern "C" void dgeev_optking(int L, double **G, double *lambda, double **alpha);
+extern "C" void print_evects(double **evects, double *evals, int nrow, int ncol, FILE *out);
 extern "C" double **mass_mat(double *masses);
 extern "C" double **unit_mat(int dim);
 extern "C" void swap(int *a, int *b);

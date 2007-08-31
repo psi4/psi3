@@ -270,10 +270,10 @@ void freq_grad_cart(cartesians &carts) {
     free_block(force_constants);
     sort(evals, evects, dim);
 
-	fprintf(outfile,"\nNormal coordinates for irrep %s\n",syminfo.clean_irrep_lbls[h]);
 	normal = block_matrix(3*natom, dim);
     mmult(&(B[start_irr[h]]),1,evects,0,normal,0,3*natom,dim,dim,0);
-    print_mat(normal, 3*natom, dim, outfile);
+	fprintf(outfile,"\n\tNormal coordinates for irrep %s\n",syminfo.clean_irrep_lbls[h]);
+    print_evects(normal, evals, 3*natom, dim, outfile);
 	free_block(normal);
     free_block(evects);
 
