@@ -146,6 +146,7 @@ public:
 	static VALUE rb_chkpt_eccsd_get(VALUE);
 	static VALUE rb_chkpt_e_t_get(VALUE);
 	static VALUE rb_chkpt_emp2_get(VALUE);	
+	static VALUE rb_chkpt_eom_state_energies_get(VALUE);
 };
 
 //

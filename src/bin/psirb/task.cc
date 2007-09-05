@@ -110,6 +110,7 @@ void Task::create_ruby_class()
 	rb_define_method(Task::m_rbTask, "eccsd",   RUBYCAST(Task::rb_chkpt_eccsd_get), 0);
 	rb_define_method(Task::m_rbTask, "e_t",     RUBYCAST(Task::rb_chkpt_e_t_get),   0);
 	rb_define_method(Task::m_rbTask, "emp2",    RUBYCAST(Task::rb_chkpt_emp2_get),  0);
+	rb_define_method(Task::m_rbTask, "eom_states_energy", RUBYCAST(Task::rb_chkpt_eom_state_energies_get), 0);
 }
 
 void Task::rb_free(void *p)
@@ -655,4 +656,42 @@ VALUE Task::rb_chkpt_emp2_get(VALUE self)
 
 	// Return the value to the user
 	return rb_float_new(energy);
+}
+
+//! Ruby function: Psi::Task.eom_states_energy
+/*! Returns an array containing the EOM energies for the requested states.
+    \param self The Ruby object that is calling this function.
+    \return An array containing the energies.
+*/
+VALUE Task::rb_chkpt_eom_state_energies_get(VALUE self)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	int count, i;
+	double *energies;
+	char *keyword;
+	
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	keyword = chkpt.build_keyword("EOM Number of States");
+	
+	// Read in the number
+	task->m_psiPSIO.read_entry(32, keyword, (char*)&count, sizeof(int));
+	free(keyword);
+	
+	// Allocate memory
+	energies = (double*)malloc(sizeof(double) * count);
+	
+	// Read in the energies
+	keyword = chkpt.build_keyword("EOM State Energies");
+	task->m_psiPSIO.read_entry(32, keyword, (char*)energies, sizeof(double) * count);
+	free(keyword);
+	cd		
+	// Convert the energy array to a Ruby array
+	VALUE array = rb_ary_new();
+	for (i=0; i<count; i++)
+		rb_ary_push(array, rb_float_new(energies[i]));
+		
+	free(energies);
+	
+	return array;
 }
