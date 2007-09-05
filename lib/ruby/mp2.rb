@@ -68,6 +68,8 @@ module Psi
       # Run the scf module, sending the input file as keyboard input
       puts "mp2"
       mp2_obj.execute(input_hash)
+      
+      Psi::Chkpt::etot
     end
   end
 end

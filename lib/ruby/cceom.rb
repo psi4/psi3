@@ -1,14 +1,14 @@
 # Handle access to Psi ccenergy module
 
 module Psi
-  class CCEnergy
+  class CCEom
     
     # Mixin the InputGenerator
     include InputGenerator
     include Executor
     # Which references does this method support
     def self.supports_analytic_gradients
-      { "rhf" => true, "rohf" => false, "uhf" => false, "twocon" => false }
+      { "rhf" => false, "rohf" => false, "uhf" => false, "twocon" => false }
     end
     def self.supports_analytic_second_derivatives
       { "rhf" => false, "rohf" => false, "uhf" => false, "twocon" => false }
@@ -17,36 +17,29 @@ module Psi
     def initialize(task_obj)
       @task = task_obj
       # Set the generic command for this class
-      set_binary_command Psi::Commands::CCENERGY
+      set_binary_command Psi::Commands::CCEOM
     end
   end
   
   # Add ccenergy ability to Task
   class Task
-    def ccsd(*args)
+    def eom(*args)
       # convert to a hash
       args_hash = args[0]
 
       # Call transqt and ccsort unless told not to
       if args_hash != nil
-        if args_hash.has_key?(:transqt) == false or 
-           (args_hash.has_key?(:transqt) and args_hash[:transqt] == true)
-          transqt(args_hash)
-        end
-
-        if args_hash.has_key?(:ccsort) == false or
-           (args_hash.has_key?(:ccsort) and args_hash[:ccsort] == true)
-          ccsort(args_hash)
+        if args_hash.has_key?(:cchbar) == false or 
+           (args_hash.has_key?(:cchbar) and args_hash[:cchbar] == true)
+          cchbar(args_hash)
         end
       else
-        transqt(args_hash)
-        ccsort(args_hash)
+        cchbar(args_hash)
       end
-      args_hash.delete(:transqt) unless args_hash == nil
-      args_hash.delete(:ccsort)  unless args_hash == nil
+      args_hash.delete(:cchbar) unless args_hash == nil
 
       # Create a new scf object
-      ccsd_obj = Psi::CCEnergy.new self
+      eom_obj = Psi::CCEom.new self
 
       # Form the input hash and generate the input file
       input_hash = { }
@@ -58,7 +51,7 @@ module Psi
       end
 
       # If we are doing analytic gradients make sure ccenergy knows
-      if get_gradients == true and CCEnergy.supports_analytic_gradients[reference] == true
+      if get_gradients == true and CCEom.supports_analytic_gradients[reference] == true
         input_hash["dertype"] = "first"
       else
         input_hash["dertype"] = "none"
@@ -73,19 +66,20 @@ module Psi
       input_hash = input_hash.merge(args_hash) unless args_hash == nil
 
       # Run the ccenergy module, sending the input file as keyboard input
-      puts "ccsd"
-      ccsd_obj.execute(input_hash)
+      puts "eom"
+      eom_obj.execute(input_hash)
       
       # Check to see if we are supposed to compute analytical gradients, only do if
       #  1. It is supported
       #  2. The user requested it
       #  3. The wavefunction is CCSD
-      if get_gradients == true and CCEnergy.supports_analytic_gradients[reference] == true and wavefunction.casecmp("ccsd") == 0
+      if get_gradients == true and CCEom.supports_analytic_gradients[reference] == true and wavefunction.casecmp("eom_ccsd") == 0
         puts "gradient:"
         Psi::indent_puts
-        cchbar(input_hash)
-        cclambda(input_hash)
-        ccdensity(input_hash)
+        cclambda(input_hash, :binary => Psi::Commands::CCLAMBDA_EXCITED)
+        ccdensity(input_hash, :binary => Psi::Commands::CCDENSITY_CALC_XI)
+        cclambda(input_hash, :binary => Psi::Commands::CCLAMBDA_ZETA)
+        ccdensity(input_hash, :binary => Psi::Commands::CCDENSITY_USE_ZETA)
         oeprop(input_hash)
         
         # Tell transqt to do a back transformation
@@ -96,15 +90,15 @@ module Psi
         Psi::unindent_puts
       end
       
-      Psi::Chkpt::etot
+      eom_states_energy
     end
   end
 end
 
 # Create some global functions
 # User can send additional input parameters to the function
-def ccsd(*args)
+def eom(*args)
   # convert to a hash
   args_hash = args[0]
-  Psi::global_task.ccsd(args_hash)
+  Psi::global_task.eom(args_hash)
 end

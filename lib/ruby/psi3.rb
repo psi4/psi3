@@ -55,6 +55,10 @@ module Psi
     CCDENSITY   = "ccdensity"
     MP2         = "mp2"
     DETCI       = "detci"
+    CCLAMBDA_EXCITED   = "cclambda"
+    CCLAMBDA_ZETA      = "cclambda --zeta"
+    CCDENSITY_CALC_XI  = "ccdensity --calc_xi"
+    CCDENSITY_USE_ZETA = "ccdensity --use_zeta" # --excited
     
     # Things for optimizations
     FINDIF_DISP_SYMM   = "optking --disp_irrep --irrep 1"
@@ -502,3 +506,5 @@ require 'deriv2'
 require 'propint'
 require 'cphf'
 require 'frequencies'
+require 'cceom'
+

@@ -63,6 +63,8 @@ module Psi
       # Run the scf module, sending the input file as keyboard input
       puts "ccsd(t)"
       ccsd_t_obj.execute(input_hash)
+      
+      Psi::Chkpt::etot
     end
   end
 end

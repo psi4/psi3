@@ -6,10 +6,14 @@ module Psi
     include InputGenerator
     include Executor
     
-    def initialize(task_obj)
+    def initialize(task_obj, binary=nil)
       @task = task_obj
       # Set the generic command for this class
-      set_binary_command Psi::Commands::CCDENSITY
+      if binary == nil
+        set_binary_command Psi::Commands::CCDENSITY
+      else
+        set_binary_command binary
+      end
     end
   end
   
@@ -19,8 +23,15 @@ module Psi
       # convert to a hash
       args_hash = args[0]
 
+      binary = nil
+      if args_hash != nil
+        if args_hash.has_key?(:binary)
+          binary = args_hash[:binary]
+        end
+      end
+      
       # Create a new cclambda object
-      ccdensity_obj = Psi::CCDensity.new self
+      ccdensity_obj = Psi::CCDensity.new(self, binary)
 
       # Form the input hash and generate the input file
       input_hash = { }

@@ -91,6 +91,9 @@ module Psi
         propint(input_hash)
         cphf(input_hash)
       end
+      
+      # Return the total energy to the user
+      Psi::Chkpt::etot
     end
 
     def rhf(*args)
