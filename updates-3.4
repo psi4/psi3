@@ -1,3 +1,10 @@
+09/05/07 Psirb can now read in the z-matrix from checkpoint. This is used
+in the Ruby driver for optking. When a geometry optimization completes
+either successfully or runs out of cycles the new z-matrix is read in and
+the Psi::zmat variable is updated with the new geometry. Also added
+ability to use variables in the zmat variable, the variables are updated
+as well. See the wiki for an example of this. -JMT
+
 09/05/07 CSCF can now reset occupations during SCF if RESET_OCCUPATIONS is
 is set to true.  -EFV
 
