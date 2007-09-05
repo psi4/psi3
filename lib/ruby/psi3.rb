@@ -113,6 +113,13 @@ module Psi
     Psi::global_task.check_commands
   end
   
+  def self.units=(val)
+    Psi::global_task.units = val
+  end
+  def self.units
+    Psi::global_task.units
+  end
+  
   # Routines to set active geometry, referred to only by Input
   def self.geometry=(val)
     Psi::global_task.geometry = val
@@ -202,6 +209,17 @@ module Psi
         return "SCF"
       end
       @wavefunction
+    end
+
+    # What are the units for the geometry
+    def units=(val)
+      @units = val
+    end
+    def units
+      if @units == nil
+        return "angstroms"
+      end
+      @units
     end
     
     # Routines to set active geometry, referred to only by Input
@@ -347,6 +365,12 @@ module Psi
         item.each do |key,value|
           result.puts "#{key} = #{generate_value(value).string}"
         end
+      elsif item.kind_of?(Symbol)
+        # 1. Get the name of the symbol :name (without colon) and tack on a $ to the front
+        #    making it a global variable.
+        # 2. eval the global variable for it's value
+        value = eval("$" + item.id2name)
+        result.printf "#{value.to_s} "
       else
         # Tell everything else to convert to a string
         result.printf "#{item.to_s} "

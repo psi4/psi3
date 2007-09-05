@@ -72,6 +72,10 @@ module Psi
         puts "Error: Both geometry and zmat are set. One must be nil."
         exit 1
       end
+      # What are the units on the geometry
+      @units = "angstroms" unless @units != nil
+      input_hash["units"] = @units
+      
       input_hash = input_hash.merge(args_hash) unless args_hash == nil
 
       # Run the input module, sending the input file as keyboard input

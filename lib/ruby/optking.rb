@@ -75,6 +75,7 @@ module Psi
       current_cycle = 0
       save_energy = false
       fixedintco = nil
+      cleanup = true
 
       # By default, we do by energy points unless the requested wavefunction supports analytic gradients
       set_gradients(false)
@@ -99,6 +100,10 @@ module Psi
         if args_hash.has_key?(:fixed_intco)
           puts "Doing a constrained geometry optimization."
           fixedintco = args_hash[:fixed_intco]
+        end
+        
+        if args_hash.has_key?(:cleanup)
+          cleanup = args_hash[:cleanup]
         end
         
         if args_hash.has_key?(:gradients) and args_hash[:gradients] == true and get_gradients == false
@@ -283,9 +288,49 @@ module Psi
       end
       
       Psi::unindent_puts
+      Psi::unindent_puts # I'm missing one somewhere
       
       # Tell methods that follow that an optimization was completed.
       set_optimization_complete true
+      
+      # Unless told not to, run psiclean
+      clean if cleanup == true
+      
+      # If the user gave a zmatrix read in the new zmatrix from checkpoint
+      if @zmat != nil
+        chkpt_zmat = ZEntry.new self
+        zmat_arr = chkpt_zmat.to_a
+        
+        # zmat_arr should "look" like @zmat, go through it and update the variables
+        # if a variable is a symbol then update the global variable referred to by the symbol
+        count = zmat_arr.length - 1
+        0.upto(count) do |x|
+          if @zmat[x].length >= 3
+            if @zmat[x][2].kind_of?(Symbol)
+              # Set the global variable that is named from the symbol to the zmat_arr value
+              eval("$" + @zmat[x][2].id2name + "=zmat_arr[x][2]")
+            else
+              @zmat[x][2] = zmat_arr[x][2]
+            end
+          end
+          if @zmat[x].length >= 5
+            if @zmat[x][4].kind_of?(Symbol)
+              # Set the global variable that is named from the symbol to the zmat_arr value
+              eval("$" + @zmat[x][4].id2name + "=zmat_arr[x][4]")
+            else
+              @zmat[x][4] = zmat_arr[x][4]
+            end
+          end
+          if @zmat[x].length >= 7
+            if @zmat[x][6].kind_of?(Symbol)
+              # Set the global variable that is named from the symbol to the zmat_arr value
+              eval("$" + @zmat[x][6].id2name + "=zmat_arr[x][6]")
+            else
+              @zmat[x][6] = zmat_arr[x][6]
+            end
+          end
+        end
+      end
     end
   end
 end

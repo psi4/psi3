@@ -6,7 +6,9 @@ module Psi
     # Function arguments:
     #  :num_disps => #          (required)
     #  :report => true or false (default => true)
-    #  :col_labels => array      (required, column headings)
+    #  :col_labels => array     (required, column headings)
+    #  :file => string          (optional)
+    #  :format => formatstring  (optional) if "csv" saves the file in csv format.
     #
     # Expects a yield block that runs the single point and returns the information to collect.
     #
@@ -15,6 +17,9 @@ module Psi
       # Convert the array to a hash
       args_hash = args[0]
 
+      format = "normal"
+      format = args_hash[:format] if args_hash.has_key?(:format)
+      
       # Make sure num_disps is provided
       if args_hash.has_key?(:num_disps) == false
         puts "Error: In function \"pes\", :num_disps required."
@@ -45,7 +50,7 @@ module Psi
 
       # Report the results
       if args_hash.has_key?(:report) and args_hash[:report] == true
-        puts "Result from PES scan:"
+        puts "Results from PES scan:"
         args_hash[:col_labels].each do |label|
           printf(sprintf(" %14-s ", label.to_s))
         end
@@ -73,7 +78,11 @@ module Psi
       if args_hash.has_key?(:file)
         File.open(args_hash[:file], "w") do |file|
           args_hash[:col_labels].each do |label|
-            file.printf(sprintf(" %14-s ", label.to_s))
+            if format == "normal"
+              file.printf(sprintf(" %14-s ", label.to_s))
+            elsif format == "csv"
+              file.printf(label.to_s + ",")
+            end
           end
           file.printf "\n"
 
@@ -83,12 +92,16 @@ module Psi
           (0..row_count).each do |row|
             (0..col_count).each do |col|
               indx = row * (col_count+1) + col
-              if result[indx].instance_of? Fixnum or result[indx].instance_of? Bignum
-                file.printf(sprintf(" %14-d ", result[indx]))
-              elsif result[indx].instance_of? Float
-                file.printf(sprintf(" % 14.9-f ", result[indx]))
-              else
-                file.printf(sprintf(" %14-s ", result[indx].to_s))
+              if format == "normal"
+                if result[indx].instance_of? Fixnum or result[indx].instance_of? Bignum
+                  file.printf(sprintf(" %14-d ", result[indx]))
+                elsif result[indx].instance_of? Float
+                  file.printf(sprintf(" % 14.9-f ", result[indx]))
+                else
+                  file.printf(sprintf(" %14-s ", result[indx].to_s))
+                end
+              elsif format == "csv"
+                file.printf(result[indx].to_s + ",")
               end
             end
             file.printf "\n"
