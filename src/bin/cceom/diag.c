@@ -97,6 +97,7 @@ void diag(void) {
   int num_vecs, cc3_index, num_cc3_restarts = 0, ignore_G_old=0;
   double ra, rb, r2aa, r2bb, r2ab, cc3_eval, cc3_last_converged_eval=0.0, C0, S0, R0;
   int cc3_stage; /* 0=eom_ccsd; 1=eom_cc3 (reuse sigmas), 2=recompute sigma */
+  char *keyw;
 
 
 #ifdef TIME_CCEOM
@@ -926,7 +927,11 @@ timer_off("INIT GUESS");
       for (i=0;i<eom_params.cs_per_irrep[C_irr];++i) {
         if (converged[i] == 1) {
 				  if (!params.full_matrix) totalE =lambda_old[i]+moinfo.eref+moinfo.ecc; 
-					else totalE =lambda_old[i]+moinfo.eref; 
+					else totalE =lambda_old[i]+moinfo.eref;
+					
+		  /* save the state energy */
+		  eom_params.state_energies[num_converged_index] = totalE;
+					
           fprintf(outfile,"EOM State %d %10.3lf %10.1lf %14.10lf  %15.10lf\n",
               ++num_converged_index,
 		  lambda_old[i]* _hartree2ev, lambda_old[i]* _hartree2wavenumbers,
@@ -1077,6 +1082,16 @@ timer_off("INIT GUESS");
       */
   }
 
+  /* Save the energy vector to checkpoint */
+  chkpt_init(PSIO_OPEN_OLD);
+  keyw = chkpt_build_keyword("EOM Number of States");
+  psio_write_entry(PSIF_CHKPT, keyw, (char *) &(eom_params.number_of_states), sizeof(int));
+  free(keyw);
+  keyw = chkpt_build_keyword("EOM State Energies");
+  psio_write_entry(PSIF_CHKPT, keyw, (char *) eom_params.state_energies, eom_params.number_of_states * sizeof(double));
+  free(keyw);
+  chkpt_close();
+	
   return;
 }
 

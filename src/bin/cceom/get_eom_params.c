@@ -34,9 +34,12 @@ void get_eom_params()
   chkpt_close();
 
   eom_params.cs_per_irrep = (int *) malloc(moinfo.nirreps * sizeof(int));
+  eom_params.number_of_states = 0;
   for (state_irrep=0; state_irrep<moinfo.nirreps; ++state_irrep) {
     eom_params.cs_per_irrep[state_irrep^moinfo.sym] = eom_params.states_per_irrep[state_irrep];
+	eom_params.number_of_states += eom_params.states_per_irrep[state_irrep];
   }
+  eom_params.state_energies = (double*) malloc(eom_params.number_of_states * sizeof(double));
 
   eom_params.max_iter = 80 * moinfo.nirreps;
   errcod = ip_data("MAX_ITER","%d",&(eom_params.max_iter),0);
