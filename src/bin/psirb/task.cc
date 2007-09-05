@@ -685,7 +685,7 @@ VALUE Task::rb_chkpt_eom_state_energies_get(VALUE self)
 	keyword = chkpt.build_keyword("EOM State Energies");
 	task->m_psiPSIO.read_entry(32, keyword, (char*)energies, sizeof(double) * count);
 	free(keyword);
-	cd		
+
 	// Convert the energy array to a Ruby array
 	VALUE array = rb_ary_new();
 	for (i=0; i<count; i++)
