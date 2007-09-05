@@ -99,5 +99,9 @@ module Psi
 	  def self.emp2
 	    Psi::global_task.emp2
     end
+    
+    def self.num_irreps
+      Psi::global_task.num_irreps
+    end
   end
 end
