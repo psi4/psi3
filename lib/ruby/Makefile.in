@@ -22,9 +22,10 @@ MKDIRS = @MKDIRS@
 INSTALL = @INSTALL@
 INSTALL_DATA = @INSTALL_DATA@
 
-RUBYSRC = ccdensity.rb ccenergy.rb cchbar.rb cclambda.rb ccsort.rb cctriples.rb \
-cints.rb clean.rb input.rb optking.rb pes.rb psi3.rb scf.rb symbols.rb transqt.rb \
-chkpt.rb deriv.rb mp2.rb oeprop.rb detci.rb color.rb testcases.rb
+RUBYSRC = \
+ccdensity.rb   cchbar.rb      cctriples.rb   clean.rb       deriv.rb       mp2.rb         pes.rb         scf.rb         transqt.rb \
+ccenergy.rb    cclambda.rb    chkpt.rb       color.rb       deriv2.rb      frequencies.rb oeprop.rb      propint.rb     symbols.rb \
+cceom.rb       ccsort.rb      cints.rb       cphf.rb        detci.rb       input.rb       optking.rb     psi3.rb        testcases.rb 
 
 install: $(RUBYSRC)
 	$(MKDIRS) $(rubydatadir)
