@@ -75,6 +75,9 @@ void scf_input(ipvalue)
          inflg=2;
    }
 
+   reset_occ = 0;
+   errcod = ip_boolean("RESET_OCCUPATIONS",&reset_occ,0);
+
    reordr = 0;
    norder = 0;
    errcod = ip_boolean("REORDER",&reordr,0);

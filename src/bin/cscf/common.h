@@ -204,6 +204,7 @@ EXTERN int use_iwl;             /* use IWL format */
 EXTERN int delete_ints;         /* delete ints? */
 EXTERN int delete_1e;           /* delete one-electron ints? */
 EXTERN int delete_2e;           /* delete two-electron ints? */
+EXTERN int reset_occ;           /* reset occupations? */
 
 EXTERN int multp;		/* multiplicity of the molecule */
 EXTERN int mflag;               /* 1 if multp specified */

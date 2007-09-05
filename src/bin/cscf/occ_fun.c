@@ -176,6 +176,12 @@ void occ_calc(void){
     int i,j;
     int a,b;
     
+    /* zero out occupations */
+    for(i=0; i<num_ir; ++i) {
+      scf_info[i].nclosed = 0;
+      scf_info[i].nopen = 0;
+      scf_info[i].nhalf = 0;
+    } 
         
     if(multp == 1 && iopen == 0) {
 	for(i = 0;i < (nelec/2);i++) 
@@ -246,6 +252,16 @@ void occ_calc(void){
 	for(i=a;i<b;i++)
 	    scf_info[symm_tot[i]].nopen++;
     }
+
+    /* determine alpha and beta occupations, if UHF */
+    if(uhf){
+      for(i=0;i<num_ir;i++){
+        spin_info[1].scf_spin[i].nclosed = scf_info[i].nclosed;
+        spin_info[0].scf_spin[i].nclosed = scf_info[i].nclosed
+                                         + scf_info[i].nopen;
+      }
+    }
+
 }
 
 void occ_read(int *cldpi, int *openpi){

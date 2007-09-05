@@ -451,8 +451,14 @@ void scf_iter()
 	}
       }
     }
-    /* form new density matrix */
 
+    /* reset occupations if needed */
+    if (reset_occ) {
+      sortev();
+      occ_calc();
+    }
+
+    /* form new density matrix */
     dmat();
 
     /* and form new fock matrix */
