@@ -111,6 +111,7 @@ void Task::create_ruby_class()
 	rb_define_method(Task::m_rbTask, "e_t",     RUBYCAST(Task::rb_chkpt_e_t_get),   0);
 	rb_define_method(Task::m_rbTask, "emp2",    RUBYCAST(Task::rb_chkpt_emp2_get),  0);
 	rb_define_method(Task::m_rbTask, "eom_states_energy", RUBYCAST(Task::rb_chkpt_eom_state_energies_get), 0);
+	rb_define_method(Task::m_rbTask, "num_irreps", RUBYCAST(Task::rb_chkpt_num_irreps_get), 0);
 }
 
 void Task::rb_free(void *p)
@@ -567,6 +568,20 @@ VALUE Task::rb_chkpt_etot_set(VALUE self, VALUE vetot)
 	chkpt.wt_etot(etot);
 	
 	return self;
+}
+
+//! Ruby function: Psi::Task.num_irreps
+/*! Ruby interface to chkpt_rd_nirreps. */
+VALUE Task::rb_chkpt_num_irreps_get(VALUE self)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	int num_irreps;
+	
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	num_irreps = chkpt.rd_nirreps();
+	
+	return INT2FIX(num_irreps);
 }
 
 //! Ruby function: Psi::Task.disp
