@@ -64,6 +64,7 @@ bool initialize_ruby()
 	// Add some basic functionality to Ruby
 	create_ruby_psi_module();
 	Task::create_ruby_class();
+	ZEntry::create_ruby_class();
 	
 	// Done
 	return true;

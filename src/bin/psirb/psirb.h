@@ -11,6 +11,7 @@
 #include <string>
 #include <ruby.h>
 #include <libpsio/psio.hpp>
+#include <libchkpt/chkpt.hpp>
 
 #define PSI_VERSION_MAJOR 3
 #define PSI_VERSION_MINOR 3
@@ -87,6 +88,10 @@ public:
 		\param new_scratch what to change the scratch to */
 	void scratch(std::string new_scratch);
 	
+	/*! Accessor get function for the libpsio object associated with this Task
+		\return libpsio object pointer */
+	psi::PSIO *libpsio();
+
 	//
 	// Ruby framework for Task
 	//
@@ -106,7 +111,7 @@ public:
 	/*! Called by Ruby during object copy creation */
 	static VALUE rb_init_copy(VALUE copy, VALUE orig);
 	
-	/*! Called by Ruby if the user try to print a Task object */
+	/*! Called by Ruby if the user tries to print a Task object */
 	static VALUE rb_to_s(VALUE self);
 	
 	/*! Ruby function: Task.prefix= */
@@ -143,18 +148,35 @@ public:
 	static VALUE rb_chkpt_emp2_get(VALUE);	
 };
 
-/*
+//
+// Used to read in the z-matrix from checkpoint file.
 class ZEntry {
 private:
+	//! Z-Matrix entries read from checkpoint
 	z_entry *m_zEntry;
 
+	//! How many z_entry are there in m_zEntry
+	unsigned int m_numZEntries;
+	
+	//! Full geometry elements (includes dummies)
+	char **m_szFElement;
+	
 	//! Ruby reference to the Z-Matrix class descriptor
 	static VALUE m_rbZEntry;
+	
+	//! Task to use for libchkpt interface.
+	Task *m_pTask;
 	
 public:
 	//! Default constructor
 	ZEntry();
 	~ZEntry();
+	
+	//! Attach to a specific Task to gain access to a checkpoint file.
+	void attach_to(Task* task);
+	
+	//! Read in the z_entry from checkpoint. Must be attached to a Task first.
+	void read();
 	
 	//
 	// Ruby framework for ZEntry
@@ -162,10 +184,24 @@ public:
 	
 	//! Creates the Ruby class framework
 	static void create_ruby_class();
+		
+	/*! Called by Ruby when it needs to delete a class. */
+	static void rb_free(void *p);
 	
-	//! Called by Ruby when it needs to delete a class.
+	/*! Called by Ruby during object creation */
+	static VALUE rb_alloc(VALUE klass);
 	
+	/*! Called by Ruby during object creation */
+	static VALUE rb_init(VALUE self, VALUE arg);
+	
+	/*! Called by Ruby during object copy creation */
+	static VALUE rb_init_copy(VALUE copy, VALUE orig);
+	
+	/*! Called by Ruby if the user try to print a Task object */
+	static VALUE rb_to_s(VALUE self);
+
+	/*! Called by Ruby if the user try to convert to an array */
+	static VALUE rb_to_a(VALUE self);
 };
-*/
 
 #endif // __PSIRB_H__

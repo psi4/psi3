@@ -56,6 +56,11 @@ void Task::scratch(std::string new_scratch)
 	m_psiPSIO.filecfg_kwd("DEFAULT", "VOLUME1", -1, new_scratch.c_str());
 }
 
+psi::PSIO *Task::libpsio()
+{
+	return &m_psiPSIO;
+}
+
 //
 // Ruby framework for Task
 //

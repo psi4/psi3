@@ -12,7 +12,7 @@ LDLIBS += $(RUBYLIB)
 PSILIBS = -lPSI_chkpt -lPSI_psio -lPSI_ipv1
 
 CXXINC += $(RUBYINC) -DINSTALLEDPSIDATADIR=\"$(datadir)\"
-CXXSRC = psirb.cc ruby.cc task.cc
+CXXSRC = psirb.cc ruby.cc task.cc zentry.cc
 
 BINOBJ = $(CXXSRC:%.cc=%.o)
 
