@@ -84,6 +84,9 @@ module Psi
       
       # Ensure label was written
       self.label=@label.to_str
+      
+      # We finished successfully
+      true
     end
   end
 end

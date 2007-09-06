@@ -32,6 +32,27 @@ module Psi
       # Run the psiclean module, sending the input file as keyboard input
       puts "cleaning"
       clean_obj.execute(input_hash)
+      
+      # Return true
+      true
+    end
+    
+    def veryclean(*args)
+      args_hash = args[0]
+      
+      # Run clean
+      clean(args_hash)
+      
+      # Remove files in the local directory that match prefix.[0-9]*
+      list = Dir[prefix + ".[0-9]*"]
+      printf "Deleting: "
+      list.each do |item|
+        printf item + " "
+        File.delete(item)
+      end
+      puts
+
+      true
     end
   end
 end
@@ -42,4 +63,10 @@ def clean(*args)
   # convert to a hash
   args_hash = args[0]
   Psi::global_task.clean(args_hash)
+end
+
+def veryclean(*args)
+  # convert to a hash
+  args_hash = args[0]
+  Psi::global_task.veryclean(args_hash)
 end

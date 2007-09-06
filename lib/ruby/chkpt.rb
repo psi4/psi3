@@ -66,6 +66,14 @@ module Psi
   	  Psi::global_task.efzc=val
 	  end
 	  
+	  def self.clsdpi=(val)
+	    Psi::global_task.clsdpi=val
+    end
+    
+    def self.clsdpi
+      Psi::global_task.clsdpi
+    end
+    
   	#rb_define_module_function(rubyChkpt, "etot", 	RUBYCAST(ruby_psi_chkpt_etot_get),  0);
   	def self.etot
   	  Psi::global_task.etot

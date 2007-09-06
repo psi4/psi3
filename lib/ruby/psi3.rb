@@ -117,6 +117,10 @@ module Psi
     Psi::global_task.check_commands
   end
   
+  def self.print_toc(unit)
+    Psi::global_task.print_toc unit
+  end
+  
   def self.units=(val)
     Psi::global_task.units = val
   end

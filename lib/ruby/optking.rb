@@ -137,9 +137,9 @@ module Psi
       
       # Report what we are doing
       if get_gradients == true
-        puts "\nOptimizing geometry via analytic gradients.\n"
+        puts "Optimizing geometry via analytic gradients.\n"
       else
-        puts "\nOptimizing geometry via energy points.\n"
+        puts "Optimizing geometry via energy points.\n"
       end
       
       # Create a new optking object
@@ -331,6 +331,9 @@ module Psi
           end
         end
       end
+      
+      # Return the new total energy of the system
+      etot
     end
   end
 end
