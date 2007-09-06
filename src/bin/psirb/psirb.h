@@ -16,6 +16,13 @@
 #define PSI_VERSION_MAJOR 3
 #define PSI_VERSION_MINOR 3
 
+//
+// Useful functions
+extern VALUE create_array(unsigned int count, int *array);
+extern VALUE create_array(unsigned int count, double *array);
+extern int create_array(VALUE arr, int **array);
+extern int create_array(VALUE arr, double **array);
+
 /*! Namespace for containing global variables */
 namespace Globals {
 /*! All output should be sent to this variable */
@@ -36,10 +43,12 @@ namespace Globals {
 /*! How much to indent the Ruby puts output by. */
 	EXT int g_iPutsIndent = 0;
 	EXT bool g_bQuietRuby = false;
+	EXT bool g_bIRB = false;
 #else
 	EXT VALUE g_rbPsi;
 	EXT int g_iPutsIndent;
 	EXT bool g_bQuietRuby;
+	EXT bool g_bIRB;
 #endif
 };
 
@@ -125,6 +134,10 @@ public:
 	static VALUE rb_scratch_get(VALUE self);
 	
 	//
+	// Libpsio++ interface
+	static VALUE rb_print_toc(VALUE, VALUE);
+	
+	//
 	// Checkpoint interface
 	static VALUE rb_chkpt_exist(VALUE, VALUE);
 	static VALUE rb_chkpt_label_get(VALUE);
@@ -148,6 +161,8 @@ public:
 	static VALUE rb_chkpt_emp2_get(VALUE);	
 	static VALUE rb_chkpt_eom_state_energies_get(VALUE);
 	static VALUE rb_chkpt_num_irreps_get(VALUE);
+	static VALUE rb_chkpt_clsdpi_set(VALUE, VALUE);
+	static VALUE rb_chkpt_clsdpi_get(VALUE);
 };
 
 //

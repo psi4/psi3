@@ -88,6 +88,9 @@ void Task::create_ruby_class()
 	rb_define_method(Task::m_rbTask, "scratch=", RUBYCAST(Task::rb_scratch_set), 1);
 	rb_define_method(Task::m_rbTask, "scratch",  RUBYCAST(Task::rb_scratch_get), 0);
 	
+	// Interface to libpsio++
+	rb_define_method(Task::m_rbTask, "print_toc", RUBYCAST(Task::rb_print_toc), 1);
+	
 	// Checkpoint interface
 	rb_define_method(Task::m_rbTask, "exist?",  RUBYCAST(Task::rb_chkpt_exist),     1);
 	rb_define_method(Task::m_rbTask, "exists?", RUBYCAST(Task::rb_chkpt_exist),     1);
@@ -112,6 +115,8 @@ void Task::create_ruby_class()
 	rb_define_method(Task::m_rbTask, "emp2",    RUBYCAST(Task::rb_chkpt_emp2_get),  0);
 	rb_define_method(Task::m_rbTask, "eom_states_energy", RUBYCAST(Task::rb_chkpt_eom_state_energies_get), 0);
 	rb_define_method(Task::m_rbTask, "num_irreps", RUBYCAST(Task::rb_chkpt_num_irreps_get), 0);
+	rb_define_method(Task::m_rbTask, "clsdpi=", RUBYCAST(Task::rb_chkpt_clsdpi_set), 1);
+	rb_define_method(Task::m_rbTask, "clsdpi", RUBYCAST(Task::rb_chkpt_clsdpi_get), 0);	
 }
 
 void Task::rb_free(void *p)
@@ -709,4 +714,76 @@ VALUE Task::rb_chkpt_eom_state_energies_get(VALUE self)
 	free(energies);
 	
 	return array;
+}
+
+//! Ruby function: Psi::Task.print_toc(unit)
+/*! Prints the TOC entries for unit to Globals::g_fOutput */
+VALUE Task::rb_print_toc(VALUE self, VALUE rUnit)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	unsigned int unit = NUM2UINT(rUnit);
+	int bAlreadyOpen;
+	
+	// Is the file already open?
+	bAlreadyOpen = task->m_psiPSIO.open_check(unit);
+	if (bAlreadyOpen == false)
+		task->m_psiPSIO.open(unit, PSIO_OPEN_OLD);
+		
+	// Print the toc
+	task->m_psiPSIO.tocprint(unit, Globals::g_fOutput);
+	
+	// If it was already open, do not close it.
+	if (bAlreadyOpen == false)
+		task->m_psiPSIO.close(unit, 1);
+		
+	return self;
+}
+
+//! Ruby function: Psi::Task.clsdpi=(array)
+/*! Saves the clsdpi array to checkpoint */
+VALUE Task::rb_chkpt_clsdpi_set(VALUE self, VALUE arr)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	int *clsdpi;
+	int count, expectedCount;
+	
+	// Convert the arr to a C-array. The function call handles type checking
+	count = create_array(arr, &clsdpi);
+	
+	// Gain access to checkpoint
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	expectedCount = chkpt.rd_nirreps();
+	
+	if (count != expectedCount) {
+		rb_raise(rb_eArgError, "array is of length %d, expecting %d", count, expectedCount);
+		return self;
+	}
+	
+	// Save a new clsdpi
+	chkpt.wt_clsdpi(clsdpi);
+	
+	// Free memory
+	free(clsdpi);
+	
+	return self;
+}
+
+VALUE Task::rb_chkpt_clsdpi_get(VALUE self)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	int *clsdpi;
+	int count;
+	
+	// Gain access to checkpoint
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	count = chkpt.rd_nirreps();
+	clsdpi = chkpt.rd_clsdpi();
+	
+	VALUE arr = create_array(count, clsdpi);
+	free(clsdpi);
+	
+	return arr;
 }

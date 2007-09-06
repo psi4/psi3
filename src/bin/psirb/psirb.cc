@@ -18,6 +18,7 @@ extern bool initialize_ruby();
 extern void load_input_file_into_ruby();
 extern void process_input_file();
 extern void finalize_ruby();
+extern void run_interactive_ruby();
 
 // The following are completely ignored by psirb and psi
 extern "C" {
@@ -50,12 +51,21 @@ int main(int argc, char *argv[])
 	//  2. Input filename has been determined
 	//  3. Ruby has been initialized
 	//  4. So far, some basic commands have been registered with Ruby
-	// Now have Ruby load in the input file and begin processing
-	load_input_file_into_ruby();
+	
+	// Now we need to branch off. If the user did not specify -I or --irb then process the
+	// input file.
+	if (Globals::g_bIRB == false) {
+		// Now have Ruby load in the input file and begin processing
+		load_input_file_into_ruby();
 		
-	// Actually exist the input file.
-	process_input_file();
-		
+		// Actually exist the input file.
+		process_input_file();
+	}
+	// User requested irb (interactive Ruby) this requires other procedures.
+	else {
+		run_interactive_ruby();
+	}
+	
 	// Close the interpreter
 	finalize_ruby();
 	
@@ -76,8 +86,9 @@ void parse_command_line(int argc, char *argv[])
 	Globals::g_bVerbose = false;
 	
 	// A string listing of valid short option letters
-	const char* const short_options = "hvV:o:";
+	const char* const short_options = "IhvV:o:";
 	const struct option long_options[] = {
+		{ "irb",     0, NULL, 'I' },
 		{ "help",    0, NULL, 'h' },
 		{ "verbose", 0, NULL, 'v' },
 		{ "version", 0, NULL, 'V' },
@@ -92,6 +103,10 @@ void parse_command_line(int argc, char *argv[])
 		switch (next_option) {			
 			case 'h': // -h or --help
 			print_usage();
+			break;
+			
+			case 'I': // -I or --irb
+			Globals::g_bIRB = true;
 			break;
 			
 			case 'o': // -o or --output
@@ -165,7 +180,7 @@ void redirect_output(char *szFilename, bool append)
 /*! Print PSI version information that is was set in configure.ac */
 void print_version()
 {
-	fprintf(Globals::g_fOutput, "PSI Ruby Driver Version %d.%d\n", PSI_VERSION_MAJOR, PSI_VERSION_MINOR);
+	fprintf(Globals::g_fOutput, "PSI %d.%d Ruby Driver\n", PSI_VERSION_MAJOR, PSI_VERSION_MINOR);
 }
 
 /*! Print command-line usage information. */
@@ -176,6 +191,7 @@ void print_usage()
 	printf(" -v  --verbose            Print alot of information.\n");
 	printf(" -V  --version            Print version information.\n");
 	printf(" -o  --output filename    Redirect output elsewhere.\n");
+	printf(" -I  --irb                Run psirb in interactive mode.\n");
 	
 	exit(EXIT_FAILURE);
 }

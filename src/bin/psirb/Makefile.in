@@ -4,15 +4,19 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-LD = $(CXX) $(RUBYLDFLAGS)
+LD = $(CXX)
 LDLIBS += $(RUBYLIB)
+
+# Override LDFLAGS, sometimes users want static linking, but static linking will break Ruby's
+# ability to load modules from shared libraries.
+LDFLAGS = $(RUBYLDFLAGS)
 
 # Hopefully one day I can remove -lPSI_ipv1 from below.
 # It's only there to fix some link references.
 PSILIBS = -lPSI_chkpt -lPSI_psio -lPSI_ipv1
 
 CXXINC += $(RUBYINC) -DINSTALLEDPSIDATADIR=\"$(datadir)\"
-CXXSRC = psirb.cc ruby.cc task.cc zentry.cc
+CXXSRC = psirb.cc ruby.cc task.cc zentry.cc irb.cc common.cc
 
 BINOBJ = $(CXXSRC:%.cc=%.o)
 
