@@ -21,7 +21,7 @@ double *Chkpt::rd_evals(void)
 	char *keyword;
 	keyword = build_keyword("MO energies");
 
-	energies = init_array(chkpt_rd_nmo());
+	energies = init_array(rd_nmo());
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) energies, 
 		rd_nmo()*sizeof(double));
@@ -36,7 +36,7 @@ double *Chkpt::rd_alpha_evals(void)
 	char *keyword;
 	keyword = build_keyword("Alpha MO energies");
 
-	energies = init_array(chkpt_rd_nmo());
+	energies = init_array(rd_nmo());
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) energies, 
 		rd_nmo()*sizeof(double));
@@ -51,7 +51,7 @@ double *Chkpt::rd_beta_evals(void)
 	char *keyword;
 	keyword = build_keyword("Beta MO energies");
 
-	energies = init_array(chkpt_rd_nmo());
+	energies = init_array(rd_nmo());
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) energies, 
 		rd_nmo()*sizeof(double));
