@@ -270,6 +270,21 @@ void rhf_sf_opdm(void)
   trace += dpd_file2_trace(&D);
   dpd_file2_close(&D);
 
+  /* zero out Dia DIA Dai DAI */
+  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DAI");
+  dpd_file2_scm(&D,0.0);
+  dpd_file2_close(&D);
+  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dai");
+  dpd_file2_scm(&D,0.0);
+  dpd_file2_close(&D);
+  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "DIA");
+  dpd_file2_scm(&D,0.0);
+  dpd_file2_close(&D);
+  dpd_file2_init(&D, CC_OEI, 0, 0, 1, "Dia");
+  dpd_file2_scm(&D,0.0);
+  dpd_file2_close(&D);
+  
+
   fprintf(outfile, "\n\tTrace of onepdm = %20.15f\n", trace);
 }
 

@@ -29,7 +29,7 @@ void rhf_sf_Iab(void)
 
   dpd_file2_init(&F, CC_OEI, 0, 1, 1, "fAB");
   dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
-  dpd_contract222(&F, &D, &I, 0, 0, 1.0, 1.0);
+  dpd_contract222(&F, &D, &I, 0, 0, 1.0, 0.0);
   dpd_contract222(&F, &D, &I, 0, 1, 1.0, 1.0);
   dpd_file2_close(&D);
   dpd_file2_close(&F);
@@ -41,7 +41,7 @@ void rhf_sf_Iab(void)
 
   dpd_file2_init(&F, CC_OEI, 0, 1, 1, "fab");
   dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
-  dpd_contract222(&F, &D, &I, 0, 0, 1.0, 1.0);
+  dpd_contract222(&F, &D, &I, 0, 0, 1.0, 0.0);
   dpd_contract222(&F, &D, &I, 0, 1, 1.0, 1.0);
   dpd_file2_close(&D);
   dpd_file2_close(&F);

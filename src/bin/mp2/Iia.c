@@ -26,7 +26,7 @@ void rhf_sf_Iia(void)
 
   dpd_buf4_init(&Eints, CC_EINTS, 0, 2, 10, 2, 10, 0, "E <ij||ka> (i>j,ka)");
   dpd_buf4_init(&G, CC_GAMMA, 0, 2, 5, 2, 7, 0, "GIJAB");
-  dpd_contract442(&Eints, &G, &I, 2, 2, 2.0, 1.0);
+  dpd_contract442(&Eints, &G, &I, 2, 2, 2.0, 0.0);
   dpd_buf4_close(&G);
   dpd_buf4_close(&Eints);
 
@@ -43,7 +43,7 @@ void rhf_sf_Iia(void)
 
   dpd_buf4_init(&Eints, CC_EINTS, 0, 2, 10, 2, 10, 0, "E <ij||ka> (i>j,ka)");
   dpd_buf4_init(&G, CC_GAMMA, 0, 2, 5, 2, 7, 0, "Gijab");
-  dpd_contract442(&Eints, &G, &I, 2, 2, 2.0, 1.0);
+  dpd_contract442(&Eints, &G, &I, 2, 2, 2.0, 0.0);
   dpd_buf4_close(&G);
   dpd_buf4_close(&Eints);
 

@@ -26,7 +26,7 @@ void rhf_sf_Iai(void)
 
   dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
   dpd_buf4_init(&Eints, CC_EINTS, 0, 11, 0, 11, 0, 1, "E <ai|jk>");
-  dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
+  dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 0.0);
   dpd_dot24(&D, &Eints, &I, 1, 0, 1.0, 1.0);
   dpd_buf4_close(&Eints);
   dpd_file2_close(&D);
@@ -45,7 +45,7 @@ void rhf_sf_Iai(void)
 
   dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
   dpd_buf4_init(&Eints, CC_EINTS, 0, 11, 0, 11, 0, 1, "E <ai|jk>");
-  dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 1.0);
+  dpd_dot24(&D, &Eints, &I, 0, 0, 1.0, 0.0);
   dpd_dot24(&D, &Eints, &I, 1, 0, 1.0, 1.0);
   dpd_buf4_close(&Eints);
   dpd_file2_close(&D);
