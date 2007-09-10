@@ -93,7 +93,7 @@ module Psi
       end
       
       # Return the total energy to the user
-      Psi::Chkpt::etot
+      etot
     end
 
     def rhf(*args)

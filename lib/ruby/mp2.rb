@@ -69,7 +69,7 @@ module Psi
       puts "mp2"
       mp2_obj.execute(input_hash)
       
-      Psi::Chkpt::etot
+      etot
     end
   end
 end

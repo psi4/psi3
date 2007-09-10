@@ -65,6 +65,8 @@ module Psi
       # Run the ccenergy module, sending the input file as keyboard input
       puts "detci"
       detci_obj.execute(input_hash)
+      
+      etot
     end
   end
 end

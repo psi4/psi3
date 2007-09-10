@@ -74,6 +74,34 @@ module Psi
       Psi::global_task.clsdpi
     end
     
+    def self.exps=(val)
+	    Psi::global_task.exps=val
+    end
+    
+    def self.exps
+      Psi::global_task.exps
+    end
+    
+    def self.frzcpi=(val)
+	    Psi::global_task.frzcpi=val
+    end
+    
+    def self.frzcpi
+      Psi::global_task.frzcpi
+    end
+    
+    def self.frzvpi=(val)
+	    Psi::global_task.frzvpi=val
+    end
+    
+    def self.frzvpi
+      Psi::global_task.frzvpi
+    end
+    
+    def self.load_zmat
+      Psi::global_task.load_zmat
+    end
+    
   	#rb_define_module_function(rubyChkpt, "etot", 	RUBYCAST(ruby_psi_chkpt_etot_get),  0);
   	def self.etot
   	  Psi::global_task.etot
@@ -110,6 +138,30 @@ module Psi
     
     def self.num_irreps
       Psi::global_task.num_irreps
+    end
+    
+    def self.evals
+      Psi::global_task.evals
+    end
+    
+    def self.alpha_evals
+      Psi::global_task.alpha_evals
+    end
+    
+    def self.beta_evals
+      Psi::global_task.beta_evals
+    end
+    
+    def self.evals=(val)
+      Psi::global_task.evals=val
+    end
+    
+    def self.alpha_evals=(val)
+      Psi::global_task.alpha_evals=val
+    end
+    
+    def self.beta_evals=(val)
+      Psi::global_task.beta_evals=val
     end
   end
 end

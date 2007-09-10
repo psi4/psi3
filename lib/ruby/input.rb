@@ -50,8 +50,13 @@ module Psi
         end
       end
       
+      if @basis == nil
+        puts "Set a basis."
+        exit 1
+      end
+      
       # Check to see if @basis includes '*', if so wrap in ""
-      if @basis.include?("*")
+      if @basis.kind_of?(Array) == false and @basis.include?("*")
         basis_to_use = "\\\"#{@basis}\\\""
       else
         basis_to_use = @basis

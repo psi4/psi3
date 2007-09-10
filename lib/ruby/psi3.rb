@@ -248,9 +248,11 @@ module Psi
 
     # Routines to remember basis
     def basis=(val)
+      puts val.to_s
       @basis = val
     end
     def basis
+      puts val.to_s
       @basis
     end
 

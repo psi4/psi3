@@ -96,7 +96,7 @@ module Psi
         Psi::unindent_puts
       end
       
-      Psi::Chkpt::etot
+      etot
     end
   end
 end
