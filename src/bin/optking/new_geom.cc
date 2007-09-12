@@ -315,7 +315,7 @@ void symmetrize_geom(double *x) {
 
   free(x_temp);
   free(ua2a);
-  free_int_matrix(ict, nirreps);
+  free_int_matrix(ict);
   free_block(cartrep);
   return;
 }

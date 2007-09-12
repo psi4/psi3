@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -23,7 +22,7 @@ double **Chkpt::rd_fgeom(void)
 	keyword = build_keyword("Full cartesian geometry");
 
 	nallatom = rd_nallatom();
-	fgeom = block_matrix(nallatom,3);
+	fgeom = matrix<double>(nallatom,3);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) fgeom[0],
 					(int) 3*nallatom*sizeof(double));

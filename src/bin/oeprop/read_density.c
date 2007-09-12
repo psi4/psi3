@@ -198,7 +198,7 @@ void read_density()
     free_block(scfvec);
     free(docc); free(socc); free(frozen_docc); free(frozen_uocc);
     free(reorder);
-    free_int_matrix(ras_opi, 4);
+    free_int_matrix(ras_opi);
 
     tmp_mat = init_matrix(nbfso,nbfao);
     psq_ao = init_matrix(nbfao,nbfao);

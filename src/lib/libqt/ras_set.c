@@ -222,7 +222,7 @@ int ras_set(int nirreps, int nbfso, int freeze_core, int *orbspi,
   }
   
   free(used);  free(offset);
-  free_int_matrix(tras, 6);
+  free_int_matrix(tras);
 
   return(!errbad);
 
@@ -530,7 +530,7 @@ int ras_set2(int nirreps, int nmo, int delete_fzdocc,
   }
   
   free(used);  free(offset);
-  free_int_matrix(tras, MAX_RAS_SPACES+4);
+  free_int_matrix(tras);
 
   return(!errbad);
 

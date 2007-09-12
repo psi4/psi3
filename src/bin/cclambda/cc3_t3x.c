@@ -184,7 +184,7 @@ void cc3_t3x(void)
     dpd_file2_close(&fij);
     dpd_file2_close(&fab);
 
-    free_int_matrix(W_offset, nirreps);
+    free_int_matrix(W_offset);
 
     for(h=0; h < nirreps; h++) {
       dpd_buf4_mat_irrep_close(&L2, h);

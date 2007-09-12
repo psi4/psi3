@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -22,7 +21,7 @@ double **Chkpt::rd_rref(void)
 	char *keyword;
 	keyword = build_keyword("Transmat to reference frame");
 
-	Rref = block_matrix(3,3);
+	Rref = matrix<double>(3,3);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) Rref[0], sizeof(double)*9);
 

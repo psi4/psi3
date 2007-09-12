@@ -7,8 +7,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -22,7 +21,7 @@ int *Chkpt::rd_frzvpi(void)
 	keyword = build_keyword("Frozen UOCC per irrep");
 
 	nirreps = rd_nirreps();
-	frzvpi = init_int_array(nirreps);
+	frzvpi = array<int>(nirreps);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) frzvpi,
 		nirreps*sizeof(int));

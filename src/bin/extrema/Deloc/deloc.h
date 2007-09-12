@@ -54,7 +54,7 @@ class deloc : public internals {
     ~deloc() {
 	free(point_group);
 	free(simples);
-	free_int_matrix(bonds,num_atoms);
+	free_int_matrix(bonds);
 	return; 
     }
     void optimize();

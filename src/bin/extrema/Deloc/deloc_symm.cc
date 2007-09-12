@@ -171,7 +171,7 @@ void deloc::ir_project() {
 	    free_matrix(proj_temp,nproj_coord);
 	}	
     }
-    free_int_matrix(simples_ict,ct.num_ops);   
+    free_int_matrix(simples_ict);   
     free_matrix(results,ct.num_irreps);
     free(project);
     free_matrix(initial_irrep,num_nonzero);

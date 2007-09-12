@@ -1033,7 +1033,7 @@ void cc3_UHF_AAB_obsolete(void)
   dpd_buf4_close(&DAA);
   dpd_buf4_close(&DAB);
 
-  free_int_matrix(W_offset, nirreps);
+  free_int_matrix(W_offset);
 
   dpd_file2_mat_close(&FME);
   dpd_file2_close(&FME);
@@ -1627,7 +1627,7 @@ void cc3_UHF_BBA_obsolete(void)
   dpd_buf4_close(&DBB);
   dpd_buf4_close(&DBA);
 
-  free_int_matrix(W_offset, nirreps);
+  free_int_matrix(W_offset);
 
   dpd_file2_mat_close(&FME);
   dpd_file2_close(&FME);

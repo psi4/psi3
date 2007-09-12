@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -24,7 +23,7 @@ double **Chkpt::rd_lagr(void)
 
 	nmo = rd_nmo();
 
-	lagr = block_matrix(nmo,nmo);
+	lagr = matrix<double>(nmo,nmo);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) lagr[0], 
 		nmo*nmo*sizeof(double));
@@ -56,7 +55,7 @@ double **Chkpt::rd_alpha_lagr(void)
 
 	nmo = rd_nmo();
 
-	lagr = block_matrix(nmo,nmo);
+	lagr = matrix<double>(nmo,nmo);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) lagr[0], 
 		nmo*nmo*sizeof(double));
@@ -88,7 +87,7 @@ double **Chkpt::rd_beta_lagr(void)
 
 	nmo = rd_nmo();
 
-	lagr = block_matrix(nmo,nmo);
+	lagr = matrix<double>(nmo,nmo);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) lagr[0], 
 		nmo*nmo*sizeof(double));

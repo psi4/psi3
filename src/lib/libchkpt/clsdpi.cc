@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -23,7 +22,7 @@ int *Chkpt::rd_clsdpi(void)
 	keyword = build_keyword("Closed shells per irrep");
 
 	nirreps = rd_nirreps();
-	clsdpi = init_int_array(nirreps);
+	clsdpi = array<int>(nirreps);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) clsdpi, 
 		nirreps*sizeof(int));

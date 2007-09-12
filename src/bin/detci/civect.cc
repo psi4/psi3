@@ -590,7 +590,7 @@ CIvect::~CIvect()
       free(buf_offdiag);
       free(first_ablk);
       free(last_ablk);
-      free_int_matrix(decode, num_alpcodes);
+      free_int_matrix(decode);
       free(offset);
       }
 

@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -25,7 +24,7 @@ double **Chkpt::rd_cartrep(void)
 
 	nirrep = rd_nirreps();
 	ptr = PSIO_ZERO;
-	cartrep = block_matrix(nirrep,9);
+	cartrep = matrix<double>(nirrep,9);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) cartrep[0], 
 		9*nirrep*sizeof(double));

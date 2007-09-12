@@ -9,8 +9,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -23,7 +22,7 @@ int *Chkpt::rd_am2canon_shell_order(void)
 	keyword = build_keyword("AM -> canonical shell map"); 
 
 	nshell = rd_nshell();
-	am2can_sh_ord = init_int_array(nshell);
+	am2can_sh_ord = array<int>(nshell);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) am2can_sh_ord,
 		nshell*sizeof(int));

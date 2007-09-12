@@ -15,8 +15,8 @@ int dpd_trans4_close(dpdtrans4 *Trans)
 
   free(Trans->matrix);
   
-  free_int_matrix(Trans->shift.rowtot, nirreps);
-  free_int_matrix(Trans->shift.coltot, nirreps);
+  free_int_matrix(Trans->shift.rowtot);
+  free_int_matrix(Trans->shift.coltot);
   free(Trans->shift.matrix);
 
   return 0;

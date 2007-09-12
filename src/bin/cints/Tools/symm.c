@@ -65,7 +65,7 @@ void init_symmetry()
 void cleanup_symmetry()
 {
   if (Symmetry.nirreps > 1)
-    free_int_matrix(Symmetry.dp_table,Symmetry.nirreps);
+    free_int_matrix(Symmetry.dp_table);
   free(Symmetry.sopi);
   free_block(Symmetry.usotao);
   free(Symmetry.us2s);

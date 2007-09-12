@@ -9,7 +9,7 @@ LDLIBS += $(RUBYLIB)
 
 # Override LDFLAGS, sometimes users want static linking, but static linking will break Ruby's
 # ability to load modules from shared libraries.
-LDFLAGS = $(RUBYLDFLAGS)
+LDFLAGS += $(RUBYLDFLAGS)
 
 # Hopefully one day I can remove -lPSI_ipv1 from below.
 # It's only there to fix some link references.

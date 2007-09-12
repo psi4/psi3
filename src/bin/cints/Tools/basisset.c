@@ -108,7 +108,9 @@ void get_shell_info()
       if (shell_num_prims[i] > BasisSet.max_num_prims)
         BasisSet.max_num_prims = shell_num_prims[i];
       BasisSet.shells[i].fprim = prim_pointers[i];
-      BasisSet.shells[i].trans_vec = shell_trans_table[i];
+      BasisSet.shells[i].trans_vec = init_int_array(Symmetry.nirreps);
+      for(j=0; j<Symmetry.nirreps; ++j)
+    	  BasisSet.shells[i].trans_vec[j] = shell_trans_table[i][j];
       BasisSet.shells[i].fbf = shell_fbf[i];
       BasisSet.shells[i].fao = shell_fao[i];
       /*--- compute index of the stabilizer for the shell ---*/
@@ -127,6 +129,7 @@ void get_shell_info()
    free(prim_pointers);
    free(shell_fbf);
    free(shell_fao);
+   free_int_matrix(shell_trans_table);
    
    return;
 }

@@ -1178,7 +1178,7 @@ void get_reorder_array(void)
       }
     }
 
-    free_int_matrix(ras_opi, MAX_RAS_SPACES);
+    free_int_matrix(ras_opi);
 
   } 
   

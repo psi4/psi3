@@ -92,7 +92,7 @@ void write_to_chkpt(double repulsion)
     }
   }
   chkpt_wt_ict(ict_tmp);
-  free_int_matrix(ict_tmp, nirreps);
+  free_int_matrix(ict_tmp);
   free(ict);
 
   /* Exponents of primitive gaussians */
@@ -158,7 +158,7 @@ void write_to_chkpt(double repulsion)
 	shell_transm[first_shell_on_atom[atom]+i][symop] = first_shell_on_atom[eq_atom] + i + 1;
     }
   chkpt_wt_shell_transm(shell_transm);
-  free_int_matrix(shell_transm,num_shells);
+  free_int_matrix(shell_transm);
 
   /* Labels of atoms including dummy atoms */
   tmp_atom_label = (char **) malloc(num_allatoms*sizeof(char *));

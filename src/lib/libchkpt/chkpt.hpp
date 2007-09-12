@@ -2,6 +2,8 @@
 #define _psi_src_lib_libchkpt_chkpt_hpp_
 
 #include <libchkpt/config.h>
+#include <cstdio>
+#include <strings.h>
 
 namespace psi {
 	class PSIO;
@@ -286,6 +288,30 @@ namespace psi {
 		
 		int* rd_cdsalcpi();
 		void wt_cdsalcpi(const int*);
+		
+		/// allocate a block matrix -- analogous to libciomr's block_matrix
+		template <typename T> static T** matrix(int nrow, int ncol) {
+			T** mat = (T**) malloc(sizeof(T*)*nrow);
+			const size_t size = sizeof(T)*nrow*ncol;
+			mat[0] = (T*) malloc(size);
+			bzero((void*)mat[0],size);
+			for(int r=1; r<nrow; ++r) mat[r] = mat[r-1] + ncol;
+			return mat;
+		}
+		/// free a (block) matrix -- analogous to libciomr's free_block
+		template <typename T> static void free_block(T** Block) {
+			free(Block[0]);  free(Block);
+		}
+		/// allocate an array -- analogous to libciomr's array<double>
+		template <typename T> static T* array(int n) {
+			const size_t size = sizeof(T)*n;
+			T* arr = (T*) malloc(size);
+			return arr;
+		}
+		/// free an array -- just for the hell of it
+		template <typename T> static void free(T* Array) {
+			::free(Array);
+		}
 	};
 	
 	extern Chkpt* _default_chkpt_lib_;

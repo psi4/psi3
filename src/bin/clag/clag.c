@@ -203,7 +203,7 @@ main(int argc, char **argv)
   */
   free(docc); free(socc);
   free(frdocc); free(fruocc);
-  free_int_matrix(ras_opi, 4);
+  free_int_matrix(ras_opi);
   free(onel_ints);
   free(twoel_ints);
   free_block(opdm);

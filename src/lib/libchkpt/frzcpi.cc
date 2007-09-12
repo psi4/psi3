@@ -7,8 +7,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -22,7 +21,7 @@ int *Chkpt::rd_frzcpi(void)
 	keyword = build_keyword("Frozen DOCC per irrep");
 
 	nirreps = rd_nirreps();
-	frzcpi = init_int_array(nirreps);
+	frzcpi = array<int>(nirreps);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) frzcpi, nirreps*sizeof(int));
 

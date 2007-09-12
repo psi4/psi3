@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -22,7 +21,7 @@ double **Chkpt::rd_geom(void)
 	int natom, nallatom, atom, atomcount;
 
 	natom = rd_natom();
-	geom = block_matrix(natom, 3);
+	geom = matrix<double>(natom, 3);
 
 	nallatom = rd_nallatom();
 	full_geom = rd_fgeom();

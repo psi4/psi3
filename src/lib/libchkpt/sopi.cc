@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -22,7 +21,7 @@ int *Chkpt::rd_sopi(void)
 	keyword = build_keyword("SO's per irrep");
 
 	nirreps = rd_nirreps();
-	sopi = init_int_array(nirreps);
+	sopi = array<int>(nirreps);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) sopi, nirreps*sizeof(int));
 

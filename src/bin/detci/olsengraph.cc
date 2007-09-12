@@ -328,7 +328,7 @@ void olsengraph(struct olsen_graph *Graph, int ci_orbs, int num_el,
       Graph->encode[1][i] = encode_tmp[1][i];
       Graph->encode[2][i] = encode_tmp[2][i];
       } 
-   free_int_matrix(encode_tmp, 3);
+   free_int_matrix(encode_tmp);
  
  
    Graph->subgr_per_irrep = code;
@@ -458,8 +458,8 @@ void olsengraph(struct olsen_graph *Graph, int ci_orbs, int num_el,
    for (i=0; i<nirreps; i++) {
       for (j=0; j<code; j++) {
          sgptr = Graph->sg[i] + j;
-         free_int_matrix(sgptr->ktmp[0], maxj);
-         free_int_matrix(sgptr->ktmp[1], maxj);
+         free_int_matrix(sgptr->ktmp[0]);
+         free_int_matrix(sgptr->ktmp[1]);
          }
       }
 

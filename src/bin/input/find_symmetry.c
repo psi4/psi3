@@ -498,7 +498,7 @@ void find_symmetry()
 	    punt("Unidentified symmetry.");
   } /* end of switch(nirreps) */
 
-  free_int_matrix(redun_atom_orbit,num_atoms);
+  free_int_matrix(redun_atom_orbit);
   
   return;
 }

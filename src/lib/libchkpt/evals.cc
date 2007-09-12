@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -21,7 +20,7 @@ double *Chkpt::rd_evals(void)
 	char *keyword;
 	keyword = build_keyword("MO energies");
 
-	energies = init_array(rd_nmo());
+	energies = array<double>(rd_nmo());
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) energies, 
 		rd_nmo()*sizeof(double));
@@ -36,7 +35,7 @@ double *Chkpt::rd_alpha_evals(void)
 	char *keyword;
 	keyword = build_keyword("Alpha MO energies");
 
-	energies = init_array(rd_nmo());
+	energies = array<double>(rd_nmo());
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) energies, 
 		rd_nmo()*sizeof(double));
@@ -51,7 +50,7 @@ double *Chkpt::rd_beta_evals(void)
 	char *keyword;
 	keyword = build_keyword("Beta MO energies");
 
-	energies = init_array(rd_nmo());
+	energies = array<double>(rd_nmo());
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) energies, 
 		rd_nmo()*sizeof(double));

@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -25,8 +24,8 @@ double *Chkpt::rd_contr(void)
 
 	nprim = rd_nprim();
 
-	temp_contr = init_array(MAXANGMOM*nprim);
-	contr = init_array(nprim);
+	temp_contr = array<double>(MAXANGMOM*nprim);
+	contr = array<double>(nprim);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) temp_contr,
 		MAXANGMOM*nprim*sizeof(double));

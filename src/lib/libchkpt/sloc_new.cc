@@ -7,8 +7,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -22,7 +21,7 @@ int *Chkpt::rd_sloc_new(void)
 	keyword = build_keyword("First BF per shell");
 
 	nshell = rd_nshell();
-	sloc_new = init_int_array(nshell);
+	sloc_new = array<int>(nshell);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) sloc_new, nshell*sizeof(int));
 

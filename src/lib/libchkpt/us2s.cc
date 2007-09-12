@@ -7,8 +7,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -22,7 +21,7 @@ int *Chkpt::rd_us2s(void)
 	keyword = build_keyword("Unique shell -> full shell map");
 
 	num_unique_shells = rd_num_unique_shell();
-	us2s = init_int_array(num_unique_shells);
+	us2s = array<int>(num_unique_shells);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) us2s, num_unique_shells*sizeof(int));
 

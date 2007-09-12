@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -18,7 +17,7 @@ using namespace psi;
 int *Chkpt::rd_cdsalcpi(void)
 {
 	const int nirreps = rd_nirreps();
-	int *cdsalcpi = init_int_array(nirreps);
+	int *cdsalcpi = array<int>(nirreps);
 	psio_address ptr = PSIO_ZERO;
 	char *keyword = build_keyword("cartdisp SALCs per irrep");
 

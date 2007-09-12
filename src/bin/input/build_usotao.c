@@ -263,12 +263,12 @@ void build_usotao()
       Clean up
      ---------*/
 
-    free_int_matrix(first_cart_so_in_symblk_from_unique,num_uniques);
+    free_int_matrix(first_cart_so_in_symblk_from_unique);
     free(cart_symblk_offset);
     free(first_cart_so_in_symblk);
     if (puream) {
-/*      free_int_matrix(first_pureang_so_in_symblk,num_atoms);*/
-      free_int_matrix(first_pureang_so_unique,num_uniques);
+/*      free_int_matrix(first_pureang_so_in_symblk);*/
+      free_int_matrix(first_pureang_so_unique);
       free(pureang_symblk_offset);
       free(first_so_in_symblk);
     }

@@ -160,7 +160,7 @@ int file_build_multipass(dpdfile4 *File, int inputfile, double tolerance,
   psio_open(inputfile, PSIO_OPEN_OLD);
   psio_close(inputfile, keep);
 
-  free_int_matrix(bucket_map,nump);
+  free_int_matrix(bucket_map);
 
   for(n=0; n < nbuckets; n++) {
     free(bucket_offset[n]);

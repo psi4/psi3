@@ -134,7 +134,7 @@ void stringlist(struct olsen_graph *Graph, struct stringwr **slist)
       free_stringwr_temps(nirreps * ncodes);
       }
 
-   free_int_matrix(outarr, nel_expl);
+   free_int_matrix(outarr);
    free(occs);
 }
 

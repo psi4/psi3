@@ -147,7 +147,7 @@ int file_build(dpdfile4 *File, int inputfile, double tolerance,
       iwl_buf_close(&SortBuf[n], 1);
     }
 
-  free_int_matrix(bucket_map,nump);
+  free_int_matrix(bucket_map);
 
   /* Now sort each buffer and send it to the final target */
   next = PSIO_ZERO;

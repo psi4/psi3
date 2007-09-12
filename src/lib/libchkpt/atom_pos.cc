@@ -7,8 +7,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -21,7 +20,7 @@ int *Chkpt::rd_atom_position(void)
 	keyword = build_keyword("Atomic symm positions");
 
 	natom = rd_natom();
-	atom_position = init_int_array(natom);
+	atom_position = array<int>(natom);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) atom_position,
 		natom*sizeof(int));

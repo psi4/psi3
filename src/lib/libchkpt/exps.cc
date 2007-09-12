@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -23,7 +22,7 @@ double *Chkpt::rd_exps(void)
 	keyword = build_keyword("Exponents");
 
 	nprim = rd_nprim();
-	exps = init_array(nprim);
+	exps = array<double>(nprim);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) exps, 
 		nprim*sizeof(double));

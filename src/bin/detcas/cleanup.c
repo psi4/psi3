@@ -36,11 +36,11 @@ void cleanup(void)
   free(CalcInfo.fstact);
   free(CalcInfo.lstact);
   free(CalcInfo.active);
-  free_int_matrix(CalcInfo.ras_opi, MAX_RAS_SPACES);
-  free_int_matrix(CalcInfo.fzc_orbs, CalcInfo.nirreps);
-  free_int_matrix(CalcInfo.fzv_orbs, CalcInfo.nirreps);
+  free_int_matrix(CalcInfo.ras_opi);
+  free_int_matrix(CalcInfo.fzc_orbs);
+  free_int_matrix(CalcInfo.fzv_orbs);
   for (i=0; i<MAX_RAS_SPACES; i++) 
-    free_int_matrix(CalcInfo.ras_orbs[i],CalcInfo.nirreps);
+    free_int_matrix(CalcInfo.ras_orbs[i]);
   free(CalcInfo.ras_orbs);
   for (i=0; i<CalcInfo.nirreps; i++) 
     free(CalcInfo.labels[i]);

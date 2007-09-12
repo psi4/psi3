@@ -23,11 +23,11 @@ int dpd_buf4_close(dpdbuf4 *Buf)
 
   free(Buf->matrix);
 
-  free_int_matrix(Buf->shift.rowtot,nirreps);
-  free_int_matrix(Buf->shift.coltot,nirreps);
+  free_int_matrix(Buf->shift.rowtot);
+  free_int_matrix(Buf->shift.coltot);
 
-  free_int_matrix(Buf->row_offset, nirreps);
-  free_int_matrix(Buf->col_offset, nirreps);
+  free_int_matrix(Buf->row_offset);
+  free_int_matrix(Buf->col_offset);
 
   free(Buf->shift.matrix);
 

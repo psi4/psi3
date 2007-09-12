@@ -7,8 +7,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -22,7 +21,7 @@ int *Chkpt::rd_ua2a(void)
 	keyword = build_keyword("Unique atom -> full atom map");
 
 	num_unique_atoms = rd_num_unique_atom();
-	ua2a = init_int_array(num_unique_atoms);
+	ua2a = array<int>(num_unique_atoms);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) ua2a, num_unique_atoms*sizeof(int));
 

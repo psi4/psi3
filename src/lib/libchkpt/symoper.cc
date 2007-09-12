@@ -7,8 +7,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -22,7 +21,7 @@ int *Chkpt::rd_symoper(void)
 	keyword = build_keyword("Cotton -> local map");
 
 	nirreps = rd_nirreps();
-	symoper = init_int_array(nirreps);
+	symoper = array<int>(nirreps);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) symoper, nirreps*sizeof(int));
 

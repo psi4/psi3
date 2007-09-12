@@ -976,7 +976,7 @@ void cc3_sigma_UHF_AAB_obsolete(dpdbuf4 *C2AA, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
   free(W1);
   free(W2);
   free(W3);
-  free_int_matrix(W_offset, nirreps);
+  free_int_matrix(W_offset);
 
   dpd_file2_close(&fIJ);
   dpd_file2_close(&fAB);
@@ -1519,7 +1519,7 @@ void cc3_sigma_UHF_BBA_obsolete(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
   free(W1);
   free(W2);
   free(W3);
-  free_int_matrix(W_offset, nirreps);
+  free_int_matrix(W_offset);
 
   dpd_file2_close(&fIJ);
   dpd_file2_close(&fAB);

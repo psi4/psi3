@@ -584,7 +584,7 @@ int dpd_init(int dpd_num, int nirreps, long int memory, int cachetype,
   
   free(pairs);
 
-  for(h=0; h < nirreps; h++) free_int_matrix(dp[h], nirreps);
+  for(h=0; h < nirreps; h++) free_int_matrix(dp[h]);
   free(dp);
 
   /* Set the default DPD set to the current one */

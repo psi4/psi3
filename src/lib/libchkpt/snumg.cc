@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -23,7 +22,7 @@ int *Chkpt::rd_snumg(void)
 	keyword = build_keyword("Primitives per shell");
 
 	nshell = rd_nshell();
-	snumg = init_int_array(nshell);
+	snumg = array<int>(nshell);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) snumg, nshell*sizeof(int));
 

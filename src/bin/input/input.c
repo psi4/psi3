@@ -482,9 +482,9 @@ void cleanup()
 /*  free_char_matrix(element,num_atoms);
     free_char_matrix(full_element,num_allatoms);
   free_char_matrix(atom_basis,num_atoms);*/
-  free_int_matrix(atom_orbit,num_atoms);
-  free_int_matrix(class_orbit,num_classes);
-  free_int_matrix(red_unique_orbit,num_uniques);
+  free_int_matrix(atom_orbit);
+  free_int_matrix(class_orbit);
+  free_int_matrix(red_unique_orbit);
   for(uc=0;uc<num_unique_classes;uc++) {
     class = uc2c[uc];
     class_first = class;
@@ -492,16 +492,13 @@ void cleanup()
     for(i=class_first;i<class_last;i++)
       for(l=0;l<=max_angmom_class[i];l++) {
 	free_matrix(class_so_coeff[i][l],ioff[l+1]*unique_class_degen[uc]);
-	free(num_cart_so_in_class[i][l]);
-	if (puream)
-	  free(num_pureang_so_in_class[i][l]);
       }
   }
   for(i=0;i<num_classes;i++) {
     free(class_so_coeff[i]);
-    free(num_cart_so_in_class[i]);
+    free_int_matrix(num_cart_so_in_class[i]);
     if (puream)
-      free(num_pureang_so_in_class[i]);
+      free_int_matrix(num_pureang_so_in_class[i]);
   }
   free(class_so_coeff);
   free(num_cart_so_in_class);
@@ -513,11 +510,11 @@ void cleanup()
   free(unique_degen);
   free(unique_class_degen);
   free(num_cart_so_per_irrep);
-  free_int_matrix(num_cart_so,MAX(max_angmom+1,MAXANGMOM));
+  free_int_matrix(num_cart_so);
   if (puream) {
     free(num_so_per_irrep);
-    free_int_matrix(num_pureang_so,max_angmom+1);
-    free_int_matrix(num_redun_so,max_angmom+1);
+    free_int_matrix(num_pureang_so);
+    free_int_matrix(num_redun_so);
   }
   free(nshells_per_atom);
   free(first_shell_on_atom);
@@ -542,7 +539,7 @@ void cleanup()
   free_matrix(usotao,num_so);
   free(atom_class);
   free(atom_position);
-  free_int_matrix(ao_type_irr,MAX(max_angmom+1,MAXANGMOM));
+  free_int_matrix(ao_type_irr);
   free(ioff);
   free(df);
   free(z_geom);

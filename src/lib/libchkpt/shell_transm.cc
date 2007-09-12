@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -26,7 +25,7 @@ int **Chkpt::rd_shell_transm(void)
 	nshell = rd_nshell();
 	nirreps = rd_nirreps();
 
-	shell_transm = init_int_matrix(nshell,nirreps);
+	shell_transm = matrix<int>(nshell,nirreps);
 	ptr = PSIO_ZERO;
 	for(i=0; i < nshell; i++)
 		psio->read(PSIF_CHKPT, keyword, (char *) shell_transm[i],

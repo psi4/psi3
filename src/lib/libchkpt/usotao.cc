@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -26,7 +25,7 @@ double **Chkpt::rd_usotao(void)
 	num_ao = rd_nao();
 	num_so = rd_nso();
 
-	usotao = block_matrix(num_so,num_ao);
+	usotao = matrix<double>(num_so,num_ao);
 	ptr = PSIO_ZERO;
 
 	for(i=0;i<num_so;i++)

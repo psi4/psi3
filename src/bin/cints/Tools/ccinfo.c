@@ -188,7 +188,7 @@ void cleanup_ccinfo()
 
   free_block(T2_MO);
 
-  free_int_matrix(cachelist,12);
+  free_int_matrix(cachelist);
   free(cachefiles);
   dpd_close(1);
 

@@ -125,7 +125,7 @@ void diag_A_ROHF(void)
   free(num_ai);
 
   for(h=0; h < nirreps; h++)
-    free_int_matrix(dp[h], nirreps);
+    free_int_matrix(dp[h]);
   free(dp);
 
   dpd_buf4_close(&A);

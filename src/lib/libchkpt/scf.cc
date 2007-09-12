@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -27,7 +26,7 @@ double **Chkpt::rd_scf(void)
 		nmo = rd_nmo();
 		nso = rd_nso();
 
-		scf = block_matrix(nso,nmo);
+		scf = matrix<double>(nso,nmo);
 		psio->read_entry(PSIF_CHKPT, keyword, (char *) scf[0], 
 			nso*nmo*sizeof(double));
 	}
@@ -50,7 +49,7 @@ double **Chkpt::rd_alpha_scf(void)
 		nmo = chkpt_rd_nmo();
 		nso = chkpt_rd_nso();
 
-		scf = block_matrix(nso,nmo);
+		scf = matrix<double>(nso,nmo);
 		psio->read_entry(PSIF_CHKPT, keyword, (char *) scf[0], 
 			nso*nmo*sizeof(double));
 	}
@@ -72,7 +71,7 @@ double **Chkpt::rd_beta_scf(void)
 		nmo = chkpt_rd_nmo();
 		nso = chkpt_rd_nso();
 
-		scf = block_matrix(nso,nmo);
+		scf = matrix<double>(nso,nmo);
 		psio->read_entry(PSIF_CHKPT, keyword, (char *) scf[0], 
 			nso*nmo*sizeof(double));
 	}
@@ -140,7 +139,7 @@ double **Chkpt::rd_scf_irrep(int irrep)
 	nso = rd_nso();
 	nmo = rd_nmo();
 
-	scf = block_matrix(sopi[irrep],mopi[irrep]);
+	scf = matrix<double>(sopi[irrep],mopi[irrep]);
 	scf_full = rd_scf();
 	if (scf_full == NULL) {
 		free_block(scf);
@@ -179,7 +178,7 @@ double **Chkpt::rd_alpha_scf_irrep(int irrep)
 	nso = rd_nso();
 	nmo = rd_nmo();
 
-	scf = block_matrix(sopi[irrep],mopi[irrep]);
+	scf = matrix<double>(sopi[irrep],mopi[irrep]);
 	scf_full = rd_alpha_scf();
 	if (scf_full == NULL) {
 		free_block(scf);
@@ -218,7 +217,7 @@ double **Chkpt::rd_beta_scf_irrep(int irrep)
 	nso = rd_nso();
 	nmo = rd_nmo();
 
-	scf = block_matrix(sopi[irrep],mopi[irrep]);
+	scf = matrix<double>(sopi[irrep],mopi[irrep]);
 	scf_full = rd_beta_scf();
 	if (scf_full == NULL) {
 		free_block(scf);
@@ -362,7 +361,7 @@ double **Chkpt::rd_local_scf(void)
 		nmo = rd_nmo();
 		nso = rd_nso();
 
-		scf = block_matrix(nso,nmo);
+		scf = matrix<double>(nso,nmo);
 		psio->read_entry(PSIF_CHKPT, keyword, (char *) scf[0], 
 			nso*nmo*sizeof(double));
 	}
@@ -490,7 +489,7 @@ extern "C" {
 ** returns: none
 **
 ** NOTE: The input scf matrix must occupy a contiguous block of nmo x
-** nso memory.  Use block_matrix() from libciomr to allocate space for
+** nso memory.  Use matrix<double>() to allocate space for
 ** the matrix.
 **
 ** \ingroup (CHKPT)
@@ -521,7 +520,7 @@ extern "C" {
 ** returns: none
 **
 ** NOTE: The input scf matrix must occupy a contiguous block of nmo x
-** nso memory.  Use block_matrix() from libciomr to allocate space for
+** nso memory.  Use matrix<double>() to allocate space for
 ** the matrix.
 **
 ** \ingroup (CHKPT)
@@ -552,7 +551,7 @@ extern "C" {
 ** returns: none
 **
 ** NOTE: The input scf matrix must occupy a contiguous block of nmo x
-** nso memory.  Use block_matrix() from libciomr to allocate space for
+** nso memory.  Use matrix<double>() to allocate space for
 ** the matrix.
 **
 ** \ingroup (CHKPT)

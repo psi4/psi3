@@ -645,14 +645,14 @@ void BT2_AO(void)
   }  /** UHF **/
 
   if(params.ref == 0 || params.ref == 1)
-    free_int_matrix(T2_cd_row_start, nirreps);
+    free_int_matrix(T2_cd_row_start);
   else if(params.ref ==2) {
-    free_int_matrix(T2_CD_row_start, nirreps);
-    free_int_matrix(T2_cd_row_start, nirreps);
-    free_int_matrix(T2_Cd_row_start,nirreps);
+    free_int_matrix(T2_CD_row_start);
+    free_int_matrix(T2_cd_row_start);
+    free_int_matrix(T2_Cd_row_start);
   }
 
-  free_int_matrix(T2_pq_row_start, nirreps);
+  free_int_matrix(T2_pq_row_start);
 
   /* Reset the default dpd back to 0 --- this stuff gets really ugly */
   dpd_set_default(0);

@@ -705,7 +705,7 @@ void local_init(void)
   local.aostart = aostart;
   local.aostop = aostop;
 
-  free_int_matrix(domain_bp, nocc);
+  free_int_matrix(domain_bp);
   free(domain_len_bp);
 
   free(ao2atom);
@@ -1021,8 +1021,8 @@ void local_done(void)
     free(moinfo.C);
   }
 
-  free_int_matrix(local.pairdomain, nocc*nocc);
-  free_int_matrix(local.domain, nocc);
+  free_int_matrix(local.pairdomain);
+  free_int_matrix(local.domain);
   for(i=0; i < nocc*nocc; i++) {
     free_block(local.W[i]);
     free_block(local.V[i]);

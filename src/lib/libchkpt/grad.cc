@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -23,7 +22,7 @@ double *Chkpt::rd_grad(void)
 	keyword = build_keyword("Energy Gradient");
 
 	natom = rd_natom();
-	grad = init_array(natom*3);
+	grad = array<double>(natom*3);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) grad, natom*3*sizeof(double));
 

@@ -900,8 +900,8 @@ void print_mo_eigvals(void)
      if ((printctr-1) % 3) fprintf(outfile, "\n");
 
     free(sorted_counter);
-    free_int_matrix(sorted_index,3);
-    free_int_matrix(sorted_irreps,3);
+    free_int_matrix(sorted_index);
+    free_int_matrix(sorted_irreps);
     free_matrix(sorted_evals,3);
   }
 
@@ -1038,8 +1038,8 @@ void print_mo_eigvals(void)
 
 
     free(sorted_counter);
-    free_int_matrix(sorted_index,2);
-    free_int_matrix(sorted_irreps,2);
+    free_int_matrix(sorted_index);
+    free_int_matrix(sorted_irreps);
     free_matrix(sorted_evals,2);
   }
 

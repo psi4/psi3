@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -24,7 +23,7 @@ int *Chkpt::rd_stype(void)
 
 	nshell = rd_nshell();
 
-	stype = init_int_array(nshell);
+	stype = array<int>(nshell);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) stype, nshell*sizeof(int));
 

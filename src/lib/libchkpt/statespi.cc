@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -23,7 +22,7 @@ int *Chkpt::rd_statespi(void)
 	keyword = build_keyword("States per irrep");
 
 	nirreps = rd_nirreps();
-	statespi = init_int_array(nirreps);
+	statespi = array<int>(nirreps);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) statespi, 
 		nirreps*sizeof(int));

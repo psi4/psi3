@@ -9,8 +9,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -26,7 +25,7 @@ double **Chkpt::rd_ccvecs(void)
 	ccvec_length = abs(rd_iopen());
 
 	if (ccvec_length > 0) {
-		ccvecs = block_matrix(2,ccvec_length);
+		ccvecs = matrix<double>(2,ccvec_length);
 
 		keyword = build_keyword("SCF coupling coefficients"); 
 

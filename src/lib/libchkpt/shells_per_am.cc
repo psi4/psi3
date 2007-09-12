@@ -7,8 +7,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -22,7 +21,7 @@ int *Chkpt::rd_shells_per_am(void)
 	keyword = build_keyword("Shells per am");
 
 	max_am = rd_max_am();
-	shells_per_am = init_int_array(max_am+1);
+	shells_per_am = array<int>(max_am+1);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) shells_per_am,
 		(max_am+1)*sizeof(int));

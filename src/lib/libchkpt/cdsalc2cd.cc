@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -18,7 +17,7 @@ using namespace psi;
 double **Chkpt::rd_cdsalc2cd(void)
 {
 	const int num_cd = 3*rd_natom();
-	double **cdsalc2cd = block_matrix(num_cd,num_cd);
+	double **cdsalc2cd = matrix<double>(num_cd,num_cd);
 	psio_address ptr = PSIO_ZERO;
 	char *keyword = build_keyword("cartdisp->SALC matrix");
 

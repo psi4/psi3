@@ -306,7 +306,7 @@ void graphset(struct graph_set *GraphSet, int ci_orbs, int num_el,
       GraphSet->encode[1][i] = encode_tmp[1][i];
       GraphSet->encode[2][i] = encode_tmp[2][i];
       } 
-   free_int_matrix(encode_tmp, 3);
+   free_int_matrix(encode_tmp);
  
  
    GraphSet->num_codes = code;

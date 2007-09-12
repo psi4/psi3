@@ -61,7 +61,7 @@ void zero_int_array(int *a, int size)
 ** init_int_matrix():
 ** Function initializes (allocates and clears) a matrix of integers with 
 ** dimensions 'rows' by 'cols' and returns a pointer to it (ptr to first 
-** row ptr).
+** row ptr). The matrix layout is blocked, i.e. like produced by block_matrix()
 **
 ** \ingroup (CIOMR)
 */
@@ -76,35 +76,29 @@ int **init_int_matrix(int rows, int cols)
       exit(PSI_RETURN_FAILURE) ;
       }
 
-   for (i=0; i<rows; i++) {
-      if ((array[i] = (int *) malloc (sizeof(int)*cols))==NULL) {
-         fprintf(stderr,"init_int_matrix: trouble allocating memory \n") ; 
-         fprintf(stderr,"row = %d, cols = %d", i, cols) ;
-         exit(PSI_RETURN_FAILURE) ;
-         }
-      bzero(array[i], sizeof(int)*cols) ;
-      }
+   if ((array[0] = (int *) malloc (sizeof(int)*cols*rows))==NULL) {
+	   fprintf(stderr,"init_int_matrix: trouble allocating memory \n") ; 
+	   fprintf(stderr,"rows = %d, cols = %d", rows, cols) ;
+	   exit(PSI_RETURN_FAILURE) ;
+   }
+   for (i=1; i<rows; i++) {
+	   	array[i] = array[i-1] + cols;
+   }
+   bzero(array[0], sizeof(int)*cols*rows) ;
 
-   return(array) ;
+   return array;
 }
 
 
 /*!
 ** free_int_matrix():
-** Free a matrix of integers.  Pass a pointer to the matrix and the
-** number of rows.
+** Free a matrix of integers.  Pass a pointer to the matrix.
 ** \ingroup (CIOMR)
 */
-void free_int_matrix(int **array, int size)
+void free_int_matrix(int **array)
 {
-   int i ;
-
-   for (i=0; i<size; i++) {
-      free(array[i]) ;
-      }
-
+   free(array[0]) ;
    free(array) ;
-
 }
 
 
@@ -116,11 +110,7 @@ void free_int_matrix(int **array, int size)
 */
 void zero_int_matrix(int **array, int rows, int cols)
 {
-   int i;
-
-   for (i=0; i<rows; i++) {
-      zero_int_array(array[i], cols);
-      }
+	zero_int_array(array[0], rows*cols);
 }
 
 

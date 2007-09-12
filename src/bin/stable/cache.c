@@ -709,10 +709,10 @@ void cache_ijkl_uhf(int **cachelist)
 
 void cachedone_uhf(int **cachelist)
 {
-  free_int_matrix(cachelist, 32);
+  free_int_matrix(cachelist);
 }
 
 void cachedone_rhf(int **cachelist)
 {
-  free_int_matrix(cachelist, 12);
+  free_int_matrix(cachelist);
 }

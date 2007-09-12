@@ -8,8 +8,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -24,7 +23,7 @@ double **Chkpt::rd_usotbf(void)
 	keyword = build_keyword("SO->BF transmat");
 
 	num_so = rd_nso();
-	usotbf = block_matrix(num_so,num_so);
+	usotbf = matrix<double>(num_so,num_so);
 
 	ptr = PSIO_ZERO;
 	for(i=0;i<num_so;i++)

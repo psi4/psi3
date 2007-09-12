@@ -7,8 +7,7 @@
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+	#include <libchkpt/chkpt.h>
 }
 #include <libchkpt/chkpt.hpp>
 
@@ -22,7 +21,7 @@ double *Chkpt::rd_zvals(void)
 	keyword = build_keyword("Nuclear charges");
 
 	natom = rd_natom();
-	zvals = init_array(natom);
+	zvals = array<double>(natom);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) zvals, 
 		natom*sizeof(double));

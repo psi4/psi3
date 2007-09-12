@@ -686,8 +686,8 @@ void local_done(void)
   free(local.aostart);
   free(local.aostop);
 
-  free_int_matrix(local.pairdomain, local.nocc*local.nocc);
-  free_int_matrix(local.domain, local.nocc);
+  free_int_matrix(local.pairdomain);
+  free_int_matrix(local.domain);
   free(local.pairdom_len);
   free(local.pairdom_nrlen);
   free(local.weak_pairs);

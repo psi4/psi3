@@ -262,7 +262,7 @@ void init_unique_shell_pairs(void)
   for(us=0;us<Symmetry.num_unique_shells;us++) {
     shell = Symmetry.us2s[us];
     num_bf = BasisSet.puream ? 2*BasisSet.shells[shell].am-1 : ioff[BasisSet.shells[shell].am];
-    free_int_matrix(bf_so[us],num_bf);
+    free_int_matrix(bf_so[us]);
   }
   free(bf_so);
 

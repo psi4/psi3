@@ -551,7 +551,7 @@ void get_reorder_array(void)
 void cleanup(void)
 {
   free(moinfo.fzc_operator);
-  free_int_matrix(moinfo.ras_opi, MAX_RAS_SPACES);
+  free_int_matrix(moinfo.ras_opi);
 }
 
 void get_mvos(void)
