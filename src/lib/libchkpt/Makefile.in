@@ -90,7 +90,7 @@ eccsd.cc \
 e_t.cc \
 emp2.cc 
 
-DEPENDINCLUDE = chkpt.h
+DEPENDINCLUDE = chkpt.h chkpt.hpp config.h
 
 LIBOBJ = $(TRUECXXSRC:%.cc=%.o)
 
