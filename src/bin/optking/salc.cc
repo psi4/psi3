@@ -129,7 +129,7 @@ salc_set :: salc_set(char *keyword)
   double f;
   char *buffer;
 
-  buffer = new char[MAX_LINELENGTH];
+  buffer = (char*) malloc(sizeof(char)*MAX_LINELENGTH);
   salc_array = new salc_class[MAX_SALCS];
   name = new char[MAX_LINELENGTH];
 
@@ -189,7 +189,7 @@ salc_set :: salc_set(char *keyword)
     salc_array[i].set_prefactor(1.0/sqrt(sum));
   }
 
-  delete [] buffer;
+  free(buffer);
 
   return;
 }

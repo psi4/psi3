@@ -643,9 +643,6 @@ void free_info(int nsimples) {
     free(syminfo.irrep_lbls[i]);
     free(syminfo.clean_irrep_lbls[i]);
   }
-  free(syminfo.ct);
-  free(syminfo.ict);
-  free(syminfo.fict);
   free(syminfo.irrep_lbls);
   free(syminfo.clean_irrep_lbls);
   
