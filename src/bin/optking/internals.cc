@@ -741,6 +741,8 @@ internals :: internals(cartesians& carts, int user_intcos)
         print(fp_intco,0); 
         fclose(fp_intco);
       }
+      
+      free_int_matrix(bonds);
     } // end generate internals loop
     } // end count, creation loop
 

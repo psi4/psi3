@@ -636,10 +636,10 @@ void free_info(int nsimples) {
 
  // free syminfo
   free(syminfo.symmetry);
+  free_int_matrix(syminfo.ct);
+  free_int_matrix(syminfo.ict);
+  free_int_matrix(syminfo.fict);
   for (i=0; i<syminfo.nirreps; ++i) {
-    free(syminfo.ct[i]);
-    free(syminfo.ict[i]);
-    free(syminfo.fict[i]);
     free(syminfo.irrep_lbls[i]);
     free(syminfo.clean_irrep_lbls[i]);
   }
@@ -648,13 +648,9 @@ void free_info(int nsimples) {
   free(syminfo.fict);
   free(syminfo.irrep_lbls);
   free(syminfo.clean_irrep_lbls);
-
-  for (i=0; i<nsimples; ++i) {
-    free(syminfo.ict_ops[i]);
-    free(syminfo.ict_ops_sign[i]);
-  }
-  free(syminfo.ict_ops);
-  free(syminfo.ict_ops_sign);
+  
+  free_int_matrix(syminfo.ict_ops);
+  free_int_matrix(syminfo.ict_ops_sign);
 
   // free optinfo
   free(optinfo.to_dummy);

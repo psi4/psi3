@@ -132,10 +132,7 @@ int **get_char_table(char *ptgrp) {
                            2,-1,-1, 2, 0, 0,-2, 1, 1,-2, 0, 0};
 
    nirreps = get_nirreps(ptgrp);
-
-   table = (int **) malloc(nirreps*sizeof(int *));
-   for (i=0;i<nirreps;++i)
-      table[i] = (int *) malloc(nirreps*sizeof(int));
+   table = init_int_matrix(nirreps,nirreps);
 
    count = 0;
 
