@@ -51,7 +51,7 @@ void scf_iter_2()
    int opblk=0;
    int *optest;
    int errcod;
-   double ciconv = 10.0e-9;
+   double ciconv = 10.0e-9;  // FAE it was 10.0e-9
    double c1i,c1ii;
    double eci1,eci2,eci3;
    double ci1,ci2,ci1old,term,hoff,amax,cn,sn;
@@ -76,6 +76,17 @@ void scf_iter_2()
    c2 = (double *) init_array(num_ir);
    fock_o = (double **) init_matrix(nsfmax,nsfmax);
 
+   for (i=0; i < num_ir ; i++) {
+		 s = &scf_info[i];
+		 if (nn=s->num_so) {
+		   num_mo = s->num_mo;
+		   s->ucmat = block_matrix(num_mo, num_mo);
+		   for(j=0; j<num_mo; j++)
+		     s->ucmat[j][j] = 1.0;
+     }
+   }
+
+	 
    /*
    ip_cwk_clear();
    ip_cwk_add(":DEFAULT");
@@ -147,14 +158,19 @@ void scf_iter_2()
             }
          }
       }
+   ci1    =  1.0;
+   ci1old =  0.0;  // FAE Give it some arbitrary value
 
 /* and iterate */
-
+   
    if (second_root) 
       fprintf(outfile, "Warning: Finding second root of TCSCF\n\n");
 
    for (iter=0; iter < itmax ; ) {
-
+      if(iter==stop_lshift){
+        lshift = 1.0;
+        fprintf(outfile,"Setting level shift to %lf\n",lshift);
+      }
       schmit(1);
 
       if(!newci || fabs(ci1old-ci1) < ciconv && iter) goto L2;
@@ -242,7 +258,7 @@ void scf_iter_2()
       cimax = 1.0/(cimax*cimax+dampsv);
       if(fabs(cimin) >= 0.1) cimax = 1.0; 
 
-      fprintf(outfile,"  ci coeffs %f %f\n",ci1,ci2);
+      fprintf(outfile,"  ci coeffs %14.10f %14.10f\n",ci1,ci2);
 
 L2:
 
@@ -421,6 +437,12 @@ L2:
          free(c1);
          free(c2);
          free(optest);
+         /* Clean up */
+				 for(i=0; i < num_ir ; i++) {
+				   s = &scf_info[i];
+				   if (nn=s->num_so)
+				   free_block(s->ucmat);
+				 }
          cleanup();
          }
       }

@@ -184,6 +184,7 @@ EXTERN double corr_energy;      /* KS DFT correlation energy */
 EXTERN double coulomb_energy;   /* Coulomb energy */
 EXTERN double den_trace;        /* KS DFT trace of the density */
 EXTERN double lshift;           /* levelshift */
+EXTERN int    stop_lshift;      /* cycle to turn off levelshift */
 EXTERN double diiser;           /* max off-diag. element in MO fock mat. */
 EXTERN double save_ci1,save_ci2; /* ci coefficients for tcscf */
 EXTERN double dampd;

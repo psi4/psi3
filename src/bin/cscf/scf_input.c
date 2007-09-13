@@ -383,6 +383,8 @@ void scf_input(ipvalue)
    lshift=1.0;
    errcod = ip_data("LEVELSHIFT","%lf",&lshift,0);
    if(!iopen && fabs(lshift) > 0.0) lshift = 0.1;
+   stop_lshift=10;
+   errcod = ip_data("STOP_LEVELSHIFT","%d",&stop_lshift,0);
 
    dampd=1.0;
    errcod = ip_data("DAMPD","%lf",&dampd,0);
@@ -391,6 +393,7 @@ void scf_input(ipvalue)
    errcod = ip_data("DAMPO","%lf",&dampo,0);
 
    fprintf(outfile,"\n  level shift                      = %f\n",lshift);
+   fprintf(outfile,"\n  level shifting will stop after %d cycles\n",stop_lshift);
    if(!diisflg) {
       fprintf(outfile,"  diis scale factor                = %f\n",dampsv+1.0);
       fprintf(outfile,"  iterations before extrapolation  = %d\n",it_diis);
