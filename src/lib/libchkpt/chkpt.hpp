@@ -299,8 +299,8 @@ namespace psi {
 			return mat;
 		}
 		/// free a (block) matrix -- analogous to libciomr's free_block
-		template <typename T> static void free_block(T** Block) {
-			free(Block[0]);  free(Block);
+		template <typename T> static void free(T** Block) {
+			::free(Block[0]);  ::free(Block);
 		}
 		/// allocate an array -- analogous to libciomr's array<double>
 		template <typename T> static T* array(int n) {

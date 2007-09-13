@@ -37,7 +37,7 @@ double **Chkpt::rd_geom(void)
 		}
 	}
 
-	free_block(full_geom);
+	free(full_geom);
 	free(atom_dummy);
 
 	return geom;
@@ -66,7 +66,7 @@ void Chkpt::wt_geom(double **geom)
 	}
 
 	wt_fgeom(full_geom);
-	free_block(full_geom);
+	free(full_geom);
 	free(atom_dummy);
 }
 

@@ -142,7 +142,7 @@ double **Chkpt::rd_scf_irrep(int irrep)
 	scf = matrix<double>(sopi[irrep],mopi[irrep]);
 	scf_full = rd_scf();
 	if (scf_full == NULL) {
-		free_block(scf);
+		free(scf);
 		free(sopi);
 		free(mopi);
 		return NULL;
@@ -158,7 +158,7 @@ double **Chkpt::rd_scf_irrep(int irrep)
 		for(j=0; j < mopi[irrep]; j++)
 		scf[i][j] = scf_full[i+row][j+col];
 
-	free_block(scf_full);
+	free(scf_full);
 	free(sopi);
 	free(mopi);
 
@@ -181,7 +181,7 @@ double **Chkpt::rd_alpha_scf_irrep(int irrep)
 	scf = matrix<double>(sopi[irrep],mopi[irrep]);
 	scf_full = rd_alpha_scf();
 	if (scf_full == NULL) {
-		free_block(scf);
+		free(scf);
 		free(sopi);
 		free(mopi);
 		return NULL;
@@ -197,7 +197,7 @@ double **Chkpt::rd_alpha_scf_irrep(int irrep)
 		for(j=0; j < mopi[irrep]; j++)
 		scf[i][j] = scf_full[i+row][j+col];
 
-	free_block(scf_full);
+	free(scf_full);
 	free(sopi);
 	free(mopi);
 
@@ -220,7 +220,7 @@ double **Chkpt::rd_beta_scf_irrep(int irrep)
 	scf = matrix<double>(sopi[irrep],mopi[irrep]);
 	scf_full = rd_beta_scf();
 	if (scf_full == NULL) {
-		free_block(scf);
+		free(scf);
 		free(sopi);
 		free(mopi);
 		return NULL;
@@ -236,7 +236,7 @@ double **Chkpt::rd_beta_scf_irrep(int irrep)
 		for(j=0; j < mopi[irrep]; j++)
 		scf[i][j] = scf_full[i+row][j+col];
 
-	free_block(scf_full);
+	free(scf_full);
 	free(sopi);
 	free(mopi);
 
@@ -269,7 +269,7 @@ void Chkpt::wt_scf_irrep(double **scf, int irrep)
 		scf_full[i+row][j+col] = scf[i][j];
 
 	wt_scf(scf_full);
-	free_block(scf_full);
+	free(scf_full);
 	free(sopi);
 	free(mopi);
 }
@@ -300,7 +300,7 @@ void Chkpt::wt_alpha_scf_irrep(double **scf, int irrep)
 		scf_full[i+row][j+col] = scf[i][j];
 
 	wt_alpha_scf(scf_full);
-	free_block(scf_full);
+	free(scf_full);
 	free(sopi);
 	free(mopi);
 }
@@ -331,7 +331,7 @@ void Chkpt::wt_beta_scf_irrep(double **scf, int irrep)
 		scf_full[i+row][j+col] = scf[i][j];
 
 	wt_beta_scf(scf_full);
-	free_block(scf_full);
+	free(scf_full);
 	free(sopi);
 	free(mopi);
 }
