@@ -1,4 +1,3 @@
-
 #ifndef _psi_src_lib_libpsio_config_h_
 #define _psi_src_lib_libpsio_config_h_
 
@@ -31,10 +30,10 @@
 #define PSIO_ERROR_IDENTVOLPATH 19
 #define PSIO_ERROR_MAXUNIT   20
 
-typedef unsigned long int ULI;  /* For convenience */
+typedef unsigned long int ULI; /* For convenience */
 
 typedef struct {
-    ULI page;   /* First page of entry */
+    ULI page; /* First page of entry */
     ULI offset; /* Starting byte offset on fpage */
 } psio_address;
 

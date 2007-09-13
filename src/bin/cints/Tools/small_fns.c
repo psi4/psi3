@@ -78,7 +78,7 @@ void start_io(int argc, char *argv[])
   if (errcod != PSI_RETURN_SUCCESS)
     abort();
   ip_cwk_add(":CINTS");
-  psio_init();
+  psio_init(); psio_ipv1_config();
   chkpt_init(PSIO_OPEN_OLD);
 
   free(extra_args);

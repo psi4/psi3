@@ -2,7 +2,7 @@
 #define _psi_src_lib_libchkpt_chkpt_hpp_
 
 #include <libchkpt/config.h>
-#include <cstdio>
+#include <cstdlib>
 #include <strings.h>
 
 namespace psi {

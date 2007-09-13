@@ -373,7 +373,7 @@ void init_io(int argc, char * argv[])
   free(progid);
   tstart(outfile);
 
-  psio_init();
+  psio_init(); psio_ipv1_config();
 }
 
 void title(void)

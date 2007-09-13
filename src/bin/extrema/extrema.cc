@@ -120,7 +120,7 @@ void start_io(int argc, char *argv[]) {
     psi_start(argc-1,argv+1,0); 
     ip_cwk_add(":INPUT");
     ip_cwk_add(":EXTREMA");
-    psio_init();
+    psio_init(); psio_ipv1_config();
     chkpt_init(PSIO_OPEN_OLD);
 
     return;

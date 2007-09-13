@@ -62,6 +62,10 @@ basic read/write functions of libpsio may be used, the global data
 needed by the library functions must be initialized using this
 function.
 
+\celem{int psio\_ipv1\_config(void)}: For the library to operate properly,
+its configuration must be read from the input file or from user's {\tt .psirc} file.
+This call MUST immediately follow {\em int psio\_init();}.
+
 \celem{int psio\_done(void)}: When all interaction with the
 direct-access files is complete, this function is used to free the
 library's global memory.
@@ -150,7 +154,7 @@ data from the file. This function is still under construction.
 
 \subsubsection{Using \library{libpsio.a}}
 The following code illustrates the basic use of the library, as well
-as when/how the \celem{psio\_init()} and \celem{psio\_done()}
+as when/how the \celem{psio\_init()}, \celem{psio\_ipv1\_config()}, and \celem{psio\_done()}
 functions should be called in relation to initialization of
 \library{libipv1}.  (See section \ref{C_Program} later in the manual
 for a description of the basic elements of C-language \PSIthree\
@@ -177,7 +181,7 @@ int main()
   ip_cwk_add(progid);
 
   /* Initialize the I/O system */
-  psio_init();
+  psio_init(); psio_ipv1_config();
 
   /* Open the file and write an energy */
   psio_open(31, PSIO_OPEN_NEW);

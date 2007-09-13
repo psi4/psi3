@@ -150,7 +150,7 @@ void init_io(int argc, char *argv[])
   ip_cwk_add(progid);
   free(progid);
   tstart(outfile);
-  psio_init();
+  psio_init(); psio_ipv1_config();
 
   if(params.reset) for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,0);
   else for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);

@@ -101,6 +101,12 @@ files may be opened or the basic read/write functions of
 <tt>libpsio</tt> may be used, the global data needed by the library
 functions must be initialized using this function.<p>
 
+<tt><b><font color=darkblue>int psio_ipv1_config(void)</font></b></tt>:
+If the library is operator within a PSI module, the library can find
+its configuration data in the input file or in the .psirc file when this
+function is called. Therefore it should be called immediately after
+<tt>psio_init()</tt>. <p>
+
 <tt><b><font color=darkblue>int psio_done(void)</font></b></tt>: When
 all interaction with the files is complete, this function is used to
 free the library's global memory.<p>
@@ -220,7 +226,7 @@ int main()
 
 <font color=red>
   /* Initialize the I/O system */</font><font color=darkblue>
-  psio_init();</font>
+  psio_init(); psio_ipv1_config();</font>
 
 <font color=red>
   /* Open the file and write an energy */</font><font color=darkblue>

@@ -88,7 +88,7 @@ void start_io(int argc, char *argv[])
     abort();
   ip_cwk_add(":INPUT");
   tstart(outfile);
-  psio_init();
+  psio_init(); psio_ipv1_config();
 
   free(extra_args);
 

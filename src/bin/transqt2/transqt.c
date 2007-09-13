@@ -353,7 +353,7 @@ void init_io(int argc, char *argv[])
   free(progid);
 
   if(params.print_lvl) tstart(outfile);
-  psio_init();
+  psio_init(); psio_ipv1_config();
 
   psio_open(CC_INFO, PSIO_OPEN_NEW);
 }

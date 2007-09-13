@@ -240,7 +240,7 @@ int main(int argc, char **argv) {
     if (fp_intco != NULL)
       fclose(fp_intco);
 
-    psio_init();
+    psio_init(); psio_ipv1_config();
     get_optinfo();
 
     // generate simples from zmat

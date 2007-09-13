@@ -65,7 +65,7 @@ StringBlocks::end(int block) const
 ///////////
 
 #define PSIO_INIT if (!psio_state()) { \
-    psio_init(); \
+    psio_init(); psio_ipv1_config(); \
     need_to_init_psio_ = 1; \
   }
 

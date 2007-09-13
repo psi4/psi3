@@ -242,7 +242,7 @@ void init_io(int argc, char **argv)
    psi_start(num_extra_args, extra_args, 0);
    ip_cwk_add(":CLAG");  
    if (print_lvl > 0) tstart(outfile);
-   psio_init();
+   psio_init(); psio_ipv1_config();
 }
 
 /****************************************************************************/

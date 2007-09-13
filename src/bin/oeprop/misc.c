@@ -16,7 +16,7 @@ void start_io(int argc, char *argv[])
     abort();
   ip_cwk_add(":OEPROP");
   tstart(outfile);
-  psio_init();
+  psio_init(); psio_ipv1_config();
   chkpt_init(PSIO_OPEN_OLD);
 
   return;

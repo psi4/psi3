@@ -686,7 +686,7 @@ int get_ndisp(void) {
   psi_start(0,NULL,0); */
 
   /* need to remove psi_start */
-  psio_init();
+  psio_init(); psio_ipv1_config();
   psio_open(PSIF_OPTKING, PSIO_OPEN_OLD);
   psio_read_entry(PSIF_OPTKING, "OPT: Num. of disp.", (char *) &(ndisp), 
     sizeof(int));

@@ -51,7 +51,7 @@ void init_io(int argc, char *argv[])
 
   if (Params.print_lvl) tstart(outfile);
   ip_cwk_add(":DETCAS");
-  psio_init();
+  psio_init(); psio_ipv1_config();
 
   free(extra_args);
 }

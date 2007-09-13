@@ -50,7 +50,7 @@ void init_io(int argc, char *argv[])
   tstart(outfile);
   ip_cwk_add(":MP2R12");
   
-  psio_init();
+  psio_init(); psio_ipv1_config();
   chkpt_init(PSIO_OPEN_OLD);
 }
 

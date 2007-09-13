@@ -396,7 +396,7 @@ void init_io(int argc, char *argv[])
   free(progid);
   tstart(outfile);
 
-  psio_init();
+  psio_init(); psio_ipv1_config();
 
   /* Open all dpd data files here */
   for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);

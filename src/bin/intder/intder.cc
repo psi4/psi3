@@ -48,7 +48,7 @@ int main(int argc, char** argv)
 
   psi_start(argc-1, argv+1, 0);
   ip_cwk_add(gprgid());
-  psio_init();
+  psio_init(); psio_ipv1_config();
   tstart(outfile);
   chkpt_init(PSIO_OPEN_OLD);
 

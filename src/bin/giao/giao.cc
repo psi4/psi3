@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
   if (errcod != PSI_RETURN_SUCCESS)
     throw std::runtime_error("main -- psi_start failed");
   tstart(outfile);
-  psio_init();
+  psio_init(); psio_ipv1_config();
   chkpt_init(PSIO_OPEN_OLD);
   init_misc();
   

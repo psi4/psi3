@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
   psi_start(argc-1,argv+1,0);
   
   /* Initialize the I/O system */
-  psio_init();
+  psio_init(); psio_ipv1_config();
 
   /* Get the number of volumes */
   nvol = psio_get_numvols_default();

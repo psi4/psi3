@@ -235,7 +235,7 @@ int main(argc,argv)
 
   /* open integrals file(s) */
 
-  psio_init();
+  psio_init(); psio_ipv1_config();
    
   /* STB (6/30/99) - Function added because in order to initialize things
      one must know whether you are doing UHF or restricted */   

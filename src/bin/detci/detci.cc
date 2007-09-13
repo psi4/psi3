@@ -260,7 +260,7 @@ void init_io(int argc, char *argv[])
    ip_cwk_add(":DEFAULT");
    */
    ip_cwk_add(":DETCI");
-   psio_init();
+   psio_init(); psio_ipv1_config();
    
 }
  

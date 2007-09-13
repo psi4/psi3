@@ -559,7 +559,7 @@ void init_io(int argc, char *argv[])
     throw std::runtime_error("init_io -- psi_start failed");
   ip_cwk_add(progid);
   tstart(outfile);
-  psio_init();
+  psio_init(); psio_ipv1_config();
 
   // Psi modules called by dboc should read from the same input file
   // set the value of PSI_INPUT for the duration of this run

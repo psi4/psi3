@@ -167,7 +167,7 @@ void init_io(int argc, char *argv[])
   ip_cwk_add(":INPUT");
   ip_cwk_add(progid);
   free(progid);
-  psio_init();
+  psio_init(); psio_ipv1_config();
 }
 
 
