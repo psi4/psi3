@@ -91,7 +91,7 @@ $(top_objdir)/config.status: $(top_srcdir)/configure
 	cd $(top_objdir) && ./config.status --recheck
 
 Makefile: $(mysrcdir)/Makefile.in $(top_objdir)/config.status
-	cd $(top_objdir) && CONFIG_FILES=doc/Makefile ./config.status
+	cd $(top_objdir) && CONFIG_FILES=doc/`basename $(srcdir)`/Makefile ./config.status
 
 ../MakeVars: $(top_srcdir)/doc/MakeVars.in $(top_objdir)/config.status
 	cd $(top_objdir) && CONFIG_FILES=doc/MakeVars ./config.status
