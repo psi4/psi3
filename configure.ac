@@ -583,13 +583,33 @@ test -z "$F77SUF" && F77SUF=f AC_SUBST(F77SUF)
 test -z "$LIBSUF" && LIBSUF=a AC_SUBST(LIBSUF)
 test -z "$OBJSUF" && OBJSUF=o AC_SUBST(OBJSUF)
 
-AC_CC_PROCESS_CHECK(C dependency processing,[
-#include "nosuchincludefile.h"
-],-M,CCDEPEND='$(CC) -M'; DODEPEND=yes,CCDEPEND=":"; DODEPEND=no)
-AC_SUBST(CCDEPEND)
-AC_SUBST(DODEPEND)
-AC_MSG_RESULT(CCDEPEND is $CCDEPEND)
-AC_MSG_RESULT(DODEPEND is $DODEPEND)
+dnl -- check how dependency information is built --
+# The GNU compilers work with:
+CCDEPENDSUF=none
+CXXDEPENDSUF=none
+CCDEPENDFLAGS=-M
+CXXDEPENDFLAGS=-M
+/bin/rm -f depcheck.u depcheck.c depcheck.o
+# Check for an IBM visual age C compiler
+echo "#include <stdio.h>" > depcheck.c
+$CC $CPPFLAGS $CFLAGS -M depcheck.c > /dev/null 2>&1
+if test -f depcheck.u; then
+  CCDEPENDSUF=u
+fi
+/bin/rm -f depcheck.u depcheck.c depcheck.o
+# Check for an IBM visual age C++ compiler
+echo "#include <iostream>" > depcheck.cc
+$CXX $CPPFLAGS $CXXFLAGS -M -E depcheck.cc > /dev/null 2>&1
+if test -f depcheck.u; then
+  CXXDEPENDSUF=u
+  CXXDEPENDFLAGS="-M -E"
+fi
+/bin/rm -f depcheck.u depcheck.c depcheck.o
+
+AC_SUBST(CCDEPENDSUF)
+AC_SUBST(CXXDEPENDSUF)
+AC_SUBST(CCDEPENDFLAGS)
+AC_SUBST(CXXDEPENDFLAGS)
 
 AC_CHECK_LIB(m,exit,CLIBS="$CLIBS -lm")
 AC_CHECK_LIB(bsd,exit,CLIBS="$CLIBS -lbsd")

@@ -76,4 +76,4 @@ $(top_objdir)/config.status: $(top_srcdir)/configure
 	cd $(top_objdir) && ./config.status --recheck
 
 Makefile: $(srcdir)/Makefile.in $(top_objdir)/config.status
-	cd $(top_objdir) && CONFIG_FILES=src/Makefile ./config.status
+	cd $(top_objdir) && CONFIG_FILES=Makefile ./config.status
