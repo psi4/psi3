@@ -40,6 +40,11 @@ Chkpt::Chkpt(psi::PSIO *psioObject, int status) : psio(psioObject)
 	}
 }
 
+void
+Chkpt::rehash() {
+  psio->rehash(PSIF_CHKPT);
+}
+
 extern "C" {
 /*!
 **  chkpt_init()  Initializes the checkpoint file for other chkpt_

@@ -89,6 +89,15 @@ void PSIO::open(unsigned int unit, int status) {
   free(name);
 }
 
+void
+PSIO::rehash(unsigned int unit)
+{
+  if (open_check(unit)) {
+    close(unit,1);
+    open(unit,PSIO_OPEN_OLD);
+  }
+}
+
 extern "C" {
   /*!
    ** PSIO_OPEN(): Opens a multivolume PSI direct access file for

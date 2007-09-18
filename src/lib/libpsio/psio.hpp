@@ -50,6 +50,8 @@ namespace psi {
       void open(unsigned int unit, int status);
       /// close unit. if keep == 0, will remove the file, else keep it
       void close(unsigned int unit, int keep);
+      /// sync up the object to the file on disk by closing and opening the file, if necessary
+      void rehash(unsigned int unit);
       /// return 1 if unit is open
       int open_check(unsigned int unit);
       /** Reads data from within a TOC entry from a PSI file.

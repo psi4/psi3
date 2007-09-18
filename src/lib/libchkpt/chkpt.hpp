@@ -28,6 +28,8 @@ namespace psi {
 		Chkpt(PSIO *psioObject, int status);
 		/*! Destructor. Call PSIO::close to close the checkpoint file. */
 		~Chkpt();
+		/// update this object. call rehash() if the state of the checkpoint file may have changed
+		void rehash();
 
 		char *rd_prefix();
 		void wt_prefix(char *prefix);
