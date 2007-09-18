@@ -56,4 +56,4 @@ endif
 # in case DODEPEND is no
 #
 
-ip_read.o:: y.tab.h
+ip_read.o: y.tab.h
