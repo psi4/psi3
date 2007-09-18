@@ -134,10 +134,7 @@ int main(int argc, char *argv[])
   /* Write total energy and (T) contribution to the checkpoint file */
   chkpt_init(PSIO_OPEN_OLD);
   chkpt_wt_etot(ET+moinfo.ecc+moinfo.eref);
-  keyw = chkpt_build_keyword("(T) Energy");
-  psio_write_entry(PSIF_CHKPT, keyw, (char *) &(ET),
-		     sizeof(double));
-  free(keyw);
+  chkpt_wt_e_t(ET);
   chkpt_close();
 
   /* Write pertinent data to energy.dat */
