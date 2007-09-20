@@ -131,6 +131,7 @@ extern "C" {
   #include <libciomr/libciomr.h>
   #include <libchkpt/chkpt.h>
   #include <libqt/qt.h>
+  #include <libiwl/iwl.h>
   #include <psifiles.h>
   #include "MOInfo.h"
   #include "Params.h"
@@ -168,9 +169,9 @@ void get_parameters(void);
 void print_parameters(void);
 void get_moinfo(void);
 void get_one_electron_integrals(void);
-void exit_io(void);
+extern "C" void exit_io(void);
 void get_reorder_array(void);
-double *** construct_evects(char *spin, int nirreps, int *active, int *sopi, 
+extern "C" double *** construct_evects(char *spin, int nirreps, int *active, int *sopi, 
   int *orbspi, int *first_so, int *last_so, int *first, int *last, 
   int *fstact, int *lstact, int printflag);
 int check_C(int nso, int nmo, double **Cmat, double *S);
@@ -1424,7 +1425,7 @@ double *** construct_evects(char *spin, int nirreps, int *active, int *sopi,
 
 }
 
-void destruct_evects(int nirreps, double ***evects) 
+extern "C" void destruct_evects(int nirreps, double ***evects) 
 {
   int h;
 
