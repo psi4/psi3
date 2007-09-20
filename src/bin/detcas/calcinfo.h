@@ -1,18 +1,16 @@
-/*! \file 
-    \ingroup (DETCAS)
-    \brief Enter brief description of file here 
+/*! \defgroup DETCAS detcas: Orbital optimizer for detci */
+
+/*! 
+  \file calcinfo.h
+  \ingroup (DETCAS)
+  \brief Enter brief description of file here 
+ 
+   CALCINFO.H
+   
+   C. David Sherrill
+   University of California, Berkeley
+   1998
 */
-
-/*! \defgroup DETCAS Add a description of the group DETCAS */
-
-/*
-** CALCINFO.H
-** 
-** C. David Sherrill
-** University of California, Berkeley
-** 1998
-*/
-
 
 /*
 ** CalcInfo: Data Structure for holding calculation information such

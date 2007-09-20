@@ -1,8 +1,6 @@
 /*! \file 
     \ingroup (DETCAS)
-    \brief Enter brief description of file here 
-*/
-/*
+    \brief Orbital optimizer for detci
 **
 ** DETCAS
 **
@@ -249,11 +247,12 @@ void form_independent_pairs(void)
 }
 
 
-/*
+/*!
 ** calc_gradient()
 **
 ** This function calculates the MO gradient from the MO Lagrangian
 **
+** \ingroup (DETCAS)
 */
 void calc_gradient(void)
 {
@@ -354,13 +353,15 @@ void calc_gradient(void)
 }
 
 
-/*
+/*!
 ** bfgs_hessian()
 **
 ** This function calculates a BFGS-updated MO/MO Hessian
 **
 ** C. David Sherrill
 ** March 2004
+**
+** \ingroup (DETCAS)
 */
 void bfgs_hessian(void)
 {
@@ -608,13 +609,15 @@ void bfgs_hessian(void)
 }
 
 
-/*
+/*!
 ** ds_hessian()
 **
 ** This function calculates a Hessian update by a difference of gradients
 **
 ** C. David Sherrill
 ** March 2004
+**
+** \ingroup (DETCAS)
 */
 void ds_hessian(void)
 {
@@ -727,7 +730,7 @@ void ds_hessian(void)
 
 
 
-/*
+/*!
 ** calc_hessian()
 **
 ** This function calculates an approximate MO Hessian from the 
@@ -735,6 +738,8 @@ void ds_hessian(void)
 **
 ** C. David Sherrill
 ** April 1998
+**
+** \ingroup (DETCAS)
 */
 void calc_hessian(void)
 {
@@ -795,10 +800,12 @@ void calc_hessian(void)
 
 
 
-/*
+/*!
 ** scale_gradient()
 **
 ** Scales the orbital gradient by the approximate orbital Hessian
+**
+** \ingroup (DETCAS)
 */
 void scale_gradient(void)
 {
@@ -859,12 +866,14 @@ void scale_gradient(void)
 }
 
 
-/*
+/*!
 ** take_step()
 **
 ** This function takes a step in orbital rotation (theta) space
 **
 ** Returns: type of step taken; 1=regular (Newton-Raphson), 2=diis
+**
+** \ingroup (DETCAS)
 */
 int take_step(void)
 {
@@ -900,10 +909,13 @@ int take_step(void)
 }
 
 
-/*
+/*!
+**
 ** rotate_orbs()
 **
 ** Rotate the orbitals, irrep by irrep
+**
+** \ingroup (DETCAS)
 */
 void rotate_orbs(void)
 {
@@ -964,12 +976,14 @@ void rotate_orbs(void)
 }
 
 
-/*
+/*!
 ** check_conv
 **
 ** Check the summary file to see if we've converged
 **
 ** Returns: 1 if converged, otherwise 0
+**
+** \ingroup (DETCAS)
 */
 int check_conv(void)
 {
