@@ -1,8 +1,8 @@
-/*! \file 
-    \ingroup (DETCI)
-    \brief Enter brief description of file here 
-*/
-/*
+/*!
+  \file s1.c
+  \ingroup (DETCI)
+  \brief Enter brief description of file here 
+
 ** S1.C
 ** 
 ** File contains code to calculate sigma1 in various ways, all
@@ -30,7 +30,7 @@ extern void b2brepl(unsigned char **occs, int *Jcnt, int **Jij, int **Joij,
       int Ilist, int Jlist, int len);
 
 
-/*
+/*!
 ** S1_BLOCK_FCI(): 
 **
 ** Calculate the sigma_1 vector as described by
@@ -47,6 +47,7 @@ extern void b2brepl(unsigned char **occs, int *Jcnt, int **Jij, int **Joij,
 ** Modified 4/10/94 to make FCI-only (for now) and use new string structs
 ** Modified 6/21/95 for use in new RAS program
 **
+** \ingroup (DETCI)
 */
 void s1_block_fci(struct stringwr **alplist, struct stringwr **betlist, 
       double **C, double **S, double *oei, double *tei, double *F,
