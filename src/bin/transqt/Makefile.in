@@ -3,6 +3,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
+LD = $(CXX)
 LDLIBS += $(LAPACK) $(BLAS)
 CDEF += -DUSE_BLAS
 
@@ -10,7 +11,6 @@ PSILIBS = -lPSI_iwl -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 CSRC = \
 gprgid.c \
-transqt.c \
 semicanonical.c \
 transform_one.c \
 transform_two.c \
@@ -24,7 +24,9 @@ frozen_core.c \
 backsort.c \
 cleanup.c
 
-BINOBJ = $(CSRC:%.c=%.o)
+CXXSRC = transqt.cc
+
+BINOBJ = $(CSRC:%.c=%.o) $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 
