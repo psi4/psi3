@@ -1,6 +1,6 @@
 /*! \file 
     \ingroup (TRANSQT)
-    \brief Enter brief description of file here 
+    \brief The SO-to-MO integral transformation program
 */
 /*
 ** TRANSQT:
@@ -114,59 +114,69 @@
 ** Center for Computational Quantum Chemistry
 ** University of Georgia */
 
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <string.h>
-#include <libipv1/ip_lib.h>
-#include <libpsio/psio.h>
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
-#include <libqt/qt.h>
-#include <psifiles.h>
-#include "MOInfo.h"
-#include "Params.h"
-#include "globals.h"
-
-
-/* First definitions of globals */
-FILE *infile, *outfile;
-char *psi_file_prefix;
-int *ioff;
-struct MOInfo moinfo;
-struct Params params;
-
 /* Max length of ioff array */
 #define IOFF_MAX 32641
 
-/* Function prototypes */
+#include <math.h>
+
+extern "C" {
+
+  /* C INCLUDE FILES */
+
+  #include <stdio.h>
+  #include <stdlib.h>
+  #include <string.h>
+  #include <libipv1/ip_lib.h>
+  #include <libpsio/psio.h>
+  #include <libciomr/libciomr.h>
+  #include <libchkpt/chkpt.h>
+  #include <libqt/qt.h>
+  #include <psifiles.h>
+  #include "MOInfo.h"
+  #include "Params.h"
+  #include "globals.h"
+
+  /* First definitions of globals */
+  FILE *infile, *outfile;
+  char *psi_file_prefix;
+  int *ioff;
+  struct MOInfo moinfo;
+  struct Params params;
+
+  /* C FUNCTION PROTOTYPES */
+  void semicanonical_fock(void);
+  void transform_one(void);
+  void transform_two(void);
+  void cleanup(void);
+  void fzc_density(int nirreps, int *frdocc, double *Pc, double **C,
+    int *first, int *first_so, int *last_so, int *ioff);
+  void ivo_density(int nirreps, int *frdocc, int *docc, int *socc, double *P, 
+    double **C, int *first, int *first_so, int *last_so, int *ioff);
+  void transform_two_mp2(void);
+  void transform_two_mp2r12a_t(void);
+  void transform_two_mp2r12a_gr(void);
+
+}
+
+/* C++ INCLUDE FILES GO HERE */
+
+/* C++ FUNCTION PROTOTYPES */
 void init_io(int argc, char *argv[]);
 void title(void);
 void init_ioff(void);
 void get_parameters(void);
 void print_parameters(void);
 void get_moinfo(void);
-void semicanonical_fock(void);
 void get_one_electron_integrals(void);
-void transform_one(void);
-void transform_two(void);
-void cleanup(void);
 void exit_io(void);
 void get_reorder_array(void);
-void fzc_density(int nirreps, int *frdocc, double *Pc, double **C,
-                 int *first, int *first_so, int *last_so, int *ioff);
-void ivo_density(int nirreps, int *frdocc, int *docc, int *socc, double *P, 
-                 double **C, int *first, int *first_so, int *last_so, 
-                 int *ioff);
 double *** construct_evects(char *spin, int nirreps, int *active, int *sopi, 
-                            int *orbspi, int *first_so, int *last_so, 
-                            int *first, int *last, int *fstact, int *lstact, 
-                            int printflag);
+  int *orbspi, int *first_so, int *last_so, int *first, int *last, 
+  int *fstact, int *lstact, int printflag);
 int check_C(int nso, int nmo, double **Cmat, double *S);
 
 
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   params.print_lvl = 1;
   init_io(argc,argv);
@@ -203,7 +213,7 @@ main(int argc, char *argv[])
 
   cleanup();
   exit_io();
-  exit(PSI_RETURN_SUCCESS);
+  return(PSI_RETURN_SUCCESS);
 }
 
 
