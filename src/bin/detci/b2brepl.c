@@ -1,9 +1,8 @@
-/*! \file 
-    \ingroup (DETCI)
-    \brief Enter brief description of file here 
+/*! 
+  \file b2brepl.c
+  \ingroup (DETCI)
+  \brief Contains code to do block-to-block single replacement lists
 */
-
-/*! \defgroup DETCI Add a description of the group DETCI */
 
 #define EXTERN
 #include <stdio.h>
