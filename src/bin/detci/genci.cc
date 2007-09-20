@@ -1,16 +1,15 @@
-/*! \file 
-    \ingroup (DETCI)
-    \brief Enter brief description of file here 
-*/
+/*! 
+  \file genci.cc
+  \ingroup (DETCI)
+  \brief C++ parts of the General Configuration interaction (GENCI) package
 
-/*
-** GENCI.CC
-**
-** C++ parts of the General Configuration Interaction (GENCI) package
-**
-** Matt Leininger
-** Center for Computational Quantum Chemistry
-** 1996
+   GENCI.CC
+  
+   C++ parts of the General Configuration Interaction (GENCI) package
+  
+   Matt Leininger
+   Center for Computational Quantum Chemistry
+   1996
 */ 
 
 /*** DEFINES ***/
