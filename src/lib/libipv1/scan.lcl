@@ -1,3 +1,9 @@
+#ifndef _psi_src_lib_libipv1_scan_lcl_
+#define _psi_src_lib_libipv1_scan_lcl_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifdef LOCAL_HEADER_USED
 /* #  error included two local headers */#else
@@ -19,3 +25,9 @@ char *s
 
 #endif
 );
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* header guard */

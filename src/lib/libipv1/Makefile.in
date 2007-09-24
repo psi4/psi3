@@ -18,18 +18,18 @@ PSITARGET = $(top_objdir)/lib/libPSI_ipv1.a
 
 DEFINES += -DNO_TEMPLATES
 
-TRUESRC = ip_alloc.c ip_cwk.c ip_data.c ip_error.c ip_karray.c ip_print.c \
-            ip_read.c scan.l parse.y
-
-CSRC = ip_alloc.c ip_cwk.c ip_data.c ip_error.c ip_karray.c ip_print.c ip_read.c
+CSRC =
+CXXSRC = ip_cwk.cc ip_alloc.cc ip_data.cc ip_error.cc ip_karray.cc ip_print.cc ip_read.cc
+TRUESRC = $(CSRC) $(CXXGEN) scan.l parse.y
 GENSRC = scan.c y.tab.c
-ALLSRC = $(CSRC) $(GENSRC)
+ALLCSRC = $(CSRC) $(GENSRC)
+ALLCXXSRC = $(CXXSRC)
 
-GBLINC = $(ALLSRC:%.c=%.gbl)
+GBLINC = $(ALLCSRC:%.c=%.gbl) $(ALLCXXSRC:%.cc=%.gbl)
 
 ALLINCLUDE = ip_lib.h ip_error.h ip_types.h ip_global.h tmpl.h $(GBLINC)
 
-LIBOBJ = $(ALLSRC:%.c=%.o)
+LIBOBJ = $(ALLCSRC:%.c=%.o) $(ALLCXXSRC:%.cc=%.o)
 
 include ../MakeRules
 
@@ -49,7 +49,7 @@ clean::
 depend:: $(ALLINCLUDE) y.tab.h
 
 ifneq ($(DODEPEND),no)
-include $(ALLSRC:%.c=%.d)
+include $(LIBOBJ:%.o=%.d)
 endif
 
 #

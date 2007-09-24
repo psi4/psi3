@@ -1,3 +1,5 @@
+#ifndef _psi_src_lib_libciomr_includes_h_
+#define _psi_src_lib_libciomr_includes_h_
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -42,3 +44,5 @@
 #define DSIGN(a,b) ((b) >= 0.0) ? (fabs(a)) : (-fabs(a))
 #define MIN0(a,b) ((a)<(b)) ? (a) : (b)
 #define MAX0(a,b) ((a)>(b)) ? (a) : (b)
+
+#endif /* header guard */

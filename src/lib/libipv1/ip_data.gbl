@@ -1,3 +1,6 @@
+#ifndef _psi_src_lib_libipv1_ipdata_gbl_
+#define _psi_src_lib_libipv1_ipdata_gbl_
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -20,3 +23,5 @@ int ip_double_array(char *keyword, double *arr, int len);
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* header guard */

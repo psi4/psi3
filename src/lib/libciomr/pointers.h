@@ -1,4 +1,11 @@
+#ifndef _psi_src_lib_libciomr_pointers_h_
+#define _psi_src_lib_libciomr_pointers_h_
+
 #include "iomrparam.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifdef ALLOC_GLOBALS
 #define EXTERN
@@ -18,3 +25,9 @@ EXTERN struct tms total_tmstime;
 #endif
 
 #undef EXTERN
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* header guard */

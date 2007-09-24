@@ -6,11 +6,15 @@
 **
 */
 
-#ifndef LIBCIOMR_H
-#define LIBCIOMR_H
+#ifndef _psi_src_lib_libciomr_libciomr_h_
+#define _psi_src_lib_libciomr_libciomr_h_
 
 #include <stdio.h>
 #include <libciomr/iomrparam.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 int psi_start(int argc, char *argv[], int overwrite_output);
 int psi_stop(void);
@@ -158,4 +162,8 @@ void free_block(double **array);
 /* Functions in fndcor */
 void fndcor(long int *maxcrb, FILE *infile, FILE *outfile);
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* header guard */

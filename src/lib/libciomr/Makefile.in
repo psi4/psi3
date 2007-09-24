@@ -4,76 +4,79 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-CDEF += -DBUFF=0 -DSITEDIR=\"$(datadir)\"
+CXXDEF += -DBUFF=0 -DSITEDIR=\"$(datadir)\"
 
 PSITARGET = $(top_objdir)/lib/libPSI_ciomr.a
 
-TRUESRC = \
-add_arr.c \
-add_mat.c \
-block_alloc.c \
-block_matrix.c \
-dot.c \
-eigout.c \
-eigsort.c \
-eivout.c \
-errors.c \
-ffile.c \
-flen.c \
-flin.c \
-fndcor.c \
-get_file_info.c \
-get_file_ptr.c \
-get_param.c \
-i2sec.c \
-init_array.c \
-init_matrix.c \
-init_ptrs.c \
-int_array.c \
-int_pac.c \
-io_getline.c \
-io_locate.c \
-ioopen.c \
-long_int_array.c \
-lubksb.c \
-ludcmp.c \
-mmult.c \
-mxmb.c \
-mxmbol.c \
-old_inp.c \
-print_array.c \
-print_mat.c \
-psi_start.c \
-psi_stop.c \
-r_async.c \
-ram.c \
-rclose.c \
-resource.c \
-rfile.c \
-rgetsa.c \
-rread.c \
-rsetsa.c \
-rsp.c \
-rwrit.c \
-s_async.c \
-sec2i.c \
-sequential.c \
-sq_rsp.c \
-sq_to_tri.c \
-sread.c \
-srew.c \
-swrit.c \
-tqli.c \
-tred2.c \
-tri_to_sq.c \
-tstart.c \
-wreadw.c \
-wwritw.c \
-zero.c 
+CXXSRC = \
+add_arr.cc \
+add_mat.cc \
+balance.cc \
+block_alloc.cc \
+block_matrix.cc \
+dot.cc \
+eigout.cc \
+eigsort.cc \
+eivout.cc \
+errors.cc \
+ffile.cc \
+flen.cc \
+flin.cc \
+fndcor.cc \
+get_file_info.cc \
+get_file_ptr.cc \
+get_param.cc \
+i2sec.cc \
+init_array.cc \
+init_matrix.cc \
+init_ptrs.cc \
+int_array.cc \
+int_pac.cc \
+io_getline.cc \
+io_locate.cc \
+ioopen.cc \
+long_int_array.cc \
+lubksb.cc \
+ludcmp.cc \
+mmult.cc \
+mxmb.cc \
+old_inp.cc \
+print_array.cc \
+print_mat.cc \
+psi_start.cc \
+psi_stop.cc \
+r_async.cc \
+ram.cc \
+rclose.cc \
+resource.cc \
+rfile.cc \
+rgetsa.cc \
+rread.cc \
+rsetsa.cc \
+rsp.cc \
+rwrit.cc \
+s_async.cc \
+sec2i.cc \
+sequential.cc \
+sq_rsp.cc \
+sq_to_tri.cc \
+sread.cc \
+srew.cc \
+swrit.cc \
+tqli.cc \
+tred2.cc \
+tri_to_sq.cc \
+tstart.cc \
+wreadw.cc \
+wwritw.cc \
+zero.cc 
+
+
+TRUECSRC =
 
 DEPENDINCLUDE = includes.h iomrparam.h common.h pointers.h structs.h types.h
 
-LIBOBJ = $(TRUESRC:%.c=%.o)
+LIBOBJ = $(TRUECSRC:%.c=%.o) $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 

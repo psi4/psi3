@@ -1,3 +1,6 @@
+#ifndef _psi_src_lib_libipv1_ipalloc_gbl_
+#define _psi_src_lib_libipv1_ipalloc_gbl_
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -11,3 +14,5 @@ void ip_free_array(ip_array_t *array);
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* header guard */

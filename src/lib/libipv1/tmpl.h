@@ -2,8 +2,12 @@
     \ingroup (IPV1)
     \brief Enter brief description of file here 
 */
-#ifndef _TMPL_H
-#define _TMPL_H
+#ifndef _psi_src_lib_libipv1_tmpl_h_
+#define _psi_src_lib_libipv1_tmpl_h_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifdef DEC
 #define NO_CONST
@@ -55,5 +59,9 @@ void abort( void );
 
 #endif /* PROTO_LIBRARY */
 
-#endif /* _TMPL_H */
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* header guard */
 

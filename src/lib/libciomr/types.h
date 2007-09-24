@@ -1,7 +1,11 @@
-#ifndef TYPES_H
-#define TYPES_H
+#ifndef _psi_src_lib_libciomr_types_h_
+#define _psi_src_lib_libciomr_types_h_
 
 #include "iomrparam.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 typedef
 struct {
@@ -54,50 +58,37 @@ struct {
     } ptr;
   } ioFILE_t;
 
+  sequential_t *
+  sequential_ioopen(char* baseparam,int unit);
+  void
+  sequential_ioclos(sequential_t* ud, int status);
+  void
+  sequential_iordr(sequential_t* ud, char* buffer,PSI_FPTR first,int length);
+  void
+  sequential_iowrr(sequential_t *ud,char* buffer,PSI_FPTR first,int length);
+  void
+  sequential_iordwrr(char* caller,int ioop,sequential_t* ud,char* buffer,PSI_FPTR first,int length);
+  PSI_FPTR sequential_iosize(sequential_t* ud);
+  r_async_t * r_async_ioopen(char *param, int unit);
+  void r_async_ioclos(r_async_t *ud, int status);
+  void r_async_iordr(r_async_t *ud, char *buffer, PSI_FPTR first, int length);
+  void r_async_iowrr(r_async_t *ud, char *buffer, PSI_FPTR first, int length);
+  PSI_FPTR r_async_iosize(r_async_t *ud);
+  s_async_t *s_async_ioopen(char *param, int unit);
+  void s_async_ioclos(s_async_t *ud, int status);
+  void s_async_iordr(s_async_t *ud, char *buffer, PSI_FPTR first, int length);
+  void s_async_iowrr(s_async_t *ud, char *buffer, PSI_FPTR first, int length);
+  PSI_FPTR s_async_iosize(s_async_t *ud);
+  ram_t * ram_ioopen(char *param, int unit);
+  void ram_ioclos(ram_t *ud, int status);
+  void ram_iordr(ram_t *ud, char *buffer, PSI_FPTR first, int length);
+  void ram_iowrr(ram_t *ud, char *buffer, PSI_FPTR first, int length);
+  PSI_FPTR ram_iosize(ram_t *ud);
 
-/* From ioopen.c */
-void ioinit_();
-void ioopen_();
-void ioclos_();
-void iowrr_();
-void iordr_();
-void ioabort();
-PSI_FPTR iosize_();
 
-/* From sequential.c */
-sequential_t *sequential_ioopen();
-void sequential_ioclos();
-void sequential_iordr();
-void sequential_iowrr();
-void sequential_iordwrr();
-PSI_FPTR sequential_iosize();
 
-/* From r_async.c */
-r_async_t *r_async_ioopen();
-void r_async_ioclos();
-void r_async_iordr();
-void r_async_iowrr();
-PSI_FPTR r_async_iosize();
-
-/* From s_async.c */
-s_async_t *s_async_ioopen();
-void s_async_ioclos();
-void s_async_iordr();
-void s_async_iowrr();
-PSI_FPTR s_async_iosize();
-
-/* From ram.c */
-ram_t *ram_ioopen();
-void ram_ioclos();
-void ram_iordr();
-void ram_iowrr();
-PSI_FPTR ram_iosize();
-
-/* From errors.c */
-void no_path_given();
-void malloc_check();
-void fopen_check();
-void fread_error();
-void fwrite_error();
-
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* header guard */

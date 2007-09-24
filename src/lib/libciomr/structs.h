@@ -1,3 +1,9 @@
+#ifndef _psi_src_lib_libciomr_structs_h_
+#define _psi_src_lib_libciomr_structs_h_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 struct integrals {
      double *smat;
@@ -16,3 +22,8 @@ struct integrals {
      double *pmat_old;
      } ;
 
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* header guard */

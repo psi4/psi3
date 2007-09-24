@@ -1,3 +1,6 @@
+#ifndef _psi_src_lib_libipv1_ipprint_gbl_
+#define _psi_src_lib_libipv1_ipprint_gbl_
+
 #include <stdio.h>
 
 #ifdef __cplusplus
@@ -11,3 +14,5 @@ void ip_print_value(FILE *fp, ip_value_t *value);
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* header guard */

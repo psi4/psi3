@@ -3,6 +3,13 @@
     \brief Enter brief description of file here 
 */
 
+#ifndef _psi_src_lib_libipv1_ipglobal_h_
+#define _psi_src_lib_libipv1_ipglobal_h_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
  /* Global data for the ip routines. */
 
 #ifdef _IP_ALLOCATE_GLOBAL_
@@ -33,3 +40,8 @@ EXTERN int INITIALIZE(ip_uppercase,0);
  /* This is 1 if keywords are to be shown as they are searched. */
 EXTERN int ip_keyword;
 
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* header guard */

@@ -3,6 +3,13 @@
     \brief Enter brief description of file here 
 */
 
+#ifndef _psi_src_lib_libipv1_iptypes_h_
+#define _psi_src_lib_libipv1_iptypes_h_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #define IP_UNDEFINED  0
 #define IP_ARRAY      1
 #define IP_SCALAR     2
@@ -39,3 +46,8 @@ typedef struct ip_array_struct ip_array_t;
 typedef struct ip_keyword_tree_struct ip_keyword_tree_t;
 typedef struct ip_keyword_tree_list_struct ip_keyword_tree_list_t;
 
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* header guard */

@@ -1,3 +1,6 @@
+#ifndef _psi_src_lib_libipv1_ipread_gbl_
+#define _psi_src_lib_libipv1_ipread_gbl_
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -16,3 +19,5 @@ ip_value_t *ip_array(ip_value_t *arrayval, ip_value_t *newval);
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* header guard */

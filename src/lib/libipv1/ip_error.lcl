@@ -1,3 +1,9 @@
+#ifndef _psi_src_lib_libipv1_iperror_lcl_
+#define _psi_src_lib_libipv1_iperror_lcl_
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 #ifdef LOCAL_HEADER_USED
 /* #  error included two local headers */#else
@@ -12,3 +18,9 @@
 #ifndef LOCAL_VA_FUNCTION
 #  define LOCAL_VA_FUNCTION LOCAL_STORAGE_CLASS
 #endif
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* header guard */

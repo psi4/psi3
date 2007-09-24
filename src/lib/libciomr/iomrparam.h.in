@@ -1,6 +1,5 @@
-
-#ifndef IOMRPARAM_H
-#define IOMRPARAM_H
+#ifndef _psi_src_lib_libciomr_iomrparam_h_
+#define _psi_src_lib_libciomr_iomrparam_h_
 
 /* Change this macro to unsigned long long int for systems that allow it */
 #define PSI_FPTR unsigned long int
@@ -19,4 +18,4 @@
 #define IOOP_READ 1
 #define IOOP_WRITE 2
 
-#endif
+#endif /* header guard */

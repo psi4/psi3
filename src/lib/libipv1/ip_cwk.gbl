@@ -1,6 +1,10 @@
+#ifndef _psi_src_lib_libipv1_ipcwk_gbl_
+#define _psi_src_lib_libipv1_ipcwk_gbl_
+
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 
 void ip_cwk_root(void);
 void ip_cwk_clear(void);
@@ -14,3 +18,5 @@ ip_value_t *ip_key_value(char *keyword);
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* header guard */

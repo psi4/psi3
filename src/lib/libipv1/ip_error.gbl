@@ -1,3 +1,6 @@
+#ifndef _psi_src_lib_libipv1_iperror_gbl_
+#define _psi_src_lib_libipv1_iperror_gbl_
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -9,3 +12,5 @@ void ip_warn(char *msg, ...);
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* header guard */
