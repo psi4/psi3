@@ -111,7 +111,7 @@ STRIP_FROM_PATH        =
 # to NO (the default) then the documentation will be excluded. 
 # Set it to YES to include the internal documentation. 
 
-INTERNAL_DOCS          = NO
+INTERNAL_DOCS          = YES
 
 # If the CLASS_DIAGRAMS tag is set to YES (the default) Doxygen will 
 # generate a class diagram (in Html and LaTeX) for classes with base or 
@@ -122,12 +122,12 @@ CLASS_DIAGRAMS         = YES
 # If the SOURCE_BROWSER tag is set to YES then a list of source files will 
 # be generated. Documented entities will be cross-referenced with these sources. 
 
-SOURCE_BROWSER         = NO
+SOURCE_BROWSER         = YES
 
 # Setting the INLINE_SOURCES tag to YES will include the body 
 # of functions and classes directly in the documentation. 
 
-INLINE_SOURCES         = NO
+INLINE_SOURCES         = YES
 
 # Setting the STRIP_CODE_COMMENTS tag to YES (the default) will instruct 
 # doxygen to hide any special comment blocks from generated source code 

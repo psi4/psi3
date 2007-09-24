@@ -1,6 +1,6 @@
-/*! \file 
+/*! \file ip_data.c
     \ingroup (IPV1)
-    \brief Enter brief description of file here 
+    \brief Rudimentary data retrieval routines from the input file 
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,10 +20,10 @@
 #include "ip_error.h"
 #include "ip_error.gbl"
 
-/* The way the AIX xlc compiler handles vararg decs isn't compatible with
+/*!\todo The way the AIX xlc compiler handles vararg decs isn't compatible with
  * the way the tmpl file is formed, so ip_data.global cannot be used.
  * Everything global should be defined before it is used here. */
-/* NOTE: ip_data.global will work fine (and be correct) for other source
+/*! \note NOTE: ip_data.global will work fine (and be correct) for other source
  * files.  It's just this one that is a problem because xlc thinks my
  * declarations below are different than the ones in the global file
  * (and they are-sort of). */
@@ -35,6 +35,8 @@
 
 #include "ip_cwk.gbl"
 
+/*! Count the number of entries in an array 
+  \param n =0 just count first level, >0 allocate array. */
 int ip_count(char *keyword, int *count, int n, ...)
 {
   va_list args;
@@ -59,6 +61,7 @@ int ip_count(char *keyword, int *count, int n, ...)
     }
   }
 
+/*! Count the entries of an array and store in array.  \param n =0 just count first level, >0 allocate array.*/
 int ip_count_v(char *keyword, int *count, int n, int *v)
 {
   ip_value_t *val;
@@ -72,6 +75,7 @@ int ip_count_v(char *keyword, int *count, int n, int *v)
   return IPE_OK;
   }
 
+/*! Retrieve the value of a boolean keyword.  \param n =0 just count first level, >0 allocate array. */
 int ip_boolean(char *keyword, int *boolean, int n, ...)
 {
   va_list args;
@@ -95,7 +99,7 @@ int ip_boolean(char *keyword, int *boolean, int n, ...)
     return r;
     }
   }
-
+/*! Retrieve a boolean keyword.   \param n =0 just count first level, >0 allocate array.*/
 int ip_boolean_v(char *keyword, int *boolean, int n, int *v)
 {
   ip_value_t *val;
@@ -125,7 +129,7 @@ int ip_boolean_v(char *keyword, int *boolean, int n, int *v)
   return IPE_OK;
   }
 
-/* n should always be zero in this version of libip. */
+/*! Check for existence of keyword. n should always be zero in this version of libip.  \param n =0 just count first level, >0 allocate array. */
 int ip_exist(char *keyword, int n, ...)
 {
   va_list args;
@@ -153,14 +157,16 @@ int ip_exist(char *keyword, int n, ...)
     }
   }
 
-/* n should always be zero in this version of libip. */
+/*! Check for existence of keyword. n should always be zero in this version of libip.   \param n =0 just count first level, >0 allocate array.*/
 int ip_exist_v(char *keyword, int n, int *v)
 {
   if (ip_cwk_descend_tree(keyword)) return 1;
 
   return 0;
   }
-
+/*! Read data entries.   
+  \param n =0 just count first level, >0 allocate array. 
+  \param conv string conversion information a la snprintf. */
 int ip_data(char *keyword, char *conv, void *value, int n, ...)
 {
   va_list args;
@@ -185,6 +191,9 @@ int ip_data(char *keyword, char *conv, void *value, int n, ...)
     }
   }
 
+/*! Read data entries.   
+  \param n =0 just count first level, >0 allocate array. 
+  \param conv string conversion information a la snprintf. */
 int ip_data_v(char *keyword, char *conv, void *value, int n, int *v)
 {
   ip_value_t *val;
