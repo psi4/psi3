@@ -9,6 +9,10 @@
 
 #include <libpsio/psio.h>
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /*!
   String is a string
 */
@@ -175,6 +179,9 @@ void slaterdetset_read_vect(ULI unit, char *prefix, double *coeffs,
 #define SDSET_KEY_BETASTRINGS "Beta Strings"
 #define SDVECTOR_KEY_VECTOR "Vector"
 
-
+#ifdef __cplusplus
+}
 #endif
+
+#endif  /* _psi3_src_lib_libqt_slaterdset_h_ */
 

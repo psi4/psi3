@@ -11,6 +11,10 @@
 #ifndef _psi_src_lib_libqt_qt_h_
 #define _psi_src_lib_libqt_qt_h_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 int mat_in(FILE *fp, double **array, int width, int max_length, int *stat);
 void fill_sym_matrix(double **A, int size);
 double combinations(int n, int k);
@@ -59,24 +63,24 @@ double eri(unsigned int l1, unsigned int m1, unsigned int n1,
 double norm_const(unsigned int l1, unsigned int m1, unsigned int n1, 
         double alpha1, double A[3]);
 
-extern void C_DAXPY(int length, double a, double *x, int inc_x,
+void C_DAXPY(int length, double a, double *x, int inc_x,
              double *y, int inc_y);
-extern void C_DCOPY(int length, double *x, int inc_x,
+void C_DCOPY(int length, double *x, int inc_x,
              double *y, int inc_y);
-extern void C_DGEMM(char transa, char transb, int m, int n, int k,
+void C_DGEMM(char transa, char transb, int m, int n, int k,
              double alpha, double *A, int nca, double *B, int ncb,
              double beta, double *C, int ncc);
-extern void C_DROT(int ntot, double *x, int incx, double *y, int incy,
+void C_DROT(int ntot, double *x, int incx, double *y, int incy,
              double costheta, double sintheta);
-extern void C_DSCAL(long int len, double alpha, double *vec, int inc);
-extern void C_DGEMV(char transa, int m, int n, double alpha, double *A, 
+void C_DSCAL(long int len, double alpha, double *vec, int inc);
+void C_DGEMV(char transa, int m, int n, double alpha, double *A, 
              int nca, double *X, int inc_x, double beta, double *Y,
              int inc_y);
-extern void C_DSPMV(char uplo, int n, double alpha, double *A,
+void C_DSPMV(char uplo, int n, double alpha, double *A,
              double *X, int inc_x, double beta, double *Y,
              int inc_y);
-extern double C_DDOT(int n, double *X, int inc_x, double *Y, int inc_y);
-extern int C_DGETRF(int nrow, int ncol, double *a, int lda, int *ipiv);
+double C_DDOT(int n, double *X, int inc_x, double *Y, int inc_y);
+int C_DGETRF(int nrow, int ncol, double *a, int lda, int *ipiv);
 void timer_init(void);
 void timer_done(void);
 void timer_on(char *key);
@@ -114,4 +118,8 @@ int ci_wfn(char *wfn);
 
 #define MAX_RAS_SPACES 4
 
+#ifdef __cplusplus
+}
 #endif
+
+#endif /* _psi_src_lib_libqt_qt_h */
