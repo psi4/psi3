@@ -40,11 +40,6 @@
 
 #include <psifiles.h>
 
-/* guess for HZ, if missing */
-#ifndef HZ
-#define HZ 60
-#endif
-
 #define TIMER_KEYLEN 32
 #define TIMER_OFF 0
 #define TIMER_ON 1
@@ -228,9 +223,9 @@ void timer_off(char *key)
   ontime = this_timer->ontime;
 
   times(&offtime);
-
-  this_timer->utime += ((double) (offtime.tms_utime-ontime.tms_utime))/HZ;
-  this_timer->stime += ((double) (offtime.tms_stime-ontime.tms_stime))/HZ;
+  const long clk_tck = sysconf(_SC_CLK_TCK);
+  this_timer->utime += ((double) (offtime.tms_utime-ontime.tms_utime))/clk_tck;
+  this_timer->stime += ((double) (offtime.tms_stime-ontime.tms_stime))/clk_tck;
 
   wall_stop = time(NULL);
   this_timer->wtime += ((double) (wall_stop - this_timer->wall_start));

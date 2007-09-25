@@ -20,16 +20,6 @@
 #include <sys/times.h>
 #endif
 
-#ifdef HAVE_SYS_PARAM_H
-/* This has HZ, which gives the number of clock ticks per second. */
-#include <sys/param.h>
-#endif
-
-/* guess for HZ, if missing */
-#ifndef HZ
-#define HZ 60
-#endif
-
 extern "C" {
 
 /*
@@ -84,9 +74,9 @@ void tstop(FILE *outfile)
   total_time = time_end - time_start;
 
   times(&total_tmstime);
-
-  user_s = ((double) total_tmstime.tms_utime)/HZ;
-  sys_s = ((double) total_tmstime.tms_stime)/HZ;
+  const long clk_tck = sysconf(_SC_CLK_TCK);
+  user_s = ((double) total_tmstime.tms_utime)/clk_tck;
+  sys_s = ((double) total_tmstime.tms_stime)/clk_tck;
 
   for (i=0; i < 78 ; i++) {
     fprintf(outfile,"*");

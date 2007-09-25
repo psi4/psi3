@@ -1,5 +1,5 @@
 
-.PHONY: tests clean
+.PHONY: tests quicktests cc_tests psirb_tests clean
 
 cc_subdirs = cc1 cc2 cc3 cc4 cc8 cc9 cc10 cc11 cc12 cc13 cc14 cc15 cc16 \
 cc17 cc18 cc19 cc21 cc22 cc23 cc24 cc25 cc26 cc27 cc28 cc29 cc30 cc31 cc32 \
@@ -30,8 +30,20 @@ ifeq ($(RUBYLINK),yes)
 subdirs += $(rb_subdirs)
 endif
 
+# the bare minimum
+quicktestdirs = scf-opt scf-freq scf-polar rhf-stab \
+rhf-oeprop cc1 mp2-opt mp2-direct-sp mp2-scs \
+dboc-rhf1 mp2r12-sp1 rhf-lindep1 cisd-sp casscf-sp \
+psi_start
+
 tests:
 	for dir in $(subdirs); \
+	do \
+	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
+	done
+
+quicktests:
+	for dir in $(quicktestdirs); \
 	do \
 	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
 	done
