@@ -49,7 +49,7 @@ depend:
           done
 
 clean:
-	for dir in $(subdirs) tests doc; \
+	for dir in $(subdirs); \
           do \
             (cd $${dir}; echo Making clean in $${dir}; $(MAKE) clean) || exit 1; \
           done
