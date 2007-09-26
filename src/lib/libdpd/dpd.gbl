@@ -1,5 +1,8 @@
 #include "dpd.h"
 
+#ifndef _psi_src_lib_libdpd_dpd_gbl
+#define _psi_src_lib_libdpd_dpd_gbl
+
 #ifdef EXTERN
 #undef EXTERN
 #define EXTERN extern
@@ -18,3 +21,5 @@ EXTERN dpd_gbl dpd_main;     /* Central cache for all DPD's */
 #ifdef __cplusplus
 }
 #endif
+
+#endif /* _psi_src_lib_libdpd_dpd_gbl */=======
