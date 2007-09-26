@@ -5,6 +5,7 @@
 #define EXTERN
 #include <stdio.h>
 #include <stdlib.h>
+#include <strings.h>
 #include <libciomr/libciomr.h>
 #include <math.h>
 #include "input.h"

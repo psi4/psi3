@@ -14,6 +14,7 @@
 
 /* include's */
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 /* define's */

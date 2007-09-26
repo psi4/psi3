@@ -10,6 +10,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <ctype.h>
+#include <libciomr/libciomr.h>
 
 #define EXTERN
 #define C_CODE

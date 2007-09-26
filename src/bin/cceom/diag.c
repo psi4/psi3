@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <libchkpt/chkpt.h>
 #define EXTERN
 #include "globals.h"
 #include <physconst.h>
