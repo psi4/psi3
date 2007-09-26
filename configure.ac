@@ -589,14 +589,14 @@ CCDEPENDSUF=none
 CXXDEPENDSUF=none
 CCDEPENDFLAGS=-M
 CXXDEPENDFLAGS=-M
-/bin/rm -f depcheck.u depcheck.c depcheck.o
+/bin/rm -f depcheck.u depcheck.c depcheck.cc depcheck.o
 # Check for an IBM visual age C compiler
 echo "#include <stdio.h>" > depcheck.c
 $CC $CPPFLAGS $CFLAGS -M depcheck.c > /dev/null 2>&1
 if test -f depcheck.u; then
   CCDEPENDSUF=u
 fi
-/bin/rm -f depcheck.u depcheck.c depcheck.o
+/bin/rm -f depcheck.u depcheck.c depcheck.cc depcheck.o
 # Check for an IBM visual age C++ compiler
 echo "#include <iostream>" > depcheck.cc
 $CXX $CPPFLAGS $CXXFLAGS -M -E depcheck.cc > /dev/null 2>&1
@@ -604,7 +604,7 @@ if test -f depcheck.u; then
   CXXDEPENDSUF=u
   CXXDEPENDFLAGS="-M -E"
 fi
-/bin/rm -f depcheck.u depcheck.c depcheck.o
+/bin/rm -f depcheck.u depcheck.c depcheck.cc depcheck.o
 
 AC_SUBST(CCDEPENDSUF)
 AC_SUBST(CXXDEPENDSUF)
