@@ -2,8 +2,8 @@
     \ingroup (DPD)
     \brief Enter brief description of file here 
 */
-#ifndef DPD_H
-#define DPD_H
+#ifndef _psi_src_lib_libdpd_dpd_h
+#define _psi_src_lib_libdpd_dpd_h
 
 #include <stdio.h>
 #include <libpsio/psio.h>
@@ -15,6 +15,10 @@
 #include <dmalloc.h>
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+	
 #define T3_TIMER_ON (0)
 
 #define DPD_BIGNUM 2147483647 /* the four-byte signed int limit */
@@ -238,6 +242,7 @@ int dpd_file2_mat_close(dpdfile2 *File);
 int dpd_file2_mat_rd(dpdfile2 *File);
 int dpd_file2_mat_wrt(dpdfile2 *File);
 int dpd_file2_print(dpdfile2 *File, FILE *outfile);
+int dpd_file2_mat_print(dpdfile2 *File, FILE *outfile);
 int dpd_file2_copy(dpdfile2 *InFile, int outfilenum, char *label);
 int dpd_file2_dirprd(dpdfile2 *FileA, dpdfile2 *FileB);
 double dpd_file2_dot(dpdfile2 *FileA, dpdfile2 *FileB);
@@ -333,11 +338,15 @@ struct dpd_file2_cache_entry
 struct dpd_file2_cache_entry *dpd_file2_cache_last(void);
 int dpd_file2_cache_add(dpdfile2 *File);
 int dpd_file2_cache_del(dpdfile2 *File);
+int dpd_file4_cache_del_low(void);
+void dpd_file2_cache_dirty(dpdfile2 *File);
 
 void dpd_file4_cache_init(void);
 void dpd_file4_cache_close(void);
 void dpd_file4_cache_print(FILE *outfile);
 void dpd_file4_cache_print_screen(void);
+int dpd_file4_cache_get_priority(dpdfile4 *File);
+
 struct dpd_file4_cache_entry
  *dpd_file4_cache_scan(int filenum, int irrep, int pqnum, int rsnum, char *label, int dpdnum);
 struct dpd_file4_cache_entry *dpd_file4_cache_last(void);
@@ -418,5 +427,9 @@ void cc3_sigma_UHF_BBA(dpdbuf4 *C2BB, dpdbuf4 *C2AB, dpdbuf4 *C2BA,
     int *bocc_off, int *avirtpi, int *avir_off, int *bvirtpi, int *bvir_off,
     double omega, FILE *outfile);
 
-#endif /* DPD_H */
+#ifdef __cplusplus
+} /* extern "C" */
+#endif
+
+#endif /* _psi_src_lib_libdpd_dpd_h */
 

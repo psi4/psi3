@@ -4,51 +4,51 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-#CFLAGS += -DDPD_TIMER
-#CFLAGS += -DDPD_DEBUG
-#CFLAGS += -DUSE_DMALLOC
+#CXXFLAGS += -DDPD_TIMER
+#CXXFLAGS += -DDPD_DEBUG
+#CXXFLAGS += -DUSE_DMALLOC
 
 PSITARGET = $(top_objdir)/lib/libPSI_dpd.a
 
-TRUESRC = \
-4mat_irrep_print.c           buf4_symm2.c      file2_trace.c                \
-buf4_axpy.c                  close.c           file4_cache.c                \
-buf4_close.c                 contract222.c     file4_close.c                \
-buf4_copy.c                  contract244.c     file4_init.c                 \
-buf4_dirprd.c                contract422.c     file4_init_nocache.c         \
-buf4_dot.c                   contract424.c     file4_mat_irrep_close.c      \
-buf4_dump.c                  contract442.c     file4_mat_irrep_init.c       \
-buf4_init.c                  contract444.c     file4_mat_irrep_rd.c         \
-buf4_mat_irrep_close.c       dot13.c           file4_mat_irrep_rd_block.c   \
-buf4_mat_irrep_close_block.c dot14.c           file4_mat_irrep_row_close.c  \
-buf4_mat_irrep_init.c        dot23.c           file4_mat_irrep_row_init.c   \
-buf4_mat_irrep_init_block.c  dot24.c           file4_mat_irrep_row_rd.c     \
-buf4_mat_irrep_rd.c          error.c           file4_mat_irrep_row_wrt.c    \
-buf4_mat_irrep_rd_block.c    file2_axpy.c      file4_mat_irrep_row_zero.c   \
-buf4_mat_irrep_row_close.c   file2_cache.c     file4_mat_irrep_wrt.c        \
-buf4_mat_irrep_row_init.c    file2_close.c     file4_mat_irrep_wrt_block.c  \
-buf4_mat_irrep_row_rd.c      file2_copy.c      file4_print.c                \
-buf4_mat_irrep_row_wrt.c     file2_dirprd.c    init.c                       \
-buf4_mat_irrep_row_zero.c    file2_dot.c       trans4_close.c               \
-buf4_mat_irrep_shift13.c     file2_init.c      trans4_init.c                \
-buf4_mat_irrep_shift31.c     file2_mat_close.c trans4_mat_irrep_close.c     \
-buf4_mat_irrep_wrt.c         file2_mat_init.c  trans4_mat_irrep_init.c      \
-buf4_mat_irrep_wrt_block.c   file2_mat_print.c trans4_mat_irrep_rd.c        \
-buf4_dot_self.c              file2_mat_rd.c    trans4_mat_irrep_shift13.c   \
-buf4_print.c                 file2_mat_wrt.c   trans4_mat_irrep_shift31.c   \
-buf4_scm.c                   file2_dot_self.c  trans4_mat_irrep_wrt.c       \
-buf4_sort.c                  file2_print.c     set_default.c                \
-                             file2_axpbycz.c      \
-buf4_axpbycz.c                \
-buf4_symm.c                  buf4_scmcopy.c    file2_scm.c                  \
-buf4_sort_ooc.c              block_matrix.c    memfree.c                    \
-trace42_13.c                 buf4_sort_axpy.c  3d_sort.c \
-T3_AAA.c                     T3_AAB.c          T3_RHF.c  T3_RHF_ic.c \
-cc3_sigma_RHF.c              cc3_sigma_UHF.c   cc3_sigma_RHF_ic.c
+CXXSRC = \
+4mat_irrep_print.cc           buf4_symm2.cc      file2_trace.cc                \
+buf4_axpy.cc                  close.cc           file4_cache.cc                \
+buf4_close.cc                 contract222.cc     file4_close.cc                \
+buf4_copy.cc                  contract244.cc     file4_init.cc                 \
+buf4_dirprd.cc                contract422.cc     file4_init_nocache.cc         \
+buf4_dot.cc                   contract424.cc     file4_mat_irrep_close.cc      \
+buf4_dump.cc                  contract442.cc     file4_mat_irrep_init.cc       \
+buf4_init.cc                  contract444.cc     file4_mat_irrep_rd.cc         \
+buf4_mat_irrep_close.cc       dot13.cc           file4_mat_irrep_rd_block.cc   \
+buf4_mat_irrep_close_block.cc dot14.cc           file4_mat_irrep_row_close.cc  \
+buf4_mat_irrep_init.cc        dot23.cc           file4_mat_irrep_row_init.cc   \
+buf4_mat_irrep_init_block.cc  dot24.cc           file4_mat_irrep_row_rd.cc     \
+buf4_mat_irrep_rd.cc          error.cc           file4_mat_irrep_row_wrt.cc    \
+buf4_mat_irrep_rd_block.cc    file2_axpy.cc      file4_mat_irrep_row_zero.cc   \
+buf4_mat_irrep_row_close.cc   file2_cache.cc     file4_mat_irrep_wrt.cc        \
+buf4_mat_irrep_row_init.cc    file2_close.cc     file4_mat_irrep_wrt_block.cc  \
+buf4_mat_irrep_row_rd.cc      file2_copy.cc      file4_print.cc                \
+buf4_mat_irrep_row_wrt.cc     file2_dirprd.cc    init.cc                       \
+buf4_mat_irrep_row_zero.cc    file2_dot.cc       trans4_close.cc               \
+buf4_mat_irrep_shift13.cc     file2_init.cc      trans4_init.cc                \
+buf4_mat_irrep_shift31.cc     file2_mat_close.cc trans4_mat_irrep_close.cc     \
+buf4_mat_irrep_wrt.cc         file2_mat_init.cc  trans4_mat_irrep_init.cc      \
+buf4_mat_irrep_wrt_block.cc   file2_mat_print.cc trans4_mat_irrep_rd.cc        \
+buf4_dot_self.cc              file2_mat_rd.cc    trans4_mat_irrep_shift13.cc   \
+buf4_print.cc                 file2_mat_wrt.cc   trans4_mat_irrep_shift31.cc   \
+buf4_scm.cc                   file2_dot_self.cc  trans4_mat_irrep_wrt.cc       \
+buf4_sort.cc                  file2_print.cc     set_default.cc                \
+file2_axpbycz.cc      \
+buf4_axpbycz.cc                \
+buf4_symm.cc                  buf4_scmcopy.cc    file2_scm.cc                  \
+buf4_sort_ooc.cc              block_matrix.cc    memfree.cc                    \
+trace42_13.cc                 buf4_sort_axpy.cc  3d_sort.cc \
+T3_AAA.cc                     T3_AAB.cc          T3_RHF.cc  T3_RHF_ic.cc \
+cc3_sigma_RHF.cc              cc3_sigma_UHF.cc   cc3_sigma_RHF_ic.cc
 
 DEPENDINCLUDE = dpd.h dpd.gbl
 
-LIBOBJ = $(TRUESRC:%.c=%.o)
+LIBOBJ = $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 
