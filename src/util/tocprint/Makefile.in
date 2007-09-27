@@ -5,7 +5,7 @@ VPATH = @srcdir@
 include ../MakeVars
 
 CXXSRC = tocprint.cc cc2unit.cc
-BINOBJ = $(CXXSRC:%.c=%.o)
+BINOBJ = $(CXXSRC:%.cc=%.o)
 PSILIBS = -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 ALLOC =
 
