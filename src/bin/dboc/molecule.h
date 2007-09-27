@@ -6,6 +6,8 @@
 #ifndef _psi3_bin_dboc_molecule_h_
 #define _psi3_bin_dboc_molecule_h_
 
+namespace psi { namespace dboc {
+
 typedef struct {
   int natom;
   int nuniques;       // Number of unique atoms
@@ -18,6 +20,8 @@ typedef struct {
   int *ua_degen;      // Degeneracy (length of the orbit) of unique atom
   double **cartrep;   // Group representation in cartesian basis
 } Molecule_t;
+
+}} /* namespace psi::dboc */
 
 #endif
 

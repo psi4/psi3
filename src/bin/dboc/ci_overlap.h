@@ -6,10 +6,10 @@
 #ifndef _psi3_bin_dboc_cioverlap_h_
 #define _psi3_bin_dboc_cioverlap_h_
 
-extern "C" {
- #include <libqt/slaterdset.h>
-}
+#include <libqt/slaterdset.h>
 #include "stringblocks.h"
+
+namespace psi{ namespace dboc {
 
 /// Computes overlap between 2 CI vectors. Uses precomputed string overlap matrix for alpha and beta spins.
 class CIOverlap {
@@ -61,9 +61,6 @@ class CIOverlap {
   ThreadGrp threadgrp_;
 };
 
-// Packages ptr to CIOverlap and thread id
-typedef std::pair<CIOverlap*,int> objptr_id_t;
-
-extern "C" void* thread_compute(void* objptr_id_voidptr);
+}} /* namespace psi::dboc */
 
 #endif

@@ -15,6 +15,8 @@
 #include "params.h"
 #include "linalg.h"
 
+namespace psi { namespace dboc {
+
 extern void done(const char * message);
 extern Params_t Params;
 
@@ -215,3 +217,5 @@ void lu_decom(FLOAT** a, int n, int* indx, FLOAT* d)
     }
   }
 }
+
+}} /* namespace psi::dboc */

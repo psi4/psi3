@@ -6,6 +6,8 @@
 #ifndef _psi3_bin_dboc_moinfo_h_
 #define _psi3_bin_dboc_moinfo_h_
 
+namespace psi { namespace dboc {
+
 typedef struct {
   int num_so;
   int num_mo;
@@ -18,6 +20,8 @@ typedef struct {
   int nact;
   short int* QTS_to_pitzer;
 } MOInfo_t;
+
+}} /* namespace psi::dboc */
 
 #endif
 

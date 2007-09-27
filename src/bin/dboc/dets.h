@@ -6,6 +6,8 @@
 #ifndef _psi3_dboc_dets_h_
 #define _psi3_dboc_dets_h_
 
+namespace psi{ namespace dboc {
+
 /// Det is a determinant to be sorted according to "indices" Ia and Ib (can be string indices, block indices, etc.)
 struct Det {
   int Ia;
@@ -24,5 +26,7 @@ inline bool detcomp(DetI i, DetI j)
   if (Ia == Ja) return Ib < Jb;
   return false;
 }
+
+}} /* namespace psi::dboc */
 
 #endif

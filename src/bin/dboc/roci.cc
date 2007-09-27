@@ -6,12 +6,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-extern "C" {
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libqt/slaterdset.h>
 #include <psifiles.h>
-}
 #include "moinfo.h"
 #include "float.h"
 #include "linalg.h"
@@ -19,6 +17,7 @@ extern "C" {
 #include "hfwfn.h"
 
 using namespace std;
+namespace psi { namespace dboc {
 
 // Wrap a,b indices into one composite index assuming S2 symmetry
 #define INDEX2(a,b) ((a) > (b)) ? ( (((a)*(a+1)) >> 1) + (b) ) : ( (((b)*(b+1)) >> 1) + (a) )
@@ -27,8 +26,9 @@ using namespace std;
 // Wrap a>=b>=c indices into one composite index assuming S3 symmetry
 #define INDEX3_ORD(a,b,c) ( ((a)*(((a)+4)*((a)-1)+6)/6) + (((b)*(b+1))/2) + (c) )
 
+extern "C" FILE *outfile;
+
 extern MOInfo_t MOInfo;
-extern FILE *outfile;
 extern char *CI_Vector_Labels[MAX_NUM_DISP];
 extern HFWavefunction* HFVectors[MAX_NUM_DISP];
 extern void done(const char *);
@@ -187,3 +187,4 @@ double eval_roci_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp
   return fabs(S_tot_double);
 }
 
+}} // namespace psi::dboc

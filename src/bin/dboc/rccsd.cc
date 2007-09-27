@@ -6,11 +6,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-extern "C" {
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <psifiles.h>
-}
 #include "moinfo.h"
 #include "mo_overlap.h"
 #include "float.h"
@@ -25,9 +23,11 @@ using namespace std;
 // Wrap a>=b>=c indices into one composite index assuming S3 symmetry
 #define INDEX3_ORD(a,b,c) ( ((a)*(((a)+4)*((a)-1)+6)/6) + (((b)*(b+1))/2) + (c) )
 
+namespace psi { namespace dboc {
+
 extern MOInfo_t MOInfo;
-extern FILE *outfile;
 extern void done(const char *);
+extern "C" FILE *outfile;
 
 double eval_rccsd_derwfn_overlap()
 {
@@ -180,3 +180,4 @@ double eval_rccsd_derwfn_overlap()
   return (double)deter_ref*deter_ref;
 }
 
+}} // namespace psi::dboc

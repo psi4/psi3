@@ -6,9 +6,9 @@
 #ifndef _psi3_bin_dboc_hfwfn_h_
 #define _psi3_bin_dboc_hfwfn_h_
 
-extern "C" {
-  #include <libchkpt/chkpt.h>
-}
+#include <libchkpt/chkpt.h>
+
+namespace psi { namespace dboc {
 
 class HFWavefunction {
 
@@ -51,6 +51,8 @@ class HFWavefunction {
   double** rref();
   void set_rref(double**);
 };
+
+}} /* namespace psi::dboc */
 
 #endif
 

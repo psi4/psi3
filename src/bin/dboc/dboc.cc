@@ -12,14 +12,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-extern "C" {
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 #include <libpsio/psio.h>
 #include <libqt/slaterdset.h>
 #include <psifiles.h>
-}
 #include <libbasis/basisset.h>
 #include <libbasis/overlap.h>
 #include <masses.h>
@@ -34,6 +32,14 @@ extern "C" {
   extern int setenv(const char *, const char *, int);
 #endif
 
+extern "C" {
+FILE *infile, *outfile;
+char *psi_file_prefix;
+}
+extern "C" char *gprgid();
+
+namespace psi { namespace dboc {
+
 /* Function prototypes */
 static void init_io(int argc, char *argv[]);
 static void exit_io();
@@ -44,14 +50,11 @@ static double eval_dboc();
 extern void print_intro();
 extern void print_params();
 extern void print_geom();
-extern "C" char *gprgid();
 extern void setup_geoms();
 extern double eval_derwfn_overlap(bool symm_coord);
 extern void read_moinfo();
 
 /*--- Global structures ---*/
-FILE *infile, *outfile;
-char *psi_file_prefix;
 Molecule_t Molecule;
 MOInfo_t MOInfo;
 Params_t Params;
@@ -67,8 +70,11 @@ char* CI_Vector_Labels[MAX_NUM_DISP] = {
 
 const int MAX_GEOM_STRING=20;
 
+}} // namespace psi::dboc
+
 int main(int argc, char *argv[])
 {
+  using namespace psi::dboc;
   int i,j;
   int natom, num, junk;
   double **geom, *zvals;
@@ -92,6 +98,7 @@ int main(int argc, char *argv[])
   exit(0);
 }
 
+namespace psi { namespace dboc {
 
 /*--- parsing ---*/
 void parsing()
@@ -609,6 +616,7 @@ void done(const char *message)
   delete[] errmsg;
 }
 
+}} // namespace psi::dboc
 
 extern "C" char *gprgid()
 {

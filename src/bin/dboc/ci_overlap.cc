@@ -6,10 +6,25 @@
 /*! \defgroup DBOC Add a description of the group DBOC */
 
 
-extern "C" {
 #include <pthread.h>
-}
 #include "ci_overlap.h"
+
+using namespace psi::dboc;
+
+namespace {
+  // Packages ptr to CIOverlap and thread id
+  typedef std::pair<CIOverlap*,int> objptr_id_t;
+  void*
+  thread_compute(void* objptr_id_voidptr)
+  {
+    objptr_id_t* objptr_id = static_cast<objptr_id_t*>(objptr_id_voidptr);
+    int tid = objptr_id->second;
+    CIOverlap* obj = objptr_id->first;
+    // call
+    obj->thread_compute(tid);
+    return 0;
+  }
+};
 
 CIOverlap::CIOverlap(SlaterDetVector* vecbra, SlaterDetVector* vecket,
 		     StringBlockedMatrix& ovlp_a, StringBlockedMatrix& ovlp_b,
@@ -139,16 +154,4 @@ CIOverlap::thread_compute(int tid)
   }
 
   threadgrp_.Sthr[tid] += S_tot;
-}
-
-extern "C"
-void*
-thread_compute(void* objptr_id_voidptr)
-{
-  objptr_id_t* objptr_id = static_cast<objptr_id_t*>(objptr_id_voidptr);
-  int tid = objptr_id->second;
-  CIOverlap* obj = objptr_id->first;
-  // call
-  obj->thread_compute(tid);
-  return 0;
 }

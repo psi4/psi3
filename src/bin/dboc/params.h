@@ -6,6 +6,8 @@
 #ifndef _psi3_bin_dboc_params_h_
 #define _psi3_bin_dboc_params_h_
 
+namespace psi { namespace dboc {
+
 namespace PrintLevels {
   static const int print_intro = 1;
   static const int print_params = 1;
@@ -42,5 +44,7 @@ typedef struct {
   int print_lvl;
 
 } Params_t;
+
+}} /* namespace psi::dboc */
 
 #endif

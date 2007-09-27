@@ -7,10 +7,10 @@
 #define _psi3_dboc_stringblocks_h_
 
 #include <string>
-extern "C" {
 #include <psifiles.h>
-}
 #include "float.h"
+
+namespace psi { namespace dboc {
 
 /// Manages logic of arranging strings into blocks of manageble size
 class StringBlocks {
@@ -70,5 +70,7 @@ class StringBlockedMatrix {
 
   std::string key(int brablk, int ketblk);
 };
+
+}} /* namespace psi::dboc */
 
 #endif

@@ -5,17 +5,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-extern "C" {
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <psifiles.h>
-}
 #include "defines.h"
 #include "params.h"
 #include "mo_overlap.h"
 
+namespace psi { namespace dboc {
+
 extern Params_t Params;
-extern FILE *outfile;
+extern "C" FILE *outfile;
 
 extern void done(const char *);
 extern double eval_rhf_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp);
@@ -101,3 +101,5 @@ double eval_derwfn_overlap(bool symm)
 
   return S;
 }  
+
+}} // namespace psi::dboc

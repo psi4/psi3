@@ -5,12 +5,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-extern "C" {
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
 #include <psifiles.h>
-}
 #include "defines.h"
 #include "params.h"
 #include "moinfo.h"
@@ -19,8 +17,10 @@ extern "C" {
 #include "linalg.h"
 #include "hfwfn.h"
 
+namespace psi { namespace dboc {
+
 extern MOInfo_t MOInfo;
-extern FILE *outfile;
+extern "C" FILE *outfile;
 extern Params_t Params;
 extern HFWavefunction* HFVectors[MAX_NUM_DISP];
 
@@ -68,7 +68,7 @@ double eval_rhf_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
 
   if (Params.print_lvl > PrintLevels::print_contrib) {
     fprintf(outfile,"  +/- overlap in the basis of doubly-occupied MOs:\n");
-    print_mat(CSC_occ, ndocc, ndocc, outfile);
+    psi::dboc::print_mat(CSC_occ, ndocc, ndocc, outfile);
   }
 
   // Compute the determinant
@@ -85,3 +85,4 @@ double eval_rhf_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
   return (double)deter1*deter1;
 }
 
+}} // namespace psi::dboc

@@ -5,14 +5,13 @@
 
 #include <stdexcept>
 #include <stdlib.h>
-extern "C" {
-  #include <psifiles.h>
-  #include <libchkpt/chkpt.h>
-  #include <libciomr/libciomr.h>
-}
+#include <psifiles.h>
+#include <libchkpt/chkpt.h>
+#include <libciomr/libciomr.h>
 #include "hfwfn.h"
 
 using namespace std;
+using namespace psi::dboc;
 
 HFWavefunction::HFWavefunction()
 {

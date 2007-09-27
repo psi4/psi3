@@ -12,9 +12,11 @@
 #define PRINT_PARAMS 1
 #define PRINT_DISP 2
 
-extern FILE *outfile;
+namespace psi { namespace dboc {
+
 extern Params_t Params;
 extern Molecule_t Molecule;
+extern "C" FILE *outfile;
 
 void print_intro()
 {
@@ -91,3 +93,5 @@ void print_geom()
     fprintf(outfile, "\n\n");
   }
 }
+
+}} // namespace psi::dboc

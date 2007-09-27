@@ -4,12 +4,12 @@
 */
 
 #include <stdexcept>
-extern "C" {
 #include <libchkpt/chkpt.h>
 #include <libipv1/ip_lib.h>
 #include <libqt/qt.h>
-}
 #include "moinfo.h"
+
+namespace psi { namespace dboc {
 
 extern MOInfo_t MOInfo;
 
@@ -137,3 +137,4 @@ void mo_maps(short int** qt2p_map, short int** act_qt2p_map)
   *act_qt2p_map = aq2pmap;
 }
 
+}} // namespace psi::dboc

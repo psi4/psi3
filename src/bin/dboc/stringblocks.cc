@@ -7,12 +7,12 @@
 #include <stdexcept>
 #include <sstream>
 #include <cstring>
-extern "C" {
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
-}
 #include "stringblocks.h"
 #include "linalg.h"
+
+using namespace psi::dboc;
 
 StringBlocks::StringBlocks(int nstr, int nstr_per_block) :
   nstr_(nstr), nstr_per_block_(nstr_per_block)

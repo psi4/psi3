@@ -5,17 +5,17 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-extern "C" {
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
 #include <psifiles.h>
-}
 #include "moinfo.h"
 #include "mo_overlap.h"
 #include "float.h"
 #include "linalg.h"
 #include "hfwfn.h"
+
+namespace psi { namespace dboc {
 
 extern MOInfo_t MOInfo;
 extern FILE *outfile;
@@ -121,3 +121,4 @@ double eval_rohf_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp
   return (double)deter_a*deter_b;
 }
 
+}} // namespace psi::dboc

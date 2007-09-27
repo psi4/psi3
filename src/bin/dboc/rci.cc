@@ -9,12 +9,10 @@
 #include <vector>
 #include <algorithm>
 #include <sstream>
-extern "C" {
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libqt/slaterdset.h>
 #include <psifiles.h>
-}
 #include "moinfo.h"
 #include "params.h"
 #include "float.h"
@@ -26,6 +24,7 @@ extern "C" {
 #include "ci_overlap.h"
 
 using namespace std;
+using namespace psi::dboc;
 
 // Wrap a,b indices into one composite index assuming S2 symmetry
 #define INDEX2(a,b) ((a) > (b)) ? ( (((a)*(a+1)) >> 1) + (b) ) : ( (((b)*(b+1)) >> 1) + (a) )
@@ -34,18 +33,20 @@ using namespace std;
 // Wrap a>=b>=c indices into one composite index assuming S3 symmetry
 #define INDEX3_ORD(a,b,c) ( ((a)*(((a)+4)*((a)-1)+6)/6) + (((b)*(b+1))/2) + (c) )
 
-extern MOInfo_t MOInfo;
-extern Params_t Params;
-extern FILE *outfile;
-extern char *CI_Vector_Labels[MAX_NUM_DISP];
-extern HFWavefunction* HFVectors[MAX_NUM_DISP];
-extern void done(const char *);
-extern void mo_maps(short int**, short int**);
-
 // Set to 1 to use the new threaded code
 #define USE_CI_OVERLAP 1
 // Set to 1 to reduce I/O at the expense of more computation
 #define LOOP_OVER_BLOCKS 1
+
+namespace psi { namespace dboc {
+
+extern MOInfo_t MOInfo;
+extern Params_t Params;
+extern char *CI_Vector_Labels[MAX_NUM_DISP];
+extern HFWavefunction* HFVectors[MAX_NUM_DISP];
+extern void done(const char *);
+extern void mo_maps(short int**, short int**);
+extern "C" FILE *outfile;
 
 double eval_rci_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
 {
@@ -316,3 +317,4 @@ double eval_rci_derwfn_overlap(DisplacementIndex LDisp, DisplacementIndex RDisp)
   return fabs(S_tot_double);
 }
 
+}} // namespace psi::dboc
