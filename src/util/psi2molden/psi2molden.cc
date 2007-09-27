@@ -9,7 +9,6 @@
 #include <libqt/qt.h>
 #include <psifiles.h>
 
-
 extern "C" {
   FILE *infile, *outfile;
   char *psi_file_prefix;
@@ -17,10 +16,6 @@ extern "C" {
 
 namespace psi{
   namespace psi2molden{
-
-  extern "C" {
-    char *gprgid(void);
-  }
 
   void init_io(int argc, char *argv[]);
   void exit_io(void);
@@ -170,12 +165,13 @@ int main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
+extern "C" { char *gprgid(void) { char *prgid = "PSI2MOLDEN"; return(prgid); } }
+
 namespace psi{
   namespace psi2molden{
 
   void init_io(int argc, char *argv[])
   {
-   extern char *gprgid();
    char *progid;
   
    progid = (char *) malloc(strlen(gprgid())+2);
@@ -188,20 +184,12 @@ namespace psi{
    psio_init(); psio_ipv1_config();
   }
 
-
   void exit_io(void)
   {
    psio_done();
    psi_stop();
   }
 
-  extern "C" {
-    char *gprgid(void)
-    {
-     char *prgid = "PSI2MOLDEN";
-     return(prgid);
-    }
-  }
   } /* End namespace psi2molden */
 } /* End namespace psi */
 
