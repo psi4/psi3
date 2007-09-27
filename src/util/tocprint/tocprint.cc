@@ -18,7 +18,6 @@ namespace psi{
   extern "C"{
     FILE *infile, *outfile;
     char *psi_file_prefix;
-    char *gprgid();
   }
 
   } /* Namespace tocprint */
@@ -69,12 +68,13 @@ int main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
-namespace psi{
-  namespace tocprint{
+namespace psi {
+  namespace tocprint {
+
+  extern "C"{ char *gprgid() { char *prgid = "TOCPRINT"; return(prgid); } }
 
   void init_io(int argc, char *argv[])
   {
-   extern char *gprgid();
    char *progid;
   
    progid = (char *) malloc(strlen(gprgid())+2);
@@ -91,14 +91,6 @@ namespace psi{
   {
     psio_done();
     psi_stop();
-  }
-
-  extern "C"{
-    char *gprgid()
-    {
-       char *prgid = "TOCPRINT";
-       return(prgid);
-    }
   }
 
   } /* Namespace tocprint */
