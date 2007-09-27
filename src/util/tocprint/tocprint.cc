@@ -7,18 +7,30 @@
 #include <libciomr/libciomr.h>
 #include <psifiles.h>
 
-/* Function prototypes */
-void init_io(int argc, char *argv[]);
-void exit_io(void);
-int cc2unit(char *);
+namespace psi{
+  namespace tocprint{
 
-FILE *infile, *outfile;
-char *psi_file_prefix;
+  /* Function prototypes */
+  void init_io(int argc, char *argv[]);
+  void exit_io(void);
+  int cc2unit(char *);
+
+  extern "C"{
+    FILE *infile, *outfile;
+    char *psi_file_prefix;
+    char *gprgid();
+  }
+
+  } /* Namespace tocprint */
+} /* Namespace psi */
+
 
 int main(int argc, char *argv[])
 {
   int unit=0, i=0, get_chkpt_prefix=0;
   char *prefix;
+
+  using namespace psi::tocprint;
 
   while(--argc > 0) {
        i++;
@@ -57,30 +69,37 @@ int main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
-void init_io(int argc, char *argv[])
-{
-  extern char *gprgid();
-  char *progid;
+namespace psi{
+  namespace tocprint{
 
-  progid = (char *) malloc(strlen(gprgid())+2);
-  sprintf(progid, ":%s",gprgid());
+  void init_io(int argc, char *argv[])
+  {
+   extern char *gprgid();
+   char *progid;
+  
+   progid = (char *) malloc(strlen(gprgid())+2);
+   sprintf(progid, ":%s",gprgid());
+  
+   psi_start(argc-1, argv+1, 0);
+   ip_cwk_add(progid);
+   free(progid);
+  
+   psio_init(); psio_ipv1_config();
+  }
 
-  psi_start(argc-1, argv+1, 0);
-  ip_cwk_add(progid);
-  free(progid);
+  void exit_io(void)
+  {
+    psio_done();
+    psi_stop();
+  }
 
-  psio_init(); psio_ipv1_config();
-}
+  extern "C"{
+    char *gprgid()
+    {
+       char *prgid = "TOCPRINT";
+       return(prgid);
+    }
+  }
 
-void exit_io(void)
-{
-  psio_done();
-  psi_stop();
-}
-
-char *gprgid()
-{
-   char *prgid = "TOCPRINT";
-
-   return(prgid);
-}
+  } /* Namespace tocprint */
+} /* Namespace psi */
