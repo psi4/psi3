@@ -9,11 +9,24 @@
 #include <libqt/qt.h>
 #include <psifiles.h>
 
-FILE *infile, *outfile;
-char *psi_file_prefix;
 
-void init_io(int argc, char *argv[]);
-void exit_io(void);
+extern "C" {
+  FILE *infile, *outfile;
+  char *psi_file_prefix;
+}
+
+namespace psi{
+  namespace psi2molden{
+
+  extern "C" {
+    char *gprgid(void);
+  }
+
+  void init_io(int argc, char *argv[]);
+  void exit_io(void);
+
+  } /* Namespace psi2molden */ 
+} /* Namespace psi */
 
 int main(int argc, char *argv[])
 {
@@ -29,6 +42,8 @@ int main(int argc, char *argv[])
   double **usotao;
   double **geom, *zvals, *exps, *contr, occ;
   char **atom_labs, *am_labs[7], **irr_labs;
+
+  using namespace psi::psi2molden;
 
   /* I don't think molden knows anything > f, but it's here anyway */
   am_labs[0] = strdup("s");
@@ -155,31 +170,38 @@ int main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
-void init_io(int argc, char *argv[])
-{
-  extern char *gprgid();
-  char *progid;
+namespace psi{
+  namespace psi2molden{
 
-  progid = (char *) malloc(strlen(gprgid())+2);
-  sprintf(progid, ":%s",gprgid());
+  void init_io(int argc, char *argv[])
+  {
+   extern char *gprgid();
+   char *progid;
+  
+   progid = (char *) malloc(strlen(gprgid())+2);
+   sprintf(progid, ":%s",gprgid());
+  
+   psi_start(argc-1,argv+1,0); /* this assumes no cmdline args except filenames */
+   ip_cwk_add(":INPUT");
+   ip_cwk_add(progid);
+   free(progid);
+   psio_init(); psio_ipv1_config();
+  }
 
-  psi_start(argc-1,argv+1,0); /* this assumes no cmdline args except filenames */
-  ip_cwk_add(":INPUT");
-  ip_cwk_add(progid);
-  free(progid);
-  psio_init(); psio_ipv1_config();
-}
 
+  void exit_io(void)
+  {
+   psio_done();
+   psi_stop();
+  }
 
-void exit_io(void)
-{
-  psio_done();
-  psi_stop();
-}
+  extern "C" {
+    char *gprgid(void)
+    {
+     char *prgid = "PSI2MOLDEN";
+     return(prgid);
+    }
+  }
+  } /* End namespace psi2molden */
+} /* End namespace psi */
 
-char *gprgid(void)
-{
-   char *prgid = "PSI2MOLDEN";
-
-   return(prgid);
-}
