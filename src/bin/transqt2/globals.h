@@ -17,8 +17,10 @@
 #define EXTERN
 #endif
 
+extern "C" {
 EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
+}
 
 EXTERN int *ioff;
 EXTERN struct MOInfo moinfo;

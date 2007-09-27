@@ -57,6 +57,7 @@ void cachedone_rhf(int **);
 int file_build_presort(dpdfile4 *, int, double, long int, int, 
 		       int, double *, double *, double *, double *, int);
 void transtwo_rhf(void);
+void transtwo_uhf(void);
 void transone(int m, int n, double *input, double *output, double **C, int nc, int *order, int *ioff);
 void semicanonical_fock(void);
 
@@ -326,12 +327,11 @@ main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
-char *gprgid(void) { char *prgid = "TRANSQT"; return (prgid); }
+extern "C" { char *gprgid(void) { char *prgid = "TRANSQT"; return (prgid); } }
 
 void init_io(int argc, char *argv[])
 {
   int i;
-  extern char *gprgid(void);
   char *progid;
   int num_extra_args = 0;
   char **extra_args;

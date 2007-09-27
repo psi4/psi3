@@ -7,11 +7,13 @@ LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_dpd -lPSI_iwl -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CSRC = \
-transqt.c cache.c file_build_presort.c get_moinfo.c get_params.c idx_error.c idx_permute_presort.c \
-transone.c transtwo_rhf.c transtwo_uhf.c semicanonical.c \
+CXXSRC = \
+cache.cc               idx_error.cc           transqt.cc \
+file_build_presort.cc  idx_permute_presort.cc transtwo_rhf.cc \
+get_moinfo.cc          semicanonical.cc       transtwo_uhf.cc \
+get_params.cc          transone.cc
 
-BINOBJ = $(CSRC:%.c=%.o)
+BINOBJ = $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 
