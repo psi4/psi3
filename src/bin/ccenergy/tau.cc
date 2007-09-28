@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <libdpd/dpd.h>
-#include "Moinfo.h"
+#include "MOInfo.h"
 #include "Params.h"
 #define EXTERN
 #include "globals.h"
