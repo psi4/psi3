@@ -12,6 +12,8 @@
 #include <ccfiles.h>
 #define TOL 1E-14
 
+namespace psi { namespace oeprop {
+
 void read_density()
 { 
   int i,j,k,l,dim_i,count,ibf;
@@ -563,3 +565,4 @@ void read_density()
   return;
 }
 
+}} // namespace psi::oeprop

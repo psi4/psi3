@@ -7,6 +7,8 @@
 #include "globals.h"
 #include "prototypes.h"
 
+namespace psi { namespace oeprop {
+
 void compute_overlap()
 {
   int i,j,k,l,ig,jg,ibf,jbf,ib,jb,jlim,kk,ll;
@@ -138,3 +140,4 @@ void compute_overlap()
   free_box(MIZ,lmax+1,lmax+1);
 }
 
+}} // namespace psi::oeprop

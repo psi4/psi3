@@ -10,6 +10,8 @@
 #include <psifiles.h>
 #include <ccfiles.h>
 
+namespace psi { namespace oeprop {
+
 void get_opdm_lbl(void) { 
   int i, errcod;
   int root;
@@ -126,3 +128,4 @@ void get_opdm_lbl(void) {
 
 }
 
+}} // namespace psi::oeprop

@@ -6,6 +6,8 @@
 #include "includes.h"
 #include "globals.h"
 
+namespace psi { namespace oeprop {
+
 extern void compute_grid_oeprops();
 extern void compute_grid_dens_2d();
 extern void compute_grid_dens_3d();
@@ -36,3 +38,5 @@ void compute_grid() {
 
   return;
 }
+
+}} // namespace psi::oeprop

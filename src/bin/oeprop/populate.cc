@@ -7,7 +7,7 @@
 #include "prototypes.h"
 #include "globals.h"
 
-
+namespace psi { namespace oeprop {
 
 void populate()
 {
@@ -130,3 +130,5 @@ void populate()
     free(gsop);
   }
 }
+
+}} // namespace psi::oeprop

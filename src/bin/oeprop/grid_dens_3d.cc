@@ -7,6 +7,8 @@
 #include "globals.h"
 #include "prototypes.h"
 
+namespace psi { namespace oeprop {
+
 void compute_grid_dens_3d()
 {
   int i,j,k,l,ig,jg,ibf,jbf,ib,jb,jlim,kk,ll;
@@ -151,3 +153,4 @@ void compute_grid_dens_3d()
   }
 }
 
+}} // namespace psi::oeprop

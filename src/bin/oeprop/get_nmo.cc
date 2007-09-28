@@ -7,6 +7,8 @@
 #include "prototypes.h"
 #include "globals.h"
 
+namespace psi { namespace oeprop {
+
 void get_nmo()
 {
   int i,k,l,count,dim_i;
@@ -114,3 +116,5 @@ void get_nmo()
   free_matrix(nmo_mo,nmo);
   free_block(nmo_so);
 }
+
+}} // namespace psi::oeprop

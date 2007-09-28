@@ -7,7 +7,7 @@
 #include "globals.h"
 #include "prototypes.h"
 
-
+namespace psi { namespace oeprop {
 
 void parsing()
 {
@@ -147,3 +147,5 @@ void parsing()
   fine_structure_alpha = 1.0;
   errcod = ip_data("FINE_STRUCTURE_ALPHA","%lf",&fine_structure_alpha,0,0);
 }
+
+}} // namespace psi::oeprop

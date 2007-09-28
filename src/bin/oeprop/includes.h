@@ -2,6 +2,10 @@
     \ingroup (OEPROP)
     \brief Enter brief description of file here 
 */
+
+#ifndef _psi_bin_oeprop_defines_h_
+#define _psi_bin_oeprop_defines_h_
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
@@ -13,3 +17,5 @@
 #include <string.h>
 #include <physconst.h>
 #include <psifiles.h>
+
+#endif // header guard

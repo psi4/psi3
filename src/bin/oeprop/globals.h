@@ -2,6 +2,10 @@
     \ingroup (OEPROP)
     \brief Enter brief description of file here 
 */
+
+#ifndef _psi_bin_oeprop_globals_h_
+#define _psi_bin_oeprop_globals_h_
+
 #define MAXMP 3         /* Up to octopole moments can be computed */
 #define EPS 1.0E-17     /* Absolute precision in computing Fm(t)
                            (see recursion:calc_fij() ) */
@@ -40,9 +44,12 @@
 # define EXTERN
 #endif
 
+namespace psi { namespace oeprop {
 
-EXTERN FILE *infile,*outfile;
-EXTERN char *psi_file_prefix;
+extern "C" {
+  EXTERN FILE *infile,*outfile;
+  EXTERN char *psi_file_prefix;
+}
 EXTERN int *ioff;
 EXTERN double df[MAXFACT*2];
 
@@ -218,3 +225,7 @@ EXTERN char *wfn;             /* wavefunction type */
 EXTERN char *ref;             /* reference type */
 EXTERN int update_energy_with_MVD; /* update energy in file 1? for SCF_MVD optimizations */
 EXTERN double fine_structure_alpha; /* multiply relativisitic terms by this */
+
+}} // namespace psi::oeprop
+
+#endif // header guard

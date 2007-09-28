@@ -7,6 +7,8 @@
 #include "globals.h"
 #include "prototypes.h"
 
+namespace psi { namespace oeprop {
+
 void read_basset_info()
 {
   int i;
@@ -36,3 +38,5 @@ void read_basset_info()
   }
 
 }
+
+}} // namespace psi::oeprop

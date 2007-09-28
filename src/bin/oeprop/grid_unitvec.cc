@@ -7,7 +7,11 @@
 #include "prototypes.h"
 #include "globals.h"
 
-static int* fock_to_pitzer(int, int*);
+namespace {
+  int* fock_to_pitzer(int, int*);
+}
+
+namespace psi { namespace oeprop {
 
 void grid_parse()
 {
@@ -261,6 +265,10 @@ void grid_parse()
   }
 }
 
+}} //namespace psi::oeprop
+namespace {
+  using namespace psi::oeprop;
+
 int* fock_to_pitzer(int num_mo, int* fock_mos)
 {
   int mo, irrep, o, v;
@@ -376,6 +384,10 @@ int* fock_to_pitzer(int num_mo, int* fock_mos)
   return pitzer_mos;
 }
 
+} // namespace
+
+namespace psi { namespace oeprop {
+
 void grid_unitvec()
 {
   int i;
@@ -449,4 +461,4 @@ void grid_unitvec()
   return;
 }
 
-
+}} // namespace psi::oeprop

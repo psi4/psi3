@@ -8,6 +8,7 @@
 #include "globals.h"
 #include <masses.h>
 
+namespace psi { namespace oeprop {
 
 void compute_mp_ref_xyz()
 {
@@ -69,3 +70,5 @@ void compute_mp_ref_xyz()
   mp_ref_xyz[2] = sumz/sum;
 
 }
+
+}} // namespace psi::oeprop

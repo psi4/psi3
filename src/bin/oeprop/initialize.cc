@@ -8,6 +8,7 @@
 #include "prototypes.h"
 #include "globals.h"
 
+namespace psi { namespace oeprop {
 
 /* This function generates three matrices (xpow_bf, etc.) that
    determine exponents of x, y, and z in every basis function
@@ -79,7 +80,4 @@ void free_box(double ***box, int a, int b)
   free(box);
 }
 
-
-
-
-
+}} // namespace psi::oeprop

@@ -4,18 +4,18 @@ VPATH = @srcdir@
 include ../MakeVars
 
 #Need do remove -DAIX because I have a variable named AIX
-CDEF_NOAIX = $(CDEF:-DAIX=)
-CFLAGS = $(CDBG) $(COPT) $(CDEF_NOAIX) $(COTH) $(CINC)
+CXXDEF_NOAIX = $(CXXDEF:-DAIX=)
+CXXFLAGS = $(CXXDBG) $(CXXOPT) $(CXXDEF_NOAIX) $(CXXOTH) $(CXXINC)
 
 PSILIBS = -lPSI_iwl -lPSI_qt -lPSI_chkpt -lPSI_ciomr -lPSI_psio -lPSI_ipv1
 
-CSRC = main.c oeprop.c parsing.c grid_unitvec.c read_density.c \
-compute_density.c read_basset.c recursion.c populate.c mprefxyz.c \
-initialize.c overlap.c get_nmo.c grid.c grid_oeprop.c \
-grid_dens_2d.c grid_dens_3d.c grid_mo.c print.c print_grid.c \
-connectivity.c misc.c get_opdm_lbl.c
+CXXSRC = main.cc oeprop.cc parsing.cc grid_unitvec.cc read_density.cc \
+compute_density.cc read_basset.cc recursion.cc populate.cc mprefxyz.cc \
+initialize.cc overlap.cc get_nmo.cc grid.cc grid_oeprop.cc \
+grid_dens_2d.cc grid_dens_3d.cc grid_mo.cc print.cc print_grid.cc \
+connectivity.cc misc.cc get_opdm_lbl.cc
 
-BINOBJ = $(CSRC:%.c=%.o)
+BINOBJ = $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 

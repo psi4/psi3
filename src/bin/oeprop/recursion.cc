@@ -7,8 +7,11 @@
 #include "globals.h"
 #include "prototypes.h"
 
-void calc_f(double *, int, double);
+namespace {
+  void calc_f(double *, int, double);
+}
 
+namespace psi { namespace oeprop {
 
 	/* Recursion relations are taken from Obara and Saika paper
 	   JCP 84, 3963, 1986. */
@@ -585,8 +588,10 @@ void AI_OSrecurs(double pax, double pay, double paz,
   free(F);
 }
 
+}} // namespace psi::oeprop
 
-
+namespace {
+using namespace psi::oeprop;
 
 	/* This function computes infamous integral Fn(t). For its definition 
 	   see Obara and Saika paper, or Shavitt's chapter in the 
@@ -636,3 +641,5 @@ void calc_f(double *F, int n, double t)
     }
   }
 }
+
+} // namespace

@@ -10,6 +10,7 @@
 #include "globals.h"
 #include "prototypes.h"
 
+namespace psi { namespace oeprop {
 
 void compute_density()
 {
@@ -192,3 +193,5 @@ void compute_density()
   free(beta); */
 
 }
+
+}} // namespace psi::oeprop

@@ -9,6 +9,8 @@
 
 #define VDW_SCALE 0.5
 
+namespace psi { namespace oeprop {
+
 void compute_connectivity()
 {
   int i, j;
@@ -38,3 +40,5 @@ void compute_connectivity()
 
   return;
 }
+
+}} // namespace psi::oeprop

@@ -7,6 +7,8 @@
 #include "globals.h"
 #include "prototypes.h"
 
+namespace psi { namespace oeprop {
+
 void compute_oeprops()
 {
   int i,j,k,l,ig,jg,ibf,jbf,ib,jb,jlim,kk,ll;
@@ -820,4 +822,4 @@ void compute_oeprops()
 
 }
 
-
+}} // namespace psi::oeprop

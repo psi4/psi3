@@ -2,6 +2,12 @@
     \ingroup (OEPROP)
     \brief Enter brief description of file here 
 */
+
+#ifndef _psi_bin_oeprop_prototypes_h_
+#define _psi_bin_oeprop_prototypes_h_
+
+namespace psi { namespace oeprop {
+
 void start_io(int argc, char *argv[]);
 void stop_io();
 void punt(char *);
@@ -34,3 +40,8 @@ void print_grid();
 void print_misc();
 void compute_connectivity();
 void get_opdm_lbl(void);
+void grid_parse();
+
+}} // namespace psi::oeprop
+
+#endif // header guard

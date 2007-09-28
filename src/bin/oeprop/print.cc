@@ -7,6 +7,8 @@
 #include "prototypes.h"
 #include "globals.h"
 
+namespace psi { namespace oeprop {
+
 void print_intro()
 { 
   fprintf(outfile,"    **********************************************\n");
@@ -455,3 +457,5 @@ void print_misc()
     fprintf(outfile,"\n");
   }
 }
+
+}} // namespace psi::oeprop

@@ -7,6 +7,8 @@
 #include "prototypes.h"
 #include "globals.h"
 
+namespace psi { namespace oeprop {
+
 void start_io(int argc, char *argv[])
 {
   int errcod;
@@ -38,3 +40,5 @@ void punt(char *errmsg)
   stop_io();
   abort();
 }
+
+}} // namespace psi::oeprop

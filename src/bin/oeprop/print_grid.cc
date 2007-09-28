@@ -7,13 +7,17 @@
 #include "prototypes.h"
 #include "globals.h"
 
-static void print_2d_summary();
-static void print_3d_summary();
-static void print_grid_plotmtv();
-static void print_grid_megapovray();
-static void create_megapovray_file();
-static void print_grid_gausscube();
-static FILE* grid_file;
+namespace {
+  void print_2d_summary();
+  void print_3d_summary();
+  void print_grid_plotmtv();
+  void print_grid_megapovray();
+  void create_megapovray_file();
+  void print_grid_gausscube();
+  FILE* grid_file;
+}
+
+namespace psi { namespace oeprop {
 
 void print_grid()
 {
@@ -26,6 +30,11 @@ void print_grid()
 
   return;
 }
+
+}} // namespace psi::oeprop
+
+namespace {
+using namespace psi::oeprop;
 
 void print_2d_summary()
 {
@@ -459,3 +468,5 @@ void print_grid_gausscube()
 
   return;
 }
+
+} // namespace

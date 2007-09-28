@@ -6,9 +6,9 @@
 #include "prototypes.h"
 #include "globals.h"
 
-
 int main(int argc, char* argv[]) {
-
+ using namespace psi::oeprop;
+ 
  int i,j,k,l,count;
  char buffer[80];	/* buffer string */
 
@@ -228,7 +228,7 @@ for (irho=0;irho<nrho;irho++) {
 }
 
 
-char *gprgid()
+extern "C" char *gprgid()
 {
  char *prgid = "OEPROP";
    
