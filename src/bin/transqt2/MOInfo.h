@@ -5,6 +5,9 @@
 
 /*! \defgroup TRANSQT2 Add a description of the group TRANSQT2 */
 
+namespace psi {
+  namespace transqt2 {
+
 struct MOInfo {
   int nirreps;           /* no. of irreducible representations */
   int nmo;               /* no. of molecular orbitals */
@@ -36,3 +39,6 @@ struct MOInfo {
   int *act2qt_A;         /* reordering array (UHF): active MO -> QT (alpha) */
   int *act2qt_B;         /* reordering array (UHF): active MO -> QT (beta) */
 };
+
+  } // namespace transqt2
+} // namespace psi

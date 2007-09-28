@@ -2,6 +2,10 @@
     \ingroup (TRANSQT2)
     \brief Enter brief description of file here 
 */
+
+namespace psi {
+  namespace transqt2 {
+
 struct Params {
   char *wfn;
   int ref;
@@ -17,3 +21,6 @@ struct Params {
   int semicanonical;  /* Boolean for semicanonical orbitals */
   int delete_tei;     /* Boolean for the TEI integral file */
 };
+
+  } // namespace transqt2
+} // namespace psi
