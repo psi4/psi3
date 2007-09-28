@@ -23,13 +23,13 @@ namespace psi{
   } /* Namespace tocprint */
 } /* Namespace psi */
 
+using namespace psi::tocprint;
 
 int main(int argc, char *argv[])
 {
   int unit=0, i=0, get_chkpt_prefix=0;
   char *prefix;
 
-  using namespace psi::tocprint;
 
   while(--argc > 0) {
        i++;
