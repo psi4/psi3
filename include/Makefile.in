@@ -1,5 +1,5 @@
 
-.PHONY:	default all install depend clean targetclean
+.PHONY:	default all install depend clean dclean targetclean
 
 default: all
 
@@ -8,6 +8,7 @@ all:
 install_man:
 depend:
 clean:
+dclean:
 targetclean:
 
 top_srcdir = @top_srcdir@

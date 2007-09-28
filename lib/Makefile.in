@@ -1,5 +1,5 @@
 
-.PHONY:	default all install depend clean targetclean
+.PHONY:	default all install depend clean dclean targetclean
 
 subdirs = ruby
 
@@ -10,6 +10,7 @@ all:
 install_inc:
 depend:
 clean:
+dclean:
 targetclean:
 
 top_srcdir = @top_srcdir@

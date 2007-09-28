@@ -1,6 +1,6 @@
 SHELL = /bin/sh
 
-.PHONY:	default all install depend clean targetclean
+.PHONY:	default all install depend clean dclean targetclean
 
 subdirs = lib bin util
 
@@ -40,6 +40,12 @@ clean:
 	for dir in $(subdirs); \
           do \
             (cd $${dir}; echo Making clean in $${dir}; $(MAKE) clean) || exit 1; \
+          done
+
+dclean:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo Making clean in $${dir}; $(MAKE) dclean) || exit 1; \
           done
 
 targetclean:

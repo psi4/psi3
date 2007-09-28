@@ -1,5 +1,5 @@
  
-.PHONY:	default all install depend clean targetclean
+.PHONY:	default all install depend clean dclean targetclean
 
 # Needed in order for $(RUBYLINK) to work below
 include MakeVars
@@ -51,6 +51,12 @@ clean:
 	for dir in $(subdirs); \
           do \
             (cd $${dir}; echo ... Making clean in $${dir} ...; $(MAKE) clean) || exit 1; \
+          done
+
+dclean:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo ... Making clean in $${dir} ...; $(MAKE) dclean) || exit 1; \
           done
 
 targetclean:

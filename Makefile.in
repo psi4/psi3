@@ -1,6 +1,6 @@
 SHELL = /bin/sh
 
-.PHONY:	default all install install_man install_inc install_host depend clean targetclean tests quicktests testsclean doc
+.PHONY:	default all install install_man install_inc install_host depend clean dclean targetclean tests testsclean doc
 
 default: all
 
@@ -54,6 +54,12 @@ clean:
             (cd $${dir}; echo Making clean in $${dir}; $(MAKE) clean) || exit 1; \
           done
 
+dclean:
+	for dir in $(subdirs); \
+          do \
+            (cd $${dir}; echo Making clean in $${dir}; $(MAKE) dclean) || exit 1; \
+          done
+
 targetclean:
 	for dir in $(subdirs) tests doc; \
           do \
@@ -62,9 +68,6 @@ targetclean:
 
 tests:
 	(cd tests; echo Running test suite...; $(MAKE)) || exit 1;
-
-quicktests:
-	(cd tests; echo Running quick test suite...; $(MAKE) quicktests) || exit 1;
 
 testsclean:
 	(cd tests; echo Cleaning test suite...; $(MAKE) clean) || exit 1;
