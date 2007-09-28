@@ -7,19 +7,23 @@ LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
+CXXSRC = \
+b_sort.cc                distribute.cc            idx_error.cc \
+build_B_RHF.cc           domain_print.cc          idx_permute.cc \
+build_F_RHF.cc           e_sort.cc                idx_permute_multipass.cc \
+build_abcd_packed.cc     e_spinad.cc              idx_permute_presort.cc \
+c_sort.cc                f_sort.cc                local.cc \
+cache.cc                 f_spinad.cc              local_magnetic.cc \
+cc_memcheck.cc           file_build.cc            local_polar.cc \
+ccsort.cc                file_build_multipass.cc  scf_check.cc \
+classify.cc              file_build_presort.cc    sort_oei.cc \
+cphf_B.cc                fock.cc                  sort_pert.cc \
+cphf_F.cc                sort_tei.cc \
+d_sort.cc                get_moinfo.cc            \
+d_spinad.cc              get_params.cc            transpert.cc \
+denom.cc
 
-CSRC = \
-c_sort.c    d_sort.c      e_sort.c      get_moinfo.c  idx_permute.c \
-ccsort.c    denom.c       file_build.c  get_params.c  scf_check.c   \
-classify.c  distribute.c  fock.c        idx_error.c   sort_oei.c    \
-sort_tei.c  f_sort.c      cache.c       b_sort.c                    \
-transpert.c sort_pert.c build_F_RHF.c cphf_F.c build_B_RHF.c cphf_B.c \
-local.c local_polar.c local_magnetic.c domain_print.c \
-d_spinad.c  e_spinad.c    f_spinad.c    cc_memcheck.c  \
-file_build_multipass.c  idx_permute_multipass.c \
-build_abcd_packed.c \
-
-BINOBJ = $(CSRC:%.c=%.o)
+BINOBJ = $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 

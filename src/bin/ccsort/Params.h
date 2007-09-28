@@ -2,6 +2,9 @@
     \ingroup (CCSORT)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace ccsort {
+
 struct Params {
   int print_lvl;         /* Output level control */
   int keep_TEIFile;      /* Should we keep the input two-elec. integrals? */
@@ -24,3 +27,5 @@ struct Params {
   int local;
   char *prop;
 };
+
+}} // namespace psi::ccsort

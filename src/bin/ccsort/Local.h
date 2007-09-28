@@ -5,6 +5,8 @@
 
 /*! \defgroup CCSORT Add a description of the group CCSORT */
 
+namespace psi { namespace ccsort {
+
 struct Local {
   int natom;
   int nso;
@@ -34,3 +36,5 @@ struct Local {
   char *freeze_core;
   char *pairdef;
 };
+
+}} // namespace psi::ccsort

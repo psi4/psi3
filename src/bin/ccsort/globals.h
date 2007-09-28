@@ -4,6 +4,8 @@
 */
 #include <ccfiles.h>
 
+namespace psi { namespace ccsort {
+
 /* Global variables */
 #ifdef EXTERN
 #undef EXTERN
@@ -12,9 +14,14 @@
 #define EXTERN
 #endif
 
+extern "C" {
 EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
+}
+
 EXTERN int *ioff;
 EXTERN struct MOInfo moinfo;
 EXTERN struct Params params;
 EXTERN struct Local local;
+
+}} // namespace psi::ccsort

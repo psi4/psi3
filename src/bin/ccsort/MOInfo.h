@@ -2,6 +2,9 @@
     \ingroup (CCSORT)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace ccsort {
+
 struct MOInfo {
   int nirreps;           /* no. of irreducible representations */
   int nmo;               /* no. of molecular orbitals */
@@ -135,3 +138,5 @@ struct MOInfo {
   int irrep_Rz;
   double ***C;           /* Virtual orbital transformation matrix (for AO-basis B terms) */
 };
+
+}} //namespace psi::ccsort
