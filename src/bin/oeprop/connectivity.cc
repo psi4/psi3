@@ -7,6 +7,8 @@
 #include "prototypes.h"
 #include "globals.h"
 
+#include <vdw_radii.h>
+
 #define VDW_SCALE 0.5
 
 namespace psi { namespace oeprop {
@@ -16,7 +18,6 @@ void compute_connectivity()
   int i, j;
   int zi, zj;
   double radius_i, radius_j, rij;
-#include <vdw_radii.h>
 
   connectivity = init_int_matrix(natom,natom);
   

@@ -6,6 +6,7 @@
 #include "includes.h"
 #include "prototypes.h"
 #include "globals.h"
+#include <rgb.h>
 
 namespace {
   void print_2d_summary();
@@ -199,7 +200,6 @@ void print_grid_megapovray()
   return;
 }
 
-
 void create_megapovray_file()
 {
   int i, j, z;
@@ -208,7 +208,6 @@ void create_megapovray_file()
   double dimx, dimy, dimz, maxdim;
   double **grid_geom, **Rgrid;
   FILE *mpvfile;
-#include <rgb.h>
 
   dimx = grid_xyz1[0] - grid_xyz0[0];
   dimy = grid_xyz1[1] - grid_xyz0[1];
