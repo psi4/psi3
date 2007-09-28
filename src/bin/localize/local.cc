@@ -10,21 +10,27 @@
 #include <string.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
+#include <libipv1/ip_lib.h>
 #include <libint/libint.h>
 #include <libchkpt/chkpt.h>
 #include <libiwl/iwl.h>
 #include <psifiles.h>
 #include <libqt/qt.h>
 
-FILE *infile, *outfile;
-char *psi_file_prefix;
+extern "C" {
+  FILE *infile, *outfile;
+  char *psi_file_prefix;
+}
 
-void init_io(int argc, char *argv[]);
-void exit_io(void);
-void title(void);
+namespace psi { namespace localize {
+  void init_io(int argc, char *argv[]);
+  void exit_io(void);
+  void title(void);
+}}
 
 int main(int argc, char *argv[])
 {
+  using namespace psi::localize;
   int iter, s, t, A, k, l, m, p, q, inew, iold, max, max_col, phase_ok, phase_chk;
   int i, j, ij, am, atom, shell_length, offset, stat;
   int nirreps, nao, nmo, nso, natom, nshell, noei, nocc, errcod, nfzc;
@@ -361,9 +367,11 @@ int main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
+namespace psi { namespace localize {
+
+extern "C" extern char *gprgid();
 void init_io(int argc, char * argv[])
 {
-  extern char *gprgid();
   char *progid;
 
   progid = (char *) malloc(strlen(gprgid())+2);
@@ -395,7 +403,9 @@ void exit_io(void)
   psi_stop();
 }
 
-char *gprgid()
+}} // namespace psi::localize
+
+extern "C" char *gprgid()
 {
    char *prgid = "LOCAL";
 
