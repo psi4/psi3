@@ -6,6 +6,9 @@
     Global variables
  ***************************/
 
+#ifndef _psi3_bin_input_global_h_
+#define _psi3_bin_input_global_h_
+
 /*need this for z_entry structure*/
 #include <libchkpt/chkpt.h>
 
@@ -15,6 +18,8 @@
 #else
 # define EXTERN
 #endif
+
+namespace psi { namespace input {
 
 /*--- NOTE!
   Whenever I refer to basis function - it means either puream/cart function
@@ -29,8 +34,10 @@ struct coordinates{
 };
 
 /*Super-global stuff - the same no matter what calculation is running */
-EXTERN FILE *infile, *outfile;
-EXTERN char *psi_file_prefix;
+extern "C" {
+  EXTERN FILE *infile, *outfile;
+  EXTERN char *psi_file_prefix;
+}
 EXTERN int *ioff;
 EXTERN double *df;                  /*df[i] = (i-1)!!*/
 EXTERN char **elem_name;            /*Element names*/
@@ -209,7 +216,7 @@ EXTERN int **xexp_ao, **yexp_ao, **zexp_ao;
  ----------------------*/
 
 /*array of structures for z-mat entry*/
-struct z_entry* z_geom;          
+EXTERN struct z_entry* z_geom;          
 
 /*-----------------------------------------------
   Hack to allow MO projection onto the new basis
@@ -276,3 +283,7 @@ typedef struct {
 } GTOs_t;
 
 EXTERN GTOs_t GTOs;
+
+}} // namespace psi::input
+
+#endif // header guard

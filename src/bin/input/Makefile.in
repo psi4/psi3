@@ -5,17 +5,17 @@ include ../MakeVars
 
 PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CINC += -DINSTALLEDPSIDATADIR=\"$(datadir)\"
+CXXINC += -DINSTALLEDPSIDATADIR=\"$(datadir)\"
 
-CSRC = input.c parsing.c read_cart.c read_zmat.c reorient.c io.c \
-find_symmetry.c count_uniques.c functions.c sym_operations.c atom_num.c \
-init_elem_names.c read_basis.c build_transmat.c build_cart2pureang.c \
-build_so_classes.c build_usotao.c write_to_chkpt.c projection.c oe_osrr.c \
-overlap.c gto.c oldcalc.c write_scf_to_chkpt.c globals.c read_chkpt.c \
-read_charges.c read_geomdat.c linalg.c overlap_float.c oe_osrr_float.c \
-freeze_orbs.c correlate.c build_cdsalc.c
+CXXSRC = input.cc parsing.cc read_cart.cc read_zmat.cc reorient.cc io.cc \
+find_symmetry.cc count_uniques.cc functions.cc sym_operations.cc atom_num.cc \
+init_elem_names.cc read_basis.cc build_transmat.cc build_cart2pureang.cc \
+build_so_classes.cc build_usotao.cc write_to_chkpt.cc projection.cc oe_osrr.cc \
+overlap.cc gto.cc oldcalc.cc write_scf_to_chkpt.cc globals.cc read_chkpt.cc \
+read_charges.cc read_geomdat.cc linalg.cc overlap_float.cc oe_osrr_float.cc \
+freeze_orbs.cc correlate.cc build_cdsalc.cc
 
-BINOBJ = $(CSRC:%.c=%.o)
+BINOBJ = $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 

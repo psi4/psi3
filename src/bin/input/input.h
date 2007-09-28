@@ -6,6 +6,11 @@
   Prototypes for functions
  **************************/
 
+#ifndef _psi3_bin_input_input_h_
+#define _psi3_bin_input_input_h_
+
+namespace psi { namespace input {
+
 /*
    strange, but necessary, gprgid function
 */
@@ -147,10 +152,10 @@ void read_basis();
 /*
    normalization functions in read_basis.c 
 */
-void setup();
-void normalize();
+void setup(int maxioff);
+void normalize(double** bs, int fp, int lp, int am);
 int parse_am();
-double int_pow();
+double int_pow(double, int);
 double ovlp();
 
 
@@ -186,8 +191,32 @@ void write_scf_to_chkpt();
 void parsing();
 void freeze_core();
 
+void init_globals();
+void read_cart();
+void read_zmat();
+void read_chkpt_geom();
+void read_geomdat();
+void freeze_virt();
+void reorient();
+void find_symmetry();
+void count_uniques();
+void build_transmat();
+void build_usotao();
+void build_cart2pureang();
+void build_so_classes();
+void write_to_chkpt(double erep);
+void read_charges();
+
+void median_vec(double *A, double *B, double *median);
+void vectors_to_matrix(double *v1, double *v2, double *v3, double **matrix);
+int inv_related(double *A, double *B);
+int vect_equiv(double *A, double *B);
+
 /*
   Make canonical and reference frames equivalent
   */
 void canon_eq_ref_frame();
 
+}} // namespace psi::input
+
+#endif // header guard
