@@ -154,9 +154,13 @@
  * -Ed
  * */
 
+#ifndef _psi_bin_cscf_common_h_
+#define _psi_bin_cscf_common_h_
+
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 #include <libpsio/psio.h>
+#include <libipv1/ip_lib.h>
 
 #define MAX_BASIS 4096
 #define MAXIOFF 4096
@@ -172,8 +176,14 @@
 # define EXTERN
 #endif
 
-EXTERN FILE *infile, *outfile, *JK,*gmat,*diis_out;
-EXTERN char **psi_file_prefix;
+extern "C" {
+  EXTERN FILE *infile, *outfile;
+  EXTERN char **psi_file_prefix;
+}
+
+namespace psi { namespace cscf {
+
+EXTERN FILE *JK,*gmat,*diis_out;
 
 EXTERN double dampsv;           /* scale factor in diis */
 EXTERN double repnuc;           /* nuclear repulsion */
@@ -339,3 +349,45 @@ EXTERN int tight_ints, ok_ints,    /*keeps track of acccuracy being used*/
                                      switched*/
 EXTERN double delta;               /*just another density convergence
                                      variable*/
+
+void occ_init();
+void init_scf();
+void init_scf2();
+void init_uhf();
+void scf_input(ip_value_t *);
+void rdone_iwl();
+void form_vec();
+void shalf();
+void guess();
+void schmit(int);
+void schmit_uhf(int);
+void print_mos();
+void print_mos_uhf();
+void dmat();
+void dmatuhf();
+void cmatsplit();
+void rdtwo();
+void formg_direct();
+void scf_iter();
+void scf_iter_2();
+void uhf_iter();
+void cleanup();
+void sortev();
+void rotate_vector();
+void sdot(double** a, double** b, int n, double* value);
+void errchk(int errcod, char* token);
+int ecalc(double incr);
+void occ_calc();
+void diis(double** scr1, double** scr2, double** scr3, double* c1, double* c2, double cim, int newci);
+void formg_open();
+void formg_closed();
+void dmat_2(int opblk);
+void formg_two(int iju, int* optest);
+void occ_read();
+void occ_out(void);
+void diis_uhf(void);
+void orb_mix(void);
+
+}} // namespace psi::cscf
+
+#endif // header guard
