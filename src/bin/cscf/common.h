@@ -178,7 +178,7 @@
 
 extern "C" {
   EXTERN FILE *infile, *outfile;
-  EXTERN char **psi_file_prefix;
+  EXTERN char *psi_file_prefix;
 }
 
 namespace psi { namespace cscf {
