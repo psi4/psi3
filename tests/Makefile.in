@@ -1,5 +1,5 @@
 
-.PHONY: tests quicktests cc_tests psirb_tests clean
+.PHONY: tests quicktests cc_tests psirb_tests clean quicktestsclean
 
 cc_subdirs = cc1 cc2 cc3 cc4 cc8 cc9 cc10 cc11 cc12 cc13 cc14 cc15 cc16 \
 cc17 cc18 cc19 cc21 cc22 cc23 cc24 cc25 cc26 cc27 cc28 cc29 cc30 cc31 cc32 \
@@ -62,6 +62,13 @@ psirb_tests:
 
 clean:
 	for dir in $(subdirs); \
+	do \
+	 (cd $${dir}; echo ...Cleaning $${dir}...; $(MAKE) clean) || exit 1; \
+	done
+	rm -f ../test-case-results
+
+quicktestsclean:
+	for dir in $(quicktestdirs); \
 	do \
 	 (cd $${dir}; echo ...Cleaning $${dir}...; $(MAKE) clean) || exit 1; \
 	done
