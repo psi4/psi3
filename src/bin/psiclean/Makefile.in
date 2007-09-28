@@ -5,9 +5,9 @@ include ../MakeVars
 
 PSILIBS = -lPSI_qt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CSRC = psiclean.c
+CXXSRC = psiclean.cc
 
-BINOBJ = $(CSRC:%.c=%.o)
+BINOBJ = $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 

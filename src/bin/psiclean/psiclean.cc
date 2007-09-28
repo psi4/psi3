@@ -24,10 +24,18 @@
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 
+extern "C" {
+  FILE *infile, *outfile;
+  char *psi_file_prefix;
+}
 
-FILE *infile, *outfile;
-char *psi_file_prefix;
-void exit_bad(void);
+namespace psi { namespace psiclean {
+  void exit_bad(void)
+  {
+    psio_done();
+    exit(1);
+  }
+}}
 
 int main(int argc, char *argv[])
 {
@@ -78,14 +86,7 @@ int main(int argc, char *argv[])
 }
 
 
-void exit_bad(void)
-{
-  psio_done();
-  exit(1);
-}
-
-
-char *gprgid()
+extern "C" char *gprgid()
 {
    char *prgid = "PSICLEAN";
 
