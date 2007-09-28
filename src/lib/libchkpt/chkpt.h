@@ -270,6 +270,9 @@ void chkpt_wt_cdsalcpi(const int*);
 double** chkpt_rd_cdsalc2cd();
 void chkpt_wt_cdsalc2cd(const double**);
 
+double *chkpt_rd_exps();
+void chkpt_wt_exps(double*);
+
 int chkpt_exist(char *);
 
 int chkpt_rd_override_occ(void);
