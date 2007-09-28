@@ -2,6 +2,12 @@
     \ingroup (CCENERGY)
     \brief Enter brief description of file here 
 */
+
+#ifndef _psi_src_bin_ccenergy_moinfo_h
+#define _psi_src_bin_ccenergy_moinfo_h
+
+namespace psi { namespace ccenergy {
+
 struct MOInfo {
   int nirreps;           /* no. of irreducible representations */
   int nmo;               /* no. of molecular orbitals */
@@ -73,3 +79,7 @@ struct MOInfo {
   double ***Ca;          /* UHF alpha virtual orbital transformation matrix (for AO-basis B terms) */
   double ***Cb;          /* UHF beta virtual orbital transformation matrix (for AO-basis B terms) */
 };
+
+}} // namespace psi::ccenergy
+
+#endif //  _psi_src_bin_ccenergy_moinfo_h

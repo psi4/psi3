@@ -2,6 +2,12 @@
     \ingroup (CCENERGY)
     \brief Enter brief description of file here 
 */
+
+#ifndef _psi_src_bin_ccenergy_params_h
+#define _psi_src_bin_ccenergy_params_h
+
+namespace psi { namespace ccenergy {
+
 /* Input parameters */
 struct Params {
   int maxiter;
@@ -34,3 +40,7 @@ struct Params {
   int t3_Ws_incore;
   int nthreads;
 };
+
+}} // namespace psi::ccenergy
+
+#endif // _psi_src_bin_ccenergy_params_h

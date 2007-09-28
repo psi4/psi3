@@ -2,6 +2,12 @@
     \ingroup (CCENERGY)
     \brief Enter brief description of file here 
 */
+
+#ifndef _psi_src_bin_ccenergy_local_h
+#define _psi_src_bin_ccenergy_local_h
+
+namespace psi { namespace ccenergy {
+
 struct Local {
   int natom;
   int nso;
@@ -27,3 +33,7 @@ struct Local {
   char *freeze_core;
   char *pairdef;
 };
+
+}} // namespace psi::ccenergy
+
+#endif // _psi_src_bin_ccenergy_local_h
