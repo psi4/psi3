@@ -4,7 +4,14 @@
   EV, March 30, 2001
  ------------------------------------------*/
 
+#ifndef _psi_include_rgb_h_
+#define _psi_include_rgb_h_
+
 #define LAST_RGB_INDEX 9
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 double atomic_rgb[][3] = { {0.40, 0.40, 0.40},  /* default element or ghost */
                     {1.00, 1.00, 1.00},  /* hydrogen */
@@ -17,3 +24,9 @@ double atomic_rgb[][3] = { {0.40, 0.40, 0.40},  /* default element or ghost */
 		    {1.00, 0.00, 0.00},  /* oxygen */
 		    {0.75, 0.40, 0.15}  /* fluorine */
 };
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* header guard */

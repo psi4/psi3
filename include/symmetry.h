@@ -4,6 +4,9 @@
   Edward Valeev, Oct. 1999
  -------------------------------------------------------*/
 
+#ifndef _psi_include_symmetry_h_
+#define _psi_include_symmetry_h_
+
 /*--------------------------------------------------------------
   Point groups at this moment are limited to D2h and sumbgroups
   Therefore the number of symmetry elements is at most 8. Each
@@ -39,3 +42,5 @@
 #define XAXIS 0
 #define YAXIS 1
 #define ZAXIS 2
+
+#endif /* header guard */

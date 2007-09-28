@@ -18,6 +18,9 @@
  * -TDC
  */
 
+#ifndef _psi_include_physconst_h_
+#define _psi_include_physconst_h_
+
 #define _pi    3.14159265358979323846264338327950288
 #define _twopi 6.2831853071795862320E0
 #define _h 6.6260755E-34  /* J s    */
@@ -46,3 +49,5 @@
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
+
+#endif /* header guard */

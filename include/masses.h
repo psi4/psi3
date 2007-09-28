@@ -24,8 +24,16 @@
 ** 08/23/02 EFV - Use lithium isotope 7 as the default (most abundant) 
 **
 */
+
+#ifndef _psi_include_masses_h_
+#define _psi_include_masses_h_
+
 #define LAST_MASS_INDEX (139)
- 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 double atomic_masses[] = 
 { 1.0078250321, 1.0078250321, 2.0141017780, 3.0160492675, 2.0141017780, 3.0160492675, 
   4.0026032497, 3.0160293097, 4.0026032497,
@@ -151,3 +159,9 @@ double an2masses[] =
   54.938046, 55.934939, 58.933198, 57.935347, 62.929599, 63.929145,
   68.925581, 73.921179, 74.921596, 79.916521, 78.918336, 83.911506
 } ; 
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* header guard */

@@ -1,6 +1,6 @@
 
-#ifndef _psi_src_psiconfig_h
-#define _psi_src_psiconfig_h
+#ifndef _psi_include_psiconfig_h
+#define _psi_include_psiconfig_h
 
 /* Define if you have <stdint.h>.  */
 #undef HAVE_STDINT_H
