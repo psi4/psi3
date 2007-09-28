@@ -3,7 +3,10 @@
     \brief Enter brief description of file here 
 */
 /* External global variables */
-extern FILE *infile, *outfile;
+extern "C" {
+  extern FILE *infile, *outfile;
+}
+
 extern int *ioff;
 extern struct MOInfo moinfo;
 extern struct Params params;

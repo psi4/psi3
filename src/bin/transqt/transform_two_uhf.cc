@@ -8,6 +8,7 @@
 #include <libciomr/libciomr.h>
 #include <libiwl/iwl.h>
 #include <libchkpt/chkpt.h>
+#include <libqt/qt.h>
 
 #include "MOInfo.h"
 #include "Params.h"

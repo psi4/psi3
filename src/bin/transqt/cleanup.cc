@@ -4,6 +4,7 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <libciomr/libciomr.h>
 #include "MOInfo.h"
 #include "Params.h"

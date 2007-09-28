@@ -119,49 +119,42 @@
 
 #include <math.h>
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <libipv1/ip_lib.h>
+#include <libpsio/psio.h>
+#include <libciomr/libciomr.h>
+#include <libchkpt/chkpt.h>
+#include <libqt/qt.h>
+#include <libiwl/iwl.h>
+#include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
+#include "globals.h"
+
+/* First definitions of globals */
 extern "C" {
-
-  /* C INCLUDE FILES */
-
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <string.h>
-  #include <libipv1/ip_lib.h>
-  #include <libpsio/psio.h>
-  #include <libciomr/libciomr.h>
-  #include <libchkpt/chkpt.h>
-  #include <libqt/qt.h>
-  #include <libiwl/iwl.h>
-  #include <psifiles.h>
-  #include "MOInfo.h"
-  #include "Params.h"
-  #include "globals.h"
-
-  /* First definitions of globals */
   FILE *infile, *outfile;
   char *psi_file_prefix;
-  int *ioff;
-  struct MOInfo moinfo;
-  struct Params params;
-
-  /* C FUNCTION PROTOTYPES */
-  void semicanonical_fock(void);
-  void transform_one(void);
-  void transform_two(void);
-  void cleanup(void);
-  void fzc_density(int nirreps, int *frdocc, double *Pc, double **C,
-    int *first, int *first_so, int *last_so, int *ioff);
-  void ivo_density(int nirreps, int *frdocc, int *docc, int *socc, double *P, 
-    double **C, int *first, int *first_so, int *last_so, int *ioff);
-  void transform_two_mp2(void);
-  void transform_two_mp2r12a_t(void);
-  void transform_two_mp2r12a_gr(void);
-
 }
 
-/* C++ INCLUDE FILES GO HERE */
+int *ioff;
+struct MOInfo moinfo;
+struct Params params;
 
-/* C++ FUNCTION PROTOTYPES */
+void semicanonical_fock(void);
+void transform_one(void);
+void transform_two(void);
+void cleanup(void);
+void fzc_density(int nirreps, int *frdocc, double *Pc, double **C,
+  int *first, int *first_so, int *last_so, int *ioff);
+void ivo_density(int nirreps, int *frdocc, int *docc, int *socc, double *P, 
+  double **C, int *first, int *first_so, int *last_so, int *ioff);
+void transform_two_mp2(void);
+void transform_two_mp2r12a_t(void);
+void transform_two_mp2r12a_gr(void);
+
 void init_io(int argc, char *argv[]);
 void title(void);
 void init_ioff(void);
@@ -169,11 +162,12 @@ void get_parameters(void);
 void print_parameters(void);
 void get_moinfo(void);
 void get_one_electron_integrals(void);
-extern "C" void exit_io(void);
+void exit_io(void);
 void get_reorder_array(void);
-extern "C" double *** construct_evects(char *spin, int nirreps, int *active, int *sopi, 
+double *** construct_evects(char *spin, int nirreps, int *active, int *sopi, 
   int *orbspi, int *first_so, int *last_so, int *first, int *last, 
   int *fstact, int *lstact, int printflag);
+void destruct_evects(int nirreps, double ***evects);
 int check_C(int nso, int nmo, double **Cmat, double *S);
 
 
@@ -1425,7 +1419,7 @@ double *** construct_evects(char *spin, int nirreps, int *active, int *sopi,
 
 }
 
-extern "C" void destruct_evects(int nirreps, double ***evects) 
+void destruct_evects(int nirreps, double ***evects) 
 {
   int h;
 

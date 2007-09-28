@@ -11,20 +11,20 @@ PSILIBS = -lPSI_iwl -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
 CSRC = \
 gprgid.c \
-semicanonical.c \
-transform_one.c \
-transform_two.c \
-transform_two_mp2.c \
-transform_two_mp2r12a_gr.c \
-transform_two_mp2r12a_t.c \
-transform_two_uhf.c \
-transform_two_backtr_uhf.c \
-yoshimine.c \
-frozen_core.c \
-backsort.c \
-cleanup.c
 
-CXXSRC = transqt.cc
+CXXSRC = transqt.cc \
+semicanonical.cc \
+transform_one.cc \
+transform_two.cc \
+transform_two_mp2.cc \
+transform_two_mp2r12a_gr.cc \
+transform_two_mp2r12a_t.cc \
+transform_two_uhf.cc \
+transform_two_backtr_uhf.cc \
+yoshimine.cc \
+frozen_core.cc \
+backsort.cc \
+cleanup.cc
 
 BINOBJ = $(CSRC:%.c=%.o) $(CXXSRC:%.cc=%.o)
 

@@ -97,4 +97,9 @@ YEXTERN void add_2pdm_ref_pt(struct yoshimine *YBuff,int *ioff,int prtflg,
 YEXTERN void yosh_buff_put_val(struct yoshimine *YBuff, int *ioff, int pq,
                        int p, int q, int r, int s, double value, int prtflg,
                        FILE *outfile);
+YEXTERN void yosh_wrt_arr_mp2r12a(struct yoshimine *YBuff, int p, int q, int pq,
+                          int pqsym, double **arr, int rsym, int *firstr,
+                          int *lastr, int *firsts, int *lasts, int sortby_rs,
+                          int *occ, int *ioff3,
+                          int printflag, FILE *outfile);
 #endif /* end YOSHIMINE_H */
