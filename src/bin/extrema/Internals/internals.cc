@@ -8,9 +8,11 @@
 #define EXTERN
 #include"extrema.h"
 
+namespace psi { namespace extrema {
 double **symm_matrix_invert(double **A, int dim, int print_det, int redundant);
+}}
 
-
+using namespace psi::extrema;
 
 /*--------------------------------------------------------------------------*/
 /*! \fn internals::mem_alloc()

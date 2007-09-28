@@ -8,7 +8,7 @@
 #define EXTERN
 #include "extrema.h"
 
-
+using namespace psi::extrema;
 
 /*---------------------------------------------------------------------------*/
 /*! \fn math_tools::rep_reduce(char *label, double **rep_matrix, int num_reps)

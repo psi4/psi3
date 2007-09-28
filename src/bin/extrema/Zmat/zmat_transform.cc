@@ -12,6 +12,7 @@
 #include "extrema.h"
 #include "inline.h"
 
+using namespace psi::extrema;
 
 /*---------------------------------------------------------------------------*/
 /*! \fn zmat::compute_B()

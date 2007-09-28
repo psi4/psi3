@@ -1,3 +1,8 @@
+#ifndef _psi_bin_extrema_deloc_h_
+#define _psi_bin_extrema_deloc_h_
+
+namespace psi { namespace extrema {
+
 /*###########################################################################*/
 /*! \file 
     \ingroup (EXTREMA)
@@ -63,3 +68,7 @@ class deloc : public internals {
 
 /*! \fn deloc::~deloc() 
   \brief Frees memory. */
+
+}} // namespace psi::extrema
+
+#endif // header guard

@@ -17,3 +17,7 @@ BINOBJ = $(TRUESRC:%.cc=%.o)
 
 include ../MakeRules
 
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif

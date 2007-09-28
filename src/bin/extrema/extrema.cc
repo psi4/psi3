@@ -14,15 +14,17 @@
 
 #include "extrema.h"
 
+namespace psi { namespace extrema {
 int get_coord_type();
 void print_intro();
 void start_io(int argc, char *argv[]);
 void stop_io();
-
+}}
 
 
 int main(int argc, char *argv[]) {
-
+    using namespace psi::extrema;
+    
     start_io(argc,argv);
     print_intro();
     coord_type = get_coord_type();
@@ -57,6 +59,7 @@ int main(int argc, char *argv[]) {
 }
 
 
+namespace psi { namespace extrema {
 
 /*-----------------------------------------------------------------------------
   get_coord_type
@@ -136,3 +139,5 @@ void stop_io() {
  
     return;
 }
+
+}} // namespace psi::extrema

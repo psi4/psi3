@@ -12,7 +12,7 @@
 #define EXTERN
 #include"extrema.h"
 
-
+using namespace psi::extrema;
 
 /*---------------------------------------------------------------------------*/
 /*! \fn zmat::zmat() 

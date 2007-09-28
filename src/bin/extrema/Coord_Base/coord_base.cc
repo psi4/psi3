@@ -8,9 +8,13 @@
 #define EXTERN
 #include "extrema.h"
 
+/*
+namespace psi { namespace extrema {
 void stop_io();
+}}
+*/
 
-
+using namespace psi::extrema;
 
 /*---------------------------------------------------------------------------*/
 /*! \fn coord_base::coord_base()

@@ -1,3 +1,8 @@
+#ifndef _psi_bin_extrema_internals_h_
+#define _psi_bin_extrema_internals_h_
+
+namespace psi { namespace extrema {
+
 /*###########################################################################*/
 /*! \file 
     \ingroup (EXTREMA)
@@ -79,3 +84,6 @@ class internals : protected coord_base {
   <b>back_transform()</b>. 
   \param double *cg the cartesian geometry for which internals are desired. */
 
+}} // namespace psi::extrema
+
+#endif // header guard

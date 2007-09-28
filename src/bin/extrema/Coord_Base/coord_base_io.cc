@@ -8,7 +8,7 @@
 #define EXTERN
 #include"extrema.h"
 
-
+using namespace psi::extrema;
 
 /*--------------------------------------------------------------------------*/ 
 /*! \fn coord_base::parse_input()

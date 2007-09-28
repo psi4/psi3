@@ -14,6 +14,8 @@
 #include"bondl.h"
 #include"inline.h"
 
+using namespace psi::extrema;
+
 /*---------------------------------------------------------------------------*/
 /*! \fn deloc::deloc() 
 

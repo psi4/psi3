@@ -1,3 +1,8 @@
+#ifndef _psi_bin_extrema_bondl_h_
+#define _psi_bin_extrema_bondl_h_
+
+namespace psi { namespace extrema {
+
 /*##########################################################################*/
 /*! \file 
     \ingroup (EXTREMA)
@@ -291,3 +296,7 @@ static float bondl[1485] = {
  .00, .00, .00, .00, .00, .00, .00, .00,
  .00, .00, .00, .00, .00, .00 
 };
+
+}} // namespace psi::extrema
+
+#endif // header guard

@@ -12,11 +12,10 @@
 #include<stdlib.h>
 #include<string.h>
 #include<stdio.h>
-extern "C" {
 #include <ctype.h>
-} 
 #include"math_tools.h"
 
+using namespace psi::extrema;
 
 /*--------------------------------------------------------------------------*/
 /*! \fn char_table::char_table(char *ptgrp_name) 

@@ -10,6 +10,7 @@
 #include "masses.h"
 
 
+using namespace psi::extrema;
 
 /*---------------------------------------------------------------------------*/
 /*! \fn coord_base_carts::coord_base_carts() 

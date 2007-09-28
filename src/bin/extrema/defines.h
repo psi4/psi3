@@ -6,6 +6,9 @@
   \brief #define parameters */
 /*###########################################################################*/
 
+#ifndef _psi_bin_extrema_defines_h_
+#define _psi_bin_extrema_defines_h_
+
 #define NORMAL_PRINT 1 /*!< normal print level */
 #define RIDICULOUS_PRINT 3 /*!< level at which printing becomes ridiculous */
 #define BT_CONV 1.0e-10 /*!< convergence level for internals->cartesians
@@ -32,3 +35,5 @@
 #define CART_TYPE 1 /*!< cartesian coordinate id */
 #define ZMAT_TYPE 2 /*!< zmat coordinate id */ 
 #define DELOC_TYPE 3 /*!< deloc coordinate id */
+
+#endif // header guard

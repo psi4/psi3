@@ -5,7 +5,12 @@
 /*						Joseph P. Kenny 11/29/01
   ###########################################################################*/
 
-#include<math.h>
+#ifndef _psi_bin_extrema_inline_h_
+#define _psi_bin_extrema_inline_h_
+
+#include <cmath>
+
+namespace psi { namespace extrema {
 
 inline double *unit_vec(double* cart_arr, int atom1, int atom2 ) {
 
@@ -152,26 +157,6 @@ inline double compute_torsion(double *car, int atm, int bnd, int ang, int tor){
     return t_val;
 }
 
+}} // namespace psi::extrema
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+#endif

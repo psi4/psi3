@@ -9,9 +9,14 @@
 #include<stdio.h>
 #include<math.h>
 
+#include <libciomr/libciomr.h>
 #include <psifiles.h> 
 
+namespace psi { namespace extrema {
+
+extern "C" {
 extern FILE *infile, *outfile;
+}
 
 void stop_io();
 void punt(char *mess);
@@ -23,7 +28,6 @@ double **symm_matrix_invert(double **_A, int dim, int print_det,
   \brief The obligatory gprgid function. */
 /*---------------------------------------------------------------------------*/
 extern "C" {
-    #include<libciomr/libciomr.h>
     char *gprgid() {
 	char *prgid = "EXTREMA";
 	return(prgid);
@@ -101,3 +105,4 @@ double **symm_matrix_invert(double **_A, int dim, int print_det, int redundant) 
   return _A_inv;
 }
 
+}} // namespace psi::extrema

@@ -1,3 +1,8 @@
+#ifndef _psi_bin_extrema_simple_h_
+#define _psi_bin_extrema_simple_h_
+
+namespace psi { namespace extrema {
+
 /*##########################################################################*/
 /*! \file 
     \ingroup (EXTREMA)
@@ -15,6 +20,9 @@
 
 /*						Joseph P. Kenny 11/29/01
   ###########################################################################*/
+
+extern void punt(char*);
+extern void stop_io();
 
 class simple {
     int type, equiv_grp;
@@ -101,3 +109,6 @@ class simple {
 /*! \fn simple::get_tors()
   \brief Returns atom (4) which defines torsion 1-2-3-4 */
 
+}} // namespace psi::extrema
+
+#endif // header guard

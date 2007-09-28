@@ -1,3 +1,8 @@
+#ifndef _psi_bin_extrema_mathtools_h_
+#define _psi_bin_extrema_mathtools_h_
+
+namespace psi { namespace extrema {
+
 /*###########################################################################*/
 /*! \file 
     \ingroup (EXTREMA)
@@ -73,3 +78,7 @@ class char_table {
     int num_classes;
     
 };
+
+}} // namespace psi::extrema
+
+#endif // header guard

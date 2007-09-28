@@ -1,3 +1,8 @@
+#ifndef _psi_bin_extrema_coordbase_h_
+#define _psi_bin_extrema_coordbase_h_
+
+namespace psi { namespace extrema {
+
 /*###########################################################################*/
 /*! \file 
     \ingroup (EXTREMA)
@@ -141,7 +146,6 @@ class coord_base : protected coord_base_carts,  protected math_tools {
   \brief Derived classes may override this function and write necessary 
   information to chkpt */
 
+}} // namespace psi::extrema
 
-
-
-
+#endif // header guard

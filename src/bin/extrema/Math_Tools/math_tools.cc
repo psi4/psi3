@@ -7,12 +7,10 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
-extern "C" {
 #include <libciomr/libciomr.h>
-}
-
 #include"math_tools.h"
+
+using namespace psi::extrema;
 
 /*---------------------------------------------------------------------------*/
 /*! \fn math_tools::newton_step(int dim, double **_Hi, double *g)

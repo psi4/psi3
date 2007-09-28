@@ -1,3 +1,8 @@
+#ifndef _psi_bin_extrema_zmat_h_
+#define _psi_bin_extrema_zmat_h_
+
+namespace psi { namespace extrema {
+
 /*###########################################################################*/
 /*! \file 
     \ingroup (EXTREMA)
@@ -75,5 +80,6 @@ class zmat : protected internals {
 
   Frees allocated memory.*/
 
+}} // namespace psi::extrema
 
-
+#endif // header guard

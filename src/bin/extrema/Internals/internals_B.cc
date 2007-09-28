@@ -10,7 +10,7 @@
 #include "extrema.h"
 #include "inline.h"
 
-
+using namespace psi::extrema;
 
 /*---------------------------------------------------------------------------*/
 /*! \fn internals::B_row_bond(double *carr, int atom1, int atom2)
