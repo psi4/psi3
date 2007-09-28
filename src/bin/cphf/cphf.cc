@@ -43,6 +43,8 @@
 #include <psifiles.h>
 #include "globals.h"
 
+namespace psi { namespace cphf {
+
 void init_io(int argc, char *argv[]);
 void exit_io(void);
 void title(void);
@@ -63,8 +65,11 @@ void build_dipder(double ***);
 void vibration(double **, double **);
 void cphf_B(double ***, double **);
 
+}} // namespace psi::cphf
+
 int main(int argc, char *argv[])
 {
+  using namespace psi::cphf;
   int errcod = 0;
   int coord = 0;
   double ***F;
@@ -172,9 +177,12 @@ int main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
+namespace psi { namespace cphf {
+
+extern "C" extern char *gprgid(void);
+
 void init_io(int argc, char *argv[])
 {
-  extern char *gprgid(void);
   char *progid;
 
   progid = (char *) malloc(strlen(gprgid())+2);
@@ -205,7 +213,7 @@ void exit_io(void)
   psi_stop();
 }
 
-char *gprgid(void)
+extern "C" char *gprgid(void)
 {
    char *prgid = "CPHF";
 
@@ -222,3 +230,4 @@ void init_ioff(void)
   }
 }
 
+}} // namespace psi::cphf

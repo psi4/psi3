@@ -14,6 +14,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi { namespace cphf {
+
 /* cphf_X(): Solve the first-order CPHF equations for a nuclear
 ** perturbation.
 **
@@ -188,3 +190,4 @@ void cphf_X(double ***S, double **Baijk, double **Aaibj, double ***U)
   free_block(Acopy);
 }
 
+}} // namespace psi::cphf

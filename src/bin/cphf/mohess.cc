@@ -4,9 +4,12 @@
 */
 #include <stdio.h>
 #include <libciomr/libciomr.h>
+#include <libpsio/psio.h>
 #include <psifiles.h>
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cphf {
 
 /* mohess(): Builds the molecular orbital hessian matrix, which is
 ** needed for solving the CPHF equations and for Hartree-Fock wave
@@ -96,3 +99,5 @@ void mohess(double **Aaibj)
 
   return;
 }
+
+}} // namespace psi::cphf

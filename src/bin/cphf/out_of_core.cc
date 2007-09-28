@@ -11,6 +11,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi { namespace cphf {
+
 void out_of_core(double ***F, double ***S, double ***B, double **A)
 {
   int coord;
@@ -786,3 +788,5 @@ void sort_A(double **A, double **Aaibj)
 
   return;
 }
+
+}} // namespace psi::cphf

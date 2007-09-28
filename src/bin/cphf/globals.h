@@ -3,6 +3,9 @@
     \brief Enter brief description of file here 
 */
 
+#ifndef _psi_bin_cphf_globals_h_
+#define _psi_bin_cphf_globals_h_
+
 /* Global variables */
 #ifdef EXTERN
 #undef EXTERN
@@ -11,8 +14,13 @@
 #define EXTERN
 #endif
 
+extern "C" {
 EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
+}
+
+namespace psi { namespace cphf {
+
 EXTERN int *ioff;
 #define IOFF_MAX 32641
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
@@ -29,3 +37,8 @@ EXTERN char **asymbol;
 EXTERN double **dipder, **dipder_q;
 
 EXTERN int print_lvl;
+void zval_to_symbol(double zval, char *sym);
+
+}} // namespace psi::cphf
+
+#endif // header file

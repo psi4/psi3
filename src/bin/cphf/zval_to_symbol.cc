@@ -8,6 +8,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+namespace psi { namespace cphf {
+
 void zval_to_symbol(double zval, char *sym) {
   int z;
   z = (int) zval;
@@ -121,3 +123,5 @@ void zval_to_symbol(double zval, char *sym) {
   else if (z==106) strcpy(sym,"UNS");
   return ;
 }
+
+}} // namespace psi::cphf

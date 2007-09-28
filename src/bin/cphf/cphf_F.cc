@@ -14,6 +14,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi { namespace cphf {
+
 /* cphf_F(): Solve the first-order CPHF equations for an electric
 ** field perturbation.
 **
@@ -262,3 +264,5 @@ void cphf_F(double **Aaibj, double ***U)
 
   free_block(Acopy);
 }
+
+}} // namespace psi::cphf

@@ -9,6 +9,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi { namespace cphf {
+
 void setup(void)
 {
   int i, coord, h, foffset, loffset;
@@ -126,3 +128,5 @@ void cleanup(void)
   free_block(scf);
   free_block(geom);
 }
+
+}} // namespace psi::cphf

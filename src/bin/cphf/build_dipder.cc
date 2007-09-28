@@ -47,6 +47,8 @@
 ** TDC, October 2002
 */
 
+namespace psi { namespace cphf {
+
 void build_dipder(double ***UX)
 {
   int coord, ij, stat;
@@ -305,3 +307,5 @@ void build_dipder(double ***UX)
   free(MU);
   free(scratch);
 }
+
+}} // namespace psi::cphf

@@ -7,11 +7,11 @@ LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CSRC = cphf.c setup.c out_of_core.c mohess.c cphf_X.c cphf_F.c \
-polarize.c build_hessian.c build_dipder.c vibration.c cphf_B.c \
-zval_to_symbol.c 
+CXXSRC = cphf.cc setup.cc out_of_core.cc mohess.cc cphf_X.cc cphf_F.cc \
+polarize.cc build_hessian.cc build_dipder.cc vibration.cc cphf_B.cc \
+zval_to_symbol.cc 
 
-BINOBJ = $(CSRC:%.c=%.o)
+BINOBJ = $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 

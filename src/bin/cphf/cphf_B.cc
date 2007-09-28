@@ -18,6 +18,10 @@
 /* Convert atomic unit of magnetic flux density to tesla */
 #define _aumfd2tesla 2.35051742E5
 
+namespace psi { namespace cphf {
+
+void zval_to_symbol(double,char*);
+
 /* cphf_B(): Solve the first-order CPHF equations for a magnetic 
 ** field perturbation.
 **
@@ -35,8 +39,6 @@
 ** where (mu^a)_pq is a magnetic dipole moment integral.
 **
 */
-
-void zval_to_symbol(double,char*);
 
 void cphf_B(double ***UX, double **lx)
 {
@@ -756,3 +758,5 @@ void cphf_B(double ***UX, double **lx)
   free_block(dipder_q);
   free(label);
 }
+
+}} // namespace psi::cphf

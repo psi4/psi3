@@ -12,6 +12,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi { namespace cphf {
+
 /* polarize(): Compute the total polarizability from the dipole moment
 ** integrals computed by "cints --oeprop" and the field-perturbation
 ** CPHF coefficients computed in cphf_F().  The equation for the
@@ -130,3 +132,5 @@ void polarize(double ***UF)
   free(MU);
   free_block(alpha);
 }
+
+}} // namespace psi::cphf

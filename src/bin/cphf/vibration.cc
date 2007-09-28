@@ -18,6 +18,8 @@
 
 #define _D2esucm 1e-18
 
+namespace psi { namespace cphf {
+
 /* vibration(): Computes the harmonic vibrational frequencies and IR
 ** integrated absorption coefficients (intensities) using the
 ** cartesian hessian from build_hessian() and dipole derivatives from
@@ -172,3 +174,5 @@ void vibration(double **hessian, double **lx)
   free_block(M);
   free(km);
 }
+
+}} // namespace psi::cphf

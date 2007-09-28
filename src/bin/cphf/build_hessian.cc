@@ -42,6 +42,8 @@
 ** TDC, December 2001 (revised October 2002)
 */
 
+namespace psi { namespace cphf {
+
 void build_hessian(double ***F, double ***S, 
 		   double **A, double ***U, 
 		   double **hessian)
@@ -174,3 +176,5 @@ void build_hessian(double ***F, double ***S,
   }
   fclose(file15);
 }
+
+}} // namespace psi::cphf
