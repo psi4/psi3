@@ -10,16 +10,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-extern "C" {
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 #include <libiwl/iwl.h>
 #include <psifiles.h>
+
+extern "C" {
+  FILE* infile;
+  FILE* outfile;
+  char* psi_file_prefix;
 }
 
-FILE* infile;
-FILE* outfile;
-char* psi_file_prefix;
+namespace psi { namespace giao {
 
 static const int IOFFMAX = 1024;
 static int ioff[IOFFMAX];
@@ -40,8 +42,12 @@ void print_1e(const char* label, double** ints, int nbf);
 void print_2e(const char* label, double* ints, int nbf, double cutoff);
 void print_2e_canon(const char* label, double* ints, int nbf, double cutoff);
 
+}} // namespace psi::giao
+
 int main(int argc, char* argv[])
 {
+  using namespace psi::giao;
+  
   int errcod = psi_start(argc-1,argv+1,0);
   if (errcod != PSI_RETURN_SUCCESS)
     throw std::runtime_error("main -- psi_start failed");
@@ -287,6 +293,7 @@ extern "C" const char* gprgid()
   return prgid;
 }
 
+namespace psi { namespace giao {
 
 void init_misc()
 {
@@ -597,3 +604,5 @@ void print_2e_canon(const char* label, double* ints, int nbf, double cutoff)
 
   return;
 }
+
+}} // namespace psi:giao
