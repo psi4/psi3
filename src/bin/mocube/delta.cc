@@ -18,6 +18,8 @@
 #define EXTERN
 #include "mocube.h"
 
+namespace psi { namespace mocube {
+
 void compute_phi(double *phi, double x, double y, double z);
 
 void compute_mos(double *movals, double x, double y, double z,
@@ -54,3 +56,4 @@ void compute_mos(double *movals, double x, double y, double z,
   return;
 }
 
+}} // namespace psi::mocube

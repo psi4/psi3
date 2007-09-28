@@ -17,6 +17,7 @@
 #define MAX(I,J) ((I>J) ? I : J)
 #define MIN(I,J) ((I<J) ? I : J)
 
+namespace psi { namespace mocube {
 char *progid;
 void init_io(int argc, char *argv[]);
 void get_params(void);
@@ -25,10 +26,16 @@ void compute_mos(double *movals, double x, double y, double z,
     double **scf, double **u);
 void wrt_cube(void);
 void exit_io(void);
-FILE *infile, *outfile, *cubfile;
+FILE *cubfile;
+}}
+
+extern "C" {
+FILE *infile, *outfile;
 char *psi_file_prefix;
+}
 
 int main(int argc, char *argv[]) {
+  using namespace psi::mocube;
   int i,j, nirreps, cnt_x, cnt_y, cnt_z;
   double x, y, z, *movals, **scf, **u;
   char *filename;
@@ -166,13 +173,14 @@ int main(int argc, char *argv[]) {
   return 0 ;
 }
 
-char *gprgid() {
+extern "C" char *gprgid() {
   char *prgid = "MOCUBE";
   return (prgid);
 }
 
+namespace psi { namespace mocube {
+
 void init_io(int argc, char *argv[]) {
-  extern char *gprgid();
   char *filename;
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
@@ -346,3 +354,4 @@ void setup_delta(double **scf, double **u)
   return;
 }
 
+}} // namespace psi::mocube

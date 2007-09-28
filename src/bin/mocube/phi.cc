@@ -19,6 +19,8 @@
 
 #define MAXFACT 100
 
+namespace psi { namespace mocube {
+
 int nao, natom, nprim, nshell;
 int *stype, *snuc, *snumg, *sprim;
 double *a, *c, **geom, df[MAXFACT], **norm;
@@ -139,3 +141,4 @@ void compute_phi(double *phi, double x, double y, double z)
     }
 }
 
+}} // namespace psi::mocube

@@ -2,6 +2,12 @@
     \ingroup (MOCUBE)
     \brief Enter brief description of file here 
 */
+
+#ifndef _psi_bin_mocube_mocube_h_
+#define _psi_bin_mocube_modube_h_
+
+namespace psi { namespace mocube {
+
 struct cube_struct {
   char title[80];
   char subtitle[80];
@@ -44,3 +50,7 @@ struct Params {
 
 EXTERN struct Params params;
 EXTERN struct cube_struct cube;
+
+}} // namespace psi::mocube
+
+#endif // header guard

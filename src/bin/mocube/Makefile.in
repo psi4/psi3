@@ -7,10 +7,9 @@ LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CSRC = \
-mocube.c delta.c phi.c
+CXXSRC = mocube.cc delta.cc phi.cc
 
-BINOBJ = $(CSRC:%.c=%.o)
+BINOBJ = $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 
