@@ -6,6 +6,9 @@
 #include <stdlib.h>
 #include <psifiles.h>
 
+namespace psi {
+  namespace transqt2 {
+
 void idx_error(char *message, int p, int q, int r, int s, int pq, int rs,
 	       int pq_sym, int rs_sym, FILE *outfile)
 {
@@ -20,3 +23,5 @@ void idx_error(char *message, int p, int q, int r, int s, int pq, int rs,
   exit(PSI_RETURN_FAILURE);
 }
 
+  } // namespace transqt2
+} // namespace psi

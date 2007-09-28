@@ -12,6 +12,9 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi {
+  namespace transqt2 {
+
 void get_params()
 {
   int errcod, tol;
@@ -118,3 +121,6 @@ void get_params()
     fflush(outfile);
   }
 }
+
+  } // namespace transqt2
+} // namespace psi

@@ -42,7 +42,9 @@
 #include <psifiles.h>
 #include "globals.h"
 
-/* Function prototypes */
+namespace psi {
+  namespace transqt2 {
+
 void init_io(int argc, char *argv[]);
 void init_ioff(void);
 void title(void);
@@ -50,16 +52,19 @@ void get_params(void);
 void get_moinfo(void);
 void cleanup(void);
 void exit_io(void);
-
 int **cacheprep_rhf(int level, int *cachefiles);
 void cachedone_rhf(int **);
-
-int file_build_presort(dpdfile4 *, int, double, long int, int, 
-		       int, double *, double *, double *, double *, int);
+int file_build_presort(dpdfile4 *,int,double,long int,int,int,double *,
+                       double *,double *,double *,int);
 void transtwo_rhf(void);
 void transtwo_uhf(void);
-void transone(int m, int n, double *input, double *output, double **C, int nc, int *order, int *ioff);
+void transone(int,int,double *,double *,double **,int,int *,int *);
 void semicanonical_fock(void);
+
+ }
+}
+
+using namespace psi::transqt2;
 
 main(int argc, char *argv[])
 {
@@ -329,6 +334,9 @@ main(int argc, char *argv[])
 
 extern "C" { char *gprgid(void) { char *prgid = "TRANSQT"; return (prgid); } }
 
+namespace psi {
+  namespace transqt2 {
+
 void init_io(int argc, char *argv[])
 {
   int i;
@@ -387,3 +395,6 @@ void init_ioff(void)
   for(i=1; i < IOFF_MAX; i++)
     ioff[i] = ioff[i-1] + i;
 }
+
+  } // namespace transqt2
+} // namespace psi

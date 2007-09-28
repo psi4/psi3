@@ -14,6 +14,9 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi {
+  namespace transqt2 {
+
 void transtwo_rhf(void)
 {
   int nirreps, nso, nmo;
@@ -288,3 +291,6 @@ void transtwo_rhf(void)
     fflush(outfile);
   }
 }
+
+  } // namespace transqt2
+} // namespace psi

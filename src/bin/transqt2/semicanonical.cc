@@ -28,6 +28,9 @@
 ** TDC, 7/06
 */
 
+namespace psi {
+  namespace transqt2 {
+
 void uhf_fock_build(double **fock_a, double **fock_b, double **D_a, double **D_b);
 
 void semicanonical_fock(void)
@@ -449,3 +452,5 @@ void uhf_fock_build(double **fock_a, double **fock_b, double **D_a, double **D_b
   free_block(Dt);
 }
 
+  } // namespace transqt2
+} // namespace psi

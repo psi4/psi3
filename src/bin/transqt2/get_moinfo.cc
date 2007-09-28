@@ -18,6 +18,9 @@
 ** chkpt and compute the associated lookup arrays.
 */
 
+namespace psi {
+  namespace transqt2 {
+
 void get_moinfo(void)
 {
   int i, h, p, count;
@@ -199,3 +202,6 @@ void cleanup(void)
     free(moinfo.act2qt_B);
   }
 }
+
+  } // namespace transqt2
+} // namespace psi

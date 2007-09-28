@@ -14,17 +14,18 @@
 #define EXTERN
 #include "globals.h"
 
-void frozen_core(int p, int q, int r, int s, double value, double *D_a, double *D_b,
-		 double *fock_a, double *fock_b, int ref);
+namespace psi {
+  namespace transqt2 {
 
-void idx_permute_presort(dpdfile4 *File, int this_bucket,
-			   int **bucket_map, int **bucket_offset,
-			   int p, int q, int r, int s,
-			   double value, FILE *outfile);
+void frozen_core(int,int,int,int,double,double *,double *,double *,
+                 double *,int);
+
+void idx_permute_presort(dpdfile4 *,int,int **,int **,int,int,int,int,
+			   double,FILE *);
 
 int file_build_presort(dpdfile4 *File, int inputfile, double tolerance, 
-		       long int memoryb, int keep, int fzc, 
-		       double *D_a, double *D_b, double *fock_a, double *fock_b, int ref)
+		       long int memoryb, int keep, int fzc, double *D_a, 
+                       double *D_b, double *fock_a, double *fock_b, int ref)
 {
   struct iwlbuf InBuf;
   int lastbuf;
@@ -465,3 +466,6 @@ void frozen_core(int p, int q, int r, int s, double value, double *D_a, double *
     }
   }
 }
+
+  } // namespace transqt2
+} // namespace psi

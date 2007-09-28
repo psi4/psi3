@@ -22,6 +22,9 @@
 ** TDC, 7/06
 */
 
+namespace psi {
+  namespace transqt2 {
+
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 
 void transone(int m, int n, double *input, double *output, double **C, int nc, int *order, int *ioff)
@@ -50,3 +53,6 @@ void transone(int m, int n, double *input, double *output, double **C, int nc, i
   free_block(TMP0);
   free_block(TMP1);
 }
+
+  } // namespace transqt2
+} // namespace psi
