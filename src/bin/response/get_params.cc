@@ -5,12 +5,17 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdlib.h>
+#include <string.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <psifiles.h>
 #include <physconst.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace response {
 
 void get_params()
 {
@@ -82,3 +87,5 @@ void get_params()
   fprintf(outfile, "\tApplied field   =    %5.3f E_h\n", params.omega);
 }
 
+
+}} // namespace psi::response

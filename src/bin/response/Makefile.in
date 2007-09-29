@@ -7,11 +7,11 @@ LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CSRC = \
-response.c  get_moinfo.c get_params.c cache.c \
-build_A_RHF.c build_B_RHF.c invert_RPA_RHF.c trans_mu.c
+CXSRC = \
+build_A_RHF.cc  cache.cc       get_params.cc 		response.cc \
+build_B_RHF.cc  get_moinfo.cc  invert_RPA_RHF.cc 	trans_mu.cc
 
-BINOBJ = $(CSRC:%.c=%.o)
+BINOBJ = $(CXSRC:%.cc=%.o)
 
 include ../MakeRules
 

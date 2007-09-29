@@ -8,8 +8,12 @@
 #include <libqt/qt.h>
 #include <libdpd/dpd.h>
 #include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace response {
 
 void invert_RPA_RHF(void)
 {
@@ -129,3 +133,5 @@ void invert_RPA_RHF(void)
   dpd_buf4_close(&A);
   dpd_buf4_close(&B);
 }
+
+}} // namespace psi::response

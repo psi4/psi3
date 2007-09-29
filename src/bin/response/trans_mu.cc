@@ -7,9 +7,13 @@
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libiwl/iwl.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include <psifiles.h>
 #include "globals.h"
+
+namespace psi { namespace response {
 
 void trans_mu(void)
 {
@@ -103,3 +107,5 @@ void trans_mu(void)
   */
 
 }
+
+}} // namespace psi::response

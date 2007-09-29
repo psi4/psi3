@@ -4,8 +4,12 @@
 */
 #include <libdpd/dpd.h>
 #include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace response {
 
 /* BUILD_A_UHF(): Construct the components of the molecular orbital
 ** Hessian, A, for UHF orbitals.  Building
@@ -151,3 +155,5 @@ void build_A_UHF(void)
   dpd_file2_close(&fia);
 }
 
+
+}} // namespace psi::response

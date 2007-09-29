@@ -8,9 +8,14 @@
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libchkpt/chkpt.h>
+#include <libqt/qt.h>
 #include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace response {
 
 /* get_moinfo(): Routine to obtain basic orbital information from
 ** CHKPT and CC_INFO.
@@ -244,3 +249,5 @@ void cleanup(void)
   free(moinfo.pitzer2qt);
   free(moinfo.qt2pitzer);
 }
+
+}} // namespace psi::response

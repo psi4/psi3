@@ -4,8 +4,12 @@
 */
 #include <libdpd/dpd.h>
 #include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace response {
 
 /* build_B_RHF(): Builds the RHF B matrix for RPA calculations.
 ** In spin orbitals, the B matrix is:
@@ -32,3 +36,5 @@ void build_B_RHF(void)
   dpd_buf4_sort(&D, PSIF_MO_HESS, rpsq, 11, 11, "B(AI,BJ) triplet");
   dpd_buf4_close(&D);
 }
+
+}} // namespace psi::response

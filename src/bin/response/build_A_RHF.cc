@@ -4,8 +4,12 @@
 */
 #include <libdpd/dpd.h>
 #include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace response {
 
 /* build_A_RHF_singlet(): Builds the RHF A matrix for RPA calculations.
 ** In spin orbitals, the A matrix is:
@@ -122,3 +126,5 @@ void build_A_RHF(void)
   dpd_file2_mat_close(&fIJ);
   dpd_file2_close(&fIJ);
 }
+
+}} // namespace psi::response

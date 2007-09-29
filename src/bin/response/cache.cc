@@ -7,6 +7,8 @@
 #include <libciomr/libciomr.h>
 #include <ccfiles.h>
 
+namespace psi { namespace response {
+
 void cache_abcd_rhf(int **cachelist);
 void cache_iabc_rhf(int **cachelist);
 void cache_ijab_rhf(int **cachelist);
@@ -715,3 +717,5 @@ void cachedone_rhf(int **cachelist)
 {
   free_int_matrix(cachelist);
 }
+
+}} // namespace psi::response

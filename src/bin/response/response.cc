@@ -16,7 +16,11 @@
 #include <libdpd/dpd.h>
 #include <libchkpt/chkpt.h>
 #include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
 #include "globals.h"
+
+namespace psi { namespace response {
 
 /* Max length of ioff array */
 #define IOFF_MAX 32641
@@ -31,6 +35,13 @@ void exit_io(void);
 int **cacheprep_rhf(int level, int *cachefiles);
 int **cacheprep_uhf(int level, int *cachefiles);
 void build_A_RHF(void);
+void build_B_RHF(void);
+void invert_RPA_RHF(void);
+void trans_mu(void);
+
+}} // namespace psi::response
+
+using namespace psi::response;
 
 int main(int argc, char *argv[])
 {
@@ -73,10 +84,13 @@ int main(int argc, char *argv[])
   exit(0);
 }
 
+extern "C" {char *gprgid() { char *prgid = "STABLE"; return(prgid); }}
+
+namespace psi { namespace response {
+
 void init_io(int argc, char *argv[])
 {
   int i;
-  extern char *gprgid();
   char *progid;
 
   progid = (char *) malloc(strlen(gprgid())+2);
@@ -112,13 +126,6 @@ void exit_io(void)
   psi_stop();
 }
 
-char *gprgid()
-{
-   char *prgid = "STABLE";
-
-   return(prgid);
-}
-
 void init_ioff(void)
 {
   int i;
@@ -126,3 +133,5 @@ void init_ioff(void)
   ioff[0] = 0;
   for(i=1; i < IOFF_MAX; i++) ioff[i] = ioff[i-1] + i;
 }
+
+}} // namespace psi::response

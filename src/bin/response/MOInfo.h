@@ -5,6 +5,8 @@
 
 /*! \defgroup RESPONSE Add a description of the group RESPONSE */
 
+namespace psi { namespace response {
+
 struct MOInfo {
   int nirreps;        /* no. of irreducible representations */
   int nmo;            /* no. of molecular orbitals */
@@ -60,3 +62,5 @@ struct MOInfo {
   double **MUY;       /* MO-basis y-dipole integrals (Pitzer order) */
   double **MUZ;       /* MO-basis z-dipole integrals (Pitzer order) */
 };
+
+}} // namespace psi::response
