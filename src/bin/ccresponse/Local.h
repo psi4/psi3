@@ -2,6 +2,9 @@
     \ingroup (CCRESPONSE)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace ccresponse {
+
 struct Local {
   int natom;
   int nso;
@@ -27,3 +30,5 @@ struct Local {
   char *freeze_core;
   char *pairdef;
 };
+
+}} // namespace psi::ccresponse

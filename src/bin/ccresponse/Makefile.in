@@ -7,47 +7,19 @@ LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CSRC = \
-ccresponse.c \
-get_moinfo.c \
-get_params.c \
-cache.c \
-sort_pert.c \
-pertbar.c \
-transpert.c \
-hbar_extra.c \
-cc2_hbar_extra.c \
-sort_lamps.c \
-init_X.c \
-denom.c \
-sort_X.c \
-cc2_sort_X.c \
-X1.c \
-X2.c \
-cc2_X1.c \
-cc2_X2.c \
-compute_X.c \
-save_X.c \
-update_X.c \
-diis.c \
-converged.c \
-pseudopolar.c \
-LCX.c \
-print_X.c \
-HXY.c \
-LHX1Y1.c \
-LHX1Y2.c \
-LHX2Y2.c \
-cc2_LHX1Y1.c \
-cc2_LHX1Y2.c \
-local.c \
-polar.c \
-optrot.c \
-lambda_residuals.c \
-amp_write.c \
-linresp.c \
+CXXSRC = \
+HXY.cc         cc2_LHX1Y2.cc      get_moinfo.cc        print_X.cc \
+LCX.cc         cc2_X1.cc          get_params.cc        pseudopolar.cc \
+LHX1Y1.cc      cc2_X2.cc          hbar_extra.cc        save_X.cc \
+LHX1Y2.cc      cc2_hbar_extra.cc  init_X.cc            sort_X.cc \
+LHX2Y2.cc      cc2_sort_X.cc      lambda_residuals.cc  sort_lamps.cc \
+X1.cc          ccresponse.cc      linresp.cc           sort_pert.cc \
+X2.cc          compute_X.cc       local.cc             transpert.cc \
+amp_write.cc   converged.cc       optrot.cc            update_X.cc \
+cache.cc       denom.cc           pertbar.cc \
+cc2_LHX1Y1.cc  diis.cc            polar.cc
 
-BINOBJ = $(CSRC:%.c=%.o)
+BINOBJ = $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 

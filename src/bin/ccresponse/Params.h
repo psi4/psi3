@@ -2,6 +2,9 @@
     \ingroup (CCRESPONSE)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace ccresponse {
+
 struct Params {
   int print;             /* Output level control */
   long int memory;       /* Memory available (in bytes) */
@@ -23,3 +26,5 @@ struct Params {
   int num_amps;
   int sekino;  /* Sekino-Bartlett size-extensive models */
 };
+
+}} // namespace psi::ccresponse

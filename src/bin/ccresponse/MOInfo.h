@@ -2,6 +2,9 @@
     \ingroup (CCRESPONSE)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace ccresponse {
+
 struct MOInfo {
   int nirreps;        /* no. of irreducible representations */
   int nmo;            /* no. of molecular orbitals */
@@ -78,3 +81,5 @@ struct MOInfo {
   double *zvals;      /* atomic zvals */
   double ***C;        /* Virtual orbital transformation matrix */
 };
+
+}} // namespace psi::ccresponse
