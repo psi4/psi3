@@ -7,20 +7,22 @@ LDLIBS += $(LAPACK) $(BLAS) -lpthread
 
 PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CSRC = \
-cceom.c       diag.c                   diagSS.c       cache.c         hbar_extra.c \
-check_sum.c   form_diagonal.c          norm.c         get_moinfo.c    rzero.c \
-dgeev_eom.c   get_eom_params.c         schmidt_add.c  c_clean.c       cache.c \
-c_clean.c     precondition.c           hbar_norms.c   get_params.c     \
-sigmaSS.c     sigmaSD.c    FSD.c       WmnieSD.c    WamefSD.c  \
-sigmaDS.c     WmaijDS.c    WabejDS.c   WnmjeDS.c    WbmfeDS.c  \
-sigmaDD.c     FDD.c        WmnijDD.c   WabefDD.c    WmbejDD.c  WmnefDD.c \
-local.c restart.c sort_C.c amp_write.c read_guess.c local_guess.c  sort_amps.c  \
-write_Rs.c sigmaCC3.c norm_HC1.c cc3_HC1.c restart_with_root.c\
-cc3_HC1ET1.c follow_root.c cc2_hbar_extra.c cc2_sigma.c \
-sigma_full.c sigmaCC3_RHF.c \
+CXXSRC = \
+FDD.cc        c_clean.cc         get_eom_params.cc     rzero.cc \
+FSD.cc        cache.cc           get_moinfo.cc         schmidt_add.cc \
+WabefDD.cc    cc2_hbar_extra.cc  get_params.cc         sigmaCC3.cc \
+WabejDS.cc    cc2_sigma.cc       hbar_extra.cc         sigmaCC3_RHF.cc \
+WamefSD.cc    cc3_HC1.cc         hbar_norms.cc         sigmaDD.cc \
+WbmfeDS.cc    cc3_HC1ET1.cc      local.cc              sigmaDS.cc \
+WmaijDS.cc    cceom.cc           local_guess.cc        sigmaSD.cc \
+WmbejDD.cc    check_sum.cc       norm.cc               sigmaSS.cc \
+WmnefDD.cc    dgeev_eom.cc       norm_HC1.cc           sigma_full.cc \
+WmnieSD.cc    diag.cc            precondition.cc       sort_C.cc \
+WmnijDD.cc    diagSS.cc          read_guess.cc         sort_amps.cc \
+WnmjeDS.cc    follow_root.cc     restart.cc            write_Rs.cc \
+amp_write.cc  form_diagonal.cc   restart_with_root.cc
 
-BINOBJ = $(CSRC:%.c=%.o)
+BINOBJ = $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 

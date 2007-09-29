@@ -4,9 +4,8 @@
 */
 #include <ccfiles.h>
 #include <libdpd/dpd.h>
-#include "MOInfo.h"
-#include "Params.h"
-#include "Local.h"
+
+namespace psi { namespace cceom {
 
 /* Global variables */
 #ifdef EXTERN
@@ -23,12 +22,14 @@
 #define MAX(I,J) ((I>J) ? I : J)
 #define MIN(I,J) ((I<J) ? I : J)
 
+extern "C" {
 EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
+}
 EXTERN struct MOInfo moinfo;
 EXTERN struct Params params;
 EXTERN struct Eom_params eom_params;
 EXTERN struct Local local;
 EXTERN int ***dpd_dp;
 
-
+}} // namespace psi::cceom

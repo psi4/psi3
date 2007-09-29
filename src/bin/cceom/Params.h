@@ -2,6 +2,9 @@
     \ingroup (CCEOM)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace cceom {
+
 /* Input parameters for ccenergy */
 struct Params {
   long int memory;
@@ -54,3 +57,5 @@ struct Eom_params {
   int L_irr;
 };
 
+
+}} // namespace psi::cceom

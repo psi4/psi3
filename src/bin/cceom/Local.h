@@ -2,6 +2,9 @@
     \ingroup (CCEOM)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace cceom {
+
 struct Local {
   int natom;
   int nso;
@@ -27,3 +30,5 @@ struct Local {
   int filter_singles;
   double weak_pair_energy;
 };
+
+}} // namespace psi::cceom
