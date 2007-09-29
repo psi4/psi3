@@ -2,6 +2,9 @@
     \ingroup (CCLAMBDA)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace cclambda {
+
 /* Input parameters for cclambda */
 struct Params {
   int maxiter;
@@ -40,3 +43,5 @@ struct L_Params {
   char L2RHF_lbl[32];
 };
 
+
+}} // namespace psi::cclambda

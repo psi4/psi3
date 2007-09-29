@@ -2,6 +2,9 @@
     \ingroup (CCLAMBDA)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace cclambda {
+
 struct Local {
   int natom;
   int nso;
@@ -26,3 +29,5 @@ struct Local {
   char *freeze_core;
   char *pairdef;
 };
+
+}} // namespace psi::cclambda

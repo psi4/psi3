@@ -8,19 +8,20 @@ LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CSRC = \
-DL2.c    L1.c       WefabL2.c  cclambda.c   get_moinfo.c    sort_amps.c \
-FaeL2.c  L1FL2.c    WejabL2.c  converged.c  get_params.c    update.c    \
-FmiL2.c  L2.c       WijmbL2.c  denom.c      init_amps.c                 \
-G.c      Lsave.c    WijmnL2.c  diis.c       overlap.c                   \
-GL2.c    WabeiL1.c  WmbejL2.c  dijabL2.c    pseudoenergy.c              \
-cache.c  BL2_AO.c   halftrans.c Lnorm.c Lmag.c check_sum.c \
-check_ortho.c overlap_LAMPS.c local.c c_clean.c spinad_amps.c hbar_extra.c \
-status.c cc3_t3z.c cc3_t3x.c cc3_l3l2.c cc3_l3l1.c L3_AAA.c L3_AAB.c \
-cc2_L1.c cc2_L2.c cc2_faeL2.c cc2_fmiL2.c cc2_hbar_extra.c cc2_Gai.c \
-ortho_Rs.c projections.c Lamp_write.c \
+CXXSRC = \
+BL2_AO.cc  Lamp_write.cc  cache.cc           cclambda.cc     init_amps.cc \
+DL2.cc     Lmag.cc        cc2_Gai.cc         check_ortho.cc  local.cc \
+FaeL2.cc   Lnorm.cc       cc2_L1.cc          check_sum.cc    ortho_Rs.cc \
+FmiL2.cc   Lsave.cc       cc2_L2.cc          converged.cc    overlap.cc \
+G.cc       WabeiL1.cc     cc2_faeL2.cc       denom.cc        overlap_LAMPS.cc \
+GL2.cc     WefabL2.cc     cc2_fmiL2.cc       diis.cc         projections.cc \
+L1.cc      WejabL2.cc     cc2_hbar_extra.cc  dijabL2.cc      pseudoenergy.cc \
+L1FL2.cc   WijmbL2.cc     cc3_l3l1.cc        get_moinfo.cc   sort_amps.cc \
+L2.cc      WijmnL2.cc     cc3_l3l2.cc        get_params.cc   spinad_amps.cc \
+L3_AAA.cc  WmbejL2.cc     cc3_t3x.cc         halftrans.cc    status.cc \
+L3_AAB.cc  c_clean.cc     cc3_t3z.cc         hbar_extra.cc   update.cc
 
-BINOBJ = $(CSRC:%.c=%.o)
+BINOBJ = $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 

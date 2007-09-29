@@ -2,6 +2,9 @@
     \ingroup (CCLAMBDA)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace cclambda {
+
 struct MOInfo {
   int nirreps;        /* no. of irreducible representations */
   int nmo;            /* no. of molecular orbitals */
@@ -48,3 +51,5 @@ struct MOInfo {
   double ***Ca;       /* UHF alpha virtual orbital transformation matr5ix (for AO-basis B terms) */
   double ***Cb;       /* UHF beta virtual orbital transformation matr5ix (for AO-basis B terms) */
 };
+
+}} // namespace psi::cclambda

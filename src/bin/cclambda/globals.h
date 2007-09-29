@@ -4,9 +4,8 @@
 */
 #include <ccfiles.h>
 #include <libdpd/dpd.h>
-#include "MOInfo.h"
-#include "Params.h"
-#include "Local.h"
+
+namespace psi { namespace cclambda {
 
 /* Global variables */
 #ifdef EXTERN
@@ -18,10 +17,15 @@
 
 /* #define EOM_DEBUG (1) */
 
+extern "C" {
 EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
+}
+
 EXTERN struct MOInfo moinfo;
 EXTERN struct Params params;
 EXTERN struct L_Params *pL_params;
 EXTERN struct Local local;
 void check_sum(char *lbl, int L_irr);
+
+}} // namespace psi::cclambda
