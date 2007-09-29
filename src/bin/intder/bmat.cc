@@ -15,19 +15,19 @@
 #include <stdlib.h>
 #include <math.h>
 
-extern "C" {
-  #include <libciomr/libciomr.h>
-  #include <libipv1/ip_lib.h>
-  #include <physconst.h>
-  #include <libpsio/psio.h>
-  #include <psifiles.h>
+#include <libciomr/libciomr.h>
+#include <libipv1/ip_lib.h>
+#include <physconst.h>
+#include <libpsio/psio.h>
+#include <psifiles.h>
 
-//  extern FILE *outfile;
-};
+using namespace psi::intder;
 
+namespace psi { namespace intder {
 extern InternalCoordinates gIntCo;
 extern Params gParams;
 //extern Transform gTransform;
+}}
 
 BMat::BMat()
 {

@@ -2,8 +2,10 @@
     \ingroup (INTDER)
     \brief Enter brief description of file here 
 */
-#ifndef __bmat_h
-#define __bmat_h
+#ifndef _psi_bin_intder_bmat_h_
+#define _psi_bin_intder_bmat_h_
+
+namespace psi { namespace intder {
 
 class BMat
 {
@@ -30,4 +32,6 @@ public:
   void print_BMat();
 };
 
-#endif
+}} // namespace psi::intder
+
+#endif // header guard

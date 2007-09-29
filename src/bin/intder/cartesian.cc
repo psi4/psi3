@@ -5,6 +5,8 @@
 #include <math.h>
 #include "cartesian.h"
 
+using namespace psi::intder;
+
 double Cartesian::Distance(Cartesian& B)
 {
   double result = 0.0;

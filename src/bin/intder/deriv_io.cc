@@ -11,17 +11,14 @@
 #include "params.h"
 #include "3dmatrix.h"
 
-extern "C" {
-  #include <libchkpt/chkpt.h>
-  #include <libciomr/libciomr.h>
-  #include <libipv1/ip_lib.h>
-  #include <physconst.h>
-  #include <libpsio/psio.h>
-  #include <psifiles.h>
+#include <libchkpt/chkpt.h>
+#include <libciomr/libciomr.h>
+#include <libipv1/ip_lib.h>
+#include <physconst.h>
+#include <libpsio/psio.h>
+#include <psifiles.h>
 
-//  extern FILE *fp_ider;
-//  extern FILE *outfile;
-};
+namespace psi { namespace intder {
 
 extern Params gParams;
 
@@ -247,3 +244,5 @@ void Transform::close_PSIF() {
 }
 
 */
+
+}} // namespace psi::intder

@@ -2,8 +2,10 @@
     \ingroup (INTDER)
     \brief Enter brief description of file here 
 */
-#ifndef __cartesian_h
-#define __cartesian_h
+#ifndef _psi_bin_intder_cartesian_h_
+#define _psi_bin_intder_cartesian_h_
+
+namespace psi { namespace intder {
 
 class Cartesian
 {
@@ -26,5 +28,7 @@ public:
     { return z; }
 };
 
-#endif
+}} // namespace psi::intder
+
+#endif // header guard
 

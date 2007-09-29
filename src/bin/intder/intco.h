@@ -2,11 +2,13 @@
     \ingroup (INTDER)
     \brief Enter brief description of file here 
 */
-#ifndef __intco_h
-#define __intco_h
+#ifndef _psi_bin_intder_intco_h_
+#define _psi_bin_intder_intco_h_
 
 #include <vector>
 #include "3dmatrix.h"
+
+namespace psi { namespace intder {
 
 typedef enum IntCoType { STRE, BEND, LIN1, OUT, TORS, SPF, LINX, LINY, RCOM, SYMM };
 
@@ -262,5 +264,7 @@ public:
   int intcoSwitch(double, int, int*, int*, int*, int*, double*, double*, double*, double*, double*);
 };
 
-#endif
+}} // namespace psi::intder
+
+#endif // header guard
 

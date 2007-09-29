@@ -2,11 +2,13 @@
     \ingroup (INTDER)
     \brief Enter brief description of file here 
 */
-#ifndef __molecule_h
-#define __molecule_h
+#ifndef _psi_bin_intder_molecule_h_
+#define _psi_bin_intder_molecule_h_
 
 #include "atom.h"
 #include <vector>
+
+namespace psi { namespace intder {
 
 class Molecule
 {
@@ -24,5 +26,7 @@ public:
   Atom* atom(int an);
 };
 
-#endif
+}} // namespace psi::intder
+
+#endif // header guard
 

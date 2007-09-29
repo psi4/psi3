@@ -2,9 +2,11 @@
     \ingroup (INTDER)
     \brief Enter brief description of file here 
 */
-#ifndef __params_h_
-#define __params_h_
+#ifndef _psi_bin_intder_params_h_
+#define _psi_bin_intder_params_h_
 #include "3dmatrix.h"
+
+namespace psi { namespace intder {
 
 class Params
 {
@@ -84,5 +86,7 @@ public:
 
 };
 
-#endif
+}} // namespace psi::intder
+
+#endif // header guard
 

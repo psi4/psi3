@@ -6,20 +6,21 @@
 #include <stdlib.h>
 #include "displacements.h"
 #include "params.h"
+#define EXTERN
+#include "globals.h"
 
-extern "C" {
-  #include <libchkpt/chkpt.h>
-  #include <libciomr/libciomr.h>
-  #include <libipv1/ip_lib.h>
-  #include <libpsio/psio.h>
-  #include <psifiles.h>
-  #include <masses.h>
-  #include <physconst.h>
+#include <libchkpt/chkpt.h>
+#include <libciomr/libciomr.h>
+#include <libipv1/ip_lib.h>
+#include <libpsio/psio.h>
+#include <psifiles.h>
+#include <physconst.h>
 
-  extern FILE* outfile;
-  extern Params gParams;
-  extern char *psi_file_prefix;
-};
+using namespace psi::intder;
+
+namespace psi { namespace intder {
+extern Params gParams;
+}}
 
 void Displacements::addDisplacement(Molecule& mol)
 {

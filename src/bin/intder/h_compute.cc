@@ -13,17 +13,17 @@
 #include <stdlib.h>
 #include <math.h>
 
-extern "C" {
-  #include <libciomr/libciomr.h>
-  #include <libipv1/ip_lib.h>
-  #include <physconst.h>
+#include <libciomr/libciomr.h>
+#include <libipv1/ip_lib.h>
+#include <physconst.h>
 
-//  extern FILE *outfile;
-};
+using namespace psi::intder;
 
+namespace psi { namespace intder {
 extern InternalCoordinates gIntCo;
 extern Params gParams;
 extern Displacements gDisplacements;
+}}
 
 void Stretch::Hijs(int disp, int k1, int k2, double **h11)
 {

@@ -2,8 +2,8 @@
     \ingroup (INTDER)
     \brief Enter brief description of file here 
 */
-#ifndef __transform_h
-#define __transform_h
+#ifndef _psi_bin_intder_transform_h_
+#define _psi_bin_intder_transform_h_
 
 #include <vector>
 #include "3dmatrix.h"
@@ -14,6 +14,8 @@
 #else
 #define EXTERN
 #endif
+
+namespace psi { namespace intder {
 
 class Transform
 {
@@ -164,4 +166,6 @@ public:
 };
 */
 
-#endif
+}} // namespace psi::intder
+
+#endif // header guard

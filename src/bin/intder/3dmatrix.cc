@@ -16,9 +16,9 @@ A small batch of functions in order to manipulate 3d/4d/5d matrices
 #include <stdlib.h>
 #include "3dmatrix.h"
 
-extern "C" {
-  #include <libciomr/libciomr.h>
-};
+#include <libciomr/libciomr.h>
+
+using namespace psi::intder;
 
 C3DMatrix::C3DMatrix()
 {

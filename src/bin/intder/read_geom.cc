@@ -11,23 +11,19 @@
 #include "globals.h"
 #undef EXTERN
 
-extern "C" {
-  #include <libchkpt/chkpt.h>
-  #include <libciomr/libciomr.h>
-  #include <libipv1/ip_lib.h>
-  #include <libpsio/psio.h>
-  #include <psifiles.h>
-  #include <physconst.h>
+#include <libchkpt/chkpt.h>
+#include <libciomr/libciomr.h>
+#include <libipv1/ip_lib.h>
+#include <libpsio/psio.h>
+#include <psifiles.h>
+#include <physconst.h>
+#include <masses.h>
 
-//  extern FILE *outfile; 
-  extern Params gParams;
-//  extern char *psi_file_prefix;
+using namespace psi::intder;
 
-  extern double atomic_masses[];
-  extern char *mass_labels[];
-  extern char *atomic_labels[];
-  extern double an2masses[];
-}
+namespace psi { namespace intder {
+extern Params gParams;
+}}
 
 bool Displacements::loadFromCheckPoint()
 {

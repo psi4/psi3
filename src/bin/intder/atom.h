@@ -2,10 +2,12 @@
     \ingroup (INTDER)
     \brief Enter brief description of file here 
 */
-#ifndef __atom_h
-#define __atom_h
+#ifndef _psi_bin_intder_atom_h_
+#define _psi_bin_intder_atom_h_
 
 #include "cartesian.h"
+
+namespace psi { namespace intder {
 
 class Atom : public Cartesian
 {
@@ -27,5 +29,7 @@ public:
     { atomicWeight = aw; }
 };
 
-#endif
+}} // namespace psi::intder
+
+#endif // header guard
 

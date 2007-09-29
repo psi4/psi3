@@ -10,25 +10,22 @@
 #include "globals.h"
 #undef EXTERN
 
-extern "C" {
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <libchkpt/chkpt.h>
-  #include <libciomr/libciomr.h>
-  #include <libipv1/ip_lib.h>
-  #include <physconst.h>
-  #include <libpsio/psio.h>
-  #include <psifiles.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <libchkpt/chkpt.h>
+#include <libciomr/libciomr.h>
+#include <libipv1/ip_lib.h>
+#include <physconst.h>
+#include <libpsio/psio.h>
+#include <psifiles.h>
+#include <masses.h>
 
-//  extern FILE *fp_intco;
-  extern double atomic_masses[];
-  extern char *mass_labels[];
-  extern char *atomic_labels[];
-  extern double an2masses[];
-};
+using namespace psi::intder;
 
+namespace psi { namespace intder {
 extern Displacements gDisplacements;
 extern InternalCoordinates gIntCo;
+}}
 
 void Params::parseInputFile()
 {

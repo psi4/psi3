@@ -18,16 +18,15 @@ layers of C++? NJD
 #include "atom.h"
 #include "molecule.h"
 #include "params.h"
+#define EXTERN
+#include "globals.h"
+#include <masses.h>
 
-extern "C" {
-extern double atomic_masses[];
-extern char *mass_labels[];
-extern char *atomic_labels[];
-extern double an2masses[];
-extern FILE* outfile;
+using namespace psi::intder;
 
+namespace psi { namespace intder {
 extern Params gParams;
-};
+}}
 
 Molecule::Molecule()
 {

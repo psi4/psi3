@@ -2,11 +2,13 @@
     \ingroup (INTDER)
     \brief Enter brief description of file here 
 */
-#ifndef __displacements_h
-#define __displacements_h
+#ifndef _psi_bin_intder_displacements_h_
+#define _psi_bin_intder_displacements_h_
 
 #include "molecule.h"
 #include <vector>
+
+namespace psi { namespace intder {
 
 class Displacements
 {
@@ -26,6 +28,7 @@ public:
   Molecule* displacement(int disp);
 };
 
+}} // namespace psi::intder
 
-#endif
+#endif // header guard
 

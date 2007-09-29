@@ -14,7 +14,6 @@
 #include "bmat.h"
 #include "transform.h"
 
-extern "C" {
 #include <libchkpt/chkpt.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
@@ -22,9 +21,9 @@ extern "C" {
 #include <libpsio/psio.h>
 #include <psifiles.h>
 
-char *gprgid(void);
-};
+extern "C" char *gprgid(void);
 
+namespace psi { namespace intder {
 // Global variables
 Displacements gDisplacements;
 Params gParams;
@@ -34,10 +33,11 @@ Transform gTransform;
 
 void intro(void);
 void readIntCoDerivatives(void);
-
+}} // namespace psi::intder
 
 int main(int argc, char** argv)
 {
+  using namespace psi::intder;
   double *e12 = NULL;
   double *e23 = NULL;
   double *e13 = NULL;
@@ -173,11 +173,13 @@ int main(int argc, char** argv)
   return 0;
 }
 
-char *gprgid(void)
+extern "C" char *gprgid(void)
 {
   char *prgid = ":INTDER";
   return (prgid);
 }
+
+namespace psi { namespace intder {
 
 void intro(void)
 {
@@ -200,3 +202,5 @@ void intro(void)
     fprintf(outfile,
               "\t------------------------------------------------------\n");
 }
+
+}} // namespace psi::intder

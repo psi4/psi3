@@ -2,12 +2,13 @@
     \ingroup (INTDER)
     \brief Enter brief description of file here 
 */
-#ifndef __3dmatrix_h
-#define __3dmatrix_h
 
-extern "C" {
-  #include <libciomr/libciomr.h>
-};
+#ifndef _psi_bin_intder_3dmatrix_h_
+#define _psi_bin_intder_3dmatrix_h_
+
+#include <libciomr/libciomr.h>
+
+namespace psi { namespace intder {
 
 class C3DMatrix
 {
@@ -89,4 +90,6 @@ public:
   { array = init_array(size); }
 };
 
-#endif
+}} // namespace psi::intder
+
+#endif // heaer guard

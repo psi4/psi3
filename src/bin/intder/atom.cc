@@ -4,6 +4,8 @@
 */
 #include "atom.h"
 
+using namespace psi::intder;
+
 Atom::Atom(int an, double aw, double ax, double ay, double az) 
     : Cartesian(ax, ay, az)
 {

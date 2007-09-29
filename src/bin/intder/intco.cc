@@ -14,20 +14,20 @@
 #include <stdlib.h>
 #include <math.h>
 
-extern "C" {
-  #include <libciomr/libciomr.h>
-  #include <libipv1/ip_lib.h>
-  #include <libpsio/psio.h>
-  #include <physconst.h>
-  #include <psifiles.h>
+#include <libciomr/libciomr.h>
+#include <libipv1/ip_lib.h>
+#include <libpsio/psio.h>
+#include <physconst.h>
+#include <psifiles.h>
 
-//  extern FILE *outfile;
-};
+using namespace psi::intder;
 
+namespace psi { namespace intder {
 extern InternalCoordinates gIntCo;
 extern Params gParams;
 extern Displacements gDisplacements;
 extern BMat gBMat;
+}}
 
 void InternalCoordinate::printInfo()
 {

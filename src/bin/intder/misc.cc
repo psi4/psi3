@@ -12,14 +12,16 @@
 #include "globals.h"
 #include "params.h"
 
-extern Params gParams;
+using namespace psi::intder;
 
-extern "C" {
+namespace psi { namespace intder {
+extern Params gParams;
+}}
+
 #include <libciomr/libciomr.h>
 #include <physconst.h>
-//  extern FILE *input, *outfile;
-};
 
+namespace psi { namespace intder {
 
 //Calculates the dot product of two three-dimensional vectors
 //SCAPRO(U, V, D) from intder2000.f
@@ -407,3 +409,5 @@ double ***Christoffel1(void)
     return Chris;
   }
 */
+
+}} // namespace psi::intder
