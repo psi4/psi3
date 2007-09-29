@@ -4,12 +4,17 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace stable {
 
 void get_params()
 {
@@ -69,3 +74,5 @@ void get_params()
 
 }
 
+
+}} // namespace psi::stable

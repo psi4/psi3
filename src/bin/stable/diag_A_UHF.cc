@@ -8,11 +8,15 @@
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 #include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
 
-extern void follow_eigenvector_UHF(double *vf, int dim_A, int dim_B);
-extern void follow_eigenvector_UHF2(double *vf, int dim_A, int dim_B);
+namespace psi { namespace stable {
+
+extern void follow_evec_UHF(double *vf, int dim_A, int dim_B);
+extern void follow_evec_UHF2(double *vf, int dim_A, int dim_B);
 
 void diag_A_UHF(void)
 {
@@ -102,3 +106,5 @@ void diag_A_UHF(void)
 
 }
 
+
+}} // namespace psi::stable

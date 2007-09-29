@@ -3,8 +3,12 @@
     \brief Enter brief description of file here 
 */
 #include <stdio.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace stable {
 
 void print_evals(double **evals, int *rank)
 {
@@ -30,3 +34,5 @@ void print_evals(double **evals, int *rank)
 
   fprintf(outfile, "\n");
 }
+
+}} // namespace psi::stable

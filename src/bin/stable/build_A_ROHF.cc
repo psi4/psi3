@@ -4,8 +4,12 @@
 */
 #include <libdpd/dpd.h>
 #include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace stable {
 
 /* BUILD_A_ROHF(): Construct the molecular orbital Hessian, A, for
 ** ROHF orbitals. At the moment we're actually building all symmetry
@@ -233,3 +237,5 @@ void build_A_ROHF(void)
   dpd_buf4_close(&Amat);
 }
 
+
+}} // namespace psi::stable

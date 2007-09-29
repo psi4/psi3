@@ -7,13 +7,12 @@ LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CSRC = \
-stable.c  get_moinfo.c get_params.c cache.c print_evals.c \
-build_A_RHF.c build_A_ROHF.c build_A_UHF.c \
-diag_A_RHF.c diag_A_ROHF.c diag_A_UHF.c \
-follow_evec_UHF.c
+CXXSRC = \
+build_A_RHF.cc   cache.cc        diag_A_UHF.cc       get_params.cc \
+build_A_ROHF.cc  diag_A_RHF.cc   follow_evec_UHF.cc  print_evals.cc \
+build_A_UHF.cc   diag_A_ROHF.cc  get_moinfo.cc       stable.cc \
 
-BINOBJ = $(CSRC:%.c=%.o)
+BINOBJ = $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 

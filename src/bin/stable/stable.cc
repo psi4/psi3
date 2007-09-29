@@ -17,7 +17,11 @@
 #include <libdpd/dpd.h>
 #include <libchkpt/chkpt.h>
 #include <psifiles.h>
+#include "Params.h"
+#include "MOInfo.h"
 #include "globals.h"
+
+namespace psi { namespace stable {
 
 /* Max length of ioff array */
 #define IOFF_MAX 32641
@@ -37,6 +41,11 @@ void diag_A_ROHF(void);
 void diag_A_UHF(void);
 int **cacheprep_rhf(int level, int *cachefiles);
 int **cacheprep_uhf(int level, int *cachefiles);
+void print_evals(double **evals, int *rank);
+
+}} // namespace psi::stable
+
+using namespace psi::stable;
 
 int main(int argc, char *argv[])
 {
@@ -113,10 +122,13 @@ int main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
+extern "C" {char *gprgid() { char *prgid = "STABLE"; return(prgid); }}
+
+namespace psi { namespace stable {
+
 void init_io(int argc, char *argv[])
 {
   int i;
-  extern char *gprgid();
   char *progid;
 
   progid = (char *) malloc(strlen(gprgid())+2);
@@ -152,13 +164,6 @@ void exit_io(void)
   psi_stop();
 }
 
-char *gprgid()
-{
-   char *prgid = "STABLE";
-
-   return(prgid);
-}
-
 void init_ioff(void)
 {
   int i;
@@ -166,3 +171,5 @@ void init_ioff(void)
   ioff[0] = 0;
   for(i=1; i < IOFF_MAX; i++) ioff[i] = ioff[i-1] + i;
 }
+
+}} // namespace psi::stable

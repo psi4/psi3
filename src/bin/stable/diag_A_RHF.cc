@@ -8,8 +8,12 @@
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 #include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace stable {
 
 void diag_A_RHF(void)
 {
@@ -52,3 +56,5 @@ void diag_A_RHF(void)
   dpd_buf4_close(&B);
   dpd_buf4_close(&A);
 }
+
+}} // namespace psi::stable

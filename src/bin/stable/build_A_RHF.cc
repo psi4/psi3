@@ -4,8 +4,12 @@
 */
 #include <libdpd/dpd.h>
 #include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace stable {
 
 /* build_A_RHF_singlet(): Builds the RHF orbital Hessian for computing
 ** spatial- and spin-symmetry instabilities.  In spin orbitals the Hessian
@@ -131,3 +135,5 @@ void build_A_RHF(void)
   dpd_file2_mat_close(&fIJ);
   dpd_file2_close(&fIJ);
 }
+
+}} // namespace psi::stable

@@ -5,6 +5,8 @@
 
 /*! \defgroup STABLE Add a description of the group STABLE */
 
+namespace psi { namespace stable {
+
 struct MOInfo {
   int nirreps;        /* no. of irreducible representations */
   int nmo;            /* no. of molecular orbitals */
@@ -54,3 +56,5 @@ struct MOInfo {
   double **A_triplet_evals;  /* lowest few triplet eigenvalues of RHF Hessian 
                                 in each irrep */
 };
+
+}} // namespace psi::stable

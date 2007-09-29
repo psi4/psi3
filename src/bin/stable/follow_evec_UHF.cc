@@ -11,8 +11,12 @@
 #include <libchkpt/chkpt.h>
 #include <libiwl/iwl.h>
 #include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace stable {
 
 #define HALFPI 1.5707963268
 
@@ -319,3 +323,5 @@ void follow_evec_UHF2(double *vf, int dim_A, int dim_B)
 }
 
 
+
+}} // namespace psi::stable

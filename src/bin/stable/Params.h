@@ -2,6 +2,9 @@
     \ingroup (STABLE)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace stable {
+
 struct Params {
   int print_lvl;         /* Output level control */
   long int memory;       /* Memory available (in bytes) */
@@ -12,3 +15,5 @@ struct Params {
   int rotation_method;   /* 0 = by angles, 1 = by antisymmetric matrix */
   double scale;          /* scale factor for orbital rotation step */
 };
+
+}} // namespace psi::stable
