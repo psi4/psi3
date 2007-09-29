@@ -57,7 +57,7 @@ clean:
 dclean:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo Making clean in $${dir}; $(MAKE) dclean) || exit 1; \
+            (cd $${dir}; echo Making dclean in $${dir}; $(MAKE) dclean) || exit 1; \
           done
 
 targetclean:
