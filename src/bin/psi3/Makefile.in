@@ -5,12 +5,11 @@ include ../MakeVars
 
 PSILIBS = libPSI_ciomr.a libPSI_ipv1.a -lPSI_psio
 
-CINC += -DINSTALLEDPSIDATADIR=\"$(datadir)\"
+CXXINC += -DINSTALLEDPSIDATADIR=\"$(datadir)\"
 
-TRUESRC = gprgid.c psi3.c parse_var.c runcmd.c
+CXXSRC = gprgid.cc psi3.cc parse_var.cc runcmd.cc
 
-BINOBJ = $(TRUESRC:%.F=%.o)
-BINOBJ := $(BINOBJ:%.c=%.o)
+BINOBJ = $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 

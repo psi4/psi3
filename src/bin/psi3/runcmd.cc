@@ -9,6 +9,8 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
+namespace psi { namespace psi3 {
+
 void runcmd(int *errcod, char *cmd)
 {
 
@@ -38,3 +40,4 @@ void runcmd(int *errcod, char *cmd)
   */
 }
 
+}} // namespace psi::psi3

@@ -33,10 +33,13 @@
   extern int setenv(const char *, const char *, int);
 #endif
 
-int get_ndisp(void);
+extern "C" {
 FILE *infile, *outfile;
-/* char **psi_file_prefix; */
 char *psi_file_prefix;
+}
+
+namespace psi { namespace psi3 {
+int get_ndisp(void);
 /* 
   the following must stay in scope throughout the run, else the 
   environmental variables will vanish!
@@ -58,9 +61,11 @@ int auto_check;
 int called_from_dboc;
 /* boolean for whether $done should be called */
 int call_done;
+}} // namespace psi::psi3
 
 int main(int argc, char *argv[])
 {
+  using namespace psi::psi3;
   FILE *psidat;
   char *psidat_dirname, *psidat_filename;
   char *wfn, *dertyp, *reftyp, *calctyp, *jobtype, **exec, proced[132];
@@ -417,6 +422,8 @@ int main(int argc, char *argv[])
 }
 
 
+namespace psi { namespace psi3 {
+
 void psi3_abort(void)
 {
   if (outfile)
@@ -696,3 +703,5 @@ int get_ndisp(void) {
   outfile = outfile_psi3;
   return ndisp;
 }
+
+}} // namespace psi::psi3

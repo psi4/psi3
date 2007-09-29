@@ -6,7 +6,7 @@
 /*! \defgroup PSI3 psi3: The Psi3 Driver */
 
 
-char *gprgid()
+extern "C" char *gprgid()
 {
    char *prgid = "PSI3";
 

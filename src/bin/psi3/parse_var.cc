@@ -10,11 +10,15 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <cstring>
 #include <libipv1/ip_lib.h>
 
 #define MAX_VAR_SIZE 80
 
-extern FILE *outfile;
+extern "C" extern FILE *outfile;
+
+namespace psi { namespace psi3 {
+
 extern void psi3_abort();
 extern int call_done;
 
@@ -112,5 +116,4 @@ char **parse_var(int *nvars, int mxvars, char *name)
   return(vars);
 }
 
-
-
+}} // namespace psi::psi3
