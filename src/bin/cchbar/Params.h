@@ -2,6 +2,9 @@
     \ingroup (CCHBAR)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace cchbar {
+
 /* Input parameters for cchbar */
 struct Params {
   long int memory;
@@ -14,3 +17,4 @@ struct Params {
   int wabei_lowdisk;
 };
 
+}} // namespace psi::cchbar

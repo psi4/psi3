@@ -2,6 +2,9 @@
     \ingroup (CCHBAR)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace cchbar {
+
 struct MOInfo {
   int nirreps;        /* no. of irreducible representations */
   int nmo;            /* no. of molecular orbitals */
@@ -33,3 +36,5 @@ struct MOInfo {
   int *avir_off;      /* alpha virtual orbital offsets within each irrep */
   int *bvir_off;      /* beta virtual orbital offsets within each irrep */
 };
+
+}} // namespace psi::cchbar
