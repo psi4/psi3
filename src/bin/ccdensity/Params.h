@@ -2,6 +2,9 @@
     \ingroup (CCDENSITY)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace ccdensity {
+
 /* Input parameters for cclambda */
 struct Params {
   double tolerance;
@@ -96,3 +99,5 @@ struct TD_Params {
   double RS_velocity;
 };
 
+
+}} // namespace psi::ccdensity

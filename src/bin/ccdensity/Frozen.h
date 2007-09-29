@@ -5,6 +5,8 @@
 
 /*! \defgroup CCDENSITY Add a description of the group CCDENSITY */
 
+namespace psi { namespace ccdensity {
+
 struct Frozen {
     int nfzc;           /* total no. of frozen core orbitals */
     int nfzv;           /* total no. of frozen virtual orbitals */
@@ -36,3 +38,5 @@ struct Frozen {
     int *vir;           /* boolean array for virt. orbs. */
     int *socc;          /* boolean array for socc. orbs. */
 };
+
+}} // namespace psi::ccdensity

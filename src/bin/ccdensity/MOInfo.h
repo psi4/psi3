@@ -2,6 +2,9 @@
     \ingroup (CCDENSITY)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace ccdensity {
+
 struct MOInfo {
     int nirreps;        /* no. of irreducible representations */
     int nmo;            /* no. of molecular orbitals */
@@ -70,3 +73,5 @@ struct MOInfo {
   double ***nabla;
   double ***dip;
 };
+
+}} // namespace psi::ccdensity
