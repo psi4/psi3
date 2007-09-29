@@ -7,8 +7,12 @@
 #include <math.h>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cctriples {
 
 double ET_UHF_ABB(void)
 {
@@ -784,3 +788,5 @@ double ET_UHF_ABB(void)
 
   return ET_ABB;
 }
+
+}} // namespace psi::cctriples

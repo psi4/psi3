@@ -4,12 +4,17 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libchkpt/chkpt.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cctriples {
 
 /*
 ** get_moinfo():  Routine to obtain basic orbital information from
@@ -217,3 +222,5 @@ void cleanup(void)
   }
 }
 
+
+}} // namespace psi::cctriples

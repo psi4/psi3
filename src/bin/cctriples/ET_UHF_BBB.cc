@@ -7,10 +7,14 @@
 #include <math.h>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
 
-double ET_UHF_AAA(void)
+namespace psi { namespace cctriples {
+
+double ET_UHF_BBB(void)
 {
   int cnt;
   int h, nirreps;
@@ -41,14 +45,14 @@ double ET_UHF_AAA(void)
   FILE *ijkfile;
 
   nirreps = moinfo.nirreps;
-  occpi = moinfo.aoccpi; 
-  virtpi = moinfo.avirtpi;
-  occ_off = moinfo.aocc_off;
-  vir_off = moinfo.avir_off;
+  occpi = moinfo.boccpi; 
+  virtpi = moinfo.bvirtpi;
+  occ_off = moinfo.bocc_off;
+  vir_off = moinfo.bvir_off;
 
-  dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
-  dpd_file2_init(&fAB, CC_OEI, 0, 1, 1, "fAB");
-  dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
+  dpd_file2_init(&fIJ, CC_OEI, 0, 2, 2, "fij");
+  dpd_file2_init(&fAB, CC_OEI, 0, 3, 3, "fab");
+  dpd_file2_init(&fIA, CC_OEI, 0, 2, 3, "fia");
   dpd_file2_mat_init(&fIJ);
   dpd_file2_mat_init(&fAB);
   dpd_file2_mat_init(&fIA);
@@ -56,14 +60,14 @@ double ET_UHF_AAA(void)
   dpd_file2_mat_rd(&fAB);
   dpd_file2_mat_rd(&fIA);
 
-  dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+  dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
   dpd_file2_mat_init(&T1); 
   dpd_file2_mat_rd(&T1);
 
-  dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
-  dpd_buf4_init(&Fints, CC_FINTS, 0, 20, 5, 20, 5, 1, "F <IA|BC>");
-  dpd_buf4_init(&Eints, CC_EINTS, 0, 0, 20, 2, 20, 0, "E <IJ||KA> (I>J,KA)");
-  dpd_buf4_init(&Dints, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <IJ||AB>");
+  dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 15, 12, 17, 0, "tijab");
+  dpd_buf4_init(&Fints, CC_FINTS, 0, 30, 15, 30, 15, 1, "F <ia|bc>");
+  dpd_buf4_init(&Eints, CC_EINTS, 0, 10, 30, 12, 30, 0, "E <ij||ka> (i>j,ka)");
+  dpd_buf4_init(&Dints, CC_DINTS, 0, 10, 15, 10, 15, 0, "D <ij||ab>");
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&T2, h);
     dpd_buf4_mat_irrep_rd(&T2, h);
@@ -92,8 +96,8 @@ double ET_UHF_AAA(void)
 	  }
 	}
 
-  ffile(&ijkfile,"ijk.dat", 0);
-  fprintf(ijkfile, "Spin Case: AAA\n");
+  ffile(&ijkfile,"ijk.dat",0);
+  fprintf(ijkfile, "Spin Case: BBB\n");
   fprintf(ijkfile, "Number of IJK combintions: %d\n", nijk);
   fprintf(ijkfile, "\nCurrent IJK Combination:\n");
 
@@ -156,7 +160,7 @@ double ET_UHF_AAA(void)
 
 		  cd = T2.col_offset[Gjk][Gc];
 		  id = Fints.row_offset[Gid][I];
- 
+
 		  Fints.matrix[Gid] = dpd_block_matrix(virtpi[Gd], Fints.params->coltot[Gid]);
 		  dpd_buf4_mat_irrep_rd_block(&Fints, Gid, id, virtpi[Gd]);
 
@@ -789,3 +793,5 @@ double ET_UHF_AAA(void)
 
   return ET;
 }
+
+}} // namespace psi::cctriples

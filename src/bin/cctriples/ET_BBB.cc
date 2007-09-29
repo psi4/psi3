@@ -2,16 +2,17 @@
     \ingroup (CCTRIPLES)
     \brief Enter brief description of file here 
 */
-
-/*! \defgroup CCTRIPLES Add a description of the group CCTRIPLES */
-
 #include <stdio.h>
 #include <math.h>
 #include <libdpd/dpd.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
 
-double ET_AAA(void)
+namespace psi { namespace cctriples {
+
+double ET_BBB(void)
 {
   int cnt;
   int h, nirreps;
@@ -23,7 +24,7 @@ double ET_AAA(void)
   int im, jm, km, ma, mb, mc;
   int ae, be, ce, ke, ie, je;
   int *occpi, *virtpi, *occ_off, *vir_off;
-  double value_c, value_d, denom, ET_AAA;
+  double value_c, value_d, denom, ET_BBB;
   double t_ijae, t_ijbe, t_ijce, t_jkae, t_jkbe, t_jkce, t_ikae, t_ikbe, t_ikce;
   double F_kebc, F_keac, F_keba, F_iebc, F_ieac, F_ieba, F_jebc, F_jeac, F_jeba;
   double t_imbc, t_imac, t_imba, t_jmbc, t_jmac, t_jmba, t_kmbc, t_kmac, t_kmba;
@@ -38,18 +39,18 @@ double ET_AAA(void)
   occ_off = moinfo.occ_off;
   vir_off = moinfo.vir_off;
 
-  dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
-  dpd_file2_init(&fAB, CC_OEI, 0, 1, 1, "fAB");
+  dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fij");
+  dpd_file2_init(&fAB, CC_OEI, 0, 1, 1, "fab");
   dpd_file2_mat_init(&fIJ);
   dpd_file2_mat_init(&fAB);
   dpd_file2_mat_rd(&fIJ);
   dpd_file2_mat_rd(&fAB);
 
-  dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+  dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
   dpd_file2_mat_init(&T1);
   dpd_file2_mat_rd(&T1);
 
-  dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
+  dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tijab");
   dpd_buf4_init(&Fints, CC_FINTS, 0, 10, 5, 10, 5, 1, "F <ia|bc>");
   dpd_buf4_init(&Eints, CC_EINTS, 0, 0, 10, 2, 10, 0, "E <ij||ka> (i>j,ka)");
   dpd_buf4_init(&Dints, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij||ab>");
@@ -68,7 +69,7 @@ double ET_AAA(void)
   }
 
   cnt = 0;
-  ET_AAA = 0.0;
+  ET_BBB = 0.0;
 
   for(Gi=0; Gi < nirreps; Gi++) {
     for(Gj=0; Gj < nirreps; Gj++) {
@@ -283,7 +284,7 @@ double ET_AAA(void)
                           value_c += t_ijce * F_keba;
 			}
 
-			/** <oo||ov> --> connected triples **/
+			/** <oo||vv> --> connected triples **/
 
                         /* -t_imbc * E_jkma */
 			Gm = Gi ^ Gb ^ Gc;
@@ -599,7 +600,7 @@ double ET_AAA(void)
 			if(fAB.params->rowtot[Gc])
 			  denom -= fAB.matrix[Gc][c][c];
 
-			ET_AAA += (value_d + value_c) * value_c / denom;
+			ET_BBB += (value_d + value_c) * value_c / denom;
 
 
 		      } /* c */
@@ -618,8 +619,8 @@ double ET_AAA(void)
   } /* Gi */
 
   /*  fprintf(outfile, "cnt = %d\n", cnt); */
-  ET_AAA /= 36.0;
-  /*  fprintf(outfile, "ET_AAA = %20.14f\n", ET_AAA); */
+  ET_BBB /= 36.0;
+  /*  fprintf(outfile, "ET_BBB = %20.14f\n", ET_BBB); */
 
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_close(&T2, h);
@@ -641,5 +642,7 @@ double ET_AAA(void)
   dpd_file2_close(&fIJ);
   dpd_file2_close(&fAB);
 
-  return ET_AAA;
+  return ET_BBB;
 }
+
+}} // namespace psi::cctriples

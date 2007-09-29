@@ -2,6 +2,9 @@
     \ingroup (CCTRIPLES)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace cctriples {
+
 struct MOInfo {
   int nirreps;        /* no. of irreducible representations */
   int nmo;            /* no. of molecular orbitals */
@@ -39,3 +42,5 @@ struct MOInfo {
   double eref;        /* Reference energy (file100) */
   double ecc;         /* CC energy from ccenergy */
 };
+
+}} // namespace psi::cctriples

@@ -3,8 +3,12 @@
     \brief Enter brief description of file here 
 */
 #include <stdio.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cctriples {
 
 void count_ijk(void)
 {
@@ -145,3 +149,5 @@ void count_ijk(void)
   fprintf(outfile, "\n");
 
 }
+
+}} // namespace psi::cctriples

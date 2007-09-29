@@ -8,8 +8,12 @@
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libdpd/dpd.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cctriples {
 
 double ET_UHF_AAB(void)
 {
@@ -802,3 +806,5 @@ double ET_UHF_AAB(void)
 
   return ET_AAB;
 }
+
+}} // namespace psi::cctriples

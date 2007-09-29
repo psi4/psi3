@@ -2,13 +2,20 @@
     \ingroup (CCTRIPLES)
     \brief Enter brief description of file here 
 */
+
+/*! \defgroup CCTRIPLES Add a description of the group CCTRIPLES */
+
 #include <stdio.h>
 #include <math.h>
 #include <libdpd/dpd.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
 
-double ET_UHF_BBB_noddy(void)
+namespace psi { namespace cctriples {
+
+double ET_AAA(void)
 {
   int cnt;
   int h, nirreps;
@@ -20,7 +27,7 @@ double ET_UHF_BBB_noddy(void)
   int im, jm, km, ma, mb, mc;
   int ae, be, ce, ke, ie, je;
   int *occpi, *virtpi, *occ_off, *vir_off;
-  double value_c, value_d, denom, ET_BBB, E4T_BBB, EST_BBB, junk;
+  double value_c, value_d, denom, ET_AAA;
   double t_ijae, t_ijbe, t_ijce, t_jkae, t_jkbe, t_jkce, t_ikae, t_ikbe, t_ikce;
   double F_kebc, F_keac, F_keba, F_iebc, F_ieac, F_ieba, F_jebc, F_jeac, F_jeba;
   double t_imbc, t_imac, t_imba, t_jmbc, t_jmac, t_jmba, t_kmbc, t_kmac, t_kmba;
@@ -31,26 +38,25 @@ double ET_UHF_BBB_noddy(void)
   dpdfile2 fIJ, fAB, T1;
 
   nirreps = moinfo.nirreps;
-  occpi = moinfo.boccpi; 
-  virtpi = moinfo.bvirtpi;
-  occ_off = moinfo.bocc_off;
-  vir_off = moinfo.bvir_off;
+  occpi = moinfo.occpi; virtpi = moinfo.virtpi;
+  occ_off = moinfo.occ_off;
+  vir_off = moinfo.vir_off;
 
-  dpd_file2_init(&fIJ, CC_OEI, 0, 2, 2, "fij");
-  dpd_file2_init(&fAB, CC_OEI, 0, 3, 3, "fab");
+  dpd_file2_init(&fIJ, CC_OEI, 0, 0, 0, "fIJ");
+  dpd_file2_init(&fAB, CC_OEI, 0, 1, 1, "fAB");
   dpd_file2_mat_init(&fIJ);
   dpd_file2_mat_init(&fAB);
   dpd_file2_mat_rd(&fIJ);
   dpd_file2_mat_rd(&fAB);
 
-  dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
-  dpd_file2_mat_init(&T1); 
+  dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+  dpd_file2_mat_init(&T1);
   dpd_file2_mat_rd(&T1);
 
-  dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 15, 12, 17, 0, "tijab");
-  dpd_buf4_init(&Fints, CC_FINTS, 0, 30, 15, 30, 15, 1, "F <ia|bc>");
-  dpd_buf4_init(&Eints, CC_EINTS, 0, 10, 30, 12, 30, 0, "E <ij||ka> (i>j,ka)");
-  dpd_buf4_init(&Dints, CC_DINTS, 0, 10, 15, 10, 15, 0, "D <ij||ab>");
+  dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 2, 7, 0, "tIJAB");
+  dpd_buf4_init(&Fints, CC_FINTS, 0, 10, 5, 10, 5, 1, "F <ia|bc>");
+  dpd_buf4_init(&Eints, CC_EINTS, 0, 0, 10, 2, 10, 0, "E <ij||ka> (i>j,ka)");
+  dpd_buf4_init(&Dints, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij||ab>");
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_init(&T2, h);
     dpd_buf4_mat_irrep_rd(&T2, h);
@@ -66,9 +72,7 @@ double ET_UHF_BBB_noddy(void)
   }
 
   cnt = 0;
-  ET_BBB = 0.0;
-  E4T_BBB = 0.0;
-  EST_BBB = 0.0;
+  ET_AAA = 0.0;
 
   for(Gi=0; Gi < nirreps; Gi++) {
     for(Gj=0; Gj < nirreps; Gj++) {
@@ -77,25 +81,25 @@ double ET_UHF_BBB_noddy(void)
 	Gjk = Gj ^ Gk;
 	Gik = Gi ^ Gk;
 
-	for(i=0; i < occpi[Gi]; i++) {
-	  I = occ_off[Gi] + i;
-	  for(j=0; j < occpi[Gj]; j++) {
-	    J = occ_off[Gj] + j;
-	    for(k=0; k < occpi[Gk]; k++) {
-	      K = occ_off[Gk] + k;
+	for(Ga=0; Ga < nirreps; Ga++) {
+	  for(Gb=0; Gb < nirreps; Gb++) {
+	    Gc = Gi ^ Gj ^ Gk ^ Ga ^ Gb;
 
-	      ij = T2.params->rowidx[I][J];
-	      ji = T2.params->rowidx[J][I];
-	      jk = T2.params->rowidx[J][K];
-	      ik = T2.params->rowidx[I][K];
+	    Gbc = Gb^Gc;
+	    Gac = Ga^Gc;
+	    Gba = Gb^Ga;
 
-	      for(Ga=0; Ga < nirreps; Ga++) {
-		for(Gb=0; Gb < nirreps; Gb++) {
-		  Gc = Gi ^ Gj ^ Gk ^ Ga ^ Gb;
+	    for(i=0; i < occpi[Gi]; i++) {
+	      I = occ_off[Gi] + i;
+	      for(j=0; j < occpi[Gj]; j++) {
+		J = occ_off[Gj] + j;
+		for(k=0; k < occpi[Gk]; k++) {
+		  K = occ_off[Gk] + k;
 
-		  Gbc = Gb^Gc;
-		  Gac = Ga^Gc;
-		  Gba = Gb^Ga;
+		  ij = T2.params->rowidx[I][J];
+		  ji = T2.params->rowidx[J][I];
+		  jk = T2.params->rowidx[J][K];
+		  ik = T2.params->rowidx[I][K];
 
 		  for(a=0; a < virtpi[Ga]; a++) {
 		    A = vir_off[Ga] + a;
@@ -283,7 +287,7 @@ double ET_UHF_BBB_noddy(void)
                           value_c += t_ijce * F_keba;
 			}
 
-			/** <oo||vv> --> connected triples **/
+			/** <oo||ov> --> connected triples **/
 
                         /* -t_imbc * E_jkma */
 			Gm = Gi ^ Gb ^ Gc;
@@ -578,10 +582,10 @@ double ET_UHF_BBB_noddy(void)
 			}
 
 			/*
-			  if(fabs(value_d) > 1e-7) {
+			if(fabs(value_c) > 1e-7) {
 			  cnt++;
-			  fprintf(outfile, "%d %d %d %d %d %d %20.14f\n", I, J, K, A, B, C, value_d);
-			  }
+			  fprintf(outfile, "%d %d %d %d %d %d %20.14f\n", I, J, K, A, B, C, value_c);
+			}
 			*/
 
 			/* Compute the Fock denominator */
@@ -599,7 +603,7 @@ double ET_UHF_BBB_noddy(void)
 			if(fAB.params->rowtot[Gc])
 			  denom -= fAB.matrix[Gc][c][c];
 
-			ET_BBB += (value_d + value_c) * value_c / denom;
+			ET_AAA += (value_d + value_c) * value_c / denom;
 
 
 		      } /* c */
@@ -618,7 +622,8 @@ double ET_UHF_BBB_noddy(void)
   } /* Gi */
 
   /*  fprintf(outfile, "cnt = %d\n", cnt); */
-  ET_BBB /= 36.0;
+  ET_AAA /= 36.0;
+  /*  fprintf(outfile, "ET_AAA = %20.14f\n", ET_AAA); */
 
   for(h=0; h < nirreps; h++) {
     dpd_buf4_mat_irrep_close(&T2, h);
@@ -640,5 +645,7 @@ double ET_UHF_BBB_noddy(void)
   dpd_file2_close(&fIJ);
   dpd_file2_close(&fAB);
 
-  return ET_BBB;
+  return ET_AAA;
 }
+
+}} // namespace psi::cctriples

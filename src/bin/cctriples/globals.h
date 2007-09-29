@@ -5,8 +5,8 @@
 #include <stdio.h>
 #include <ccfiles.h>
 #include <libdpd/dpd.h>
-#include "MOInfo.h"
-#include "Params.h"
+
+namespace psi { namespace cctriples {
 
 /* Global variables */
 #ifdef EXTERN
@@ -16,10 +16,12 @@
 #define EXTERN
 #endif
 
+extern "C" {
 EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
+}
+
 EXTERN struct MOInfo moinfo;
 EXTERN struct Params params;
 
-EXTERN int *triotot, ***triorb;
-
+}} // namespace psi::cctriples

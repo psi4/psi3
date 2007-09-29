@@ -5,8 +5,12 @@
 #include <stdio.h>
 #include <math.h>
 #include <libdpd/dpd.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cctriples {
 
 double ET_AAB(void)
 {
@@ -595,3 +599,5 @@ double ET_AAB(void)
 
   return ET_AAB;
 }
+
+}} // namespace psi::cctriples

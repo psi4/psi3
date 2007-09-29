@@ -12,7 +12,11 @@
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 #include <psifiles.h>
+#include "Params.h"
+#include "MOInfo.h"
 #include "globals.h"
+
+namespace psi { namespace cctriples {
 
 void init_io(int argc, char *argv[]);
 void title(void);
@@ -20,8 +24,6 @@ void get_moinfo(void);
 void exit_io(void);
 void cleanup(void);
 double ET_RHF(void);
-double ET_RHF_allijk(void);
-double ET_RHF_noddy(void);
 double ET_AAA(void);
 double ET_AAB(void);
 double ET_ABB(void);
@@ -30,16 +32,16 @@ double ET_UHF_AAA(void);
 double ET_UHF_BBB(void);
 double ET_UHF_AAB(void);
 double ET_UHF_ABB(void);
-double ET_UHF_AAA_noddy(void);
-double ET_UHF_BBB_noddy(void);
-double ET_UHF_AAB_noddy(void);
-double ET_UHF_ABB_noddy(void);
 void count_ijk(void);
 void setup(void);
 int **cacheprep_rhf(int level, int *cachefiles);
 int **cacheprep_uhf(int level, int *cachefiles);
 void cachedone_uhf(int **cachelist);
 void cachedone_rhf(int **cachelist);
+
+}} // namespace psi::cctriples
+
+using namespace psi::cctriples;
 
 int main(int argc, char *argv[])
 {
@@ -178,10 +180,13 @@ int main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
+extern "C" {char *gprgid() { char *prgid = "CCTRIPLES"; return(prgid); }}
+
+namespace psi { namespace cctriples {
+
 void init_io(int argc, char *argv[])
 {
   int i;
-  extern char *gprgid();
   char *progid;
 
   progid = (char *) malloc(strlen(gprgid())+2);
@@ -215,9 +220,4 @@ void exit_io(void)
   psi_stop();
 }
 
-char *gprgid()
-{
-   char *prgid = "CCTRIPLES";
-
-   return(prgid);
-}
+}} // namespace psi::cctriples
