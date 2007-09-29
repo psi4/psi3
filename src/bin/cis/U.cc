@@ -4,8 +4,14 @@
 */
 #include <math.h>
 #include <libdpd/dpd.h>
+#include <libqt/qt.h>
+#include "MOInfo.h"
+#include "Params.h"
+#include "Local.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cis {
 
 void local_filter_U2(dpdbuf4 *T2, double lambda);
 
@@ -188,3 +194,5 @@ int U_build(int irrep, int root, double lambda, enum Spin spin)
 
   return 0;
 }
+
+}} // namespace psi::cis

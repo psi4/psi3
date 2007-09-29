@@ -16,8 +16,13 @@
 #include <libqt/qt.h>
 #include <libdpd/dpd.h>
 #include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
+#include "Local.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cis {
 
 /*! 
 ** local_init(): Set up parameters of local excitation domains.
@@ -843,3 +848,5 @@ void local_filter_U2(dpdbuf4 *T2, double lambda)
   dpd_buf4_mat_irrep_close(T2, 0);
 }
 
+
+}} // namespace psi::cis

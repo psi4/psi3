@@ -2,6 +2,9 @@
     \ingroup (CIS)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace cis {
+
 struct MOInfo {
   int nirreps;           /* no. of irreducible representations */
   int nmo;               /* no. of molecular orbitals */
@@ -43,3 +46,5 @@ struct MOInfo {
   double **uhf_evals;    /* UHF-CIS excitation energies */
   double **uhf_d;        /* UHF-CIS excitation corrections */
 };
+
+}} // namespace psi::cis

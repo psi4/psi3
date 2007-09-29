@@ -5,8 +5,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <libdpd/dpd.h>
+#include "MOInfo.h"
+#include "Params.h"
+#include "Local.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cis {
 
 void Z_build(int irrep, int root, enum Spin spin)
 {
@@ -234,3 +239,5 @@ void Z_build(int irrep, int root, enum Spin spin)
   }
 
 }
+
+}} // namespace psi::cis

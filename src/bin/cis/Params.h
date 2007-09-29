@@ -2,6 +2,9 @@
     \ingroup (CIS)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace cis {
+
 /* Input parameters */
 struct Params {
   long int memory;
@@ -16,3 +19,5 @@ struct Params {
   int local;
 };
 
+
+}} // namespace psi::cis

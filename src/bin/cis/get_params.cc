@@ -9,8 +9,13 @@
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
+#include "Local.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cis {
 
 void get_params()
 {
@@ -161,3 +166,5 @@ void get_params()
 
 }
 
+
+}} // namespace psi::cis

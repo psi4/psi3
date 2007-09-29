@@ -6,8 +6,13 @@
 /*! \defgroup CIS Add a description of the group CIS */
 
 #include <libdpd/dpd.h>
+#include "MOInfo.h"
+#include "Params.h"
+#include "Local.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cis {
 
 void Fab_build(void)
 {
@@ -57,3 +62,5 @@ void Fab_build(void)
     dpd_file2_close(&F);
   }
 }
+
+}} // namespace psi::cis

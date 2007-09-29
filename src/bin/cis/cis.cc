@@ -13,7 +13,12 @@
 #include <libqt/qt.h>
 #include <physconst.h>
 #include <psifiles.h>
+#include "Params.h"
+#include "MOInfo.h"
+#include "Local.h"
 #include "globals.h"
+
+namespace psi { namespace cis {
 
 void init_io(int argc, char *argv[]);
 void title(void);
@@ -30,6 +35,11 @@ void d_corr(void);
 void local_init(void);
 void local_done(void);
 void amp_write_T1(dpdfile2 *T1, int length, FILE *outfile);
+void diag(void);
+
+}} // namespace psi::cis
+
+using namespace psi::cis;
 
 int main(int argc, char *argv[])
 {
@@ -240,9 +250,12 @@ int main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
+extern "C" {char *gprgid() { char *prgid = "CIS"; return(prgid); }}
+
+namespace psi { namespace cis {
+
 void init_io(int argc, char *argv[])
 {
-  extern char *gprgid();
   char *progid;
 
   progid = (char *) malloc(strlen(gprgid())+2);
@@ -294,9 +307,4 @@ void exit_io(void)
   psi_stop();
 }
 
-char *gprgid()
-{
-  char *prgid = "CIS";
-
-  return(prgid);
-}
+}} // namespace psi::cis

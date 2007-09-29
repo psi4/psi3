@@ -5,8 +5,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <libdpd/dpd.h>
+#include "MOInfo.h"
+#include "Params.h"
+#include "Local.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cis {
 
 void Fkc_build(int irrep, int root, enum Spin spin)
 {
@@ -72,3 +77,5 @@ void Fkc_build(int irrep, int root, enum Spin spin)
     dpd_file2_close(&B_B);
   }
 }
+
+}} // namespace psi::cis

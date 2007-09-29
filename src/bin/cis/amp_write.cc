@@ -7,6 +7,8 @@
 #include <math.h>
 #include <libdpd/dpd.h>
 
+namespace psi { namespace cis {
+
 struct onestack {
     double value;
     int i;
@@ -88,3 +90,5 @@ void onestack_insert(struct onestack *stack, double value, int i, int a, int lev
   }
 }
 
+
+}} // namespace psi::cis

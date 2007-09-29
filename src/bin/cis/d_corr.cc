@@ -7,8 +7,13 @@
 #include <string.h>
 #include <libdpd/dpd.h>
 #include <libpsio/psio.h>
+#include "MOInfo.h"
+#include "Params.h"
+#include "Local.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cis {
 
 void mp2(void);
 void Fab_build(void);
@@ -17,6 +22,7 @@ void Fkc_build(int, int, enum Spin);
 void v_build(int, int, enum Spin);
 void Z_build(int, int, enum Spin);
 int U_build(int, int, double, enum Spin);
+void denom(int irrep, double root);
 
 void d_corr(void)
 {
@@ -257,3 +263,5 @@ void d_corr(void)
 
   if(params.local) free(pair_energy);
 }
+
+}} // namespace psi::cis

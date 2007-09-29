@@ -8,8 +8,13 @@
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 #include <libpsio/psio.h>
+#include "MOInfo.h"
+#include "Params.h"
+#include "Local.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cis {
 
 /*
 ** get_moinfo():  Routine to obtain basic orbital information from
@@ -177,3 +182,5 @@ void cleanup(void)
 
 }
 
+
+}} // namespace psi::cis

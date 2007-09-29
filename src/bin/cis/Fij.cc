@@ -3,8 +3,13 @@
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>
+#include "MOInfo.h"
+#include "Params.h"
+#include "Local.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cis {
 
 void Fij_build(void)
 {
@@ -54,3 +59,5 @@ void Fij_build(void)
     dpd_file2_close(&F);
   }
 }
+
+}} // namespace psi::cis

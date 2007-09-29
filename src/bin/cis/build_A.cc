@@ -3,8 +3,13 @@
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>
+#include "MOInfo.h"
+#include "Params.h"
+#include "Local.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cis {
 
 /* build_A(): Builds the CIS response matrix A, which is expressed in
 ** spin-orbitals as:
@@ -226,3 +231,5 @@ void build_A(void)
   }
 
 }
+
+}} // namespace psi::cis

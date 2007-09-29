@@ -2,6 +2,9 @@
     \ingroup (CIS)
     \brief Enter brief description of file here 
 */
+
+namespace psi { namespace cis {
+
 struct Local {
   int natom;
   int nso;
@@ -28,3 +31,5 @@ struct Local {
   double **WW;
   double amp_print_cutoff;
 };
+
+}} // namespace psi::cis

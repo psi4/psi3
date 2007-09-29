@@ -3,9 +3,8 @@
     \brief Enter brief description of file here 
 */
 #include <ccfiles.h>
-#include "MOInfo.h"
-#include "Params.h"
-#include "Local.h"
+
+namespace psi { namespace cis {
 
 /* Global variables */
 #ifdef EXTERN
@@ -15,10 +14,14 @@
 #define EXTERN
 #endif
 
+extern "C" {
 EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
+}
 EXTERN struct MOInfo moinfo;
 EXTERN struct Params params;
 EXTERN struct Local local;
 
 enum Spin {singlet, triplet, uhf};
+
+}} // namespace psi::cis

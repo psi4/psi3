@@ -7,27 +7,12 @@ LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CSRC = \
-cis.c \
-cache.c \
-get_moinfo.c \
-get_params.c \
-build_A.c \
-diag.c \
-david.c \
-denom.c \
-d_corr.c \
-Fab.c \
-Fij.c \
-Fkc.c \
-v.c \
-Z.c \
-U.c \
-mp2.c \
-local.c \
-amp_write.c \
+CXXSRC = \
+Fab.cc  U.cc          build_A.cc  d_corr.cc  get_moinfo.cc  mp2.cc \
+Fij.cc  Z.cc          cache.cc    denom.cc   get_params.cc  v.cc \
+Fkc.cc  amp_write.cc  cis.cc      diag.cc    local.cc \
 
-BINOBJ = $(CSRC:%.c=%.o)
+BINOBJ = $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 

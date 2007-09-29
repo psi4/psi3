@@ -4,12 +4,18 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <libciomr/libciomr.h>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 #include <physconst.h>
+#include "MOInfo.h"
+#include "Params.h"
+#include "Local.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cis {
 
 void diag(void)
 {
@@ -252,3 +258,5 @@ void diag(void)
   }
 
 }
+
+}} // namespace psi::cis

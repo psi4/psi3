@@ -3,8 +3,13 @@
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>
+#include "MOInfo.h"
+#include "Params.h"
+#include "Local.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cis {
 
 void denom(int irrep, double root)
 {
@@ -219,3 +224,5 @@ void denom(int irrep, double root)
     dpd_file2_close(&fab);
   }
 }
+
+}} // namespace psi::cis

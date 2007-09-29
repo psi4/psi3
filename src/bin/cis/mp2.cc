@@ -6,8 +6,16 @@
 #include <stdlib.h>
 #include <libdpd/dpd.h>
 #include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
+#include "Local.h"
 #define EXTERN
 #include "globals.h"
+
+namespace psi { namespace cis {
+
+void local_filter_T1(dpdfile2 *T1);
+void local_filter_T2(dpdbuf4 *T2);
 
 void mp2(void)
 {
@@ -184,3 +192,5 @@ void mp2(void)
   }
 }
 
+
+}} // namespace psi::cis
