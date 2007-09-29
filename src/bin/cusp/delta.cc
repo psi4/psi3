@@ -15,11 +15,14 @@
 #include <libqt/qt.h>
 #include <psifiles.h>
 
-void compute_phi(double *phi, double x, double y, double z);
-void setup_delta(void);
+
+namespace psi { namespace cusp {
 
 int nmo, nao;
 double **scf, **u;
+
+void compute_phi(double *phi, double x, double y, double z);
+void setup_delta(void);
 
 void compute_delta(double **delta, double x, double y, double z)
 {
@@ -121,3 +124,5 @@ void setup_delta(void)
 
 
 
+
+}} // namespace psi::cusp

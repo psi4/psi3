@@ -3,6 +3,7 @@
     \brief Enter brief description of file here 
 */
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
 #include <libint/libint.h>
@@ -12,6 +13,8 @@
 #include <libqt/qt.h>
 
 extern FILE *outfile;
+
+namespace psi { namespace cusp {
 
 void local(void)
 {
@@ -523,3 +526,5 @@ void local(void)
   */
 
 }
+
+}} // namespace psi::cusp

@@ -8,6 +8,7 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include <libipv1/ip_lib.h>
@@ -17,9 +18,12 @@
 #include <psiconfig.h>
 #include <psifiles.h>
 
+namespace psi { namespace cusp {
+
 #define MAXFACT 100
 
-int nao, natom, nprim, nshell;
+extern int nao;
+int natom, nprim, nshell;
 int *stype, *snuc, *snumg, *sprim;
 double *a, *c, **geom, df[MAXFACT], **norm;
 int **xexp, **yexp, **zexp, *l_length;
@@ -139,3 +143,5 @@ void compute_phi(double *phi, double x, double y, double z)
     }
 }
 
+
+}} // namespace psi::cusp

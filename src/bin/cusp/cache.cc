@@ -11,6 +11,8 @@
 #include <ccfiles.h>
 #include <psifiles.h>
 
+namespace psi { namespace cusp {
+
 void cache_abcd(int **cachelist);
 void cache_iabc(int **cachelist);
 void cache_ijab(int **cachelist);
@@ -259,3 +261,5 @@ void cache_ijkl(int **cachelist)
   cachelist[4][3] = 1;
   cachelist[4][4] = 1;
 }
+
+}} // namespace psi::cusp

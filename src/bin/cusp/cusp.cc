@@ -3,6 +3,7 @@
     \brief Enter brief description of file here 
 */
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <math.h>
 #include <libipv1/ip_lib.h>
@@ -16,14 +17,22 @@
 #include <ccfiles.h>
 #include <physconst.h>
 
-FILE *infile, *outfile;
-char *psi_file_prefix;
+extern "C" {
+  FILE *infile, *outfile;
+  char *psi_file_prefix;
+}
+
+namespace psi { namespace cusp {
 
 void init_io(int argc, char *argv[]);
 void exit_io(void);
 void compute_delta(double **delta, double x, double y, double z);
 int **cacheprep(int level, int *cachefiles);
 void local(void);
+
+}}
+
+using namespace psi::cusp;
 
 int main(int argc, char *argv[])
 {
@@ -382,10 +391,13 @@ int main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
+extern "C" {char *gprgid() { char *prgid = "CCONTOUR"; return(prgid); }}
+
+namespace psi { namespace cusp {
+
 void init_io(int argc, char *argv[])
 {
   int i;
-  extern char *gprgid();
   char *progid;
 
   progid = (char *) malloc(strlen(gprgid())+2);
@@ -413,9 +425,4 @@ void exit_io(void)
   psi_stop();
 }
 
-char *gprgid()
-{
-   char *prgid = "CCONTOUR";
-
-   return(prgid);
-}
+}} // namespace psi::cusp
