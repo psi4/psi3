@@ -5,6 +5,8 @@
 #include <ruby.h>
 #include "psirb.h"
 
+namespace psi { namespace psirb {
+	
 // Function declarations
 bool initialize_ruby();
 void load_input_file_into_ruby();
@@ -65,6 +67,7 @@ bool initialize_ruby()
 	create_ruby_psi_module();
 	Task::create_ruby_class();
 	ZEntry::create_ruby_class();
+	Matrix::create_ruby_class();
 	
 	// Done
 	return true;
@@ -237,3 +240,5 @@ bool create_ruby_psi_module()
 	// Done
 	return true;
 }
+
+}} // namespace psi::psirb

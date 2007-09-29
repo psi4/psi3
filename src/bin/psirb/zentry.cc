@@ -7,6 +7,8 @@
 #include <iomanip>
 #include "psirb.h"
 
+namespace psi { namespace psirb {
+	
 using namespace psi;
 
 //
@@ -185,35 +187,42 @@ VALUE ZEntry::rb_to_s(VALUE self)
 	return rb_str_new2(text.c_str());
 }
 
-VALUE ZEntry::rb_to_a(VALUE self)
+VALUE ZEntry::to_a()
 {
-	ZEntry *s;
-	z_entry *zmat;
-	
-	Data_Get_Struct(self, ZEntry, s);
 	VALUE final_array = rb_ary_new();
-	zmat = s->m_zEntry;
 	
-	for (int i=0; i < s->m_numZEntries; ++i) {
+	for (int i=0; i < m_numZEntries; ++i) {
 		VALUE entry = rb_ary_new();
 		
 		// Add the element name to the entry
-		rb_ary_push(entry, rb_cvar_get(rb_cObject, rb_intern(s->m_szFElement[i])));
+		rb_ary_push(entry, rb_cvar_get(rb_cObject, rb_intern(m_szFElement[i])));
 		
 		if (i > 0) {
-			rb_ary_push(entry, INT2FIX(zmat[i].bond_atom));
-			rb_ary_push(entry, rb_float_new(zmat[i].bond_val));
+			rb_ary_push(entry, INT2FIX(m_zEntry[i].bond_atom));
+			rb_ary_push(entry, rb_float_new(m_zEntry[i].bond_val));
 		}
 		if (i > 1) {
-			rb_ary_push(entry, INT2FIX(zmat[i].angle_atom));
-			rb_ary_push(entry, rb_float_new(zmat[i].angle_val));
+			rb_ary_push(entry, INT2FIX(m_zEntry[i].angle_atom));
+			rb_ary_push(entry, rb_float_new(m_zEntry[i].angle_val));
 		}
 		if (i > 2) {
-			rb_ary_push(entry, INT2FIX(zmat[i].tors_atom));
-			rb_ary_push(entry, rb_float_new(zmat[i].tors_val));
+			rb_ary_push(entry, INT2FIX(m_zEntry[i].tors_atom));
+			rb_ary_push(entry, rb_float_new(m_zEntry[i].tors_val));
 		}
 		rb_ary_push(final_array, entry);
 	}
 	
 	return final_array;
 }
+
+VALUE ZEntry::rb_to_a(VALUE self)
+{
+	ZEntry *s;
+	
+	Data_Get_Struct(self, ZEntry, s);
+	VALUE final_array = s->to_a();
+	
+	return final_array;
+}
+
+}} // namespace psi::psirb

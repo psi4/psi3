@@ -13,6 +13,8 @@
 #include <libpsio/psio.hpp>
 #include <libchkpt/chkpt.hpp>
 
+namespace psi { namespace psirb {
+	
 #define PSI_VERSION_MAJOR 3
 #define PSI_VERSION_MINOR 3
 
@@ -133,6 +135,9 @@ public:
 	/*! Ruby function: Task.scratch */
 	static VALUE rb_scratch_get(VALUE self);
 	
+	static VALUE rb_load_zmat(VALUE self);
+	static VALUE rb_load_cartesian(VALUE self);
+	
 	//
 	// Libpsio++ interface
 	static VALUE rb_print_toc(VALUE, VALUE);
@@ -163,6 +168,18 @@ public:
 	static VALUE rb_chkpt_num_irreps_get(VALUE);
 	static VALUE rb_chkpt_clsdpi_set(VALUE, VALUE);
 	static VALUE rb_chkpt_clsdpi_get(VALUE);
+	static VALUE rb_chkpt_frzcpi_set(VALUE, VALUE);
+	static VALUE rb_chkpt_frzcpi_get(VALUE);
+	static VALUE rb_chkpt_frzvpi_set(VALUE, VALUE);
+	static VALUE rb_chkpt_frzvpi_get(VALUE);
+	static VALUE rb_chkpt_evals_get(VALUE);
+	static VALUE rb_chkpt_alpha_evals_get(VALUE);
+	static VALUE rb_chkpt_beta_evals_get(VALUE);
+	static VALUE rb_chkpt_evals_set(VALUE, VALUE);
+	static VALUE rb_chkpt_alpha_evals_set(VALUE, VALUE);
+	static VALUE rb_chkpt_beta_evals_set(VALUE, VALUE);
+	static VALUE rb_chkpt_exps_set(VALUE, VALUE);
+	static VALUE rb_chkpt_exps_get(VALUE);
 };
 
 //
@@ -195,6 +212,8 @@ public:
 	//! Read in the z_entry from checkpoint. Must be attached to a Task first.
 	void read();
 	
+	VALUE to_a();
+	
 	//
 	// Ruby framework for ZEntry
 	//
@@ -220,5 +239,57 @@ public:
 	/*! Called by Ruby if the user try to convert to an array */
 	static VALUE rb_to_a(VALUE self);
 };
+
+//
+// Ruby framework for handling BLAS compatible matrices
+class Matrix {
+	double **m_pMatrix;
+	size_t m_nRows, m_nCols;
+
+	//! Ruby reference to the Z-Matrix class descriptor
+	static VALUE m_rbMatrix;
+	
+public:
+	Matrix();
+	~Matrix();
+	
+	bool allocate(size_t rows, size_t cols);
+	void release();
+	void copy(Matrix *);
+	
+	void set(size_t x, size_t y, double value) {
+		m_pMatrix[x][y] = value;
+	}
+	double get(size_t x, size_t y) {
+		return m_pMatrix[x][y];
+	}
+	
+	//
+	// Ruby framework for Matrix
+	//
+	//! Creates the Ruby class framework
+	static void create_ruby_class();
+	
+	//! Called by Ruby when it needs to delete a class
+	static void rb_free(void *p);
+	
+	//! Called by Ruby during object creation
+	static VALUE rb_alloc(VALUE klass);
+	
+	//! Called by Ruby during object creation
+	static VALUE rb_init(int argc, VALUE *argv, VALUE self);
+	
+	//! Called by Ruby during object creation
+	static VALUE rb_init_copy(VALUE copy, VALUE orig);
+	
+	//! Accessor methods
+	static VALUE rb_element_get(VALUE self, VALUE i, VALUE j);
+	static VALUE rb_element_set(VALUE self, VALUE i, VALUE j, VALUE val);
+	
+	//! Conversion routines
+	static VALUE rb_to_s(VALUE self);
+};
+
+}} // namespace psi::psirb
 
 #endif // __PSIRB_H__

@@ -13,12 +13,20 @@
 #define MAIN
 #include "psirb.h"
 
+namespace psi { namespace psirb {
 // Functions defined in ruby.c that are only needed here
 extern bool initialize_ruby();
 extern void load_input_file_into_ruby();
 extern void process_input_file();
 extern void finalize_ruby();
 extern void run_interactive_ruby();
+
+// Functions defined here.
+void parse_command_line(int, char**);
+void redirect_output(char *szFilename, bool append=false);
+void print_version();
+void print_usage();
+}}
 
 // The following are completely ignored by psirb and psi
 extern "C" {
@@ -29,14 +37,10 @@ extern "C" {
 	char *psi_file_prefix;
 };
 
-// Functions defined here.
-void parse_command_line(int, char**);
-void redirect_output(char *szFilename, bool append=false);
-void print_version();
-void print_usage();
-
 int main(int argc, char *argv[])
 {
+	using namespace psi::psirb;
+	
 	// Parse the command line arguments
 	parse_command_line(argc, argv);
 	
@@ -72,6 +76,7 @@ int main(int argc, char *argv[])
 	return EXIT_SUCCESS;
 }
 
+namespace psi { namespace psirb {
 /*! Handles the command line arguments and stores them in global variables. In some cases
 	default globals variables are set.
 	\param argc Number of command-line arguments received.
@@ -195,3 +200,5 @@ void print_usage()
 	
 	exit(EXIT_FAILURE);
 }
+
+}} // namespace psi::psirb

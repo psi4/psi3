@@ -3,7 +3,13 @@
 #include <libchkpt/chkpt.hpp>
 #include "psirb.h"
 
+namespace psi { namespace psirb {
+	
 using namespace psi;
+
+extern "C" {
+extern void free_block(double **);
+};
 
 //
 // class Task
@@ -73,50 +79,74 @@ void Task::create_ruby_class()
 	// Register the allocation functioin with Ruby
 	rb_define_alloc_func(Task::m_rbTask, Task::rb_alloc);
 	
+	
 	// Register the initialization function with Ruby
-	rb_define_method(Task::m_rbTask, "initialize", RUBYCAST(Task::rb_init), -1);
+	//
+	// The structure of a call to rb_define_method is the following. If # of arguments is -1 then an C-array of
+	// Ruby objects is sent. Note every single function has a "VALUE self" parameter that is not counted in the
+	// number listed here.
+	//
+	//               Ruby object      Ruby function name    C/++ function to be called                  # of arguments
+	rb_define_method(Task::m_rbTask, "initialize",          RUBYCAST(Task::rb_init),                        -1);
 	
 	// Register the initialization copy function with Ruby
-	rb_define_method(Task::m_rbTask, "initialize_copy", RUBYCAST(Task::rb_init_copy), 1);
+	rb_define_method(Task::m_rbTask, "initialize_copy",     RUBYCAST(Task::rb_init_copy),                    1);
 	
 	// Register the the to_s function.
-	rb_define_method(Task::m_rbTask, "to_s", RUBYCAST(Task::rb_to_s), 0);
+	rb_define_method(Task::m_rbTask, "to_s",                RUBYCAST(Task::rb_to_s),                         0);
 	
 	// Add other functions starting here.
-	rb_define_method(Task::m_rbTask, "prefix=",  RUBYCAST(Task::rb_prefix_set), 1);
-	rb_define_method(Task::m_rbTask, "prefix",   RUBYCAST(Task::rb_prefix_get), 0);
-	rb_define_method(Task::m_rbTask, "scratch=", RUBYCAST(Task::rb_scratch_set), 1);
-	rb_define_method(Task::m_rbTask, "scratch",  RUBYCAST(Task::rb_scratch_get), 0);
+	rb_define_method(Task::m_rbTask, "prefix=",             RUBYCAST(Task::rb_prefix_set),                   1);
+	rb_define_method(Task::m_rbTask, "prefix",              RUBYCAST(Task::rb_prefix_get),                   0);
+	rb_define_method(Task::m_rbTask, "scratch=",            RUBYCAST(Task::rb_scratch_set),                  1);
+	rb_define_method(Task::m_rbTask, "scratch",             RUBYCAST(Task::rb_scratch_get),                  0);
+	rb_define_method(Task::m_rbTask, "load_zmat",           RUBYCAST(Task::rb_load_zmat),                    0);
+	rb_define_method(Task::m_rbTask, "load_cartesian",      RUBYCAST(Task::rb_load_cartesian),               0);
 	
 	// Interface to libpsio++
-	rb_define_method(Task::m_rbTask, "print_toc", RUBYCAST(Task::rb_print_toc), 1);
+	rb_define_method(Task::m_rbTask, "print_toc",           RUBYCAST(Task::rb_print_toc),                    1);
 	
 	// Checkpoint interface
-	rb_define_method(Task::m_rbTask, "exist?",  RUBYCAST(Task::rb_chkpt_exist),     1);
-	rb_define_method(Task::m_rbTask, "exists?", RUBYCAST(Task::rb_chkpt_exist),     1);
-	rb_define_method(Task::m_rbTask, "label", 	RUBYCAST(Task::rb_chkpt_label_get), 0);
-	rb_define_method(Task::m_rbTask, "label=",  RUBYCAST(Task::rb_chkpt_label_set), 1); 
-	rb_define_method(Task::m_rbTask, "escf",	RUBYCAST(Task::rb_chkpt_escf_get),  0);
-	rb_define_method(Task::m_rbTask, "escf=",	RUBYCAST(Task::rb_chkpt_escf_set),  1);
-	rb_define_method(Task::m_rbTask, "eref",	RUBYCAST(Task::rb_chkpt_eref_get),  0);
-	rb_define_method(Task::m_rbTask, "eref=", 	RUBYCAST(Task::rb_chkpt_eref_set),  1);
-	rb_define_method(Task::m_rbTask, "ecorr", 	RUBYCAST(Task::rb_chkpt_ecorr_get), 0);
-	rb_define_method(Task::m_rbTask, "ecorr=",  RUBYCAST(Task::rb_chkpt_ecorr_set), 1);
-	rb_define_method(Task::m_rbTask, "enuc", 	RUBYCAST(Task::rb_chkpt_enuc_get),  0);
-	rb_define_method(Task::m_rbTask, "enuc=", 	RUBYCAST(Task::rb_chkpt_enuc_set),  1);
-	rb_define_method(Task::m_rbTask, "efzc", 	RUBYCAST(Task::rb_chkpt_efzc_get),  0);
-	rb_define_method(Task::m_rbTask, "efzc=", 	RUBYCAST(Task::rb_chkpt_efzc_set),  1);
-	rb_define_method(Task::m_rbTask, "etot", 	RUBYCAST(Task::rb_chkpt_etot_get),  0);
-	rb_define_method(Task::m_rbTask, "etot=", 	RUBYCAST(Task::rb_chkpt_etot_set),  1);
-	rb_define_method(Task::m_rbTask, "disp", 	RUBYCAST(Task::rb_chkpt_disp_get),  0);
-	rb_define_method(Task::m_rbTask, "disp=", 	RUBYCAST(Task::rb_chkpt_disp_set),  1);
-	rb_define_method(Task::m_rbTask, "eccsd",   RUBYCAST(Task::rb_chkpt_eccsd_get), 0);
-	rb_define_method(Task::m_rbTask, "e_t",     RUBYCAST(Task::rb_chkpt_e_t_get),   0);
-	rb_define_method(Task::m_rbTask, "emp2",    RUBYCAST(Task::rb_chkpt_emp2_get),  0);
-	rb_define_method(Task::m_rbTask, "eom_states_energy", RUBYCAST(Task::rb_chkpt_eom_state_energies_get), 0);
-	rb_define_method(Task::m_rbTask, "num_irreps", RUBYCAST(Task::rb_chkpt_num_irreps_get), 0);
-	rb_define_method(Task::m_rbTask, "clsdpi=", RUBYCAST(Task::rb_chkpt_clsdpi_set), 1);
-	rb_define_method(Task::m_rbTask, "clsdpi", RUBYCAST(Task::rb_chkpt_clsdpi_get), 0);	
+	rb_define_method(Task::m_rbTask, "exist?",              RUBYCAST(Task::rb_chkpt_exist),                  1);
+	rb_define_method(Task::m_rbTask, "exists?",             RUBYCAST(Task::rb_chkpt_exist),                  1);
+	rb_define_method(Task::m_rbTask, "label",               RUBYCAST(Task::rb_chkpt_label_get),              0);
+	rb_define_method(Task::m_rbTask, "label=",              RUBYCAST(Task::rb_chkpt_label_set),              1); 
+	rb_define_method(Task::m_rbTask, "escf",                RUBYCAST(Task::rb_chkpt_escf_get),               0);
+	rb_define_method(Task::m_rbTask, "escf=",               RUBYCAST(Task::rb_chkpt_escf_set),               1);
+	rb_define_method(Task::m_rbTask, "eref",                RUBYCAST(Task::rb_chkpt_eref_get),               0);
+	rb_define_method(Task::m_rbTask, "eref=",               RUBYCAST(Task::rb_chkpt_eref_set),               1);
+	rb_define_method(Task::m_rbTask, "ecorr",               RUBYCAST(Task::rb_chkpt_ecorr_get),              0);
+	rb_define_method(Task::m_rbTask, "ecorr=",              RUBYCAST(Task::rb_chkpt_ecorr_set),              1);
+	rb_define_method(Task::m_rbTask, "enuc",                RUBYCAST(Task::rb_chkpt_enuc_get),               0);
+	rb_define_method(Task::m_rbTask, "enuc=",               RUBYCAST(Task::rb_chkpt_enuc_set),               1);
+	rb_define_method(Task::m_rbTask, "efzc",                RUBYCAST(Task::rb_chkpt_efzc_get),               0);
+	rb_define_method(Task::m_rbTask, "efzc=",               RUBYCAST(Task::rb_chkpt_efzc_set),               1);
+	rb_define_method(Task::m_rbTask, "etot",                RUBYCAST(Task::rb_chkpt_etot_get),               0);
+	rb_define_method(Task::m_rbTask, "etot=",               RUBYCAST(Task::rb_chkpt_etot_set),               1);
+	rb_define_method(Task::m_rbTask, "disp",                RUBYCAST(Task::rb_chkpt_disp_get),               0);
+	rb_define_method(Task::m_rbTask, "disp=", 	            RUBYCAST(Task::rb_chkpt_disp_set),               1);
+	rb_define_method(Task::m_rbTask, "eccsd",               RUBYCAST(Task::rb_chkpt_eccsd_get),              0);
+	rb_define_method(Task::m_rbTask, "e_t",                 RUBYCAST(Task::rb_chkpt_e_t_get),                0);
+	rb_define_method(Task::m_rbTask, "emp2",                RUBYCAST(Task::rb_chkpt_emp2_get),               0);
+	rb_define_method(Task::m_rbTask, "eom_states_energy",   RUBYCAST(Task::rb_chkpt_eom_state_energies_get), 0);
+	rb_define_method(Task::m_rbTask, "num_irreps",          RUBYCAST(Task::rb_chkpt_num_irreps_get),         0);
+	rb_define_method(Task::m_rbTask, "clsdpi=",             RUBYCAST(Task::rb_chkpt_clsdpi_set),             1);
+	rb_define_method(Task::m_rbTask, "clsdpi",              RUBYCAST(Task::rb_chkpt_clsdpi_get),             0);
+	rb_define_method(Task::m_rbTask, "frzcpi=",             RUBYCAST(Task::rb_chkpt_frzcpi_set),             1);
+	rb_define_method(Task::m_rbTask, "frzcpi",              RUBYCAST(Task::rb_chkpt_frzcpi_get),             0);
+	rb_define_method(Task::m_rbTask, "frzvpi=",             RUBYCAST(Task::rb_chkpt_frzvpi_set),             1);
+	rb_define_method(Task::m_rbTask, "frzvpi",              RUBYCAST(Task::rb_chkpt_frzvpi_get),             0);
+	rb_define_method(Task::m_rbTask, "evals",               RUBYCAST(Task::rb_chkpt_evals_get),              0);
+	rb_define_method(Task::m_rbTask, "evals=",              RUBYCAST(Task::rb_chkpt_evals_set),              1);
+	rb_define_method(Task::m_rbTask, "alpha_evals",         RUBYCAST(Task::rb_chkpt_alpha_evals_get),        0);
+	rb_define_method(Task::m_rbTask, "alpha_evals=",        RUBYCAST(Task::rb_chkpt_alpha_evals_set),        1);
+	rb_define_method(Task::m_rbTask, "beta_evals",          RUBYCAST(Task::rb_chkpt_beta_evals_get),         0);
+	rb_define_method(Task::m_rbTask, "beta_evals=",         RUBYCAST(Task::rb_chkpt_beta_evals_set),         1);
+	rb_define_method(Task::m_rbTask, "exps",                RUBYCAST(Task::rb_chkpt_exps_get),               0);
+	rb_define_method(Task::m_rbTask, "exps=",               RUBYCAST(Task::rb_chkpt_exps_set),               1);
+	
+	// A checkpoint function that uses Psi::Matrix
+//	rb_define_method(Task::m_rbTask, "fgeom=",              RUBYCAST(Task::rb_chkpt_fgeom_get),              0);
 }
 
 void Task::rb_free(void *p)
@@ -770,6 +800,8 @@ VALUE Task::rb_chkpt_clsdpi_set(VALUE self, VALUE arr)
 	return self;
 }
 
+//! Ruby function: Psi::Task.clsdpi
+/*! Reads in the clsdpi array from checkpoint */
 VALUE Task::rb_chkpt_clsdpi_get(VALUE self)
 {
 	Task *task;
@@ -787,3 +819,346 @@ VALUE Task::rb_chkpt_clsdpi_get(VALUE self)
 	
 	return arr;
 }
+
+//! Ruby function: Psi::Task.frzcpi=(array)
+/*! Saves the frzcpi array to checkpoint */
+VALUE Task::rb_chkpt_frzcpi_set(VALUE self, VALUE arr)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	int *frzcpi;
+	int count, expectedCount;
+	
+	// Convert the arr to a C-array. The function call handles type checking
+	count = create_array(arr, &frzcpi);
+	
+	// Gain access to checkpoint
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	expectedCount = chkpt.rd_nirreps();
+	
+	if (count != expectedCount) {
+		rb_raise(rb_eArgError, "array is of length %d, expecting %d", count, expectedCount);
+		return self;
+	}
+	
+	// Save a new clsdpi
+	chkpt.wt_frzcpi(frzcpi);
+	
+	// Free memory
+	free(frzcpi);
+	
+	return self;
+}
+
+//! Ruby function: Psi::Task.frzcpi
+/*! Reads in the frzcpi array from checkpoint */
+VALUE Task::rb_chkpt_frzcpi_get(VALUE self)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	int *frzcpi;
+	int count;
+	
+	// Gain access to checkpoint
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	count = chkpt.rd_nirreps();
+	frzcpi = chkpt.rd_frzcpi();
+	
+	VALUE arr = create_array(count, frzcpi);
+	free(frzcpi);
+	
+	return arr;
+}
+
+//! Ruby function: Psi::Task.frzvpi=(array)
+/*! Saves the frzvpi array to checkpoint */
+VALUE Task::rb_chkpt_frzvpi_set(VALUE self, VALUE arr)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	int *frzvpi;
+	int count, expectedCount;
+	
+	// Convert the arr to a C-array. The function call handles type checking
+	count = create_array(arr, &frzvpi);
+	
+	// Gain access to checkpoint
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	expectedCount = chkpt.rd_nirreps();
+	
+	if (count != expectedCount) {
+		rb_raise(rb_eArgError, "array is of length %d, expecting %d", count, expectedCount);
+		return self;
+	}
+	
+	// Save a new clsdpi
+	chkpt.wt_frzvpi(frzvpi);
+	
+	// Free memory
+	free(frzvpi);
+	
+	return self;
+}
+
+//! Ruby function: Psi::Task.frzcpi
+/*! Reads in the frzcpi array from checkpoint */
+VALUE Task::rb_chkpt_frzvpi_get(VALUE self)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	int *frzvpi;
+	int count;
+	
+	// Gain access to checkpoint
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	count = chkpt.rd_nirreps();
+	frzvpi = chkpt.rd_frzvpi();
+	
+	VALUE arr = create_array(count, frzvpi);
+	free(frzvpi);
+	
+	return arr;
+}
+
+VALUE Task::rb_chkpt_evals_get(VALUE self)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	double *evals;
+	int count;
+	
+	// Gain access to checkpoint
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	count = chkpt.rd_nmo();
+	evals = chkpt.rd_evals();
+	
+	VALUE arr = create_array(count, evals);
+	free(evals);
+	
+	return arr;
+}
+
+VALUE Task::rb_chkpt_alpha_evals_get(VALUE self)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	double *evals;
+	int count;
+	
+	// Gain access to checkpoint
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	count = chkpt.rd_nmo();
+	evals = chkpt.rd_alpha_evals();
+	
+	VALUE arr = create_array(count, evals);
+	free(evals);
+	
+	return arr;
+}
+
+VALUE Task::rb_chkpt_beta_evals_get(VALUE self)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	double *evals;
+	int count;
+	
+	// Gain access to checkpoint
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	count = chkpt.rd_nmo();
+	evals = chkpt.rd_beta_evals();
+	
+	VALUE arr = create_array(count, evals);
+	free(evals);
+	
+	return arr;
+}
+
+VALUE Task::rb_chkpt_evals_set(VALUE self, VALUE arr)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	double *evals;
+	int count, expectedCount;
+	
+	// Convert the arr to a C-array. The function call handles type checking
+	count = create_array(arr, &evals);
+	
+	// Gain access to checkpoint
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	expectedCount = chkpt.rd_nmo();
+	
+	if (count != expectedCount) {
+		rb_raise(rb_eArgError, "array is of length %d, expecting %d", count, expectedCount);
+		return self;
+	}
+	
+	// Save a new evals
+	chkpt.wt_evals(evals);
+	
+	// Free memory
+	free(evals);
+	
+	return self;
+}
+
+VALUE Task::rb_chkpt_alpha_evals_set(VALUE self, VALUE arr)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	double *evals;
+	int count, expectedCount;
+	
+	// Convert the arr to a C-array. The function call handles type checking
+	count = create_array(arr, &evals);
+	
+	// Gain access to checkpoint
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	expectedCount = chkpt.rd_nmo();
+	
+	if (count != expectedCount) {
+		rb_raise(rb_eArgError, "array is of length %d, expecting %d", count, expectedCount);
+		return self;
+	}
+	
+	// Save a new evals
+	chkpt.wt_alpha_evals(evals);
+	
+	// Free memory
+	free(evals);
+	
+	return self;
+}
+
+VALUE Task::rb_chkpt_beta_evals_set(VALUE self, VALUE arr)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	double *evals;
+	int count, expectedCount;
+
+	// Convert the arr to a C-array. The function call handles type checking
+	count = create_array(arr, &evals);
+
+	// Gain access to checkpoint
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	expectedCount = chkpt.rd_nmo();
+
+	if (count != expectedCount) {
+		rb_raise(rb_eArgError, "array is of length %d, expecting %d", count, expectedCount);
+		return self;
+	}
+
+	// Save a new evals
+	chkpt.wt_beta_evals(evals);
+
+	// Free memory
+	free(evals);
+
+	return self;
+}
+
+VALUE Task::rb_chkpt_exps_get(VALUE self)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	double *exps;
+	int count;
+	
+	// Gain access to checkpoint
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	count = chkpt.rd_nprim();
+	exps = chkpt.rd_exps();
+	
+	VALUE arr = create_array(count, exps);
+	free(exps);
+	
+	return arr;
+}
+
+VALUE Task::rb_chkpt_exps_set(VALUE self, VALUE arr)
+{
+	Task *task;
+	Data_Get_Struct(self, Task, task);
+	double *exps;
+	int count, expectedCount;
+
+	// Convert the arr to a C-array. The function call handles type checking
+	count = create_array(arr, &exps);
+
+	// Gain access to checkpoint
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	expectedCount = chkpt.rd_nprim();
+
+	if (count != expectedCount) {
+		rb_raise(rb_eArgError, "array is of length %d, expecting %d", count, expectedCount);
+		return self;
+	}
+
+	// Save a new evals
+	chkpt.wt_exps(exps);
+
+	// Free memory
+	free(exps);
+
+	return self;
+}
+
+VALUE Task::rb_load_zmat(VALUE self)
+{
+	Task *task;
+	ZEntry z;
+	VALUE zmat;
+	
+	Data_Get_Struct(self, Task, task);
+	z.attach_to(task);
+	zmat = z.to_a();
+	
+	return zmat;
+}
+
+VALUE Task::rb_load_cartesian(VALUE self)
+{
+	Task *task;
+	VALUE xyz;
+	char **felements;
+	double **fgeom;
+	int nallatoms;
+	int i;
+	
+	Data_Get_Struct(self, Task, task);
+	// Gain access to checkpoint
+	Chkpt chkpt(&task->m_psiPSIO, PSIO_OPEN_OLD);
+	felements = chkpt.rd_felement();
+	fgeom = chkpt.rd_fgeom();
+	nallatoms = chkpt.rd_nallatom();
+	
+	// Go through and construct the cartesian geometry matrix for psirb
+	xyz = rb_ary_new();
+	for (i=0; i<nallatoms; ++i) {
+		VALUE entry = rb_ary_new();
+		
+		// Add the element name to the entry
+		rb_ary_push(entry, rb_cvar_get(rb_cObject, rb_intern(felements[i])));
+		
+		// Push the x, y, z values
+		rb_ary_push(entry, rb_float_new(fgeom[i][0]));
+		rb_ary_push(entry, rb_float_new(fgeom[i][1]));
+		rb_ary_push(entry, rb_float_new(fgeom[i][2]));
+		
+		// Push the entry to the main array
+		rb_ary_push(xyz, entry);
+	} 
+	
+	// Clean up
+	free_block(fgeom);
+	for (i = 0; i < nallatoms; ++i)
+		free(felements[i]);
+	free(felements);
+	
+	return xyz;
+}
+
+//VALUE Task::
+
+}} // namespace psi::psirb

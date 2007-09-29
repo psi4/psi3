@@ -13,10 +13,10 @@ LDFLAGS += $(RUBYLDFLAGS)
 
 # Hopefully one day I can remove -lPSI_ipv1 from below.
 # It's only there to fix some link references.
-PSILIBS = -lPSI_chkpt -lPSI_psio -lPSI_ipv1
+PSILIBS = -lPSI_chkpt -lPSI_psio
 
 CXXINC += $(RUBYINC) -DINSTALLEDPSIDATADIR=\"$(datadir)\"
-CXXSRC = psirb.cc ruby.cc task.cc zentry.cc irb.cc common.cc
+CXXSRC = psirb.cc ruby.cc task.cc zentry.cc irb.cc common.cc matrix.cc
 
 BINOBJ = $(CXXSRC:%.cc=%.o)
 
@@ -27,8 +27,8 @@ include ../MakeRules
 #	$(LD) $(LDFLAGS) -o $@ $^ $(LDLIBS) $^
 	
 ifneq ($(DODEPEND),no)
-#$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
-#include $(BINOBJ:%.o=%.d)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
 endif
 
 #install_man:: psirb.1

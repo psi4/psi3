@@ -1,6 +1,7 @@
 #include <ruby.h>
 #include "psirb.h"
 
+namespace psi { namespace psirb { 
 /*! Handles running Ruby interactively. This version makes use of the
     irb module found in Ruby to handle Ruby input parsing. */
 void run_interactive_ruby()
@@ -17,3 +18,4 @@ void run_interactive_ruby()
 	printf("Starting interactive Psi3 Ruby driver.\n");
 	rb_eval_string("IRB.start");
 }
+}} // namespace psi::psirb
