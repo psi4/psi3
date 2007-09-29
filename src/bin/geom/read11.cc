@@ -16,8 +16,13 @@
 /* define's */
 #define MAX_LINE 132
 
+namespace psi { namespace geom {
+
+extern void malloc_ck(void *array, char *mesg);
+extern void prf_abort(FILE *file, char *mesg);
+
 /* global variables */
-char line1[MAX_LINE] ;
+static char line1[MAX_LINE] ;
 
 /*
 ** READ_FILE11(): This function reads 'file11.dat' and prints out again
@@ -35,12 +40,7 @@ char line1[MAX_LINE] ;
 ** Returns: success (1) or failure (0) 
 **
 */
-int read_file11(label, natom, energy, X, Y, Z, AN, fpo) 
-      char *label ;
-      int *natom ;
-      double *energy ;
-      double **X, **Y, **Z, **AN ;
-      FILE *fpo ;
+int read_file11(char* label, int* natom, double* energy, double** X, double** Y, double** Z, double** AN, FILE* fpo)
 {
 int i ;                  /* loop variable */
 FILE *fpi ;              /* pointer for input file file11.dat */
@@ -64,13 +64,13 @@ double g1, g2, g3;       /* junk variables for gradients */
    
 /* now make room for the Cartesian coordinates */
    *X = (double *) malloc (*natom * sizeof(double)) ;
-   malloc_check(*X, "(read_file11): Trouble allocating Cartesian array\n") ;
+   malloc_ck((void*)*X, "(read_file11): Trouble allocating Cartesian array\n") ;
    *Y = (double *) malloc (*natom * sizeof(double)) ;
-   malloc_check(*Y, "(read_file11): Trouble allocating Cartesian array\n") ;
+   malloc_ck((void*)*Y, "(read_file11): Trouble allocating Cartesian array\n") ;
    *Z = (double *) malloc (*natom * sizeof(double)) ;
-   malloc_check(*Z, "(read_file11): Trouble allocating Cartesian array\n") ;
+   malloc_ck((void*)*Z, "(read_file11): Trouble allocating Cartesian array\n") ;
    *AN = (double *) malloc (*natom * sizeof(double)) ;
-   malloc_check(*AN, "(read_file11): Trouble allocating atomic num array\n") ;
+   malloc_ck((void*)*AN, "(read_file11): Trouble allocating atomic num array\n") ;
 
 /* now rewind file11 and read it one chunk at a time */
    rewind(fpi) ;
@@ -115,12 +115,7 @@ double g1, g2, g3;       /* junk variables for gradients */
 **      AN      = atomic number array (allocated here)
 **      fpo     = file pointer for output
 */
-void print_file11(label, natom, energy, X, Y, Z, AN, fpo) 
-      char *label ;
-      int natom ;
-      double energy ;
-      double *X, *Y, *Z, *AN ;
-      FILE *fpo ;
+void print_file11(char* label, int natom, double energy, double* X, double* Y, double* Z, double* AN, FILE* fpo) 
 {
 int i ;
 
@@ -137,4 +132,4 @@ int i ;
    fflush(fpo) ;
 }
 
-
+}} // namespace psi::geom

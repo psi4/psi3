@@ -44,6 +44,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <ctype.h>
 #include <string.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
@@ -58,24 +59,27 @@
 #define ITOL 0.100
 #define MIN_I 0.00001
 #define PRINT_DIST 4.00  /* max pair distance for printing (bohr) */
- 
+
+namespace psi { namespace geom {
 
 /* global variables */
-char line1[MAX_LINE];
+static char line1[MAX_LINE];
 char line2[MAX_LINE];
 int print_all_dist = 0; /* flag for printing all parameters, however far
                          * apart individual pairs of atoms are */
 double print_dist = PRINT_DIST;
+extern "C" {
 FILE *outfile;                 /* output file pointer */
 FILE *infile; 
 char *psi_file_prefix;
+}
 
 /* declare functions in this file */
 void malloc_ck(void *array, char *mesg);
 void prf_abort(FILE *file, char *mesg);
-int read_file11() ;
-void print_file11();
-int read_geom();
+int read_file11(char* label, int* natom, double* energy, double** X, double** Y, double** Z, double** AN, FILE* fpo);
+void print_file11(char* label, int natom, double energy, double* X, double* Y, double* Z, double* AN, FILE* fpo) ;
+int read_geom(int maxlines, int* natom, double** X, double** Y, double** Z, char* fname);
 void print_geom(int natom, double *X, double *Y, double *Z, FILE *fpo);
 int read_aces_geom(char *fname, int *natom, double **X, double **Y,
                    double **Z, double **AN, FILE *fpo);
@@ -110,11 +114,11 @@ void calc_rot_constants(double Ia, double Ib, double Ic, FILE *fpo);
 void calc_mass_analysis(int natom, double *M, double *X, double *Y, 
 			double *Z, FILE *fpo);
 void fill_sym_matrix(double **A, int size);
+}} // namespace psi::geom
 
-
-main(argc, argv)
-      int argc; char *argv[];    /* standard C command line arguments */
+main(int argc, char* argv[])
 {
+  using namespace psi::geom;
   int natom;                     /* number of atoms */
   double energy;                 /* energy from file11 */
   double *X, *Y, *Z;             /* pointers to arrays of Cartesian coords */
@@ -457,6 +461,7 @@ main(argc, argv)
 }
 
 
+namespace psi { namespace geom {
 
 /*
 ** CALC_MASS_ANALYSIS(): This function reads in an array of the
@@ -1118,3 +1123,4 @@ int label2an(char *label)
 
 }
 
+}} // namespace psi::geom

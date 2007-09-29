@@ -5,9 +5,9 @@ include ../MakeVars
 
 PSILIBS = libPSI_ciomr.a libPSI_ipv1.a
 
-CSRC = geom.c read11.c read_geom.c gprgid.c
+CXXSRC = geom.cc read11.cc read_geom.cc gprgid.cc
 
-BINOBJ = $(CSRC:%.c=%.o)
+BINOBJ = $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 

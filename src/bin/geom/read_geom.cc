@@ -21,8 +21,13 @@
 #define MAX_LINE 132
 #define MAX_ATOM_LABEL 10
 
+namespace psi { namespace geom {
+
+extern void malloc_ck(void *array, char *mesg);
+extern void prf_abort(FILE *file, char *mesg);
+
 /* global variables */
-char line1[MAX_LINE+1];
+static char line1[MAX_LINE+1];
 
 extern int label2an(char *label);
 
@@ -46,11 +51,7 @@ extern int label2an(char *label);
 **        is encountered.  Actually, also beware that the geometry data can
 **        be enclosed in "geometry = ( ... )"
 */
-int read_geom(maxlines, natom, X, Y, Z, fname) 
-      int maxlines ;
-      int *natom ;
-      double **X, **Y, **Z ;
-      char *fname ;
+int read_geom(int maxlines, int* natom, double** X, double** Y, double** Z, char* fname) 
 {
 int i ;                      /* loop variable */
 int datalines = 0 ;          /* number of data-containing lines read */
@@ -206,13 +207,13 @@ int read_aces_geom(char *fname, int *natom, double **X, double **Y,
 
   /* now make room for the Cartesian coordinates */
   *X = (double *) malloc (*natom * sizeof(double));
-  malloc_check(*X, "(read_file11): Trouble allocating Cartesian array\n");
+  malloc_ck((void*)*X, "(read_file11): Trouble allocating Cartesian array\n");
   *Y = (double *) malloc (*natom * sizeof(double));
-  malloc_check(*Y, "(read_file11): Trouble allocating Cartesian array\n");
+  malloc_ck((void*)*Y, "(read_file11): Trouble allocating Cartesian array\n");
   *Z = (double *) malloc (*natom * sizeof(double));
-  malloc_check(*Z, "(read_file11): Trouble allocating Cartesian array\n");
+  malloc_ck((void*)*Z, "(read_file11): Trouble allocating Cartesian array\n");
   *AN = (double *) malloc (*natom * sizeof(double));
-  malloc_check(*AN, "(read_file11): Trouble allocating atomic num array\n");
+  malloc_ck((void*)*AN, "(read_file11): Trouble allocating atomic num array\n");
   
   /* read symbol, atomic number, and Cartesians */
   rewind(fpi);
@@ -305,13 +306,13 @@ int read_qchem_geom(char *fname, int *natom, double **X, double **Y,
 
   /* now make room for the Cartesian coordinates */
   *X = (double *) malloc (*natom * sizeof(double));
-  malloc_check(*X, "(read_file11): Trouble allocating Cartesian array\n");
+  malloc_ck((void*)*X, "(read_file11): Trouble allocating Cartesian array\n");
   *Y = (double *) malloc (*natom * sizeof(double));
-  malloc_check(*Y, "(read_file11): Trouble allocating Cartesian array\n");
+  malloc_ck((void*)*Y, "(read_file11): Trouble allocating Cartesian array\n");
   *Z = (double *) malloc (*natom * sizeof(double));
-  malloc_check(*Z, "(read_file11): Trouble allocating Cartesian array\n");
+  malloc_ck((void*)*Z, "(read_file11): Trouble allocating Cartesian array\n");
   *AN = (double *) malloc (*natom * sizeof(double));
-  malloc_check(*AN, "(read_file11): Trouble allocating atomic num array\n");
+  malloc_ck((void*)*AN, "(read_file11): Trouble allocating atomic num array\n");
   
   /* read atom number and Cartesians */
   rewind(fpi);
@@ -375,13 +376,13 @@ int read_xyz_geom(char *fname, int *natom, double **X, double **Y,
 
   /* now make room for the Cartesian coordinates */
   *X = (double *) malloc (*natom * sizeof(double));
-  malloc_check(*X, "(read_xyz_geom): Trouble allocating Cartesian array\n");
+  malloc_ck((void*)*X, "(read_xyz_geom): Trouble allocating Cartesian array\n");
   *Y = (double *) malloc (*natom * sizeof(double));
-  malloc_check(*Y, "(read_xyz_geom): Trouble allocating Cartesian array\n");
+  malloc_ck((void*)*Y, "(read_xyz_geom): Trouble allocating Cartesian array\n");
   *Z = (double *) malloc (*natom * sizeof(double));
-  malloc_check(*Z, "(read_xyz_geom): Trouble allocating Cartesian array\n");
+  malloc_ck((void*)*Z, "(read_xyz_geom): Trouble allocating Cartesian array\n");
   *AN = (double *) malloc (*natom * sizeof(double));
-  malloc_check(*AN, "(read_xyz_geom): Trouble allocating atomic num array\n");
+  malloc_ck((void*)*AN, "(read_xyz_geom): Trouble allocating atomic num array\n");
   
   /* read the comment line and ignore it */
   fgets(line1, MAX_LINE, fpi);
@@ -408,4 +409,4 @@ int read_xyz_geom(char *fname, int *natom, double **X, double **Y,
   return(1);
 }
 
-
+}} // namespace psi::geom
