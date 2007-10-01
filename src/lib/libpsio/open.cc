@@ -47,9 +47,6 @@ void PSIO::open(unsigned int unit, int status) {
     char* fullpath;
     get_volpath(unit, i, &path);
     
-    if (this_unit->numvols > 1)
-      psio_error(unit, PSIO_ERROR_NOVOLPATH);
-    
     fullpath = (char*) malloc( (strlen(path)+strlen(name)+80)*sizeof(char));
     sprintf(fullpath, "%s%s.%u", path, name, unit);
     this_unit->vol[i].path = strdup(fullpath);
