@@ -6,6 +6,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi{ namespace mp2{
+
 void relax_opdm(void)
 {
   dpdfile2 D1, D2;
@@ -62,3 +64,5 @@ void relax_opdm(void)
     dpd_file2_close(&D1);
   }
 }
+
+}} /* End namespaces */

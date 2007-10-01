@@ -9,6 +9,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi{ namespace mp2{
+
 void sort_amps(void)
 {
   dpdbuf4 T;
@@ -82,3 +84,5 @@ void sort_amps(void)
 
   }
 }
+
+}} /* End namespaces */

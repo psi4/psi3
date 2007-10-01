@@ -2,6 +2,8 @@
     \ingroup (MP2)
     \brief Enter brief description of file here 
 */
+#ifndef _psi_src_bin_mp2_params_h_
+#define _psi_src_bin_mp2_params_h_
 struct params {
   int ref;
   char *wfn;
@@ -21,3 +23,5 @@ struct params {
   double scs_scale_s;
   double scs_scale_t;
 };
+
+#endif /* Header guard */

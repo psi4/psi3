@@ -3,6 +3,7 @@
     \brief Enter brief description of file here 
 */
 #include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
 #include <libciomr/libciomr.h>
 #include <libiwl/iwl.h>
@@ -13,6 +14,8 @@
 #include <physconst.h>
 #define EXTERN
 #include "globals.h"
+
+namespace psi{ namespace mp2{
 
 void dipole(void)
 {
@@ -228,3 +231,5 @@ void dipole(void)
 
   return;
 }
+
+}} /* End namespace */

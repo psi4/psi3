@@ -9,6 +9,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi{ namespace mp2{
+
 /* DEANTI_ROHF(): Convert the ROHF two-particle density from Dirac to
 ** Mulliken ordering.  The original, Fock-adjusted density (see the
 ** comments in fock.c) corresponds to a two-electron energy (or energy
@@ -243,3 +245,5 @@ void uhf_sf_deanti(void)
 {
 
 }
+
+}} /* End namespaces */

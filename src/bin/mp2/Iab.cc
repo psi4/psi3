@@ -10,6 +10,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi{ namespace mp2{
+
 void rhf_sf_Iab(void);
 void uhf_sf_Iab(void);
 
@@ -87,3 +89,6 @@ void uhf_sf_Iab(void)
 {
 
 }
+
+
+}} /* End namespaces */

@@ -8,6 +8,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi{ namespace mp2{
+
 void rhf_sort_twopdm(void);
 void uhf_sort_twopdm(void);
 void check_energy(int);
@@ -227,3 +229,5 @@ void rhf_sort_twopdm(void)
 void uhf_sort_twopdm(void)
 {
 }
+
+}} /* End namespaces */

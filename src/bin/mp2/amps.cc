@@ -6,6 +6,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi{ namespace mp2{
+
 double amps(void) 
 {
   dpdfile2 tIA, tia, fIA, fia, dIA, dia;
@@ -75,3 +77,4 @@ double amps(void)
   
 }
 
+}} /* End namespaces*/

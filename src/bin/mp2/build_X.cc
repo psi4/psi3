@@ -6,6 +6,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi{ namespace mp2{
+
 void build_X(void)
 {
   dpdfile2 X, I, X2;
@@ -72,3 +74,5 @@ void build_X(void)
   }
 
 }
+
+}} /* End namespaces */

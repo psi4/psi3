@@ -6,6 +6,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi{ namespace mp2{
+
 void rhf_check_energy(int);
 void uhf_check_energy(int);
 
@@ -174,3 +176,5 @@ void uhf_check_energy(int chk)
 {
 
 }
+
+}} /* End namespace */

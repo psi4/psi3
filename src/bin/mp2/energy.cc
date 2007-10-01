@@ -6,6 +6,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi{ namespace mp2{
+
 double rhf_energy(void);
 double uhf_energy(void);
 
@@ -97,3 +99,4 @@ double uhf_energy(void)
     return(E2AA+E2BB+E2AB);
 }
 
+}} /* End namespaces */

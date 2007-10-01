@@ -9,6 +9,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi{ namespace mp2{
+
 void rhf_opdm(void);
 void uhf_opdm(void);
 void rhf_sf_opdm(void);
@@ -293,3 +295,5 @@ void uhf_sf_opdm(void)
   fprintf(outfile,"\n\tNot yet yo! -MLA\n");
   exit(PSI_RETURN_FAILURE);
 }
+
+}} /* End namespaces */

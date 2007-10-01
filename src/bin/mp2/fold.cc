@@ -6,6 +6,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi{ namespace mp2{
+
 /* FOLD(): Fold the Fock matrix contributions to the energy (or energy
 ** derivative) into the two-particle density matrix.  Here we are
 ** trying to convert from an energy expression of the form:
@@ -768,3 +770,5 @@ void uhf_sf_fold(void)
 {
 
 }
+
+}} /* End namespaces */

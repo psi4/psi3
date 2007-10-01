@@ -16,6 +16,8 @@
 #include <psifiles.h>
 #include "globals.h"
 
+namespace psi{ namespace mp2{
+
 void init_io(int argc, char *argv[]);
 void title(void);
 void get_moinfo(void);
@@ -26,6 +28,7 @@ int **cacheprep_uhf(int level, int *cachefiles);
 void cachedone_rhf(int **cachelist);
 struct dpd_file4_cache_entry *priority_list(void);
 double energy(void);
+void amps(void);
 void sort_amps(void);
 void opdm(void);
 void twopdm(void);
@@ -45,8 +48,12 @@ void sort_twopdm(void);
 void cleanup(void);
 void exit_io(void);
 
+}} /* End namespaces */
+
 int main(int argc, char *argv[])
 {
+  using namespace psi::mp2;
+
   int *cachefiles;
   int **cachelist;
   char *keyw;
@@ -127,6 +134,9 @@ int main(int argc, char *argv[])
   exit(0);
 }
 
+
+namespace psi{ namespace mp2{
+
 void init_io(int argc, char *argv[])
 {
   int i=0;
@@ -136,9 +146,10 @@ void init_io(int argc, char *argv[])
   char *progid;
 
   extra_args = (char **)malloc(argc*sizeof(char *));
-  progid = (char *)malloc(strlen(gprgid())+2);
-  sprintf(progid, ":%s",gprgid());
- 
+  //progid = (char *)malloc(strlen(gprgid())+2);
+  //sprintf(progid, ":%s",gprgid());
+  progid = (char *)malloc(5);
+  sprintf(progid, ":%s","MP2");
   params.opdm = 0;
 
   for(i=1; i<argc; i++) {
@@ -239,8 +250,12 @@ void exit_io(void)
   psi_stop();
 }
 
-char *gprgid()
-{
-  char *prgid = "MP2";
-  return(prgid);
+extern "C"{
+  char *gprgid()
+  {
+    char *prgid = "MP2";
+    return(prgid);
+  }
 }
+
+}} /* End namespaces */

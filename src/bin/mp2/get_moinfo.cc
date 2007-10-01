@@ -2,6 +2,7 @@
     \ingroup (MP2)
     \brief Enter brief description of file here 
 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <libipv1/ip_lib.h>
@@ -11,6 +12,8 @@
 #include <libqt/qt.h>
 #define EXTERN
 #include "globals.h"
+
+namespace psi{ namespace mp2{
 
 void get_moinfo(void)
 {
@@ -141,3 +144,5 @@ void get_moinfo(void)
   fprintf(outfile,"\tSCF energy              = %20.15f\n",mo.Escf);
   fflush(outfile);
 }
+
+}} /* End namespace */

@@ -7,6 +7,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi{ namespace mp2{
+
 void rhf_lag(void);
 void uhf_lag(void);
 void sf_lag(void);
@@ -100,3 +102,5 @@ void sf_lag(void)
   }
 
 }
+
+}} /* End namespaces */

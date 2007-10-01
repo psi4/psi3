@@ -14,6 +14,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi{ namespace mp2{
+
 void get_params()
 {
   int errcod;
@@ -173,3 +175,4 @@ void get_params()
 
 }
 
+}} /* End namespaces */

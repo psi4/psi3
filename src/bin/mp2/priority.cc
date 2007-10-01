@@ -9,6 +9,8 @@
 #include <ccfiles.h>
 #include <libdpd/dpd.h>
 
+namespace psi{ namespace mp2{
+
 #define NUM_ENTRIES 113
 struct dpd_file4_cache_entry list[NUM_ENTRIES];
 
@@ -1037,3 +1039,5 @@ struct dpd_file4_cache_entry *priority_list(void)
 
   return(&(list[0]));
 }
+
+}} /* End namespaces */

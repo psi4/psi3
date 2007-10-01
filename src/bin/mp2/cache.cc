@@ -8,6 +8,8 @@
 #include <ccfiles.h>
 #include <psifiles.h>
 
+namespace psi{ namespace mp2{
+
 void cache_abcd_rhf(int **cachelist);
 void cache_iabc_rhf(int **cachelist);
 void cache_ijab_rhf(int **cachelist);
@@ -716,3 +718,5 @@ void cachedone_rhf(int **cachelist)
 {
   free_int_matrix(cachelist);
 }
+
+}} /* End namespaces */

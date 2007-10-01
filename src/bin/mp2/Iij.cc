@@ -7,6 +7,8 @@
 #define EXTERN
 #include "globals.h"
 
+namespace psi{ namespace mp2{
+
 void rhf_sf_Iij(void);
 void uhf_sf_Iij(void);
 
@@ -34,7 +36,7 @@ void rhf_sf_Iij(void)
   dpd_file2_axpy(&F, &I, 2.0, 0);
   dpd_file2_close(&F);
 
-  close(&I);
+  dpd_file2_close(&I);
 
   /* I'ij <-- sum_k fik (Djk + Dkj) */
   dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'ij");
@@ -49,7 +51,7 @@ void rhf_sf_Iij(void)
   dpd_file2_axpy(&F, &I, 2.0, 0);
   dpd_file2_close(&F);
 
-  close(&I);
+  dpd_file2_close(&I);
 
   /* I'IJ <-- sum_KL <IK||JL> (D_KL + D_LK) + sum_kl <Ik|Jl> (D_kl + D_lk) */
   dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
@@ -259,3 +261,5 @@ void uhf_sf_Iij(void)
 {
 
 }
+
+}} /* End namespaces */
