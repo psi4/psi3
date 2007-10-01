@@ -5,11 +5,12 @@ include ../MakeVars
 
 LDLIBS += $(BLAS)
 
+LD = $(CXX)
 PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CSRC = gprgid.c mp2r12.c mp2r12_energy.c
+CXXSRC = gprgid.cc mp2r12.cc mp2r12_energy.cc
 
-BINOBJ = $(CSRC:%.c=%.o)
+BINOBJ = $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 

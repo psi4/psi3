@@ -6,7 +6,14 @@
 /*! \defgroup MP2R12 Add a description of the group MP2R12 */
 
 /* Struct for PSIF_CHKPT molecular orbital information */
-struct MOInfo {
+
+#ifndef _psi_src_bin_mp2r12_moinfo_h_
+#define _psi_src_bin_mp2r12_moinfo_h_
+
+namespace psi{
+  namespace mp2r12{
+
+  struct MOInfo {
     int nmo;
     int nirreps;
     int iopen;
@@ -25,5 +32,9 @@ struct MOInfo {
     double escf;
     double *evals;
     double *te_ints;
-};
-    
+  };
+
+  } /* Namespace mp2r12 */
+} /* Namespace psi */
+ 
+# endif /* Header guard */   
