@@ -15,7 +15,9 @@
 
 #define MAX_VAR_SIZE 80
 
-extern "C" extern FILE *outfile;
+extern "C" {
+  extern FILE *outfile;
+}
 
 namespace psi { namespace psi3 {
 
