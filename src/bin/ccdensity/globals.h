@@ -15,7 +15,7 @@ namespace psi { namespace ccdensity {
 #define EXTERN
 #endif
 
-/* #define DEBUG_XI (1) */
+/* #define DEBUG_XI (1)*/
 
 extern "C" {
 EXTERN FILE *infile, *outfile;

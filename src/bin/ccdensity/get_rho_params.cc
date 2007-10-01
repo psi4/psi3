@@ -147,8 +147,6 @@ void get_rho_params(void)
       rho_params[i].R0 = 1.0;
     }
     else {
-
-
       if(!strcmp(params.wfn,"EOM_CC2")) {
         sprintf(lbl,"EOM CC2 Energy for root %d %d", rho_params[i].R_irr, rho_params[i].R_root);
         psio_read_entry(CC_INFO,lbl,(char*)&(rho_params[i].cceom_energy), sizeof(double));
@@ -167,8 +165,11 @@ void get_rho_params(void)
         sprintf(lbl,"EOM CC3 R0 for root %d %d",rho_params[i].R_irr, rho_params[i].R_root);
         psio_read_entry(CC_INFO,lbl,(char*)&(rho_params[i].R0),sizeof(double));
       }
-
     }
+    if (rho_params[i].L_ground)
+      rho_params[i].L0 = 1.0;
+    else
+      rho_params[i].L0 = 0.0;
 
     sprintf(rho_params[i].R1A_lbl, "RIA %d %d",  rho_params[i].R_irr, rho_params[i].R_root);
     sprintf(rho_params[i].R1B_lbl, "Ria %d %d",  rho_params[i].R_irr, rho_params[i].R_root);
