@@ -1,16 +1,10 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief cartesians.cc : contains member functions for cartesian class
 */
-/*** cartesians.cc : contains member functions for cartesian class ***/
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
+#include <math.h>
 
-extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,13 +13,13 @@ extern "C" {
 #include <libchkpt/chkpt.h>
 #include <physconst.h>
 #include <masses.h>
-}
 
 #define EXTERN
 #include "opt.h"
 #include "cartesians.h"
 #undef EXTERN
 
+namespace psi { namespace optking {
 
 /*** FORCES returns forces in cartesian coordinates in aJ/Ang ***/ 
 double *cartesians:: get_forces() {
@@ -341,3 +335,4 @@ void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
   return;
 }
 
+}} /* namespace psi::optking */

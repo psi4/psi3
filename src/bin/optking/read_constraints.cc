@@ -1,19 +1,11 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
-*/
-/* READ_CONSTRAINTS reads constraints from  "FIXED_INTCO" section of input
+    \brief READ_CONSTRAINTS reads constraints from  "FIXED_INTCO" section of input
    or intco files, the constrained internals must already be present in the
    list of all of the simple internal coordinates
 */
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
@@ -21,7 +13,6 @@ extern "C" {
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <physconst.h>
-}
 
 #define EXTERN
 #include "opt.h"
@@ -29,6 +20,8 @@ extern "C" {
 #include "cartesians.h"
 #include "internals.h"
 #include "salc.h"
+
+namespace psi { namespace optking {
 
 int *read_constraints(internals &simples) {
   int num_type, i,j,a,b,c,d,cnt,*sign,id, intco_type, sub_index;
@@ -276,3 +269,6 @@ int *read_constraints(internals &simples) {
 
   return constraints;
 }
+
+}} /* namespace psi::optking */
+

@@ -2,25 +2,19 @@
     \ingroup (OPTKING)
     \brief freq_grad_cart(): computes frequencies from gradients and cartesian disps
 */
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
 
-extern "C" {
-  #include <stdio.h>
-  #include <libchkpt/chkpt.h>
-  #include <stdlib.h>
-  #include <string.h>
-  #include <ctype.h>
-  #include <libciomr/libciomr.h>
-  #include <libqt/qt.h>
-  #include <libipv1/ip_lib.h>
-  #include <physconst.h>
-  #include <libpsio/psio.h>
-  #include <psifiles.h>
-}
+#include <math.h>
+#include <stdio.h>
+#include <libchkpt/chkpt.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include <libipv1/ip_lib.h>
+#include <physconst.h>
+#include <libpsio/psio.h>
+#include <psifiles.h>
 
 #define EXTERN
 #include "opt.h"
@@ -30,6 +24,8 @@ extern "C" {
 #include "salc.h"
 #include "bond_lengths.h"
 #define MAX_LINE 132
+
+namespace psi { namespace optking {
 
 extern double **compute_B(internals &simples, salc_set &salcs);
 extern double *compute_q(internals &simples, salc_set &symm);
@@ -338,3 +334,6 @@ void sort_evals_all(int nsalc_all, double *evals_all, int *evals_all_irrep) {
   }
   return;
 }
+
+}} /* namespace psi::optking */
+

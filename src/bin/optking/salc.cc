@@ -1,27 +1,21 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief SALC.CC : constructor functions for salc_set
 */
-// SALC.CC : constructor functions for salc_set
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
-}
 
 #define EXTERN
 #include "opt.h"
 #undef EXTERN
 #include "salc.h"
+
+namespace psi { namespace optking {
 
 void salc_class::set_label(char *new_label) { strcpy(label,new_label); }
 
@@ -194,9 +188,5 @@ salc_set :: salc_set(char *keyword)
   return;
 }
 
-
-
-
-
-
+}} /* namespace psi::optking */
 

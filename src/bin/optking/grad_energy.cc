@@ -1,16 +1,9 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief GRAD_ENERGY computes a file11 entry from energies in chkpt Rollin King, 2002
 */
-/*** GRAD_ENERGY computes a file11 entry from energies in chkpt Rollin King, 2002 ***/ 
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
@@ -21,7 +14,6 @@ extern "C" {
 #include <physconst.h>
 #include <libpsio/psio.h>
 #include <psifiles.h>
-}
 
 #define EXTERN
 #include "opt.h"
@@ -31,6 +23,8 @@ extern "C" {
 #include "salc.h"
 #include "bond_lengths.h"
 #define MAX_LINE 132
+
+namespace psi { namespace optking {
 
 double **compute_B(internals &simples, salc_set &symm);
 
@@ -182,4 +176,6 @@ for (i=0;i<symm.get_num();++i)
   close_PSIF();
   */
 }
+
+}} /* namespace psi::optking */
 

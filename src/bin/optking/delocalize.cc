@@ -1,19 +1,12 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief This function forms a set of delocalized, symmetry-adapted
+     internal coordinates, given a set of simples and their
+     s-vectors.  The new coordinates will not mix coordinates of
+     different types if mix_types == 1
 */
-// This function forms a set of delocalized, symmetry-adapted
-// internal coordinates, given a set of simples and their
-// s-vectors.  The new coordinates will not mix coordinates of
-// different types if mix_types == 1
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
@@ -23,7 +16,6 @@ extern "C" {
 #include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>
 #include <psifiles.h>
-}
 
 #define EXTERN
 #include "opt.h"
@@ -32,8 +24,9 @@ extern "C" {
 #include "internals.h"
 #include "salc.h"
 
-extern double **irrep(internals &simples, double **evectst);
+namespace psi { namespace optking {
 
+extern double **irrep(internals &simples, double **evectst);
 void rm_rotations(internals &simples, cartesians &carts, int &num_nonzero, double **evects);
 
 void delocalize(internals &simples, cartesians &carts) {
@@ -421,4 +414,6 @@ double repulsion(double *fatomic_num, double *coord) {
   fprintf(outfile,"returning repulsion: %15.10lf \n", tval);
   return tval;
 }
+
+}} /* namespace psi::optking */
 

@@ -4,25 +4,18 @@
     cartesian displacements - formulas are in disp_freq_energy_cart.cc
 */
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
-  #include <stdio.h>
-  #include <libchkpt/chkpt.h>
-  #include <stdlib.h>
-  #include <string.h>
-  #include <ctype.h>
-  #include <libciomr/libciomr.h>
-  #include <libqt/qt.h>
-  #include <libipv1/ip_lib.h>
-  #include <physconst.h>
-  #include <libpsio/psio.h>
-  #include <psifiles.h>
-}
+#include <math.h>
+#include <stdio.h>
+#include <libchkpt/chkpt.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include <libipv1/ip_lib.h>
+#include <physconst.h>
+#include <libpsio/psio.h>
+#include <psifiles.h>
 
 #define EXTERN
 #include "opt.h"
@@ -32,6 +25,8 @@ extern "C" {
 #include "salc.h"
 #include "bond_lengths.h"
 #define MAX_LINE 132
+
+namespace psi { namespace optking {
 
 void sort_evals_all(int nsalc_all, double *evals_all, int *evals_all_irrep);
 FILE *fp_energy_dat;
@@ -352,3 +347,6 @@ int iE(int *ndisp, int *nsalc, int irr, int ii, int jj, int disp_i, int disp_j) 
   fprintf(outfile, "Problem finding displaced energy\n");
   exit(2);
 }
+
+}} /* namespace psi::optking */
+

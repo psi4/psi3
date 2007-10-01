@@ -1,10 +1,8 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
-*/
-/* DISP_FREQ_ENERGY_CART makes symmetry-adapted cartesian coordinates and displaces
-   along them to setup frequencies by energy points */
-/*
+    \brief 
+ DISP_FREQ_ENERGY_CART makes symmetry-adapted cartesian coordinates and displaces
+   along them to setup frequencies by energy points
 Formulas for finite differences
 3-point - diagonal
   O(1/h^2): [f(1,0) + f(-1,0) - 2f(0,0)]/(h^2)
@@ -25,13 +23,7 @@ Formulas for finite differences
     + 1f(0,-2) - 7f(0,-1)  - 7f(0,+1) + 1f(0,+2) + 12f(0,0)]/(12h^2)
 */
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
@@ -43,7 +35,6 @@ extern "C" {
 #include <physconst.h>
 #include <libpsio/psio.h>
 #include <psifiles.h>
-}
 
 #define EXTERN
 #include "opt.h"
@@ -52,6 +43,8 @@ extern "C" {
 #include "internals.h"
 #include "salc.h"
 #include "bond_lengths.h"
+
+namespace psi { namespace optking {
 
 extern int get_irrep_xyz( double **cartrep, int xyz);
 extern int check_coordinates(int natom, double *coord, double *masses, double *Zvals,
@@ -512,4 +505,6 @@ int disp_freq_energy_cart(cartesians &carts)
   free(ua2a);
   return(ndisp_all);
 }
+
+}} /* namespace psi::optking */
 

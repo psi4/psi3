@@ -1,10 +1,7 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
-*/
-/*** OPT.CC Rollin King, begun 1999 ***/
-
-/*
+    \brief main optking function
+    OPT.CC Rollin King, begun 1999 
 command-line      internal specifier   what it does
 --opt_step         MODE_OPT_STEP        take an ordinary geometry optimization step
 --disp_nosymm      MODE_DISP_NOSYMM     displaces along all internals, assumes no sym
@@ -34,26 +31,19 @@ command-line      internal specifier   what it does
 --grad_dat         optinfo.grad_dat   read gradients from file11.dat 
 */
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
-  #include <stdio.h>
-  #include <libchkpt/chkpt.h>
-  #include <stdlib.h>
-  #include <string.h>
-  #include <ctype.h>
-  #include <libciomr/libciomr.h>
-  #include <libipv1/ip_lib.h>
-  #include <physconst.h>
-  #include <libpsio/psio.h>
-  #include <libqt/qt.h>	  
-  #include <psifiles.h>
-  #include <ccfiles.h>
-}
+#include <math.h>
+#include <stdio.h>
+#include <libchkpt/chkpt.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <libciomr/libciomr.h>
+#include <libipv1/ip_lib.h>
+#include <physconst.h>
+#include <libpsio/psio.h>
+#include <libqt/qt.h>	  
+#include <psifiles.h>
+#include <ccfiles.h>
 
 #include "opt.h"
 #include "cartesians.h"
@@ -61,11 +51,13 @@ extern "C" {
 #include "salc.h"
 #include "bond_lengths.h"
 
+namespace psi { namespace optking {
+
 void intro(int argc, char **argv);
 void free_info(int nsimples);
 int *count_internals(cartesians &cart_geom, int intco_given);
-extern "C" void zmat_to_intco(void);
-extern "C" void get_optinfo();
+extern void zmat_to_intco(void);
+extern void get_optinfo();
 extern void get_syminfo(internals &simples);
 extern void delocalize(internals &simples, cartesians &carts);
 extern void disp_user(cartesians &carts, internals &simples, 
@@ -93,6 +85,12 @@ extern void freq_energy_cart(cartesians &carts);
 int test_B(cartesians &carts, internals &simples, salc_set &symm);
 
 void chkpt_restart(char *new_prefix);
+
+}} // namespace psi::optking
+
+extern "C" { char *gprgid() { char *prgid = "OPTKING"; return(prgid); } }
+
+using namespace psi::optking;
 
 int main(int argc, char **argv) {
 
@@ -611,6 +609,8 @@ int main(int argc, char **argv) {
     return(0);
 }
 
+namespace psi { namespace optking {
+
 /***  INTRO   prints into ***/
 void intro(int argc, char **argv) {
   int i;
@@ -720,3 +720,5 @@ void chkpt_restart(char *new_prefix) {
   chkpt_close();
   return;
 }
+
+}} /* namespace psi::optking */

@@ -1,7 +1,13 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief Class for torsions
 */
+
+#ifndef _psi3_bin_optking_torsion_h_
+#define _psi3_bin_optking_torsion_h_
+
+namespace psi { namespace optking {
+
 class torsion_class {
     int id;
     int A;
@@ -375,3 +381,6 @@ class torsion_set {
      }
 };
 
+}} /* namespace psi::optking */
+
+#endif

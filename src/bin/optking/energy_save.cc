@@ -1,17 +1,10 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief ENERGY_SAVE.CC Rollin King, 2002 
+     function executes if optinfo.mode == MODE_GRAD_SAVE
 */
-/*** ENERGY_SAVE.CC Rollin King, 2002 ***/
-// function executes if optinfo.mode == MODE_GRAD_SAVE
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
@@ -23,13 +16,14 @@ extern "C" {
 #include <physconst.h>
 #include <psifiles.h>
 #include <ccfiles.h>
-}
 
 #define EXTERN
 #include "opt.h"
 #undef EXTERN
 #include "cartesians.h"
 #include "internals.h"
+
+namespace psi { namespace optking {
 
 void energy_save(cartesians &carts) {
   int i,j,dim_carts,total_num_disps;
@@ -106,3 +100,6 @@ void energy_save(cartesians &carts) {
 
   return ;
 }
+
+}} /* namespace psi::optking */
+

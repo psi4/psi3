@@ -1,16 +1,10 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief OPT_STEP.CC takes geometry steps using
+    gradients -- optking's default operation
 */
-/*** OPT_STEP.CC takes geometry steps using gradients -- optking's default operation ***/ 
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
@@ -21,7 +15,6 @@ extern "C" {
 #include <physconst.h>
 #include <libpsio/psio.h>
 #include <psifiles.h>
-}
 
 #define EXTERN
 #include "opt.h"
@@ -30,6 +23,8 @@ extern "C" {
 #include "internals.h"
 #include "salc.h"
 #include "bond_lengths.h"
+
+namespace psi { namespace optking {
 
 extern double *compute_q(internals &simples, salc_set &symm);
 extern double **compute_B(internals &simples, salc_set &symm);
@@ -458,4 +453,6 @@ void fconst_init(cartesians &carts, internals &simples, salc_set &symm) {
   }
   delete [] buffer;
 }
+
+}} /* namespace psi::optking */
 

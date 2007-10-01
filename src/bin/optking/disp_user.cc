@@ -1,16 +1,9 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief DISP_USER only performs input-specified displacements
 */
-/*** DISP_USER only performs input-specified displacements ***/ 
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
@@ -21,7 +14,6 @@ extern "C" {
 #include <physconst.h>
 #include <libpsio/psio.h>
 #include <psifiles.h>
-}
 
 #define EXTERN
 #include "opt.h"
@@ -30,6 +22,8 @@ extern "C" {
 #include "internals.h"
 #include "salc.h"
 #include "bond_lengths.h"
+
+namespace psi { namespace optking {
 
 int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs, double *dq,
     int print_to_geom_file, int restart_geom_file, 
@@ -107,3 +101,6 @@ void disp_user(cartesians &carts, internals &simples, salc_set &all_salcs) {
   free(disp_label);
   free(djunk);
 }
+
+}} /* namespace psi::optking */
+

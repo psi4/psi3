@@ -1,24 +1,21 @@
-/* six coordinates for non-bonded fragments */
+/*! \file 
+    \ingroup (OPTKING)
+    \brief six coordinates for non-bonded fragments
+*/
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
-//#include <string.h>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <physconst.h>
-}
 
 #define EXTERN
 #include "opt.h"
 #undef EXTERN
 #include "fragment.h"
+
+namespace psi { namespace optking {
 
 void fragment_class::print(FILE *fp_out, int print_values, int print_weights) {
   int i,a,b;
@@ -414,4 +411,4 @@ void fragment_class::print_s(void) {
   print_mat(&B_s, 1, 9, outfile);
 }
 
-
+}} /* namespace psi::optking */

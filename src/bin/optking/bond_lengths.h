@@ -1,8 +1,12 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief Atomic covalent radii in picometers
 */
-/* atomic covalent radii in picometers*/
+
+#ifndef _psi3_bin_optking_bond_lengths_h_
+#define _psi3_bin_optking_bond_lengths_h_
+
+namespace psi { namespace optking {
 
 static float radii[55] = {
 /* dummy */ 0,
@@ -34,3 +38,7 @@ static float radii[55] = {
 /*I */ 0.0,
 /*Xe*/ 0.0
 };
+
+}} /* namespace psi::optking */
+
+#endif

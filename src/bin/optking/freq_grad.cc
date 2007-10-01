@@ -4,25 +4,19 @@
            freq_grad_nosymm(): computes frequencies from gradients for all coordinates
            ignoring symmetry
 */
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
 
-extern "C" {
-  #include <stdio.h>
-  #include <libchkpt/chkpt.h>
-  #include <stdlib.h>
-  #include <string.h>
-  #include <ctype.h>
-  #include <libciomr/libciomr.h>
-  #include <libipv1/ip_lib.h>
-  #include <physconst.h>
-  #include <libpsio/psio.h>
-  #include <libqt/qt.h>
-  #include <psifiles.h>
-}
+#include <math.h>
+#include <stdio.h>
+#include <libchkpt/chkpt.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <libciomr/libciomr.h>
+#include <libipv1/ip_lib.h>
+#include <physconst.h>
+#include <libpsio/psio.h>
+#include <libqt/qt.h>
+#include <psifiles.h>
 
 #define EXTERN
 #include "opt.h"
@@ -31,6 +25,8 @@ extern "C" {
 #include "internals.h"
 #include "salc.h"
 #include "bond_lengths.h"
+
+namespace psi { namespace optking {
 
 extern double **compute_B(internals &simples, salc_set &salcs);
 extern double *compute_q(internals &simples, salc_set &symm);
@@ -383,3 +379,6 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
   close_PSIF();
 
 }
+
+}} /* namespace psi::optking */
+

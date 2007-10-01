@@ -1,19 +1,11 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief This function reads in Force Constants H from
+    PSIF_OPTKING (in redundant internal coodinates) does a
+    BFGS update on H inverts H to form H_inv and returns H_inv.
 */
-// This function reads in 
-// Force Constants H from PSIF_OPTKING (in redundant internal coodinates)
-// does a BFGS update on H
-// inverts H to form H_inv and returns H_inv
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
@@ -23,7 +15,6 @@ extern "C" {
 #include <libipv1/ip_lib.h>
 #include <psifiles.h>
 #include <libpsio/psio.h>
-}
 
 #define EXTERN
 #include "opt.h"
@@ -31,6 +22,8 @@ extern "C" {
 #include "cartesians.h"
 #include "internals.h"
 #include "salc.h"
+
+namespace psi { namespace optking {
 
 void bfgs(double **H, internals &simples, salc_set &symm, cartesians &carts);
 extern double *compute_q(internals &simples, salc_set &symm);
@@ -210,3 +203,6 @@ void bfgs(double **H, internals &simples, salc_set &symm, cartesians &carts) {
   free(x_old);
   return;
 }
+
+}} /* namespace psi::optking */
+

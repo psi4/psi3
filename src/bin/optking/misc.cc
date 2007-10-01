@@ -1,7 +1,8 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief miscellaneous little matrix and print functions
 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -14,27 +15,10 @@
 #include <psifiles.h>
 
 #define EXTERN
-#define C_CODE
 #include "opt.h"
-#undef C_CODE
 #undef EXTERN
 
-/*
-void exit_io(void);
-void punt(char *message);
-void open_PSIF(void);
-void close_PSIF(void);
-char *gprgid(void);
-void swap(int *a, int *b);
-void swap_tors(int *a, int *b, int *c, int *d);
-void print_mat2(double **matrix, int rows, int cols, FILE *of);
-void cross_product(double *u,double *v,double *out);
-void scalar_mult(double a, double *vect, int dim);
-void scalar_div(double a, double *vect);
-int div_int(int big, int little);
-double **symm_matrix_invert(double **A, int dim, int print_det, int redundant);
-double energy_chkpt(void);
-*/
+namespace psi { namespace optking {
 
 /*** PRINT_MAT2   prints a matrix to output file ***/
 void print_mat2(double **matrix, int rows, int cols, FILE *of) {
@@ -106,12 +90,6 @@ void punt(char *message) {
   /* fclose(outfile); */
   /* exit(1); */
   exit_io();
-}
-
-char *gprgid()
-{
-  char *prgid = "OPTKING";
-  return(prgid);
 }
 
 void open_PSIF(void) {
@@ -320,3 +298,6 @@ L200:
          }
       ii=kk; goto L200;
 }
+
+}} /* namespace psi::optking */
+

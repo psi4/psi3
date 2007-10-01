@@ -1,9 +1,8 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief ZMAT_TO_INTCO() determine simples from z-matrix coordinates 
+  - may not work for dummy atoms
 */
-/*** ZMAT_TO_INTCO() determine simples from z-matrix coordinates 
-  - not intended to work for dummy atoms ***/
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -13,12 +12,10 @@
 #include <libchkpt/chkpt.h>
 
 #define EXTERN
-#define C_EXTERN
-#define C_CODE
 #include "opt.h"
-#undef C_CODE
-#undef C_EXTERN
 #undef EXTERN
+
+namespace psi { namespace optking {
 
 void zmat_to_intco() {
   int i, first, a, b, c, d, cnt = 0, natom;
@@ -195,3 +192,6 @@ void zmat_to_intco() {
   fclose(fp_intco);
   return;
 }
+
+}} /* namespace psi::optking */
+

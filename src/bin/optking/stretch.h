@@ -1,7 +1,12 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief Class for stretches
 */
+
+#ifndef _psi3_bin_optking_stretch_h_
+#define _psi3_bin_optking_stretch_h_
+
+namespace psi { namespace optking {
 
 class stretch_class {
     int id;
@@ -174,3 +179,6 @@ class stretch_set {
     }
 };
 
+}} /* namespace psi::optking */
+
+#endif

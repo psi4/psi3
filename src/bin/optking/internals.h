@@ -1,8 +1,10 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief Class declaration for internals
 */
-/*** INTERNALS.H class declaration for internals ***/
+
+#ifndef _psi3_bin_optking_internals_h_
+#define _psi3_bin_optking_internals_h_
 
 #include "stretch.h"
 #include "bend.h"
@@ -10,6 +12,8 @@
 #include "out_of_plane.h"
 #include "lin_bend.h"
 #include "fragment.h"
+
+namespace psi { namespace optking {
 
 class internals {
 
@@ -51,3 +55,6 @@ class internals {
     }
 };
 
+}} /* namespace psi::optking */
+
+#endif

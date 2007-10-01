@@ -3,8 +3,10 @@
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup OPTKING Add a description of the group OPTKING */
+#ifndef _psi3_bin_optking_bend_h_
+#define _psi3_bin_optking_bend_h_
 
+namespace psi { namespace optking {
 
 class bend_class {
     int id;
@@ -226,3 +228,6 @@ class bend_set {
     }
 };
 
+}} /* namespace psi::optking */
+
+#endif

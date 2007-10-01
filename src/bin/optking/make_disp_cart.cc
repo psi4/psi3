@@ -1,16 +1,9 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief displaces + and - along all cartesian coordinates
 */
-/** displaces + and - along all cartesian coordinates **/ 
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
@@ -22,7 +15,6 @@ extern "C" {
 #include <physconst.h>
 #include <libpsio/psio.h>
 #include <psifiles.h>
-}
 
 #define EXTERN
 #include "opt.h"
@@ -31,6 +23,8 @@ extern "C" {
 #include "internals.h"
 #include "salc.h"
 #include "bond_lengths.h"
+
+namespace psi { namespace optking {
 
 /* MAKE_CART_DISP makes cartesian displacements for each atom */
 /* symmetrize later: (+ and - if symmetric; otherwise, just +) */
@@ -522,4 +516,6 @@ double repulsion_energy(int natom, double *coord, double *Zvals) {
     fprintf(outfile,"returning repulsion: %15.10lf \n", energy);
     return energy;
 }
+
+}} /* namespace psi::optking */
 

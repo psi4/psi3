@@ -1,9 +1,7 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
-*/
-/*** This file contains functions which provide information
-**  from the group character tables as given in Cotton 
+    \brief This file contains functions which provide information
+     from the group character tables as given in Cotton 
 */
 
 #include <stdlib.h>
@@ -13,12 +11,10 @@
 #include <libciomr/libciomr.h>
 
 #define EXTERN
-#define C_CODE
-#define C_EXTERN
 #include "opt.h"
-#undef C_EXTERN
-#undef C_CODE
 #undef EXTERN
+
+namespace psi { namespace optking {
 
 int **get_char_table(char *ptgrp);    /* returns the character table */
 int get_nirreps(char *ptgrp);      /* "     " number of irreps */
@@ -721,28 +717,6 @@ int *get_ops_in_class(char *ptgrp, int nirreps) {
 return num_ops;
 
 }      
-               
-             
-      
-    
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}} /* namespace psi::optking */
 

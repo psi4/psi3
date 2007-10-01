@@ -1,7 +1,12 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief Class for salcs
 */
+
+#ifndef _psi3_bin_optking_salc_h_
+#define _psi3_bin_optking_salc_h_
+
+namespace psi { namespace optking {
 
 class salc_class {
     int length;
@@ -132,3 +137,6 @@ class salc_set {
     }
 };
 
+}} /* namespace psi::optking */
+
+#endif

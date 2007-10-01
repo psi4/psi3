@@ -1,24 +1,16 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief Returns the values of salcs given the simple internals
+    and salc_set the value of the simple internals must already be computed.
 */
-// returns the values of salcs given the simple internals and salc_set
-// the value of the simple internals must already be computed
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
 #include <string.h>
 #include <libciomr/libciomr.h>
 #include <physconst.h>
-}
 
 #define EXTERN
 #include "opt.h"
@@ -26,6 +18,8 @@ extern "C" {
 #include "cartesians.h"
 #include "internals.h"
 #include "salc.h"
+
+namespace psi { namespace optking {
 
 double *compute_q(internals &simples,salc_set &symm) {
   int i, j, simple, intco_type, sub_index;
@@ -64,3 +58,6 @@ double *compute_q(internals &simples,salc_set &symm) {
 
   return q;
 }
+
+}} /* namespace psi::optking */
+

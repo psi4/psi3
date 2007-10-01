@@ -1,28 +1,20 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief This function generates an empirical guess Hessian from a given set of
+    salcs according to Schlegel, Theor. Chim. Acta, 66, 333 (1984).
 */
-// This function generates an empirical guess Hessian from a given set of
-//   salcs according to Schlegel, Theor. Chim. Acta, 66, 333 (1984).
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
-  #include <stdio.h>
-  #include <libchkpt/chkpt.h>
-  #include <stdlib.h>
-  #include <string.h>
-  #include <libciomr/libciomr.h>
-  #include <physconst.h>
-  #include <libipv1/ip_lib.h>
-  #include <physconst.h>
-  #include <libpsio/psio.h>
-  #include <psifiles.h>
-}
+#include <math.h>
+#include <stdio.h>
+#include <libchkpt/chkpt.h>
+#include <stdlib.h>
+#include <string.h>
+#include <libciomr/libciomr.h>
+#include <physconst.h>
+#include <libipv1/ip_lib.h>
+#include <physconst.h>
+#include <libpsio/psio.h>
+#include <psifiles.h>
 
 #define EXTERN
 #include "opt.h"
@@ -30,6 +22,8 @@ extern "C" {
 #include "cartesians.h"
 #include "internals.h"
 #include "salc.h"
+
+namespace psi { namespace optking {
 
 static double cov_radii[37] = {
        0.32, 0.32, 0.60,
@@ -212,4 +206,6 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
    free_block(intcos);
    return;
 }
+
+}} /* namespace psi::optking */
 

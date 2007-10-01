@@ -1,13 +1,12 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief Class declaration for cartesian coordinates
 */
-/*****************************************************************************
 
-	CARTESIANS.H
+#ifndef _psi3_bin_optking_cartesians_h_
+#define _psi3_bin_optking_cartesians_h_
 
-        class declaration for cartesian
-******************************************************************************/
+namespace psi { namespace optking {
 
 class cartesians {
     double energy;
@@ -124,3 +123,6 @@ class cartesians {
     cartesians();
 };
 
+}} /* namespace psi::optking */
+
+#endif

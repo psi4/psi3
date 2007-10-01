@@ -1,19 +1,19 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief opt.h header file
 */
+
+#ifndef _psi3_bin_optking_opt_h_
+#define _psi3_bin_optking_opt_h_
+
+namespace psi { namespace optking {
+
+/* Global variables */
 #ifdef EXTERN
 # undef EXTERN
 # define EXTERN extern
 #else
 # define EXTERN
-#endif
-
-#ifdef C_EXTERN
-# undef C_EXTERN
-# define C_EXTERN extern
-#else
-# define C_EXTERN
 #endif
 
 #define OPT_AUX (13)
@@ -47,65 +47,7 @@
 #define MIN_CART_OUT (1.0E-12)
 #define MIN_LIN_COS (1.0E-10)
 
-EXTERN FILE *infile, *outfile;
-EXTERN char *psi_file_prefix;
-EXTERN FILE *fp_input, *fp_intco, *fp_fconst, *fp_opt_aux, *fp_11, *fp_fintco;
-EXTERN int *ops_in_class;
-EXTERN int nirreps, *irr;
-EXTERN int num_nonzero;      /* number of non-redundant di coordinates (eigenvectors of G with nonzero eigenvalues) */
-EXTERN char ptgrp[4];        /*molecular point group*/
-/* EXTERN int *number_internals; */
-/* EXTERN double energy_chkpt(void); */
-
-#ifdef C_CODE
-C_EXTERN void punt(char *message);
-C_EXTERN void open_PSIF(void);
-C_EXTERN void close_PSIF(void);
-C_EXTERN void exit_io(void);
-C_EXTERN void print_mat2(double **matrix, int rows, int cols, FILE *of);
-C_EXTERN void print_mat5(double **matrix, int rows, int cols, FILE *of);
-C_EXTERN void cross_product(double *u,double *v,double *out);
-C_EXTERN void scalar_mult(double a, double *vect, int dim);
-C_EXTERN void scalar_div(double a, double *vect);
-C_EXTERN int div_int(int big, int little);
-C_EXTERN double **symm_matrix_invert(double **A, int dim, int print_det, int redundant);
-C_EXTERN double energy_chkpt(void);
-C_EXTERN void dgeev_optking(int L, double **G, double *lambda, double **alpha);
-C_EXTERN double **mass_mat(double *masses);
-C_EXTERN double **unit_mat(int dim);
-C_EXTERN void swap(int *a, int *b);
-C_EXTERN void swap_tors(int *a, int *b, int *c, int *d);
-C_EXTERN void zval_to_symbol(double zval, char *sym);
-
-/* C_EXTERN int **get_char_table(char *ptgrp); returns the character table 
-   C_EXTERN char **get_symm_ops(char *ptgrp); "     " symm operation labels 
-   C_EXTERN int *get_ops_in_class(char *ptgrp);
-   #include <dmalloc.h> */
-#else
-extern "C" void punt(char *message);
-extern "C" void open_PSIF(void);
-extern "C" void close_PSIF(void);
-extern "C" void exit_io(void);
-extern "C" void print_mat2(double **matrix, int rows, int cols, FILE *of);
-extern "C" void print_mat5(double **matrix, int rows, int cols, FILE *of);
-extern "C" void cross_product(double *u,double *v,double *out);
-extern "C" void scalar_mult(double a, double *vect, int dim);
-extern "C" void scalar_div(double a, double *vect);
-extern "C" int div_int(int big, int little);
-extern "C" double **symm_matrix_invert(double **A, int dim, int print_det, int redundant);
-extern "C" double energy_chkpt(void);
-extern "C" void dgeev_optking(int L, double **G, double *lambda, double **alpha);
-extern "C" void print_evects(double **evects, double *evals, int nrow, int ncol, FILE *out);
-extern "C" double **mass_mat(double *masses);
-extern "C" double **unit_mat(int dim);
-extern "C" void swap(int *a, int *b);
-extern "C" void swap_tors(int *a, int *b, int *c, int *d);
-extern "C" void zval_to_symbol(double zval, char *sym);
-/* extern "C" int **get_char_table(char *ptgrp); returns the character table 
-   extern "C"  char **get_symm_ops(char *ptgrp); "     " symm operation labels
-   extern "C" { #include <dmalloc.h> } */
-#endif
-
+/* optking running modes */
 #define MODE_DISP_NOSYMM   (10)
 #define MODE_DISP_IRREP    (11)
 #define MODE_DISP_LOAD     (12)
@@ -126,6 +68,37 @@ extern "C" void zval_to_symbol(double zval, char *sym);
 #define MODE_DISP_NUM_PLUS      (27)
 #define MODE_DELETE_BINARIES    (28)
 #define MODE_TEST_BMAT    (29)
+
+extern "C" {
+  EXTERN FILE *infile, *outfile;
+  EXTERN char *psi_file_prefix;
+}
+
+EXTERN FILE *fp_input, *fp_intco, *fp_fconst, *fp_opt_aux, *fp_11, *fp_fintco;
+EXTERN int *ops_in_class;
+EXTERN int nirreps, *irr;
+EXTERN int num_nonzero;  /* # of non-redundant di coordinates (evects of G with nonzero eigenvalues) */
+EXTERN char ptgrp[4];    /*molecular point group*/
+
+EXTERN void punt(char *message);
+EXTERN void open_PSIF(void);
+EXTERN void close_PSIF(void);
+EXTERN void exit_io(void);
+EXTERN void print_mat2(double **matrix, int rows, int cols, FILE *of);
+EXTERN void print_mat5(double **matrix, int rows, int cols, FILE *of);
+EXTERN void cross_product(double *u,double *v,double *out);
+EXTERN void scalar_mult(double a, double *vect, int dim);
+EXTERN void scalar_div(double a, double *vect);
+EXTERN int div_int(int big, int little);
+EXTERN double **symm_matrix_invert(double **A, int dim, int print_det, int redundant);
+EXTERN double energy_chkpt(void);
+EXTERN void dgeev_optking(int L, double **G, double *lambda, double **alpha);
+EXTERN void print_evects(double **evects, double *evals, int nrow, int ncol, FILE *out);
+EXTERN double **mass_mat(double *masses);
+EXTERN double **unit_mat(int dim);
+EXTERN void swap(int *a, int *b);
+EXTERN void swap_tors(int *a, int *b, int *c, int *d);
+EXTERN void zval_to_symbol(double zval, char *sym);
 
 struct OPTInfo {
 
@@ -212,11 +185,6 @@ struct SYMInfo {
 EXTERN struct OPTInfo optinfo;
 EXTERN struct SYMInfo syminfo;
 
+}} /* namespace psi::optking */
 
-
-
-
-
-
-
-
+#endif

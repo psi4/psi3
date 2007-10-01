@@ -1,26 +1,18 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief GET_SYMINFO: gets symmetry info from chkpt and char_table.c
 */
-/*** GET_SYMINFO   gets symmetry info from chkpt and char_table.c ***/ 
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <string.h>
-  #include <ctype.h>
-  #include <libchkpt/chkpt.h>
-  #include <libciomr/libciomr.h>
-  #include <libipv1/ip_lib.h>
-  #include <physconst.h>
-  #include <libpsio/psio.h>
-}
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include <libchkpt/chkpt.h>
+#include <libciomr/libciomr.h>
+#include <libipv1/ip_lib.h>
+#include <physconst.h>
+#include <libpsio/psio.h>
 
 #define EXTERN
 #include "opt.h"
@@ -28,11 +20,11 @@ extern "C" {
 #include "cartesians.h"
 #include "internals.h"
 
-extern "C" int **get_char_table(char *symmetry);
-extern "C"  char **get_symm_ops(char *symmetry);
-extern "C" int *get_ops_in_class(char *ptgrp, int nirreps);
-//extern "C" void swap(int *a, int *b);
-//extern "C" void swap_tors(int *a, int *b, int *c, int *d);
+namespace psi { namespace optking {
+
+extern int **get_char_table(char *symmetry);
+extern char **get_symm_ops(char *symmetry);
+extern int *get_ops_in_class(char *ptgrp, int nirreps);
 
 void get_syminfo(internals &simples) {
   int a, b, c, d, aa, bb, cc, dd, i, j, sign, natom;
@@ -239,4 +231,6 @@ void get_syminfo(internals &simples) {
   }
   return;
 }
+
+}} /* namespace psi::optking */
 

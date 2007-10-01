@@ -1,26 +1,20 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief This function computes G via BuB^t where u is a diagonal matrix
+    of inverse masses.
 */
-// This function computes G via BuB^t where u is a diagonal matrix
-// of inverse masses.
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
-  #include <stdio.h>
-  #include <stdlib.h>
-  #include <libciomr/libciomr.h>
-}
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <libciomr/libciomr.h>
 
 #define EXTERN
 #include "opt.h"
 #undef EXTERN
 #include "cartesians.h"
+
+namespace psi { namespace optking {
 
 double **compute_G(double **B, int num_intcos, cartesians &carts) {
   double **u, **G, **temp_mat, *masses;
@@ -43,3 +37,5 @@ double **compute_G(double **B, int num_intcos, cartesians &carts) {
 
   return G;
 }
+
+}}

@@ -1,12 +1,13 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief ZVAL_TO_SYMBOL() return atom symbol
 */
-/*** ZVAL_TO_SYMBOL() return atom symbol ***/ 
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+namespace psi { namespace optking {
 
 void zval_to_symbol(double zval, char *sym) {
   int z;
@@ -121,3 +122,6 @@ void zval_to_symbol(double zval, char *sym) {
   else if (z==106) strcpy(sym,"UNS");
   return ;
 }
+
+}} /* namespace psi::optking */
+

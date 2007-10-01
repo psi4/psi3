@@ -1,23 +1,15 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief This function constructs the B matrix for a set of salcs
 */
-// This function constructs the B matrix for a set of salcs
 
-#if HAVE_CMATH
-# include <cmath>
-#else
 # include <math.h>
-#endif
-
-extern "C" {
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
 #include <string.h>
 #include <physconst.h>
 #include <libciomr/libciomr.h>
-}
 
 #define EXTERN
 #include "opt.h"
@@ -25,6 +17,8 @@ extern "C" {
 #include "cartesians.h"
 #include "internals.h"
 #include "salc.h"
+
+namespace psi { namespace optking {
 
 double **compute_B(internals &simples,salc_set &symm) {
   int i,j,k,a,b,c,d, simple, intco_type, sub_index;
@@ -113,3 +107,4 @@ double **compute_B(internals &simples,salc_set &symm) {
   return B;
 }
 
+}} /* namespace psi::optking */

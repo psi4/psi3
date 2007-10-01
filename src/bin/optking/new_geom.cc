@@ -1,19 +1,12 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief NEW_GEOM performs the back-transformation to cartesian coordinates.
+It computes a new cartesian geometry from an old cartesian geometry
+and a set of internal coordinate displacements
+it returns 1 if a new cartesian geometry was successfully determined
 */
-// NEW_GEOM performs the back-transformation to cartesian coordinates.
-// It computes a new cartesian geometry from an old cartesian geometry
-// and a set of internal coordinate displacements
-// it returns 1 if a new cartesian geometry was successfully determined
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
@@ -21,7 +14,6 @@ extern "C" {
 #include <libciomr/libciomr.h>
 #include <physconst.h>
 #include <psifiles.h>
-}
 
 #define EXTERN
 #include "opt.h"
@@ -29,6 +21,8 @@ extern "C" {
 #include "cartesians.h"
 #include "internals.h"
 #include "salc.h"
+
+namespace psi { namespace optking {
 
 double *compute_q(internals &simples, salc_set &all_salcs);
 double **compute_B(internals &simples, salc_set &all_salcs);
@@ -320,3 +314,4 @@ void symmetrize_geom(double *x) {
   return;
 }
 
+}} /* namespace psi::optking */

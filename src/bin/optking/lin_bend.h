@@ -1,16 +1,17 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief Class for pairs of orthogonal linear bend coordinates;
+ lin with linval1 is toward an axis perpendicular with A-B-C with maximum
+ overlap with the y-axis;
+ lin with linval2 is orthogonal to this axis
 */
-/* class for pairs of orthogonal linear bend coordinates
- * lin with linval1 is toward an axis perpendicular with A-B-C with maximum
- * overlap with the y-axis
- * lin with linval2 is orthogonal to this axis
- */
 
-extern "C" {
-  #include <libchkpt/chkpt.h>
-}
+#ifndef _psi3_bin_optking_lin_bend_h_
+#define _psi3_bin_optking_lin_bend_h_
+
+#include <libchkpt/chkpt.h>
+
+namespace psi { namespace optking {
 
 class lin_bend_class {
     int id;
@@ -352,3 +353,6 @@ class lin_bend_set {
   }
 };
 
+}} /* namespace psi::optking */
+
+#endif

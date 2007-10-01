@@ -1,12 +1,9 @@
-/*** TEST_BMAT.CC compares analytic and numerical B matrices */
+/*! \file 
+    \ingroup (OPTKING)
+    \brief TEST_BMAT.CC : compares analytic and numerical B matrices
+*/
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
@@ -17,7 +14,6 @@ extern "C" {
 #include <physconst.h>
 #include <libpsio/psio.h>
 #include <psifiles.h>
-}
 
 #define EXTERN
 #include "opt.h"
@@ -26,6 +22,8 @@ extern "C" {
 #include "internals.h"
 #include "salc.h"
 #include "bond_lengths.h"
+
+namespace psi { namespace optking {
 
 extern double **compute_B(internals &simples, salc_set &symm);
 extern double *compute_q(internals &simples, salc_set &symm);
@@ -98,4 +96,6 @@ int test_B(cartesians &carts, internals &simples, salc_set &symm) {
   free_block(dq);
   return 0;
 }
+
+}} /* namespace psi::optking */
 

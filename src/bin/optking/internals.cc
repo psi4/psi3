@@ -1,16 +1,9 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief INTERNALS.CC member functions for internals class
 */
-/*** INTERNALS.CC member functions for internals class ***/ 
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -19,13 +12,14 @@ extern "C" {
 #include <libipv1/ip_lib.h>
 #include <physconst.h>
 #include "bond_lengths.h"
-}
 
 #define EXTERN
 #include "opt.h"
 #undef EXTERN
 #include "cartesians.h"
 #include "internals.h"
+
+namespace psi { namespace optking {
 
 int is_unique(int a, int b, int c, int d, int *aa, int *bb, int *cc, int *dd);
 
@@ -848,3 +842,6 @@ int is_unique(int a, int b, int c, int d, int *aa, int *bb, int *cc, int *dd) {
   // fprintf(outfile,"unique returning %d\n",unique);
   return unique;
 }
+
+}} /* namespace psi::optking */
+

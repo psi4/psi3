@@ -1,29 +1,23 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief PRINT_ZMAT() printout z-matrix
 */
-/*** PRINT_ZMAT() printout z-matrix ***/ 
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <physconst.h>
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
-}
 
 #define EXTERN
 #include "opt.h"
 #undef EXTERN
 #include "cartesians.h"
 #include "internals.h"
+
+namespace psi { namespace optking {
 
 void compute_zmat(cartesians &carts, int *unique_zvars);
 void print_zmat(FILE *outfile, int *unique_zvars);
@@ -239,4 +233,6 @@ void print_zmat(FILE *outfile, int *unique_zvars) {
   }
   return;
 }
+
+}} /* namespace psi::optking */
 

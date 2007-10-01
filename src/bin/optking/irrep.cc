@@ -1,8 +1,7 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
-*/
-/*** IRREP.CC :  symmetrizes set of delocalized internal coordinates
+    \brief 
+IRREP.CC :  symmetrizes set of delocalized internal coordinates
   also places irreps of coordinates in global array 'irr'
 
   &simples  -- address of an object of class internals
@@ -10,15 +9,10 @@
  (eigenvectors of G)
   returns:  -- pointer to 'symm_coordinate', a vector containing pointers to
                properly symmetrized delocalized internal coordinate vectors
-significant modifications by J. Kenny June '00 ***/
+significant modifications by J. Kenny June '00
+*/
 
-#if HAVE_CMATH
-# include <cmath>
-#else
-# include <math.h>
-#endif
-
-extern "C" {
+#include <math.h>
 #include <stdio.h>
 #include <libchkpt/chkpt.h>
 #include <stdlib.h>
@@ -26,7 +20,6 @@ extern "C" {
 #include <physconst.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
-}
 
 #define EXTERN
 #include "opt.h"
@@ -34,6 +27,8 @@ extern "C" {
 #include "cartesians.h"
 #include "internals.h"
 #include "salc.h"
+
+namespace psi { namespace optking {
 
 double **irrep_reduce( double **coord_mat, internals &simples, int coords, int order);
 
@@ -372,3 +367,6 @@ double **irrep_reduce(double **coord_mat, internals &simples, int num_coords, in
   free(tmp_vec);   
   return coef_mat;
 }
+
+}} /* namespace psi::optking */
+

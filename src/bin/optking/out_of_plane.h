@@ -1,7 +1,13 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief Class for out-of-plane angles
 */
+
+#ifndef _psi3_bin_optking_out_of_plane_h_
+#define _psi3_bin_optking_out_of_plane_h_
+
+namespace psi { namespace optking {
+
 class out_class {
     int id;
     int A;
@@ -323,3 +329,6 @@ fprintf(outfile,"ordering change of out of plane %d\n",i);
     }
 };
 
+}} /* namespace psi::optking */
+
+#endif

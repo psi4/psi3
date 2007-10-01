@@ -1,8 +1,7 @@
 /*! \file 
     \ingroup (OPTKING)
-    \brief Enter brief description of file here 
+    \brief GET_OPTINFO   reads optimization parameters from input.dat
 */
-/* GET_OPTINFO   reads optimization parameters from input.dat */
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -15,12 +14,10 @@
 #include <psifiles.h>
 
 #define EXTERN
-#define C_CODE
-#define C_EXTERN
 #include "opt.h"
-#undef C_EXTERN
-#undef C_CODE
 #undef EXTERN
+
+namespace psi { namespace optking {
 
 double power(double x, int y);
 
@@ -261,4 +258,6 @@ double power(double x, int y) {
   if (invert) tval = 1.0/tval;
   return tval;
 }
+
+}} /* namespace psi::optking */
 

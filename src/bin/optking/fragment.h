@@ -1,4 +1,12 @@
-/* six coordinates for non-bonded fragments */
+/*! \file 
+    \ingroup (OPTKING)
+    \brief Six coordinates for non-bonded fragments
+*/
+
+#ifndef _psi3_bin_optking_fragment_h_
+#define _psi3_bin_optking_fragment_h_
+
+namespace psi { namespace optking {
 
 class fragment_class {
     int id;
@@ -180,3 +188,6 @@ class fragment_set {
 */
 };
 
+}} /* namespace psi::optking */
+
+#endif
