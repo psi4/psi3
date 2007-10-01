@@ -369,7 +369,10 @@ int main(int argc, char *argv[])
 
 namespace psi { namespace localize {
 
-extern "C" extern char *gprgid();
+extern "C" {
+extern char *gprgid();
+};
+
 void init_io(int argc, char * argv[])
 {
   char *progid;
