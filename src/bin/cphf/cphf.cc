@@ -179,7 +179,9 @@ int main(int argc, char *argv[])
 
 namespace psi { namespace cphf {
 
-extern "C" extern char *gprgid(void);
+extern "C" {
+extern char *gprgid(void);
+};
 
 void init_io(int argc, char *argv[])
 {
