@@ -1,6 +1,6 @@
-/*! \file 
+/*! \file ip_data.c
     \ingroup (IPV1)
-    \brief Enter brief description of file here 
+    \brief Rudimentary data retrieval routines from the input file 
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -20,10 +20,10 @@
 #include "ip_error.h"
 #include "ip_error.gbl"
 
-/* The way the AIX xlc compiler handles vararg decs isn't compatible with
+/*!\todo The way the AIX xlc compiler handles vararg decs isn't compatible with
  * the way the tmpl file is formed, so ip_data.global cannot be used.
  * Everything global should be defined before it is used here. */
-/* NOTE: ip_data.global will work fine (and be correct) for other source
+/*! \note NOTE: ip_data.global will work fine (and be correct) for other source
  * files.  It's just this one that is a problem because xlc thinks my
  * declarations below are different than the ones in the global file
  * (and they are-sort of). */
@@ -37,6 +37,8 @@
 
 extern "C" {
 
+/*! Count the number of entries in an array 
+  \param n =0 just count first level, >0 allocate array. */
 int ip_count(char *keyword, int *count, int n, ...)
 {
   va_list args;
@@ -61,6 +63,7 @@ int ip_count(char *keyword, int *count, int n, ...)
     }
   }
 
+/*! Count the entries of an array and store in array.  \param n =0 just count first level, >0 allocate array.*/
 int ip_count_v(char *keyword, int *count, int n, int *v)
 {
   ip_value_t *val;
@@ -74,6 +77,7 @@ int ip_count_v(char *keyword, int *count, int n, int *v)
   return IPE_OK;
   }
 
+/*! Retrieve the value of a boolean keyword.  \param n =0 just count first level, >0 allocate array. */
 int ip_boolean(char *keyword, int *boolean, int n, ...)
 {
   va_list args;
@@ -97,7 +101,7 @@ int ip_boolean(char *keyword, int *boolean, int n, ...)
     return r;
     }
   }
-
+/*! Retrieve a boolean keyword.   \param n =0 just count first level, >0 allocate array.*/
 int ip_boolean_v(char *keyword, int *boolean, int n, int *v)
 {
   ip_value_t *val;
@@ -127,7 +131,7 @@ int ip_boolean_v(char *keyword, int *boolean, int n, int *v)
   return IPE_OK;
   }
 
-/* n should always be zero in this version of libip. */
+/*! Check for existence of keyword. n should always be zero in this version of libip.  \param n =0 just count first level, >0 allocate array. */
 int ip_exist(char *keyword, int n, ...)
 {
   va_list args;
@@ -155,14 +159,16 @@ int ip_exist(char *keyword, int n, ...)
     }
   }
 
-/* n should always be zero in this version of libip. */
+/*! Check for existence of keyword. n should always be zero in this version of libip.   \param n =0 just count first level, >0 allocate array.*/
 int ip_exist_v(char *keyword, int n, int *v)
 {
   if (ip_cwk_descend_tree(keyword)) return 1;
 
   return 0;
   }
-
+/*! Read data entries.   
+  \param n =0 just count first level, >0 allocate array. 
+  \param conv string conversion information a la snprintf. */
 int ip_data(char *keyword, char *conv, void *value, int n, ...)
 {
   va_list args;
@@ -187,6 +193,9 @@ int ip_data(char *keyword, char *conv, void *value, int n, ...)
     }
   }
 
+/*! Read data entries.   
+  \param n =0 just count first level, >0 allocate array. 
+  \param conv string conversion information a la snprintf. */
 int ip_data_v(char *keyword, char *conv, void *value, int n, int *v)
 {
   ip_value_t *val;
@@ -201,6 +210,7 @@ int ip_data_v(char *keyword, char *conv, void *value, int n, int *v)
   return IPE_OK;
   }
 
+/*! Description */
 int ip_string(char *keyword, char **value, int n, ...)
 {
   va_list args;
@@ -225,6 +235,8 @@ int ip_string(char *keyword, char **value, int n, ...)
     }
   }
 
+
+/*! Description */
 int ip_string_v(char *keyword, char **value, int n, int *v)
 {
   ip_value_t *val;
@@ -240,6 +252,7 @@ int ip_string_v(char *keyword, char **value, int n, int *v)
   return IPE_OK;
   }
 
+/*! Description */
 int ip_value(char *keyword, ip_value_t **value, int n, ...)
 {
   va_list args;
@@ -264,6 +277,8 @@ int ip_value(char *keyword, ip_value_t **value, int n, ...)
     }
   }
 
+
+/*! Description */
 int ip_value_v(char *keyword, ip_value_t **value, int n, int *v)
 {
   int i;
@@ -286,7 +301,7 @@ int ip_value_v(char *keyword, ip_value_t **value, int n, int *v)
   }
 
 
-/*
+/*!
 ** ip_int_array()
 **
 ** Function reads in an integer array using the PSI input parser.
@@ -297,16 +312,14 @@ int ip_value_v(char *keyword, ip_value_t **value, int n, int *v)
 ** Center for Computational Quantum Chemistry
 ** August 1995
 **
-** Parameters:
-**    keyword = string containing the keyword for the input parser
-**    arr     = array to hold results
-**    len     = length of array
+**    \param keyword = string containing the keyword for the input parser
+**    \param arr     = array to hold results
+**    \param len     = length of array
 **
 ** Returns: IP Error code
 **
 ** Note: keyword should ordinarily be an uppercase string.
 */
-
 int ip_int_array(char *keyword, int *arr, int len)
 {
   int i, errcod, cnt;
@@ -332,7 +345,7 @@ int ip_int_array(char *keyword, int *arr, int len)
 }
 
 
-/*
+/*!
 ** ip_double_array()
 **
 ** Function reads in an array of doubles using the PSI input parser.
@@ -341,14 +354,12 @@ int ip_int_array(char *keyword, int *arr, int len)
 **
 ** Based on ip_int_array by C. David Sherrill
 **
-** Parameters:
-**    keyword = string containing the keyword for the input parser
-**    arr     = array to hold results
-**    len     = length of array
+**    \param keyword = string containing the keyword for the input parser
+**    \param arr     = array to hold results
+**    \param len     = length of array
 **
 ** Returns: IP Error code
 */
-
 int ip_double_array(char *keyword, double *arr, int len)
 {
   int i, errcod, cnt;
@@ -372,5 +383,4 @@ int ip_double_array(char *keyword, double *arr, int len)
 
   return(IPE_OK);
 }
-
 }; /* extern "C" */

@@ -1,13 +1,11 @@
-/*! \file 
+/*! \file ip_karray.cc
     \ingroup (IPV1)
-    \brief Enter brief description of file here 
-*/
-/* These routines manipulate keyword arrays.  A keyword
+    \brief These routines manipulate keyword arrays.  A keyword
  * array differs from a data array in that its indices are indicated
  * by a keyword segment.  For example: array:0:1 = 6 is a keyword
  * array element.  The count is the upper bound plus 1. */
 
-/* NOTE: If these routines are used to access keyword arrays, then
+/*!\note NOTE: If these routines are used to access keyword arrays, then
  * only the first place in the cwk in which a keyword array name is
  * found will be used. */
 
@@ -21,10 +19,10 @@
 #include "ip_error.h"
 #include "ip_error.gbl"
 
-/* The way the AIX xlc compiler handles vararg decs isn't compatible with
+/* \note The way the AIX xlc compiler handles vararg decs isn't compatible with
  * the way the tmpl file is formed, so ip_data.global cannot be used.
  * Everything global should be defined before it is used here. */
-/* NOTE: ip_data.global will work fine (and be correct) for other source
+/* \note NOTE: ip_data.global will work fine (and be correct) for other source
  * files.  It's just this one that is a problem because xlc thinks my
  * declarations below are different than the ones in the global file
  * (and they are-sort of). */
@@ -96,7 +94,7 @@ ip_keyword_tree_t *ip_karray_descend_v(ip_keyword_tree_t *kt, int n, int *v, ...
 
   if (!kt) return NULL;
 
-  /* kt starts off at the array so we must first descend to the first
+  /* \internal kt starts off at the array so we must first descend to the first
    * level of indices. */
   r = kt->down;
   if (!r) return NULL;
@@ -145,15 +143,15 @@ int ip_karray_count_v(char *keyword, int *karray_count, int n, int *v)
   int index;
   int max;
 
-  /* Descend the keyword tree to keyword. */
+  /*!\internal Descend the keyword tree to keyword. */
   kt = ip_cwk_descend_tree(keyword);
   if (kt == NULL) return IPE_KEY_NOT_FOUND;
 
-  /* Descend the tree to the indices. */
+  /*!\internal Descend the tree to the indices. */
   kt = ip_karray_descend_v(kt,n,v);
   if (kt == NULL) return IPE_NOT_AN_ARRAY;
 
-  /* Go thru the keyword array and examine the indices. */
+  /*!\internal Go thru the keyword array and examine the indices. */
   I = kt;
   max = 0;
   do {
@@ -166,7 +164,7 @@ int ip_karray_count_v(char *keyword, int *karray_count, int n, int *v)
   return IPE_OK;
   }
 
-/* This counts the number of elements in a keyword array. */
+/*! This counts the number of elements in a keyword array. */
 int ip_karray_count(char *keyword, int *karray_count, int n, ...)
 {
   va_list args;
