@@ -1,6 +1,5 @@
 /*! \file main.cc
-    \defgroup (CINTS)
-    \brief The integral computation suite.
+    \defgroup CINTS CINTS:The integral computation suite.
 */
 #include<cstdio>
 #include<cstdlib>
@@ -168,6 +167,7 @@ int main(int argc, char *argv[])
   } catch (std::domain_error e) {
     std::cerr << e.what() << std::endl;
     std::cerr << "cints failed due to errors\n";
+    punt(e.what());
   }
   exit(PSI_RETURN_SUCCESS);
 }

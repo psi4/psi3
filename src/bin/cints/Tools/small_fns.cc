@@ -105,7 +105,7 @@ void punt(char *mess)
   fprintf(outfile, "  error: %s\n", mess);
   fprintf(stderr, "  CINTS error: %s\n", mess);
   stop_io();
-  abort();
+  //  abort();
 }
 
 double distance_calc(struct coordinates g1, struct coordinates g2)
