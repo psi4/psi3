@@ -175,7 +175,7 @@ int main(int argc, char** argv)
 
 extern "C" char *gprgid(void)
 {
-  char *prgid = ":INTDER";
+  char *prgid = "INTDER";
   return (prgid);
 }
 

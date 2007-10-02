@@ -2,12 +2,10 @@
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */
-extern "C" {
 #include<pthread.h>
 #include<stdio.h>
 #include<memory.h>
 #include<stdlib.h>
-}
 #include<cstring>
 #include<cmath>
 #include<libqt/qt.h>

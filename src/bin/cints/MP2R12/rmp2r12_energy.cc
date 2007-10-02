@@ -5,12 +5,9 @@
 #include<cmath>
 #include<cstdio>
 #include<cstring>
-
-extern "C" {
 #include<memory.h>
 #include<stdlib.h>
 #include<pthread.h>
-}
 #include<libciomr/libciomr.h>
 #include<libqt/qt.h>
 #include<libiwl/iwl.h>

@@ -4,10 +4,7 @@
 */
 #include<cstdio>
 
-extern "C"{
 #include<pthread.h>
-}
-
 #include<libipv1/ip_lib.h>
 #include<cmath>
 #include<libciomr/libciomr.h>

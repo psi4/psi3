@@ -289,7 +289,7 @@ int main(int argc, char* argv[])
 
 extern "C" const char* gprgid()
 {
-  static char* prgid = ":GIAO";
+  static char* prgid = "GIAO";
   return prgid;
 }
 

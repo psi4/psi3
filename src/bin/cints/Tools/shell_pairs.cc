@@ -5,9 +5,7 @@
 #include<cmath>
 #include<cstdio>
 #include<cstring>
-extern "C" {
 #include<stdlib.h>
-}
 #include<libciomr/libciomr.h>
 #include<libint/libint.h>
 

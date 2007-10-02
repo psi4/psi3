@@ -3,9 +3,7 @@
     \brief Enter brief description of file here 
 */
 #include<cstdio>
-extern "C" {
 #include<stdlib.h>
-}
 #include<libciomr/libciomr.h>
 #include<libpsio/psio.h>
 #include<libint/libint.h>

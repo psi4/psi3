@@ -4,11 +4,9 @@
 */
 #include<cmath>
 #include<cstring>
-extern "C" {
 #include<stdio.h>
 #include<memory.h>
 #include<stdlib.h>
-}
 #include<libipv1/ip_lib.h>
 #include<libiwl/iwl.h>
 #include<libciomr/libciomr.h>

@@ -6,9 +6,7 @@
     -------------------------------------------------------------------------------------------------*/
 
 #include<cstdio>
-extern "C" {
 #include<memory.h>
-}
 #include<libciomr/libciomr.h>
 #include<libqt/qt.h>
 #include<libint/libint.h>

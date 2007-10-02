@@ -2,10 +2,8 @@
     \ingroup (CINTS)
     \brief Initialise global variables.
 */
-extern "C" {
 #include<stdio.h>
 #include<stdlib.h>
-}
 #include<libint/libint.h>
 #include<psifiles.h>
 #include"defines.h"

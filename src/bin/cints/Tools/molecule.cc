@@ -4,9 +4,7 @@
 */
 #include<cstdio>
 #include<cmath>
-extern "C" {
-#include<stdlib.h>
-}
+#include<stdlib.h>}
 #include<libciomr/libciomr.h>
 #include<libchkpt/chkpt.h>
 #include<libint/libint.h>
@@ -89,9 +87,9 @@ void compute_enuc()
 	oor = 1.0/sqrt(r2);
         Z1Z2 = Molecule.centers[i].Z_nuc*Molecule.centers[j].Z_nuc;
 #ifdef HAVE_FUNC_ISINF
-        if (isnan(oor) || isinf(oor)) {
+        if (std::isnan(oor) || std::isinf(oor)) {
 #elif HAVE_FUNC_FINITE
-        if (isnan(oor) || !finite(oor)) {
+        if (std::isnan(oor) || !std::finite(oor)) {
 #endif
           if (fabs(Z1Z2) != 0.0)
             throw std::domain_error("compute_enuc -- charges too close to each other");

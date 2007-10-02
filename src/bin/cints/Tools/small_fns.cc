@@ -3,9 +3,7 @@
     \brief Enter brief description of file here 
 */
 #include<cstdio>
-extern "C" {
 #include<stdlib.h>
-}
 #include <cstring>
 #include<libipv1/ip_lib.h>
 #include<math.h>

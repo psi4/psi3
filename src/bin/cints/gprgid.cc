@@ -2,7 +2,6 @@
   \ingroup (CINTS)
   \brief program id
 */
-//namespace psi { namespace CINTS {
 extern "C" {
   char *gprgid()
   {
@@ -11,5 +10,3 @@ extern "C" {
     return(prgid);
   }
 }
-//}
-//}

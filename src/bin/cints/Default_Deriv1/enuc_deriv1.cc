@@ -2,9 +2,7 @@
     \ingroup (CINTS)
     \brief Compute the energy derivative of the nuclear repulsion.
 */
-extern "C" {
 #include<stdio.h>
-}
 #include<libipv1/ip_lib.h>
 #include<cmath>
 #include<libciomr/libciomr.h>

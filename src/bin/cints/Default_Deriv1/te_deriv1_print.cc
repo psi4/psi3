@@ -6,9 +6,7 @@
 #include <cstring>
 #include <cstdio>
 #include <cstdlib>
-extern "C" {
 #include <memory.h>
-}
 #include<stdexcept>
 #include <psitypes.h>
 #include <libciomr/libciomr.h>

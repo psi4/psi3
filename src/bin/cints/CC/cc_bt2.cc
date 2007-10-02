@@ -2,12 +2,9 @@
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */
-extern "C" {
 #include<memory.h>
 #include<stdlib.h>
 #include<pthread.h>
-}
-
 #include<cstdio>
 #include<cstring>
 #include<cmath>

@@ -3,10 +3,8 @@
     \brief Enter brief description of file here 
 */
 #include<cstdio>
-extern "C" {
 #include<stdlib.h>
 #include<memory.h>
-}
 #include<libciomr/libciomr.h>
 #include<libint/libint.h>
 

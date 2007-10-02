@@ -2,9 +2,7 @@
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */
-extern "C" {
 #include<stdio.h>
-}
 #include<libint/libint.h>
 
 #include"defines.h"

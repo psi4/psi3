@@ -2,10 +2,8 @@
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */
-extern "C" {
 #include<stdio.h>
 #include<stdlib.h>
-}
 #include<cmath>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>

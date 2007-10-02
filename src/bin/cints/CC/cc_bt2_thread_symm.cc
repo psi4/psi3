@@ -9,13 +9,10 @@
 #endif
 
 #include <cstring>
-
-extern "C" {
 #include<stdio.h>
 #include<memory.h>
 #include<stdlib.h>
 #include<pthread.h>
-}
 
 #include<libqt/qt.h>
 #include<libint/libint.h>

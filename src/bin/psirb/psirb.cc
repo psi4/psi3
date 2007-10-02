@@ -31,7 +31,7 @@ void print_usage();
 // The following are completely ignored by psirb and psi
 extern "C" {
 	char *gprgid() {
-		char *prog = ":psirb";
+		char *prog = "psirb";
 		return prog;
 	}
 	char *psi_file_prefix;

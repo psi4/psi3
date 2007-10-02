@@ -2,10 +2,8 @@
     \ingroup (CINTS)
     \brief Routines for determining the rotational invariance of gradients.
 */
-extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
-}
 #include <libipv1/ip_lib.h>
 #include <cmath>
 #include <masses.h>

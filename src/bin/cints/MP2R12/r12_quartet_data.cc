@@ -5,10 +5,8 @@
 #include<cmath>
 #include<cstdio>
 #include<cstring>
-extern "C" {
 #include<memory.h>
 #include<stdlib.h>
-}
 #include<libint/libint.h>
 #include<libr12/libr12.h>
 

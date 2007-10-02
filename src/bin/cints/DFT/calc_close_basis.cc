@@ -3,10 +3,8 @@
     \brief Enter brief description of file here 
 */
 #include <cmath>
-extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
-}
 #include <cstring>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>

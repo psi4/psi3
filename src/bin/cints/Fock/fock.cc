@@ -6,10 +6,8 @@
 #include<cstdio>
 #include<cstring>
 #include<cstdlib>
-extern "C" {
 #include<memory.h>
 #include<pthread.h>
-}
 #include<libipv1/ip_lib.h>
 #include<libciomr/libciomr.h>
 #include<libpsio/psio.h>

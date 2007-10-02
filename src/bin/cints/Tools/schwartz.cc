@@ -5,10 +5,8 @@
 #include<cmath>
 #include<cstdio>
 #include<cstring>
-extern "C" {
 #include<memory.h>
 #include<stdlib.h>
-}
 #include<libipv1/ip_lib.h>
 #include<libciomr/libciomr.h>
 #include<libpsio/psio.h>

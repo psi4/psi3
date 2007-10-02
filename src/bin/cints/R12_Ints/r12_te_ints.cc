@@ -5,10 +5,8 @@
 #include<cmath>
 #include<cstdio>
 #include<cstring>
-extern "C" {
 #include<memory.h>
 #include<stdlib.h>
-}
 #include<libiwl/iwl.h>
 #include<libciomr/libciomr.h>
 #include<libint/libint.h>

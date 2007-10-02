@@ -8,9 +8,7 @@
     */
 
 #include <cstdio>
-extern "C" {
 #include <stdlib.h>
-}
 #include <cmath>
 #include <libciomr/libciomr.h>
 #include <libint/libint.h>

@@ -6,10 +6,8 @@
 #include<cstdio>
 #include<cstring>
 #include<cstdlib>
-extern "C" {
 #include<memory.h>
 #include<pthread.h>
-}
 #include<libciomr/libciomr.h>
 #include<libchkpt/chkpt.h>
 #include<libqt/qt.h>
