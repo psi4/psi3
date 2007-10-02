@@ -7,6 +7,11 @@
 #include <libciomr/libciomr.h>
 #include <psifiles.h>
 
+extern "C"{
+    FILE *infile, *outfile;
+    char *psi_file_prefix;
+}
+
 namespace psi{
   namespace tocprint{
 
@@ -14,12 +19,7 @@ namespace psi{
   void init_io(int argc, char *argv[]);
   void exit_io(void);
   int cc2unit(char *);
-
-  extern "C"{
-    FILE *infile, *outfile;
-    char *psi_file_prefix;
-  }
-
+  
   } /* Namespace tocprint */
 } /* Namespace psi */
 
@@ -29,7 +29,6 @@ int main(int argc, char *argv[])
 {
   int unit=0, i=0, get_chkpt_prefix=0;
   char *prefix;
-
 
   while(--argc > 0) {
        i++;
@@ -68,10 +67,10 @@ int main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
+extern "C"{ char *gprgid() { char *prgid = "TOCPRINT"; return(prgid); } }
+
 namespace psi {
   namespace tocprint {
-
-  extern "C"{ char *gprgid() { char *prgid = "TOCPRINT"; return(prgid); } }
 
   void init_io(int argc, char *argv[])
   {
