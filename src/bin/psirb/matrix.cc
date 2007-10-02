@@ -38,7 +38,7 @@ bool Matrix::allocate(size_t rows, size_t cols)
 	if (m_pMatrix)
 		release();
 		
-	m_pMatrix = block_matrix(rows, cols);
+	m_pMatrix = psi::Chkpt::matrix<double>((int)rows, (int)cols);
 	m_nRows = rows;
 	m_nCols = cols;
 	
@@ -48,7 +48,7 @@ bool Matrix::allocate(size_t rows, size_t cols)
 void Matrix::release()
 {
 	if (m_pMatrix)
-		free_block(m_pMatrix);
+		psi::Chkpt::free(m_pMatrix);
 	m_pMatrix = NULL;
 	m_nRows = m_nCols = 0;
 }

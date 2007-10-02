@@ -741,7 +741,7 @@ VALUE Task::rb_chkpt_eom_state_energies_get(VALUE self)
 	for (i=0; i<count; i++)
 		rb_ary_push(array, rb_float_new(energies[i]));
 		
-	free(energies);
+	psi::Chkpt::free(energies);
 	
 	return array;
 }
@@ -795,7 +795,7 @@ VALUE Task::rb_chkpt_clsdpi_set(VALUE self, VALUE arr)
 	chkpt.wt_clsdpi(clsdpi);
 	
 	// Free memory
-	free(clsdpi);
+	psi::Chkpt::free(clsdpi);
 	
 	return self;
 }
@@ -815,7 +815,7 @@ VALUE Task::rb_chkpt_clsdpi_get(VALUE self)
 	clsdpi = chkpt.rd_clsdpi();
 	
 	VALUE arr = create_array(count, clsdpi);
-	free(clsdpi);
+	psi::Chkpt::free(clsdpi);
 	
 	return arr;
 }
@@ -845,7 +845,7 @@ VALUE Task::rb_chkpt_frzcpi_set(VALUE self, VALUE arr)
 	chkpt.wt_frzcpi(frzcpi);
 	
 	// Free memory
-	free(frzcpi);
+	psi::Chkpt::free(frzcpi);
 	
 	return self;
 }
@@ -865,7 +865,7 @@ VALUE Task::rb_chkpt_frzcpi_get(VALUE self)
 	frzcpi = chkpt.rd_frzcpi();
 	
 	VALUE arr = create_array(count, frzcpi);
-	free(frzcpi);
+	psi::Chkpt::free(frzcpi);
 	
 	return arr;
 }
@@ -895,7 +895,7 @@ VALUE Task::rb_chkpt_frzvpi_set(VALUE self, VALUE arr)
 	chkpt.wt_frzvpi(frzvpi);
 	
 	// Free memory
-	free(frzvpi);
+	psi::Chkpt::free(frzvpi);
 	
 	return self;
 }
@@ -915,7 +915,7 @@ VALUE Task::rb_chkpt_frzvpi_get(VALUE self)
 	frzvpi = chkpt.rd_frzvpi();
 	
 	VALUE arr = create_array(count, frzvpi);
-	free(frzvpi);
+	psi::Chkpt::free(frzvpi);
 	
 	return arr;
 }
@@ -933,7 +933,7 @@ VALUE Task::rb_chkpt_evals_get(VALUE self)
 	evals = chkpt.rd_evals();
 	
 	VALUE arr = create_array(count, evals);
-	free(evals);
+	psi::Chkpt::free(evals);
 	
 	return arr;
 }
@@ -951,7 +951,7 @@ VALUE Task::rb_chkpt_alpha_evals_get(VALUE self)
 	evals = chkpt.rd_alpha_evals();
 	
 	VALUE arr = create_array(count, evals);
-	free(evals);
+	psi::Chkpt::free(evals);
 	
 	return arr;
 }
@@ -969,7 +969,7 @@ VALUE Task::rb_chkpt_beta_evals_get(VALUE self)
 	evals = chkpt.rd_beta_evals();
 	
 	VALUE arr = create_array(count, evals);
-	free(evals);
+	psi::Chkpt::free(evals);
 	
 	return arr;
 }
@@ -997,7 +997,7 @@ VALUE Task::rb_chkpt_evals_set(VALUE self, VALUE arr)
 	chkpt.wt_evals(evals);
 	
 	// Free memory
-	free(evals);
+	psi::Chkpt::free(evals);
 	
 	return self;
 }
@@ -1025,7 +1025,7 @@ VALUE Task::rb_chkpt_alpha_evals_set(VALUE self, VALUE arr)
 	chkpt.wt_alpha_evals(evals);
 	
 	// Free memory
-	free(evals);
+	psi::Chkpt::free(evals);
 	
 	return self;
 }
@@ -1053,7 +1053,7 @@ VALUE Task::rb_chkpt_beta_evals_set(VALUE self, VALUE arr)
 	chkpt.wt_beta_evals(evals);
 
 	// Free memory
-	free(evals);
+	psi::Chkpt::free(evals);
 
 	return self;
 }
@@ -1071,7 +1071,7 @@ VALUE Task::rb_chkpt_exps_get(VALUE self)
 	exps = chkpt.rd_exps();
 	
 	VALUE arr = create_array(count, exps);
-	free(exps);
+	psi::Chkpt::free(exps);
 	
 	return arr;
 }
@@ -1099,7 +1099,7 @@ VALUE Task::rb_chkpt_exps_set(VALUE self, VALUE arr)
 	chkpt.wt_exps(exps);
 
 	// Free memory
-	free(exps);
+	psi::Chkpt::free(exps);
 
 	return self;
 }
@@ -1151,10 +1151,8 @@ VALUE Task::rb_load_cartesian(VALUE self)
 	} 
 	
 	// Clean up
-	free_block(fgeom);
-	for (i = 0; i < nallatoms; ++i)
-		free(felements[i]);
-	free(felements);
+	psi::Chkpt::free(fgeom);
+	psi::Chkpt::free(felements);
 	
 	return xyz;
 }
