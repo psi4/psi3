@@ -1,11 +1,14 @@
-/*! \file 
+#ifndef _psi_src_bin_cints_global_h
+#define _psi_src_bin_cints_global_h
+
+/*! \file global.h
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */
 /*-----------------
   global variables
  -----------------*/
-
+#include"defines.h"
 #include "data_structs.h"
 
 #ifdef EXTERN
@@ -15,7 +18,10 @@
 # define EXTERN
 #endif
 
-/*--- Expensive/frequently-used quantities ---*/
+namespace psi {
+  namespace CINTS {
+    
+    /*--- Expensive/frequently-used quantities ---*/
 EXTERN int ioff[IOFFMAX];             /* Offset array */
 EXTERN double fac[CINTS_MAX_AM*2];          /* Factorials */
 EXTERN int bc[CINTS_MAX_AM+1][CINTS_MAX_AM+1];    /* Binomial coefficients */
@@ -27,11 +33,6 @@ EXTERN UserOptions_t UserOptions;
 
 /*--- I/O descriptors ---*/
 EXTERN IOUnits_t IOUnits;
-
-/*--- Mandatory: Input and Output files, PSI file prefix ---*/
-EXTERN FILE *infile;
-EXTERN FILE *outfile;
-EXTERN char *psi_file_prefix;
 
 /*--- Molecule Info ---*/
 EXTERN Molecule_t Molecule;
@@ -80,5 +81,12 @@ EXTERN double ***HDS;    /* Half-Differentiated overlap matrices in AO basis */
 EXTERN double **Grad;    /* Nuclear forces */
 EXTERN double **Hess;    /* Nuclear force constants */
 
+}
+};
 
-
+#include<cstdio>
+/*--- Mandatory: Input and Output files, PSI file prefix ---*/
+EXTERN FILE *infile;
+EXTERN FILE *outfile;
+EXTERN char *psi_file_prefix;
+#endif

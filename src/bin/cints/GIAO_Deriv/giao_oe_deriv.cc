@@ -1,12 +1,11 @@
-/*! \file 
+/*! \file giao_oe_deriv.cc
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */
-extern "C" {
-#include<math.h>
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include<cmath>
+#include<cstdio>
+#include<cstdlib>
+#include<cstring>
 #include<libipv1/ip_lib.h>
 #include<libiwl/iwl.h>
 #include<libciomr/libciomr.h>
@@ -16,12 +15,15 @@ extern "C" {
 #include"defines.h"
 #define EXTERN
 #include"global.h"
+#include <stdexcept>
 #include"taylor_fm_eval.h"
 #include"oe_osrr.h"
 #include"small_fns.h"
-}
 
-/*-----------------------------------------------------------------------------------------
+
+namespace psi { namespace CINTS {
+
+/*!-----------------------------------------------------------------------------------------
   This function computes some derivatives of integrals over GIAO Gaussians with respect to
   E and B fields (at E=0, B=0, i.e. in absence of external fields) and writes them out.
   
@@ -34,7 +36,7 @@ extern "C" {
   d h/dE   =  - <mu| r |nu>   -- simply electric dipole integral, already computed, hence
                                  not computed here
  -----------------------------------------------------------------------------------------*/
-extern "C" void giao_oe_deriv()
+void giao_oe_deriv()
 {
 
 #ifdef USE_TAYLOR_FM
@@ -476,3 +478,4 @@ extern "C" void giao_oe_deriv()
 
   return;
 }   
+};};

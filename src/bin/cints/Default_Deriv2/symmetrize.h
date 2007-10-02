@@ -1,6 +1,10 @@
-/*! \file 
+#ifndef _psi_src_bin_cints_Default_Deriv2_symmetrize_h
+#define _psi_src_bin_cints_Default_Deriv2_symmetrize_h
+
+/*! \file symmetrize.h
     \ingroup (CINTS)
-    \brief Enter brief description of file here 
-*/
+*/namespace psi { namespace CINTS {
 
 void symmetrize_hessian(double **hess);
+}}
+#endif

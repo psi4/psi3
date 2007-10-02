@@ -1,7 +1,11 @@
-/*! \file 
+#ifndef _psi_src_bin_cints_Tools_basisset_h
+#define _psi_src_bin_cints_Tools_basisset_h
+
+/*! \file basisset.h
     \ingroup (CINTS)
-    \brief Enter brief description of file here 
-*/
+*/namespace psi { namespace CINTS {
 
 void init_basisset();
 void cleanup_basisset();
+}}
+#endif

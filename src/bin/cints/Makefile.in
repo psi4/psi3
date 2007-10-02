@@ -113,7 +113,7 @@ endif
 
 CSRC = main.c parsing.c gprgid.c init_globals.c check_max_am.c $(DIRS:%=%/*.c)
 TRUECSRC = $(notdir $(shell echo `ls $(CSRC:%=$(srcdir)/%)`))
-CXXSRC = $(DIRS:%=%/*.cc)
+CXXSRC = $(DIRS:%=%/*.cc) *.cc
 TRUECXXSRC = $(notdir $(shell echo `ls $(CXXSRC:%=$(srcdir)/%)`))
 
 BINOBJ = $(TRUECSRC:%.c=%.o) $(TRUECXXSRC:%.cc=%.o)

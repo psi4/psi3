@@ -1,18 +1,21 @@
-/*! \file 
+/*! \file cdsalc.cc
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+#include <cstdio>
 extern "C" {
+#include <stdlib.h>
+}
+#include <cstring>
+
 #include <libint/libint.h>
 #include "defines.h"
 #define  EXTERN
 #include "global.h"
-}
+
 #include "cdsalc.h"
+
+namespace psi { namespace CINTS {
 
 void init_cdsalc()
 {
@@ -66,4 +69,4 @@ void cleanup_cdsalc()
   }
   delete[] CDSALCs.cd2salc_map;
 }
-
+};};

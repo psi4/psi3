@@ -1,11 +1,15 @@
-/*! \file 
+#ifndef _psi_src_bin_cints_Fock_hash_h
+#define _psi_src_bin_cints_Fock_hash_h
+
+/*! \file hash.h
     \ingroup (CINTS)
-    \brief Enter brief description of file here 
-*/
-/*-----------------------------------
+-----------------------------------
   Declarations of htable_entry, etc.
  -----------------------------------*/
 #include <psitypes.h>
+
+namespace psi { namespace CINTS {
+
 typedef struct {
     PSI_INT_LEAST64 key;
     int si, sj, sk, sl;
@@ -26,6 +30,5 @@ int put_entry(htable_t *htable, PSI_INT_LEAST64 key,
               int si, int sj, int sk, int sl,
 	      double q4ijkl, double q4ikjl, double q4iljk);
 int find_entry(htable_t *htable, PSI_INT_LEAST64 key);
-
-
-
+};}
+#endif

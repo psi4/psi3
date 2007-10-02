@@ -1,6 +1,10 @@
-/*! \file 
+#ifndef _psi_src_bin_cints_Tools_rad_extent_h
+#define _psi_src_bin_cints_Tools_rad_extent_h
+
+/*! \file rad_extent.h
     \ingroup (CINTS)
-    \brief Enter brief description of file here 
-*/
+*/namespace psi { namespace CINTS {
 
 void init_rad_extent(double thresh)
+}}
+#endif

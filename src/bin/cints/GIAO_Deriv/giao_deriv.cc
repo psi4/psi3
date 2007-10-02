@@ -1,4 +1,4 @@
-/*! \file 
+/*! \file giao_deriv.cc
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */
@@ -9,7 +9,8 @@
 #define DO_OEI 1
 #define DO_TEI 1
 
-extern "C" void giao_deriv()
+namespace psi { namespace CINTS {
+void giao_deriv()
 {
 #if DO_OEI
   giao_oe_deriv();
@@ -19,3 +20,4 @@ extern "C" void giao_deriv()
 #endif
 }
 
+};};

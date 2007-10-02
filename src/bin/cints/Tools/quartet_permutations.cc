@@ -1,23 +1,26 @@
-/*! \file 
+/*! \file quartet_permutations.cc
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */
+#include<cstdio>
 extern "C" {
-#include<stdio.h>
 #include<stdlib.h>
 #include<memory.h>
+}
 #include<libciomr/libciomr.h>
 #include<libint/libint.h>
 
 #include"defines.h"
 #define EXTERN
 #include"global.h"
-}
+#include <stdexcept>
 
-/*-------------------------------------
+namespace psi { namespace CINTS {
+
+/*!-------------------------------------
   Swap ket and bra of a 4-index buffer
  -------------------------------------*/
-extern "C" void ijkl_to_klij(double *ijkl_buf, double *klij_buf, int nij, int nkl)
+void ijkl_to_klij(double *ijkl_buf, double *klij_buf, int nij, int nkl)
 {
   int ijkl = 0;
   for(int ij=0; ij<nij; ij++) {
@@ -30,7 +33,7 @@ extern "C" void ijkl_to_klij(double *ijkl_buf, double *klij_buf, int nij, int nk
   return;
 }
 
-extern "C" void ijkl_to_jikl(double *ijkl_buf, double *jikl_buf, int ni, int nj, int nkl)
+ void ijkl_to_jikl(double *ijkl_buf, double *jikl_buf, int ni, int nj, int nkl)
 {
   double* ijkl_ptr = ijkl_buf;
   for(int i=0; i<ni; i++) {
@@ -43,7 +46,7 @@ extern "C" void ijkl_to_jikl(double *ijkl_buf, double *jikl_buf, int ni, int nj,
   }
 }
 
-extern "C" void ijkl_to_ijlk(double *ijkl_buf, double *ijlk_buf, int nij, int nk, int nl)
+ void ijkl_to_ijlk(double *ijkl_buf, double *ijlk_buf, int nij, int nk, int nl)
 {
   double* ijkl_ptr = ijkl_buf;
   for(int ij=0; ij<nij; ij++) {
@@ -56,3 +59,4 @@ extern "C" void ijkl_to_ijlk(double *ijkl_buf, double *ijlk_buf, int nij, int nk
   }
 }
 
+};};

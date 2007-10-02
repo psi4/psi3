@@ -1,13 +1,14 @@
-/*! \file 
+/*! \file giaio_te_deriv.h
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */
+#include <cmath>
+#include <cstdio>
+#include <cstring>
 extern "C" {
-#include <math.h>
-#include <stdio.h>
-#include <string.h>
 #include <memory.h>
 #include <stdlib.h>
+}
 #include <libipv1/ip_lib.h>
 #include <libiwl/iwl.h>
 #include <libciomr/libciomr.h>
@@ -29,11 +30,11 @@ extern "C" {
 #include "symmetrize.h"
 #include "small_fns.h"
 #include "compute_eri.h"
-}
 
+namespace psi { namespace CINTS {
 static inline int hash(int L, int M, int N);
 
-extern "C" void giao_te_deriv(void)
+void giao_te_deriv(void)
 {
   /*--- Various data structures ---*/
   Libint_t Libint;                    /* Integrals library object */
@@ -418,3 +419,4 @@ static inline int hash(int L, int M, int N)
   int result = N + io[MpN];
   return result;
 }
+};};

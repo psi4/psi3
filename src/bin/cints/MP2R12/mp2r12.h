@@ -1,6 +1,10 @@
-/*! \file 
+#ifndef _psi_src_bin_cints_MP2R12_mp2r12_h
+#define _psi_src_bin_cints_MP2R12_mp2r12_h
+
+/*! \file mp2r12.h
     \ingroup (CINTS)
-    \brief Enter brief description of file here 
-*/
+*/namespace psi { namespace CINTS {
 
 void mp2r12();
+}}
+#endif

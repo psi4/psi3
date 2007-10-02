@@ -1,13 +1,14 @@
-/*! \file 
+/*! \file oe_deriv1_ints.cc
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */
-#include <math.h>
+#include <cmath>
+extern "C" {
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+}
+#include <cstring>
 
-extern "C" {
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libint/libint.h>
@@ -23,12 +24,12 @@ extern "C" {
   #include"taylor_fm_eval.h"
 #endif
 #include "small_fns.h"
-}
+
 
 /*-------------------------------
   Explicit function declarations
  -------------------------------*/
-namespace {
+namespace psi { namespace CINTS {
 /*--- These frequently used numbers are to avoid costs of passing parameters ---*/
 static double oo2g, oog, gam;
 inline double overlap_int(double a1, int l1, int m1, int n1, double norm1,
@@ -43,14 +44,10 @@ struct coordinates PA,
 struct coordinates PB);
 inline double f_n(int k, int l1, int l2, double A, double B);
 inline double int_pow(double a, int p);
-};
 
-/*-------------------------------------------------------------
+/*!-------------------------------------------------------------
   This function computes derivatives of one-electron integrals
  -------------------------------------------------------------*/
-
-extern "C" {
-
 void oe_deriv1_ints()
 {
   /* Only computing first-order derivatives here */
@@ -524,11 +521,10 @@ void oe_deriv1_ints()
   free(T_so);
   free(V_so);
 }   
-}
 
 
-namespace {
-/*-----------------------------------------------
+
+/*!-----------------------------------------------
   This computes overlap of 2 primitive gaussians
  -----------------------------------------------*/
 double overlap_int(double a1, int l1, int m1, int n1, double norm1,
@@ -581,7 +577,7 @@ double overlap_int(double a1, int l1, int m1, int n1, double norm1,
 }
 
 
-/*-----------------------------------------------------------------------------
+/*!-----------------------------------------------------------------------------
   This computes matrix element of kinetic energy between 2 primitive gaussians
  -----------------------------------------------------------------------------*/
 double ke_int(double a1, int l1, int m1, int n1, double norm1,
@@ -675,4 +671,4 @@ double int_pow(double a, int p)
   return b;
 }
 };
-
+};
