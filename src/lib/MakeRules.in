@@ -5,7 +5,7 @@
 #
 
 .PHONY:	all default install install_inc install_target install_man
-.PHONY:	 clean oclean iclean dclean target_clean
+.PHONY:	 clean oclean dclean target_clean
 
 #
 # This should be the first rule.  It will create a library without
