@@ -46,8 +46,8 @@ double **Chkpt::rd_alpha_scf(void)
 	keyword = build_keyword("Alpha MO coefficients");
 
 	if (psio->tocscan(PSIF_CHKPT, keyword) != NULL) {
-		nmo = chkpt_rd_nmo();
-		nso = chkpt_rd_nso();
+		nmo = rd_nmo();
+		nso = rd_nso();
 
 		scf = matrix<double>(nso,nmo);
 		psio->read_entry(PSIF_CHKPT, keyword, (char *) scf[0], 
@@ -68,8 +68,8 @@ double **Chkpt::rd_beta_scf(void)
 	keyword = build_keyword("Beta MO coefficients");
 
 	if (psio->tocscan(PSIF_CHKPT, keyword) != NULL) {
-		nmo = chkpt_rd_nmo();
-		nso = chkpt_rd_nso();
+		nmo = rd_nmo();
+		nso = rd_nso();
 
 		scf = matrix<double>(nso,nmo);
 		psio->read_entry(PSIF_CHKPT, keyword, (char *) scf[0], 
