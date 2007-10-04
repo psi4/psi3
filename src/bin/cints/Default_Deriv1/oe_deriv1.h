@@ -25,5 +25,9 @@ namespace psi {
   double int_pow(double a, int p);
   double ***init_box(int a, int b, int c);
   void free_box(double ***box, int a, int b);
+  void oe_deriv1_darwin1(void);
+  void oe_deriv1_darwin1_test(void);
+  void oe_deriv1_mvc(void);
+  void oe_deriv1_mvc_test(void);
 };}
 #endif

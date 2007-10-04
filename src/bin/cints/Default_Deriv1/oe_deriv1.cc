@@ -192,7 +192,7 @@ void oe_deriv1()
 		    wdens_pf *= 2.0;
 		  }
 		  /*--- A factor of 1/2 for correlated Lagrangians ---*/
-		  if (strcmp(UserOptions.wfn,"SCF"))
+          if ((strcmp(UserOptions.wfn,"SCF")) && (strcmp(UserOptions.wfn,"SCF_MVD")))
 		    wdens_pf *= 0.5;
 
 		  tmp = 2.0*a1*overlap_int(a1, l1+1, m1, n1, inorm, a2, l2, m2, 

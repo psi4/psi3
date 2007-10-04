@@ -60,7 +60,7 @@ namespace psi { namespace CINTS {
     errcod = ip_string("WFN",&UserOptions.wfn,0);
     if (UserOptions.wfn == NULL)
       throw std::domain_error("Keyword WFN is missing");
-    if (!strcmp("SCF",UserOptions.wfn))
+    if ((!strcmp("SCF",UserOptions.wfn)) || (!strcmp("SCF_MVD",UserOptions.wfn)))
       UserOptions.scf_only = 1;
     
     UserOptions.num_threads = 1;
@@ -174,6 +174,9 @@ namespace psi { namespace CINTS {
 	UserOptions.make_eri = 0;
 	UserOptions.make_fock = 0;
 	UserOptions.make_deriv1 = 1;
+    UserOptions.make_deriv1_mvd = 0;
+    if (!strcmp("SCF_MVD",UserOptions.wfn))
+      UserOptions.make_deriv1_mvd = 1;
 	UserOptions.symm_ints = 0;
 	UserOptions.dertype = strdup("FIRST");
 	if (!strcmp("SCF",UserOptions.wfn)) {
@@ -191,7 +194,11 @@ namespace psi { namespace CINTS {
 	  else
 	    throw std::domain_error("SCF gradients with specified REFERENCE not implemented");
 	}
-	else
+    if (!strcmp("SCF_MVD",UserOptions.wfn)) {
+	  if (UserOptions.reftype != rhf)
+	    throw std::domain_error("SCF_MVD gradients with specified REFERENCE not implemented");
+    }
+	if ((strcmp("SCF",UserOptions.wfn)) && (strcmp("SCF_MVD",UserOptions.wfn))) 
 	  UserOptions.num_threads = 1;
 #else
 	throw std::domain_error("--deriv1 option is not supported by your CINTS executable.\nRecompile the code including files in Default_Deriv1 subdirectory.");

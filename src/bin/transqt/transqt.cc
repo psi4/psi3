@@ -574,6 +574,8 @@ void get_parameters(void)
   /* pitzer = true for SCF second derivative calculation */
   if(!strcmp(params.wfn,"SCF") && !strcmp(params.dertype,"SECOND"))
     params.pitzer = 1;
+  if(!strcmp(params.wfn,"SCF_MVD") && !strcmp(params.dertype,"FIRST"))
+    params.pitzer = 1;
 
   params.reorder = 0;
   errcod = ip_boolean("REORDER",&(params.reorder),0);

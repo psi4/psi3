@@ -42,7 +42,7 @@ void deriv1()
     Grad = block_matrix(Molecule.num_atoms,3);
     
     if (Molecule.num_atoms != 0) {
-      if (!strcmp(UserOptions.wfn,"SCF")) {
+      if ((!strcmp(UserOptions.wfn,"SCF")) || (!strcmp(UserOptions.wfn,"SCF_MVD"))) {
         init_moinfo();
         compute_scf_opdm();
       }
@@ -50,13 +50,17 @@ void deriv1()
         read_gen_opdm();
       enuc_deriv1();
       oe_deriv1();
-      if (!strcmp(UserOptions.wfn,"SCF"))
+      if (!strcmp(UserOptions.wfn,"SCF_MVD")) {
+        oe_deriv1_darwin1();
+        oe_deriv1_mvc();
+      }
+      if ((!strcmp(UserOptions.wfn,"SCF")) || (!strcmp(UserOptions.wfn,"SCF_MVD")))
         te_deriv1_scf();
       else
         te_deriv1_corr();
       symmetrize_deriv1();
       check_rot_inv();
-      if (!strcmp(UserOptions.wfn,"SCF"))
+      if ((!strcmp(UserOptions.wfn,"SCF")) || (!strcmp(UserOptions.wfn,"SCF_MVD")))
         cleanup_moinfo();
     }
     
