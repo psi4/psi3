@@ -8,8 +8,6 @@
 
 extern "C" {
 
-extern void resource_command(void);
-
 /* allocates memory for an n x m matrix */
 /* returns pointer to pointer to 1st element */
 
@@ -32,7 +30,6 @@ double ** init_matrix(unsigned long int n, unsigned long int m)
         ==NULL) {
          fprintf(stderr,"init_matrix: trouble allocating memory \n");
          fprintf(stderr,"n = %ld\n",n);
-         resource_command();
          exit(PSI_RETURN_FAILURE);
          }
 
@@ -41,7 +38,6 @@ double ** init_matrix(unsigned long int n, unsigned long int m)
             ==NULL) {
            fprintf(stderr,"init_matrix: trouble allocating memory \n");
            fprintf(stderr,"i = %ld m = %ld\n",i,m);
-           resource_command();
            exit(PSI_RETURN_FAILURE);
            }
         bzero(array[i],m*(unsigned long int)sizeof(double));

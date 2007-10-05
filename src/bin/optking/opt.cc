@@ -215,7 +215,7 @@ int main(int argc, char **argv) {
       }
     }
 
-    psi_start(argc-parsed,argv+parsed,0);
+    psi_start(&infile,&outfile,&psi_file_prefix,argc-parsed,argv+parsed,0);
     /* init_in_out() sets the value of "infile", so we need to save it */
     fp_input = infile;
     

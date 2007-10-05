@@ -177,7 +177,7 @@ namespace psi{
    progid = (char *) malloc(strlen(gprgid())+2);
    sprintf(progid, ":%s",gprgid());
   
-   psi_start(argc-1,argv+1,0); /* this assumes no cmdline args except filenames */
+   psi_start(&infile,&outfile,&psi_file_prefix,argc-1,argv+1,0); /* this assumes no cmdline args except filenames */
    ip_cwk_add(":INPUT");
    ip_cwk_add(progid);
    free(progid);
@@ -187,7 +187,7 @@ namespace psi{
   void exit_io(void)
   {
    psio_done();
-   psi_stop();
+   psi_stop(infile,outfile,psi_file_prefix);
   }
 
   } /* End namespace psi2molden */

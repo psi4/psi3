@@ -96,7 +96,7 @@ void init_io(int argc, char *argv[])
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  psi_start(argc-1,argv+1,0); /* this assumes no cmdline args except filenames */
+  psi_start(&infile,&outfile,&psi_file_prefix,argc-1,argv+1,0); /* this assumes no cmdline args except filenames */
   ip_cwk_add(progid);
   free(progid);
   tstart(outfile);
@@ -123,7 +123,7 @@ void exit_io(void)
 
   psio_done();
   tstop(outfile);
-  psi_stop();
+  psi_stop(infile,outfile,psi_file_prefix);
 }
 
 void init_ioff(void)

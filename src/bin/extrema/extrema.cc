@@ -120,7 +120,7 @@ void print_intro() {
 
 void start_io(int argc, char *argv[]) {
    
-    psi_start(argc-1,argv+1,0); 
+    psi_start(&infile,&outfile,&psi_file_prefix,argc-1,argv+1,0); 
     ip_cwk_add(":INPUT");
     ip_cwk_add(":EXTREMA");
     psio_init(); psio_ipv1_config();
@@ -135,7 +135,7 @@ void stop_io() {
 
     chkpt_close();
     tstop(outfile);
-    psi_stop();
+    psi_stop(infile,outfile,psi_file_prefix);
  
     return;
 }

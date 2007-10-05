@@ -48,7 +48,7 @@ int main(int argc, char* argv[])
 {
   using namespace psi::giao;
   
-  int errcod = psi_start(argc-1,argv+1,0);
+  int errcod = psi_start(&infile,&outfile,&psi_file_prefix,argc-1,argv+1,0);
   if (errcod != PSI_RETURN_SUCCESS)
     throw std::runtime_error("main -- psi_start failed");
   tstart(outfile);
@@ -283,7 +283,7 @@ int main(int argc, char* argv[])
   chkpt_close();
   psio_done();
   tstop(outfile);
-  psi_stop();
+  psi_stop(infile,outfile,psi_file_prefix);
   exit(0);
 }
 

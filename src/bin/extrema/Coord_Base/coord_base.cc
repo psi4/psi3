@@ -132,7 +132,7 @@ void coord_base :: grad_test() {
 	fprintf(stdout,"\n Optimization completed\n");  
         stop_io();
 	/* stop_io() calls psi_stop
-           psi_stop() closes infile and outfile */
+           psi_stop(infile,outfile,psi_file_prefix) closes infile and outfile */
 	exit(PSI_RETURN_ENDLOOP);
     }
     

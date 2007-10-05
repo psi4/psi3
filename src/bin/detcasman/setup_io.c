@@ -34,7 +34,7 @@ void init_io(int argc, char *argv[])
     extra_args[num_extra_args++] = argv[i];
   }
   
-  psi_start(num_extra_args, extra_args, 0);
+  psi_start(&infile,&outfile,&psi_file_prefix,num_extra_args, extra_args, 0);
   ip_cwk_add(":DETCASMAN");
   ip_cwk_add(":DETCAS"); 
   tstart(outfile);
@@ -49,7 +49,7 @@ void init_io(int argc, char *argv[])
 void close_io(void)
 {
   tstop(outfile);
-  psi_stop();
+  psi_stop(infile,outfile,psi_file_prefix);
 }
 
 

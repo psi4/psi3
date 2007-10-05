@@ -273,7 +273,7 @@ void init_io(int argc, char *argv[])
     }
   }
 
-  psi_start(num_unparsed, argv_unparsed, 0);
+  psi_start(&infile,&outfile,&psi_file_prefix,num_unparsed, argv_unparsed, 0);
   ip_cwk_add(":INPUT");
   ip_cwk_add(":CCEOM");
   ip_cwk_add(progid);
@@ -319,7 +319,7 @@ void exit_io(void)
 
   psio_done();
   tstop(outfile);
-  psi_stop();
+  psi_stop(infile,outfile,psi_file_prefix);
 }
 
 /* put copies of L for excited states in LAMPS with irrep and index label */

@@ -12,11 +12,8 @@
 
 extern "C" {
 
-extern FILE *infile, *outfile;
-extern char *psi_file_prefix;
-
 /*!
-** psi_stop()
+** psi_stop(infile,outfile,psi_file_prefix)
 **
 ** This function closes input and output files and deinitializes Input Parsing library.
 **
@@ -26,7 +23,7 @@ extern char *psi_file_prefix;
 ** \ingroup (CIOMR)
 */
 
-int psi_stop(void)
+int psi_stop(FILE* infile, FILE* outfile, char* psi_file_prefix)
 {
   ip_done();
   free(psi_file_prefix);

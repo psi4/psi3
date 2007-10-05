@@ -239,7 +239,7 @@ main(int argc, char* argv[])
   }
 
   /* open files */
-  errcod = psi_start(num_unparsed,argv_unparsed,0);
+  errcod = psi_start(&infile,&outfile,&psi_file_prefix,num_unparsed,argv_unparsed,0);
   ip_cwk_add(":GEOM");
   /* done inside psi_start now
   ffile(&outfile,outfname,0);
@@ -415,7 +415,7 @@ main(int argc, char* argv[])
     /* close files */
     fprintf(outfile, "\n");
     tstop(outfile);
-    psi_stop();
+    psi_stop(infile,outfile,psi_file_prefix);
     exit(0);
   }
   
@@ -428,7 +428,7 @@ main(int argc, char* argv[])
       printf("GEOM: trouble parsing isotopes array %d\n", i) ; 
       fprintf(outfile, "\n") ;
       tstop(outfile);
-      psi_stop();
+      psi_stop(infile,outfile,psi_file_prefix);
       exit(0) ;
     } 
     
@@ -457,7 +457,7 @@ main(int argc, char* argv[])
   /* close files */
   fprintf(outfile, "\n");
   tstop(outfile);
-  psi_stop();
+  psi_stop(infile,outfile,psi_file_prefix);
 }
 
 

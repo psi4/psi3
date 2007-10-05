@@ -634,7 +634,7 @@ void cleanup()
     fprintf(outfile,"\n%8cCalculation has not converged!\n",' ');
       
   tstop(outfile);
-  psi_stop();
+  psi_stop(infile,outfile,psi_file_prefix);
       
   if(!converged) exit(PSI_RETURN_FAILURE);
   exit(PSI_RETURN_SUCCESS);

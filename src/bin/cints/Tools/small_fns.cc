@@ -78,7 +78,7 @@ void start_io(int argc, char *argv[])
       extra_args[num_extra_args++] = argv[i];
   }
   
-  errcod = psi_start(num_extra_args, extra_args, 0);
+  errcod = psi_start(&infile,&outfile,&psi_file_prefix,num_extra_args, extra_args, 0);
   if (errcod != PSI_RETURN_SUCCESS)
     abort();
   ip_cwk_add(":CINTS");
@@ -95,7 +95,7 @@ void stop_io()
   if(UserOptions.print_lvl)
     tstop(outfile);
   psio_done();
-  psi_stop();
+  psi_stop(infile,outfile,psi_file_prefix);
 }
 
 void punt(char *mess)

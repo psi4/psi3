@@ -46,7 +46,7 @@ int main(int argc, char *argv[])
   char fileslist[MAX_STRING];
   char cmdstring[MAX_STRING];
 
-  psi_start(argc-1,argv+1,0);
+  psi_start(&infile,&outfile,&psi_file_prefix,argc-1,argv+1,0);
   
   /* Initialize the I/O system */
   psio_init(); psio_ipv1_config();
@@ -81,7 +81,7 @@ int main(int argc, char *argv[])
 
   /* we're done, clean up */
   psio_done();
-  psi_stop();
+  psi_stop(infile,outfile,psi_file_prefix);
   exit(0);
 }
 

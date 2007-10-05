@@ -192,7 +192,7 @@ int main(int argc,char* argv[])
   int errcod, orthog_only, mo_print;
   char *wfn;
  
-  errcod = psi_start(argc-1, argv+1, 0);
+  errcod = psi_start(&infile,&outfile,&psi_file_prefix,argc-1, argv+1, 0);
   if (errcod != PSI_RETURN_SUCCESS)
     exit(PSI_RETURN_FAILURE);
   ip_cwk_add(":SCF");
@@ -323,7 +323,7 @@ int main(int argc,char* argv[])
     write_scf_matrices();
     psio_done();
     tstop(outfile);
-    psi_stop();
+    psi_stop(infile,outfile,psi_file_prefix);
     exit(PSI_RETURN_SUCCESS);
   }
 

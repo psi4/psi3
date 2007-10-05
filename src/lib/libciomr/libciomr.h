@@ -16,8 +16,8 @@
 extern "C" {
 #endif
 
-int psi_start(int argc, char *argv[], int overwrite_output);
-int psi_stop(void);
+int psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix, int argc, char *argv[], int overwrite_output);
+int psi_stop(FILE* infile, FILE* outfile, char* psi_file_prefix);
 char* psi_ifname();
 char* psi_ofname();
 char* psi_fprefix();

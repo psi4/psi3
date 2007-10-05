@@ -86,7 +86,7 @@ void start_io(int argc, char *argv[])
     }
   }
   
-  errcod = psi_start(num_extra_args, extra_args, overwrite_output);
+  errcod = psi_start(&infile,&outfile,&psi_file_prefix,num_extra_args, extra_args, overwrite_output);
   if (errcod != PSI_RETURN_SUCCESS)
     abort();
   ip_cwk_add(":INPUT");
@@ -102,7 +102,7 @@ void stop_io()
 {
   tstop(outfile);
   psio_done();
-  psi_stop();
+  psi_stop(infile,outfile,psi_file_prefix);
 }
 
 }} // namespace psi::input

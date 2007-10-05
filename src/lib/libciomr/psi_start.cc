@@ -16,9 +16,6 @@
 
 extern "C" {
 
-extern FILE *infile, *outfile;
-extern char *psi_file_prefix;
-
 static char *ifname = NULL;
 static char *ofname = NULL;
 static char *fprefix = NULL;
@@ -40,7 +37,7 @@ static char *fprefix = NULL;
 ** \ingroup (CIOMR)
 */
 
-int psi_start(int argc, char *argv[], int overwrite_output)
+int psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix, int argc, char *argv[], int overwrite_output)
 {
   int i, errcod;
                                 /* state flags */
@@ -132,35 +129,35 @@ int psi_start(int argc, char *argv[], int overwrite_output)
 
   /* open input and output files */
   if(ifname[0]=='-' && ifname[1]=='\x0')
-    infile=stdin;
+    *infile=stdin;
   else
-    infile = fopen(ifname, "r");
-  if (infile == NULL) {
+    *infile = fopen(ifname, "r");
+  if (*infile == NULL) {
     fprintf(stderr, "Error: could not open input file %s\n",ifname);
     return(PSI_RETURN_FAILURE);
   }
   if (overwrite_output)
     {
       if(ofname[0]=='-' && ofname[1]=='\x0')
-	outfile=stdout;
+	*outfile=stdout;
       else
-	outfile = fopen(ofname, "w");
+	*outfile = fopen(ofname, "w");
     }
   else
     {
       if(ofname[0]=='-' && ofname[1]=='\x0')
-	outfile=stdout;
+	*outfile=stdout;
       else
-	outfile = fopen(ofname, "a");
+	*outfile = fopen(ofname, "a");
     }
-  if (outfile == NULL) {
+  if (*outfile == NULL) {
     fprintf(stderr, "Error: could not open output file %s\n",ofname);
     return(PSI_RETURN_FAILURE);
   }
 
   /* initialize libipv1 */
   ip_set_uppercase(1);
-  ip_initialize(infile, outfile);
+  ip_initialize(*infile, *outfile);
   ip_cwk_clear();
 
   /* open user's PSI configuration file (default, $HOME/.psirc) */
@@ -192,7 +189,7 @@ int psi_start(int argc, char *argv[], int overwrite_output)
   if (fprefix == NULL) {
     fprefix = strdup(PSI_DEFAULT_FILE_PREFIX);
   }
-  psi_file_prefix = strdup(fprefix);
+  *psi_file_prefix = strdup(fprefix);
 
   /* other Psi modules called by this module should read from the same input file
      set the value of PSI_INPUT for the duration of this run */

@@ -221,7 +221,7 @@ int main()
   psio_address next;</font><font color=red>  /* Special page/offset structure */
 </font>
 
-  psi_start(argc-1,argv+1,0);
+  psi_start(&infile,&outfile,&psi_file_prefix,argc-1,argv+1,0);
   ip_cwk_add(progid);
 
 <font color=red>

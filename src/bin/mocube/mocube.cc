@@ -185,7 +185,7 @@ void init_io(int argc, char *argv[]) {
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  psi_start(argc-1,argv+1,0);
+  psi_start(&infile,&outfile,&psi_file_prefix,argc-1,argv+1,0);
   ip_cwk_add(":INPUT");
   ip_cwk_add(progid);
   psio_init(); psio_ipv1_config();

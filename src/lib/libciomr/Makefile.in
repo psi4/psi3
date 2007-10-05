@@ -48,7 +48,6 @@ psi_stop.cc \
 r_async.cc \
 ram.cc \
 rclose.cc \
-resource.cc \
 rfile.cc \
 rgetsa.cc \
 rread.cc \

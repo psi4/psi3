@@ -39,7 +39,7 @@ void init_io(int argc, char *argv[])
     }
   }
  
-  psi_start(num_extra_args, extra_args, 0); 
+  psi_start(&infile,&outfile,&psi_file_prefix,num_extra_args, extra_args, 0); 
 
   /*
   init_in_out(argc-parsed,argv+parsed);
@@ -65,7 +65,7 @@ void close_io(void)
 {
    psio_done();
    if (Params.print_lvl) tstop(outfile);
-   psi_stop();
+   psi_stop(infile,outfile,psi_file_prefix);
 }
 
 

@@ -258,7 +258,7 @@ void init_io(int argc, char *argv[])
        }
    }
 
-   errcod = psi_start(num_extra_args, extra_args, 0);
+   errcod = psi_start(&infile,&outfile,&psi_file_prefix,num_extra_args, extra_args, 0);
    if (errcod != PSI_RETURN_SUCCESS)
     abort();
    if (params.print_lvl) tstart(outfile);
@@ -304,7 +304,7 @@ void exit_io(void)
 {
   psio_done();
   if (params.print_lvl) tstop(outfile);
-  psi_stop();
+  psi_stop(infile,outfile,psi_file_prefix);
 }
 
 

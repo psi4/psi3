@@ -16,8 +16,6 @@
 
 extern "C" {
 
-extern int resource_command(void);
-
 /*!
 ** init_long_int_array():
 ** Allocates memory for one-D array of long ints of dimension 'size'
@@ -35,7 +33,6 @@ long int * init_long_int_array(int size)
    if ((array = (long int *) malloc(sizeof(long int)*size))==NULL) {
       fprintf(stderr,"init_array:  trouble allocating memory \n");
       fprintf(stderr,"size = %d\n",size);
-      resource_command();
       exit(PSI_RETURN_FAILURE);
       }
    bzero(array,sizeof(long int)*size);

@@ -46,7 +46,7 @@ int main(int argc, char** argv)
   int index;
   int i,j;
 
-  psi_start(argc-1, argv+1, 0);
+  psi_start(&infile,&outfile,&psi_file_prefix,argc-1, argv+1, 0);
   ip_cwk_add(gprgid());
   psio_init(); psio_ipv1_config();
   tstart(outfile);
@@ -169,7 +169,7 @@ int main(int argc, char** argv)
   chkpt_close();
   tstop(outfile);
   psio_done();
-  psi_stop();
+  psi_stop(infile,outfile,psi_file_prefix);
   return 0;
 }
 

@@ -561,7 +561,7 @@ void init_io(int argc, char *argv[])
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  int errcod = psi_start(argc-1,argv+1,0);
+  int errcod = psi_start(&infile,&outfile,&psi_file_prefix,argc-1,argv+1,0);
   if (errcod != PSI_RETURN_SUCCESS)
     throw std::runtime_error("init_io -- psi_start failed");
   ip_cwk_add(progid);
@@ -603,7 +603,7 @@ void exit_io()
 {
   psio_done();
   tstop(outfile);
-  psi_stop();
+  psi_stop(infile,outfile,psi_file_prefix);
 }
 
 void done(const char *message)

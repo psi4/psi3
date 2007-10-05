@@ -248,7 +248,7 @@ void init_io(int argc, char *argv[])
     * we do pointer arithmetic on argv
     */
    /* init_in_out(argc-parsed,argv+parsed); */
-   errcod = psi_start(num_unparsed,argv_unparsed,0);
+   errcod = psi_start(&infile,&outfile,&psi_file_prefix,num_unparsed,argv_unparsed,0);
 
    if (Parameters.print_lvl) tstart(outfile);
 
@@ -292,7 +292,7 @@ void close_io(void)
    int errcod;
    psio_done();
    if (Parameters.print_lvl) tstop(outfile);
-   errcod = psi_stop();
+   errcod = psi_stop(infile,outfile,psi_file_prefix);
 }
 
 

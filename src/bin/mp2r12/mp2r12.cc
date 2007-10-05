@@ -57,7 +57,7 @@ namespace psi{
   namespace mp2r12{
   void init_io(int argc, char *argv[])
   {
-   psi_start(argc-1,argv+1,0);
+   psi_start(&infile,&outfile,&psi_file_prefix,argc-1,argv+1,0);
    tstart(outfile);
    ip_cwk_add(":MP2R12");
    
@@ -100,7 +100,7 @@ namespace psi{
    chkpt_close();
    psio_done();
    tstop(outfile);
-   psi_stop();
+   psi_stop(infile,outfile,psi_file_prefix);
   }
 
   void get_parameters(void)

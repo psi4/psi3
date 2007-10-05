@@ -15,8 +15,6 @@
 
 extern "C" {
 
-extern int resource_command(void);
-
 
 /*!
 ** init_int_array():
@@ -39,7 +37,6 @@ int * init_int_array(int size)
    if ((array = (int *) malloc(sizeof(int)*size))==NULL) {
       fprintf(stderr,"init_array:  trouble allocating memory \n");
       fprintf(stderr,"size = %d\n",size);
-      resource_command();
       exit(PSI_RETURN_FAILURE);
       }
    bzero(array,sizeof(int)*size);

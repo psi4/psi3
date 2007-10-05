@@ -516,7 +516,7 @@ int execut(char **exec, int nexec, int depth)
   return(i);
 }
 
-/* this code is essentially the same as in the psi_start() lib funct */
+/* this code is essentially the same as in the psi_start(&infile,&outfile,&psi_file_prefix,) lib funct */
 int parse_cmdline(int argc, char *argv[])
 {
   int i,errcod;
@@ -669,7 +669,7 @@ int parse_cmdline(int argc, char *argv[])
   /*RAK */
   /* this hack works but doesn't pick up psi prefixes
   fclose(infile);
-  psi_start(0,NULL,0);
+  psi_start(&infile,&outfile,&psi_file_prefix,0,NULL,0);
   ip_done();
   fclose(outfile);
   fclose(infile);
@@ -690,7 +690,7 @@ int get_ndisp(void) {
 
   /* psi_file_prefix = getenv("PSI_PREFIX");
   printf("%s\n", psi_file_prefix);
-  psi_start(0,NULL,0); */
+  psi_start(&infile,&outfile,&psi_file_prefix,0,NULL,0); */
 
   /* need to remove psi_start */
   psio_init(); psio_ipv1_config();

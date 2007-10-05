@@ -13,7 +13,7 @@ void start_io(int argc, char *argv[])
 {
   int errcod;
 
-  errcod = psi_start(argc-1,argv+1,0);
+  errcod = psi_start(&infile,&outfile,&psi_file_prefix,argc-1,argv+1,0);
   if (errcod != PSI_RETURN_SUCCESS)
     abort();
   ip_cwk_add(":OEPROP");
@@ -28,7 +28,7 @@ void stop_io()
 {
   tstop(outfile);
   psio_done();
-  psi_stop();
+  psi_stop(infile,outfile,psi_file_prefix);
 
   return;
 }

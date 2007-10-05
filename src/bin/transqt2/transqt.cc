@@ -353,7 +353,7 @@ void init_io(int argc, char *argv[])
       extra_args[num_extra_args++] = argv[i];
   }
 
-  psi_start(num_extra_args, extra_args, 0);
+  psi_start(&infile,&outfile,&psi_file_prefix,num_extra_args, extra_args, 0);
 
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s", gprgid());
@@ -385,7 +385,7 @@ void exit_io(void)
   psio_close(CC_INFO,1);
   psio_done();
   if(params.print_lvl) tstop(outfile);
-  psi_stop();
+  psi_stop(infile,outfile,psi_file_prefix);
 }
 
 void init_ioff(void)

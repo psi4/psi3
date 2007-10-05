@@ -27,7 +27,7 @@ a minimal \PSIthree\ program, whose elements are described below.
                 {
                   extern char *gprgid(void);
 
-                  psi_start(argc-1, argv+1, 0);
+                  psi_start(&infile, &outfile, &psi_file_prefix, argc-1, argv+1, 0);
                   ip_cwk_add(gprgid());
                   psio_init(); psio_ipv1_config();
 
@@ -38,13 +38,12 @@ a minimal \PSIthree\ program, whose elements are described below.
                   /* to end timing, tstop(outfile); */
 
                   psio_done();
-                  psi_stop();
+                  psi_stop(infile, outfile, psi_file_prefix);
                 }
 
                 char *gprgid(void)
                 {
-                   /* YOU NEED THE COLON IN THE STRING BELOW */
-                   char *prgid = ":CODE_NAME";
+                   char *prgid = "CODE_NAME";
                    return(prgid);
                 }               
 \end{verbatim}

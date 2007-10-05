@@ -369,7 +369,7 @@ void init_io(int argc, char *argv[])
     }
   }
 
-  psi_start(num_unparsed,argv_unparsed,0);
+  psi_start(&infile,&outfile,&psi_file_prefix,num_unparsed,argv_unparsed,0);
   ip_cwk_add(progid);
   free(progid);
   tstart(outfile);
@@ -424,7 +424,7 @@ void exit_io(void)
 
   psio_done();
   tstop(outfile);
-  psi_stop();
+  psi_stop(infile,outfile,psi_file_prefix);
 }
 
 }} // namespace psi::ccdensity

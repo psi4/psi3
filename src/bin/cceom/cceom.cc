@@ -116,7 +116,7 @@ void init_io(int argc, char *argv[])
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  psi_start(num_unparsed, argv_unparsed, 0);
+  psi_start(&infile,&outfile,&psi_file_prefix,num_unparsed, argv_unparsed, 0);
   ip_cwk_add(":INPUT");
   ip_cwk_add(progid);
   free(progid);
@@ -157,7 +157,7 @@ void exit_io(void)
 
   psio_done();
   tstop(outfile);
-  psi_stop();
+  psi_stop(infile,outfile,psi_file_prefix);
 }
 
 void form_dpd_dp(void) {
