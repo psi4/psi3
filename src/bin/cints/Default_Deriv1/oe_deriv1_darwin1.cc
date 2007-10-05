@@ -112,7 +112,8 @@ void oe_deriv1_darwin1(void) {
         energy_atom[iatom] += zval * Dens[i][j] * AO_at_nuc[iatom][i] * AO_at_nuc[iatom][j];
   }
   for (iatom=0; iatom<natom; ++iatom) {
-    energy_atom[iatom] *= _pi/(2*_c_au*_c_au);
+    energy_atom[iatom] *= UserOptions.fine_structure_alpha * UserOptions.fine_structure_alpha
+      * _pi/(2*_c_au*_c_au);
     energy += energy_atom[iatom];
   }
   if (UserOptions.print_lvl >= PRINT_DEBUG) {
@@ -224,7 +225,8 @@ void oe_deriv1_darwin1(void) {
           for (j=0; j<nao; ++j)
             tval += zval * Dens[i][j] * AO_at_nuc[k][i] * dAO_at_nuc[3*iatom+xyz][k][j]; 
       }
-      darwin_deriv[iatom][xyz] = _pi/(_c_au * _c_au) * tval;
+      darwin_deriv[iatom][xyz] = UserOptions.fine_structure_alpha * UserOptions.fine_structure_alpha 
+        * _pi/(_c_au * _c_au) * tval;
     }
   }
 
@@ -273,7 +275,8 @@ void oe_deriv1_darwin1(void) {
           for (j=0; j<nao; ++j)
             tval += zval * der_rho[i][j] * AO_at_nuc[k][i] * AO_at_nuc[k][j];
       }
-      darwin_deriv_orb[iatom][xyz] = _pi/(_c_au * _c_au) * tval;
+      darwin_deriv_orb[iatom][xyz] = UserOptions.fine_structure_alpha * UserOptions.fine_structure_alpha
+        * _pi/(_c_au * _c_au) * tval;
     }
   }
 

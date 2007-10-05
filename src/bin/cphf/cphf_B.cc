@@ -75,7 +75,6 @@ void cphf_B(double ***UX, double **lx)
   double *eval;
   double **evec;
   double *rotstr;
-  double noei_ao;
 
   /*
   Compute MO Hessian for a complex perturbation (IC) 

@@ -130,10 +130,26 @@ int main(int argc, char *argv[])
   
   cphf_X(S, Baijk, Aaibj, UX);
 
-  UF = (double ***) malloc(3 * sizeof(double **));
-  for(coord=0; coord < 3; coord++)  {
-    UF[coord] = block_matrix(nmo,nmo);
+  if (X_only) { /* only compute cphf coefficients, then quit */
+    free_block(A);
+    free_block(Baijk);
+    free_block(Aaibj);
+
+    for(coord=0; coord < natom*3; coord++) {
+      free_block(UX[coord]);
+      free_block(F[coord]);
+      free_block(S[coord]);
+    }
+    free(UX); free(F); free(S);
+    timer_off("CPHF Main");
+    timer_done();
+    exit_io();
+    exit(PSI_RETURN_SUCCESS);
   }
+  
+  UF = (double ***) malloc(3 * sizeof(double **));
+  for(coord=0; coord < 3; coord++)
+    UF[coord] = block_matrix(nmo,nmo);
 
   cphf_F(Aaibj, UF);
   
@@ -185,12 +201,21 @@ extern char *gprgid(void);
 
 void init_io(int argc, char *argv[])
 {
-  char *progid;
+  int i, num_unparsed;
+  char *progid, *argv_unparsed[100];
 
   progid = (char *) malloc(strlen(gprgid())+2);
   sprintf(progid, ":%s",gprgid());
 
-  psi_start(argc-1,argv+1,0);
+  X_only = 0;
+  for (i=1, num_unparsed=0; i<argc; ++i) {
+    if (!strcmp(argv[i],"--X_only")) /* only compute cphf coefficients, then quit */
+      X_only = 1;
+    else
+      argv_unparsed[num_unparsed++] = argv[i];
+  }
+
+  psi_start(num_unparsed,argv_unparsed,0);
   ip_cwk_add(progid);
   free(progid);
   tstart(outfile);

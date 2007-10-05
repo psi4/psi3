@@ -58,6 +58,8 @@ void print_scalars()
      fprintf(outfile,"    Number of atomic orbitals   = %d\n", BasisSet.num_ao);
      fprintf(outfile,"    Number of symmetry orbitals = %d\n", Symmetry.num_so);
      fprintf(outfile,"    Maximum AM in the basis     = %d\n", BasisSet.max_am - 1);
+     if (UserOptions.fine_structure_alpha != 1.0)
+       fprintf(outfile,"    Fine-structure alpha scaling = %8.4lf\n", UserOptions.fine_structure_alpha);
      fprintf(outfile,"\n  -SYMMETRY INFORMATION;\n");
      fprintf(outfile,"    Computational point group        = %s\n", Symmetry.symlabel);
      fprintf(outfile,"    Number of irreps                 = %d\n", Symmetry.nirreps);

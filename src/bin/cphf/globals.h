@@ -24,6 +24,7 @@ namespace psi { namespace cphf {
 EXTERN int *ioff;
 #define IOFF_MAX 32641
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
+EXTERN int X_only; /* only compute cphf coefficients, then stop */
 
 /* setup.c */
 EXTERN int natom, nmo, nso, nao, nirreps, ndocc, nuocc;

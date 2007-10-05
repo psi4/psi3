@@ -224,7 +224,8 @@ void oe_deriv1_mvc(void) {
         energy += 2.0 * Dens[i][j] * mvc_ints[i][j];
     }
   }
-  energy *= -1/(8.0 * _c_au * _c_au);
+  energy *= -1/(8.0 * _c_au * _c_au) *
+    UserOptions.fine_structure_alpha * UserOptions.fine_structure_alpha;
   fprintf(outfile,"\n\tMass-Velocity Correction energy: %15.10lf\n\n", energy);
   energy = energy + chkpt_rd_etot();
   chkpt_wt_etot(energy);
@@ -275,7 +276,8 @@ void oe_deriv1_mvc(void) {
   /* dE/dRx = -1/8c^2 * [d(Cu)Cv + Cu*d(Cv)] = -1/(8c^2)(2*dCu*Cv) */ 
   for (iatom=0; iatom<natom; ++iatom)
     for (xyz=0; xyz<3; ++xyz)
-      mvc_deriv_orb[iatom][xyz] *= -1.0/(8.0*_c_au*_c_au);
+      mvc_deriv_orb[iatom][xyz] *= -1.0/(8.0*_c_au*_c_au) * 
+        UserOptions.fine_structure_alpha * UserOptions.fine_structure_alpha;
 
   free_block(temp_mat);
   free_block(der_rho);
@@ -533,7 +535,8 @@ void oe_deriv1_mvc(void) {
         for (j=0; j<nao; ++j)
           tval += Dens[i][j] * dmvc_ints[3*datom+xyz][i][j];
       }
-      mvc_deriv[datom][xyz] = -1.0 / (4.0 * _c_au * _c_au) * tval;
+      mvc_deriv[datom][xyz] = -1.0 / (4.0 * _c_au * _c_au) * tval
+        * UserOptions.fine_structure_alpha * UserOptions.fine_structure_alpha;
     }
   }
 

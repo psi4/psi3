@@ -145,7 +145,7 @@ void parsing()
     nuc_esp = 1;
 
   fine_structure_alpha = 1.0;
-  errcod = ip_data("FINE_STRUCTURE_ALPHA","%lf",&fine_structure_alpha,0,0);
+  errcod = ip_data("FINE_STRUCTURE_ALPHA","%lf",&fine_structure_alpha,0);
 }
 
 }} // namespace psi::oeprop

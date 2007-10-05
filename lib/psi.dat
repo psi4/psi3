@@ -23,6 +23,7 @@ psi: (
   cctrans    = "transqt2"  %testing with CC modules; eventually will replace transqt
   backtransqt = "transqt --backtr"
   cphf        = "cphf"
+  cphf_X      = "cphf --X_only"
   response    = "response"
   normco      = "normco"
   oeprop      = "oeprop"
@@ -127,24 +128,6 @@ psi: (
   SCFUHFEnergyOpt = $SCFEnergyOpt
   SCFTwoConEnergyOpt = $SCFEnergyOpt
 
-  % Optimizing geometries with SCF_MVD energies
-  SCF_MVDEnergyOpt = (repeat $nopt $SCFEnergy $oeprop $findif_disp_symm 
-    repeat NUM_DISP $findif_next $findif_input $SCFEnergy $oeprop
-    $findif_energy_save end $findif_grad_energy $geomupdate end $done)
-  SCF_MVDRHFEnergyOpt = $SCF_MVDEnergyOpt
-  SCF_MVDROHFEnergyOpt = $SCF_MVDEnergyOpt
-  SCF_MVDUHFEnergyOpt = ERROR
-  SCF_MVDTwoConEnergyOpt = ERROR
-
-  % Procedures for the finite displacements of SCF gradients
-  SCFFirstDisp  = 
-    ($findif_disp repeat $ndisp 
-     $findif_next $uinput $SCFFirst $findif_grad_save end $findif_calc $done)
-  SCFRHFFirstDisp  = $SCFFirstDisp
-  SCFROHFFirstDisp  = $SCFFirstDisp
-  SCFUHFFirstDisp  = $SCFFirstDisp
-  SCFTwoConFirstDisp  = $SCFFirstDisp
-
   % *** SCF Frequencies by Second Derivatives ***
   SCFSecondFreq = ($ints $scf $transqt $deriv2 $propint $cphf)
   SCFRHFSecondFreq = ($SCFSecondFreq $done)
@@ -171,16 +154,6 @@ psi: (
   SCFROHFEnergyFreq  = $SCFEnergyFreq
   SCFUHFEnergyFreq  = $SCFEnergyFreq
   SCFTwoConEnergyFreq  = $SCFEnergyFreq
-
-  % *** SCF_MVD Frequencies by finite differences of energies ***
-  SCF_MVDEnergyFreq  =
-    ($SCF_MVDEnergy $findif_disp_freq_energy_cart repeat NUM_DISP
-     $findif_next $findif_input $SCF_MVDEnergy $findif_energy_save end
-     $findif_freq_energy_cart $done)
-  SCF_MVDRHFEnergyFreq  = $SCF_MVDEnergyFreq
-  SCF_MVDROHFEnergyFreq  = $SCF_MVDEnergyFreq
-  SCF_MVDUHFEnergyFreq  = ERROR
-  SCF_MVDTwoConEnergyFreq  = ERROR
 
   % Procedures for symm force constants via differences of analytic gradients
   SCFFirstSymm_FC  = 
@@ -226,6 +199,69 @@ psi: (
   SCF_MVDROHFEnergy = $SCF_MVDEnergy
   SCF_MVDUHFEnergy = ERROR
   SCF_MVDTwoConEnergy = ERROR
+
+  % *** SCF_MVD energies for geometry optimization ***
+  SCF_MVDEnergyOpt = (repeat $nopt $SCFEnergy $oeprop $findif_disp_symm 
+    repeat NUM_DISP $findif_next $findif_input $SCFEnergy $oeprop
+    $findif_energy_save end $findif_grad_energy $geomupdate end $done)
+  SCF_MVDRHFEnergyOpt = $SCF_MVDEnergyOpt
+  SCF_MVDROHFEnergyOpt = $SCF_MVDEnergyOpt
+  SCF_MVDUHFEnergyOpt = ERROR
+  SCF_MVDTwoConEnergyOpt = ERROR
+
+  % *** SCF_MVD energies for vibrational frequencies ***
+  SCF_MVDEnergyFreq  =
+    ($SCF_MVDEnergy $findif_disp_freq_energy_cart repeat NUM_DISP
+     $findif_next $findif_input $SCF_MVDEnergy $findif_energy_save end
+     $findif_freq_energy_cart $done)
+  SCF_MVDRHFEnergyFreq  = $SCF_MVDEnergyFreq
+  SCF_MVDROHFEnergyFreq  = $SCF_MVDEnergyFreq
+  SCF_MVDUHFEnergyFreq  = ERROR
+  SCF_MVDTwoConEnergyFreq  = ERROR
+
+  % *** SCF_MVD gradients ***
+  SCF_MVDFirst = ($ints $scf $transqt $deriv2 $cphf_X $deriv)
+  SCF_MVDRHFFirst = ($SCF_MVDFirst $done) 
+  SCF_MVDROHFFirst = ERROR
+  SCF_MVDUHFFirst = ERROR 
+  SCF_MVDTwoConFirst = ERROR
+
+  % *** SCF_MVD gradients for geometry optimization ***
+  SCF_MVDFirstOpt = (repeat $nopt $SCF_MVDFirst $geomupdate end $done)
+  SCF_MVDRHFFirstOpt  = $SCF_MVDFirstOpt
+  SCF_MVDROHFFirstOpt  = $SCF_MVDFirstOpt
+  SCF_MVDUHFFirstOpt  = $SCF_MVDFirstOpt
+  SCF_MVDTwoConFirstOpt  = $SCF_MVDFirstOpt
+
+  % *** SCF_MVD gradients to get all vibrational frequencies ***
+  SCF_MVDFirstFreq  =
+    ($SCF_MVDEnergy $findif_disp_freq_grad_cart repeat NUM_DISP
+     $findif_next $findif_input $SCF_MVDFirst $findif_grad_save end
+     $findif_freq_grad_cart $done)
+  SCF_MVDRHFFirstFreq  = $SCF_MVDFirstFreq
+  SCF_MVDROHFFirstFreq  = $SCF_MVDFirstFreq
+  SCF_MVDUHFFirstFreq  = $SCF_MVDFirstFreq
+  SCF_MVDTwoConFirstFreq  = $SCF_MVDFirstFreq
+
+  % *** SCF_MVD gradients for symmetric force constants ***
+  SCF_MVDFirstSymm_FC  =
+    ($SCF_MVDEnergy $findif_disp_symm repeat NUM_DISP
+     $findif_next $findif_input $SCF_MVDFirst $findif_grad_save end
+     $findif_freq_grad_symm $done)
+  SCF_MVDRHFFirstSymm_FC  = $SCF_MVDFirstSymm_FC
+  SCF_MVDROHFFirstSymm_FC  = $SCF_MVDFirstSymm_FC
+  SCF_MVDUHFFirstSymm_FC  = $SCF_MVDFirstSymm_FC
+  SCF_MVDTwoConFirstSymm_FC  = $SCF_MVDFirstSymm_FC
+
+  % *** SCF_MVD gradients for all force constants ***
+  SCF_MVDFirstFC =
+    ($SCF_MVDEnergy $findif_disp_nosymm repeat NUM_DISP
+     $findif_next $findif_input $SCF_MVDFirst $findif_grad_save end
+     $findif_freq_grad_nosymm $done)
+  SCF_MVDRHFFirstFC  = $SCF_MVDFirstFC
+  SCF_MVDROHFFirstFC  = $SCF_MVDFirstFC
+  SCF_MVDUHFFirstFC  = $SCF_MVDFirstFC
+  SCF_MVDTwoConFirstFC  = $SCF_MVDFirstFC
 
   % Procedure for an SCF DBOC computation
   SCFDBOC = ($input $dboc)

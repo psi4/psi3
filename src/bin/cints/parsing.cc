@@ -43,7 +43,10 @@ namespace psi { namespace CINTS {
     cutoff_exp = CUTOFF;
     errcod = ip_data("CUTOFF","%d",&cutoff_exp,0);
     UserOptions.cutoff = 1.0/pow(10.0,(double)cutoff_exp);
-    
+
+    UserOptions.fine_structure_alpha = 1.0;
+    errcod = ip_data("FINE_STRUCTURE_ALPHA","%lf",&(UserOptions.fine_structure_alpha),0);
+
     UserOptions.make_oei = 1;
     UserOptions.make_fock = 0;
     UserOptions.make_eri = 1;

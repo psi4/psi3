@@ -146,6 +146,7 @@ namespace psi {
     int restart;                       /* Is this a restart? */
       int restart_task;                  /* Where to restart? */
       struct coordinates origin;           /* user-selected origin for magnetic dipole integrals */
+      double fine_structure_alpha;       /* scalar to multiply fine-structure constant */
     } UserOptions_t;
     
     typedef struct {
