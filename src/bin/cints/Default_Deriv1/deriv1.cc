@@ -3,6 +3,7 @@
     \brief Driver for the computation of first derivatives.
 */
 #include<cstdio>
+#include<cstring>
 
 #include<pthread.h>
 #include<libipv1/ip_lib.h>

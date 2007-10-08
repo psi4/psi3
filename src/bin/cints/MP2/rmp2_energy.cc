@@ -219,14 +219,14 @@ namespace psi {
       for(i=0;i<BasisSet.num_ao;i++)
 #endif
 	pthread_mutex_init(&(rmp2_sindex_mutex[i]),NULL);
-      for(i=0;i<UserOptions.num_threads-1;i++)
-	pthread_create(&(thread_id[i]),&thread_attr,
+    for(long int i=0;i<UserOptions.num_threads-1;i++)
+      pthread_create(&(thread_id[i]),&thread_attr,
 		       rmp2_energy_thread,(void *)i);
-      rmp2_energy_thread( (void *) (UserOptions.num_threads - 1) );
-      for(i=0;i<UserOptions.num_threads-1;i++)
-	pthread_join(thread_id[i], NULL);
-      free(thread_id);
-      pthread_mutex_destroy(&rmp2_energy_mutex);
+    rmp2_energy_thread( (void *) (UserOptions.num_threads - 1) );
+    for(i=0;i<UserOptions.num_threads-1;i++)
+      pthread_join(thread_id[i], NULL);
+    free(thread_id);
+    pthread_mutex_destroy(&rmp2_energy_mutex);
 #if LOCK_RS_SHELL
       for(i=0;i<ioff[BasisSet.num_shells];i++)
 #else

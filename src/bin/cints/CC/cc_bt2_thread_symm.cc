@@ -32,7 +32,7 @@
 namespace psi { namespace CINTS {
   void *cc_bt2_thread_symm(void *tnum_ptr)
   {
-    int thread_num = (long int) tnum_ptr;
+    const long int thread_num = (long int) tnum_ptr;
     const double toler = UserOptions.cutoff;
     const double m_sqrt1_2 = 1/sqrt(2.0);
     int lambda_T = 1;

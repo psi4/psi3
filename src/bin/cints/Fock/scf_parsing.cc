@@ -3,6 +3,7 @@
     \brief Enter brief description of file here 
 */
 #include<cstdio>
+#include<cstring>
 #include<cmath>
 #include<libipv1/ip_lib.h>
 #include<libint/libint.h>

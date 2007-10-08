@@ -44,7 +44,7 @@ namespace psi {
     extern double ****Gskel, ****Gskel_o;   /* Global skeleton Fock matrices, updated in critical sections */
 void *hf_fock_thread(void *tnum_ptr)
 {
-  int thread_num = (int) tnum_ptr;
+  const long int thread_num = (long int) tnum_ptr;
   /*--- Various data structures ---*/
   struct tebuf *tot_data;             /* buffer for non-zero integrals */
   struct shell_pair *sp_ij, *sp_kl, *sp_ik, *sp_il, *sp_jk, *sp_jl;

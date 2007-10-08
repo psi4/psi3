@@ -4,6 +4,7 @@
 */
 #include <stdio.h>
 #include <stdlib.h>
+#include <strings.h>
 #include "displacements.h"
 #include "params.h"
 

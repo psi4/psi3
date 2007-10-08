@@ -197,7 +197,7 @@ void rmp2r12_energy()
   for(i=0;i<BasisSet.num_ao;i++)
 #endif
       pthread_mutex_init(&(rmp2r12_sindex_mutex[i]),NULL);
-  for(i=0;i<UserOptions.num_threads-1;i++)
+  for(long int i=0;i<UserOptions.num_threads-1;i++)
     pthread_create(&(thread_id[i]),&thread_attr,
 		   rmp2r12_energy_thread,(void *)i);
   rmp2r12_energy_thread( (void *) (UserOptions.num_threads - 1) );

@@ -57,12 +57,12 @@ void te_deriv1_scf()
 			PTHREAD_SCOPE_SYSTEM);
   pthread_mutex_init(&deriv1_mutex,NULL);
 #if USE_SYM
-  for(i=0;i<UserOptions.num_threads-1;i++)
+  for(long int i=0;i<UserOptions.num_threads-1;i++)
     pthread_create(&(thread_id[i]),&thread_attr,
 		   te_deriv1_scf_thread_symm,(void *)i);
   te_deriv1_scf_thread_symm( (void *) (UserOptions.num_threads - 1) );
 #else
-  for(i=0;i<UserOptions.num_threads-1;i++)
+  for(long int i=0;i<UserOptions.num_threads-1;i++)
     pthread_create(&(thread_id[i]),&thread_attr,
 		   te_deriv1_scf_thread,(void *)i);
   te_deriv1_scf_thread( (void *) (UserOptions.num_threads - 1) );

@@ -87,7 +87,7 @@ void hf_fock()
   pthread_attr_setscope(&thread_attr,
 			PTHREAD_SCOPE_SYSTEM);
   pthread_mutex_init(&fock_mutex,NULL);
-  for(i=0;i<UserOptions.num_threads-1;i++)
+  for(long int i=0;i<UserOptions.num_threads-1;i++)
     pthread_create(&(thread_id[i]),&thread_attr,
 		   hf_fock_thread,(void *)i);
   hf_fock_thread( (void *) (UserOptions.num_threads - 1) );

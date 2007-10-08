@@ -4,7 +4,7 @@
 */
 #include <cmath>
 #include <stdio.h>
-#include <stdlib.h>}
+#include <stdlib.h>
 #include <cstring>
 
 #include <libciomr/libciomr.h>

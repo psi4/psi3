@@ -88,7 +88,7 @@ namespace psi {
  -------------------------------------------------------*/
 void *rmp2r12_energy_thread(void *tnum_ptr)
 {
-  int thread_num = (int) tnum_ptr;
+  const long int thread_num = (long int) tnum_ptr;
   const double toler = UserOptions.cutoff;
 
   extern pthread_mutex_t rmp2r12_energy_mutex;

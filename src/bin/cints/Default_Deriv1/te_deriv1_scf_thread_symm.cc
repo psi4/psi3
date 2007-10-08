@@ -28,7 +28,7 @@
 namespace psi { namespace CINTS {
 void *te_deriv1_scf_thread_symm(void *tnum_ptr)
 {
-  int thread_num = (int) tnum_ptr;
+  const long int thread_num = (long int) tnum_ptr;
 
   extern double **grad_te;
   extern pthread_mutex_t deriv1_mutex;    /* Used to lock "global" gradient matrix grad_te during update */

@@ -88,12 +88,12 @@ namespace psi { namespace CINTS {
     pthread_attr_setscope(&thread_attr,
 			  PTHREAD_SCOPE_SYSTEM);
 #if USE_SYMM_CODE
-    for(i=0;i<UserOptions.num_threads-1;i++)
+    for(long int i=0;i<UserOptions.num_threads-1;i++)
       pthread_create(&(thread_id[i]),&thread_attr,
 		     cc_bt2_thread_symm,(void *)i);
     cc_bt2_thread_symm( (void *) (UserOptions.num_threads - 1) );
 #else
-    for(i=0;i<UserOptions.num_threads-1;i++)
+    for(long int i=0;i<UserOptions.num_threads-1;i++)
       pthread_create(&(thread_id[i]),&thread_attr,
 		     cc_bt2_thread,(void *)i);
     cc_bt2_thread( (void *) (UserOptions.num_threads - 1) );
