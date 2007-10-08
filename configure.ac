@@ -138,55 +138,27 @@ esac
 
 
 AC_ARG_WITH(cc,[  --with-cc               which C compiler to use],[
-case $withval in
-  yes)
-    CC_LIST="$CC_LIST"
-    ;;
-  no)
-    CC_LIST="$CC_LIST"
-    ;;
-  *)
-    CC_LIST="$withval $CC_LIST"
-    ;;
-esac
+CC=$withval
 ])
-
 AC_PROG_CC([$CC_LIST])
 
 AC_ARG_WITH(cxx,[  --with-cxx              which C++ compiler to use],[
-case $withval in           
-  yes)
-    CXX_LIST="$CXX_LIST"
-    ;;
-  no)
-    CXX_LIST="$CXX_LIST"
-    ;;
-  *)
-    CXX_LIST="$withval $CXX_LIST"
-    ;;
-esac
+CXX=$withval
 ])
-
 AC_PROG_CXX([$CXX_LIST])
 
 AC_ARG_WITH(fc,[  --with-fc               which Fortran compiler to use],[
 case $withval in
-  yes)
-    F77_LIST="$F77_LIST"
-    ;;
   no)
-    F77_LIST='no'
+    F77=
     ;;
   *)
-    F77_LIST="$withval $F77_LIST"
+    F77=$withval
     ;;
 esac
 ])
-
-if test "$F77_LIST" != no; then
+if test X"$F77" != X; then
   AC_PROG_F77([$F77_LIST])
-else
-  F77=
 fi
 AC_SUBST(FC,[$F77])
 
