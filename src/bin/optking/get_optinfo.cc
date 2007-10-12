@@ -107,6 +107,10 @@ void get_optinfo() {
 
   optinfo.bfgs = 1;
   ip_boolean("BFGS",&(optinfo.bfgs),0);
+  // ACS (11/06) Are we getting our energies from outside of PSI3?
+  optinfo.external_energies = 0;
+  ip_boolean("EXTERNAL_ENERGIES",&(optinfo.external_energies),0);
+
   optinfo.bfgs_use_last = 6;
   ip_data("BFGS_USE_LAST","%d",&(optinfo.bfgs_use_last),0);
   optinfo.mix_types = 1;

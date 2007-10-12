@@ -421,6 +421,28 @@ int disp_freq_energy_cart(cartesians &carts)
   }
   free(masses);
 
+  if(optinfo.external_energies){
+    int counter = 1;
+    FILE *fp_dispcart = fopen("dispcart", "w");
+    // ACS (11/06) Print the displaced and reference geometry for external programs
+    // Use 1 based counting, and remember that the first "displacement" is the reference itself
+    fprintf(fp_dispcart,"%d\n",counter++);
+    for(int n = 0; n < carts.get_natom(); n++){
+      fprintf(fp_dispcart,"%16.10lf %16.10lf %16.10lf\n",coord[3*n],coord[3*n+1],coord[3*n+2]);
+    }
+
+    for (irrep=0; irrep<nirreps; ++irrep) {
+      for(int disp = 0; disp< ndisp[irrep]; disp++){
+        fprintf(fp_dispcart,"%d\n",counter++);
+        for(int n = 0; n < carts.get_natom(); n++){
+          fprintf(fp_dispcart,"%16.10lf %16.10lf %16.10lf\n",
+            geoms[irrep][disp][3*n],geoms[irrep][disp][3*n+1],geoms[irrep][disp][3*n+2]);
+        }
+      }
+    }
+    fclose(fp_dispcart);
+  }
+
   /**** write out info to PSIF_OPTKING, geoms and coordinates in irrep order ****/
   open_PSIF();
 

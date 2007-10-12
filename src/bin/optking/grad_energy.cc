@@ -58,9 +58,17 @@ void grad_energy(cartesians &carts, internals &simples, salc_set &symm) {
     fp_energy_dat = fopen("energy.dat", "r");
     rewind (fp_energy_dat);
     line1 = new char[MAX_LINE+1];
-    for (i=0; i<num_disps; ++i) {
-      fgets(line1, MAX_LINE, fp_energy_dat);
-      sscanf(line1, "%lf", &(energies[i]));
+    // ACS (11/06) Allow external program to be used to compute energies
+    if(optinfo.external_energies){
+      /* Read the first energy and dump it as the reference energy */
+      double temp;
+      fscanf(fp_energy_dat,"%lf",&temp);
+      open_PSIF();
+      psio_write_entry(PSIF_OPTKING, "OPT: Reference energy",(char *) &(temp), sizeof(double));
+      close_PSIF();
+    }
+    for (i=0; i<num_disps; i++) {
+      fscanf(fp_energy_dat,"%lf",&(energies[i]));
     }
     fclose(fp_energy_dat);
     delete [] line1;

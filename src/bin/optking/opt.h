@@ -153,6 +153,7 @@ struct OPTInfo {
   char *jobtype;
   int energy_dat;
   int grad_dat;
+  int external_energies; //ACS (11/07) Are we getting energy.dat from another program?
 /* parameters involving fragment coordinates */
   int frag_dist_rho;
   int fix_interfragment;

@@ -423,19 +423,10 @@ void fconst_init(cartesians &carts, internals &simples, salc_set &symm) {
       fprintf(outfile,"Reading force constants from fconst.dat\n");
       dim = symm.get_num();
       temp_mat = block_matrix(dim,dim);
-      for (i=0;i<dim;++i) {
-        fgets(buffer,MAX_LINELENGTH,fp_fconst);
-        count = 0;
-        for (j=0;j<=i;++j) {
-          if ( div_int(j,8) ) {
-            fgets(buffer,MAX_LINELENGTH,fp_fconst);
-            count = 0;
-          }
-          if (sscanf(buffer+count,"%lf",&(temp_mat[i][j])) != 1) {
-            fprintf(outfile,"\nProblem reading force constants.\n");
-            exit(2);
-          }
-          count += 10;
+      for (i=0;i<dim;i++) {
+        for (j=0;j<=i;j++) {
+          fscanf(fp_fconst,"%lf",&(temp_mat[i][j]));
+          temp_mat[j][i] = temp_mat[i][j];
         }
       }
     } */

@@ -64,8 +64,6 @@ void freq_energy_cart(cartesians &carts) {
       (char *) &(ndisp[0]), nirreps*sizeof(int));
   psio_read_entry(PSIF_OPTKING, "OPT: Coord. per irrep",
       (char *) &(nsalc[0]), nirreps*sizeof(int));
-  psio_read_entry(PSIF_OPTKING, "OPT: Reference energy",
-      (char *) &(energy_ref), sizeof(double));
 
   fprintf(outfile,"total nsalc: %d, total ndisp: %d\n", nsalc_all, ndisp_all);
   fprintf(outfile,"nsalc per irrep: "); for (h=0; h<nirreps; ++h) fprintf(outfile,"%d ",nsalc[h]);
@@ -84,10 +82,17 @@ void freq_energy_cart(cartesians &carts) {
     }
     rewind (fp_energy_dat);
     line1 = new char[MAX_LINE+1];
-    for (i=0; i<ndisp_all; ++i) {
-      fgets(line1, MAX_LINE, fp_energy_dat);
-      sscanf(line1, "%lf", &(disp_E[i]));
+    // ACS (11/06) Allow external program to be used to compute energies
+    if(optinfo.external_energies){
+      /* Read the first energy and dump it as the reference energy */
+      double temp;
+      fscanf(fp_energy_dat,"%lf",&temp);
+      psio_write_entry(PSIF_OPTKING, "OPT: Reference energy",(char *) &(temp), sizeof(double));
     }
+    for (i=0; i<ndisp_all; i++) {
+      fscanf(fp_energy_dat,"%lf",&(disp_E[i]));
+    }
+
     fclose(fp_energy_dat);
     delete [] line1;
   }
@@ -97,7 +102,8 @@ void freq_energy_cart(cartesians &carts) {
         (char *) &(disp_E[0]), ndisp_all*sizeof(double));
   }
 
-
+  psio_read_entry(PSIF_OPTKING, "OPT: Reference energy",
+      (char *) &(energy_ref), sizeof(double));
   B = block_matrix(nsalc_all,3*natom);
   psio_read_entry(PSIF_OPTKING, "OPT: Adapted cartesians",
     (char *) &(B[0][0]), nsalc_all*3*natom*sizeof(double));

@@ -69,7 +69,13 @@ cartesians::cartesians() {
     ||(optinfo.mode == MODE_DISP_FREQ_GRAD_CART) || (optinfo.mode == MODE_FREQ_GRAD_CART)
     ||(optinfo.mode == MODE_DISP_FREQ_ENERGY_CART) || (optinfo.mode == MODE_FREQ_ENERGY_CART)
     )
-      energy = chkpt_rd_etot();
+
+  //ACS (11/06) Allow external programs to be used
+  if(optinfo.external_energies){
+    energy = 0.0;
+  }else{
+    energy = chkpt_rd_etot();
+  }
 
   zvals = chkpt_rd_zvals();
   chkpt_close();
