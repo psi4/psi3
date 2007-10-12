@@ -218,6 +218,7 @@ namespace psi { namespace CINTS {
 	UserOptions.symm_ints = 1;
 	UserOptions.make_deriv1 = 1;
 	UserOptions.num_threads = 1;
+        UserOptions.make_mkpt2_ints = 0;
 #else
 	throw std::domain_error("--deriv1_ints option is not supported by your CINTS executable.\nRecompile the code including files in Default_Deriv1 subdirectory.");
 #endif
@@ -232,6 +233,7 @@ namespace psi { namespace CINTS {
 	UserOptions.make_fock = 0;
 	UserOptions.symm_ints = 0;
 	UserOptions.make_deriv2 = 1;
+        UserOptions.make_mkpt2_ints = 0;
 #else
 	throw std::domain_error("--deriv2 option is not supported by your CINTS executable.\nRecompile the code including files in Default_Deriv2 subdirectory.");
 #endif
@@ -247,6 +249,7 @@ namespace psi { namespace CINTS {
 	UserOptions.make_oeprop = 1;
 	UserOptions.symm_ints = 0;
 	UserOptions.print_lvl = 0;
+        UserOptions.make_mkpt2_ints = 0;
 #else
 	throw std::domain_error("--oeprop option is not supported by your CINTS executable.\nRecompile the code including files in OEProp_Ints subdirectory.");
 #endif
@@ -265,6 +268,7 @@ namespace psi { namespace CINTS {
 	UserOptions.make_mp2r12 = 0;
 	UserOptions.make_cc_bt2 = 0;
 	UserOptions.symm_ints = 0;
+        UserOptions.make_mkpt2_ints = 0;
 	
 	errcod = ip_string("REFERENCE",&refstring,0);
 	if (errcod != IPE_OK)
@@ -296,6 +300,7 @@ namespace psi { namespace CINTS {
 	UserOptions.make_cc_bt2 = 0;
 	UserOptions.symm_ints = 1;
 	UserOptions.num_threads = 1;
+        UserOptions.make_mkpt2_ints = 0;
 #else
 	throw std::domain_error("--r12ints option is not supported by your CINTS executable.\nRecompile the code including files in R12_Ints subdirectory.");
 #endif
@@ -314,6 +319,7 @@ namespace psi { namespace CINTS {
 	UserOptions.make_mp2r12 = 1;
 	UserOptions.make_cc_bt2 = 0;
 	UserOptions.symm_ints = 0;
+        UserOptions.make_mkpt2_ints = 0;
 	
 	errcod = ip_string("REFERENCE",&refstring,0);
 	if (errcod != IPE_OK)
@@ -328,6 +334,38 @@ namespace psi { namespace CINTS {
 	return;
       }
       
+      /*--- compute MkPT2 integrals option ---*/
+      if (strcmp(argv[i], "--mkpt2") == 0) {
+#ifdef INCLUDE_MkPT2
+        UserOptions.make_oei = 0;
+        UserOptions.make_eri = 0;
+        UserOptions.make_fock = 0;
+        UserOptions.make_deriv1 = 0;
+        UserOptions.make_mp2 = 0;
+        UserOptions.make_r12ints = 0;
+        UserOptions.make_mp2r12 = 0;
+        UserOptions.make_cc_bt2 = 0;
+        UserOptions.symm_ints = 0;
+        UserOptions.make_mkpt2_ints = 1;
+
+        errcod = ip_string("REFERENCE",&refstring,0);
+        if (errcod != IPE_OK)
+          throw std::domain_error("REFERENCE keyword is missing");
+        else if (!strcmp(refstring,"RHF") || !strcmp(refstring,""))
+          UserOptions.reftype = rhf;
+        else if (!strcmp(refstring,"ROHF"))
+          UserOptions.reftype = rohf;
+        else if (!strcmp(refstring,"TWOCON"))
+          UserOptions.reftype = twocon;
+        else
+          throw std::domain_error("Direct MkPT2 integral computation with specified REFERENCE not implemented");
+#else
+        throw std::domain_error("--mkpt2 option is not supported by your CINTS executable.\nRecompile the code including files in MKPT2 subdirectory.");
+#endif
+        return;
+      }
+
+
       /*--- compute 4-virtuals T2 contribution to CC equations ---*/
       if (strcmp(argv[i], "--cc_bt2") == 0) {
 #ifdef INCLUDE_CC
@@ -340,6 +378,7 @@ namespace psi { namespace CINTS {
 	UserOptions.make_cc_bt2 = 1;
 	UserOptions.symm_ints = 0;
 	UserOptions.print_lvl = 0;
+        UserOptions.make_mkpt2_ints = 0;
 	
 	errcod = ip_string("REFERENCE",&refstring,0);
 	if (errcod != IPE_OK)
@@ -362,6 +401,7 @@ namespace psi { namespace CINTS {
 	UserOptions.make_fock = 0;
 	UserOptions.symm_ints = 0;
 	UserOptions.make_giao_deriv = 1;
+        UserOptions.make_mkpt2_ints = 0;
 #else
 	throw std::domain_error("--giao_deriv option is not supported by your CINTS executable.\nRecompile the code including files in GIAO_Deriv subdirectory.");
 #endif

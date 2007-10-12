@@ -134,6 +134,7 @@ namespace psi {
       int make_oeprop;                   /* Flag tp compute one-electron property integrals */
       int make_mp2;                      /* Flag to compute MP2 energy directly */
       int make_r12ints;                  /* Compute integrals for linear R12 methods */
+      int make_mkpt2_ints;               /* Flag to compute MKPT2 integrals directly and dump them to disk */
       int make_mp2r12;                   /* Flag to compute MP2-R12 energy directly */
       int make_cc_bt2;                   /* Flag to compute CC four-virtuals T2 term directly */
       int make_giao_deriv;               /* Flag to compute derivative integrals WRT B and E fields over
@@ -246,7 +247,7 @@ namespace psi {
 					    matrices */
       mat_elem ****cc2pp_sparse;         /* sparse representation (row-compressed) of cc2pp */
       mat_elem ****pp2cc_sparse;         /* sparse representation (row-compressed) of the reverse of cc2pp */
-    int ***cc2pp_rowlength;            /* this holds lengths of "compressed" rows in cc2pp_sparse */
+      int ***cc2pp_rowlength;            /* this holds lengths of "compressed" rows in cc2pp_sparse */
       int ***pp2cc_rowlength;            /* see above */
     } GTOs_t;
     
@@ -311,6 +312,30 @@ namespace psi {
       int num_openmoshells;     /* number of shells of singly-occupied MOs */
       int alpha_occ;            /* number of alpha occupied orbitals */
       int beta_occ;             /* number of beta  occupied orbitals */
+      int *occ_to_pitzer;       /* The occupied (frozen docc + docc + active) to Pitzer
+                                   array for the MkPT2 routine */
+//these were added by ACS for the direct ump2r12 routine (01/06)
+    double **scf_evec_alpha;     /* alpha SCF eigenvectors in AO basis
+                                 NOTE: MOs are arranged in rows!!!!! */
+    double **scf_evec_beta;     /*  beta SCF eigenvectors in AO basis
+                                 NOTE: MOs are arranged in rows!!!!! */
+    double **scf_evec_occ_alpha; /* alpha SCF eigenvectors in AO basis for all
+                                 doubly-occupied MOs in QTS order:
+                                 frozen DOCC MOs for each symmetry block come first,
+                                 then active DOCC MOs for each symmetry block */
+    double **scf_evec_occ_beta; /* beta SCF eigenvectors in AO basis for all
+                                 doubly-occupied MOs in QTS order:
+                                 frozen DOCC MOs for each symmetry block come first,
+                                 then active DOCC MOs for each symmetry block */
+    int *virtpi_alpha;        /* number of vacant alpha MOs per irrep */
+    int *virtpi_beta;         /* number of vacant beta MOs per irrep */
+    int alpha_act_occ;        /* number of active alpha occupied orbitals */
+    int beta_act_occ;         /* number of active beta  occupied orbitals */
+    int *mo2symblk_occ_alpha; /* Array that maps alpha occ index to its symblk number;
+                                 useful in manipulating QTS-indexed MOs */
+    int *mo2symblk_occ_beta;  /* Array that maps beta occ index to its symblk number;
+                                 useful in manipulating QTS-indexed MOs */
+
     } MOInfo_t;
     
     

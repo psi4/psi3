@@ -15,9 +15,10 @@
 # 8. R12_Ints (8/30/03 EFV - doesn't work anymore, transqt needs to be fixed)
 # 9. CC
 # 10. GIAO_Deriv
+# 11. MkPT2
 #
 SUBDIRS = Default_Ints OEProp_Ints Fock MP2 Default_Deriv1 Default_Deriv2 CC \
-MP2R12 GIAO_Deriv
+MP2R12 GIAO_Deriv MkPT2
 
 #
 # Some subdirectories are not completely independent - need to perform

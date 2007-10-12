@@ -44,6 +44,9 @@ void deriv1_fock(void);
 #ifdef INCLUDE_MP2
 #include"mp2.h"
 #endif
+#ifdef INCLUDE_MkPT2
+#include"mkpt2.h"
+#endif
 #ifdef INCLUDE_R12_Ints
 #include"r12_te_ints.h"
 #endif
@@ -137,6 +140,10 @@ int main(int argc, char *argv[])
 #ifdef INCLUDE_MP2
     if (UserOptions.make_mp2)
       mp2();
+#endif
+#ifdef INCLUDE_MkPT2
+    if (UserOptions.make_mkpt2_ints)
+      run_mkpt2();
 #endif
 #ifdef INCLUDE_R12_Ints
     if (UserOptions.make_r12ints)

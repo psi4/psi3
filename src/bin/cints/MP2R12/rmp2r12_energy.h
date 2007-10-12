@@ -8,6 +8,13 @@
 			       blocks or just the appropriate basis functions (more fine-grained in the second case) ---*/
 namespace psi { namespace CINTS {
 void rmp2r12_energy();
+namespace ump2r12_aa{
+  void ump2r12_energy_aa();
+}
+
+namespace ump2r12_bb{
+  void ump2r12_energy_bb();
+}
 
 typedef struct {
     int num_i_per_ibatch;

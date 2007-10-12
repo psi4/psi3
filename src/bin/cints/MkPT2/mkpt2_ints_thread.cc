@@ -1,4 +1,4 @@
-/*! \file rmp2_energy_thread.cc
+/*! \file mkpt2_ints_thread.cc
     \ingroup (CINTS)
     \brief Enter brief description of file here 
 */
@@ -11,8 +11,10 @@
 #include<libciomr/libciomr.h>
 #include<libqt/qt.h>
 #include<libint/libint.h>
+#include<libpsio/psio.h>
 
 #include"defines.h"
+#include "psifiles.h"
 #define EXTERN
 #include"global.h"
 #include <stdexcept>
@@ -26,26 +28,27 @@
   #include"fjt.h"
 #endif
 #include"quartet_permutations.h"
-#include"rmp2_energy.h"
+#include"mkpt2_ints.h"
 
 #define SWAP1 1
 
 namespace psi { 
   namespace CINTS {
+    namespace mkpt2  {
 
-void *rmp2_energy_thread(void *tnum_ptr)
+void *mkpt2_ints_thread(void *tnum_ptr)
 {
   const long int thread_num = (long int) tnum_ptr;
   const double toler = UserOptions.cutoff;
   const double m_sqrt1_2 = 1/sqrt(2.0);
 
-  extern RMP2_Status_t RMP2_Status;
-  extern pthread_mutex_t rmp2_energy_mutex;
-  extern pthread_mutex_t *rmp2_sindex_mutex;
-  extern pthread_cond_t rmp2_energy_cond;
-  extern double *jsia_buf;             /* buffer for (js|ia) integrals, where j runs over all d.-o. MOs,
-				   s runs over all AOs, i - over I-batch, a - over all virtuals */
-  extern double *jbia_buf;             /* buffer contains all MP2-type integrals */
+  extern MkPT2_Status_t MkPT2_Status;
+  extern pthread_mutex_t mkpt2_energy_mutex;
+  extern pthread_mutex_t *mkpt2_sindex_mutex;
+  extern pthread_cond_t mkpt2_energy_cond;
+  extern double *jsix_buf;             /* buffer for (js|ix) integrals, where j runs over all d.-o. MOs,
+       				   s runs over all AOs, i - over I-batch, a - over all virtuals */
+  extern double *jyix_buf;             /* buffer contains all MP2-type integrals */
 
   /*--- Various data structures ---*/
   struct shell_pair *sp_ij, *sp_kl;
@@ -92,9 +95,11 @@ void *rmp2_energy_thread(void *tnum_ptr)
   int num_ibatch, num_i_per_ibatch, ibatch, ibatch_length;
   int imin, imax, jmin;
   int max_bf_per_shell;
-  int mo_i, mo_j, mo_a, mo_b, mo_ij;
-  int ia;
+  int mo_i, mo_j, mo_x, mo_y, mo_ij;
+  int ix;
   int rs_offset, rsi_offset, rsp_offset;
+  char ij_key_string[80];
+  double * xy_buf;
 
   double AB2, CD2;
 
@@ -111,12 +116,11 @@ void *rmp2_energy_thread(void *tnum_ptr)
   double *rsiq_buf;             /* buffer for (rs|iq) integrals, where r,s run over shell sets,
 				   i runs over I-batch, q runs over all AOs */
   double *rsi_row, *i_row;
-  double *ia_block_ptr;
-  double *rsia_buf;             /* buffer for (rs|ia) integrals, where r,s run over shell sets,
+  double *ix_block_ptr;
+  double *rsix_buf;             /* buffer for (rs|ix) integrals, where r,s run over shell sets,
 				   i runs over I-batch, q runs over all AOs */
   double *jsi_row;
-  double *jbi_row;
-  double iajb, ibja, pfac, k0ijab, k1ijab, eijab, e0, e1;
+  double *jyi_row;
 
   double temp1,temp2,*iq_row,*ip_row;
   int rs,qrs;
@@ -150,33 +154,34 @@ void *rmp2_energy_thread(void *tnum_ptr)
                        BasisSet.max_num_prims)*
                       (BasisSet.max_num_prims*
                        BasisSet.max_num_prims);
-  pthread_mutex_lock(&rmp2_energy_mutex);
+  pthread_mutex_lock(&mkpt2_energy_mutex);
   init_libint(&Libint, BasisSet.max_am-1, max_num_prim_comb);
-  pthread_mutex_unlock(&rmp2_energy_mutex);
+  pthread_mutex_unlock(&mkpt2_energy_mutex);
 
 #ifdef NONDOUBLE_INTS
   raw_data = init_array(max_cart_class_size);
 #endif
 
-  num_ibatch = RMP2_Status.num_ibatch;
-  num_i_per_ibatch = RMP2_Status.num_i_per_ibatch;
+  num_ibatch = MkPT2_Status.num_ibatch;
+  num_i_per_ibatch = MkPT2_Status.num_i_per_ibatch;
   rsiq_buf = init_array(num_i_per_ibatch*BasisSet.num_ao*
 			max_bf_per_shell*max_bf_per_shell);
-  rsia_buf = init_array(num_i_per_ibatch*MOInfo.nactuocc*
+  rsix_buf = init_array(num_i_per_ibatch*MOInfo.num_mo*
 			  max_bf_per_shell*max_bf_per_shell);
   scratch_buf = init_array(MAX(max_cart_class_size,
 			       num_i_per_ibatch*BasisSet.num_ao*
 			       max_bf_per_shell*max_bf_per_shell));
-  
+  xy_buf = init_array(MOInfo.num_mo*MOInfo.num_mo);
+
 /*-----------------------------------
   generate all unique shell quartets
  -----------------------------------*/
   /*--- I-batch loop ---*/
   for (ibatch=0;ibatch<num_ibatch;ibatch++) {
-    imin = ibatch * num_i_per_ibatch + MOInfo.nfrdocc;
-    imax = MIN( imin+num_i_per_ibatch , MOInfo.ndocc );
+    imin = ibatch * num_i_per_ibatch;
+    imax = MIN( imin+num_i_per_ibatch , MOInfo.nactdocc );
     ibatch_length = imax - imin;
-    jmin = MOInfo.nfrdocc;
+    jmin = 0;
     if (thread_num == 0)
       fprintf(outfile,"  Pass #%d, MO %d through MO %d\n",ibatch,imin+1,imax);
     fflush(outfile);
@@ -601,69 +606,69 @@ void *rmp2_energy_thread(void *tnum_ptr)
 #else
 	  rsi_row = rsiq_buf;
 #endif
-	  ia_block_ptr = rsia_buf;
+	  ix_block_ptr = rsix_buf;
 	  for(r=0;r<nr;r++) {
 	      for(s=0;s<ns;s++) {
 		  /*--- Can be done as a matrix multiply ---*/
 /*		  timer_on("Step 2");*/
 #if !USE_BLAS
-		  ia = 0;
+		  ix = 0;
 		  for(mo_i=0;mo_i<ibatch_length;mo_i++,rsi_row+=BasisSet.num_ao) {
-		      for(mo_a=0;mo_a<MOInfo.nactuocc;mo_a++,ia++) {
-			  mo_vec = MOInfo.scf_evec_uocc[0][mo_a];
+		      for(mo_x=0;mo_x<MOInfo.num_mo;mo_x++,ix++) {
+			  mo_vec = MOInfo.scf_evec[0][mo_x];
 			  temp = 0.0;
 			  for(q_abs=0;q_abs<BasisSet.num_ao;q_abs++) {
 			      temp += mo_vec[q_abs] * rsi_row[q_abs];
 			  }
-			  ia_block_ptr[ia] = temp;
+			  ix_block_ptr[ix] = temp;
 		      }
 		  }
 #else
-		  C_DGEMM('n','t',ibatch_length,MOInfo.nactuocc,BasisSet.num_ao,1.0,
-			  rsi_row,BasisSet.num_ao,MOInfo.scf_evec_uocc[0][0],BasisSet.num_ao,
-			  0.0,ia_block_ptr,MOInfo.nactuocc);
+		  C_DGEMM('n','t',ibatch_length,MOInfo.num_mo,BasisSet.num_ao,1.0,
+			  rsi_row,BasisSet.num_ao,MOInfo.scf_evec[0][0],BasisSet.num_ao,
+			  0.0,ix_block_ptr,MOInfo.num_mo);
 		  rsi_row += BasisSet.num_ao*ibatch_length;
 #endif
-		  ia_block_ptr += MOInfo.nactuocc*ibatch_length;
+		  ix_block_ptr += MOInfo.num_mo*ibatch_length;
 /*		  timer_off("Step 2");*/
 	      }
 	  }
 
 	  /*--- step 3 of the transformation ---*/
-	  rsi_row = rsia_buf;
+	  rsi_row = rsix_buf;
 	  /*--- To update (JS|IA) need to lock mutex corresponding to the S and R indices ---*/
 #if LOCK_RS_SHELL	  
-	  pthread_mutex_lock(&rmp2_sindex_mutex[INDEX(si,sj)]);
+	  pthread_mutex_lock(&mkpt2_sindex_mutex[INDEX(si,sj)]);
 #endif
 	  for(r=0;r<nr;r++) {
 	      for(s=0;s<ns;s++) {
 /*		  timer_on("Step 3");*/
 		  r_abs = r + sr_fao;
 		  s_abs = s + ss_fao;
-		  for(mo_i=0;mo_i<ibatch_length;mo_i++,rsi_row+=MOInfo.nactuocc) {
+		  for(mo_i=0;mo_i<ibatch_length;mo_i++,rsi_row+=MOInfo.num_mo) {
 		      for(mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
 #if !LOCK_RS_SHELL
-			  pthread_mutex_lock(&rmp2_sindex_mutex[s_abs]);
+			  pthread_mutex_lock(&mkpt2_sindex_mutex[s_abs]);
 #endif
-			  jsi_row = jsia_buf + ((mo_j * BasisSet.num_ao + s_abs) * ibatch_length + mo_i) * MOInfo.nactuocc;
+			  jsi_row = jsix_buf + ((mo_j * BasisSet.num_ao + s_abs) * ibatch_length + mo_i) * MOInfo.num_mo;
 			  temp = MOInfo.scf_evec_occ[0][mo_j+jmin][r_abs];
-			  for(mo_a=0;mo_a<MOInfo.nactuocc;mo_a++) {
-			      jsi_row[mo_a] += temp * rsi_row[mo_a];
+			  for(mo_x=0;mo_x<MOInfo.num_mo;mo_x++) {
+			      jsi_row[mo_x] += temp * rsi_row[mo_x];
 			  }
 #if !LOCK_RS_SHELL
-			  pthread_mutex_unlock(&rmp2_sindex_mutex[s_abs]);
+			  pthread_mutex_unlock(&mkpt2_sindex_mutex[s_abs]);
 #endif
 			  if (usi != usj) {
 #if !LOCK_RS_SHELL
-			    pthread_mutex_lock(&rmp2_sindex_mutex[r_abs]);
+			    pthread_mutex_lock(&mkpt2_sindex_mutex[r_abs]);
 #endif
-			    jsi_row = jsia_buf + ((mo_j * BasisSet.num_ao + r_abs) * ibatch_length + mo_i) * MOInfo.nactuocc;
+			    jsi_row = jsix_buf + ((mo_j * BasisSet.num_ao + r_abs) * ibatch_length + mo_i) * MOInfo.num_mo;
 			    temp = MOInfo.scf_evec_occ[0][mo_j+jmin][s_abs];
-			    for(mo_a=0;mo_a<MOInfo.nactuocc;mo_a++) {
-			      jsi_row[mo_a] += temp * rsi_row[mo_a];
+			    for(mo_x=0;mo_x<MOInfo.num_mo;mo_x++) {
+			      jsi_row[mo_x] += temp * rsi_row[mo_x];
 			    }
 #if !LOCK_RS_SHELL
-			    pthread_mutex_unlock(&rmp2_sindex_mutex[r_abs]);
+			    pthread_mutex_unlock(&mkpt2_sindex_mutex[r_abs]);
 #endif
 			  }
 		      }
@@ -672,32 +677,32 @@ void *rmp2_energy_thread(void *tnum_ptr)
 	      }
 	  }
 #if LOCK_RS_SHELL
-	  pthread_mutex_unlock(&rmp2_sindex_mutex[INDEX(si,sj)]);
+	  pthread_mutex_unlock(&mkpt2_sindex_mutex[INDEX(si,sj)]);
 #endif
 	  memset(rsiq_buf,0,nr*ns*ibatch_length*BasisSet.num_ao*sizeof(double));
-	  memset(rsia_buf,0,nr*ns*ibatch_length*MOInfo.nactuocc*sizeof(double));
+	  memset(rsix_buf,0,nr*ns*ibatch_length*MOInfo.num_mo*sizeof(double));
 
 	} /* end of R,S loop */
       } /* end of "unique" R,S loop */
 
-    pthread_mutex_lock(&rmp2_energy_mutex);
-    RMP2_Status.num_arrived++;
-    if (RMP2_Status.num_arrived != UserOptions.num_threads) { /*--- there are some threads still working - wait here --*/
-      pthread_cond_wait(&rmp2_energy_cond,&rmp2_energy_mutex);
-      pthread_mutex_unlock(&rmp2_energy_mutex);
+    pthread_mutex_lock(&mkpt2_energy_mutex);
+    MkPT2_Status.num_arrived++;
+    if (MkPT2_Status.num_arrived != UserOptions.num_threads) { /*--- there are some threads still working - wait here --*/
+      pthread_cond_wait(&mkpt2_energy_cond,&mkpt2_energy_mutex);
+      pthread_mutex_unlock(&mkpt2_energy_mutex);
     }
     else { /*--- this is the last thread to get here - do the 4th step and energy calculation alone and wake everybody up ---*/
       /*--- step 4 of the transformation ---*/
 /*    timer_on("Step 4");*/
       for(mo_i=0;mo_i<ibatch_length;mo_i++) {
 	for(mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
-	  for(mo_b=0;mo_b<MOInfo.nactuocc;mo_b++) {
-	    jbi_row = jbia_buf + ((mo_j * MOInfo.nactuocc + mo_b) * ibatch_length + mo_i) * MOInfo.nactuocc;
+	  for(mo_y=0;mo_y<MOInfo.num_mo;mo_y++) {
+	    jyi_row = jyix_buf + ((mo_j * MOInfo.num_mo + mo_y) * ibatch_length + mo_i) * MOInfo.num_mo;
 	    for(s_abs=0;s_abs<BasisSet.num_ao;s_abs++) {
-	      jsi_row = jsia_buf + ((mo_j * BasisSet.num_ao + s_abs) * ibatch_length + mo_i) * MOInfo.nactuocc;
-	      temp = MOInfo.scf_evec_uocc[0][mo_b][s_abs];
-	      for(mo_a=0;mo_a<MOInfo.nactuocc;mo_a++) {
-		jbi_row[mo_a] += temp * jsi_row[mo_a];
+	      jsi_row = jsix_buf + ((mo_j * BasisSet.num_ao + s_abs) * ibatch_length + mo_i) * MOInfo.num_mo;
+	      temp = MOInfo.scf_evec[0][mo_y][s_abs];
+	      for(mo_x=0;mo_x<MOInfo.num_mo;mo_x++) {
+		jyi_row[mo_x] += temp * jsi_row[mo_x];
 	      }
 	    }
 	  }
@@ -709,11 +714,11 @@ void *rmp2_energy_thread(void *tnum_ptr)
       if (Symmetry.nirreps > 1)
 	for(mo_i=0;mo_i<ibatch_length;mo_i++) {
 	  for(mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
-	    for(mo_b=0;mo_b<MOInfo.nactuocc;mo_b++) {
-	      for(mo_a=0;mo_a<MOInfo.nactuocc;mo_a++) {
+	    for(mo_y=0;mo_y<MOInfo.num_mo;mo_y++) {
+	      for(mo_x=0;mo_x<MOInfo.num_mo;mo_x++) {
 		if ((MOInfo.mo2symblk_occ[0][mo_i+imin] ^ MOInfo.mo2symblk_occ[0][mo_j+jmin]) ^
-		    (MOInfo.mo2symblk_uocc[0][mo_a] ^ MOInfo.mo2symblk_uocc[0][mo_b]))
-		    jbia_buf[((mo_j * MOInfo.nactuocc + mo_b) * ibatch_length + mo_i) * MOInfo.nactuocc + mo_a] = 0.0;
+		    (MOInfo.mo2symblk[mo_x] ^ MOInfo.mo2symblk[mo_y]))
+		    jyix_buf[((mo_j * MOInfo.num_mo + mo_y) * ibatch_length + mo_i) * MOInfo.num_mo + mo_x] = 0.0;
 	      }
 	    }
 	  }
@@ -723,97 +728,74 @@ void *rmp2_energy_thread(void *tnum_ptr)
     /*--- Print them out if needed ---*/
       for(mo_i=0;mo_i<ibatch_length;mo_i++) {
 	for(mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
-	  for(mo_b=0;mo_b<MOInfo.nactuocc;mo_b++) {
-	    for(mo_a=0;mo_a<MOInfo.nactuocc;mo_a++) {
-	      temp = jbia_buf[((mo_j * MOInfo.nactuocc + mo_b) * ibatch_length + mo_i) * MOInfo.nactuocc + mo_a];
+	  for(mo_y=0;mo_y<MOInfo.num_mo;mo_y++) {
+	    for(mo_x=0;mo_x<MOInfo.num_mo;mo_x++) {
+	      temp = jyix_buf[((mo_j * MOInfo.num_mo + mo_y) * ibatch_length + mo_i) * MOInfo.num_mo + mo_x];
 	      if (fabs(temp) > ZERO)
-		fprintf(outfile,"<%d %d %d %d [%d] [%d] = %20.10lf\n",
-			mo_j+jmin,mo_b,mo_i+imin,mo_a,
-			mo_j*MOInfo.nactuocc+mo_b,
-			mo_i*MOInfo.nactuocc+mo_a,
-			temp);
+		fprintf(outfile,"<(%3d %3d| %3d %3d) = %20.10lf\n",MOInfo.occ_to_pitzer[mo_j+jmin],mo_y,MOInfo.occ_to_pitzer[mo_i+imin],mo_x,temp);
 	    }
 	  }
 	}
       }
 #endif
 
-    /*--- Compute a contribution to the MP2 energy from the current batch ---*/
-/*    timer_on("Energy");*/
-      for(mo_i=0;mo_i<ibatch_length;mo_i++) {
-	for(mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
-	  /*--- Evaluate pair energies ---*/
-	  mo_ij = INDEX(mo_i + imin, mo_j + jmin);
-	  e0 = 0.0;
-	  e1 = 0.0;
-	  for(mo_a=0;mo_a<MOInfo.nactuocc;mo_a++) {
-	    for(mo_b=0;mo_b<=mo_a;mo_b++) {
-	      iajb = jbia_buf[((mo_j * MOInfo.nactuocc + mo_b) * ibatch_length + mo_i) * MOInfo.nactuocc + mo_a];
-	      ibja = jbia_buf[((mo_j * MOInfo.nactuocc + mo_a) * ibatch_length + mo_i) * MOInfo.nactuocc + mo_b];
-	      pfac = (mo_i + imin != mo_j + jmin) ? 1.0 : m_sqrt1_2;
-	      pfac *= (mo_a != mo_b) ? 1.0 : m_sqrt1_2;
-	      k0ijab = pfac * (iajb + ibja);
-	      eijab = (MOInfo.scf_evals_occ[0][mo_i+imin] +
-		       MOInfo.scf_evals_occ[0][mo_j+jmin] -
-		       MOInfo.scf_evals_uocc[0][mo_a] -
-		       MOInfo.scf_evals_uocc[0][mo_b]);
-	      e0 += k0ijab*k0ijab/eijab;
-	      if (mo_i + imin != mo_j + jmin) {
-		k1ijab = pfac * (iajb - ibja);
-		e1 += 3*k1ijab*k1ijab/eijab;
-	      }
-	    }
-	  }
-	  RMP2_Status.emp2_0[mo_ij] = e0;
-	  RMP2_Status.Emp2_0 += e0;
-	  if (mo_i + imin != mo_j + jmin) {
-	    RMP2_Status.emp2_1[mo_ij] = e1;
-	    RMP2_Status.Emp2_1 += e1;
-	  }
-	}
-      }
-/*    timer_off("Energy");*/
-      if (ibatch < num_ibatch-1) {
-	fprintf(outfile,"  Energy after Pass #%d = %20.10lf\n",ibatch,RMP2_Status.Emp2_0+RMP2_Status.Emp2_1);
-	fprintf(outfile,"  Singlet energy after Pass #%d = %20.10lf\n",ibatch,RMP2_Status.Emp2_0);
-	fprintf(outfile,"  Triplet energy after Pass #%d = %20.10lf\n",ibatch,RMP2_Status.Emp2_1);
-	fflush(outfile);
-	memset(jsia_buf,0,MOInfo.nactdocc*BasisSet.num_ao*ibatch_length*MOInfo.nactuocc*sizeof(double));
-	memset(jbia_buf,0,MOInfo.nactdocc*MOInfo.nactuocc*ibatch_length*MOInfo.nactuocc*sizeof(double));
+    /*--- Files are opened and closed each pass to ensure integrity of TOCs
+      if restart ever needed ---*/
+     psio_open(PSIF_MO_TEI, (ibatch != 0) ? PSIO_OPEN_OLD : PSIO_OPEN_NEW);
 
-	fprintf(outfile,"\n");
-	fprintf(outfile,"  Singlet pair energies after Pass #%d:\n",ibatch);
-	fprintf(outfile,"    i       j         e(ij)\n");
-	fprintf(outfile,"  -----   -----   ------------\n");
-	for(mo_i=0;mo_i<ibatch_length;mo_i++)
-	  for(mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
-	    mo_ij = INDEX(mo_i + imin, mo_j + jmin);
-	    fprintf(outfile,"  %3d     %3d     %12.9lf\n",imin+mo_i+1,jmin+mo_j+1,RMP2_Status.emp2_0[mo_ij]);
-	  }
-	fprintf(outfile,"\n");
-	fprintf(outfile,"  Triplet pair energies after Pass #%d:\n",ibatch);
-	fprintf(outfile,"    i       j         e(ij)\n");
-	fprintf(outfile,"  -----   -----   ------------\n");
-	for(mo_i=0;mo_i<ibatch_length;mo_i++)
-	  for(mo_j=0;mo_j<mo_i+imin-jmin;mo_j++) {
-	    mo_ij = INDEX(mo_i + imin, mo_j + jmin);
-	    fprintf(outfile,"  %3d     %3d     %12.9lf\n",imin+mo_i+1,jmin+mo_j+1,RMP2_Status.emp2_1[mo_ij]);
-	  }
-	fprintf(outfile,"\n");
-	fflush(outfile);
-      }
-      /*--- Done with the non-threaded part - wake everybody up and prepare for the next ibatch ---*/
-      RMP2_Status.num_arrived = 0;
-      pthread_cond_broadcast(&rmp2_energy_cond);
-      pthread_mutex_unlock(&rmp2_energy_mutex);
+    /*--------------------------------------------------------
+      Dump all fully transformed integrals to disk. Zero out
+      non-symmetrical integrals (what's left of the Pitzer's
+      equal contribution theorem in Abelian case).
+     --------------------------------------------------------*/
+     /*--------------------------------------------------------------------
+       Write integrals out in num_mo by num_mo batches corresponding to
+       each active ij pair.
+      --------------------------------------------------------------------*/
+     for(int mo_i=0;mo_i<ibatch_length;mo_i++) {
+       int i = MOInfo.occ_to_pitzer[mo_i+imin];       /*--- mo_i+imin is the index in the occupied indexing scheme, convert to pitzer */
+       int isym = MOInfo.mo2symblk_occ[0][mo_i+imin];
+       for(int mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
+         int jsym = MOInfo.mo2symblk_occ[0][mo_j+jmin];
+         int j = MOInfo.occ_to_pitzer[mo_j+jmin];    /*--- Again, get the "occupied" index converted to pitzer---*/
+         sprintf(ij_key_string,"Block_%d_x_%d_y",i,j);
+         memset(xy_buf,0,MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
+         /*--- Put all integrals with common i and j into a buffer ---*/
+         for(int mo_x=0,xy=0;mo_x<MOInfo.num_mo;mo_x++) {
+           int x = mo_x;    /*--- The second index is a virtual index, that's fine ---*/
+           int xsym = MOInfo.mo2symblk[x];
+           for(int mo_y=0;mo_y<MOInfo.num_mo;mo_y++,xy++) {
+     	     int y = mo_y;                    /*--- Again, the Pitzer index here is what we need ---*/
+     	     int ysym = MOInfo.mo2symblk[y];
+             /*--- Skip this integral if it's non-totally symmetric -
+               Pitzer's contribution theorem in Abelian case ---*/
+             if ((isym ^ jsym) ^ (xsym ^ ysym)) continue;
+             /*--- find the integral in ixjy_buf and put it in xy_buf ---*/
+	     xy_buf[xy] = jyix_buf[((mo_j * MOInfo.num_mo + mo_y) * ibatch_length + mo_i) * MOInfo.num_mo + mo_x];
+             
+           }
+         }
+         psio_write_entry(PSIF_MO_TEI, ij_key_string, (char *)xy_buf, MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
+       }
+     }
+     psio_close(PSIF_MO_TEI, 1);
+     if (ibatch < num_ibatch-1) {
+       memset(jsix_buf,0,MOInfo.nactdocc*BasisSet.num_ao*ibatch_length*MOInfo.num_mo*sizeof(double));
+       memset(jyix_buf,0,MOInfo.nactdocc*MOInfo.num_mo*ibatch_length*MOInfo.num_mo*sizeof(double));
+     }
+    /*--- Done with the non-threaded part - wake everybody up and prepare for the next ibatch ---*/
+     MkPT2_Status.num_arrived = 0;
+     pthread_cond_broadcast(&mkpt2_energy_cond);
+     pthread_mutex_unlock(&mkpt2_energy_mutex);
     }
   } /* End of "I"-loop */
 
   /*---------
     Clean-up
    ---------*/
-  free(rsia_buf);
+  free(rsix_buf);
   free(rsiq_buf);
+  free(xy_buf);
 #ifdef NONDOUBLE_INTS
   free(raw_data);
 #endif
@@ -829,5 +811,6 @@ void *rmp2_energy_thread(void *tnum_ptr)
   return NULL;
 }
 
+}
 }
 }
