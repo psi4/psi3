@@ -86,8 +86,8 @@ namespace psi {
 
   /* symmetrize the F's and S's */
   for(coord=0; coord < Molecule.num_atoms*3; coord++) {
-    fprintf(outfile, "AO-basis Overlap Derivs (Pre-Symm) (%d)", coord);
     if (UserOptions.print_lvl >= PRINT_OEDERIV) {
+      fprintf(outfile, "AO-basis Overlap Derivs (Pre-Symm) (%d)", coord);
       print_mat(S[coord],BasisSet.num_ao,BasisSet.num_ao,outfile);
     }
 
@@ -100,8 +100,8 @@ namespace psi {
       }
     }
 
-    fprintf(outfile, "AO-basis Overlap Derivs (%d)", coord);
     if (UserOptions.print_lvl >= PRINT_OEDERIV) {
+      fprintf(outfile, "AO-basis Overlap Derivs (%d)", coord);
       print_mat(S[coord],BasisSet.num_ao,BasisSet.num_ao,outfile);
     }
   }
@@ -179,7 +179,7 @@ namespace psi {
   free(outbuf);
   free(label);
 
-  print_atommat("Skeleton contribution to the molecular Hessian (a.u.)",Hess);
+  /* print_atommat("Skeleton contribution to the molecular Hessian (a.u.)",Hess); */
   natom = Molecule.num_atoms;
   psio_open(PSIF_DERINFO, PSIO_OPEN_NEW);
   psio_write_entry(PSIF_DERINFO, "Skeleton Hessian", (char *) Hess[0], natom*3*natom*3*sizeof(double));
