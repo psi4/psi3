@@ -70,9 +70,10 @@ struct Params {
   int ivo;                      /* boolean for test IVO's                 */
   int semicanonical;            /* boolean for Semicanonical orbitals     */
 
-  char *aobasis;                /* string for AO-Basis CC algorithms     */
+  char *aobasis;                /* string for AO-Basis CC algorithms      */
 
   int pitzer;                   /* boolean to override all MO reordering  */
+  int psimrcc;                  /* boolean for psimrcc settings           */
 };
 
 /* Note that the current version does a reordering of orbital indices.

@@ -220,6 +220,7 @@ void init_io(int argc, char *argv[])
    extra_args = (char **) malloc(argc*sizeof(char *));
 
    params.runmode = MODE_NORMAL;
+   params.psimrcc = 0; 
 
    for (i=1; i<argc; i++) {
        
@@ -230,6 +231,10 @@ void init_io(int argc, char *argv[])
        /*--- do backtransformation ---*/
        else if (strcmp(argv[i], "--backtr") == 0) {
 	   params.backtr = 1;
+       }
+       /*--- use Pitzer ordering and don't freeze core, used by psimrcc ---*/
+       else if (strcmp(argv[i], "--psimrcc") == 0) {
+           params.psimrcc = 1;
        }
        /*--- transform integrals for MP2R12A ---*/
        else if (strcmp(argv[i], "--mp2r12a") == 0) {
@@ -577,6 +582,9 @@ void get_parameters(void)
   if(!strcmp(params.wfn,"SCF_MVD") && !strcmp(params.dertype,"FIRST"))
     params.pitzer = 1;
 
+  if(params.psimrcc)
+    params.pitzer = 1;
+
   params.reorder = 0;
   errcod = ip_boolean("REORDER",&(params.reorder),0);
 
@@ -784,6 +792,14 @@ void get_moinfo(void)
   if (!params.fzc) {
     for (i=0; i<moinfo.nirreps; i++) {
       moinfo.frdocc[i] = 0;
+    }
+  }
+
+  // (ACS/FAE  more hacking for MRCC code...)
+  if(params.psimrcc){
+    params.fzc = 0;
+    for (i=0; i<moinfo.nirreps; i++) {
+      moinfo.frdocc[i] = moinfo.fruocc[i] = 0;
     }
   }
 
