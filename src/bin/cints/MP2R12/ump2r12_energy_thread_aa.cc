@@ -967,7 +967,7 @@ void *ump2r12_energy_thread_aa(void *tnum_ptr)
   free(sk_arr);
   free(sl_arr);
 
-  return;
+  return NULL;
 }
 
 }}} /* End namespaces */
