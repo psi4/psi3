@@ -85,7 +85,7 @@ namespace psi{ namespace CINTS{ namespace ump2r12_bb{
 
 void *ump2r12_energy_thread_bb(void *tnum_ptr)
 {
-  int thread_num = (int) tnum_ptr;
+  const long int thread_num = (long int) tnum_ptr;
   const double toler = UserOptions.cutoff;
 
   extern pthread_mutex_t rmp2r12_energy_mutex;

@@ -125,7 +125,7 @@ void ump2r12_energy_aa()
   int max_bf_per_shell;
   int max_num_prim_comb;
   int te_type;
-  int i;
+  long int i;
 
   int num_ibatch, num_i_per_ibatch, ibatch, ibatch_first, ibatch_length;
   int imin, imax, jmin;

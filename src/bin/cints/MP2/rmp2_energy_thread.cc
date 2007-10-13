@@ -719,7 +719,7 @@ void *rmp2_energy_thread(void *tnum_ptr)
 	  }
 	}
 
-#if 1
+#if PRINT
     /*--- Print them out if needed ---*/
       for(mo_i=0;mo_i<ibatch_length;mo_i++) {
 	for(mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
