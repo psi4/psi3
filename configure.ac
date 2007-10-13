@@ -81,7 +81,7 @@ AC_ARG_WITH(max-am-deriv1,[  --with-max-am-deriv1    maximum AM in ERI first der
   LIBDERIV_NEW_AM1=$((2*($withval)))
 ])
 AC_SUBST(LIBDERIV_NEW_AM1)
-LIBDERIV_NEW_AM2=4
+LIBDERIV_NEW_AM2=6
 AC_ARG_WITH(max-am-deriv2,[  --with-max-am-deriv2    maximum AM in ERI second derivatives],[
   LIBDERIV_NEW_AM2=$((2*($withval)))
 ])
