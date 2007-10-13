@@ -15,6 +15,8 @@ namespace psi { namespace cceom {
 #define EXTERN
 #endif
 
+EXTERN void check_sum(char *term_lbl, int index, int irrep);
+
 /* #define EOM_DEBUG (1) */
 #define TIME_CCEOM (1)
 
