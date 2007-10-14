@@ -3,6 +3,8 @@
     \brief Enter brief description of file here 
 */
 #include<cstdio>
+#include<cstring>
+#include<cstdlib>
 #include<libint/libint.h>
 #include<libipv1/ip_lib.h>
 #include<libciomr/libciomr.h>

@@ -3,6 +3,8 @@
     \brief Enter brief description of file here 
 */
 #include<cstdio>
+#include <cstring>
+#include <cstdlib>
 #include<libint/libint.h>
 #include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
