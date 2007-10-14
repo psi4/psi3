@@ -38,6 +38,7 @@ void init_amps(void);
 void tau_build(void);
 void taut_build(void);
 double energy(void);
+double mp2_energy(void);
 void sort_amps(void);
 void Fae_build(void);
 void Fmi_build(void);
@@ -174,7 +175,14 @@ int main(int argc, char *argv[])
 
   init_amps();
 
+  /* Compute the MP2 energy while we're here */
+  if(params.ref == 0 || params.ref == 2) {
+    moinfo.emp2 = mp2_energy();
+    psio_write_entry(CC_INFO, "MP2 Energy", (char *) &(moinfo.emp2),sizeof(double));
+  }
+
   if(params.print_mp2_amps) amp_write();
+
   tau_build();
   taut_build();
   fprintf(outfile, "\t            Solving CC Amplitude Equations\n");
@@ -183,18 +191,6 @@ int main(int argc, char *argv[])
   fprintf(outfile, "  ----     ---------------------    ---------   ----------  ----------  ----------\n");
   moinfo.ecc = energy();
   pair_energies(&emp2_aa, &emp2_ab);
-
-  /* hang on to the MP2 energy if applicable */
-  if(params.ref == 0 || params.ref == 2) {
-    if(!params.restart || !psio_tocscan(CC_INFO, "MP2 Energy")) {
-      moinfo.emp2 = moinfo.ecc;
-      psio_write_entry(CC_INFO, "MP2 Energy", (char *) &(moinfo.ecc),
-		       sizeof(double));
-    }
-    else
-      psio_read_entry(CC_INFO, "MP2 Energy", (char *) &(moinfo.emp2),
-		      sizeof(double));  
-  }
 
   moinfo.t1diag = diagnostic();
   moinfo.d1diag = d1diag();
@@ -342,26 +338,22 @@ int main(int argc, char *argv[])
   fprintf(outfile, "\tReference energy (file100) = %20.15f\n", moinfo.eref);
   if(params.ref == 0 || params.ref == 2) {
     fprintf(outfile, "\tMP2 correlation energy     = %20.15f\n", moinfo.emp2);
-    fprintf(outfile, "\tTotal MP2 energy           = %20.15f\n", 
-	    moinfo.eref + moinfo.emp2);
+    fprintf(outfile, "\tTotal MP2 energy           = %20.15f\n", moinfo.eref + moinfo.emp2);
   }
   if( (!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3"))) {
     fprintf(outfile, "\tCC3 correlation energy     = %20.15f\n", moinfo.ecc);
-    fprintf(outfile, "\tTotal CC3 energy           = %20.15f\n", 
-            moinfo.eref + moinfo.ecc);
+    fprintf(outfile, "\tTotal CC3 energy           = %20.15f\n", moinfo.eref + moinfo.ecc);
   }
   else if( (!strcmp(params.wfn,"CC2")) || (!strcmp(params.wfn,"EOM_CC2"))) {
     fprintf(outfile, "\tCC2 correlation energy     = %20.15f\n", moinfo.ecc);
-    fprintf(outfile, "\tTotal CC2 energy           = %20.15f\n", 
-            moinfo.eref + moinfo.ecc);
+    fprintf(outfile, "\tTotal CC2 energy           = %20.15f\n", moinfo.eref + moinfo.ecc);
     if(params.local && !strcmp(local.weakp,"MP2")) 
       fprintf(outfile, "\tTotal LCC2 energy (+LMP2)  = %20.15f\n", 
 	      moinfo.eref + moinfo.ecc + local.weak_pair_energy);
   }
   else {
     fprintf(outfile, "\tCCSD correlation energy    = %20.15f\n", moinfo.ecc);
-    fprintf(outfile, "\tTotal CCSD energy          = %20.15f\n", 
-            moinfo.eref + moinfo.ecc);
+    fprintf(outfile, "\tTotal CCSD energy          = %20.15f\n", moinfo.eref + moinfo.ecc);
     if(params.local && !strcmp(local.weakp,"MP2")) 
       fprintf(outfile, "\tTotal LCCSD energy (+LMP2) = %20.15f\n", 
 	      moinfo.eref + moinfo.ecc + local.weak_pair_energy);

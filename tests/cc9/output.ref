@@ -1,6 +1,6 @@
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Dec 13 18:56:14 2002
+tstart called on ganymede.local
+Sun Oct 14 14:13:41 2007
 
                                 --------------
                                   WELCOME TO
@@ -9,8 +9,10 @@ Fri Dec 13 18:56:14 2002
 
   LABEL       =	UHF-CCSD(T)/cc-pVDZ 2Sigma+ CN
   SHOWNORM    =	0
-  PUREAM      =	1
+  PUREAM      =	0
   PRINT_LVL   =	2
+
+  Parsed basis sets from /Users/crawdad/psi3/lib/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -26,8 +28,8 @@ Fri Dec 13 18:56:14 2002
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON      0.000000000000     0.000000000000     1.195736246924
-        NITROGEN      0.000000000000     0.000000000000    -1.024691789657
+          CARBON      0.000000000000     0.000000000000    -1.195736246924
+        NITROGEN      0.000000000000     0.000000000000     1.024691789657
 
 
   -SYMMETRY INFORMATION:
@@ -113,29 +115,29 @@ Fri Dec 13 18:56:14 2002
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON      0.000000000000     0.000000000000     1.195736246924
-        NITROGEN      0.000000000000     0.000000000000    -1.024691789657
+          CARBON      0.000000000000     0.000000000000    -1.195736246924
+        NITROGEN      0.000000000000     0.000000000000     1.024691789657
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON      0.000000000000     0.000000000000     1.195736246924
-        NITROGEN      0.000000000000     0.000000000000    -1.024691789657
+          CARBON      0.000000000000     0.000000000000    -1.195736246924
+        NITROGEN      0.000000000000     0.000000000000     1.024691789657
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON      0.000000000000     0.000000000000     0.632756417677
-        NITROGEN      0.000000000000     0.000000000000    -0.542243582323
+          CARBON      0.000000000000     0.000000000000    -0.632756417677
+        NITROGEN      0.000000000000     0.000000000000     0.542243582323
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON      0.000000000000     0.000000000000     1.195736246924
-        NITROGEN      0.000000000000     0.000000000000    -1.024691789657
+          CARBON      0.000000000000     0.000000000000    -1.195736246924
+        NITROGEN      0.000000000000     0.000000000000     1.024691789657
 
 
   --------------------------------------------------------------------------
@@ -149,17 +151,20 @@ Fri Dec 13 18:56:14 2002
     1   0.0000000
     2   1.1750000   0.0000000
 
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Dec 13 18:56:14 2002
+tstop called on ganymede.local
+Sun Oct 14 14:13:41 2007
 
-user time   =       0.03 seconds
-system time =       0.01 seconds
-total time  =          0 seconds
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Dec 13 18:56:17 2002
+tstart called on ganymede.local
+Sun Oct 14 14:13:41 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -170,39 +175,40 @@ Fri Dec 13 18:56:17 2002
   -OPTIONS:
     Print level                 = 2
     Integral tolerance          = 1e-15
-    Max. memory to use          = 4000000 double words
+    Max. memory to use          = 2500000 double words
     Number of threads           = 1
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = UHF-CCSD(T)/cc-pVDZ 2Sigma+ CN                                                  
+    Label                       = UHF-CCSD(T)/cc-pVDZ 2Sigma+ CN
     Number of atoms             = 2
     Number of atomic orbitals   = 30
     Number of symmetry orbitals = 28
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
 
   -CARTESIAN COORDINATES (a.u.):
      Nuc. charge           X                  Y                   Z
     -------------   -----------------  -----------------  -----------------
-         6.000         0.000000000000     0.000000000000     1.195736246924
-         7.000         0.000000000000     0.000000000000    -1.024691789657
+         6.000         0.000000000000     0.000000000000    -1.195736246924
+         7.000         0.000000000000     0.000000000000     1.024691789657
+
 
     Wrote 19125 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Dec 13 18:56:17 2002
+tstop called on ganymede.local
+Sun Oct 14 14:13:41 2007
 
-user time   =       0.53 seconds
-system time =       0.03 seconds
-total time  =          0 seconds
+user time   =       0.17 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Dec 13 18:56:17 2002
+tstart called on ganymede.local
+Sun Oct 14 14:13:41 2007
 
 
              ------------------------------------------
@@ -213,19 +219,17 @@ Fri Dec 13 18:56:17 2002
 
              ------------------------------------------
 
-
-
 Cannot check consistency of the multiplicity
 
 and number of electrons, double check
 your occupations
 
-  label       = UHF-CCSD(T)/cc-pVDZ 2Sigma+ CN
+  label        = UHF-CCSD(T)/cc-pVDZ 2Sigma+ CN
   wfn          = CCSD_T
   reference    = UHF
   multiplicity = 2
   charge       = 0
-  direct SCF   = false
+  direct       = false
   dertype      = NONE
   convergence  = 10
   maxiter      = 40
@@ -235,6 +239,8 @@ your occupations
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
@@ -261,85 +267,77 @@ your occupations
   iter       total energy        delta E         delta P          diiser
     1       -83.1984135320    1.021137e+02    0.000000e+00    0.000000e+00
     2       -83.9760925125    7.776790e-01    1.780265e-01    1.095783e+00
-    3       -85.4940281839    1.517936e+00    1.431625e-01    8.968520e-01
-    4       -87.3119739077    1.817946e+00    2.995625e-02    8.039218e-01
-    5       -87.9255867046    6.136128e-01    1.827526e-02    8.099109e-01
-    6       -89.4193766628    1.493790e+00    3.862597e-02    8.372438e-01
-    7       -91.3501048430    1.930728e+00    2.137972e-02    5.490729e-01
-    8       -92.1831596974    8.330549e-01    1.370260e-02    3.726986e-01
-    9       -92.1874819365    4.322239e-03    2.450603e-03    6.018732e-02
-   10       -92.2041789726    1.669704e-02    2.096880e-03    7.067982e-02
-   11       -92.2060892597    1.910287e-03    7.504481e-04    1.474253e-02
-   12       -92.2070937261    1.004466e-03    3.132432e-04    9.488472e-03
-   13       -92.2085474963    1.453770e-03    4.792378e-04    7.938679e-03
-   14       -92.2105954086    2.047912e-03    8.035360e-04    7.471742e-03
-   15       -92.2127603668    2.164958e-03    1.926326e-03    5.880112e-03
-   16       -92.2127428224   -1.754436e-05    3.101743e-04    1.058852e-03
-   17       -92.2126614046   -8.141779e-05    1.949996e-04    8.892977e-04
-   18       -92.2127706432    1.092386e-04    3.035815e-04    1.655805e-03
-   19       -92.2127720328    1.389509e-06    1.080921e-05    3.955838e-04
-   20       -92.2127762217    4.188984e-06    1.113330e-04    3.521656e-04
-   21       -92.2127769359    7.141185e-07    3.549303e-05    1.313793e-04
-   22       -92.2127769520    1.612419e-08    3.303930e-06    2.320261e-05
-   23       -92.2127769533    1.275609e-09    1.077613e-06    5.770710e-06
-   24       -92.2127769533    2.373213e-11    1.503879e-07    7.805199e-07
-   25       -92.2127769533    1.136868e-13    4.098583e-08    1.022257e-07
-   26       -92.2127769533    2.984279e-13    1.735496e-08    8.219046e-08
-   27       -92.2127769533    0.000000e+00    9.846455e-10    1.290521e-08
-   28       -92.2127769533    0.000000e+00    5.607379e-10    9.274224e-09
-   29       -92.2127769533    0.000000e+00    5.476802e-10    5.891629e-09
-   30       -92.2127769533    1.421085e-14    4.047191e-10    2.134864e-09
-   31       -92.2127769533    0.000000e+00    5.610959e-11    3.683691e-10
+    3       -91.8523824828    7.876290e+00    1.150826e-01    1.110631e+00
+    4       -92.1882265825    3.358441e-01    1.111967e-02    2.200720e-01
+    5       -92.2013333077    1.310673e-02    2.843735e-03    7.976069e-02
+    6       -92.2037546954    2.421388e-03    1.160480e-03    3.057112e-02
+    7       -92.2057673831    2.012688e-03    5.565023e-04    1.568942e-02
+    8       -92.2072975509    1.530168e-03    4.621990e-04    9.878179e-03
+    9       -92.2114385932    4.141042e-03    1.652666e-03    7.501955e-03
+   10       -92.2125459618    1.107369e-03    1.921422e-03    4.804305e-03
+   11       -92.2126100639    6.410214e-05    1.005466e-03    2.700578e-03
+   12       -92.2127746937    1.646298e-04    4.200627e-04    1.859135e-03
+   13       -92.2127767274    2.033703e-06    7.096045e-05    2.154885e-04
+   14       -92.2127769326    2.051846e-07    2.223667e-05    7.056458e-05
+   15       -92.2127769530    2.043664e-08    5.112697e-06    2.139741e-05
+   16       -92.2127769532    1.201244e-10    4.128490e-07    3.846194e-06
+   17       -92.2127769533    1.085994e-10    4.416916e-07    1.660665e-06
+   18       -92.2127769533    3.396394e-12    6.414477e-08    3.270629e-07
+   19       -92.2127769533   -7.105427e-14    3.839843e-09    6.435897e-08
+   20       -92.2127769533    1.278977e-13    1.247031e-09    2.422997e-08
+   21       -92.2127769533   -2.842171e-14    8.102441e-10    4.385096e-09
+   22       -92.2127769533    0.000000e+00    1.700437e-10    1.394598e-09
+   23       -92.2127769533    0.000000e+00    2.488102e-11    2.190025e-10
 
 Orbital energies (a.u.):
 
   Alpha Occupied orbitals
    1A1    -15.609649     2A1    -11.361901     3A1     -1.240450  
-   4A1     -0.739642     5A1     -0.563366     1B1     -0.515486  
-   1B2     -0.515486  
+   4A1     -0.739642     5A1     -0.563366     1B2     -0.515486  
+   1B1     -0.515486  
 
   Alpha Unoccupied orbitals
    2B1      0.185545     2B2      0.185545     6A1      0.371294  
    3B1      0.618208     3B2      0.618208     7A1      0.647664  
    8A1      0.874611     9A1      1.016318     4B2      1.069923  
-   4B1      1.069923     1A2      1.276314    10A1      1.276314  
-   5B2      1.477267     5B1      1.477267    11A1      1.568138  
-   2A2      2.197372    12A1      2.197372    13A1      2.235884  
-   6B1      2.682841     6B2      2.682841    14A1      3.102221  
+   4B1      1.069923    10A1      1.276314     1A2      1.276314  
+   5B1      1.477267     5B2      1.477267    11A1      1.568138  
+  12A1      2.197372     2A2      2.197372    13A1      2.235884  
+   6B2      2.682841     6B1      2.682841    14A1      3.102221  
 
   Beta Occupied orbitals
    1A1    -15.635827     2A1    -11.306231     3A1     -1.254501  
    4A1     -0.616935     1B2     -0.533650     1B1     -0.533650  
 
   Beta Unoccupied orbitals
-   5A1     -0.011000     2B2      0.210416     2B1      0.210416  
-   6A1      0.399783     3B1      0.708996     3B2      0.708996  
+   5A1     -0.011000     2B1      0.210416     2B2      0.210416  
+   6A1      0.399783     3B2      0.708996     3B1      0.708996  
    7A1      0.800256     8A1      0.870942     4B2      1.008070  
-   4B1      1.008070     9A1      1.090983     1A2      1.361267  
-  10A1      1.361267     5B2      1.541385     5B1      1.541385  
+   4B1      1.008070     9A1      1.090983    10A1      1.361267  
+   1A2      1.361267     5B2      1.541385     5B1      1.541385  
   11A1      1.563544    12A1      2.124491     2A2      2.124491  
-  13A1      2.286372     6B1      2.677621     6B2      2.677621  
+  13A1      2.286372     6B2      2.677621     6B1      2.677621  
   14A1      3.100604  
 
 
         SCF total energy   =     -92.212776953277
-        kinetic energy     =      92.114935698337
-        nuc. attr. energy  =    -253.944261262102
-        elec. rep. energy  =      69.616548610488
-        potential energy   =    -184.327712651614
-        virial theorem     =       1.998938962060
+        kinetic energy     =      92.114935697525
+        nuc. attr. energy  =    -253.944261261468
+        elec. rep. energy  =      69.616548610666
+        potential energy   =    -184.327712650802
+        virial theorem     =       1.998938962051
         wavefunction norm  =       1.000000000000
-        <S^2>              =       0.412337173160
+        <S^2>              =       1.162337170555
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Dec 13 18:56:17 2002
+tstop called on ganymede.local
+Sun Oct 14 14:13:41 2007
 
-user time   =       0.04 seconds
-system time =       0.00 seconds
-total time  =          0 seconds
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Dec 13 18:56:17 2002
+tstart called on ganymede.local
+Sun Oct 14 14:13:41 2007
 
 
 	**************************************************
@@ -347,131 +345,138 @@ Fri Dec 13 18:56:17 2002
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  CCSD_T
-	Reference orbitals     =  UHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            = Yes
-	Delete Restricted Docc =  No
-	Do All TEI             = No
-	Memory (Mbytes)        =   32.0
-	Max Buckets            =  199
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  No
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  2
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Pitzer                 =  No
+	Wave function   =	CCSD_T
+	Print Level     =	2
+	Print TEIs      =	No
+	Reference wfn   =	UHF
+	Derivative      =	None
+	Delete TEI File =	No
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 28
+	Number of MOs        = 28
+	Number of active MOs = 26
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 28
-	Number of MOs    = 28
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   14	    2	    2	    1	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   6	    0	    1	    0	    5	    0
+	 B2 	   6	    0	    1	    0	    5	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   14	   14	    2	    4	    1	    9	    0
-	 A2 	   2	   2	    0	    0	    0	    2	    0
-	 B1 	   6	   6	    0	    1	    0	    5	    0
-	 B2 	   6	   6	    0	    1	    0	    5	    0
+	Nuclear Rep. energy (chkpt) =     18.91527187914894
+	SCF energy          (chkpt) =    -92.21277695327693
 
-	Nuclear Repulsion Energy    =        18.9152718791
-	Total SCF Energy            =       -92.2127769533
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron integrals...
-
-	Presort Yoshimine Parameters Yoshimine structure:
-	bra_indices  =        406
-	ket_indices  =        406
-	bin size   =    1331344
-	bins       =          1
-	core loads =          1
-	pq/bin     =        406
-	cutoff     =   1.00E-14
-
-
-	Frozen core energy =  -86.999353710953670
-
-	Beginning AA/AB two-electron transform...
-	Half-transform Yoshimine Parameters Yoshimine structure:
-	bra_indices  =        406
-	ket_indices  =        406
-	bin size   =    1331344
-	bins       =          1
-	core loads =          1
-	pq/bin     =        406
-	cutoff     =   1.00E-14
-
-	Sorting AA/AB half-transformed integrals...
-	Finished AA/AB half-transformation...
-
-	AA Transformation finished.
-	Two-electron AA integrals written to file81.
-
-	AB Transformation finished.
-	Two-electron AB integrals written to file83.
-
-	Beginning BB two-electron transform...
-	Half-transform Yoshimine Parameters Yoshimine structure:
-	bra_indices  =        406
-	ket_indices  =        406
-	bin size   =    1331344
-	bins       =          1
-	core loads =          1
-	pq/bin     =        406
-	cutoff     =   1.00E-14
-
-	Sorting BB half-transformed integrals...
-	Finished BB half-transformation...
-
-	BB Transformation finished.
-	Two-electron BB integrals written to file82.
-
-	Transforming one-electron integrals...
-	One-electron A integrals written to file 35.
-	One-electron B integrals written to file 35.
-	Alpha frozen-core operator written to file 35.
-	Beta frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =  -86.999353710957308
+	Starting AA/AB first half-transformation.
+	h = 0; memfree         = 31999508
+	h = 0; rows_per_bucket = 150
+	h = 0; rows_left       = 0
+	h = 0; nbuckets        = 1
+	h = 1; memfree         = 31999752
+	h = 1; rows_per_bucket = 64
+	h = 1; rows_left       = 0
+	h = 1; nbuckets        = 1
+	h = 2; memfree         = 31999640
+	h = 2; rows_per_bucket = 96
+	h = 2; rows_left       = 0
+	h = 2; nbuckets        = 1
+	h = 3; memfree         = 31999640
+	h = 3; rows_per_bucket = 96
+	h = 3; rows_left       = 0
+	h = 3; nbuckets        = 1
+	Sorting AA/AB half-transformed integrals.
+	Starting AA second half-transformation.
+	h = 0; memfree         = 31999508
+	h = 0; rows_per_bucket = 123
+	h = 0; rows_left       = 0
+	h = 0; nbuckets        = 1
+	h = 1; memfree         = 31999752
+	h = 1; rows_per_bucket = 60
+	h = 1; rows_left       = 0
+	h = 1; nbuckets        = 1
+	h = 2; memfree         = 31999640
+	h = 2; rows_per_bucket = 84
+	h = 2; rows_left       = 0
+	h = 2; nbuckets        = 1
+	h = 3; memfree         = 31999640
+	h = 3; rows_per_bucket = 84
+	h = 3; rows_left       = 0
+	h = 3; nbuckets        = 1
+	Starting AB second half-transformation.
+	h = 0; memfree         = 31999508
+	h = 0; rows_per_bucket = 123
+	h = 0; rows_left       = 0
+	h = 0; nbuckets        = 1
+	h = 1; memfree         = 31999752
+	h = 1; rows_per_bucket = 60
+	h = 1; rows_left       = 0
+	h = 1; nbuckets        = 1
+	h = 2; memfree         = 31999640
+	h = 2; rows_per_bucket = 84
+	h = 2; rows_left       = 0
+	h = 2; nbuckets        = 1
+	h = 3; memfree         = 31999640
+	h = 3; rows_per_bucket = 84
+	h = 3; rows_left       = 0
+	h = 3; nbuckets        = 1
+	Starting BB first half-transformation.
+	h = 0; memfree         = 31999508
+	h = 0; rows_per_bucket = 150
+	h = 0; rows_left       = 0
+	h = 0; nbuckets        = 1
+	h = 1; memfree         = 31999752
+	h = 1; rows_per_bucket = 64
+	h = 1; rows_left       = 0
+	h = 1; nbuckets        = 1
+	h = 2; memfree         = 31999640
+	h = 2; rows_per_bucket = 96
+	h = 2; rows_left       = 0
+	h = 2; nbuckets        = 1
+	h = 3; memfree         = 31999640
+	h = 3; rows_per_bucket = 96
+	h = 3; rows_left       = 0
+	h = 3; nbuckets        = 1
+	Sorting BB half-transformed integrals.
+	Starting BB second half-transformation.
+	h = 0; memfree         = 31999508
+	h = 0; rows_per_bucket = 123
+	h = 0; rows_left       = 0
+	h = 0; nbuckets        = 1
+	h = 1; memfree         = 31999752
+	h = 1; rows_per_bucket = 60
+	h = 1; rows_left       = 0
+	h = 1; nbuckets        = 1
+	h = 2; memfree         = 31999640
+	h = 2; rows_per_bucket = 84
+	h = 2; rows_left       = 0
+	h = 2; nbuckets        = 1
+	h = 3; memfree         = 31999640
+	h = 3; rows_per_bucket = 84
+	h = 3; rows_left       = 0
+	h = 3; nbuckets        = 1
+	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Dec 13 18:56:18 2002
+tstop called on ganymede.local
+Sun Oct 14 14:13:41 2007
 
-user time   =       0.06 seconds
-system time =       0.31 seconds
-total time  =          1 seconds
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Dec 13 18:56:18 2002
+tstart called on ganymede.local
+Sun Oct 14 14:13:41 2007
 
 
 			**************************
@@ -483,12 +488,15 @@ Fri Dec 13 18:56:18 2002
 
 	Input parameters:
 	-----------------
-	Reference wfn   =      UHF
-	Derivative      =     None
-	Memory (Mbytes) =     32.0
-	AO Basis        =      Yes
-	Cache Level     =        2
-	Cache Type      =      LRU
+	Wave function   =	CCSD_T
+	Reference wfn   =	UHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	DISK
+	Make (ab|cd)    =	False
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
 
 
 	Chkpt Parameters:
@@ -505,24 +513,74 @@ Fri Dec 13 18:56:18 2002
 	 B2 	   6	    0	    1	    0	    5	    0
 
 	Nuclear Rep. energy (chkpt) =     18.91527187914894
-	SCF energy          (chkpt) =    -92.21277695327689
-	One-electron energy          =    -41.74422543948723
-	Two-electron (AA) energy     =      4.27920498041562
-	Two-electron (BB) energy     =      3.03649990702334
-	Two-electron (AB) energy     =     10.29982543057614
-	Two-electron energy          =     17.61553031801511
-	Frozen-core energy (transqt) =    -86.99935371095367
-	Reference energy             =    -92.21277695327686
-******************************************************************************
-tstop called on diadem.giga.net
-Fri Dec 13 18:56:18 2002
+	SCF energy          (chkpt) =    -92.21277695327693
 
-user time   =       0.07 seconds
-system time =       0.10 seconds
-total time  =          0 seconds
+	Size of irrep 0 of <AB|CD> integrals:      0.003 (MW) /      0.026 (MB)
+	Size of irrep 1 of <AB|CD> integrals:      0.002 (MW) /      0.015 (MB)
+	Size of irrep 2 of <AB|CD> integrals:      0.003 (MW) /      0.024 (MB)
+	Size of irrep 3 of <AB|CD> integrals:      0.003 (MW) /      0.024 (MB)
+	Total:                                     0.011 (MW) /      0.089 (MB)
+
+	Size of irrep 0 of <ab|cd> integrals:      0.004 (MW) /      0.035 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.002 (MW) /      0.016 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.004 (MW) /      0.029 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.004 (MW) /      0.029 (MB)
+	Total:                                     0.014 (MW) /      0.109 (MB)
+
+	Size of irrep 0 of <Ab|Cd> integrals:      0.021 (MW) /      0.166 (MB)
+	Size of irrep 1 of <Ab|Cd> integrals:      0.008 (MW) /      0.062 (MB)
+	Size of irrep 2 of <Ab|Cd> integrals:      0.013 (MW) /      0.106 (MB)
+	Size of irrep 3 of <Ab|Cd> integrals:      0.013 (MW) /      0.106 (MB)
+	Total:                                     0.055 (MW) /      0.439 (MB)
+
+	Size of irrep 0 of <IA|BC> integrals:      0.005 (MW) /      0.040 (MB)
+	Size of irrep 1 of <IA|BC> integrals:      0.001 (MW) /      0.011 (MB)
+	Size of irrep 2 of <IA|BC> integrals:      0.003 (MW) /      0.023 (MB)
+	Size of irrep 3 of <IA|BC> integrals:      0.003 (MW) /      0.023 (MB)
+	Total:                                     0.012 (MW) /      0.097 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.005 (MW) /      0.037 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.010 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.003 (MW) /      0.021 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.003 (MW) /      0.021 (MB)
+	Total:                                     0.011 (MW) /      0.089 (MB)
+
+	Size of irrep 0 of <Ia|Bc> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 1 of <Ia|Bc> integrals:      0.001 (MW) /      0.011 (MB)
+	Size of irrep 2 of <Ia|Bc> integrals:      0.003 (MW) /      0.025 (MB)
+	Size of irrep 3 of <Ia|Bc> integrals:      0.003 (MW) /      0.025 (MB)
+	Total:                                     0.013 (MW) /      0.107 (MB)
+
+	Size of irrep 0 of <iA|bC> integrals:      0.004 (MW) /      0.032 (MB)
+	Size of irrep 1 of <iA|bC> integrals:      0.001 (MW) /      0.010 (MB)
+	Size of irrep 2 of <iA|bC> integrals:      0.002 (MW) /      0.019 (MB)
+	Size of irrep 3 of <iA|bC> integrals:      0.002 (MW) /      0.019 (MB)
+	Total:                                     0.010 (MW) /      0.081 (MB)
+
+	Size of irrep 0 of tIjAb amplitudes:       0.001 (MW) /      0.009 (MB)
+	Size of irrep 1 of tIjAb amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tIjAb amplitudes:       0.001 (MW) /      0.005 (MB)
+	Size of irrep 3 of tIjAb amplitudes:       0.001 (MW) /      0.005 (MB)
+	Total:                                     0.002 (MW) /      0.020 (MB)
+
+
+	One-electron energy          =    -41.74422543998274
+	Two-electron (AA) energy     =      4.27920498095096
+	Two-electron (BB) energy     =      3.03649990582885
+	Two-electron (AB) energy     =     10.29982543173436
+	Two-electron energy          =     17.61553031851417
+	Frozen-core energy (transqt) =    -86.99935371095731
+	Reference energy             =    -92.21277695327694
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Dec 13 18:56:18 2002
+tstop called on ganymede.local
+Sun Oct 14 14:13:42 2007
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.06 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on ganymede.local
+Sun Oct 14 14:13:42 2007
 
 			**************************
 			*                        *
@@ -531,29 +589,35 @@ Fri Dec 13 18:56:18 2002
 			**************************
 
 	Nuclear Rep. energy (chkpt)   =   18.915271879148936
-	SCF energy          (chkpt)   =  -92.212776953276887
-	Reference energy    (file100) =  -92.212776953276858
+	SCF energy          (chkpt)   =  -92.212776953276929
+	Reference energy    (file100) =  -92.212776953276943
 
 	Input parameters:
 	-----------------
 	Wave function   =    CCSD_T
 	Reference wfn   =      UHF
-	Memory (Mbytes) =   32.0
+	Memory (Mbytes) =  256.0
 	Maxiter         =     50
 	Convergence     = 1.0e-07
 	Restart         =     Yes
 	DIIS            =     Yes
-	Local CC        =     No
-	AO Basis        =     Yes
+	AO Basis        =     DISK
+	ABCD            =     NEW
 	Cache Level     =    2
 	Cache Type      =     LRU
 	Print Level     =    2
+	Num. of threads =     1
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
+	Print Pair Ener =    No
+	Local CC        =     No
 
-	                     Solving CCSD Equations
-	                     ----------------------
-	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
-	----     ---------------------    ---------   ----------  ----------  ----------
-	   0        -0.221996161767137    0.000e+00    0.000000    0.000000    0.000000
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.221996162039320    0.000e+00    0.000000    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -572,7 +636,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   1        -0.227318464026479    1.127e-01    0.034203    0.000000    0.000000
+     1        -0.227318464219420    1.127e-01    0.034203    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -591,7 +655,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   2        -0.244460944037984    6.180e-02    0.055516    0.000000    0.000000
+     2        -0.244460944217416    6.180e-02    0.055516    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -610,7 +674,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   3        -0.258959222620497    5.026e-02    0.096674    0.000000    0.000000
+     3        -0.258959222772608    5.026e-02    0.096674    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -629,7 +693,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   4        -0.262343389645438    2.205e-02    0.117471    0.000000    0.000000
+     4        -0.262343389801253    2.205e-02    0.117471    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -648,7 +712,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   5        -0.262908618625464    1.243e-02    0.122443    0.000000    0.000000
+     5        -0.262908618782769    1.243e-02    0.122443    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -667,7 +731,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   6        -0.263757853034067    8.177e-03    0.126445    0.000000    0.000000
+     6        -0.263757853185718    8.177e-03    0.126445    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -686,7 +750,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   7        -0.263879206779141    3.817e-03    0.128184    0.000000    0.000000
+     7        -0.263879206931521    3.817e-03    0.128184    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -705,7 +769,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   8        -0.264014615618282    1.695e-03    0.128964    0.000000    0.000000
+     8        -0.264014615769718    1.695e-03    0.128964    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -724,7 +788,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   9        -0.264066152052957    8.614e-04    0.129290    0.000000    0.000000
+     9        -0.264066152204510    8.614e-04    0.129290    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -743,7 +807,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  10        -0.264071940007449    4.297e-04    0.129464    0.000000    0.000000
+    10        -0.264071940159053    4.297e-04    0.129464    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -762,7 +826,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  11        -0.264057387527368    1.444e-04    0.129427    0.000000    0.000000
+    11        -0.264057387679069    1.444e-04    0.129427    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -781,7 +845,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  12        -0.264050052451962    4.714e-05    0.129438    0.000000    0.000000
+    12        -0.264050052603690    4.714e-05    0.129438    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -800,7 +864,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  13        -0.264053142709454    1.551e-05    0.129448    0.000000    0.000000
+    13        -0.264053142861149    1.551e-05    0.129448    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -819,7 +883,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  14        -0.264053075050841    4.850e-06    0.129447    0.000000    0.000000
+    14        -0.264053075202524    4.850e-06    0.129447    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -838,7 +902,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  15        -0.264053284987055    1.185e-06    0.129448    0.000000    0.000000
+    15        -0.264053285138730    1.185e-06    0.129448    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -857,7 +921,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  16        -0.264053237549985    4.821e-07    0.129447    0.000000    0.000000
+    16        -0.264053237701657    4.821e-07    0.129447    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -876,7 +940,7 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  17        -0.264053218333473    1.513e-07    0.129447    0.000000    0.000000
+    17        -0.264053218485144    1.513e-07    0.129447    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -895,25 +959,88 @@ Fri Dec 13 18:56:18 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  18        -0.264053215433023    5.776e-08    0.129447    0.000000    0.000000
+    18        -0.264053215584694    5.776e-08    0.129447    0.000000    0.000000
 
 	Iterations converged.
 
-	SCF energy       (chkpt)   =  -92.212776953276887
-	Reference energy (file100) =  -92.212776953276858
-	CCSD correlation energy    =   -0.264053215433023
-	Total CCSD energy          =  -92.476830168709881
+
+	Largest TIA Amplitudes:
+	          3  11        -0.1562916163
+	          4  16        -0.1562916163
+	          3  13        -0.0386836946
+	          4  18        -0.0386836946
+	          3  14         0.0217614506
+	          4  19         0.0217614506
+	          0   3        -0.0109229431
+	          1   1        -0.0077761785
+	          3  12         0.0076150464
+	          4  17         0.0076150464
+
+	Largest Tia Amplitudes:
+	          1   0         0.2352610532
+	          2  12         0.1325985244
+	          3  17         0.1325985244
+	          2  13        -0.0459911424
+	          3  18        -0.0459911424
+	          1   2        -0.0413568502
+	          2  15         0.0134656317
+	          3  20         0.0134656317
+	          2  14         0.0119131155
+	          3  19         0.0119131155
+
+	Largest TIJAB Amplitudes:
+	  4   3  16  11        -0.0398171077
+	  3   2  11   3        -0.0234853049
+	  4   2  16   3        -0.0234853049
+	  4   3  17  12        -0.0206385167
+	  4   3   9   4         0.0188072525
+	  3   1  12   1         0.0168567614
+	  4   1  17   1         0.0168567614
+	  3   1  11   1        -0.0140526571
+	  4   1  16   1        -0.0140526571
+	  3   1  11   4         0.0120691042
+
+	Largest Tijab Amplitudes:
+	  3   2  17  12        -0.0346069235
+	  2   1  12   0        -0.0310243388
+	  3   1  17   0        -0.0310243388
+	  3   2  19  14        -0.0150424494
+	  3   2  17  14        -0.0147208180
+	  3   2  19  12        -0.0147208180
+	  2   1  12   4        -0.0144836211
+	  3   1  17   4        -0.0144836211
+	  3   2  10   5         0.0138482903
+	  3   2  18  13        -0.0135177462
+
+	Largest TIjAb Amplitudes:
+	  3   2  11  12        -0.1090709675
+	  4   3  16  17        -0.1090709675
+	  3   1  11   0        -0.0876053180
+	  4   1  16   0        -0.0876053180
+	  3   3  11  17        -0.0648698392
+	  4   2  16  12        -0.0648698392
+	  1   2  11   0         0.0593336799
+	  1   3  16   0         0.0593336799
+	  1   1  11  12         0.0462409359
+	  1   1  16  17         0.0462409359
+
+	SCF energy       (chkpt)   =  -92.212776953276929
+	Reference energy (file100) =  -92.212776953276943
+	MP2 correlation energy     =   -0.221996162039320
+	Total MP2 energy           =  -92.434773115316261
+	CCSD correlation energy    =   -0.264053215584694
+	Total CCSD energy          =  -92.476830168861639
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Dec 13 18:56:21 2002
+tstop called on ganymede.local
+Sun Oct 14 14:13:44 2007
 
-user time   =       1.78 seconds
-system time =       1.19 seconds
-total time  =          3 seconds
+user time   =       1.03 seconds =       0.02 minutes
+system time =       0.56 seconds =       0.01 minutes
+total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on diadem.giga.net
-Fri Dec 13 18:56:21 2002
+tstart called on ganymede.local
+Sun Oct 14 14:13:44 2007
 
 			**************************
 			*                        *
@@ -921,11 +1048,15 @@ Fri Dec 13 18:56:21 2002
 			*                        *
 			**************************
 
+
+	Wave function   =    CCSD_T
+	Reference wfn   =      UHF
+
 	Nuclear Rep. energy (chkpt)   =   18.915271879148936
-	SCF energy          (chkpt)   =  -92.212776953276887
-	Reference energy    (file100) =  -92.212776953276858
-	CCSD energy         (file100) =   -0.264053215433023
-	Total CCSD energy   (file100) =  -92.476830168709881
+	SCF energy          (chkpt)   =  -92.212776953276929
+	Reference energy    (file100) =  -92.212776953276943
+	CCSD energy         (file100) =   -0.264053215584694
+	Total CCSD energy   (file100) =  -92.476830168861639
 
 	Number of ijk index combinations:
 	Spin Case AAA: 10
@@ -933,17 +1064,17 @@ Fri Dec 13 18:56:21 2002
 	Spin Case AAB: 40
 	Spin Case ABB: 30
 
-	AAA (T) energy                =   -0.000105841401523
-	BBB (T) energy                =   -0.000012376485758
-	AAB (T) energy                =   -0.007108813862973
-	ABB (T) energy                =   -0.005234214888424
-	(T) energy                    =   -0.012461246638678
-	Total CCSD(T) energy          =  -92.489291415348561
+	AAA (T) energy                =   -0.000105841401815
+	BBB (T) energy                =   -0.000012376486006
+	AAB (T) energy                =   -0.007108813870652
+	ABB (T) energy                =   -0.005234214893376
+	(T) energy                    =   -0.012461246651849
+	Total CCSD(T) energy          =  -92.489291415513492
 
 ******************************************************************************
-tstop called on diadem.giga.net
-Fri Dec 13 18:56:21 2002
+tstop called on ganymede.local
+Sun Oct 14 14:13:44 2007
 
-user time   =       0.16 seconds
-system time =       0.06 seconds
-total time  =          0 seconds
+user time   =       0.09 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes

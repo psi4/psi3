@@ -1,6 +1,6 @@
 ******************************************************************************
 tstart called on ganymede.local
-Thu Aug 11 10:14:58 2005
+Sun Oct 14 14:24:00 2007
 
                                 --------------
                                   WELCOME TO
@@ -12,7 +12,7 @@ Thu Aug 11 10:14:58 2005
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /Users/crawdad/share/pbasis.dat
+  Parsed basis sets from /Users/crawdad/psi3/lib/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -29,9 +29,9 @@ Thu Aug 11 10:14:58 2005
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        HYDROGEN     -1.340211960333     0.929903582097    -0.000000000000
-          OXYGEN     -0.000000000000    -0.117184758984     0.000000000000
-        HYDROGEN      1.340211960333     0.929903582097    -0.000000000000
+        HYDROGEN     -1.340211960333     0.929903582097     0.000000000000
+          OXYGEN      0.000000000000    -0.117184758984     0.000000000000
+        HYDROGEN      1.340211960333     0.929903582097     0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -116,32 +116,32 @@ Thu Aug 11 10:14:58 2005
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000    -0.000000000000    -0.117184758984
-        HYDROGEN     -0.000000000000     1.340211960333     0.929903582097
+          OXYGEN      0.000000000000     0.000000000000    -0.117184758984
+        HYDROGEN      0.000000000000     1.340211960333     0.929903582097
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        HYDROGEN     -0.000000000000    -1.340211960333     0.929903582097
-          OXYGEN      0.000000000000    -0.000000000000    -0.117184758984
-        HYDROGEN     -0.000000000000     1.340211960333     0.929903582097
+        HYDROGEN      0.000000000000    -1.340211960333     0.929903582097
+          OXYGEN      0.000000000000     0.000000000000    -0.117184758984
+        HYDROGEN      0.000000000000     1.340211960333     0.929903582097
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        HYDROGEN     -0.000000000000    -0.709209678246     0.492083819409
-          OXYGEN      0.000000000000    -0.000000000000    -0.062011508384
-        HYDROGEN     -0.000000000000     0.709209678246     0.492083819409
+        HYDROGEN      0.000000000000    -0.709209678246     0.492083819409
+          OXYGEN      0.000000000000     0.000000000000    -0.062011508384
+        HYDROGEN      0.000000000000     0.709209678246     0.492083819409
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        HYDROGEN     -0.000000000000    -1.340211960333     0.929903582097
-          OXYGEN      0.000000000000    -0.000000000000    -0.117184758984
-        HYDROGEN     -0.000000000000     1.340211960333     0.929903582097
+        HYDROGEN      0.000000000000    -1.340211960333     0.929903582097
+          OXYGEN      0.000000000000     0.000000000000    -0.117184758984
+        HYDROGEN      0.000000000000     1.340211960333     0.929903582097
 
 
   --------------------------------------------------------------------------
@@ -162,14 +162,14 @@ Thu Aug 11 10:14:58 2005
 
 ******************************************************************************
 tstop called on ganymede.local
-Thu Aug 11 10:14:58 2005
+Sun Oct 14 14:24:00 2007
 
-user time   =       0.13 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on ganymede.local
-Thu Aug 11 10:14:58 2005
+Sun Oct 14 14:24:00 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -199,14 +199,14 @@ Thu Aug 11 10:14:58 2005
 
 ******************************************************************************
 tstop called on ganymede.local
-Thu Aug 11 10:15:00 2005
+Sun Oct 14 14:24:01 2007
 
-user time   =       2.18 seconds =       0.04 minutes
-system time =       0.35 seconds =       0.01 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.77 seconds =       0.01 minutes
+system time =       0.09 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 tstart called on ganymede.local
-Thu Aug 11 10:15:00 2005
+Sun Oct 14 14:24:01 2007
 
 
              ------------------------------------------
@@ -235,6 +235,8 @@ Thu Aug 11 10:15:00 2005
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
@@ -263,13 +265,13 @@ Thu Aug 11 10:15:00 2005
     7       -76.0565307856    5.055377e-03    1.444717e-04    2.302639e-02
     8       -76.0567564140    2.256284e-04    3.823625e-05    5.170422e-03
     9       -76.0567577170    1.303027e-06    2.848975e-06    3.099074e-04
-   10       -76.0567577580    4.098537e-08    5.031485e-07    6.017146e-05
-   11       -76.0567577614    3.366182e-09    1.735608e-07    1.471984e-05
-   12       -76.0567577614    7.106848e-11    2.818555e-08    1.731503e-06
-   13       -76.0567577614    1.847411e-12    5.521792e-09    3.651038e-07
-   14       -76.0567577614    8.526513e-14    1.128057e-09    8.087768e-08
-   15       -76.0567577614   -7.105427e-14    1.551508e-10    1.241294e-08
-   16       -76.0567577614    0.000000e+00    4.132056e-11    2.949274e-09
+   10       -76.0567577580    4.098507e-08    5.031485e-07    6.017146e-05
+   11       -76.0567577614    3.366296e-09    1.735608e-07    1.471984e-05
+   12       -76.0567577614    7.113954e-11    2.818555e-08    1.731503e-06
+   13       -76.0567577614    1.961098e-12    5.521792e-09    3.651039e-07
+   14       -76.0567577614   -1.421085e-13    1.128056e-09    8.087768e-08
+   15       -76.0567577614    1.278977e-13    1.551513e-10    1.241295e-08
+   16       -76.0567577614   -4.263256e-14    4.131982e-11    2.949277e-09
 
 Orbital energies (a.u.):
 
@@ -312,21 +314,21 @@ Orbital energies (a.u.):
 
         SCF total energy   =     -76.056757761447
         kinetic energy     =      76.213246106977
-        nuc. attr. energy  =    -200.278790557602
+        nuc. attr. energy  =    -200.278790557603
         elec. rep. energy  =      48.008786689178
-        potential energy   =    -152.270003868424
+        potential energy   =    -152.270003868425
         virial theorem     =       2.002057520596
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 tstop called on ganymede.local
-Thu Aug 11 10:15:01 2005
+Sun Oct 14 14:24:02 2007
 
-user time   =       0.87 seconds =       0.01 minutes
-system time =       0.48 seconds =       0.01 minutes
+user time   =       0.29 seconds =       0.00 minutes
+system time =       0.14 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 tstart called on ganymede.local
-Thu Aug 11 10:15:01 2005
+Sun Oct 14 14:24:02 2007
 
 
 	**************************************************
@@ -334,94 +336,54 @@ Thu Aug 11 10:15:01 2005
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  EOM_CCSD
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            =  Yes
-	Delete Restricted Docc =  Yes
-	Do All TEI             =  No
-	Memory (Mbytes)        =    2.0
-	Max Buckets            =  199
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Semicanonical orbitals =  No
-	Pitzer                 =  No
+	Wave function   =	EOM_CCSD
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	5.0
+	Cache Level     =	0
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 92
+	Number of MOs        = 92
+	Number of active MOs = 92
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 92
-	Number of MOs    = 92
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   35	    0	    3	    0	    32	    0
+	 A2 	   12	    0	    0	    0	    12	    0
+	 B1 	   18	    0	    1	    0	    17	    0
+	 B2 	   27	    0	    1	    0	    26	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   35	   35	    0	    3	    0	    32	    0
-	 A2 	   12	   12	    0	    0	    0	    12	    0
-	 B1 	   18	   18	    0	    1	    0	    17	    0
-	 B2 	   27	   27	    0	    1	    0	    26	    0
+	Nuclear Rep. energy (chkpt) =      9.78067085332389
+	SCF energy          (chkpt) =    -76.05675776144736
 
-	Nuclear Repulsion Energy    =         9.7806708533
-	Total SCF Energy            =       -76.0567577614
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 8
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
 ******************************************************************************
 tstop called on ganymede.local
-Thu Aug 11 10:15:11 2005
+Sun Oct 14 14:24:05 2007
 
-user time   =       5.33 seconds =       0.09 minutes
-system time =       5.68 seconds =       0.09 minutes
-total time  =         10 seconds =       0.17 minutes
+user time   =       2.03 seconds =       0.03 minutes
+system time =       0.93 seconds =       0.02 minutes
+total time  =          3 seconds =       0.05 minutes
 ******************************************************************************
 tstart called on ganymede.local
-Thu Aug 11 10:15:11 2005
+Sun Oct 14 14:24:05 2007
 
 
 			**************************
@@ -439,7 +401,7 @@ Thu Aug 11 10:15:11 2005
 	Memory (Mbytes) =	2.0
 	AO Basis        =	NONE
 	Make (ab|cd)    =	True
-	Cache Level     =	2
+	Cache Level     =	0
 	Cache Type      =	LRU
 	Local CC        =     No
 
@@ -457,46 +419,46 @@ Thu Aug 11 10:15:11 2005
 	 B1 	   18	    0	    1	    0	    17	    0
 	 B2 	   27	    0	    1	    0	    26	    0
 
-	Nuclear Rep. energy (chkpt) =      9.78067085332388
-	SCF energy          (chkpt) =    -76.05675776144733
+	Nuclear Rep. energy (chkpt) =      9.78067085332389
+	SCF energy          (chkpt) =    -76.05675776144736
 
-	Size of irrep 0 of <ab|cd> integrals:     4.550 (MW) /    36.398 (MB)
-	Size of irrep 1 of <ab|cd> integrals:     2.729 (MW) /    21.833 (MB)
-	Size of irrep 2 of <ab|cd> integrals:     2.931 (MW) /    23.448 (MB)
-	Size of irrep 3 of <ab|cd> integrals:     4.293 (MW) /    34.345 (MB)
-	Total:                                   14.503 (MW) /   116.023 (MB)
+	Size of irrep 0 of <ab|cd> integrals:      4.550 (MW) /     36.398 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      2.729 (MW) /     21.833 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      2.931 (MW) /     23.448 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      4.293 (MW) /     34.345 (MB)
+	Total:                                    14.503 (MW) /    116.023 (MB)
 
-	Size of irrep 0 of <ia|bc> integrals:     0.296 (MW) /     2.372 (MB)
-	Size of irrep 1 of <ia|bc> integrals:     0.131 (MW) /     1.044 (MB)
-	Size of irrep 2 of <ia|bc> integrals:     0.163 (MW) /     1.301 (MB)
-	Size of irrep 3 of <ia|bc> integrals:     0.253 (MW) /     2.022 (MB)
-	Total:                                    0.842 (MW) /     6.739 (MB)
+	Size of irrep 0 of <ia|bc> integrals:      0.296 (MW) /      2.372 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.131 (MW) /      1.044 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.163 (MW) /      1.301 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.253 (MW) /      2.022 (MB)
+	Total:                                     0.842 (MW) /      6.739 (MB)
 
-	Size of irrep 0 of tijab amplitudes:      0.023 (MW) /     0.188 (MB)
-	Size of irrep 1 of tijab amplitudes:      0.003 (MW) /     0.026 (MB)
-	Size of irrep 2 of tijab amplitudes:      0.010 (MW) /     0.082 (MB)
-	Size of irrep 3 of tijab amplitudes:      0.012 (MW) /     0.099 (MB)
-	Total:                                    0.049 (MW) /     0.396 (MB)
+	Size of irrep 0 of tijab amplitudes:       0.023 (MW) /      0.188 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.003 (MW) /      0.026 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.010 (MW) /      0.082 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.012 (MW) /      0.099 (MB)
+	Total:                                     0.049 (MW) /      0.396 (MB)
 
 
-	Sorting File: B <ab|cd> nbuckets = 59
-	One-electron energy          =   -124.06554445062559
-	Two-electron (AA) energy     =     14.60934680673212
-	Two-electron (BB) energy     =     14.60934680673212
-	Two-electron (AB) energy     =     23.61876902912220
-	Two-electron energy          =     38.22811583585431
+	Sorting File: B(+) <ab|cd> nbuckets = 30
+	One-electron energy          =   -124.06554445062571
+	Two-electron (AA) energy     =     14.60934680673218
+	Two-electron (BB) energy     =     14.60934680673218
+	Two-electron (AB) energy     =     23.61876902912231
+	Two-electron energy          =     38.22811583585450
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -76.05675776144740
+	Reference energy             =    -76.05675776144733
 ******************************************************************************
 tstop called on ganymede.local
-Thu Aug 11 10:15:24 2005
+Sun Oct 14 14:24:10 2007
 
-user time   =      12.85 seconds =       0.21 minutes
-system time =       8.32 seconds =       0.14 minutes
-total time  =         13 seconds =       0.22 minutes
+user time   =       2.69 seconds =       0.04 minutes
+system time =       1.36 seconds =       0.02 minutes
+total time  =          5 seconds =       0.08 minutes
 ******************************************************************************
 tstart called on ganymede.local
-Thu Aug 11 10:15:24 2005
+Sun Oct 14 14:24:10 2007
 
 			**************************
 			*                        *
@@ -504,9 +466,9 @@ Thu Aug 11 10:15:24 2005
 			*                        *
 			**************************
 
-	Nuclear Rep. energy (chkpt)   =    9.780670853323883
-	SCF energy          (chkpt)   =  -76.056757761447329
-	Reference energy    (file100) =  -76.056757761447400
+	Nuclear Rep. energy (chkpt)   =    9.780670853323890
+	SCF energy          (chkpt)   =  -76.056757761447358
+	Reference energy    (file100) =  -76.056757761447329
 
 	Input parameters:
 	-----------------
@@ -518,9 +480,11 @@ Thu Aug 11 10:15:24 2005
 	Restart         =     Yes
 	DIIS            =     Yes
 	AO Basis        =     NONE
-	Cache Level     =    2
+	ABCD            =     NEW
+	Cache Level     =    0
 	Cache Type      =     LOW
 	Print Level     =    0
+	Num. of threads =     1
 	# Amps to Print =    10
 	Print MP2 Amps? =    No
 	Analyze T2 Amps =    No
@@ -531,19 +495,19 @@ Thu Aug 11 10:15:24 2005
 	            ------------------------------
   Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
   ----     ---------------------    ---------   ----------  ----------  ----------
-     0        -0.279674125010998    0.000e+00    0.000000    0.000000    0.000000
-     1        -0.279409491269777    3.234e-02    0.006916    0.015380    0.015380
-     2        -0.283853547410511    1.083e-02    0.006812    0.015245    0.015245
-     3        -0.284963174542554    4.144e-03    0.007831    0.017966    0.017966
-     4        -0.284845262937587    8.605e-04    0.007970    0.018381    0.018381
-     5        -0.284853920760317    3.048e-04    0.008041    0.018628    0.018628
-     6        -0.284858120531415    7.414e-05    0.008058    0.018695    0.018695
-     7        -0.284856403480716    2.369e-05    0.008061    0.018711    0.018711
-     8        -0.284856097543005    6.223e-06    0.008062    0.018716    0.018716
-     9        -0.284856155781583    1.813e-06    0.008062    0.018718    0.018718
-    10        -0.284856042623063    6.021e-07    0.008062    0.018718    0.018718
-    11        -0.284856049999462    1.425e-07    0.008062    0.018718    0.018718
-    12        -0.284856045967708    5.004e-08    0.008062    0.018718    0.018718
+     0        -0.279674125010867    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.279409491269823    3.234e-02    0.006916    0.015380    0.015380
+     2        -0.283853547410558    1.083e-02    0.006812    0.015245    0.015245
+     3        -0.284963174542603    4.144e-03    0.007831    0.017966    0.017966
+     4        -0.284845262937637    8.605e-04    0.007970    0.018381    0.018381
+     5        -0.284853920760368    3.048e-04    0.008041    0.018628    0.018628
+     6        -0.284858120531467    7.414e-05    0.008058    0.018695    0.018695
+     7        -0.284856403480766    2.369e-05    0.008061    0.018711    0.018711
+     8        -0.284856097543055    6.223e-06    0.008062    0.018716    0.018716
+     9        -0.284856155781633    1.813e-06    0.008062    0.018718    0.018718
+    10        -0.284856042623113    6.021e-07    0.008062    0.018718    0.018718
+    11        -0.284856049999514    1.425e-07    0.008062    0.018718    0.018718
+    12        -0.284856045967757    5.004e-08    0.008062    0.018718    0.018718
 
 	Iterations converged.
 
@@ -556,7 +520,7 @@ Thu Aug 11 10:15:24 2005
 	          4  73         0.0047997711
 	          3  54         0.0039845160
 	          3  47         0.0034300387
-	          4  69         0.0032757445
+	          4  69        -0.0032757445
 	          2  23        -0.0032700032
 	          2   6        -0.0031145089
 
@@ -572,23 +536,23 @@ Thu Aug 11 10:15:24 2005
 	  2   2   4   9         0.0117729164
 	  2   2   9   4         0.0117729164
 
-	SCF energy       (chkpt)   =  -76.056757761447329
-	Reference energy (file100) =  -76.056757761447400
-	MP2 correlation energy     =   -0.279674125010998
-	Total MP2 energy           =  -76.336431886458399
-	CCSD correlation energy    =   -0.284856045967708
-	Total CCSD energy          =  -76.341613807415115
+	SCF energy       (chkpt)   =  -76.056757761447358
+	Reference energy (file100) =  -76.056757761447329
+	MP2 correlation energy     =   -0.279674125010867
+	Total MP2 energy           =  -76.336431886458200
+	CCSD correlation energy    =   -0.284856045967757
+	Total CCSD energy          =  -76.341613807415087
 
 ******************************************************************************
 tstop called on ganymede.local
-Thu Aug 11 10:15:39 2005
+Sun Oct 14 14:24:22 2007
 
-user time   =       9.52 seconds =       0.16 minutes
-system time =      16.53 seconds =       0.28 minutes
-total time  =         15 seconds =       0.25 minutes
+user time   =       3.72 seconds =       0.06 minutes
+system time =      12.21 seconds =       0.20 minutes
+total time  =         12 seconds =       0.20 minutes
 ******************************************************************************
 tstart called on ganymede.local
-Thu Aug 11 10:15:39 2005
+Sun Oct 14 14:24:22 2007
 
 
 			**************************
@@ -599,24 +563,24 @@ Thu Aug 11 10:15:39 2005
 
 ******************************************************************************
 tstop called on ganymede.local
-Thu Aug 11 10:15:41 2005
+Sun Oct 14 14:24:24 2007
 
-user time   =       1.70 seconds =       0.03 minutes
-system time =       2.47 seconds =       0.04 minutes
+user time   =       0.90 seconds =       0.02 minutes
+system time =       1.09 seconds =       0.02 minutes
 total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
 tstart called on ganymede.local
-Thu Aug 11 10:15:42 2005
+Sun Oct 14 14:24:24 2007
 
 
 	**********************************************************
 	*  CCEOM: An Equation of Motion Coupled Cluster Program  *
 	**********************************************************
 
-	Nuclear Rep. energy (chkpt)   =    9.780670853323883
-	SCF energy          (chkpt)   =  -76.056757761447329
-	Reference energy    (file100) =  -76.056757761447400
-	CCSD energy         (file100) =   -0.284856045967708
+	Nuclear Rep. energy (chkpt)   =    9.780670853323890
+	SCF energy          (chkpt)   =  -76.056757761447358
+	Reference energy    (file100) =  -76.056757761447329
+	CCSD energy         (file100) =   -0.284856045967757
 
 	Input parameters:
 	-----------------
@@ -624,27 +588,29 @@ Thu Aug 11 10:15:42 2005
 	Reference EOM wfn=     RHF
 	Memory (Mbytes) =    2.0
 	AO Basis        =     No
-	Cache Level     =    2
+	ABCD            =     NEW
+	Cache Level     =    0
 	Cache Type      =     LRU
+	Num. of threads =     1
 	Local CC        =     No
 
 
 	CCEOM parameters:
 	-----------------
 	States sought per irrep     = A1  1, A2  0, B1  0, B2  1,
-	Max. number of iterations   =    80
+	Max. number of iterations   =   320
 	Vectors stored per root     =    12
 	Print HbarSS iterations?    =     0
 	Excitation range for HBarSS =     2
-	Eigenvalue tolerance        = 1.0e-06
+	Eigenvalue tolerance        = 1.0e-08
 	Eigenvalue toleranceSS      = 1.0e-06
-	Residual vector tolerance   = 1.0e-07
+	Residual vector tolerance   = 1.0e-06
 	Residual vector toleranceSS = 1.0e-06
 	Complex tolerance           = 1.0e-12
-	Root for properties         =     0
-	Save all R vectors          =     0
+	Root for properties         =     1
 	Sym of state for properties =    B2 
 	Guess vectors taken from    = SINGLES
+	Restart EOM CC3             = NO
 
 
 Symmetry of ground state: A1 
@@ -654,80 +620,72 @@ Seeking states with multiplicity of 1
 Obtaining initial guess from singles-singles block of Hbar...Done.
 
 Iter=1    L=1     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.5026852776   5.03e-01    2.33e-01      N
+                     1   0.5026852776   5.03e-01    5.28e-01      N
 Iter=2    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3842311379  -1.18e-01    4.11e-02      N
+                     1   0.3842311385  -1.18e-01    9.34e-02      N
 Iter=3    L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3808141062  -3.42e-03    1.40e-02      N
+                     1   0.3808141068  -3.42e-03    2.83e-02      N
 Iter=4    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3805428645  -2.71e-04    8.05e-03      N
+                     1   0.3805428651  -2.71e-04    1.30e-02      N
 Iter=5    L=5     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3804674340  -7.54e-05    4.48e-03      N
+                     1   0.3804674346  -7.54e-05    7.53e-03      N
 Iter=6    L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803791068  -8.83e-05    3.98e-03      N
+                     1   0.3803791074  -8.83e-05    6.68e-03      N
 Iter=7    L=7     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803520550  -2.71e-05    2.08e-03      N
+                     1   0.3803520556  -2.71e-05    3.58e-03      N
 Iter=8    L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803547364   2.68e-06    1.66e-03      N
+                     1   0.3803547370   2.68e-06    2.50e-03      N
 Iter=9    L=9     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803472764  -7.46e-06    9.68e-04      N
+                     1   0.3803472770  -7.46e-06    1.93e-03      N
 Iter=10   L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803408449  -6.43e-06    4.46e-04      N
+                     1   0.3803408455  -6.43e-06    8.74e-04      N
 Iter=11   L=11    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803408503   5.41e-09    2.13e-04      N
+                     1   0.3803408509   5.41e-09    3.83e-04      N
 Iter=12   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803413810   5.31e-07    1.07e-04      N
+                     1   0.3803413816   5.31e-07    1.79e-04      N
 Iter=13   L=1     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803413810   5.00e-16    1.07e-04      N
+                     1   0.3803413816  -1.55e-15    1.79e-04      N
 Iter=14   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803409944  -3.87e-07    7.07e-05      N
+                     1   0.3803409950  -3.87e-07    8.43e-05      N
 Iter=15   L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803410376   4.33e-08    3.38e-05      N
+                     1   0.3803410382   4.33e-08    7.24e-05      N
 Iter=16   L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803412744   2.37e-07    1.46e-05      N
+                     1   0.3803412750   2.37e-07    2.80e-05      N
 Iter=17   L=5     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803412501  -2.43e-08    7.60e-06      N
+                     1   0.3803412507  -2.43e-08    1.26e-05      N
 Iter=18   L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803412206  -2.95e-08    3.87e-06      N
+                     1   0.3803412212  -2.95e-08    7.00e-06      N
 Iter=19   L=7     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803412226   1.95e-09    2.66e-06      N
+                     1   0.3803412232   1.95e-09    3.98e-06      N
 Iter=20   L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803412272   4.60e-09    1.59e-06      N
+                     1   0.3803412278   4.60e-09    2.73e-06      N
 Iter=21   L=9     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803412290   1.81e-09    1.26e-06      N
+                     1   0.3803412296   1.81e-09    2.06e-06      N
 Iter=22   L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803412198  -9.16e-09    7.46e-07      N
+                     1   0.3803412204  -9.16e-09    1.45e-06      N
 Iter=23   L=11    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803412243   4.49e-09    4.47e-07      N
-Iter=24   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803412271   2.74e-09    2.34e-07      N
-Iter=25   L=1     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803412271   2.78e-16    2.34e-07      N
-Iter=26   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803412223  -4.79e-09    1.41e-07      N
-Iter=27   L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.3803412248   2.55e-09    5.92e-08      Y
+                     1   0.3803412249   4.49e-09    7.97e-07      Y
 Collapsing to only 1 vector(s).
 
 Procedure converged for 1 root(s).
-EOM CCSD R0 for root 0 =   -0.0010498667
+EOM CCSD R0 for root 0 =   0.00104984908
 
 Final Energetic Summary for Converged Roots of Irrep A1 
                      Excitation Energy              Total Energy
                 (eV)     (cm^-1)     (au)             (au)
-EOM State 1     10.350    83475.3   0.3803412248   -75.9612725826
+EOM State 1     10.350    83475.3   0.3803412249   -75.9612725825
 
 Largest components of excited wave function #1:
-	          2   0         0.5689228326
-	          2   2        -0.2633892546
-	          2   1         0.2204454883
-	          3  44         0.1189402588
-	          2   5        -0.1093550295
-	  2   2   0   9         0.0382369388
-	  2   2   9   0         0.0382369388
-	  2   2   0   1        -0.0355829216
-	  2   2   1   0        -0.0355829216
-	  2   2   0   4        -0.0354767950
+	          2   0        -0.5689226807
+	          2   2         0.2633889484
+	          2   1        -0.2204448176
+	          3  44        -0.1189407984
+	          2   5         0.1093548587
+	  2   2   0   9        -0.0382369129
+	  2   2   9   0        -0.0382369129
+	  2   2   0   1         0.0355829182
+	  2   2   1   0         0.0355829182
+	  2   2   0   4         0.0354768066
 
 
 Symmetry of excited state: B2 
@@ -736,79 +694,75 @@ Seeking states with multiplicity of 1
 Obtaining initial guess from singles-singles block of Hbar...Done.
 
 Iter=1    L=1     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.5625361547   5.63e-01    2.39e-01      N
+                     1   0.5625361547   5.63e-01    5.14e-01      N
 Iter=2    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4467392259  -1.16e-01    4.10e-02      N
+                     1   0.4467392264  -1.16e-01    8.83e-02      N
 Iter=3    L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4436875972  -3.05e-03    1.22e-02      N
+                     1   0.4436875978  -3.05e-03    2.53e-02      N
 Iter=4    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434964335  -1.91e-04    5.34e-03      N
+                     1   0.4434964340  -1.91e-04    9.77e-03      N
 Iter=5    L=5     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434588721  -3.76e-05    2.67e-03      N
+                     1   0.4434588727  -3.76e-05    3.90e-03      N
 Iter=6    L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434261881  -3.27e-05    1.75e-03      N
+                     1   0.4434261887  -3.27e-05    3.02e-03      N
 Iter=7    L=7     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434169924  -9.20e-06    8.39e-04      N
+                     1   0.4434169930  -9.20e-06    1.74e-03      N
 Iter=8    L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434223121   5.32e-06    3.63e-04      N
+                     1   0.4434223127   5.32e-06    7.17e-04      N
 Iter=9    L=9     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434233863   1.07e-06    1.82e-04      N
+                     1   0.4434233869   1.07e-06    3.06e-04      N
 Iter=10   L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434229575  -4.29e-07    9.13e-05      N
+                     1   0.4434229580  -4.29e-07    1.41e-04      N
 Iter=11   L=11    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434229810   2.35e-08    5.36e-05      N
+                     1   0.4434229815   2.35e-08    8.99e-05      N
 Iter=12   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434231937   2.13e-07    3.35e-05      N
+                     1   0.4434231943   2.13e-07    5.74e-05      N
 Iter=13   L=1     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434231937   4.44e-16    3.35e-05      N
+                     1   0.4434231943   0.00e+00    5.74e-05      N
 Iter=14   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434230854  -1.08e-07    2.28e-05      N
+                     1   0.4434230860  -1.08e-07    2.71e-05      N
 Iter=15   L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434230594  -2.60e-08    1.46e-05      N
+                     1   0.4434230600  -2.60e-08    2.65e-05      N
 Iter=16   L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434230150  -4.44e-08    1.10e-05      N
+                     1   0.4434230156  -4.44e-08    1.69e-05      N
 Iter=17   L=5     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434230696   5.46e-08    5.94e-06      N
+                     1   0.4434230702   5.46e-08    1.06e-05      N
 Iter=18   L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434230464  -2.32e-08    2.87e-06      N
+                     1   0.4434230470  -2.32e-08    5.18e-06      N
 Iter=19   L=7     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434230511   4.65e-09    1.15e-06      N
+                     1   0.4434230517   4.65e-09    2.06e-06      N
 Iter=20   L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434230602   9.11e-09    5.91e-07      N
+                     1   0.4434230608   9.11e-09    1.02e-06      N
 Iter=21   L=9     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434230539  -6.30e-09    4.08e-07      N
-Iter=22   L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434230551   1.27e-09    1.80e-07      N
-Iter=23   L=11    Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4434230541  -1.06e-09    7.47e-08      Y
+                     1   0.4434230545  -6.30e-09    6.20e-07      Y
 Collapsing to only 1 vector(s).
 
 Procedure converged for 1 root(s).
-Energy written to chkpt  -75.8981907533
-EOM CCSD R0 for root 0 =    0.0000000000
+Energy written to chkpt:Etot  -75.8981907529
+EOM CCSD R0 for root 0 =   0.00000000000
 
 Final Energetic Summary for Converged Roots of Irrep B2 
                      Excitation Energy              Total Energy
                 (eV)     (cm^-1)     (au)             (au)
-EOM State 2     12.066    97320.1   0.4434230541   -75.8981907533
+EOM State 2     12.066    97320.1   0.4434230545   -75.8981907529
 
 Largest components of excited wave function #2:
-	          2  61        -0.5911867946
-	          2  62        -0.3098888303
-	          2  63        -0.1121671923
-	          2  65         0.1023757505
-	          3  32        -0.0384558169
-	  2   2   9  61        -0.0399184144
-	  2   2  61   9        -0.0399184144
-	  2   2   4  61         0.0357753920
-	  2   2  61   4         0.0357753920
-	  2   2   1  61         0.0332148947
+	          2  61         0.5911866886
+	          2  62         0.3098891880
+	          2  63        -0.1121665509
+	          2  65        -0.1023758990
+	          3  32         0.0384560390
+	  2   2   9  61         0.0399184095
+	  2   2  61   9         0.0399184095
+	  2   2   4  61        -0.0357753817
+	  2   2  61   4        -0.0357753817
+	  2   2   1  61        -0.0332148941
 
 
 ******************************************************************************
 tstop called on ganymede.local
-Thu Aug 11 10:17:03 2005
+Sun Oct 14 14:24:56 2007
 
-user time   =      41.38 seconds =       0.69 minutes
-system time =     105.45 seconds =       1.76 minutes
-total time  =         81 seconds =       1.35 minutes
+user time   =      12.70 seconds =       0.21 minutes
+system time =      42.75 seconds =       0.71 minutes
+total time  =         32 seconds =       0.53 minutes

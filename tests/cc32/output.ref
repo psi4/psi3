@@ -1,6 +1,6 @@
 ******************************************************************************
-tstart called on syrma.giga.net
-Thu Jun 10 13:26:51 2004
+tstart called on ganymede.local
+Sun Oct 14 14:21:29 2007
 
                                 --------------
                                   WELCOME TO
@@ -12,7 +12,7 @@ Thu Jun 10 13:26:51 2004
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /home/users/crawdad/psi3/xeon/share/pbasis.dat
+  Parsed basis sets from /Users/crawdad/psi3/lib/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -143,15 +143,15 @@ Thu Jun 10 13:26:51 2004
 
 
 ******************************************************************************
-tstop called on syrma.giga.net
-Thu Jun 10 13:26:51 2004
+tstop called on ganymede.local
+Sun Oct 14 14:21:29 2007
 
-user time   =       0.05 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on syrma.giga.net
-Thu Jun 10 13:26:53 2004
+tstart called on ganymede.local
+Sun Oct 14 14:21:29 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -180,15 +180,15 @@ Thu Jun 10 13:26:53 2004
     Wrote 11412 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on syrma.giga.net
-Thu Jun 10 13:26:53 2004
+tstop called on ganymede.local
+Sun Oct 14 14:21:29 2007
 
-user time   =       0.36 seconds =       0.01 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on syrma.giga.net
-Thu Jun 10 13:26:54 2004
+tstart called on ganymede.local
+Sun Oct 14 14:21:29 2007
 
 
              ------------------------------------------
@@ -213,6 +213,8 @@ Thu Jun 10 13:26:54 2004
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
@@ -239,15 +241,15 @@ Thu Jun 10 13:26:54 2004
     5       -76.0239378765    1.147624e-03    1.189224e-03    1.514444e-02
     6       -76.0240334344    9.555784e-05    3.429742e-04    3.895688e-03
     7       -76.0240384139    4.979483e-06    7.594723e-05    9.911724e-04
-    8       -76.0240384904    7.654180e-08    1.028407e-05    1.377556e-04
-    9       -76.0240385110    2.064394e-08    4.648086e-06    4.643816e-05
-   10       -76.0240385115    4.542926e-10    7.194098e-07    5.884072e-06
-   11       -76.0240385115    1.864464e-11    1.722826e-07    2.037699e-06
+    8       -76.0240384904    7.654182e-08    1.028407e-05    1.377556e-04
+    9       -76.0240385110    2.064398e-08    4.648086e-06    4.643816e-05
+   10       -76.0240385115    4.543352e-10    7.194098e-07    5.884072e-06
+   11       -76.0240385115    1.857359e-11    1.722826e-07    2.037699e-06
    12       -76.0240385115    6.679102e-13    3.188073e-08    2.840313e-07
-   13       -76.0240385115    4.263256e-14    4.703867e-09    5.048888e-08
-   14       -76.0240385115   -4.263256e-14    5.949950e-10    5.096652e-09
-   15       -76.0240385115    1.421085e-14    1.118589e-10    8.155662e-10
-   16       -76.0240385115    0.000000e+00    1.347582e-11    1.359686e-10
+   13       -76.0240385115    0.000000e+00    4.703867e-09    5.048888e-08
+   14       -76.0240385115    4.263256e-14    5.949950e-10    5.096652e-09
+   15       -76.0240385115   -4.263256e-14    1.118588e-10    8.155672e-10
+   16       -76.0240385115    0.000000e+00    1.347577e-11    1.359675e-10
 
 Orbital energies (a.u.):
 
@@ -268,21 +270,21 @@ Orbital energies (a.u.):
 
         SCF total energy   =     -76.024038511513
         kinetic energy     =      75.911628750104
-        nuc. attr. energy  =    -198.751247114040
-        elec. rep. energy  =      46.815579852423
+        nuc. attr. energy  =    -198.751247114041
+        elec. rep. energy  =      46.815579852424
         potential energy   =    -151.935667261617
         virial theorem     =       1.998521391870
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on syrma.giga.net
-Thu Jun 10 13:26:54 2004
+tstop called on ganymede.local
+Sun Oct 14 14:21:29 2007
 
 user time   =       0.01 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on syrma.giga.net
-Thu Jun 10 13:27:10 2004
+tstart called on ganymede.local
+Sun Oct 14 14:21:29 2007
 
 
 	**************************************************
@@ -290,94 +292,54 @@ Thu Jun 10 13:27:10 2004
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  CC3
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            =  Yes
-	Delete Restricted Docc =  No
-	Do All TEI             =  No
-	Memory (Mbytes)        =  256.0
-	Max Buckets            =  199
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Semicanonical orbitals =  No
-	Pitzer                 =  No
+	Wave function   =	CC3
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 24
+	Number of MOs        = 24
+	Number of active MOs = 24
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 24
-	Number of MOs    = 24
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   11	    0	    3	    0	    8	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   11	   11	    0	    3	    0	    8	    0
-	 A2 	   2	   2	    0	    0	    0	    2	    0
-	 B1 	   4	   4	    0	    1	    0	    3	    0
-	 B2 	   7	   7	    0	    1	    0	    6	    0
+	Nuclear Rep. energy (chkpt) =      9.00935422966266
+	SCF energy          (chkpt) =    -76.02403851151261
 
-	Nuclear Repulsion Energy    =         9.0093542297
-	Total SCF Energy            =       -76.0240385115
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on syrma.giga.net
-Thu Jun 10 13:27:12 2004
+tstop called on ganymede.local
+Sun Oct 14 14:21:29 2007
 
-user time   =       0.08 seconds =       0.00 minutes
-system time =       1.56 seconds =       0.03 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on syrma.giga.net
-Thu Jun 10 13:27:12 2004
+tstart called on ganymede.local
+Sun Oct 14 14:21:29 2007
 
 
 			**************************
@@ -413,30 +375,47 @@ Thu Jun 10 13:27:12 2004
 	 B1 	   4	    0	    1	    0	    3	    0
 	 B2 	   7	    0	    1	    0	    6	    0
 
-	Nuclear Rep. energy (chkpt) =      9.00935422966267
-	SCF energy          (chkpt) =    -76.02403851151321
+	Nuclear Rep. energy (chkpt) =      9.00935422966266
+	SCF energy          (chkpt) =    -76.02403851151261
 
-	Size of <ab|cd> integrals:     0.013 (MW) /     0.102 (MB)
-	Size of <ia|bc> integrals:     0.004 (MW) /     0.030 (MB)
-	Size of Tijab amplitudes:      0.001 (MW) /     0.010 (MB)
+	Size of irrep 0 of <ab|cd> integrals:      0.013 (MW) /      0.102 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.037 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.012 (MW) /      0.093 (MB)
+	Total:                                     0.034 (MW) /      0.274 (MB)
 
-	One-electron energy          =   -122.83961836393622
-	Two-electron (AA) energy     =     14.42439697027515
-	Two-electron (BB) energy     =     14.42439697027515
-	Two-electron (AB) energy     =     23.38182865248518
-	Two-electron energy          =     37.80622562276033
+	Size of irrep 0 of <ia|bc> integrals:      0.004 (MW) /      0.030 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.008 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.001 (MW) /      0.011 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.003 (MW) /      0.024 (MB)
+	Total:                                     0.009 (MW) /      0.073 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.001 (MW) /      0.010 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.000 (MW) /      0.003 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.005 (MB)
+	Total:                                     0.002 (MW) /      0.020 (MB)
+
+
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	One-electron energy          =   -122.83961836393638
+	Two-electron (AA) energy     =     14.42439697027547
+	Two-electron (BB) energy     =     14.42439697027547
+	Two-electron (AB) energy     =     23.38182865248560
+	Two-electron energy          =     37.80622562276106
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -76.02403851151323
+	Reference energy             =    -76.02403851151266
 ******************************************************************************
-tstop called on syrma.giga.net
-Thu Jun 10 13:27:12 2004
+tstop called on ganymede.local
+Sun Oct 14 14:21:29 2007
 
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.08 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on syrma.giga.net
-Thu Jun 10 13:27:12 2004
+tstart called on ganymede.local
+Sun Oct 14 14:21:29 2007
 
 			**************************
 			*                        *
@@ -444,9 +423,9 @@ Thu Jun 10 13:27:12 2004
 			*                        *
 			**************************
 
-	Nuclear Rep. energy (chkpt)   =    9.009354229662666
-	SCF energy          (chkpt)   =  -76.024038511513211
-	Reference energy    (file100) =  -76.024038511513226
+	Nuclear Rep. energy (chkpt)   =    9.009354229662664
+	SCF energy          (chkpt)   =  -76.024038511512614
+	Reference energy    (file100) =  -76.024038511512657
 
 	Input parameters:
 	-----------------
@@ -457,31 +436,35 @@ Thu Jun 10 13:27:12 2004
 	Convergence     = 1.0e-07
 	Restart         =     Yes
 	DIIS            =     Yes
-	Local CC        =     No
 	AO Basis        =     NONE
+	ABCD            =     NEW
 	Cache Level     =    2
 	Cache Type      =     LOW
 	Print Level     =    0
+	Num. of threads =     1
 	# Amps to Print =    10
 	Print MP2 Amps? =    No
 	Analyze T2 Amps =    No
+	Print Pair Ener =    No
+	Local CC        =     No
+	T3 Ws incore    =     No
 
-	                     Solving CCSD Equations
-	                     ----------------------
+	            Solving CC Amplitude Equations
+	            ------------------------------
   Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
   ----     ---------------------    ---------   ----------  ----------  ----------
-     0        -0.204690005384275    0.000e+00    0.000000    0.000000    0.000000
-     1        -0.212564207003199    2.781e-02    0.003598    0.007561    0.007561
-     2        -0.216986916913856    1.023e-02    0.004766    0.010065    0.010065
-     3        -0.217205216621119    2.238e-03    0.005153    0.011255    0.011255
-     4        -0.217234524409104    6.156e-04    0.005230    0.011619    0.011619
-     5        -0.217238426691868    1.950e-04    0.005266    0.011787    0.011787
-     6        -0.217235476533302    6.010e-05    0.005276    0.011839    0.011839
-     7        -0.217235576813635    1.545e-05    0.005279    0.011855    0.011855
-     8        -0.217235377484535    2.814e-06    0.005280    0.011856    0.011856
-     9        -0.217235381736471    5.953e-07    0.005280    0.011857    0.011857
-    10        -0.217235383854135    1.269e-07    0.005280    0.011857    0.011857
-    11        -0.217235382059811    2.245e-08    0.005280    0.011857    0.011857
+     0        -0.204690005384254    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.212564207003185    2.781e-02    0.003598    0.007561    0.007561
+     2        -0.216986916913844    1.023e-02    0.004766    0.010065    0.010065
+     3        -0.217205216621108    2.238e-03    0.005153    0.011255    0.011255
+     4        -0.217234524409093    6.156e-04    0.005230    0.011619    0.011619
+     5        -0.217238426691857    1.950e-04    0.005266    0.011787    0.011787
+     6        -0.217235476533291    6.010e-05    0.005276    0.011839    0.011839
+     7        -0.217235576813623    1.545e-05    0.005279    0.011855    0.011855
+     8        -0.217235377484524    2.814e-06    0.005280    0.011856    0.011856
+     9        -0.217235381736459    5.953e-07    0.005280    0.011857    0.011857
+    10        -0.217235383854124    1.269e-07    0.005280    0.011857    0.011857
+    11        -0.217235382059799    2.245e-08    0.005280    0.011857    0.011857
 
 	Iterations converged.
 
@@ -510,17 +493,17 @@ Thu Jun 10 13:27:12 2004
 	  2   4  14   1        -0.0232217909
 	  4   2   1  14        -0.0232217909
 
-	SCF energy       (chkpt)   =  -76.024038511513211
-	Reference energy (file100) =  -76.024038511513226
-	MP2 correlation energy     =   -0.204690005384275
-	Total MP2 energy           =  -76.228728516897505
-	CC3 correlation energy     =   -0.217235382059811
-	Total CC3 energy           =  -76.241273893573037
+	SCF energy       (chkpt)   =  -76.024038511512614
+	Reference energy (file100) =  -76.024038511512657
+	MP2 correlation energy     =   -0.204690005384254
+	Total MP2 energy           =  -76.228728516896908
+	CC3 correlation energy     =   -0.217235382059799
+	Total CC3 energy           =  -76.241273893572455
 
 ******************************************************************************
-tstop called on syrma.giga.net
-Thu Jun 10 13:27:22 2004
+tstop called on ganymede.local
+Sun Oct 14 14:21:31 2007
 
-user time   =       9.86 seconds =       0.16 minutes
-system time =       0.41 seconds =       0.01 minutes
-total time  =         10 seconds =       0.17 minutes
+user time   =       0.95 seconds =       0.02 minutes
+system time =       0.51 seconds =       0.01 minutes
+total time  =          2 seconds =       0.03 minutes

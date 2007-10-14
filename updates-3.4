@@ -1,3 +1,10 @@
+10/14/07 Fixed calculation of MBPT(2) energies in ccenergy code.  Old code
+used initial CC amplitudes with the CCSD energy expression.  This is
+incorrect if singles contribute (i.e., non-HF references) and if a wfn
+restart is used.  New code has independent MP2 amplitude and energy
+calculations.  Tested verified against PSI3 MP2 code and ACESII codes. All
+CC test case reference outputs updated. -TDC
+
 10/04/07 Removed all mention of global outfile, infile, and psi_file_prefix
 from libciomr. All binaries can now out these in local scope.  -EFV
 

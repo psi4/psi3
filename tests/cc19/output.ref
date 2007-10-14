@@ -1,6 +1,6 @@
 ******************************************************************************
 tstart called on ganymede.local
-Tue Nov 15 16:39:54 2005
+Sun Oct 14 14:15:34 2007
 
                                 --------------
                                   WELCOME TO
@@ -12,7 +12,7 @@ Tue Nov 15 16:39:54 2005
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /Users/crawdad/share/pbasis.dat
+  Parsed basis sets from /Users/crawdad/psi3/lib/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -171,14 +171,14 @@ Tue Nov 15 16:39:54 2005
 
 ******************************************************************************
 tstop called on ganymede.local
-Tue Nov 15 16:39:54 2005
+Sun Oct 14 14:15:34 2007
 
-user time   =       0.13 seconds =       0.00 minutes
-system time =       0.05 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on ganymede.local
-Tue Nov 15 16:39:54 2005
+Sun Oct 14 14:15:34 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -208,14 +208,14 @@ Tue Nov 15 16:39:54 2005
 
 ******************************************************************************
 tstop called on ganymede.local
-Tue Nov 15 16:39:55 2005
+Sun Oct 14 14:15:34 2007
 
-user time   =       0.95 seconds =       0.02 minutes
-system time =       0.10 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.26 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on ganymede.local
-Tue Nov 15 16:39:55 2005
+Sun Oct 14 14:15:34 2007
 
 
              ------------------------------------------
@@ -240,10 +240,12 @@ Tue Nov 15 16:39:55 2005
   maxiter      = 40
   guess        = AUTO
 
-  nuclear repulsion energy       46.7803620583461
+  nuclear repulsion energy       46.7803620583460
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
@@ -271,15 +273,15 @@ Tue Nov 15 16:39:55 2005
     6      -174.4183478159    7.478384e-04    4.014430e-04    8.046129e-03
     7      -174.4184225818    7.476587e-05    1.053924e-04    3.540408e-03
     8      -174.4184323371    9.755381e-06    3.940217e-05    1.372626e-03
-    9      -174.4184329483    6.111991e-07    1.217883e-05    2.309366e-04
-   10      -174.4184329961    4.771684e-08    3.288085e-06    7.756808e-05
-   11      -174.4184330015    5.459214e-09    1.373328e-06    2.554358e-05
-   12      -174.4184330016    9.305268e-11    1.863302e-07    2.766448e-06
-   13      -174.4184330016    1.847411e-12    3.045374e-08    5.715808e-07
-   14      -174.4184330016    2.557954e-13    7.274995e-09    1.290897e-07
-   15      -174.4184330016    5.684342e-14    1.082209e-09    2.486282e-08
-   16      -174.4184330016    0.000000e+00    4.325501e-10    7.995740e-09
-   17      -174.4184330016   -2.842171e-14    6.643814e-11    1.232198e-09
+    9      -174.4184329483    6.111993e-07    1.217883e-05    2.309366e-04
+   10      -174.4184329961    4.771692e-08    3.288085e-06    7.756808e-05
+   11      -174.4184330015    5.459100e-09    1.373328e-06    2.554358e-05
+   12      -174.4184330016    9.313794e-11    1.863302e-07    2.766448e-06
+   13      -174.4184330016    1.904255e-12    3.045374e-08    5.715808e-07
+   14      -174.4184330016   -5.684342e-14    7.274995e-09    1.290897e-07
+   15      -174.4184330016    2.557954e-13    1.082209e-09    2.486282e-08
+   16      -174.4184330016   -2.273737e-13    4.325501e-10    7.995742e-09
+   17      -174.4184330016    3.410605e-13    6.643813e-11    1.232200e-09
 
 Orbital energies (a.u.):
 
@@ -299,23 +301,23 @@ Orbital energies (a.u.):
    9App     4.827587    23Ap      4.882340    24Ap      5.266361  
 
 
-        SCF total energy   =    -174.418433001619
+        SCF total energy   =    -174.418433001620
         kinetic energy     =     177.057876153773
         nuc. attr. energy  =    -511.815568474871
-        elec. rep. energy  =     160.339259319478
-        potential energy   =    -351.476309155392
+        elec. rep. energy  =     160.339259319479
+        potential energy   =    -351.476309155393
         virial theorem     =       2.015132822298
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 tstop called on ganymede.local
-Tue Nov 15 16:39:55 2005
+Sun Oct 14 14:15:34 2007
 
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on ganymede.local
-Tue Nov 15 16:39:55 2005
+Sun Oct 14 14:15:34 2007
 
 
 	**************************************************
@@ -323,92 +325,52 @@ Tue Nov 15 16:39:55 2005
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  CCSD
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            =  Yes
-	Delete Restricted Docc =  Yes
-	Do All TEI             =  No
-	Memory (Mbytes)        =  256.0
-	Max Buckets            =  499
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Semicanonical orbitals =  No
-	Pitzer                 =  No
+	Wave function   =	CCSD
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	Response
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 2
+	Number of SOs        = 33
+	Number of MOs        = 33
+	Number of active MOs = 33
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 2
-	Number of SOs    = 33
-	Number of MOs    = 33
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 Ap 	   24	    0	    7	    0	    17	    0
+	 App	   9	    0	    2	    0	    7	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 Ap 	   24	   24	    0	    7	    0	    17	    0
-	 App	   9	   9	    0	    2	    0	    7	    0
+	Nuclear Rep. energy (chkpt) =     46.78036205834605
+	SCF energy          (chkpt) =   -174.41843300161969
 
-	Nuclear Repulsion Energy    =        46.7803620583
-	Total SCF Energy            =      -174.4184330016
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
 ******************************************************************************
 tstop called on ganymede.local
-Tue Nov 15 16:39:57 2005
+Sun Oct 14 14:15:34 2007
 
-user time   =       0.60 seconds =       0.01 minutes
-system time =       2.07 seconds =       0.03 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on ganymede.local
-Tue Nov 15 16:39:57 2005
+Sun Oct 14 14:15:34 2007
 
 
 			**************************
@@ -442,40 +404,40 @@ Tue Nov 15 16:39:57 2005
 	 Ap 	   24	    0	    7	    0	    17	    0
 	 App	   9	    0	    2	    0	    7	    0
 
-	Nuclear Rep. energy (chkpt) =     46.78036205834606
-	SCF energy          (chkpt) =   -174.41843300161949
+	Nuclear Rep. energy (chkpt) =     46.78036205834605
+	SCF energy          (chkpt) =   -174.41843300161969
 
-	Size of irrep 0 of <ab|cd> integrals:     0.114 (MW) /     0.914 (MB)
-	Size of irrep 1 of <ab|cd> integrals:     0.057 (MW) /     0.453 (MB)
-	Total:                                    0.171 (MW) /     1.367 (MB)
+	Size of irrep 0 of <ab|cd> integrals:      0.114 (MW) /      0.914 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.057 (MW) /      0.453 (MB)
+	Total:                                     0.171 (MW) /      1.367 (MB)
 
-	Size of irrep 0 of <ia|bc> integrals:     0.045 (MW) /     0.360 (MB)
-	Size of irrep 1 of <ia|bc> integrals:     0.020 (MW) /     0.158 (MB)
-	Total:                                    0.065 (MW) /     0.518 (MB)
+	Size of irrep 0 of <ia|bc> integrals:      0.045 (MW) /      0.360 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.020 (MW) /      0.158 (MB)
+	Total:                                     0.065 (MW) /      0.518 (MB)
 
-	Size of irrep 0 of tijab amplitudes:      0.018 (MW) /     0.143 (MB)
-	Size of irrep 1 of tijab amplitudes:      0.007 (MW) /     0.053 (MB)
-	Total:                                    0.025 (MW) /     0.197 (MB)
+	Size of irrep 0 of tijab amplitudes:       0.018 (MW) /      0.143 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.007 (MW) /      0.053 (MB)
+	Total:                                     0.025 (MW) /      0.197 (MB)
 
 
 	Sorting File: B(+) <ab|cd> nbuckets = 1
-	One-electron energy          =   -334.75769232109786
-	Two-electron (AA) energy     =     47.26858977557125
-	Two-electron (BB) energy     =     47.26858977557125
-	Two-electron (AB) energy     =     66.29030748556100
-	Two-electron energy          =    113.55889726113224
+	One-electron energy          =   -334.75769232109792
+	Two-electron (AA) energy     =     47.26858977557132
+	Two-electron (BB) energy     =     47.26858977557132
+	Two-electron (AB) energy     =     66.29030748556104
+	Two-electron energy          =    113.55889726113236
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =   -174.41843300161955
+	Reference energy             =   -174.41843300161949
 ******************************************************************************
 tstop called on ganymede.local
-Tue Nov 15 16:39:57 2005
+Sun Oct 14 14:15:35 2007
 
-user time   =       0.10 seconds =       0.00 minutes
-system time =       0.25 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 tstart called on ganymede.local
-Tue Nov 15 16:39:57 2005
+Sun Oct 14 14:15:35 2007
 
 			**************************
 			*                        *
@@ -483,9 +445,9 @@ Tue Nov 15 16:39:57 2005
 			*                        *
 			**************************
 
-	Nuclear Rep. energy (chkpt)   =   46.780362058346064
-	SCF energy          (chkpt)   = -174.418433001619491
-	Reference energy    (file100) = -174.418433001619547
+	Nuclear Rep. energy (chkpt)   =   46.780362058346050
+	SCF energy          (chkpt)   = -174.418433001619690
+	Reference energy    (file100) = -174.418433001619491
 
 	Input parameters:
 	-----------------
@@ -501,6 +463,7 @@ Tue Nov 15 16:39:57 2005
 	Cache Level     =    2
 	Cache Type      =     LOW
 	Print Level     =    0
+	Num. of threads =     1
 	# Amps to Print =    10
 	Print MP2 Amps? =    No
 	Analyze T2 Amps =    No
@@ -511,19 +474,19 @@ Tue Nov 15 16:39:57 2005
 	            ------------------------------
   Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
   ----     ---------------------    ---------   ----------  ----------  ----------
-     0        -0.356636240724450    0.000e+00    0.000000    0.000000    0.000000
-     1        -0.362752063089170    3.144e-02    0.004275    0.011894    0.011894
-     2        -0.368196197125690    1.020e-02    0.004675    0.013297    0.013297
-     3        -0.368909989043094    3.691e-03    0.005274    0.015965    0.015965
+     0        -0.356636240724456    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.362752063089171    3.144e-02    0.004275    0.011894    0.011894
+     2        -0.368196197125692    1.020e-02    0.004675    0.013297    0.013297
+     3        -0.368909989043093    3.691e-03    0.005274    0.015965    0.015965
      4        -0.368843223253681    1.064e-03    0.005417    0.016790    0.016790
-     5        -0.368847102129686    5.172e-04    0.005511    0.017384    0.017384
-     6        -0.368845295156879    1.896e-04    0.005559    0.017671    0.017671
+     5        -0.368847102129687    5.172e-04    0.005511    0.017384    0.017384
+     6        -0.368845295156880    1.896e-04    0.005559    0.017671    0.017671
      7        -0.368842607502809    4.221e-05    0.005566    0.017712    0.017712
      8        -0.368842991735573    9.726e-06    0.005568    0.017722    0.017722
      9        -0.368843083960410    1.805e-06    0.005568    0.017722    0.017722
-    10        -0.368843084637785    4.602e-07    0.005568    0.017723    0.017723
+    10        -0.368843084637787    4.602e-07    0.005568    0.017723    0.017723
     11        -0.368843099039917    1.246e-07    0.005568    0.017723    0.017723
-    12        -0.368843101565181    3.400e-08    0.005568    0.017723    0.017723
+    12        -0.368843101565182    3.400e-08    0.005568    0.017723    0.017723
 
 	Iterations converged.
 
@@ -552,23 +515,23 @@ Tue Nov 15 16:39:57 2005
 	  8   7  17  17        -0.0203462179
 	  7   8  18  18         0.0189838367
 
-	SCF energy       (chkpt)   = -174.418433001619491
-	Reference energy (file100) = -174.418433001619547
-	MP2 correlation energy     =   -0.356636240724450
-	Total MP2 energy           = -174.775069242343989
-	CCSD correlation energy    =   -0.368843101565181
-	Total CCSD energy          = -174.787276103184723
+	SCF energy       (chkpt)   = -174.418433001619690
+	Reference energy (file100) = -174.418433001619491
+	MP2 correlation energy     =   -0.356636240724456
+	Total MP2 energy           = -174.775069242343960
+	CCSD correlation energy    =   -0.368843101565182
+	Total CCSD energy          = -174.787276103184666
 
 ******************************************************************************
 tstop called on ganymede.local
-Tue Nov 15 16:40:02 2005
+Sun Oct 14 14:15:38 2007
 
-user time   =       2.62 seconds =       0.04 minutes
-system time =       3.77 seconds =       0.06 minutes
-total time  =          5 seconds =       0.08 minutes
+user time   =       0.95 seconds =       0.02 minutes
+system time =       1.36 seconds =       0.02 minutes
+total time  =          3 seconds =       0.05 minutes
 ******************************************************************************
 tstart called on ganymede.local
-Tue Nov 15 16:40:02 2005
+Sun Oct 14 14:15:38 2007
 
 
 			**************************
@@ -579,14 +542,14 @@ Tue Nov 15 16:40:02 2005
 
 ******************************************************************************
 tstop called on ganymede.local
-Tue Nov 15 16:40:03 2005
+Sun Oct 14 14:15:38 2007
 
-user time   =       0.32 seconds =       0.01 minutes
-system time =       0.55 seconds =       0.01 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.12 seconds =       0.00 minutes
+system time =       0.21 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 tstart called on ganymede.local
-Tue Nov 15 16:40:03 2005
+Sun Oct 14 14:15:38 2007
 
 
 			**************************
@@ -594,12 +557,12 @@ Tue Nov 15 16:40:03 2005
 			**************************
 
 
-	Nuclear Rep. energy (chkpt)   =   46.780362058346064
+	Nuclear Rep. energy (chkpt)   =   46.780362058346050
 	Reference           (chkpt)   = 0
-	SCF energy          (chkpt)   = -174.418433001619491
-	Reference energy    (CC_INFO) = -174.418433001619547
-	CCSD energy         (CC_INFO) =   -0.368843101565181
-	Total CCSD energy   (CC_INFO) = -174.787276103184723
+	SCF energy          (chkpt)   = -174.418433001619690
+	Reference energy    (CC_INFO) = -174.418433001619491
+	CCSD energy         (CC_INFO) =   -0.368843101565182
+	Total CCSD energy   (CC_INFO) = -174.787276103184666
 
 	Input parameters:
 	-----------------
@@ -607,6 +570,7 @@ Tue Nov 15 16:40:03 2005
 	Convergence   = 1.0e-07
 	Restart       =     Yes
 	Cache Level   =     2
+	Model III     =     No
 	DIIS          =     Yes
 	AO Basis      =     No
 	ABCD            =     NEW
@@ -623,68 +587,56 @@ Tue Nov 15 16:40:03 2005
 	          ------------------------
 	Iter     PseudoEnergy or Norm         RMS  
 	----     ---------------------     --------
-	   0        -0.368917657464074    0.000e+00
-	   1        -0.364932522700713    1.124e-02
+	   0        -0.368917657464075    0.000e+00
+	   1        -0.364932522700714    1.124e-02
 	   2        -0.364255665837471    1.639e-03
-	   3        -0.364135867448194    9.744e-04
-	   4        -0.364111552232835    4.261e-04
+	   3        -0.364135867448196    9.744e-04
+	   4        -0.364111552232836    4.261e-04
 	   5        -0.364122022083919    1.761e-04
-	   6        -0.364124905781666    4.164e-05
-	   7        -0.364124461350767    9.123e-06
-	   8        -0.364124452954291    1.977e-06
-	   9        -0.364124473959087    5.096e-07
-	  10        -0.364124471226961    1.305e-07
+	   6        -0.364124905781667    4.164e-05
+	   7        -0.364124461350768    9.123e-06
+	   8        -0.364124452954290    1.977e-06
+	   9        -0.364124473959089    5.096e-07
+	  10        -0.364124471226962    1.305e-07
 	  11        -0.364124470189086    3.649e-08
+
+	Largest LIA Amplitudes:
+	          6   0         0.0088889529
+	          6   9        -0.0046230271
+	          6   2         0.0043558318
+	          7  17        -0.0037331040
+	          3   1         0.0037156072
+	          4   9         0.0037153619
+	          5   0         0.0036782945
+	          6   1         0.0029821779
+	          4   2         0.0027873898
+	          3  10         0.0027698857
+
+	Largest LIjAb Amplitudes:
+	  8   8  17  17        -0.0343768543
+	  6   6   2   2        -0.0334418935
+	  6   6   0   0        -0.0231204893
+	  8   8  18  18        -0.0214011799
+	  6   6   0   2        -0.0212279749
+	  6   6   2   0        -0.0212279749
+	  7   7  18  18        -0.0210288529
+	  7   8  17  17        -0.0202007798
+	  8   7  17  17        -0.0202007798
+	  7   8  18  18         0.0188264243
 
 	Iterations converged.
 
 	Overlap <L|e^T> =        0.92327310299
 ******************************************************************************
 tstop called on ganymede.local
-Tue Nov 15 16:40:06 2005
+Sun Oct 14 14:15:39 2007
 
-user time   =       1.48 seconds =       0.02 minutes
-system time =       2.12 seconds =       0.04 minutes
-total time  =          3 seconds =       0.05 minutes
+user time   =       0.53 seconds =       0.01 minutes
+system time =       0.74 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 tstart called on ganymede.local
-Tue Nov 15 16:40:06 2005
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = cc-pVDZ/CCSD HOF dynamic polarizabilities
-    Number of atoms             = 3
-    Number of atomic orbitals   = 35
-    Number of symmetry orbitals = 33
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = Cs 
-    Number of irreps                 = 2
-    Reference point for elec. mom. ints. = (0.000, 0.000, 0.000)
-    Reference point for ang. mom. ints. = (0.000, 0.000, 0.000)
-******************************************************************************
-tstop called on ganymede.local
-Tue Nov 15 16:40:06 2005
-
-user time   =       0.23 seconds =       0.00 minutes
-system time =       0.07 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on ganymede.local
-Tue Nov 15 16:40:06 2005
+Sun Oct 14 14:15:39 2007
 
 			**************************
 			*                        *
@@ -701,7 +653,9 @@ Tue Nov 15 16:40:06 2005
 	Print Level      =    1
 	Maxiter          =     50
 	Convergence      = 1.0e-07
+	Restart          =     Allowed
 	DIIS             =     Yes
+	Model III        =     No
 	ABCD             =     NEW
 	Irrep X          =    Ap 
 	Irrep Y          =    Ap 
@@ -722,14 +676,14 @@ Tue Nov 15 16:40:06 2005
 	   0         4.102741741993
 	   1         5.169883370323    2.839e-01
 	   2         6.160877862128    1.719e-01
-	   3         6.223230638716    5.812e-02
-	   4         6.272628573535    3.365e-02
+	   3         6.223230638715    5.812e-02
+	   4         6.272628573534    3.365e-02
 	   5         6.278541476199    5.661e-03
-	   6         6.276858614789    1.660e-03
+	   6         6.276858614788    1.660e-03
 	   7         6.276945122602    4.790e-04
 	   8         6.276905196894    1.161e-04
-	   9         6.276885849505    2.881e-05
-	  10         6.276887667964    7.093e-06
+	   9         6.276885849504    2.881e-05
+	  10         6.276887667963    7.093e-06
 	  11         6.276891021563    1.786e-06
 	  12         6.276892362238    3.933e-07
 	-----------------------------------------
@@ -763,7 +717,7 @@ Tue Nov 15 16:40:06 2005
 	   3         7.288570444839    6.955e-02
 	   4         7.375149914250    3.606e-02
 	   5         7.384722065959    5.193e-03
-	   6         7.384223773257    1.466e-03
+	   6         7.384223773258    1.466e-03
 	   7         7.384480439202    2.971e-04
 	   8         7.384507914081    6.671e-05
 	   9         7.384497341435    1.959e-05
@@ -823,13 +777,15 @@ Tue Nov 15 16:40:06 2005
 	   5         3.065056399428    3.294e-03
 	   6         3.065551033204    8.083e-04
 	   7         3.065578763992    1.694e-04
-	   8         3.065568810862    4.034e-05
+	   8         3.065568810863    4.034e-05
 	   9         3.065572220666    8.828e-06
 	  10         3.065572949876    2.796e-06
 	  11         3.065572848968    7.295e-07
-	  12         3.065572638041    2.091e-07
+	  12         3.065572638042    2.091e-07
 	-----------------------------------------
 	Converged Mu-Z-Perturbed Wfn to 4.685e-08
+
+	Computing <<Mu;Mu>_(0.050) tensor.
 
                  CCSD Dipole Polarizability [(e^2 a0^2)/E_h]:
   -------------------------------------------------------------------------
@@ -838,9 +794,9 @@ Tue Nov 15 16:40:06 2005
 
                 0                  1                  2        
 
-    0   5.757358034803975  1.826687614318885  0.000000000000000
-    1   1.827227806427362  6.559981895241576  0.000000000000000
-    2   0.000000000000000  0.000000000000000  3.189441996676424
+    0   5.757358034803890  1.826687614318874  0.000000000000000
+    1   1.827227806427352  6.559981895241647  0.000000000000000
+    2   0.000000000000000  0.000000000000000  3.189441996676472
 
 	alpha_(0.050) =      15.506781926722 a.u.
 
@@ -854,7 +810,7 @@ Tue Nov 15 16:40:06 2005
 	   4         6.756016394984    4.857e-02
 	   5         6.766956807588    8.604e-03
 	   6         6.764282912824    2.620e-03
-	   7         6.764477576743    8.068e-04
+	   7         6.764477576742    8.068e-04
 	   8         6.764392549450    1.967e-04
 	   9         6.764363158579    4.842e-05
 	  10         6.764365088535    1.235e-05
@@ -875,7 +831,7 @@ Tue Nov 15 16:40:06 2005
 	   5         5.314004475750    2.112e-03
 	   6         5.313496194003    5.636e-04
 	   7         5.313511070987    1.342e-04
-	   8         5.313504866837    3.063e-05
+	   8         5.313504866836    3.063e-05
 	   9         5.313499049734    7.817e-06
 	  10         5.313499702166    1.828e-06
 	  11         5.313500482777    3.909e-07
@@ -887,7 +843,7 @@ Tue Nov 15 16:40:06 2005
 	----   --------------------   -----------
 	   0         4.547271336307
 	   1         5.921487060653    4.387e-01
-	   2         7.955606351098    3.071e-01
+	   2         7.955606351099    3.071e-01
 	   3         8.127348997271    9.742e-02
 	   4         8.298354977310    5.266e-02
 	   5         8.316124670395    7.806e-03
@@ -944,7 +900,7 @@ Tue Nov 15 16:40:06 2005
 	Computing Mu-Z-Perturbed Wave Function (-0.100 E_h).
 	Iter   Pseudopolarizability       RMS 
 	----   --------------------   -----------
-	   0         2.268748030890
+	   0         2.268748030889
 	   1         2.671832395623    1.418e-01
 	   2         2.926184084580    7.510e-02
 	   3         2.934537182794    2.669e-02
@@ -955,10 +911,12 @@ Tue Nov 15 16:40:06 2005
 	   8         2.942239961278    2.513e-05
 	   9         2.942241788563    5.113e-06
 	  10         2.942242200122    1.513e-06
-	  11         2.942242193836    3.874e-07
+	  11         2.942242193837    3.874e-07
 	  12         2.942242097179    1.103e-07
 	-----------------------------------------
 	Converged Mu-Z-Perturbed Wfn to 2.463e-08
+
+	Computing <<Mu;Mu>_(0.100) tensor.
 
                  CCSD Dipole Polarizability [(e^2 a0^2)/E_h]:
   -------------------------------------------------------------------------
@@ -967,9 +925,9 @@ Tue Nov 15 16:40:06 2005
 
                 0                  1                  2        
 
-    0   5.861609089249120  1.962553012586400  0.000000000000000
-    1   1.963800900425663  6.804320851370284  0.000000000000000
-    2   0.000000000000000  0.000000000000000  3.296071350072317
+    0   5.861609089249033  1.962553012586390  0.000000000000000
+    1   1.963800900425653  6.804320851370362  0.000000000000000
+    2   0.000000000000000  0.000000000000000  3.296071350072386
 
 	alpha_(0.100) =      15.962001290692 a.u.
 
@@ -983,8 +941,8 @@ Tue Nov 15 16:40:06 2005
 	0.100   455.63        15.96200
 ******************************************************************************
 tstop called on ganymede.local
-Tue Nov 15 16:41:16 2005
+Sun Oct 14 14:16:01 2007
 
-user time   =      32.87 seconds =       0.55 minutes
-system time =      65.10 seconds =       1.08 minutes
-total time  =         70 seconds =       1.17 minutes
+user time   =      10.12 seconds =       0.17 minutes
+system time =      17.09 seconds =       0.28 minutes
+total time  =         22 seconds =       0.37 minutes

@@ -1,6 +1,6 @@
 ******************************************************************************
-tstart called on Edward-Valeevs-Computer.local.
-Mon Jan  3 16:39:40 2005
+tstart called on ganymede.local
+Sun Oct 14 14:21:44 2007
 
                                 --------------
                                   WELCOME TO
@@ -12,7 +12,7 @@ Mon Jan  3 16:39:40 2005
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /Users/evaleev/Development/QuantumChemistry/psi3/stable/psi3/share/pbasis.dat
+  Parsed basis sets from /Users/crawdad/psi3/lib/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -29,7 +29,7 @@ Mon Jan  3 16:39:40 2005
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.124308519936    -0.000000000000
+          OXYGEN      0.000000000000    -0.124308519936     0.000000000000
         HYDROGEN      1.427452943482     0.986433210056     0.000000000000
         HYDROGEN     -1.427452943482     0.986433210056     0.000000000000
 
@@ -98,14 +98,14 @@ Mon Jan  3 16:39:40 2005
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.124308519936
+          OXYGEN      0.000000000000     0.000000000000    -0.124308519936
         HYDROGEN      0.000000000000     1.427452943482     0.986433210056
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.124308519936
+          OXYGEN      0.000000000000     0.000000000000    -0.124308519936
         HYDROGEN      0.000000000000     1.427452943482     0.986433210056
         HYDROGEN      0.000000000000    -1.427452943482     0.986433210056
 
@@ -113,7 +113,7 @@ Mon Jan  3 16:39:40 2005
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.065781240607
+          OXYGEN      0.000000000000     0.000000000000    -0.065781240607
         HYDROGEN      0.000000000000     0.755375621709     0.521998012420
         HYDROGEN      0.000000000000    -0.755375621709     0.521998012420
 
@@ -121,7 +121,7 @@ Mon Jan  3 16:39:40 2005
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.124308519936
+          OXYGEN      0.000000000000     0.000000000000    -0.124308519936
         HYDROGEN      0.000000000000     1.427452943482     0.986433210056
         HYDROGEN      0.000000000000    -1.427452943482     0.986433210056
 
@@ -143,15 +143,15 @@ Mon Jan  3 16:39:40 2005
 
 
 ******************************************************************************
-tstop called on Edward-Valeevs-Computer.local.
-Mon Jan  3 16:39:40 2005
+tstop called on ganymede.local
+Sun Oct 14 14:21:44 2007
 
-user time   =       0.43 seconds =       0.01 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on Edward-Valeevs-Computer.local.
-Mon Jan  3 16:39:40 2005
+tstart called on ganymede.local
+Sun Oct 14 14:21:44 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -180,15 +180,15 @@ Mon Jan  3 16:39:40 2005
     Wrote 11412 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on Edward-Valeevs-Computer.local.
-Mon Jan  3 16:39:40 2005
+tstop called on ganymede.local
+Sun Oct 14 14:21:44 2007
 
-user time   =       0.40 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on Edward-Valeevs-Computer.local.
-Mon Jan  3 16:39:40 2005
+tstart called on ganymede.local
+Sun Oct 14 14:21:44 2007
 
 
              ------------------------------------------
@@ -217,6 +217,8 @@ Mon Jan  3 16:39:40 2005
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
@@ -242,16 +244,16 @@ Mon Jan  3 16:39:40 2005
     4       -76.0253791516    2.226350e-02    4.578763e-03    6.025476e-02
     5       -76.0267283996    1.349248e-03    1.249151e-03    1.815735e-02
     6       -76.0268039961    7.559649e-05    3.101190e-04    3.653202e-03
-    7       -76.0268047109    7.147939e-07    3.443409e-05    4.348232e-04
-    8       -76.0268047985    8.756975e-08    8.875022e-06    2.024337e-04
-    9       -76.0268048153    1.685802e-08    5.092018e-06    8.312248e-05
-   10       -76.0268048154    1.229523e-10    3.313708e-07    3.836288e-06
-   11       -76.0268048155    1.854517e-11    1.406506e-07    1.311962e-06
-   12       -76.0268048155    5.258016e-13    2.338527e-08    2.760316e-07
-   13       -76.0268048155    7.105427e-14    3.598712e-09    4.321011e-08
-   14       -76.0268048155   -2.842171e-14    5.968266e-10    5.895687e-09
-   15       -76.0268048155    0.000000e+00    1.101146e-10    7.375423e-10
-   16       -76.0268048155    1.421085e-14    9.476175e-12    1.227640e-10
+    7       -76.0268047109    7.147938e-07    3.443409e-05    4.348232e-04
+    8       -76.0268047985    8.756979e-08    8.875022e-06    2.024337e-04
+    9       -76.0268048153    1.685798e-08    5.092018e-06    8.312248e-05
+   10       -76.0268048154    1.230660e-10    3.313708e-07    3.836288e-06
+   11       -76.0268048155    1.848832e-11    1.406506e-07    1.311962e-06
+   12       -76.0268048155    5.826450e-13    2.338527e-08    2.760316e-07
+   13       -76.0268048155    0.000000e+00    3.598712e-09    4.321012e-08
+   14       -76.0268048155   -1.421085e-14    5.968266e-10    5.895686e-09
+   15       -76.0268048155    1.421085e-14    1.101146e-10    7.375422e-10
+   16       -76.0268048155   -4.263256e-14    9.476093e-12    1.227642e-10
 
 Orbital energies (a.u.):
 
@@ -278,15 +280,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.999511411726
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on Edward-Valeevs-Computer.local.
-Mon Jan  3 16:39:40 2005
+tstop called on ganymede.local
+Sun Oct 14 14:21:44 2007
 
-user time   =       0.03 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on Edward-Valeevs-Computer.local.
-Mon Jan  3 16:39:40 2005
+tstart called on ganymede.local
+Sun Oct 14 14:21:44 2007
 
 
 	**************************************************
@@ -294,94 +296,54 @@ Mon Jan  3 16:39:40 2005
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  CCSD
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            =  Yes
-	Delete Restricted Docc =  No
-	Do All TEI             =  No
-	Memory (Mbytes)        =  256.0
-	Max Buckets            =  199
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Semicanonical orbitals =  No
-	Pitzer                 =  No
+	Wave function   =	CCSD
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 24
+	Number of MOs        = 24
+	Number of active MOs = 23
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 24
-	Number of MOs    = 24
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   11	    1	    2	    0	    8	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   11	   11	    1	    3	    0	    8	    0
-	 A2 	   2	   2	    0	    0	    0	    2	    0
-	 B1 	   4	   4	    0	    1	    0	    3	    0
-	 B2 	   7	   7	    0	    1	    0	    6	    0
+	Nuclear Rep. energy (chkpt) =      9.19644278059961
+	SCF energy          (chkpt) =    -76.02680481545858
 
-	Nuclear Repulsion Energy    =         9.1964427806
-	Total SCF Energy            =       -76.0268048155
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =  -61.316598826521151
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =  -61.316598826521115
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on Edward-Valeevs-Computer.local.
-Mon Jan  3 16:39:43 2005
+tstop called on ganymede.local
+Sun Oct 14 14:21:44 2007
 
-user time   =       3.08 seconds =       0.05 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          3 seconds =       0.05 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on Edward-Valeevs-Computer.local.
-Mon Jan  3 16:39:43 2005
+tstart called on ganymede.local
+Sun Oct 14 14:21:44 2007
 
 
 			**************************
@@ -418,29 +380,45 @@ Mon Jan  3 16:39:43 2005
 	 B2 	   7	    0	    1	    0	    6	    0
 
 	Nuclear Rep. energy (chkpt) =      9.19644278059961
-	SCF energy          (chkpt) =    -76.02680481545859
+	SCF energy          (chkpt) =    -76.02680481545858
 
-	Size of <ab|cd> integrals:     0.013 (MW) /     0.102 (MB)
-	Size of <ia|bc> integrals:     0.003 (MW) /     0.023 (MB)
-	Size of Tijab amplitudes:      0.001 (MW) /     0.005 (MB)
+	Size of irrep 0 of <ab|cd> integrals:      0.013 (MW) /      0.102 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.037 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.012 (MW) /      0.093 (MB)
+	Total:                                     0.034 (MW) /      0.274 (MB)
 
+	Size of irrep 0 of <ia|bc> integrals:      0.003 (MW) /      0.023 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.007 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.002 (MW) /      0.019 (MB)
+	Total:                                     0.007 (MW) /      0.058 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.001 (MW) /      0.005 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.000 (MW) /      0.002 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.000 (MW) /      0.003 (MB)
+	Total:                                     0.002 (MW) /      0.012 (MB)
+
+
+	Sorting File: B(+) <ab|cd> nbuckets = 1
 	One-electron energy          =    -41.62079003141372
 	Two-electron (AA) energy     =      6.88161653652519
 	Two-electron (BB) energy     =      6.88161653652519
 	Two-electron (AB) energy     =     10.83252472535149
 	Two-electron energy          =     17.71414126187668
-	Frozen-core energy (transqt) =    -61.31659882652115
-	Reference energy             =    -76.02680481545859
+	Frozen-core energy (transqt) =    -61.31659882652112
+	Reference energy             =    -76.02680481545855
 ******************************************************************************
-tstop called on Edward-Valeevs-Computer.local.
-Mon Jan  3 16:39:43 2005
+tstop called on ganymede.local
+Sun Oct 14 14:21:44 2007
 
-user time   =       0.33 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on Edward-Valeevs-Computer.local.
-Mon Jan  3 16:39:43 2005
+tstart called on ganymede.local
+Sun Oct 14 14:21:44 2007
 
 			**************************
 			*                        *
@@ -449,8 +427,8 @@ Mon Jan  3 16:39:43 2005
 			**************************
 
 	Nuclear Rep. energy (chkpt)   =    9.196442780599606
-	SCF energy          (chkpt)   =  -76.026804815458590
-	Reference energy    (file100) =  -76.026804815458590
+	SCF energy          (chkpt)   =  -76.026804815458576
+	Reference energy    (file100) =  -76.026804815458547
 
 	Input parameters:
 	-----------------
@@ -461,33 +439,35 @@ Mon Jan  3 16:39:43 2005
 	Convergence     = 1.0e-07
 	Restart         =     Yes
 	DIIS            =     Yes
-	Local CC        =     No
 	AO Basis        =     NONE
+	ABCD            =     NEW
 	Cache Level     =    2
 	Cache Type      =     LOW
 	Print Level     =    0
+	Num. of threads =     1
 	# Amps to Print =    10
 	Print MP2 Amps? =    No
 	Analyze T2 Amps =    No
 	Print Pair Ener =    Yes
 	Spinadapt Ener. =    Yes
+	Local CC        =     No
 
 	            Solving CC Amplitude Equations
 	            ------------------------------
   Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
   ----     ---------------------    ---------   ----------  ----------  ----------
-     0        -0.201645050890902    0.000e+00    0.000000    0.000000    0.000000
-     1        -0.206836942866171    2.658e-02    0.004491    0.008605    0.008605
-     2        -0.210781121050049    9.357e-03    0.005320    0.009910    0.009910
-     3        -0.211188389641210    2.416e-03    0.005797    0.010711    0.010711
-     4        -0.211199629573203    5.559e-04    0.005843    0.010928    0.010928
-     5        -0.211210632590097    1.646e-04    0.005869    0.011038    0.011038
-     6        -0.211208797299675    5.463e-05    0.005878    0.011083    0.011083
-     7        -0.211208574544236    1.476e-05    0.005881    0.011097    0.011097
-     8        -0.211208450668226    2.550e-06    0.005882    0.011099    0.011099
-     9        -0.211208404906862    6.129e-07    0.005882    0.011099    0.011099
-    10        -0.211208419069418    1.239e-07    0.005882    0.011099    0.011099
-    11        -0.211208417847319    2.638e-08    0.005882    0.011099    0.011099
+     0        -0.201645050890904    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.206836942866175    2.658e-02    0.004491    0.008605    0.008605
+     2        -0.210781121050054    9.357e-03    0.005320    0.009910    0.009910
+     3        -0.211188389641214    2.416e-03    0.005797    0.010711    0.010711
+     4        -0.211199629573207    5.559e-04    0.005843    0.010928    0.010928
+     5        -0.211210632590101    1.646e-04    0.005869    0.011038    0.011038
+     6        -0.211208797299679    5.463e-05    0.005878    0.011083    0.011083
+     7        -0.211208574544240    1.476e-05    0.005881    0.011097    0.011097
+     8        -0.211208450668230    2.550e-06    0.005882    0.011099    0.011099
+     9        -0.211208404906866    6.129e-07    0.005882    0.011099    0.011099
+    10        -0.211208419069422    1.239e-07    0.005882    0.011099    0.011099
+    11        -0.211208417847323    2.638e-08    0.005882    0.011099    0.011099
 
 	Iterations converged.
 
@@ -495,33 +475,33 @@ Mon Jan  3 16:39:43 2005
 	Largest TIA Amplitudes:
 	          1   0         0.0074294747
 	          3  17        -0.0073229119
-	          3  13        -0.0059853306
-	          1   5         0.0049810563
+	          3  13         0.0059853306
+	          1   5        -0.0049810563
 	          3  15         0.0045372464
 	          0   2         0.0042045391
-	          0   0        -0.0038074429
+	          0   0         0.0038074429
 	          2  11         0.0032788565
 	          2  10         0.0030289137
-	          1   1         0.0029930215
+	          1   1        -0.0029930215
 
 	Largest TIjAb Amplitudes:
 	  2   2  10  10        -0.0514005086
 	  3   3  14  14        -0.0361095425
 	  1   1   2   2        -0.0353039399
 	  3   3  13  13        -0.0292732787
-	  1   2   2  10        -0.0285597322
-	  2   1  10   2        -0.0285597322
+	  1   2   2  10         0.0285597322
+	  2   1  10   2         0.0285597322
 	  3   3   1   1        -0.0282565442
 	  1   1  14  14        -0.0256830907
 	  2   3  10  15         0.0228210020
 	  3   2  15  10         0.0228210020
 
-	SCF energy       (chkpt)   =  -76.026804815458590
-	Reference energy (file100) =  -76.026804815458590
-	MP2 correlation energy     =   -0.201645050890902
-	Total MP2 energy           =  -76.228449866349493
-	CCSD correlation energy    =   -0.211208417847319
-	Total CCSD energy          =  -76.238013233305907
+	SCF energy       (chkpt)   =  -76.026804815458576
+	Reference energy (file100) =  -76.026804815458547
+	MP2 correlation energy     =   -0.201645050890904
+	Total MP2 energy           =  -76.228449866349450
+	CCSD correlation energy    =   -0.211208417847323
+	Total CCSD energy          =  -76.238013233305864
 
 	Singlet pair energies
 	    i       j         MP2             CCSD
@@ -552,9 +532,9 @@ Mon Jan  3 16:39:43 2005
 	      Total       -0.076074830   -0.067965374
 
 ******************************************************************************
-tstop called on Edward-Valeevs-Computer.local.
-Mon Jan  3 16:39:45 2005
+tstop called on ganymede.local
+Sun Oct 14 14:21:45 2007
 
-user time   =       2.37 seconds =       0.04 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.18 seconds =       0.00 minutes
+system time =       0.14 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes

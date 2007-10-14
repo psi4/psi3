@@ -1,6 +1,6 @@
 ******************************************************************************
-tstart called on lynx.chem.vt.edu
-Wed Mar  9 11:38:11 2005
+tstart called on ganymede.local
+Sun Oct 14 14:22:01 2007
 
                                 --------------
                                   WELCOME TO
@@ -12,7 +12,7 @@ Wed Mar  9 11:38:11 2005
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /usr/local/psi3/lynx/share/pbasis.dat
+  Parsed basis sets from /Users/crawdad/psi3/lib/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -29,9 +29,9 @@ Wed Mar  9 11:38:11 2005
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.947809456753    -0.132934425166    -0.000000000000
-        HYDROGEN      1.513924045650     1.610489987682     0.000000000000
-        FLUORINE     -0.878279174994     0.026485523654     0.000000000000
+          OXYGEN      0.947809456753    -0.132934425166     0.000000000000
+        HYDROGEN      1.513924045650     1.610489987682    -0.000000000000
+        FLUORINE     -0.878279174994     0.026485523654    -0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -124,33 +124,33 @@ Wed Mar  9 11:38:11 2005
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.947809456753    -0.132934425166    -0.000000000000
-        HYDROGEN      1.513924045650     1.610489987682     0.000000000000
-        FLUORINE     -0.878279174994     0.026485523654     0.000000000000
+          OXYGEN      0.947809456753    -0.132934425166     0.000000000000
+        HYDROGEN      1.513924045650     1.610489987682    -0.000000000000
+        FLUORINE     -0.878279174994     0.026485523654    -0.000000000000
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.947809456753    -0.132934425166    -0.000000000000
-        HYDROGEN      1.513924045650     1.610489987682     0.000000000000
-        FLUORINE     -0.878279174994     0.026485523654     0.000000000000
+          OXYGEN      0.947809456753    -0.132934425166     0.000000000000
+        HYDROGEN      1.513924045650     1.610489987682    -0.000000000000
+        FLUORINE     -0.878279174994     0.026485523654    -0.000000000000
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.501559200901    -0.070345873407    -0.000000000000
-        HYDROGEN      0.801134161672     0.852234661224     0.000000000000
-        FLUORINE     -0.464765357677     0.014015536545     0.000000000000
+          OXYGEN      0.501559200901    -0.070345873407     0.000000000000
+        HYDROGEN      0.801134161672     0.852234661224    -0.000000000000
+        FLUORINE     -0.464765357677     0.014015536545    -0.000000000000
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.947809456753    -0.132934425166    -0.000000000000
-        HYDROGEN      1.513924045650     1.610489987682     0.000000000000
-        FLUORINE     -0.878279174994     0.026485523654     0.000000000000
+          OXYGEN      0.947809456753    -0.132934425166     0.000000000000
+        HYDROGEN      1.513924045650     1.610489987682    -0.000000000000
+        FLUORINE     -0.878279174994     0.026485523654    -0.000000000000
 
 
   --------------------------------------------------------------------------
@@ -170,15 +170,15 @@ Wed Mar  9 11:38:11 2005
 
 
 ******************************************************************************
-tstop called on lynx.chem.vt.edu
-Wed Mar  9 11:38:12 2005
+tstop called on ganymede.local
+Sun Oct 14 14:22:01 2007
 
 user time   =       0.04 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on lynx.chem.vt.edu
-Wed Mar  9 11:38:12 2005
+tstart called on ganymede.local
+Sun Oct 14 14:22:01 2007
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -207,15 +207,15 @@ Wed Mar  9 11:38:12 2005
     Wrote 78700 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on lynx.chem.vt.edu
-Wed Mar  9 11:38:13 2005
+tstop called on ganymede.local
+Sun Oct 14 14:22:02 2007
 
-user time   =       0.65 seconds =       0.01 minutes
+user time   =       0.26 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on lynx.chem.vt.edu
-Wed Mar  9 11:38:13 2005
+tstart called on ganymede.local
+Sun Oct 14 14:22:02 2007
 
 
              ------------------------------------------
@@ -244,6 +244,8 @@ Wed Mar  9 11:38:13 2005
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
@@ -273,13 +275,13 @@ Wed Mar  9 11:38:13 2005
     8      -174.4184323371    9.755381e-06    3.940217e-05    1.372626e-03
     9      -174.4184329483    6.111993e-07    1.217883e-05    2.309366e-04
    10      -174.4184329961    4.771692e-08    3.288085e-06    7.756808e-05
-   11      -174.4184330015    5.459128e-09    1.373328e-06    2.554358e-05
-   12      -174.4184330016    9.299583e-11    1.863302e-07    2.766448e-06
-   13      -174.4184330016    2.017941e-12    3.045374e-08    5.715808e-07
-   14      -174.4184330016    5.684342e-14    7.274995e-09    1.290897e-07
+   11      -174.4184330015    5.459100e-09    1.373328e-06    2.554358e-05
+   12      -174.4184330016    9.313794e-11    1.863302e-07    2.766448e-06
+   13      -174.4184330016    1.904255e-12    3.045374e-08    5.715808e-07
+   14      -174.4184330016   -5.684342e-14    7.274995e-09    1.290897e-07
    15      -174.4184330016    2.557954e-13    1.082209e-09    2.486282e-08
-   16      -174.4184330016   -1.136868e-13    4.325500e-10    7.995740e-09
-   17      -174.4184330016    2.842171e-14    6.643813e-11    1.232199e-09
+   16      -174.4184330016   -2.273737e-13    4.325501e-10    7.995742e-09
+   17      -174.4184330016    3.410605e-13    6.643813e-11    1.232200e-09
 
 Orbital energies (a.u.):
 
@@ -299,23 +301,23 @@ Orbital energies (a.u.):
    9App     4.827587    23Ap      4.882340    24Ap      5.266361  
 
 
-        SCF total energy   =    -174.418433001619
+        SCF total energy   =    -174.418433001620
         kinetic energy     =     177.057876153773
         nuc. attr. energy  =    -511.815568474871
-        elec. rep. energy  =     160.339259319478
-        potential energy   =    -351.476309155392
+        elec. rep. energy  =     160.339259319479
+        potential energy   =    -351.476309155393
         virial theorem     =       2.015132822298
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on lynx.chem.vt.edu
-Wed Mar  9 11:38:14 2005
+tstop called on ganymede.local
+Sun Oct 14 14:22:02 2007
 
-user time   =       0.03 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on lynx.chem.vt.edu
-Wed Mar  9 11:38:14 2005
+tstart called on ganymede.local
+Sun Oct 14 14:22:02 2007
 
 
 	**************************************************
@@ -323,92 +325,52 @@ Wed Mar  9 11:38:14 2005
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  CC2
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            =  Yes
-	Delete Restricted Docc =  No
-	Do All TEI             =  No
-	Memory (Mbytes)        =  256.0
-	Max Buckets            =  199
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Semicanonical orbitals =  No
-	Pitzer                 =  No
+	Wave function   =	CC2
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	Response
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 2
+	Number of SOs        = 33
+	Number of MOs        = 33
+	Number of active MOs = 33
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 2
-	Number of SOs    = 33
-	Number of MOs    = 33
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 Ap 	   24	    0	    7	    0	    17	    0
+	 App	   9	    0	    2	    0	    7	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 Ap 	   24	   24	    0	    7	    0	    17	    0
-	 App	   9	   9	    0	    2	    0	    7	    0
+	Nuclear Rep. energy (chkpt) =     46.78036205834605
+	SCF energy          (chkpt) =   -174.41843300161969
 
-	Nuclear Repulsion Energy    =        46.7803620583
-	Total SCF Energy            =      -174.4184330016
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on lynx.chem.vt.edu
-Wed Mar  9 11:38:15 2005
+tstop called on ganymede.local
+Sun Oct 14 14:22:02 2007
 
-user time   =       0.23 seconds =       0.00 minutes
-system time =       0.98 seconds =       0.02 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on lynx.chem.vt.edu
-Wed Mar  9 11:38:15 2005
+tstart called on ganymede.local
+Sun Oct 14 14:22:02 2007
 
 
 			**************************
@@ -443,32 +405,39 @@ Wed Mar  9 11:38:15 2005
 	 App	   9	    0	    2	    0	    7	    0
 
 	Nuclear Rep. energy (chkpt) =     46.78036205834605
-	SCF energy          (chkpt) =   -174.41843300161949
+	SCF energy          (chkpt) =   -174.41843300161969
 
-	Size of <ab|cd> integrals:     0.114 (MW) /     0.914 (MB)
-	No. of <vv|vv> allowed in memory:      280 
-	Size of <ia|bc> integrals:     0.045 (MW) /     0.360 (MB)
-	No. of <ov|vv> allowed in memory:      711 
-	Size of Tijab amplitudes:      0.018 (MW) /     0.143 (MB)
-	A cachelevel of 4 is suggested.
+	Size of irrep 0 of <ab|cd> integrals:      0.114 (MW) /      0.914 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.057 (MW) /      0.453 (MB)
+	Total:                                     0.171 (MW) /      1.367 (MB)
 
-	One-electron energy          =   -334.75769232109764
-	Two-electron (AA) energy     =     47.26858977557117
-	Two-electron (BB) energy     =     47.26858977557117
-	Two-electron (AB) energy     =     66.29030748556092
-	Two-electron energy          =    113.55889726113209
+	Size of irrep 0 of <ia|bc> integrals:      0.045 (MW) /      0.360 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.020 (MW) /      0.158 (MB)
+	Total:                                     0.065 (MW) /      0.518 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.018 (MW) /      0.143 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.007 (MW) /      0.053 (MB)
+	Total:                                     0.025 (MW) /      0.197 (MB)
+
+
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	One-electron energy          =   -334.75769232109792
+	Two-electron (AA) energy     =     47.26858977557132
+	Two-electron (BB) energy     =     47.26858977557132
+	Two-electron (AB) energy     =     66.29030748556104
+	Two-electron energy          =    113.55889726113236
 	Frozen-core energy (transqt) =      0.00000000000000
 	Reference energy             =   -174.41843300161949
 ******************************************************************************
-tstop called on lynx.chem.vt.edu
-Wed Mar  9 11:38:15 2005
+tstop called on ganymede.local
+Sun Oct 14 14:22:02 2007
 
-user time   =       0.07 seconds =       0.00 minutes
-system time =       0.11 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.06 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on lynx.chem.vt.edu
-Wed Mar  9 11:38:15 2005
+tstart called on ganymede.local
+Sun Oct 14 14:22:02 2007
 
 			**************************
 			*                        *
@@ -477,7 +446,7 @@ Wed Mar  9 11:38:15 2005
 			**************************
 
 	Nuclear Rep. energy (chkpt)   =   46.780362058346050
-	SCF energy          (chkpt)   = -174.418433001619491
+	SCF energy          (chkpt)   = -174.418433001619690
 	Reference energy    (file100) = -174.418433001619491
 
 	Input parameters:
@@ -489,32 +458,34 @@ Wed Mar  9 11:38:15 2005
 	Convergence     = 1.0e-07
 	Restart         =     Yes
 	DIIS            =     Yes
-	Local CC        =     No
 	AO Basis        =     NONE
+	ABCD            =     NEW
 	Cache Level     =    2
 	Cache Type      =     LOW
 	Print Level     =    0
+	Num. of threads =     1
 	# Amps to Print =    10
 	Print MP2 Amps? =    No
 	Analyze T2 Amps =    No
 	Print Pair Ener =    No
+	Local CC        =     No
 
 	            Solving CC Amplitude Equations
 	            ------------------------------
   Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
   ----     ---------------------    ---------   ----------  ----------  ----------
-     0        -0.356636240724451    0.000e+00    0.000000    0.000000    0.000000
-     1        -0.356563792994318    1.814e-02    0.004275    0.011894    0.011894
+     0        -0.356636240724456    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.356563792994319    1.814e-02    0.004275    0.011894    0.011894
      2        -0.357908437198155    4.538e-03    0.004855    0.013947    0.013947
-     3        -0.358105631697251    2.649e-03    0.005471    0.016723    0.016723
+     3        -0.358105631697250    2.649e-03    0.005471    0.016723    0.016723
      4        -0.358083328314918    1.020e-03    0.005718    0.018168    0.018168
      5        -0.358082686607096    4.248e-04    0.005833    0.018902    0.018902
-     6        -0.358084019986551    6.450e-05    0.005837    0.018941    0.018941
+     6        -0.358084019986553    6.450e-05    0.005837    0.018941    0.018941
      7        -0.358084016494559    1.720e-05    0.005838    0.018948    0.018948
-     8        -0.358083998381240    4.378e-06    0.005838    0.018944    0.018944
-     9        -0.358083991164514    1.096e-06    0.005838    0.018945    0.018945
-    10        -0.358083990048635    2.215e-07    0.005838    0.018944    0.018944
-    11        -0.358083992540997    5.827e-08    0.005838    0.018944    0.018944
+     8        -0.358083998381241    4.378e-06    0.005838    0.018944    0.018944
+     9        -0.358083991164513    1.096e-06    0.005838    0.018945    0.018945
+    10        -0.358083990048634    2.215e-07    0.005838    0.018944    0.018944
+    11        -0.358083992540998    5.827e-08    0.005838    0.018944    0.018944
 
 	Iterations converged.
 
@@ -543,23 +514,23 @@ Wed Mar  9 11:38:15 2005
 	  8   7  18  18         0.0177215747
 	  4   4   6   6        -0.0167721228
 
-	SCF energy       (chkpt)   = -174.418433001619491
+	SCF energy       (chkpt)   = -174.418433001619690
 	Reference energy (file100) = -174.418433001619491
-	MP2 correlation energy     =   -0.356636240724451
-	Total MP2 energy           = -174.775069242343932
-	CC2 correlation energy     =   -0.358083992540997
+	MP2 correlation energy     =   -0.356636240724456
+	Total MP2 energy           = -174.775069242343960
+	CC2 correlation energy     =   -0.358083992540998
 	Total CC2 energy           = -174.776516994160488
 
 ******************************************************************************
-tstop called on lynx.chem.vt.edu
-Wed Mar  9 11:38:17 2005
+tstop called on ganymede.local
+Sun Oct 14 14:22:04 2007
 
-user time   =       0.86 seconds =       0.01 minutes
-system time =       0.72 seconds =       0.01 minutes
+user time   =       0.51 seconds =       0.01 minutes
+system time =       0.47 seconds =       0.01 minutes
 total time  =          2 seconds =       0.03 minutes
 ******************************************************************************
-tstart called on lynx.chem.vt.edu
-Wed Mar  9 11:38:17 2005
+tstart called on ganymede.local
+Sun Oct 14 14:22:04 2007
 
 
 			**************************
@@ -569,15 +540,15 @@ Wed Mar  9 11:38:17 2005
 			**************************
 
 ******************************************************************************
-tstop called on lynx.chem.vt.edu
-Wed Mar  9 11:38:17 2005
+tstop called on ganymede.local
+Sun Oct 14 14:22:04 2007
 
-user time   =       0.09 seconds =       0.00 minutes
-system time =       0.12 seconds =       0.00 minutes
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.07 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on lynx.chem.vt.edu
-Wed Mar  9 11:38:17 2005
+tstart called on ganymede.local
+Sun Oct 14 14:22:04 2007
 
 
 			**************************
@@ -587,10 +558,10 @@ Wed Mar  9 11:38:17 2005
 
 	Nuclear Rep. energy (chkpt)   =   46.780362058346050
 	Reference           (chkpt)   = 0
-	SCF energy          (chkpt)   = -174.418433001619491
+	SCF energy          (chkpt)   = -174.418433001619690
 	Reference energy    (CC_INFO) = -174.418433001619491
-	CCSD energy         (CC_INFO) =   -0.358083992540997
-	Total CCSD energy   (CC_INFO) = -174.776516994160488
+	CC2 energy          (CC_INFO) =   -0.358083992540998
+	Total CC2 energy    (CC_INFO) = -174.776516994160488
 
 	Input parameters:
 	-----------------
@@ -598,14 +569,15 @@ Wed Mar  9 11:38:17 2005
 	Convergence   = 1.0e-07
 	Restart       =     Yes
 	Cache Level   =     2
+	Model III     =     No
 	DIIS          =     Yes
 	AO Basis      =     No
-	Excited State  =     No
+	ABCD            =     NEW
 	Local CC        =     No
 	Paramaters for left-handed eigenvectors:
-	Irr   Root  Ground-State?    EOM energy        R0
-	  0    -1           Yes   0.0000000000   1.0000000000
-	Labels for state 0:
+	    Irr   Root  Ground-State?    EOM energy        R0
+	  1   0     0        Yes       0.0000000000   1.0000000000
+	Labels for eigenvector 1:
 	LIA 0 -1, Lia 0 -1, LIJAB 0 -1, Lijab 0 -1, LIjAb 0 -1, 2LIjAb - LIjbA 0 -1
 	Symmetry of left-hand state: Ap 
 	Symmetry of left-hand eigenvector: Ap 
@@ -614,67 +586,55 @@ Wed Mar  9 11:38:17 2005
 	          ------------------------
 	Iter     PseudoEnergy or Norm         RMS  
 	----     ---------------------     --------
-	   0        -0.358163763455801    0.000e+00
-	   1        -0.358109752172957    5.948e-03
-	   2        -0.357964639987543    8.374e-04
-	   3        -0.357946752826888    5.893e-04
-	   4        -0.357944447303693    2.526e-04
-	   5        -0.357944748121959    8.987e-05
-	   6        -0.357944311879904    1.995e-05
-	   7        -0.357944209639923    3.708e-06
-	   8        -0.357944202402525    8.806e-07
-	   9        -0.357944207101115    2.164e-07
-	  10        -0.357944208070491    7.381e-08
+	   0        -0.358163763455802    0.000e+00
+	   1        -0.358109752170306    5.948e-03
+	   2        -0.357964639996922    8.374e-04
+	   3        -0.357946752836530    5.893e-04
+	   4        -0.357944447315459    2.526e-04
+	   5        -0.357944748133673    8.987e-05
+	   6        -0.357944311891317    1.995e-05
+	   7        -0.357944209651331    3.708e-06
+	   8        -0.357944202413938    8.806e-07
+	   9        -0.357944207112527    2.164e-07
+	  10        -0.357944208081903    7.381e-08
+
+	Largest LIA Amplitudes:
+	          6   0         0.0126078767
+	          5   0         0.0052208623
+	          7  17        -0.0051024710
+	          6   9        -0.0050287290
+	          4   2         0.0044232982
+	          4   9         0.0042061548
+	          8  17        -0.0041847800
+	          6   2         0.0040979133
+	          3   1         0.0037476760
+	          6   1         0.0031129513
+
+	Largest LIjAb Amplitudes:
+	  8   8  17  17        -0.0309537175
+	  6   6   2   2        -0.0282735624
+	  8   8  18  18        -0.0206652713
+	  7   7  18  18        -0.0200413449
+	  7   8  17  17        -0.0186782371
+	  8   7  17  17        -0.0186782371
+	  6   6   0   0        -0.0182203071
+	  7   8  18  18         0.0176903710
+	  8   7  18  18         0.0176903710
+	  4   4   6   6        -0.0167575189
 
 	Iterations converged.
 
-	Overlap <L|e^T> =        0.92825718344
+	Overlap <L|e^T> =        0.92825718345
 ******************************************************************************
-tstop called on lynx.chem.vt.edu
-Wed Mar  9 11:38:18 2005
+tstop called on ganymede.local
+Sun Oct 14 14:22:04 2007
 
-user time   =       0.37 seconds =       0.01 minutes
-system time =       0.32 seconds =       0.01 minutes
-total time  =          1 seconds =       0.02 minutes
-******************************************************************************
-tstart called on lynx.chem.vt.edu
-Wed Mar  9 11:38:19 2005
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = cc-pVDZ/CC2 HOF static polarizability
-    Number of atoms             = 3
-    Number of atomic orbitals   = 35
-    Number of symmetry orbitals = 33
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = Cs 
-    Number of irreps                 = 2
-    Reference point for elec. mom. ints. = (0.000, 0.000, 0.000)
-    Reference point for ang. mom. ints. = (0.000, 0.000, 0.000)
-******************************************************************************
-tstop called on lynx.chem.vt.edu
-Wed Mar  9 11:38:19 2005
-
-user time   =       0.23 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.19 seconds =       0.00 minutes
+system time =       0.16 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on lynx.chem.vt.edu
-Wed Mar  9 11:38:19 2005
+tstart called on ganymede.local
+Sun Oct 14 14:22:05 2007
 
 			**************************
 			*                        *
@@ -691,7 +651,10 @@ Wed Mar  9 11:38:19 2005
 	Print Level      =    1
 	Maxiter          =     50
 	Convergence      = 1.0e-07
+	Restart          =     Allowed
 	DIIS             =     Yes
+	Model III        =     No
+	ABCD             =     NEW
 	Irrep X          =    Ap 
 	Irrep Y          =    Ap 
 	Irrep Z          =    App
@@ -699,46 +662,46 @@ Wed Mar  9 11:38:19 2005
 	Irrep RY         =    App
 	Irrep RZ         =    Ap 
 	Gauge            =    LENGTH
-	Applied field  0 = none
-	Local CC         =    No
+	Applied field  0 =  0.000
 	Analyze X2 Amps  =    No
+	Local CC         =    No
 
 
 	Computing Mu-X-Perturbed Wave Function (0.000 E_h).
 	Iter   Pseudopolarizability       RMS 
 	----   --------------------   -----------
 	   0         4.273812270683
-	   1         5.212426587757    2.621e-01
-	   2         5.943417283894    1.559e-01
-	   3         6.061384558362    4.934e-02
-	   4         6.083563814314    2.648e-02
-	   5         6.085921470219    3.006e-03
-	   6         6.085783826438    1.188e-03
-	   7         6.085621116784    1.971e-04
-	   8         6.085638879879    6.289e-05
-	   9         6.085633705609    1.075e-05
-	  10         6.085634750958    2.523e-06
-	  11         6.085634854188    4.138e-07
-	  12         6.085634946774    1.037e-07
+	   1         5.212426587699    2.621e-01
+	   2         5.943417283645    1.559e-01
+	   3         6.061384557847    4.934e-02
+	   4         6.083563813709    2.648e-02
+	   5         6.085921469606    3.006e-03
+	   6         6.085783825825    1.188e-03
+	   7         6.085621116172    1.971e-04
+	   8         6.085638879266    6.289e-05
+	   9         6.085633704996    1.075e-05
+	  10         6.085634750345    2.523e-06
+	  11         6.085634853575    4.138e-07
+	  12         6.085634946162    1.037e-07
 	-----------------------------------------
 	Converged Mu-X-Perturbed Wfn to 3.353e-08
 
 	Computing Mu-Y-Perturbed Wave Function (0.000 E_h).
 	Iter   Pseudopolarizability       RMS 
 	----   --------------------   -----------
-	   0         4.602402202566
-	   1         5.675624730923    3.509e-01
-	   2         6.782510200376    2.214e-01
-	   3         6.917947396776    5.829e-02
-	   4         6.960708570656    2.890e-02
-	   5         6.963556026889    3.021e-03
-	   6         6.964599270249    1.187e-03
-	   7         6.964491511581    1.346e-04
-	   8         6.964519998355    4.651e-05
-	   9         6.964518220827    9.537e-06
-	  10         6.964520274464    2.619e-06
-	  11         6.964520426228    7.174e-07
-	  12         6.964520591465    1.585e-07
+	   0         4.602402202567
+	   1         5.675624730909    3.509e-01
+	   2         6.782510200217    2.214e-01
+	   3         6.917947396397    5.829e-02
+	   4         6.960708570188    2.890e-02
+	   5         6.963556026408    3.021e-03
+	   6         6.964599269763    1.187e-03
+	   7         6.964491511095    1.346e-04
+	   8         6.964519997869    4.651e-05
+	   9         6.964518220341    9.537e-06
+	  10         6.964520273978    2.619e-06
+	  11         6.964520425742    7.174e-07
+	  12         6.964520590979    1.585e-07
 	-----------------------------------------
 	Converged Mu-Y-Perturbed Wfn to 4.676e-08
 
@@ -746,21 +709,23 @@ Wed Mar  9 11:38:19 2005
 	Iter   Pseudopolarizability       RMS 
 	----   --------------------   -----------
 	   0         2.479889957498
-	   1         2.892986931326    1.719e-01
-	   2         3.179551301453    1.097e-01
-	   3         3.227327166693    5.000e-02
-	   4         3.254438521093    2.873e-02
-	   5         3.255064383448    4.754e-03
-	   6         3.256671491079    2.117e-03
-	   7         3.256666895395    2.505e-04
-	   8         3.256680335507    7.992e-05
-	   9         3.256683827543    1.616e-05
-	  10         3.256684477885    6.243e-06
-	  11         3.256685144947    1.406e-06
-	  12         3.256685553689    3.646e-07
-	  13         3.256685677848    1.195e-07
+	   1         2.892986931310    1.719e-01
+	   2         3.179551301399    1.097e-01
+	   3         3.227327166595    5.000e-02
+	   4         3.254438520950    2.873e-02
+	   5         3.255064383299    4.754e-03
+	   6         3.256671490925    2.117e-03
+	   7         3.256666895241    2.505e-04
+	   8         3.256680335354    7.992e-05
+	   9         3.256683827389    1.616e-05
+	  10         3.256684477731    6.243e-06
+	  11         3.256685144793    1.406e-06
+	  12         3.256685553535    3.646e-07
+	  13         3.256685677694    1.195e-07
 	-----------------------------------------
 	Converged Mu-Z-Perturbed Wfn to 3.126e-08
+
+	Computing <<Mu;Mu>_(0.000) tensor.
 
                  CC2 Dipole Polarizability [(e^2 a0^2)/E_h]:
   -------------------------------------------------------------------------
@@ -769,15 +734,15 @@ Wed Mar  9 11:38:19 2005
 
                 0                  1                  2        
 
-    0   5.872580339926264  1.907284123285610  0.000000000000000
-    1   1.907284123285610  6.660155296570336  0.000000000000000
-    2   0.000000000000000  0.000000000000000  3.190144146948371
+    0   5.872580338045037  1.907284119433896  0.000000000000000
+    1   1.907284119433896  6.660155290158396  0.000000000000000
+    2   0.000000000000000  0.000000000000000  3.190144147152354
 
-	alpha_(0.000) =      15.722879783445 a.u.
+	alpha_(0.000) =      15.722879775356 a.u.
 ******************************************************************************
-tstop called on lynx.chem.vt.edu
-Wed Mar  9 11:38:26 2005
+tstop called on ganymede.local
+Sun Oct 14 14:22:07 2007
 
-user time   =       2.64 seconds =       0.04 minutes
-system time =       3.43 seconds =       0.06 minutes
-total time  =          7 seconds =       0.12 minutes
+user time   =       0.92 seconds =       0.02 minutes
+system time =       1.31 seconds =       0.02 minutes
+total time  =          2 seconds =       0.03 minutes
