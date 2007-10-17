@@ -144,7 +144,7 @@ namespace psi {
 					    (may save some space) */
       int num_threads;                   /* Number of threads */
       enum scftype reftype;              /* Reference type, e.g. RHF, ROHF, UHF */
-    int restart;                       /* Is this a restart? */
+      int restart;                       /* Is this a restart? */
       int restart_task;                  /* Where to restart? */
       struct coordinates origin;           /* user-selected origin for magnetic dipole integrals */
       double fine_structure_alpha;       /* scalar to multiply fine-structure constant */

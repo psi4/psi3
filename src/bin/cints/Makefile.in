@@ -112,12 +112,10 @@ ifeq ($(findstring CC,$(SUBDIRS)),CC)
   endif
 endif
 
-CSRC = main.c parsing.c gprgid.c init_globals.c check_max_am.c $(DIRS:%=%/*.c)
-TRUECSRC = $(notdir $(shell echo `ls $(CSRC:%=$(srcdir)/%)`))
 CXXSRC = $(DIRS:%=%/*.cc) *.cc
 TRUECXXSRC = $(notdir $(shell echo `ls $(CXXSRC:%=$(srcdir)/%)`))
 
-BINOBJ = $(TRUECSRC:%.c=%.o) $(TRUECXXSRC:%.cc=%.o)
+BINOBJ = $(TRUECXXSRC:%.cc=%.o)
 
 include ../MakeRules
 
@@ -145,4 +143,7 @@ install_htmlsrc: $(HTMLSRC)
 	$(MKDIRS) $(htmldir)/CINTS
 	$(INSTALL_INCLUDE) $(HTMLSRC) $(htmldir)/CINTS
 
-
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
