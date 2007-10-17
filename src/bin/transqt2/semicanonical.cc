@@ -99,6 +99,12 @@ void semicanonical_fock(void)
   C_DGEMM('t','n',nmo,nmo,nso,1.0,C[0],nmo,X[0],nso,0.0,fock_b[0],nso);
   free_block(X);
 
+  if(params.print_lvl > 2) {
+    fprintf(outfile,"Alpha Fock matrix (before canonicalization)");
+    print_mat(fock_a,nmo,nmo,outfile);
+    fprintf(outfile,"Beta Fock matrix (before canonicalization)");
+    print_mat(fock_b,nmo,nmo,outfile);
+  }
   
   /** alpha Fock semicanonicalization **/
 
@@ -239,17 +245,21 @@ void semicanonical_fock(void)
   chkpt_wt_beta_scf(C_b); 
   chkpt_close();
  
-  /*fprintf(outfile,"\nAlpha Eigenvalues\n");
-    for(i=0; i<nmo; i++) fprintf(outfile,"%10.7lf\n",alpha_evals[i]);  
-    fprintf(outfile,"\nBeta Eigenvalues\n");
-    for(i=0; i<nmo; i++) fprintf(outfile,"%10.7lf\n",beta_evals[i]);  
+  if(params.print_lvl > 2) {
+    fprintf(outfile, "\nAlpha Eigenvalues\n");
+    for (i=0; i<nmo; i++)
+      fprintf(outfile, "%10.7lf\n", alpha_evals[i]);
+    fprintf(outfile, "\nBeta Eigenvalues\n");
+    for (i=0; i<nmo; i++)
+      fprintf(outfile, "%10.7lf\n", beta_evals[i]);
     fflush(outfile);
+    
+    fprintf(outfile, "\nAlpha Eigenvectors\n");
+    print_mat(C_a, nmo, nmo, outfile);
+    fprintf(outfile, "\nBeta Eigenvectors\n");
+    print_mat(C_b, nmo, nmo, outfile);
+  }
   
-    fprintf(outfile,"\nAlpha Eigenvalues\n");
-    print_mat(scf_vector_alpha,nmo,nmo,outfile);
-    fprintf(outfile,"\nBeta Eigenvalues\n");
-    print_mat(scf_vector_beta,nmo,nmo,outfile);*/
-   
   free_block(C_a);
   free_block(C_b);
   free_block(C);
