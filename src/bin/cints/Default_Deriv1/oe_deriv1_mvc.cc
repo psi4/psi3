@@ -86,7 +86,7 @@ void oe_deriv1_mvc(void) {
     iang  = BasisSet.shells[i].am - 1;
     nbfi = (iang+2)*(iang+1)/2;
     igmin = BasisSet.shells[i].fprim - 1;
-    i_1stbf = BasisSet.shells[i].fbf - 1;
+    i_1stbf = BasisSet.shells[i].fao - 1;
     igmax = igmin + BasisSet.shells[i].n_prims - 1;
 
     for(j=0;j<=i;j++) {  /* J-shell loop */
@@ -97,7 +97,7 @@ void oe_deriv1_mvc(void) {
       jang  = BasisSet.shells[j].am - 1;
       nbfj = (jang+2)*(jang+1)/2;
       jgmin = BasisSet.shells[j].fprim - 1;
-      j_1stbf = BasisSet.shells[j].fbf - 1;
+      j_1stbf = BasisSet.shells[j].fao - 1;
       jgmax = jgmin + BasisSet.shells[j].n_prims - 1;
 
       eq_shell = (i == j);
@@ -295,7 +295,7 @@ void oe_deriv1_mvc(void) {
         iang  = BasisSet.shells[i].am - 1;
         nbfi = (iang+2)*(iang+1)/2;
         igmin = BasisSet.shells[i].fprim - 1;
-        i_1stbf = BasisSet.shells[i].fbf - 1;
+        i_1stbf = BasisSet.shells[i].fao - 1;
         igmax = igmin + BasisSet.shells[i].n_prims - 1;
     
         for(j=0;j<BasisSet.num_shells;j++) {  /* J-shell loop */
@@ -307,7 +307,7 @@ void oe_deriv1_mvc(void) {
           jang  = BasisSet.shells[j].am - 1;
           nbfj = (jang+2)*(jang+1)/2;
           jgmin = BasisSet.shells[j].fprim - 1;
-          j_1stbf = BasisSet.shells[j].fbf - 1;
+          j_1stbf = BasisSet.shells[j].fao - 1;
           jgmax = jgmin + BasisSet.shells[j].n_prims - 1;
     
           eq_shell = (i == j);

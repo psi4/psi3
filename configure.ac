@@ -957,6 +957,8 @@ AC_CONFIG_FILES([include/Makefile
           tests/rb-ccsd-opt-grad/Makefile
           tests/scf-mvd-opt/Makefile
           tests/scf-mvd-opt-numer/Makefile
+          tests/scf-mvd-opt-puream/Makefile
+          tests/scf-mvd-opt-numer-puream/Makefile
           src/bin/giao/Makefile
 ])
 

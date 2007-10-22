@@ -1,0 +1,2143 @@
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:15:24 2007
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	mass-velocity and darwin gradient test with 5d/7f
+  SHOWNORM    =	0
+  PUREAM      =	1
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /usr/local/psi/share/pbasis.dat
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.120139520500
+        HYDROGEN      0.000000000000    -1.428782293400     0.953350686900
+        HYDROGEN      0.000000000000     1.428782293400     0.953350686900
+
+
+  -Rotational constants (cm-1) :
+    A =   29.18289  B =   14.63009  C =    9.74479
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000    -0.120139520507     0.000000000000
+        HYDROGEN     -1.428782293400     0.953350686893     0.000000000000
+        HYDROGEN      1.428782293400     0.953350686893     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S ( 18050.00000000     0.00075700)
+           (  2660.00000000     0.00606600)
+           (   585.70000000     0.03278200)
+           (   160.90000000     0.13260900)
+           (    51.16000000     0.39683900)
+           (    17.90000000     0.54257200) )
+        (S (    17.90000000     0.26249000)
+           (     6.63900000     0.76982800) )
+        (S (     2.07700000     1.00000000) )
+        (S (     0.77360000     1.00000000) )
+        (S (     0.25580000     1.00000000) )
+        (P (    49.83000000     0.01635800)
+           (    11.49000000     0.10645300)
+           (     3.60900000     0.34930200)
+           (     1.32100000     0.65718300) )
+        (P (     0.48210000     1.00000000) )
+        (P (     0.16510000     1.00000000) )
+        (D (     1.70000000     1.00000000) )
+        (D (     0.42500000     1.00000000) )
+        (F (     1.40000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    33.64000000     0.02537400)
+           (     5.05800000     0.18968400)
+           (     1.14700000     0.85293300) )
+        (S (     0.32110000     1.00000000) )
+        (S (     0.10130000     1.00000000) )
+        (P (     1.50000000     1.00000000) )
+        (P (     0.37500000     1.00000000) )
+        (D (     1.00000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 23
+    Number of primitives   = 28
+    Number of AO           = 66
+    Number of SO           = 59
+
+    Irrep    Number of SO
+    -----    ------------
+      1           24
+      2            7
+      3           11
+      4           17
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.120139520507
+        HYDROGEN      0.000000000000     1.428782293400     0.953350686893
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.120139520507
+        HYDROGEN      0.000000000000    -1.428782293400     0.953350686893
+        HYDROGEN      0.000000000000     1.428782293400     0.953350686893
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.063575100958
+        HYDROGEN      0.000000000000    -0.756079083441     0.504491493823
+        HYDROGEN      0.000000000000     0.756079083441     0.504491493823
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000    -0.120139520507
+        HYDROGEN      0.000000000000    -1.428782293400     0.953350686893
+        HYDROGEN      0.000000000000     1.428782293400     0.953350686893
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.302897536149
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9457036   0.0000000
+    3   0.9457036   1.5121582   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:15:24 2007
+
+user time   =       0.09 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:15:24 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin gradient test with 5d/7f
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 59
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 374912 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:15:24 2007
+
+user time   =       0.31 seconds =       0.01 minutes
+system time =       0.06 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:15:24 2007
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = mass-velocity and darwin gradient test with 5d/7f
+  wfn          = SCF_MVD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3028975361489
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 2398128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 1.499476e-03
+
+  Using core guess to determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 137076 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -63.6059367242    7.290883e+01    0.000000e+00    0.000000e+00
+    2       -67.4861629106    3.880226e+00    2.369314e-02    1.622189e+00
+    3       -73.6508826505    6.164720e+00    2.044153e-02    7.832788e-01
+    4       -75.4594112145    1.808529e+00    1.926611e-03    7.222018e-01
+    5       -76.0579622132    5.985510e-01    1.999595e-03    3.490096e-01
+    6       -76.0615601029    3.597890e-03    1.896829e-04    4.137372e-02
+    7       -76.0624811423    9.210394e-04    8.136757e-05    1.632183e-02
+    8       -76.0625076586    2.651621e-05    1.643431e-05    1.662798e-03
+    9       -76.0625115721    3.913542e-06    6.785886e-06    5.326759e-04
+   10       -76.0625116212    4.906713e-08    7.506317e-07    8.900874e-05
+   11       -76.0625116228    1.658250e-09    2.045804e-07    1.296622e-05
+   12       -76.0625116229    6.352252e-11    3.484827e-08    2.145011e-06
+   13       -76.0625116229    1.094236e-12    5.555746e-09    2.965066e-07
+   14       -76.0625116229    1.421085e-14    7.121645e-10    3.359700e-08
+   15       -76.0625116229   -4.263256e-14    7.948781e-11    5.101070e-09
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557749     2A1     -1.354722     1B2     -0.724485  
+   3A1     -0.581082     1B1     -0.508685  
+
+
+  Unoccupied orbitals
+   4A1      0.144505     2B2      0.191461     5A1      0.461404  
+   3B2      0.502265     2B1      0.547072     6A1      0.594004  
+   4B2      0.660287     7A1      0.788265     1A2      0.840009  
+   3B1      0.933418     5B2      1.168928     8A1      1.169609  
+   9A1      1.389543     6B2      1.412786     4B1      1.513062  
+   2A2      1.553495    10A1      1.574743     7B2      1.606829  
+  11A1      1.714558    12A1      2.395685     8B2      2.548387  
+   5B1      2.705874     6B1      3.237827    13A1      3.252305  
+   9B2      3.419081    14A1      3.447280     3A2      3.480836  
+  10B2      3.696934     4A2      3.770376    11B2      3.829954  
+  15A1      3.890015     7B1      3.950326    16A1      3.976292  
+   5A2      4.067735     8B1      4.068139    12B2      4.178267  
+  17A1      4.402989    13B2      4.593276    18A1      4.692678  
+  14B2      4.914832     9B1      5.203661     6A2      5.320366  
+  19A1      5.529790    20A1      5.814793    10B1      5.992317  
+  21A1      6.314496    15B2      6.374938    22A1      6.592204  
+  11B1      6.837244     7A2      7.033659    16B2      7.086818  
+  17B2      7.692195    23A1      8.411859    24A1     47.467119  
+
+
+        SCF total energy   =     -76.062511622889
+        kinetic energy     =      76.042176316324
+        nuc. attr. energy  =    -199.319549789685
+        elec. rep. energy  =      47.214861850472
+        potential energy   =    -152.104687939213
+        virial theorem     =       1.999732650078
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:15:25 2007
+
+user time   =       0.18 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:15:25 2007
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  SCF_MVD
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  Yes
+	Do All TEI             =  Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  Yes
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 59
+	Number of MOs    = 59
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   24	   24	    0	    3	    0	    21	    0
+	 A2 	   7	   7	    0	    0	    0	    7	    0
+	 B1 	   11	   11	    0	    1	    0	    10	    0
+	 B2 	   17	   17	    0	    1	    0	    16	    0
+
+	Nuclear Repulsion Energy    =         9.3028975361
+	Total SCF Energy            =       -76.0625116229
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:15:29 2007
+
+user time   =       1.07 seconds =       0.02 minutes
+system time =       1.92 seconds =       0.03 minutes
+total time  =          4 seconds =       0.07 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:15:29 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin gradient test with 5d/7f
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 59
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:15:52 2007
+
+user time   =      20.92 seconds =       0.35 minutes
+system time =       0.39 seconds =       0.01 minutes
+total time  =         23 seconds =       0.38 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:15:52 2007
+
+			**************************
+			*                        *
+			*          CPHF          *
+			*                        *
+			**************************
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:15:52 2007
+
+user time   =       0.27 seconds =       0.00 minutes
+system time =       0.12 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:15:52 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin gradient test with 5d/7f
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 59
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+	One-electron Darwin energy:    0.2007194529
+
+	Mass-Velocity Correction energy:   -0.2526391071
+
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF_MVD forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.007513170668
+       2        0.000000000000    -0.005136116574     0.003756585334
+       3        0.000000000000     0.005136116574     0.003756585334
+
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:15:54 2007
+
+user time   =       1.85 seconds =       0.03 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1201395205
+  1.0     1.00782503   0.0000000000  -1.4287822934   0.9533506869
+  1.0     1.00782503   0.0000000000   1.4287822934   0.9533506869
+                       0.0000000000   0.0000000000  -0.0075131707
+                       0.0000000000  -0.0051361166   0.0037565853
+                       0.0000000000   0.0051361166   0.0037565853
+
+Generating simple internals
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94570357)
+    (2 1 3) (0.94570357)
+Bends
+    (3 2 1 3) (106.16256223)
+
+Putting simple, possibly redundant, internal coordinates in intco.dat.
+ 
+ ** Taking normal optimization step. **
+
+Current SCF_MVD energy before step       -76.1144312771
+
+Taking geometry step number 1
+
+BuB^t Determinant: 2.657995e+00
+
+Generating empirical Hessian.
+
+Force Constants read from PSIF_OPTKING
+
+No BFGS update performed.
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    0.94570357   -0.05242115   -0.00573937    0.93996420
+ 2    0.94570357   -0.05242115   -0.00573937    0.93996420
+ 3    1.85288625   -0.00063752   -0.00091393    1.85197233
+   MAX force:    0.0524211460   RMS force:    0.0428032691
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.002631182527  0.000003222819
+    3  0.000001148454  0.000000000003
+    4  0.000000000002  0.000000000000
+Convergence to displaced geometry took 4 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000   0.0000000000  -0.1194830209
+  1.0   0.0000000000  -1.4196234603   0.9481411244
+  1.0   0.0000000000   1.4196234603   0.9481411244
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:15:55 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin gradient test with 5d/7f
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 59
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 374912 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:15:55 2007
+
+user time   =       0.30 seconds =       0.01 minutes
+system time =       0.06 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:15:55 2007
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = mass-velocity and darwin gradient test with 5d/7f
+  wfn          = SCF_MVD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3598214479455
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.06251162
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 2398128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 1.466682e-03
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 137076 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0625553038    8.542238e+01    0.000000e+00    0.000000e+00
+    2       -76.0625748222    1.951837e-05    1.284668e-05    2.138017e-03
+    3       -76.0625768142    1.991998e-06    4.993939e-06    7.305528e-04
+    4       -76.0625772719    4.577019e-07    1.476453e-06    2.372595e-04
+    5       -76.0625773130    4.116342e-08    7.850686e-07    6.460697e-05
+    6       -76.0625773168    3.740467e-09    2.853119e-07    1.986597e-05
+    7       -76.0625773169    9.255530e-11    3.708684e-08    2.271672e-06
+    8       -76.0625773169    2.188472e-12    7.011967e-09    4.710610e-07
+    9       -76.0625773169   -1.421085e-14    2.096664e-09    7.900248e-08
+   10       -76.0625773169    5.684342e-14    2.920025e-10    1.123974e-08
+   11       -76.0625773169   -2.842171e-14    2.246583e-11    2.280435e-09
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.556769     2A1     -1.357842     1B2     -0.727647  
+   3A1     -0.582276     1B1     -0.509214  
+
+
+  Unoccupied orbitals
+   4A1      0.145157     2B2      0.191933     5A1      0.460011  
+   3B2      0.502920     2B1      0.546658     6A1      0.597897  
+   4B2      0.662767     7A1      0.789053     1A2      0.841457  
+   3B1      0.934509     8A1      1.167154     5B2      1.172244  
+   9A1      1.396014     6B2      1.415905     4B1      1.514011  
+   2A2      1.554333    10A1      1.571285     7B2      1.603660  
+  11A1      1.715408    12A1      2.393730     8B2      2.546230  
+   5B1      2.706626     6B1      3.237460    13A1      3.253809  
+   9B2      3.423988    14A1      3.454403     3A2      3.488904  
+  10B2      3.708274     4A2      3.772840    11B2      3.836907  
+  15A1      3.890503     7B1      3.951665    16A1      3.976191  
+   8B1      4.065592     5A2      4.066671    12B2      4.176635  
+  17A1      4.405146    13B2      4.610055    18A1      4.702415  
+  14B2      4.931472     9B1      5.212759     6A2      5.331336  
+  19A1      5.545927    20A1      5.828581    10B1      6.003746  
+  21A1      6.319065    15B2      6.388796    22A1      6.613925  
+  11B1      6.853328     7A2      7.052592    16B2      7.101166  
+  17B2      7.713059    23A1      8.428699    24A1     47.472321  
+
+
+        SCF total energy   =     -76.062577316859
+        kinetic energy     =      76.065849790573
+        nuc. attr. energy  =    -199.443150888964
+        elec. rep. energy  =      47.314723781532
+        potential energy   =    -152.128427107433
+        virial theorem     =       2.000043023440
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:15:55 2007
+
+user time   =       0.15 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:15:55 2007
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  SCF_MVD
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  Yes
+	Do All TEI             =  Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  Yes
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 59
+	Number of MOs    = 59
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   24	   24	    0	    3	    0	    21	    0
+	 A2 	   7	   7	    0	    0	    0	    7	    0
+	 B1 	   11	   11	    0	    1	    0	    10	    0
+	 B2 	   17	   17	    0	    1	    0	    16	    0
+
+	Nuclear Repulsion Energy    =         9.3598214479
+	Total SCF Energy            =       -76.0625773169
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:16:00 2007
+
+user time   =       1.07 seconds =       0.02 minutes
+system time =       1.90 seconds =       0.03 minutes
+total time  =          5 seconds =       0.08 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:16:00 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin gradient test with 5d/7f
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 59
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:16:22 2007
+
+user time   =      20.85 seconds =       0.35 minutes
+system time =       0.38 seconds =       0.01 minutes
+total time  =         22 seconds =       0.37 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:16:22 2007
+
+			**************************
+			*                        *
+			*          CPHF          *
+			*                        *
+			**************************
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:16:23 2007
+
+user time   =       0.27 seconds =       0.00 minutes
+system time =       0.12 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:16:23 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin gradient test with 5d/7f
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 59
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+	One-electron Darwin energy:    0.2007127994
+
+	Mass-Velocity Correction energy:   -0.2526325467
+
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF_MVD forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.000191098230
+       2        0.000000000000     0.000472387767     0.000095549115
+       3        0.000000000000    -0.000472387767     0.000095549115
+
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:16:25 2007
+
+user time   =       1.83 seconds =       0.03 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1194830209
+  1.0     1.00782503   0.0000000000  -1.4196234603   0.9481411244
+  1.0     1.00782503   0.0000000000   1.4196234603   0.9481411244
+                       0.0000000000   0.0000000000  -0.0001910982
+                       0.0000000000   0.0004723878   0.0000955491
+                       0.0000000000  -0.0004723878   0.0000955491
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.93996420)
+    (2 1 3) (0.93996420)
+Bends
+    (3 2 1 3) (106.11019810)
+ 
+ ** Taking normal optimization step. **
+
+Current SCF_MVD energy before step       -76.1144970642
+
+Taking geometry step number 2
+
+BuB^t Determinant: 2.690416e+00
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 1 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    0.93996420    0.00263729    0.00018232    0.94014652
+ 2    0.93996420    0.00263729    0.00018232    0.94014652
+ 3    1.85197233    0.00279013    0.00371856    1.85569089
+   MAX force:    0.0027901329   RMS force:    0.0026892043
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.000781427570  0.000001390854
+    3  0.000000735772  0.000000000001
+    4  0.000000000000  0.000000000000
+Convergence to displaced geometry took 4 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000   0.0000000000  -0.1192105363
+  1.0   0.0000000000  -1.4218817633   0.9459788605
+  1.0   0.0000000000   1.4218817633   0.9459788605
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:16:25 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin gradient test with 5d/7f
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 59
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 374912 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:16:25 2007
+
+user time   =       0.30 seconds =       0.01 minutes
+system time =       0.06 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:16:25 2007
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = mass-velocity and darwin gradient test with 5d/7f
+  wfn          = SCF_MVD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3575152075332
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.06257732
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 2398128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 1.464505e-03
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 137076 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0625788335    8.542009e+01    0.000000e+00    0.000000e+00
+    2       -76.0625792821    4.485851e-07    2.097890e-06    3.780191e-04
+    3       -76.0625793030    2.091727e-08    5.511170e-07    5.392074e-05
+    4       -76.0625793039    9.122374e-10    1.899376e-07    1.009707e-05
+    5       -76.0625793040    5.897505e-11    4.539781e-08    2.880673e-06
+    6       -76.0625793040    7.858603e-12    1.391084e-08    1.212749e-06
+    7       -76.0625793040    1.065814e-12    5.199662e-09    3.195842e-07
+    8       -76.0625793040   -2.842171e-14    7.096852e-10    4.865382e-08
+    9       -76.0625793040    5.684342e-14    2.225136e-10    1.228136e-08
+   10       -76.0625793040   -5.684342e-14    2.985079e-11    1.762701e-09
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.556706     2A1     -1.357583     1B2     -0.727960  
+   3A1     -0.581821     1B1     -0.509134  
+
+
+  Unoccupied orbitals
+   4A1      0.145182     2B2      0.191857     5A1      0.460171  
+   3B2      0.503186     2B1      0.546693     6A1      0.596984  
+   4B2      0.662752     7A1      0.790022     1A2      0.841005  
+   3B1      0.935227     8A1      1.167102     5B2      1.171500  
+   9A1      1.395714     6B2      1.416218     4B1      1.513088  
+   2A2      1.554783    10A1      1.571354     7B2      1.603501  
+  11A1      1.715645    12A1      2.394632     8B2      2.546094  
+   5B1      2.706613     6B1      3.239956    13A1      3.254961  
+   9B2      3.422418    14A1      3.454643     3A2      3.486096  
+  10B2      3.708330     4A2      3.773709    11B2      3.836091  
+  15A1      3.891752     7B1      3.952617    16A1      3.975819  
+   5A2      4.066085     8B1      4.066414    12B2      4.176270  
+  17A1      4.403891    13B2      4.609231    18A1      4.701809  
+  14B2      4.929664     9B1      5.211291     6A2      5.332050  
+  19A1      5.544297    20A1      5.829167    10B1      6.002264  
+  21A1      6.320324    15B2      6.387730    22A1      6.608176  
+  11B1      6.853991     7A2      7.051033    16B2      7.106121  
+  17B2      7.709141    23A1      8.431063    24A1     47.472487  
+
+
+        SCF total energy   =     -76.062579303987
+        kinetic energy     =      76.064709056730
+        nuc. attr. energy  =    -199.438488688676
+        elec. rep. energy  =      47.311200327959
+        potential energy   =    -152.127288360717
+        virial theorem     =       2.000028000007
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:16:25 2007
+
+user time   =       0.15 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:16:25 2007
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  SCF_MVD
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  Yes
+	Do All TEI             =  Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  Yes
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 59
+	Number of MOs    = 59
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   24	   24	    0	    3	    0	    21	    0
+	 A2 	   7	   7	    0	    0	    0	    7	    0
+	 B1 	   11	   11	    0	    1	    0	    10	    0
+	 B2 	   17	   17	    0	    1	    0	    16	    0
+
+	Nuclear Repulsion Energy    =         9.3575152075
+	Total SCF Energy            =       -76.0625793040
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:16:29 2007
+
+user time   =       1.07 seconds =       0.02 minutes
+system time =       1.90 seconds =       0.03 minutes
+total time  =          4 seconds =       0.07 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:16:29 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin gradient test with 5d/7f
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 59
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:16:52 2007
+
+user time   =      20.99 seconds =       0.35 minutes
+system time =       0.39 seconds =       0.01 minutes
+total time  =         23 seconds =       0.38 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:16:52 2007
+
+			**************************
+			*                        *
+			*          CPHF          *
+			*                        *
+			**************************
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:16:52 2007
+
+user time   =       0.27 seconds =       0.00 minutes
+system time =       0.12 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:16:52 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin gradient test with 5d/7f
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 59
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+	One-electron Darwin energy:    0.2007111246
+
+	Mass-Velocity Correction energy:   -0.2526301385
+
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF_MVD forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.000017264671
+       2        0.000000000000    -0.000010928694    -0.000008632335
+       3        0.000000000000     0.000010928694    -0.000008632335
+
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:16:54 2007
+
+user time   =       1.85 seconds =       0.03 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1192105363
+  1.0     1.00782503   0.0000000000  -1.4218817633   0.9459788605
+  1.0     1.00782503   0.0000000000   1.4218817633   0.9459788605
+                       0.0000000000   0.0000000000   0.0000172647
+                       0.0000000000  -0.0000109287  -0.0000086323
+                       0.0000000000   0.0000109287  -0.0000086323
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94014652)
+    (2 1 3) (0.94014652)
+Bends
+    (3 2 1 3) (106.32325586)
+ 
+ ** Taking normal optimization step. **
+
+Current SCF_MVD energy before step       -76.1144983179
+
+Taking geometry step number 3
+
+BuB^t Determinant: 2.689932e+00
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 2 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    0.94014652   -0.00002942    0.00000052    0.94014705
+ 2    0.94014652   -0.00002942    0.00000052    0.94014705
+ 3    1.85569089   -0.00010426   -0.00013863    1.85555226
+   MAX force:    0.0001042645   RMS force:    0.0000648130
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.000028605280  0.000000001844
+    3  0.000000001026  0.000000000000
+Convergence to displaced geometry took 3 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000   0.0000000000  -0.1192216322
+  1.0   0.0000000000  -1.4218087212   0.9460669099
+  1.0   0.0000000000   1.4218087212   0.9460669099
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:16:55 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin gradient test with 5d/7f
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 59
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 374912 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:16:55 2007
+
+user time   =       0.30 seconds =       0.01 minutes
+system time =       0.06 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:16:55 2007
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = mass-velocity and darwin gradient test with 5d/7f
+  wfn          = SCF_MVD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3575282540465
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.06257930
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 2398128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 1.464629e-03
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 137076 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0625792776    8.542011e+01    0.000000e+00    0.000000e+00
+    2       -76.0625792782    6.427427e-10    7.982811e-08    1.330528e-05
+    3       -76.0625792783    3.586820e-11    2.584137e-08    1.734301e-06
+    4       -76.0625792783    2.856382e-12    5.668172e-09    6.125136e-07
+    5       -76.0625792783    5.400125e-13    4.233367e-09    2.462146e-07
+    6       -76.0625792783    2.842171e-14    8.571698e-10    5.281211e-08
+    7       -76.0625792783   -5.684342e-14    2.062904e-10    1.375455e-08
+    8       -76.0625792783    2.842171e-14    3.641741e-11    2.128894e-09
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.556709     2A1     -1.357589     1B2     -0.727945  
+   3A1     -0.581837     1B1     -0.509137  
+
+
+  Unoccupied orbitals
+   4A1      0.145180     2B2      0.191859     5A1      0.460167  
+   3B2      0.503176     2B1      0.546692     6A1      0.597013  
+   4B2      0.662749     7A1      0.789984     1A2      0.841020  
+   3B1      0.935198     8A1      1.167107     5B2      1.171524  
+   9A1      1.395717     6B2      1.416202     4B1      1.513122  
+   2A2      1.554765    10A1      1.571356     7B2      1.603511  
+  11A1      1.715635    12A1      2.394600     8B2      2.546102  
+   5B1      2.706612     6B1      3.239863    13A1      3.254916  
+   9B2      3.422470    14A1      3.454624     3A2      3.486190  
+  10B2      3.708314     4A2      3.773673    11B2      3.836113  
+  15A1      3.891705     7B1      3.952580    16A1      3.975833  
+   5A2      4.066108     8B1      4.066386    12B2      4.176286  
+  17A1      4.403935    13B2      4.609240    18A1      4.701819  
+  14B2      4.929709     9B1      5.211334     6A2      5.332009  
+  19A1      5.544338    20A1      5.829128    10B1      6.002305  
+  21A1      6.320271    15B2      6.387752    22A1      6.608364  
+  11B1      6.853944     7A2      7.051067    16B2      7.105916  
+  17B2      7.709261    23A1      8.430953    24A1     47.472474  
+
+
+        SCF total energy   =     -76.062579278254
+        kinetic energy     =      76.064721214664
+        nuc. attr. energy  =    -199.438504132430
+        elec. rep. energy  =      47.311203639512
+        potential energy   =    -152.127300492918
+        virial theorem     =       2.000028160186
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:16:55 2007
+
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:16:55 2007
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  SCF_MVD
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  Yes
+	Do All TEI             =  Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  Yes
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 59
+	Number of MOs    = 59
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   24	   24	    0	    3	    0	    21	    0
+	 A2 	   7	   7	    0	    0	    0	    7	    0
+	 B1 	   11	   11	    0	    1	    0	    10	    0
+	 B2 	   17	   17	    0	    1	    0	    16	    0
+
+	Nuclear Repulsion Energy    =         9.3575282540
+	Total SCF Energy            =       -76.0625792783
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:16:59 2007
+
+user time   =       1.07 seconds =       0.02 minutes
+system time =       1.91 seconds =       0.03 minutes
+total time  =          4 seconds =       0.07 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:16:59 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin gradient test with 5d/7f
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 59
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:17:21 2007
+
+user time   =      20.77 seconds =       0.35 minutes
+system time =       0.39 seconds =       0.01 minutes
+total time  =         22 seconds =       0.37 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:17:22 2007
+
+			**************************
+			*                        *
+			*          CPHF          *
+			*                        *
+			**************************
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:17:23 2007
+
+user time   =       0.27 seconds =       0.00 minutes
+system time =       0.12 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:17:23 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin gradient test with 5d/7f
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 59
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+	One-electron Darwin energy:    0.2007111961
+
+	Mass-Velocity Correction energy:   -0.2526302374
+
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF_MVD forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.000000185580
+       2        0.000000000000    -0.000000137284     0.000000092790
+       3        0.000000000000     0.000000137284     0.000000092790
+
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:17:25 2007
+
+user time   =       1.85 seconds =       0.03 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1192216322
+  1.0     1.00782503   0.0000000000  -1.4218087212   0.9460669099
+  1.0     1.00782503   0.0000000000   1.4218087212   0.9460669099
+                       0.0000000000   0.0000000000  -0.0000001856
+                       0.0000000000  -0.0000001373   0.0000000928
+                       0.0000000000   0.0000001373   0.0000000928
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94014705)
+    (2 1 3) (0.94014705)
+Bends
+    (3 2 1 3) (106.31531323)
+ 
+ ** Taking normal optimization step. **
+
+Current SCF_MVD energy before step       -76.1144983195
+
+Taking geometry step number 4
+
+BuB^t Determinant: 2.689908e+00
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 3 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    0.94014705   -0.00000136   -0.00000014    0.94014690
+ 2    0.94014705   -0.00000136   -0.00000014    0.94014690
+ 3    1.85555226   -0.00000006    0.00000001    1.85555227
+   MAX force:    0.0000013635   RMS force:    0.0000011139
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.000000064553  0.000000000000
+Convergence to displaced geometry took 2 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000   0.0000000000  -0.1192216135
+  1.0   0.0000000000  -1.4218085095   0.9460667617
+  1.0   0.0000000000   1.4218085095   0.9460667617
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:17:25 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin gradient test with 5d/7f
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 59
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 374912 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:17:25 2007
+
+user time   =       0.30 seconds =       0.01 minutes
+system time =       0.06 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:17:25 2007
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = mass-velocity and darwin gradient test with 5d/7f
+  wfn          = SCF_MVD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3575296725432
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.06257928
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 2398128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 1.464628e-03
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 137076 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0625792783    8.542011e+01    0.000000e+00    0.000000e+00
+    2       -76.0625792783    9.947598e-14    3.277614e-10    5.303915e-08
+    3       -76.0625792783    0.000000e+00    1.284876e-10    1.826153e-08
+    4       -76.0625792783   -1.421085e-13    3.796825e-11    6.074791e-09
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.556709     2A1     -1.357589     1B2     -0.727945  
+   3A1     -0.581837     1B1     -0.509137  
+
+
+  Unoccupied orbitals
+   4A1      0.145180     2B2      0.191859     5A1      0.460167  
+   3B2      0.503176     2B1      0.546692     6A1      0.597013  
+   4B2      0.662749     7A1      0.789984     1A2      0.841020  
+   3B1      0.935198     8A1      1.167107     5B2      1.171524  
+   9A1      1.395717     6B2      1.416202     4B1      1.513122  
+   2A2      1.554765    10A1      1.571355     7B2      1.603511  
+  11A1      1.715635    12A1      2.394600     8B2      2.546102  
+   5B1      2.706612     6B1      3.239863    13A1      3.254916  
+   9B2      3.422470    14A1      3.454625     3A2      3.486191  
+  10B2      3.708314     4A2      3.773673    11B2      3.836113  
+  15A1      3.891705     7B1      3.952580    16A1      3.975833  
+   5A2      4.066108     8B1      4.066386    12B2      4.176286  
+  17A1      4.403935    13B2      4.609241    18A1      4.701819  
+  14B2      4.929710     9B1      5.211334     6A2      5.332009  
+  19A1      5.544338    20A1      5.829128    10B1      6.002305  
+  21A1      6.320271    15B2      6.387752    22A1      6.608364  
+  11B1      6.853945     7A2      7.051068    16B2      7.105916  
+  17B2      7.709262    23A1      8.430953    24A1     47.472474  
+
+
+        SCF total energy   =     -76.062579278256
+        kinetic energy     =      76.064721819225
+        nuc. attr. energy  =    -199.438507234753
+        elec. rep. energy  =      47.311206137272
+        potential energy   =    -152.127301097481
+        virial theorem     =       2.000028168135
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:17:26 2007
+
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:17:26 2007
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  SCF_MVD
+	Reference orbitals     =  RHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  Yes
+	Do All TEI             =  Yes
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  Yes
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  No
+	Pitzer                 =  Yes
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 59
+	Number of MOs    = 59
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   24	   24	    0	    3	    0	    21	    0
+	 A2 	   7	   7	    0	    0	    0	    7	    0
+	 B1 	   11	   11	    0	    1	    0	    10	    0
+	 B2 	   17	   17	    0	    1	    0	    16	    0
+
+	Nuclear Repulsion Energy    =         9.3575296725
+	Total SCF Energy            =       -76.0625792783
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	One-electron integrals written to file 35.
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:17:29 2007
+
+user time   =       1.07 seconds =       0.02 minutes
+system time =       1.91 seconds =       0.03 minutes
+total time  =          3 seconds =       0.05 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:17:29 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin gradient test with 5d/7f
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 59
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:17:52 2007
+
+user time   =      20.86 seconds =       0.35 minutes
+system time =       0.39 seconds =       0.01 minutes
+total time  =         23 seconds =       0.38 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:17:52 2007
+
+			**************************
+			*                        *
+			*          CPHF          *
+			*                        *
+			**************************
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:17:53 2007
+
+user time   =       0.27 seconds =       0.00 minutes
+system time =       0.12 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on mac4704.local
+Sun Oct 21 20:17:53 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin gradient test with 5d/7f
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 59
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+	One-electron Darwin energy:    0.2007111959
+
+	Mass-Velocity Correction energy:   -0.2526302372
+
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF_MVD forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.000000005244
+       2        0.000000000000     0.000000002753    -0.000000002622
+       3        0.000000000000    -0.000000002753    -0.000000002622
+
+******************************************************************************
+tstop called on mac4704.local
+Sun Oct 21 20:17:55 2007
+
+user time   =       1.84 seconds =       0.03 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1192216135
+  1.0     1.00782503   0.0000000000  -1.4218085095   0.9460667617
+  1.0     1.00782503   0.0000000000   1.4218085095   0.9460667617
+                       0.0000000000   0.0000000000   0.0000000052
+                       0.0000000000   0.0000000028  -0.0000000026
+                       0.0000000000  -0.0000000028  -0.0000000026
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94014690)
+    (2 1 3) (0.94014690)
+Bends
+    (3 2 1 3) (106.31531366)
+ 
+ ** Taking normal optimization step. **
+
+Current SCF_MVD energy before step       -76.1144983195
+
+Taking geometry step number 5
+
+BuB^t Determinant: 2.689909e+00
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 4 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    0.94014690    0.00000003    0.00000000    0.94014691
+ 2    0.94014690    0.00000003    0.00000000    0.94014691
+ 3    1.85555227   -0.00000000   -0.00000001    1.85555226
+   MAX force:    0.0000000311   RMS force:    0.0000000255
+
+MAX force is < 1.0e-06.  Optimization is complete.
+Final SCF_MVD energy is  -76.1144983195
+The Optimized geometry in a.u.
+  (  O   0.0000000000   0.0000000000  -0.1192216135 )
+  (  H   0.0000000000  -1.4218085095   0.9460667617 )
+  (  H   0.0000000000   1.4218085095   0.9460667617 )
+
+******** OPTKING execution completed ********
+

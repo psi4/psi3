@@ -68,7 +68,7 @@ void oe_deriv1_darwin1(void) {
     iang  = BasisSet.shells[i].am - 1;      /* iang = l for this shell */
     nbfi = (iang+2)*(iang+1)/2;             /* nbfi = # of bf in shell */
     igmin = BasisSet.shells[i].fprim - 1;   /* locate first primitive in shell */
-    i_1stbf = BasisSet.shells[i].fbf - 1;   /* locate 1st AO in shell */
+    i_1stbf = BasisSet.shells[i].fao - 1;   /* locate 1st AO in shell */
     igmax = igmin + BasisSet.shells[i].n_prims - 1; /* last primitive = 1st + # primitives - 1 */
 
     for(ibf=0;ibf<nbfi;ibf++) {             /* loop over contracted gaussians */
@@ -137,7 +137,7 @@ void oe_deriv1_darwin1(void) {
     az = Molecule.centers[atom_A].z;
     iang  = BasisSet.shells[i].am - 1;    
     nbfi = (iang+2)*(iang+1)/2;           
-    i_1stbf = BasisSet.shells[i].fbf - 1; 
+    i_1stbf = BasisSet.shells[i].fao - 1; 
     igmin = BasisSet.shells[i].fprim - 1;   /* locate first primitive in shell */
     igmax = igmin + BasisSet.shells[i].n_prims - 1; /* last primitive = 1st + # primitives - 1 */
 

@@ -17,7 +17,8 @@ scf-freq-none-3 scf-freq-none-5 \
 scf-symm-fc-numer scf-fc-numer \
 scf-freq scf-polar rhf-stab uhf-stab rohf-stab mp2-sp mp2-direct-sp mp2-scs \
 cis-sp cisd-sp fci-h2o fci-dipole fci-trans casscf-sp casscf-sa-sp \
-casscf-fzc-sp rasscf-sp scf-mvd-opt scf-mvd-opt-numer \
+casscf-fzc-sp rasscf-sp scf-mvd-opt scf-mvd-opt-numer scf-mvd-opt-puream \
+scf-mvd-opt-numer-puream \
 $(cc_subdirs) \
 dboc-rhf1 dboc-rohf1 dboc-uhf1 dboc-rcisd1 dboc-rocisd1 \
 rhf-oeprop mp2-oeprop mp2-opt \

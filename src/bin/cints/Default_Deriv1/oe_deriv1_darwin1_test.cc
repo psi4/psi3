@@ -62,7 +62,7 @@ void oe_deriv1_darwin1_test(void) {
     iang  = BasisSet.shells[i].am - 1;  
     nbfi = (iang+2)*(iang+1)/2;         
     igmin = BasisSet.shells[i].fprim - 1;
-    i_1stbf = BasisSet.shells[i].fbf - 1;
+    i_1stbf = BasisSet.shells[i].fao - 1;
     igmax = igmin + BasisSet.shells[i].n_prims - 1;
 
     for(ibf=0;ibf<nbfi;ibf++) {         
@@ -108,7 +108,7 @@ void oe_deriv1_darwin1_test(void) {
     iang  = BasisSet.shells[i].am - 1;  
     nbfi = (iang+2)*(iang+1)/2;         
     igmin = BasisSet.shells[i].fprim - 1;
-    i_1stbf = BasisSet.shells[i].fbf - 1;
+    i_1stbf = BasisSet.shells[i].fao - 1;
     igmax = igmin + BasisSet.shells[i].n_prims - 1;
 
     for(ibf=0;ibf<nbfi;ibf++) {
@@ -161,7 +161,7 @@ void oe_deriv1_darwin1_test(void) {
     iang  = BasisSet.shells[i].am - 1;  
     nbfi = (iang+2)*(iang+1)/2;         
     igmin = BasisSet.shells[i].fprim - 1;
-    i_1stbf = BasisSet.shells[i].fbf - 1;
+    i_1stbf = BasisSet.shells[i].fao - 1;
     igmax = igmin + BasisSet.shells[i].n_prims - 1;
 
     for(ibf=0;ibf<nbfi;ibf++) {         
