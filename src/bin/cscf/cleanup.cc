@@ -210,6 +210,7 @@ static char *rcsid = "$Id$";
 #define EXTERN
 #include "includes.h"
 #include "common.h"
+#include <strings.h>
 #include <libipv1/ip_lib.h>
 #include <libchkpt/chkpt.h>
 
@@ -279,10 +280,15 @@ void cleanup()
   /* first print mo's, then rotate if this is a ci */
 
   if (mo_print) {
-    if(uhf)
-      print_mos_uhf();
-    else
-      print_mos(); 
+    if(uhf) {
+      print_mos("Alpha",spin_info[0].scf_spin);
+      print_mos("Beta",spin_info[1].scf_spin);
+    }
+    else {
+      print_mos("Alpha",scf_info);
+      if (print&4)
+        print_mos_aobasis("Alpha",scf_info);
+    }
   }
 
   if(irot) rotate_vector();
@@ -559,7 +565,7 @@ void cleanup()
   if(ci_calc && iopen && irot) {
     fprintf(outfile,
 	    "\n ci_typ is %s so mo vector will be rotated\n",ci_type);
-    if (mo_print) print_mos();
+    if (mo_print) print_mos("Alpha",scf_info);
   }
   num_elec = ekin = enpot = ovlp = 0.0;
   for (i=0; i < num_ir ; i++) {
@@ -641,39 +647,83 @@ void cleanup()
 
 }
 
-void print_mos()
+void print_mos(const char* spincase, const struct symm* scfinfo)
 {
    int i,nn,num_mo;
-   struct symm *s;
-   
 
-   for (i=0; i < num_ir ; i++) {
-      s = &scf_info[i];
-      if (nn=s->num_so) {
-	 num_mo = s->num_mo;
-         fprintf(outfile,"\n molecular orbitals for irrep %s\n",s->irrep_label);
-         eigout(s->cmat,s->fock_evals,s->occ_num,nn,num_mo,outfile);
-         }
-      }
+   for (i=0; i < num_ir; i++) {
+     const struct symm* s = &scfinfo[i];
+     if (nn=s->num_so) {
+       num_mo = s->num_mo;
+       fprintf(outfile, "\n %s molecular orbitals for irrep %s\n", spincase,
+               s->irrep_label);
+       eigout(s->cmat, s->fock_evals, s->occ_num, nn, num_mo, outfile);
+     }
+   }
 }
 
-void print_mos_uhf()
+void print_mos_aobasis(const char* spincase, const struct symm* scfinfo)
 {
-    int i,j,nn;
-    struct symm *s;
-    
-    for(j=0; j<2;j++){
-	for (i=0; i < num_ir ; i++) {
-	    s = &scf_info[i];
-	    if (nn=s->num_so) {
-		fprintf(outfile,"\n %s molecular orbitals for irrep %s\n"
-			,spin_info[j].spinlabel,s->irrep_label);
-		eigout(spin_info[j].scf_spin[i].cmat
-		       ,spin_info[j].scf_spin[i].fock_evals
-		       ,spin_info[j].scf_spin[i].occ_num,nn,nn,outfile);
-	    }
-	}
+  if (!chkpt_rd_puream()) {
+    print_mos_cartaobasis(spincase,scfinfo);
+    return;
+  }
+  
+  double** usotbf = chkpt_rd_usotbf();
+  const int num_bf = chkpt_rd_nso();
+  
+  int so_offset = 0;
+  for (int i=0; i < num_ir; i++) {
+    const struct symm* s = &scfinfo[i];
+    const int num_so = s->num_so;
+    if (num_so) {
+      double** usotbf_blk = block_matrix(num_so,num_bf);
+      bcopy(static_cast<const void*>(usotbf[so_offset]),static_cast<void*>(usotbf_blk[0]),
+            num_so*num_bf*sizeof(double));
+      const int num_mo = s->num_mo;
+      double** cmat_bf = block_matrix(num_bf,num_mo);
+      mmult(usotbf_blk,1,s->cmat,0,cmat_bf,0,num_bf,num_so,num_mo,0);
+      fprintf(outfile, "\n %s molecular orbitals (in AO basis) for irrep %s\n", spincase,
+              s->irrep_label);
+      eigout(cmat_bf, s->fock_evals, s->occ_num, num_bf, num_mo, outfile);
+      free_block(usotbf_blk);
+      free_block(cmat_bf);
     }
+
+    so_offset += num_so;
+  }
+
+  free_block(usotbf);
+}
+
+
+void print_mos_cartaobasis(const char* spincase, const struct symm* scfinfo)
+{
+  double** usotao = chkpt_rd_usotao();
+  const int num_ao = chkpt_rd_nao();
+
+  int so_offset = 0;
+  for (int i=0; i < num_ir; i++) {
+    const struct symm* s = &scfinfo[i];
+    const int num_so = s->num_so;
+    if (num_so) {
+      double** usotao_blk = block_matrix(num_so,num_ao);
+      bcopy(static_cast<const void*>(usotao[so_offset]),static_cast<void*>(usotao_blk[0]),
+            num_so*num_ao*sizeof(double));
+      const int num_mo = s->num_mo;
+      double** cmat_ao = block_matrix(num_ao,num_mo);
+      mmult(usotao_blk,1,s->cmat,0,cmat_ao,0,num_ao,num_so,num_mo,0);
+      fprintf(outfile, "\n %s molecular orbitals (in AO basis) for irrep %s\n", spincase,
+              s->irrep_label);
+      eigout(cmat_ao, s->fock_evals, s->occ_num, num_ao, num_mo, outfile);
+      free_block(usotao_blk);
+      free_block(cmat_ao);
+    }
+    
+    so_offset += num_so;
+  }
+  
+  free_block(usotao);
 }
 
 /* STB(11/2/99) - This function does not at the moment, hence why it is commented out above*/

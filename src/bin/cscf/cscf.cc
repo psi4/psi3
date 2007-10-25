@@ -319,7 +319,7 @@ int main(int argc,char* argv[])
     fprintf(outfile, "Only orbital orthogonalization has been performed\n");
     mo_print = 0;
     errcod = ip_boolean("PRINT_MOS",&mo_print,0);
-    if (mo_print) print_mos();
+    if (mo_print) print_mos("Alpha",scf_info);
     write_scf_matrices();
     psio_done();
     tstop(outfile);

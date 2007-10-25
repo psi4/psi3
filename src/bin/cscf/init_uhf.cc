@@ -99,6 +99,7 @@ void init_uhf()
 	   scf_info[i].hevals = init_array(nn);
 	   for(m=0;m<2;m++){
 	       sp = &spin_info[m];
+           sp->scf_spin[i].irrep_label = scf_info[i].irrep_label;
 	       sp->scf_spin[i].dpmat = init_array(ioff[nn]);
 	       sp->scf_spin[i].dpmato = NULL;
 	       sp->scf_spin[i].pmat = init_array(ioff[nn]);
