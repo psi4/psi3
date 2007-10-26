@@ -43,13 +43,16 @@ void *mkpt2_ints_thread(void *tnum_ptr)
   const double m_sqrt1_2 = 1/sqrt(2.0);
 
   extern MkPT2_Status_t MkPT2_Status;
+  extern unsigned long int n_ij;
+  extern unsigned long int n_xy;
+  extern unsigned long int n_ab;
   extern pthread_mutex_t mkpt2_energy_mutex;
   extern pthread_mutex_t *mkpt2_sindex_mutex;
   extern pthread_cond_t mkpt2_energy_cond;
-  extern double *jsix_buf;             /* buffer for (js|ix) integrals, where j runs over all d.-o. MOs,
-       				   s runs over all AOs, i - over I-batch, a - over all virtuals */
-  extern double *jyix_buf;             /* buffer contains all MP2-type integrals */
-
+  extern double *jsix_buf;
+  extern double *jyix_buf;
+  extern double *asij_buf;
+  extern double *abij_buf;
   /*--- Various data structures ---*/
   struct shell_pair *sp_ij, *sp_kl;
   struct unique_shell_pair *usp_ij,*usp_kl;
@@ -93,12 +96,13 @@ void *mkpt2_ints_thread(void *tnum_ptr)
   int num_prim_comb;
 
   int num_ibatch, num_i_per_ibatch, ibatch, ibatch_length;
-  int imin, imax, jmin;
+  int imin, imax;
   int max_bf_per_shell;
-  int mo_i, mo_j, mo_x, mo_y, mo_ij;
+  int mo_a, mo_b, mo_i, mo_j, mo_x, mo_y, mo_ij;
   int ix;
   int rs_offset, rsi_offset, rsp_offset;
-  char ij_key_string[80];
+  char ixjy_key_string[80];
+  char ijab_key_string[80];
   double * xy_buf;
 
   double AB2, CD2;
@@ -116,11 +120,11 @@ void *mkpt2_ints_thread(void *tnum_ptr)
   double *rsiq_buf;             /* buffer for (rs|iq) integrals, where r,s run over shell sets,
 				   i runs over I-batch, q runs over all AOs */
   double *rsi_row, *i_row;
-  double *ix_block_ptr;
-  double *rsix_buf;             /* buffer for (rs|ix) integrals, where r,s run over shell sets,
+  double *ix_block_ptr,*ij_block_ptr;
+  double *rsix_buf,*rsij_buf;             /* buffer for (rs|ix) integrals, where r,s run over shell sets,
 				   i runs over I-batch, q runs over all AOs */
-  double *jsi_row;
-  double *jyi_row;
+  double *jsi_row,*asi_row;
+  double *jyi_row,*abi_row;
 
   double temp1,temp2,*iq_row,*ip_row;
   int rs,qrs;
@@ -164,13 +168,10 @@ void *mkpt2_ints_thread(void *tnum_ptr)
 
   num_ibatch = MkPT2_Status.num_ibatch;
   num_i_per_ibatch = MkPT2_Status.num_i_per_ibatch;
-  rsiq_buf = init_array(num_i_per_ibatch*BasisSet.num_ao*
-			max_bf_per_shell*max_bf_per_shell);
-  rsix_buf = init_array(num_i_per_ibatch*MOInfo.num_mo*
-			  max_bf_per_shell*max_bf_per_shell);
-  scratch_buf = init_array(MAX(max_cart_class_size,
-			       num_i_per_ibatch*BasisSet.num_ao*
-			       max_bf_per_shell*max_bf_per_shell));
+  rsiq_buf = init_array(num_i_per_ibatch*BasisSet.num_ao* max_bf_per_shell*max_bf_per_shell);
+  rsix_buf = init_array(num_i_per_ibatch*MOInfo.num_mo* max_bf_per_shell*max_bf_per_shell);
+  rsij_buf = init_array(num_i_per_ibatch*MOInfo.ndocc* max_bf_per_shell*max_bf_per_shell);
+  scratch_buf = init_array(MAX(max_cart_class_size, num_i_per_ibatch*BasisSet.num_ao* max_bf_per_shell*max_bf_per_shell));
   xy_buf = init_array(MOInfo.num_mo*MOInfo.num_mo);
 
 /*-----------------------------------
@@ -179,9 +180,8 @@ void *mkpt2_ints_thread(void *tnum_ptr)
   /*--- I-batch loop ---*/
   for (ibatch=0;ibatch<num_ibatch;ibatch++) {
     imin = ibatch * num_i_per_ibatch;
-    imax = MIN( imin+num_i_per_ibatch , MOInfo.nactdocc );
+    imax = MIN( imin+num_i_per_ibatch , MOInfo.ndocc );
     ibatch_length = imax - imin;
-    jmin = 0;
     if (thread_num == 0)
       fprintf(outfile,"  Pass #%d, MO %d through MO %d\n",ibatch,imin+1,imax);
     fflush(outfile);
@@ -516,30 +516,6 @@ void *mkpt2_ints_thread(void *tnum_ptr)
 		}
 #else
 		if (usk != usl)
-/*		for(mo_i=0;mo_i<ibatch_length;mo_i++) {
-		    mo_vec = MOInfo.scf_evec_occ[0][mo_i+imin];
-		    rspq_ptr = data;
-		    for(p=0,p_abs=sp_fao;p<np;p++,p_abs++) {
-			for(q=0,q_abs=sq_fao;
-			    q<nq;
-			    q++,q_abs++) {
-			    iq_row = rsiq_buf + ((mo_i*BasisSet.num_ao + q_abs) * nr * ns);
-			    ip_row = rsiq_buf + ((mo_i*BasisSet.num_ao + p_abs) * nr * ns);
-			    temp1 = mo_vec[q_abs];
-			    temp2 = mo_vec[p_abs];
-#if !USE_BLAS
-			    for(rs=0;rs<nr*ns;rs++,rspq_ptr++,iq_row++,ip_row++) {
-				(*iq_row) += temp2 * (*rspq_ptr);
-				(*ip_row) += temp1 * (*rspq_ptr);
-			    }
-#else
-			    C_DAXPY(nr*ns,temp2,rspq_ptr,1,iq_row,1);
-			    C_DAXPY(nr*ns,temp1,rspq_ptr,1,ip_row,1);
-			    rspq_ptr += nr*ns;
-#endif
-			}
-		    }
-		}*/
 		for(mo_i=0;mo_i<ibatch_length;mo_i++) {
 		    mo_vec = MOInfo.scf_evec_occ[0][mo_i+imin];
 		    rspq_ptr = data;
@@ -597,7 +573,7 @@ void *mkpt2_ints_thread(void *tnum_ptr)
 	    } /* end of "unique" P,Q loop */
 	  
 	  /*--- step 2 of the transfromation ---*/
-/*	  rsi_offset = ((r*ns + s) * ibatch_length * BasisSet.num_ao);*/
+          /*====First, the exchange integrals====*/
 #if SWAP1
 /*	  timer_on("Post1Swap");*/
 	  ijkl_to_klij(rsiq_buf,scratch_buf,ibatch_length*BasisSet.num_ao,nr*ns);
@@ -633,10 +609,39 @@ void *mkpt2_ints_thread(void *tnum_ptr)
 /*		  timer_off("Step 2");*/
 	      }
 	  }
+          /*====Now the Coulomb operator====*/
+#if SWAP1
+/*        timer_on("Post1Swap");*/
+          ijkl_to_klij(rsiq_buf,scratch_buf,ibatch_length*BasisSet.num_ao,nr*ns);
+          rsi_row = scratch_buf;
+/*        timer_off("Post1Swap");*/
+#else
+          rsi_row = rsiq_buf;
+#endif
+          ij_block_ptr = rsij_buf;
+          for(r=0;r<nr;r++) {
+              for(s=0;s<ns;s++) {
+                  /*--- Permutational symmetry stops us using a matrix multiply straightforwardly ---*/
+/*                timer_on("Step 2");*/
+                  for(mo_i=0;mo_i<ibatch_length;mo_i++,rsi_row+=BasisSet.num_ao) {
+                      for(mo_j=0;mo_j<=mo_i+imin;mo_j++) {
+                          mo_vec = MOInfo.scf_evec_occ[0][mo_j];
+                          temp = 0.0;
+                          for(q_abs=0;q_abs<BasisSet.num_ao;q_abs++) {
+                              temp += mo_vec[q_abs] * rsi_row[q_abs];
+                          }
+                          ij_block_ptr[mo_j] = temp;
+                      }
+                      ij_block_ptr += MOInfo.ndocc;
+                  }
+/*                timer_off("Step 2");*/
+              }
+          }
 
 	  /*--- step 3 of the transformation ---*/
+          /*====First, the exchange integrals====*/
 	  rsi_row = rsix_buf;
-	  /*--- To update (JS|IA) need to lock mutex corresponding to the S and R indices ---*/
+	  /*--- To update (JS|IX) need to lock mutex corresponding to the S and R indices ---*/
 #if LOCK_RS_SHELL	  
 	  pthread_mutex_lock(&mkpt2_sindex_mutex[INDEX(si,sj)]);
 #endif
@@ -646,12 +651,12 @@ void *mkpt2_ints_thread(void *tnum_ptr)
 		  r_abs = r + sr_fao;
 		  s_abs = s + ss_fao;
 		  for(mo_i=0;mo_i<ibatch_length;mo_i++,rsi_row+=MOInfo.num_mo) {
-		      for(mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
+		      for(mo_j=0;mo_j<=mo_i+imin;mo_j++) {
 #if !LOCK_RS_SHELL
 			  pthread_mutex_lock(&mkpt2_sindex_mutex[s_abs]);
 #endif
 			  jsi_row = jsix_buf + ((mo_j * BasisSet.num_ao + s_abs) * ibatch_length + mo_i) * MOInfo.num_mo;
-			  temp = MOInfo.scf_evec_occ[0][mo_j+jmin][r_abs];
+			  temp = MOInfo.scf_evec_occ[0][mo_j][r_abs];
 			  for(mo_x=0;mo_x<MOInfo.num_mo;mo_x++) {
 			      jsi_row[mo_x] += temp * rsi_row[mo_x];
 			  }
@@ -663,7 +668,7 @@ void *mkpt2_ints_thread(void *tnum_ptr)
 			    pthread_mutex_lock(&mkpt2_sindex_mutex[r_abs]);
 #endif
 			    jsi_row = jsix_buf + ((mo_j * BasisSet.num_ao + r_abs) * ibatch_length + mo_i) * MOInfo.num_mo;
-			    temp = MOInfo.scf_evec_occ[0][mo_j+jmin][s_abs];
+			    temp = MOInfo.scf_evec_occ[0][mo_j][s_abs];
 			    for(mo_x=0;mo_x<MOInfo.num_mo;mo_x++) {
 			      jsi_row[mo_x] += temp * rsi_row[mo_x];
 			    }
@@ -679,11 +684,61 @@ void *mkpt2_ints_thread(void *tnum_ptr)
 #if LOCK_RS_SHELL
 	  pthread_mutex_unlock(&mkpt2_sindex_mutex[INDEX(si,sj)]);
 #endif
-	  memset(rsiq_buf,0,nr*ns*ibatch_length*BasisSet.num_ao*sizeof(double));
-	  memset(rsix_buf,0,nr*ns*ibatch_length*MOInfo.num_mo*sizeof(double));
 
-	} /* end of R,S loop */
+          /*====Now the Coulomb operator====*/
+          rsi_row = rsij_buf;
+          /*--- To update (JS|IX) need to lock mutex corresponding to the S and R indices ---*/
+#if LOCK_RS_SHELL         
+          pthread_mutex_lock(&mkpt2_sindex_mutex[INDEX(si,sj)]);
+#endif
+          for(r=0;r<nr;r++) {
+              for(s=0;s<ns;s++) {
+/*                timer_on("Step 3");*/
+                  r_abs = r + sr_fao; 
+                  s_abs = s + ss_fao;
+                  for(mo_i=0;mo_i<ibatch_length;rsi_row+=MOInfo.ndocc,mo_i++) {
+                    for(mo_a=0;mo_a<MOInfo.nuocc;mo_a++) {
+#if !LOCK_RS_SHELL
+                          pthread_mutex_lock(&mkpt2_sindex_mutex[s_abs]);
+#endif
+                          asi_row = asij_buf + ((mo_a * BasisSet.num_ao + s_abs) * ibatch_length + mo_i) * MOInfo.ndocc;
+                          temp = MOInfo.scf_evec_uocc[0][mo_a][r_abs];
+                          for(mo_j=0;mo_j<=mo_i+imin;mo_j++) {
+                              asi_row[mo_j] += temp * rsi_row[mo_j];
+                          }
+#if !LOCK_RS_SHELL
+                          pthread_mutex_unlock(&mkpt2_sindex_mutex[s_abs]);
+#endif
+                          if (usi != usj) {
+#if !LOCK_RS_SHELL
+                            pthread_mutex_lock(&mkpt2_sindex_mutex[r_abs]);
+#endif
+                            asi_row = asij_buf + ((mo_a * BasisSet.num_ao + r_abs) * ibatch_length + mo_i) * MOInfo.ndocc;
+                            temp = MOInfo.scf_evec_uocc[0][mo_a][s_abs];
+                            for(mo_j=0;mo_j<=mo_i+imin;mo_j++) {
+                                asi_row[mo_j] += temp * rsi_row[mo_j];
+                            }
+#if !LOCK_RS_SHELL
+                            pthread_mutex_unlock(&mkpt2_sindex_mutex[r_abs]);
+#endif
+                          }
+                      }
+                  }
+/*                timer_off("Step 3");*/
+              }
+          }
+#if LOCK_RS_SHELL
+          pthread_mutex_unlock(&mkpt2_sindex_mutex[INDEX(si,sj)]);
+#endif
+          memset(rsiq_buf,0,nr*ns*ibatch_length*BasisSet.num_ao*sizeof(double));
+          memset(rsix_buf,0,nr*ns*ibatch_length*MOInfo.num_mo*sizeof(double));
+          memset(rsij_buf,0,nr*ns*ibatch_length*MOInfo.ndocc*sizeof(double));
+
+        } /* end of R,S loop */
       } /* end of "unique" R,S loop */
+
+
+
 
     pthread_mutex_lock(&mkpt2_energy_mutex);
     MkPT2_Status.num_arrived++;
@@ -694,8 +749,9 @@ void *mkpt2_ints_thread(void *tnum_ptr)
     else { /*--- this is the last thread to get here - do the 4th step and energy calculation alone and wake everybody up ---*/
       /*--- step 4 of the transformation ---*/
 /*    timer_on("Step 4");*/
+      /* The exchange part */
       for(mo_i=0;mo_i<ibatch_length;mo_i++) {
-	for(mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
+	for(mo_j=0;mo_j<=mo_i+imin;mo_j++) {
 	  for(mo_y=0;mo_y<MOInfo.num_mo;mo_y++) {
 	    jyi_row = jyix_buf + ((mo_j * MOInfo.num_mo + mo_y) * ibatch_length + mo_i) * MOInfo.num_mo;
 	    for(s_abs=0;s_abs<BasisSet.num_ao;s_abs++) {
@@ -708,31 +764,73 @@ void *mkpt2_ints_thread(void *tnum_ptr)
 	  }
 	}
       }
+      /* The Coulomb part */
+      for(mo_a=0;mo_a<MOInfo.nuocc;mo_a++) {
+        for(s_abs=0;s_abs<BasisSet.num_ao;s_abs++) {
+          for(mo_i=0;mo_i<ibatch_length;mo_i++) {
+            asi_row = asij_buf + ((mo_a * BasisSet.num_ao + s_abs) * ibatch_length + mo_i) * MOInfo.ndocc;
+            for(mo_b=0;mo_b<=mo_a;mo_b++) {
+              abi_row = abij_buf + ((INDEX(mo_a,mo_b)) * ibatch_length + mo_i) * MOInfo.ndocc;
+	      temp = MOInfo.scf_evec_uocc[0][mo_b][s_abs];
+              for(mo_j=0;mo_j<=mo_i+imin;mo_j++) {
+                abi_row[mo_j] += temp * asi_row[mo_j]; 
+              }
+            }
+          }
+        }
+      }
+
 /*    timer_off("Step 4");*/
 
       /*--- Finish the symmetrization step - zero out non-totally symmetric integrals in Abelian case */
+      /* The exchange terms */
       if (Symmetry.nirreps > 1)
 	for(mo_i=0;mo_i<ibatch_length;mo_i++) {
-	  for(mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
+	  for(mo_j=0;mo_j<=mo_i+imin;mo_j++) {
 	    for(mo_y=0;mo_y<MOInfo.num_mo;mo_y++) {
 	      for(mo_x=0;mo_x<MOInfo.num_mo;mo_x++) {
-		if ((MOInfo.mo2symblk_occ[0][mo_i+imin] ^ MOInfo.mo2symblk_occ[0][mo_j+jmin]) ^
+		if ((MOInfo.mo2symblk_occ[0][mo_i+imin] ^ MOInfo.mo2symblk_occ[0][mo_j]) ^
 		    (MOInfo.mo2symblk[mo_x] ^ MOInfo.mo2symblk[mo_y]))
 		    jyix_buf[((mo_j * MOInfo.num_mo + mo_y) * ibatch_length + mo_i) * MOInfo.num_mo + mo_x] = 0.0;
 	      }
 	    }
 	  }
 	}
+      /* The Coulomb terms */
+     if (Symmetry.nirreps > 1)
+       for(mo_a=0;mo_a<MOInfo.nuocc;mo_a++) {
+         for(mo_b=0;mo_b<=mo_a;mo_b++) {
+           for(mo_i=0;mo_i<ibatch_length;mo_i++) {
+             for(mo_j=0;mo_j<=mo_i+imin;mo_j++) {
+               if (MOInfo.mo2symblk_occ[0][mo_i+imin] ^ MOInfo.mo2symblk_occ[0][mo_j] ^
+                   MOInfo.mo2symblk_uocc[0][mo_a] ^ MOInfo.mo2symblk_uocc[0][mo_b])
+       	           abij_buf[((INDEX(mo_a,mo_b))*ibatch_length + mo_i) * MOInfo.ndocc + mo_j] = 0.0;
+             }
+           }
+         }
+       }
 
-#if 1
+#if PRINT
     /*--- Print them out if needed ---*/
       for(mo_i=0;mo_i<ibatch_length;mo_i++) {
-	for(mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
+	for(mo_j=0;mo_j<=mo_i+imin;mo_j++) {
 	  for(mo_y=0;mo_y<MOInfo.num_mo;mo_y++) {
 	    for(mo_x=0;mo_x<MOInfo.num_mo;mo_x++) {
 	      temp = jyix_buf[((mo_j * MOInfo.num_mo + mo_y) * ibatch_length + mo_i) * MOInfo.num_mo + mo_x];
 	      if (fabs(temp) > ZERO)
-		fprintf(outfile,"<(%3d %3d| %3d %3d) = %20.10lf\n",MOInfo.occ_to_pitzer[mo_j+jmin],mo_y,MOInfo.occ_to_pitzer[mo_i+imin],mo_x,temp);
+		fprintf(outfile,"K  (%3d %3d| %3d %3d) = %20.10lf\n",MOInfo.occ_to_pitzer[mo_j],mo_y,MOInfo.occ_to_pitzer[mo_i+imin],mo_x,temp);
+	    }
+	  }
+	}
+      }
+      for(mo_i=0;mo_i<ibatch_length;mo_i++) {
+	for(mo_j=0;mo_j<=mo_i+imin;mo_j++) {
+	  for(mo_a=0;mo_a<MOInfo.nuocc;mo_a++) {
+	    for(mo_b=0;mo_b<=mo_a;mo_b++) {
+	      temp = abij_buf[((INDEX(mo_a,mo_b)) * ibatch_length + mo_i) * MOInfo.ndocc + mo_j];
+              if (fabs(temp) > ZERO)
+        	fprintf(outfile,"J  (%3d %3d| %3d %3d) = %20.10f\n", MOInfo.occ_to_pitzer[mo_i+imin], MOInfo.occ_to_pitzer[mo_j],
+                MOInfo.vir_to_pitzer[mo_a],      MOInfo.vir_to_pitzer[mo_b],temp);
 	    }
 	  }
 	}
@@ -743,45 +841,75 @@ void *mkpt2_ints_thread(void *tnum_ptr)
       if restart ever needed ---*/
      psio_open(PSIF_MO_TEI, (ibatch != 0) ? PSIO_OPEN_OLD : PSIO_OPEN_NEW);
 
-    /*--------------------------------------------------------
-      Dump all fully transformed integrals to disk. Zero out
-      non-symmetrical integrals (what's left of the Pitzer's
-      equal contribution theorem in Abelian case).
-     --------------------------------------------------------*/
      /*--------------------------------------------------------------------
        Write integrals out in num_mo by num_mo batches corresponding to
-       each active ij pair.
+       each active ij pair for the (ix|jy) exchange like integrals.
       --------------------------------------------------------------------*/
-     for(int mo_i=0;mo_i<ibatch_length;mo_i++) {
-       int i = MOInfo.occ_to_pitzer[mo_i+imin];       /*--- mo_i+imin is the index in the occupied indexing scheme, convert to pitzer */
-       int isym = MOInfo.mo2symblk_occ[0][mo_i+imin];
-       for(int mo_j=0;mo_j<=mo_i+imin-jmin;mo_j++) {
-         int jsym = MOInfo.mo2symblk_occ[0][mo_j+jmin];
-         int j = MOInfo.occ_to_pitzer[mo_j+jmin];    /*--- Again, get the "occupied" index converted to pitzer---*/
-         sprintf(ij_key_string,"Block_%d_x_%d_y",i,j);
-         memset(xy_buf,0,MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
-         /*--- Put all integrals with common i and j into a buffer ---*/
-         for(int mo_x=0,xy=0;mo_x<MOInfo.num_mo;mo_x++) {
-           int x = mo_x;    /*--- The second index is a virtual index, that's fine ---*/
-           int xsym = MOInfo.mo2symblk[x];
-           for(int mo_y=0;mo_y<MOInfo.num_mo;mo_y++,xy++) {
-     	     int y = mo_y;                    /*--- Again, the Pitzer index here is what we need ---*/
-     	     int ysym = MOInfo.mo2symblk[y];
-             /*--- Skip this integral if it's non-totally symmetric -
-               Pitzer's contribution theorem in Abelian case ---*/
-             if ((isym ^ jsym) ^ (xsym ^ ysym)) continue;
-             /*--- find the integral in ixjy_buf and put it in xy_buf ---*/
-	     xy_buf[xy] = jyix_buf[((mo_j * MOInfo.num_mo + mo_y) * ibatch_length + mo_i) * MOInfo.num_mo + mo_x];
-             
-           }
-         }
-         psio_write_entry(PSIF_MO_TEI, ij_key_string, (char *)xy_buf, MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
-       }
-     }
+      for(int mo_i=0;mo_i<ibatch_length;mo_i++) {
+        int i = MOInfo.occ_to_pitzer[mo_i+imin];       /*--- mo_i+imin is the index in the occupied indexing scheme, convert to pitzer */
+        int isym = MOInfo.mo2symblk_occ[0][mo_i+imin];
+        for(int mo_j=0;mo_j<=mo_i+imin;mo_j++) {
+          int jsym = MOInfo.mo2symblk_occ[0][mo_j];
+          int j = MOInfo.occ_to_pitzer[mo_j];    /*--- Again, get the "occupied" index converted to pitzer---*/
+          sprintf(ixjy_key_string,"Block_%d_x_%d_y",i,j);
+          memset(xy_buf,0,MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
+          /*--- Put all integrals with common i and j into a buffer ---*/
+          for(int mo_x=0,xy=0;mo_x<MOInfo.num_mo;mo_x++) {
+            int x = mo_x;    /*--- The second index is a virtual index, that's fine ---*/
+            int xsym = MOInfo.mo2symblk[x];
+            for(int mo_y=0;mo_y<MOInfo.num_mo;mo_y++,xy++) {
+      	     int y = mo_y;                    /*--- Again, the Pitzer index here is what we need ---*/
+      	     int ysym = MOInfo.mo2symblk[y];
+              /*--- Skip this integral if it's non-totally symmetric -
+                Pitzer's contribution theorem in Abelian case ---*/
+              if ((isym ^ jsym) ^ (xsym ^ ysym)) continue;
+              /*--- find the integral in ixjy_buf and put it in xy_buf ---*/
+              xy_buf[xy] = jyix_buf[((mo_j * MOInfo.num_mo + mo_y) * ibatch_length + mo_i) * MOInfo.num_mo + mo_x];
+              
+            }
+          }
+          psio_write_entry(PSIF_MO_TEI, ixjy_key_string, (char *)xy_buf, MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
+        }
+      }
+
+     /*--------------------------------------------------------------------
+       Write integrals out in nmo*nmo  batches corresponding to
+       each active ij pair for the (ij|ab) Coulomb integrals
+      --------------------------------------------------------------------*/
+      for(int mo_i=0;mo_i<ibatch_length;mo_i++) {
+        int i = MOInfo.occ_to_pitzer[mo_i+imin];       /*--- mo_i+imin is the index in the occupied indexing scheme, convert to pitzer */
+        int isym = MOInfo.mo2symblk_occ[0][mo_i+imin];
+        for(int mo_j=0;mo_j<=mo_i+imin;mo_j++) {
+          int jsym = MOInfo.mo2symblk_occ[0][mo_j];
+          int j = MOInfo.occ_to_pitzer[mo_j];    /*--- Again, get the "occupied" index converted to pitzer---*/
+          sprintf(ijab_key_string,"Block_%d_%d_a_b",i,j);
+          memset(xy_buf,0,MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
+          /*--- Put all integrals with common i and j into a buffer ---*/
+          for(int mo_a=0;mo_a<MOInfo.nuocc;mo_a++) {
+            int a = MOInfo.vir_to_pitzer[mo_a]; 
+            int asym = MOInfo.mo2symblk_uocc[0][mo_a];
+            for(int mo_b=0;mo_b<=mo_a;mo_b++) {
+             int b = MOInfo.vir_to_pitzer[mo_b]; 
+             int bsym = MOInfo.mo2symblk_uocc[0][mo_y];
+              /*--- Skip this integral if it's non-totally symmetric -
+                Pitzer's contribution theorem in Abelian case ---*/
+              if ((isym ^ jsym) ^ (asym ^ bsym)) continue;
+              unsigned long int ab = a * MOInfo.nuocc + b;
+              /*--- find the integral in ixjy_buf and put it in xy_buf ---*/
+              xy_buf[ab] = abij_buf[((INDEX(mo_a,mo_b)) * ibatch_length + mo_i) * MOInfo.ndocc + mo_j];
+            }
+          }
+          psio_write_entry(PSIF_MO_TEI, ijab_key_string, (char *)xy_buf, MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
+        }
+      }
      psio_close(PSIF_MO_TEI, 1);
+
+
      if (ibatch < num_ibatch-1) {
-       memset(jsix_buf,0,MOInfo.nactdocc*BasisSet.num_ao*ibatch_length*MOInfo.num_mo*sizeof(double));
-       memset(jyix_buf,0,MOInfo.nactdocc*MOInfo.num_mo*ibatch_length*MOInfo.num_mo*sizeof(double));
+       memset(jsix_buf,0,MOInfo.ndocc*BasisSet.num_ao*ibatch_length*MOInfo.num_mo*sizeof(double));
+       memset(jyix_buf,0,MOInfo.ndocc*MOInfo.num_mo*ibatch_length*MOInfo.num_mo*sizeof(double));
+       memset(abij_buf,0,n_ab*ibatch_length*MOInfo.ndocc*sizeof(double));
+       memset(asij_buf,0,MOInfo.nuocc*BasisSet.num_ao*ibatch_length*MOInfo.ndocc*sizeof(double));
      }
     /*--- Done with the non-threaded part - wake everybody up and prepare for the next ibatch ---*/
      MkPT2_Status.num_arrived = 0;

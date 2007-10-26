@@ -118,11 +118,14 @@ void run_mkpt2()
   MOInfo.nactdocc          = nactv + ndocc;
   MOInfo.nactuocc          = MOInfo.num_mo - ndocc - nfocc - nfvir; // Actives are considered virtuals too!!
   MOInfo.ndocc             = nactv + ndocc + nfocc;
-  MOInfo.nuocc             = MOInfo.nactuocc + nfvir;
+  MOInfo.nuocc             = MOInfo.nactuocc + nfvir - nactv;
   MOInfo.scf_evec_occ[0]   = block_matrix(MOInfo.ndocc,BasisSet.num_ao);
+  MOInfo.scf_evec_uocc[0]  = block_matrix(MOInfo.nuocc,BasisSet.num_ao);
   MOInfo.mo2symblk_occ[0]  = init_int_array(MOInfo.ndocc);
+  MOInfo.mo2symblk_uocc[0] = init_int_array(MOInfo.nuocc);
   MOInfo.mo2symblk         = init_int_array(MOInfo.num_mo);
   MOInfo.occ_to_pitzer     = init_int_array(MOInfo.ndocc);
+  MOInfo.vir_to_pitzer     = init_int_array(MOInfo.nuocc);
 
   int occ_count   = 0;
   int pitz_offset = 0;
@@ -141,10 +144,22 @@ void run_mkpt2()
       memcpy(MOInfo.scf_evec_occ[0][occ_count],MOInfo.scf_evec[0][pitz_offset+mo],BasisSet.num_ao*sizeof(double));
       MOInfo.mo2symblk_occ[0][occ_count] = irrep;
       MOInfo.occ_to_pitzer[occ_count] = pitz_offset+mo;
-      fprintf(outfile,"occ_to_pitzer[%2d] = %2d\n",occ_count, pitz_offset+mo);
       occ_count++;
     }
     pitz_offset += MOInfo.orbspi[irrep];
+  }
+  /*--- VIR space ---*/
+  pitz_offset = 0;
+  int vir_count   = 0;
+  for(irrep=0;irrep<Symmetry.nirreps;irrep++) {
+    pitz_offset += focc[irrep] + docc[irrep] + actv[irrep];
+    for(mo=0;mo<MOInfo.orbspi[irrep] - focc[irrep] - docc[irrep] - actv[irrep];mo++) {
+      memcpy(MOInfo.scf_evec_uocc[0][vir_count],MOInfo.scf_evec[0][pitz_offset+mo],BasisSet.num_ao*sizeof(double));
+      MOInfo.mo2symblk_uocc[0][vir_count] = irrep;
+      MOInfo.vir_to_pitzer[vir_count] = pitz_offset+mo;
+      vir_count++;
+    }
+    pitz_offset += MOInfo.orbspi[irrep] - focc[irrep] - docc[irrep] - actv[irrep];
   }
 
   switch(UserOptions.reftype) {
@@ -161,6 +176,7 @@ void run_mkpt2()
       throw std::domain_error("MkPT2 integrals with specified REFERENCE not implemented");
   }
   free(MOInfo.occ_to_pitzer);
+  free(MOInfo.vir_to_pitzer);
   cleanup_moinfo_corr();
   cleanup_moinfo();
 

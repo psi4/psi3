@@ -45,9 +45,13 @@ namespace psi {
     pthread_mutex_t *mkpt2_sindex_mutex;
     pthread_cond_t mkpt2_energy_cond;
     MkPT2_Status_t MkPT2_Status;
-    double *jsix_buf;             /* buffer for (js|ix) integrals, where j runs over all d.-o. MOs,
-				     s runs over all AOs, i - over I-batch, a - over all virtuals */
-    double *jyix_buf;             /* buffer contains all MP2-type integrals */
+    double *jsix_buf;
+    double *jyix_buf;
+    double *asij_buf;
+    double *abij_buf;
+    unsigned long int n_ij;
+    unsigned long int n_xy;
+    unsigned long int n_ab;
     
     
     void mkpt2_ints()
@@ -112,6 +116,9 @@ namespace psi {
       /*-------------------------
 	Allocate data structures
 	-------------------------*/
+      n_ij = MOInfo.ndocc*(MOInfo.ndocc+1)/2;
+      n_ab = MOInfo.nuocc*(MOInfo.nuocc+1)/2;
+      n_xy = MOInfo.num_mo*(MOInfo.num_mo+1)/2;
       max_bf_per_shell = ioff[BasisSet.max_am];
       /*--- Use this dirty trick to get how much memory integrals library needs ---*/
       max_num_prim_comb = (BasisSet.max_num_prims*
@@ -120,30 +127,37 @@ namespace psi {
 	 BasisSet.max_num_prims);
       libint_memory = libint_storage_required(BasisSet.max_am-1,max_num_prim_comb);
       UserOptions.memory -= libint_memory*UserOptions.num_threads;
-      
       /*---
 	Minimum number of I-batches - 
 	take sizes of rsiq_buf, rsix_buf, jsix_buf,
-	jyix_buf and xy_buf into account
+	jyix_buf ,abij_buf, asij_buf, rsij_buf, xy_buf into account
       ---*/
       fprintf(outfile,"\n  Computing MkPT2 integrals\n");
-      num_i_per_ibatch = UserOptions.memory / (UserOptions.num_threads*(BasisSet.num_ao*max_bf_per_shell*max_bf_per_shell +
-									MOInfo.num_mo*max_bf_per_shell*max_bf_per_shell) +
-					       MOInfo.num_mo*MOInfo.nactdocc*BasisSet.num_ao +
-					       MOInfo.num_mo*MOInfo.nactdocc*MOInfo.num_mo +MOInfo.num_mo*MOInfo.num_mo);
-      if (num_i_per_ibatch > MOInfo.nactdocc)
-	num_i_per_ibatch = MOInfo.nactdocc;
+      num_i_per_ibatch = UserOptions.memory / (UserOptions.num_threads*
+                              (
+                                BasisSet.num_ao*max_bf_per_shell*max_bf_per_shell + /*rsiq*/
+                                MOInfo.num_mo*max_bf_per_shell*max_bf_per_shell + /*rsix*/
+                                MOInfo.ndocc*max_bf_per_shell*max_bf_per_shell /*rsij*/
+                              ) +
+			      MOInfo.num_mo*MOInfo.ndocc*BasisSet.num_ao + /*jsix*/
+			      MOInfo.nuocc*MOInfo.ndocc*BasisSet.num_ao + /*asij*/
+			      n_ab*MOInfo.ndocc + /*abij*/
+			      MOInfo.num_mo*MOInfo.ndocc*MOInfo.num_mo + /*jyix*/
+                              MOInfo.num_mo*MOInfo.num_mo /*xy_buf*/
+                             );
+      if (num_i_per_ibatch > MOInfo.ndocc)
+	num_i_per_ibatch = MOInfo.ndocc;
       if (num_i_per_ibatch < 1)
 	throw std::domain_error("Not enough memory for direct MkPT2 integrals");
-      num_ibatch = (MOInfo.nactdocc + num_i_per_ibatch - 1) / num_i_per_ibatch;
+      num_ibatch = (MOInfo.ndocc + num_i_per_ibatch - 1) / num_i_per_ibatch;
       /*--- Recompute number of MOs per I-batch ---*/
-      num_i_per_ibatch = (MOInfo.nactdocc + num_ibatch - 1) / num_ibatch;
+      num_i_per_ibatch = (MOInfo.ndocc + num_ibatch - 1) / num_ibatch;
       MkPT2_Status.num_ibatch = num_ibatch;
       MkPT2_Status.num_i_per_ibatch = num_i_per_ibatch;
-      jsix_buf = init_array(MOInfo.nactdocc*BasisSet.num_ao*
-			    num_i_per_ibatch*MOInfo.num_mo);
-      jyix_buf = init_array(MOInfo.nactdocc*MOInfo.num_mo*
-			    num_i_per_ibatch*MOInfo.num_mo);
+      jsix_buf = init_array(MOInfo.ndocc*BasisSet.num_ao* num_i_per_ibatch*MOInfo.num_mo);
+      jyix_buf = init_array(MOInfo.ndocc*MOInfo.num_mo* num_i_per_ibatch*MOInfo.num_mo);
+      asij_buf = init_array(MOInfo.nuocc*BasisSet.num_ao*num_i_per_ibatch*MOInfo.ndocc);
+      abij_buf = init_array(n_ab* num_i_per_ibatch*MOInfo.ndocc);
       fprintf(outfile,"  Using %d %s\n\n",num_ibatch, (num_ibatch == 1) ? "pass" : "passes");
       
       /*--------------------------
@@ -185,7 +199,9 @@ namespace psi {
 	---------*/
       free(mkpt2_sindex_mutex);
       free(jyix_buf);
+      free(abij_buf);
       free(jsix_buf);
+      free(asij_buf);
 #ifdef USE_TAYLOR_FM
       free_Taylor_Fm_Eval();
 #else
