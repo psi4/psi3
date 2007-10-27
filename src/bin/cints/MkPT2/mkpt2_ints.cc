@@ -143,7 +143,11 @@ namespace psi {
 			      MOInfo.nuocc*MOInfo.ndocc*BasisSet.num_ao + /*asij*/
 			      n_ab*MOInfo.ndocc + /*abij*/
 			      MOInfo.num_mo*MOInfo.ndocc*MOInfo.num_mo + /*jyix*/
+#if MkPT2_USE_IWL
+                              MOInfo.num_mo*MOInfo.num_mo*sizeof(te_buf)/sizeof(double) /*iwl_buf*/
+#else
                               MOInfo.num_mo*MOInfo.num_mo /*xy_buf*/
+#endif
                              );
       if (num_i_per_ibatch > MOInfo.ndocc)
 	num_i_per_ibatch = MOInfo.ndocc;

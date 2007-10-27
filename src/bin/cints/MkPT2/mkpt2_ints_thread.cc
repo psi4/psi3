@@ -841,6 +841,8 @@ void *mkpt2_ints_thread(void *tnum_ptr)
       if restart ever needed ---*/
      psio_open(PSIF_MO_TEI, (ibatch != 0) ? PSIO_OPEN_OLD : PSIO_OPEN_NEW);
 
+#if MkPT2_USE_IWL
+#else
      /*--------------------------------------------------------------------
        Write integrals out in num_mo by num_mo batches corresponding to
        each active ij pair for the (ix|jy) exchange like integrals.
@@ -902,6 +904,7 @@ void *mkpt2_ints_thread(void *tnum_ptr)
           psio_write_entry(PSIF_MO_TEI, ijab_key_string, (char *)xy_buf, MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
         }
       }
+#endif
      psio_close(PSIF_MO_TEI, 1);
 
 
@@ -923,7 +926,13 @@ void *mkpt2_ints_thread(void *tnum_ptr)
    ---------*/
   free(rsix_buf);
   free(rsiq_buf);
+  free(rsij_buf);
+#if MkPT2_USE_IWL
+  free(iwl_buf);
+#else
   free(xy_buf);
+#endif
+
 #ifdef NONDOUBLE_INTS
   free(raw_data);
 #endif

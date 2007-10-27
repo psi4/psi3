@@ -314,6 +314,8 @@ namespace psi {
       int beta_occ;             /* number of beta  occupied orbitals */
       int *occ_to_pitzer;       /* The occupied (frozen docc + docc + active) to Pitzer
                                    array for the MkPT2 routine */
+      int *vir_to_pitzer;       /* The virtual (active + virtual) to Pitzer
+                                   array for the MkPT2 routine */
 //these were added by ACS for the direct ump2r12 routine (01/06)
     double **scf_evec_alpha;     /* alpha SCF eigenvectors in AO basis
                                  NOTE: MOs are arranged in rows!!!!! */
