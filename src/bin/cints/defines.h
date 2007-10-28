@@ -82,6 +82,8 @@
 			    3 - [r12,T2]
 			    */
 
+#define MkPT2_USE_IWL 1 /* How the MkPT2 routine dumps integrals to disk */
+#define MkPT2_TEST 0    /* Whether to test the MkPT2 integrals by printing them on writing to IWL and reading them back in */
 /*----------
   DFT cutoffs
   ----------*/

@@ -11,6 +11,7 @@
 #include<libciomr/libciomr.h>
 #include<libqt/qt.h>
 #include<libint/libint.h>
+#include<libiwl/iwl.h>
 #include<libpsio/psio.h>
 
 #include"defines.h"
@@ -29,6 +30,7 @@
 #endif
 #include"quartet_permutations.h"
 #include"mkpt2_ints.h"
+#include "iwl_tebuf.h"
 
 #define SWAP1 1
 
@@ -103,8 +105,13 @@ void *mkpt2_ints_thread(void *tnum_ptr)
   int rs_offset, rsi_offset, rsp_offset;
   char ixjy_key_string[80];
   char ijab_key_string[80];
-  double * xy_buf;
-
+#if MkPT2_USE_IWL
+  extern struct tebuf * iwl_buf;
+  extern struct iwlbuf ERIOUT;
+  extern int iwl_count;
+#else
+  extern double * xy_buf;
+#endif
   double AB2, CD2;
 
   double *raw_data;             /* pointer to the unnormalized taregt quartet of integrals */
@@ -172,7 +179,6 @@ void *mkpt2_ints_thread(void *tnum_ptr)
   rsix_buf = init_array(num_i_per_ibatch*MOInfo.num_mo* max_bf_per_shell*max_bf_per_shell);
   rsij_buf = init_array(num_i_per_ibatch*MOInfo.ndocc* max_bf_per_shell*max_bf_per_shell);
   scratch_buf = init_array(MAX(max_cart_class_size, num_i_per_ibatch*BasisSet.num_ao* max_bf_per_shell*max_bf_per_shell));
-  xy_buf = init_array(MOInfo.num_mo*MOInfo.num_mo);
 
 /*-----------------------------------
   generate all unique shell quartets
@@ -839,10 +845,11 @@ void *mkpt2_ints_thread(void *tnum_ptr)
 
     /*--- Files are opened and closed each pass to ensure integrity of TOCs
       if restart ever needed ---*/
+#if !MkPT2_USE_IWL
      psio_open(PSIF_MO_TEI, (ibatch != 0) ? PSIO_OPEN_OLD : PSIO_OPEN_NEW);
-
-#if MkPT2_USE_IWL
 #else
+     iwl_buf_init(&ERIOUT,PSIF_MO_TEI,UserOptions.cutoff,ibatch,0);
+#endif
      /*--------------------------------------------------------------------
        Write integrals out in num_mo by num_mo batches corresponding to
        each active ij pair for the (ix|jy) exchange like integrals.
@@ -853,8 +860,12 @@ void *mkpt2_ints_thread(void *tnum_ptr)
         for(int mo_j=0;mo_j<=mo_i+imin;mo_j++) {
           int jsym = MOInfo.mo2symblk_occ[0][mo_j];
           int j = MOInfo.occ_to_pitzer[mo_j];    /*--- Again, get the "occupied" index converted to pitzer---*/
+#if MkPT2_USE_IWL
+          iwl_count = 0;
+#else
           sprintf(ixjy_key_string,"Block_%d_x_%d_y",i,j);
           memset(xy_buf,0,MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
+#endif
           /*--- Put all integrals with common i and j into a buffer ---*/
           for(int mo_x=0,xy=0;mo_x<MOInfo.num_mo;mo_x++) {
             int x = mo_x;    /*--- The second index is a virtual index, that's fine ---*/
@@ -866,11 +877,27 @@ void *mkpt2_ints_thread(void *tnum_ptr)
                 Pitzer's contribution theorem in Abelian case ---*/
               if ((isym ^ jsym) ^ (xsym ^ ysym)) continue;
               /*--- find the integral in ixjy_buf and put it in xy_buf ---*/
+#if MkPT2_USE_IWL
+              iwl_buf[iwl_count].i = (short int) i;
+              iwl_buf[iwl_count].j = (short int) x;
+              iwl_buf[iwl_count].k = (short int) j;
+              iwl_buf[iwl_count].l = (short int) y;
+              iwl_buf[iwl_count].val = jyix_buf[((mo_j * MOInfo.num_mo + mo_y) * ibatch_length + mo_i) * MOInfo.num_mo + mo_x];
+#if MkPT2_TEST
+              fprintf(outfile,"---> (%3d %3d | %3d %3d) = %16.10f\n", 
+              iwl_buf[iwl_count].i, iwl_buf[iwl_count].j, iwl_buf[iwl_count].k, iwl_buf[iwl_count].l,iwl_buf[iwl_count].val);
+#endif
+              iwl_count++;
+#else
               xy_buf[xy] = jyix_buf[((mo_j * MOInfo.num_mo + mo_y) * ibatch_length + mo_i) * MOInfo.num_mo + mo_x];
-              
+#endif         
             }
           }
+#if MkPT2_USE_IWL
+          iwl_buf_wrt_struct_nocut(&ERIOUT, iwl_buf, iwl_count);
+#else
           psio_write_entry(PSIF_MO_TEI, ixjy_key_string, (char *)xy_buf, MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
+#endif         
         }
       }
 
@@ -884,8 +911,12 @@ void *mkpt2_ints_thread(void *tnum_ptr)
         for(int mo_j=0;mo_j<=mo_i+imin;mo_j++) {
           int jsym = MOInfo.mo2symblk_occ[0][mo_j];
           int j = MOInfo.occ_to_pitzer[mo_j];    /*--- Again, get the "occupied" index converted to pitzer---*/
+#if MkPT2_USE_IWL
+          iwl_count = 0;
+#else
           sprintf(ijab_key_string,"Block_%d_%d_a_b",i,j);
           memset(xy_buf,0,MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
+#endif
           /*--- Put all integrals with common i and j into a buffer ---*/
           for(int mo_a=0;mo_a<MOInfo.nuocc;mo_a++) {
             int a = MOInfo.vir_to_pitzer[mo_a]; 
@@ -898,14 +929,35 @@ void *mkpt2_ints_thread(void *tnum_ptr)
               if ((isym ^ jsym) ^ (asym ^ bsym)) continue;
               unsigned long int ab = a * MOInfo.nuocc + b;
               /*--- find the integral in ixjy_buf and put it in xy_buf ---*/
+#if MkPT2_USE_IWL
+              iwl_buf[iwl_count].i = (short int) i;
+              iwl_buf[iwl_count].j = (short int) j;
+              iwl_buf[iwl_count].k = (short int) a;
+              iwl_buf[iwl_count].l = (short int) b;
+              iwl_buf[iwl_count].val = abij_buf[((INDEX(mo_a,mo_b)) * ibatch_length + mo_i) * MOInfo.ndocc + mo_j];
+#if MkPT2_TEST
+              fprintf(outfile,"---> (%3d %3d | %3d %3d) = %16.10f\n", 
+              iwl_buf[iwl_count].i, iwl_buf[iwl_count].j, iwl_buf[iwl_count].k, iwl_buf[iwl_count].l,iwl_buf[iwl_count].val);
+#endif
+              iwl_count++;
+#else
               xy_buf[ab] = abij_buf[((INDEX(mo_a,mo_b)) * ibatch_length + mo_i) * MOInfo.ndocc + mo_j];
+#endif         
             }
           }
+#if MkPT2_USE_IWL
+          iwl_buf_wrt_struct_nocut(&ERIOUT, iwl_buf, iwl_count);
+#else
           psio_write_entry(PSIF_MO_TEI, ijab_key_string, (char *)xy_buf, MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
+#endif         
         }
       }
+#if MkPT2_USE_IWL
+  iwl_buf_flush(&ERIOUT, 1);
+  iwl_buf_close(&ERIOUT, 1);  
+#else
+  psio_close(PSIF_MO_TEI, 1);
 #endif
-     psio_close(PSIF_MO_TEI, 1);
 
 
      if (ibatch < num_ibatch-1) {
@@ -927,11 +979,6 @@ void *mkpt2_ints_thread(void *tnum_ptr)
   free(rsix_buf);
   free(rsiq_buf);
   free(rsij_buf);
-#if MkPT2_USE_IWL
-  free(iwl_buf);
-#else
-  free(xy_buf);
-#endif
 
 #ifdef NONDOUBLE_INTS
   free(raw_data);

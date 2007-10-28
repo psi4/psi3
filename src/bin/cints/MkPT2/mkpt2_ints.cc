@@ -11,15 +11,18 @@
 #include<libciomr/libciomr.h>
 #include<libchkpt/chkpt.h>
 #include<libqt/qt.h>
+#include<libiwl/iwl.h>
 #include<libint/libint.h>
 
 #include"defines.h"
+#include"psifiles.h"
 #define EXTERN
 #include"global.h"
 #include <stdexcept>
 #include"schwartz.h"
 #include"quartet_data.h"
 #include"norm_quartet.h"
+#include "data_structs.h"
 #ifdef USE_TAYLOR_FM
   #include"taylor_fm_eval.h"
 #else
@@ -29,10 +32,11 @@
 #include"quartet_permutations.h"
 #include"mkpt2_ints.h"
 
+
 namespace psi { 
   namespace CINTS {
     namespace mkpt2 {
-
+    
     /*-------------------------------
       Explicit function declarations
       -------------------------------*/
@@ -52,6 +56,13 @@ namespace psi {
     unsigned long int n_ij;
     unsigned long int n_xy;
     unsigned long int n_ab;
+#if MkPT2_USE_IWL
+    tebuf *iwl_buf;
+    iwlbuf ERIOUT;
+    int iwl_count;
+#else
+    double * xy_buf;
+#endif
     
     
     void mkpt2_ints()
@@ -144,7 +155,7 @@ namespace psi {
 			      n_ab*MOInfo.ndocc + /*abij*/
 			      MOInfo.num_mo*MOInfo.ndocc*MOInfo.num_mo + /*jyix*/
 #if MkPT2_USE_IWL
-                              MOInfo.num_mo*MOInfo.num_mo*sizeof(te_buf)/sizeof(double) /*iwl_buf*/
+                              MOInfo.num_mo*MOInfo.num_mo*sizeof(struct tebuf)/sizeof(double) /*iwl_buf*/
 #else
                               MOInfo.num_mo*MOInfo.num_mo /*xy_buf*/
 #endif
@@ -162,6 +173,11 @@ namespace psi {
       jyix_buf = init_array(MOInfo.ndocc*MOInfo.num_mo* num_i_per_ibatch*MOInfo.num_mo);
       asij_buf = init_array(MOInfo.nuocc*BasisSet.num_ao*num_i_per_ibatch*MOInfo.ndocc);
       abij_buf = init_array(n_ab* num_i_per_ibatch*MOInfo.ndocc);
+#if MkPT2_USE_IWL
+      iwl_buf = (struct tebuf*) malloc(MOInfo.num_mo*MOInfo.num_mo*sizeof(struct tebuf));
+#else
+      xy_buf = init_array(MOInfo.num_mo*MOInfo.num_mo);
+#endif
       fprintf(outfile,"  Using %d %s\n\n",num_ibatch, (num_ibatch == 1) ? "pass" : "passes");
       
       /*--------------------------
@@ -196,12 +212,23 @@ namespace psi {
 #endif
 	pthread_mutex_destroy(&(mkpt2_sindex_mutex[i]));
       
-     //WRITE THE INTEGRALS OUT HERE!!! 
-      
+#if MkPT2_TEST
+     double *temp_arr = init_array(MOInfo.num_mo*MOInfo.num_mo*MOInfo.num_mo*MOInfo.num_mo); 
+     iwl_buf_init(&ERIOUT,PSIF_MO_TEI,UserOptions.cutoff,1,1);
+     iwl_buf_rd_all(&ERIOUT,temp_arr,ioff,ioff,1,ioff,1,outfile);
+     iwl_buf_close(&ERIOUT, 1);  
+     free(temp_arr);
+#endif
+
       /*---------
 	Clean-up
 	---------*/
       free(mkpt2_sindex_mutex);
+#if MkPT2_USE_IWL
+      free(iwl_buf);
+#else
+      free(xy_buf);
+#endif
       free(jyix_buf);
       free(abij_buf);
       free(jsix_buf);
