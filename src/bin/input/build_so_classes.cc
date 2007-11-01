@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <strings.h>
 #include <libciomr/libciomr.h>
-#include <math.h>
+#include <cmath>
 #include "input.h"
 #include "global.h"
 #include "defines.h"
@@ -82,6 +82,8 @@ void build_so_classes()
       clss = uc2c[uc];
       class_first = clss;
       class_last = clss + unique_class_degen[uc];
+      const double norm_pfac = 1.0 / std::sqrt(unique_class_degen[uc]);
+      
       lmax = max_angmom_class[clss];
       for(l=0;l<=lmax;l++) {
 	ao_max = ioff[l+1];
@@ -144,7 +146,7 @@ void build_so_classes()
 	    if (num_cart_so_in_class[clss][l][irr] != 0)
 	      for(ao=0;ao<ao_max;ao++)
 		if (coeff_irr[irr][ao] != 0)
-		  class_so_coeff[i][l][so_cnt++][ao] = sign(coeff_irr[irr][ao]);
+		  class_so_coeff[i][l][so_cnt++][ao] = sign(coeff_irr[irr][ao]) * norm_pfac;
 	}
 	for(irr=0;irr<nirreps;irr++)
 	  bzero((char *)coeff_irr[irr],sizeof(int)*ao_max);
