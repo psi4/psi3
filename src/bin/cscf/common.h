@@ -206,6 +206,9 @@ EXTERN int diisflg;             /* 0 for diis, 1 disables diis */
 EXTERN int scf_conv;               /* dmat convg. criterion */
 EXTERN int iopen;               /* 0 for closed, 1 for open, 2 for twocon */
 EXTERN int inflg;               /* 0 default, 1 use old guess, 2 use core H */
+EXTERN int hcore_guess;         /* 0 -- obtain using diagonalization of H(core) in orthogonalized SO,
+                                   1 -- diagonalize H(core) in nonorthogonal SO (this hack is borrowed from MPQC's OneBodyWavefunction::hcore_guess()
+                                 */
 EXTERN int print;               /* print flag */
 EXTERN int fock_typ;            /* 0 for default, 1 for simpler op sh fock m */
 EXTERN int ndiis;               /* # of error matrices to keep in diis */

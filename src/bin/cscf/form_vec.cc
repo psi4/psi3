@@ -82,6 +82,7 @@ void form_vec()
   temp = (double **) init_matrix(nsfmax,nsfmax);
   sqhmat = (double **) init_matrix(nsfmax,nsfmax);
   sqhmat2 = (double **) init_matrix(nsfmax,nsfmax);
+  double* hevals = init_array(nsfmax);
    
   for (i=0; i < num_ir ; i++) {
     s = &scf_info[i];
@@ -90,18 +91,32 @@ void form_vec()
       tri_to_sq(s->hmat,sqhmat,nn);
       mmult(s->sahalf,1,sqhmat,0,temp,0,num_mo,nn,nn,0);
       mmult(temp,0,s->sahalf,0,sqhmat2,0,num_mo,nn,num_mo,0);
-      sq_rsp(num_mo,num_mo,sqhmat2,s->hevals,1,ctrans,tol);
+      // This hack is borrowed from MPQC. Important enough to implement!
+      if (hcore_guess == 1 && num_mo == nn) {
+        // MPQC uses eigenvalues of the core hamiltonian in a nonorthogonal basis
+        // to assign occupations. It seems to work better than the usual method.
+        // right now this is an undocumented capability and not enabled by default
+        sq_rsp(num_mo,num_mo,sqhmat,s->hevals,1,ctrans,tol);
+        sq_rsp(num_mo,num_mo,sqhmat2,hevals,1,ctrans,tol);
+      }
+      else {
+        sq_rsp(num_mo,num_mo,sqhmat2,s->hevals,1,ctrans,tol);
+      }
       mxmb(s->sahalf,1,0,ctrans,1,0,s->cmat,1,0,nn,num_mo,num_mo);
       for(k=0;k < nn; k++)
-	for(l=0;l < num_mo; l++) s->sahalf[k][l]=s->cmat[k][l];
-	   
-      if(print & 2) {
-	fprintf(outfile,"\nguess vector for irrep %s\n",s->irrep_label);
-	print_mat(s->cmat,nn,num_mo,outfile);
+        for(l=0;l < num_mo; l++) s->sahalf[k][l]=s->cmat[k][l];
+      
+      if (print & 2) {
+        double* occs = init_array(num_mo);
+        fprintf(outfile, "\nguess vector for irrep %s\n", s->irrep_label);
+        //print_mat(s->cmat, nn, num_mo, outfile);
+        eigout(s->cmat, s->hevals, occs, nn, num_mo, outfile);
+        free(occs);
       }
     }
   }
-   
+  
+  free(hevals);
   free_matrix(ctrans,nsfmax);
   free_matrix(temp,nsfmax);
   free_matrix(sqhmat,nsfmax);

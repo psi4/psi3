@@ -75,6 +75,14 @@ void scf_input(ip_value_t* ipvalue)
          inflg=2;
    }
 
+   hcore_guess = 0;
+   if(ip_exist("HCORE_GUESS",0)) {
+     char* token;
+     errcod = ip_string("HCORE_GUESS",&token,0);
+     if (!strcmp(token,"NEW"))
+       hcore_guess = 1;
+   }
+   
    reset_occ = 0;
    errcod = ip_boolean("RESET_OCCUPATIONS",&reset_occ,0);
 
