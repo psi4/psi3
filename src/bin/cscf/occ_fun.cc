@@ -264,6 +264,41 @@ void occ_calc(void){
       }
     }
 
+    // now assign occupation vectors
+    for (i=0; i<num_ir; ++i) {
+        const int nc = scf_info[i].nclosed;
+        const int no = scf_info[i].nopen;
+        const int nh = scf_info[i].nhalf;
+        const int nmo = scf_info[i].num_mo;
+
+        if (uhf) {
+          int j;
+          for (j=0; j < nc+no; j++)
+            spin_info[0].scf_spin[i].occ_num[j] = 1.0;
+          for ( ; j < nmo; j++)
+            spin_info[0].scf_spin[i].occ_num[j] = 0.0;
+          for (j=0; j < nc; j++)
+            spin_info[1].scf_spin[i].occ_num[j] = 1.0;
+          for ( ; j < nmo; j++)
+            spin_info[1].scf_spin[i].occ_num[j] = 0.0;
+        }
+        else {
+          int j;
+          for (j=0; j < nc; j++) {
+            scf_info[i].occ_num[j] = 2.0;
+          }
+          for ( ; j < nc+no; j++) {
+            scf_info[i].occ_num[j] = 1.0;
+          }
+          for ( ; j < nc+no+nh; j++) {
+            scf_info[i].occ_num[j] = 0.5;
+          }
+          for ( ; j < nmo; j++) {
+            scf_info[i].occ_num[j] = 0.0;
+          }
+        }
+      }
+
 }
 
 void occ_read(){
