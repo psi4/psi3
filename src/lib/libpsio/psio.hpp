@@ -157,6 +157,9 @@ namespace psi {
 
   };
   
+extern "C" {
+  extern int psiopp_ipv1_config(PSIO *psio_obj);
+}
   extern PSIO* _default_psio_lib_;
 }
 
