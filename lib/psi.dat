@@ -1057,7 +1057,7 @@ psi: (
 
   % Procedures for symmetric force constants via differences of analytic gradients
   MP2FirstSymm_FC =
-    ($MP2DEnergy $findif_disp_symm repeat NUM_DISP
+    ($MP2Energy $findif_disp_symm repeat NUM_DISP
      $findif_next $findif_input $MP2First $findif_grad_save end
      $findif_freq_grad_symm $done)
   MP2RHFFirstSymm_FC  = $MP2FirstSymm_FC
