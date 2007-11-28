@@ -146,14 +146,20 @@ void init_amps(struct L_Params L_params)
   /* excited state guess L <= R0 * T + R */
   if (L_params.ground || L_params.irrep == 0) {
     if(params.ref == 0) { /** RHF **/
-      dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
-      dpd_file2_copy(&T1, CC_LAMBDA, "LIA");
-      dpd_file2_copy(&T1, CC_LAMBDA, "Lia");
-      dpd_file2_close(&T1);
+      if(!params.restart || !psio_tocscan(CC_LAMBDA, "LIA")) {
+        dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+        dpd_file2_copy(&T1, CC_LAMBDA, "LIA");
+        dpd_file2_copy(&T1, CC_LAMBDA, "Lia");
+        dpd_file2_close(&T1);
+      }
+      else fprintf(outfile, "\tUsing old L1 amplitudes.\n");
 
-      dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
-      dpd_buf4_copy(&T2, CC_LAMBDA, "LIjAb");
-      dpd_buf4_close(&T2);
+      if(!params.restart || !psio_tocscan(CC_LAMBDA, "LIjAb")) {
+        dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+        dpd_buf4_copy(&T2, CC_LAMBDA, "LIjAb");
+        dpd_buf4_close(&T2);
+      }
+      else fprintf(outfile, "\tUsing old L2 amplitudes.\n");
 
       dpd_buf4_init(&T2, CC_LAMBDA, 0, 2, 7, 0, 5, 1, "LIjAb");
       dpd_buf4_copy(&T2, CC_LAMBDA, "LIJAB");
@@ -161,46 +167,64 @@ void init_amps(struct L_Params L_params)
       dpd_buf4_close(&T2);
     }
     else if(params.ref == 1) { /** ROHF **/
-      dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
-      dpd_file2_copy(&T1, CC_LAMBDA, "LIA");
-      dpd_file2_close(&T1);
+      if(!params.restart || !psio_tocscan(CC_LAMBDA, "LIA") ||
+         !psio_tocscan(CC_LAMBDA, "Lia")) {
+        dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+        dpd_file2_copy(&T1, CC_LAMBDA, "LIA");
+        dpd_file2_close(&T1);
   
-      dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
-      dpd_file2_copy(&T1, CC_LAMBDA, "Lia");
-      dpd_file2_close(&T1);
+        dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
+        dpd_file2_copy(&T1, CC_LAMBDA, "Lia");
+        dpd_file2_close(&T1);
+      }
+      else fprintf(outfile, "\tUsing old L1 amplitudes.\n");
   
-      dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tIJAB");
-      dpd_buf4_copy(&T2, CC_LAMBDA, "LIJAB");
-      dpd_buf4_close(&T2);
+      if(!params.restart || !psio_tocscan(CC_LAMBDA, "LIjAb") ||
+         !psio_tocscan(CC_LAMBDA, "LIJAB") || 
+         !psio_tocscan(CC_LAMBDA, "Lijab")) {
+        dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tIJAB");
+        dpd_buf4_copy(&T2, CC_LAMBDA, "LIJAB");
+        dpd_buf4_close(&T2);
   
-      dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tijab");
-      dpd_buf4_copy(&T2, CC_LAMBDA, "Lijab");
-      dpd_buf4_close(&T2);
+        dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tijab");
+        dpd_buf4_copy(&T2, CC_LAMBDA, "Lijab");
+        dpd_buf4_close(&T2);
 
-      dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
-      dpd_buf4_copy(&T2, CC_LAMBDA, "LIjAb");
-      dpd_buf4_close(&T2);
+        dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+        dpd_buf4_copy(&T2, CC_LAMBDA, "LIjAb");
+        dpd_buf4_close(&T2);
+      }
+      else fprintf(outfile, "\tUsing old L2 amplitudes.\n");
     }
     else if(params.ref == 2) { /** UHF **/
-      dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
-      dpd_file2_copy(&T1, CC_LAMBDA, "LIA");
-      dpd_file2_close(&T1);
+      if(!params.restart || !psio_tocscan(CC_LAMBDA, "LIA") ||
+         !psio_tocscan(CC_LAMBDA, "Lia")) {
+        dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+        dpd_file2_copy(&T1, CC_LAMBDA, "LIA");
+        dpd_file2_close(&T1);
   
-      dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
-      dpd_file2_copy(&T1, CC_LAMBDA, "Lia");
-      dpd_file2_close(&T1);
+        dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
+        dpd_file2_copy(&T1, CC_LAMBDA, "Lia");
+        dpd_file2_close(&T1);
+      }
+      else fprintf(outfile, "\tUsing old L1 amplitudes.\n");
   
-      dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tIJAB");
-      dpd_buf4_copy(&T2, CC_LAMBDA, "LIJAB");
-      dpd_buf4_close(&T2);
+      if(!params.restart || !psio_tocscan(CC_LAMBDA, "LIjAb") ||
+         !psio_tocscan(CC_LAMBDA, "LIJAB") || 
+         !psio_tocscan(CC_LAMBDA, "Lijab")) {
+        dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 7, 2, 7, 0, "tIJAB");
+        dpd_buf4_copy(&T2, CC_LAMBDA, "LIJAB");
+        dpd_buf4_close(&T2);
   
-      dpd_buf4_init(&T2, CC_TAMPS, 0, 12, 17, 12, 17, 0, "tijab");
-      dpd_buf4_copy(&T2, CC_LAMBDA, "Lijab");
-      dpd_buf4_close(&T2);
+        dpd_buf4_init(&T2, CC_TAMPS, 0, 12, 17, 12, 17, 0, "tijab");
+        dpd_buf4_copy(&T2, CC_LAMBDA, "Lijab");
+        dpd_buf4_close(&T2);
   
-      dpd_buf4_init(&T2, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb");
-      dpd_buf4_copy(&T2, CC_LAMBDA, "LIjAb");
-      dpd_buf4_close(&T2);
+        dpd_buf4_init(&T2, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb");
+        dpd_buf4_copy(&T2, CC_LAMBDA, "LIjAb");
+        dpd_buf4_close(&T2);
+      }
+      else fprintf(outfile, "\tUsing old L2 amplitudes.\n");
     }
   }
 
