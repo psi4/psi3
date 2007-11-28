@@ -20,12 +20,6 @@ void init_amps(struct L_Params L_params)
   int L_irr;
   L_irr = L_params.irrep;
 
-  /* Restart from previous amplitudes if we can/should */
-  /* Need to adjust this for new I/O
-     if(params.restart && flen(CC_LIA) && flen(CC_Lia) && flen(CC_LIJAB)
-     && flen(CC_Lijab) && flen(CC_LIjAb)) return;
-  */
-
   /* if solving zeta equations, initial guess is Xi * denom */
   if (params.zeta) {
     if (params.ref == 0) { /* RHF */

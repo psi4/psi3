@@ -13,6 +13,7 @@
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
+#include <libqt/qt.h>
 #include "MOInfo.h"
 #include "Params.h"
 #include "Local.h"
@@ -87,6 +88,18 @@ int main(int argc, char *argv[])
   get_moinfo();
   get_params();
 
+  /* throw any existing CC_LAMBDA, CC_DENOM away */
+  /* Do this only if we're not running an analytic gradient on the
+     ground state. Keeping the files around should allow us to 
+     restart from old Lambda amplitudes. -TDC, 11/2007 */
+  if(!(params.dertype==1 && !cc_excited(params.wfn))) {
+    fprintf(outfile, "Deleting old CC_LAMBDA data.\n");
+    psio_close(CC_LAMBDA,0);
+    psio_open(CC_LAMBDA,PSIO_OPEN_NEW);
+    psio_close(CC_DENOM,0);
+    psio_open(CC_DENOM,PSIO_OPEN_NEW);
+  }
+
   cachefiles = init_int_array(PSIO_MAXUNIT);
 
   if(params.ref == 0 || params.ref == 1) { /** RHF or ROHF **/
@@ -136,11 +149,13 @@ int main(int argc, char *argv[])
     /* delete and reopen intermediate files */
     psio_close(CC_TMP,0); psio_close(CC_TMP0,0); 
     psio_close(CC_TMP1,0); psio_close(CC_TMP2,0); 
-    psio_close(CC_LAMBDA,0);
-
     psio_open(CC_TMP,0); psio_open(CC_TMP0,0); 
     psio_open(CC_TMP1,0); psio_open(CC_TMP2,0); 
-    psio_open(CC_LAMBDA,0);
+    /* Keep the old lambda amps if this is a ground-state geomopt */
+    if(!(params.dertype==1 && !cc_excited(params.wfn))) {
+      psio_close(CC_LAMBDA,0);
+      psio_open(CC_LAMBDA,0);
+    }
 
     fprintf(outfile,"\tSymmetry of left-hand state: %s\n",
             moinfo.labels[ moinfo.sym^(pL_params[i].irrep) ]);
@@ -285,11 +300,6 @@ void init_io(int argc, char *argv[])
 
   for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);
 
-  /* throw any existing CC_LAMBDA, CC_DENOM away */
-  psio_close(CC_LAMBDA,0);
-  psio_open(CC_LAMBDA,PSIO_OPEN_NEW);
-  psio_close(CC_DENOM,0);
-  psio_open(CC_DENOM,PSIO_OPEN_NEW);
 }
 
 void title(void)
