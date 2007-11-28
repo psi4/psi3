@@ -1,9 +1,13 @@
-11/01/07 Coefficients of AOs in SOs now include the normalization factor
-so that SOs composed of normalized non-overlapping AOs. This feature is used
-to implement a hackish method for assigning occupations by diagonalizing
-H(core) in non-orthogonal SO basis. This method is used in MPQC and seems to work
-better than the standard approach. The default is to use the standard approach,
-but an undocumented keyword to use the new method was introduced in CSCF. -EFV
+11/28/07 Updated cclambda to restart from old lambda amplitudes (ONLY for a
+ground-state geometry optimization).  -TDC
+
+11/01/07 Coefficients of AOs in SOs now include the normalization factor so
+that SOs composed of normalized non-overlapping AOs. This feature is used to
+implement a hackish method for assigning occupations by diagonalizing H(core)
+in non-orthogonal SO basis. This method is used in MPQC and seems to work
+better than the standard approach. The default is to use the standard
+approach, but an undocumented keyword to use the new method was introduced in
+CSCF. -EFV
 
 10/14/07 Fixed calculation of MBPT(2) energies in ccenergy code.  Old code
 used initial CC amplitudes with the CCSD energy expression.  This is
