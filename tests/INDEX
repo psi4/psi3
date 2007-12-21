@@ -23,6 +23,9 @@ cc7: RHF-CCSD(T)/aug-cc-pVTZ pyramidal (Cs) C4NH4 single-point energy
 cc8: UHF-CCSD(T)/cc-pVDZ 2Sigma+ CN single-point energy (fzc, MO-basis
     <ab|cd>)
 
+cc8a: ROHF-CCSD(T)/cc-pVDZ 2Sigma+ CN single-point energy (fzc, MO-basis
+    <ab|cd>)
+
 cc9: UHF-CCSD(T)/cc-pVDZ 2Sigma+ CN single-point energy (fzc, AO-basis
     <ab|cd>)
 

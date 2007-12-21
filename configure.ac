@@ -893,6 +893,7 @@ AC_CONFIG_FILES([include/Makefile
           tests/cc6/Makefile
           tests/cc7/Makefile
           tests/cc8/Makefile
+          tests/cc8a/Makefile
           tests/cc9/Makefile
           tests/cc10/Makefile
           tests/cc11/Makefile
