@@ -121,7 +121,7 @@ int file_build(dpdfile4 *File, int inputfile, double tolerance,
       idx_permute(File,SortBuf,bucket_map,p,q,r,s,
 		  perm_pr,perm_qs,perm_prqs,value,outfile);
 
-          } /* end loop through current buffer */
+  } /* end loop through current buffer */
 
   /* Now run through the rest of the buffers in the file */
   while (!lastbuf) {
@@ -185,6 +185,10 @@ int file_build(dpdfile4 *File, int inputfile, double tolerance,
               if(row >= File->params->rowtot[h] ||
                  col >= File->params->coltot[h]) {
                     fprintf(outfile, "CCSORT ERROR: DPD File Build Problem!\n");
+                    fprintf(outfile, "CCSORT ERROR: %s\n", File->label);
+                    fprintf(outfile, "CCSORT ERROR: p = %d; q = %d; r = %d; s = %d; value = %20.14f\n", p, q, r, s, value);
+                    fprintf(outfile, "CCSORT ERROR: irrep = %d; row = %d; col = %d\n", h, row, col);
+                    fprintf(outfile, "CCSORT ERROR: rowtot = %d; coltot = %d\n", File->params->rowtot[h], File->params->coltot[h]);
                     exit(PSI_RETURN_FAILURE);
                 }
                     

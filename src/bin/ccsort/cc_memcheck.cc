@@ -192,8 +192,7 @@ void cc_memcheck(void)
 
   }
 
-
-
+  fflush(outfile);
 }
 
 }} // namespace psi::ccsort

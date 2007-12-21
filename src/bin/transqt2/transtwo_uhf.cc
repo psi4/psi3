@@ -610,12 +610,12 @@ void transtwo_uhf(void)
 		    0.0,&K.matrix[h][pq][rs],ncols);
 	} /* Gr */
 
-	p = moinfo.act2qt_A[K.params->roworb[h][pq+n*rows_per_bucket][0]];
-	q = moinfo.act2qt_A[K.params->roworb[h][pq+n*rows_per_bucket][1]];
+	p = moinfo.act2qt_B[K.params->roworb[h][pq+n*rows_per_bucket][0]];
+	q = moinfo.act2qt_B[K.params->roworb[h][pq+n*rows_per_bucket][1]];
 	PQ = INDEX(p,q);
 	for(rs=0; rs < K.params->coltot[h]; rs++) {
-	  r = moinfo.act2qt_A[K.params->colorb[h][rs][0]];
-	  s = moinfo.act2qt_A[K.params->colorb[h][rs][1]];
+	  r = moinfo.act2qt_B[K.params->colorb[h][rs][0]];
+	  s = moinfo.act2qt_B[K.params->colorb[h][rs][1]];
 	  RS = INDEX(r,s);
 	  if(r >= s && RS <= PQ)
 	    iwl_buf_wrt_val(&MBuff, p, q, r, s, K.matrix[h][pq][rs], params.print_tei, outfile, 0);
