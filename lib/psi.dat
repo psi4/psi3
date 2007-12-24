@@ -899,6 +899,10 @@ psi: (
   DETCIUHFDBOC = ($DETCIDBOC $done)
   DETCITwoConDBOC = ($DETCIDBOC $done)
 
+  % Procedure for ZAPTn Energy (SEW)
+  ZAPTNROHFEnergy = ($DETCIEnergy $done)
+
+
   % -------------------------------- DETCAS Procedures
   % Procedures for the DETCAS energy
   DETCASEnergy = ($ints $scf $detcasman)
