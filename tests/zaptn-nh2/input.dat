@@ -1,0 +1,28 @@
+% NH2 ZAPT25
+
+psi: (
+  label = "NH2 at r=1.013"
+  wfn = zaptn
+  reference = rohf
+  jobtype = sp
+  multp = 2
+  basis = "6-31G"
+  docc = (3 0 0 1)
+  socc = (0 0 1 0)
+  frozen_docc = (1 0 0 0)
+
+  memory = ( 10 mb )
+  zmat = (
+        N
+        H 1 1.013
+        H 1 1.013 2 103.2
+)
+
+)
+
+detci: (
+        ex_lvl = 9
+        maxnvect = 25
+        wigner = true
+)
+

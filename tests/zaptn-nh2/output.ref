@@ -1,0 +1,593 @@
+******************************************************************************
+tstart called on opt48
+Mon Dec 24 08:33:33 2007
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	NH2 at r=1.013
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /opt/psi/3Steven/x86_64/eth0/share/pbasis.dat
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        NITROGEN      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN      0.000000000000     0.000000000000     1.914292426430
+        HYDROGEN      1.863714720303     0.000000000000    -0.437130341222
+
+
+  -Rotational constants (cm-1) :
+    A =   24.16447  B =   13.26997  C =    8.56596
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        NITROGEN      0.000000000000    -0.149620270273     0.000000000000
+        HYDROGEN      1.500218450002     1.039438221208    -0.000000000000
+        HYDROGEN     -1.500218450002     1.039438221208    -0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  4173.51146000     0.00183477)
+           (   627.45791100     0.01399463)
+           (   142.90209300     0.06858655)
+           (    40.23432930     0.23224087)
+           (    12.82021290     0.46906995)
+           (     4.39043701     0.36045520) )
+        (S (    11.62636186    -0.11496118)
+           (     2.71627981    -0.16911748)
+           (     0.77221840     1.14585195) )
+        (S (     0.21203150     1.00000000) )
+        (P (    11.62636186     0.06757974)
+           (     2.71627981     0.32390730)
+           (     0.77221840     0.74089514) )
+        (P (     0.21203150     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    18.73113696     0.03349460)
+           (     2.82539437     0.23472695)
+           (     0.64012169     0.81375733) )
+        (S (     0.16127776     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 9
+    Number of primitives   = 18
+    Number of AO           = 13
+    Number of SO           = 13
+
+    Irrep    Number of SO
+    -----    ------------
+      1            7
+      2            0
+      3            2
+      4            4
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        NITROGEN      0.000000000000     0.000000000000    -0.149620270273
+        HYDROGEN     -0.000000000000     1.500218450002     1.039438221208
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        NITROGEN      0.000000000000     0.000000000000    -0.149620270273
+        HYDROGEN     -0.000000000000     1.500218450002     1.039438221208
+        HYDROGEN     -0.000000000000    -1.500218450002     1.039438221208
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        NITROGEN      0.000000000000     0.000000000000    -0.079175643018
+        HYDROGEN     -0.000000000000     0.793881472271     0.550047058404
+        HYDROGEN     -0.000000000000    -0.793881472271     0.550047058404
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        NITROGEN      0.000000000000     0.000000000000    -0.149620270273
+        HYDROGEN     -0.000000000000     1.500218450002     1.039438221208
+        HYDROGEN     -0.000000000000    -1.500218450002     1.039438221208
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       7.646691988455
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   1.0130000   0.0000000
+    3   1.0130000   1.5877629   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on opt48
+Mon Dec 24 08:33:33 2007
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on opt48
+Mon Dec 24 08:33:33 2007
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 1250000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = NH2 at r=1.013
+    Number of atoms             = 3
+    Number of atomic orbitals   = 13
+    Number of symmetry orbitals = 13
+    Maximum AM in the basis     = 1
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 1270 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on opt48
+Mon Dec 24 08:33:33 2007
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on opt48
+Mon Dec 24 08:33:33 2007
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+Cannot check consistency of the multiplicity
+
+and number of electrons, double check
+your occupations
+
+  label        = NH2 at r=1.013
+  wfn          = ZAPTN
+  reference    = ROHF
+  multiplicity = 2
+  charge       = 0
+  direct       = false
+  dertype      = NONE
+  convergence  = 10
+  maxiter      = 40
+  guess        = AUTO
+
+  nuclear repulsion energy        7.6466919884546
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 1.000000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.020000
+  iterations before extrapolation  = 0
+  4 error matrices will be kept
+
+  keeping integrals in 20784 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 4.814107e-02
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     0     1   
+  SOCC:              0     0     1     0   
+
+
+  open-shell energy coeffs
+  open shell pair    alpha         beta
+        1  1       0.000000     -1.000000
+  reading integrals in the IWL format from files 33,35,36,37
+
+         6 integrals written to file92 in   1 buffers
+       765 integrals written to file93 in   1 buffers
+  wrote 0 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -50.9092101385    5.855590e+01    0.000000e+00    0.000000e+00
+    2       -55.4219726028    4.512762e+00    1.206011e-01    8.090516e-01
+    3       -55.5135627762    9.159017e-02    1.005237e-02    1.719158e-01
+    4       -55.5243489448    1.078617e-02    4.610100e-03    4.397712e-02
+    5       -55.5286248525    4.275908e-03    2.951352e-03    2.362773e-02
+    6       -55.5298639887    1.239136e-03    1.638108e-03    1.205510e-02
+    7       -55.5301115147    2.475260e-04    7.880192e-04    6.221240e-03
+    8       -55.5301602813    4.876664e-05    3.995851e-04    3.650588e-03
+    9       -55.5301717120    1.143064e-05    2.241278e-04    2.122838e-03
+   10       -55.5301751768    3.464862e-06    1.334841e-04    1.229638e-03
+   11       -55.5301762799    1.103086e-06    7.703169e-05    6.822654e-04
+   12       -55.5301766371    3.572057e-07    4.398426e-05    3.667002e-04
+   13       -55.5301767576    1.204735e-07    2.587949e-05    1.945344e-04
+   14       -55.5301767998    4.222438e-08    1.568933e-05    1.014221e-04
+   15       -55.5301768154    1.562859e-08    9.883241e-06    5.515596e-05
+   16       -55.5301768216    6.142400e-09    6.473059e-06    3.859780e-05
+   17       -55.5301768241    2.521361e-09    4.347246e-06    2.641786e-05
+   18       -55.5301768252    1.050964e-09    2.936286e-06    1.762428e-05
+   19       -55.5301768256    4.320100e-10    1.960711e-06    1.143903e-05
+   20       -55.5301768258    1.714682e-10    1.280661e-06    7.229565e-06
+   21       -55.5301768258    6.523493e-11    8.151502e-07    4.465476e-06
+   22       -55.5301768258    2.387424e-11    5.062303e-07    2.710926e-06
+   23       -55.5301768259    8.547829e-12    3.081560e-07    1.628508e-06
+   24       -55.5301768259    2.970069e-12    1.849956e-07    9.743795e-07
+   25       -55.5301768259    1.037392e-12    1.102250e-07    5.836722e-07
+   26       -55.5301768259    4.121148e-13    6.556484e-08    3.510265e-07
+   27       -55.5301768259    1.563194e-13    3.908762e-08    2.119279e-07
+   28       -55.5301768259    4.263256e-14    2.335999e-08    1.281027e-07
+   29       -55.5301768259    1.421085e-14    1.394998e-08    7.728239e-08
+   30       -55.5301768259    3.552714e-14    8.299483e-09    4.648718e-08
+   31       -55.5301768259   -4.973799e-14    4.927624e-09    2.794459e-08
+   32       -55.5301768259   -7.105427e-15    2.942345e-09    1.684964e-08
+   33       -55.5301768259    2.131628e-14    1.784073e-09    1.020612e-08
+   34       -55.5301768259   -1.421085e-14    1.099808e-09    6.184654e-09
+   35       -55.5301768259    0.000000e+00    6.785735e-10    3.716884e-09
+   36       -55.5301768259    2.131628e-14    4.110626e-10    2.203970e-09
+   37       -55.5301768259   -2.131628e-14    2.432797e-10    1.295107e-09
+   38       -55.5301768259    1.421085e-14    1.418898e-10    7.627302e-10
+   39       -55.5301768259   -7.105427e-15    8.290114e-11    4.556808e-10
+
+ ci_typ is ZAPTN so mo vector will be rotated
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -15.582028     2A1     -1.118806     1B2     -0.638291  
+   3A1     -0.469620  
+
+  Singly occupied orbitals
+   1B1     -0.166077  
+
+  Unoccupied orbitals
+   4A1      0.222025     2B2      0.308215     3B2      0.916351  
+   2B1      0.949264     5A1      0.978395     6A1      1.168600  
+   4B2      1.211191     7A1      1.353287  
+
+
+        SCF total energy   =     -55.530176825861
+        kinetic energy     =      55.565384900414
+        nuc. attr. energy  =    -145.797967618923
+        elec. rep. energy  =      34.702405892648
+        potential energy   =    -111.095561726275
+        virial theorem     =       2.000634034980
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on opt48
+Mon Dec 24 08:33:36 2007
+
+user time   =       6.99 seconds =       0.12 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          3 seconds =       0.05 minutes
+******************************************************************************
+tstart called on opt48
+Mon Dec 24 08:33:36 2007
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  ZAPTN
+	Reference orbitals     =  ROHF
+	Backtrans              =  No
+	Print MOs              =  No
+	Freeze Core            =  Yes
+	Delete Restricted Docc =  Yes
+	Do All TEI             =  No
+	Memory (Mbytes)        =   10.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  33
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  72
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  Yes
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Semicanonical orbitals =  Z-Averaged
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 13
+	Number of MOs    = 13
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   7	   7	    1	    3	    0	    4	    0
+	 A2 	   0	   0	    0	    0	    0	    0	    0
+	 B1 	   2	   2	    0	    0	    1	    1	    0
+	 B2 	   4	   4	    0	    1	    0	    3	    0
+
+	Nuclear Repulsion Energy    =         7.6466919885
+	Total SCF Energy            =       -55.5301768259
+
+	Reading one-electron integrals...done.
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =  -46.818822201651074
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file72.
+
+	Transforming one-electron integrals...
+	Frozen-core operator written to file 35.
+******************************************************************************
+tstop called on opt48
+Mon Dec 24 08:33:36 2007
+
+user time   =       0.19 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on opt48
+Mon Dec 24 08:33:36 2007
+
+
+*******************************************************
+                       D E T C I  
+
+                   C. David Sherrill
+                  Matt L. Leininger
+                     18 June 1999
+*******************************************************
+
+
+
+
+PARAMETERS: 
+   EX LVL        =        9      H0 BLOCKSIZE =        1
+   VAL EX LVL    =        0      H0 GUESS SIZE=        1
+   H0COUPLINGSIZE=        0      H0 COUPLING  =       no
+   NPRINT        =       20      MAX DET      =    10000
+   MAXITER       =       12      FREEZE CORE  =      yes
+   NUM ROOTS     =        1      ICORE        =        1
+   PRINT         =        1      FCI          =       no
+   CONV          =        4      MIXED        =      yes
+   E CONV        =        6      MIXED4       =      yes
+   OEI FILE      =       35      R4S          =       no
+   OEI ERASE     =       no      REPL OTF     =       no
+   TEI FILE      =       72      DIAG METHOD  =      SEM
+   PRECONDITIONER= DAVIDSON      UPDATE       =   DAVIDSON
+   S             =   0.500000     Ms0          =       no
+   TEI ERASE     =       no      MAXNVECT     =       25
+   RESTART       =       no      RESTART VECS =        0
+   GUESS VECTOR  =     UNIT      OPENTYPE     = HIGHSPIN
+   GENCI ALG     =       no      REF SYM      =     auto
+   COLLAPSE SIZE =        1      HD AVE       =    ORB_ENER
+   LSE           =       no      LSE ITER     =        0
+   HD OTF        =      yes      NO DFILE     =      yes
+   MPN           =      yes      MPN SCHMIDT  =       no
+ ZAPTN           =      yes
+   WIGNER        =      yes      ZERO BLOCKS  =       no
+   PERT Z        =   1.0000      ROOT         =        0
+   PTHREADS      =       no      NTHREADS     =        1
+   EXPORT VECTOR =       no      NUM EXPORT   =        0
+   FILTER_GUESS  =       no      SF_RESTRICT  =       no
+   OPDM          =       no      TRANS DENSITY=       no
+
+   FILES         =  50 51 52 53
+
+   EX_TYPE       =  1  1  1  1  1  1  1  1  1 
+   STATE AVERAGE =  1(1.00) 
+
+ORBITALS:
+   NMO          =       13      NUM ALP      =        5
+   ORBS IN CI   =       12      NUM ALP EXPL =        4
+   FROZEN CORE  =        1      NUM BET      =        4
+   RESTR CORE   =        0      NUM BET EXPL =        3
+   IOPEN        =      yes
+   RAS1 LVL     =        3      A RAS3 MAX   =        4
+   RAS1 MIN     =        2      B RAS3 MAX   =        3
+   A RAS1 LVL   =        3      RAS4 LVL     =       12
+   A RAS1 MIN   =        1      A RAS4 MAX   =        0
+   A RAS1 MAX   =        5      B RAS4 MAX   =        0
+   B RAS1 LVL   =        3      RAS4 MAX     =        0
+   B RAS1 MIN   =        1      A RAS34 MAX  =        4
+   B RAS1 MAX   =        4      B RAS34 MAX  =        3
+   RAS3 LVL     =        4      RAS34 MAX    =        7
+   RAS3 MAX     =        7
+
+   DOCC         =  3  0  0  1 
+   SOCC         =  0  0  1  0 
+   FROZEN DOCC  =  1  0  0  0 
+   FROZEN UOCC  =  0  0  0  0 
+   RAS 1        =  2  0  1  1 
+   RAS 2        =  0  0  0  0 
+   RAS 3        =  4  0  1  3 
+   RAS 4        =  0  0  0  0 
+*******************************************************
+
+
+There are 495 alpha strings
+There are 220 beta strings
+CI space contains   64 blocks
+
+CI space requires 27126 determinants
+
+Check SCF Energy from 1- and 2-electron integrals
+
+SCF Energy (ref):            -55.5301768259
+Nuclear repulsion energy:      7.6466919885
+One-electron energy:         -23.9497751077
+Two-electron energy:           8.0953919604
+Frozen core energy:          -46.8188222017
+Total electronic energy:     -62.6732053489
+Total SCF energy:            -55.0265133605
+
+*** Calculated Energy Differs from SCF Energy in CHKPT ! ***
+
+ CI vector/subblock length = 27126
+ orb_energy[0] = -15.582028
+   CalcInfo.escf =       -55.530176825861382
+   CalcInfo.e0   =       -36.121154910122996
+   CalcInfo.enuc =         7.646691988454646
+   CalcInfo.e1   =       -27.055713904193031
+
+   n         Corr. Energy 		 E(ZAPTn) 		   n         Corr. Energy 		 E(ZAPTn)
+
+   0          0.000000000000000       -28.474462921668351
+   1        -27.055713904193031       -55.530176825861382
+   1        -27.055713904192999       -55.530176825861346
+   2         -0.086734353157818       -55.616911179019198	  2        -0.086734353157818       -55.616911179019198
+								  3        -0.010596149669048       -55.627507328688246
+   3         -0.010596149669047       -55.627507328688246	  4        -0.003721979388743       -55.631229308076989
+								  5        -0.001211239253451       -55.632440547330440
+   4         -0.003721979388743       -55.631229308076989	  6        -0.000451781050516       -55.632892328380954
+								  7        -0.000183906503035       -55.633076234883987
+   5         -0.001211239253452       -55.632440547330440	  8        -0.000086106993696       -55.633162341877686
+								  9        -0.000042708262841       -55.633205050140525
+   6         -0.000451781050517       -55.632892328380954	 10        -0.000023287889804       -55.633228338030328
+								 11        -0.000013345755016       -55.633241683785343
+   7         -0.000183906503035       -55.633076234883987	 12        -0.000008063433708       -55.633249747219054
+								 13        -0.000005011087742       -55.633254758306798
+   8         -0.000086106993696       -55.633162341877686	 14        -0.000003193299716       -55.633257951606517
+								 15        -0.000002063432406       -55.633260015038921
+   9         -0.000042708262841       -55.633205050140525	 16        -0.000001349356963       -55.633261364395885
+								 17        -0.000000889106515       -55.633262253502402
+  10         -0.000023287889804       -55.633228338030328	 18        -0.000000589818908       -55.633262843321312
+								 19        -0.000000393313010       -55.633263236634320
+  11         -0.000013345755016       -55.633241683785343	 20        -0.000000263572747       -55.633263500207065
+								 21        -0.000000177413468       -55.633263677620533
+  12         -0.000008063433708       -55.633249747219054	 22        -0.000000119946010       -55.633263797566542
+								 23        -0.000000081442928       -55.633263879009469
+  13         -0.000005011087742       -55.633254758306798	 24        -0.000000055541473       -55.633263934550939
+								 25        -0.000000038044516       -55.633263972595458
+  14         -0.000003193299716       -55.633257951606517	 26        -0.000000026176525       -55.633263998771980
+								 27        -0.000000018092573       -55.633264016864551
+  15         -0.000002063432406       -55.633260015038921	 28        -0.000000012562570       -55.633264029427124
+								 29        -0.000000008763027       -55.633264038190148
+  16         -0.000001349356963       -55.633261364395885	 30        -0.000000006140782       -55.633264044330929
+								 31        -0.000000004322827       -55.633264048653757
+  17         -0.000000889106515       -55.633262253502402	 32        -0.000000003056700       -55.633264051710455
+								 33        -0.000000002170850       -55.633264053881305
+  18         -0.000000589818908       -55.633262843321312	 34        -0.000000001548232       -55.633264055429535
+								 35        -0.000000001108656       -55.633264056538195
+  19         -0.000000393313010       -55.633263236634320	 36        -0.000000000796943       -55.633264057335140
+								 37        -0.000000000574954       -55.633264057910097
+  20         -0.000000263572747       -55.633263500207065	 38        -0.000000000416214       -55.633264058326311
+								 39        -0.000000000302255       -55.633264058628569
+  21         -0.000000177413468       -55.633263677620533	 40        -0.000000000220141       -55.633264058848710
+								 41        -0.000000000160766       -55.633264059009477
+  22         -0.000000119946010       -55.633263797566542	 42        -0.000000000117694       -55.633264059127171
+								 43        -0.000000000086354       -55.633264059213523
+  23         -0.000000081442928       -55.633263879009469	 44        -0.000000000063487       -55.633264059277010
+								 45        -0.000000000046760       -55.633264059323771
+  24         -0.000000055541473       -55.633263934550939	 46        -0.000000000034496       -55.633264059358268
+								 47        -0.000000000025485       -55.633264059383755
+  25         -0.000000038044516       -55.633263972595458	 48        -0.000000000018853       -55.633264059402606
+								 49        -0.000000000013962       -55.633264059416568
+
+ZAPT25 energy saved
+
+EZAPTn = -55.6332639725955
+
+
+        Total Time (s)     %Time 		%Relative
+ -----------------------------------------------------
+ Read      0.098021
+ Write     0.017164
+ Sigma1    0.267239
+ Sigma2    1.024117
+ Sigma3    2.919071
+ S1 Thread 0.000000
+ S2 Thread 0.000000
+ S3 Thread 0.000000
+
+		 "A good bug is a dead bug" 
+
+			 - Starship Troopers
+
+		 "I didn't write FORTRAN.  That's the problem."
+
+			 - Edward Valeev
+
+******************************************************************************
+tstop called on opt48
+Mon Dec 24 08:33:41 2007
+
+user time   =       2.02 seconds =       0.03 minutes
+system time =       0.37 seconds =       0.01 minutes
+total time  =          5 seconds =       0.08 minutes

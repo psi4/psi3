@@ -40,8 +40,9 @@ $PSITEST_TEST_SCRIPT = "runtest.pl";
 @PSITEST_JOBTYPES = ("SP", "OPT", "DISP", "FREQ", "SYMM_FC", "FC", 
 "OEPROP", "DBOC");
 @PSITEST_WFNS = ("SCF", "MP2", "MP2R12", "DETCI", "DETCAS", "CASSCF",
-"RASSCF", "BCCD", "BCCD_T", "CC2", "CCSD", "CCSD_T", "CC3", "EOM_CC2", 
-"LEOM_CC2", "EOM_CCSD", "LEOM_CCSD", "OOCCD", "CIS", "EOM_CC3", "SCF_MVD");
+"RASSCF", "ZAPTN", "BCCD", "BCCD_T", "CC2", "CCSD", "CCSD_T", "CC3", 
+"EOM_CC2", "LEOM_CC2", "EOM_CCSD", "LEOM_CCSD", "OOCCD", "CIS", "EOM_CC3",
+"SCF_MVD");
 @PSITEST_REFTYPES = ("RHF", "ROHF", "UHF", "TWOCON");
 @PSITEST_DERTYPES = ("NONE", "FIRST", "SECOND", "RESPONSE");
 
@@ -161,6 +162,7 @@ sub do_tests
           if ($wfn eq "CASSCF")   { $fail |= compare_casscf_energy(); last SWITCH2; }
           if ($wfn eq "RASSCF")   { $fail |= compare_rasscf_energy(); last SWITCH2; }
           if ($wfn eq "DETCI")    { $fail |= compare_ci_energy(); last SWITCH2; }
+          if ($wfn eq "ZAPTN")    { $fail |= compare_zaptn_energy(); last SWITCH2; }
           if ($wfn eq "CIS")      { $fail |= compare_cis_energy(); last SWITCH2; }
           if ($wfn eq "MP2" && $direct == 1)
                                   { $fail |= compare_direct_mp2_energy(); last SWITCH2; }
@@ -761,6 +763,23 @@ sub compare_ci_energy
   
   return $fail;
 }
+
+sub compare_zaptn_energy
+{
+  my $fail = 0;
+  my $REF_FILE = "$SRC_PATH/output.ref";
+  my $TEST_FILE = "output.dat";
+
+  if(abs(seek_zaptn($REF_FILE) - seek_zaptn($TEST_FILE)) > $PSITEST_ETOL) {
+    fail_test("ZAPTn energy"); $fail = 1;
+  }
+  else {
+    pass_test("ZAPTn energy");
+  }
+
+  return $fail;
+}
+
 
 sub dip_check
 {
@@ -1625,7 +1644,26 @@ sub seek_ci
   printf "Error: Could not find CI energy in $_[0].\n";
   exit 1;
 }
-			  
+
+sub seek_zaptn
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while (<OUT>) {
+    if (/EZAPTn/) {
+    @data = split(/ +/, $_);
+    $zaptn = $data[2];
+    }
+  }
+
+  if($zaptn != 0.0) {
+    return $zaptn;
+  }
+
+  printf "Error: Could not find ZAPTn energy in $_[0].\n";
+  exit 1;
+}
+
 sub seek_energy_file11
 {
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
