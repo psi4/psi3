@@ -262,6 +262,8 @@ struct calcinfo {
    int *reorder;         /* map Pitzer-ordered orbitals to our ordering */
    int *order;           /* map our ordering back to Pitzer ordering */
    double *scfeigval;    /* SCF eigenvalues */
+   double *scfeigvala;    /* For ZAPTn, alpha and beta eigenvalues different */
+   double *scfeigvalb;    /* in SOCC space */
    double *onel_ints;    /* one-electron integrals */
    double *tf_onel_ints; /* transformed (avg) one-electron integrals */
    double *maxK;         /* maximum K integral - ave diag elements */
@@ -385,6 +387,7 @@ struct params {
                               1 = Davidson
                               2 = Olsen */
    int mpn;                /* 1(0) if computing mpn series is TRUE(FALSE) */
+   int zaptn;              /* 1(0) if computing zaptn series is TRUE(FALSE) */
    int save_mpn2;          /* 1 = save MP(2n-1) energy, 0 = save MPn energy */
    int mpn_schmidt;        /* 1(0) if a orthonormal vector space is employed
                               rather than storing the kth order wfn */ 

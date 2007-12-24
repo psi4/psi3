@@ -9,7 +9,7 @@ PSILIBS = libPSI_qt.a libPSI_chkpt.a libPSI_iwl.a libPSI_psio.a libPSI_ciomr.a \
 libPSI_psio.a libPSI_ipv1.a
 
 CSRC = \
-gprgid.c get_mo_info.c check_energy.c ints.c \
+gprgid.c get_mo_info.c check_energy.c ints.c shift.c \
 stringlist.c og_addr.c printing.c set_ciblks.c calc_hd_block.c \
 misc.c h0block.c olsenupdt.c b2brepl.c vector.c calc_d.c \
 sem_test.c slater.c form_ov.c s3_block_bz.c s1v.c s2v.c s3v.c \

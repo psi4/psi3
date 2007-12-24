@@ -162,7 +162,13 @@ void get_parameters(void)
    Parameters.r4s = 0;
    Parameters.repl_otf = 0;
    Parameters.calc_ssq = 0;
-   Parameters.mpn = 0;
+   if (strcmp(Parameters.wfn, "ZAPTN")==0) {
+     Parameters.mpn = 1;
+     Parameters.zaptn = 1;
+   } else {
+     Parameters.mpn = 0;
+     Parameters.zaptn = 0;
+   }
    Parameters.save_mpn2 = 0;
    Parameters.mpn_schmidt = 0;
    Parameters.wigner = 0;
@@ -1029,6 +1035,8 @@ void print_parameters(void)
            Parameters.hd_otf ? "yes" : "no", Parameters.nodfile ? "yes":"no");
    fprintf(outfile, "   MPN           =   %6s      MPN SCHMIDT  =   %6s\n",
            Parameters.mpn ? "yes":"no", Parameters.mpn_schmidt ? "yes":"no");
+   fprintf(outfile, " ZAPTN           =   %6s\n",
+           Parameters.zaptn ? "yes":"no");
    fprintf(outfile, "   WIGNER        =   %6s      ZERO BLOCKS  =   %6s\n", 
            Parameters.wigner ? "yes":"no", Parameters.zero_blocks ? "yes":"no");
    fprintf(outfile, "   PERT Z        =   %1.4f      ROOT         =   %6d\n",

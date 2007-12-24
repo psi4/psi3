@@ -483,9 +483,10 @@ integral file.  The default is 72.
 
 .IP "\fBMPN =\fP \fIboolean\fP"
 When this option is TRUE DETCI will compute the MPn series out to
-kth order where k is determined by maxnvect.  GUESS_VECTOR must
-be set to TRUE.  HD_OTF must be set to TRUE.  HD_AVE must be set
-to orb_ener.
+kth order where k is determined by maxnvect.  For open-shell systems 
+(REF=ROHF, WFN = ZAPTN), DETCI will compute the ZAPTn series.  
+GUESS_VECTOR must be set to TRUE.  HD_OTF must be set to TRUE.  
+HD_AVE must be set to orb_ener.
 
 .IP "\fBSAVE_MPN2 = \fP \fIinteger\fP"
 When MPN is TRUE and WIGNER is TRUE then this option becomes valid. 

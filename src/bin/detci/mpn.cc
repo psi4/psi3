@@ -101,11 +101,16 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
   fprintf(outfile,"   CalcInfo.e0   = %25.15f\n", CalcInfo.e0);
   fprintf(outfile,"   CalcInfo.enuc = %25.15f\n", CalcInfo.enuc);
   fprintf(outfile,"   CalcInfo.e1   = %25.15f\n\n", CalcInfo.e1);
-  fprintf(outfile,"   n         Corr. Energy \t\t E(MPn) \t\t"
-      "   n         Corr. Energy \t\t E(MPn)\n\n");
+  if(Parameters.zaptn) {
+    fprintf(outfile,"   n         Corr. Energy \t\t E(ZAPTn) \t\t"
+        "   n         Corr. Energy \t\t E(ZAPTn)\n\n");
+    } else {
+    fprintf(outfile,"   n         Corr. Energy \t\t E(MPn) \t\t"
+        "   n         Corr. Energy \t\t E(MPn)\n\n");
+    }
   fprintf(outfile,"   0  %25.15f %25.15f\n", 0.0000000000,
       CalcInfo.e0+CalcInfo.enuc);
-  fprintf(outfile,"   1  %25.15f %25.15f\n",mpk_energy[1]+CalcInfo.enuc, 
+  fprintf(outfile,"   1  %25.15f %25.15f\n",mpk_energy[1],
       mpk_energy[0]+mpk_energy[1]+CalcInfo.enuc);
   Empn = mpk_energy[0]+mpk_energy[1]+CalcInfo.enuc;
   Empn2 = Empn;
@@ -153,7 +158,7 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
  
   tval += CalcInfo.efzc - mpk_energy[0]; 
  
-  fprintf(outfile,"   1  %25.15f %25.15f\n", tval+CalcInfo.enuc, 
+  fprintf(outfile,"   1  %25.15f %25.15f\n", tval,
    tval+mpk_energy[0]+CalcInfo.enuc);
   if (tval - mpk_energy[1] > ZERO) 
     fprintf(outfile, "First-order energies do not agree!\n");
@@ -189,7 +194,7 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
     }
 
   /* Here buffer1 = Cvec and buffer2 = Sigma */
-  k=1;
+  k=1; 
   while (k<Parameters.maxnvect) {
 
      /* Form Sigma */
@@ -315,16 +320,30 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
    chkpt_init(PSIO_OPEN_OLD);
    if (Parameters.save_mpn2 == 1 && Parameters.wigner) {
      chkpt_wt_etot(Empn2);
-     fprintf(outfile, "\nMP%d energy saved\n", (Parameters.maxnvect * 2) - 1);
+     if(Parameters.zaptn) 
+       fprintf(outfile, "\nZAPT%d energy saved\n", (Parameters.maxnvect * 2) - 1);
+     else
+       fprintf(outfile, "\nMP%d energy saved\n", (Parameters.maxnvect * 2) - 1);
    }
    else if (Parameters.save_mpn2 == 2 && Parameters.wigner) {
      chkpt_wt_etot(Empn2a);
-     fprintf(outfile, "\nMP%d energy saved\n", (Parameters.maxnvect * 2) - 2);
+     if(Parameters.zaptn)
+       fprintf(outfile, "\nZAPT%d energy saved\n", (Parameters.maxnvect * 2) - 2);
+     else
+       fprintf(outfile, "\nMP%d energy saved\n", (Parameters.maxnvect * 2) - 2);
    }
    else {
      chkpt_wt_etot(Empn);
-     fprintf(outfile, "\nMP%d energy saved\n", Parameters.maxnvect);
+     if(Parameters.zaptn)
+       fprintf(outfile, "\nZAPT%d energy saved\n", Parameters.maxnvect);
+     else
+       fprintf(outfile, "\nMP%d energy saved\n", Parameters.maxnvect);
    }
+   if(Parameters.zaptn)
+     fprintf(outfile, "\nEZAPTn = %17.13lf\n", chkpt_rd_etot());
+   else
+     fprintf(outfile, "\nEMPn = %17.13lf\n", chkpt_rd_etot());
+
    chkpt_close();
 
    fprintf(outfile,"\n");

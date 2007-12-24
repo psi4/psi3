@@ -317,7 +317,10 @@ void calc_hd_block_orbenergy(struct stringwr *alplist_local,
       for (a1=0; a1<na; a1++) {
          i = (int) alplist_local->occs[a1];
          i += CalcInfo.num_fzc_orbs;
-         orb_e_diff_alp[acnt] += CalcInfo.scfeigval[i];
+         if(Parameters.zaptn) 
+           orb_e_diff_alp[acnt] += CalcInfo.scfeigvala[i];
+         else
+           orb_e_diff_alp[acnt] += CalcInfo.scfeigval[i];
          }
       alplist_local++;
       }
@@ -327,7 +330,10 @@ void calc_hd_block_orbenergy(struct stringwr *alplist_local,
       for (b1=0; b1<nb; b1++) {
          j = (int) betlist_local->occs[b1];
          j += CalcInfo.num_fzc_orbs;
-         orb_e_diff_bet[bcnt] += CalcInfo.scfeigval[j];
+         if(Parameters.zaptn) 
+           orb_e_diff_bet[bcnt] += CalcInfo.scfeigvalb[j];
+         else
+           orb_e_diff_bet[bcnt] += CalcInfo.scfeigval[j];
          }
       betlist_local++;
       }

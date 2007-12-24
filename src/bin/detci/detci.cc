@@ -60,6 +60,8 @@ extern "C" {
       FILE *outfile);
    extern void read_integrals(void);
    extern void tf_onel_ints(int printflg, FILE *outfile);
+   extern void zapt_shift(double *TEI, int nirreps, int nmo, int *doccpi, 
+      int *soccpi, int *orbspi, int *frzdoccpi, int *reorder);
    extern void form_gmat(int printflg, FILE *outfile);
    extern void get_mo_info(void);
    extern void print_vec(unsigned int nprint, int *Iacode, int *Ibcode, 
@@ -171,6 +173,11 @@ main(int argc, char *argv[])
 
    
    read_integrals();            /* get the 1 and 2 elec MO integrals        */
+
+   if(Parameters.zaptn)         /* Shift SCF eigenvalues for ZAPTn          */
+      zapt_shift(CalcInfo.twoel_ints, CalcInfo.nirreps, CalcInfo.nmo,
+         CalcInfo.docc, CalcInfo.socc, CalcInfo.orbs_per_irr,
+         CalcInfo.frozen_docc, CalcInfo.reorder);
 
    if (Parameters.genci) 
      diag_h_genci(alplist, betlist);
@@ -1323,15 +1330,27 @@ void mpn(struct stringwr **alplist, struct stringwr **betlist)
      CalcInfo.e0_fzc += tval; 
      }
 
-  for (i=0; i<CalcInfo.num_alp_expl; i++) {
-     j = (stralp->occs)[i] + CalcInfo.num_fzc_orbs;
-     CalcInfo.e0 += CalcInfo.scfeigval[j];
-     }
+  if(Parameters.zaptn) { 
+    for (i=0; i<CalcInfo.num_alp_expl; i++) {
+       j = (stralp->occs)[i] + CalcInfo.num_fzc_orbs;
+       CalcInfo.e0 += CalcInfo.scfeigvala[j];
+       }
 
-  for (i=0; i<CalcInfo.num_bet_expl; i++) {
-     j = (strbet->occs)[i] + CalcInfo.num_fzc_orbs;
-     CalcInfo.e0 += CalcInfo.scfeigval[j];
-     }
+    for (i=0; i<CalcInfo.num_bet_expl; i++) {
+       j = (strbet->occs)[i] + CalcInfo.num_fzc_orbs;
+       CalcInfo.e0 += CalcInfo.scfeigvalb[j];
+       }
+    } else {
+    for (i=0; i<CalcInfo.num_alp_expl; i++) {
+       j = (stralp->occs)[i] + CalcInfo.num_fzc_orbs;
+       CalcInfo.e0 += CalcInfo.scfeigval[j];
+       }
+
+    for (i=0; i<CalcInfo.num_bet_expl; i++) {
+       j = (strbet->occs)[i] + CalcInfo.num_fzc_orbs;
+       CalcInfo.e0 += CalcInfo.scfeigval[j];
+       }
+    }
  
    /* prepare the H0 block */
           

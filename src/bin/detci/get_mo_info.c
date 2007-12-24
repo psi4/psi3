@@ -143,6 +143,10 @@ void get_mo_info(void)
    /* transform orbsym vector to new MO order */
    CalcInfo.orbsym = init_int_array(CalcInfo.nmo);
    CalcInfo.scfeigval = init_array(CalcInfo.nmo);
+   if(Parameters.zaptn) {
+     CalcInfo.scfeigvala = init_array(CalcInfo.nmo);
+     CalcInfo.scfeigvalb = init_array(CalcInfo.nmo);
+     }
 
    for (i=0,cnt=0; i<CalcInfo.nirreps; i++) {
       for (j=0; j<CalcInfo.orbs_per_irr[i]; j++,cnt++) {
@@ -154,6 +158,10 @@ void get_mo_info(void)
    for (i=0; i<CalcInfo.nmo; i++) {
       j = CalcInfo.reorder[i];
       CalcInfo.scfeigval[j] = eig_unsrt[i];
+      if(Parameters.zaptn) {
+        CalcInfo.scfeigvala[j] = eig_unsrt[i];
+        CalcInfo.scfeigvalb[j] = eig_unsrt[i];
+        }
       }
    free(eig_unsrt);
 
