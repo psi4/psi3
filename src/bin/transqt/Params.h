@@ -69,6 +69,8 @@ struct Params {
   int qrhf;                     /* boolean for QRHF reference             */
   int ivo;                      /* boolean for test IVO's                 */
   int semicanonical;            /* boolean for Semicanonical orbitals     */
+                                /* now semicanonical is used as an integer:
+                                  ==1 for semicanonical, 2 for z-averaged */
 
   char *aobasis;                /* string for AO-Basis CC algorithms      */
 

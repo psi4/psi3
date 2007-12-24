@@ -143,7 +143,10 @@ int *ioff;
 struct MOInfo moinfo;
 struct Params params;
 
-void semicanonical_fock(void);
+/* averaged==1 for three-subspace canonicalized via averaged Fock
+   for OPT1, OPT2 or ZAPT,
+   averaged==0 for regular semicanonicalization for RMP, etc. */
+void semicanonical_fock(int averaged); 
 void transform_one(void);
 void transform_two(void);
 void cleanup(void);
@@ -386,6 +389,11 @@ void get_parameters(void)
     params.semicanonical = 1;
   }  
 
+  /* Averaged semicanonical orbitals for ZAPTn */
+  if(!strcmp(params.ref, "ROHF") && !strcmp(params.wfn, "ZAPTN"))
+    params.semicanonical = 2; 
+
+
   /* the default to this was already set by command line parsing */
   errcod = ip_boolean("BACKTRANS", &(params.backtr), 0);
 
@@ -498,7 +506,8 @@ void get_parameters(void)
      
   if (strcmp(params.wfn, "CI")==0 || strcmp(params.wfn, "DETCAS")==0 ||
       strcmp(params.wfn, "CASSCF")==0 || strcmp(params.wfn, "RASSCF")==0 ||
-      strcmp(params.wfn, "DETCI")==0) {
+      strcmp(params.wfn, "DETCI")==0 ||
+      strcmp(params.wfn, "ZAPTN")==0) { 
     params.lagran_double = 1;
     params.lagran_halve = 0;
     params.ras_type = 1;
@@ -534,7 +543,8 @@ void get_parameters(void)
       params.do_h_bare = 1;
       params.do_h_fzc = 0;
     }
-    else if ((strcmp(params.wfn,"CI")==0 || strcmp(params.wfn,"DETCI")==0) &&  
+    else if ((strcmp(params.wfn,"CI")==0 || strcmp(params.wfn,"DETCI")==0 ||
+             strcmp(params.wfn,"ZAPTN")==0) &&   
              strcmp(params.dertype, "NONE")==0) {
       params.do_h_bare = 0;
       params.do_h_fzc = 1;
@@ -609,7 +619,7 @@ void print_parameters(void)
       fprintf(outfile,"\tInput Parameters:\n");
       fprintf(outfile,"\t-----------------\n");
       fprintf(outfile,"\tWavefunction           =  %s\n", params.wfn);
-      if(params.semicanonical) {
+      if(params.semicanonical==1) { 
       fprintf(outfile,"\tReference orbitals     =  ROHF changed to UHF for Semicanonical Orbitals\n");
       }
       else {
@@ -672,8 +682,12 @@ void print_parameters(void)
                                   (params.qrhf ? "Yes" : "No"));
       fprintf(outfile,"\tIVO orbitals           =  %s\n", 
                                   (params.ivo ? "Yes" : "No"));
-      fprintf(outfile,"\tSemicanonical orbitals =  %s\n", 
-                                  (params.semicanonical ? "Yes" : "No"));
+      if(params.semicanonical) { 
+        if(params.semicanonical==1)
+          fprintf(outfile,"\tSemicanonical orbitals =  Yes\n");
+        else /* semicanonical == 2, hopefully */
+          fprintf(outfile,"\tSemicanonical orbitals =  Z-Averaged\n");
+      }
       fprintf(outfile,"\tPitzer                 =  %s\n", 
                                   (params.pitzer ? "Yes" : "No"));
     }
@@ -882,9 +896,13 @@ void get_moinfo(void)
   moinfo.nteints = moinfo.noeints*(moinfo.noeints+1)/2;
 
   if(params.semicanonical) {
-    semicanonical_fock();
-    moinfo.scf_vector_alpha = chkpt_rd_alpha_scf();
-    moinfo.scf_vector_beta = chkpt_rd_beta_scf();
+    semicanonical_fock(params.semicanonical - 1); /* averaged == 0 for semicanonical, ==1 for Z-averaged canonicalization */
+    if(params.semicanonical==1) {
+        moinfo.scf_vector_alpha = chkpt_rd_alpha_scf();
+        moinfo.scf_vector_beta = chkpt_rd_beta_scf();
+    } else {
+        moinfo.scf_vector = chkpt_rd_scf();
+    }
   }
   
   /*
@@ -1174,6 +1192,7 @@ void get_reorder_array(void)
       || strcmp(params.wfn, "GVVPT2") == 0 
       || strcmp(params.wfn, "MCSCF") == 0 
       || strcmp(params.wfn, "OOCCD") == 0 
+      || strcmp(params.wfn, "ZAPTN") == 0  
       || strcmp(params.wfn, "CASSCF") == 0 
       || strcmp(params.wfn, "RASSCF") == 0 
       || strcmp(params.wfn, "DETCAS") == 0) {

@@ -22,12 +22,13 @@
 
 void uhf_fock_build(double **fock_a, double **fock_b, double **D_a, double **D_b);
 
-void semicanonical_fock(void)
+void semicanonical_fock(int averaged) /* averaged==0, regular semicanonical; =1 Z-averaged orbitals */
 {
-  int h, p, q, i, j, a, b, I, J, A, B;
+  int h, p, q, i, j, a, b, I, J, A, B, x, y, XX, YY;
   int stat, cnt;
   int *offset = init_int_array(moinfo.nirreps);
   int *aoccpi = init_int_array(moinfo.nirreps);
+  int *asoccpi = init_int_array(moinfo.nirreps); /* socc per irrep, used for ZAPT */
   int *boccpi = init_int_array(moinfo.nirreps);  
   int *avirtpi = init_int_array(moinfo.nirreps);
   int *bvirtpi = init_int_array(moinfo.nirreps);
@@ -36,7 +37,7 @@ void semicanonical_fock(void)
   double **fock_a;
   double **fock_b;
   double **X;
-  double ***Foo, ***Fvv;
+  double ***Foo, ***Fvv, ***Fss; /* Fss for single-single block of Fock */
   double *evals, *work;
   double *alpha_evals;
   double *beta_evals;
@@ -44,7 +45,13 @@ void semicanonical_fock(void)
   double **scf_vector_beta;
 
   for(h=0; h < moinfo.nirreps; h++) {
-    aoccpi[h] = moinfo.clsdpi[h] + moinfo.openpi[h];
+    if(averaged==1) { /* ZAPT */
+        aoccpi[h] = moinfo.clsdpi[h];
+        asoccpi[h] = moinfo.openpi[h];
+    } else {
+        aoccpi[h] = moinfo.clsdpi[h] + moinfo.openpi[h];
+    }
+
     boccpi[h] = moinfo.clsdpi[h];
     avirtpi[h] = moinfo.virtpi[h];
     bvirtpi[h] = moinfo.virtpi[h] + moinfo.openpi[h];
@@ -56,9 +63,15 @@ void semicanonical_fock(void)
   for(h=0; h < moinfo.nirreps; h++) {
     for(p=offset[h]; p < offset[h]+moinfo.orbspi[h]; p++) {
       for(q=offset[h]; q < offset[h]+moinfo.orbspi[h]; q++) {
-	for(i=offset[h]; i < offset[h]+aoccpi[h]; i++) {
-          D_a[p][q] += moinfo.scf_vector[p][i] * moinfo.scf_vector[q][i];
-	}
+        if(averaged==1) { 
+          for(i=offset[h]; i < offset[h]+aoccpi[h]+asoccpi[h]; i++) {
+            D_a[p][q] += moinfo.scf_vector[p][i] * moinfo.scf_vector[q][i];
+          }
+        } else {
+          for(i=offset[h]; i < offset[h]+aoccpi[h]; i++) {
+            D_a[p][q] += moinfo.scf_vector[p][i] * moinfo.scf_vector[q][i];
+          }
+        }
 	for(i=offset[h]; i < offset[h]+boccpi[h]; i++) {
 	  D_b[p][q] += moinfo.scf_vector[p][i] * moinfo.scf_vector[q][i];
 	}
@@ -90,6 +103,9 @@ void semicanonical_fock(void)
 
   Foo = (double ***) malloc(moinfo.nirreps * sizeof(double **));
   Fvv = (double ***) malloc(moinfo.nirreps * sizeof(double **));
+  if(averaged==1)
+    Fss = (double ***) malloc(moinfo.nirreps * sizeof(double **));
+
   X = block_matrix(moinfo.nmo, moinfo.nmo);
   scf_vector_alpha = block_matrix(moinfo.nmo, moinfo.nmo);
   alpha_evals = init_array(moinfo.nmo);
@@ -98,15 +114,33 @@ void semicanonical_fock(void)
 
     Foo[h] = block_matrix(aoccpi[h], aoccpi[h]);
     Fvv[h] = block_matrix(avirtpi[h], avirtpi[h]);
+   if(averaged==1) 
+        Fss[h] = block_matrix(asoccpi[h], asoccpi[h]);
 
-    for(i=offset[h],I=0; i < offset[h]+aoccpi[h]; i++,I++)
-      for(j=offset[h],J=0; j < offset[h]+aoccpi[h]; j++,J++)
-	Foo[h][I][J] = fock_a[i][j];
 
-    for(a=offset[h]+aoccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
-      for(b=offset[h]+aoccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
-        Fvv[h][A][B] = fock_a[a][b];
+    if(averaged==1) { 		/* Average Alpha and Beta Fock Matrices */
+      for(i=offset[h],I=0; i < offset[h]+aoccpi[h]; i++,I++)
+        for(j=offset[h],J=0; j < offset[h]+aoccpi[h]; j++,J++)
+          Foo[h][I][J] = (fock_a[i][j] + fock_b[i][j])/2.0;
 
+      for(x=offset[h]+aoccpi[h],XX=0; x < offset[h]+aoccpi[h]+asoccpi[h]; x++,XX++)
+        for(y=offset[h]+aoccpi[h],YY=0; y < offset[h]+aoccpi[h]+asoccpi[h]; y++,YY++)
+          Fss[h][XX][YY] = (fock_a[x][y] + fock_b[x][y])/2.0;
+
+      for(a=offset[h]+aoccpi[h]+asoccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
+        for(b=offset[h]+aoccpi[h]+asoccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
+          Fvv[h][A][B] = (fock_a[a][b] + fock_b[a][b])/2.0;
+    } else {
+      for(i=offset[h],I=0; i < offset[h]+aoccpi[h]; i++,I++)
+        for(j=offset[h],J=0; j < offset[h]+aoccpi[h]; j++,J++)
+          Foo[h][I][J] = fock_a[i][j];
+
+      for(a=offset[h]+aoccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
+        for(b=offset[h]+aoccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
+          Fvv[h][A][B] = fock_a[a][b];
+    }
+
+    /* diagonalize in docc-docc subspace */
     if(aoccpi[h]) {
       evals = init_array(aoccpi[h]);
       work = init_array(3*aoccpi[h]);
@@ -125,6 +159,25 @@ void semicanonical_fock(void)
         X[i][j] = Foo[h][J][I];
     }
 
+    /* diagonalize in socc-socc subspace */
+    if(averaged==1 && asoccpi[h]) { 
+      evals = init_array(asoccpi[h]);
+      work = init_array(3*asoccpi[h]);
+      if(stat = C_DSYEV('v','u', asoccpi[h], &(Fss[h][0][0]), asoccpi[h], evals, work, asoccpi[h]*3)) {
+        fprintf(outfile, "rotate(): Error in alpha Fss[%1d] diagonalization. stat = %d\n", h, stat);
+        exit(PSI_RETURN_FAILURE);
+      }
+      for(i=0; i<asoccpi[h]; i++) alpha_evals[cnt++] = evals[i];
+      free(evals);
+      free(work);
+
+      for(x=offset[h]+aoccpi[h],XX=0; x < offset[h]+aoccpi[h]+asoccpi[h]; x++,XX++)
+        for(y=offset[h]+aoccpi[h],YY=0; y < offset[h]+aoccpi[h]+asoccpi[h]; y++,YY++)
+          X[x][y] = Fss[h][YY][XX];
+    }
+
+
+    /* diagonalize in vir-vir subspace */
     if(avirtpi[h]) {
       evals = init_array(avirtpi[h]);
       work = init_array(3*avirtpi[h]);
@@ -138,16 +191,27 @@ void semicanonical_fock(void)
     free(evals);
     free(work);
 
-    for(a=offset[h]+aoccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
-      for(b=offset[h]+aoccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
-        X[a][b] = Fvv[h][B][A];
+      if(averaged==1) { 
+        for(a=offset[h]+aoccpi[h]+asoccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
+          for(b=offset[h]+aoccpi[h]+asoccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
+            X[a][b] = Fvv[h][B][A];
+      } else {
+        for(a=offset[h]+aoccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
+          for(b=offset[h]+aoccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
+            X[a][b] = Fvv[h][B][A];
+      }
+
     }
 
     free_block(Foo[h]);
     free_block(Fvv[h]);
+    if(averaged==1) 
+        free_block(Fss[h]);
   }
   free(Foo);
   free(Fvv);
+  if(averaged==1) 
+    free(Fss);
   free_block(fock_a);
 
   C_DGEMM('n','n',moinfo.nso,moinfo.nmo,moinfo.nmo,1,&(moinfo.scf_vector[0][0]),moinfo.nmo,&(X[0][0]),
@@ -156,82 +220,90 @@ void semicanonical_fock(void)
   free_block(X);
   
   /** beta Fock semicanonicalization **/
+  if(averaged==0) { /* No beta Fock matrix for ZAPT */
 
-  Foo = (double ***) malloc(moinfo.nirreps * sizeof(double **));
-  Fvv = (double ***) malloc(moinfo.nirreps * sizeof(double **));
-  X = block_matrix(moinfo.nmo, moinfo.nmo);
-  scf_vector_beta = block_matrix(moinfo.nmo, moinfo.nmo);
-  beta_evals = init_array(moinfo.nmo);
-  cnt = 0;
-  for(h=0; h < moinfo.nirreps; h++) {
-    /* leave the frozen core orbitals alone */
-    for(i=offset[h]; i < offset[h]+moinfo.frdocc[h]; i++) X[i][i] = 1.0;
+    Foo = (double ***) malloc(moinfo.nirreps * sizeof(double **));
+    Fvv = (double ***) malloc(moinfo.nirreps * sizeof(double **));
+    X = block_matrix(moinfo.nmo, moinfo.nmo);
+    scf_vector_beta = block_matrix(moinfo.nmo, moinfo.nmo);
+    beta_evals = init_array(moinfo.nmo);
+    cnt = 0;
+    for(h=0; h < moinfo.nirreps; h++) {
+      /* leave the frozen core orbitals alone */
+      for(i=offset[h]; i < offset[h]+moinfo.frdocc[h]; i++) X[i][i] = 1.0;
 
-    Foo[h] = block_matrix(boccpi[h], boccpi[h]);
-    Fvv[h] = block_matrix(bvirtpi[h], bvirtpi[h]);
+      Foo[h] = block_matrix(boccpi[h], boccpi[h]);
+      Fvv[h] = block_matrix(bvirtpi[h], bvirtpi[h]);
 
-    for(i=offset[h],I=0; i < offset[h]+boccpi[h]; i++,I++)
-      for(j=offset[h],J=0; j < offset[h]+boccpi[h]; j++,J++)
-	  Foo[h][I][J] = fock_b[i][j];
+      for(i=offset[h],I=0; i < offset[h]+boccpi[h]; i++,I++)
+        for(j=offset[h],J=0; j < offset[h]+boccpi[h]; j++,J++)
+          Foo[h][I][J] = fock_b[i][j];
 
-      for(a=offset[h]+boccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
-	for(b=offset[h]+boccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
-	  Fvv[h][A][B] = fock_b[a][b];
+        for(a=offset[h]+boccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
+          for(b=offset[h]+boccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
+	    Fvv[h][A][B] = fock_b[a][b];
 
-      if(boccpi[h]) {
-	evals = init_array(boccpi[h]);
-	work = init_array(3*boccpi[h]);
-	if(stat = C_DSYEV('v','u', boccpi[h], &(Foo[h][0][0]), 
-			  boccpi[h], evals, work, boccpi[h]*3)) {
-	  fprintf(outfile, "rotate(): Error in alpha Foo[%1d] diagonalization. stat = %d\n", 
+        if(boccpi[h]) {
+          evals = init_array(boccpi[h]);
+          work = init_array(3*boccpi[h]);
+	  if(stat = C_DSYEV('v','u', boccpi[h], &(Foo[h][0][0]), 
+	  		  boccpi[h], evals, work, boccpi[h]*3)) {
+	    fprintf(outfile, "rotate(): Error in alpha Foo[%1d] diagonalization. stat = %d\n", 
 		  h, stat);
-	  exit(PSI_RETURN_FAILURE);
-	}
-        for(i=0; i<boccpi[h]; i++) beta_evals[cnt++] = evals[i]; 
-	free(evals);
-	free(work);
+	    exit(PSI_RETURN_FAILURE);
+          }
+          for(i=0; i<boccpi[h]; i++) beta_evals[cnt++] = evals[i]; 
+          free(evals);
+          free(work);
 
-	for(i=offset[h],I=0; i < offset[h]+boccpi[h]; i++,I++)
-	  for(j=offset[h],J=0; j < offset[h]+boccpi[h]; j++,J++)
-	    X[i][j] = Foo[h][J][I];
-      }
+          for(i=offset[h],I=0; i < offset[h]+boccpi[h]; i++,I++)
+	    for(j=offset[h],J=0; j < offset[h]+boccpi[h]; j++,J++)
+	      X[i][j] = Foo[h][J][I];
+        }  
 
-      if(bvirtpi[h]) {
-	evals = init_array(bvirtpi[h]);
-	work = init_array(3*bvirtpi[h]);
-	if(stat = C_DSYEV('v','u', bvirtpi[h], &(Fvv[h][0][0]), bvirtpi[h], 
+        if(bvirtpi[h]) {
+	  evals = init_array(bvirtpi[h]);
+	  work = init_array(3*bvirtpi[h]);
+	  if(stat = C_DSYEV('v','u', bvirtpi[h], &(Fvv[h][0][0]), bvirtpi[h], 
 			  evals, work, bvirtpi[h]*3)) {
-	  fprintf(outfile, "rotate(): Error in alpha Fvv[%1d] diagonalization. stat = %d\n", 
+	    fprintf(outfile, "rotate(): Error in alpha Fvv[%1d] diagonalization. stat = %d\n", 
 		  h, stat);
-	  exit(PSI_RETURN_FAILURE);
-	}
-        for(i=0; i<bvirtpi[h]; i++) beta_evals[cnt++] = evals[i]; 
-	free(evals);
-	free(work);
+	    exit(PSI_RETURN_FAILURE);
+	  }
+          for(i=0; i<bvirtpi[h]; i++) beta_evals[cnt++] = evals[i]; 
+	  free(evals);
+	  free(work);
 
-	for(a=offset[h]+boccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
-	  for(b=offset[h]+boccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
-	    X[a][b] = Fvv[h][B][A];
+	  for(a=offset[h]+boccpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
+	    for(b=offset[h]+boccpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
+	      X[a][b] = Fvv[h][B][A];
+       }
+
+        free_block(Foo[h]);
+        free_block(Fvv[h]);
       }
-
-      free_block(Foo[h]);
-      free_block(Fvv[h]);
-    }
-    free(Foo);
-    free(Fvv);
-    free_block(fock_b);
+      free(Foo);
+      free(Fvv);
+      free_block(fock_b);
   
-  C_DGEMM('n','n',moinfo.nso,moinfo.nmo,moinfo.nmo,1,&(moinfo.scf_vector[0][0]),moinfo.nmo,&(X[0][0]),
+    C_DGEMM('n','n',moinfo.nso,moinfo.nmo,moinfo.nmo,1,&(moinfo.scf_vector[0][0]),moinfo.nmo,&(X[0][0]),
           moinfo.nmo,0,&(scf_vector_beta[0][0]),moinfo.nmo);
 
-  free_block(X);
+    free_block(X);
+  } 
   
   /* Write Semicanonical Alpha and Beta Fock Matrix Eigenvectors 
      and Eigenvalues to the Checkpoint File */ 
-  chkpt_wt_alpha_evals(alpha_evals);
-  chkpt_wt_beta_evals(beta_evals);
-  chkpt_wt_alpha_scf(scf_vector_alpha);
-  chkpt_wt_beta_scf(scf_vector_beta); 
+  if(averaged == 0) { 
+    chkpt_wt_alpha_evals(alpha_evals);
+    chkpt_wt_alpha_scf(scf_vector_alpha);
+    chkpt_wt_beta_evals(beta_evals);
+    chkpt_wt_beta_scf(scf_vector_beta);
+  } else {
+    chkpt_wt_evals(alpha_evals);
+    chkpt_wt_scf(scf_vector_alpha);
+  }
+
  
   /*fprintf(outfile,"\nAlpha Eigenvalues\n");
   for(i=0; i<moinfo.nmo; i++) fprintf(outfile,"%10.7lf\n",alpha_evals[i]);  
@@ -245,9 +317,11 @@ void semicanonical_fock(void)
   print_mat(scf_vector_beta,moinfo.nmo,moinfo.nmo,outfile);*/
    
   free_block(scf_vector_alpha);
-  free_block(scf_vector_beta);
   free(alpha_evals);
-  free(beta_evals);
+  if(averaged==0) { 
+    free_block(scf_vector_beta);
+    free(beta_evals);
+  }
   free(offset);
 }
  
