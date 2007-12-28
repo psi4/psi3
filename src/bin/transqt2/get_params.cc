@@ -96,6 +96,17 @@ void get_params()
   errcod = ip_data("CACHELEV", "%d", &(params.cachelev),0);
 
   params.delete_tei = 1;
+  /* If AO-basis chosen, keep the SO_TEI file */
+  {
+    char* aobasis;
+    if(ip_exist("AO_BASIS",0)) {
+      errcod = ip_string("AO_BASIS", &aobasis,0);
+    }
+    else aobasis = strdup("NONE");
+    if(!strcmp(aobasis,"DISK")) {
+      params.delete_tei = 0;
+    }
+  }
   errcod = ip_boolean("DELETE_TEI", &params.delete_tei, 0);
 
   if(params.print_lvl) {
