@@ -95,14 +95,12 @@ int file_build(dpdfile4 *File, int inputfile, double tolerance,
 	}
     }
 
-  /*
   fprintf(outfile, "\tSorting File: %s nbuckets = %d\n", File->label, nbuckets);
-  */
 
   /* Set up IWL buffers for sorting */
   SortBuf = (struct iwlbuf *) malloc(nbuckets * sizeof(struct iwlbuf));
   for(n=0; n < nbuckets; n++)
-      iwl_buf_init(&SortBuf[n], CC_MAX+1+n, tolerance, 0, 0);
+      iwl_buf_init(&SortBuf[n], inputfile+20+n, tolerance, 0, 0);
 
   iwl_buf_init(&InBuf, inputfile, tolerance, 1, 1);
 
@@ -154,7 +152,7 @@ int file_build(dpdfile4 *File, int inputfile, double tolerance,
   /* Now sort each buffer and send it to the final target */
   next = PSIO_ZERO;
   for(n=0; n < nbuckets; n++) {
-      iwl_buf_init(&SortBuf[n], CC_MAX+1+n, tolerance, 1, 0);
+      iwl_buf_init(&SortBuf[n], inputfile+20+n, tolerance, 1, 0);
       lastbuf = 0;
 
       for(h=0; h < nirreps; h++) {
