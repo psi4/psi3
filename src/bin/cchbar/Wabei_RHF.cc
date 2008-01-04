@@ -118,6 +118,7 @@ void Wabei_RHF(void)
   dpd_file2_mat_init(&T1);
   dpd_file2_mat_rd(&T1);
   dpd_buf4_init(&Z1, CC_TMP0, 0, 11, 8, 11, 8, 0, "Z1(ei,a>=b)");
+  dpd_buf4_scm(&Z1, 0.0); /* this scm is necessary for cases with empty occpi or virtpi irreps */
   for(Gef=0; Gef < moinfo.nirreps; Gef++) {
     Gei = Gab = Gef; /* W and B are totally symmetric */
     for(Ge=0; Ge < moinfo.nirreps; Ge++) {
@@ -148,6 +149,7 @@ void Wabei_RHF(void)
   dpd_file2_mat_init(&T1);
   dpd_file2_mat_rd(&T1);
   dpd_buf4_init(&Z2, CC_TMP0, 0, 11, 9, 11, 9, 0, "Z2(ei,a>=b)");
+  dpd_buf4_scm(&Z2, 0.0); /* this scm is necessary for cases with empty occpi or virtpi irreps */
   for(Gef=0; Gef < moinfo.nirreps; Gef++) {
     Gei = Gab = Gef; /* W and B are totally symmetric */
     for(Ge=0; Ge < moinfo.nirreps; Ge++) {
