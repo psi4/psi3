@@ -118,7 +118,7 @@ As above for {\tt RAS1}, but for the RAS II subspace.
 No restrictions are placed on the occupancy of RAS II orbitals.
 Typically this will correspond to the conventional idea of
 an ``active space'' in multi-reference CI.
-\item[RAS 3 = (integer array)]\mbox{}\\
+\item[RAS3 = (integer array)]\mbox{}\\
 Should be in {\tt psi:()} or {\tt default:()} sections of input.
 As above for {\tt RAS3}, but for the RAS III subspace.
 A maximum of {\tt EX\_LVL} electrons are allowed in RAS III.
@@ -155,8 +155,27 @@ more features.
 This option allows the user to look for CI vectors of a different irrep
 than the reference.  This probably only makes sense for Full CI,
 and it is not supported for unit vector guesses.
+\item[MPN = boolean]\mbox{}\\
+If {\tt TRUE}, compute MPn energies up to nth order, where MAXNVECT = n
+controls the maximum order energy computed.  For open-shell systems
+(REF = ROHF, WFN = ZAPTN), ZAPTn energies are computed.
 \end{description}
 
 For larger computations, additional keywords may be required, as
 described in the \PSIdetci\ man pages.
 
+\subsubsection{Arbitrary Order Perturbation Theory}
+\PSIthree\ is capable of computing arbitrary order M{\o}ller-Plesset
+ perturbation theory (MPn, closed-shell systems) and 
+Z-averaged perturbation theory (ZAPTn, open-shell systems) energies,
+invoked with MPN = TRUE.  The maximum level of perturbation theory
+computed is controlled by MAXNVECT.
+Higher order energies (2n - 1 and 2n - 2) can be computed at no additional
+computational cost by using WIGNER = TRUE.
+By default, the n{th} order energy is saved, but (2n - 1) or (2n - 2) order 
+energies can be saved using SAVE\_MPN2 = 1 or SAVE\_MPN2 = 2, respectively.
+
+For open-shell systems, arbitary order ZAPTn energies can be computed using
+WFN = ZAPTN and REF = ROHF.
+All other options are the same as 
+closed-shell MPn.
