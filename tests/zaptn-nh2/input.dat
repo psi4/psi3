@@ -21,7 +21,6 @@ psi: (
 )
 
 detci: (
-        ex_lvl = 9
         maxnvect = 25
         wigner = true
 )
