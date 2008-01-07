@@ -361,6 +361,7 @@ void get_parameters(void)
    errcod = ip_boolean("CALC_SSQ",&(Parameters.calc_ssq),0);
    errcod = ip_boolean("MPN",&(Parameters.mpn),0);
    if (Parameters.mpn) {
+     Parameters.fci = 1;
      Parameters.mpn_schmidt = FALSE;
      Parameters.wigner = TRUE;
      Parameters.guess_vector = PARM_GUESS_VEC_UNIT;
