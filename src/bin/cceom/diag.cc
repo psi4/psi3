@@ -46,7 +46,7 @@ extern void scm_C(dpdfile2 *CME, dpdfile2 *Cme, dpdbuf4 *CMNEF,
 extern void scm_C_full(double C0, dpdfile2 *CME, dpdfile2 *Cme, dpdbuf4 *CMNEF,
     dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, double a);
 extern void scm_C2(dpdbuf4 *CMNEF, dpdbuf4 *Cmnef, dpdbuf4 *CMnEf, double a);
-extern void restart(double **alpha, int L, int num, int irrep, int ortho);
+extern void restart(double **alpha, int L, int num, int irrep, int ortho, double **alpha_old, int L_old, int use_alpha_old);
 extern void precondition(dpdfile2 *RIA, dpdfile2 *Ria,
     dpdbuf4 *RIJAB, dpdbuf4 *Rijab, dpdbuf4 *RIjAb, double eval);
 extern void precondition_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, double eval);
@@ -103,14 +103,15 @@ void diag(void) {
   dpdbuf4 CMnEf1, CMnfE1, CMnfE, CMneF, C2;
   char lbl[32];
   int num_converged, num_converged_index=0, *converged, keep_going, already_sigma;
-  int irrep, numCs, iter, lwork, info, vectors_per_root;
+  int irrep, numCs, iter, lwork, info, vectors_per_root, nsigma_evaluations=0;
   int get_right_ev = 1, get_left_ev = 0;
   int L,h,i,j,k,a,nirreps,errcod,C_irr;
   double norm, tval, **G, *work, *evals_complex, **alpha, **evectors_left;
-  double *lambda, *lambda_old, totalE, **G_old;
+  double *lambda, *lambda_old, totalE, **G_old, **alpha_old; 
   int num_vecs, cc3_index, num_cc3_restarts = 0, ignore_G_old=0;
   double ra, rb, r2aa, r2bb, r2ab, cc3_eval, cc3_last_converged_eval=0.0, C0, S0, R0;
   int cc3_stage; /* 0=eom_ccsd; 1=eom_cc3 (reuse sigmas), 2=recompute sigma */
+  int L_start_iter, L_old;
   char *keyw;
 
 
@@ -280,13 +281,14 @@ timer_off("INIT GUESS");
     while ((keep_going == 1) && (iter < eom_params.max_iter)) {
       fprintf(outfile,"Iter=%-4d L=%-4d", iter+1, L); fflush(outfile);
       keep_going = 0;
-      numCs = L;
+      numCs = L_start_iter = L;
       num_converged = 0;
 
       for (i=already_sigma;i<L;++i) {
         /* Form a zeroed S vector for each C vector
 	   SIA and Sia do get overwritten by sigmaSS
 	   so this may only be necessary for debugging */
+        ++nsigma_evaluations;
         if (params.full_matrix) init_S0(i);
         init_S1(i, C_irr);
         init_S2(i, C_irr);
@@ -815,16 +817,21 @@ timer_off("INIT GUESS");
       if (L >= vectors_per_root * eom_params.cs_per_irrep[C_irr]) {
         if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) ) {
           fprintf(outfile,"Collapsing to %d vector(s).\n",cc3_index+1);
-          restart(alpha, L, cc3_index+1, C_irr, 1);
+          restart(alpha, L, cc3_index+1, C_irr, 1, alpha_old, L_old, eom_params.collapse_with_last);
+          L_old = L;
           L = cc3_index+1;
+          if (eom_params.collapse_with_last) L *= 2;
           already_sigma = 0;
           ignore_G_old = 1;
         }
         else {
-           restart(alpha, L, eom_params.restart_vectors_per_root*
-             eom_params.cs_per_irrep[C_irr], C_irr, 1);
-           L = eom_params.restart_vectors_per_root * eom_params.cs_per_irrep[C_irr];
-          already_sigma = L;
+           restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 1,alpha_old,L_old,eom_params.collapse_with_last);
+            L_old = L;
+           if (eom_params.collapse_with_last)
+             L = 2 * eom_params.cs_per_irrep[C_irr];
+           else
+             L = eom_params.cs_per_irrep[C_irr];
+             already_sigma = L;
           ignore_G_old = 1;
         }
         keep_going = 1;
@@ -841,6 +848,7 @@ timer_off("INIT GUESS");
         /* If any new vectors were added, then continue */
         if (numCs > L) {
           keep_going = 1;
+          L_old = L;
           L = numCs;
         }
       }
@@ -857,13 +865,14 @@ timer_off("INIT GUESS");
           fprintf(outfile, "Completed EOM_CCSD\n");
           fprintf(outfile,"Collapsing to only %d vector(s).\n", eom_params.cs_per_irrep[C_irr]);
           if (!eom_params.restart_eom_cc3) {
-            restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 1);
+            restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 1,alpha_old,L_old,0);
             save_C_ccsd(eom_params.prop_root, C_irr);
           }
 
           cc3_last_converged_eval = cc3_eval = lambda_old[eom_params.prop_root];
           fprintf(outfile,"Setting initial CC3 eigenvalue to %15.10lf\n",cc3_eval);
 
+          L_old = L;
           L = eom_params.cs_per_irrep[C_irr];
           eom_params.cs_per_irrep[C_irr] = 1; /* only get 1 CC3 solution */
           keep_going = 1;
@@ -879,7 +888,7 @@ timer_off("INIT GUESS");
           if (cc3_stage == 1) fprintf(outfile, "Forcing one restart with sigma recomputation.\n");
           else fprintf(outfile,"Forcing restart to make sure new sigma vectors give same eigenvalue.\n");
           fprintf(outfile,"Collapsing to only %d vector(s).\n", cc3_index+1);
-          restart(alpha, L, cc3_index+1, C_irr, 1);
+          restart(alpha, L, cc3_index+1, C_irr, 1, alpha_old, L_old, 0);
           cc3_eval = lambda_old[cc3_index];
           if (cc3_stage == 1)
             fprintf(outfile,"Change in CC3 energy from last iterated value %15.10lf\n", cc3_eval - 0.0);
@@ -891,13 +900,14 @@ timer_off("INIT GUESS");
           keep_going = 1;
           already_sigma = 0;
           ignore_G_old = 1;
+          L_old = L;
           L = cc3_index+1;
           cc3_stage = 2;
         }
         else if (!strcmp(params.wfn,"EOM_CC3")) {
           /* for CC3: collapse to one final root and place in location 0 */
           fprintf(outfile,"Collapsing to only %d vector(s).\n", cc3_index+1);
-          restart(alpha, L, cc3_index+1, C_irr, 0);
+          restart(alpha, L, cc3_index+1, C_irr, 0, alpha_old, L_old, 0);
           if (cc3_index > 0) restart_with_root(cc3_index, C_irr);
           converged[0] = 1;
           cc3_eval = lambda_old[0] = lambda_old[cc3_index];
@@ -906,12 +916,16 @@ timer_off("INIT GUESS");
         }
         else {
           fprintf(outfile,"Collapsing to only %d vector(s).\n", eom_params.cs_per_irrep[C_irr]);
-          restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 0);
+          restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 0, alpha_old, L_old, 0);
         }
       }
+      alpha_old = block_matrix(L_start_iter,L_start_iter);
+      for (k=0;k<L_start_iter;++k)
+        for (i=0;i<L_start_iter;++i)
+          alpha_old[i][k] = alpha[i][k];
       free_block(alpha);
     }
-		free_block(G_old);
+    free_block(G_old);
 
     fprintf(outfile,"\nProcedure converged for %d root(s).\n",num_converged);
     if (num_converged == eom_params.cs_per_irrep[C_irr]) { }
@@ -1086,6 +1100,7 @@ timer_off("INIT GUESS");
     fprintf(outfile,"\n");
 
     free(lambda_old);
+    free_block(alpha_old);
     free(converged);
     /* I don't want to do this for local CC calculations -TDC */
     /*
@@ -1105,7 +1120,8 @@ timer_off("INIT GUESS");
   psio_write_entry(PSIF_CHKPT, keyw, (char *) eom_params.state_energies, eom_params.number_of_states * sizeof(double));
   free(keyw);
   chkpt_close();
-	
+
+  fprintf(outfile,"\tTotal # of sigma evaluations: %d\n",nsigma_evaluations);
   return;
 }
 

@@ -100,8 +100,8 @@ void get_eom_params()
   if (eom_params.vectors_cc3 > eom_params.vectors_per_root)
     eom_params.vectors_cc3 = eom_params.vectors_per_root;
 
-  eom_params.restart_vectors_per_root = 1;
-  errcod = ip_data("RESTART_VECTORS_PER_ROOT","%d",&(eom_params.restart_vectors_per_root),0);
+  eom_params.collapse_with_last = 1;
+  errcod = ip_data("COLLAPSE_WITH_LAST","%d",&(eom_params.collapse_with_last),0);
 
   eom_params.complex_tol = 1E-12;
   errcod = ip_data("COMPLEX_TOL","%d",&(iconv),0);
@@ -169,6 +169,7 @@ void get_eom_params()
   fprintf(outfile, "\tSym of state for properties = %6s\n", moinfo.labels[eom_params.prop_sym]);
   fprintf(outfile, "\tGuess vectors taken from    = %s\n", eom_params.guess);
   fprintf(outfile, "\tRestart EOM CC3             = %s\n", eom_params.restart_eom_cc3?"YES":"NO");
+  fprintf(outfile, "\tCollapse with last vector   = %s\n", eom_params.collapse_with_last ? "YES":"NO");
   if (eom_params.follow_root)
     fprintf(outfile, "\tRoot following for CC3 turned on.\n");
   fprintf(outfile, "\n\n");

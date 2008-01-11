@@ -46,7 +46,7 @@ struct Eom_params {
   int rhf_triplets;
   int mult;
   int follow_root;
-  int restart_vectors_per_root;
+  int collapse_with_last;
   int skip_diagSS;
   int vectors_cc3;
   int restart_eom_cc3;
