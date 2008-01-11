@@ -596,7 +596,7 @@ void ZFW(dpdbuf4 *Z, dpdbuf4 *F, dpdbuf4 *W, double alpha, double beta)
     rows_per_bucket = dpd_memfree()/(2 * F->params->coltot[Gea]);
     if(rows_per_bucket > F->params->rowtot[Gib])
       rows_per_bucket = F->params->rowtot[Gib];
-    nbuckets = ceil((double) F->params->rowtot[Gib]/(double) rows_per_bucket);
+    nbuckets = (int) ceil((double) F->params->rowtot[Gib]/(double) rows_per_bucket);
     rows_left = F->params->rowtot[Gib] % rows_per_bucket;
 
     /* allocate space for the full buckets */

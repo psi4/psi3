@@ -219,7 +219,7 @@ int build_abcd_packed(int inputfile, double tolerance, int keep)
 
   rows_per_bucket = dpd_memfree()/(B_s.params->coltot[0] + nvirt);
   if(rows_per_bucket > B_s.params->rowtot[0]) rows_per_bucket = B_s.params->rowtot[0];
-  nbuckets = ceil((double) B_s.params->rowtot[0]/(double) rows_per_bucket);
+  nbuckets = (int) ceil((double) B_s.params->rowtot[0]/(double) rows_per_bucket);
   rows_left = B_s.params->rowtot[0] % rows_per_bucket;
 
   dpd_buf4_mat_irrep_init_block(&B_s, 0, rows_per_bucket);

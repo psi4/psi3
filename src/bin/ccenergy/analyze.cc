@@ -67,7 +67,7 @@ void analyze(void)
 	tot1++;
       }
       else if ((value < max) && (value > min)) {
-	position = floor((value-min)/width);
+	position = (int) floor((value-min)/width);
 	amp_array[position]++;
 	tot1++;
       }
@@ -123,7 +123,7 @@ void analyze(void)
 	tot1++;
       }
       else if ((value < max) && (value > min)) {
-	position = floor((value-min)/width);
+	position = (int) floor((value-min)/width);
 	amp_array[position]++;
 	tot1++;
       }

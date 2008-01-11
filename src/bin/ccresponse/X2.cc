@@ -265,7 +265,7 @@ void X2_build(char *pert, char *cart, int irrep, double omega)
 
     rows_per_bucket = dpd_memfree()/(B_s.params->coltot[0] + moinfo.nvirt);
     if(rows_per_bucket > B_s.params->rowtot[0]) rows_per_bucket = B_s.params->rowtot[0];
-    nbuckets = ceil((double) B_s.params->rowtot[0]/(double) rows_per_bucket);
+    nbuckets = (int) ceil((double) B_s.params->rowtot[0]/(double) rows_per_bucket);
     rows_left = B_s.params->rowtot[0] % rows_per_bucket;
 
     B_diag = dpd_block_matrix(rows_per_bucket, moinfo.nvirt);
