@@ -59,6 +59,13 @@ double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &c
     fprintf(outfile,"The Hessian (Second Derivative) Matrix\n");
     print_mat5(H,dim,dim,outfile);
   }
+  /*
+  for (i=0;i<dim;++i)
+    if (H[i][i] < 0.0) {
+      for (j=0;j<dim;++j)
+        H[i][j] = H[j][i] = -1.0*H[i][j];
+    }
+ */
 
   // Project redundancies out of H according to Peng JCC 1996
   // and produce invertible Hessian
