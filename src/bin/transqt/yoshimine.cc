@@ -96,7 +96,17 @@ void yosh_init(struct yoshimine *YBuff, unsigned bra_indices,
     * the last bucket will have the remainder of the pq's.
     */
    YBuff->pq_per_bucket = bra_indices / nbuckets ;
-   bytes_per_bucket = (unsigned long int) (maxcor / nbuckets);
+
+   if (nbuckets == 1) {
+      bytes_per_bucket = ((unsigned long int) (4*sizeof(int) + sizeof(double))) *
+       ((unsigned long int) twoel_array_size) + (unsigned long int) (sizeof(struct iwlbuf)
+       + IWL_INTS_PER_BUF * (4*sizeof(Label) + sizeof(Value))); 
+    if (bytes_per_bucket > (unsigned long int) (maxcor/nbuckets))
+      bytes_per_bucket = (unsigned long int) (maxcor / nbuckets);
+   }
+   else
+      bytes_per_bucket = (unsigned long int) (maxcor / nbuckets);
+
    free_bytes_per_bucket = bytes_per_bucket - 
      (unsigned long int) (sizeof(struct iwlbuf) + IWL_INTS_PER_BUF * (4*sizeof(Label) + sizeof(Value)));
    YBuff->bucketsize = free_bytes_per_bucket / (4 * sizeof(int) +
