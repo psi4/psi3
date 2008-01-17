@@ -23,6 +23,8 @@
 #include "globaldefs.h"
 #include "globals.h"
 
+namespace psi { namespace detcas {
+
 void read_integrals()
 {
   int i, j, ij, k, l, kl, ijkl;
@@ -106,4 +108,5 @@ void get_mat_block(double **src, double **dst, int dst_dim, int dst_offset,
 
 }
 
+}} // end namespace psi::detcas
 

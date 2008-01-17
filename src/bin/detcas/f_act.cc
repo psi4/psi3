@@ -10,6 +10,8 @@
 #include "globaldefs.h"
 #include "globals.h"
 
+namespace psi { namespace detcas {
+
 void calc_F_act(double *F_act, int nmo, int firstact, int lastact, 
                 double **onepdm, double *tei);
 void check_F_act(double *F_act, int nmo, int firstact, int lastact, 
@@ -241,4 +243,5 @@ void test_lag2(int nbf, int ncore, int npop, double *oei,
 }
 
 
+}} // end namespace psi::detcas
 

@@ -2,8 +2,10 @@
     \ingroup (DETCAS)
     \brief Enter brief description of file here 
 */
-#ifndef INDEPPAIRS_H
-#define INDEPPAIRS_H
+#ifndef _psi_src_bin_detcas_indpairs_h
+#define _psi_src_bin_detcas_indpairs_h
+
+namespace psi { namespace detcas {
 
 /*
 ** INDPAIRS.H
@@ -70,4 +72,6 @@ class IndepPairs {
 
 };
 
-#endif
+}} // end namespace psi::detcas
+
+#endif // header guard

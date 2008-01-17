@@ -11,13 +11,15 @@
 #include "globaldefs.h"
 #include "globals.h"
 
+namespace psi { namespace detcas {
+
 void pitzer_arrays(int nirreps, int *frdocc, int *fruocc, int *orbspi, 
                    int *first, int *last, int *fstact, int *lstact,
                    int *active);
 double *** construct_evects(int nirreps, int *active, int *orbspi,
                             int *first, int *last, int *fstact, int *lstact,
                             int printflag);
-
+extern void check(int a, char *errmsg);
 
 /*
 ** GET_MO_INFO
@@ -416,4 +418,6 @@ void destruct_evects(int nirreps, double ***evects)
     if (evects[h] != NULL) free_block(evects[h]);
 }
 */
+
+}} // end namespace psi::detcas
 

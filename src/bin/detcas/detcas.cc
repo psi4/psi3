@@ -16,81 +16,71 @@
 */
 
 #include "globaldefs.h"
+#include <iostream.h>
 #include <math.h>
-
-/* C INCLUDE FILES */
-
-extern "C" {
-   #include <stdlib.h>
-   #include <stdio.h>
-   #include <string.h>
-   #include <libipv1/ip_lib.h>
-   #include <libqt/qt.h>
-   #include <libciomr/libciomr.h>
-   #include <libchkpt/chkpt.h>
-   #include <psifiles.h>
-   #include "globals.h"
-   #include "setup_io.h"
-
-   extern void get_mo_info(void);
-   extern void get_parameters(void);
-   extern void print_parameters(void);
-   extern void read_integrals(void);
-   extern void read_density_matrices(void);
-   extern void read_lagrangian(void);
-   extern void form_independent_pairs(void);
-   extern void read_thetas(int npairs);
-   extern void write_thetas(int npairs);
-   extern int  read_ref_orbs(void);
-   extern int  write_ref_orbs(void);
-   extern void read_cur_orbs(void);
-   extern void form_F_act(void);
-   extern int  diis(int veclen, double *vec, double *errvec);
-   extern void get_mat_block(double **src, double **dst, int dst_dim,
-                             int dst_offset, int *dst2src);
-   extern void calc_dE_dT(int n, double **dEU, int npairs, int *ppair, 
-                          int *qpair, double *theta, double *dET);
-   extern void form_appx_diag_mo_hess(int npairs, int *ppair, int *qpair, 
-                                 double *F_core, double *tei, double **opdm, 
-                                 double *tpdm, double *F_act, int firstact, 
-                                 int lastact, double *hess);
-   extern void form_diag_mo_hess(int npairs, int *ppair, int *qpair, 
-                                 double *F_core, double *tei, double **opdm, 
-                                 double *tpdm, double *F_act, int firstact, 
-                                 int lastact, double *hess);
-   extern void form_full_mo_hess(int npairs, int *ppair, int *qpair, 
-                            double *oei, double *tei, double **opdm, 
-                            double *tpdm, double **lag, double **hess);
-   extern void form_diag_mo_hess_yy(int npairs, int *ppair, int *qpair, 
-                            double *oei, double *tei, double **opdm, 
-                            double *tpdm, double **lag, double *hess);
-   extern void calc_orb_step(int npairs, double *grad, double *hess_diag, 
-                             double *theta);
-   extern void calc_orb_step_full(int npairs, double *grad, double **hess, 
-                             double *theta);
-   extern void calc_orb_step_bfgs(int npairs, double *grad, double **hess, 
-                             double *theta);
-   extern int print_step(int npairs, int steptype);
-   extern void postmult_by_U(int irrep, int dim, double **mo_coeffs,
-                             int npairs, int *p_arr, int *q_arr, 
-                             double *theta_arr);
-   extern void premult_by_U(int irrep, int dim, double **mo_coeffs,
-                            int npairs, int *p_arr, int *q_arr, 
-                            double *theta_arr);
-   extern void postmult_by_exp_R(int irrep, int dim, double **mat,
-                                 int npairs, int *p_arr, int *q_arr, 
-                                 double *theta_arr);
-   extern void cleanup(void);
-}
-
-
-/* C++ INCLUDE FILES */
-
-#include <iostream>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <libipv1/ip_lib.h>
+#include <libqt/qt.h>
+#include <libciomr/libciomr.h>
+#include <libchkpt/chkpt.h>
+#include <psifiles.h>
+#include "globals.h"
+#include "setup_io.h"
 #include "indpairs.h"
 
+namespace psi { namespace detcas {
 
-/* C++ FUNCTION PROTOTYPES */
+extern void get_mo_info(void);
+extern void get_parameters(void);
+extern void print_parameters(void);
+extern void read_integrals(void);
+extern void read_density_matrices(void);
+extern void read_lagrangian(void);
+extern void form_independent_pairs(void);
+extern void read_thetas(int npairs);
+extern void write_thetas(int npairs);
+extern int  read_ref_orbs(void);
+extern int  write_ref_orbs(void);
+extern void read_cur_orbs(void);
+extern void form_F_act(void);
+extern int  diis(int veclen, double *vec, double *errvec);
+extern void get_mat_block(double **src, double **dst, int dst_dim,
+                          int dst_offset, int *dst2src);
+extern void calc_dE_dT(int n, double **dEU, int npairs, int *ppair, 
+                       int *qpair, double *theta, double *dET);
+extern void form_appx_diag_mo_hess(int npairs, int *ppair, int *qpair, 
+                              double *F_core, double *tei, double **opdm, 
+                              double *tpdm, double *F_act, int firstact, 
+                              int lastact, double *hess);
+extern void form_diag_mo_hess(int npairs, int *ppair, int *qpair, 
+                              double *F_core, double *tei, double **opdm, 
+                              double *tpdm, double *F_act, int firstact, 
+                              int lastact, double *hess);
+extern void form_full_mo_hess(int npairs, int *ppair, int *qpair, 
+                         double *oei, double *tei, double **opdm, 
+                         double *tpdm, double **lag, double **hess);
+extern void form_diag_mo_hess_yy(int npairs, int *ppair, int *qpair, 
+                         double *oei, double *tei, double **opdm, 
+                         double *tpdm, double **lag, double *hess);
+extern void calc_orb_step(int npairs, double *grad, double *hess_diag, 
+                          double *theta);
+extern void calc_orb_step_full(int npairs, double *grad, double **hess, 
+                          double *theta);
+extern void calc_orb_step_bfgs(int npairs, double *grad, double **hess, 
+                          double *theta);
+extern void print_step(int npairs, int steptype);
+extern void postmult_by_U(int irrep, int dim, double **mo_coeffs,
+                          int npairs, int *p_arr, int *q_arr, 
+                          double *theta_arr);
+extern void premult_by_U(int irrep, int dim, double **mo_coeffs,
+                         int npairs, int *p_arr, int *q_arr, 
+                         double *theta_arr);
+extern void postmult_by_exp_R(int irrep, int dim, double **mat,
+                              int npairs, int *p_arr, int *q_arr, 
+                              double *theta_arr);
+extern void cleanup(void);
 
 void title(void);
 void quote(void);
@@ -104,21 +94,22 @@ int check_conv(void);
 int take_step(void);
 void rotate_orbs(void);
 
-
-/* GLOBAL VARIABLES (other modules load these via globals.h) */
-extern "C" {
-  struct calcinfo CalcInfo;
-  struct params Params;
-  int *ioff;
-  FILE *infile, *outfile;
-  char *psi_file_prefix;
-}
+struct calcinfo CalcInfo;
+struct params Params;
+int *ioff;
 IndepPairs IndPairs;
 
 #define MO_HESS_MIN 1.0E-1
 
+}} // end namespace psi::detcas
 
-/* MAIN ROUTINE */
+/* GLOBAL VARIABLES (other modules load these via globals.h) */
+extern "C" {
+  FILE *infile, *outfile;
+  char *psi_file_prefix;
+}
+
+using namespace psi::detcas;
 
 int main(int argc, char *argv[])
 {
@@ -184,6 +175,8 @@ int main(int argc, char *argv[])
   close_io();
   return(converged);
 }
+
+namespace psi { namespace detcas {
 
 /*
 ** init_ioff(): Set up the ioff array for quick indexing
@@ -1038,6 +1031,7 @@ int check_conv(void)
     fprintf(outfile, "\n\t... calculation continuing ...\n");
     return(0);
   }
-
 }
+
+}} // end namespace psi::detcas
 

@@ -10,6 +10,8 @@
 #include "globaldefs.h"
 #include "globals.h"
 
+namespace psi { namespace detcas {
+
 /*
 ** form_appx_diag_mo_hess
 **
@@ -698,4 +700,6 @@ void form_diag_mo_hess_yy(int npairs, int *ppair, int *qpair, double *oei,
   } /* end loop over pair1 */
 
 }
+
+}} // end namespace psi::detcas
 

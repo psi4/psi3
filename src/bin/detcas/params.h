@@ -10,6 +10,11 @@
 ** 1998
 */
 
+#ifndef _psi_src_bin_detcas_params_h
+#define _psi_src_bin_detcas_params_h
+
+namespace psi { namespace detcas {
+
 /*
 ** parameters structure: holds user-specified parameters
 */
@@ -60,3 +65,6 @@ struct params {
    int ds_hessian;          /* Do a DS Hessian update?                      */
   };
 
+}} // end namespace psi::detcas
+
+#endif // header guard

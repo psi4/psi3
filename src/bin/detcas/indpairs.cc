@@ -14,12 +14,11 @@
 ** May 1998
 */
 
-extern "C" {
-   #include <stdio.h>
-   #include <stdlib.h>
-}
-
+#include <stdio.h>
+#include <stdlib.h>
 #include "indpairs.h"
+
+namespace psi { namespace detcas {
 
 IndepPairs::IndepPairs() // Default constructor
 {
@@ -446,4 +445,5 @@ void IndepPairs::put_irrep_vec(int irrep, double *ir_vec, double *tot_vec)
 } 
 
 
+}} // end namespace psi::detcas
 

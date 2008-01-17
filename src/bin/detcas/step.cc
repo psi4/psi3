@@ -13,6 +13,8 @@
 #include "globaldefs.h"
 #include "globals.h"
 
+namespace psi { namespace detcas {
+
 #define MO_HESS_MIN 1.0E-2
 
 
@@ -123,7 +125,7 @@ void calc_orb_step_full(int npairs, double *grad, double **hess, double *theta)
   if (!Params.invert_hessian) { /* solve H delta = - g */
     fprintf(outfile,"Solving system of linear equations for orbital step...");
     BVector = init_array(npairs);
-    pivots = init_int_array(0.5 * npairs * (npairs - 1));
+    pivots = init_int_array((npairs * (npairs - 1))/2);
     for(i=0;i<npairs;i++){
       BVector[i] = -grad[i];
       theta[i] = 0.0;
@@ -242,7 +244,7 @@ void calc_orb_step_bfgs(int npairs, double *grad, double **hess, double *theta)
 **
 ** This function prints out the information for a given orbital iteration
 */
-int print_step(int npairs, int steptype)
+void print_step(int npairs, int steptype)
 {
   FILE *sumfile;
   char sumfile_name[] = "file14.dat";
@@ -331,4 +333,6 @@ int print_step(int npairs, int steptype)
   free(comments);
 
 }
+
+}} // end namespace psi::detcas
 

@@ -20,6 +20,8 @@
 #include "globaldefs.h"
 #include "globals.h"
 
+namespace psi { namespace detcas {
+
 #define DIIS_MIN_DET 1.0E-16
 
 /*
@@ -218,4 +220,5 @@ int diis(int veclen, double *vec, double *errvec)
   return(1);
 }
 
+}} // end namespace psi::detcas
 

@@ -10,6 +10,7 @@
 #include "globaldefs.h"
 #include "globals.h"
 
+namespace psi { namespace detcas {
 
 /*
 ** cleanup()
@@ -64,4 +65,6 @@ void cleanup(void)
   free(CalcInfo.theta_step);
   free(CalcInfo.orbs_per_irr);
 }
+
+}} // end namespace psi::detcas
 

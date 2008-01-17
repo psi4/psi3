@@ -11,6 +11,7 @@
 #include "globaldefs.h"
 #include "globals.h"
 
+namespace psi { namespace detcas {
 
 /*
 ** calc_grad_1
@@ -153,4 +154,5 @@ void calc_grad_2(int npairs, int *ppair, int *qpair, double *F_core,
 
 }
 
+}} // end namespace psi::detcas
 

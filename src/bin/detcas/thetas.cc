@@ -11,6 +11,7 @@
 #include "globaldefs.h"
 #include "globals.h"
 
+namespace psi { namespace detcas { 
 
 void rotate_test(int dim, int npairs, int *p_arr, int *q_arr, 
                  double *theta_arr);
@@ -382,5 +383,5 @@ void calc_dE_dT(int n, double **dEU, int npairs, int *ppair, int *qpair,
   free_block(Scratch);
 }
 
-
+}} // end namespace psi::detcas
 

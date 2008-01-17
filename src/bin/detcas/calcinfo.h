@@ -12,6 +12,11 @@
    1998
 */
 
+#ifndef _psi_src_bin_detcas_calcinfo_h
+#define _psi_src_bin_detcas_calcinfo_h
+
+namespace psi { namespace detcas {
+
 /*
 ** CalcInfo: Data Structure for holding calculation information such
 **   as nuclear repulsion energy, number of atoms, number of basis functions,
@@ -77,4 +82,8 @@ struct calcinfo {
   double *theta_cur;     /* current orbital rotation angles */
   double *theta_step;    /* step in orbital rotation angles */
   };
+
+}} // end namespace psi::detcas
+
+#endif // header guard
 

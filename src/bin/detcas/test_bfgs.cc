@@ -17,6 +17,8 @@
 #include <math.h>
 #include <libciomr/libciomr.h>
 
+namespace psi { namespace detcas {
+
 void test_bfgs(void)
 {
   int ndim, i, j;
@@ -129,4 +131,6 @@ double dfunc(double *x, double *g)
   g[1] = 20.0 * x[1];
   return(E);
 }
+
+}} // end namespace psi::detcas
 

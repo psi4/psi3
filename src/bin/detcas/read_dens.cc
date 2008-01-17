@@ -17,9 +17,12 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <libiwl/iwl.h>
+#include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include "globaldefs.h"
 #include "globals.h"
+
+namespace psi { namespace detcas {
 
 double **rdopdm(int nbf, int print_lvl, int opdm_file, int erase);
 double *rdtpdm(int nbf, int print_lvl, int tpdm_file, int erase);
@@ -200,4 +203,5 @@ double *rdtpdm(int nbf, int print_lvl, int tpdm_file, int erase)
   return (symm_tpdm);
 }
 
+}} // end namespace psi::detcas
 

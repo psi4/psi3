@@ -20,6 +20,8 @@
 #include <psifiles.h>
 #include "globals.h"
 
+namespace psi { namespace detcas {
+
 /*
 ** get_parameters(): Function gets the program running parameters such
 **   as convergence.  These are stored in the Parameters data structure.
@@ -183,4 +185,5 @@ void print_parameters(void)
   fflush(outfile) ;
 }
 
+}} // end namespace psi::detcas
 

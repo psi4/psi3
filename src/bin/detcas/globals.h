@@ -14,11 +14,24 @@
 ** University of California, Berkeley
 */
 
+#ifndef _psi_src_bin_detcas_globals_h
+#define _psi_src_bin_detcas_globals_h
+
 #include "calcinfo.h"
 #include "params.h"
+
+extern "C" {
+  extern FILE *infile, *outfile;
+  extern char *psi_file_prefix;
+}
+
+namespace psi { namespace detcas {
 
 extern struct calcinfo CalcInfo;
 extern struct params Params;
 extern int *ioff;
-extern FILE *infile, *outfile;
-extern char *psi_file_prefix;
+
+}} // end namespace psi::detcas
+
+#endif // header guard
+

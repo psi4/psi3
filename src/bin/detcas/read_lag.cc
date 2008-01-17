@@ -23,6 +23,8 @@
 #include "globals.h"
 
 
+namespace psi { namespace detcas {
+
 void read_lagrangian(void)
 {
   int nmo;
@@ -52,4 +54,5 @@ void read_lagrangian(void)
 
 } 
 
+}} // end namespace psi::detcas
 

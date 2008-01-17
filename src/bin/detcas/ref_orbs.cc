@@ -22,6 +22,8 @@
 #include "globals.h"
 
 
+namespace psi { namespace detcas {
+
 /*
 ** read_ref_orbs()
 **
@@ -95,4 +97,6 @@ int write_ref_orbs(void)
   fclose(fp);
   return(1);
 }
+
+}} // end namespace psi::detcas
 
