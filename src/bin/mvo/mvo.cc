@@ -32,8 +32,13 @@
 
 
 /* First definitions of globals */
-FILE *infile, *outfile;
-char *psi_file_prefix;
+extern "C" {
+  FILE *infile, *outfile;
+  char *psi_file_prefix;
+}
+
+namespace psi { namespace mvo {
+
 int *ioff;
 struct MOInfo moinfo;
 struct Params params;
@@ -62,8 +67,11 @@ void get_mvos(void);
 void get_canonical(void);
 void get_mp2nos(void);
 /* void get_unos(void); */
+}} // end namespace psi::mvo
 
-main(int argc, char *argv[])
+using namespace psi::mvo;
+
+int main(int argc, char *argv[])
 {
   params.print_lvl = 1;
   init_io(argc, argv);
@@ -88,8 +96,10 @@ main(int argc, char *argv[])
   }
   cleanup();
   exit_io();
-  exit(0);
+  return(0);
 }
+
+namespace psi { namespace mvo {
 
 void init_io(int argc, char *argv[])
 {
@@ -742,4 +752,6 @@ void get_mvos(void)
   free(eig_unsrt);
   free_block(scf_vector);
 }
+
+}} // end namespace psi::mvo
 

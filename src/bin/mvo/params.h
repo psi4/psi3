@@ -10,6 +10,10 @@
 ** 2001
 */
 
+#ifndef _psi_src_bin_mvo_h
+#define _psi_src_bin_mvo_h
+
+namespace psi { namespace mvo {
 
 #define PARM_OUTFILE_MAX           132
 
@@ -44,3 +48,6 @@ struct Params {
                             /* of the virtual space during mvo calculations */
   };
 
+}} // end namespace psi::mvo
+
+#endif // header guard

@@ -11,6 +11,8 @@
 #include "globals.h"
 #include "params.h"
 
+namespace psi { namespace mvo {
+
 /*
 ** transform_density
 ** 
@@ -117,4 +119,6 @@ void transform_density(double **onepdm, double **psq_so, int spin)
   free_block(opdm_blk);
   free_block(tmp_mat);
 }
+
+}} // end namespace psi::mvo
 

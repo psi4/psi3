@@ -59,7 +59,12 @@
 
 
 /* First definitions of globals */
-extern FILE *infile, *outfile;
+extern "C" {
+  extern FILE *infile, *outfile;
+}
+
+namespace psi { namespace mvo {
+
 extern int *ioff;
 extern struct MOInfo moinfo;
 extern struct Params params;
@@ -225,4 +230,6 @@ void get_canonical(void)
   free_block(C);
   free_block(tras);
 }
+
+}} // end namespace psi::mvo
 

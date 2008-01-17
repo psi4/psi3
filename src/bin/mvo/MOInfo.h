@@ -5,6 +5,11 @@
 
 /*! \defgroup MVO Add a description of the group MVO */
 
+#ifndef _psi_src_bin_mvo_MOInfo_h
+#define _psi_src_bin_mvo_MOInfo_h
+
+namespace psi { namespace mvo {
+
 /* Struct for PSIF_CHKPT molecular orbital information */
 struct MOInfo {
   int nmo;               /* number of molecular orbitals                   */
@@ -49,4 +54,7 @@ struct MOInfo {
   double *fzc_operator;  /* AO frozen core operator (lwr triangle)         */
   int **ras_opi;         /* orbs per ras space per irrep                   */
 };
-    
+
+}} // end namespace psi::mvo
+
+#endif // header guard

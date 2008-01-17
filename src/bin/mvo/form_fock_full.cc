@@ -19,7 +19,12 @@
 
 
 /* First definitions of globals */
-extern FILE *infile, *outfile;
+extern "C" {
+  extern FILE *infile, *outfile;
+}
+
+namespace psi { namespace mvo {
+
 extern int *ioff;
 extern struct MOInfo moinfo;
 extern struct Params params;
@@ -84,3 +89,6 @@ void form_fock_full(double **F)
   free(oei);
   free(tei);
 }
+
+}} // end namespace psi::mvo
+

@@ -30,7 +30,12 @@
 
 
 /* First definitions of globals */
-extern FILE *infile, *outfile;
+extern "C" {
+  extern FILE *infile, *outfile;
+}
+
+namespace psi { namespace mvo {
+
 extern int *ioff;
 extern struct MOInfo moinfo;
 extern struct Params params;
@@ -43,6 +48,7 @@ extern struct Params params;
 #define MAX0(a,b) (((a)>(b)) ? (a) : (b))
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 
+extern void transform_density(double **onepdm, double **psq_so, int spin);
 
 void get_mp2nos(void)
 {
@@ -630,4 +636,4 @@ double check_density_trace(double **P)
   return(tval); 
 }
 
-
+}} // end namespace psi::mvo
