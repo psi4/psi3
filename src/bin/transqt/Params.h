@@ -4,6 +4,11 @@
 */
 /* Struct for input parameters */
 
+#ifndef _psi3_bin_transqt_Params_h_
+#define _psi3_bin_transqt_Params_h_
+
+namespace psi { namespace transqt {
+
 struct Params {
   int runmode;                  /* which mode we are running in, defined
                                    in globals.h                           */
@@ -84,3 +89,6 @@ struct Params {
  * currently output only to 'mfile' after reordering, and not to 
  * 'sorted_tei_file'
  */
+
+}} // end namespace psi::transqt
+#endif // header guard

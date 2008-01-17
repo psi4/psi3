@@ -10,6 +10,8 @@
 #include "Params.h"
 #include "globals.h"
 
+namespace psi { namespace transqt {
+
 void destruct_evects(int nirreps, double ***evects);
 
 
@@ -94,3 +96,5 @@ void cleanup(void)
   /* Free params Arrays */
   free(params.wfn);
 }
+
+}} // end namespace psi::transqt

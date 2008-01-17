@@ -26,6 +26,9 @@
 #define YEXTERN
 #include "yoshimine.h"
 #include "MOInfo.h"
+
+namespace psi { namespace transqt {
+
 extern struct MOInfo moinfo;
 
 #define MIN0(a,b) (((a)<(b)) ? (a) : (b))
@@ -1781,5 +1784,7 @@ void yosh_wrt_arr_mp2r12a(struct yoshimine *YBuff, int p, int q, int pq,
          } /* end loop over s */
 
       }  /* end loop over r */
-
 }
+
+}} // end namespace psi::transqt
+

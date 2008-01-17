@@ -14,6 +14,9 @@
 
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 #define MIN0(a,b) (((a)<(b)) ? (a) : (b))
+
+namespace psi { namespace transqt {
+
 int get_p(int i);
 
 /* backsort.c: This code prepares for and carries out a Yoshimine sort
@@ -567,3 +570,6 @@ int get_p(int pq)
 
   return p;
 }
+
+}} // end namespace psi::transqt
+

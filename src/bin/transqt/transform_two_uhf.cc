@@ -15,6 +15,8 @@
 #include "globals.h"
 #include "yoshimine.h"
 
+namespace psi { namespace transqt {
+
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 #define MAX0(a,b) (((a)>(b)) ? (a) : (b))
 
@@ -623,3 +625,6 @@ void transform_two_uhf(void)
   free_block(A);
   free_block(B);
 }
+
+}} // end namespace psi::transqt
+

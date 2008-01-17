@@ -13,6 +13,8 @@
 #include "globals.h"
 #include "yoshimine.h"
 
+namespace psi { namespace transqt {
+
 #define MAXIOFF3 255
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 
@@ -420,4 +422,5 @@ void make_arrays(double ****Cdocc, double ****Cvirt,
 
 }
 
-  
+}} // end namespace psi::transqt
+ 

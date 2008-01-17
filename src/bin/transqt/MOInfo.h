@@ -3,7 +3,12 @@
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup TRANSQT Add a description of the group TRANSQT */
+/*! \defgroup TRANSQT Integral Transformation Program */
+
+#ifndef _psi3_bin_transqt_MOInfo_h_
+#define _psi3_bin_transqt_MOInfo_h_
+
+namespace psi { namespace transqt {
 
 /* Struct for chkpt file molecular orbital information */
 struct MOInfo {
@@ -92,4 +97,6 @@ struct MOInfo {
   double *fzc_operator_beta;  /* AO frozen core operator (lwr tri)         */
   /* double *te_ints; */
 };
-    
+
+}} // end namespace psi::transqt
+#endif // header guard 

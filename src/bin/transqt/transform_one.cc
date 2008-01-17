@@ -16,6 +16,7 @@
 #include "Params.h"
 #include "globals.h"
 
+namespace psi { namespace transqt {
 
 #define MIN0(a,b) (((a)<(b)) ? (a) : (b))
 #define MAX0(a,b) (((a)>(b)) ? (a) : (b))
@@ -710,4 +711,4 @@ void tran_one(int nirreps, double ***C, int src_orbs, int *src_first, int *src_l
 
 }
 
-
+}} // end namespace psi::transqt

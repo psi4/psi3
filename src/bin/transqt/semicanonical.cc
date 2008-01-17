@@ -16,6 +16,8 @@
 #include "globals.h"
 
 
+namespace psi { namespace transqt {
+
 #define MIN0(a,b) (((a)<(b)) ? (a) : (b))
 #define MAX0(a,b) (((a)>(b)) ? (a) : (b))
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
@@ -519,3 +521,4 @@ void uhf_fock_build(double **fock_a, double **fock_b, double **D_a, double **D_b
   free_block(Dt);
 }
 
+}} // end namespace psi::transqt

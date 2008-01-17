@@ -2,10 +2,15 @@
     \ingroup (TRANSQT)
     \brief Enter brief description of file here 
 */
+#ifndef _psi_bin_transqt_global_h_
+#define _psi_bin_transqt_global_h_
+
 /* External global variables */
 extern "C" {
   extern FILE *infile, *outfile;
 }
+
+namespace psi { namespace transqt {
 
 extern int *ioff;
 extern struct MOInfo moinfo;
@@ -43,3 +48,5 @@ extern int *bucket_lastpq;  /* Last pq in bucket           */
 #define MODE_MP2R12AR12    2     /* transform ints of r12       */
 #define MODE_MP2R12AR12T1  3     /* transform ints of [r12,T1]  */
 
+}} // end namespace psi::transqt
+#endif // header guard

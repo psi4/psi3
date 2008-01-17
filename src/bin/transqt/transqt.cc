@@ -133,11 +133,15 @@
 #include "Params.h"
 #include "globals.h"
 
+using namespace psi::transqt;
+
 /* First definitions of globals */
 extern "C" {
   FILE *infile, *outfile;
   char *psi_file_prefix;
 }
+
+namespace psi { namespace transqt {
 
 int *ioff;
 struct MOInfo moinfo;
@@ -172,6 +176,8 @@ double *** construct_evects(char *spin, int nirreps, int *active, int *sopi,
   int *fstact, int *lstact, int printflag);
 void destruct_evects(int nirreps, double ***evects);
 int check_C(int nso, int nmo, double **Cmat, double *S);
+
+}} // end of namespace psi::transqt
 
 
 int main(int argc, char *argv[])
@@ -214,6 +220,7 @@ int main(int argc, char *argv[])
   return(PSI_RETURN_SUCCESS);
 }
 
+namespace psi { namespace transqt {
 
 void init_io(int argc, char *argv[])
 {
@@ -1529,4 +1536,4 @@ int check_C(int nso, int nmo, double **Cmat, double *S)
   return(failflag); 
 }
 
-
+}} // end of namespace psi::transqt

@@ -2,8 +2,10 @@
     \ingroup (TRANSQT)
     \brief Enter brief description of file here 
 */
-#ifndef YOSHIMINE_H
-#define YOSHIMINE_H
+#ifndef _psi3_bin_transqt_yoshimine_h_
+#define _psi3_bin_transqt_yoshimine_h_
+
+namespace psi { namespace transqt {
 
 /*
 ** YOSHIMINE.H 
@@ -102,4 +104,5 @@ YEXTERN void yosh_wrt_arr_mp2r12a(struct yoshimine *YBuff, int p, int q, int pq,
                           int *lastr, int *firsts, int *lasts, int sortby_rs,
                           int *occ, int *ioff3,
                           int printflag, FILE *outfile);
-#endif /* end YOSHIMINE_H */
+}} // end namespace psi::transqt
+#endif // header guard

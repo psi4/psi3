@@ -13,7 +13,10 @@
 */
 
 #include <stdio.h>
+
 extern FILE *outfile;
+
+namespace psi { namespace transqt {
 
 /*
 ** FZC_DENSITY(): Form the frozen core density matrix, i.e. the density
@@ -230,3 +233,4 @@ double fzc_energy_uhf(int nbfso, int *orbsym, double *Pa, double *Pb,
    return(fzc);
 }
 
+}} // end namespace psi::transqt

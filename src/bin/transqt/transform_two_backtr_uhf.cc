@@ -17,6 +17,8 @@
 #include "yoshimine.h"
 #include "backsort.h"
 
+namespace psi { namespace transqt {
+
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 #define MAX0(a,b) (((a)>(b)) ? (a) : (b))
 
@@ -999,3 +1001,5 @@ void transform_two_backtr_uhf(void)
   free_block(dens);
   */
 }
+
+}} // end namespace psi::transqt
