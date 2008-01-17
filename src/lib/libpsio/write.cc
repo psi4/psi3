@@ -32,7 +32,7 @@ void PSIO::write(unsigned int unit, char *key, char *buffer, ULI size,
     dirty = 1; /* set flag for writing the TOC header */
     
     this_entry = (psio_tocentry *) malloc(sizeof(psio_tocentry));
-    strcpy(this_entry->key, key);
+    strncpy(this_entry->key, key, PSIO_KEYLEN);
     this_entry->next = NULL;
     this_entry->last = NULL;
     
