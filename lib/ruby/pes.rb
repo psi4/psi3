@@ -52,7 +52,7 @@ module Psi
       if args_hash.has_key?(:report) and args_hash[:report] == true
         puts "Results from PES scan:"
         args_hash[:col_labels].each do |label|
-          printf(sprintf(" %14-s ", label.to_s))
+          printf(sprintf(" %-14s ", label.to_s))
         end
         printf "\n"
 
@@ -63,11 +63,11 @@ module Psi
           (0..col_count).each do |col|
             indx = row * (col_count+1) + col
             if result[indx].instance_of? Fixnum or result[indx].instance_of? Bignum
-              printf(sprintf(" %14-d ", result[indx]))
+              printf(sprintf(" %-14d ", result[indx]))
             elsif result[indx].instance_of? Float
-              printf(sprintf(" % 14.9-f ", result[indx]))
+              printf(sprintf(" %-14.9f ", result[indx]))
             else
-              printf(sprintf(" %14-s ", result[indx].to_s))
+              printf(sprintf(" %-14s ", result[indx].to_s))
             end
           end
           printf "\n"
@@ -79,7 +79,7 @@ module Psi
         File.open(args_hash[:file], "w") do |file|
           args_hash[:col_labels].each do |label|
             if format == "normal"
-              file.printf(sprintf(" %14-s ", label.to_s))
+              file.printf(sprintf(" %-14s ", label.to_s))
             elsif format == "csv"
               file.printf(label.to_s + ",")
             end
@@ -94,11 +94,11 @@ module Psi
               indx = row * (col_count+1) + col
               if format == "normal"
                 if result[indx].instance_of? Fixnum or result[indx].instance_of? Bignum
-                  file.printf(sprintf(" %14-d ", result[indx]))
+                  file.printf(sprintf(" %-14d ", result[indx]))
                 elsif result[indx].instance_of? Float
-                  file.printf(sprintf(" % 14.9-f ", result[indx]))
+                  file.printf(sprintf(" %-14.9f ", result[indx]))
                 else
-                  file.printf(sprintf(" %14-s ", result[indx].to_s))
+                  file.printf(sprintf(" %-14s ", result[indx].to_s))
                 end
               elsif format == "csv"
                 file.printf(result[indx].to_s + ",")
