@@ -502,19 +502,19 @@ void parse_zmat(int i, int position, double *value, struct definition
    
    if( isalpha( temp_string[0] ) ) {
      if(position == 2) 
-       strcpy( z_geom[i].bond_label, temp_string );
+       strncpy( z_geom[i].bond_label, temp_string, CHKPT_ZMAT_LABEL_LEN);
      if(position == 4)
-       strcpy( z_geom[i].angle_label, temp_string );
+       strncpy( z_geom[i].angle_label, temp_string, CHKPT_ZMAT_LABEL_LEN);
      if(position == 6)
-       strcpy( z_geom[i].tors_label, temp_string );
+       strncpy( z_geom[i].tors_label, temp_string, CHKPT_ZMAT_LABEL_LEN);
    }
    else {
      if(position == 2)
-       z_geom[i].bond_label[0] = '\0';
+       strncpy( z_geom[i].bond_label, '\0', CHKPT_ZMAT_LABEL_LEN);
      if(position == 4)
-       z_geom[i].angle_label[0] = '\0';
+       strncpy( z_geom[i].angle_label, '\0', CHKPT_ZMAT_LABEL_LEN);
      if(position == 6)
-       z_geom[i].tors_label[0] = '\0';
+       strncpy( z_geom[i].tors_label, '\0', CHKPT_ZMAT_LABEL_LEN);
    }
    
    free(temp_string);	

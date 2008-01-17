@@ -32,7 +32,7 @@ void Chkpt::wt_prefix(char *prefix)
 
 void Chkpt::set_prefix(char *prefix)
 {
-  	strcpy(chkpt_prefix, prefix);
+  	strncpy(chkpt_prefix, prefix, CHKPT_PREFIX_LEN);
 }
 
 void Chkpt::commit_prefix()
@@ -51,7 +51,7 @@ char *Chkpt::get_prefix(void)
 
 	prefix = (char *) malloc(CHKPT_PREFIX_LEN*sizeof(char));
 
-	strcpy(prefix,chkpt_prefix);
+	strncpy(prefix,chkpt_prefix,CHKPT_PREFIX_LEN);
 
 	return prefix;
 }
