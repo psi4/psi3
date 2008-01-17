@@ -19,14 +19,17 @@
 #include <math.h>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
+
+extern "C" {
+  extern FILE *infile;
+  extern FILE *outfile;
+}
+
+namespace psi { namespace clag {
+
 #define INDEX(x,y) ((x>y) ? ioff[x] + y : ioff[y] + x)
 #define CI_DIFF 1.0E-10
 
-/*
-** declare needed external items
-*/
-extern FILE *infile;
-extern FILE *outfile;
 extern int *ioff;
 extern int print_lvl;
 
@@ -98,3 +101,6 @@ void ci_energy(double **OPDM, double *TPDM, double *h, double *TwoElec,
     fprintf(outfile,"CI Energy from file 30    = %20.10lf\n", eci_30);
     }          
 }
+
+}} // end namespace psi::clag
+

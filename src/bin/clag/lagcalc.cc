@@ -18,13 +18,14 @@
 #include <libqt/qt.h>         
 #include <libpsio/psio.h>
 
-#define INDEX(x,y) ((x>y) ? ioff[x] + y : ioff[y] + x)
+extern "C" {
+  extern FILE *infile;
+  extern FILE *outfile;
+}
 
-/*
-** declare needed external variables
-*/
-extern FILE *infile;
-extern FILE *outfile;
+namespace psi { namespace clag {
+
+#define INDEX(x,y) ((x>y) ? ioff[x] + y : ioff[y] + x)
 extern int *ioff;
 
 /***************************************************************************/
@@ -128,4 +129,6 @@ double lagcalc(double **OPDM, double *TPDM, double *h, double *TwoElec,
 
   return(lagtrace);
 }
+
+}} // end namespace psi::clag
 

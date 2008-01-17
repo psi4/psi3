@@ -18,24 +18,35 @@
 #include <psifiles.h>
 #include <libpsio/psio.h>
 #include <math.h>
+#include <string.h>
 #include "clag.h"
+
+extern "C" {
+  FILE *outfile;           /* pointer to the output file */
+  FILE *infile;            /* pointer to the input file  */
+  char *psi_file_prefix;   /* pointer to the file prefix string */
+}
+
+namespace psi { namespace clag {
+
 #define INDEX(i,j) ( (i>j) ? (ioff[(i)] + (j)): (ioff[(j)] + (i)) )
 
 /*
 ** define input parsing files and ioff array 
 */
 
-FILE *outfile;           /* pointer to the output file */
-FILE *infile;            /* pointer to the input file  */
-char *psi_file_prefix;   /* pointer to the file prefix string */
+
 int *ioff;               /* the ioff array                 */
 int print_lvl=1;         /* diagnostic info flag           */
+
+}} // end namespace psi::clag
 
 /***************************************************************************/
 /* The main procedure                                                      */
 /***************************************************************************/
-main(int argc, char **argv) 
+using namespace psi::clag;
 
+main(int argc, char **argv) 
 {
 
   double **opdm;                       /* the one particle density matrix */
@@ -218,6 +229,7 @@ main(int argc, char **argv)
   return(0);
 }
 
+namespace psi { namespace clag {
 
 /****************************************************************************/
 /* init_io(): Function opens input and output files                         */
@@ -378,14 +390,17 @@ void trace_tpdm(double *tpdm, int nbf)
 
 }
 
+}} // end namespace psi::clag
 
 /***************************************************************************/
 /* gpgrid: program id                                                      */
 /***************************************************************************/
-char *gprgid()
-{
+extern "C" {
+  char *gprgid()
+  {
    char *prgid = "CLAG";
-
    return(prgid);
+  }
 }
+
 
