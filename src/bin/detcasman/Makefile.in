@@ -5,9 +5,11 @@ include ../MakeVars
 
 PSILIBS = libPSI_qt.a libPSI_ciomr.a libPSI_ipv1.a
 
-CSRC = detcasman.c setup_io.c
+CSRC = 
 
-BINOBJ = $(CSRC:%.c=%.o)
+CXXSRC = detcasman.cc setup_io.cc
+
+BINOBJ = $(CSRC:%.c=%.o) $(CXXSRC:%.cc=%.o)
 
 include ../MakeRules
 

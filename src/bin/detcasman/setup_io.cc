@@ -14,10 +14,13 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <psifiles.h>
 #include "globals.h"
+
+namespace psi { namespace detcasman {
 
 /*
 ** init_io(): Function opens input and output files
@@ -67,14 +70,17 @@ void check(int a, char *errmsg)
   }
 }
 
+}} // end namespace psi::detcasman
+
 /*
 ** The gprgid() function required by the PSI I/O libraries
 */
-char *gprgid()
-{
-   char *prgid = "DETCASMAN";
-
-   return(prgid);
+extern "C" {
+  char *gprgid()
+  {
+    char *prgid = "DETCASMAN";
+    return(prgid);
+  }
 }
 
 

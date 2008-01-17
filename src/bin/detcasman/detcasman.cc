@@ -39,20 +39,25 @@
 #include <libciomr/libciomr.h>
 #include "setup_io.h"
 
+extern "C" {
+  FILE *infile, *outfile;
+  char *psi_file_prefix;
+}
+
+namespace psi { namespace detcasman {
+
 #define MAX_COMMENT 10
 
 void title(void);
 void quote(void);
 double calc_ci_conv(double scale, double *energy);
 
-
-FILE *infile, *outfile;
-char *psi_file_prefix;
+}} // end namespace psi::detcasman
 
 
-/* MAIN ROUTINE */
+using namespace psi::detcasman;
 
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   int converged = 0;
   int i, errcod = 0;
@@ -129,6 +134,7 @@ main(int argc, char *argv[])
   return(!converged);
 }
 
+namespace psi { namespace detcasman {
 
 /*
 ** title(): Function prints a program identification
@@ -193,4 +199,6 @@ double calc_ci_conv(double scale_conv, double *energy_last)
 
   return(tval);
 }
+
+}} // end namespace psi::detcasman 
 
