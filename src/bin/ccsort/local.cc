@@ -1019,7 +1019,7 @@ void local_done(void)
 
   if(params.ref == 0 || params.ref == 1) {
     for(h=0; h < moinfo.nirreps; h++)
-      if(moinfo.orbspi[h] && moinfo.virtpi[h]) free_block(moinfo.C[h]);
+      if(moinfo.sopi[h] && moinfo.virtpi[h]) free_block(moinfo.C[h]);
     free(moinfo.C);
   }
 

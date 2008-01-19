@@ -55,6 +55,7 @@ void get_moinfo(void)
   moinfo.labels = chkpt_rd_irr_labs();
   moinfo.enuc = chkpt_rd_enuc();
   escf = chkpt_rd_escf();
+  moinfo.sopi = chkpt_rd_sopi();
   moinfo.orbspi = chkpt_rd_orbspi();
   moinfo.clsdpi = chkpt_rd_clsdpi();
   moinfo.openpi = chkpt_rd_openpi();
@@ -988,9 +989,9 @@ void get_moinfo(void)
       evects_A[h] = chkpt_rd_alpha_scf_irrep(h); /* Pitzer-ordered MO's */
 
       if(moinfo.avirtpi[h]) {
-	scf_vector_A[h] = block_matrix(moinfo.orbspi[h], moinfo.avirtpi[h]);
+	scf_vector_A[h] = block_matrix(moinfo.sopi[h], moinfo.avirtpi[h]);
 
-	for(i=0; i < moinfo.orbspi[h]; i++) {
+	for(i=0; i < moinfo.sopi[h]; i++) {
 	  for(j=0; j < moinfo.avirtpi[h]; j++) { /* CC-ordered relative index */
 	    J = moinfo.avir_off[h] + j;          /* CC-ordered absolute index */
 	    qt_j = moinfo.qt_avir[J];            /* QT-ordered absolute index */
@@ -1001,7 +1002,7 @@ void get_moinfo(void)
 	}
 
 	psio_write(CC_INFO, "UHF Active Alpha Virtual Orbs", (char *) scf_vector_A[h][0],
-		   moinfo.orbspi[h]*moinfo.avirtpi[h]*sizeof(double), next, &next);
+		   moinfo.sopi[h]*moinfo.avirtpi[h]*sizeof(double), next, &next);
     
         free_block(evects_A[h]);
         free_block(scf_vector_A[h]);
@@ -1020,9 +1021,9 @@ void get_moinfo(void)
       evects_B[h] = chkpt_rd_beta_scf_irrep(h); /* Pitzer-ordered MO's */
 
       if(moinfo.bvirtpi[h]) {
-	scf_vector_B[h] = block_matrix(moinfo.orbspi[h], moinfo.bvirtpi[h]);
+	scf_vector_B[h] = block_matrix(moinfo.sopi[h], moinfo.bvirtpi[h]);
 
-	for(i=0; i < moinfo.orbspi[h]; i++) {
+	for(i=0; i < moinfo.sopi[h]; i++) {
 	  for(j=0; j < moinfo.bvirtpi[h]; j++) { /* CC-ordered relative index */
 	    J = moinfo.bvir_off[h] + j;          /* CC-ordered absolute index */
 	    qt_j = moinfo.qt_bvir[J];            /* QT-ordered absolute index */
@@ -1033,7 +1034,7 @@ void get_moinfo(void)
 	}
 
 	psio_write(CC_INFO, "UHF Active Beta Virtual Orbs", (char *) scf_vector_B[h][0],
-		   moinfo.orbspi[h]*moinfo.bvirtpi[h]*sizeof(double), next, &next);
+		   moinfo.sopi[h]*moinfo.bvirtpi[h]*sizeof(double), next, &next);
 
 	free_block(evects_B[h]);
 	free_block(scf_vector_B[h]);
@@ -1065,21 +1066,22 @@ void get_moinfo(void)
 
       /* Are there active virtuals in this irrep? */
       if(moinfo.virtpi[h]) {
-	scf_vector[h] = block_matrix(moinfo.orbspi[h],moinfo.virtpi[h]);
+        
+	scf_vector[h] = block_matrix(moinfo.sopi[h],moinfo.virtpi[h]);
 
-	for(i=0; i < moinfo.orbspi[h]; i++) {
+	for(i=0; i < moinfo.sopi[h]; i++) {
 	  for(j=0; j < moinfo.virtpi[h]; j++) { /* CC-ordered relative index */
 	    J = moinfo.vir_off[h] + j;          /* CC-ordered absolute index */
 	    qt_j = moinfo.qt_vir[J];            /* QT-ordered absolute index */
 	    pitz_J = moinfo.qt2pitz[qt_j];             /* Pitzer-ordered absolute index */
 	    pitz_j = pitz_J - pitz_offset[h];   /* Pitzer-order relative index */
-	    scf_vector[h][i][j] = evects[h][i][pitz_j];
+        scf_vector[h][i][j] = evects[h][i][pitz_j];
 	  }
 	}
 
 	psio_write(CC_INFO, "RHF/ROHF Active Virtual Orbitals",
 		   (char *) scf_vector[h][0],
-		   moinfo.orbspi[h]*moinfo.virtpi[h]*sizeof(double),
+		   moinfo.sopi[h]*moinfo.virtpi[h]*sizeof(double),
 		   next, &next);
 
 	free_block(scf_vector[h]);
@@ -1092,21 +1094,21 @@ void get_moinfo(void)
       evects[h] = chkpt_rd_scf_irrep(h); /* Pitzer-order MO's */
       next = PSIO_ZERO;
       if(moinfo.occpi[h]) {
-	scf_vector[h] = block_matrix(moinfo.orbspi[h],moinfo.occpi[h]);
+	scf_vector[h] = block_matrix(moinfo.sopi[h],moinfo.occpi[h]);
 
-	for(i=0; i < moinfo.orbspi[h]; i++) {
+	for(i=0; i < moinfo.sopi[h]; i++) {
 	  for(j=0; j < moinfo.occpi[h]; j++) { /* CC-ordered relative index */
 	    J = moinfo.occ_off[h] + j;          /* CC-ordered absolute index */
 	    qt_j = moinfo.qt_occ[J];            /* QT-ordered absolute index */
 	    pitz_J = moinfo.qt2pitz[qt_j];             /* Pitzer-ordered absolute index */
 	    pitz_j = pitz_J - pitz_offset[h];   /* Pitzer-order relative index */
-	    scf_vector[h][i][j] = evects[h][i][pitz_j];
+        scf_vector[h][i][j] = evects[h][i][pitz_j];
 	  }
 	}
 
 	psio_write(CC_INFO, "RHF/ROHF Active Occupied Orbitals",
 		   (char *) scf_vector[h][0],
-		   moinfo.orbspi[h]*moinfo.occpi[h]*sizeof(double),
+		   moinfo.sopi[h]*moinfo.occpi[h]*sizeof(double),
 		   next, &next);
 
 	free_block(scf_vector[h]);
@@ -1117,20 +1119,20 @@ void get_moinfo(void)
 
     /*
       fprintf(outfile, "\n\tOriginal SCF Eigenvectors:\n");
-      print_mat(evects[h], moinfo.orbspi[h], moinfo.orbspi[h], outfile);
+      print_mat(evects[h], moinfo.sopi[h], moinfo.orbspi[h], outfile);
 
       fprintf(outfile, "\n\tRe-ordered Virtual SCF Eigenvectors:\n");
-      print_mat(scf_vector[h], moinfo.orbspi[h], moinfo.virtpi[h], outfile);
+      print_mat(scf_vector[h], moinfo.sopi[h], moinfo.virtpi[h], outfile);
     */
     }
 
     C = (double ***) malloc(moinfo.nirreps * sizeof(double **));
     next = PSIO_ZERO;
     for(h=0; h < moinfo.nirreps; h++) {
-      if(moinfo.orbspi[h] && moinfo.virtpi[h]) {
-	C[h] = block_matrix(moinfo.orbspi[h],moinfo.virtpi[h]);
-	psio_read(CC_INFO, "RHF/ROHF Active Virtual Orbitals", (char *) C[h][0],
-		  moinfo.orbspi[h]*moinfo.virtpi[h]*sizeof(double), next, &next);
+      if(moinfo.sopi[h] && moinfo.virtpi[h]) {
+        C[h] = block_matrix(moinfo.sopi[h],moinfo.virtpi[h]);
+        psio_read(CC_INFO, "RHF/ROHF Active Virtual Orbitals", (char *) C[h][0],
+                  moinfo.sopi[h]*moinfo.virtpi[h]*sizeof(double), next, &next);
       }
     }
     moinfo.C = C;

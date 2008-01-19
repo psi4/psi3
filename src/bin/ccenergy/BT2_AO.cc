@@ -30,7 +30,7 @@ void BT2_AO(void)
   int h, nirreps, i, Gc, Gd, Ga, Gb, ij;
   double ***C, **X;
   double ***Ca, ***Cb;
-  int *orbspi, *virtpi;
+  int *sopi, *virtpi;
   int *avirtpi, *bvirtpi;
   int **T2_cd_row_start, **T2_pq_row_start, offset, cd, pq;
   int **T2_CD_row_start, **T2_Cd_row_start;
@@ -45,14 +45,14 @@ void BT2_AO(void)
   int counter=0, counterAA=0, counterBB=0, counterAB=0;
 
   nirreps = moinfo.nirreps;
-  orbspi = moinfo.orbspi;
+  sopi = moinfo.sopi;
 
   T2_pq_row_start = init_int_matrix(nirreps,nirreps);
   for(h=0; h < nirreps; h++) {
     for(Gc=0,offset=0; Gc < nirreps; Gc++) {
       Gd = Gc ^ h;
       T2_pq_row_start[h][Gc] = offset;
-      offset += orbspi[Gc] * orbspi[Gd];
+      offset += sopi[Gc] * sopi[Gd];
     }
   }
 
@@ -114,7 +114,7 @@ void BT2_AO(void)
       dpd_buf4_init(&tau, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
 
       halftrans(&tau, 0, &tau1_AO, 1, C, C, nirreps, T2_cd_row_start, T2_pq_row_start, 
-		virtpi, virtpi, orbspi, 0, 1.0, 0.0);
+		virtpi, virtpi, sopi, 0, 1.0, 0.0);
 
       dpd_buf4_close(&tau);
       dpd_buf4_close(&tau1_AO);
@@ -173,7 +173,7 @@ void BT2_AO(void)
       dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
 
       halftrans(&t2, 0, &tau2_AO, 1, C, C, nirreps, T2_cd_row_start, T2_pq_row_start, 
-		virtpi, virtpi, orbspi, 1, 1.0, 1.0);
+		virtpi, virtpi, sopi, 1, 1.0, 1.0);
 
       dpd_buf4_close(&t2);
       dpd_buf4_close(&tau2_AO);
@@ -210,7 +210,7 @@ void BT2_AO(void)
     dpd_buf4_init(&tau, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tauIJAB");
 
     halftrans(&tau, 0, &tau1_AO, 1, C, C, nirreps, T2_cd_row_start, T2_pq_row_start, 
-	      virtpi, virtpi, orbspi, 0, 1.0, 0.0);
+	      virtpi, virtpi, sopi, 0, 1.0, 0.0);
 
     dpd_buf4_close(&tau);
     dpd_buf4_close(&tau1_AO);
@@ -269,7 +269,7 @@ void BT2_AO(void)
     dpd_buf4_init(&t2, CC_TAMPS, 0, 2, 5, 2, 7, 0, "New tIJAB");
 
     halftrans(&t2, 0, &tau2_AO, 1, C, C, nirreps, T2_cd_row_start, T2_pq_row_start, 
-	      virtpi, virtpi, orbspi, 1, 0.5, 1.0);
+	      virtpi, virtpi, sopi, 1, 0.5, 1.0);
 
     dpd_buf4_close(&t2);
     dpd_buf4_close(&tau2_AO);
@@ -284,7 +284,7 @@ void BT2_AO(void)
     dpd_buf4_init(&tau, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tauijab");
 
     halftrans(&tau, 0, &tau1_AO, 1, C, C, nirreps, T2_cd_row_start, T2_pq_row_start, 
-	      virtpi, virtpi, orbspi, 0, 1.0, 0.0);
+	      virtpi, virtpi, sopi, 0, 1.0, 0.0);
 
     dpd_buf4_close(&tau);
     dpd_buf4_close(&tau1_AO);
@@ -343,7 +343,7 @@ void BT2_AO(void)
     dpd_buf4_init(&t2, CC_TAMPS, 0, 2, 5, 2, 7, 0, "New tijab");
 
     halftrans(&t2, 0, &tau2_AO, 1, C, C, nirreps, T2_cd_row_start, T2_pq_row_start, 
-	      virtpi, virtpi, orbspi, 1, 0.5, 1.0);
+	      virtpi, virtpi, sopi, 1, 0.5, 1.0);
 
     dpd_buf4_close(&t2);
     dpd_buf4_close(&tau2_AO);
@@ -358,7 +358,7 @@ void BT2_AO(void)
     dpd_buf4_init(&tau, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
 
     halftrans(&tau, 0, &tau1_AO, 1, C, C, nirreps, T2_cd_row_start, T2_pq_row_start, 
-	      virtpi, virtpi, orbspi, 0, 1.0, 0.0);
+	      virtpi, virtpi, sopi, 0, 1.0, 0.0);
 
     dpd_buf4_close(&tau);
     dpd_buf4_close(&tau1_AO);
@@ -417,7 +417,7 @@ void BT2_AO(void)
     dpd_buf4_init(&t2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "New tIjAb");
 
     halftrans(&t2, 0, &tau2_AO, 1, C, C, nirreps, T2_cd_row_start, T2_pq_row_start, 
-	      virtpi, virtpi, orbspi, 1, 1.0, 1.0);
+	      virtpi, virtpi, sopi, 1, 1.0, 1.0);
 
     dpd_buf4_close(&t2);
     dpd_buf4_close(&tau2_AO);
@@ -435,7 +435,7 @@ void BT2_AO(void)
     dpd_buf4_init(&tau, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tauIJAB");
 
     halftrans(&tau, 0, &tau1_AO, 1, Ca, Ca, nirreps, T2_CD_row_start, T2_pq_row_start,
-              avirtpi, avirtpi, orbspi, 0, 1.0, 0.0);
+              avirtpi, avirtpi, sopi, 0, 1.0, 0.0);
 
     dpd_buf4_close(&tau);
     dpd_buf4_close(&tau1_AO);
@@ -494,7 +494,7 @@ void BT2_AO(void)
     dpd_buf4_init(&t2, CC_TAMPS, 0, 2, 5, 2, 7, 0, "New tIJAB");
 
     halftrans(&t2, 0, &tau2_AO, 1, Ca, Ca, nirreps, T2_CD_row_start, T2_pq_row_start,
-              avirtpi, avirtpi, orbspi, 1, 0.5, 1.0);
+              avirtpi, avirtpi, sopi, 1, 0.5, 1.0);
 
     dpd_buf4_close(&t2);
     dpd_buf4_close(&tau2_AO);
@@ -509,7 +509,7 @@ void BT2_AO(void)
     dpd_buf4_init(&tau, CC_TAMPS, 0, 12, 15, 12, 17, 0, "tauijab");
 
     halftrans(&tau, 0, &tau1_AO, 1, Cb, Cb, nirreps, T2_cd_row_start, T2_pq_row_start,
-              bvirtpi, bvirtpi, orbspi, 0, 1.0, 0.0);
+              bvirtpi, bvirtpi, sopi, 0, 1.0, 0.0);
 
     dpd_buf4_close(&tau);
     dpd_buf4_close(&tau1_AO);
@@ -568,7 +568,7 @@ void BT2_AO(void)
     dpd_buf4_init(&t2, CC_TAMPS, 0, 12, 15, 12, 17, 0, "New tijab");
 
     halftrans(&t2, 0, &tau2_AO, 1, Cb, Cb, nirreps, T2_cd_row_start, T2_pq_row_start,
-              bvirtpi, bvirtpi, orbspi, 1, 0.5, 1.0);
+              bvirtpi, bvirtpi, sopi, 1, 0.5, 1.0);
 
     dpd_buf4_close(&t2);
     dpd_buf4_close(&tau2_AO);
@@ -583,7 +583,7 @@ void BT2_AO(void)
     dpd_buf4_init(&tau, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tauIjAb");
 
     halftrans(&tau, 0, &tau1_AO, 1, Ca, Cb, nirreps, T2_Cd_row_start, T2_pq_row_start,
-              avirtpi, bvirtpi, orbspi, 0, 1.0, 0.0);
+              avirtpi, bvirtpi, sopi, 0, 1.0, 0.0);
 
     dpd_buf4_close(&tau);
     dpd_buf4_close(&tau1_AO);
@@ -642,7 +642,7 @@ void BT2_AO(void)
     dpd_buf4_init(&t2, CC_TAMPS, 0, 22, 28, 22, 28, 0, "New tIjAb");
 
     halftrans(&t2, 0, &tau2_AO, 1, Ca, Cb, nirreps, T2_Cd_row_start, T2_pq_row_start,
-              avirtpi, bvirtpi, orbspi, 1, 1.0, 1.0);
+              avirtpi, bvirtpi, sopi, 1, 1.0, 1.0);
 
     dpd_buf4_close(&t2);
     dpd_buf4_close(&tau2_AO);

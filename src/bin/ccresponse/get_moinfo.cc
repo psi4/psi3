@@ -41,6 +41,7 @@ void get_moinfo(void)
   moinfo.nso = chkpt_rd_nso();
   moinfo.nao = chkpt_rd_nao();
   moinfo.labels = chkpt_rd_irr_labs();
+  moinfo.sopi = chkpt_rd_sopi();
   moinfo.orbspi = chkpt_rd_orbspi();
   moinfo.clsdpi = chkpt_rd_clsdpi();
   moinfo.openpi = chkpt_rd_openpi();
@@ -258,10 +259,10 @@ void get_moinfo(void)
     C = (double ***) malloc(nirreps * sizeof(double **));
     next = PSIO_ZERO;
     for(h=0; h < nirreps; h++) {
-      if(moinfo.orbspi[h] && moinfo.virtpi[h]) {
-	C[h] = block_matrix(moinfo.orbspi[h],moinfo.virtpi[h]);
-	psio_read(CC_INFO, "RHF/ROHF Active Virtual Orbitals", (char *) C[h][0],
-		  moinfo.orbspi[h]*moinfo.virtpi[h]*sizeof(double), next, &next);
+      if(moinfo.sopi[h] && moinfo.virtpi[h]) {
+        C[h] = block_matrix(moinfo.sopi[h],moinfo.virtpi[h]);
+        psio_read(CC_INFO, "RHF/ROHF Active Virtual Orbitals", (char *) C[h][0],
+                  moinfo.sopi[h]*moinfo.virtpi[h]*sizeof(double), next, &next);
       }
     }
     moinfo.C = C;
@@ -275,6 +276,7 @@ void cleanup(void)
 {
   int i;
 
+  free(moinfo.sopi);
   free(moinfo.orbspi);
   free(moinfo.clsdpi);
   free(moinfo.openpi);
@@ -317,7 +319,7 @@ void cleanup(void)
     free(moinfo.qt_vir);
     free_block(moinfo.scf);
     for(i=0; i < moinfo.nirreps; i++)
-      if(moinfo.orbspi[i] && moinfo.virtpi[i]) free_block(moinfo.C[i]);
+      if(moinfo.sopi[i] && moinfo.virtpi[i]) free_block(moinfo.C[i]);
     free(moinfo.C);
   }
 

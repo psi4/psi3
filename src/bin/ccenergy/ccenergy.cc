@@ -136,8 +136,8 @@ int main(int argc, char *argv[])
 
     if(strcmp(params.aobasis,"NONE")) { /* Set up new DPD's for AO-basis algorithm */
       dpd_init(1, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL, 
-               4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.orbspi, moinfo.orbsym, 
-	       moinfo.boccpi, moinfo.bocc_sym, moinfo.orbspi, moinfo.orbsym);
+               4, moinfo.aoccpi, moinfo.aocc_sym, moinfo.sopi, moinfo.sosym, 
+               moinfo.boccpi, moinfo.bocc_sym, moinfo.sopi, moinfo.sosym);
       dpd_set_default(0);
     }
 
@@ -153,7 +153,7 @@ int main(int argc, char *argv[])
    
     if(strcmp(params.aobasis,"NONE")) { /* Set up new DPD for AO-basis algorithm */
       dpd_init(1, moinfo.nirreps, params.memory, 0, cachefiles, cachelist, NULL, 
-	       2, moinfo.occpi, moinfo.occ_sym, moinfo.orbspi, moinfo.orbsym);
+               2, moinfo.occpi, moinfo.occ_sym, moinfo.sopi, moinfo.sosym);
       dpd_set_default(0);
     }
 

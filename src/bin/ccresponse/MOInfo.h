@@ -15,6 +15,7 @@ struct MOInfo {
   int noei_ao;        /* no. of elements in AOxAO lower triangle */
   int nactive;        /* no. of active MO's */
   int nfzc;           /* no. of frozen core orbitals */
+  int *sopi;          /* no. of SOs per irrep */
   int *orbspi;        /* no. of MOs per irrep */
   int *clsdpi;        /* no. of closed-shells per irrep  */
   int *openpi;        /* no. of open-shells per irrep */
