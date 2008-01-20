@@ -76,7 +76,7 @@ main(int argc, char *argv[])
   double *H_a, *H_b, *D_a, *D_b, *F_a, *F_b;
   double ***C, ***C_a, ***C_b;
   int stat;
-  int *offset;
+  int *so_offset, *mo_offset;
   double efzc;
 
   init_io(argc,argv);
@@ -119,17 +119,20 @@ main(int argc, char *argv[])
   }
 
   /* build the frozen-core density (RHF) */
-  offset = init_int_array(nirreps);
-  for(h=1; h < nirreps; h++)
-    offset[h] = offset[h-1] + moinfo.sopi[h-1];
+  so_offset = init_int_array(nirreps);
+  mo_offset = init_int_array(nirreps);
+  for(h=1; h < nirreps; h++) {
+    so_offset[h] = so_offset[h-1] + moinfo.sopi[h-1];
+    mo_offset[h] = mo_offset[h-1] + moinfo.mopi[h-1] + moinfo.frdocc[h-1] + moinfo.fruocc[h-1];
+  }
 
   if(params.ref == 0 || params.ref == 1) { /* RHF/ROHF */
     D = init_array(ntri_so);
     for(h=0; h < nirreps; h++)
-      for(p=offset[h]; p < offset[h]+moinfo.sopi[h]; p++)
-	for(q=offset[h]; q <=p; q++) {
+      for(p=so_offset[h]; p < so_offset[h]+moinfo.sopi[h]; p++)
+	for(q=so_offset[h]; q <=p; q++) {
 	  pq = INDEX(p,q);
-	  for(i=offset[h]; i < offset[h]+moinfo.frdocc[h]; i++)
+	  for(i=mo_offset[h]; i < mo_offset[h]+moinfo.frdocc[h]; i++)
 	    D[pq] += C[0][p][i] * C[0][q][i];
 	}
     if(params.print_lvl > 2) {
@@ -141,10 +144,10 @@ main(int argc, char *argv[])
     D_a = init_array(ntri_so);
     D_b = init_array(ntri_so);
     for(h=0; h < nirreps; h++)
-      for(p=offset[h]; p < offset[h]+moinfo.sopi[h]; p++)
-	for(q=offset[h]; q <=p; q++) {
+      for(p=so_offset[h]; p < so_offset[h]+moinfo.sopi[h]; p++)
+	for(q=so_offset[h]; q <=p; q++) {
 	  pq = INDEX(p,q);
-	  for(i=offset[h]; i < offset[h]+moinfo.frdocc[h]; i++) {
+	  for(i=mo_offset[h]; i < mo_offset[h]+moinfo.frdocc[h]; i++) {
 	    D_a[pq] += C_a[0][p][i] * C_a[0][q][i];
 	    D_b[pq] += C_b[0][p][i] * C_b[0][q][i];
 	  }
@@ -157,7 +160,8 @@ main(int argc, char *argv[])
     }
   }
 
-  free(offset);
+  free(so_offset);
+  free(mo_offset);
 
   /* pre-sort the SO-basis two-electron integrals and generate the fzc operator(s) */
   if(params.ref == 0 || params.ref == 1)
