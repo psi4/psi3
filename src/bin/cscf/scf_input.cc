@@ -116,7 +116,7 @@ void scf_input(ip_value_t* ipvalue)
    exitflag = 0;
    errcod = ip_boolean("EXIT_CINTS",&exitflag,0);
    
-   itmax = 40;
+   itmax = 100;
    errcod = ip_data("MAXITER","%d",&itmax,0);
 
    it_diis = 0;

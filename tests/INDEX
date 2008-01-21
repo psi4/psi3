@@ -29,6 +29,9 @@ cc8a: ROHF-CCSD(T)/cc-pVDZ 2Sigma+ CN single-point energy (fzc, MO-basis
 cc9: UHF-CCSD(T)/cc-pVDZ 2Sigma+ CN single-point energy (fzc, AO-basis
     <ab|cd>)
 
+cc9: ROHF-CCSD(T)/cc-pVDZ 2Sigma+ CN single-point energy (nofzc, AO-basis
+    <ab|cd>)
+
 cc10: ROHF-CCSD/cc-pVDZ 2Sigma+ CN single-point energy (fzc, MO-basis
     <ab|cd>)
 

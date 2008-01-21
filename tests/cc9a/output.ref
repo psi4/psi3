@@ -1,0 +1,1062 @@
+******************************************************************************
+tstart called on arcturus.local
+Sun Jan 20 22:26:46 2008
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	UHF-CCSD(T)/cc-pVDZ 2Sigma+ CN
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	2
+
+  Parsed basis sets from /Users/crawdad/psi3_trunk/macosx/share/pbasis.dat
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          CARBON      0.000000000000     0.000000000000     0.000000000000
+        NITROGEN      0.000000000000     0.000000000000     2.220428036580
+
+
+  -Rotational constants (cm-1) :
+    A = **********  B =    1.88947  C =    1.88947
+    It is a linear molecule.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          CARBON      0.000000000000     0.000000000000    -1.195736246924
+        NITROGEN      0.000000000000     0.000000000000     1.024691789657
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 2
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  6665.00000000     0.00069200)
+           (  1000.00000000     0.00532900)
+           (   228.00000000     0.02707700)
+           (    64.71000000     0.10171800)
+           (    21.06000000     0.27474000)
+           (     7.49500000     0.44856400)
+           (     2.79700000     0.28507400)
+           (     0.52150000     0.01520400)
+           (     0.15960000    -0.00319100) )
+        (S (  6665.00000000    -0.00014600)
+           (  1000.00000000    -0.00115400)
+           (   228.00000000    -0.00572500)
+           (    64.71000000    -0.02331200)
+           (    21.06000000    -0.06395500)
+           (     7.49500000    -0.14998100)
+           (     2.79700000    -0.12726200)
+           (     0.52150000     0.54452900)
+           (     0.15960000     0.58049600) )
+        (S (     0.15960000     1.00000000) )
+        (P (     9.43900000     0.03810900)
+           (     2.00200000     0.20948000)
+           (     0.54560000     0.50855700)
+           (     0.15170000     0.46884200) )
+        (P (     0.15170000     1.00000000) )
+        (D (     0.55000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (  9046.00000000     0.00070000)
+           (  1357.00000000     0.00538900)
+           (   309.30000000     0.02740600)
+           (    87.73000000     0.10320700)
+           (    28.56000000     0.27872300)
+           (    10.21000000     0.44854000)
+           (     3.83800000     0.27823800)
+           (     0.74660000     0.01544000)
+           (     0.22480000    -0.00286400) )
+        (S (  9046.00000000    -0.00015300)
+           (  1357.00000000    -0.00120800)
+           (   309.30000000    -0.00599200)
+           (    87.73000000    -0.02454400)
+           (    28.56000000    -0.06745900)
+           (    10.21000000    -0.15807800)
+           (     3.83800000    -0.12183100)
+           (     0.74660000     0.54900300)
+           (     0.22480000     0.57881500) )
+        (S (     0.22480000     1.00000000) )
+        (P (    13.55000000     0.03991900)
+           (     2.91700000     0.21716900)
+           (     0.79730000     0.51031900)
+           (     0.21850000     0.46221400) )
+        (P (     0.21850000     1.00000000) )
+        (D (     0.81700000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 50
+    Number of AO           = 30
+    Number of SO           = 28
+
+    Irrep    Number of SO
+    -----    ------------
+      1           14
+      2            2
+      3            6
+      4            6
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          CARBON      0.000000000000     0.000000000000    -1.195736246924
+        NITROGEN      0.000000000000     0.000000000000     1.024691789657
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          CARBON      0.000000000000     0.000000000000    -1.195736246924
+        NITROGEN      0.000000000000     0.000000000000     1.024691789657
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          CARBON      0.000000000000     0.000000000000    -0.632756417677
+        NITROGEN      0.000000000000     0.000000000000     0.542243582323
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          CARBON      0.000000000000     0.000000000000    -1.195736246924
+        NITROGEN      0.000000000000     0.000000000000     1.024691789657
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =      18.915271879149
+
+  -The Interatomic Distances in angstroms:
+
+           1           2
+
+    1   0.0000000
+    2   1.1750000   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on arcturus.local
+Sun Jan 20 22:26:46 2008
+
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on arcturus.local
+Sun Jan 20 22:26:46 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 2
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = UHF-CCSD(T)/cc-pVDZ 2Sigma+ CN
+    Number of atoms             = 2
+    Number of atomic orbitals   = 30
+    Number of symmetry orbitals = 28
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+  -CARTESIAN COORDINATES (a.u.):
+     Nuc. charge           X                  Y                   Z
+    -------------   -----------------  -----------------  -----------------
+         6.000         0.000000000000     0.000000000000    -1.195736246924
+         7.000         0.000000000000     0.000000000000     1.024691789657
+
+
+    Wrote 19125 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on arcturus.local
+Sun Jan 20 22:26:47 2008
+
+user time   =       0.20 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on arcturus.local
+Sun Jan 20 22:26:47 2008
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+Cannot check consistency of the multiplicity
+
+and number of electrons, double check
+your occupations
+
+  label        = UHF-CCSD(T)/cc-pVDZ 2Sigma+ CN
+  wfn          = CCSD_T
+  reference    = ROHF
+  multiplicity = 2
+  charge       = 0
+  direct       = false
+  dertype      = NONE
+  convergence  = 10
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy       18.9152718791489
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 1.000000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.020000
+  iterations before extrapolation  = 0
+  4 error matrices will be kept
+
+  keeping integrals in 271920 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 8.124725e-03
+
+
+  Using DOCC and SOCC to 
+  determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              4     0     1     1   
+  SOCC:              1     0     0     0   
+
+
+  open-shell energy coeffs
+  open shell pair    alpha         beta
+        1  1       0.000000     -1.000000
+  reading integrals in the IWL format from files 33,35,36,37
+
+      3345 integrals written to file92 in   1 buffers
+      5296 integrals written to file93 in   1 buffers
+  wrote 0 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -83.1984135320    1.021137e+02    0.000000e+00    0.000000e+00
+    2       -88.3429024467    5.144489e+00    1.829208e-01    7.859851e-01
+    3       -90.1784745152    1.835572e+00    3.126349e-02    6.570929e-01
+    4       -91.4107195483    1.232245e+00    1.264362e-02    4.989588e-01
+    5       -92.0100841051    5.993646e-01    7.278561e-03    3.855891e-01
+    6       -92.1393475965    1.292635e-01    3.505913e-03    1.818348e-01
+    7       -92.1725161649    3.316857e-02    2.794358e-03    7.192013e-02
+    8       -92.1867098529    1.419369e-02    2.347206e-03    3.235918e-02
+    9       -92.1921564976    5.446645e-03    1.477729e-03    1.621939e-02
+   10       -92.1940868518    1.930354e-03    7.823449e-04    1.107726e-02
+   11       -92.1948903141    8.034623e-04    4.847801e-04    6.942965e-03
+   12       -92.1952702038    3.798897e-04    3.231373e-04    5.181050e-03
+   13       -92.1954555739    1.853701e-04    2.414012e-04    3.774146e-03
+   14       -92.1955264126    7.083866e-05    1.647815e-04    2.793982e-03
+   15       -92.1955483580    2.194544e-05    1.189913e-04    1.947990e-03
+   16       -92.1955523311    3.973088e-06    7.347990e-05    1.412969e-03
+   17       -92.1955540369    1.705768e-06    4.623227e-05    9.003899e-04
+   18       -92.1955559860    1.949067e-06    3.883852e-05    4.827014e-04
+   19       -92.1955565130    5.270391e-07    1.986730e-05    1.659424e-04
+   20       -92.1955566028    8.978667e-08    7.407489e-06    6.639042e-05
+   21       -92.1955566176    1.481054e-08    2.652104e-06    2.381300e-05
+   22       -92.1955566203    2.742340e-09    1.006845e-06    1.547405e-05
+   23       -92.1955566210    6.986340e-10    5.505637e-07    1.051189e-05
+   24       -92.1955566212    2.115854e-10    2.974642e-07    5.826522e-06
+   25       -92.1955566213    8.893153e-11    1.863748e-07    3.405968e-06
+   26       -92.1955566214    3.248601e-11    1.170846e-07    2.050342e-06
+   27       -92.1955566214    9.336532e-12    7.353790e-08    1.306330e-06
+   28       -92.1955566214    1.847411e-12    4.487398e-08    8.559536e-07
+   29       -92.1955566214    9.947598e-13    2.778563e-08    5.443620e-07
+   30       -92.1955566214    1.548983e-12    2.506698e-08    3.259270e-07
+   31       -92.1955566214    7.531753e-13    1.950845e-08    2.105713e-07
+   32       -92.1955566214    1.705303e-13    7.855051e-09    8.613663e-08
+   33       -92.1955566214    5.684342e-14    3.473829e-09    4.524247e-08
+   34       -92.1955566214   -1.421085e-14    2.016529e-09    3.354505e-08
+   35       -92.1955566214    1.421085e-14    1.303841e-09    2.176729e-08
+   36       -92.1955566214   -5.684342e-14    8.574436e-10    1.314033e-08
+   37       -92.1955566214    4.263256e-14    4.909300e-10    8.491296e-09
+   38       -92.1955566214    1.421085e-14    2.885064e-10    5.308194e-09
+   39       -92.1955566214    0.000000e+00    1.959519e-10    3.149088e-09
+   40       -92.1955566214   -4.263256e-14    1.179647e-10    1.581361e-09
+   41       -92.1955566214    1.136868e-13    7.544474e-11    9.376479e-10
+
+ ci_typ is CCSD_T so mo vector will be rotated
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -15.636443     2A1    -11.359535     3A1     -1.246019  
+   4A1     -0.626091     1B1     -0.507352     1B2     -0.507352  
+
+  Singly occupied orbitals
+   5A1     -0.337390  
+
+  Unoccupied orbitals
+   2B2      0.177180     2B1      0.177180     6A1      0.384745  
+   3B1      0.655939     3B2      0.655939     7A1      0.699522  
+   8A1      0.869525     4B1      1.036480     4B2      1.036480  
+   9A1      1.044979     1A2      1.314443    10A1      1.314443  
+   5B2      1.503400     5B1      1.503400    11A1      1.564388  
+  12A1      2.160944     2A2      2.160944    13A1      2.254479  
+   6B1      2.677031     6B2      2.677031    14A1      3.095851  
+
+
+        SCF total energy   =     -92.195556621383
+        kinetic energy     =      91.922587808772
+        nuc. attr. energy  =    -253.718623712896
+        elec. rep. energy  =      69.600479282742
+        potential energy   =    -184.118144430155
+        virial theorem     =       1.997039241124
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on arcturus.local
+Sun Jan 20 22:26:47 2008
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on arcturus.local
+Sun Jan 20 22:26:47 2008
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	CCSD_T
+	Print Level     =	2
+	Print TEIs      =	No
+	Reference wfn   =	ROHF (using UHF for semicanonical orbitals)
+	Derivative      =	None
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 28
+	Number of MOs        = 28
+	Number of active MOs = 28
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   14	    0	    4	    1	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   6	    0	    1	    0	    5	    0
+	 B2 	   6	    0	    1	    0	    5	    0
+
+	Nuclear Rep. energy (chkpt) =     18.91527187914894
+	SCF energy          (chkpt) =    -92.19555662138251
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting AA/AB first half-transformation.
+	h = 0; memfree         = 31999456
+	h = 0; rows_per_bucket = 150
+	h = 0; rows_left       = 0
+	h = 0; nbuckets        = 1
+	h = 1; memfree         = 31999744
+	h = 1; rows_per_bucket = 64
+	h = 1; rows_left       = 0
+	h = 1; nbuckets        = 1
+	h = 2; memfree         = 31999616
+	h = 2; rows_per_bucket = 96
+	h = 2; rows_left       = 0
+	h = 2; nbuckets        = 1
+	h = 3; memfree         = 31999616
+	h = 3; rows_per_bucket = 96
+	h = 3; rows_left       = 0
+	h = 3; nbuckets        = 1
+	Sorting AA/AB half-transformed integrals.
+	Starting AA second half-transformation.
+	h = 0; memfree         = 31999456
+	h = 0; rows_per_bucket = 150
+	h = 0; rows_left       = 0
+	h = 0; nbuckets        = 1
+	h = 1; memfree         = 31999744
+	h = 1; rows_per_bucket = 64
+	h = 1; rows_left       = 0
+	h = 1; nbuckets        = 1
+	h = 2; memfree         = 31999616
+	h = 2; rows_per_bucket = 96
+	h = 2; rows_left       = 0
+	h = 2; nbuckets        = 1
+	h = 3; memfree         = 31999616
+	h = 3; rows_per_bucket = 96
+	h = 3; rows_left       = 0
+	h = 3; nbuckets        = 1
+	Starting AB second half-transformation.
+	h = 0; memfree         = 31999456
+	h = 0; rows_per_bucket = 150
+	h = 0; rows_left       = 0
+	h = 0; nbuckets        = 1
+	h = 1; memfree         = 31999744
+	h = 1; rows_per_bucket = 64
+	h = 1; rows_left       = 0
+	h = 1; nbuckets        = 1
+	h = 2; memfree         = 31999616
+	h = 2; rows_per_bucket = 96
+	h = 2; rows_left       = 0
+	h = 2; nbuckets        = 1
+	h = 3; memfree         = 31999616
+	h = 3; rows_per_bucket = 96
+	h = 3; rows_left       = 0
+	h = 3; nbuckets        = 1
+	Starting BB first half-transformation.
+	h = 0; memfree         = 31999456
+	h = 0; rows_per_bucket = 150
+	h = 0; rows_left       = 0
+	h = 0; nbuckets        = 1
+	h = 1; memfree         = 31999744
+	h = 1; rows_per_bucket = 64
+	h = 1; rows_left       = 0
+	h = 1; nbuckets        = 1
+	h = 2; memfree         = 31999616
+	h = 2; rows_per_bucket = 96
+	h = 2; rows_left       = 0
+	h = 2; nbuckets        = 1
+	h = 3; memfree         = 31999616
+	h = 3; rows_per_bucket = 96
+	h = 3; rows_left       = 0
+	h = 3; nbuckets        = 1
+	Sorting BB half-transformed integrals.
+	Starting BB second half-transformation.
+	h = 0; memfree         = 31999456
+	h = 0; rows_per_bucket = 150
+	h = 0; rows_left       = 0
+	h = 0; nbuckets        = 1
+	h = 1; memfree         = 31999744
+	h = 1; rows_per_bucket = 64
+	h = 1; rows_left       = 0
+	h = 1; nbuckets        = 1
+	h = 2; memfree         = 31999616
+	h = 2; rows_per_bucket = 96
+	h = 2; rows_left       = 0
+	h = 2; nbuckets        = 1
+	h = 3; memfree         = 31999616
+	h = 3; rows_per_bucket = 96
+	h = 3; rows_left       = 0
+	h = 3; nbuckets        = 1
+	Two-electron integral transformation complete.
+******************************************************************************
+tstop called on arcturus.local
+Sun Jan 20 22:26:47 2008
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.06 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on arcturus.local
+Sun Jan 20 22:26:47 2008
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	CCSD_T
+	Reference wfn   =	ROHF changed to UHF for Semicanonical Orbitals
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 28
+	Number of active MOs = 28
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   14	    0	    4	    1	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   6	    0	    1	    0	    5	    0
+	 B2 	   6	    0	    1	    0	    5	    0
+
+	Nuclear Rep. energy (chkpt) =     18.91527187914894
+	SCF energy          (chkpt) =    -92.19555662138251
+
+	Size of irrep 0 of <AB|CD> integrals:      0.003 (MW) /      0.026 (MB)
+	Size of irrep 1 of <AB|CD> integrals:      0.002 (MW) /      0.015 (MB)
+	Size of irrep 2 of <AB|CD> integrals:      0.003 (MW) /      0.024 (MB)
+	Size of irrep 3 of <AB|CD> integrals:      0.003 (MW) /      0.024 (MB)
+	Total:                                     0.011 (MW) /      0.089 (MB)
+
+	Size of irrep 0 of <ab|cd> integrals:      0.004 (MW) /      0.035 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.002 (MW) /      0.016 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.004 (MW) /      0.029 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.004 (MW) /      0.029 (MB)
+	Total:                                     0.014 (MW) /      0.109 (MB)
+
+	Size of irrep 0 of <Ab|Cd> integrals:      0.021 (MW) /      0.166 (MB)
+	Size of irrep 1 of <Ab|Cd> integrals:      0.008 (MW) /      0.062 (MB)
+	Size of irrep 2 of <Ab|Cd> integrals:      0.013 (MW) /      0.106 (MB)
+	Size of irrep 3 of <Ab|Cd> integrals:      0.013 (MW) /      0.106 (MB)
+	Total:                                     0.055 (MW) /      0.439 (MB)
+
+	Size of irrep 0 of <IA|BC> integrals:      0.007 (MW) /      0.059 (MB)
+	Size of irrep 1 of <IA|BC> integrals:      0.002 (MW) /      0.014 (MB)
+	Size of irrep 2 of <IA|BC> integrals:      0.004 (MW) /      0.032 (MB)
+	Size of irrep 3 of <IA|BC> integrals:      0.004 (MW) /      0.032 (MB)
+	Total:                                     0.017 (MW) /      0.137 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.008 (MW) /      0.062 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.002 (MW) /      0.013 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.004 (MW) /      0.031 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.004 (MW) /      0.031 (MB)
+	Total:                                     0.017 (MW) /      0.136 (MB)
+
+	Size of irrep 0 of <Ia|Bc> integrals:      0.009 (MW) /      0.069 (MB)
+	Size of irrep 1 of <Ia|Bc> integrals:      0.002 (MW) /      0.014 (MB)
+	Size of irrep 2 of <Ia|Bc> integrals:      0.004 (MW) /      0.034 (MB)
+	Size of irrep 3 of <Ia|Bc> integrals:      0.004 (MW) /      0.034 (MB)
+	Total:                                     0.019 (MW) /      0.151 (MB)
+
+	Size of irrep 0 of <iA|bC> integrals:      0.007 (MW) /      0.053 (MB)
+	Size of irrep 1 of <iA|bC> integrals:      0.002 (MW) /      0.013 (MB)
+	Size of irrep 2 of <iA|bC> integrals:      0.004 (MW) /      0.029 (MB)
+	Size of irrep 3 of <iA|bC> integrals:      0.004 (MW) /      0.029 (MB)
+	Total:                                     0.015 (MW) /      0.123 (MB)
+
+	Size of irrep 0 of tIjAb amplitudes:       0.003 (MW) /      0.025 (MB)
+	Size of irrep 1 of tIjAb amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tIjAb amplitudes:       0.001 (MW) /      0.008 (MB)
+	Size of irrep 3 of tIjAb amplitudes:       0.001 (MW) /      0.008 (MB)
+	Total:                                     0.005 (MW) /      0.043 (MB)
+
+
+	Sorting File: A <IJ|KL> nbuckets = 1
+	Sorting File: B <AB|CD> nbuckets = 1
+	Sorting File: C <IA|JB> nbuckets = 1
+	Sorting File: D <IJ|AB> nbuckets = 1
+	Sorting File: E <AI|JK> nbuckets = 1
+	Sorting File: F <IA|BC> nbuckets = 1
+	Sorting File: F <AI|BC> nbuckets = 1
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
+	Sorting File: A <Ij|Kl> nbuckets = 1
+	Sorting File: B <Ab|Cd> nbuckets = 1
+	Sorting File: C <Ia|Jb> nbuckets = 1
+	Sorting File: C <Ai|Bj> nbuckets = 1
+	Sorting File: D <Ij|Ab> nbuckets = 1
+	Sorting File: E <Ai|Jk> nbuckets = 1
+	Sorting File: E <Ij|Ka> nbuckets = 1
+	Sorting File: F <Ia|Bc> nbuckets = 1
+	Sorting File: F <aI|bC> nbuckets = 1
+	Sorting File: F <Ab|Ci> nbuckets = 1
+	Sorting File: F <Ai|Bc> nbuckets = 1
+	One-electron energy          =   -161.79603590412441
+	Two-electron (AA) energy     =     11.19205135105362
+	Two-electron (BB) energy     =      8.49570701868783
+	Two-electron (AB) energy     =     30.99744903385150
+	Two-electron energy          =     50.68520740359295
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -92.19555662138255
+******************************************************************************
+tstop called on arcturus.local
+Sun Jan 20 22:26:47 2008
+
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.12 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on arcturus.local
+Sun Jan 20 22:26:47 2008
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =   18.915271879148936
+	SCF energy          (chkpt)   =  -92.195556621382508
+	Reference energy    (file100) =  -92.195556621382551
+
+	Input parameters:
+	-----------------
+	Wave function   =    CCSD_T
+	Reference wfn   =    ROHF changed to UHF for Semicanonical Orbitals
+	Memory (Mbytes) =  256.0
+	Maxiter         =     50
+	Convergence     = 1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	AO Basis        =     NONE
+	ABCD            =     NEW
+	Cache Level     =    2
+	Cache Type      =     LRU
+	Print Level     =    2
+	Num. of threads =     1
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
+	Print Pair Ener =    No
+	Local CC        =     No
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.274514270039965    0.000e+00    0.013430    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+     1        -0.263908563380523    1.106e-01    0.031103    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+     2        -0.277752987350866    4.184e-02    0.034767    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+     3        -0.282899006072971    3.490e-02    0.046111    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+     4        -0.283881362279293    1.811e-02    0.054370    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+     5        -0.284747206267286    1.217e-02    0.061801    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+     6        -0.284789626078372    5.881e-03    0.065648    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+     7        -0.284896556909341    2.111e-03    0.066557    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+     8        -0.284941170305739    1.031e-03    0.067250    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+     9        -0.284916202435834    4.000e-04    0.067255    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+    10        -0.284925683349678    2.038e-04    0.067307    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+    11        -0.284923574688545    1.095e-04    0.067370    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+    12        -0.284924887464183    5.568e-05    0.067361    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+    13        -0.284923291540358    1.501e-05    0.067367    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+    14        -0.284922690791428    3.891e-06    0.067369    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+    15        -0.284922803048535    1.391e-06    0.067369    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+    16        -0.284922891572555    6.346e-07    0.067370    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+    17        -0.284922900318735    1.131e-07    0.067370    0.000000    0.000000
+     F intermediates...complete
+     T1 amplitudes  ...complete
+     Wmbej          ...complete
+     Z              ...complete
+     Wmnij          ...complete
+     <ij||ab> -> T2 ...complete
+     F -> T2        ...complete
+     Wmnij -> T2    ...complete
+     <ab||cd> -> T2 ...complete
+     Z -> T2        ...complete
+     <ia||bc> -> T2 ...complete
+     <ij||ka> -> T2 ...complete
+     Wmbej -> T2    ...complete
+     <ia||jb> -> T2 ...complete
+     T2 amplitudes  ...complete
+    18        -0.284922902819267    4.440e-08    0.067370    0.000000    0.000000
+
+	Iterations converged.
+
+
+	Largest TIA Amplitudes:
+	          5  11         0.0353828768
+	          6  16         0.0353828768
+	          5  12         0.0248789246
+	          6  17         0.0248789246
+	          5  14         0.0239951933
+	          6  19         0.0239951933
+	          4   1         0.0179530762
+	          4   3         0.0164691539
+	          4   0        -0.0113429301
+	          5  13         0.0097033999
+
+	Largest Tia Amplitudes:
+	          3   0         0.2197999063
+	          4  12        -0.0352135216
+	          5  17        -0.0352135216
+	          3   2        -0.0219359830
+	          4  14         0.0185864652
+	          5  19         0.0185864652
+	          2   0         0.0145613782
+	          3   1        -0.0136676920
+	          4  15        -0.0107724463
+	          5  20        -0.0107724463
+
+	Largest TIJAB Amplitudes:
+	  6   5  16  11        -0.0345988819
+	  5   4  11   3         0.0226926730
+	  6   4  16   3         0.0226926730
+	  6   5  17  12        -0.0172561379
+	  6   5   9   4         0.0164439343
+	  5   3  12   1        -0.0147258186
+	  6   3  17   1        -0.0147258186
+	  6   5  16  13         0.0114044341
+	  6   5  18  11         0.0114044341
+	  5   4  13   3        -0.0113075778
+
+	Largest Tijab Amplitudes:
+	  4   3  12   0        -0.0383395692
+	  5   3  17   0        -0.0383395692
+	  5   4  17  12        -0.0367707886
+	  5   4  18  13        -0.0148992508
+	  5   4  10   5         0.0147264960
+	  4   3  14   0         0.0136504532
+	  5   3  19   0         0.0136504532
+	  5   4  17  14         0.0130977058
+	  5   4  19  12         0.0130977058
+	  5   4  19  14        -0.0130893483
+
+	Largest TIjAb Amplitudes:
+	  5   4  11  12        -0.1034065924
+	  6   5  16  17        -0.1034065924
+	  5   3  11   0        -0.0804563496
+	  6   3  16   0        -0.0804563496
+	  5   5  11  17        -0.0611850857
+	  6   4  16  12        -0.0611850857
+	  3   4  11   0        -0.0596578123
+	  3   5  16   0        -0.0596578123
+	  3   3  11  12        -0.0484330084
+	  3   3  16  17        -0.0484330084
+
+	SCF energy       (chkpt)   =  -92.195556621382508
+	Reference energy (file100) =  -92.195556621382551
+	MP2 correlation energy     =   -0.274405282596416
+	Total MP2 energy           =  -92.469961903978970
+	CCSD correlation energy    =   -0.284922902819267
+	Total CCSD energy          =  -92.480479524201812
+
+******************************************************************************
+tstop called on arcturus.local
+Sun Jan 20 22:26:50 2008
+
+user time   =       1.22 seconds =       0.02 minutes
+system time =       1.04 seconds =       0.02 minutes
+total time  =          3 seconds =       0.05 minutes
+******************************************************************************
+tstart called on arcturus.local
+Sun Jan 20 22:26:50 2008
+
+			**************************
+			*                        *
+			*        CCTRIPLES       *
+			*                        *
+			**************************
+
+
+	Wave function   =    CCSD_T
+	Reference wfn   =    ROHF changed to UHF for Semicanonical Orbitals
+
+	Nuclear Rep. energy (chkpt)   =   18.915271879148936
+	SCF energy          (chkpt)   =  -92.195556621382508
+	Reference energy    (file100) =  -92.195556621382551
+	CCSD energy         (file100) =   -0.284922902819267
+	Total CCSD energy   (file100) =  -92.480479524201812
+
+	Number of ijk index combinations:
+	Spin Case AAA: 35
+	Spin Case BBB: 20
+	Spin Case AAB: 126
+	Spin Case ABB: 105
+
+	AAA (T) energy                =   -0.000198637581920
+	BBB (T) energy                =   -0.000177305445395
+	AAB (T) energy                =   -0.007197927272097
+	ABB (T) energy                =   -0.006489162510777
+	(T) energy                    =   -0.014063032810189
+	Total CCSD(T) energy          =  -92.494542557012011
+
+******************************************************************************
+tstop called on arcturus.local
+Sun Jan 20 22:26:51 2008
+
+user time   =       0.35 seconds =       0.01 minutes
+system time =       0.17 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
