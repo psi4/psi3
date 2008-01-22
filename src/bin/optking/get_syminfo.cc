@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <libqt/qt.h>
 #include <libchkpt/chkpt.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
@@ -51,8 +52,10 @@ void get_syminfo(internals &simples) {
   syminfo.irrep_lbls = chkpt_rd_irr_labs();
   chkpt_close();
 
+  // abort if group label is greater than 3 characters
   j = strlen(syminfo.symmetry);
-  strncpy(ptgrp,syminfo.symmetry,j);
+  if (j > 3) abort();
+  strncpy(ptgrp,syminfo.symmetry,4);
   for ( ;j<3;++j)
     ptgrp[j] = ' ';
   ptgrp[3] = '\0';

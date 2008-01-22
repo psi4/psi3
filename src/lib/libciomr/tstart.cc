@@ -19,6 +19,7 @@
 #ifdef HAVE_SYS_TIMES_H
 #include <sys/times.h>
 #endif
+#include <libqt/qt.h>
 
 extern "C" {
 

@@ -134,7 +134,7 @@ token_to_segments(char* token,char* seg[MAX_SEGMENT])
       }
     else if (*tloop == ':') {
       seg[segn] = (char *) malloc(tloop - sloop + 1);
-      strncpy(seg[segn],sloop,tloop - sloop);
+      ::strncpy(seg[segn],sloop,tloop - sloop);
       seg[segn][tloop - sloop] = '\0';
       segn++;
       sloop = tloop + 1;

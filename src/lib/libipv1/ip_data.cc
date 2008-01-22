@@ -112,7 +112,7 @@ int ip_boolean_v(char *keyword, int *boolean, int n, int *v)
 
   if (val->type != IP_SCALAR) return IPE_NOT_A_SCALAR;
 
-  strncpy(copy,val->v.scalar,10);
+  ::strncpy(copy,val->v.scalar,10);
   copy[9] = '\0';
 
   /* Convert the string to uppercase. */

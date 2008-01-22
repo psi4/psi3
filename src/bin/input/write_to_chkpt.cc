@@ -10,6 +10,7 @@
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libchkpt/chkpt.h>
+#include <libqt/qt.h>
 #include <psifiles.h>
 #include "input.h"
 #include "global.h"

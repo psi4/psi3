@@ -10,6 +10,7 @@
 #include <string.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
+#include <libqt/qt.h>
 #include "input.h"
 #include "global.h"
 #include "defines.h"

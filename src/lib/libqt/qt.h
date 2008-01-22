@@ -11,6 +11,8 @@
 #ifndef _psi_src_lib_libqt_qt_h_
 #define _psi_src_lib_libqt_qt_h_
 
+#include <stdio.h>
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -119,6 +121,14 @@ int ci_wfn(char *wfn);
 #define MAX_RAS_SPACES 4
 
 #ifdef __cplusplus
+}
+#endif
+
+/* Some functions should not be used outside of Psi */
+#ifdef __cplusplus
+namespace psi {
+  /// Same as ::strncpy(), but make sure that dest ends in \0
+  char* strncpy(char* dest, const char* source, size_t n);
 }
 #endif
 
