@@ -36,7 +36,7 @@ extern "C" {
 */
 void get_parameters(void)
 {
-   int i, errcod;
+   int i, j, k, errcod;
    int iopen=0, tval;
    char line1[133];
    double junk;
@@ -131,8 +131,11 @@ void get_parameters(void)
    /* Parameters.print_lvl is set in detci.cc */
    /* Parameters.have_special_conv is set in detci.cc */
    Parameters.ex_lvl = 2;
+   Parameters.cc_ex_lvl = 2;
    Parameters.val_ex_lvl = 0;
-   Parameters.maxiter = 12;
+   Parameters.cc_val_ex_lvl = 0;
+   Parameters.cc_a_val_ex_lvl = -1;
+   Parameters.cc_b_val_ex_lvl = -1;
    Parameters.max_dets = 10000;
    Parameters.num_roots = 1;
    Parameters.istop = 0;
@@ -148,6 +151,7 @@ void get_parameters(void)
    Parameters.h0block_coupling = 0;
    Parameters.h0block_coupling_size = 0;
    Parameters.nprint = 20;
+   Parameters.cc_nprint = 10;
    Parameters.hd_ave = EVANGELISTI;
    Parameters.hd_otf = TRUE;
    Parameters.nodfile = 0;
@@ -183,11 +187,16 @@ void get_parameters(void)
    Parameters.b_ras1_min = -1;
    Parameters.a_ras3_max = -1;
    Parameters.b_ras3_max = -1;
+   Parameters.cc_a_ras3_max = -1;
+   Parameters.cc_b_ras3_max = -1;
    Parameters.ras3_lvl = -1;
    Parameters.ras3_max = -1;
+   Parameters.cc_ras3_max = -1;
    Parameters.ras4_lvl = -1;
    Parameters.ras4_max = -1;
+   Parameters.cc_ras4_max = -1;
    Parameters.ras34_max = -1;
+   Parameters.cc_ras34_max = -1;
 
    if (strcmp(Parameters.wfn, "DETCAS")==0 ||
        strcmp(Parameters.wfn, "CASSCF")==0 ||
@@ -225,6 +234,9 @@ void get_parameters(void)
    Parameters.restart_iter = 0;
    Parameters.bendazzoli = 0;
 
+   Parameters.cc = 0;
+   errcod = ip_boolean("CC",&(Parameters.cc),0);
+
    if (strcmp(Parameters.dertype, "FIRST")==0 ||
       strcmp(Parameters.wfn, "DETCAS")==0 ||
       strcmp(Parameters.wfn, "CASSCF")==0 ||
@@ -236,11 +248,20 @@ void get_parameters(void)
      Parameters.opdm_write = 1;
      Parameters.tpdm = 1;
      Parameters.tpdm_write = 1;
+     Parameters.maxiter = 12;
    }
 
    else {
-     Parameters.convergence = 4;
-     Parameters.energy_convergence = 6;
+     if (Parameters.cc) {
+       Parameters.convergence = 5;
+       Parameters.energy_convergence = 7;
+       Parameters.maxiter = 20;
+     }
+     else {
+       Parameters.convergence = 4;
+       Parameters.energy_convergence = 6;
+       Parameters.maxiter = 12;
+     }
      Parameters.opdm = 0;
      Parameters.opdm_write = 0;
      Parameters.tpdm = 0;
@@ -272,7 +293,9 @@ void get_parameters(void)
    errcod = ip_data("S","%lf",&(Parameters.S),0);
 
    errcod = ip_data("EX_LVL","%d",&(Parameters.ex_lvl),0);
+   errcod = ip_data("CC_EX_LVL","%d",&(Parameters.cc_ex_lvl),0);
    errcod = ip_data("VAL_EX_LVL","%d",&(Parameters.val_ex_lvl),0);
+   errcod = ip_data("CC_VAL_EX_LVL","%d",&(Parameters.cc_val_ex_lvl),0);
    errcod = ip_data("MAX_DET","%d",&(Parameters.max_dets),0);
    errcod = ip_data("MAXITER","%d",&(Parameters.maxiter),0);
    errcod = ip_data("NUM_ROOTS","%d",&(Parameters.num_roots),0);
@@ -350,6 +373,7 @@ void get_parameters(void)
                     &(Parameters.h0block_coupling_size),0);
    errcod = ip_boolean("H0_BLOCK_COUPLING",&(Parameters.h0block_coupling),0);
    errcod = ip_data("NPRINT","%d",&(Parameters.nprint),0);
+   errcod = ip_data("CC_NPRINT","%d",&(Parameters.cc_nprint),0);
    errcod = ip_boolean("FREEZE_CORE",&(Parameters.fzc),0);
    errcod = ip_boolean("FCI",&(Parameters.fci),0);
    if (Parameters.fci) Parameters.fci_strings = 1;
@@ -390,6 +414,12 @@ void get_parameters(void)
    errcod = ip_data("RAS3_MAX","%d",&(Parameters.ras3_max),0);
    errcod = ip_data("RAS4_MAX","%d",&(Parameters.ras4_max),0);
    errcod = ip_data("RAS34_MAX","%d",&(Parameters.ras34_max),0);
+   errcod = ip_data("CC_A_RAS3_MAX","%d",&(Parameters.cc_a_ras3_max),0);
+   errcod = ip_data("CC_B_RAS3_MAX","%d",&(Parameters.cc_b_ras3_max),0);
+   errcod = ip_data("CC_RAS3_MAX","%d",&(Parameters.cc_ras3_max),0);
+   errcod = ip_data("CC_RAS4_MAX","%d",&(Parameters.cc_ras4_max),0);
+   errcod = ip_data("CC_RAS34_MAX","%d",&(Parameters.cc_ras34_max),0);
+
    errcod = ip_data("GUESS_VECTOR", "%s", line1, 0);
    if (errcod == IPE_OK) {
       if (strcmp(line1, "UNIT")==0) 
@@ -664,6 +694,8 @@ void get_parameters(void)
    
    errcod = ip_boolean("SF_RESTRICT",&(Parameters.sf_restrict),0);
    errcod = ip_boolean("SIGMA_OVERLAP",&(Parameters.print_sigma_overlap),0);
+   
+   if (Parameters.cc) Parameters.ex_lvl = Parameters.cc_ex_lvl + 2;
 
    Parameters.ex_type = (int *)malloc(Parameters.ex_lvl*sizeof(int));
    if (ip_exist("EX_TYPE",0)) {
@@ -854,7 +886,83 @@ void get_parameters(void)
    for (i=0; i<Parameters.average_num; i++) {
      Parameters.average_weights[i] /= junk; 
    }
+
+  Parameters.cc_export = 0;
+  Parameters.cc_import = 0;
+  errcod = ip_boolean("CC_EXPORT", &(Parameters.cc_export), 0);
+  errcod = ip_boolean("CC_IMPORT", &(Parameters.cc_import), 0);
+
+  Parameters.cc_fix_external = 0;
+  errcod = ip_boolean("CC_FIX_EXTERNAL", &(Parameters.cc_fix_external), 0);
+  Parameters.cc_fix_external_min = 1;
+  errcod = ip_data("CC_FIX_EXTERNAL_MIN", "%d",
+    &(Parameters.cc_fix_external_min),0);
+
+  Parameters.cc_variational = 0;
+  errcod = ip_boolean("CC_VARIATIONAL", &(Parameters.cc_variational), 0);
+
+  Parameters.cc_mixed = 1;
+  errcod = ip_boolean("CC_MIXED", &(Parameters.cc_mixed), 0);
+
+  /* update using orb eigvals or not? */
+  Parameters.cc_update_eps = 1;
+  errcod = ip_boolean("CC_UPDATE_EPS", &(Parameters.cc_update_eps), 0);
+
+  Parameters.diis = 1;             /* only kicks in for CC anyway */
+  Parameters.diis_start = 1;       /* iteration to turn on DIIS */
+  Parameters.diis_freq  = 1;       /* how often to do a DIIS extrapolation */
+  Parameters.diis_min_vecs = 2;
+  Parameters.diis_max_vecs = 5;
+
+  errcod = ip_boolean("DIIS", &(Parameters.diis), 0);
+  errcod = ip_data("DIIS_START","%d",&(Parameters.diis_start),0);
+  errcod = ip_data("DIIS_FREQ","%d",&(Parameters.diis_freq),0);
+  errcod = ip_data("DIIS_MIN_VECS","%d",&(Parameters.diis_min_vecs),0);
+  errcod = ip_data("DIIS_MAX_VECS","%d",&(Parameters.diis_max_vecs),0);
    
+  /* parse cc_macro = (
+       (ex_lvl max_holes_I max_parts_IV max_I+IV)
+       ...
+     )
+     This says to eliminate T blocks in which: [the excitation level
+     (holes in I + II) is equal to ex_lvl] AND [there are more than
+     max_holes_I holes in RAS I, there are more than max_parts_IV
+     particles in RAS IV, OR there are more than max_I+IV quasiparticles
+     in RAS I + RAS IV]
+   */
+  Parameters.cc_macro_on = 0;
+  if (Parameters.cc && ip_exist("CC_MACRO",0)) {
+    errcod = ip_count("CC_MACRO",&i,0);
+    Parameters.cc_macro = init_int_matrix(Parameters.cc_ex_lvl +
+      Parameters.cc_val_ex_lvl + 1, 3);
+    Parameters.cc_macro_parsed = init_int_array(Parameters.cc_ex_lvl +
+      Parameters.cc_val_ex_lvl + 1);
+    for (j=0; j<i; j++) {
+      errcod = ip_data("CC_MACRO","%d",&k,2,j,0);
+      if (errcod != IPE_OK) {
+        fprintf(outfile, "Trouble parsing CC_MACRO\n");
+        abort();
+      }
+      errcod = ip_data("CC_MACRO","%d",Parameters.cc_macro[k],2,j,1);
+      if (errcod != IPE_OK) {
+        fprintf(outfile, "Trouble parsing CC_MACRO\n");
+        abort();
+      }
+      errcod = ip_data("CC_MACRO","%d",Parameters.cc_macro[k]+1,2,j,2);
+      if (errcod != IPE_OK) {
+        fprintf(outfile, "Trouble parsing CC_MACRO\n");
+        abort();
+      }
+      errcod = ip_data("CC_MACRO","%d",Parameters.cc_macro[k]+2,2,j,3);
+      if (errcod != IPE_OK) {
+        fprintf(outfile, "Trouble parsing CC_MACRO\n");
+        abort();
+      }
+      Parameters.cc_macro_parsed[k] = 1;
+    }
+    Parameters.cc_macro_on = 1;
+  } /* end parsing of CC_MACRO */
+
 }
 
 
@@ -1049,6 +1157,12 @@ void print_parameters(void)
    fprintf(outfile, "   FILTER_GUESS  =   %6s      SF_RESTRICT  =   %6s\n",
            Parameters.filter_guess ?  "yes":"no",
 	   Parameters.sf_restrict ? "yes":"no");
+   if (Parameters.cc && Parameters.diis) {
+     fprintf(outfile, "   DIIS START    =   %6d      DIIS FREQ    =   %6d\n",
+             Parameters.diis_start, Parameters.diis_freq);
+     fprintf(outfile, "   DIIS MIN VECS =   %6d      DIIS MAX VECS=   %6d\n",
+             Parameters.diis_min_vecs, Parameters.diis_max_vecs);
+   }
    fprintf(outfile, "   OPDM          =   %6s      TRANS DENSITY=   %6s\n",
            Parameters.opdm ?  "yes":"no",
 	   Parameters.transdens ? "yes":"no");
@@ -1068,6 +1182,13 @@ void print_parameters(void)
        Parameters.average_weights[i]);
    }
 
+   fprintf(outfile, "\n   STATE AVERAGE = ");
+   for (i=0; i<Parameters.average_num; i++) {
+     if (i%5==0 && i!=0) fprintf(outfile, "\n");
+     fprintf(outfile, "%2d(%4.2lf) ",Parameters.average_states[i]+1,
+       Parameters.average_weights[i]);
+   }
+
    if (Parameters.follow_vec_num > 0) {
      fprintf(outfile,"\nDensity matrices will follow vector like:\n");
      for (i=0; i<Parameters.follow_vec_num; i++) 
@@ -1075,8 +1196,8 @@ void print_parameters(void)
          Parameters.follow_vec_Ib[i], Parameters.follow_vec_coef[i]);
    }
 
-   fprintf(outfile, "\n\n") ;
-   fflush(outfile) ;
+   fprintf(outfile, "\n\n");
+   fflush(outfile);
 }
 
 
@@ -1113,6 +1234,15 @@ void set_ras_parms(void)
      }
 
    } /* end FCI override */
+
+   /* reset ex_lvl if incompatible with number of electrons */
+   if (Parameters.cc && (Parameters.cc_ex_lvl > 
+     CalcInfo.num_alp_expl + CalcInfo.num_bet_expl)) {
+     Parameters.cc_ex_lvl = CalcInfo.num_alp_expl + CalcInfo.num_bet_expl;
+   }
+   if (Parameters.ex_lvl > CalcInfo.num_alp_expl + CalcInfo.num_bet_expl) {
+     Parameters.ex_lvl = CalcInfo.num_alp_expl + CalcInfo.num_bet_expl;
+   }
 
    for (i=0,j=0; i<CalcInfo.nirreps; i++) j += CalcInfo.ras_opi[0][i];
    Parameters.a_ras1_lvl = Parameters.b_ras1_lvl = Parameters.ras1_lvl = j-1;
@@ -1179,7 +1309,53 @@ void set_ras_parms(void)
 
    /* check Parameters to make sure everything consistent */
 
-   /* deduce Parameters.a_ras3_max and Parameters.b_ras3_max if needed */
+   if (Parameters.cc) {
+     if (Parameters.cc_a_val_ex_lvl == -1)
+       Parameters.cc_a_val_ex_lvl = Parameters.cc_val_ex_lvl;
+     if (Parameters.cc_b_val_ex_lvl == -1)
+       Parameters.cc_b_val_ex_lvl = Parameters.cc_val_ex_lvl;
+     if (Parameters.cc_a_val_ex_lvl > Parameters.ras3_lvl - 
+         Parameters.ras1_lvl - 1)
+       Parameters.cc_a_val_ex_lvl = Parameters.ras3_lvl-Parameters.ras1_lvl-1;
+     if (Parameters.cc_b_val_ex_lvl > Parameters.ras3_lvl - 
+         Parameters.ras1_lvl - 1)
+       Parameters.cc_b_val_ex_lvl = Parameters.ras3_lvl-Parameters.ras1_lvl-1;
+     if (Parameters.cc_val_ex_lvl > Parameters.cc_a_val_ex_lvl +
+         Parameters.cc_b_val_ex_lvl)
+       Parameters.cc_val_ex_lvl = Parameters.cc_a_val_ex_lvl +
+         Parameters.cc_b_val_ex_lvl;
+   }
+
+   /* deduce Parameters.cc_a_ras3_max and Parameters.cc_b_ras3_max if needed */
+   if (Parameters.cc & (Parameters.cc_a_ras3_max == -1 || 
+       Parameters.cc_b_ras3_max == -1)) {
+      if (Parameters.cc_ras3_max != -1) { /* have parsed cc_ras3_max */
+         Parameters.cc_a_ras3_max = 
+            (Parameters.cc_ras3_max <= CalcInfo.num_alp_expl)
+            ? Parameters.cc_ras3_max : CalcInfo.num_alp_expl;
+         Parameters.cc_b_ras3_max = 
+            (Parameters.cc_ras3_max <= CalcInfo.num_bet_expl)
+            ? Parameters.cc_ras3_max : CalcInfo.num_bet_expl;
+         }
+      else {
+         Parameters.cc_a_ras3_max = 
+            (Parameters.cc_ex_lvl <= CalcInfo.num_alp_expl) 
+            ? Parameters.cc_ex_lvl : CalcInfo.num_alp_expl;
+         Parameters.cc_b_ras3_max = 
+            (Parameters.cc_ex_lvl <= CalcInfo.num_bet_expl) 
+            ? Parameters.cc_ex_lvl : CalcInfo.num_bet_expl; 
+         }
+      }
+
+   if (Parameters.cc) {
+      Parameters.a_ras3_max = 
+         (Parameters.cc_a_ras3_max+2<=CalcInfo.num_alp_expl) 
+         ? Parameters.cc_a_ras3_max+2 : CalcInfo.num_alp_expl;
+      Parameters.b_ras3_max = 
+         (Parameters.cc_b_ras3_max+2<=CalcInfo.num_bet_expl) 
+         ? Parameters.cc_b_ras3_max+2 : CalcInfo.num_bet_expl;
+      }
+
    if (Parameters.a_ras3_max == -1 || Parameters.b_ras3_max == -1) {
       if (Parameters.ras3_max != -1) { /* have parsed ras3_max */
          Parameters.a_ras3_max = (Parameters.ras3_max <= CalcInfo.num_alp_expl)
@@ -1195,37 +1371,103 @@ void set_ras_parms(void)
          }
       }
 
-   if (Parameters.ras4_max != -1) { /* have parsed */
-      Parameters.a_ras4_max = (Parameters.ras4_max <= CalcInfo.num_alp_expl)
-        ? Parameters.ras4_max : CalcInfo.num_alp_expl;
-      Parameters.b_ras4_max = (Parameters.ras4_max <= CalcInfo.num_bet_expl)
-        ? Parameters.ras4_max : CalcInfo.num_bet_expl;
-      }
+   if (Parameters.cc) {
+     if (Parameters.cc_ras4_max != -1) { /* have parsed */
+        Parameters.cc_a_ras4_max = 
+          (Parameters.cc_ras4_max <= CalcInfo.num_alp_expl)
+          ? Parameters.cc_ras4_max : CalcInfo.num_alp_expl;
+        Parameters.cc_b_ras4_max = 
+          (Parameters.cc_ras4_max <= CalcInfo.num_bet_expl)
+          ? Parameters.cc_ras4_max : CalcInfo.num_bet_expl;
+        }
+     else {
+        Parameters.cc_a_ras4_max = Parameters.cc_a_ras3_max;
+        Parameters.cc_b_ras4_max = Parameters.cc_b_ras3_max;
+     }
+     Parameters.a_ras4_max = 
+       (Parameters.cc_a_ras4_max+2 <= CalcInfo.num_alp_expl) 
+       ? Parameters.cc_a_ras4_max+2 : CalcInfo.num_alp_expl;
+     Parameters.b_ras4_max = 
+       (Parameters.cc_b_ras4_max+2 <= CalcInfo.num_bet_expl) 
+       ? Parameters.cc_b_ras4_max+2 : CalcInfo.num_bet_expl;
+   }
    else {
-      Parameters.a_ras4_max = Parameters.a_ras3_max;
-      Parameters.b_ras4_max = Parameters.b_ras3_max;
+     if (Parameters.ras4_max != -1) { /* have parsed */
+        Parameters.a_ras4_max = (Parameters.ras4_max <= CalcInfo.num_alp_expl)
+          ? Parameters.ras4_max : CalcInfo.num_alp_expl;
+        Parameters.b_ras4_max = (Parameters.ras4_max <= CalcInfo.num_bet_expl)
+          ? Parameters.ras4_max : CalcInfo.num_bet_expl;
+        }
+     else {
+        Parameters.a_ras4_max = Parameters.a_ras3_max;
+        Parameters.b_ras4_max = Parameters.b_ras3_max;
+     }
    }
 
-   if (Parameters.ras34_max != -1) { /* have parsed */
-      Parameters.a_ras34_max = Parameters.ras34_max;
-      Parameters.b_ras34_max = Parameters.ras34_max;
-      }
-   else {
-      Parameters.a_ras34_max = Parameters.a_ras3_max;
-      Parameters.b_ras34_max = Parameters.b_ras3_max;
-      }
+
+   if (Parameters.cc) {
+     if (Parameters.cc_ras34_max != -1) { /* have parsed */
+       Parameters.cc_a_ras34_max = Parameters.cc_ras34_max;
+       Parameters.cc_b_ras34_max = Parameters.cc_ras34_max;
+     }
+     else {
+       Parameters.cc_a_ras34_max = Parameters.cc_a_ras3_max
+                                 + Parameters.cc_a_ras4_max;
+       Parameters.cc_b_ras34_max = Parameters.cc_b_ras3_max
+                                 + Parameters.cc_b_ras4_max;
+     }
+     if (Parameters.ras34_max != -1) { /* have parsed */
+        Parameters.a_ras34_max = Parameters.ras34_max;
+        Parameters.b_ras34_max = Parameters.ras34_max;
+        }
+     else {
+        Parameters.a_ras34_max = Parameters.cc_a_ras34_max+2;
+        if (Parameters.a_ras34_max > CalcInfo.num_alp_expl)
+          Parameters.a_ras34_max = CalcInfo.num_alp_expl;
+        Parameters.b_ras34_max = Parameters.cc_b_ras34_max+2;
+        if (Parameters.b_ras34_max > CalcInfo.num_bet_expl)
+          Parameters.b_ras34_max = CalcInfo.num_bet_expl;
+        Parameters.ras34_max = Parameters.cc_ras34_max+2;
+        if (Parameters.ras34_max > Parameters.a_ras34_max +
+            Parameters.b_ras34_max)
+          Parameters.ras34_max = Parameters.a_ras34_max + 
+            Parameters.b_ras34_max;
+        }
+   }
+   else { /* non-CC */
+     if (Parameters.ras34_max != -1) { /* have parsed */
+       Parameters.a_ras34_max = Parameters.ras34_max;
+       Parameters.b_ras34_max = Parameters.ras34_max;
+     }
+     else {
+       Parameters.a_ras34_max = Parameters.a_ras3_max;
+       Parameters.b_ras34_max = Parameters.b_ras3_max;
+     }
+   }
 
    i = Parameters.ras4_lvl - Parameters.ras3_lvl;
    if (Parameters.a_ras3_max > i) Parameters.a_ras3_max = i;
    if (Parameters.b_ras3_max > i) Parameters.b_ras3_max = i;
+   if (Parameters.cc) {
+     if (Parameters.cc_a_ras3_max > i) Parameters.cc_a_ras3_max = i;
+     if (Parameters.cc_b_ras3_max > i) Parameters.cc_b_ras3_max = i;
+   }
 
    i = CalcInfo.num_ci_orbs - Parameters.ras4_lvl;
    if (Parameters.a_ras4_max > i) Parameters.a_ras4_max = i;
    if (Parameters.b_ras4_max > i) Parameters.b_ras4_max = i;
+   if (Parameters.cc) {
+     if (Parameters.cc_a_ras4_max > i) Parameters.cc_a_ras4_max = i;
+     if (Parameters.cc_b_ras4_max > i) Parameters.cc_b_ras4_max = i;
+   }
 
    i = CalcInfo.num_ci_orbs - Parameters.ras3_lvl;
    if (Parameters.a_ras34_max > i) Parameters.a_ras34_max = i;
    if (Parameters.b_ras34_max > i) Parameters.b_ras34_max = i;
+   if (Parameters.cc) {
+     if (Parameters.cc_a_ras34_max > i) Parameters.cc_a_ras34_max = i;
+     if (Parameters.cc_b_ras34_max > i) Parameters.cc_b_ras34_max = i;
+   }
 
    i = (CalcInfo.num_alp_expl <= Parameters.a_ras1_lvl + 1) ? 
       CalcInfo.num_alp_expl : Parameters.a_ras1_lvl + 1;
@@ -1244,6 +1486,19 @@ void set_ras_parms(void)
    Parameters.b_ras1_min += CalcInfo.num_cor_orbs;
 
    tot_expl_el = CalcInfo.num_alp_expl + CalcInfo.num_bet_expl;
+   if (Parameters.cc) {
+     if (Parameters.cc_val_ex_lvl != 0) i = Parameters.cc_val_ex_lvl;
+     else i = Parameters.cc_ex_lvl;
+     if (Parameters.cc_ras3_max == -1) {
+       Parameters.cc_ras3_max = (i <= tot_expl_el) ?  i : tot_expl_el ;
+     }
+     else {
+       if (Parameters.cc_ras3_max > tot_expl_el) 
+         Parameters.cc_ras3_max = tot_expl_el;
+     } 
+     if (Parameters.ras3_max == -1) 
+       Parameters.ras3_max = Parameters.cc_ras3_max + 2;
+   }
    if (Parameters.ras3_max == -1) {
       Parameters.ras3_max = (Parameters.ex_lvl <= tot_expl_el) ?
          Parameters.ex_lvl : tot_expl_el ;
@@ -1253,13 +1508,12 @@ void set_ras_parms(void)
          Parameters.ras3_max = tot_expl_el;
       }
 
-   if (Parameters.ras34_max == -1) Parameters.ras34_max = Parameters.ras3_max;
-
    i = 2 * (Parameters.ras4_lvl - Parameters.ras3_lvl);
    if (i < Parameters.ras3_max) Parameters.ras3_max = i;
+   if (Parameters.cc) {
+     if (i < Parameters.cc_ras3_max) Parameters.cc_ras3_max = i;
+   }
 
-   i = 2 * (CalcInfo.num_ci_orbs - Parameters.ras3_lvl);
-   if (i < Parameters.ras34_max) Parameters.ras34_max = i;
 
    i = (tot_expl_el < 2*(Parameters.ras1_lvl + 1)) ? tot_expl_el :
       2*(Parameters.ras1_lvl + 1) ;
@@ -1270,76 +1524,158 @@ void set_ras_parms(void)
    if (Parameters.a_ras1_min + Parameters.b_ras1_min > Parameters.ras1_min)
       Parameters.ras1_min = Parameters.a_ras1_min + Parameters.b_ras1_min;
 
+   if (Parameters.cc && Parameters.cc_ras4_max == -1) {
+     Parameters.cc_ras4_max = (Parameters.cc_ex_lvl <= tot_expl_el) ?
+       Parameters.cc_ex_lvl : tot_expl_el;
+   }
+
    if (Parameters.ras4_max == -1) {
-      Parameters.ras4_max = (Parameters.ex_lvl <= tot_expl_el) ?
-         Parameters.ex_lvl : tot_expl_el;
-      }
+     if (Parameters.cc) {
+       Parameters.ras4_max = (Parameters.cc_ras4_max+2 <= tot_expl_el) ?
+         Parameters.cc_ras4_max+2 : tot_expl_el;
+     }
+     else Parameters.ras4_max = (Parameters.ex_lvl <= tot_expl_el) ?
+       Parameters.ex_lvl : tot_expl_el;
+   }
 
    i = 2 * (CalcInfo.num_ci_orbs - Parameters.ras4_lvl);
    if (i < Parameters.ras4_max) Parameters.ras4_max = i;
+   if (Parameters.cc) {
+     if (i < Parameters.cc_ras4_max) Parameters.cc_ras4_max = i;
+   }
 
-   if (Parameters.print_lvl > 0) {
-      fprintf(outfile, "ORBITALS:\n") ;
-      fprintf(outfile, "   NMO          =   %6d      NUM ALP      =   %6d\n",
-         CalcInfo.nmo, CalcInfo.num_alp);
-      fprintf(outfile, "   ORBS IN CI   =   %6d      NUM ALP EXPL =   %6d\n",
-         CalcInfo.num_ci_orbs, CalcInfo.num_alp_expl);
-      fprintf(outfile, "   FROZEN CORE  =   %6d      NUM BET      =   %6d\n",
-         CalcInfo.num_fzc_orbs, CalcInfo.num_bet);
-      fprintf(outfile, "   RESTR CORE   =   %6d      NUM BET EXPL =   %6d\n",
-         CalcInfo.num_cor_orbs, CalcInfo.num_bet_expl);
-      fprintf(outfile, "   IOPEN        =   %6s\n", CalcInfo.iopen ? "yes" :
-         "no");
-      fprintf(outfile, "   RAS1 LVL     =   %6d      A RAS3 MAX   =   %6d\n",
-         Parameters.ras1_lvl, Parameters.a_ras3_max);
-      fprintf(outfile, "   RAS1 MIN     =   %6d      B RAS3 MAX   =   %6d\n",
-         Parameters.ras1_min, Parameters.b_ras3_max);
-      fprintf(outfile, "   A RAS1 LVL   =   %6d      RAS4 LVL     =   %6d\n", 
-         Parameters.a_ras1_lvl, Parameters.ras4_lvl);
-      fprintf(outfile, "   A RAS1 MIN   =   %6d      A RAS4 MAX   =   %6d\n", 
-         Parameters.a_ras1_min, Parameters.a_ras4_max);
-      fprintf(outfile, "   A RAS1 MAX   =   %6d      B RAS4 MAX   =   %6d\n", 
-         Parameters.a_ras1_max, Parameters.b_ras4_max);
-      fprintf(outfile, "   B RAS1 LVL   =   %6d      RAS4 MAX     =   %6d\n", 
-         Parameters.b_ras1_lvl, Parameters.ras4_max);
-      fprintf(outfile, "   B RAS1 MIN   =   %6d      A RAS34 MAX  =   %6d\n", 
-         Parameters.b_ras1_min, Parameters.a_ras34_max);
-      fprintf(outfile, "   B RAS1 MAX   =   %6d      B RAS34 MAX  =   %6d\n", 
-         Parameters.b_ras1_max, Parameters.b_ras34_max);
-      fprintf(outfile, "   RAS3 LVL     =   %6d      RAS34 MAX    =   %6d\n", 
-         Parameters.ras3_lvl, Parameters.ras34_max);
-      fprintf(outfile, "   RAS3 MAX     =   %6d\n", Parameters.ras3_max);
-   
-      fprintf(outfile, "\n");
-      fprintf(outfile, "   DOCC         = ") ;
-      for (i=0; i<CalcInfo.nirreps; i++) {
-         fprintf(outfile, "%2d ", CalcInfo.docc[i]) ;
-         }
-      fprintf(outfile, "\n   SOCC         = ") ;
-      for (i=0; i<CalcInfo.nirreps; i++) {
-         fprintf(outfile, "%2d ", CalcInfo.socc[i]) ;
-         }
-      fprintf(outfile, "\n   FROZEN DOCC  = ") ;
-      for (i=0; i<CalcInfo.nirreps; i++) {
-         fprintf(outfile, "%2d ", CalcInfo.frozen_docc[i]) ;
-         }
-      fprintf(outfile, "\n   FROZEN UOCC  = ") ;
-      for (i=0; i<CalcInfo.nirreps; i++) {
-         fprintf(outfile, "%2d ", CalcInfo.frozen_uocc[i]) ;
-         }
-      fprintf(outfile, "\n");
-      for (i=0; i<4; i++) {
-         fprintf(outfile, "   RAS %d        = ",i+1);
-         for (j=0; j<CalcInfo.nirreps; j++) {
-            fprintf(outfile,"%2d ",CalcInfo.ras_opi[i][j]);
-            }
-         fprintf(outfile, "\n");
-         }
+   if (Parameters.cc && Parameters.cc_ras34_max == -1)
+     Parameters.cc_ras34_max = Parameters.cc_ras3_max + Parameters.cc_ras4_max;
+   i = 2 * (CalcInfo.num_ci_orbs - Parameters.ras3_lvl);
+   if (Parameters.cc) {
+     if (i < Parameters.cc_ras34_max) Parameters.cc_ras34_max = i;
+   }
 
-      fprintf(outfile,
-         "*******************************************************\n\n");
-      }
+   if (Parameters.ras34_max == -1 && !Parameters.cc) 
+     Parameters.ras34_max = Parameters.ras3_max;
+   else
+     Parameters.ras34_max = Parameters.cc_ras34_max + 2;
+
+   i = 2 * (CalcInfo.num_ci_orbs - Parameters.ras3_lvl);
+   if (i < Parameters.ras34_max) Parameters.ras34_max = i;
+   if (Parameters.ras34_max > tot_expl_el) Parameters.ras34_max = tot_expl_el;
+
+   if (Parameters.a_ras34_max > Parameters.a_ras3_max + Parameters.a_ras4_max)
+     Parameters.a_ras34_max = Parameters.a_ras3_max + Parameters.a_ras4_max;
+   if (Parameters.cc && (Parameters.cc_a_ras34_max > 
+     Parameters.cc_a_ras3_max + Parameters.cc_b_ras4_max))
+     Parameters.cc_a_ras34_max = Parameters.cc_a_ras3_max + 
+     Parameters.cc_a_ras4_max;
+
+   if (Parameters.b_ras34_max > Parameters.b_ras3_max + Parameters.b_ras4_max)
+     Parameters.b_ras34_max = Parameters.b_ras3_max + Parameters.b_ras4_max;
+   if (Parameters.cc && (Parameters.cc_b_ras34_max > 
+     Parameters.cc_b_ras3_max + Parameters.cc_b_ras4_max))
+     Parameters.cc_b_ras34_max = Parameters.cc_b_ras3_max + 
+     Parameters.cc_b_ras4_max;
+
+   /* now just re-check some basic things */
+   if (Parameters.a_ras34_max > CalcInfo.num_alp_expl)
+     Parameters.a_ras34_max = CalcInfo.num_alp_expl;
+   if (Parameters.b_ras34_max > CalcInfo.num_bet_expl)
+     Parameters.b_ras34_max = CalcInfo.num_bet_expl;
+   if (Parameters.cc) {
+     if (Parameters.cc_a_ras34_max > CalcInfo.num_alp_expl)
+       Parameters.cc_a_ras34_max = CalcInfo.num_alp_expl;
+     if (Parameters.cc_b_ras34_max > CalcInfo.num_bet_expl)
+       Parameters.cc_b_ras34_max = CalcInfo.num_bet_expl;
+   }
+
+   if (Parameters.ras34_max > Parameters.a_ras34_max + Parameters.b_ras34_max)
+     Parameters.ras34_max = Parameters.a_ras34_max + Parameters.b_ras34_max;
+
 }
 
 
+/*
+** print_ras_parms(): Set the RAS parameters or their conventional equivalents
+**   (i.e. fermi level, etc).
+**
+*/
+void print_ras_parms(void)
+{
+  int i, j;
+
+  fprintf(outfile, "ORBITALS:\n") ;
+  fprintf(outfile, "   NMO          =   %6d      NUM ALP      =   %6d\n",
+    CalcInfo.nmo, CalcInfo.num_alp);
+  fprintf(outfile, "   ORBS IN CI   =   %6d      NUM ALP EXPL =   %6d\n",
+    CalcInfo.num_ci_orbs, CalcInfo.num_alp_expl);
+  fprintf(outfile, "   FROZEN CORE  =   %6d      NUM BET      =   %6d\n",
+    CalcInfo.num_fzc_orbs, CalcInfo.num_bet);
+  fprintf(outfile, "   RESTR CORE   =   %6d      NUM BET EXPL =   %6d\n",
+    CalcInfo.num_cor_orbs, CalcInfo.num_bet_expl);
+  fprintf(outfile, "   IOPEN        =   %6s\n", CalcInfo.iopen ? "yes" :
+    "no");
+  fprintf(outfile, "   RAS1 LVL     =   %6d      A RAS3 MAX   =   %6d\n",
+    Parameters.ras1_lvl, Parameters.a_ras3_max);
+  fprintf(outfile, "   RAS1 MIN     =   %6d      B RAS3 MAX   =   %6d\n",
+    Parameters.ras1_min, Parameters.b_ras3_max);
+  fprintf(outfile, "   A RAS1 LVL   =   %6d      RAS4 LVL     =   %6d\n", 
+    Parameters.a_ras1_lvl, Parameters.ras4_lvl);
+  fprintf(outfile, "   A RAS1 MIN   =   %6d      A RAS4 MAX   =   %6d\n", 
+    Parameters.a_ras1_min, Parameters.a_ras4_max);
+  fprintf(outfile, "   A RAS1 MAX   =   %6d      B RAS4 MAX   =   %6d\n", 
+    Parameters.a_ras1_max, Parameters.b_ras4_max);
+  fprintf(outfile, "   B RAS1 LVL   =   %6d      RAS4 MAX     =   %6d\n", 
+    Parameters.b_ras1_lvl, Parameters.ras4_max);
+  fprintf(outfile, "   B RAS1 MIN   =   %6d      A RAS34 MAX  =   %6d\n", 
+    Parameters.b_ras1_min, Parameters.a_ras34_max);
+  fprintf(outfile, "   B RAS1 MAX   =   %6d      B RAS34 MAX  =   %6d\n", 
+    Parameters.b_ras1_max, Parameters.b_ras34_max);
+  fprintf(outfile, "   RAS3 LVL     =   %6d      RAS34 MAX    =   %6d\n", 
+    Parameters.ras3_lvl, Parameters.ras34_max);
+  fprintf(outfile, "   RAS3 MAX     =   %6d\n", Parameters.ras3_max);
+  if (Parameters.cc) {
+    fprintf(outfile, "   CC RAS3 MAX  =   %6d      CC RAS4 MAX  =   %6d\n",
+      Parameters.cc_ras3_max, Parameters.cc_ras4_max);
+    fprintf(outfile, "   CC A RAS3 MAX=   %6d      CC B RAS3 MAX=   %6d\n",
+      Parameters.cc_a_ras3_max, Parameters.cc_b_ras3_max);
+    fprintf(outfile, "   CC A RAS4 MAX=   %6d      CC B RAS4 MAX=   %6d\n", 
+      Parameters.cc_a_ras4_max, Parameters.cc_b_ras4_max);
+    fprintf(outfile, "   CC RAS34 MAX =   %6d\n",
+      Parameters.cc_ras34_max);
+    fprintf(outfile, "   CC A RAS34 MAX=  %6d      CC B RAS34 MAX=  %6d\n", 
+      Parameters.cc_a_ras34_max, Parameters.cc_b_ras34_max);
+    fprintf(outfile, "   CC MIXED     =   %6s      CC FIX EXTERN =  %6s\n",
+      Parameters.cc_mixed ? "yes" : "no",
+      Parameters.cc_fix_external ? "yes" : "no");
+    fprintf(outfile, "   CC VARIATIONAL=  %6s\n",
+      Parameters.cc_variational ? "yes" : "no");
+  }
+
+  fprintf(outfile, "\n");
+  fprintf(outfile, "   DOCC         = ") ;
+  for (i=0; i<CalcInfo.nirreps; i++) {
+    fprintf(outfile, "%2d ", CalcInfo.docc[i]) ;
+  }
+  fprintf(outfile, "\n   SOCC         = ") ;
+  for (i=0; i<CalcInfo.nirreps; i++) {
+    fprintf(outfile, "%2d ", CalcInfo.socc[i]) ;
+  }
+  fprintf(outfile, "\n   FROZEN DOCC  = ") ;
+  for (i=0; i<CalcInfo.nirreps; i++) {
+    fprintf(outfile, "%2d ", CalcInfo.frozen_docc[i]) ;
+  }
+  fprintf(outfile, "\n   FROZEN UOCC  = ") ;
+  for (i=0; i<CalcInfo.nirreps; i++) {
+    fprintf(outfile, "%2d ", CalcInfo.frozen_uocc[i]) ;
+  }
+  fprintf(outfile, "\n");
+  for (i=0; i<4; i++) {
+    fprintf(outfile, "   RAS %d        = ",i+1);
+    for (j=0; j<CalcInfo.nirreps; j++) {
+      fprintf(outfile,"%2d ",CalcInfo.ras_opi[i][j]);
+    }
+    fprintf(outfile, "\n");
+  }
+
+  fprintf(outfile,
+     "*******************************************************\n\n");
+}
 

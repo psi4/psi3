@@ -157,6 +157,7 @@ extern "C" {
 
 }
 
+extern int cc_reqd_sblocks[CI_BLK_MAX];
 
 #ifndef CIVECT_H
 #include "civect.h"
@@ -528,6 +529,7 @@ void sigma_b(struct stringwr **alplist, struct stringwr **betlist,
 
    /* loop over unique sigma subblocks */ 
    for (sblock=0; sblock<S.num_blocks; sblock++) {
+      if (Parameters.cc && !cc_reqd_sblocks[sblock]) continue;
       did_sblock = 0;
       sac = S.Ia_code[sblock];
       sbc = S.Ib_code[sblock];

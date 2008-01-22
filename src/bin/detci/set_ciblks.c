@@ -181,6 +181,7 @@ void set_ciblks(struct olsen_graph *AlphaG, struct olsen_graph *BetaG)
          for (nalp1=AlphaG->ras1_max; nalp1>=AlphaG->ras1_min; nalp1--) {
             for (nalp3=0; nalp3<=AlphaG->ras3_max; nalp3++) {
                for (nalp4=0; nalp4<=AlphaG->ras4_max; nalp4++) {
+
                   alpcode=AlphaG->decode[nalp1-AlphaG->ras1_min][nalp3][nalp4];
                   if (alpcode == -1) continue;
                   nas = AlphaG->sg[irrep][alpcode].num_strings;
@@ -204,6 +205,12 @@ void set_ciblks(struct olsen_graph *AlphaG, struct olsen_graph *BetaG)
                            if (!Parameters.mixed4 && (nalp4 || nbet4) &&
                               (AlphaG->ras1_max - nalp1 + BetaG->ras1_max -
                                nbet1 > xlvl)) continue;
+
+                           if (!Parameters.cc_mixed && 
+                               nalp3+nalp4+nbet3+nbet4 > xlvl &&
+                               (nalp4>2 || nbet4>2 || 
+                                nalp1-AlphaG->ras1_min > 2 ||
+                                nbet1-BetaG->ras1_min > 2)) continue;
 
                            /* add special constraint if we want to kick 
                               out any determinants which would not be

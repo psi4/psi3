@@ -1,21 +1,22 @@
-/*! \file 
+/*! \defgroup DETCI detci: The Determinant CI code */
+
+/*! \file detci.cc
     \ingroup (DETCI)
-    \brief Enter brief description of file here 
-*/
-/*
-** DETCI
-**
-** DETERMINANT CI Program, incorporating Abelian point-group symmetry
-**
-** C. David Sherrill
-** Center for Computational Quantum Chemistry 
-** University of Georgia
-** August 1994
-**
-** Updated 3/95 to do frozen core and virtuals correctly
-** Updated 5/95 to do RAS CI's again 
-** Updated 2/96 to clean up code and rename DETCI
-** 
+    \brief Determinant-based CI program
+
+   DETCI
+  
+   DETERMINANT CI Program, incorporating Abelian point-group symmetry
+  
+   C. David Sherrill
+   Center for Computational Quantum Chemistry 
+   University of Georgia
+   August 1994
+  
+   Updated 3/95 to do frozen core and virtuals correctly
+   Updated 5/95 to do RAS CI's again 
+   Updated 2/96 to clean up code and rename DETCI
+   
 */
 
 /* DEFINES */
@@ -118,6 +119,7 @@ extern void diag_h_genci(struct stringwr **alplist, struct stringwr **betlist);
 extern void get_parameters(void);
 extern void print_parameters(void);
 extern void set_ras_parms(void);
+extern void print_ras_parms(void);
 extern void form_strings(void);
 extern void mitrush_iter(CIvect &Hd, 
       struct stringwr **alplist, struct stringwr **betlist,
@@ -139,6 +141,7 @@ extern void tpdm(struct stringwr **alplist, struct stringwr **betlist,
           int Inroots, int Inunits, int Ifirstunit,
           int Jnroots, int Jnunits, int Jfirstunit,
           int targetfile, int writeflag, int printflag);
+extern void compute_cc(void);
 extern void calc_mrpt(void);
 
 main(int argc, char *argv[])
@@ -153,12 +156,14 @@ main(int argc, char *argv[])
    init_ioff();                 /* set up the ioff array                    */
    title();                     /* print program identification             */
    get_mo_info();               /* read DOCC, SOCC, frozen, nmo, etc        */
-   
-   if (Parameters.print_lvl)
-     print_parameters();       /* print running parameters                 */
-
    set_ras_parms();             /* set fermi levels and the like            */ 
+   
+   if (Parameters.print_lvl) {
+     print_parameters();       /* print running parameters                 */
+     print_ras_parms();
+   }
    fflush(outfile); 
+
    form_strings();              /* form the alpha/beta strings              */
    if (Parameters.pthreads)
      tpool_init(&thread_pool, Parameters.nthreads, CalcInfo.num_alp_str, 0);
@@ -197,10 +202,12 @@ main(int argc, char *argv[])
      form_gmat((Parameters.print_lvl>3), outfile); 
      fflush(outfile);
 
-   if (Parameters.mpn)
-     mpn(alplist, betlist);
-   else
-     diag_h(alplist, betlist);
+     if (Parameters.mpn)
+       mpn(alplist, betlist);
+     else if (Parameters.cc)
+       compute_cc();
+     else
+       diag_h(alplist, betlist);
    }
 
    if (Parameters.opdm || Parameters.transdens) form_opdm();

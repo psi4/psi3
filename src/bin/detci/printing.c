@@ -244,6 +244,72 @@ void orb2lbl(int orbnum, char *label)
 }
 
 
+/*
+** lbl2orb(): Function converts a label such as 4A1, 2B2, etc., to
+**   an absolute orbital number.  The reverse of the above function
+**   orb2lbl().
+**
+** Parameters:
+**    orbnum = orbital number in CI order (add frozen core!)
+**    label  = place to put constructed label
+**
+** Returns:
+**    absolute orbital number for the correlated calc (less frozen)
+**
+*/
+int lbl2orb(char *orbstring)
+{
+
+   int ir, i, j, pitzer_orb, rel_orb, corr_orb;
+   char *s, *t;
+   char orblbl[10];
+
+   sscanf(orbstring, "%d%s", &rel_orb, orblbl);
+
+   /* get the irrep */
+   for (i=0,ir=-1; i<CalcInfo.nirreps; i++) {
+     s = orblbl;
+     t = CalcInfo.labels[i];
+     j = 0;
+     while ((toupper(*s) == toupper(*t)) && (j < strlen(orblbl))) {
+       s++; 
+       t++;
+       j++;
+     }
+     if (j == strlen(orblbl)) {
+       ir = i;
+       break;
+     }
+   }
+
+   if (ir == -1) {
+     fprintf("lbl2orb: can't find label %s!\n", orblbl);
+     return(0);
+   }
+
+   /* get Pitzer ordering */
+   for (i=0,pitzer_orb=0; i<ir; i++) {
+     pitzer_orb += CalcInfo.orbs_per_irr[i];
+   }
+   pitzer_orb += rel_orb - 1; /* 1A1 is orbital 0 in A1 stack ... */
+
+   /* get correlated ordering */
+   corr_orb = CalcInfo.reorder[pitzer_orb];
+
+   /* probably need to subtract frozen here */
+   corr_orb -= CalcInfo.num_fzc_orbs;
+
+   if (corr_orb < 0 || corr_orb > CalcInfo.num_ci_orbs) {
+     fprintf(outfile, "lbl2orb: error corr_orb out of bounds, %d\n", 
+       corr_orb);
+     return(0);
+   }
+
+   return(corr_orb);
+
+}
+
+
 void eivout_t(a,b,m,n,out)
    double **a, *b;
    int m,n;

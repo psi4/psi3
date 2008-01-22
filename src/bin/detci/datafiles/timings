@@ -330,6 +330,7 @@ E = -128.7629007841444 C0=-0.984931 C1=0.037659
 dido      : 2899u, 540s, 3820t
 aurelius  : 2396u, 433s, 3147t
 plato     : 1164u, 226s, 1468t
+plato**   : 1092u, 194s, 1289t   (3 disks... above was 2 or 3)
 cicero:   :  966u,  76s, 1048t
 
 ======================================================================
@@ -342,4 +343,8 @@ convergence = 6
 E = -25.2351554791625 for R(BH)=1.2
 
 SP2 node (PowerIII-2 375MHz) : 1905u, 60s, 1978t
+cicero*                      : 1087u, 12s, 1103t
+
+*Some defaults must have changed, did not converge in 8 iters.  Terminated
+at 8 iters to allow comparison of timings.
 

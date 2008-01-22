@@ -5,7 +5,8 @@
 #ifndef CIVECT_H
 #define CIVECT_H
 
-typedef unsigned long long int BIGINT;
+//typedef unsigned long long int BIGINT;
+typedef unsigned long int BIGINT;
 
 /*
 ** CIVECT.H

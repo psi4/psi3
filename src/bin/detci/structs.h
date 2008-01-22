@@ -18,10 +18,12 @@
 #include <sys/time.h>
 
 /*** DEFINES ***/
+/*
+typedef unsigned long long int BIGINT; 
+*/
+typedef unsigned long int BIGINT; 
 
-typedef unsigned long long int BIGINT; /* should be 64bits even on 32bit arch */
-
-#define CI_BLK_MAX 650
+#define CI_BLK_MAX 5000
 #define IOFF_MAX 50604
 
 #define PARM_GUESS_VEC_UNIT        0
@@ -247,6 +249,7 @@ struct calcinfo {
    int iopen;            /* flag for whether open shell or not */
    double enuc;          /* nuclear repulsion energy */
    double escf;          /* scf energy */
+   double eref;          /* ref det energy as computed here in detci */
    double efzc;          /* frozen core energy */
    double e0;            /* E0, zeroth order energy */
    double e0_fzc;        /* two times the sum of the fzc orbitals */
@@ -270,6 +273,7 @@ struct calcinfo {
    double maxKlist;      /* maximum K integral in entire integral list */
    double **gmat;        /* onel ints in RAS g matrix form */
    double *twoel_ints;   /* two-electron integrals */
+   double **fock;        /* fock matrix */
    int num_fzc_orbs;     /* number of FZC orbitals (i.e. frozen core) */
    int num_cor_orbs;     /* number of COR orbitals (i.e. restricted core) */
    int num_alp_str;      /* number of alpha strings */
@@ -306,6 +310,10 @@ struct params {
    int filter_ints;  /* true (1) if some integrals in tei file to be ignored */
    int ex_lvl;       /* excitation level */
    int val_ex_lvl;   /* valence excitation level, used for RAS's */
+   int cc_val_ex_lvl;/* NOT analogous to val_ex_lvl ... this controls how
+                        many holes allowed from RAS II for MRCC */
+   int cc_a_val_ex_lvl; /* alpha part of cc_val_ex_lvl */
+   int cc_b_val_ex_lvl; /* beta part of cc_val_ex_lvl */
    int max_dets;     /* maximum number of allowed determinants */
    int maxiter;      /* maximum number of allowed iterations */
    int num_roots;    /* number of CI roots to find */
@@ -336,18 +344,27 @@ struct params {
    int b_ras1_max;   /* maximum number of beta electrons in RAS I */
    int a_ras3_max;   /* maximum number of alpha electrons in RAS III */
    int b_ras3_max;   /* maximum number of beta electrons in RAS III */
+   int cc_a_ras3_max;/* as above but for CC */
+   int cc_b_ras3_max;/* as above but for CC */
    int a_ras4_max;   /* maximum number of alpha electrons in RAS IV */
    int b_ras4_max;   /* maximum number of beta electrons in RAS IV */
+   int cc_a_ras4_max;/* as above but for CC */
+   int cc_b_ras4_max;/* as above but for CC */
    int ras1_lvl;     /* orbital number defining RAS I overall */
    int ras1_min;     /* currently min #e AT THE RAS I LEVEL (incl fzc) */
    int ras3_lvl;     /* orbital number defining RAS III overall */
    int ras4_lvl;     /* orbital number defining RAS IV overall */
                      /* make larger than num_ci_orbs if there is no RAS IV */
    int ras3_max;     /* maximum number of electrons in RAS III */
+   int cc_ras3_max;  /* as above but for CC */
    int ras4_max;     /* maximum number of electrons in RAS IV */
+   int cc_ras4_max;  /* as above but for CC */
    int ras34_max;    /* max number of electrons in RAS III AND IV */
+   int cc_ras34_max; /* as above but for CC */
    int a_ras34_max;  /* max number of alp electrons in RAS III AND IV */
    int b_ras34_max;  /* max number of bet electrons in RAS III AND IV */
+   int cc_a_ras34_max;/* as above but for CC */
+   int cc_b_ras34_max;/* as above but for CC */
    int guess_vector; /* what kind of CI vector to start with; see #define */
    int h0blocksize;  /* size of H0 block in preconditioner. */  
    int h0guess_size; /* size of H0 block for initial guess */
@@ -357,6 +374,7 @@ struct params {
    int hd_otf;       /* 1 if diag energies computed on the fly 0 otherwise */
    int nodfile;      /* 1 if no dfile used 0 otherwise works for nroots=1 */
    int nprint;       /* number of important determinants to print out */
+   int cc_nprint;    /* number of most important CC amps per ex lvl to print */
    int mixed;        /* 1=allow mixed excitations, 0=don't */
    int mixed4;       /* 1=allow mixed excitations in RAS IV, 0=don't */
    int repl_otf;     /* generate single-replacements on-the-fly */
@@ -491,6 +509,30 @@ struct params {
    int *average_states;    /* which states to average in a SA calc */
    double *average_weights;/* the weights for each state in a SA calc */
    int average_num;        /* length of the above two arrays */
+   int cc;                 /* do coupled-cluster */
+   int cc_ex_lvl;          /* coupled-cluster excitation level */
+   int cc_export;          /* export a CC vector? */
+   int cc_import;          /* import a CC vector? */
+   int cc_fix_external;    /* fix amplitudes involving RAS I or IV ?        */
+   int cc_fix_external_min;/* num external indices before amp gets fixed    */
+   int cc_mixed;           /* ignore block if num holes in RAS I and II is
+                              > cc_ex_lvl and if any indices correspond to
+                              RAS I or IV (i.e., include only all-active
+                              higher excitations)                           */
+   int cc_update_eps;      /* update T amps with orb eigvals or not?        */
+   int diis;               /* do DIIS?                                      */
+   int diis_start;         /* how many diis vectors built up before start   */
+   int diis_freq;          /* how many iters to go before a diis step       */
+   int diis_min_vecs;      /* how many vectors required before do diis?     */
+   int diis_max_vecs;      /* how many vectors maximum to hold?             */
+   int cc_macro_on;        /* add restrictions to macroconfigurations       */
+   int *cc_macro_parsed;   /* did the user specify a macro for this ex_lvl? */
+   int **cc_macro;         /* specify T vector macroconfigurations          
+                              each ex_lvl has different specifications
+                              cc_macro[ex_lvl][0] = max I holes 
+                                              [1] = max IV particles
+                                              [2] = max (I h + IV p)        */
+   int cc_variational;     /* variational energy expression?                */
 };
 
 

@@ -233,7 +233,6 @@ void get_mo_info(void)
    CalcInfo.num_alp_expl = CalcInfo.num_alp - CalcInfo.num_fzc_orbs;
    CalcInfo.num_bet_expl = CalcInfo.num_bet - CalcInfo.num_fzc_orbs;
 
-
    /* construct the CalcInfo.ras_orbs array (may not be of any use now) */
    cnt = 0;
    for (i=0; i<4; i++) {
