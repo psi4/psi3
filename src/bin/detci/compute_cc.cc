@@ -29,45 +29,8 @@ extern "C" {
    #include <libpsio/psio.h>
    #include "structs.h"
    #include "globals.h"
-   #include "cc.h"
-
-   extern unsigned char ***Occs;
-   extern struct olsen_graph *AlphaG;
-   extern struct olsen_graph *BetaG;
-   extern struct stringwr **alplist;
-   extern struct stringwr **betlist;
-
-   extern BIGINT strings2det(int alp_code, int alp_idx,
-     int bet_code, int bet_idx);
-                                                         
-   extern int og_lex_addr(struct olsen_graph *Graph, int *occs, int nel,
-     int *listnum);
-
-   extern void print_vec(unsigned int nprint, int *Iacode, int *Ibcode,
-     int *Iaidx, int *Ibidx, double *coeff,
-     struct olsen_graph *AlphaG, struct olsen_graph *BetaG,
-     struct stringwr **alplist, struct stringwr **betlist,
-     FILE *outfile);
-
-   extern void xpeay(double *x, double a, double *y, int size);
-
-   extern void orb2lbl(int orbnum, char *label);
-   extern int  lbl2orb(char *label);
-   
-   struct T_blks Tblks; 
-   struct diis_obj diis;
-
-   extern void parse_import_vector(SlaterDetSet *sdset, int *i_alplist,
-      int *i_alpidx, int *i_betlist, int *i_betidx, int *i_blknums);
-
 }
-
-#include <iostream>
-#define ODOMETER_DECL_ONLY
-#include "odometer.h"
                                                                                 
-#include "civect.h"
-
 int cc_reqd_sblocks[CI_BLK_MAX];
 
 /*
