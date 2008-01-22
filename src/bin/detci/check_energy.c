@@ -25,9 +25,9 @@ extern int *ioff ;
 **    opi      =  orbs per irrep in Pitzer ordering
 **    outfile  =  file to write output to
 */
-void check_energy(double *H, double *twoel_ints, int *docc, int *frozen_docc,
+double check_energy(double *H, double *twoel_ints, int *docc, int *frozen_docc,
       int fzc_flag, double escf, double enuc, double efzc, 
-      int nirreps, int *reorder, int *opi, FILE *outfile)
+      int nirreps, int *reorder, int *opi, int print_lvl, FILE *outfile)
 {
    void scf_energy() ;
    double energy_1 ;     /* one-electron energy */
@@ -37,21 +37,24 @@ void check_energy(double *H, double *twoel_ints, int *docc, int *frozen_docc,
    scf_energy(H, twoel_ints, &energy_1, &energy_2, &energy_e, docc,
       frozen_docc, fzc_flag, nirreps, reorder, opi);
 
-   fprintf(outfile,"\nCheck SCF Energy from 1- and 2-electron integrals\n\n") ;
-   fprintf(outfile,"SCF Energy (ref):          %16.10lf\n", escf) ;
-   fprintf(outfile,"Nuclear repulsion energy:  %16.10lf\n", enuc) ;
-   fprintf(outfile,"One-electron energy:       %16.10lf\n", energy_1) ;
-   fprintf(outfile,"Two-electron energy:       %16.10lf\n", energy_2) ;
-   fprintf(outfile,"Frozen core energy:        %16.10lf\n", efzc) ;
-   fprintf(outfile,"Total electronic energy:   %16.10lf\n", energy_e+efzc) ;
-   fprintf(outfile,"Total SCF energy:          %16.10lf\n", enuc + 
-      energy_e + efzc) ;
- 
-   if (fabs(enuc + efzc + energy_e - escf) > 0.00000001) {
-      fprintf(outfile, 
-         "\n*** Calculated Energy Differs from SCF Energy in CHKPT ! ***\n") ;
-      }
+   if (print_lvl) {
+     fprintf(outfile,"\nCheck SCF Energy from 1- and 2-electron integrals\n\n");
+     fprintf(outfile,"SCF Energy (ref):          %16.10lf\n", escf) ;
+     fprintf(outfile,"Nuclear repulsion energy:  %16.10lf\n", enuc) ;
+     fprintf(outfile,"One-electron energy:       %16.10lf\n", energy_1) ;
+     fprintf(outfile,"Two-electron energy:       %16.10lf\n", energy_2) ;
+     fprintf(outfile,"Frozen core energy:        %16.10lf\n", efzc) ;
+     fprintf(outfile,"Total electronic energy:   %16.10lf\n", energy_e+efzc) ;
+     fprintf(outfile,"Total SCF energy:          %16.10lf\n", enuc + 
+        energy_e + efzc) ;
+    
+     if (fabs(enuc + efzc + energy_e - escf) > 0.00000001) {
+        fprintf(outfile, 
+           "\n*** Calculated Energy Differs from SCF Energy in CHKPT ! ***\n") ;
+        }
+   }
 
+   return(enuc+efzc+energy_e); 
 }   
 
 
