@@ -52,9 +52,7 @@ void write_to_chkpt(double repulsion)
     Write out the label then 80 zeros
     ----------------------------------*/
   calc_label = init_char_array(80);
-  strncpy(calc_label,label,MIN(80,strlen(label)));
-  if(strlen(label) < 80) calc_label[strlen(label)] = '\0';
-  else calc_label[79] = '\0';
+  strncpy(calc_label,label,80);
   
   /*----------------------------------
     Write out basic info to chkpt
@@ -171,8 +169,7 @@ void write_to_chkpt(double repulsion)
     if(strlen(full_element[atom]) > MAX_ELEMNAME)
       punt("Element name exceeds limit, MAX_ELEMNAME.\n");
 
-    strncpy(tmp_atom_label[atom],full_element[atom],strlen(full_element[atom]));
-    tmp_atom_label[atom][strlen(full_element[atom])] = '\0';
+    strncpy(tmp_atom_label[atom],full_element[atom],strlen(full_element[atom])+1);
   }
   chkpt_wt_felement(tmp_atom_label);
   for(atom=0; atom<num_allatoms; atom++) {
