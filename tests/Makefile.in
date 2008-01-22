@@ -8,6 +8,10 @@ cc47 cc48 cc49 cc50 \
 
 rb_subdirs = rb-scf-opt-numer rb-ccsd_t-sp rb-fci-h2o rb-ccsd-opt-grad
 
+ci_subdirs = cis-sp cisd-sp fci-h2o fci-dipole fci-trans zaptn-nh2
+
+mcscf_subdirs = casscf-sp casscf-sa-sp casscf-fzc-sp rasscf-sp
+
 subdirs = \
 scf-opt scf-opt-fragments scf-opt2 scf-opt3 scf-opt4 scf-opt5 scf-opt6 scf-opt7 \
 scf-opt9 scf-opt10 scf-opt11 scf-opt12 \
@@ -16,8 +20,8 @@ scf-freq-first-3 scf-freq-first-3a scf-freq-first-5 scf-freq-first-5a \
 scf-freq-none-3 scf-freq-none-5 \
 scf-symm-fc-numer scf-fc-numer \
 scf-freq scf-polar rhf-stab uhf-stab rohf-stab mp2-sp mp2-direct-sp mp2-scs \
-cis-sp cisd-sp fci-h2o fci-dipole fci-trans casscf-sp casscf-sa-sp \
-casscf-fzc-sp rasscf-sp zaptn-nh2 \
+$(ci_subdirs) \
+$(mcscf_subdirs) \
 scf-mvd-opt scf-mvd-opt-numer scf-mvd-opt-puream \
 scf-mvd-opt-numer-puream \
 $(cc_subdirs) \
@@ -52,6 +56,18 @@ quicktests:
 
 cc_tests:
 	for dir in $(cc_subdirs); \
+	do \
+	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
+	done
+
+ci_tests:
+	for dir in $(ci_subdirs); \
+	do \
+	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
+	done
+
+mcscf_tests:
+	for dir in $(mcscf_subdirs); \
 	do \
 	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
 	done
