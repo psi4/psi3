@@ -336,6 +336,11 @@ BIGINT strings2det(int alp_code, int alp_idx, int bet_code, int bet_idx)
    BIGINT addr;
 
    blknum = CIblks.decode[alp_code][bet_code];
+   if (blknum == -1) {
+     fprintf(outfile, "CIvect::strings2det failed --- invalid block\n");
+     exit(1);
+   }
+
    addr = CIblks.offset[blknum];
    addr += alp_idx * CIblks.Ib_size[blknum] + bet_idx;
 
