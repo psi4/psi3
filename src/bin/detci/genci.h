@@ -11,6 +11,11 @@
 **
 */
 
+#ifndef _psi_src_bin_detci_genci_h
+#define _psi_src_bin_detci_genci_h
+
+namespace psi { namespace detci {
+
 int schmidt_addoc(double *buffer4, double *buffer5, int buf_size, 
                   int extra_buf, int num_buf, PSI_FPTR d_index, 
                   int N, int L, int b_file, int d_file);
@@ -30,4 +35,8 @@ void min_element(double *buffer, int num_elements, double *min, int *min_num);
 void read_c(int switch_buf3, double *buffer, int buf_size, int num_buf,
             int extra_buf, int b_file, PSI_FPTR b_writ,
             int c_file, PSI_FPTR c_index);
+
+}} // namespace psi::detci
+
+#endif // header guard
 

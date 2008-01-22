@@ -1,26 +1,23 @@
-/*! \file 
-    \ingroup (DETCI)
-    \brief Enter brief description of file here 
+/*! \file tpdm.cc
+**  \ingroup (DETCI)
+**  \brief Compute the two-particle density matrix (TPDM)
+**
+**  C. David Sherrill
 */
-#define EXTERN
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
-
-extern "C" {
-   #include <stdio.h>
-   #include <stdlib.h>
-   /* may no longer need #include <libc.h> */
-   #include <libciomr/libciomr.h>
-   #include <libqt/qt.h>
-   #include <libiwl/iwl.h>
-   #include "structs.h"
-   #include "globals.h"
-}
-
-
-#ifndef CIVECT_H
+/* may no longer need #include <libc.h> */
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include <libiwl/iwl.h>
+#include "structs.h"
+#define EXTERN
+#include "globals.h"
 #include "civect.h"
-#endif
+
+namespace psi { namespace detci {
 
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 
@@ -591,4 +588,6 @@ void tpdm_block(struct stringwr **alplist, struct stringwr **betlist,
   } /* end loop over Ja */
 
 }
+
+}} // namespace psi::detci
 

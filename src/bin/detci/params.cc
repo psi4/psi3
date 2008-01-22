@@ -12,13 +12,9 @@
 
 #define EXTERN
 
-extern "C" {
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-#ifdef AIX
-#include <string.h>
-#endif
 #include <libipv1/ip_lib.h>
 #include <libipv1/ip_data.gbl>
 #include <libciomr/libciomr.h>
@@ -27,8 +23,8 @@ extern "C" {
 #include <psifiles.h>
 #include "structs.h"
 #include "globals.h"
-}
 
+namespace psi { namespace detci {
 
 /*
 ** get_parameters(): Function gets the program running parameters such
@@ -1678,4 +1674,6 @@ void print_ras_parms(void)
   fprintf(outfile,
      "*******************************************************\n\n");
 }
+
+}} // namespace psi::detci
 

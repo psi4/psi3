@@ -1,13 +1,9 @@
-/*! \file 
-    \ingroup (DETCI)
-    \brief Enter brief description of file here 
-*/
-/* 
-** GRAPHSET.CC
+/*! \file graphset.cc
+**  \ingroup (DETCI)
+**  \brief Routines needed to maintain the GraphSet Object.  
 **
-** Routines needed to maintain the GraphSet Object.  The graph
-** for alpha/beta strings has a different subgraph for each value of
-** irrep and RAS I hole/RAS III particle/RAS IV particle combination.  
+** The graph for alpha/beta strings has a different subgraph for each value 
+** of irrep and RAS I hole/RAS III particle/RAS IV particle combination.  
 **
 ** C. David Sherrill, May 1996
 ** Based on previous code by David Sherrill, 1994-5
@@ -16,31 +12,30 @@
 
 #define EXTERN
 
-extern "C" {
-   #include <stdlib.h>
-   #include <stdio.h>
-   #include <libciomr/libciomr.h>
-   #include <libqt/qt.h>
-   #include "structs.h"
-   #include "globals.h"
-   extern struct stringwr **alplist;  
-   extern struct stringwr **betlist; 
-
-   extern void gs_stringlist(struct graph_set *AG, struct stringwr **slist);
-   extern void gs_set_ciblks(struct graph_set *AG, struct graph_set *BG);
-   extern void print_ci_space(struct stringwr *strlist, int num_strings,
-      int nirreps, int strtypes, int nel, FILE *outfile);
-} ;
-
+#include <stdlib.h>
+#include <stdio.h>
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include "structs.h"
+#include "globals.h"
 #include <iostream>
-#define ODOMETER_DECL_ONLY
 #include "odometer.h"
+
+namespace psi { namespace detci {
+
+extern struct stringwr **alplist;  
+extern struct stringwr **betlist; 
+
+extern void gs_stringlist(struct graph_set *AG, struct stringwr **slist);
+extern void gs_set_ciblks(struct graph_set *AG, struct graph_set *BG);
+extern void print_ci_space(struct stringwr *strlist, int num_strings,
+   int nirreps, int strtypes, int nel, FILE *outfile);
 
 #define UOC_BIT 1
 #define OCC_BIT 2
 #define N_RAS_SPACES 4
 
-#define DEBUG 
+//#define DEBUG 
 
 /* GLOBALS THIS MODULE */
 int **Tij, **Toij;
@@ -1182,4 +1177,5 @@ void gs_free_repinfo_temps(void)
    free(Tsgn);
 }
 
+}} // namespace psi::detci
 

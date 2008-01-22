@@ -2,6 +2,7 @@
     \ingroup (DETCI)
     \brief Enter brief description of file here 
 */
+
 /*
 ** ODOMETER.CC
 **
@@ -10,11 +11,10 @@
 ** University of Georgia
 */
 
-extern "C" {
-   #include <stdio.h>
-}
-
+#include <stdio.h>
 #include "odometer.h"
+
+namespace psi { namespace detci {
 
 // #define STANDALONE
 #ifdef STANDALONE
@@ -274,4 +274,5 @@ int minvals[] = {3, 2, 1} ;
 }
 #endif
 
+}} // namespace psi::detci
 

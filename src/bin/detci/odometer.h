@@ -36,6 +36,11 @@
 **
 */
 
+#ifndef _psi_src_bin_detci_odometer_h
+#define _psi_src_bin_detci_odometer_h
+
+namespace psi { namespace detci {
+
 class Odometer {
 
    protected:
@@ -70,4 +75,8 @@ class Odometer {
          {return length; }
       unsigned boundscheck() ;
 } ;
+
+}} // namespace psi::detci
+
+#endif // header guard
 

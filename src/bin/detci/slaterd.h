@@ -2,6 +2,7 @@
     \ingroup (DETCI)
     \brief Enter brief description of file here 
 */
+
 /* Slater Determinant Class
 **
 ** Based on a previous implementation by David Sherrill using bitsrings 
@@ -27,9 +28,10 @@
 */
 
 
-#ifndef _SLATERD_H
-#define _SLATERD_H
+#ifndef _psi_src_bin_detci_slaterd_h
+#define _psi_src_bin_detci_slaterd_h
 
+namespace psi { namespace detci {
 
 class SlaterDeterminant {
 
@@ -54,4 +56,7 @@ class SlaterDeterminant {
       friend double matrix_element(SlaterDeterminant* I, SlaterDeterminant* J);
 };
 
-#endif
+}} // namespace psi::detci
+
+#endif // header guard
+

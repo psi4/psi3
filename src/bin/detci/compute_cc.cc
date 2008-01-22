@@ -1,8 +1,6 @@
-/*
-** COMPUTE_CC.CC
-**
-** This will be a prototype implementation of arbitrary-order 
-** coupled-cluster code.
+/*! \file compute_cc.cc
+**  \ingroup (DETCI)
+**  \brief Arbitrary-order coupled-cluster code
 ** 
 ** C. David Sherrill
 ** Center for Computational Molecular Science and Technology
@@ -16,21 +14,20 @@
 
 #define EXTERN
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
+#include <psifiles.h>
+#include <libipv1/ip_lib.h>
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include <libqt/slaterdset.h>
+#include <libpsio/psio.h>
+#include "structs.h"
+#include "globals.h"
 
-extern "C" {
-   #include <stdio.h>
-   #include <stdlib.h>
-   #include <psifiles.h>
-   #include <libipv1/ip_lib.h>
-   #include <libciomr/libciomr.h>
-   #include <libqt/qt.h>
-   #include <libqt/slaterdset.h>
-   #include <libpsio/psio.h>
-   #include "structs.h"
-   #include "globals.h"
-}
-                                                                                
+namespace psi { namespace detci {
+
 int cc_reqd_sblocks[CI_BLK_MAX];
 
 /*
@@ -44,3 +41,6 @@ void compute_cc(void)
 {
   printf("compute_cc: Not yet available\n");
 }
+
+}} // namespace psi::detci
+

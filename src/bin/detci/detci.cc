@@ -19,92 +19,72 @@
    
 */
 
-/* DEFINES */
-#define MIN0(a,b) (((a)<(b)) ? (a) : (b))
-#define MAX0(a,b) (((a)>(b)) ? (a) : (b))
-
+#include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
-
-extern "C" {
-
-   /* C INCLUDE FILES */
-
-   #include <stdlib.h>
-   #include <stdio.h>
-   #include <libipv1/ip_lib.h>
-   /* seem to need string.h in RedHat 7.1 */
-   #include <string.h>
-   #include <psifiles.h>
-   #include <libqt/qt.h>
-   #include <libciomr/libciomr.h>
-   #include <libchkpt/chkpt.h>
-   #include <libpsio/psio.h>
-   #include <libqt/slaterdset.h>
-   #include <masses.h>
-   #include "structs.h"
-   #include "globals.h"
-   #include "ci_tol.h"
-   #include <pthread.h>
-   #include "tpool.h"
-
-
-   /* C "GLOBAL" VARIABLES FOR THIS MODULE */
-
-   unsigned char ***Occs;
-   struct stringwr **alplist;  
-   struct stringwr **betlist; 
-
-
-   /* C FUNCTION PROTOTYPES */
-
-   extern void eivout_t(double **evecs, double *evals, int rows, int cols,
-      FILE *outfile);
-   extern void read_integrals(void);
-   extern void tf_onel_ints(int printflg, FILE *outfile);
-   extern void zapt_shift(double *TEI, int nirreps, int nmo, int *doccpi, 
-      int *soccpi, int *orbspi, int *frzdoccpi, int *reorder);
-   extern void form_gmat(int printflg, FILE *outfile);
-   extern void get_mo_info(void);
-   extern void print_vec(unsigned int nprint, int *Iacode, int *Ibcode, 
-      int *Iaidx, int *Ibidx, double *coeff,
-      struct olsen_graph *AlphaG, struct olsen_graph *BetaG, 
-      struct stringwr **alplist, struct stringwr **betlist,
-      FILE *outfile);
-   extern void print_config(int nbf, int num_alp_el, int num_bet_el,
-      struct stringwr *stralp, struct stringwr *strbet, 
-      int num_fzc_orbs, char *outstring);
-   extern void init_stringwr_temps(int nel, int num_ci_orbs, int nsym);
-   extern void free_stringwr_temps(int nsym);
-   extern void str_abs2rel(int absidx, int *relidx, int *listnum,
-      struct olsen_graph *Graph);
-   extern int str_rel2abs(int relidx, int listnum, struct olsen_graph *Graph);
-   extern void H0block_init(unsigned int size);
-   extern void H0block_fill(struct stringwr **alplist, 
-      struct stringwr **betlist);
-   extern void H0block_free(void);
-   extern void H0block_print(void);
-   extern void H0block_setup(int num_blocks, int *Ia_code, int *Ib_code);
-   extern void H0block_pairup(int guess);
-   extern void H0block_spin_cpl_chk(void);
-   extern void H0block_filter_setup(void);
-   extern void sem_test(double **A, int N, int M, int L, double **evecs,
-      double *evals, double **b, double conv_e, double conv_rms, 
-      int maxiter, double offst, int *vu, int maxnvect, FILE *outfile);
-   extern void form_ov(struct stringwr **alplist);
-   extern void write_energy(int nroots, double *evals, double offset);
-}
-
-
-/* C++ INCLUDE FILES */
-
+#include <libipv1/ip_lib.h>
+#include <string.h>
+#include <psifiles.h>
+#include <libqt/qt.h>
+#include <libciomr/libciomr.h>
+#include <libchkpt/chkpt.h>
+#include <libpsio/psio.h>
+#include <libqt/slaterdset.h>
+#include <masses.h>
+#include "structs.h"
+#include "globals.h"
+#include "ci_tol.h"
+#include <pthread.h>
+#include "tpool.h"
 #include <iostream>
 #include "odometer.h"
 #include "slaterd.h"
 #include "civect.h"
 
+namespace psi { namespace detci {
 
+#define MIN0(a,b) (((a)<(b)) ? (a) : (b))
+#define MAX0(a,b) (((a)>(b)) ? (a) : (b))
 
-/* C++ FUNCTION PROTOTYPES */
+unsigned char ***Occs;
+struct stringwr **alplist;  
+struct stringwr **betlist; 
+
+extern void eivout_t(double **evecs, double *evals, int rows, int cols,
+   FILE *outfile);
+extern void read_integrals(void);
+extern void tf_onel_ints(int printflg, FILE *outfile);
+extern void zapt_shift(double *TEI, int nirreps, int nmo, int *doccpi, 
+   int *soccpi, int *orbspi, int *frzdoccpi, int *reorder);
+extern void form_gmat(int printflg, FILE *outfile);
+extern void get_mo_info(void);
+extern void print_vec(unsigned int nprint, int *Iacode, int *Ibcode, 
+   int *Iaidx, int *Ibidx, double *coeff,
+   struct olsen_graph *AlphaG, struct olsen_graph *BetaG, 
+   struct stringwr **alplist, struct stringwr **betlist,
+   FILE *outfile);
+extern void print_config(int nbf, int num_alp_el, int num_bet_el,
+   struct stringwr *stralp, struct stringwr *strbet, 
+   int num_fzc_orbs, char *outstring);
+extern void init_stringwr_temps(int nel, int num_ci_orbs, int nsym);
+extern void free_stringwr_temps(int nsym);
+extern void str_abs2rel(int absidx, int *relidx, int *listnum,
+   struct olsen_graph *Graph);
+extern int str_rel2abs(int relidx, int listnum, struct olsen_graph *Graph);
+extern void H0block_init(unsigned int size);
+extern void H0block_fill(struct stringwr **alplist, 
+   struct stringwr **betlist);
+extern void H0block_free(void);
+extern void H0block_print(void);
+extern void H0block_setup(int num_blocks, int *Ia_code, int *Ib_code);
+extern void H0block_pairup(int guess);
+extern void H0block_spin_cpl_chk(void);
+extern void H0block_filter_setup(void);
+extern void sem_test(double **A, int N, int M, int L, double **evecs,
+   double *evals, double **b, double conv_e, double conv_rms, 
+   int maxiter, double offst, int *vu, int maxnvect, FILE *outfile);
+extern void form_ov(struct stringwr **alplist);
+extern void write_energy(int nroots, double *evals, double offset);
 
 void init_io(int argc, char *argv[]);
 void close_io(void);
@@ -122,29 +102,33 @@ extern void set_ras_parms(void);
 extern void print_ras_parms(void);
 extern void form_strings(void);
 extern void mitrush_iter(CIvect &Hd, 
-      struct stringwr **alplist, struct stringwr **betlist,
-      int nroots, double *evals, double conv_rms, double conv_e, double enuc, 
-      double efzc, int maxiter, int maxnvect, FILE *outfile, 
-      int print_lvl);
+   struct stringwr **alplist, struct stringwr **betlist,
+   int nroots, double *evals, double conv_rms, double conv_e, double enuc, 
+   double efzc, int maxiter, int maxnvect, FILE *outfile, 
+   int print_lvl);
 extern void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
-      **betlist, double *evals, double conv_e,
-      double conv_rms, double enuc, double efzc,
-      int nroots, int maxiter, int maxnvect, FILE *outfile, int print_lvl);
+   **betlist, double *evals, double conv_e,
+   double conv_rms, double enuc, double efzc,
+   int nroots, int maxiter, int maxnvect, FILE *outfile, int print_lvl);
 extern void mpn_generator(CIvect &Hd, struct stringwr **alplist, 
-          struct stringwr **betlist);
+   struct stringwr **betlist);
 extern void opdm(struct stringwr **alplist, struct stringwr **betlist, 
-          int transdens, int dipmom,
-          int Inroots, int Iroot, int Inunits, int Ifirstunit,
-          int Jnroots, int Jroot, int Jnunits, int Jfirstunit,
-          int targetfile, int writeflag, int printflag);
+   int transdens, int dipmom,
+   int Inroots, int Iroot, int Inunits, int Ifirstunit,
+   int Jnroots, int Jroot, int Jnunits, int Jfirstunit,
+   int targetfile, int writeflag, int printflag);
 extern void tpdm(struct stringwr **alplist, struct stringwr **betlist, 
-          int Inroots, int Inunits, int Ifirstunit,
-          int Jnroots, int Jnunits, int Jfirstunit,
-          int targetfile, int writeflag, int printflag);
+   int Inroots, int Inunits, int Ifirstunit,
+   int Jnroots, int Jnunits, int Jfirstunit,
+   int targetfile, int writeflag, int printflag);
 extern void compute_cc(void);
 extern void calc_mrpt(void);
 
-main(int argc, char *argv[])
+}} // namespace psi::detci
+
+using namespace psi::detci;
+
+int main(int argc, char *argv[])
 {
    Parameters.print_lvl = 1;
    Parameters.have_special_conv = 0;
@@ -219,7 +203,7 @@ main(int argc, char *argv[])
    return(0);
 }
 
-
+namespace psi { namespace detci {
 
 /*
 ** init_io(): Figure out command-line arguments and start up I/O for
@@ -1369,3 +1353,8 @@ void mpn(struct stringwr **alplist, struct stringwr **betlist)
 
    mpn_generator(Hd, alplist, betlist);
 }
+
+}} // namespace psi::detci
+
+extern "C" { char *gprgid(void) { char *prgid = "DETCI"; return (prgid); } }
+

@@ -14,60 +14,51 @@
 
 /*** DEFINES ***/
 #define EXTERN
+
+/*** INCLUDES ***/
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+#include <libipv1/ip_lib.h>
+#include <libqt/qt.h>
+#include <libciomr/libciomr.h>
+#include <libchkpt/chkpt.h>
+#include "structs.h"
+#include "globals.h"
+#include "genci.h"
+#include "slaterd.h"
+
+namespace psi { namespace detci {
+
 #define MAX_B_ROWS 200
 #define MIN_F_DENOM 1.0E-3
 #define INDEX(i,j) ( (i>j) ? (ioff[(i)] + (j)): (ioff[(j)] + (i)) )
 
-#include <math.h>
-
-/*** INCLUDES ***/
-extern "C" {
-
-   /* C INCLUDE FILES */
-
-   #include <stdlib.h>
-   #include <stdio.h>
-   #include <libipv1/ip_lib.h>
-   #include <libqt/qt.h>
-   #include <libciomr/libciomr.h>
-   #include <libchkpt/chkpt.h>
-   #include "structs.h"
-   #include "globals.h"
-   #include "genci.h"
-
-   extern struct stringwr **alplist;  
-   extern struct stringwr **betlist; 
-}
-
-#include "slaterd.h"
-
+extern struct stringwr **alplist;  
+extern struct stringwr **betlist; 
 
 /*** FUNCTION PROTOTYPES ***/
 void sem_genci(struct stringwr **alplist, struct stringwr **betlist,
-               int N, int M, double *evals, double conv_e, double conv_rms, 
-               int maxiter, double nucrep, double efzc, int maxnvect, 
-               FILE *outfile, int print_lvl, int h0blocksize, int guess_vector,
-               int restart, int restart_vecs);
+   int N, int M, double *evals, double conv_e, double conv_rms, 
+   int maxiter, double nucrep, double efzc, int maxnvect, 
+   FILE *outfile, int print_lvl, int h0blocksize, int guess_vector,
+   int restart, int restart_vecs);
 void calc_h0_blk(double *h0, int *detref, double *detval, int h0blocksize, 
-             int tridim, struct stringwr **alplist, 
-             struct stringwr **betlist);
+   int tridim, struct stringwr **alplist, struct stringwr **betlist);
 void gen_mat(unsigned long i, unsigned long j, int buf_size, double *A,
-             struct stringwr **alplist, struct stringwr **betlist);
+   struct stringwr **alplist, struct stringwr **betlist);
 void gendi_a(unsigned long i, unsigned long buf_size, double *A,
-             struct stringwr **alplist, struct stringwr **betlist);
+   struct stringwr **alplist, struct stringwr **betlist);
 PSI_FPTR sigma(struct stringwr **alplist, struct stringwr **betlist,
-                        double **buffer, int L, int switch_buf3,
-                        int buf_size, int num_buf, int num_new_vec, 
-                        int extra_buf3, int b_file, int bA_file, 
-                        int buf_val3, int N, int extra_buf,
-                        PSI_FPTR byte, int print_lvl);
+   double **buffer, int L, int switch_buf3, int buf_size, int num_buf, 
+   int num_new_vec, int extra_buf3, int b_file, int bA_file, 
+   int buf_val3, int N, int extra_buf, PSI_FPTR byte, int print_lvl);
 void h0_guess(int alp_code, int alp_idx, int bet_code, int bet_idx,
-              int switch_buf3, double *buffer, int buf_size,
-              int num_buf, int extra_buf, int b_file,
-              PSI_FPTR b_writ, int M, int N, int h0blocksize,
-              double nucrep, double efzc, struct stringwr **alplist,
-              struct stringwr **betlist);
-
+   int switch_buf3, double *buffer, int buf_size,
+   int num_buf, int extra_buf, int b_file,
+   PSI_FPTR b_writ, int M, int N, int h0blocksize,
+   double nucrep, double efzc, struct stringwr **alplist,
+   struct stringwr **betlist);
 
 
 /*** GLOBAL VARIABLES THIS MODULE ***/
@@ -1039,4 +1030,6 @@ void h0_guess(int alp_code, int alp_idx, int bet_code, int bet_idx,
    free(h0);
    free(eigvec);
 }
+
+}} // namespace psi::detci
 

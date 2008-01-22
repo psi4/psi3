@@ -2,25 +2,23 @@
     \ingroup (DETCI)
     \brief Enter brief description of file here 
 */
-extern "C" {
-   #include <stdio.h>
-   #include <stdlib.h> /* was libc.h */
-   /* gcc 2.7.0 doesn't like #include <string.h> */
-   extern double get_twoel(int i, int j, int k, int l);
-   extern double get_onel(int i, int j);
-   extern int calc_orb_diff(int cnt, unsigned char *I, unsigned char *J, 
-      int *I_alpha_diff, int *J_alpha_diff, int *sign, int *same, 
-      int extended);
-   extern void common_orbs(int *same_alpha, int *same_beta, int cnt_alpha,
-      int cnt_beta, int *common_docc, int *common_alpha_socc, 
-      int *common_beta_socc, int *cnt_docc, int *cnt_alpha_socc, 
-      int *cnt_beta_socc);
-}
 
+#include <stdio.h>
+#include <stdlib.h> /* was libc.h */
+/* gcc 2.7.0 doesn't like #include <string.h> */
 #include "slaterd.h"
-// #define STANDALONE
-// #define PRINT_INTS
 
+namespace psi { namespace detci {
+
+extern double get_twoel(int i, int j, int k, int l);
+extern double get_onel(int i, int j);
+extern int calc_orb_diff(int cnt, unsigned char *I, unsigned char *J, 
+   int *I_alpha_diff, int *J_alpha_diff, int *sign, int *same, 
+   int extended);
+extern void common_orbs(int *same_alpha, int *same_beta, int cnt_alpha,
+   int cnt_beta, int *common_docc, int *common_alpha_socc, 
+   int *common_beta_socc, int *cnt_docc, int *cnt_alpha_socc, 
+   int *cnt_beta_socc);
 
 
 void SlaterDeterminant::set(unsigned int na, unsigned char *alpoccs, 
@@ -602,4 +600,6 @@ double get_onel(int i, int j)
 #endif
 
 #endif
+
+}} // namespace psi::detci
 

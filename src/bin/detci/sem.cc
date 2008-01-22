@@ -13,38 +13,36 @@
 
 /* #define DEBUG */ 
 
-#define MALPHA_TOLERANCE 1E-15
-
+#include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
+#include <psifiles.h>
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include <libqt/slaterdset.h>
+#include <physconst.h>
+#include "structs.h"
+#include "ci_tol.h"
+#define EXTERN
+#include "globals.h"
+#include "civect.h"
 
-extern "C" {
-   #include <stdlib.h>
-   #include <stdio.h>
-   #include <psifiles.h>
-   #include <libciomr/libciomr.h>
-   #include <libqt/qt.h>
-   #include <libqt/slaterdset.h>
-   #include <physconst.h>
-   #include "structs.h"
-   #include "ci_tol.h"
-   #define EXTERN
-   #include "globals.h"
+namespace psi { namespace detci {
 
-   extern int H0block_calc(double E);
-   extern void H0block_xy(double *x, double *y, double E);
-   extern void print_vec(unsigned int nprint, int *Iacode, int *Ibcode,
-      int *Iaidx, int *Ibidx, double *coeff,
-      struct olsen_graph *AlphaG, struct olsen_graph *BetaG,
-      struct stringwr **alplist, struct stringwr **betlist,
-      FILE *outfile);
-   extern void parse_import_vector(SlaterDetSet *sdset, int *i_alplist, 
-      int *i_alpidx, int *i_betlist, int *i_betidx, int *i_blknums);
-   
-}
+extern int H0block_calc(double E);
+extern void H0block_xy(double *x, double *y, double E);
+extern void print_vec(unsigned int nprint, int *Iacode, int *Ibcode,
+   int *Iaidx, int *Ibidx, double *coeff,
+   struct olsen_graph *AlphaG, struct olsen_graph *BetaG,
+   struct stringwr **alplist, struct stringwr **betlist,
+   FILE *outfile);
+extern void parse_import_vector(SlaterDetSet *sdset, int *i_alplist, 
+   int *i_alpidx, int *i_betlist, int *i_betidx, int *i_blknums);
 
 extern void H0block_coupling_calc(double E, struct stringwr **alplist,
-      struct stringwr **betlist);
-#include "civect.h"
+   struct stringwr **betlist);
+
+#define MALPHA_TOLERANCE 1E-15
 
 void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
       **betlist, double *evals, double conv_e, 
@@ -1353,3 +1351,6 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
    free(buffer1);
    free(buffer2);
 }
+
+}} // namespace psi::detci
+

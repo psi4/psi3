@@ -11,11 +11,15 @@
 ** 1996
 */
 
+#ifndef _psi_src_bin_detci_structs_h
+#define _psi_src_bin_detci_structs_h
+
+namespace psi { namespace detci {
 
 /*** INCLUDES ***/
-
-#include <unistd.h>
-#include <sys/time.h>
+// do I really need these?  22 Jan 2008 CDS
+// #include <unistd.h>
+// #include <sys/time.h>
 
 /*** DEFINES ***/
 /*
@@ -647,3 +651,8 @@ struct detci_timings {
 double wall_time_new(void);
 void init_time_new(struct detci_timings time);
 void print_time_new(struct detci_timings time);
+
+}} // namespace psi::detci
+
+#endif // header guard
+

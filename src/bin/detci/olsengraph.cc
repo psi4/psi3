@@ -2,6 +2,7 @@
     \ingroup (DETCI)
     \brief Enter brief description of file here 
 */
+
 /* 
 ** OLSENGRAPH.CC
 **
@@ -15,48 +16,44 @@
 */
 
 #define EXTERN
-
-extern "C" {
-   #include <stdlib.h>
-   #include <stdio.h>
-   #include <libciomr/libciomr.h>
-   #include <libqt/qt.h>
-   #include "structs.h"
-   #include "globals.h"
-   extern struct stringwr **alplist;  
-   extern struct stringwr **betlist; 
-
-   extern void stringlist(struct olsen_graph *Graph, struct stringwr **slist);
-   extern void set_ciblks(struct olsen_graph *AG, struct olsen_graph *BG);
-   extern void print_ci_space(struct stringwr *strlist, int num_strings,
-      int nirreps, int strtypes, int nel, FILE *outfile);
-   extern void str_abs2rel(int absidx, int *relidx, int *listnum,
-      struct olsen_graph *Graph);
-} ;
-
+#include <stdlib.h>
+#include <stdio.h>
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include "structs.h"
+#include "globals.h"
 #include <iostream>
-#define ODOMETER_DECL_ONLY
 #include "odometer.h"
 
+namespace psi { namespace detci {
+
+extern struct stringwr **alplist;  
+extern struct stringwr **betlist; 
+
+extern void stringlist(struct olsen_graph *Graph, struct stringwr **slist);
+extern void set_ciblks(struct olsen_graph *AG, struct olsen_graph *BG);
+extern void print_ci_space(struct stringwr *strlist, int num_strings,
+   int nirreps, int strtypes, int nel, FILE *outfile);
+extern void str_abs2rel(int absidx, int *relidx, int *listnum,
+   struct olsen_graph *Graph);
 
 //#define DEBUG  
 
 /* FUNCTION PROTOTYPES for this module */
 void olsengraph(struct olsen_graph *Graph, int ci_orbs, int num_el, 
-      int nirreps, int *orbsym, int ras1_lvl, int ras1_min, int ras1_max, 
-      int ras3_lvl, int ras3_max, int num_fzc_orbs, int num_cor_orbs,
-      int ras4_lvl, int ras4_max, int ras34_max);
+   int nirreps, int *orbsym, int ras1_lvl, int ras1_min, int ras1_max, 
+   int ras3_lvl, int ras3_max, int num_fzc_orbs, int num_cor_orbs,
+   int ras4_lvl, int ras4_max, int ras34_max);
 void og_add_walk(int ras1_idx, int ras3_num, int ras4_num, int *occs, 
-      int nel_expl, int norb, int nirreps, int num_fzc_orbs,
-      struct olsen_graph *Graph);
+   int nel_expl, int norb, int nirreps, int num_fzc_orbs,
+   struct olsen_graph *Graph);
 int og_calc_y(struct level *lvl, int ci_orbs);
 void og_fill(int num_el, int norb, int nirreps, int num_fzc_orbs,
-      struct olsen_graph *Graph);
+   struct olsen_graph *Graph);
 int subgr_lex_addr(struct level *head, int *occs, int nel, int norb);
 int og_lex_addr(struct olsen_graph *Graph, int *occs, int nel,
-      int *listnum);
+   int *listnum);
 void og_print(struct olsen_graph *Graph, FILE *outfile);
-
 
 
 /*
@@ -843,5 +840,7 @@ void og_print(struct olsen_graph *Graph, FILE *outfile)
    fprintf(outfile, "\n");
    fflush(outfile);
 }
+
+}} // namespace psi::detci
 
 

@@ -2,8 +2,10 @@
     \ingroup (DETCI)
     \brief Enter brief description of file here 
 */
-#ifndef CIVECT_H
-#define CIVECT_H
+#ifndef _psi_src_bin_detci_civect_h
+#define _psi_src_bin_detci_civect_h
+
+namespace psi { namespace detci {
 
 //typedef unsigned long long int BIGINT;
 typedef unsigned long int BIGINT;
@@ -233,4 +235,7 @@ class CIvect {
           int targetfile, int writeflag, int printflag);
 };
 
-#endif  /* CIVECT_H */
+}} // namespace psi::detci
+
+#endif  // header guard
+

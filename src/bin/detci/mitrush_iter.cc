@@ -1,11 +1,6 @@
-/*! \file 
-    \ingroup (DETCI)
-    \brief Enter brief description of file here 
-*/
-/*
-** MITRUSH_ITER.CC
-**
-** Contains code to do a Mitrushenkov iterative scheme for RAS CI's
+/*! \file mitrush_iter.cc
+**  \ingroup (DETCI)
+**  \brief Mitrushenkov iterative scheme for RAS CI's
 **
 ** C. David Sherrill
 ** Center for Computational Quantum Chemistry
@@ -22,33 +17,32 @@
 #define EXTERN 
 /* #define DEBUG */
 
+#include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
-
-extern "C" {
-   #include <stdlib.h>
-   #include <stdio.h>
-   #include <libciomr/libciomr.h>
-   #include <libqt/qt.h>
-   #include "structs.h"
-   #include "globals.h"
-
-   extern int H0block_calc(double E);
-   extern int H0block_coupling_calc(double E, struct stringwr *alplist,
-      struct stringwr *betlist);
-   extern void H0block_xy(double *x, double *y, double E);
-   extern void print_vec(unsigned int nprint, int *Iacode, int *Ibcode, 
-      int *Iaidx, int *Ibidx, double *coeff,
-      struct olsen_graph *AlphaG, struct olsen_graph *BetaG, 
-      struct stringwr **alplist, struct stringwr **betlist,
-      FILE *outfile);
-}
-
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include "structs.h"
+#include "globals.h"
 #include "civect.h"
 #include "ci_tol.h"
 
-/* #define DEBUG */
+namespace psi { namespace detci {
 
+extern int H0block_calc(double E);
+extern int H0block_coupling_calc(double E, struct stringwr *alplist,
+   struct stringwr *betlist);
+extern void H0block_xy(double *x, double *y, double E);
+extern void print_vec(unsigned int nprint, int *Iacode, int *Ibcode, 
+   int *Iaidx, int *Ibidx, double *coeff,
+   struct olsen_graph *AlphaG, struct olsen_graph *BetaG, 
+   struct stringwr **alplist, struct stringwr **betlist,
+   FILE *outfile);
+
+
+/* #define DEBUG */
 #define MITRUSH_E_DIFF_MIN 5.0E-6
+
 
 /*
 ** mitrush_iter()
@@ -514,3 +508,6 @@ void mitrush_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
       } /* end while (1) */
 
 }
+
+}} // namespace psi::detci
+

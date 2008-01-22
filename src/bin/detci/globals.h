@@ -2,6 +2,10 @@
     \ingroup (DETCI)
     \brief Enter brief description of file here 
 */
+
+#ifndef _psi_src_bin_detci_globals_h
+#define _psi_src_bin_detci_globals_h
+
 /* nice stuff to extern or not to extern properly */
 #ifdef EXTERN
 # undef EXTERN
@@ -10,12 +14,17 @@
 # define EXTERN
 #endif
 
+extern "C" {
+  EXTERN FILE *infile, *outfile;
+  EXTERN char *psi_file_prefix;
+}
+
+namespace psi { namespace detci {
+
 EXTERN int errcod;
 EXTERN struct calcinfo CalcInfo;
 EXTERN struct params Parameters;
 EXTERN int *ioff;
-EXTERN FILE *infile, *outfile;
-EXTERN char *psi_file_prefix;
 EXTERN struct ci_blks CIblks;
 EXTERN struct olsen_graph *AlphaG;
 EXTERN struct olsen_graph *BetaG;
@@ -27,3 +36,6 @@ EXTERN int **s1_contrib, **s2_contrib, **s3_contrib;
 EXTERN double *tmp_ras_array;
 EXTERN struct detci_timings detci_time;
 
+}} // namespace psi::detci
+
+#endif // header guard

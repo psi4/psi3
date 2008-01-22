@@ -2,34 +2,30 @@
     \ingroup (DETCI)
     \brief Enter brief description of file here 
 */
-#define EXTERN
-#define TOL 1E-14
+
 /* #define DEBUG */
 
+#define EXTERN
+
+#include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
-
-extern "C" {
-   #include <stdio.h>
-   #include <stdlib.h>
-   /* may no longer need #include <libc.h> */
-   #include <libciomr/libciomr.h>
-   #include <libqt/qt.h>
-   #include <libchkpt/chkpt.h>
-   #include <libiwl/iwl.h>
-   #include <psifiles.h>
-   #include <physconst.h>
-   #include "structs.h"
-   #include "globals.h"
-}
-
-
-#ifndef CIVECT_H
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include <libchkpt/chkpt.h>
+#include <libiwl/iwl.h>
+#include <psifiles.h>
+#include <physconst.h>
+#include "structs.h"
+#include "globals.h"
 #include "civect.h"
-#endif
+
+namespace psi { namespace detci {
 
 #define MIN0(a,b) (((a)<(b)) ? (a) : (b))
 #define MAX0(a,b) (((a)>(b)) ? (a) : (b))
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
+#define TOL 1E-14
 
 void orbsfile_rd_blk(int targetfile, int root, int irrep, double **orbs_vector);
 void orbsfile_wt_blk(int targetfile, int root, int irrep, double **orbs_vector);
@@ -1113,4 +1109,6 @@ void get_dipmom_nuc(double *mu_x_n, double *mu_y_n, double *mu_z_n)
   free_block(geom);
 
 }  
+
+}} // namespace psi::detci
 

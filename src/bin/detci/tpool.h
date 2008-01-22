@@ -15,8 +15,20 @@
  * Structures for thread pool
  */
 
+#ifndef _psi_src_bin_detci_tpool_h
+#define _psi_src_bin_detci_tpool_h
+
+#ifdef EXTERN
+# undef EXTERN
+# define EXTERN extern
+#else
+# define EXTERN
+#endif
+
+namespace psi { namespace detci {
+
 typedef struct tpool_work {
-    void               (*routine)();
+    void               (*routine)(void *);
     void                *arg;
     struct tpool_work   *next;
 } tpool_work_t;
@@ -50,16 +62,20 @@ void tpool_init(
 
 int tpool_add_work(
     tpool_t          tpool,
-    void             (*routine)(),
+    void             (*routine)(void *),
     void             *arg);
 
 int tpool_destroy(
     tpool_t          tpool,
     int              finish);
 
-tpool_t thread_pool;
+EXTERN tpool_t thread_pool;
 
 void tpool_queue_open(tpool_t tpool);
 
 void tpool_queue_close(tpool_t tpool, int finish);
+
+}} // namespace psi::detci
+
+#endif // header guard
 

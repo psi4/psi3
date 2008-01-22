@@ -2,6 +2,7 @@
     \ingroup (DETCI)
     \brief Enter brief description of file here 
 */
+
 /*
 ** Moeller Plesset Perturbation Series Generator
 **
@@ -12,26 +13,26 @@
 
 /* #define DEBUG */
 
+#include <stdlib.h>
+#include <stdio.h>
 #include <math.h>
-
-extern "C" {
-   #include <stdlib.h>
-   #include <stdio.h>
-   #include <libciomr/libciomr.h>
-   #include <libqt/qt.h>
-   #include <libchkpt/chkpt.h>
-   #include "structs.h"
-   #include "ci_tol.h"
-   #define EXTERN
-   #include "globals.h"
-   extern void print_vec(unsigned int nprint, int *Iacode, int *Ibcode,
-      int *Iaidx, int *Ibidx, double *coeff,
-      struct olsen_graph *AlphaG, struct olsen_graph *BetaG,
-      struct stringwr **alplist, struct stringwr **betlist,
-      FILE *outfile);
-}
-
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include <libchkpt/chkpt.h>
+#include "structs.h"
+#include "ci_tol.h"
+#define EXTERN
+#include "globals.h"
 #include "civect.h"
+
+namespace psi { namespace detci {
+
+extern void print_vec(unsigned int nprint, int *Iacode, int *Ibcode,
+   int *Iaidx, int *Ibidx, double *coeff,
+   struct olsen_graph *AlphaG, struct olsen_graph *BetaG,
+   struct stringwr **alplist, struct stringwr **betlist,
+   FILE *outfile);
+
 
 void mpn_generator(CIvect &Hd, struct stringwr **alplist, 
       struct stringwr **betlist)
@@ -348,4 +349,6 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
 
    fprintf(outfile,"\n");
 }
+
+}} // namespace psi::detci
 

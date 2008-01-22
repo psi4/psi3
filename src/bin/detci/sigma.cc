@@ -1,9 +1,6 @@
 /*! \file 
-    \ingroup (DETCI)
-    \brief Enter brief description of file here 
-*/
-/*
-** SIGMA.CC
+**  \ingroup (DETCI)
+**  \brief Routines to compute sigma = H * c
 **
 ** Here collect the stuff to calculate the sigma vector within the
 ** framework of the CI vector class.
@@ -16,153 +13,146 @@
 **
 */
 
-#define EXTERN
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
-
-extern "C" {
-   #include <stdio.h>
-   #include <stdlib.h>
-   /* may no longer need #include <libc.h> */
-   #include <libciomr/libciomr.h>
-   #include <libqt/qt.h>
-   #include "structs.h"
-   #include "globals.h"
-   extern void transp_sigma(double **a, int rows, int cols, int phase);
-   extern void H0block_gather(double **mat, int al, int bl, int cscode, 
-      int mscode, int phase);
-   extern void b2brepl(unsigned char **occs, int *Jcnt, int **Jij, int **Joij,
-      int **Jridx, signed char **Jsgn, struct olsen_graph *Graph,
-      int Ilist, int Jlist, int len);
-   extern void b2brepl_test(unsigned char ***occs, int *Jcnt, int **Jij, 
-      int **Joij, int **Jridx, signed char **Jsgn, struct olsen_graph *Graph);
-   extern void s3_block_bz(int Ialist, int Iblist, int Jalist, 
-      int Jblist, int nas, int nbs, int cnas, 
-      double *tei, double **C, double **S, double **Cprime, double **Sprime);
-   extern void set_row_ptrs(int rows, int cols, double **matrix);
-   extern void bcopy(char *, char *, int);
-
-   #ifdef OLD_CDS_ALG
-   extern void s1_block_fci(struct stringwr **alplist, 
-      struct stringwr **betlist, 
-      double **C, double **S, double *oei, double *tei, double *F, 
-      int nlists, int nas, int nbs, int sbc, int cbc, int cnbs);
-   extern void s2_block_fci(struct stringwr **alplist, 
-      struct stringwr **betlist, 
-      double **C, double **S, double *oei, double *tei, double *F,
-      int nlists, int nas, int nbs, int Ia_list, int Ja_list, 
-      int Ja_list_nas);
-   extern void s1_block_ras(struct stringwr **alplist, 
-      struct stringwr **betlist, 
-      double **C, double **S, double *oei, double *tei, double *F, 
-      int nlists, int nas, int nbs, int sbc, int cbc, int cnbs);
-   extern void s1_block_ras_rotf(int *Cnt[2], int **Ij[2], int **Oij[2],
-      int **Ridx[2], signed char **Sgn[2], unsigned char **Toccs,
-      double **C, double **S,
-      double *oei, double *tei, double *F, int nlists, int nas, int nbs,
-      int Ib_list, int Jb_list, int Jb_list_nbs);
-   extern void s2_block_ras(struct stringwr **alplist, 
-      struct stringwr **betlist, 
-      double **C, double **S, double *oei, double *tei, double *F,
-      int nlists, int nas, int nbs, int sac, int cac, int cnas);
-   extern void s2_block_ras_rotf(int *Cnt[2], int **Ij[2], int **Oij[2],
-      int **Ridx[2], signed char **Sgn[2], unsigned char **Toccs,
-      double **C, double **S,
-      double *oei, double *tei, double *F, int nlists, int nas, int nbs,
-      int Ia_list, int Ja_list, int Ja_list_nbs);
-   extern void s3_block(struct stringwr *alplist, struct stringwr *betlist,
-      double **C, double **S, double *tei, int nas, int nbs,
-      int Ja_list, int Jb_list);
-   extern void s3_block_diag(struct stringwr *alplist,struct stringwr *betlist,
-      double **C, double **S, double *tei, int nas, int nbs,
-      int Ja_list, int Jb_list);
-   extern void s3_block_diag_rotf(int *Cnt[2], int **Ij[2], 
-      int **Ridx[2], signed char **Sgn[2], double **C, double **S,
-      double *tei, int nas, int nbs);
-   extern void s3_block_rotf(int *Cnt[2], int **Ij[2], 
-      int **Ridx[2], signed char **Sgn[2], double **C, double **S,
-      double *tei, int nas, int nbs);
-   #else
-   extern void s1_block_vfci_thread(struct stringwr **alplist, 
-      struct stringwr **betlist,
-      double **C, double **S, double *oei, double *tei, double *F,
-      int nlists, int nas, int nbs, int Ib_list, int Jb_list, 
-      int Jb_list_nbs);
-   extern void s1_block_vfci(struct stringwr **alplist, 
-      struct stringwr **betlist,
-      double **C, double **S, double *oei, double *tei, double *F,
-      int nlists, int nas, int nbs, int Ib_list, int Jb_list, 
-      int Jb_list_nbs);
-   extern void s1_block_vras(struct stringwr **alplist, 
-      struct stringwr **betlist, 
-      double **C, double **S, double *oei, double *tei, double *F, 
-      int nlists, int nas, int nbs, int sbc, int cbc, int cnbs);
-   extern void s1_block_vras_thread(struct stringwr **alplist, 
-      struct stringwr **betlist, 
-      double **C, double **S, double *oei, double *tei, double *F, 
-      int nlists, int nas, int nbs, int sbc, int cbc, int cnbs);
-   extern void s1_block_vras_rotf(int *Cnt[2], int **Ij[2], int **Oij[2],
-      int **Ridx[2], signed char **Sgn[2], unsigned char **Toccs,
-      double **C, double **S,
-      double *oei, double *tei, double *F, int nlists, int nas, int nbs,
-      int Ib_list, int Jb_list, int Jb_list_nbs);
-   extern void s2_block_vfci_thread(struct stringwr **alplist, 
-      struct stringwr **betlist, 
-      double **C, double **S, double *oei, double *tei, double *F,
-      int nlists, int nas, int nbs, int Ia_list, int Ja_list, 
-      int Ja_list_nas);
-   extern void s2_block_vfci(struct stringwr **alplist, 
-      struct stringwr **betlist, 
-      double **C, double **S, double *oei, double *tei, double *F,
-      int nlists, int nas, int nbs, int Ia_list, int Ja_list, 
-      int Ja_list_nas);
-   extern void s2_block_vras(struct stringwr **alplist, 
-      struct stringwr **betlist, 
-      double **C, double **S, double *oei, double *tei, double *F,
-      int nlists, int nas, int nbs, int sac, int cac, int cnas);
-   extern void s2_block_vras_thread(struct stringwr **alplist, 
-      struct stringwr **betlist, 
-      double **C, double **S, double *oei, double *tei, double *F,
-      int nlists, int nas, int nbs, int sac, int cac, int cnas);
-   extern void s2_block_vras_rotf(int *Cnt[2], int **Ij[2], int **Oij[2],
-      int **Ridx[2], signed char **Sgn[2], unsigned char **Toccs,
-      double **C, double **S,
-      double *oei, double *tei, double *F, int nlists, int nas, int nbs,
-      int Ia_list, int Ja_list, int Ja_list_nbs);
-   extern void s3_block_vdiag(struct stringwr *alplist,
-      struct stringwr *betlist,
-      double **C, double **S, double *tei, int nas, int nbs, int cnas,
-      int Ib_list, int Ja_list, int Jb_list, int Ib_sym, int Jb_sym,
-      double **Cprime, double *F, double *V, double *Sgn, int *L, int *R);
-   extern void s3_block_v(struct stringwr *alplist,struct stringwr *betlist,
-      double **C, double **S, double *tei, int nas, int nbs, int cnas,
-      int Ib_list, int Ja_list, int Jb_list, int Ib_sym, int Jb_sym,
-      double **Cprime, double *F, double *V, double *Sgn, int *L, int *R);
-   extern void s3_block_vrotf(int *Cnt[2], int **Ij[2], int **Ridx[2],
-      signed char **Sn[2], double **C, double **S, 
-      double *tei, int nas, int nbs, int cnas,
-      int Ib_list, int Ja_list, int Jb_list, int Ib_sym, int Jb_sym,
-      double **Cprime, double *F, double *V, double *Sgn, int *L, int *R);
-   extern void s3_block_vdiag_rotf(int *Cnt[2], int **Ij[2], int **Ridx[2],
-      signed char **Sn[2], double **C, double **S, 
-      double *tei, int nas, int nbs, int cnas,
-      int Ib_list, int Ja_list, int Jb_list, int Ib_sym, int Jb_sym,
-      double **Cprime, double *F, double *V, double *Sgn, int *L, int *R);
-
-   #endif
-
-   extern unsigned char ***Occs;
-   extern struct olsen_graph *AlphaG;
-   extern struct olsen_graph *BetaG;
-
-}
-
-extern int cc_reqd_sblocks[CI_BLK_MAX];
-
-#ifndef CIVECT_H
+#include <string.h>
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include "structs.h"
+#define EXTERN
+#include "globals.h"
 #include "civect.h"
+
+namespace psi { namespace detci {
+
+extern void transp_sigma(double **a, int rows, int cols, int phase);
+extern void H0block_gather(double **mat, int al, int bl, int cscode, 
+   int mscode, int phase);
+extern void b2brepl(unsigned char **occs, int *Jcnt, int **Jij, int **Joij,
+   int **Jridx, signed char **Jsgn, struct olsen_graph *Graph,
+   int Ilist, int Jlist, int len);
+extern void b2brepl_test(unsigned char ***occs, int *Jcnt, int **Jij, 
+   int **Joij, int **Jridx, signed char **Jsgn, struct olsen_graph *Graph);
+extern void s3_block_bz(int Ialist, int Iblist, int Jalist, 
+   int Jblist, int nas, int nbs, int cnas, 
+   double *tei, double **C, double **S, double **Cprime, double **Sprime);
+extern void set_row_ptrs(int rows, int cols, double **matrix);
+
+#ifdef OLD_CDS_ALG
+extern void s1_block_fci(struct stringwr **alplist, 
+   struct stringwr **betlist, 
+   double **C, double **S, double *oei, double *tei, double *F, 
+   int nlists, int nas, int nbs, int sbc, int cbc, int cnbs);
+extern void s2_block_fci(struct stringwr **alplist, 
+   struct stringwr **betlist, 
+   double **C, double **S, double *oei, double *tei, double *F,
+   int nlists, int nas, int nbs, int Ia_list, int Ja_list, 
+   int Ja_list_nas);
+extern void s1_block_ras(struct stringwr **alplist, 
+   struct stringwr **betlist, 
+   double **C, double **S, double *oei, double *tei, double *F, 
+   int nlists, int nas, int nbs, int sbc, int cbc, int cnbs);
+extern void s1_block_ras_rotf(int *Cnt[2], int **Ij[2], int **Oij[2],
+   int **Ridx[2], signed char **Sgn[2], unsigned char **Toccs,
+   double **C, double **S,
+   double *oei, double *tei, double *F, int nlists, int nas, int nbs,
+   int Ib_list, int Jb_list, int Jb_list_nbs);
+extern void s2_block_ras(struct stringwr **alplist, 
+   struct stringwr **betlist, 
+   double **C, double **S, double *oei, double *tei, double *F,
+   int nlists, int nas, int nbs, int sac, int cac, int cnas);
+extern void s2_block_ras_rotf(int *Cnt[2], int **Ij[2], int **Oij[2],
+   int **Ridx[2], signed char **Sgn[2], unsigned char **Toccs,
+   double **C, double **S,
+   double *oei, double *tei, double *F, int nlists, int nas, int nbs,
+   int Ia_list, int Ja_list, int Ja_list_nbs);
+extern void s3_block(struct stringwr *alplist, struct stringwr *betlist,
+   double **C, double **S, double *tei, int nas, int nbs,
+   int Ja_list, int Jb_list);
+extern void s3_block_diag(struct stringwr *alplist,struct stringwr *betlist,
+   double **C, double **S, double *tei, int nas, int nbs,
+   int Ja_list, int Jb_list);
+extern void s3_block_diag_rotf(int *Cnt[2], int **Ij[2], 
+   int **Ridx[2], signed char **Sgn[2], double **C, double **S,
+   double *tei, int nas, int nbs);
+extern void s3_block_rotf(int *Cnt[2], int **Ij[2], 
+   int **Ridx[2], signed char **Sgn[2], double **C, double **S,
+   double *tei, int nas, int nbs);
+#else
+extern void s1_block_vfci_thread(struct stringwr **alplist, 
+   struct stringwr **betlist,
+   double **C, double **S, double *oei, double *tei, double *F,
+   int nlists, int nas, int nbs, int Ib_list, int Jb_list, 
+   int Jb_list_nbs);
+extern void s1_block_vfci(struct stringwr **alplist, 
+   struct stringwr **betlist,
+   double **C, double **S, double *oei, double *tei, double *F,
+   int nlists, int nas, int nbs, int Ib_list, int Jb_list, 
+   int Jb_list_nbs);
+extern void s1_block_vras(struct stringwr **alplist, 
+   struct stringwr **betlist, 
+   double **C, double **S, double *oei, double *tei, double *F, 
+   int nlists, int nas, int nbs, int sbc, int cbc, int cnbs);
+extern void s1_block_vras_thread(struct stringwr **alplist, 
+   struct stringwr **betlist, 
+   double **C, double **S, double *oei, double *tei, double *F, 
+   int nlists, int nas, int nbs, int sbc, int cbc, int cnbs);
+extern void s1_block_vras_rotf(int *Cnt[2], int **Ij[2], int **Oij[2],
+   int **Ridx[2], signed char **Sgn[2], unsigned char **Toccs,
+   double **C, double **S,
+   double *oei, double *tei, double *F, int nlists, int nas, int nbs,
+   int Ib_list, int Jb_list, int Jb_list_nbs);
+extern void s2_block_vfci_thread(struct stringwr **alplist, 
+   struct stringwr **betlist, 
+   double **C, double **S, double *oei, double *tei, double *F,
+   int nlists, int nas, int nbs, int Ia_list, int Ja_list, 
+   int Ja_list_nas);
+extern void s2_block_vfci(struct stringwr **alplist, 
+   struct stringwr **betlist, 
+   double **C, double **S, double *oei, double *tei, double *F,
+   int nlists, int nas, int nbs, int Ia_list, int Ja_list, 
+   int Ja_list_nas);
+extern void s2_block_vras(struct stringwr **alplist, 
+   struct stringwr **betlist, 
+   double **C, double **S, double *oei, double *tei, double *F,
+   int nlists, int nas, int nbs, int sac, int cac, int cnas);
+extern void s2_block_vras_thread(struct stringwr **alplist, 
+   struct stringwr **betlist, 
+   double **C, double **S, double *oei, double *tei, double *F,
+   int nlists, int nas, int nbs, int sac, int cac, int cnas);
+extern void s2_block_vras_rotf(int *Cnt[2], int **Ij[2], int **Oij[2],
+   int **Ridx[2], signed char **Sgn[2], unsigned char **Toccs,
+   double **C, double **S,
+   double *oei, double *tei, double *F, int nlists, int nas, int nbs,
+   int Ia_list, int Ja_list, int Ja_list_nbs);
+extern void s3_block_vdiag(struct stringwr *alplist,
+   struct stringwr *betlist,
+   double **C, double **S, double *tei, int nas, int nbs, int cnas,
+   int Ib_list, int Ja_list, int Jb_list, int Ib_sym, int Jb_sym,
+   double **Cprime, double *F, double *V, double *Sgn, int *L, int *R);
+extern void s3_block_v(struct stringwr *alplist,struct stringwr *betlist,
+   double **C, double **S, double *tei, int nas, int nbs, int cnas,
+   int Ib_list, int Ja_list, int Jb_list, int Ib_sym, int Jb_sym,
+   double **Cprime, double *F, double *V, double *Sgn, int *L, int *R);
+extern void s3_block_vrotf(int *Cnt[2], int **Ij[2], int **Ridx[2],
+   signed char **Sn[2], double **C, double **S, 
+   double *tei, int nas, int nbs, int cnas,
+   int Ib_list, int Ja_list, int Jb_list, int Ib_sym, int Jb_sym,
+   double **Cprime, double *F, double *V, double *Sgn, int *L, int *R);
+extern void s3_block_vdiag_rotf(int *Cnt[2], int **Ij[2], int **Ridx[2],
+   signed char **Sn[2], double **C, double **S, 
+   double *tei, int nas, int nbs, int cnas,
+   int Ib_list, int Ja_list, int Jb_list, int Ib_sym, int Jb_sym,
+   double **Cprime, double *F, double *V, double *Sgn, int *L, int *R);
 #endif
 
+extern unsigned char ***Occs;
+extern struct olsen_graph *AlphaG;
+extern struct olsen_graph *BetaG;
+
+extern int cc_reqd_sblocks[CI_BLK_MAX];
 
 /* FUNCTION PROTOS THIS MODULE */
 
@@ -457,8 +447,11 @@ void sigma_a(struct stringwr **alplist, struct stringwr **betlist,
          /* I think I should copy to cblock2 not cblock */
          if (do_cblock2) {
             C.transp_block(cblock, transp_tmp);
-            bcopy((char *) transp_tmp[0], (char *) C.blocks[cblock][0], 
-		  cnas * cnbs * sizeof(double));
+//          bcopy((char *) transp_tmp[0], (char *) C.blocks[cblock][0], 
+//            cnas * cnbs * sizeof(double));
+//          bcopy is non-ANSI.  memcpy reverses the arguments.
+            memcpy((void *) C.blocks[cblock][0], (void *) transp_tmp[0],
+              cnas * cnbs * sizeof(double));
             /* set_row_ptrs(cnbs, cnas, C.blocks[cblock]); */
             if (cprime != NULL) set_row_ptrs(cnbs, cnas, cprime);
             sigma_block(alplist, betlist, C.blocks[cblock2], S.blocks[sblock], 
@@ -720,8 +713,8 @@ void sigma_block(struct stringwr **alplist, struct stringwr **betlist,
 #ifndef OLD_CDS_ALG
       if (fci) {
           if (Parameters.pthreads)
-              s2_block_vfci_thread(alplist, betlist, cmat, smat, oei, tei, F, cnac,
-                                   nas, nbs, sac, cac, cnas);
+              s2_block_vfci_thread(alplist, betlist, cmat, smat, oei, tei, F, 
+                 cnac, nas, nbs, sac, cac, cnas);
           else
               s2_block_vfci(alplist, betlist, cmat, smat, oei, tei, F, cnac,
                             nas, nbs, sac, cac, cnas);
@@ -729,7 +722,8 @@ void sigma_block(struct stringwr **alplist, struct stringwr **betlist,
       else {
           if (Parameters.repl_otf) {
               s2_block_vras_rotf(Jcnt, Jij, Joij, Jridx, Jsgn,
-                                 Toccs, cmat, smat, oei, tei, F, cnac, nas, nbs, sac, cac, cnas);
+                                 Toccs, cmat, smat, oei, tei, F, cnac, 
+                                 nas, nbs, sac, cac, cnas);
             }
           else if (Parameters.pthreads) {
             s2_block_vras_thread(alplist, betlist, cmat, smat, 
@@ -748,7 +742,8 @@ void sigma_block(struct stringwr **alplist, struct stringwr **betlist,
       else {
           if (Parameters.repl_otf) {
               s2_block_ras_rotf(Jcnt, Jij, Joij, Jridx, Jsgn,
-                                Toccs, cmat, smat, oei, tei, F, cnac, nas, nbs, sac, cac, cnas);
+                                Toccs, cmat, smat, oei, tei, F, cnac, 
+                                nas, nbs, sac, cac, cnas);
             }
           else {
               s2_block_ras(alplist, betlist, cmat, smat, 
@@ -896,11 +891,12 @@ void sigma_block(struct stringwr **alplist, struct stringwr **betlist,
       #endif
       
       detci_time.s3_after_time = wall_time_new();
-      detci_time.s3_total_time += detci_time.s3_after_time - detci_time.s3_before_time;
+      detci_time.s3_total_time += 
+         detci_time.s3_after_time - detci_time.s3_before_time;
 
       } /* end sigma3 */
-
 }
  
 
+}} // namespace psi::detci
 

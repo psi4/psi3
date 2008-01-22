@@ -1,11 +1,6 @@
-/*! \file 
-    \ingroup (DETCI)
-    \brief Enter brief description of file here 
-*/
-/*
-** CIVECT.CC
-**
-** Code for the CI vector class
+/*! \file civect.cc
+**  \ingroup (DETCI)
+**  \brief Code for the CI vector class
 ** 
 ** David Sherrill, 15 June 1995
 ** Center for Comptuational Quantum Chemistry
@@ -21,129 +16,123 @@
 ** Modification: actually, don't store redundant _buffers_, but store
 ** redundant blocks if needed.
 **
-**
 */
 
+
 #define EXTERN
-/* #define DEBUG */
 
+#include <stdio.h>
+#include <stdlib.h>
 #include <math.h>
-
-extern "C" {
-   #include <stdio.h>
-   #include <stdlib.h>
-   #include <libciomr/libciomr.h>
-   #include <libqt/qt.h>
-   #include <libpsio/psio.h>
-   #include "structs.h"
-   #include "globals.h"
-   #include "ci_tol.h"
-
-   extern void calc_hd_block(struct stringwr *alplist, 
-      struct stringwr *betlist,
-      double **H0, double *oei, double *tei, double efzc,
-      int nas, int nbs, int na, int nb, int nbf);
-   extern void calc_hd_block_ave(struct stringwr *alplist, 
-      struct stringwr *betlist, double **H0, double *tf_oei, 
-      double *tei, double efzc, int nas, int nbs, int na, int nb, int nbf);
-   extern void calc_hd_block_z_ave(struct stringwr *alplist,
-      struct stringwr *betlist, double **H0, double pert_param,
-      double *tei, double efzc, int nas, int nbs, int na, int nb, int nbf);
-   extern void calc_hd_block_orbenergy(struct stringwr *alplist, 
-      struct stringwr *betlist, double **H0, double *oei, 
-      double *tei, double efzc, int nas, int nbs, int na, 
-      int nb, int nbf);
-   extern void calc_hd_block_mll(struct stringwr *alplist, 
-      struct stringwr *betlist, double **H0, double *oei, 
-      double *tei, double efzc, int nas, int nbs, int na, 
-      int nb, int nbf);
-   extern void calc_hd_block_evangelisti(struct stringwr *alplist, 
-      struct stringwr *betlist, double **H0, double *tf_oei, 
-      double *tei, double efzc, int nas, int nbs, int na, 
-      int nb, int nbf);
-   extern void s1_block_fci(struct stringwr **alplist, 
-      struct stringwr **betlist, 
-      double **C, double **S, double *oei, double *tei, double *F, 
-      int nlists, int nas, int nbs, int sbc, int cbc, int cnbs);
-   extern void s2_block_fci(struct stringwr **alplist, 
-      struct stringwr **betlist, 
-      double **C, double **S, double *oei, double *tei, double *F,
-      int nlists, int nas, int nbs, int Ia_list, int Ja_list, 
-      int Ja_list_nas);
-   extern void s1_block_ras(struct stringwr **alplist, 
-      struct stringwr **betlist, 
-      double **C, double **S, double *oei, double *tei, double *F, 
-      int nlists, int nas, int nbs, int sbc, int cbc, int cnbs);
-   extern void s1_block_ras_rotf(int *Cnt[2], int **Ij[2], int **Oij[2],
-      int **Ridx[2], signed char **Sgn[2], unsigned char **Toccs,
-      double **C, double **S,
-      double *oei, double *tei, double *F, int nlists, int nas, int nbs,
-      int Ib_list, int Jb_list, int Jb_list_nbs);
-   extern void s2_block_ras(struct stringwr **alplist, 
-      struct stringwr **betlist, 
-      double **C, double **S, double *oei, double *tei, double *F,
-      int nlists, int nas, int nbs, int Ia_list, int Ja_list, 
-      int Ja_list_nas);
-   extern void s2_block_ras_rotf(int *Cnt[2], int **Ij[2], int **Oij[2],
-      int **Ridx[2], signed char **Sgn[2], unsigned char **Toccs,
-      double **C, double **S,
-      double *oei, double *tei, double *F, int nlists, int nas, int nbs,
-      int Ia_list, int Ja_list, int Ja_list_nbs);
-   extern void s3_block(struct stringwr *alplist, struct stringwr *betlist,
-      double **C, double **S, double *tei, int nas, int nbs,
-      int Ja_list, int Jb_list);
-   extern void s3_block_diag(struct stringwr *alplist, struct stringwr *betlist,
-      double **C, double **S, double *tei, int nas, int nbs,
-      int Ja_list, int Jb_list);
-   extern void s3_block_diag_rotf(int *Cnt[2], int **Ij[2], 
-      int **Ridx[2], signed char **Sgn[2], double **C, double **S,
-      double *tei, int nas, int nbs);
-   extern void s3_block_rotf(int *Cnt[2], int **Ij[2], 
-      int **Ridx[2], signed char **Sgn[2], double **C, double **S,
-      double *tei, int nas, int nbs);
-   extern void transp_sigma(double **a, int rows, int cols, int phase);
-   extern void H0block_gather(double **mat, int al, int bl, int cscode, 
-      int mscode, int phase);
-   extern double buf_xy1(double *c, double *hd, double E, int len);
-   extern void b2brepl(unsigned char **occs, int *Jcnt, int **Jij, int **Joij, 
-      int **Jridx, signed char **Jsgn, struct olsen_graph *Graph,
-      int Ilist, int Jlist, int len);
-   extern void b2brepl_test(unsigned char ***occs, int *Jcnt, int **Jij, 
-      int **Joij, int **Jridx, signed char **Jsgn, struct olsen_graph *Graph);
-   extern void xey(double *x, double *y, int size);
-   extern void xeay(double *x, double a, double *y, int size);
-   extern void xpeay(double *x, double a, double *y, int size);
-   extern void xpey(double *x, double *y, int size);
-   extern void xeax(double *x, double a, int size);
-   extern void xexmy(double *x, double *y, int size);
-   extern void calc_d(double *target, double alpha, double *sigma,
-      double lambda, double *c, int size);
-   extern double calc_d2(double *target, double lambda, double *Hd, 
-      int size, int precon);
-   extern double calc_mpn_vec(double *target, double energy, double *Hd, 
-      int size, double sign1, double sign2, int precon);
-   extern void xeaxmy(double *x, double *y, double a, int size);
-   extern void xeaxpby(double *x, double *y, double a, double b, int size);
-   extern void xexy(double *x, double *y, int size);
-   extern void buf_ols_denom(double *a, double *hd, double E, int len);
-   extern void buf_ols_updt(double *a, double *c, double *norm, double *ovrlap, 
-      double *c1norm, int len, FILE *outfile);
-   extern int H0block_calc(double E);
-   extern double ssq(struct stringwr *alplist, struct stringwr *betlist,
-     double **CL, double **CR, int nas, int nbs, int Ja_list, int Jb_list);
-
-   extern unsigned char ***Occs;
-   extern struct olsen_graph *AlphaG;
-   extern struct olsen_graph *BetaG;
-}
-
-
- extern void H0block_coupling_calc(double E, struct stringwr **alplist,
-     struct stringwr **betlist);
-
-#ifndef CIVECT_H
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include <libpsio/psio.h>
+#include "structs.h"
+#include "globals.h"
+#include "ci_tol.h"
 #include "civect.h"
-#endif
+
+namespace psi { namespace detci {
+
+extern void calc_hd_block(struct stringwr *alplist, 
+   struct stringwr *betlist,
+   double **H0, double *oei, double *tei, double efzc,
+   int nas, int nbs, int na, int nb, int nbf);
+extern void calc_hd_block_ave(struct stringwr *alplist, 
+   struct stringwr *betlist, double **H0, double *tf_oei, 
+   double *tei, double efzc, int nas, int nbs, int na, int nb, int nbf);
+extern void calc_hd_block_z_ave(struct stringwr *alplist,
+   struct stringwr *betlist, double **H0, double pert_param,
+   double *tei, double efzc, int nas, int nbs, int na, int nb, int nbf);
+extern void calc_hd_block_orbenergy(struct stringwr *alplist, 
+   struct stringwr *betlist, double **H0, double *oei, 
+   double *tei, double efzc, int nas, int nbs, int na, 
+   int nb, int nbf);
+extern void calc_hd_block_mll(struct stringwr *alplist, 
+   struct stringwr *betlist, double **H0, double *oei, 
+   double *tei, double efzc, int nas, int nbs, int na, 
+   int nb, int nbf);
+extern void calc_hd_block_evangelisti(struct stringwr *alplist, 
+   struct stringwr *betlist, double **H0, double *tf_oei, 
+   double *tei, double efzc, int nas, int nbs, int na, 
+   int nb, int nbf);
+extern void s1_block_fci(struct stringwr **alplist, 
+   struct stringwr **betlist, 
+   double **C, double **S, double *oei, double *tei, double *F, 
+   int nlists, int nas, int nbs, int sbc, int cbc, int cnbs);
+extern void s2_block_fci(struct stringwr **alplist, 
+   struct stringwr **betlist, 
+   double **C, double **S, double *oei, double *tei, double *F,
+   int nlists, int nas, int nbs, int Ia_list, int Ja_list, 
+   int Ja_list_nas);
+extern void s1_block_ras(struct stringwr **alplist, 
+   struct stringwr **betlist, 
+   double **C, double **S, double *oei, double *tei, double *F, 
+   int nlists, int nas, int nbs, int sbc, int cbc, int cnbs);
+extern void s1_block_ras_rotf(int *Cnt[2], int **Ij[2], int **Oij[2],
+   int **Ridx[2], signed char **Sgn[2], unsigned char **Toccs,
+   double **C, double **S,
+   double *oei, double *tei, double *F, int nlists, int nas, int nbs,
+   int Ib_list, int Jb_list, int Jb_list_nbs);
+extern void s2_block_ras(struct stringwr **alplist, 
+struct stringwr **betlist, 
+   double **C, double **S, double *oei, double *tei, double *F,
+   int nlists, int nas, int nbs, int Ia_list, int Ja_list, 
+   int Ja_list_nas);
+extern void s2_block_ras_rotf(int *Cnt[2], int **Ij[2], int **Oij[2],
+   int **Ridx[2], signed char **Sgn[2], unsigned char **Toccs,
+   double **C, double **S,
+   double *oei, double *tei, double *F, int nlists, int nas, int nbs,
+   int Ia_list, int Ja_list, int Ja_list_nbs);
+extern void s3_block(struct stringwr *alplist, struct stringwr *betlist,
+   double **C, double **S, double *tei, int nas, int nbs,
+   int Ja_list, int Jb_list);
+extern void s3_block_diag(struct stringwr *alplist, struct stringwr *betlist,
+   double **C, double **S, double *tei, int nas, int nbs,
+   int Ja_list, int Jb_list);
+extern void s3_block_diag_rotf(int *Cnt[2], int **Ij[2], 
+   int **Ridx[2], signed char **Sgn[2], double **C, double **S,
+   double *tei, int nas, int nbs);
+extern void s3_block_rotf(int *Cnt[2], int **Ij[2], 
+   int **Ridx[2], signed char **Sgn[2], double **C, double **S,
+   double *tei, int nas, int nbs);
+extern void transp_sigma(double **a, int rows, int cols, int phase);
+extern void H0block_gather(double **mat, int al, int bl, int cscode, 
+   int mscode, int phase);
+extern double buf_xy1(double *c, double *hd, double E, int len);
+extern void b2brepl(unsigned char **occs, int *Jcnt, int **Jij, int **Joij, 
+   int **Jridx, signed char **Jsgn, struct olsen_graph *Graph,
+   int Ilist, int Jlist, int len);
+extern void b2brepl_test(unsigned char ***occs, int *Jcnt, int **Jij, 
+   int **Joij, int **Jridx, signed char **Jsgn, struct olsen_graph *Graph);
+extern void xey(double *x, double *y, int size);
+extern void xeay(double *x, double a, double *y, int size);
+extern void xpeay(double *x, double a, double *y, int size);
+extern void xpey(double *x, double *y, int size);
+extern void xeax(double *x, double a, int size);
+extern void xexmy(double *x, double *y, int size);
+extern void calc_d(double *target, double alpha, double *sigma,
+   double lambda, double *c, int size);
+extern double calc_d2(double *target, double lambda, double *Hd, 
+   int size, int precon);
+extern double calc_mpn_vec(double *target, double energy, double *Hd, 
+   int size, double sign1, double sign2, int precon);
+extern void xeaxmy(double *x, double *y, double a, int size);
+extern void xeaxpby(double *x, double *y, double a, double b, int size);
+extern void xexy(double *x, double *y, int size);
+extern void buf_ols_denom(double *a, double *hd, double E, int len);
+extern void buf_ols_updt(double *a, double *c, double *norm, double *ovrlap, 
+   double *c1norm, int len, FILE *outfile);
+extern int H0block_calc(double E);
+extern double ssq(struct stringwr *alplist, struct stringwr *betlist,
+  double **CL, double **CR, int nas, int nbs, int Ja_list, int Jb_list);
+
+extern unsigned char ***Occs;
+extern struct olsen_graph *AlphaG;
+extern struct olsen_graph *BetaG;
+
+extern void H0block_coupling_calc(double E, struct stringwr **alplist,
+   struct stringwr **betlist);
 
 
 CIvect::CIvect() // Default constructor
@@ -4255,4 +4244,6 @@ double CIvect::compute_follow_overlap(int troot, int ncoef, double *coef,
   return(tval);
 
 }
+
+}} // namespace psi::detci
 
