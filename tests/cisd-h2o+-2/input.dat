@@ -1,0 +1,26 @@
+% 6-31G** H2O+ Test CISD Energy Point
+
+psi: (
+  label = "6-31G** CISD H2O"
+  jobtype = sp
+  wfn = detci
+  reference = rohf
+  basis = "6-31G**"
+
+  charge = 1
+  multp = 2
+  docc = (3 0 0 1)
+  socc = (0 0 1 0)
+  frozen_docc = (1 0 0 0)
+
+  zmat = (
+    o
+    h 1 1.00
+    h 1 1.00 2 103.1
+  )
+)
+
+detci: (
+  icore = 2
+)
+
