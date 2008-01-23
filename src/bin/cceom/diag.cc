@@ -104,7 +104,7 @@ void diag(void) {
   char lbl[32];
   int num_converged, num_converged_index=0, *converged, keep_going, already_sigma;
   int irrep, numCs, iter, lwork, info, vectors_per_root, nsigma_evaluations=0;
-  int get_right_ev = 1, get_left_ev = 0;
+  int get_right_ev = 1, get_left_ev = 0, first_irrep=1;
   int L,h,i,j,k,a,nirreps,errcod,C_irr;
   double norm, tval, **G, *work, *evals_complex, **alpha, **evectors_left;
   double *lambda, *lambda_old, totalE, **G_old, **alpha_old; 
@@ -137,7 +137,8 @@ timer_off("HBAR_EXTRA");
   fprintf(outfile,"Symmetry of ground state: %s\n", moinfo.labels[moinfo.sym]);
   /* loop over symmetry of C's */
   for (C_irr=0; C_irr<moinfo.nirreps; ++C_irr) {
-	  ignore_G_old = 1;
+
+    ignore_G_old = 1;
     already_sigma = 0;
     iter = 0;
     keep_going = 1;
@@ -152,6 +153,12 @@ timer_on("INIT GUESS");
       fprintf(outfile,"Seeking states with multiplicity of %d\n", eom_params.mult);
 
     /* zero out files between irreps */
+    if (!first_irrep) {
+      dpd_file2_cache_close();
+      dpd_file2_cache_init();
+      dpd_file4_cache_close();
+      dpd_file4_cache_init();
+    }
     for (i=EOM_D; i<=EOM_R; ++i) {
       if (eom_params.restart_eom_cc3 && (i >= EOM_CME) && (i<= EOM_CMnEf)) continue;
       psio_close(i,0);
@@ -159,6 +166,7 @@ timer_on("INIT GUESS");
     }
     psio_close(EOM_TMP,0);
     psio_open(EOM_TMP,0);
+    first_irrep = 0; /* used to zero out files for new irreps above */
 
     /* Store approximate diagonal elements of Hbar */
     form_diagonal(C_irr);

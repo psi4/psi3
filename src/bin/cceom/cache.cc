@@ -99,6 +99,9 @@ int **cacheprep_rhf(int level, int *cachefiles)
   cachefiles[CC_TAMPS] = 1;
   cachefiles[CC_LAMPS] = 1;
   cachefiles[CC_HBAR] = 1;
+  cachefiles[EOM_CMnEf] = 1;
+  cachefiles[EOM_TMP] = 1;
+  cachefiles[EOM_SIjAb] = 1;
 
   /* The listing of DPD patterns which may be cached */
   cachelist = init_int_matrix(12,12);
