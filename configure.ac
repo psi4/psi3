@@ -878,6 +878,7 @@ AC_CONFIG_FILES([include/Makefile
           tests/cisd-h2o+-1/Makefile
           tests/cisd-h2o+-2/Makefile
           tests/cisd-sp/Makefile
+          tests/cisd-sp-2/Makefile
           tests/cisd-opt-numer/Makefile
           tests/fci-h2o/Makefile
           tests/fci-h2o-2/Makefile
