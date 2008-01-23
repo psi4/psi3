@@ -35,3 +35,7 @@ file_offsets junk), let me make a couple more test cases that might
 check the fancier versions of CIvect I/O; non-A1 open-shells states would
 be perfect, as well as different icore options.
 
+Ok, added several new test cases.  I then ripped out all I/O offset
+and I/O-related zero block stuff.  Amazingly, all test cases seem
+to pass.  This is actually somewhat surprising...
+
