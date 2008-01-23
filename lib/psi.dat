@@ -301,7 +301,7 @@ psi: (
 
   % Procedures for optimizing geometries with SCF energies
   DirectSCFEnergyOpt = (repeat $nopt $DirectSCFEnergy $findif_disp_symm 
-    repeat NUM_DISP $findif_next $DirectSCFEnergy $findif_energy_save end
+    repeat NUM_DISP $findif_next $findif_input $DirectSCFEnergy $findif_energy_save end
     $findif_grad_energy $geomupdate end $done)
   DirectSCFRHFEnergyOpt = $DirectSCFEnergyOpt
   DirectSCFROHFEnergyOpt = $DirectSCFEnergyOpt
@@ -327,7 +327,7 @@ psi: (
   % Procedures for symm freqs via differences of analytic gradients
   DirectSCFFirstSymm_FC  = 
     ($scf $findif_disp_symm repeat NUM_DISP 
-     $findif_next $DirectSCFFirst $findif_grad_save end 
+     $findif_next $findif_input $DirectSCFFirst $findif_grad_save end 
      $findif_freq_grad_symm $done)
   DirectSCFRHFFirstSymm_FC  = $DirectSCFFirstSymm_FC
   DirectSCFROHFFirstSymm_FC  = $DirectSCFFirstSymm_FC
