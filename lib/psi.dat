@@ -516,7 +516,7 @@ psi: (
 
   % Procedures for optimization via energy points
   CCSD_TEnergyOpt = (repeat $nopt $CCSD_TEnergy $findif_disp_symm 
-    repeat NUM_DISP $findif_next $CCSD_TEnergy $findif_energy_save end
+    repeat NUM_DISP $findif_next $findif_input $CCSD_TEnergy $findif_energy_save end
     $findif_grad_energy $geomupdate end $done)
   CCSD_TRHFEnergyOpt = $CCSD_TEnergyOpt
   CCSD_TROHFEnergyOpt = $CCSD_TEnergyOpt
