@@ -1,6 +1,5 @@
 $(TARGET):
 	@SRCDIR=$(SRCDIR) PSIDATADIR=$(SRC_PSIDATADIR) $(PERL) $(TEST_SCRIPT) $(TESTFLAGS)
-	@cat $(TARGET_DIR).test >> ../../test-case-results
 
 clean:
 	@SRCDIR=$(SRCDIR) PSIDATADIR=$(SRC_PSIDATADIR) $(PERL) $(TEST_SCRIPT) -c $(TESTFLAGS) && echo "Running psiclean"

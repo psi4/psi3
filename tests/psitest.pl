@@ -36,6 +36,8 @@ if ($PSITEST_PREFIX eq "") {
 $PSITEST_TARGET_SUFFIX = "test";
 $PSITEST_TEST_SCRIPT = "runtest.pl";
 
+$PSITEST_SUMMARY_FILE = "../../test-case-results";
+
 # These are definitions that default tester knows about -- should match Psi driver!
 @PSITEST_JOBTYPES = ("SP", "OPT", "DISP", "FREQ", "SYMM_FC", "FC", 
 "OEPROP", "DBOC");
@@ -295,6 +297,7 @@ sub test_finished
   $target = "$test_name.$PSITEST_TARGET_SUFFIX";
 
   system("cat $target");
+  system("cat $target >> $PSITEST_SUMMARY_FILE");
 
   if ($interrupted) {
     exit($fail);
