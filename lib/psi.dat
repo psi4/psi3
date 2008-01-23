@@ -700,7 +700,7 @@ psi: (
 
   % Procedure for optimizing geometries with energy points
   EOM_CCSDEnergyOpt = (repeat $nopt $EOM_CCSDEnergy $findif_disp_symm 
-    repeat NUM_DISP $findif_next $EOM_CCSDEnergy $findif_energy_save end
+    repeat NUM_DISP $findif_next $findif_input $EOM_CCSDEnergy $findif_energy_save end
     $findif_grad_energy $geomupdate end)
   EOM_CCSDRHFEnergyOpt = ($EOM_CCSDEnergyOpt $done)
   EOM_CCSDROHFEnergyOpt = ($EOM_CCSDEnergyOpt $done)
@@ -936,7 +936,7 @@ psi: (
 
   % Procedures for optimization via DETCAS energy points
   DETCASEnergyOpt = (repeat $nopt $DETCASEnergy $findif_disp_symm 
-    repeat NUM_DISP $findif_next $DETCASEnergy $findif_energy_save end
+    repeat NUM_DISP $findif_next $findif_input $DETCASEnergy $findif_energy_save end
     $findif_grad_energy $geomupdate end $done)
   DETCASRHFEnergyOpt = $DETCASEnergyOpt
   DETCASROHFEnergyOpt = $DETCASEnergyOpt
@@ -946,7 +946,7 @@ psi: (
   % Procedures for symmetric frequencies via finite differences of gradients
   DETCASFirstSymm_FC  = 
     ($input $DETCASEnergy $findif_disp_symm repeat NUM_DISP 
-     $findif_next $DETCASFirst $findif_grad_save end 
+     $findif_next $findif_input $DETCASFirst $findif_grad_save end 
      $findif_freq_grad_symm $done)
   DETCASRHFFirstSymm_FC  = $DETCASFirstSymm_FC
   DETCASROHFFirstSymm_FC  = $DETCASFirstSymm_FC
@@ -1078,7 +1078,7 @@ psi: (
 
   % Procedures for optimization via DirectMP2 energy points
   DirectMP2EnergyOpt = (repeat $nopt $DirectMP2Energy $findif_disp_symm 
-    repeat $ndisp $findif_next $DirectMP2Energy $findif_energy_save end
+    repeat $ndisp $findif_next $findif_input $DirectMP2Energy $findif_energy_save end
     $findif_grad_energy $geomupdate end $done)
   DirectMP2RHFEnergyOpt = $DirectMP2EnergyOpt
   DirectMP2ROHFEnergyOpt = ERROR
@@ -1101,7 +1101,7 @@ psi: (
 
   % Procedures for optimization via MP2-R12 energy points
   MP2R12EnergyOpt = (repeat $nopt $MP2R12Energy $findif_disp_symm 
-    repeat $ndisp $findif_next $MP2R12Energy $findif_energy_save end
+    repeat $ndisp $findif_next $findif_input $MP2R12Energy $findif_energy_save end
     $findif_grad_energy $geomupdate end $done)
   MP2R12RHFEnergyOpt = $MP2R12EnergyOpt
   MP2R12ROHFEnergyOpt = ERROR
@@ -1110,7 +1110,7 @@ psi: (
 
   % Procedures for optimization via DirectMP2R12 energy points
   DirectMP2R12EnergyOpt = (repeat $nopt $DirectMP2R12Energy $findif_disp_symm 
-    repeat $ndisp $findif_next $DirectMP2R12Energy $findif_energy_save end
+    repeat $ndisp $findif_next $findif_input $DirectMP2R12Energy $findif_energy_save end
     $findif_grad_energy $geomupdate end $done)
   DirectMP2R12RHFEnergyOpt = $DirectMP2R12EnergyOpt
   DirectMP2R12ROHFEnergyOpt = ERROR
