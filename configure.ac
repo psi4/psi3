@@ -836,6 +836,8 @@ AC_CONFIG_FILES([include/Makefile
           src/bin/response/Makefile
           src/bin/psirb/Makefile
 
+          src/bin/nonbonded/Makefile
+
           tests/Makefile
           tests/MakeVars
           tests/MakeRules
@@ -872,9 +874,14 @@ AC_CONFIG_FILES([include/Makefile
           tests/rohf-stab/Makefile
           tests/rohf-stab/rohf-stab.pl
           tests/cis-sp/Makefile
+          tests/cisd-h2o+-0/Makefile
+          tests/cisd-h2o+-1/Makefile
+          tests/cisd-h2o+-2/Makefile
           tests/cisd-sp/Makefile
           tests/cisd-opt-numer/Makefile
           tests/fci-h2o/Makefile
+          tests/fci-h2o-2/Makefile
+          tests/fci-h2o-clpse/Makefile
           tests/fci-dipole/Makefile
 	  tests/fci-trans/Makefile
           tests/casscf-sp/Makefile
