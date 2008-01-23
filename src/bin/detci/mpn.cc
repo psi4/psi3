@@ -229,7 +229,6 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
  
      Sigma.buf_unlock();
      if (Parameters.wigner) {
-       if (Parameters.zero_blocks) Cvec2.copy_offset_filenumber(Cvec);
        Cvec.wigner_E2k_formula(Hd, Sigma, Cvec2, alplist, betlist, buffer1,
           buffer2, k, mp2k_energy, wfn_overlap, cvec_coeff, cvec_norm, kvec_offset);
        Empn2 += mp2k_energy[2*k];
@@ -293,10 +292,8 @@ void mpn_generator(CIvect &Hd, struct stringwr **alplist,
        }
 
      /* Construct k+1th order wavefunction */
-     if (Parameters.zero_blocks) Cvec2.copy_offset_filenumber(Cvec);
      Cvec.construct_kth_order_wf(Hd, Sigma, Cvec2, alplist, betlist, buffer1,
         buffer2, k+1, mpk_energy, cvec_coeff, cvec_norm);
-     if (Parameters.zero_blocks) Cvec2.copy_offset_filenumber(Cvec);
      
      // fprintf(outfile, "Cvec %d = \n", k+1);
      // Cvec.print(outfile);

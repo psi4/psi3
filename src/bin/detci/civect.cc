@@ -160,7 +160,6 @@ CIvect::CIvect() // Default constructor
    cur_buf = -1;
    buffer_size = 0;
    units = NULL; 
-   file_offset = NULL;
    file_number = NULL;
    buf_size = NULL;
    buf2blk = NULL;
@@ -172,14 +171,10 @@ CIvect::CIvect() // Default constructor
    zero_blocks = NULL;
    buf_locked = 0;
    buffer = NULL;
-   zero_block_offset = NULL;
-   zero_block_file_number = NULL;
    in_file = 0;
-   cur_offset = 0;
    extras = 0;
    units_used = 0;
    cur_unit = 0;
-   offsets_done = NULL;
    cur_size = 0;
    first_unit = 0;
 }
@@ -213,7 +208,6 @@ CIvect::CIvect(BIGINT vl, int nb, int incor, int ms0, int *iac,
    cur_buf = -1;
    buffer_size = 0;
    units = NULL; 
-   file_offset = NULL;
    file_number = NULL;
    buf_size = NULL;
    buf2blk = NULL;
@@ -225,14 +219,10 @@ CIvect::CIvect(BIGINT vl, int nb, int incor, int ms0, int *iac,
    zero_blocks = NULL;
    buf_locked = 0;
    buffer = NULL;
-   zero_block_offset = NULL;
-   zero_block_file_number = NULL;
    in_file = 0;
-   cur_offset = 0;
    extras = 0;
    units_used = 0;
    cur_unit = 0;
-   offsets_done = NULL;
    cur_size = 0;
 
 
@@ -403,72 +393,37 @@ void CIvect::set(BIGINT vl, int nb, int incor, int ms0, int *iac,
 
       } /* end icore==0 */
 
-   file_offset = (unsigned long *) malloc (buf_total * sizeof(unsigned long));
-   zero_block_offset=(unsigned long *)malloc(maxvect * sizeof(unsigned long));
-   offsets_done = init_int_matrix(maxvect, buf_per_vect); 
-   for (i=0; i<buf_total; i++) file_offset[i] = 0;
-   for (i=0; i<maxvect; i++) zero_block_offset[i] = 0;
    file_number = init_int_array(buf_total);
-   zero_block_file_number = init_int_array(maxvect);
 
    if (nunits) {
       in_file = 0;
       extras = buf_total % nunits;
       units_used = 0;
       cur_unit = units[0];
-      cur_offset = 0;
-      size = 0;
 
-      if (!Parameters.zero_blocks) {
-        for (i=0; i<buf_total; i++) {
+      for (i=0; i<buf_total; i++) {
   
-           if (in_file + 1 <= buf_total / nunits) {
-              cur_offset += size;
-              if ((i % buf_per_vect) == 0) {
-                zero_block_offset[i/buf_per_vect] = cur_offset;
-                zero_block_file_number[i/buf_per_vect] = cur_unit;
-                size = num_blocks;
-                cur_offset += size;
-                }
-              file_offset[i] = cur_offset;
-              file_number[i] = cur_unit;
-              in_file++;
-              size = buf_size[i % buf_per_vect];
-              }
+         if (in_file + 1 <= buf_total / nunits) {
+            file_number[i] = cur_unit;
+            in_file++;
+            }
       
-           else if ((in_file == buf_total / nunits) && extras) {
-              cur_offset += size;
-              if ((i % buf_per_vect) == 0) {
-                zero_block_offset[i/buf_per_vect] = cur_offset;
-                zero_block_file_number[i/buf_per_vect] = cur_unit;
-                size = num_blocks;
-                cur_offset += size;
-                }
-              file_offset[i] = cur_offset;
-              file_number[i] = cur_unit;
-              extras--;
-              in_file++;
-              }
+         else if ((in_file == buf_total / nunits) && extras) {
+            file_number[i] = cur_unit;
+            extras--;
+            in_file++;
+            }
   
-           else {
-              file_offset[i] = 0;
-              cur_offset = 0;
-              units_used++;
-              cur_unit = units[units_used];
-              file_number[i] = cur_unit;
-              in_file = 1;
-              if ((i % buf_per_vect) == 0) {
-                zero_block_offset[i/buf_per_vect] = cur_offset;
-                zero_block_file_number[i/buf_per_vect] = cur_unit;
-                size = num_blocks;
-                }
-              size += buf_size[i % buf_per_vect];
-              } 
-           } /* end loop over buffers */
-       }
+         else {
+            units_used++;
+            cur_unit = units[units_used];
+            file_number[i] = cur_unit;
+            in_file = 1;
+            } 
+         } /* end loop over buffers */
+     }
                    
-      init_io_files();
-      }
+    init_io_files();
 
 /*
    fprintf(outfile,"num_blocks = %d\n", num_blocks);
@@ -572,7 +527,6 @@ CIvect::~CIvect()
       free(Ia_size);
       free(Ib_size);
       free(units);
-      free(file_offset);
       free(file_number);
       free(buf_size);
       free(buf2blk);
@@ -624,66 +578,6 @@ void CIvect::set_nvect(int i)
   nvect = i;
 }
 
-
-/*
-** CIvect::write_detfile
-**
-** Writes the file_offset and file_number arrays to a specified file 
-** for restarting purposes.
-**
-*/
-void CIvect::write_detfile(int vector)
-{
-  int i;
-  FILE *detfile=NULL;
-
-  if (vector) ffile_noexit(&detfile,"detci_sfile.dat",0);
-  else ffile_noexit(&detfile,"detci_cfile.dat",0);
-  if (detfile == NULL)
-    fprintf(outfile,"\n write_detfile file not opened correctly.\n"); 
-
-  for (i=0; i<buf_total; i++)
-     fprintf(detfile,"%lu ", file_offset[i]);
-  for (i=0; i<buf_total; i++)
-     fprintf(detfile,"%d ", file_number[i]);
-  fprintf(detfile,"\n");
-  fclose(detfile);
-
-}
-
-
-/*
-** CIvect::reset_detfile
-**
-** Resets the file_offset and file_number arrays to those values found
-** in detfile.  This should work for restarts with and without vector
-** collapses. 
-**
-*/
-void CIvect::reset_detfile(int vector)
-{
- int i, tmp_int;
- unsigned long tmp_long;
- FILE *detfile=NULL;
-
- if (vector) ffile_noexit(&detfile,"detci_sfile.dat",2);
- else ffile_noexit(&detfile,"detci_cfile.dat",2);
- if (detfile == NULL) 
-   fprintf(outfile,"\n reset_detfile file not opened correctly.\n"); 
-
- for (i=0; i<buf_total; i++) {
-    fscanf(detfile,"%lu", &tmp_long);
-    file_offset[i] = tmp_long;
-  }
-
-  for (i=0; i<buf_total; i++) {
-    fscanf(detfile,"%d", &tmp_int);
-    file_number[i] = tmp_int; 
-  }
-
-  fclose(detfile);
-
-}
 
 /* 
 ** CIvect::operator *
@@ -1863,8 +1757,7 @@ int CIvect::read(int ivect, int ibuf)
 {
    int unit, buf, k, i;
    unsigned long int size;
-   int blk, zero_block_unit; /* added by MLL 2-2-99 */
-   PSI_FPTR offset, nxtword, offset2;
+   int blk;
    char key[20];
 
    detci_time.read_before_time = wall_time_new();
@@ -1883,8 +1776,6 @@ int CIvect::read(int ivect, int ibuf)
    if (icore == 1) ibuf = 0;
    buf = ivect * buf_per_vect + ibuf;
 
-   zero_block_unit = zero_block_file_number[ivect];
-   offset = (PSI_FPTR) (file_offset[buf] * sizeof(double));
    size = buf_size[ibuf] * (unsigned long int) sizeof(double);   
 
    /* translate buffer number in case we renumbered after collapse * */
@@ -1893,38 +1784,7 @@ int CIvect::read(int ivect, int ibuf)
    sprintf(key, "buffer %d", buf);
    unit = file_number[buf];
 
-  /*
-    fprintf(outfile,"CIvect::read\n");
-    fprintf(outfile,"ivect = %d\n", ivect);
-    fprintf(outfile,"num_blocks = %d\n", num_blocks);
-    for (i=0; i<buf_total; i++)
-      fprintf(outfile,"file_offset[%d]*sizeof(double) = %lu\n ", 
-              i, file_offset[i]*sizeof(double));
-    for (i=0; i<maxvect; i++)
-      fprintf(outfile,"zero_block_offset[%d]*sizeof(double) = %lu\n ", 
-              i, zero_block_offset[i]*sizeof(double)); 
-    for (i=0; i<buf_per_vect; i++)
-      fprintf(outfile,"buf_size[%d] = %lu\n ", i, buf_size[i]);
-  */
-
-   if (Parameters.zero_blocks && Parameters.mpn) {
-     offset2 = (PSI_FPTR) zero_block_offset[ivect] * (PSI_FPTR) sizeof(double);
-     wreadw(zero_block_unit, (char *) zero_blocks, 
-            (int) (num_blocks*sizeof(int)), offset2, &nxtword);
-     blk = buf2blk[ibuf];
-     if (zero_blocks[blk]==0)
-       wreadw(unit, (char *) buffer, (int) size, offset, &nxtword);
-     else {
-       /* wreadw(unit, (char *) buffer, (int) size, offset, &nxtword); */
-       zero(); 
-       }
-     }
-   else {
-     // old way
-     // wreadw(unit, (char *) buffer, (int) size, offset, &nxtword);
-     // new way 
-     psio_read_entry((ULI) unit, key, (char *) buffer, size);  
-   }
+   psio_read_entry((ULI) unit, key, (char *) buffer, size);  
 
    cur_vect = ivect;
    cur_buf = ibuf;
@@ -1952,8 +1812,7 @@ int CIvect::write(int ivect, int ibuf)
 {
    int unit, buf, i;
    unsigned long int size;
-   PSI_FPTR offset, nxtword, offset2;
-   int blk, zero_block_unit; /* MLL added 2-2-99 */
+   int blk;
    char key[20];
 
    detci_time.write_before_time = wall_time_new();
@@ -1971,10 +1830,7 @@ int CIvect::write(int ivect, int ibuf)
       }
    
    if (icore == 1) ibuf = 0;
-   if (Parameters.zero_blocks) offsets_otf(ivect, ibuf);
    buf = ivect * buf_per_vect + ibuf;
-   zero_block_unit = zero_block_file_number[ivect];
-   offset = (PSI_FPTR) file_offset[buf] * (PSI_FPTR) sizeof(double);
    size = buf_size[ibuf] * (unsigned long int) sizeof(double);   
 
    /* translate buffer number in case we renumbered after collapse * */
@@ -1983,45 +1839,7 @@ int CIvect::write(int ivect, int ibuf)
    sprintf(key, "buffer %d", buf);
    unit = file_number[buf];
   
-  /*
-   if (ibuf==(buf_per_vect-1)) {
-     fprintf(outfile, "CIvect::write\n");
-     fprintf(outfile,"ivect = %d\n", ivect);
-     fprintf(outfile,"num_blocks = %d\n", num_blocks);
-     for (i=0; i<buf_total; i++)
-       fprintf(outfile,"file_offset[%d] * sizeof(double) = %lu\n ", 
-               i, file_offset[i]*sizeof(double));
-     for (i=0; i<maxvect; i++)
-       fprintf(outfile,"zero_block_offset[%d] *sizeof(double) = %lu\n ", 
-               i, zero_block_offset[i]*sizeof(double));
-     for (i=0; i<buf_per_vect; i++)
-       fprintf(outfile,"buf_size[%d] = %lu\n ", i, buf_size[i]);
-     fprintf(outfile,"num_block * sizeof(int) = %d\n",
-             num_blocks*sizeof(int));
-     fprintf(outfile, "offset2 = %lu\n", offset2);
-     fprintf(outfile, "nxtword = %lu\n", nxtword); 
-     }
-  */
-
-  
-   if (Parameters.zero_blocks && Parameters.mpn) {
-     /* If we are at the beginning of a vector write out zero_block info */
-     if (ibuf==(buf_per_vect-1)) {
-       offset2 = (PSI_FPTR) (zero_block_offset[ivect] * sizeof(double)); 
-       wwritw(zero_block_unit,(char *)zero_blocks,(int)(num_blocks*sizeof(int)),
-              offset2, &nxtword);
-       }
-     blk = buf2blk[ibuf];
-     /* write buffer out if it is not a zero block */
-     if (zero_blocks[blk]==0) 
-       wwritw(unit, (char *) buffer, (int) size, offset, &nxtword);
-   } 
-   else {
-     // old way
-     // wwritw(unit, (char *) buffer, (int) size, offset, &nxtword);
-     // new way
-     psio_write_entry((ULI) unit, key, (char *) buffer, size);
-   }
+   psio_write_entry((ULI) unit, key, (char *) buffer, size);
 
    if (ivect >= nvect) nvect = ivect + 1;
    cur_vect = ivect;
@@ -3036,7 +2854,6 @@ void CIvect::gather(int ivec, int nvec, int nroot, double **alpha,
 void CIvect::restart_reord_fp(int L)
 {
    int buf, newbuf;
-   unsigned long *tmp_file_offset;
    int *tmp_file_number;
 
    new_first_buf = L*buf_per_vect + new_first_buf;
@@ -3075,7 +2892,7 @@ void CIvect::print_fptrs()
 
    fprintf(outfile,"Printing file pointer information\n");
    for (buf=0; buf<buf_total; buf++)  
-      fprintf(outfile,"%d %d %ld\n",buf, file_number[buf],file_offset[buf]);
+      fprintf(outfile,"%d %d\n",buf, file_number[buf]);
       
     
 }
@@ -3884,87 +3701,6 @@ void CIvect::print_zero_blocks(void)
 
 }
 
-void CIvect::copy_offset_filenumber(CIvect &src)
-{
-   int i;
-
-   for (i=0; i<buf_total; i++) {
-      file_offset[i] = src.file_offset[i];
-      file_number[i] = src.file_number[i];
-   }
-   for (i=0; i<maxvect; i++) {
-      zero_block_offset[i] = src.zero_block_offset[i];
-      zero_block_file_number[i] = src.zero_block_file_number[i];
-      }
-}
-
-void CIvect::offsets_otf(int ivect, int buf)
-{
-   int global_buf_num, blk;
-   
-   global_buf_num = ivect*buf_per_vect+buf;
-   if (offsets_done[ivect][buf]) return; 
-   if (zero_blocks[buf2blk[buf]]) { 
-     if (global_buf_num % buf_per_vect == 0) {
-       zero_block_offset[global_buf_num/buf_per_vect] = cur_offset;
-       zero_block_file_number[global_buf_num/buf_per_vect] = cur_unit;
-       cur_size = num_blocks;
-       }
-     return;
-     }
-  /*
-  ** MLL - This section above will need to be modified to allow zero_block = true
-  ** to work with MPn or FCI computations where a subspace collapse is used.  In
-  ** this case we need to ensure physical locations on hard disk for blocks which
-  ** are zero this first few iterations in the CI but in later iterations will be
-  ** nonzero.
-  */ 
-
-
-   if (in_file + 1 <= buf_total / nunits) {
-     cur_offset += cur_size;
-     if ((global_buf_num % buf_per_vect) == 0) {
-       zero_block_offset[global_buf_num/buf_per_vect] = cur_offset;
-       zero_block_file_number[global_buf_num/buf_per_vect] = cur_unit;
-       cur_size = num_blocks;
-       cur_offset += cur_size;
-       }
-     file_offset[global_buf_num] = cur_offset;
-     file_number[global_buf_num] = cur_unit;
-     in_file++;
-     cur_size = buf_size[global_buf_num % buf_per_vect];
-     }
-
-  else if ((in_file == buf_total / nunits) && extras) {
-     cur_offset += cur_size;
-     if ((global_buf_num % buf_per_vect) == 0) {
-       zero_block_offset[global_buf_num/buf_per_vect] = cur_offset;
-       zero_block_file_number[global_buf_num/buf_per_vect] = cur_unit;
-       cur_size = num_blocks;
-       cur_offset += cur_size;
-       }
-     file_offset[global_buf_num] = cur_offset;
-     file_number[global_buf_num] = cur_unit;
-     extras--;
-     in_file++;
-     }
-
-  else {
-     file_offset[global_buf_num] = 0;
-     cur_offset = 0;
-     units_used++;
-     cur_unit = units[units_used];
-     file_number[global_buf_num] = cur_unit;
-     in_file = 1;
-     if ((global_buf_num % buf_per_vect) == 0) {
-       zero_block_offset[global_buf_num/buf_per_vect] = cur_offset;
-       zero_block_file_number[global_buf_num/buf_per_vect] = cur_unit;
-       cur_size = num_blocks;
-       }
-     cur_size += buf_size[global_buf_num % buf_per_vect];
-     }
-  offsets_done[ivect][buf] = 1;
-}
 
 /*
 **

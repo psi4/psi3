@@ -51,7 +51,6 @@ class CIvect {
       int cur_buf;               /* current buffer in core */
       int buf_locked;            /* is a memory buffer locked in/available?  */
       int *units;                /* file numbers */
-      unsigned long *file_offset;/* offsets for vectors/blocks w/in files */ 
       int *file_number;          /* unit number for given vector/block */
       unsigned long *buf_size;   /* size of each buffer on disk 
                                     (0...buf_per_vect) */
@@ -66,18 +65,10 @@ class CIvect {
       double ***blocks;          /* a matrix for each block                */
       double *buffer;            /* pointer to buffer, same as blocks[0][0] */
       int *zero_blocks;          /* array for which blocks happen to be 0   */
-      int *zero_block_file_number; /* file number for each zero_block array */
-      unsigned long *zero_block_offset; 
-                                 /* offset for zero_block arrays within
-                                    CI vector files */
       int in_file;               /* increment for how many buffers in a file */
-      unsigned long cur_offset;  /* current offset, necessary for otf
-                                    zero_block constructs */
       int extras;                /* accounts for extra buffers */
       int units_used;            /* accounts for number of unit files used */  
       int cur_unit;              /* current unit file */
-      int **offsets_done;        /* matrix elements of 1(0) if offsets set
-                                    or not */ 
       int cur_size;              /* current size of buffer */
       int first_unit;            /* first file unit number (if > 1) */ 
 
@@ -97,8 +88,6 @@ class CIvect {
       void print(FILE *outfile);
       double operator*(CIvect &b);
       void set_nvect(int i);
-      void write_detfile(int vector);
-      void reset_detfile(int vector);
       void setarray(const double *a, int len);
       void max_abs_vals(int nval, int *iac, int *ibc, int *iaidx, int *ibidx,
          double *coeff, int neg_only);
@@ -178,12 +167,10 @@ class CIvect {
       void set_zero_block(int blocknum, int value);
       void set_zero_blocks_all(void);
       void copy_zero_blocks(CIvect &src);
-      void copy_offset_filenumber(CIvect &src);
       void print_zero_blocks(void);
       void scale_sigma(CIvect &Hd, CIvect &C,
         struct stringwr **alplist, struct stringwr **betlist, int i, 
         double *buf1, double *buf2);
-      void offsets_otf(int ivect, int buf);
       int read_new_first_buf(void);
       void write_new_first_buf(void);
       void set_new_first_buf(int nfb);
