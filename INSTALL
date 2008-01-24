@@ -105,8 +105,7 @@ the configure script:
    libraries which should be used during linking. Libraries should be 
    specified by their full names or in the usual '-l' notation, e.g. 
    '-lm /usr/lib/libm.a', etc.  If several libraries are specified, enclose 
-   the list with single right-quotes, e.g.,
-   --with-libs='-lcompat /usr/local/lib/libm.a'.
+   the list with single right-quotes, e.g., --with-libs='-libm -lgcc_s'.
 
    * --with-libdirs=directories --- Use this option to specify extra
    directories where to look for libraries. Directories should be specified
@@ -319,16 +318,7 @@ V. Miscellaneous architecture-specific notes
    (1) The compilation requires a developer's toolkit (Xcode) from apple.com.
    Note that a fortran compiler is not needed for PSI 3.3 on Mac OS X systems.
 
-   (2) The libcompat.a library is also needed, but it is not provided in the
-   Xcode toolkit. If you see compiler complaints about missing symbols like
-   "re_comp" or "re_exec", then your -lcompat is missing or PSI3 is not aware
-   of it.  As of 6 April 2007, it can be obtained from Apple's website at:
-
-http://www.opensource.apple.com/darwinsource/tarballs/apsl/Libcompat-14.1.tar.gz
-
-   You must sign up for a free developer's account to access the
-   above library.  You can identify the library to configure by adding
-   "--with-libs=-lcompat" to the command line.
+   (2) The libcompat.a library is no longer needed as of 1/24/2008.
 
    (3) For apple systems, the latest configure script assumes that the vecLib
    will be used for the optimized BLAS and LAPACK libraries, unless the

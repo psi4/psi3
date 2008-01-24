@@ -437,12 +437,12 @@ AC_SUBST(LAPACK)
 LIBS=$SAVE_LIBS
 
 # Check for libcompat.a availability
-case $target_vendor in
-  apple)
-    AC_HAVE_LIBRARY(compat,CLIBS="-lcompat $CLIBS",AC_MSG_ERROR([Missing libcompat.a: See http://www.opensource.apple.com/ for more information]))
-    echo "$CLIBS"
-  ;;
-esac
+#case $target_vendor in
+#  apple)
+#    AC_HAVE_LIBRARY(compat,CLIBS="-lcompat $CLIBS",AC_MSG_ERROR([Missing libcompat.a: See http://www.opensource.apple.com/ for more information]))
+#    echo "$CLIBS"
+#  ;;
+#esac
 
 ########
 ## Check for header files
