@@ -387,9 +387,6 @@ struct params {
                         must equal the particles in RAS III + RAS IV else
                         the string is discarded */
    int calc_ssq;     /* calculate the value of <S^2> or not */
-   int genci;        /* run genci instead of detci:
-                            0 = (default) detci
-                            1 = genci */
    int icore;        /* core option:
                             0 = RAS subblock at a time
                             1 = Entire CI vector at a time

@@ -95,7 +95,6 @@ void diag_h(struct stringwr **strlista, struct stringwr **strlistb);
 void mpn(struct stringwr **strlista, struct stringwr **strlistb);
 void form_opdm(void);
 void form_tpdm(void);
-extern void diag_h_genci(struct stringwr **alplist, struct stringwr **betlist);
 extern void get_parameters(void);
 extern void print_parameters(void);
 extern void set_ras_parms(void);
@@ -167,9 +166,6 @@ int main(int argc, char *argv[])
       zapt_shift(CalcInfo.twoel_ints, CalcInfo.nirreps, CalcInfo.nmo,
          CalcInfo.docc, CalcInfo.socc, CalcInfo.orbs_per_irr,
          CalcInfo.frozen_docc, CalcInfo.reorder);
-
-   if (Parameters.genci) 
-     diag_h_genci(alplist, betlist);
 
    /*
    else if (Parameters.mrpt)

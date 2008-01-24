@@ -210,7 +210,6 @@ void get_parameters(void)
    Parameters.lse = 0;
    Parameters.lse_collapse = 3;
    Parameters.lse_tolerance = 3;
-   Parameters.genci = 0;
    Parameters.neg_only = 1;
    Parameters.zero_blocks = 0;
 
@@ -430,7 +429,6 @@ void get_parameters(void)
       else Parameters.guess_vector = PARM_GUESS_VEC_UNIT;
       }
    errcod = ip_data("ICORE", "%d", &(Parameters.icore),0);
-   errcod = ip_boolean("GENCI",&(Parameters.genci),0) ;
    errcod = ip_data("HD_AVE","%s",line1, 0); 
    if (errcod == IPE_OK) {
      if (strcmp(line1, "HD_EXACT")==0)    Parameters.hd_ave = HD_EXACT;
@@ -1104,8 +1102,6 @@ void print_parameters(void)
          fprintf(outfile, "%8s\n", "???"); 
          break;
       }
-   fprintf(outfile, "   GENCI ALG     =   %6s",
-      Parameters.genci ? "yes" : "no");
    if (Parameters.ref_sym == -1)
       fprintf(outfile, "      REF SYM      =   %6s\n", "auto");
    else
