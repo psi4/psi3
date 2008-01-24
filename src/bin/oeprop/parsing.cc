@@ -51,8 +51,6 @@ void parsing()
     asymm_opdm = 0;
 
   errcod = ip_string("REFERENCE", &ref, 0);
-  if (!strcmp(ref,"UHF"))
-    throw std::runtime_error("REFERENCE=UHF has not been tested and is not supported");
   
   if (errcod != IPE_OK) {
     fprintf(outfile,"Incorrect reference!\n");
