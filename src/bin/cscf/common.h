@@ -256,7 +256,6 @@ EXTERN int special;             /* 1 if OPENTYPE=special */
 EXTERN int twocon;              /* 1 if tcscf */
 EXTERN int ksdft;               /* 1 if Kohn-Sham DFT */
 EXTERN int mixing;              /* 1 if mixing for UHF, default is 0 */
-EXTERN PSI_FPTR pos34;               /* pointer to location in file34 */
 EXTERN int cscf_nint;                /* number of pki ints in present batch */
 EXTERN int opshl1,opshl2;
 EXTERN int opblk1,opblk2;
