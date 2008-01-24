@@ -442,7 +442,7 @@ void print_misc()
     fprintf(outfile,"                             <R^2> =  %11.4lf\n",
             exp_x2+exp_y2+exp_z2);
     fprintf(outfile,"\n -Orbital spatial extents ");
-    if (read_opdm) 
+    if (read_opdm && wrtnos) 
       fprintf(outfile,"of NOs contructed from onepdm in file%d ",opdm_file);
     else
       fprintf(outfile,"of MOs in checkpoint ");

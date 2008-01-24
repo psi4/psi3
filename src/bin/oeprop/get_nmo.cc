@@ -3,6 +3,7 @@
     \brief Enter brief description of file here 
 */
 #define EXTERN
+#include <stdexcept>
 #include "includes.h"
 #include "prototypes.h"
 #include "globals.h"
