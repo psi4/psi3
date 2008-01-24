@@ -3,7 +3,8 @@
   \ingroup (CIOMR)
 */
 
-#include "includes.h"
+
+#include <stdlib.h>
 
 extern "C" {
 

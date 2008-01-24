@@ -31,7 +31,7 @@ int build_abcd_packed(int inputfile, double tolerance, int keep)
   long int memoryb, memoryd, core_left, row_length;
   int h, nirreps, n, row, nump, numq, nbuckets;
   int **bucket_map, **bucket_offset, **bucket_rowdim;
-  long int **bucket_size;
+  int **bucket_size;
   Value *valptr;
   Label *lblptr;
   int idx, p, q, r, s;
@@ -71,8 +71,8 @@ int build_abcd_packed(int inputfile, double tolerance, int keep)
   bucket_offset[0] = init_int_array(nirreps);
   bucket_rowdim = (int **) malloc(sizeof(int *));
   bucket_rowdim[0] = init_int_array(nirreps);
-  bucket_size = (long int **) malloc(sizeof(long int *));
-  bucket_size[0] = init_long_int_array(nirreps);
+  bucket_size = (int **) malloc(sizeof(int *));
+  bucket_size[0] = init_int_array(nirreps);
     
   /* Figure out how many passes we need and where each p,q goes */
   for(h=0,core_left=memoryd,nbuckets=1; h < nirreps; h++) {
@@ -101,9 +101,9 @@ int build_abcd_packed(int inputfile, double tolerance, int keep)
 	bucket_rowdim[nbuckets-1] = init_int_array(nirreps);
 	bucket_rowdim[nbuckets-1][h] = 1;
 
-	bucket_size = (long int **) realloc((void *) bucket_size,
-					    nbuckets * sizeof(long int *));
-	bucket_size[nbuckets-1] = init_long_int_array(nirreps);
+	bucket_size = (int **) realloc((void *) bucket_size,
+					    nbuckets * sizeof(int *));
+	bucket_size[nbuckets-1] = init_int_array(nirreps);
 	bucket_size[nbuckets-1][h] = row_length;
       }
 

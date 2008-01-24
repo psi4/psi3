@@ -3,11 +3,6 @@
  \ingroup (CIOMR)
 */
 
-#define ALLOC_GLOBALS
-#include "includes.h"
-#undef ALLOC_GLOBALS
-#include "common.h"
-
 extern "C" {
 
 /*!

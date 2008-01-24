@@ -14,7 +14,7 @@ int dpd_buf4_mat_irrep_shift13(dpdbuf4 *Buf, int buf_block)
 {
   int h, i, nirreps, all_buf_irrep;
   int *count;
-  long int *dataoff;
+  int *dataoff;
   int rowtot, coltot;
   double *data;
 
@@ -53,7 +53,7 @@ int dpd_buf4_mat_irrep_shift13(dpdbuf4 *Buf, int buf_block)
 	    (double **) malloc(Buf->shift.rowtot[buf_block][h] * sizeof(double *)));
 
   /* Calculate the data offset */
-  dataoff = init_long_int_array(nirreps);
+  dataoff = init_int_array(nirreps);
   dataoff[0] = 0;
   for(h=1; h < nirreps; h++)
       dataoff[h] = dataoff[h-1] +

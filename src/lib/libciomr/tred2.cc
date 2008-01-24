@@ -1,4 +1,6 @@
-#include "includes.h"
+#include <math.h>
+
+#define DSIGN(a,b) ((b) >= 0.0) ? (fabs(a)) : (-fabs(a))
 
 extern "C" {
   

@@ -4,22 +4,16 @@
 ** \ingroup (CIOMR)
 */
 
-#include "includes.h"
-#define ALLOC_GLOBALS
-#include "pointers.h"
-#undef ALLOC_GLOBALS
-
+#include <stdio.h>
+#include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <time.h>
 
-#ifdef HAVE_SYS_TYPES_H
-#include <sys/types.h>
-#endif
-
-#ifdef HAVE_SYS_TIMES_H
 #include <sys/times.h>
-#endif
-#include <libqt/qt.h>
+
+time_t time_start, time_end;
+struct tms total_tmstime;
 
 extern "C" {
 

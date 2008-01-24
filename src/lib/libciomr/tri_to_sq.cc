@@ -3,9 +3,6 @@
    \ingroup (CIOMR)
 */
 
-#include "includes.h"
-#include <libciomr/libciomr.h>
-
 extern "C" {
 
 /*!

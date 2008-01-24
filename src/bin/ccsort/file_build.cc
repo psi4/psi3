@@ -28,7 +28,7 @@ int file_build(dpdfile4 *File, int inputfile, double tolerance,
   long int memoryb, memoryd, core_left, row_length;
   int h, nirreps, n, row, col, nump, numq, nbuckets;
   int **bucket_map, **bucket_offset, **bucket_rowdim, offset;
-  long int **bucket_size;
+  int **bucket_size;
   Value *valptr;
   Label *lblptr;
   int idx, p, q, r, s;
@@ -53,8 +53,8 @@ int file_build(dpdfile4 *File, int inputfile, double tolerance,
   bucket_offset[0] = init_int_array(nirreps);
   bucket_rowdim = (int **) malloc(sizeof(int *));
   bucket_rowdim[0] = init_int_array(nirreps);
-  bucket_size = (long int **) malloc(sizeof(long int *));
-  bucket_size[0] = init_long_int_array(nirreps);
+  bucket_size = (int **) malloc(sizeof(int *));
+  bucket_size[0] = init_int_array(nirreps);
     
   /* Figure out how many buckets we need and where each p,q goes */
   for(h=0,core_left=memoryd,nbuckets=1; h < nirreps; h++) {
@@ -83,9 +83,9 @@ int file_build(dpdfile4 *File, int inputfile, double tolerance,
 	      bucket_rowdim[nbuckets-1] = init_int_array(nirreps);
 	      bucket_rowdim[nbuckets-1][h] = 1;
 
-	      bucket_size = (long int **) realloc((void *) bucket_size,
-					     nbuckets * sizeof(long int *));
-	      bucket_size[nbuckets-1] = init_long_int_array(nirreps);
+	      bucket_size = (int **) realloc((void *) bucket_size,
+					     nbuckets * sizeof(int *));
+	      bucket_size[nbuckets-1] = init_int_array(nirreps);
 	      bucket_size[nbuckets-1][h] = row_length;
 	    }
 

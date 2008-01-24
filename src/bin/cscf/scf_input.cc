@@ -25,7 +25,6 @@ void scf_input(ip_value_t* ipvalue)
    int nc,no,nh,nn,num_mo;
    int ncalcs;
    int optri,ierr,nat;
-   int io_locate();
    int errcod;
    int size;
    int phase_chk;

@@ -1,4 +1,5 @@
-#include "includes.h"
+#include "libciomr.h"
+#include <stdlib.h>
 
 extern "C" {
 
