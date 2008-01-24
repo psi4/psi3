@@ -65,6 +65,7 @@ void get_params()
     if(errcod != IPE_OK) params.dertype = 0; /* assume no derivative */
     else if(!strcmp(junk,"NONE")) params.dertype = 0;
     else if(!strcmp(junk,"FIRST")) params.dertype = 1;
+    else if(!strcmp(junk,"SECOND")) params.dertype = 2;
     else if(!strcmp(junk,"RESPONSE")) params.dertype = 3; /* linear response */
     else {
       printf("Invalid value of input keyword DERTYPE: %s\n", junk);

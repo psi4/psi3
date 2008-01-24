@@ -19,8 +19,8 @@
 ** that are compatible with all the coupled cluster codes, including
 ** frozen orbitals.  
 **
-** Remaining tasks to achieve full replacement of transqt v.1:
-**   (1) Add reordering arrays needed for DETCI.
+** Remaining tasks to achieve full replacement of transqt:
+**   (1) Add reordering arrays needed for DETCI and SCF DERTYPE=2.
 **   (2) Add partial transforms for MP2 and MP2-R12.
 **   (3) Replace the backtransformation.  (I want to do this with
 **       symmetry, though, so there's no hurry here.)
@@ -239,6 +239,9 @@ main(int argc, char *argv[])
   chkpt_init(PSIO_OPEN_OLD);
   chkpt_wt_efzc(efzc);
   chkpt_close();
+
+  /*** One-electron transforms.  Note that all orbitals are transformed,
+       including those in the inactive space. ***/
 
   /* transform the bare one-electron integrals */
   if(params.ref == 0 || params.ref == 1) {
