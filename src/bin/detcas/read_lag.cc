@@ -34,12 +34,6 @@ void read_lagrangian(void)
   
   CalcInfo.lag = block_matrix(nmo, nmo);
 
-  /*
-  rfile(Params.lag_file);
-  wreadw(Params.lag_file, (char *) CalcInfo.lag[0], nmo*nmo*sizeof(double),
-         lag_fptr, &lag_fptr);
-  */
-
   psio_open(Params.lag_file, PSIO_OPEN_OLD);  
   psio_read_entry(Params.lag_file, "MO-basis Lagrangian", 
     (char *) CalcInfo.lag[0], nmo*nmo*sizeof(double));
@@ -49,7 +43,6 @@ void read_lagrangian(void)
     print_mat(CalcInfo.lag, nmo, nmo, outfile);
   }
 
-  /* rclose(Params.lag_file, Params.lag_erase ? 4 : 3); */
   psio_close(Params.lag_file, Params.lag_erase ? 0 : 1);
 
 } 
