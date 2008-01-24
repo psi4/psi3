@@ -319,7 +319,6 @@ double *rdtpdm(int nbf, int print_lvl, int tpdm_file)
  double *tpdm;
  int numslots, sqnbf;   
  int *ioff_lt, i;                    /* offsets for left (or right) indices */
- PSI_FPTR index = 0 ; 
  struct iwlbuf TBuff;
 
  iwl_buf_init(&TBuff, tpdm_file, 0.0, 1, 1);
