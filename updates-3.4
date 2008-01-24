@@ -1,6 +1,17 @@
-1/24/08 Added capability to include electric field contribution into the potential
-energy integrals. Can specify the reference frame to allow finite difference
-calculations (e.g., DBOC) with nonzero electric field. -EFV
+1/24/08 Finished removing all wreadw/wwritw calls from PSI binaries.
+Removed legacy libciomr calls from all binaries and removed all unused
+libciomr calls (reducing library size by half).  Removed need to link
+libcompat.a on Apple systems.  -TDC and CDS
+
+1/24/08 Minor updates to oeprop to fix a seg fault when running quadrupole
+analysis with correlated wavefunctions.  -EFV and CDS
+
+1/24/08 Added capability to include electric field contribution into the 
+potential energy integrals. Can specify the reference frame to allow finite 
+difference calculations (e.g., DBOC) with nonzero electric field. -EFV
+
+1/22/08 Brought CI codes fully to C++, completing stage 2 of our
+C++/single-executable master plan. -CDS
 
 1/20/08 Bumped up the default value of MAXITER in CSCF from the annoyingly
 low 40 (at least for open-shell cases) to 100. -TDC
