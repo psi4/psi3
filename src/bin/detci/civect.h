@@ -35,8 +35,7 @@ class CIvect {
       int *Ib_size;              /* num bet strings in each block */
       BIGINT *offset;            /* offsets for absolute numbering.  This
                                     is a word offset, not a byte offset,
-                                    so unsigned long should be ok, and
-                                    shouldn't have to make this PSI_FPTR */
+                                    so unsigned long should be ok          */
       int num_alpcodes;          /* number of possible (total) alpha codes */
       int num_betcodes;          /* number of possible (total) beta codes */
       int nirreps;               /* dimension of next four arrays */
