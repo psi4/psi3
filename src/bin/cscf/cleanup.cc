@@ -226,9 +226,7 @@ void cleanup()
 
 {
   int i,j,k,ij,ijk,m,nn,num_mo;
-  PSI_FPTR junk,junk1,junk2;
   int mpoint,mconst,mcalcs,loccal;
-  PSI_FPTR locvec;
   int nx,ntri;
   int newvec;
   int nat,iend,ierr,ci_calc,irot,nbfao;

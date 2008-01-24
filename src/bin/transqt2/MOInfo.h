@@ -38,6 +38,10 @@ struct MOInfo {
   int *act2qt;           /* reordering array (RHF): active MO -> QT */
   int *act2qt_A;         /* reordering array (UHF): active MO -> QT (alpha) */
   int *act2qt_B;         /* reordering array (UHF): active MO -> QT (beta) */
+
+  int *order;            /* final orbital reordering array -- RHF/ROHF */
+  int *order_A;          /* final orbital reordering array -- UHF alpha */
+  int *order_B;          /* final orbital reordering array -- UHF beta */
 };
 
   } // namespace transqt2

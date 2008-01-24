@@ -23,7 +23,6 @@ void init_uhf()
    int i,m,jj;
    int nn,isadr;
    int nkind,junk;
-   PSI_FPTR next;
    int degen[20],*num_so;
    char char_dum[80];
    char **irr_labs;

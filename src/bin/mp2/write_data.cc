@@ -29,7 +29,6 @@ void rhf_sf_write_data(void)
   int h, row, col, p, q, r, s;
   int i, j, m;
   double value;
-  PSI_FPTR next;
   dpdbuf4 G;
   struct iwlbuf OutBuf;
 

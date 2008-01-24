@@ -24,7 +24,6 @@ void scf_input(ip_value_t* ipvalue)
    int norder,*iorder,reordr;
    int nc,no,nh,nn,num_mo;
    int ncalcs;
-   PSI_FPTR junk,locvec,loccal;
    int optri,ierr,nat;
    int io_locate();
    int errcod;

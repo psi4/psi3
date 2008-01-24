@@ -42,7 +42,6 @@ void dump_ROHF(struct iwlbuf *OutBuf, struct RHO_Params rho_params)
   int nirreps, nmo, nfzv;
   int *qt_occ, *qt_vir;
   int h, row, col, p, q, r, s;
-  PSI_FPTR next;
   dpdbuf4 G;
 
   qt_occ = moinfo.qt_occ;  qt_vir = moinfo.qt_vir;

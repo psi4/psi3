@@ -35,7 +35,6 @@ void compute_oeprops()
   double r,r2;
   double tmp, sum1, sum2, sum3;
   double pfac_ij, pfac_kl;
-  PSI_FPTR junk;
   double *Density;
   double **temp_mat;
   double *XX, *YY, *ZZ;

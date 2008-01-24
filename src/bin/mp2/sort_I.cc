@@ -141,7 +141,6 @@ void rhf_sf_sort_I(void)
   int *qt_occ, *qt_vir;
   double **O, chksum, value;
   dpdfile2 D;
-  PSI_FPTR next;
 
   nmo = mo.nmo;
   nirreps = mo.nirreps;

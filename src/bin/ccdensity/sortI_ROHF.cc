@@ -33,7 +33,6 @@ void sortI_ROHF(void)
   int *qt_occ, *qt_vir;
   double **O, chksum, value;
   dpdfile2 D;
-  PSI_FPTR next;
 
   nmo = moinfo.nmo;
   nfzc = moinfo.nfzc;

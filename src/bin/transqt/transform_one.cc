@@ -299,7 +299,6 @@ void trans_one_backwards(void)
   double *new_opdm_a, *new_opdm_b, *new_lag_a, *new_lag_b;
   int p,q,pq;
   int I,J,P,Q,PQ;
-  PSI_FPTR pdm_fp_in=0, pdm_fp_out=0;
 
   if (params.print_lvl) {
     fprintf(outfile, "\n\tTransforming one-electron integrals...\n");

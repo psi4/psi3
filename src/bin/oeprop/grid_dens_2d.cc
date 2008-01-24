@@ -29,7 +29,6 @@ void compute_grid_dens_2d()
   double x,y,z;
   double r,r2;
   double tmp, sum1, sum2, sum3;
-  PSI_FPTR junk;
   double *Density;
   double **temp_mat;
 

@@ -104,7 +104,6 @@ void init_scf()
    int i,jj;
    int nn,isadr;
    int nkind,junk;
-   PSI_FPTR next;
    int degen[20],*num_so;
    char char_dum[80];
    char **irr_labs;
