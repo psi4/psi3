@@ -1,11 +1,11 @@
 /*! 
   \file genci.cc
   \ingroup (DETCI)
-  \brief C++ parts of the General Configuration interaction (GENCI) package
+  \brief Part of the General Configuration interaction (GENCI) package
 
    GENCI.CC
   
-   C++ parts of the General Configuration Interaction (GENCI) package
+   Part of the General Configuration Interaction (GENCI) package
   
    Matt Leininger
    Center for Computational Quantum Chemistry
