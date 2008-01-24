@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
     cleanup_molecule();
     
     stop_io();
-  } catch (std::domain_error e) {
+  } catch (std::exception e) {
     std::cerr << e.what() << std::endl;
     std::cerr << "cints failed due to errors\n";
     punt(const_cast<char*>(e.what()));

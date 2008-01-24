@@ -115,6 +115,7 @@ namespace psi {
     
     
     enum scftype {rhf = 0, uhf = 1, rohf = 2, twocon = 3};
+    enum frametype {canonical = 0, reference = 1};
     
     typedef struct {
       char *wfn;                         /* Wavefunction */
@@ -146,8 +147,11 @@ namespace psi {
       enum scftype reftype;              /* Reference type, e.g. RHF, ROHF, UHF */
       int restart;                       /* Is this a restart? */
       int restart_task;                  /* Where to restart? */
-      struct coordinates origin;           /* user-selected origin for magnetic dipole integrals */
+      struct coordinates origin;         /* user-selected origin for magnetic dipole integrals */
       double fine_structure_alpha;       /* scalar to multiply fine-structure constant */
+      double E[3];                       /* electric field vector */
+      bool E_given;                      /* Was EFIELD given? */
+      enum frametype E_frame;            /* in which frame is the field given? the default is canonical */
     } UserOptions_t;
     
     typedef struct {

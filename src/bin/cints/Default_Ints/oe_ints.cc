@@ -8,7 +8,11 @@
 #include<stdlib.h>
 #include<libipv1/ip_lib.h>
 #include<libiwl/iwl.h>
+#include<libqt/qt.h>
 #include<libciomr/libciomr.h>
+#include<libchkpt/chkpt.h>
+#include<libchkpt/chkpt.hpp>
+#include<libiwl/iwl.h>
 #include<libint/libint.h>
 #include<psifiles.h>
 
@@ -18,6 +22,7 @@
 #include <stdexcept>
 #include"oe_osrr.h"
 #include"small_fns.h"
+#include"moment_ints.h"
 
 #ifdef USE_TAYLOR_FM
   #include"taylor_fm_eval.h"
@@ -375,9 +380,6 @@ void oe_ints()
   if (BasisSet.puream)
     free_matrix(temp,dimension); 
   dimension=ioff[Symmetry.num_so];
-  iwl_wrtone(IOUnits.itapS,PSIF_SO_S,dimension,S);
-  iwl_wrtone(IOUnits.itapT,PSIF_SO_T,dimension,T);
-  iwl_wrtone(IOUnits.itapV,PSIF_SO_V,dimension,V);
   if (UserOptions.print_lvl >= PRINT_OEI) {
     fprintf(outfile,"  -Overlap integrals:\n\n");
     print_array(S,Symmetry.num_so,outfile);
@@ -387,6 +389,59 @@ void oe_ints()
     print_array(V,Symmetry.num_so,outfile);
     fprintf(outfile,"\n");
   }
+
+  //
+  // If EFIELD was specified, add the contribution to the potential integrals
+  //
+  if (UserOptions.E_given) {
+    moment_ints();
+    const int ntri = ioff[Symmetry.num_so];
+    double* MX = init_array(ntri);
+    double* MY = init_array(ntri);
+    double* MZ = init_array(ntri);
+    iwl_rdone(IOUnits.itapMX_AO,PSIF_AO_MX,MX,ntri,0,0,outfile);
+    iwl_rdone(IOUnits.itapMX_AO,PSIF_AO_MY,MY,ntri,0,0,outfile);
+    iwl_rdone(IOUnits.itapMX_AO,PSIF_AO_MZ,MZ,ntri,0,0,outfile);
+
+    // E field is given in the frame specified by EFIELD_FRAME
+    // if necessary, rotate E to the canonical frame, in which all integrals are computed
+    double* E = new double[3];  for(int i=0; i<3; ++i) E[i] = 0.0;
+    switch(UserOptions.E_frame) {
+      case reference:
+      {
+        double** rref = chkpt_rd_rref();
+        for(int i=0; i<3; ++i)
+          for(int j=0; j<3; ++j)
+            E[i] += rref[i][j] * UserOptions.E[j];
+        Chkpt::free(rref);
+      }
+      break;
+        
+      case canonical:
+        for(int i=0; i<3; ++i) E[i] = UserOptions.E[i];
+        break;
+        
+      default:
+        throw std::runtime_error("This value for UserOptions.E_frame not supported. See documentation for keyword EFIELD_FRAME.");
+    }
+    
+    fprintf(outfile,"\n    EFIELD(input file) = ( ");
+    for(int i=0; i<3; ++i) fprintf(outfile," %12.9lf ",UserOptions.E[i]);
+    fprintf(outfile," )\n");
+    if (UserOptions.E_frame != canonical) {
+      fprintf(outfile,"    EFIELD(%s frame) = ( ", (UserOptions.E_frame==canonical ? "canonical" : "reference"));
+      for(int i=0; i<3; ++i) fprintf(outfile," %12.9lf ",E[i]);
+      fprintf(outfile," )\n");
+    }
+    
+    C_DAXPY(ntri, E[0], MX, 1, V, 1);
+    C_DAXPY(ntri, E[1], MY, 1, V, 1);
+    C_DAXPY(ntri, E[2], MZ, 1, V, 1);
+    fprintf(outfile,"    Electric field contribution added to the one-electron potential integrals\n");
+  }
+  iwl_wrtone(IOUnits.itapS,PSIF_SO_S,dimension,S);
+  iwl_wrtone(IOUnits.itapT,PSIF_SO_T,dimension,T);
+  iwl_wrtone(IOUnits.itapV,PSIF_SO_V,dimension,V);
   free(S);
   free(T);
   free(V);

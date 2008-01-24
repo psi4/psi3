@@ -92,7 +92,33 @@ namespace psi { namespace CINTS {
       UserOptions.origin.z = 0;
     }
     UserOptions.origin.Z_nuc = 0;
-    
+
+    UserOptions.E_given = false;
+    if (ip_exist("EFIELD",0)) {
+      UserOptions.E_given = true;
+      errcod = ip_double_array("EFIELD", UserOptions.E, 3);
+      if(errcod != IPE_OK)
+        throw std::runtime_error("Could not read EFIELD");
+      else {
+        // if the field is specified also need to query the frame        
+        char* frame;
+        errcod = ip_string("EFIELD_FRAME",&frame,0);
+        if (errcod == IPE_OK) {
+          if (!strcmp(frame,"CANONICAL"))
+            UserOptions.E_frame = canonical;
+          else if (!strcmp(frame,"REFERENCE"))
+            UserOptions.E_frame = reference;
+          else
+            throw std::invalid_argument("Invalid value for keyword EFIELD_FRAME");
+          free(frame);
+        }
+        else {
+          UserOptions.E_frame = canonical;
+        }
+        
+      }
+    }
+
     return;
     
   }
