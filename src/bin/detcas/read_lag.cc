@@ -28,7 +28,6 @@ namespace psi { namespace detcas {
 void read_lagrangian(void)
 {
   int nmo;
-  PSI_FPTR lag_fptr=0;
 
   nmo = CalcInfo.nmo;
   
