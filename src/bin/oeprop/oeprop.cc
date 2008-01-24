@@ -680,8 +680,7 @@ void compute_oeprops()
     free_matrix(temp_mat,3);
     
 	/* Computing orbital spatial extents */
-    
-    if (read_opdm)	/* If onepdm is read from file - use natural orbitals */
+    if (read_opdm && wrtnos)	/* If onepdm is read from file - use natural orbitals */
       evec = nmo_ao;
     else
       evec = scf_evec_ao;

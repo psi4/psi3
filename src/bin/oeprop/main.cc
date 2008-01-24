@@ -141,7 +141,7 @@ for (irho=0;irho<nrho;irho++) {
   compute_overlap();
    
   /* Obtain natural orbitals */
-  if (read_opdm && wrtnos) 
+  if (read_opdm && wrtnos)
     get_nmo(); 
    
   chkpt_close();
