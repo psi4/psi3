@@ -6,10 +6,24 @@
    GENCI.CC
   
    Part of the General Configuration Interaction (GENCI) package
-  
+
    Matt Leininger
    Center for Computational Quantum Chemistry
    1996
+
+   This code uses the string lists from the main DETCI code to explicitly
+   compute H and its action on c to produce sigma, using the Slater
+   Determinant class.  The idea was that completely arbitrary determinants
+   could be specified (through an interface that was not ever implemented).
+   Since the code as it was only used the same (RAS-selected) determinants
+   as the main code, there was no extra functionality (other than perhaps
+   for debugging purposes) and of course this approach is much, much slower.
+   When the old wreadw/wwritw I/O calls were obsoleted in favor of the
+   new libpsio library, it was not deemed useful to translate this genci
+   code to the new library, as it did not add functionality.  However, it
+   is retained here as a possible starting point for future work in general 
+   CI expansions. --- C. David Sherrill, January 2008
+  
 */ 
 
 /*** DEFINES ***/
