@@ -22,7 +22,6 @@ void read_scf_opdm()
   int i, j, ij, nao_i, nao_j, sh_i, sh_j;
   int ioffset, joffset;
   int nstri = ioff[Symmetry.num_so];
-  PSI_FPTR next;
   double *dens, *denso;
   double **sq_dens, **sq_denso;
   double **tmp_mat;

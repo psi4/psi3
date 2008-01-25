@@ -24,7 +24,6 @@ void read_scf_occ_evec(void)
     int aocc,bocc;
     int bas_off;
     int shell_start,shell_end,shell_type;
-    PSI_FPTR next;
     double **SO_cmat, **SO_cmato;
     double **Cocc_un;
     
