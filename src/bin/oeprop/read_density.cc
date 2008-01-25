@@ -22,6 +22,7 @@ void read_density()
   int irrep, mo_offset, so_offset, i_ci, j_ci, max_opi, errcod;
   int fzc, populated_orbs;
   int *docc, *socc, *frozen_docc, *frozen_uocc, *reorder, **ras_opi; 
+  int *rstr_docc, *rstr_uocc;
   int *reorder_a, *reorder_b;
   double **scfvec, **opdm_blk, **onepdm;
   char opdm_key[80];
@@ -89,6 +90,8 @@ void read_density()
     socc = init_int_array(nirreps);
     ras_opi = init_int_matrix(4,nirreps);
     reorder = init_int_array(nmo);
+    rstr_docc = init_int_array(nirreps);
+    rstr_uocc = init_int_array(nirreps);
 
     fzc = 1;
     errcod = ip_boolean("FREEZE_CORE",&fzc,0);
@@ -97,8 +100,9 @@ void read_density()
       || strcmp(wfn, "DETCAS") == 0) {
         frozen_docc = init_int_array(nirreps);
         frozen_uocc = init_int_array(nirreps);
-      if (!ras_set(nirreps, nmo, fzc, orbspi, docc, socc,
-		   frozen_docc, frozen_uocc, ras_opi, reorder, 1) )
+      if (!ras_set2(nirreps, nmo, fzc, 1, orbspi, docc, socc,
+		   frozen_docc, frozen_uocc, rstr_docc, rstr_uocc,
+                   ras_opi, reorder, 1, 0) )
         punt("Error in ras_set()");
     }
     else { /* CC densities */
