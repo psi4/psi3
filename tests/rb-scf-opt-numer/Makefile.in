@@ -4,7 +4,9 @@ SRCDIR = @srcdir@
 include ../MakeVars
 
 $(TARGET):
-	@SRCDIR=$(SRCDIR) PSIDATADIR=$(SRC_PSIDATADIR) PATH=../../bin:$PATH psirb $(SRCDIR)/input.rb
+	@echo "`basename $(SRCDIR)`:" >> `basename $(SRCDIR)`.test
+	@SRCDIR=$(SRCDIR) PSIDATADIR=$(SRC_PSIDATADIR) PATH=../../bin:$PATH psirb $(SRCDIR)/input.rb | tee -a `basename $(SRCDIR)`.test
+	@cat `basename $(SRCDIR)`.test >> $(top_objdir)/test-case-results
 
 clean:
 	/bin/rm -f /tmp/psi.*
