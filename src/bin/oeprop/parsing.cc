@@ -62,7 +62,7 @@ void parsing()
   errcod = ip_boolean("READ_OPDM",&read_opdm,0);
   if (read_opdm) {
     errcod = ip_data("OPDM_FILE","%d",&opdm_file,0);
-    if ((opdm_file >= MAX_UNIT) || (opdm_file <= 0))
+    if ((opdm_file >= PSIO_MAXUNIT) || (opdm_file <= 0))
       punt("OPDM_FILE out of range");
     if ((opdm_file != 40) && (opdm_file != 79) && 
         (opdm_file != PSIF_MO_OPDM)) {
@@ -98,7 +98,7 @@ void parsing()
   corr = 0;
   if (corr) {
     errcod = ip_data("ZVEC_FILE","%d",&zvec_file,0);
-    if ((zvec_file >= MAX_UNIT) || (zvec_file <= 0))
+    if ((zvec_file >= PSIO_MAXUNIT) || (zvec_file <= 0))
       punt("ZVEC_FILE out of range");
     errcod = ip_boolean("DELETE_ZVEC",&delete_zvec,0);
   }

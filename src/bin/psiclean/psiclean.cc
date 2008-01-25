@@ -24,6 +24,8 @@
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 
+#define MAX_STRING 300
+
 extern "C" {
   FILE *infile, *outfile;
   char *psi_file_prefix;
