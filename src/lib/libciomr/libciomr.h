@@ -10,7 +10,6 @@
 #define _psi_src_lib_libciomr_libciomr_h_
 
 #include <stdio.h>
-#include <libciomr/iomrparam.h>
 
 #ifdef __cplusplus
 extern "C" {
