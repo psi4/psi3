@@ -8,7 +8,6 @@ psi: (
   restricted_docc = (1 0 0 0)
   active          = (3 0 1 2)
   basis = "6-31G**"
-  transqt = "transqt2"
   zmat = (
     o
     h 1 1.00
