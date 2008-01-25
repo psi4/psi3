@@ -55,10 +55,10 @@ void semicanonical_fock(void)
   avirtpi = init_int_array(nirreps);
   bvirtpi = init_int_array(nirreps);
   for(h=0; h < nirreps; h++) {
-    aoccpi[h] = moinfo.frdocc[h] + moinfo.clsdpi[h] + moinfo.openpi[h];
-    boccpi[h] = moinfo.frdocc[h] + moinfo.clsdpi[h];
-    avirtpi[h] = moinfo.uoccpi[h] + moinfo.fruocc[h];
-    bvirtpi[h] = moinfo.uoccpi[h] + moinfo.openpi[h] + moinfo.fruocc[h];
+    aoccpi[h] = moinfo.clsdpi[h] + moinfo.openpi[h];
+    boccpi[h] = moinfo.clsdpi[h];
+    avirtpi[h] = moinfo.uoccpi[h];
+    bvirtpi[h] = moinfo.uoccpi[h] + moinfo.openpi[h];
   }
   
   offset = init_int_array(nirreps);

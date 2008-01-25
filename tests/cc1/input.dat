@@ -1,6 +1,7 @@
 % 6-31G** H2O Test CCSD optimization
 
 psi: (
+  delete_tei = false
   label = "6-31G** CCSD H2O"
   jobtype = opt
   wfn = ccsd

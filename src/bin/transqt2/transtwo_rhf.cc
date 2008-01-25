@@ -38,13 +38,13 @@ void transtwo_rhf(void)
   chkpt_init(PSIO_OPEN_OLD);
   for(h=0; h < nirreps; h++) {
     scratch = chkpt_rd_scf_irrep(h);
-    C[h] = block_matrix(moinfo.sopi[h],moinfo.mopi[h]);
-    for(q=0; q < moinfo.mopi[h]; q++)
+    C[h] = block_matrix(moinfo.sopi[h],moinfo.actpi[h]);
+    for(q=0; q < moinfo.actpi[h]; q++)
       for(p=0; p < moinfo.sopi[h]; p++)
 	C[h][p][q] = scratch[p][q+moinfo.frdocc[h]];
     if(params.print_lvl > 2) {
       fprintf(outfile, "\n\tMOs for irrep %d:\n",h);
-      mat_print(C[h], moinfo.sopi[h], moinfo.mopi[h], outfile);
+      mat_print(C[h], moinfo.sopi[h], moinfo.actpi[h], outfile);
     }
     free_block(scratch);
   }
@@ -95,15 +95,15 @@ void transtwo_rhf(void)
 	for(Gr=0; Gr < nirreps; Gr++) {
 	  Gs = h^Gr;
 	  nrows = moinfo.sopi[Gr];
-	  ncols = moinfo.mopi[Gs];
+	  ncols = moinfo.actpi[Gs];
 	  nlinks = moinfo.sopi[Gs];
 	  rs = J.col_offset[h][Gr];
 	  if(nrows && ncols && nlinks)
 	    C_DGEMM('n','n',nrows,ncols,nlinks,1.0,&J.matrix[h][pq][rs],nlinks,
 		    C[Gs][0],ncols,0.0,TMP[0],nso);
 
-	  nrows = moinfo.mopi[Gr];
-	  ncols = moinfo.mopi[Gs];
+	  nrows = moinfo.actpi[Gr];
+	  ncols = moinfo.actpi[Gs];
 	  nlinks = moinfo.sopi[Gr];
 	  rs = K.col_offset[h][Gr];
 	  if(nrows && ncols && nlinks)
@@ -120,15 +120,15 @@ void transtwo_rhf(void)
 	  Gs = h^Gr;
 
 	  nrows = moinfo.sopi[Gr];
-	  ncols = moinfo.mopi[Gs];
+	  ncols = moinfo.actpi[Gs];
 	  nlinks = moinfo.sopi[Gs];
 	  rs = J.col_offset[h][Gr];
 	  if(nrows && ncols && nlinks)
 	    C_DGEMM('n','n',nrows,ncols,nlinks,1.0,&J.matrix[h][pq][rs],nlinks,
 		    C[Gs][0],ncols,0.0,TMP[0],nso);
 
-	  nrows = moinfo.mopi[Gr];
-	  ncols = moinfo.mopi[Gs];
+	  nrows = moinfo.actpi[Gr];
+	  ncols = moinfo.actpi[Gs];
 	  nlinks = moinfo.sopi[Gr];
 	  rs = K.col_offset[h][Gr];
 	  if(nrows && ncols && nlinks)
@@ -205,15 +205,15 @@ void transtwo_rhf(void)
 	for(Gr=0; Gr < nirreps; Gr++) {
 	  Gs = h^Gr;
 	  nrows = moinfo.sopi[Gr];
-	  ncols = moinfo.mopi[Gs];
+	  ncols = moinfo.actpi[Gs];
 	  nlinks = moinfo.sopi[Gs];
 	  rs = J.col_offset[h][Gr];
 	  if(nrows && ncols && nlinks)
 	    C_DGEMM('n','n',nrows,ncols,nlinks,1.0,&J.matrix[h][pq][rs],nlinks,
 		    C[Gs][0],ncols,0.0,TMP[0],nso);
 
-	  nrows = moinfo.mopi[Gr];
-	  ncols = moinfo.mopi[Gs];
+	  nrows = moinfo.actpi[Gr];
+	  ncols = moinfo.actpi[Gs];
 	  nlinks = moinfo.sopi[Gr];
 	  rs = K.col_offset[h][Gr];
 	  if(nrows && ncols && nlinks)
@@ -221,12 +221,12 @@ void transtwo_rhf(void)
 		    0.0,&K.matrix[h][pq][rs],ncols);
 	} /* Gr */
 
-	p = moinfo.act2qt[K.params->roworb[h][pq+n*rows_per_bucket][0]];
-	q = moinfo.act2qt[K.params->roworb[h][pq+n*rows_per_bucket][1]];
+	p = moinfo.pitz2corr_two[K.params->roworb[h][pq+n*rows_per_bucket][0]];
+	q = moinfo.pitz2corr_two[K.params->roworb[h][pq+n*rows_per_bucket][1]];
 	PQ = INDEX(p,q);
 	for(rs=0; rs < K.params->coltot[h]; rs++) {
-	  r = moinfo.act2qt[K.params->colorb[h][rs][0]];
-	  s = moinfo.act2qt[K.params->colorb[h][rs][1]];
+	  r = moinfo.pitz2corr_two[K.params->colorb[h][rs][0]];
+	  s = moinfo.pitz2corr_two[K.params->colorb[h][rs][1]];
 	  RS = INDEX(r,s);
 	  if(r >= s && RS <= PQ)
 	    iwl_buf_wrt_val(&MBuff, p, q, r, s, K.matrix[h][pq][rs], params.print_tei, outfile, 0);
@@ -239,15 +239,15 @@ void transtwo_rhf(void)
 	for(Gr=0; Gr < nirreps; Gr++) {
 	  Gs = h^Gr;
 	  nrows = moinfo.sopi[Gr];
-	  ncols = moinfo.mopi[Gs];
+	  ncols = moinfo.actpi[Gs];
 	  nlinks = moinfo.sopi[Gs];
 	  rs = J.col_offset[h][Gr];
 	  if(nrows && ncols && nlinks)
 	    C_DGEMM('n','n',nrows,ncols,nlinks,1.0,&J.matrix[h][pq][rs],nlinks,
 		    C[Gs][0],ncols,0.0,TMP[0],nso);
 
-	  nrows = moinfo.mopi[Gr];
-	  ncols = moinfo.mopi[Gs];
+	  nrows = moinfo.actpi[Gr];
+	  ncols = moinfo.actpi[Gs];
 	  nlinks = moinfo.sopi[Gr];
 	  rs = K.col_offset[h][Gr];
 	  if(nrows && ncols && nlinks)
@@ -255,12 +255,12 @@ void transtwo_rhf(void)
 		    0.0,&K.matrix[h][pq][rs],ncols);
 	} /* Gr */
 
-	p = moinfo.act2qt[K.params->roworb[h][pq+n*rows_per_bucket][0]];
-	q = moinfo.act2qt[K.params->roworb[h][pq+n*rows_per_bucket][1]];
+	p = moinfo.pitz2corr_two[K.params->roworb[h][pq+n*rows_per_bucket][0]];
+	q = moinfo.pitz2corr_two[K.params->roworb[h][pq+n*rows_per_bucket][1]];
 	PQ = INDEX(p,q);
 	for(rs=0; rs < K.params->coltot[h]; rs++) {
-	  r = moinfo.act2qt[K.params->colorb[h][rs][0]];
-	  s = moinfo.act2qt[K.params->colorb[h][rs][1]];
+	  r = moinfo.pitz2corr_two[K.params->colorb[h][rs][0]];
+	  s = moinfo.pitz2corr_two[K.params->colorb[h][rs][1]];
 	  RS = INDEX(r,s);
 	  if(r >= s && RS <= PQ)
 	    iwl_buf_wrt_val(&MBuff, p, q, r, s, K.matrix[h][pq][rs], params.print_tei, outfile, 0);

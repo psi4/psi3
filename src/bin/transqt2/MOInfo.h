@@ -17,9 +17,11 @@ struct MOInfo {
   int *mopi;             /* no. of MOs per irrep */
   int *sosym;            /* SO symmetry array */
   int *mosym;            /* MO symmetry array */
-  int *clsdpi;           /* no. of closed-shells per irrep ex. frdocc */
+  int *actpi;            /* no. of active MOs per irrep */
+  int *actsym;           /* active MO symmetry array */
+  int *clsdpi;           /* no. of closed-shells per irrep */
   int *openpi;           /* no. of open-shells per irrep */
-  int *uoccpi;           /* no. of unoccupied orbitals per irrep ex. fruocc */
+  int *uoccpi;           /* no. of unoccupied orbitals per irrep */
   int *frdocc;           /* no. of frozen core orbitals per irrep */
   int *fruocc;           /* no. of frozen unoccupied orbitals per irrep */
   char **labels;         /* irrep labels */
@@ -29,19 +31,13 @@ struct MOInfo {
 
   double enuc;           /* Nuclear repulsion energy */
   double efzc;           /* Frozen core energy */
-  double eref;           /* The reference energy (computed here) */
 
-  int *pitzer2qt;        /* reordering array (RHF): Pitzer MO -> QT */
-  int *pitzer2qt_A;      /* reordering array (UHF): Pitzer MO -> QT (alpha) */
-  int *pitzer2qt_B;      /* reordering array (UHF): Pitzer MO -> QT (beta) */
-
-  int *act2qt;           /* reordering array (RHF): active MO -> QT */
-  int *act2qt_A;         /* reordering array (UHF): active MO -> QT (alpha) */
-  int *act2qt_B;         /* reordering array (UHF): active MO -> QT (beta) */
-
-  int *order;            /* final orbital reordering array -- RHF/ROHF */
-  int *order_A;          /* final orbital reordering array -- UHF alpha */
-  int *order_B;          /* final orbital reordering array -- UHF beta */
+  int *pitz2corr_one;      /* one-electron integral reordering array (RHF): Pitzer MO -> corr */
+  int *pitz2corr_one_A;    /* one-electron integral reordering array (UHF): Pitzer MO -> corr (alpha) */
+  int *pitz2corr_one_B;    /* one-electron integral reordering array (UHF): Pitzer MO -> corr (beta) */
+  int *pitz2corr_two;      /* two-electron integral reordering array (RHF): Pitzer MO -> corr */
+  int *pitz2corr_two_A;    /* two-electron integral reordering array (UHF): Pitzer MO -> corr (alpha) */
+  int *pitz2corr_two_B;    /* two-electron integral reordering array (UHF): Pitzer MO -> corr (beta) */
 };
 
   } // namespace transqt2

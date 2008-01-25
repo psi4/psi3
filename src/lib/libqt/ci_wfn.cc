@@ -24,7 +24,8 @@ int ci_wfn(char *wfn)
 
   if (strcmp(wfn, "CI")==0     || strcmp(wfn, "DETCAS")==0 || 
       strcmp(wfn, "CASSCF")==0 || strcmp(wfn, "RASSCF")==0 ||
-      strcmp(wfn, "DETCI")==0 ) 
+      strcmp(wfn, "DETCI")==0 || strcmp(wfn, "MCSCF")==0 ||
+      strcmp(wfn, "OOCCD")==0 || strcmp(wfn,"ZAPTN")==0) 
   {
     return(1);
   }

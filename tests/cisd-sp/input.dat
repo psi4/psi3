@@ -6,6 +6,8 @@ psi: (
   wfn = detci
   reference = rhf
   basis = "6-31G**"
+%  transqt = "transqt2"
+  freeze_core = true
   zmat = (
     o
     h 1 1.00

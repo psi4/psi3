@@ -98,7 +98,7 @@ main(int argc, char *argv[])
   cachelist = cacheprep_rhf(params.cachelev, cachefiles); /* really just a placeholder */
 
   dpd_init(0, nirreps, params.memory, 0, cachefiles, cachelist,
-	   NULL, 2, moinfo.sopi, moinfo.sosym, moinfo.mopi, moinfo.mosym);
+	   NULL, 2, moinfo.sopi, moinfo.sosym, moinfo.actpi, moinfo.actsym);
 
   /*** Starting one-electron transforms and presort ***/
 
@@ -123,7 +123,7 @@ main(int argc, char *argv[])
   mo_offset = init_int_array(nirreps);
   for(h=1; h < nirreps; h++) {
     so_offset[h] = so_offset[h-1] + moinfo.sopi[h-1];
-    mo_offset[h] = mo_offset[h-1] + moinfo.mopi[h-1] + moinfo.frdocc[h-1] + moinfo.fruocc[h-1];
+    mo_offset[h] = mo_offset[h-1] + moinfo.mopi[h-1];
   }
 
   if(params.ref == 0 || params.ref == 1) { /* RHF/ROHF */
@@ -132,7 +132,7 @@ main(int argc, char *argv[])
       for(p=so_offset[h]; p < so_offset[h]+moinfo.sopi[h]; p++)
 	for(q=so_offset[h]; q <=p; q++) {
 	  pq = INDEX(p,q);
-	  for(i=mo_offset[h]; i < mo_offset[h]+moinfo.frdocc[h]; i++)
+	  for(i=mo_offset[h]; i < mo_offset[h] + moinfo.frdocc[h]; i++)
 	    D[pq] += C[0][p][i] * C[0][q][i];
 	}
     if(params.print_lvl > 2) {
@@ -147,7 +147,7 @@ main(int argc, char *argv[])
       for(p=so_offset[h]; p < so_offset[h]+moinfo.sopi[h]; p++)
 	for(q=so_offset[h]; q <=p; q++) {
 	  pq = INDEX(p,q);
-	  for(i=mo_offset[h]; i < mo_offset[h]+moinfo.frdocc[h]; i++) {
+	  for(i=mo_offset[h]; i < mo_offset[h] + moinfo.frdocc[h]; i++) {
 	    D_a[pq] += C_a[0][p][i] * C_a[0][q][i];
 	    D_b[pq] += C_b[0][p][i] * C_b[0][q][i];
 	  }
@@ -245,7 +245,7 @@ main(int argc, char *argv[])
 
   /* transform the bare one-electron integrals */
   if(params.ref == 0 || params.ref == 1) {
-    transone(nso, nmo, H, oei, C[0], nmo, moinfo.pitzer2qt, ioff);
+    transone(nso, nmo, H, oei, C[0], nmo, moinfo.pitz2corr_one, ioff);
     if(params.print_lvl > 2) {
       fprintf(outfile, "\n\tOne-electron integrals (MO basis):\n");
       print_array(oei, nmo, outfile);
@@ -254,7 +254,7 @@ main(int argc, char *argv[])
   }
   else { /* UHF */
     /* alpha */
-    transone(nso, nmo, H, oei, C_a[0], nmo, moinfo.pitzer2qt_A, ioff);
+    transone(nso, nmo, H, oei, C_a[0], nmo, moinfo.pitz2corr_one_A, ioff);
     if(params.print_lvl > 2) {
       fprintf(outfile, "\n\tAlpha one-electron integrals (MO basis):\n");
       print_array(oei, nmo, outfile);
@@ -262,7 +262,7 @@ main(int argc, char *argv[])
     iwl_wrtone(PSIF_OEI, PSIF_MO_A_OEI, ntri_mo, oei);
 
     /* beta */
-    transone(nso, nmo, H, oei, C_b[0], nmo, moinfo.pitzer2qt_B, ioff);
+    transone(nso, nmo, H, oei, C_b[0], nmo, moinfo.pitz2corr_one_B, ioff);
     if(params.print_lvl > 2) {
       fprintf(outfile, "\n\tBeta one-electron integrals (MO basis):\n");
       print_array(oei, nmo, outfile);
@@ -272,7 +272,7 @@ main(int argc, char *argv[])
 
   /* transform the frozen-core operator */
   if(params.ref == 0 || params.ref == 1) { /* RHF/ROHF */
-    transone(nso, nmo, F, oei, C[0], nmo, moinfo.pitzer2qt, ioff);
+    transone(nso, nmo, F, oei, C[0], nmo, moinfo.pitz2corr_one, ioff);
     if(params.print_lvl > 2) {
       fprintf(outfile, "\n\tFrozen-core operator (MO basis):\n");
       print_array(oei, nmo, outfile);
@@ -282,7 +282,7 @@ main(int argc, char *argv[])
   else { /* UHF */
 
     /* alpha */
-    transone(nso, nmo, F_a, oei, C_a[0], nmo, moinfo.pitzer2qt_A, ioff);
+    transone(nso, nmo, F_a, oei, C_a[0], nmo, moinfo.pitz2corr_one_A, ioff);
     if(params.print_lvl > 2) {
       fprintf(outfile, "\n\tAlpha frozen-core operator (MO basis):\n");
       print_array(oei, nmo, outfile);
@@ -290,7 +290,7 @@ main(int argc, char *argv[])
     iwl_wrtone(PSIF_OEI, PSIF_MO_A_FZC, ntri_mo, oei);
 
     /* beta */
-    transone(nso, nmo, F_b, oei, C_b[0], nmo, moinfo.pitzer2qt_B, ioff);
+    transone(nso, nmo, F_b, oei, C_b[0], nmo, moinfo.pitz2corr_one_B, ioff);
     if(params.print_lvl > 2) {
       fprintf(outfile, "\n\tBeta frozen-core operator (MO basis):\n");
       print_array(oei, nmo, outfile);

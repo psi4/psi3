@@ -22,6 +22,7 @@ void get_params()
   int *mu_irreps, tmp;
   
   errcod = ip_string("WFN", &(params.wfn), 0);
+  /*
   if(strcmp(params.wfn, "MP2") && strcmp(params.wfn, "CCSD") && 
      strcmp(params.wfn, "CCSD_T") && strcmp(params.wfn, "EOM_CCSD") && 
      strcmp(params.wfn, "LEOM_CCSD") && strcmp(params.wfn, "BCCD") && 
@@ -33,6 +34,7 @@ void get_params()
     printf("Invalid value of input keyword WFN: %s\n", params.wfn);
     exit(PSI_RETURN_FAILURE);
   }
+  */
 
   /* NB: SCF wfns are allowed because, at present, ccsort is needed for 
      RPA-type calculations */
