@@ -24,7 +24,7 @@ struct MOInfo {
   int *uoccpi;           /* no. of unoccupied orbitals per irrep */
   int *frdocc;           /* no. of frozen core orbitals per irrep */
   int *fruocc;           /* no. of frozen unoccupied orbitals per irrep */
-  int *core;             /* no. of "implicit core" orbitals per irrep */
+  int *core;             /* no. of "core" orbitals per irrep (for fzc op) */
   char **labels;         /* irrep labels */
   int nfzc;              /* total no. of frozen core orbitals */
   int nfzv;              /* total no. of frozen virtual orbitals */

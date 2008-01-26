@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <strings.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
@@ -16,6 +17,30 @@
 
 /* get_moinfo(): Routine to obtain basic orbital information from
 ** chkpt and compute the associated lookup arrays.
+**
+** Notes on some of the quantities computed here:
+**
+** pitz2corr_one/pitz2corr_two: These are orbital-index translation
+** arrays for the one-electron integral/frozen-core operator and
+** two-electron integral transformations, respectively.  Two different
+** arrays are necessary because the one-electron integral/frozen-core
+** operator transformation is carried out in the *full* MO space
+** (because of the default behavior of the iwl_rdone code is to
+** "filter" frozen orbitals) while the two-electron integral
+** transformation may be carried out only in the "active" space (if
+** integrals involving core orbitals are not needed, for example).
+** Furthermore, the definitions of these arrays vary depending on the
+** code making use of the transformed integrals.  The CI/MCSCF codes
+** require a RAS-type ordering, the CC codes require QT ordering (for
+** now), and the SCF codes (for MO-basis CPHF and orbital stability
+** calculations) require the original Pitzer order (i.e., no
+** re-ordering).
+**
+** core: The is the set of occupied orbitals used in the construction
+** of the frozen-core operator in main().  For CI/MCSCF calculations,
+** this should include both the frozen-core and the "restricted core"
+** defined by the ras_set2() function.  For CC calculations, this is
+** only the frozen-core.
 */
 
 namespace psi {
@@ -51,62 +76,12 @@ namespace psi {
 	moinfo.nfzv += moinfo.fruocc[i];
       }
 
-      moinfo.core = init_int_array(moinfo.nirreps);
-
-      /** Compute spatial-orbial reordering array(s) for the one-electron transformation **/
-      if(ci_wfn(params.wfn)) {
-
-	rstr_docc = init_int_array(moinfo.nirreps);
-	rstr_uocc = init_int_array(moinfo.nirreps);
-	ras_opi = init_int_matrix(4,moinfo.nirreps);
-
-	// below, we need frdocc and fruocc as they appear in input, i.e., they
-	// should not be zeroed out even if the frozen orbitals are to be 
-	// transformed
-
-	moinfo.pitz2corr_one = init_int_array(moinfo.nmo);
-	if (!ras_set2(moinfo.nirreps, moinfo.nmo, 1, 1,
-		      moinfo.mopi, moinfo.clsdpi, moinfo.openpi,
-		      moinfo.frdocc, moinfo.fruocc,
-		      rstr_docc, rstr_uocc,
-		      ras_opi, moinfo.pitz2corr_one, 1, 0))
-	  {
-	    fprintf(outfile, "Error in ras_set().  Aborting.\n");
-	    exit(PSI_RETURN_FAILURE);
-	  }
-
-	/* "core" for CI wfns is frozen-docc plus restricted-docc */
-	for(h=0; h < moinfo.nirreps; h++) 
-	  moinfo.core[h] = moinfo.frdocc[h] + rstr_docc[h];
-      }
-      else if(cc_wfn(params.wfn)) {
-	if(params.ref == 0 || params.ref == 1) {
-	  moinfo.pitz2corr_one = init_int_array(moinfo.nmo);
-	  reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
-		     moinfo.pitz2corr_one, moinfo.mopi, moinfo.nirreps);
-	}
-	else if(params.ref == 2) {
-	  moinfo.pitz2corr_one_A = init_int_array(moinfo.nmo);
-	  moinfo.pitz2corr_one_B = init_int_array(moinfo.nmo);
-	  reorder_qt_uhf(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
-			 moinfo.pitz2corr_one_A, moinfo.pitz2corr_one_B, moinfo.mopi, moinfo.nirreps);
-	}
-
-	/* "core" for CC wfns is just frozen-docc */
-	for(h=0; h < moinfo.nirreps; h++) 
-	  moinfo.core[h] = moinfo.frdocc[h];
-      }
-      else {
-	fprintf(outfile, "WFN %d not yet supported by transqt2.\n");
-	exit(PSI_RETURN_FAILURE);
-      }
-
       /* We want actpi to include only active orbitals */
       moinfo.actpi = init_int_array(moinfo.nirreps);
       for(h=0; h < moinfo.nirreps; h++)
 	moinfo.actpi[h] = moinfo.mopi[h] - moinfo.frdocc[h] - moinfo.fruocc[h];
 
-      /* SO and MO symmetry arrays */
+      /* SO and active-MO symmetry arrays */
       moinfo.sosym = init_int_array(moinfo.nso);
       for(h=0,count=0; h < moinfo.nirreps; h++)
 	for(i=0; i < moinfo.sopi[h]; i++,count++)
@@ -123,9 +98,32 @@ namespace psi {
 
       moinfo.nactive = moinfo.nmo - moinfo.nfzc - moinfo.nfzv;
 
-      /** Compute spatial-orbial reordering array(s) for the two-electron transformation **/
+      /* "core" orbitals needed for frozen-core operator */
+      moinfo.core = init_int_array(moinfo.nirreps);
 
       if(ci_wfn(params.wfn)) {
+
+	/** Compute CI spatial-orbial reordering array(s) for the one-electron transformation **/
+	rstr_docc = init_int_array(moinfo.nirreps);
+	rstr_uocc = init_int_array(moinfo.nirreps);
+	ras_opi = init_int_matrix(4,moinfo.nirreps);
+
+	// below, we need frdocc and fruocc as they appear in input, i.e., they
+	// should not be zeroed out even if the frozen orbitals are to be 
+	// transformed
+	moinfo.pitz2corr_one = init_int_array(moinfo.nmo);
+	if (!ras_set2(moinfo.nirreps, moinfo.nmo, 1, 1,
+		      moinfo.mopi, moinfo.clsdpi, moinfo.openpi,
+		      moinfo.frdocc, moinfo.fruocc,
+		      rstr_docc, rstr_uocc,
+		      ras_opi, moinfo.pitz2corr_one, 1, 0))
+	  {
+	    fprintf(outfile, "Error in ras_set().  Aborting.\n");
+	    exit(PSI_RETURN_FAILURE);
+	  }
+
+	/** Compute CI spatial-orbial reordering array(s) for the two-electron transformation **/
+
 	// Now we need to translate the full Pitzer -> correlated mapping
 	// array to one that involves only the active orbitals
 	moinfo.pitz2corr_two = init_int_array(moinfo.nactive);
@@ -141,8 +139,27 @@ namespace psi {
 	free_int_matrix(ras_opi);
 	free(rstr_docc);
 	free(rstr_uocc);
+
+	/* "core" for CI wfns is frozen-docc plus restricted-docc */
+	for(h=0; h < moinfo.nirreps; h++) 
+	  moinfo.core[h] = moinfo.frdocc[h] + rstr_docc[h];
       }
-      else { /* CC only */
+      else if(cc_wfn(params.wfn)) {
+	/** Compute CC spatial-orbial reordering array(s) for the one-electron transformation **/
+
+	if(params.ref == 0 || params.ref == 1) {
+	  moinfo.pitz2corr_one = init_int_array(moinfo.nmo);
+	  reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
+		     moinfo.pitz2corr_one, moinfo.mopi, moinfo.nirreps);
+	}
+	else if(params.ref == 2) {
+	  moinfo.pitz2corr_one_A = init_int_array(moinfo.nmo);
+	  moinfo.pitz2corr_one_B = init_int_array(moinfo.nmo);
+	  reorder_qt_uhf(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
+			 moinfo.pitz2corr_one_A, moinfo.pitz2corr_one_B, moinfo.mopi, moinfo.nirreps);
+	}
+
+	/** Compute CC spatial-orbial reordering array(s) for the two-electron transformation **/
 
 	offset = init_int_array(moinfo.nirreps);
 	for(h=1; h < moinfo.nirreps; h++)
@@ -199,6 +216,38 @@ namespace psi {
 	}
 	free(offset);
 
+	/* "core" for CC wfns is just frozen-docc */
+	for(h=0; h < moinfo.nirreps; h++) 
+	  moinfo.core[h] = moinfo.frdocc[h];
+      }
+      else if(!strcmp(params.wfn,"SCF")) {
+
+	/** Compute SCF spatial-orbial reordering array(s) for the
+	    one- and two-electron transformations **/
+	/* Note that no frozen orbitals are allowed in this case */
+	if(params.ref == 0 || params.ref == 1) {
+	  moinfo.pitz2corr_one = init_int_array(moinfo.nmo);
+	  moinfo.pitz2corr_two = init_int_array(moinfo.nmo);
+	  for(i=0; i < moinfo.nmo; i++) {
+	    moinfo.pitz2corr_one[i] = moinfo.pitz2corr_two[i] = i;
+	  }
+	}
+	else if(params.ref == 2) {
+	  moinfo.pitz2corr_one_A = init_int_array(moinfo.nmo);
+	  moinfo.pitz2corr_one_B = init_int_array(moinfo.nmo);
+	  moinfo.pitz2corr_two_A = init_int_array(moinfo.nmo);
+	  moinfo.pitz2corr_two_B = init_int_array(moinfo.nmo);
+	  for(i=0; i < moinfo.nmo; i++) {
+	    moinfo.pitz2corr_one_A[i] = i;
+	    moinfo.pitz2corr_one_B[i] = i;
+	    moinfo.pitz2corr_two_A[i] = i;
+	    moinfo.pitz2corr_two_B[i] = i;
+	  }
+	}
+      }
+      else {
+	fprintf(outfile, "WFN %d not yet supported by transqt2.\n");
+	exit(PSI_RETURN_FAILURE);
       }
 
       if(params.print_lvl) {
@@ -238,6 +287,7 @@ namespace psi {
       free(moinfo.uoccpi);
       free(moinfo.frdocc);
       free(moinfo.fruocc);
+      free(moinfo.core);
       for(h=0; h < moinfo.nirreps; h++)
 	free(moinfo.labels[h]);
       free(moinfo.labels);
