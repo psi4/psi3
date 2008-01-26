@@ -117,7 +117,7 @@ void get_parameters(void)
      strcpy(Parameters.wfn, "NONE");
    }
 
-  if (strcmp(Parameters.dertype, "FIRST")==0 ||
+  if (strcmp(Parameters.dertype, "NONE")!=0 ||
       strcmp(Parameters.wfn, "DETCAS")==0    ||
       strcmp(Parameters.wfn, "CASSCF")==0    ||
       strcmp(Parameters.wfn, "RASSCF")==0) Parameters.filter_ints = 1;

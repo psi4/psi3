@@ -75,18 +75,6 @@ void get_mo_info(void)
    CalcInfo.reorder = init_int_array(CalcInfo.nmo);
    CalcInfo.ras_opi = init_int_matrix(4,CalcInfo.nirreps);
 
-   /* old ras_set
-   if (!ras_set(CalcInfo.nirreps, CalcInfo.nmo, Parameters.fzc, 
-                CalcInfo.orbs_per_irr, CalcInfo.docc, CalcInfo.socc, 
-                CalcInfo.frozen_docc, CalcInfo.frozen_uocc, 
-                CalcInfo.ras_opi, CalcInfo.reorder, 1)) 
-   { 
-     fprintf(outfile, "Error in ras_set().  Aborting.\n");
-     exit(1);
-   }
-   */
-  
-   /* new ras_set2 */
    if (!ras_set2(CalcInfo.nirreps, CalcInfo.nmo, 1, (Parameters.fzc) ?  1:0,
                 CalcInfo.orbs_per_irr, CalcInfo.docc, CalcInfo.socc,
                 CalcInfo.frozen_docc, CalcInfo.frozen_uocc,

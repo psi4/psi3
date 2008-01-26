@@ -19,6 +19,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <libiwl/iwl.h>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
@@ -36,6 +37,7 @@ void read_integrals()
 {
    int i, j, ij, k, l, kl, ijkl, ijij;
    int nmotri, nmotri_full;
+   int nfilter_core, nfilter_vir;
    double value;
    extern double check_energy(double *H, double *twoel_ints, int *docc, 
       int *frozen_docc, int fzc_flag, double escf, double enuc, double efzc, 
@@ -66,10 +68,18 @@ void read_integrals()
 	  CalcInfo.num_fzc_orbs, CalcInfo.num_fzv_orbs);
    free(tmp_onel_ints);
 
+   if (Parameters.filter_ints) {
+     nfilter_core = CalcInfo.num_cor_orbs;
+     // if it's a derivative calculation we also need to filter out FZC
+     if (strcmp(Parameters.dertype, "NONE")!=0) 
+       nfilter_core += CalcInfo.num_fzc_orbs;
+     nfilter_vir = CalcInfo.num_vir_orbs;
+     if (strcmp(Parameters.dertype, "NONE")!=0)
+       nfilter_vir += CalcInfo.num_fzv_orbs; 
+   }
+ 
    iwl_rdtwo(Parameters.tei_file, CalcInfo.twoel_ints, ioff, CalcInfo.nmo, 
-             Parameters.filter_ints ? CalcInfo.num_fzc_orbs : 0, 
-             Parameters.filter_ints ? CalcInfo.num_fzv_orbs : 0, 
-             (Parameters.print_lvl>4), outfile);
+             nfilter_core, nfilter_vir, (Parameters.print_lvl>4), outfile);
 
    /* Determine maximum K integral for use in averaging the diagonal */
    /* Hamiltonian matrix elements over spin-coupling set */
