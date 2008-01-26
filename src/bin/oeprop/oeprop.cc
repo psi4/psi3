@@ -625,15 +625,13 @@ void compute_oeprops()
 
 
   /* Computing nuclear contribution to the dipole moment */
-  dz_e = dx; dz_e = dx; dz_e = dz;
+  dx_e = dx; dy_e = dy; dz_e = dz;
   for(i=0;i<natom;i++) {
-    dx += zvals[i]*geom[i][0];
     dx_n += zvals[i]*geom[i][0];
-    dy += zvals[i]*geom[i][1];
     dy_n += zvals[i]*geom[i][1];
-    dz += zvals[i]*geom[i][2];
     dz_n += zvals[i]*geom[i][2];
   }
+  dx += dx_n;  dy += dy_n;  dz += dz_n;
   dtot = sqrt(dx*dx + dy*dy + dz*dz);
 
 
