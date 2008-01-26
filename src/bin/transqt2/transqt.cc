@@ -132,7 +132,7 @@ main(int argc, char *argv[])
       for(p=so_offset[h]; p < so_offset[h]+moinfo.sopi[h]; p++)
 	for(q=so_offset[h]; q <=p; q++) {
 	  pq = INDEX(p,q);
-	  for(i=mo_offset[h]; i < mo_offset[h] + moinfo.frdocc[h]; i++)
+	  for(i=mo_offset[h]; i < mo_offset[h] + moinfo.core[h]; i++)
 	    D[pq] += C[0][p][i] * C[0][q][i];
 	}
     if(params.print_lvl > 2) {
@@ -147,7 +147,7 @@ main(int argc, char *argv[])
       for(p=so_offset[h]; p < so_offset[h]+moinfo.sopi[h]; p++)
 	for(q=so_offset[h]; q <=p; q++) {
 	  pq = INDEX(p,q);
-	  for(i=mo_offset[h]; i < mo_offset[h] + moinfo.frdocc[h]; i++) {
+	  for(i=mo_offset[h]; i < mo_offset[h] + moinfo.core[h]; i++) {
 	    D_a[pq] += C_a[0][p][i] * C_a[0][q][i];
 	    D_b[pq] += C_b[0][p][i] * C_b[0][q][i];
 	  }

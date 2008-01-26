@@ -51,6 +51,8 @@ namespace psi {
 	moinfo.nfzv += moinfo.fruocc[i];
       }
 
+      moinfo.core = init_int_array(moinfo.nirreps);
+
       /** Compute spatial-orbial reordering array(s) for the one-electron transformation **/
       if(ci_wfn(params.wfn)) {
 
@@ -70,10 +72,14 @@ namespace psi {
 		      ras_opi, moinfo.pitz2corr_one, 1, 0))
 	  {
 	    fprintf(outfile, "Error in ras_set().  Aborting.\n");
-	    exit(1);
+	    exit(PSI_RETURN_FAILURE);
 	  }
+
+	/* "core" for CI wfns is frozen-docc plus restricted-docc */
+	for(h=0; h < moinfo.nirreps; h++) 
+	  moinfo.core[h] = moinfo.frdocc[h] + rstr_docc[h];
       }
-      else {  /* CC only for now */
+      else if(cc_wfn(params.wfn)) {
 	if(params.ref == 0 || params.ref == 1) {
 	  moinfo.pitz2corr_one = init_int_array(moinfo.nmo);
 	  reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
@@ -85,6 +91,14 @@ namespace psi {
 	  reorder_qt_uhf(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
 			 moinfo.pitz2corr_one_A, moinfo.pitz2corr_one_B, moinfo.mopi, moinfo.nirreps);
 	}
+
+	/* "core" for CC wfns is just frozen-docc */
+	for(h=0; h < moinfo.nirreps; h++) 
+	  moinfo.core[h] = moinfo.frdocc[h];
+      }
+      else {
+	fprintf(outfile, "WFN %d not yet supported by transqt2.\n");
+	exit(PSI_RETURN_FAILURE);
       }
 
       /* We want actpi to include only active orbitals */
