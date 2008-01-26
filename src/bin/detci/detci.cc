@@ -167,28 +167,21 @@ int main(int argc, char *argv[])
          CalcInfo.docc, CalcInfo.socc, CalcInfo.orbs_per_irr,
          CalcInfo.frozen_docc, CalcInfo.reorder);
 
-   /*
-   else if (Parameters.mrpt)
-     calc_mrpt();
-   */
-
-   else {
-     if (Parameters.bendazzoli) /* form the Bendazzoli OV arrays            */
-        form_ov(alplist);
+   if (Parameters.bendazzoli) /* form the Bendazzoli OV arrays            */
+      form_ov(alplist);
                                 /* lump together one-electron contributions */
-     tf_onel_ints((Parameters.print_lvl>3), outfile);   
+   tf_onel_ints((Parameters.print_lvl>3), outfile);   
 
                                 /* form the RAS g matrix (eq 28-29)         */
-     form_gmat((Parameters.print_lvl>3), outfile); 
-     fflush(outfile);
+   form_gmat((Parameters.print_lvl>3), outfile); 
+   fflush(outfile);
 
-     if (Parameters.mpn)
-       mpn(alplist, betlist);
-     else if (Parameters.cc)
-       compute_cc();
-     else
-       diag_h(alplist, betlist);
-   }
+   if (Parameters.mpn)
+     mpn(alplist, betlist);
+   else if (Parameters.cc)
+     compute_cc();
+   else
+     diag_h(alplist, betlist);
 
    if (Parameters.opdm || Parameters.transdens) form_opdm();
    if (Parameters.tpdm) form_tpdm();
