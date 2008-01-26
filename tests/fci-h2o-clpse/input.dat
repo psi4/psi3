@@ -6,12 +6,6 @@ psi: (
   wfn = detci
   reference = rhf
   basis = "6-31G**"
-
-  charge = 0
-  multp = 1
-  docc = (3 0 1 1)
-  frozen_docc = (0 0 0 0)
-
   zmat = (
     o
     h 1 1.00

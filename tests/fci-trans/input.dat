@@ -1,24 +1,15 @@
 psi: (
-  check = false
-  jobtype = sp
-)
-
-default: (
   label = "BH-H2+ C2v"
-  memory = (50.0 MB)
+  jobtype = sp
   wfn = detci
-  opentype = highspin
   reference = rohf
   multp = 2
   charge = 1
-  frozen_docc = (1 0 0 0)
+  freeze_core = true
   docc = (3 0 0 0)
   socc = (1 0 0 0)
-)
 
-input: (
   basis = "cc-pVDZ"
-  units = angstrom
   geometry = (
     (B     0.10369114     0.00000000     0.00000000)
     (H    -1.13269886     0.00000000     0.00000000)
@@ -27,9 +18,7 @@ input: (
   )
 )
 
-scf: (
-  convergence = 10
-)
+scf: convergence = 10
 
 detci: (
   fci = true
