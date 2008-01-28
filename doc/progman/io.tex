@@ -17,7 +17,7 @@ I/O functions require this information.  For example, let's say the
 programmer wishes to open binary file number 92 (the supermatrix file
 constructed by \PSIcscf) and read data from it.  After initialization
 of the input parsing system (see sections \ref{C_IP} and
-\ref{C_Program}), he or she would call the \celem{rfile()} routine.
+\ref{PSI_Module}), he or she would call the \celem{rfile()} routine.
 This function requires only the unit number of the file as an argument
 --- in this case, 92.  This unit number is passed to a lower-level
 routine, \celem{ioopen{\_}()}, which determines the I/O method
