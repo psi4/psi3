@@ -308,7 +308,7 @@ have a special comment of the following form:
 \begin{verbatim}
 /*!
 ** \file close.cc
-** \ingroup (PSIO)
+** \ingroup PSIO
 */
 \end{verbatim}
 This tells {\tt doxygen} that file \file{close.cc} should be
@@ -320,14 +320,14 @@ All functions should be commented as in the following:
 /*!
 ** PSIO_CLOSE(): Closes a multivolume PSI direct access file.
 **
-**  \param unit = The PSI unit number used to identify the file to all read
+** \param unit = The PSI unit number used to identify the file to all read
 **                and write functions.
-**  \param keep = Boolean to indicate if the file should be deleted (0) or
+** \param keep = Boolean to indicate if the file should be deleted (0) or
 **                retained (1).
 **
 ** Returns: always returns 0
 **
-** \ingroup (PSIO)
+** \ingroup PSIO
 */
 
 int psio_close(ULI unit, int keep)
