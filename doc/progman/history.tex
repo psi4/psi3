@@ -21,18 +21,26 @@ Janssen (Sandia Labs, Livermore) and Ed Seidl (LLNL), the package was
 ported to UNIX systems, and substantially improved with new input formats
 and a C-based I/O system.
 
-Beginning in 1999, an extensive effort was begun to develop \PSIthree\ ---
-a {\tt PSI} suite with a completely new face.  All of the code is now in
-C and C++, including new integral/derivative integral, coupled cluster,
-and CI codes.  In addition, new I/O libraries have been added, as well as
-an improved checkpoint file structure and greater automation of typical
-tasks such as geometry optimization and frequency analysis.  The package
-has the capability to determine wavefunctions, energies, analytic gradients,
-and various molecular properties based on a variety of theories, including
-spin-restricted, spin-unrestricted, and restricted open-shell Hartree-Fock
-(RHF, UHF, and ROHF); configuration interaction (CI) (including a variety
-of multireference CI's and full CI); coupled-cluster (CC) including CC with
-variationaly optimized orbitals; second-order M{\o}ller-Plesset perturbation
-theory (MPPT) including explicitly correlated second-order M{\o}ller-Plesset
-energy (MP2-R12); and complete-active-space self-consistent field (CASSCF)
-theory.
+Beginning in 1999, an extensive effort was begun to develop \PSIthree\
+--- a {\tt PSI} suite with a completely new face.  As a result of this
+effort, all of the legacy Fortran code was removed, and everything was
+rewritten in C and C++, including new integral/derivative integral,
+coupled cluster, and CI codes.  In addition, new I/O libraries have
+been added, as well as an improved checkpoint file structure and greater
+automation of typical tasks such as geometry optimization and frequency
+analysis.  The package has the capability to determine wavefunctions,
+energies, analytic gradients, and various molecular properties based on
+a variety of theories, including spin-restricted, spin-unrestricted, and
+restricted open-shell Hartree-Fock (RHF, UHF, and ROHF); configuration
+interaction (CI) (including a variety of multireference CI's and full
+CI); coupled-cluster (CC) including CC with variationaly optimized
+orbitals; second-order M{\o}ller-Plesset perturbation theory (MPPT)
+including explicitly correlated second-order M{\o}ller-Plesset energy
+(MP2-R12); and complete-active-space self-consistent field (CASSCF)
+theory.  By January 2008, all of the C code in \PSIthree\ was 
+converted to C++ to enable a path toward more object-oriented design
+and a single-excecutable framework that will facilitate code reuse and 
+ease efforts at parallelization.  At this same time, all of the legacy I/O
+routines from {\tt PSI2} were removed, greatly streamlining the
+\library{libciomr.a} library.
+

@@ -6,6 +6,7 @@
 % Justin T. Fermann, 1 February 1996
 %
 % Updated and improved(?) by Edward F. Valeev, 7 June 2000
+% Updated to C++ by David Sherrill, 29 Jan 2008
 %
 The input parsing library is built for the purpose of reading in the
 contents of an input file with the syntax of \inputdat\ and storing
@@ -63,16 +64,16 @@ simple illustration of the use of this library, taken mostly from
   \end{itemize}
 \item C source
   \begin{itemize} 
-  \item \file{ip\_alloc.c} Allocates keyword tree elements.
-  \item \file{ip\_cwk.c} Routines to manipulate the current working
+  \item \file{ip\_alloc.cc} Allocates keyword tree elements.
+  \item \file{ip\_cwk.cc} Routines to manipulate the current working
                        keyword tree.
-  \item \file{ip\_data.c} Routines to handle reading of arrays and
+  \item \file{ip\_data.cc} Routines to handle reading of arrays and
                          scaler keyword assignments in input.
-  \item \file{ip\_error.c} Error reporting functions.
-  \item \file{ip\_karray.c} Other things to deal with keyword arrays.
-  \item \file{ip\_print.c} Routines to print sections of the keyword
+  \item \file{ip\_error.cc} Error reporting functions.
+  \item \file{ip\_karray.cc} Other things to deal with keyword arrays.
+  \item \file{ip\_print.cc} Routines to print sections of the keyword
   tree.
-  \item \file{ip\_read.c} All the file manipulation routines.  Reading
+  \item \file{ip\_read.cc} All the file manipulation routines.  Reading
                   of \inputdat\ and building the keyword tree from
                   which information is later plucked.
   \end{itemize}
@@ -80,7 +81,7 @@ simple illustration of the use of this library, taken mostly from
 
 \subsubsection{Syntax}
 
-\begin{center} \file{ip\_cwk.c}\\ \end{center}
+\begin{center} \file{ip\_cwk.cc}\\ \end{center}
 
 \celem{void ip\_cwk\_clear();} \\
 Clears current working keyword.  Used when initializing input or switching
@@ -94,7 +95,7 @@ The keyword \celem{kwd} can only be removed from the list of current working
 keywords by purging the entire list using \celem{ip\_cwk\_clear}. 
 {\em You must ensure that they keyword strings begin with a colon.}
 
-\begin{center} \file{ip\_data.c} \\ \end{center}
+\begin{center} \file{ip\_data.cc} \\ \end{center}
 
 \celem{int ip\_count(char *kwd, int *count, int n);} \\
 Counts the elements in the n'th element of the array \celem{kwd}.
@@ -141,7 +142,7 @@ understand the structure of \celem{ip\_value\_t}.
 \celem{int ip\_int\_array(char *kwd, int *arr, int n);} \\
 Reads n integers into array \celem{arr}.
 
-\begin{center} \celem{ip\_read.c} \\ \end{center}
+\begin{center} \celem{ip\_read.cc} \\ \end{center}
 
 \celem{void ip\_set\_uppercase(int uc);} \\
 Sets parsing to case sensitive if uc==0, I think.
@@ -159,7 +160,7 @@ as \celem{intco.dat}.
 \celem{void ip\_done();} \\
 Frees up the keyword tree.
 
-\begin{center} \celem{ip\_read.c} \\ \end{center}
+\begin{center} \celem{ip\_read.cc} \\ \end{center}
 
 \celem{void ip\_print\_tree(FILE *out, ip\_keyword\_tree\_t *tree);} \\
 Prints out \celem{tree} to \celem{out}. If \celem{tree} is set to \celem{NULL},
@@ -167,41 +168,32 @@ then the current working keyword tree will be printed out.
 This function is useful for debugging problems with parsing.
 
 \subsubsection{Sample Use from \PSIcscf}
-These are two slightly simplified pieces of actual code.
+These are two slightly simplified pieces of (former versions of) actual code.  
 
-From \file{cscf.c}:
+From \file{cscf.cc}:
 \begin{verbatim}
 #include <libipv1/ip_lib.h>
+#include <libpsio/psio.h>
 
-   ffile(&infile,"input.dat",2);     /* input and output files. */
-   ffile(&outfile,"output.dat",1);   /* call them whatever you want. */
 
-   ip_set_uppercase(1);              /* case sensitivity selection */
-   ip_initialize(infile,outfile);    /* reads input.dat and stores it all */
+int main(int argc,char* argv[])
+{
+  using namespace psi::cscf;
 
-   /* DO NOT NEGLECT THE COLONS IN THE KEYWORDS BELOW; OTHERWISE
-      ALL IP CALLS WILL RETURN IPE_KEY_NOT_FOUND */
-   ip_cwk_add(":DEFAULT");           /* adds default section */
-   ip_cwk_add(":SCF");               /* adds scf section */
+  ...
 
-   ip_string("OUTPUT",&output,0);    /* bet you didn't know you could */
-   if(!strcmp(output,"TERMINAL")) {  /* have cscf write to stdout!    */
-     outfile = stdout;
-     }
-   else if(!strcmp(output,"WRITE")) {
-     fclose(outfile);
-     ffile(&outfile,"output.dat",0);
-     }
+  psi_start(&infile,&outfile,&psi_file_prefix,argc-1, argv+1, 0);
+  ip_cwk_add(":SCF");
 \end{verbatim}
 
-From \file{scf\_input.c}:
+From \file{scf\_input.cc}:
 \begin{verbatim}
 
    errcod = ip_string("LABEL",&alabel,0);
    if(errcod == IPE_OK) fprintf(outfile,"  label       = %s\n",alabel);
 
-   reordr = 0;    /* easy to set default - if not specified, then */
-                  /* this line changes nothing */
+   reordr = 0;    /* this sets the default that will be used in case the
+                     user hasn't specified this keyword */
    errcod = ip_boolean("REORDER",&reordr,0); 
    if(reordr) {
       errcod = ip_count("MOORDER",&size,0);
@@ -220,7 +212,7 @@ From \file{scf\_input.c}:
       if(errcod == IPE_OK && size != num_ir) {
          fprintf(outfile,"\n SOCC array is the wrong size\n");
          fprintf(outfile," is %d, should be %d\n",size,num_ir);
-         exit(size);
+         exit(1);
          }
       if(errcod != IPE_OK) {
          fprintf(outfile,"\n try adding some electrons buddy!\n");

@@ -154,31 +154,35 @@ data from the file. This function is still under construction.
 
 \subsubsection{Using \library{libpsio.a}}
 The following code illustrates the basic use of the library, as well
-as when/how the \celem{psio\_init()}, \celem{psio\_ipv1\_config()}, and \celem{psio\_done()}
-functions should be called in relation to initialization of
-\library{libipv1}.  (See section \ref{C_Program} later in the manual
-for a description of the basic elements of C-language \PSIthree\
+as when/how the \celem{psio\_init()}, \celem{psio\_ipv1\_config()},
+and \celem{psio\_done()} functions should be called in relation to
+initialization of \library{libipv1}.  (See section \ref{PSI_Module}
+later in the manual for a description of the basic elements of \PSIthree\
 program.)
+
 \begin{verbatim}
 #include <stdio.h>
+#include <stdlib.h>
 #include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 
-FILE *infile, *outfile;
+extern "C" {
+  FILE *infile, *outfile;
+  char *psi_file_prefix;
+}
 
-int main()
+using namespace psi::MODULE_NAME;
+
+int main(int argc, char* argv[])
 {
   int i, M, N;
   double enuc, *some_data;
   psio_address next;  /* Special page/offset structure */
 
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_add(":DEFAULT");
-  ip_cwk_add(progid);
+  psi_start(&infile,&outfile,&psi_file_prefix,argc-1, argv+1, 0);
+  ip_cwk_add(":MODULE_NAME"); // MODULE_NAME in all caps
+  tstart(outfile);
 
   /* Initialize the I/O system */
   psio_init(); psio_ipv1_config();
@@ -202,15 +206,20 @@ int main()
 
   /* Close the I/O system */
   psio_done();
-
+  tstop(outfile);
   ip_done();
+  psi_stop(infile, outfile, psi_file_prefix);
+  exit(0);
 }
 
-char *gprgid()
-{
-   char *prgid = "CODE_NAME";
-   return(prgid);
+extern "C" {
+  char *gprgid()
+  {
+    char *prgid = "CODE_NAME";
+    return(prgid);
+  }
 }
+
 \end{verbatim}
 
 The interface to the \PSIthree\ I/O system has been designed to mimic

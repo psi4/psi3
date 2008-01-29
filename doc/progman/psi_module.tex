@@ -1,0 +1,213 @@
+%
+% PSI Programmer's Manual
+%
+% Essentials of a PSI Module
+%
+% David Sherrill, 31 January 1996
+% Updates by TDC, 2002.
+% Updates by CDS for C++, January 2008
+%
+
+To function as part of the PSI package, a program must incorporate
+certain required elements.  This section will discuss the header files,
+global variables, and functions required to integrate a new C++ module
+into \PSIthree.  Here is a minimal \PSIthree\ program, whose elements
+are described below.  Note that we are using C++ namespaces to avoid
+conflicting names between modules, as we are moving toward a
+single-executable design.  However, for legacy reasons certain globals and
+the \celem{gprgid()} function need to have C-linkage.
+
+\begin{verbatim}
+            #include <stdio.h>
+            #include <stdlib.h>
+            #include <libipv1/ip_lib.h>
+            #include <psifiles.h>
+            #include <libqt/qt.h>
+            #include <libciomr/libciomr.h>
+            #include <libchkpt/chkpt.h>
+            #include <libpsio/psio.h>
+
+            extern "C" {
+              FILE *infile, *outfile;
+              char *psi_file_prefix;
+            }
+
+            // begin module-specific namespace
+            namespace psi { namespace MODULE_NAME {
+
+              // global variables, function declarations, and
+              // #define statements here
+
+            }} // close namespace psi::MODULE_NAME
+
+            // main needs to be in the global namespace
+            // but give it access to the psi::MODULE_NAME namespace
+
+            using namespace psi::MODULE_NAME
+
+            int main(int argc, char *argv[])
+            {
+
+              psi_start(&infile, &outfile, &psi_file_prefix, 
+                argc-1, argv+1, 0);
+              ip_cwk_add(":MODULE_NAME"); // MODULE_NAME all caps here
+              psio_init(); psio_ipv1_config();
+
+              /* to start timing, tstart(outfile); */
+                
+              /* Insert code here */
+
+              /* to end timing, tstop(outfile); */
+
+              psio_done();
+              psi_stop(infile, outfile, psi_file_prefix);
+            }
+
+            // this needs to be global namespace also
+            extern "C" {
+              char *gprgid(void)
+              {
+                 char *prgid = "MODULE_NAME";
+                 return(prgid);
+              }               
+            }
+
+            // all other stuff is in a special namespace
+            namespace psi { namespace MODULE_NAME {
+                
+            // other stuff below
+            double some_function(int x) {
+              // code
+            }
+
+            }} // close namespace psi::MODULE_NAME
+\end{verbatim}
+
+In the above example, we have included the typical C++ and PSI
+header files, although for your specific module you may not need
+all of these, or perhaps you may need additional ones (such as
+\celem{string.h} or \celem{math.h}).  The PSI include files used in this
+example are \file{libipv1/ip\_lib.h} (the input parser, described
+in section \ref{C_IP}), \file{psifiles.h} (definitions of all the
+PSI file numbers for I/O), \file{libqt/qt.h} (the ``quantum
+trio'' library, containing miscellaneous math and utility functions),
+\file{libciomr/libciomr.h} (the old PSI I/O and math routines library
+-- although it contains no I/O anymore), \file{libchkpt/chkpt.h} (a
+library for accessing the checkpoint file to obtain quantities such
+as the SCF or nuclear repulsion energy), and \file{libpsio/psio.h}
+(the PSI I/O library, see section \ref{C_IO_New}).  These include files
+contain function declarations for all of the functions contained in
+those libraries.
+
+Note that all PSI modules require three global variables with C
+linkage (i.e., inside an \celem{extern C} statement): \celem{infile},
+\celem{outfile}, and \celem{psi\_file\_prefix}.  Each PSI module must
+also have a C-linkage function called \celem{gprgid()} defined as shown.
+The \celem{main()} function must be in global scope, and other functions
+should be inside a namespace with the name of the module (which is further
+contained inside a \celem{psi} namespace).  Consult a C++ book if you are
+unfamiliar with namespaces.
+
+The integer function \celem{main()} must be able to handle
+command-line arguments required by the \PSIthree\ libraries.  In
+particular, all \PSIthree\ modules must be able to pass to the
+function \celem{psi\_start()} arguments for the user's input and
+output filenames, as well as a global file prefix to be used for
+naming standard binary and text data files.  (NB: the default names
+for user input and output are \inputdat\ and \outputdat, respectively,
+though any name may be used.) The current standard for command-line
+arguments is for all module-specific arguments ({\em e.g.},
+\celem{--quiet}, used in \module{detci}) {\em before} the input,
+output, and prefix values.  The \celem{psi\_start()} function expects
+to find {\em only} these last three arguments at most, so the
+programmer should pass as \celem{argv[]} the pointer to the first
+non-module-specific argument.  The above example is appropriate for a
+\PSIthree\ module that requires no command-line arguments apart from
+the input/output/prefix globals.  See the \PSIthree\ modules
+\module{input} and \module{detci} for more sophisticated examples.
+The final argument to \celem{psi\_start()} is an integer whose value
+indicates whether the output file should be overwitten (1) or appended
+(0).  Most \PSIthree\ modules should choose to append.
+
+The \celem{psi\_start()} function initializes the user's input and
+output files and sets the global variables \celem{infile},
+\celem{outfile}, and \celem{psi\_file\_prefix}, based on (in order of
+priority) the above command-line arguments or the environmental
+variables \celem{PSI\_INPUT}, \celem{PSI\_OUTPUT}, and
+\celem{PSI\_PREFIX}.  The value of the global file prefix can also be
+specified in the user's input file.  The \celem{psi\_start()} function
+will also initialize the input parser and sets up a default keyword
+tree (described in detail in section \ref{C_IP}).  This step is
+required even if the program will not do any input parsing, because
+some of the functionality of the input parser is assumed by
+\library{libciomr.a} and \library{libpsio.a}.  For instance, opening a
+binary file via \celem{psio\_open()} (see section \ref{C_IO_New})
+requires parsing the \keyword{files} section of the user's input so
+that a unit number (e.g.~52) can be translated into a filename.
+The \celem{psi\_stop()} function shuts down the input parser and closes
+the user's input and output files.
+
+Timing information (when the program starts and stops, and how much
+user, system, and wall-clock time it requires) can be printed to the
+output file by adding calls to \celem{tstart()} and \celem{tstop()}
+(from \library{libciomr.a}).
+
+The sole purpose of the simple function \celem{gprgid()} is to provide
+the input parser a means to determine the name of the current program.
+This allows the input parser to add the name of the program to the
+input parsing keyword tree.  This function is used by
+\library{libpsio.a}, though the functionality it provides is rarely
+used.
+
+In all but the most trivial of modules, you will probably need to split
+your code into multiple files.  The \PSIthree\ convention is to put
+the \celem{main()} function, \celem{gprgid()}, and the allocation of
+\celem{infile}, \celem{outfile}, and \celem{psi\_file\_prefix} into a
+file with the same name as that of the module (and a .cc extension).
+Other C++ source files should have everything wrapped within the
+\celem{psi::MODULE\_NAME} namespace.  Any module-specific header files
+should look like this:
+
+\begin{verbatim}
+#ifndef _psi_src_bin_MODULE_NAME_h
+#define _psi_src_bin_MODULE_NAME_h
+
+// if you need infile, outfile, and psi_file_prefix in the header,
+// include them like this:
+extern "C" {
+  extern FILE *infile, *outfile;
+  extern char *psi_file_prefix;
+}
+
+namespace psi { namespace MODULE_NAME {
+
+/* header stuff goes here */
+
+}} // namespace psi::MODULE_NAME
+
+#endif  // header guard 
+\end{verbatim} 
+
+If you add \celem{infile}, etc, to a header file, make sure they are
+within an \celem{extern "C"} statement and in the global namespace.
+Since these variables are defined in MODULE\_NAME.cc, you should also
+precede these variables with \celem{extern} to tell the compiler they've
+been allocated in another module (e.g., \celem{extern FILE *infile}).
+However, that means you then wouldn't be able to include that header
+file in MODULE\_NAME.cc, because then you'd be telling the compiler
+both that \celem{infile}, etc, are allocated elsewhere (according
+to \celem{extern FILE *infile} in the header file) and also that it's
+allocated in the current file (\celem{FILE *infile} in MODULE\_NAME.cc),
+an obvious contradition.  Most of the official \PSIthree\ modules
+use a trick defining or undefining a variable called \celem{EXTERN}
+to avoid this apparent paradox and allow the use of the same header
+file containing global variables (often called \file{globals.h}) in
+MODULE\_NAME.cc and all other C++ source files.
+
+As always, you are encouraged to avoid use of global variables when at
+all possible.  It is customary to wrap variables that would otherwise be
+global into data structures such as MOInfo (for things like the number
+of orbitals) and Params (for user-specified parameters).  In the next
+stage of PSI development, these commonly-used data structures will be
+standardized as new C++ objects for maximum code re-use and flexibility.
+

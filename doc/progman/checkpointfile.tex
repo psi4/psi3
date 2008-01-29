@@ -32,14 +32,20 @@ within the code.
 
 \begin{verbatim}
 #include <stdio.h>
+#include <stdlib.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libchkpt/chkpt.h>
 
-FILE *infile, *outfile;
+extern "C" {
+  FILE *infile, *outfile;
+  char *psi_file_prefix;
+}
 
-void main(void)
+using namespace psi::MODULE_NAME; 
+
+int main(int argc, char* argv[])
 {
  
   int nmo;
@@ -47,19 +53,12 @@ void main(void)
   double *evals;
   double **scf;
 
-  /*-------------------------------------
-    initialize the input parser, read in
-    the files information from the
-    default section
-   -------------------------------------*/
-  ffile(&infile,"input.dat",2);
-  ffile(&outfile,"output.dat",1);
-  tstart(outfile);
-  ip_set_uppercase(1);
-  ip_initialize(infile,outfile);
-  ip_cwk_clear();
-  ip_cwk_add(":DEFAULT");
+  psi_start(&infile, &outfile, &psi_file_prefix,
+    argc-1, argv+1, 0);
+  ip_cwk_add(":MODULE_NAME"); // MODULE_NAME all caps here
   psio_init(); psio_ipv1_config();
+
+  /* to start timing, tstart(outfile); */
 
   /*------------------------------------
     now initialize the checkpoint structure
@@ -89,17 +88,18 @@ void main(void)
   
   psio_done();
   tstop(outfile);
-  ip_done();
+  psi_stop(infile,outfile,psi_file_prefix);
  }
 
   /*-------------------------------------------------
     dont forget to add the obligatory gprgid section 
    -------------------------------------------------*/
-char *gprgid()
-{
-   char *prgid = ":TEST";
-
-   return(prgid);
+extern "C" {
+  char *gprgid()
+  {
+    char *prgid = ":MODULE_NAME";
+    return(prgid);
+  }
 }
 \end{verbatim}
 

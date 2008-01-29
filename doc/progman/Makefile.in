@@ -8,7 +8,7 @@ include ../MakeVars
 TEX = progman.tex
 
 SUBTEX = \
-checkpointfile.tex  files.tex            io.tex         c_program.tex \
+checkpointfile.tex  files.tex            psi_module.tex \
 ip.tex              qt.tex               svn.tex        fundamental_psi.tex \
 iwl.tex             style.tex            debugging.tex  introduction.tex \
 makefiles.tex       documentation.tex    io_new.tex     other_libs.tex \
