@@ -378,7 +378,7 @@ void title(void)
   if(params.print_lvl) {
     fprintf(outfile, "\n");
     fprintf(outfile,"\t**************************************************\n");
-    fprintf(outfile,"\t* TRANSQT:  Program to transform integrals from  *\n");
+    fprintf(outfile,"\t* TRANSQT2: Program to transform integrals from  *\n");
     fprintf(outfile,"\t*           the SO basis to the MO basis.        *\n");
     fprintf(outfile,"\t*                                                *\n");
     fprintf(outfile,"\t*            Daniel, David, & Justin             *\n");

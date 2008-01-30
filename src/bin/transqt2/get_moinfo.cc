@@ -136,13 +136,15 @@ namespace psi {
 	    moinfo.pitz2corr_two[k++] = moinfo.pitz2corr_one[j] - moinfo.nfzc; 
 	  }  
 	}
-	free_int_matrix(ras_opi);
-	free(rstr_docc);
-	free(rstr_uocc);
 
 	/* "core" for CI wfns is frozen-docc plus restricted-docc */
 	for(h=0; h < moinfo.nirreps; h++) 
 	  moinfo.core[h] = moinfo.frdocc[h] + rstr_docc[h];
+
+	free_int_matrix(ras_opi);
+	free(rstr_docc);
+	free(rstr_uocc);
+
       }
       else if(cc_wfn(params.wfn)) {
 	/** Compute CC spatial-orbial reordering array(s) for the one-electron transformation **/
