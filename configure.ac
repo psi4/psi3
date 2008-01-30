@@ -882,6 +882,7 @@ AC_CONFIG_FILES([include/Makefile
           tests/fci-h2o/Makefile
           tests/fci-h2o-2/Makefile
           tests/fci-h2o-clpse/Makefile
+          tests/fci-h2o-fzcv/Makefile
           tests/fci-dipole/Makefile
 	  tests/fci-trans/Makefile
           tests/casscf-sp/Makefile
