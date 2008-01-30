@@ -8,7 +8,7 @@ cc47 cc48 cc49 cc50 \
 
 rb_subdirs = rb-scf-opt-numer rb-ccsd_t-sp rb-fci-h2o rb-ccsd-opt-grad
 
-ci_subdirs = cis-sp cisd-sp cisd-sp-2 fci-h2o fci-h2o-2 fci-h2o-clpse \
+ci_subdirs = cisd-sp cisd-sp-2 fci-h2o fci-h2o-2 fci-h2o-clpse fci-h2o-fzcv \
 cisd-h2o+-0 cisd-h2o+-1 cisd-h2o+-2 \
 fci-dipole fci-trans zaptn-nh2
 
