@@ -8,6 +8,9 @@ psi: (
   fci = true
   basis = "6-31G"
   units = bohr
+  frozen_docc = (1 0 0 0)
+  frozen_uocc = (1 0 0 0)
+
   % H2O DZ SCF Opt Geom
   geometry = (
     ( O       .0000000000         .0000000000        -.0742719254)
