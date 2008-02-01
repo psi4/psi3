@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
   else 
     sprintf(detci_string, "detci \n");
 
-  check(!system("transqt --quiet"), "TRANSQT failed");
+  check(!system("transqt2 --quiet"), "TRANSQT2 failed");
   check(!system(detci_string), "DETCI failed");
   check(!system("clag --quiet"), "CLAG failed");
   converged = system("detcas --quiet");
@@ -107,7 +107,7 @@ int main(int argc, char *argv[])
     else 
       sprintf(detci_string, "detci --quiet\n");
 
-    check(!system("transqt --quiet"), "TRANSQT failed");
+    check(!system("transqt2 --quiet"), "TRANSQT2 failed");
     check(!system(detci_string), "DETCI failed");
     check(!system("clag --quiet"), "CLAG failed");
     converged = system("detcas --quiet");
