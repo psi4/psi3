@@ -117,6 +117,16 @@ void get_parameters(void)
      strcpy(Parameters.wfn, "NONE");
    }
 
+   /*
+     Two-electron integrals: filter out what we don't need.  TRANSQT2
+     supplies restricted orbitals always (well, for now).  It will also
+     supply frozen core if it's a gradient calculation (need for orbital
+     response) or an MCSCF (need for MO Hessian).  We normally want to
+     filter all these out of the CI energy computation.  Likewise, we
+     normally won't need restricted or frozen virtuals in the CI energy
+     computation and should filter them out if they are in the TEI file
+   */
+
   if (strcmp(Parameters.dertype, "NONE")!=0 ||
       strcmp(Parameters.wfn, "DETCAS")==0    ||
       strcmp(Parameters.wfn, "CASSCF")==0    ||

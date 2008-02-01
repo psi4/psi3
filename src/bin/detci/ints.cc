@@ -19,6 +19,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <libiwl/iwl.h>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
@@ -42,6 +43,8 @@ void read_integrals()
       int nirreps, int *reorder, int *opi, int print_lvl, FILE *outfile);
    int junk;
    double *tmp_onel_ints;
+   int *tmp_frdocc, *tmp_fruocc;
+   int nfilter_core, nfilter_vir;
 
    /* allocate memory for one and two electron integrals */
    nmotri_full = (CalcInfo.nmo * (CalcInfo.nmo + 1)) / 2;
@@ -50,14 +53,13 @@ void read_integrals()
    CalcInfo.twoel_ints = (double *) init_array(nmotri * (nmotri + 1) / 2);
    CalcInfo.maxK = (double *) init_array(CalcInfo.num_ci_orbs);  
 
-   /* replace old iwl_rdone call with the new one which filters 
-    * note we must always filter the one-elec ints in the new scheme, 
-    * although the two-elec ints only need filtering for first derivs
-    * or for MCSCF 
-    */
-
-   /* iwl_rdone(Parameters.oei_file, nmotri, CalcInfo.onel_ints, 
-                &(CalcInfo.efzc), Parameters.oei_erase); */
+   /*
+     One-electron integrals: always filter what DETCI considers
+     frozen (whatever is in the fzc arrays, which internally DETCI
+     uses for user's frozen core or user's frozen core + restricted core)
+     because the one-electron integrals are written out as the full
+     size over all MO's regardless of the computation type.
+   */
 
    tmp_onel_ints = init_array(nmotri_full);
    iwl_rdone(Parameters.oei_file, PSIF_MO_FZC, tmp_onel_ints, nmotri_full,
@@ -66,9 +68,27 @@ void read_integrals()
 	  CalcInfo.num_fzc_orbs, CalcInfo.num_fzv_orbs);
    free(tmp_onel_ints);
 
-   iwl_rdtwo(Parameters.tei_file, CalcInfo.twoel_ints, ioff, CalcInfo.nmo, 
-             Parameters.filter_ints ? CalcInfo.num_fzc_orbs : 0, 
-             Parameters.filter_ints ? CalcInfo.num_fzv_orbs : 0, 
+   /*
+     Two-electron integrals: filter out what we don't need.  TRANSQT2
+     supplies restricted orbitals always (well, for now).  It will also
+     supply frozen core if it's a gradient calculation (need for orbital
+     response) or an MCSCF (need for MO Hessian).  We normally want to
+     filter all these out of the CI energy computation.  Likewise, we
+     normally won't need restricted or frozen virtuals in the CI energy
+     computation and should filter them out if they are in the TEI file
+   */
+
+  if (Parameters.filter_ints) {
+    nfilter_core = CalcInfo.num_fzc_orbs;
+    nfilter_vir  = CalcInfo.num_fzv_orbs;
+  }
+  else {
+    nfilter_core = 0;
+    nfilter_vir = 0;
+  }
+
+  iwl_rdtwo(Parameters.tei_file, CalcInfo.twoel_ints, ioff, CalcInfo.nmo,
+             nfilter_core, nfilter_vir, 
              (Parameters.print_lvl>4), outfile);
 
    /* Determine maximum K integral for use in averaging the diagonal */
