@@ -1,6 +1,6 @@
 /*! \file 
-    \ingroup (CLAG)
-    \brief Enter brief description of file here 
+    \ingroup CLAG
+    \brief Routine that does the work for the CI Lagrangian computation
 */
 /*****************************************************************************/
 /*lagcalc - This is a program to calculate the lagrangian matrix for a CI    */
@@ -39,7 +39,7 @@ double lagcalc(double **OPDM, double *TPDM, double *h, double *TwoElec,
   int i,j;                      /* indecies of lagrangian element          */
   int m,k,l;                    /* indecies of integrals needed            */ 
   int im,kl,imkl;               /* integral indecies combined              */
-  int Tjm,Tmj,Tkl,Tjmkl,Tmjkl;  /* TPDM indecies combined                  */
+  int Tjm,Tmj,Tkl,Tjmkl,Tmjkl;  /* TPDM indices combined                   */
   double **oe_lag;              /* One-electron part of lagrangian         */
   double **te_lag;              /* Two-electron part of lagrangian         */ 
   double OEsum;                 /* QjmHim sumed over MO index m            */
@@ -121,7 +121,6 @@ double lagcalc(double **OPDM, double *TPDM, double *h, double *TwoElec,
     print_mat(lag, nmo, nmo, outfile);
     }
 
-  /* rclose(lag_file,3); */
   psio_close(lag_file, 1);
 
   free_block(oe_lag);

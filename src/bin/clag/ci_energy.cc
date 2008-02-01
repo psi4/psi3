@@ -1,9 +1,9 @@
 /*! \file 
-    \ingroup (CLAG)
+    \ingroup CLAG
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup CLAG Add a description of the group CLAG */
+/*! \defgroup CLAG Compute the CI Lagrangian */
 
 /*****************************************************************************/
 /*ci_energy - This is a program to calculate the CI energy for a CI          */
@@ -38,7 +38,7 @@ extern int print_lvl;
 /*****************************************************************************/
 
 void ci_energy(double **OPDM, double *TPDM, double *h, double *TwoElec,
-             int nbf, double enuc, double eci_30, double lagtr)
+             int nbf, double enuc, double eci_chkpt, double lagtr)
 
 {
   int i,j;                /* indecies of lagrangian element  */
@@ -48,7 +48,7 @@ void ci_energy(double **OPDM, double *TPDM, double *h, double *TwoElec,
   double OEsum = 0.0;     /* QjmHim sumed over MO index m    */
   double TEsum = 0.0;     /* Gjmkl(im,kl) summed over m,k,l  */
   double e_ci = 0.0;      /* the CI energy                   */
-  double diff;            /* diff between e_ci and eci_30    */
+  double diff;            /* diff between e_ci and eci_chkpt */
  
     for (i=0; i<nbf; i++)
        for (j=0; j<nbf; j++)
@@ -82,12 +82,12 @@ void ci_energy(double **OPDM, double *TPDM, double *h, double *TwoElec,
          } /* end j loop */
 
   e_ci = OEsum + TEsum + enuc;
-  diff = e_ci - eci_30; 
+  diff = e_ci - eci_chkpt; 
   if (fabs(diff) > CI_DIFF) {
     fprintf(outfile,
-            "Calculated CI Energy differs from the CI Energy in file 30\n");
+      "Calculated CI Energy differs from the CI Energy in checkpoint file\n");
     fprintf(outfile,"ECI Calc. = %lf\n", e_ci); 
-    fprintf(outfile,"ECI 30    = %lf\n", eci_30); 
+    fprintf(outfile,"ECI Chkpt = %lf\n", eci_chkpt); 
     }
  
   if (print_lvl > 0) {
@@ -98,7 +98,7 @@ void ci_energy(double **OPDM, double *TPDM, double *h, double *TwoElec,
     fprintf(outfile,"Trace of lagrangian       = %20.10lf\n", lagtr);
     fprintf(outfile,"Nuclear repulsion energy  = %20.10f\n", enuc); 
     fprintf(outfile,"Total CI Energy           = %20.10lf\n", e_ci); 
-    fprintf(outfile,"CI Energy from file 30    = %20.10lf\n", eci_30);
+    fprintf(outfile,"CI Energy from chkpt file = %20.10lf\n", eci_chkpt);
     }          
 }
 

@@ -526,14 +526,6 @@ void get_reorder_array(void)
     
     moinfo.ras_opi = init_int_matrix(MAX_RAS_SPACES,moinfo.nirreps); 
     
-    /*
-    if (!ras_set(moinfo.nirreps, moinfo.nmo, params.fzc, moinfo.orbspi,
-                 moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
-		 moinfo.ras_opi, moinfo.order, params.ras_type)) {
-      fprintf(outfile, "Error in ras_set().  Aborting.\n");
-      exit(1);
-    }
-    */
     if (!ras_set2(moinfo.nirreps, moinfo.nmo, params.fzc, 
          params.del_restr_docc, moinfo.orbspi, moinfo.clsdpi, moinfo.openpi,
          moinfo.frdocc, moinfo.fruocc, moinfo.rstrdocc, moinfo.rstruocc,

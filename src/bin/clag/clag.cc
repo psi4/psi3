@@ -1,10 +1,10 @@
 /*! \file 
-    \ingroup (CLAG)
-    \brief Enter brief description of file here 
+    \ingroup CLAG
+    \brief Main file for CI Lagrangian computation
 */
 /****************************************************************************/
 /* clag: the main controlling program for calculating the lagrangian and CI */ 
-/*      energy. The lagrangian is written to file 75 and the Ci energy is   */
+/*      energy. The lagrangian is written to file 75 and the CI energy is   */
 /*      printed in the output as a simple check                             */
 /****************************************************************************/
 
@@ -91,7 +91,7 @@ main(int argc, char **argv)
 
   double *onel_ints, *twoel_ints;      /* 1e and 2e ints                  */
   double enuc = 0.0;                   /* nuclear repulsion energy        */ 
-  double eci_30;                       /* ci energy from file 30          */
+  double eci_chkpt;                    /* ci energy from checkpoint file  */
   double lagtr;                        /* trace of lagrangian             */
 
   /*
@@ -116,7 +116,7 @@ main(int argc, char **argv)
   chkpt_init(PSIO_OPEN_OLD);
   nmo = chkpt_rd_nmo();
   enuc = chkpt_rd_enuc();
-  eci_30 = chkpt_rd_etot(); 
+  eci_chkpt = chkpt_rd_etot(); 
   nirreps = chkpt_rd_nirreps();
   orbspi = chkpt_rd_orbspi();
   docc = chkpt_rd_clsdpi();
@@ -192,7 +192,7 @@ main(int argc, char **argv)
   lag = block_matrix(nmo,nmo);
   lagtr = lagcalc(opdm,tpdm,onel_ints,twoel_ints,lag,nmo,npop,
                   print_lvl,lag_file); 
-  ci_energy(opdm, tpdm, onel_ints, twoel_ints, npop, enuc, eci_30, lagtr); 
+  ci_energy(opdm, tpdm, onel_ints, twoel_ints, npop, enuc, eci_chkpt, lagtr); 
   
 
   /*

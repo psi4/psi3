@@ -1,6 +1,6 @@
 /*! \file 
-    \ingroup (CLAG)
-    \brief Enter brief description of file here 
+    \ingroup CLAG
+    \brief Header file for CI Lagrangian program
 */
 
 #ifndef _psi3_bin_clag_clag_h_
