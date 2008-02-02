@@ -1,0 +1,4703 @@
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:24:58 2008
+
+                                --------------
+                                  WELCOME TO
+                                    PSI  3
+                                --------------
+
+  LABEL       =	6-31G** CASSCF H2O
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /home/sherrill/psi3-bin/share/pbasis.dat
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN      0.000000000000     0.000000000000     0.000000000000
+        HYDROGEN      0.000000000000     0.000000000000     1.889725988579
+        HYDROGEN      1.840547697619     0.000000000000    -0.428308866009
+
+
+  -Rotational constants (cm-1) :
+    A =   24.35463  B =   13.63610  C =    8.74166
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000000000000    -0.131510165098    -0.000000000000
+        HYDROGEN      1.479940996653     1.043580877476     0.000000000000
+        HYDROGEN     -1.479940996653     1.043580877476     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  5484.67166000     0.00183107)
+           (   825.23494600     0.01395017)
+           (   188.04695800     0.06844508)
+           (    52.96450000     0.23271434)
+           (    16.89757040     0.47019290)
+           (     5.79963534     0.35852085) )
+        (S (    15.53961625    -0.11077755)
+           (     3.59993359    -0.14802626)
+           (     1.01376175     1.13076701) )
+        (S (     0.27000582     1.00000000) )
+        (P (    15.53961625     0.07087427)
+           (     3.59993359     0.33975284)
+           (     1.01376175     0.72715858) )
+        (P (     0.27000582     1.00000000) )
+        (D (     0.80000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    18.73113696     0.03349460)
+           (     2.82539437     0.23472695)
+           (     0.64012169     0.81375733) )
+        (S (     0.16127776     1.00000000) )
+        (P (     1.10000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 20
+    Number of AO           = 25
+    Number of SO           = 25
+
+    Irrep    Number of SO
+    -----    ------------
+      1           12
+      2            2
+      3            4
+      4            7
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000000000000    -0.000000000000    -0.131510165098
+        HYDROGEN      0.000000000000     1.479940996653     1.043580877476
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000000000000    -0.000000000000    -0.131510165098
+        HYDROGEN      0.000000000000     1.479940996653     1.043580877476
+        HYDROGEN      0.000000000000    -1.479940996653     1.043580877476
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000000000000    -0.000000000000    -0.069592187382
+        HYDROGEN      0.000000000000     0.783151105291     0.552239257852
+        HYDROGEN      0.000000000000    -0.783151105291     0.552239257852
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+          OXYGEN     -0.000000000000    -0.000000000000    -0.131510165098
+        HYDROGEN      0.000000000000     1.479940996653     1.043580877476
+        HYDROGEN      0.000000000000    -1.479940996653     1.043580877476
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       8.804687290999
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   1.0000000   0.0000000
+    3   1.0000000   1.5663022   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:24:58 2008
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:24:58 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** CASSCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:24:58 2008
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:24:58 2008
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = 6-31G** CASSCF H2O
+  wfn          = CASSCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        8.8046872909987
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.336125e-02
+
+  Using core guess to determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -68.3548843162    7.715957e+01    0.000000e+00    0.000000e+00
+    2       -71.3777628421    3.022879e+00    1.397563e-01    1.175783e+00
+    3       -75.8950385812    4.517276e+00    1.321080e-01    8.860959e-01
+    4       -76.0105072924    1.154687e-01    3.200745e-03    1.777807e-01
+    5       -76.0171082477    6.600955e-03    1.070757e-03    3.660637e-02
+    6       -76.0172750266    1.667789e-04    1.610114e-04    1.105642e-02
+    7       -76.0172961424    2.111579e-05    7.936641e-05    3.795642e-03
+    8       -76.0172965569    4.145116e-07    1.111235e-05    3.044370e-04
+    9       -76.0172965711    1.418182e-08    3.036008e-06    6.058786e-05
+   10       -76.0172965718    7.222667e-10    7.671837e-07    1.135728e-05
+   11       -76.0172965718    1.458034e-11    8.765027e-08    1.414942e-06
+   12       -76.0172965718    2.145839e-12    4.921433e-08    5.031535e-07
+   13       -76.0172965718    5.684342e-14    4.077507e-09    3.847156e-08
+   14       -76.0172965718   -5.684342e-14    5.199431e-10    9.017731e-09
+   15       -76.0172965718    2.842171e-14    1.016221e-10    4.425819e-09
+   16       -76.0172965718    0.000000e+00    1.497367e-11    3.058842e-10
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.568999     2A1     -1.320609     1B2     -0.678724  
+   3A1     -0.563930     1B1     -0.495004  
+
+
+  Unoccupied orbitals
+   4A1      0.202466     2B2      0.292719     3B2      0.981164  
+   5A1      1.056318     6A1      1.129179     2B1      1.168639  
+   4B2      1.294985     7A1      1.413596     1A2      1.802875  
+   8A1      1.806916     3B1      1.918871     9A1      2.513249  
+   5B2      2.537822     6B2      2.713577     2A2      2.921065  
+   4B1      2.947486    10A1      3.291755    11A1      3.620730  
+   7B2      3.874917    12A1      4.077741  
+
+
+        SCF total energy   =     -76.017296571842
+        kinetic energy     =      75.657182102721
+        nuc. attr. energy  =    -198.046615211838
+        elec. rep. energy  =      46.372136537275
+        potential energy   =    -151.674478674563
+        virial theorem     =       1.995262729861
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:24:58 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:24:58 2008
+
+
+*******************************************************
+                   D E T C A S M A N
+
+                   C. David Sherrill
+                    October 7 1998
+*******************************************************
+
+
+
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:24:59 2008
+
+
+*******************************************************
+                       D E T C I  
+
+                   C. David Sherrill
+                  Matt L. Leininger
+                     18 June 1999
+*******************************************************
+
+
+
+Note: Calculation requested is a full CI.
+Resetting EX_LVL to 8 and turning on all excitations
+
+
+PARAMETERS: 
+   EX LVL        =        8      H0 BLOCKSIZE =      400
+   VAL EX LVL    =        0      H0 GUESS SIZE=      400
+   H0COUPLINGSIZE=        0      H0 COUPLING  =       no
+   NPRINT        =       20      MAX DET      =    10000
+   MAXITER       =       12      FREEZE CORE  =      yes
+   NUM ROOTS     =        1      ICORE        =        1
+   PRINT         =        1      FCI          =      yes
+   CONV          =      0.001    MIXED        =      yes
+   E CONV        =        8      MIXED4       =      yes
+   OEI FILE      =       35      R4S          =       no
+   OEI ERASE     =       no      REPL OTF     =       no
+   TEI FILE      =       72      DIAG METHOD  =      SEM
+   PRECONDITIONER= DAVIDSON      UPDATE       =   DAVIDSON
+   S             =   0.000000     Ms0          =      yes
+   TEI ERASE     =       no      MAXNVECT     =       13
+   RESTART       =       no      RESTART VECS =        0
+   GUESS VECTOR  =   D FILE      OPENTYPE     =     NONE
+      REF SYM      =     auto
+   COLLAPSE SIZE =        1      HD AVE       = EVANGELISTI
+   LSE           =       no      LSE ITER     =        0
+   HD OTF        =      yes      NO DFILE     =       no
+   MPN           =       no      MPN SCHMIDT  =       no
+ ZAPTN           =       no
+   WIGNER        =       no      ZERO BLOCKS  =       no
+   PERT Z        =   1.0000      ROOT         =        0
+   PTHREADS      =       no      NTHREADS     =        1
+   EXPORT VECTOR =       no      NUM EXPORT   =        0
+   FILTER_GUESS  =       no      SF_RESTRICT  =       no
+   OPDM          =      yes      TRANS DENSITY=       no
+
+   FILES         =  50 51 52 53
+
+   EX_TYPE       =  1  1  1  1  1  1  1  1 
+   STATE AVERAGE =  1(1.00) 
+   STATE AVERAGE =  1(1.00) 
+
+ORBITALS:
+   NMO          =       25      NUM ALP      =        5
+   ORBS IN CI   =        6      NUM ALP EXPL =        4
+   FROZEN CORE  =        1      NUM BET      =        5
+   RESTR CORE   =        0      NUM BET EXPL =        4
+   IOPEN        =       no
+   RAS1 LVL     =       -1      A RAS3 MAX   =        0
+   RAS1 MIN     =        2      B RAS3 MAX   =        0
+   A RAS1 LVL   =       -1      RAS4 LVL     =        6
+   A RAS1 MIN   =        1      A RAS4 MAX   =        0
+   A RAS1 MAX   =        1      B RAS4 MAX   =        0
+   B RAS1 LVL   =       -1      RAS4 MAX     =        0
+   B RAS1 MIN   =        1      A RAS34 MAX  =        0
+   B RAS1 MAX   =        1      B RAS34 MAX  =        0
+   RAS3 LVL     =        6      RAS34 MAX    =        0
+   RAS3 MAX     =        0
+
+   DOCC         =  3  0  1  1 
+   SOCC         =  0  0  0  0 
+   FROZEN DOCC  =  1  0  0  0 
+   FROZEN UOCC  =  8  2  3  5 
+   RAS 1        =  0  0  0  0 
+   RAS 2        =  3  0  1  2 
+   RAS 3        =  0  0  0  0 
+   RAS 4        =  0  0  0  0 
+*******************************************************
+
+
+There are 15 alpha strings
+There are 15 beta strings
+CI space contains    4 blocks
+
+CI space requires 65 determinants
+
+Check SCF Energy from 1- and 2-electron integrals
+
+SCF Energy (ref):            -76.0172965718
+Nuclear repulsion energy:      8.8046872910
+One-electron energy:         -41.0924073951
+Two-electron energy:          17.4879358141
+Frozen core energy:          -61.2175122819
+Total electronic energy:     -84.8219838628
+Total SCF energy:            -76.0172965718
+
+ CI vector/subblock length = 65
+
+*** H0 Block Eigenvalue = -76.02993402
+
+Find the roots by the Simultaneous Expansion Method (Block Davidson Method)
+Energy convergence = 0.00316228
+RMS CI vector convergence = 0.001
+
+D file contains 0 not 1 vectors.  Attempting H0block guess.
+Using 1 initial trial vectors
+Iter  0  Root  1 = -76.029934018   Delta_E -2.362E+01   Delta_C  1.330E-13  
+Warning: Norm of correction (root 0) is < 1.0E-13
+Iter  1  Root  1 = -76.029934018   Delta_E  0.000E+00   Delta_C  1.135E-12 c
+
+ROOT 1 ECI = -76.0299340181544
+
+
+The 20 most important determinants
+
+    1   -0.995549  (    3,    3)  2A1 X  3A1 X  1B1 X  1B2 X  
+    2    0.047925  (    6,    6)  2A1 X  3A1 X  1B1 X  2B2 X  
+    3    0.028911  (    4,    6)  2A1 X  3A1 B  4A1 A  1B1 X  1B2 A  2B2 B  
+    4    0.028911  (    6,    4)  2A1 X  3A1 A  4A1 B  1B1 X  1B2 B  2B2 A  
+    5    0.027691  (    4,    4)  2A1 X  4A1 X  1B1 X  1B2 X  
+    6   -0.018759  (    5,    6)  2A1 B  3A1 X  4A1 A  1B1 X  1B2 A  2B2 B  
+    7   -0.018759  (    6,    5)  2A1 A  3A1 X  4A1 B  1B1 X  1B2 B  2B2 A  
+    8    0.018141  (    9,    9)  2A1 X  3A1 X  4A1 X  1B1 X  
+    9   -0.016772  (    4,    5)  2A1 A  3A1 B  4A1 X  1B1 X  1B2 X  
+   10   -0.016772  (    5,    4)  2A1 B  3A1 A  4A1 X  1B1 X  1B2 X  
+   11    0.015764  (   10,   10)  2A1 X  1B1 X  1B2 X  2B2 X  
+   12    0.015464  (    3,    7)  2A1 X  3A1 A  4A1 B  1B1 X  1B2 A  2B2 B  
+   13    0.015464  (    7,    3)  2A1 X  3A1 B  4A1 A  1B1 X  1B2 B  2B2 A  
+   14    0.014888  (    5,    5)  3A1 X  4A1 X  1B1 X  1B2 X  
+   15   -0.013447  (    9,   10)  2A1 X  3A1 A  4A1 A  1B1 X  1B2 B  2B2 B  
+   16   -0.013447  (   10,    9)  2A1 X  3A1 B  4A1 B  1B1 X  1B2 A  2B2 A  
+   17   -0.012904  (    3,    4)  2A1 X  3A1 A  4A1 B  1B1 X  1B2 X  
+   18   -0.012904  (    4,    3)  2A1 X  3A1 B  4A1 A  1B1 X  1B2 X  
+   19   -0.011681  (    3,    8)  2A1 A  3A1 X  4A1 B  1B1 X  1B2 A  2B2 B  
+   20   -0.011681  (    8,    3)  2A1 B  3A1 X  4A1 A  1B1 X  1B2 B  2B2 A  
+
+
+
+
+Wrote MO-basis OPDM 1 to disk
+Wrote MO-basis OPDM to disk
+
+
+        Total Time (s)     %Time 		%Relative
+ -----------------------------------------------------
+ Read      0.000142
+ Write     0.000102
+ Sigma1    0.000000
+ Sigma2    0.000065
+ Sigma3    0.000197
+ S1 Thread 0.000000
+ S2 Thread 0.000000
+ S3 Thread 0.000000
+
+		 "A good bug is a dead bug" 
+
+			 - Starship Troopers
+
+		 "I didn't write FORTRAN.  That's the problem."
+
+			 - Edward Valeev
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:24:59 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.058984723   Delta_E -2.365E+01   Delta_C  1.529E-01  
+Iter  1  Root  1 = -76.069505661   Delta_E -1.052E-02   Delta_C  3.908E-02  
+Iter  2  Root  1 = -76.070055011   Delta_E -5.494E-04   Delta_C  4.994E-03  
+Iter  3  Root  1 = -76.070067107   Delta_E -1.210E-05   Delta_C  1.017E-03  
+Iter  4  Root  1 = -76.070067571   Delta_E -4.641E-07   Delta_C  2.302E-04 c
+
+ROOT 1 ECI = -76.0700675712714
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.072878626   Delta_E -2.366E+01   Delta_C  1.108E-02  
+Iter  1  Root  1 = -76.072938749   Delta_E -6.012E-05   Delta_C  1.918E-03  
+Iter  2  Root  1 = -76.072940180   Delta_E -1.430E-06   Delta_C  4.603E-04 c
+
+ROOT 1 ECI = -76.0729401795206
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.073541057   Delta_E -2.366E+01   Delta_C  5.397E-03  
+Iter  1  Root  1 = -76.073554732   Delta_E -1.367E-05   Delta_C  2.143E-03  
+Iter  2  Root  1 = -76.073556896   Delta_E -2.164E-06   Delta_C  3.868E-04  
+Iter  3  Root  1 = -76.073556955   Delta_E -5.994E-08   Delta_C  1.014E-04 c
+
+ROOT 1 ECI = -76.0735569554940
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.073729242   Delta_E -2.366E+01   Delta_C  3.179E-03  
+Iter  1  Root  1 = -76.073734672   Delta_E -5.430E-06   Delta_C  1.218E-03  
+Iter  2  Root  1 = -76.073735356   Delta_E -6.838E-07   Delta_C  3.198E-04  
+Iter  3  Root  1 = -76.073735397   Delta_E -4.091E-08   Delta_C  8.202E-05 c
+
+ROOT 1 ECI = -76.0737353966675
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.073815003   Delta_E -2.367E+01   Delta_C  3.918E-03  
+Iter  1  Root  1 = -76.073824403   Delta_E -9.400E-06   Delta_C  1.517E-03  
+Iter  2  Root  1 = -76.073825442   Delta_E -1.039E-06   Delta_C  4.525E-04  
+Iter  3  Root  1 = -76.073825525   Delta_E -8.311E-08   Delta_C  1.221E-04  
+Iter  4  Root  1 = -76.073825530   Delta_E -5.206E-09   Delta_C  2.031E-05 c
+
+ROOT 1 ECI = -76.0738255304260
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.073835390   Delta_E -2.368E+01   Delta_C  6.159E-04  
+Iter  1  Root  1 = -76.073835677   Delta_E -2.874E-07   Delta_C  1.648E-04  
+Iter  2  Root  1 = -76.073835689   Delta_E -1.154E-08   Delta_C  4.254E-05 c
+
+ROOT 1 ECI = -76.0738356887861
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.073845746   Delta_E -2.369E+01   Delta_C  9.433E-04  
+Iter  1  Root  1 = -76.073846624   Delta_E -8.780E-07   Delta_C  3.730E-04  
+Iter  2  Root  1 = -76.073846680   Delta_E -5.605E-08   Delta_C  1.271E-04  
+Iter  3  Root  1 = -76.073846686   Delta_E -6.239E-09   Delta_C  3.381E-05 c
+
+ROOT 1 ECI = -76.0738466864232
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.073858369   Delta_E -2.374E+01   Delta_C  1.454E-03  
+Iter  1  Root  1 = -76.073860402   Delta_E -2.033E-06   Delta_C  4.299E-04  
+Iter  2  Root  1 = -76.073860482   Delta_E -8.049E-08   Delta_C  1.181E-04  
+Iter  3  Root  1 = -76.073860487   Delta_E -4.878E-09   Delta_C  3.653E-05  
+Iter  4  Root  1 = -76.073860488   Delta_E -5.199E-10   Delta_C  7.308E-06 c
+
+ROOT 1 ECI = -76.0738604878917
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.073864039   Delta_E -2.377E+01   Delta_C  7.739E-04  
+Iter  1  Root  1 = -76.073864345   Delta_E -3.064E-07   Delta_C  1.850E-04  
+Iter  2  Root  1 = -76.073864358   Delta_E -1.323E-08   Delta_C  5.432E-05  
+Iter  3  Root  1 = -76.073864359   Delta_E -1.183E-09   Delta_C  1.389E-05 c
+
+ROOT 1 ECI = -76.0738643594846
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.073864813   Delta_E -2.379E+01   Delta_C  2.461E-04  
+Iter  1  Root  1 = -76.073864841   Delta_E -2.801E-08   Delta_C  4.689E-05  
+Iter  2  Root  1 = -76.073864842   Delta_E -8.765E-10   Delta_C  1.200E-05  
+Iter  3  Root  1 = -76.073864842   Delta_E -5.165E-11   Delta_C  3.972E-06 c
+
+ROOT 1 ECI = -76.0738648415864
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+Warning: diis matrix near-singular
+Determinant is -1.248E-20
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.073864796   Delta_E -2.379E+01   Delta_C  4.272E-04  
+Iter  1  Root  1 = -76.073864983   Delta_E -1.866E-07   Delta_C  1.270E-04  
+Iter  2  Root  1 = -76.073864989   Delta_E -6.039E-09   Delta_C  4.579E-05  
+Iter  3  Root  1 = -76.073864990   Delta_E -7.676E-10   Delta_C  1.255E-05  
+Iter  4  Root  1 = -76.073864990   Delta_E -5.998E-11   Delta_C  2.221E-06 c
+
+ROOT 1 ECI = -76.0738649898577
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+Warning: diis matrix near-singular
+Determinant is -1.321E-18
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.073864998   Delta_E -2.379E+01   Delta_C  6.137E-05  
+Iter  1  Root  1 = -76.073865001   Delta_E -3.243E-09   Delta_C  2.162E-05  
+Iter  2  Root  1 = -76.073865001   Delta_E -1.701E-10   Delta_C  4.004E-06  
+Iter  3  Root  1 = -76.073865001   Delta_E -5.322E-12   Delta_C  1.450E-06  
+Iter  4  Root  1 = -76.073865001   Delta_E -7.319E-13   Delta_C  2.867E-07 c
+
+ROOT 1 ECI = -76.0738650010806
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+Warning: diis matrix near-singular
+Determinant is -4.044E-18
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.073865001   Delta_E -2.379E+01   Delta_C  5.995E-05  
+Iter  1  Root  1 = -76.073865005   Delta_E -3.357E-09   Delta_C  2.421E-05  
+Iter  2  Root  1 = -76.073865005   Delta_E -2.219E-10   Delta_C  7.124E-06  
+Iter  3  Root  1 = -76.073865005   Delta_E -2.024E-11   Delta_C  1.931E-06  
+Iter  4  Root  1 = -76.073865005   Delta_E -1.283E-12   Delta_C  3.314E-07  
+Iter  5  Root  1 = -76.073865005   Delta_E -3.908E-14   Delta_C  4.841E-08 c
+
+ROOT 1 ECI = -76.0738650049052
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+Warning: diis matrix near-singular
+Determinant is -2.747E-18
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.073865005   Delta_E -2.379E+01   Delta_C  4.554E-05  
+Iter  1  Root  1 = -76.073865006   Delta_E -1.788E-09   Delta_C  1.749E-05  
+Iter  2  Root  1 = -76.073865006   Delta_E -1.052E-10   Delta_C  5.123E-06  
+Iter  3  Root  1 = -76.073865006   Delta_E -1.017E-11   Delta_C  1.115E-06  
+Iter  4  Root  1 = -76.073865006   Delta_E -4.228E-13   Delta_C  2.187E-07  
+Iter  5  Root  1 = -76.073865006   Delta_E -1.421E-14   Delta_C  3.036E-08 c
+
+ROOT 1 ECI = -76.0738650064347
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+Warning: diis matrix near-singular
+Determinant is -1.808E-20
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.073865005   Delta_E -2.379E+01   Delta_C  4.086E-05  
+Iter  1  Root  1 = -76.073865007   Delta_E -1.461E-09   Delta_C  1.607E-05  
+Iter  2  Root  1 = -76.073865007   Delta_E -9.080E-11   Delta_C  4.840E-06  
+Iter  3  Root  1 = -76.073865007   Delta_E -9.074E-12   Delta_C  1.054E-06  
+Iter  4  Root  1 = -76.073865007   Delta_E -3.730E-13   Delta_C  2.016E-07  
+Iter  5  Root  1 = -76.073865007   Delta_E -1.421E-14   Delta_C  2.861E-08 c
+
+ROOT 1 ECI = -76.0738650069022
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+Warning: diis matrix near-singular
+Determinant is -2.009E-21
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.073865007   Delta_E -2.379E+01   Delta_C  1.724E-06  
+Iter  1  Root  1 = -76.073865007   Delta_E -2.206E-12   Delta_C  6.660E-07  
+Iter  2  Root  1 = -76.073865007   Delta_E -1.457E-13   Delta_C  2.110E-07  
+Iter  3  Root  1 = -76.073865007   Delta_E -1.421E-14   Delta_C  3.298E-08 c
+
+ROOT 1 ECI = -76.0738650069038
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	*** Calculation Converged ***
+Forming approximate diagonal orbital Hessian
+
+*******************************************************
+                  ORBITALS CONVERGED
+
+  Final CASSCF Energy =  -76.073865006902
+
+                DETCAS MANAGER EXITING
+*******************************************************
+
+
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:00 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:00 2008
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CASSCF
+	Reference orbitals     =  RHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            =  No
+	Delete Restricted Docc =  No
+	Do All TEI             =  No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    8
+	 A2 	   2	   2	    0	    0	    0	    2	    2
+	 B1 	   4	   4	    0	    1	    0	    3	    3
+	 B2 	   7	   7	    0	    1	    0	    6	    5
+
+	Nuclear Repulsion Energy    =         8.8046872910
+	Total SCF Energy            =       -76.0172965718
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:00 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:00 2008
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density in MO basis in SQUARE form will be read from file73.
+    $Only electric dipole moment will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+
+  Title : '6-31G** CASSCF H2O'
+
+  List of PARAMETERS :
+    # of atoms                 =      3
+    # of molecular orbitals    =     25
+    # of basis functions       =     25
+    # of atomic orbitals       =     25
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     12
+    # of primitives            =     20
+    Print level                =      1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
+    NIX                        =	  11
+    NIY                        =	  11
+    GRID_ZMIN                  =	   0.00000
+    GRID_ZMAX                  =	   3.00000
+
+	Densities available up to root 1
+	** Analyzing density number 1 **
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     1      1          0        1.99545434
+     1      2          0        0.91275899
+     1      3          0        0.90432056
+     1      4          1        1.14758235
+     1      5          1        0.78923608
+     1      6          1        0.91582518
+     1      7          1        0.83218273
+     1      8          1        0.46003014
+     1      9          1        0.63295824
+     1     10          2        0.00500316
+     1     11          2        0.00000000
+     1     12          2        0.00187311
+     1     13          2        0.01037898
+     1     14          2        0.01428589
+     1     15          2        0.00426083
+     2     16          0        0.47842352
+     2     17          0        0.17387919
+     2     18          1        0.00885123
+     2     19          1        0.01434770
+     2     20          1        0.01142307
+     3     21          0        0.47842352
+     3     22          0        0.17387919
+     3     23          1        0.00885123
+     3     24          1        0.01434770
+     3     25          1        0.01142307
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   7.0917891   0.2746759   0.2746759
+    2   0.2746759   0.3597726  -0.0245092
+    3   0.2746759  -0.0245092   0.3597726
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            8.626151        -0.626151
+       2            0.686925        +0.313075
+       3            0.686925        +0.313075
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+         -0.0000000000          0.0000000000          0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   9.12218361e-46 C*m  =   0.00000000 a.u.
+    mu(Y)  =   0.00000 D  =   7.42917974e-45 C*m  =   0.00000000 a.u.
+    mu(Z)  =   2.06963 D  =   6.90354996e-30 C*m  =   0.81425555 a.u.
+    |mu|   =   2.06963 D  =   6.90354996e-30 C*m  =   0.81425555 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000         -0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      8           -0.0000000000         -0.0000000000         -0.1315101651
+    2      1            0.0000000000          1.4799409967          1.0435808775
+    3      1            0.0000000000         -1.4799409967          1.0435808775
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1      -22.31200668    -0.00000000   -0.00000000   -0.12313192
+       2       -1.01363559     0.00000000   -0.01463793   -0.01504053
+       3       -1.01363559     0.00000000    0.01463793   -0.01504053
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1          -1215.00272002        -1218.57859370        -1217.32904626
+       2             -1.39955528           -1.79780252           -1.66235148
+       3             -1.39955528           -1.79780252           -1.66235148
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1             -0.00000000            0.00000000            0.00000000
+       2             -0.00000000           -0.00000000            1.47643471
+       3              0.00000000           -0.00000000           -1.47643471
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              1.96739997           -1.60847371           -0.35892626
+       2              0.22034781           -0.17789942           -0.04244839
+       3              0.22034781           -0.17789942           -0.04244839
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1             -0.00000000            0.00000000            0.00000000
+       2             -0.00000000           -0.00000000            1.47643471
+       3              0.00000000           -0.00000000           -1.47643471
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1            290.53021529
+       2              0.38672338
+       3              0.38672338
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.245488739972276
+    One-electron Darwin term     :   0.194480645630243
+    Total one-electron MVD terms :   -0.051008094342033
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:00 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:00 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** CASSCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -CASSCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.030792982352
+       2        0.000000000000     0.024490616037     0.015396491176
+       3        0.000000000000    -0.024490616037     0.015396491176
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:00 2008
+
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462  -0.0000000000  -0.0000000000  -0.1315101651
+  1.0     1.00782503   0.0000000000   1.4799409967   1.0435808775
+  1.0     1.00782503   0.0000000000  -1.4799409967   1.0435808775
+                       0.0000000000   0.0000000000  -0.0307929824
+                       0.0000000000   0.0244906160   0.0153964912
+                       0.0000000000  -0.0244906160   0.0153964912
+
+Generating simple internals
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (1.00000000)
+    (2 1 3) (1.00000000)
+Bends
+    (3 2 1 3) (103.10000000)
+
+Putting simple, possibly redundant, internal coordinates in intco.dat.
+ 
+ ** Taking normal optimization step. **
+
+Current CASSCF energy before step       -76.0738650069
+
+Taking geometry step number 1
+
+BuB^t Determinant: 2.370024e+00
+
+Generating empirical Hessian.
+
+Force Constants read from PSIF_OPTKING
+
+No BFGS update performed.
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    1.00000000   -0.23689516   -0.03190695    0.96809305
+ 2    1.00000000   -0.23689516   -0.03190695    0.96809305
+ 3    1.79943446   -0.02612709   -0.03745503    1.76197943
+   MAX force:    0.2368951621   RMS force:    0.1940113921
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.017405515223  0.000725171810
+    3  0.000266487903  0.000000199884
+    4  0.000000100769  0.000000000000
+    5  0.000000000000  0.000000000000
+Convergence to displaced geometry took 5 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000   0.0000000000  -0.1302943972
+  1.0   0.0000000000   1.4111662265   1.0339333177
+  1.0   0.0000000000  -1.4111662265   1.0339333177
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:00 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** CASSCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:00 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:00 2008
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = 6-31G** CASSCF H2O
+  wfn          = CASSCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.1002075691343
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.01729657
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.220167e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+Only orbital orthogonalization has been performed
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:00 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:00 2008
+
+
+*******************************************************
+                   D E T C A S M A N
+
+                   C. David Sherrill
+                    October 7 1998
+*******************************************************
+
+
+
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:00 2008
+
+
+*******************************************************
+                       D E T C I  
+
+                   C. David Sherrill
+                  Matt L. Leininger
+                     18 June 1999
+*******************************************************
+
+
+
+Note: Calculation requested is a full CI.
+Resetting EX_LVL to 8 and turning on all excitations
+
+
+PARAMETERS: 
+   EX LVL        =        8      H0 BLOCKSIZE =      400
+   VAL EX LVL    =        0      H0 GUESS SIZE=      400
+   H0COUPLINGSIZE=        0      H0 COUPLING  =       no
+   NPRINT        =       20      MAX DET      =    10000
+   MAXITER       =       12      FREEZE CORE  =      yes
+   NUM ROOTS     =        1      ICORE        =        1
+   PRINT         =        1      FCI          =      yes
+   CONV          =        7      MIXED        =      yes
+   E CONV        =        8      MIXED4       =      yes
+   OEI FILE      =       35      R4S          =       no
+   OEI ERASE     =       no      REPL OTF     =       no
+   TEI FILE      =       72      DIAG METHOD  =      SEM
+   PRECONDITIONER= DAVIDSON      UPDATE       =   DAVIDSON
+   S             =   0.000000     Ms0          =      yes
+   TEI ERASE     =       no      MAXNVECT     =       13
+   RESTART       =       no      RESTART VECS =        0
+   GUESS VECTOR  =   D FILE      OPENTYPE     =     NONE
+      REF SYM      =     auto
+   COLLAPSE SIZE =        1      HD AVE       = EVANGELISTI
+   LSE           =       no      LSE ITER     =        0
+   HD OTF        =      yes      NO DFILE     =       no
+   MPN           =       no      MPN SCHMIDT  =       no
+ ZAPTN           =       no
+   WIGNER        =       no      ZERO BLOCKS  =       no
+   PERT Z        =   1.0000      ROOT         =        0
+   PTHREADS      =       no      NTHREADS     =        1
+   EXPORT VECTOR =       no      NUM EXPORT   =        0
+   FILTER_GUESS  =       no      SF_RESTRICT  =       no
+   OPDM          =      yes      TRANS DENSITY=       no
+
+   FILES         =  50 51 52 53
+
+   EX_TYPE       =  1  1  1  1  1  1  1  1 
+   STATE AVERAGE =  1(1.00) 
+   STATE AVERAGE =  1(1.00) 
+
+ORBITALS:
+   NMO          =       25      NUM ALP      =        5
+   ORBS IN CI   =        6      NUM ALP EXPL =        4
+   FROZEN CORE  =        1      NUM BET      =        5
+   RESTR CORE   =        0      NUM BET EXPL =        4
+   IOPEN        =       no
+   RAS1 LVL     =       -1      A RAS3 MAX   =        0
+   RAS1 MIN     =        2      B RAS3 MAX   =        0
+   A RAS1 LVL   =       -1      RAS4 LVL     =        6
+   A RAS1 MIN   =        1      A RAS4 MAX   =        0
+   A RAS1 MAX   =        1      B RAS4 MAX   =        0
+   B RAS1 LVL   =       -1      RAS4 MAX     =        0
+   B RAS1 MIN   =        1      A RAS34 MAX  =        0
+   B RAS1 MAX   =        1      B RAS34 MAX  =        0
+   RAS3 LVL     =        6      RAS34 MAX    =        0
+   RAS3 MAX     =        0
+
+   DOCC         =  3  0  1  1 
+   SOCC         =  0  0  0  0 
+   FROZEN DOCC  =  1  0  0  0 
+   FROZEN UOCC  =  8  2  3  5 
+   RAS 1        =  0  0  0  0 
+   RAS 2        =  3  0  1  2 
+   RAS 3        =  0  0  0  0 
+   RAS 4        =  0  0  0  0 
+*******************************************************
+
+
+There are 15 alpha strings
+There are 15 beta strings
+CI space contains    4 blocks
+
+CI space requires 65 determinants
+
+Check SCF Energy from 1- and 2-electron integrals
+
+SCF Energy (ref):            -76.0172965718
+Nuclear repulsion energy:      9.1002075691
+One-electron energy:         -41.6206120896
+Two-electron energy:          17.6538067936
+Frozen core energy:          -61.1537654161
+Total electronic energy:     -85.1205707122
+Total SCF energy:            -76.0203631430
+
+*** Calculated Energy Differs from SCF Energy in CHKPT ! ***
+
+ CI vector/subblock length = 65
+
+*** H0 Block Eigenvalue = -76.07518159
+
+Find the roots by the Simultaneous Expansion Method (Block Davidson Method)
+Energy convergence = 1e-08
+RMS CI vector convergence = 1e-07
+
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.074969193   Delta_E -2.402E+01   Delta_C  1.938E-02  
+Iter  1  Root  1 = -76.075162840   Delta_E -1.936E-04   Delta_C  6.461E-03  
+Iter  2  Root  1 = -76.075180932   Delta_E -1.809E-05   Delta_C  1.334E-03  
+Iter  3  Root  1 = -76.075181582   Delta_E -6.499E-07   Delta_C  1.733E-04  
+Iter  4  Root  1 = -76.075181593   Delta_E -1.088E-08   Delta_C  2.395E-05  
+Iter  5  Root  1 = -76.075181593   Delta_E -1.898E-10   Delta_C  3.049E-06  
+Iter  6  Root  1 = -76.075181593   Delta_E -3.581E-12   Delta_C  4.144E-07  
+Warning: Norm of correction (root 0) is < 1.0E-13
+Iter  7  Root  1 = -76.075181593   Delta_E -6.395E-14   Delta_C  5.533E-08 c
+
+ROOT 1 ECI = -76.0751815927198
+
+
+The 20 most important determinants
+
+    1   -0.987984  (    3,    3)  2A1 X  3A1 X  1B1 X  1B2 X  
+    2    0.077176  (    6,    6)  2A1 X  3A1 X  1B1 X  2B2 X  
+    3    0.050080  (    4,    4)  2A1 X  4A1 X  1B1 X  1B2 X  
+    4    0.048610  (    4,    6)  2A1 X  3A1 B  4A1 A  1B1 X  1B2 A  2B2 B  
+    5    0.048610  (    6,    4)  2A1 X  3A1 A  4A1 B  1B1 X  1B2 B  2B2 A  
+    6   -0.030538  (    4,    5)  2A1 A  3A1 B  4A1 X  1B1 X  1B2 X  
+    7   -0.030538  (    5,    4)  2A1 B  3A1 A  4A1 X  1B1 X  1B2 X  
+    8   -0.029665  (    5,    6)  2A1 B  3A1 X  4A1 A  1B1 X  1B2 A  2B2 B  
+    9   -0.029665  (    6,    5)  2A1 A  3A1 X  4A1 B  1B1 X  1B2 B  2B2 A  
+   10    0.028960  (    5,    5)  3A1 X  4A1 X  1B1 X  1B2 X  
+   11    0.028442  (    9,    9)  2A1 X  3A1 X  4A1 X  1B1 X  
+   12    0.027734  (   10,   10)  2A1 X  1B1 X  1B2 X  2B2 X  
+   13    0.024397  (    3,    7)  2A1 X  3A1 A  4A1 B  1B1 X  1B2 A  2B2 B  
+   14    0.024397  (    7,    3)  2A1 X  3A1 B  4A1 A  1B1 X  1B2 B  2B2 A  
+   15   -0.024213  (    9,   10)  2A1 X  3A1 A  4A1 A  1B1 X  1B2 B  2B2 B  
+   16   -0.024213  (   10,    9)  2A1 X  3A1 B  4A1 B  1B1 X  1B2 A  2B2 A  
+   17    0.018830  (    9,   11)  2A1 A  3A1 X  4A1 A  1B1 X  1B2 B  2B2 B  
+   18    0.018830  (   11,    9)  2A1 B  3A1 X  4A1 B  1B1 X  1B2 A  2B2 A  
+   19    0.016899  (   11,   11)  3A1 X  1B1 X  1B2 X  2B2 X  
+   20    0.015434  (   13,   13)  2A1 X  3A1 X  4A1 X  1B2 X  
+
+
+
+
+Wrote MO-basis OPDM 1 to disk
+Wrote MO-basis OPDM to disk
+
+
+        Total Time (s)     %Time 		%Relative
+ -----------------------------------------------------
+ Read      0.001507
+ Write     0.000436
+ Sigma1    0.000000
+ Sigma2    0.000278
+ Sigma3    0.000908
+ S1 Thread 0.000000
+ S2 Thread 0.000000
+ S3 Thread 0.000000
+
+		 "A good bug is a dead bug" 
+
+			 - Starship Troopers
+
+		 "I didn't write FORTRAN.  That's the problem."
+
+			 - Edward Valeev
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:00 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075660081   Delta_E -2.402E+01   Delta_C  3.338E-03  
+Iter  1  Root  1 = -76.075668667   Delta_E -8.586E-06   Delta_C  1.124E-03  
+Iter  2  Root  1 = -76.075669122   Delta_E -4.550E-07   Delta_C  2.658E-04  
+Iter  3  Root  1 = -76.075669149   Delta_E -2.709E-08   Delta_C  7.621E-05 c
+
+ROOT 1 ECI = -76.0756691492315
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075690901   Delta_E -2.403E+01   Delta_C  2.291E-03  
+Iter  1  Root  1 = -76.075694615   Delta_E -3.714E-06   Delta_C  8.156E-04  
+Iter  2  Root  1 = -76.075694851   Delta_E -2.369E-07   Delta_C  2.358E-04  
+Iter  3  Root  1 = -76.075694871   Delta_E -1.919E-08   Delta_C  3.560E-05 c
+
+ROOT 1 ECI = -76.0756948706819
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075697790   Delta_E -2.403E+01   Delta_C  1.243E-03  
+Iter  1  Root  1 = -76.075698913   Delta_E -1.123E-06   Delta_C  4.913E-04  
+Iter  2  Root  1 = -76.075699005   Delta_E -9.151E-08   Delta_C  1.394E-04  
+Iter  3  Root  1 = -76.075699012   Delta_E -7.425E-09   Delta_C  2.627E-05 c
+
+ROOT 1 ECI = -76.0756990121148
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075699394   Delta_E -2.403E+01   Delta_C  1.914E-04  
+Iter  1  Root  1 = -76.075699420   Delta_E -2.566E-08   Delta_C  7.039E-05  
+Iter  2  Root  1 = -76.075699422   Delta_E -2.143E-09   Delta_C  2.190E-05  
+Iter  3  Root  1 = -76.075699422   Delta_E -1.862E-10   Delta_C  4.117E-06 c
+
+ROOT 1 ECI = -76.0756994224008
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075699543   Delta_E -2.403E+01   Delta_C  1.917E-04  
+Iter  1  Root  1 = -76.075699567   Delta_E -2.362E-08   Delta_C  7.845E-05  
+Iter  2  Root  1 = -76.075699569   Delta_E -2.361E-09   Delta_C  2.026E-05  
+Iter  3  Root  1 = -76.075699569   Delta_E -1.558E-10   Delta_C  4.754E-06  
+Iter  4  Root  1 = -76.075699569   Delta_E -6.992E-12   Delta_C  7.194E-07 c
+
+ROOT 1 ECI = -76.0756995692242
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075699617   Delta_E -2.403E+01   Delta_C  6.283E-05  
+Iter  1  Root  1 = -76.075699619   Delta_E -2.227E-09   Delta_C  1.964E-05  
+Iter  2  Root  1 = -76.075699619   Delta_E -1.410E-10   Delta_C  5.558E-06  
+Iter  3  Root  1 = -76.075699619   Delta_E -1.086E-11   Delta_C  1.269E-06 c
+
+ROOT 1 ECI = -76.0756996191857
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075699673   Delta_E -2.404E+01   Delta_C  6.948E-05  
+Iter  1  Root  1 = -76.075699675   Delta_E -2.024E-09   Delta_C  1.636E-05  
+Iter  2  Root  1 = -76.075699675   Delta_E -9.582E-11   Delta_C  4.608E-06  
+Iter  3  Root  1 = -76.075699675   Delta_E -7.148E-12   Delta_C  8.309E-07 c
+
+ROOT 1 ECI = -76.0756996750505
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+Warning: diis matrix near-singular
+Determinant is -8.524E-21
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075699718   Delta_E -2.404E+01   Delta_C  7.557E-05  
+Iter  1  Root  1 = -76.075699720   Delta_E -2.167E-09   Delta_C  1.634E-05  
+Iter  2  Root  1 = -76.075699721   Delta_E -1.028E-10   Delta_C  3.841E-06  
+Iter  3  Root  1 = -76.075699721   Delta_E -5.564E-12   Delta_C  7.726E-07 c
+
+ROOT 1 ECI = -76.0756997205733
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+Warning: diis matrix near-singular
+Determinant is -7.989E-20
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075699729   Delta_E -2.404E+01   Delta_C  3.997E-05  
+Iter  1  Root  1 = -76.075699730   Delta_E -6.118E-10   Delta_C  7.977E-06  
+Iter  2  Root  1 = -76.075699730   Delta_E -2.392E-11   Delta_C  2.070E-06  
+Iter  3  Root  1 = -76.075699730   Delta_E -1.688E-12   Delta_C  3.777E-07 c
+
+ROOT 1 ECI = -76.0756997298019
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+Warning: diis matrix near-singular
+Determinant is -8.303E-18
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075699730   Delta_E -2.405E+01   Delta_C  1.537E-05  
+Iter  1  Root  1 = -76.075699730   Delta_E -1.004E-10   Delta_C  2.748E-06  
+Iter  2  Root  1 = -76.075699730   Delta_E -2.782E-12   Delta_C  6.265E-07  
+Iter  3  Root  1 = -76.075699730   Delta_E -1.421E-13   Delta_C  2.226E-07 c
+
+ROOT 1 ECI = -76.0756997304569
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+Warning: diis matrix near-singular
+Determinant is -1.420E-17
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075699730   Delta_E -2.405E+01   Delta_C  2.228E-06  
+Iter  1  Root  1 = -76.075699730   Delta_E -2.196E-12   Delta_C  4.883E-07  
+Iter  2  Root  1 = -76.075699730   Delta_E -8.882E-14   Delta_C  1.251E-07  
+Iter  3  Root  1 = -76.075699730   Delta_E -3.553E-15   Delta_C  3.890E-08 c
+
+ROOT 1 ECI = -76.0756997304712
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075699730   Delta_E -2.405E+01   Delta_C  3.262E-07  
+Iter  1  Root  1 = -76.075699730   Delta_E -5.684E-14   Delta_C  9.224E-08 c
+
+ROOT 1 ECI = -76.0756997304719
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	*** Calculation Converged ***
+Forming approximate diagonal orbital Hessian
+
+*******************************************************
+                  ORBITALS CONVERGED
+
+  Final CASSCF Energy =  -76.075699730471
+
+                DETCAS MANAGER EXITING
+*******************************************************
+
+
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:01 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:01 2008
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CASSCF
+	Reference orbitals     =  RHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            =  No
+	Delete Restricted Docc =  No
+	Do All TEI             =  No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    8
+	 A2 	   2	   2	    0	    0	    0	    2	    2
+	 B1 	   4	   4	    0	    1	    0	    3	    3
+	 B2 	   7	   7	    0	    1	    0	    6	    5
+
+	Nuclear Repulsion Energy    =         9.1002075691
+	Total SCF Energy            =       -76.0172965718
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:01 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:01 2008
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density in MO basis in SQUARE form will be read from file73.
+    $Only electric dipole moment will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+
+  Title : '6-31G** CASSCF H2O'
+
+  List of PARAMETERS :
+    # of atoms                 =      3
+    # of molecular orbitals    =     25
+    # of basis functions       =     25
+    # of atomic orbitals       =     25
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     12
+    # of primitives            =     20
+    Print level                =      1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
+    NIX                        =	  11
+    NIY                        =	  11
+    GRID_ZMIN                  =	   0.00000
+    GRID_ZMAX                  =	   3.00000
+
+	Densities available up to root 1
+	** Analyzing density number 1 **
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     1      1          0        1.99543721
+     1      2          0        0.90897279
+     1      3          0        0.89398891
+     1      4          1        1.14568415
+     1      5          1        0.80560690
+     1      6          1        0.92584996
+     1      7          1        0.83162304
+     1      8          1        0.45287402
+     1      9          1        0.62570637
+     1     10          2        0.00543251
+     1     11          2        0.00000000
+     1     12          2        0.00209210
+     1     13          2        0.00905253
+     1     14          2        0.01504067
+     1     15          2        0.00356981
+     2     16          0        0.49497752
+     2     17          0        0.15667945
+     2     18          1        0.00999943
+     2     19          1        0.01516782
+     2     20          1        0.01271029
+     3     21          0        0.49497752
+     3     22          0        0.15667945
+     3     23          1        0.00999943
+     3     24          1        0.01516782
+     3     25          1        0.01271029
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   7.0726236   0.2864542   0.2864542
+    2   0.2864542   0.3569965  -0.0277544
+    3   0.2864542  -0.0277544   0.3569965
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            8.620931        -0.620931
+       2            0.689535        +0.310465
+       3            0.689535        +0.310465
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000          0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -7.29864973e-46 C*m  =  -0.00000000 a.u.
+    mu(Z)  =   2.09698 D  =   6.99475129e-30 C*m  =   0.82501250 a.u.
+    |mu|   =   2.09698 D  =   6.99475129e-30 C*m  =   0.82501250 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000         -0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      8            0.0000000000          0.0000000000         -0.1302943972
+    2      1            0.0000000000          1.4111662265          1.0339333177
+    3      1            0.0000000000         -1.4111662265          1.0339333177
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1      -22.31664778     0.00000000    0.00000000   -0.12671274
+       2       -1.01765997     0.00000000    0.01144813   -0.00103003
+       3       -1.01765997     0.00000000   -0.01144813   -0.00103003
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1          -1214.96891594        -1218.41147946        -1217.22637697
+       2             -1.43747258           -1.92014280           -1.76791069
+       3             -1.43747258           -1.92014280           -1.76791069
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000            0.00000000
+       2              0.00000000            0.00000000            1.60127310
+       3              0.00000000            0.00000000           -1.60127310
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              1.90000819           -1.54255534           -0.35745285
+       2              0.27103611           -0.21163411           -0.05940200
+       3              0.27103611           -0.21163411           -0.05940200
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000            0.00000000
+       2              0.00000000            0.00000000            1.60127310
+       3              0.00000000            0.00000000           -1.60127310
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1            290.50605655
+       2              0.40787640
+       3              0.40787640
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.245484978445147
+    One-electron Darwin term     :   0.194468017952621
+    Total one-electron MVD terms :   -0.051016960492526
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:01 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:01 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** CASSCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -CASSCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.003965250206
+       2        0.000000000000    -0.001554317314     0.001982625103
+       3        0.000000000000     0.001554317314     0.001982625103
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:01 2008
+
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1302943972
+  1.0     1.00782503   0.0000000000   1.4111662265   1.0339333177
+  1.0     1.00782503   0.0000000000  -1.4111662265   1.0339333177
+                       0.0000000000   0.0000000000  -0.0039652502
+                       0.0000000000  -0.0015543173   0.0019826251
+                       0.0000000000   0.0015543173   0.0019826251
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.96809305)
+    (2 1 3) (0.96809305)
+Bends
+    (3 2 1 3) (100.95398477)
+ 
+ ** Taking normal optimization step. **
+
+Current CASSCF energy before step       -76.0756997305
+
+Taking geometry step number 2
+
+BuB^t Determinant: 2.523405e+00
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 1 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    0.96809305   -0.00051712   -0.00098591    0.96710714
+ 2    0.96809305   -0.00051712   -0.00098591    0.96710714
+ 3    1.76197943    0.02008705    0.02565141    1.78763083
+   MAX force:    0.0200870526   RMS force:    0.0116049486
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.005452560876  0.000066626188
+    3  0.000036991448  0.000000001179
+    4  0.000000000432  0.000000000000
+Convergence to displaced geometry took 4 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000   0.0000000000  -0.1281275476
+  1.0   0.0000000000   1.4245295622   1.0167385804
+  1.0   0.0000000000  -1.4245295622   1.0167385804
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:01 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** CASSCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:01 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:01 2008
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = 6-31G** CASSCF H2O
+  wfn          = CASSCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.1057997163375
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.01729657
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.219549e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+Only orbital orthogonalization has been performed
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:01 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:01 2008
+
+
+*******************************************************
+                   D E T C A S M A N
+
+                   C. David Sherrill
+                    October 7 1998
+*******************************************************
+
+
+
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:01 2008
+
+
+*******************************************************
+                       D E T C I  
+
+                   C. David Sherrill
+                  Matt L. Leininger
+                     18 June 1999
+*******************************************************
+
+
+
+Note: Calculation requested is a full CI.
+Resetting EX_LVL to 8 and turning on all excitations
+
+
+PARAMETERS: 
+   EX LVL        =        8      H0 BLOCKSIZE =      400
+   VAL EX LVL    =        0      H0 GUESS SIZE=      400
+   H0COUPLINGSIZE=        0      H0 COUPLING  =       no
+   NPRINT        =       20      MAX DET      =    10000
+   MAXITER       =       12      FREEZE CORE  =      yes
+   NUM ROOTS     =        1      ICORE        =        1
+   PRINT         =        1      FCI          =      yes
+   CONV          =        7      MIXED        =      yes
+   E CONV        =        8      MIXED4       =      yes
+   OEI FILE      =       35      R4S          =       no
+   OEI ERASE     =       no      REPL OTF     =       no
+   TEI FILE      =       72      DIAG METHOD  =      SEM
+   PRECONDITIONER= DAVIDSON      UPDATE       =   DAVIDSON
+   S             =   0.000000     Ms0          =      yes
+   TEI ERASE     =       no      MAXNVECT     =       13
+   RESTART       =       no      RESTART VECS =        0
+   GUESS VECTOR  =   D FILE      OPENTYPE     =     NONE
+      REF SYM      =     auto
+   COLLAPSE SIZE =        1      HD AVE       = EVANGELISTI
+   LSE           =       no      LSE ITER     =        0
+   HD OTF        =      yes      NO DFILE     =       no
+   MPN           =       no      MPN SCHMIDT  =       no
+ ZAPTN           =       no
+   WIGNER        =       no      ZERO BLOCKS  =       no
+   PERT Z        =   1.0000      ROOT         =        0
+   PTHREADS      =       no      NTHREADS     =        1
+   EXPORT VECTOR =       no      NUM EXPORT   =        0
+   FILTER_GUESS  =       no      SF_RESTRICT  =       no
+   OPDM          =      yes      TRANS DENSITY=       no
+
+   FILES         =  50 51 52 53
+
+   EX_TYPE       =  1  1  1  1  1  1  1  1 
+   STATE AVERAGE =  1(1.00) 
+   STATE AVERAGE =  1(1.00) 
+
+ORBITALS:
+   NMO          =       25      NUM ALP      =        5
+   ORBS IN CI   =        6      NUM ALP EXPL =        4
+   FROZEN CORE  =        1      NUM BET      =        5
+   RESTR CORE   =        0      NUM BET EXPL =        4
+   IOPEN        =       no
+   RAS1 LVL     =       -1      A RAS3 MAX   =        0
+   RAS1 MIN     =        2      B RAS3 MAX   =        0
+   A RAS1 LVL   =       -1      RAS4 LVL     =        6
+   A RAS1 MIN   =        1      A RAS4 MAX   =        0
+   A RAS1 MAX   =        1      B RAS4 MAX   =        0
+   B RAS1 LVL   =       -1      RAS4 MAX     =        0
+   B RAS1 MIN   =        1      A RAS34 MAX  =        0
+   B RAS1 MAX   =        1      B RAS34 MAX  =        0
+   RAS3 LVL     =        6      RAS34 MAX    =        0
+   RAS3 MAX     =        0
+
+   DOCC         =  3  0  1  1 
+   SOCC         =  0  0  0  0 
+   FROZEN DOCC  =  1  0  0  0 
+   FROZEN UOCC  =  8  2  3  5 
+   RAS 1        =  0  0  0  0 
+   RAS 2        =  3  0  1  2 
+   RAS 3        =  0  0  0  0 
+   RAS 4        =  0  0  0  0 
+*******************************************************
+
+
+There are 15 alpha strings
+There are 15 beta strings
+CI space contains    4 blocks
+
+CI space requires 65 determinants
+
+Check SCF Energy from 1- and 2-electron integrals
+
+SCF Energy (ref):            -76.0172965718
+Nuclear repulsion energy:      9.1057997163
+One-electron energy:         -41.6592650739
+Two-electron energy:          17.6644797644
+Frozen core energy:          -61.1322877840
+Total electronic energy:     -85.1270730936
+Total SCF energy:            -76.0212733772
+
+*** Calculated Energy Differs from SCF Energy in CHKPT ! ***
+
+ CI vector/subblock length = 65
+
+*** H0 Block Eigenvalue = -76.07573961
+
+Find the roots by the Simultaneous Expansion Method (Block Davidson Method)
+Energy convergence = 1e-08
+RMS CI vector convergence = 1e-07
+
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075733162   Delta_E -2.405E+01   Delta_C  2.918E-03  
+Iter  1  Root  1 = -76.075738938   Delta_E -5.776E-06   Delta_C  1.243E-03  
+Iter  2  Root  1 = -76.075739570   Delta_E -6.328E-07   Delta_C  3.213E-04  
+Iter  3  Root  1 = -76.075739611   Delta_E -4.064E-08   Delta_C  8.388E-05  
+Iter  4  Root  1 = -76.075739613   Delta_E -2.256E-09   Delta_C  1.109E-05  
+Iter  5  Root  1 = -76.075739613   Delta_E -3.880E-11   Delta_C  1.648E-06  
+Iter  6  Root  1 = -76.075739613   Delta_E -9.344E-13   Delta_C  2.232E-07  
+Warning: Norm of correction (root 0) is < 1.0E-13
+Iter  7  Root  1 = -76.075739613   Delta_E -2.132E-14   Delta_C  2.838E-08 c
+
+ROOT 1 ECI = -76.0757396133229
+
+
+The 20 most important determinants
+
+    1   -0.988337  (    3,    3)  2A1 X  3A1 X  1B1 X  1B2 X  
+    2    0.076476  (    6,    6)  2A1 X  3A1 X  1B1 X  2B2 X  
+    3    0.049628  (    4,    4)  2A1 X  4A1 X  1B1 X  1B2 X  
+    4    0.048085  (    4,    6)  2A1 X  3A1 B  4A1 A  1B1 X  1B2 A  2B2 B  
+    5    0.048085  (    6,    4)  2A1 X  3A1 A  4A1 B  1B1 X  1B2 B  2B2 A  
+    6   -0.030342  (    4,    5)  2A1 A  3A1 B  4A1 X  1B1 X  1B2 X  
+    7   -0.030342  (    5,    4)  2A1 B  3A1 A  4A1 X  1B1 X  1B2 X  
+    8   -0.029738  (    5,    6)  2A1 B  3A1 X  4A1 A  1B1 X  1B2 A  2B2 B  
+    9   -0.029738  (    6,    5)  2A1 A  3A1 X  4A1 B  1B1 X  1B2 B  2B2 A  
+   10    0.028655  (    5,    5)  3A1 X  4A1 X  1B1 X  1B2 X  
+   11    0.028114  (    9,    9)  2A1 X  3A1 X  4A1 X  1B1 X  
+   12    0.026999  (   10,   10)  2A1 X  1B1 X  1B2 X  2B2 X  
+   13    0.024315  (    3,    7)  2A1 X  3A1 A  4A1 B  1B1 X  1B2 A  2B2 B  
+   14    0.024315  (    7,    3)  2A1 X  3A1 B  4A1 A  1B1 X  1B2 B  2B2 A  
+   15   -0.023770  (    9,   10)  2A1 X  3A1 A  4A1 A  1B1 X  1B2 B  2B2 B  
+   16   -0.023770  (   10,    9)  2A1 X  3A1 B  4A1 B  1B1 X  1B2 A  2B2 A  
+   17    0.018907  (    9,   11)  2A1 A  3A1 X  4A1 A  1B1 X  1B2 B  2B2 B  
+   18    0.018907  (   11,    9)  2A1 B  3A1 X  4A1 B  1B1 X  1B2 A  2B2 A  
+   19    0.016971  (   11,   11)  3A1 X  1B1 X  1B2 X  2B2 X  
+   20    0.015107  (   13,   13)  2A1 X  3A1 X  4A1 X  1B2 X  
+
+
+
+
+Wrote MO-basis OPDM 1 to disk
+Wrote MO-basis OPDM to disk
+
+
+        Total Time (s)     %Time 		%Relative
+ -----------------------------------------------------
+ Read      0.001060
+ Write     0.000297
+ Sigma1    0.000000
+ Sigma2    0.000243
+ Sigma3    0.000808
+ S1 Thread 0.000000
+ S2 Thread 0.000000
+ S3 Thread 0.000000
+
+		 "A good bug is a dead bug" 
+
+			 - Starship Troopers
+
+		 "I didn't write FORTRAN.  That's the problem."
+
+			 - Edward Valeev
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:02 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075758246   Delta_E -2.405E+01   Delta_C  7.944E-04  
+Iter  1  Root  1 = -76.075758661   Delta_E -4.155E-07   Delta_C  2.349E-04  
+Iter  2  Root  1 = -76.075758680   Delta_E -1.902E-08   Delta_C  6.058E-05  
+Iter  3  Root  1 = -76.075758682   Delta_E -1.268E-09   Delta_C  1.257E-05 c
+
+ROOT 1 ECI = -76.0757586817115
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075759782   Delta_E -2.405E+01   Delta_C  3.822E-04  
+Iter  1  Root  1 = -76.075759864   Delta_E -8.222E-08   Delta_C  1.235E-04  
+Iter  2  Root  1 = -76.075759869   Delta_E -4.886E-09   Delta_C  3.389E-05  
+Iter  3  Root  1 = -76.075759869   Delta_E -3.816E-10   Delta_C  5.348E-06 c
+
+ROOT 1 ECI = -76.0757598692990
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075759984   Delta_E -2.405E+01   Delta_C  2.593E-04  
+Iter  1  Root  1 = -76.075760015   Delta_E -3.134E-08   Delta_C  7.617E-05  
+Iter  2  Root  1 = -76.075760017   Delta_E -1.874E-09   Delta_C  2.154E-05  
+Iter  3  Root  1 = -76.075760017   Delta_E -1.667E-10   Delta_C  4.228E-06 c
+
+ROOT 1 ECI = -76.0757600171291
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075760051   Delta_E -2.405E+01   Delta_C  1.995E-04  
+Iter  1  Root  1 = -76.075760070   Delta_E -1.887E-08   Delta_C  6.011E-05  
+Iter  2  Root  1 = -76.075760072   Delta_E -1.237E-09   Delta_C  1.706E-05  
+Iter  3  Root  1 = -76.075760072   Delta_E -1.073E-10   Delta_C  3.564E-06 c
+
+ROOT 1 ECI = -76.0757600716367
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075760075   Delta_E -2.405E+01   Delta_C  7.544E-05  
+Iter  1  Root  1 = -76.075760078   Delta_E -2.672E-09   Delta_C  1.692E-05  
+Iter  2  Root  1 = -76.075760078   Delta_E -1.040E-10   Delta_C  5.758E-06  
+Iter  3  Root  1 = -76.075760078   Delta_E -1.221E-11   Delta_C  1.338E-06 c
+
+ROOT 1 ECI = -76.0757600781818
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075760079   Delta_E -2.405E+01   Delta_C  1.239E-05  
+Iter  1  Root  1 = -76.075760079   Delta_E -7.025E-11   Delta_C  3.231E-06  
+Iter  2  Root  1 = -76.075760079   Delta_E -4.238E-12   Delta_C  8.901E-07  
+Iter  3  Root  1 = -76.075760079   Delta_E -3.126E-13   Delta_C  2.403E-07 c
+
+ROOT 1 ECI = -76.0757600794257
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075760080   Delta_E -2.405E+01   Delta_C  6.397E-06  
+Iter  1  Root  1 = -76.075760080   Delta_E -1.587E-11   Delta_C  1.107E-06  
+Iter  2  Root  1 = -76.075760080   Delta_E -4.761E-13   Delta_C  2.879E-07 c
+
+ROOT 1 ECI = -76.0757600802062
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+Warning: diis matrix near-singular
+Determinant is -3.278E-20
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075760082   Delta_E -2.405E+01   Delta_C  1.232E-05  
+Iter  1  Root  1 = -76.075760082   Delta_E -6.002E-11   Delta_C  2.231E-06  
+Iter  2  Root  1 = -76.075760082   Delta_E -1.933E-12   Delta_C  6.471E-07  
+Iter  3  Root  1 = -76.075760082   Delta_E -1.599E-13   Delta_C  1.429E-07 c
+
+ROOT 1 ECI = -76.0757600815901
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+Warning: diis matrix near-singular
+Determinant is -1.019E-18
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075760082   Delta_E -2.405E+01   Delta_C  9.251E-06  
+Iter  1  Root  1 = -76.075760082   Delta_E -3.174E-11   Delta_C  2.057E-06  
+Iter  2  Root  1 = -76.075760082   Delta_E -1.606E-12   Delta_C  4.610E-07  
+Iter  3  Root  1 = -76.075760082   Delta_E -8.527E-14   Delta_C  7.791E-08 c
+
+ROOT 1 ECI = -76.0757600819826
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+Warning: diis matrix near-singular
+Determinant is -6.293E-19
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075760082   Delta_E -2.405E+01   Delta_C  1.703E-06  
+Iter  1  Root  1 = -76.075760082   Delta_E -1.545E-12   Delta_C  5.628E-07  
+Iter  2  Root  1 = -76.075760082   Delta_E -1.279E-13   Delta_C  1.365E-07  
+Iter  3  Root  1 = -76.075760082   Delta_E -3.553E-15   Delta_C  2.950E-08 c
+
+ROOT 1 ECI = -76.0757600819948
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+Warning: diis matrix near-singular
+Determinant is -1.451E-21
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075760082   Delta_E -2.405E+01   Delta_C  5.112E-07  
+Iter  1  Root  1 = -76.075760082   Delta_E -1.918E-13   Delta_C  1.930E-07  
+Iter  2  Root  1 = -76.075760082   Delta_E -1.421E-14   Delta_C  5.242E-08 c
+
+ROOT 1 ECI = -76.0757600819956
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	*** Calculation Converged ***
+Forming approximate diagonal orbital Hessian
+
+*******************************************************
+                  ORBITALS CONVERGED
+
+  Final CASSCF Energy =  -76.075760081995
+
+                DETCAS MANAGER EXITING
+*******************************************************
+
+
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:02 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:02 2008
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CASSCF
+	Reference orbitals     =  RHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            =  No
+	Delete Restricted Docc =  No
+	Do All TEI             =  No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    8
+	 A2 	   2	   2	    0	    0	    0	    2	    2
+	 B1 	   4	   4	    0	    1	    0	    3	    3
+	 B2 	   7	   7	    0	    1	    0	    6	    5
+
+	Nuclear Repulsion Energy    =         9.1057997163
+	Total SCF Energy            =       -76.0172965718
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:02 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:02 2008
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density in MO basis in SQUARE form will be read from file73.
+    $Only electric dipole moment will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+
+  Title : '6-31G** CASSCF H2O'
+
+  List of PARAMETERS :
+    # of atoms                 =      3
+    # of molecular orbitals    =     25
+    # of basis functions       =     25
+    # of atomic orbitals       =     25
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     12
+    # of primitives            =     20
+    Print level                =      1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
+    NIX                        =	  11
+    NIY                        =	  11
+    GRID_ZMIN                  =	   0.00000
+    GRID_ZMAX                  =	   3.00000
+
+	Densities available up to root 1
+	** Analyzing density number 1 **
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     1      1          0        1.99542637
+     1      2          0        0.90763081
+     1      3          0        0.89274612
+     1      4          1        1.14519137
+     1      5          1        0.80456273
+     1      6          1        0.93009444
+     1      7          1        0.83209184
+     1      8          1        0.45065078
+     1      9          1        0.63066998
+     1     10          2        0.00531831
+     1     11          2        0.00000000
+     1     12          2        0.00205406
+     1     13          2        0.00921875
+     1     14          2        0.01479480
+     1     15          2        0.00333035
+     2     16          0        0.49485564
+     2     17          0        0.15534501
+     2     18          1        0.01003034
+     2     19          1        0.01533600
+     2     20          1        0.01254265
+     3     21          0        0.49485564
+     3     22          0        0.15534501
+     3     23          1        0.01003034
+     3     24          1        0.01533600
+     3     25          1        0.01254265
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   7.0735255   0.2872201   0.2872201
+    2   0.2872201   0.3546801  -0.0268613
+    3   0.2872201  -0.0268613   0.3546801
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            8.623781        -0.623781
+       2            0.688110        +0.311890
+       3            0.688110        +0.311890
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000          0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -9.92763439e-46 C*m  =  -0.00000000 a.u.
+    mu(Z)  =   2.07553 D  =   6.92322439e-30 C*m  =   0.81657609 a.u.
+    |mu|   =   2.07553 D  =   6.92322439e-30 C*m  =   0.81657609 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000         -0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      8            0.0000000000          0.0000000000         -0.1281275476
+    2      1            0.0000000000          1.4245295622          1.0167385804
+    3      1            0.0000000000         -1.4245295622          1.0167385804
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1      -22.31720551     0.00000000   -0.00000000   -0.12665117
+       2       -1.01765498     0.00000000    0.00997347    0.00085100
+       3       -1.01765498     0.00000000   -0.00997347    0.00085100
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1          -1214.90039278        -1218.35638891        -1217.10775474
+       2             -1.43579316           -1.92680396           -1.76125414
+       3             -1.43579316           -1.92680396           -1.76125414
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000            1.59610733
+       3              0.00000000            0.00000000           -1.59610733
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              1.88778603           -1.56821010           -0.31957593
+       2              0.27215726           -0.21885354           -0.05330373
+       3              0.27215726           -0.21885354           -0.05330373
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000            1.59610733
+       3              0.00000000            0.00000000           -1.59610733
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1            290.48678003
+       2              0.40774313
+       3              0.40774313
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.245467001097912
+    One-electron Darwin term     :   0.194455096262340
+    Total one-electron MVD terms :   -0.051011904835572
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:02 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:02 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** CASSCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -CASSCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.000074474894
+       2        0.000000000000    -0.000045203458     0.000037237447
+       3        0.000000000000     0.000045203458     0.000037237447
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:02 2008
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1281275476
+  1.0     1.00782503   0.0000000000   1.4245295622   1.0167385804
+  1.0     1.00782503   0.0000000000  -1.4245295622   1.0167385804
+                       0.0000000000   0.0000000000  -0.0000744749
+                       0.0000000000  -0.0000452035   0.0000372374
+                       0.0000000000   0.0000452035   0.0000372374
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.96710714)
+    (2 1 3) (0.96710714)
+Bends
+    (3 2 1 3) (102.42370216)
+ 
+ ** Taking normal optimization step. **
+
+Current CASSCF energy before step       -76.0757600820
+
+Taking geometry step number 3
+
+BuB^t Determinant: 2.532276e+00
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 2 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    0.96710714    0.00009810   -0.00000678    0.96710035
+ 2    0.96710714    0.00009810   -0.00000678    0.96710035
+ 3    1.78763083    0.00045689    0.00058676    1.78821759
+   MAX force:    0.0004568914   RMS force:    0.0002756797
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.000124837614  0.000000034065
+    3  0.000000018932  0.000000000000
+Convergence to displaced geometry took 3 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000   0.0000000000  -0.1280798718
+  1.0   0.0000000000   1.4248553879   1.0163602558
+  1.0   0.0000000000  -1.4248553879   1.0163602558
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:02 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** CASSCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:02 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = 6-31G** CASSCF H2O
+  wfn          = CASSCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.1057808466225
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.01729657
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.219594e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+Only orbital orthogonalization has been performed
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+
+*******************************************************
+                   D E T C A S M A N
+
+                   C. David Sherrill
+                    October 7 1998
+*******************************************************
+
+
+
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+
+*******************************************************
+                       D E T C I  
+
+                   C. David Sherrill
+                  Matt L. Leininger
+                     18 June 1999
+*******************************************************
+
+
+
+Note: Calculation requested is a full CI.
+Resetting EX_LVL to 8 and turning on all excitations
+
+
+PARAMETERS: 
+   EX LVL        =        8      H0 BLOCKSIZE =      400
+   VAL EX LVL    =        0      H0 GUESS SIZE=      400
+   H0COUPLINGSIZE=        0      H0 COUPLING  =       no
+   NPRINT        =       20      MAX DET      =    10000
+   MAXITER       =       12      FREEZE CORE  =      yes
+   NUM ROOTS     =        1      ICORE        =        1
+   PRINT         =        1      FCI          =      yes
+   CONV          =        7      MIXED        =      yes
+   E CONV        =        8      MIXED4       =      yes
+   OEI FILE      =       35      R4S          =       no
+   OEI ERASE     =       no      REPL OTF     =       no
+   TEI FILE      =       72      DIAG METHOD  =      SEM
+   PRECONDITIONER= DAVIDSON      UPDATE       =   DAVIDSON
+   S             =   0.000000     Ms0          =      yes
+   TEI ERASE     =       no      MAXNVECT     =       13
+   RESTART       =       no      RESTART VECS =        0
+   GUESS VECTOR  =   D FILE      OPENTYPE     =     NONE
+      REF SYM      =     auto
+   COLLAPSE SIZE =        1      HD AVE       = EVANGELISTI
+   LSE           =       no      LSE ITER     =        0
+   HD OTF        =      yes      NO DFILE     =       no
+   MPN           =       no      MPN SCHMIDT  =       no
+ ZAPTN           =       no
+   WIGNER        =       no      ZERO BLOCKS  =       no
+   PERT Z        =   1.0000      ROOT         =        0
+   PTHREADS      =       no      NTHREADS     =        1
+   EXPORT VECTOR =       no      NUM EXPORT   =        0
+   FILTER_GUESS  =       no      SF_RESTRICT  =       no
+   OPDM          =      yes      TRANS DENSITY=       no
+
+   FILES         =  50 51 52 53
+
+   EX_TYPE       =  1  1  1  1  1  1  1  1 
+   STATE AVERAGE =  1(1.00) 
+   STATE AVERAGE =  1(1.00) 
+
+ORBITALS:
+   NMO          =       25      NUM ALP      =        5
+   ORBS IN CI   =        6      NUM ALP EXPL =        4
+   FROZEN CORE  =        1      NUM BET      =        5
+   RESTR CORE   =        0      NUM BET EXPL =        4
+   IOPEN        =       no
+   RAS1 LVL     =       -1      A RAS3 MAX   =        0
+   RAS1 MIN     =        2      B RAS3 MAX   =        0
+   A RAS1 LVL   =       -1      RAS4 LVL     =        6
+   A RAS1 MIN   =        1      A RAS4 MAX   =        0
+   A RAS1 MAX   =        1      B RAS4 MAX   =        0
+   B RAS1 LVL   =       -1      RAS4 MAX     =        0
+   B RAS1 MIN   =        1      A RAS34 MAX  =        0
+   B RAS1 MAX   =        1      B RAS34 MAX  =        0
+   RAS3 LVL     =        6      RAS34 MAX    =        0
+   RAS3 MAX     =        0
+
+   DOCC         =  3  0  1  1 
+   SOCC         =  0  0  0  0 
+   FROZEN DOCC  =  1  0  0  0 
+   FROZEN UOCC  =  8  2  3  5 
+   RAS 1        =  0  0  0  0 
+   RAS 2        =  3  0  1  2 
+   RAS 3        =  0  0  0  0 
+   RAS 4        =  0  0  0  0 
+*******************************************************
+
+
+There are 15 alpha strings
+There are 15 beta strings
+CI space contains    4 blocks
+
+CI space requires 65 determinants
+
+Check SCF Energy from 1- and 2-electron integrals
+
+SCF Energy (ref):            -76.0172965718
+Nuclear repulsion energy:      9.1057808466
+One-electron energy:         -41.6597534081
+Two-electron energy:          17.6619852888
+Frozen core energy:          -61.1293561569
+Total electronic energy:     -85.1271242762
+Total SCF energy:            -76.0213434296
+
+*** Calculated Energy Differs from SCF Energy in CHKPT ! ***
+
+ CI vector/subblock length = 65
+
+*** H0 Block Eigenvalue = -76.07576010
+
+Find the roots by the Simultaneous Expansion Method (Block Davidson Method)
+Energy convergence = 1e-08
+RMS CI vector convergence = 1e-07
+
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075760100   Delta_E -2.405E+01   Delta_C  6.012E-05  
+Iter  1  Root  1 = -76.075760102   Delta_E -2.500E-09   Delta_C  2.410E-05  
+Iter  2  Root  1 = -76.075760103   Delta_E -2.294E-10   Delta_C  6.485E-06  
+Iter  3  Root  1 = -76.075760103   Delta_E -1.631E-11   Delta_C  1.741E-06  
+Iter  4  Root  1 = -76.075760103   Delta_E -9.841E-13   Delta_C  2.346E-07  
+Warning: Norm of correction (root 0) is < 1.0E-13
+Iter  5  Root  1 = -76.075760103   Delta_E -1.421E-14   Delta_C  3.484E-08 c
+
+ROOT 1 ECI = -76.0757601025259
+
+
+The 20 most important determinants
+
+    1   -0.988366  (    3,    3)  2A1 X  3A1 X  1B1 X  1B2 X  
+    2    0.076464  (    6,    6)  2A1 X  3A1 X  1B1 X  2B2 X  
+    3    0.049393  (    4,    4)  2A1 X  4A1 X  1B1 X  1B2 X  
+    4    0.047945  (    4,    6)  2A1 X  3A1 B  4A1 A  1B1 X  1B2 A  2B2 B  
+    5    0.047945  (    6,    4)  2A1 X  3A1 A  4A1 B  1B1 X  1B2 B  2B2 A  
+    6   -0.030459  (    4,    5)  2A1 A  3A1 B  4A1 X  1B1 X  1B2 X  
+    7   -0.030459  (    5,    4)  2A1 B  3A1 A  4A1 X  1B1 X  1B2 X  
+    8   -0.029858  (    5,    6)  2A1 B  3A1 X  4A1 A  1B1 X  1B2 A  2B2 B  
+    9   -0.029858  (    6,    5)  2A1 A  3A1 X  4A1 B  1B1 X  1B2 B  2B2 A  
+   10    0.028776  (    5,    5)  3A1 X  4A1 X  1B1 X  1B2 X  
+   11    0.028194  (    9,    9)  2A1 X  3A1 X  4A1 X  1B1 X  
+   12    0.026733  (   10,   10)  2A1 X  1B1 X  1B2 X  2B2 X  
+   13    0.024216  (    3,    7)  2A1 X  3A1 A  4A1 B  1B1 X  1B2 A  2B2 B  
+   14    0.024216  (    7,    3)  2A1 X  3A1 B  4A1 A  1B1 X  1B2 B  2B2 A  
+   15   -0.023729  (    9,   10)  2A1 X  3A1 A  4A1 A  1B1 X  1B2 B  2B2 B  
+   16   -0.023729  (   10,    9)  2A1 X  3A1 B  4A1 B  1B1 X  1B2 A  2B2 A  
+   17    0.018955  (    9,   11)  2A1 A  3A1 X  4A1 A  1B1 X  1B2 B  2B2 B  
+   18    0.018955  (   11,    9)  2A1 B  3A1 X  4A1 B  1B1 X  1B2 A  2B2 A  
+   19    0.016976  (   11,   11)  3A1 X  1B1 X  1B2 X  2B2 X  
+   20    0.015097  (   13,   13)  2A1 X  3A1 X  4A1 X  1B2 X  
+
+
+
+
+Wrote MO-basis OPDM 1 to disk
+Wrote MO-basis OPDM to disk
+
+
+        Total Time (s)     %Time 		%Relative
+ -----------------------------------------------------
+ Read      0.000682
+ Write     0.000217
+ Sigma1    0.000000
+ Sigma2    0.000194
+ Sigma3    0.000586
+ S1 Thread 0.000000
+ S2 Thread 0.000000
+ S3 Thread 0.000000
+
+		 "A good bug is a dead bug" 
+
+			 - Starship Troopers
+
+		 "I didn't write FORTRAN.  That's the problem."
+
+			 - Edward Valeev
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075760112   Delta_E -2.405E+01   Delta_C  1.738E-05  
+Iter  1  Root  1 = -76.075760112   Delta_E -1.956E-10   Delta_C  4.905E-06  
+Iter  2  Root  1 = -76.075760112   Delta_E -8.285E-12   Delta_C  1.296E-06  
+Iter  3  Root  1 = -76.075760112   Delta_E -5.791E-13   Delta_C  2.671E-07 c
+
+ROOT 1 ECI = -76.0757601122137
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075760113   Delta_E -2.405E+01   Delta_C  8.116E-06  
+Iter  1  Root  1 = -76.075760113   Delta_E -3.532E-11   Delta_C  2.424E-06  
+Iter  2  Root  1 = -76.075760113   Delta_E -1.879E-12   Delta_C  6.722E-07  
+Iter  3  Root  1 = -76.075760113   Delta_E -1.492E-13   Delta_C  1.063E-07 c
+
+ROOT 1 ECI = -76.0757601127693
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075760113   Delta_E -2.405E+01   Delta_C  5.559E-06  
+Iter  1  Root  1 = -76.075760113   Delta_E -1.390E-11   Delta_C  1.527E-06  
+Iter  2  Root  1 = -76.075760113   Delta_E -7.461E-13   Delta_C  4.422E-07  
+Iter  3  Root  1 = -76.075760113   Delta_E -7.105E-14   Delta_C  8.652E-08 c
+
+ROOT 1 ECI = -76.0757601128317
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075760113   Delta_E -2.405E+01   Delta_C  3.959E-06  
+Iter  1  Root  1 = -76.075760113   Delta_E -7.198E-12   Delta_C  1.123E-06  
+Iter  2  Root  1 = -76.075760113   Delta_E -4.263E-13   Delta_C  3.264E-07  
+Iter  3  Root  1 = -76.075760113   Delta_E -3.908E-14   Delta_C  6.789E-08 c
+
+ROOT 1 ECI = -76.0757601128545
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075760113   Delta_E -2.405E+01   Delta_C  1.748E-06  
+Iter  1  Root  1 = -76.075760113   Delta_E -1.407E-12   Delta_C  3.902E-07  
+Iter  2  Root  1 = -76.075760113   Delta_E -5.684E-14   Delta_C  1.322E-07  
+Iter  3  Root  1 = -76.075760113   Delta_E -7.105E-15   Delta_C  3.086E-08 c
+
+ROOT 1 ECI = -76.0757601128576
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	*** Calculation Converged ***
+Forming approximate diagonal orbital Hessian
+
+*******************************************************
+                  ORBITALS CONVERGED
+
+  Final CASSCF Energy =  -76.075760112855
+
+                DETCAS MANAGER EXITING
+*******************************************************
+
+
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CASSCF
+	Reference orbitals     =  RHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            =  No
+	Delete Restricted Docc =  No
+	Do All TEI             =  No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    8
+	 A2 	   2	   2	    0	    0	    0	    2	    2
+	 B1 	   4	   4	    0	    1	    0	    3	    3
+	 B2 	   7	   7	    0	    1	    0	    6	    5
+
+	Nuclear Repulsion Energy    =         9.1057808466
+	Total SCF Energy            =       -76.0172965718
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density in MO basis in SQUARE form will be read from file73.
+    $Only electric dipole moment will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+
+  Title : '6-31G** CASSCF H2O'
+
+  List of PARAMETERS :
+    # of atoms                 =      3
+    # of molecular orbitals    =     25
+    # of basis functions       =     25
+    # of atomic orbitals       =     25
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     12
+    # of primitives            =     20
+    Print level                =      1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
+    NIX                        =	  11
+    NIY                        =	  11
+    GRID_ZMIN                  =	   0.00000
+    GRID_ZMAX                  =	   3.00000
+
+	Densities available up to root 1
+	** Analyzing density number 1 **
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     1      1          0        1.99542613
+     1      2          0        0.90760243
+     1      3          0        0.89272400
+     1      4          1        1.14518122
+     1      5          1        0.80453267
+     1      6          1        0.93018328
+     1      7          1        0.83210260
+     1      8          1        0.45060604
+     1      9          1        0.63078359
+     1     10          2        0.00531549
+     1     11          2        0.00000000
+     1     12          2        0.00205311
+     1     13          2        0.00922311
+     1     14          2        0.01478881
+     1     15          2        0.00332543
+     2     16          0        0.49484464
+     2     17          0        0.15532305
+     2     18          1        0.01003050
+     2     19          1        0.01533951
+     2     20          1        0.01253834
+     3     21          0        0.49484464
+     3     22          0        0.15532305
+     3     23          1        0.01003050
+     3     24          1        0.01533951
+     3     25          1        0.01253834
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   7.0735566   0.2872310   0.2872310
+    2   0.2872310   0.3546302  -0.0268404
+    3   0.2872310  -0.0268404   0.3546302
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            8.623848        -0.623848
+       2            0.688076        +0.311924
+       3            0.688076        +0.311924
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000          0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -1.07494219e-44 C*m  =  -0.00000000 a.u.
+    mu(Z)  =   2.07504 D  =   6.92158380e-30 C*m  =   0.81638259 a.u.
+    |mu|   =   2.07504 D  =   6.92158380e-30 C*m  =   0.81638259 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000         -0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      8            0.0000000000          0.0000000000         -0.1280798718
+    2      1            0.0000000000          1.4248553879          1.0163602558
+    3      1            0.0000000000         -1.4248553879          1.0163602558
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1      -22.31721566     0.00000000    0.00000000   -0.12664785
+       2       -1.01765213     0.00000000    0.00992801    0.00088521
+       3       -1.01765213     0.00000000   -0.00992801    0.00088521
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1          -1214.89885625        -1218.35520392        -1217.10514232
+       2             -1.43573636           -1.92688948           -1.76104982
+       3             -1.43573636           -1.92688948           -1.76104982
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000            1.59591739
+       3              0.00000000            0.00000000           -1.59591739
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              1.88754458           -1.56880309           -0.31874149
+       2              0.27215553           -0.21899759           -0.05315794
+       3              0.27215553           -0.21899759           -0.05315794
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000            1.59591739
+       3              0.00000000            0.00000000           -1.59591739
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1            290.48635557
+       2              0.40772915
+       3              0.40772915
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.245466595615213
+    One-electron Darwin term     :   0.194454809885112
+    Total one-electron MVD terms :   -0.051011785730101
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** CASSCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -CASSCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000    -0.000002437212
+       2        0.000000000000     0.000000771485     0.000001218606
+       3        0.000000000000    -0.000000771485     0.000001218606
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1280798718
+  1.0     1.00782503   0.0000000000   1.4248553879   1.0163602558
+  1.0     1.00782503   0.0000000000  -1.4248553879   1.0163602558
+                       0.0000000000   0.0000000000  -0.0000024372
+                       0.0000000000   0.0000007715   0.0000012186
+                       0.0000000000  -0.0000007715   0.0000012186
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.96710035)
+    (2 1 3) (0.96710035)
+Bends
+    (3 2 1 3) (102.45732082)
+ 
+ ** Taking normal optimization step. **
+
+Current CASSCF energy before step       -76.0757601129
+
+Taking geometry step number 4
+
+BuB^t Determinant: 2.532396e+00
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 3 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    0.96710035   -0.00001124   -0.00000180    0.96709855
+ 2    0.96710035   -0.00001124   -0.00000180    0.96709855
+ 3    1.78821759    0.00000372    0.00000602    1.78822362
+   MAX force:    0.0000112425   RMS force:    0.0000094275
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.000001442841  0.000000000007
+    3  0.000000000003  0.000000000000
+Convergence to displaced geometry took 3 iterations.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000   0.0000000000  -0.1280791526
+  1.0   0.0000000000   1.4248561777   1.0163545486
+  1.0   0.0000000000  -1.4248561777   1.0163545486
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** CASSCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = 6-31G** CASSCF H2O
+  wfn          = CASSCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.1057969801683
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.01729657
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.219588e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+Only orbital orthogonalization has been performed
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+
+*******************************************************
+                   D E T C A S M A N
+
+                   C. David Sherrill
+                    October 7 1998
+*******************************************************
+
+
+
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+
+*******************************************************
+                       D E T C I  
+
+                   C. David Sherrill
+                  Matt L. Leininger
+                     18 June 1999
+*******************************************************
+
+
+
+Note: Calculation requested is a full CI.
+Resetting EX_LVL to 8 and turning on all excitations
+
+
+PARAMETERS: 
+   EX LVL        =        8      H0 BLOCKSIZE =      400
+   VAL EX LVL    =        0      H0 GUESS SIZE=      400
+   H0COUPLINGSIZE=        0      H0 COUPLING  =       no
+   NPRINT        =       20      MAX DET      =    10000
+   MAXITER       =       12      FREEZE CORE  =      yes
+   NUM ROOTS     =        1      ICORE        =        1
+   PRINT         =        1      FCI          =      yes
+   CONV          =        7      MIXED        =      yes
+   E CONV        =        8      MIXED4       =      yes
+   OEI FILE      =       35      R4S          =       no
+   OEI ERASE     =       no      REPL OTF     =       no
+   TEI FILE      =       72      DIAG METHOD  =      SEM
+   PRECONDITIONER= DAVIDSON      UPDATE       =   DAVIDSON
+   S             =   0.000000     Ms0          =      yes
+   TEI ERASE     =       no      MAXNVECT     =       13
+   RESTART       =       no      RESTART VECS =        0
+   GUESS VECTOR  =   D FILE      OPENTYPE     =     NONE
+      REF SYM      =     auto
+   COLLAPSE SIZE =        1      HD AVE       = EVANGELISTI
+   LSE           =       no      LSE ITER     =        0
+   HD OTF        =      yes      NO DFILE     =       no
+   MPN           =       no      MPN SCHMIDT  =       no
+ ZAPTN           =       no
+   WIGNER        =       no      ZERO BLOCKS  =       no
+   PERT Z        =   1.0000      ROOT         =        0
+   PTHREADS      =       no      NTHREADS     =        1
+   EXPORT VECTOR =       no      NUM EXPORT   =        0
+   FILTER_GUESS  =       no      SF_RESTRICT  =       no
+   OPDM          =      yes      TRANS DENSITY=       no
+
+   FILES         =  50 51 52 53
+
+   EX_TYPE       =  1  1  1  1  1  1  1  1 
+   STATE AVERAGE =  1(1.00) 
+   STATE AVERAGE =  1(1.00) 
+
+ORBITALS:
+   NMO          =       25      NUM ALP      =        5
+   ORBS IN CI   =        6      NUM ALP EXPL =        4
+   FROZEN CORE  =        1      NUM BET      =        5
+   RESTR CORE   =        0      NUM BET EXPL =        4
+   IOPEN        =       no
+   RAS1 LVL     =       -1      A RAS3 MAX   =        0
+   RAS1 MIN     =        2      B RAS3 MAX   =        0
+   A RAS1 LVL   =       -1      RAS4 LVL     =        6
+   A RAS1 MIN   =        1      A RAS4 MAX   =        0
+   A RAS1 MAX   =        1      B RAS4 MAX   =        0
+   B RAS1 LVL   =       -1      RAS4 MAX     =        0
+   B RAS1 MIN   =        1      A RAS34 MAX  =        0
+   B RAS1 MAX   =        1      B RAS34 MAX  =        0
+   RAS3 LVL     =        6      RAS34 MAX    =        0
+   RAS3 MAX     =        0
+
+   DOCC         =  3  0  1  1 
+   SOCC         =  0  0  0  0 
+   FROZEN DOCC  =  1  0  0  0 
+   FROZEN UOCC  =  8  2  3  5 
+   RAS 1        =  0  0  0  0 
+   RAS 2        =  3  0  1  2 
+   RAS 3        =  0  0  0  0 
+   RAS 4        =  0  0  0  0 
+*******************************************************
+
+
+There are 15 alpha strings
+There are 15 beta strings
+CI space contains    4 blocks
+
+CI space requires 65 determinants
+
+Check SCF Energy from 1- and 2-electron integrals
+
+SCF Energy (ref):            -76.0172965718
+Nuclear repulsion energy:      9.1057969802
+One-electron energy:         -41.6597215629
+Two-electron energy:          17.6619295424
+Frozen core energy:          -61.1293496639
+Total electronic energy:     -85.1271416844
+Total SCF energy:            -76.0213447042
+
+*** Calculated Energy Differs from SCF Energy in CHKPT ! ***
+
+ CI vector/subblock length = 65
+
+*** H0 Block Eigenvalue = -76.07576011
+
+Find the roots by the Simultaneous Expansion Method (Block Davidson Method)
+Energy convergence = 1e-08
+RMS CI vector convergence = 1e-07
+
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075760113   Delta_E -2.405E+01   Delta_C  1.567E-06  
+Iter  1  Root  1 = -76.075760113   Delta_E -1.474E-12   Delta_C  6.040E-07  
+Iter  2  Root  1 = -76.075760113   Delta_E -1.634E-13   Delta_C  1.486E-07  
+Warning: Norm of correction (root 0) is < 1.0E-13
+Iter  3  Root  1 = -76.075760113   Delta_E -3.553E-15   Delta_C  3.186E-08 c
+
+ROOT 1 ECI = -76.0757601128617
+
+
+The 20 most important determinants
+
+    1   -0.988367  (    3,    3)  2A1 X  3A1 X  1B1 X  1B2 X  
+    2    0.076464  (    6,    6)  2A1 X  3A1 X  1B1 X  2B2 X  
+    3    0.049388  (    4,    4)  2A1 X  4A1 X  1B1 X  1B2 X  
+    4    0.047942  (    4,    6)  2A1 X  3A1 B  4A1 A  1B1 X  1B2 A  2B2 B  
+    5    0.047942  (    6,    4)  2A1 X  3A1 A  4A1 B  1B1 X  1B2 B  2B2 A  
+    6   -0.030461  (    4,    5)  2A1 A  3A1 B  4A1 X  1B1 X  1B2 X  
+    7   -0.030461  (    5,    4)  2A1 B  3A1 A  4A1 X  1B1 X  1B2 X  
+    8   -0.029861  (    5,    6)  2A1 B  3A1 X  4A1 A  1B1 X  1B2 A  2B2 B  
+    9   -0.029861  (    6,    5)  2A1 A  3A1 X  4A1 B  1B1 X  1B2 B  2B2 A  
+   10    0.028779  (    5,    5)  3A1 X  4A1 X  1B1 X  1B2 X  
+   11    0.028196  (    9,    9)  2A1 X  3A1 X  4A1 X  1B1 X  
+   12    0.026727  (   10,   10)  2A1 X  1B1 X  1B2 X  2B2 X  
+   13    0.024213  (    3,    7)  2A1 X  3A1 A  4A1 B  1B1 X  1B2 A  2B2 B  
+   14    0.024213  (    7,    3)  2A1 X  3A1 B  4A1 A  1B1 X  1B2 B  2B2 A  
+   15   -0.023728  (    9,   10)  2A1 X  3A1 A  4A1 A  1B1 X  1B2 B  2B2 B  
+   16   -0.023728  (   10,    9)  2A1 X  3A1 B  4A1 B  1B1 X  1B2 A  2B2 A  
+   17    0.018956  (    9,   11)  2A1 A  3A1 X  4A1 A  1B1 X  1B2 B  2B2 B  
+   18    0.018956  (   11,    9)  2A1 B  3A1 X  4A1 B  1B1 X  1B2 A  2B2 A  
+   19    0.016976  (   11,   11)  3A1 X  1B1 X  1B2 X  2B2 X  
+   20    0.015096  (   13,   13)  2A1 X  3A1 X  4A1 X  1B2 X  
+
+
+
+
+Wrote MO-basis OPDM 1 to disk
+Wrote MO-basis OPDM to disk
+
+
+        Total Time (s)     %Time 		%Relative
+ -----------------------------------------------------
+ Read      0.000371
+ Write     0.000132
+ Sigma1    0.000000
+ Sigma2    0.000129
+ Sigma3    0.000377
+ S1 Thread 0.000000
+ S2 Thread 0.000000
+ S3 Thread 0.000000
+
+		 "A good bug is a dead bug" 
+
+			 - Starship Troopers
+
+		 "I didn't write FORTRAN.  That's the problem."
+
+			 - Edward Valeev
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	... calculation continuing ...
+Forming approximate diagonal orbital Hessian
+
+D E T C I : C. David Sherrill and Matt L. Leininger, 18 June 1999
+Attempting to use 1 previous converged vectors
+Iter  0  Root  1 = -76.075760113   Delta_E -2.405E+01   Delta_C  3.039E-07  
+Iter  1  Root  1 = -76.075760113   Delta_E -6.395E-14   Delta_C  9.538E-08 c
+
+ROOT 1 ECI = -76.0757601128645
+
+CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
+WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
+
+	Trace of one-pdm =  10.000000000000
+	Trace of two-pdm =  45.000000000000
+
+D E T C A S: C. David Sherrill, April 27 1998
+
+	*** Calculation Converged ***
+Forming approximate diagonal orbital Hessian
+
+*******************************************************
+                  ORBITALS CONVERGED
+
+  Final CASSCF Energy =  -76.075760112862
+
+                DETCAS MANAGER EXITING
+*******************************************************
+
+
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+
+	**************************************************
+	* TRANSQT:  Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	*                   Sept  1995                   *
+	**************************************************
+
+	Input Parameters:
+	-----------------
+	Wavefunction           =  CASSCF
+	Reference orbitals     =  RHF
+	Backtrans              =  Yes
+	Print MOs              =  No
+	Freeze Core            =  No
+	Delete Restricted Docc =  No
+	Do All TEI             =  No
+	Memory (Mbytes)        =  256.0
+	Max Buckets            =  499
+	First Tmp File         =  150
+	Presort File           =  41
+	Source TEI File        =  74
+	Opdm In File           =  73
+	Opdm Out File          =  76
+	Lag In File            =  75
+	Keep Presort           =  No
+	J File                 =  91
+	Keep J                 =  No
+	M File                 =  77
+	Bare OEI file          =  35
+	Frozen Core OEI file   =  35
+	Sorted TEI file        =  72
+	Delete TEI source file =  Yes
+	Add TPDM Ref Part      =  No
+	Do Bare OEI tranform   =  No
+	Do FZC  OEI tranform   =  No
+	Tolerance              =  1.0e-14
+	Print Level            =  1
+	Print TE Ints          =  No
+	Print OE Ints          =  No
+	Print Sorted TE Ints   =  No
+	Print Sorted OE Ints   =  No
+	Reorder MOs            =  No
+	Check C Orthonormality =  No
+	QRHF orbitals          =  No
+	IVO orbitals           =  No
+	Pitzer                 =  No
+
+	Chkpt File Parameters:
+	------------------
+	Number of irreps = 4
+	Number of SOs    = 25
+	Number of MOs    = 25
+
+	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	-----	------	------	------	------	------
+	 A1 	   12	   12	    0	    3	    0	    9	    8
+	 A2 	   2	   2	    0	    0	    0	    2	    2
+	 B1 	   4	   4	    0	    1	    0	    3	    3
+	 B2 	   7	   7	    0	    1	    0	    6	    5
+
+	Nuclear Repulsion Energy    =         9.1057969802
+	Total SCF Energy            =       -76.0172965718
+
+	Pre-sorting two-electron ints...
+
+
+	Frozen core energy =    0.000000000000000
+	Transforming two-electron ints...
+
+	Sorting half-transformed integrals...
+	Finished half-transform...
+	Working on second half...
+
+	Transformation finished.
+	Two-electron integrals written to file77.
+
+	Transforming one-electron integrals...
+	One-pdm and lagrangian written to file76.
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density in MO basis in SQUARE form will be read from file73.
+    $Only electric dipole moment will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+
+  Title : '6-31G** CASSCF H2O'
+
+  List of PARAMETERS :
+    # of atoms                 =      3
+    # of molecular orbitals    =     25
+    # of basis functions       =     25
+    # of atomic orbitals       =     25
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     12
+    # of primitives            =     20
+    Print level                =      1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
+    NIX                        =	  11
+    NIY                        =	  11
+    GRID_ZMIN                  =	   0.00000
+    GRID_ZMAX                  =	   3.00000
+
+	Densities available up to root 1
+	** Analyzing density number 1 **
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     1      1          0        1.99542613
+     1      2          0        0.90760198
+     1      3          0        0.89272294
+     1      4          1        1.14518105
+     1      5          1        0.80453307
+     1      6          1        0.93018510
+     1      7          1        0.83210264
+     1      8          1        0.45060470
+     1      9          1        0.63078416
+     1     10          2        0.00531552
+     1     11          2        0.00000000
+     1     12          2        0.00205311
+     1     13          2        0.00922312
+     1     14          2        0.01478878
+     1     15          2        0.00332536
+     2     16          0        0.49484530
+     2     17          0        0.15532235
+     2     18          1        0.01003057
+     2     19          1        0.01533960
+     2     20          1        0.01253835
+     3     21          0        0.49484530
+     3     22          0        0.15532235
+     3     23          1        0.01003057
+     3     24          1        0.01533960
+     3     25          1        0.01253835
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   7.0735556   0.2872316   0.2872316
+    2   0.2872316   0.3546299  -0.0268404
+    3   0.2872316  -0.0268404   0.3546299
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            8.623848        -0.623848
+       2            0.688076        +0.311924
+       3            0.688076        +0.311924
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000          0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -2.21165633e-45 C*m  =  -0.00000000 a.u.
+    mu(Z)  =   2.07503 D  =   6.92155640e-30 C*m  =   0.81637936 a.u.
+    |mu|   =   2.07503 D  =   6.92155640e-30 C*m  =   0.81637936 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000         -0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      8            0.0000000000          0.0000000000         -0.1280791526
+    2      1            0.0000000000          1.4248561777          1.0163545486
+    3      1            0.0000000000         -1.4248561777          1.0163545486
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1      -22.31721616     0.00000000    0.00000000   -0.12664786
+       2       -1.01765219     0.00000000    0.00992910    0.00088666
+       3       -1.01765219     0.00000000   -0.00992910    0.00088666
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1          -1214.89884773        -1218.35519441        -1217.10511552
+       2             -1.43573718           -1.92689736           -1.76105272
+       3             -1.43573718           -1.92689736           -1.76105272
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000            1.59592173
+       3              0.00000000            0.00000000           -1.59592173
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              1.88753815           -1.56880852           -0.31872963
+       2              0.27215858           -0.21900161           -0.05315697
+       3              0.27215858           -0.21900161           -0.05315697
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000            1.59592173
+       3              0.00000000            0.00000000           -1.59592173
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1            290.48635200
+       2              0.40773008
+       3              0.40773008
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.245466593417147
+    One-electron Darwin term     :   0.194454807652534
+    Total one-electron MVD terms :   -0.051011785764613
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** CASSCF H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -CASSCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.000000558718
+       2        0.000000000000    -0.000000175249    -0.000000279359
+       3        0.000000000000     0.000000175249    -0.000000279359
+
+******************************************************************************
+tstop called on localhost.localdomain
+Fri Feb  1 19:25:03 2008
+
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1280791526
+  1.0     1.00782503   0.0000000000   1.4248561777   1.0163545486
+  1.0     1.00782503   0.0000000000  -1.4248561777   1.0163545486
+                       0.0000000000   0.0000000000   0.0000005587
+                       0.0000000000  -0.0000001752  -0.0000002794
+                       0.0000000000   0.0000001752  -0.0000002794
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.96709855)
+    (2 1 3) (0.96709855)
+Bends
+    (3 2 1 3) (102.45766599)
+ 
+ ** Taking normal optimization step. **
+
+Current CASSCF energy before step       -76.0757601129
+
+Taking geometry step number 5
+
+BuB^t Determinant: 2.532406e+00
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 4 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    0.96709855    0.00000257    0.00000034    0.96709889
+ 2    0.96709855    0.00000257    0.00000034    0.96709889
+ 3    1.78822362   -0.00000086   -0.00000113    1.78822248
+   MAX force:    0.0000025669   RMS force:    0.0000021540
+
+MAX force is < 1.0e-05.  Optimization is complete.
+Final CASSCF energy is  -76.0757601129
+The Optimized geometry in a.u.
+  (  O   0.0000000000   0.0000000000  -0.1280791526 )
+  (  H   0.0000000000   1.4248561777   1.0163545486 )
+  (  H   0.0000000000  -1.4248561777   1.0163545486 )
+  zmat = ( 
+    ( O )
+    ( H  1    0.96710)
+    ( H  1    0.96710 2  102.45767)
+  )
+
+
+******** OPTKING execution completed ********
+

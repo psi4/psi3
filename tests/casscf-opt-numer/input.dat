@@ -1,0 +1,22 @@
+% 6-31G** H2O Test CASSCF Optimization
+
+psi: (
+  label = "6-31G** CASSCF H2O"
+  jobtype = opt
+  dertype = none
+  wfn = casscf
+  reference = rhf
+  restricted_docc = (1 0 0 0)
+  active          = (3 0 1 2)
+  basis = "6-31G**"
+  zmat = (
+    o
+    h 1 1.00
+    h 1 1.00 2 103.1
+  )
+)
+
+detcas: (
+  convergence = 5
+)
+
