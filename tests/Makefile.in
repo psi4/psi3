@@ -10,9 +10,10 @@ rb_subdirs = rb-scf-opt-numer rb-ccsd_t-sp rb-fci-h2o rb-ccsd-opt-grad
 
 ci_subdirs = cisd-sp cisd-sp-2 fci-h2o fci-h2o-2 fci-h2o-clpse fci-h2o-fzcv \
 cisd-h2o+-0 cisd-h2o+-1 cisd-h2o+-2 \
-fci-dipole fci-trans zaptn-nh2
+fci-dipole fci-trans zaptn-nh2 
 
-mcscf_subdirs = casscf-sp casscf-sa-sp casscf-fzc-sp rasscf-sp
+mcscf_subdirs = casscf-sp casscf-sa-sp casscf-fzc-sp rasscf-sp \
+casscf-opt-numer casscf-opt
 
 subdirs = \
 scf-opt scf-opt-fragments scf-opt2 scf-opt3 scf-opt4 scf-opt5 scf-opt6 scf-opt7 \
