@@ -889,6 +889,8 @@ AC_CONFIG_FILES([include/Makefile
           tests/casscf-sa-sp/Makefile
           tests/casscf-fzc-sp/Makefile
           tests/rasscf-sp/Makefile
+          tests/casscf-opt-numer/Makefile
+          tests/casscf-opt/Makefile
           tests/zaptn-nh2/Makefile
           tests/mp2-sp/Makefile
           tests/mp2-direct-sp/Makefile
