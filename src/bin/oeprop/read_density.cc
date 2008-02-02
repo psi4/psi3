@@ -96,14 +96,17 @@ void read_density()
     fzc = 1;
     errcod = ip_boolean("FREEZE_CORE",&fzc,0);
  
-    if (strcmp(wfn, "CI") == 0 || strcmp(wfn, "DETCI") == 0
-      || strcmp(wfn, "DETCAS") == 0) {
+    if (ci_wfn(wfn)) {
         frozen_docc = init_int_array(nirreps);
         frozen_uocc = init_int_array(nirreps);
       if (!ras_set2(nirreps, nmo, fzc, 1, orbspi, docc, socc,
 		   frozen_docc, frozen_uocc, rstr_docc, rstr_uocc,
                    ras_opi, reorder, 1, 0) )
         punt("Error in ras_set()");
+      /* treat restricted vir as frozen vir for now */
+      for (i=0; i<nirreps; i++) {
+        frozen_uocc[i] += rstr_uocc[i];
+      }
     }
     else { /* CC densities */
       if (chkpt_rd_override_occ()) { /* ignore input occupations */
@@ -138,9 +141,9 @@ void read_density()
     }
 
     populated_orbs = nmo;
-    for (irrep=0; irrep<nirreps; irrep++)
+    for (irrep=0; irrep<nirreps; irrep++) {
       populated_orbs -= frozen_uocc[irrep];
-
+    }
     onepdm = block_matrix(populated_orbs, populated_orbs);
 
     psio_open(opdm_file, PSIO_OPEN_OLD);

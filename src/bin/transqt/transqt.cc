@@ -707,6 +707,7 @@ void get_moinfo(void)
   int i,j,k,h,errcod,size,row,col,p,q,offset,first_offset,last_offset,warned;
   int *tmpi, nopen;
   double **tmpmat, **so2ao;
+  int **ras_opi;
 
   chkpt_init(PSIO_OPEN_OLD);
   moinfo.nmo = chkpt_rd_nmo();
@@ -800,14 +801,45 @@ void get_moinfo(void)
   moinfo.frdocc = get_frzcpi();
   moinfo.fruocc = get_frzvpi();
 
-  errcod = ip_int_array("RESTRICTED_DOCC",moinfo.rstrdocc,moinfo.nirreps);
-  errcod = ip_int_array("RESTRICTED_UOCC",moinfo.rstruocc,moinfo.nirreps);
+  if (strcmp(params.wfn, "CI") == 0 || strcmp(params.wfn, "DETCI") == 0
+      || strcmp(params.wfn, "GVVPT2") == 0
+      || strcmp(params.wfn, "MCSCF") == 0
+      || strcmp(params.wfn, "OOCCD") == 0
+      || strcmp(params.wfn, "ZAPTN") == 0
+      || strcmp(params.wfn, "CASSCF") == 0
+      || strcmp(params.wfn, "RASSCF") == 0
+      || strcmp(params.wfn, "DETCAS") == 0) {
 
-  if (params.treat_cor_as_fzc) {
-    for (i=0; i<moinfo.nirreps; i++) {
-      moinfo.frdocc[i] += moinfo.rstrdocc[i];
-      moinfo.rstrdocc[i] = 0;
+    ras_opi = init_int_matrix(MAX_RAS_SPACES,moinfo.nirreps);
+    tmpi = init_int_array(moinfo.nmo);
+
+    if (strcmp(params.wfn, "GVVPT2")==0 || strcmp(params.wfn, "MCSCF")==0)
+      i=1;
+    else i=0;
+
+    if (!ras_set2(moinfo.nirreps, moinfo.nmo, params.fzc,
+                 params.del_restr_docc, moinfo.orbspi,
+                 moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
+                 moinfo.rstrdocc, moinfo.rstruocc, ras_opi, tmpi,
+                 params.ras_type, i)) {
+      fprintf(outfile, "Error in ras_set().  Aborting.\n");
+      abort();
     }
+
+    free_int_matrix(ras_opi);
+    free(tmpi);
+
+    if (params.treat_cor_as_fzc) {
+      for (i=0; i<moinfo.nirreps; i++) {
+        moinfo.frdocc[i] += moinfo.rstrdocc[i];
+        moinfo.rstrdocc[i] = 0;
+        if (params.backtr) {
+          moinfo.fruocc[i] += moinfo.rstruocc[i];
+          moinfo.rstruocc[i] = 0;
+        }
+      }
+    }
+
   }
 
   if (!params.fzc) {
@@ -1224,6 +1256,10 @@ void get_reorder_array(void)
       for (i=0; i<moinfo.nirreps; i++) {
         moinfo.frdocc[i] += moinfo.rstrdocc[i];
         moinfo.rstrdocc[i] = 0;
+        if (params.backtr) {
+          moinfo.fruocc[i] += moinfo.rstruocc[i];
+          moinfo.rstruocc[i] = 0;
+        }
       }
     }
 
