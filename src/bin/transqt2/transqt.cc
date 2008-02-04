@@ -46,7 +46,6 @@ namespace psi {
   namespace transqt2 {
 
 void init_io(int argc, char *argv[]);
-void init_ioff(void);
 void title(void);
 void get_params(void);
 void get_moinfo(void);
@@ -58,8 +57,7 @@ int file_build_presort(dpdfile4 *,int,double,long int,int,int,double *,
                        double *,double *,double *,int);
 void transtwo_rhf(void);
 void transtwo_uhf(void);
-void transone(int,int,double *,double *,double **,int,int *,int *);
-void semicanonical_fock(void);
+void transone(int,int,double *,double *,double **,int,int *);
 
  }
 }
@@ -74,17 +72,15 @@ main(int argc, char *argv[])
   int h, pq, p, q, i;
   double *H, *D, *F, *oei;
   double *H_a, *H_b, *D_a, *D_b, *F_a, *F_b;
-  double ***C, ***C_a, ***C_b;
+  double **C, **C_a, **C_b;
   int stat;
   int *so_offset, *mo_offset;
   double efzc;
 
   init_io(argc,argv);
-  init_ioff();
   title();
   get_params();
   get_moinfo();
-  if(params.semicanonical) semicanonical_fock();
 
   timer_init();
 
@@ -102,20 +98,10 @@ main(int argc, char *argv[])
 
   /*** Starting one-electron transforms and presort ***/
 
-  /* For the one-electron integral transform, the full MO list is best */
-  if(params.ref == 0 || params.ref == 1) {
-    C = (double ***) malloc(1 * sizeof(double **));
-    chkpt_init(PSIO_OPEN_OLD);
-    C[0] = chkpt_rd_scf();
-    chkpt_close();
-  }
+  if(params.ref == 0 || params.ref == 1) C = moinfo.C_full;
   else {
-    C_a = (double ***) malloc(1 * sizeof(double **));
-    C_b = (double ***) malloc(1 * sizeof(double **));
-    chkpt_init(PSIO_OPEN_OLD);
-    C_a[0] = chkpt_rd_alpha_scf();
-    C_b[0] = chkpt_rd_beta_scf();
-    chkpt_close();
+    C_a = moinfo.C_full_a;
+    C_b = moinfo.C_full_b;
   }
 
   /* build the frozen-core density (RHF) */
@@ -133,7 +119,7 @@ main(int argc, char *argv[])
 	for(q=so_offset[h]; q <=p; q++) {
 	  pq = INDEX(p,q);
 	  for(i=mo_offset[h]; i < mo_offset[h] + moinfo.core[h]; i++)
-	    D[pq] += C[0][p][i] * C[0][q][i];
+	    D[pq] += C[p][i] * C[q][i];
 	}
     if(params.print_lvl > 2) {
       fprintf(outfile, "\n\tFrozen-core density (SO):\n");
@@ -148,8 +134,8 @@ main(int argc, char *argv[])
 	for(q=so_offset[h]; q <=p; q++) {
 	  pq = INDEX(p,q);
 	  for(i=mo_offset[h]; i < mo_offset[h] + moinfo.core[h]; i++) {
-	    D_a[pq] += C_a[0][p][i] * C_a[0][q][i];
-	    D_b[pq] += C_b[0][p][i] * C_b[0][q][i];
+	    D_a[pq] += C_a[p][i] * C_a[q][i];
+	    D_b[pq] += C_b[p][i] * C_b[q][i];
 	  }
 	}
     if(params.print_lvl > 2) {
@@ -180,10 +166,10 @@ main(int argc, char *argv[])
   dpd_file4_init(&I, PSIF_SO_PRESORT, 0, 3, 3, "SO Ints (pq,rs)");
   if(params.ref == 0 || params.ref == 1) 
     file_build_presort(&I, PSIF_SO_TEI, params.tolerance, params.memory, 
-	!params.delete_tei, moinfo.nfzc, D, NULL, F, NULL, params.ref);
+	!params.delete_tei, moinfo.ncore, D, NULL, F, NULL, params.ref);
   else 
     file_build_presort(&I, PSIF_SO_TEI, params.tolerance, params.memory, 
-	!params.delete_tei, moinfo.nfzc, D_a, D_b, F_a, F_b, params.ref);
+	!params.delete_tei, moinfo.ncore, D_a, D_b, F_a, F_b, params.ref);
   dpd_file4_close(&I);
   psio_close(PSIF_SO_PRESORT, 1);
   timer_off("presort");
@@ -240,12 +226,12 @@ main(int argc, char *argv[])
   chkpt_wt_efzc(efzc);
   chkpt_close();
 
-  /*** One-electron transforms.  Note that all orbitals are transformed,
-       including those in the inactive space. ***/
+  /*** One-electron forward transforms.  Note that all orbitals are
+       transformed, including those in the inactive space. ***/
 
   /* transform the bare one-electron integrals */
   if(params.ref == 0 || params.ref == 1) {
-    transone(nso, nmo, H, oei, C[0], nmo, moinfo.pitz2corr_one, ioff);
+    transone(nso, nmo, H, oei, C, nmo, moinfo.pitz2corr_one);
     if(params.print_lvl > 2) {
       fprintf(outfile, "\n\tOne-electron integrals (MO basis):\n");
       print_array(oei, nmo, outfile);
@@ -254,7 +240,7 @@ main(int argc, char *argv[])
   }
   else { /* UHF */
     /* alpha */
-    transone(nso, nmo, H, oei, C_a[0], nmo, moinfo.pitz2corr_one_A, ioff);
+    transone(nso, nmo, H, oei, C_a, nmo, moinfo.pitz2corr_one_A);
     if(params.print_lvl > 2) {
       fprintf(outfile, "\n\tAlpha one-electron integrals (MO basis):\n");
       print_array(oei, nmo, outfile);
@@ -262,7 +248,7 @@ main(int argc, char *argv[])
     iwl_wrtone(PSIF_OEI, PSIF_MO_A_OEI, ntri_mo, oei);
 
     /* beta */
-    transone(nso, nmo, H, oei, C_b[0], nmo, moinfo.pitz2corr_one_B, ioff);
+    transone(nso, nmo, H, oei, C_b, nmo, moinfo.pitz2corr_one_B);
     if(params.print_lvl > 2) {
       fprintf(outfile, "\n\tBeta one-electron integrals (MO basis):\n");
       print_array(oei, nmo, outfile);
@@ -272,7 +258,7 @@ main(int argc, char *argv[])
 
   /* transform the frozen-core operator */
   if(params.ref == 0 || params.ref == 1) { /* RHF/ROHF */
-    transone(nso, nmo, F, oei, C[0], nmo, moinfo.pitz2corr_one, ioff);
+    transone(nso, nmo, F, oei, C, nmo, moinfo.pitz2corr_one);
     if(params.print_lvl > 2) {
       fprintf(outfile, "\n\tFrozen-core operator (MO basis):\n");
       print_array(oei, nmo, outfile);
@@ -282,7 +268,7 @@ main(int argc, char *argv[])
   else { /* UHF */
 
     /* alpha */
-    transone(nso, nmo, F_a, oei, C_a[0], nmo, moinfo.pitz2corr_one_A, ioff);
+    transone(nso, nmo, F_a, oei, C_a, nmo, moinfo.pitz2corr_one_A);
     if(params.print_lvl > 2) {
       fprintf(outfile, "\n\tAlpha frozen-core operator (MO basis):\n");
       print_array(oei, nmo, outfile);
@@ -290,7 +276,7 @@ main(int argc, char *argv[])
     iwl_wrtone(PSIF_OEI, PSIF_MO_A_FZC, ntri_mo, oei);
 
     /* beta */
-    transone(nso, nmo, F_b, oei, C_b[0], nmo, moinfo.pitz2corr_one_B, ioff);
+    transone(nso, nmo, F_b, oei, C_b, nmo, moinfo.pitz2corr_one_B);
     if(params.print_lvl > 2) {
       fprintf(outfile, "\n\tBeta frozen-core operator (MO basis):\n");
       print_array(oei, nmo, outfile);
@@ -303,18 +289,12 @@ main(int argc, char *argv[])
   if(params.ref == 0 || params.ref == 1) {
     free(F);
     free(D);
-    free_block(C[0]);
-    free(C);
   }
   else {
     free(F_a);
     free(F_b);
     free(D_a);
     free(D_b);
-    free_block(C_a[0]);
-    free(C_a);
-    free_block(C_b[0]);
-    free(C_b);
   }
 
   /*** One-electron transforms complete ***/
@@ -334,7 +314,6 @@ main(int argc, char *argv[])
   timer_done();
 
   cleanup();
-  free(ioff);
   exit_io();
   exit(PSI_RETURN_SUCCESS);
 }
@@ -353,9 +332,12 @@ void init_io(int argc, char *argv[])
   extra_args = (char **) malloc(argc*sizeof(char *));
 
   params.print_lvl = 1;
+  params.backtr = 0;
   for (i=1; i<argc; i++) {
     if (!strcmp(argv[i], "--quiet"))
       params.print_lvl = 0;
+    else if(!strcmp(argv[i], "--backtr"))
+      params.backtr = 1;
     else
       extra_args[num_extra_args++] = argv[i];
   }
@@ -393,14 +375,6 @@ void exit_io(void)
   psio_done();
   if(params.print_lvl) tstop(outfile);
   psi_stop(infile,outfile,psi_file_prefix);
-}
-
-void init_ioff(void)
-{
-  int i;
-  ioff = init_int_array(IOFF_MAX);
-  for(i=1; i < IOFF_MAX; i++)
-    ioff[i] = ioff[i-1] + i;
 }
 
   } // namespace transqt2

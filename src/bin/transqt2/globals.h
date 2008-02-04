@@ -29,11 +29,10 @@ EXTERN FILE *infile, *outfile;
 EXTERN char *psi_file_prefix;
 }
 
-EXTERN int *ioff;
 EXTERN struct MOInfo moinfo;
 EXTERN struct Params params;
 
-#define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
+#define INDEX(i,j) ((i>j) ? ((i*(i+1)/2)+j) : ((j*(j+1)/2)+i))
 
 #define PSIF_HALFT0 91
 #define PSIF_HALFT1 92

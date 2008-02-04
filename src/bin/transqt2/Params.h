@@ -20,6 +20,7 @@ struct Params {
   long int memory;    /* Memory available (in bytes) */
   int semicanonical;  /* Boolean for semicanonical orbitals */
   int delete_tei;     /* Boolean for the TEI integral file */
+  int backtr;         /* Boolean for back-transforms (not yet implemented) */
 };
 
   } // namespace transqt2

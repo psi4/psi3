@@ -27,6 +27,7 @@ struct MOInfo {
   int *core;             /* no. of "core" orbitals per irrep (for fzc op) */
   char **labels;         /* irrep labels */
   int nfzc;              /* total no. of frozen core orbitals */
+  int ncore;             /* total no. of "core" orbs = frdocc + rstr_docc */
   int nfzv;              /* total no. of frozen virtual orbitals */
   int nactive;           /* no. of active MOs */
 
@@ -39,6 +40,15 @@ struct MOInfo {
   int *pitz2corr_two;      /* two-electron integral reordering array (RHF): Pitzer MO -> corr */
   int *pitz2corr_two_A;    /* two-electron integral reordering array (UHF): Pitzer MO -> corr (alpha) */
   int *pitz2corr_two_B;    /* two-electron integral reordering array (UHF): Pitzer MO -> corr (beta) */
+
+  double ***C;             /* Irrep-blocked MO/SO transform matrix (RHF) */
+  double ***C_a;           /* Irrep-blocked alpha MO/SO transform matrix (UHF) */
+  double ***C_b;           /* Irrep-blocked beta MO/SO transform matrix (UHF) */
+  double **C_full;         /* Full MO/SO transform matrix (RHF) */
+  double **C_full_a;       /* Full alpha MO/SO transform matrix (UHF) */
+  double **C_full_b;       /* Full beta MO/SO transform matrix (UHF) */
+
+  int *C_offset;           /* Column offset for skipping core orbs in transformations */
 };
 
   } // namespace transqt2
