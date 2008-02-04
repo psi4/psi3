@@ -341,3 +341,19 @@ values, it is very valuable to explain what the function actually does.
 Add this explanation immediately after the function name (see above).  This
 explanation might be a few words, or an entire paragraph, as necessary.
 
+It is possible to include formulas in the doxygen documentation
+and to have them properly formatted when output to HTML or LaTeX.
+If the formula appears in the running text of a doxygen comment,
+enclose it within a pair of \celem{$\backslash$f\$} commands,
+and format it according to LaTeX rules.  To make the formula
+centered on a new line, enclose it within \celem{$\backslash$f[} and
+\celem{$\backslash$f]}.  If the formula is to be in an environment
+other than simple math mode (e.g., an \celem{eqnarray}, then begin
+the environment with \celem{$\backslash$f\{environment\}} and end it
+with \celem{$\backslash$f\}}, where \celem{environment} is something
+like \celem{eqnarray*}.  According to the doxygen documentation,
+the program can have trouble recovering from typos in formlas, and to
+get rid of a typo in a formula it may be necessary to remove the file
+\file{formula.repository} from the HTML directory.
+
+
