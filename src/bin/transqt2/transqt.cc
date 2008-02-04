@@ -20,12 +20,12 @@
 ** frozen orbitals.  
 **
 ** Remaining tasks to achieve full replacement of transqt:
-**   (1) Add reordering arrays needed for DETCI and SCF DERTYPE=2.
-**   (2) Add partial transforms for MP2 and MP2-R12.
+**   (1) Add reordering arrays needed for DETCI and SCF DERTYPE=2. (DONE)
+**   (2) Add partial transforms for MP2 and MP2-R12. (Still needed?)
 **   (3) Replace the backtransformation.  (I want to do this with
 **       symmetry, though, so there's no hurry here.)
 **
-** TDC, 7/06
+** TDC, 7/06 (last updated 2/08)
 */
 
 #include <stdio.h>

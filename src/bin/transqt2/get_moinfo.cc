@@ -67,6 +67,8 @@ namespace psi {
       int *rstr_docc, *rstr_uocc, **ras_opi;
       double ***C, ***C_a, ***C_b;
       double **C_full, **C_full_a, **C_full_b;
+      int *reorder, *reorder_A, *reorder_B;
+      double **TMP;
   
       chkpt_init(PSIO_OPEN_OLD);
       moinfo.nirreps = chkpt_rd_nirreps();
