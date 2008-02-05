@@ -2,16 +2,23 @@
 #include <stdlib.h>
 
 /*!
-  \file 3d_array.c
-  \ingroup (QT)
+  \file 3d_array.cc
+  \brief Routines for 3d arrays
+  \ingroup QT
 */
 
 extern "C" {
 	
 /*!
-** 3d_array()
-** Initialize and free 3d arrays  
-** \ingroup (QT)
+** 3d_array(): Initialize a (non-contiguous) 3D array
+**
+** \param p = size of first dimension
+** \param q = size of second dimension
+** \param r = size of third dimension
+**
+** Returns: triple-star pointer to 3D array
+**
+** \ingroup QT
 */
 
 double ***init_3d_array(int p, int q, int r)
@@ -33,6 +40,18 @@ double ***init_3d_array(int p, int q, int r)
   return A;
 }
 
+
+/*!
+** free_3d_array(): Free a (non-contiguous) 3D array
+**
+** \param A = triple-star pointer to the 3D array
+** \param p = size of first dimension
+** \param q = size of second dimension
+**
+** Returns: none
+**
+** \ingroup QT
+*/
 void free_3d_array(double ***A, int p, int q)
 {
   int i,j;

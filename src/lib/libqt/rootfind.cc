@@ -1,15 +1,15 @@
 extern "C" {
 
 /*!
-** \file rootfind.c
+** \file rootfind.cc
 ** \brief Simple root finding methods
-** \ingroup (QT)
+** \ingroup QT
 **
 **      (1) Bisection method
 **      (2) Newton's method
 **      (3) Secant method
 **
-** David Sherrill, for CS614
+** David Sherrill
 ** 20 Jan 1994
 **
 ** We know the maximum error for the bisection method, so this is used as 
@@ -52,9 +52,10 @@ extern "C" {
 **
 ** Returns:
 **   the value of the root
-** \ingroup (QT)
+** \ingroup QT
 */
-double bisect(double (*function)(double), double low, double high, double tolerance, int maxiter, int printflag)
+double bisect(double (*function)(double), double low, double high, 
+  double tolerance, int maxiter, int printflag)
 {
    int iter = 1 ;
    double tmpval ;
@@ -121,9 +122,8 @@ double bisect(double (*function)(double), double low, double high, double tolera
 **   \param printflag = whether or not to print results for each iteration 
 **                      (1 or 0)
 **
-** Returns: 
-**   the value of the root
-** \ingroup (QT)
+** Returns: the value of the root
+** \ingroup QT
 */
 double newton(double (*F)(double), double (*dF)(double), double x, double tolerance, int maxiter, int printflag)
 {
@@ -165,11 +165,11 @@ double newton(double (*F)(double), double (*dF)(double), double x, double tolera
 **   \param printflag = whether or not to print results for each iteration 
 **                      (1 or 0)
 **
-** Returns:
-**   the value of the root
-** \ingroup (QT)
+** Returns: the value of the root
+** \ingroup QT
 */
-double secant(double (*F)(double), double x0, double x1, double tolerance, int maxiter, int printflag)
+double secant(double (*F)(double), double x0, double x1, double tolerance, 
+  int maxiter, int printflag)
 {
    int iter = 2 ;
    double x2=0.0 ;

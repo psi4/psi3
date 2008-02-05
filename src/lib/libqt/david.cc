@@ -1,6 +1,7 @@
 /*! 
-    \file david.c
-    \ingroup (QT)
+  \file david.cc
+  \brief In-core Davidson-Liu diagonalization of symm matrices
+  \ingroup QT
 */
 
 #include <stdio.h>
@@ -17,9 +18,10 @@ extern "C" {
 
 /*!
 ** david(): Computes the lowest few eigenvalues and eigenvectors of a
-** symmetric matrix, A, using the Davidson-Liu algorithm.  The matrix
-** must be small enough to fit entirely in core.  This algorithm is
-** useful if one is interested in only a few roots of the matrix
+** symmetric matrix, A, using the Davidson-Liu algorithm.  
+**
+** The matrix must be small enough to fit entirely in core.  This algorithm 
+** is useful if one is interested in only a few roots of the matrix
 ** rather than the whole spectrum.
 **
 ** NB: This implementation will keep up to eight guess vectors for each
@@ -30,16 +32,16 @@ extern "C" {
 **
 ** TDC, July-August 2002
 **
-**   \param A      = matrix to diagonalize
-**   \param N      = dimension of A
-**   \param M      = number of roots desired
-**   \param eps    = eigenvalues
-**   \param v      = eigenvectors
-**   \param cutoff = tolerance for convergence of eigenvalues
-**   \param print  = Boolean for printing additional information
+** \param A      = matrix to diagonalize
+** \param N      = dimension of A
+** \param M      = number of roots desired
+** \param eps    = eigenvalues
+** \param v      = eigenvectors
+** \param cutoff = tolerance for convergence of eigenvalues
+** \param print  = Boolean for printing additional information
 **
 ** Returns: number of converged roots
-** \ingroup (QT)
+** \ingroup QT
 */
 
 int david(double **A, int N, int M, double *eps, double **v, 

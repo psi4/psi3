@@ -2,16 +2,23 @@
 #include <stdlib.h>
 
 /*!
-  \file mat_print.c
-  \ingroup (QT)
+  \file mat_print.cc
+  \ingroup QT
 */
 
 extern "C" {
 	
 /*!
-** mat_print()
-** This function prints a matrix to a file in a formatted style
-** \ingroup (QT)
+** mat_print(): Prints a matrix to a file in a formatted style
+**
+** \param matrix  = matrix to print
+** \param rows    = number of rows
+** \param cols    = number of columns
+** \param outfile = output file pointer for printing
+**
+** Returns: Always returns zero...
+**
+** \ingroup QT
 */
 int mat_print(double **matrix, int rows, int cols, FILE *outfile)
 {

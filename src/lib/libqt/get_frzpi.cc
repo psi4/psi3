@@ -1,3 +1,9 @@
+/*!
+  \file get_frzpi.cc
+  \brief Get frozen core/virtuals per irrep
+  \ingroup QT
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <libciomr/libciomr.h>
@@ -24,6 +30,15 @@ extern "C" {
 #define CHKPT_DONE if (need_to_init_chkpt) \
     chkpt_close();
 
+/*!
+** get_frzcpi(): Get frozen core per irrep array.
+**
+** Parameters: none
+**
+** Returns: pointer to int array
+**
+** \ingroup QT
+*/
 int* get_frzcpi()
 {
   int errcod;
@@ -55,6 +70,15 @@ PSIO_DONE
 }
 
 
+/*!
+** get_frzvpi(): Get frozen virtuals per irrep array.
+**
+** Parameters: none
+**
+** Returns: pointer to int array
+**
+** \ingroup QT
+*/
 int* get_frzvpi()
 {
   int errcod;

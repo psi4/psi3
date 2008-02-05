@@ -1,6 +1,6 @@
 /*!
-  \file normalize.c
-  \ingroup (QT)
+  \file normalize.cc
+  \ingroup QT
 */
 
 #include <stdio.h>
@@ -16,8 +16,14 @@ extern "C" {
 **
 ** Assume we're normalizing the ROWS
 **
+** \param A    = matrix holding vectors to normalize
+** \param rows = number of rows in A
+** \param cols = number of columns in A
+**
+** Returns: none
+**
 ** David Sherrill, Feb 1994
-** \ingroup (QT)
+** \ingroup QT
 */
 
 void normalize(double **A, int rows, int cols)

@@ -1,23 +1,26 @@
 /*!
-  \file dirprd_block.c
-  \ingroup (QT)
+  \file dirprd_block.cc
+  \brief Take a direct product of two matrices
+  \ingroup QT
 */
 
 extern "C" {
 	
 /*!
+ 
+   dirprd_block()
+ 
+   This function takes two block matrices A and B and multiplies
+   each element of B by the corresponding element of A
+ 
+   \param A     = block matrix A
+   \param B     = block matrix B 
+   \param nrows = number of rows of A and B
+   \param ncols = number of columns of A and B
+ 
+   Returns: none
 
-  dirprd_block()
-
-  This function takes two block matrices A and B and multiplies
-  each element of B by the corresponding element of A
-
-  \param **A: block matrix A
-  \param **B: block matrix B 
-  \param nrows: number of rows of A and B
-  \param ncols: number of columns of A and B
-
-  \ingroup (QT)
+   \ingroup QT
 */
 void dirprd_block(double **A, double **B, int rows, int cols)
 {

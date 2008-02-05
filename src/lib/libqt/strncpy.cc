@@ -1,12 +1,23 @@
 /*!
-  \file strncpy.c
+  \file strncpy.cc
+  \brief Override strncpy to ensure strings are terminated
+  \ingroup QT
   By Edward Valeev
-  \ingroup (QT)
 */
 
 #include <string.h>
 #include <libqt/qt.h>
 
+/*!
+** strncpy(): Override default strncpy to ensure last byte is a string
+**   terminating character.
+**
+** \param dest   = destination string
+** \param source = source string
+** \param n      = number of characters to copy
+**
+** Returns: pointer to destination string
+*/
 char*
 psi::strncpy(char* dest, const char* source, size_t n) {
   if (n > 0) {

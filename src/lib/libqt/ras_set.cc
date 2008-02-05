@@ -1,6 +1,7 @@
 /*!
-  \file ras_set.c
-  \ingroup (QT)
+  \file ras_set.cc
+  \brief Obtain orbital space and reordering for CI/MCSCF wavefunctions
+  \ingroup QT
 */
 
 #include <stdio.h>
@@ -15,7 +16,7 @@ extern "C" {
 extern FILE *outfile;
 
 /*!
-** ras_set()
+** ras_set(): Deprecated
 **
 ** This function sets up the number of orbitals per irrep for each of the
 ** RAS subspaces [frozen core, RAS I, RAS II, RAS III, RAS IV, frozen virts].
@@ -48,7 +49,7 @@ extern FILE *outfile;
 **                        in its own RAS space (RAS II), as appropriate for CC.
 **
 ** Returns: 1 for success, 0 otherwise
-** \ingroup (QT)
+** \ingroup QT
 */
 int ras_set(int nirreps, int nbfso, int freeze_core, int *orbspi,
             int *docc, int *socc, int *frdocc, int *fruocc, 
@@ -293,7 +294,7 @@ int ras_set(int nirreps, int nbfso, int freeze_core, int *orbspi,
 **                        Note odd placement of FZC in middle!
 **
 ** Returns: 1 for success, 0 otherwise
-** \ingroup (QT)
+** \ingroup QT
 */
 int ras_set2(int nirreps, int nmo, int delete_fzdocc, 
              int delete_restrdocc, int *orbspi,

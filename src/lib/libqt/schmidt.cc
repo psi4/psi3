@@ -1,6 +1,7 @@
 /*!
-  \file schmidt.c
-  \ingroup (QT)
+  \file schmidt.cc
+  \brief Gram-Schmidt orthogonalize a set of vectors
+  \ingroup QT
 */
  
 #include <stdio.h>
@@ -20,12 +21,12 @@ extern "C" {
 **
 ** David Sherrill, Feb 1994
 **
-**   \param A    = matrix to orthogonalize (matrix of doubles)
-**   \param rows = rows of A 
-**   \param cols = columns of A
+** \param A    = matrix to orthogonalize (matrix of doubles)
+** \param rows = rows of A 
+** \param cols = columns of A
 **
 ** Returns: none
-** \ingroup (QT)
+** \ingroup QT
 */
 void schmidt(double **A, int rows, int cols, FILE *outfile)
 {

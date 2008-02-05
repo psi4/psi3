@@ -1,6 +1,7 @@
 /*!
-    \file sort.c
-    \ingroup (QT)
+  \file sort.cc
+  \brief Sort eigenvalues and eigenvectors into ascending order
+  \ingroup QT
 */
 
 extern "C" {
@@ -10,12 +11,12 @@ extern "C" {
 **
 ** TDC, July 2002
 **
-**  \param A  = array of eigenvalues
-**  \param B  = matrix of eigenvectors
-**  \param n  = length of A.
+** \param A  = array of eigenvalues
+** \param B  = matrix of eigenvectors
+** \param n  = length of A
 **
 ** Returns: none
-** \ingroup (QT)
+** \ingroup QT
 */
 
 void sort(double *A, double **B, int n)
@@ -42,6 +43,15 @@ void sort(double *A, double **B, int n)
   }
 }
 
+/*!
+** sort_vector(): Sort the elements of a vector into increasing order
+**
+** \param A = array to sort
+** \param n = length of array
+**
+** Returns: none
+** \ingroup QT
+*/
 void sort_vector(double *A, int n)
 {
   int i, j, k;

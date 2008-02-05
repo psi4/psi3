@@ -1,7 +1,7 @@
-/*
-** qt.h
-**
-** Header file for the Quantum Trio Library 
+/*!
+** \file qt.h
+** \brief Header file for the Quantum Trio Library 
+** \ingroup QT
 **
 ** David Sherrill 1994
 **

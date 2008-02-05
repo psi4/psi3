@@ -1,7 +1,7 @@
 /*!
-  \file probabil.c
+  \file probabil.cc
   \brief Contains some probability functions
-  \ingroup (QT)
+  \ingroup QT
 */
 
 extern "C" {
@@ -18,7 +18,7 @@ extern "C" {
 **    number of combinations of n objects taken k at a time ("n choose k")
 **    (returned as a double).
 **
-** \ingroup (QT)
+** \ingroup QT
 */
 double combinations(int n, int k)
 {
@@ -42,7 +42,7 @@ double combinations(int n, int k)
 **
 ** Returns:
 **    n factorial, as a double word (since n! can get very large).
-** \ingroup (QT)
+** \ingroup QT
 */
 double factorial(int n)
 {
