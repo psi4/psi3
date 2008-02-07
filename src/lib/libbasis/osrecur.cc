@@ -10,6 +10,8 @@ extern "C" {
 
 #include "osrecur.h"
 
+using namespace psi;
+
 OI_OSRecursor::OI_OSRecursor(int maxam1, int maxam2) :
   maxam1_(maxam1), maxam2_(maxam2)
 {

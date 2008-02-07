@@ -8,6 +8,8 @@
 
 #include <psitypes.h>
 
+namespace psi {
+
 class BasisSet;
 
 class GaussianShell {
@@ -70,5 +72,7 @@ class GaussianShell {
   PSI_FLOAT cc(int ci, int pi) const;
 
 };
+
+} // end of namespace psi
 
 #endif

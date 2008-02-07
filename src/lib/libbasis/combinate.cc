@@ -10,6 +10,8 @@ extern "C" {
 #include <stdexcept>
 #include "combinate.h"
 
+using namespace psi;
+
 StatCombData::StatCombData(int imax) :
   imax_(imax)
 {

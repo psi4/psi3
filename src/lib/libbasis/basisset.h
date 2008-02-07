@@ -9,6 +9,8 @@
 #include <psitypes.h>
 #include "shell.h"
 
+namespace psi {
+
 class BasisSet {
 
   int num_prims_;
@@ -65,5 +67,7 @@ class BasisSet {
   /// Get i-th coordinate of center ci
   PSI_FLOAT get_center(int ci, int i);
 };
+
+} // end of namespace psi
 
 #endif

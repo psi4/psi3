@@ -9,6 +9,7 @@
 
 #include "shell.h"
 
+using namespace psi;
 
 GaussianShell::GaussianShell(int nprims, int ncontr, int *am, bool puream, PSI_FLOAT *exps, PSI_FLOAT **ccoeffs, PSI_FLOAT origin[3]) :
   num_prims_(nprims), num_contr_(ncontr), puream_(puream)

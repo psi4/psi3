@@ -12,6 +12,8 @@
 #include "osrecur.h"
 #include "gnorm.h"
 
+namespace psi {
+
 class OverlapEngine {
 
   const BasisSet* bs1_;
@@ -33,5 +35,7 @@ class OverlapEngine {
   /// Allocate and compute full overlap matrix
   PSI_FLOAT** compute_full_matrix();
 };
+
+} // end of namespace psi
 
 #endif

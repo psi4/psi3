@@ -11,9 +11,10 @@
 #include <stdexcept>
 #include <psitypes.h>
 
+namespace psi {
+
 /** Class StatCombData contains static data of combinatorial type -
     factorials, binomial coefficients, etc. */
-
 class StatCombData {
 
   int imax_;
@@ -45,5 +46,7 @@ class StatCombData {
   /// Return binomial coefficient (n, m), where n>=m
   PSI_FLOAT binomc(int n, int m) const { check_index(n); check_index(m); return BinomC_[n][m]; };
 };
+
+} // end of namespace psi
 
 #endif

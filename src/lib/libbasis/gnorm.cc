@@ -11,6 +11,8 @@
 #endif
 #include "gnorm.h"
 
+using namespace psi;
+
 GaussianNormalization::GaussianNormalization(int am) :
   maxam_(am)
 {

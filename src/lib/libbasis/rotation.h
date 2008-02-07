@@ -10,6 +10,8 @@
 #include "gnorm.h"
 #include "combinate.h"
 
+namespace psi {
+
 class RotationOp {
 
   BasisSet* bs_;
@@ -38,5 +40,7 @@ class RotationOp {
   /// Return the transformation matrix for a shell of a given angular momentum
   PSI_FLOAT** rotation_mat(PSI_FLOAT** R, int l);
 };
+
+} // end of namespace psi
 
 #endif

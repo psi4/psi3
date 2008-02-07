@@ -14,6 +14,8 @@ extern "C" {
 }
 #include "rotation.h"
 
+using namespace psi;
+
 RotationOp::RotationOp(BasisSet* bs) :
   gnorm_(bs->max_am()), scdata_(bs->max_am())
 {

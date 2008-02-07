@@ -17,6 +17,8 @@ extern "C" {
 
 #define MAX(a,b) (a > b ? a : b)
 
+using namespace psi;
+
 OverlapEngine::OverlapEngine(const BasisSet* bs1, const BasisSet* bs2) :
   bs1_(bs1), bs2_(bs2), overlap_recur_(bs1_->max_am(),bs2_->max_am()),
   gnorm_(MAX(bs1_->max_am(),bs2_->max_am()))

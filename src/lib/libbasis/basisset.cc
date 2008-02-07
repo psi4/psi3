@@ -17,6 +17,8 @@ extern "C" {
 #include "basisset.h"
 //#include "shell_pairs.h"
 
+using namespace psi;
+
 BasisSet::BasisSet(int chkptfile)
 {
   num_shells_ = chkpt_rd_nshell();
