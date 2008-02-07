@@ -1,6 +1,6 @@
 /*!
-  \file ecorr.c
-  \ingroup (CHKPT)
+  \file ecorr.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>

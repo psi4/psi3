@@ -1,13 +1,9 @@
-/*! \file 
-    \ingroup (DETCASMAN)
-    \brief Enter brief description of file here 
-*/
+/*! \defgroup DETCASMAN detcasman: Determinant CASSCF/MCSCF manager */
 
-/*! \defgroup DETCASMAN Add a description of the group DETCASMAN */
-
-/*
-**
-** DETCASMAN
+/*! 
+** \file detcasman.cc
+** \ingroup DETCASMAN
+** \brief Determinant CASSCF/MCSCF manager
 **
 ** Program to manage the iteration of (transqt, detci, clag, detcas)
 ** required for orbital optimization using the DETCAS program.

@@ -1,9 +1,9 @@
 /*! \file 
-    \ingroup (CCRESPONSE)
+    \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup CCRESPONSE Add a description of the group CCRESPONSE */
+/*! \defgroup CCRESPONSE ccresponse: Coupled-cluster response module */
 
 #include <stdio.h>
 #include <string.h>

@@ -1,6 +1,6 @@
 /*!
-  \file evals.c
-  \ingroup (CHKPT)
+  \file evals.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>

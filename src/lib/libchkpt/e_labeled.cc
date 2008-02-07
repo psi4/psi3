@@ -1,6 +1,6 @@
 /*!
-  \file e_labeled.c
-  \ingroup (CHKPT)
+  \file e_labeled.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>

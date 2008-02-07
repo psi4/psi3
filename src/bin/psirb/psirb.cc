@@ -1,11 +1,10 @@
-/*! \defgroup psirb PSI3 Ruby input driver */
-/*! \file psirb.cc
-	\ingroup (psirb)
-	\brief Main file for psirb
+/*! \defgroup psirb psirb: PSI3 Ruby Input Driver */
+
+/*! 
+** \file psirb.cc
+** \ingroup (psirb)
+** \brief PSI3 Ruby driver module
 */
-//
-// PSI3 Ruby driver module
-//
 
 #include <getopt.h>
 #include <stdio.h>

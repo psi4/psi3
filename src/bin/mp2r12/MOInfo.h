@@ -1,9 +1,8 @@
-/*! \file 
-    \ingroup (MP2R12)
-    \brief Enter brief description of file here 
+/*! 
+** \file MOInfo.h
+** \ingroup MP2R12
+** \brief MOInfo structure header file
 */
-
-/*! \defgroup MP2R12 Add a description of the group MP2R12 */
 
 /* Struct for PSIF_CHKPT molecular orbital information */
 

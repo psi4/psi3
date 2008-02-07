@@ -1,6 +1,6 @@
 /*!
-  \file etot.c
-  \ingroup (CHKPT)
+  \file etot.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>

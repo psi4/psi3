@@ -1,6 +1,6 @@
 /*!
   \file emp2.cc
-  \ingroup (CHKPT)
+  \ingroup CHKPT
 */
 
 #include <stdio.h>

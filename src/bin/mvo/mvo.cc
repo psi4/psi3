@@ -1,9 +1,9 @@
-/*! \file 
-    \ingroup (MVO)
-    \brief Enter brief description of file here 
-*/
-/*
-** MVO
+/*! \defgroup MVO mvo: Compute modified virtual orbitals, etc */
+
+/*! 
+** \file mvo.cc
+** \ingroup MVO
+** \brief Compute modified virtual orbitals, etc.
 **
 ** This program reads the frozen core operator from TRANSQT 
 ** output ** and diagonalizes the virtual-virtual block to make 

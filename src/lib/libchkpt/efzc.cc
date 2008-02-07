@@ -1,6 +1,6 @@
 /*!
-  \file efzc.c
-  \ingroup (CHKPT)
+  \file efzc.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>

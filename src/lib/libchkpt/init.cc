@@ -1,6 +1,6 @@
 /*!
-  \file init.c
-  \ingroup (CHKPT)
+  \file init.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -36,7 +36,7 @@ Chkpt::Chkpt(psi::PSIO *psioObject, int status) : psio(psioObject)
 	}
 	else {
 		set_prefix("");
-		commit_prefix();  /* we assume that no default prefix existed in PSIF_CHKPT */
+		commit_prefix();  /* assume no default prefix existed in PSIF_CHKPT */
 	}
 }
 
@@ -56,7 +56,7 @@ extern "C" {
 **                file should be used (PSIO_OPEN_OLD).
 **
 **  returns: zero.  Perhaps this will change some day.
-** \ingroup (CHKPT)
+**  \ingroup CHKPT
 */
 	int chkpt_init(int status)
 	{
@@ -70,3 +70,4 @@ extern "C" {
 		return 0;
 	}
 }
+

@@ -1,7 +1,11 @@
-/*! \file 
-    \ingroup (MP2R12)
-    \brief Enter brief description of file here 
+/*! \defgroup MP2R12 mp2r12: MP2-R12 energy evaluation */
+
+/*! 
+** \file mp2r12.cc
+** \ingroup MP2R12
+** \brief MP2-R12 energy evaluation
 */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>

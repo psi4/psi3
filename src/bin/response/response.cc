@@ -1,9 +1,9 @@
-/*! \file 
-    \ingroup (RESPONSE)
-    \brief Enter brief description of file here 
-*/
-/*
-**  RESPONSE: Program to compute various response properties.
+/*! \defgroup RESPONSE response: Compute various response properties */
+
+/*! 
+** \file response.cc
+** \ingroup RESPONSE
+** \brief Module to compute various response properties
 */
 
 #include <stdio.h>

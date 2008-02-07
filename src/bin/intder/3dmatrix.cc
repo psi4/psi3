@@ -1,9 +1,8 @@
-/*! \file 
-    \ingroup (INTDER)
-    \brief Enter brief description of file here 
+/*! 
+** \file 3dmatrix.cc
+** \ingroup INTDER
+** \brief Enter brief description of file here 
 */
-
-/*! \defgroup INTDER Add a description of the group INTDER */
 
 /******************************************************************
 

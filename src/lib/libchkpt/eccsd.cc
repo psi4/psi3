@@ -1,6 +1,6 @@
 /*!
-  \file eccsd.c
-  \ingroup (CHKPT)
+  \file eccsd.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>

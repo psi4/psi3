@@ -1,7 +1,11 @@
-/*! \file 
-    \ingroup (OEPROP)
-    \brief Enter brief description of file here 
+/*! \defgroup OEPROP oeprop: Compute One-Electron Properties */
+
+/*! 
+** \file oeprop.cc
+** \ingroup OEPROP
+** \brief Compute One-Electron Properties
 */
+
 #define EXTERN
 #include "includes.h"
 #include "globals.h"

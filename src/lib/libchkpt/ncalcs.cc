@@ -1,6 +1,6 @@
 /*!
   \file calcs.cc
-  \ingroup (CHKPT)
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -35,10 +35,11 @@ extern "C" {
 ** Reads in the total number of HF wave functions.
 **
 ** returns: ncalcs = total number of HF wave functions in checkpoint
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int chkpt_rd_ncalcs(void)
 	{
 		return _default_chkpt_lib_->rd_ncalcs();
 	}
 }
+

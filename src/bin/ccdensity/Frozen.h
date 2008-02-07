@@ -1,9 +1,9 @@
 /*! \file 
-    \ingroup (CCDENSITY)
+    \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup CCDENSITY Add a description of the group CCDENSITY */
+/*! \defgroup CCDENSITY ccdensity: Computes the Coupled-Cluster Density */
 
 namespace psi { namespace ccdensity {
 

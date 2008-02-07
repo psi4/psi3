@@ -1,24 +1,23 @@
-/*! \file 
-    \ingroup (GEOM)
-    \brief Enter brief description of file here 
-*/
+/*! \defgroup GEOM geom: Compute and print geometrical parameters */
 
-/*! \defgroup GEOM Add a description of the group GEOM */
-
-/*
-** GEOM.C : Program  calculate geometrical parameters from data provided
-**          in format of PSI's FILE11.DAT or GEOM.DAT
+/*! 
+** \file geom.cc
+** \brief Compute geometrical parameters
+** \ingroup GEOM
 **
-**          Reads the last section in file11.dat, or the first section
-**          in geom.dat, as it should.  Should also read in coordinates
-**          that are in a format similar to geom.dat but not quite.
+** Program calculate geometrical parameters from data provided
+** in format of PSI's FILE11.DAT or GEOM.DAT
 **
-**          Does interatomic distances, bond angles, out-of-plane (oop)
-**          angles, torsional angles.
+** Reads the last section in file11.dat, or the first section
+** in geom.dat, as it should.  Should also read in coordinates
+** that are in a format similar to geom.dat but not quite.
 **
-**          Also, center of mass, principal moments of intertia, 
-**          rotational constants, if the data has been read in file11.dat
-**          format (which contains atomic numbers).
+** Does interatomic distances, bond angles, out-of-plane (oop)
+** angles, torsional angles.
+**
+** Also, center of mass, principal moments of intertia, 
+** rotational constants, if the data has been read in file11.dat
+** format (which contains atomic numbers).
 **
 ** Created by C. David Sherrill in April 1993
 **

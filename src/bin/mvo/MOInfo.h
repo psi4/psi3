@@ -1,9 +1,8 @@
-/*! \file 
-    \ingroup (MVO)
-    \brief Enter brief description of file here 
+/*! 
+** \file MOInfo.h
+** \ingroup MVO
+** \brief MOInfo structure of checkpoint information
 */
-
-/*! \defgroup MVO Add a description of the group MVO */
 
 #ifndef _psi_src_bin_mvo_MOInfo_h
 #define _psi_src_bin_mvo_MOInfo_h

@@ -1,6 +1,6 @@
 /*!
   \file atom_dummy.c
-  \ingroup (CHKPT)
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -44,14 +44,15 @@ void Chkpt::wt_atom_dummy(int* atom_dummy)
 
 extern "C" {
 /*!
-** chkpt_rd_atom_dummy()  
+** chkpt_rd_atom_dummy()
 **
-** Reads the array of flags which indicate whether the atom in full_geom is dummy
+** Reads the array of flags which indicate whether the atom in full_geom 
+** is dummy
 **
-** takes no arguments.
+** Parameters: none
 **
-** returns: atom_dummy = array of integers nallatom long.
-** \ingroup (CHKPT)
+** Returns: atom_dummy = array of integers nallatom long.
+** \ingroup CHKPT
 */
 	int* chkpt_rd_atom_dummy(void)
 	{
@@ -62,15 +63,17 @@ extern "C" {
 /*!
 ** chkpt_wt_atom_dummy()
 **
-** Writes the array of flags which indicate whether the atom in full_geom is dummy
+** Writes the array of flags which indicate whether the atom in full_geom 
+** is dummy
 **
 ** \param atom_dummy = array of integers nallatom long.
 **
-** returns: none
-** \ingroup (CHKPT)
+** Returns: none
+** \ingroup CHKPT
 */
 	void chkpt_wt_atom_dummy(int* atom_dummy)
 	{
 		_default_chkpt_lib_->wt_atom_dummy(atom_dummy);
 	}
 }
+

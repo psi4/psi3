@@ -1,10 +1,10 @@
-/*! \file 
-    \ingroup (STABLE)
-    \brief Enter brief description of file here 
-*/
-/*
-**  STABLE: Program to calculate the eigenvalues and eigenvectors
-**  of the molecular orbital Hessian.
+/*! \defgroup STABLE stable: Perform MO Stability Analysis */
+
+/*! 
+** \file stable.cc
+** \ingroup STABLE
+** \brief Module to calculate eigenvalues and eigenvectors of the molecular
+**   orbital Hessian
 */
 
 #include <stdio.h>

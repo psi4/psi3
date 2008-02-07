@@ -1,6 +1,6 @@
 /*!
-  \file nallatom.c
-  \ingroup (CHKPT)
+  \file nallatom.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -19,7 +19,8 @@ int Chkpt::rd_nallatom(void)
 	char *keyword;
 	keyword = build_keyword("Num. all atoms");
 
-	psio->read_entry(PSIF_CHKPT, keyword, (char *) &num_allatoms, sizeof(int));
+	psio->read_entry(PSIF_CHKPT, keyword, (char *) &num_allatoms, 
+          sizeof(int));
 
 	free(keyword);
 	return num_allatoms;
@@ -30,7 +31,8 @@ void Chkpt::wt_nallatom(int num_allatoms)
 	char *keyword;
 	keyword = build_keyword("Num. all atoms");
 
-	psio->write_entry(PSIF_CHKPT, keyword, (char *) &num_allatoms, sizeof(int));
+	psio->write_entry(PSIF_CHKPT, keyword, (char *) &num_allatoms, 
+          sizeof(int));
 
 	free(keyword);
 }
@@ -41,10 +43,11 @@ extern "C" {
 **
 ** Reads number of all atoms (including dummy atoms)
 **
-** takes no arguments.
+** Parameters: none
 **
-** returns: nallatom = number of all atoms (including dummies).
-** \ingroup (CHKPT)
+** Returns: 
+**   nallatom = number of all atoms (including dummies).
+** \ingroup CHKPT
 */
 	int chkpt_rd_nallatom(void)
 	{
@@ -57,13 +60,15 @@ extern "C" {
 **
 ** Writes the number of all atoms (including dummy atoms)
 **
-** \param nallatom  = number of all atoms (including dummies).
+** Parameters:
+**   \param nallatom  = number of all atoms (including dummies).
 **
-** returns: none
-** \ingroup (CHKPT)
+** Returns: none
+** \ingroup CHKPT
 */
 	void chkpt_wt_nallatom(int num_allatoms)
 	{
 		_default_chkpt_lib_->wt_nallatom(num_allatoms);
 	}
 }
+

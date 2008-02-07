@@ -1,9 +1,8 @@
-/*! \file 
-    \ingroup (STABLE)
-    \brief Enter brief description of file here 
+/*! 
+** \file MOInfo.h 
+** \ingroup STABLE
+** \brief MOInfo structure with info about MO's from checkpoint
 */
-
-/*! \defgroup STABLE Add a description of the group STABLE */
 
 namespace psi { namespace stable {
 

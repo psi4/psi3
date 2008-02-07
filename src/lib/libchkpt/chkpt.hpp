@@ -9,8 +9,9 @@ namespace psi {
 	class PSIO;
 	
 	/**
-		Chkpt is an instance of the libchkpt library. Multiple instances are 
-		supported by having multiple instances of libpsio available.
+		Chkpt is an instance of the libchkpt library. 
+                Multiple instances are supported by having multiple 
+                instances of libpsio available.
 		
 		Each instance is configured by the constructor:
 		Chkpt new_instance(&libpsio_instance, PSIO_OPEN_OLD);
@@ -22,11 +23,11 @@ namespace psi {
 		char chkpt_prefix[CHKPT_PREFIX_LEN];
 	public:
 		/*! Constructor. Calls PSIO::open to open the checkpoint file.
-			\param psioObject Instance of libpsio to connect through.
+			\param psioObject Instance of libpsio to connect through
 			\param status Either PSIO_OPEN_OLD or PSIO_OPEN_NEW.
 		*/
 		Chkpt(PSIO *psioObject, int status);
-		/*! Destructor. Call PSIO::close to close the checkpoint file. */
+		/*! Destructor. Call PSIO::close to close the checkpoint file.*/
 		~Chkpt();
 		/// update this object. call rehash() if the state of the checkpoint file may have changed
 		void rehash();

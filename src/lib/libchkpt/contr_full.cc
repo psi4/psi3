@@ -44,11 +44,12 @@ extern "C" {
 /*!
 ** chkpt_rd_contr_full(): Reads in the normalized contraction coefficients.
 **
-**  takes no arguments.
+** Parameters: none
 **
-**  returns: double **contr Normalized contraction coefficients are
-**  returned as a matrix of doubles.
-** \ingroup (CHKPT)
+** Returns: 
+** double **contr, Normalized contraction coefficients are returned 
+** as a matrix of doubles.
+** \ingroup CHKPT
 */
 
 	double **chkpt_rd_contr_full(void)
@@ -56,3 +57,4 @@ extern "C" {
 		return _default_chkpt_lib_->rd_contr_full();
 	}   
 }
+

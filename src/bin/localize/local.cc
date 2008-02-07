@@ -1,9 +1,10 @@
-/*! \file 
-    \ingroup (LOCALIZE)
-    \brief Enter brief description of file here 
-*/
+/*! \defgroup LOCALIZE localize: Localize the orbitals */
 
-/*! \defgroup LOCALIZE Add a description of the group LOCALIZE */
+/*! 
+** \file local.cc
+** \ingroup LOCALIZE
+** \brief Localize the orbitals
+*/
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,9 +1,11 @@
-/*! \defgroup EXTREMA Add a description of the group EXTREMA */
+/*! \defgroup EXTREMA extrema: An optimizer (experimental code) */
 
 /*###########################################################################*/
-/*! \file 
-    \ingroup (EXTREMA)
-  \brief #define parameters */
+/*! 
+   \file defines.h
+   \ingroup EXTREMA
+   \brief #define parameters 
+*/
 /*###########################################################################*/
 
 #ifndef _psi_bin_extrema_defines_h_

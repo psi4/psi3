@@ -1,9 +1,8 @@
-/*! \file 
-    \ingroup (RESPONSE)
-    \brief Enter brief description of file here 
+/*! 
+** \file MOInfo.h
+** \ingroup RESPONSE
+** \brief MOInfo structure with checkpoint information about MO's
 */
-
-/*! \defgroup RESPONSE Add a description of the group RESPONSE */
 
 namespace psi { namespace response {
 

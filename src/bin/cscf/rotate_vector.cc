@@ -28,8 +28,8 @@ static char *rcsid = "$Id$";
 
 namespace psi { namespace cscf {
 
-void check_rot(int nn, int num_mo, double **cold, double **cnew, double *smat_pac,
-      double *fock_evals, int irrep);
+void check_rot(int nn, int num_mo, double **cold, double **cnew, 
+  double *smat_pac, double *fock_evals, int irrep);
 extern void formg_two(int iju, int* optest);
 extern void formg_open();
 

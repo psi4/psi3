@@ -1,6 +1,6 @@
 /*!
   \file natom.cc
-  \ingroup (CHKPT)
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -37,11 +37,14 @@ void Chkpt::wt_natom(int natom)
 
 extern "C" {
 /*!
-**  int chkpt_rd_natom() 
-**  Reads in the total number of atoms.
+** int chkpt_rd_natom() 
+** Reads in the total number of atoms.
 **
-**  returns: natom = total number of atoms.
-** \ingroup (CHKPT)
+** Parameters: none
+** 
+** Returns: 
+**   natom = total number of atoms.
+** \ingroup CHKPT
 */
 	int chkpt_rd_natom(void)
 	{
@@ -49,16 +52,18 @@ extern "C" {
 	}
 
 /*!
-**  void chkpt_wt_natom(int) 
-**  Writes out the total number of atoms.
+** void chkpt_wt_natom(int) 
+** Writes out the total number of atoms.
 **
-**  \param natom = total number of atoms.
+** Parameters: 
+**   \param natom = total number of atoms.
 **
-** returns: none
-** \ingroup (CHKPT)
+** Returns: none
+** \ingroup CHKPT
 */
 	void chkpt_wt_natom(int natom)
 	{
 		_default_chkpt_lib_->wt_natom(natom);
 	}
 }
+

@@ -1,9 +1,10 @@
-/*! \file 
-    \ingroup (GIAO)
-    \brief Enter brief description of file here 
-*/
+/*! \defgroup GIAO giao: Gauge-Including Atomic Orbitals */
 
-/*! \defgroup GIAO Add a description of the group GIAO */
+/*! 
+** \file giao.cc
+** \ingroup GIAO
+** \brief Gauge-Including Atomic Orbitals
+*/
 
 
 #include <stdexcept>

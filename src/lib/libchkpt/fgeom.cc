@@ -1,6 +1,6 @@
 /*!
-  \file fgeom.c
-  \ingroup (CHKPT)
+  \file fgeom.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -51,7 +51,7 @@ extern "C" {
 **
 ** takes no arguments.
 ** returns: double **full_geom;
-** \ingroup (CHKPT)    
+** \ingroup CHKPT    
 */
 	double **chkpt_rd_fgeom(void)
 	{
@@ -65,7 +65,7 @@ extern "C" {
 **   \param full_geom = Matrix for cartesian coordinates
 **
 ** returns: none
-** \ingroup (CHKPT) 
+** \ingroup CHKPT 
 */
 	void chkpt_wt_fgeom(double **fgeom)
 	{

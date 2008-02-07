@@ -1,6 +1,6 @@
 /*!
-  \file enuc.c
-  \ingroup (CHKPT)
+  \file enuc.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>

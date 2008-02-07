@@ -1,6 +1,6 @@
 /*!
-  \file eref.c
-  \ingroup (CHKPT)
+  \file eref.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>

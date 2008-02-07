@@ -1,9 +1,9 @@
-/*! \file 
-    \ingroup (CIS)
-    \brief Enter brief description of file here 
-*/
+/*! \defgroup CIS cis: Compute CI singles for excited states */
 
-/*! \defgroup CIS Add a description of the group CIS */
+/*! \file 
+    \ingroup CIS
+    \brief Compute CI singles for excited states
+*/
 
 #include <libdpd/dpd.h>
 #include "MOInfo.h"

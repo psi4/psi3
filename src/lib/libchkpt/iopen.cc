@@ -1,6 +1,6 @@
 /*!
   \file iopen.cc
-  \ingroup (CHKPT)
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -47,7 +47,7 @@ extern "C" {
 ** returns: 
 **   iopen = dimensionality of ALPHA and BETA vectors of coupling
 **           coefficients for open shells. 
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int chkpt_rd_iopen(void)
 	{
@@ -66,10 +66,11 @@ extern "C" {
 **  arguments: 
 **   \param iopen = dimensionality of ALPHA and BETA vectors of coupling
 **                  coefficients for open shells. 
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_iopen(int iopen)
 	{
 		_default_chkpt_lib_->wt_iopen(iopen);
 	}
 }
+

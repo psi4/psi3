@@ -1,9 +1,8 @@
-/*! \file 
-    \ingroup (TRANSQT)
-    \brief Enter brief description of file here 
+/*! 
+** \file MOInfo.h
+** \ingroup TRANSQT
+** \brief MOInfo structure
 */
-
-/*! \defgroup TRANSQT Integral Transformation Program */
 
 #ifndef _psi3_bin_transqt_MOInfo_h_
 #define _psi3_bin_transqt_MOInfo_h_

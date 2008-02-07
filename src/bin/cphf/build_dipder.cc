@@ -1,9 +1,9 @@
-/*! \file 
-    \ingroup (CPHF)
-    \brief Enter brief description of file here 
+/*! \file build_dipder.cc
+    \ingroup CPHF
+    \brief Evaluate total dipole moment derivatives
 */
 
-/*! \defgroup CPHF Add a description of the group CPHF */
+/*! \defgroup CPHF cphf: Solve the Coupled-Perturbed Hartree-Fock Equations */
 
 #include <stdio.h>
 #include <stdlib.h>

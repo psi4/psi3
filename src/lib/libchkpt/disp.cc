@@ -1,6 +1,6 @@
 /*!
-  \file disp.c
-  \ingroup (CHKPT)
+  \file disp.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -41,12 +41,12 @@ extern "C" {
 /*!
 ** chkpt_rd_disp():  Reads in the current geometry displacement number.
 **
-**   takes no arguments.
+** Parameters: none
 **
 ** not used by OPTKING; used by anybody else ???
 **
-**   returns: int disp   the current geometry displacement number
-** \ingroup (CHKPT)
+** Returns: int disp, the current geometry displacement number
+** \ingroup CHKPT
 */
 	int chkpt_rd_disp(void)
 	{
@@ -59,14 +59,14 @@ extern "C" {
 /*!
 ** chkpt_wt_disp():  Writes out the current geometry displacement number.
 **
-**  arguments: 
-**   \param int disp   the current geometry displacement number
+** \param int disp   the current geometry displacement number
 **
-** returns: none
-** \ingroup (CHKPT)
+** Returns: none
+** \ingroup CHKPT
 */
 	void chkpt_wt_disp(int disp)
 	{
 		_default_chkpt_lib_->wt_disp(disp);
 	}
 }
+

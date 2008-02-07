@@ -1,6 +1,6 @@
 /*!
-  \file escf.c
-  \ingroup (CHKPT)
+  \file escf.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>

@@ -1,9 +1,9 @@
 /*! \file 
-    \ingroup (CCSORT)
+    \ingroup CCSORT
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup CCSORT Add a description of the group CCSORT */
+/*! \defgroup CCSORT ccsort: Sort integrals for Coupled-Cluster Modules */
 
 namespace psi { namespace ccsort {
 

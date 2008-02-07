@@ -1,9 +1,10 @@
-/*! \file 
-    \ingroup (TRANSQT)
-    \brief The SO-to-MO integral transformation program
-*/
-/*
-** TRANSQT:
+/*! \defgroup TRANSQT transqt: Integral Transformation Program */
+
+/*! 
+** \file transqt.cc
+** \ingroup TRANSQT
+** \brief The SO-to-MO integral transformation program
+**
 ** Program to transform one- and two-electron integrals over
 ** symmetry-orbitals to integrals over molecular orbitals.
 **

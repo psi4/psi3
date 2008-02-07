@@ -1,12 +1,8 @@
-/*! \file 
-    \ingroup (INPUT)
-    \brief Enter brief description of file here 
+/*! 
+  \file at_num.cc
+  \ingroup INPUT
+  \brief Determine atomic number for atoms input by the user
 */
-
-/*! \defgroup INPUT Add a description of the group INPUT */
-
-/* This file contains the function to determine atomic number for atoms
-   input by the user */
 
 #define EXTERN
 #include <cstdio>

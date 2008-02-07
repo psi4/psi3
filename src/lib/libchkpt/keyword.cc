@@ -1,6 +1,6 @@
 /*!
-  \file keyword.c
-  \ingrpu (CHKPT)
+  \file keyword.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -42,3 +42,4 @@ extern "C" {
 		return keyword;
 	}
 }
+

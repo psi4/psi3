@@ -1,6 +1,6 @@
 /*!
-  \file cdsalc2cd.c
-  \ingroup (CHKPT)
+  \file cdsalc2cd.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -42,11 +42,11 @@ extern "C" {
 /*!
 ** chkpt_rd_cdsalcpi(): Read in number of SALCs per irrep
 **
-** takes no arguments.
+** Parameters: none
 **
-** returns: cdsalcpi = An array of nirreps integers.
+** Returns: cdsalcpi = An array of nirreps integers.
 ** 
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int *chkpt_rd_cdsalcpi(void)
 	{
@@ -58,12 +58,13 @@ extern "C" {
 **
 ** \param cdsalcpi = An array of nirreps integers
 **
-** returns: none
+** Returns: none
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_cdsalcpi(const int *cdsalcpi)
 	{
 		_default_chkpt_lib_->wt_cdsalcpi(cdsalcpi);
 	}
 }
+

@@ -1,6 +1,6 @@
 /*!
-  \file clsdpi.c
-  \ingroup (CHKPT)
+  \file clsdpi.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -50,15 +50,15 @@ extern "C" {
 ** chkpt_rd_clsdpi():  Reads in the number of closed-shell orbitals in each 
 **   irrep.
 **
-**   takes no arguments.
+**  Parameters: none
 **
-**   returns:
-**     int *clsdpi  an array which has an element for each irrep of the
+**  Returns:
+**    int *clsdpi, an array which has an element for each irrep of the
 **                 point group of the molecule (n.b. not just the ones
 **                 with a non-zero number of basis functions). each 
 **                 element contains the number of closed-shell orbitals for
 **                 that irrep.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int *chkpt_rd_clsdpi(void)
 	{
@@ -78,10 +78,11 @@ extern "C" {
 **                 that irrep.
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_clsdpi(int *clsdpi)
 	{
 		_default_chkpt_lib_->wt_clsdpi(clsdpi);
 	}
 }
+

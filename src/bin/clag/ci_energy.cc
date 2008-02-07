@@ -1,9 +1,9 @@
 /*! \file 
     \ingroup CLAG
-    \brief Enter brief description of file here 
+    \brief Compute the CI Lagrangian
 */
 
-/*! \defgroup CLAG Compute the CI Lagrangian */
+/*! \defgroup CLAG clag: Compute the CI Lagrangian */
 
 /*****************************************************************************/
 /*ci_energy - This is a program to calculate the CI energy for a CI          */

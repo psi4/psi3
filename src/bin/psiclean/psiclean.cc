@@ -1,12 +1,9 @@
-/*! \file 
-    \ingroup (PSICLEAN)
-    \brief Enter brief description of file here 
-*/
+/*! \defgroup PSICLEAN psiclean: Delete scratch files */
 
-/*! \defgroup PSICLEAN Add a description of the group PSICLEAN */
-
-/*
-** PSICLEAN
+/*! 
+** \file psiclean.cc
+** \ingroup PSICLEAN
+** \brief Delete scratch files
 **
 ** Utility program to delete scratch files.  Generalization of earlier
 ** PSI2.0 shell script which was limited to scratch files being put

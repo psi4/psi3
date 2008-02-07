@@ -1,9 +1,9 @@
 /*! \file 
-    \ingroup (CCENERGY)
+    \ingroup CCENERGY
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup CCENERGY Add a description of the group CCENERGY */
+/*! \defgroup CCENERGY ccenergy: Compute the Coupled-Cluster Energy */
 
 #include <stdio.h>
 #include <stdlib.h>

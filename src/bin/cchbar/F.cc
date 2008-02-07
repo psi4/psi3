@@ -1,9 +1,9 @@
 /*! \file 
-    \ingroup (CCHBAR)
+    \ingroup CCHBAR
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup CCHBAR Add a description of the group CCHBAR */
+/*! \defgroup CCHBAR cchbar: Compute the similarity-transformed Hamiltonian */
 
 #include <stdio.h>
 #include <stdlib.h>

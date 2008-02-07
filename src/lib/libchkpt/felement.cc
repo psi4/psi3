@@ -1,6 +1,6 @@
 /*!
-  \file felement.c
-  \ingroup (CHKPT)
+  \file felement.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>

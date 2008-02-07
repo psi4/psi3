@@ -1,8 +1,10 @@
-/*! \file 
-    \ingroup (MOCUBE)
-    \brief Enter brief description of file here 
+/*! \defgroup MOCUBE mocube: Make a Gaussian-compatible cube file */
+
+/*! 
+** \file mocube.cc
+** \ingroup MOCUBE
+** \brief Make Gaussian-compatible cube file 
 */
-/* MOCUBE - make Gaussian-compatible cube file */
 
 #include <stdio.h>
 #include <stdlib.h>

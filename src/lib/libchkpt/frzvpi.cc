@@ -1,5 +1,6 @@
 /*!
   \file frzvpi.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -38,14 +39,16 @@ void Chkpt::wt_frzvpi(int *frzvpi)
 
 	nirreps = rd_nirreps();
 
-	psio->write_entry(PSIF_CHKPT, keyword, (char *) frzvpi, nirreps*sizeof(int));
+	psio->write_entry(PSIF_CHKPT, keyword, (char *) frzvpi, 
+          nirreps*sizeof(int));
 
 	free(keyword);
 }
 
 extern "C" {
 /*!
-** chkpt_rd_frzvpi():  Reads in the number of frozen unoccupied molecular orbitals in each irrep.
+** chkpt_rd_frzvpi():  Reads in the number of frozen unoccupied molecular 
+**   orbitals in each irrep.
 **
 **   takes no arguments.
 **
@@ -54,8 +57,9 @@ extern "C" {
 **                 point group of the molecule (n.b. not just the ones
 **                 with a non-zero number of basis functions). each 
 **                 element contains the number of frozen unoccupied
-**                 molecular orbitals for
-**                 that irrep. Also, see chkpt_rd_sopi().
+**                 molecular orbitals for that irrep.  
+**                 See also chkpt_rd_sopi().
+** \ingroup CHKPT
 */
 	int *chkpt_rd_frzvpi(void)
 	{
@@ -63,18 +67,21 @@ extern "C" {
 	}
 
 /*!
-** chkpt_wt_frzvpi():  Writes the number of frozen unoccupied molecular orbitals in each irrep.
+** chkpt_wt_frzvpi():  Writes the number of frozen unoccupied molecular 
+**   orbitals in each irrep.
 **
 ** \param frzvpi = an array which has an element for each irrep of the
 **                 point group of the molecule (n.b. not just the ones
-**                 with a non-zero number of basis functions). each 
-**                 element contains the number of frozen unoccupied molecular orbitals for
-**                 that irrep. Also, see chkpt_rd_sopi().
+**                 with a non-zero number of basis functions).  Each element
+**                 contains the number of frozen unoccupied molecular orbitals
+**                 for that irrep.   See also chkpt_rd_sopi().
 **
 ** returns: none
+** \ingroup CHKPT
 */
 	void chkpt_wt_frzvpi(int *frzvpi)
 	{
 		_default_chkpt_lib_->wt_frzvpi(frzvpi);
 	}
 }
+

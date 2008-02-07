@@ -1,6 +1,6 @@
 /*!
   \file nao.cc
-  \ingroup (CHKPT)
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -40,8 +40,10 @@ extern "C" {
 **  int chkpt_rd_nao()
 **  Reads in the total number of atomic orbitals.
 **
-**  returns: nao = total number of atomic orbitals.
-**  \ingroup (CHKPT)
+**  Parameters: none
+**  Returns: 
+**    nao = total number of atomic orbitals.
+**  \ingroup CHKPT
 */
 	int chkpt_rd_nao(void)
 	{
@@ -52,13 +54,15 @@ extern "C" {
 **  void chkpt_wt_nao(int)
 **  Writes out the total number of atomic orbitals.
 **
-**   \param nao = total number of atomic orbitals.
+**  Parameters:
+**    \param nao = total number of atomic orbitals.
 **
-**  returns: none
-**  \ingroup (CHKPT)
+**  Returns: none
+**  \ingroup CHKPT
 */
 	void chkpt_wt_nao(int nao)
 	{
 		_default_chkpt_lib_->wt_nao(nao);
 	}
 }
+

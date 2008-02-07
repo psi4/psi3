@@ -1,7 +1,11 @@
-/*! \file 
-    \ingroup (INTDER)
-    \brief Enter brief description of file here 
+/*! \defgroup INTDER intder: Internal Coordinates and their Derivatives */
+
+/*! 
+** \file intder.cc
+** \ingroup INTDER
+** \brief Transform Internal Coordinates and their Derivatives
 */
+
 #include <stdlib.h>
 #include <stdio.h>
 #include "cartesian.h"

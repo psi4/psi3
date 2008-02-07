@@ -1,6 +1,6 @@
 /*!
   \file exps.cc
-  \ingroup (CHKPT)
+  \ingroup CHKPT
 */
 
 #include <stdio.h>

@@ -1,11 +1,7 @@
-/*! \file 
-    \ingroup (DETCASMAN)
-    \brief Enter brief description of file here 
-*/
-/*
-** SETUP_IO.C
-**
-** Contains some setup/shutdown I/O stuff
+/*! 
+** \file setup_io.cc
+** \ingroup DETCASMAN
+** \brief Set up and shut down I/O for detcasman
 **
 ** C. David Sherrill
 ** University of California, Berkeley
@@ -22,8 +18,14 @@
 
 namespace psi { namespace detcasman {
 
-/*
+/*!
 ** init_io(): Function opens input and output files
+**
+** \param argc   = number of arguments from main
+** \param argv   = argument list from main
+**
+** Returns: none
+** \ingroup detcasman
 */
 void init_io(int argc, char *argv[])
 {
@@ -46,8 +48,11 @@ void init_io(int argc, char *argv[])
 
 
 
-/*
+/*!
 ** close_io(): Function closes down I/O and exits
+** 
+** Returns: none
+** \ingroup detcasman
 */
 void close_io(void)
 {
@@ -57,9 +62,15 @@ void close_io(void)
 
 
 
-/*
+/*!
 ** check() acts as an abort function if the condition 'a' is not true;
 **   it shuts down i/o and returns an error
+**
+** \param a  = integer which is 0 (false) or nonzero (true)
+** \param errmsg = error message to write if a is 0 (false)
+**
+** Returns: none
+** \ingroup detcasman
 */
 void check(int a, char *errmsg)
 {

@@ -1,9 +1,9 @@
 /*! \file 
-    \ingroup (CCEOM)
+    \ingroup CCEOM
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup CCEOM Add a description of the group CCEOM */
+/*! \defgroup CCEOM cceom: Equation-of-Motion Coupled-Cluster */
 
 #include <stdio.h>
 #include <math.h>

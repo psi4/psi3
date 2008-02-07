@@ -1,9 +1,9 @@
 /*! \file 
-    \ingroup (CCLAMBDA)
+    \ingroup CCLAMBDA
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup CCLAMBDA Add a description of the group CCLAMBDA */
+/*! \defgroup CCLAMBDA cclambda: Coupled-Cluster Lambda Equations */
 
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,9 +1,8 @@
-/*! \file 
-    \ingroup (OEPROP)
-    \brief Enter brief description of file here 
+/*! 
+** \file compute_density.cc
+** \ingroup OEPROP
+** \brief Compute the density for Hartree-Fock wavefunctions
 */
-
-/*! \defgroup OEPROP Add a description of the group OEPROP */
 
 #define EXTERN
 #include "includes.h"

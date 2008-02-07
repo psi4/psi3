@@ -1,7 +1,11 @@
-/*! \file 
-    \ingroup (MP2)
-    \brief Enter brief description of file here 
+/*! \defgroup MP2 mp2: Canonical Evaluation of MP2 Energy and Gradients */
+
+/*! 
+** \file mp2.cc
+** \ingroup MP2
+** \brief Canonical evaluation of MP2 energy and gradients
 */
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>

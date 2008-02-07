@@ -20,6 +20,7 @@ psi: (
   deriv2     = "cints --deriv2"
   propint    = "cints --oeprop"
   transqt    = "transqt2"  
+  %transqt    = "transqt2"  
   cctrans    = "transqt2"  %testing with CC modules; eventually will replace transqt
   backtransqt = "transqt --backtr"
   cphf        = "cphf"

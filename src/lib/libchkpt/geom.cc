@@ -1,6 +1,6 @@
 /*!
   \file geom.cc
-  \ingroup (CHKPT)
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -79,7 +79,7 @@ extern "C" {
 **     of doubles.  The row index is the atomic index, and the column is the
 **     cartesian direction index (x=0, y=1, z=2).  Therefore, geom[2][0] 
 **     would be the x-coordinate of the third atom.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	double **chkpt_rd_geom(void)
 	{
@@ -93,7 +93,7 @@ extern "C" {
 **     of doubles.  The row index is the atomic index, and the column is the
 **     cartesian direction index (x=0, y=1, z=2).  Therefore, geom[2][0] 
 **     would be the x-coordinate of the third atom.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_geom(double **geom)
 	{

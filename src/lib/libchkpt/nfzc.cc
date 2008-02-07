@@ -1,6 +1,6 @@
 /*!
   \file nfzc.c
-  \ingroup (CHKPT)
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -41,7 +41,7 @@ extern "C" {
 ** Reads in the total number of frozen doubly occupied molecular orbitals.
 **
 ** returns: nfzc = total number of frozen doubly occupied molecular orbitals.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int chkpt_rd_nfzc(void)
 	{
@@ -54,7 +54,7 @@ extern "C" {
 **
 ** \param nfzc = total number of frozen doubly occupied molecular orbitals.
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_nfzc(int nfzc)
 	{

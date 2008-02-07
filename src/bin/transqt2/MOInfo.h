@@ -1,9 +1,8 @@
-/*! \file 
-    \ingroup (TRANSQT2)
-    \brief Enter brief description of file here 
+/*! 
+** \file MOInfo.h 
+** \ingroup TRANSQT2
+** \brief MOInfo structure with information about MO's from checkpoint
 */
-
-/*! \defgroup TRANSQT2 Add a description of the group TRANSQT2 */
 
 namespace psi {
   namespace transqt2 {

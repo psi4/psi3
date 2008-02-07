@@ -104,11 +104,6 @@ double lagcalc(double **OPDM, double *TPDM, double *h, double *TwoElec,
   for (lagtrace=0.0,i=0; i<nmo; i++)
     lagtrace += oe_lag[i][i] + 0.5 * te_lag[i][i];
 
-  /*
-  ** write information to diskfile and close
-  wwritw(lag_file, (char *) lag[0], (sizeof(double)*nmo*nmo), 
-         lag_index, &lag_index);  
-  */
   psio_write_entry(lag_file, "MO-basis Lagrangian", (char *) lag[0],
     nmo*nmo*sizeof(double));
 

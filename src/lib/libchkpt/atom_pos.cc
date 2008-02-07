@@ -1,6 +1,6 @@
 /*!
   \file atom_pos.cc
-  \ingroup (CHKPT)
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -46,7 +46,8 @@ void Chkpt::wt_atom_position(int *atom_position)
 extern "C" {
 /*!
 ** int *chkpt_rd_atom_position() 
-**  Reads in symmetry positions of atoms:
+**
+** Reads in symmetry positions of atoms:
 **    Possible values are as follows:
 **	1   - atom in general position
 **      2   - atom on c2z axis
@@ -58,8 +59,8 @@ extern "C" {
 **	128 - atom in the sigma_yz plane
 **	This data is sufficient to define stabilizers of the nuclei.
 **
-**  returns: int *atom_position  an array of symmetry positions of atoms 
-**  \ingroup (CHKPT)
+** Returns: int *atom_position, an array of symmetry positions of atoms 
+** \ingroup CHKPT
 */
 	int *chkpt_rd_atom_position(void)
 	{
@@ -70,7 +71,7 @@ extern "C" {
 /*!
 ** chkpt_wt_atom_position() 
 **
-**  Writes out symmetry positions of atoms:
+** Writes out symmetry positions of atoms:
 **    Possible values are as follows:
 **	1   - atom in general position
 **      2   - atom on c2z axis
@@ -82,13 +83,14 @@ extern "C" {
 **	128 - atom in the sigma_yz plane
 **	This data is sufficient to define stabilizers of the nuclei.
 **
-**  \param atom_position = an array of symmetry positions of atoms
+** \param atom_position = an array of symmetry positions of atoms
 **
-**  returns: none
-**  \ingroup (CHKPT)
+** Returns: none
+** \ingroup CHKPT
 */
 	void chkpt_wt_atom_position(int *atom_position)
 	{
 		_default_chkpt_lib_->wt_atom_position(atom_position);
 	}
 }
+

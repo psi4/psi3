@@ -1,6 +1,6 @@
 /*!
-  \file label.c
-  \ingroup (CHKPT)
+  \file label.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -44,7 +44,7 @@ extern "C" {
 **   takes no arguments.
 **
 **   returns: pointer to the checkpoint label
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	char *chkpt_rd_label(void)
 	{
@@ -60,7 +60,7 @@ extern "C" {
 **  \param label = The calculation label.
 **
 **   returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 
 	void chkpt_wt_label(char *label)

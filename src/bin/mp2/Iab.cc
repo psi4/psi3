@@ -1,9 +1,8 @@
-/*! \file 
-    \ingroup (MP2)
-    \brief Enter brief description of file here 
+/*! 
+** \file Iab.cc
+** \ingroup MP2
+** \brief Enter brief description of file here 
 */
-
-/*! \defgroup MP2 Add a description of the group MP2 */
 
 #include <math.h>
 #include <libdpd/dpd.h>

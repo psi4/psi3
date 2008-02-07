@@ -1,6 +1,6 @@
 /*!
-  \file exist.c
-  \ingroup (CHKPT)
+  \file exist.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>

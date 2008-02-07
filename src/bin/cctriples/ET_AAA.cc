@@ -1,9 +1,9 @@
 /*! \file 
-    \ingroup (CCTRIPLES)
+    \ingroup CCTRIPLES
     \brief Enter brief description of file here 
 */
 
-/*! \defgroup CCTRIPLES Add a description of the group CCTRIPLES */
+/*! \defgroup CCTRIPLES cctriples: Evaluate triple excitations */
 
 #include <stdio.h>
 #include <math.h>

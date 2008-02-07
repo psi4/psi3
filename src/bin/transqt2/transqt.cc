@@ -1,9 +1,10 @@
-/*! \file 
-    \ingroup (TRANSQT2)
-    \brief Enter brief description of file here 
-*/
-/*
-** TRANSQT:
+/*! \defgroup TRANSQT2 transqt2: Integral Transformation Program */
+
+
+/*! 
+** \file transqt.cc
+** \ingroup TRANSQT2
+** \brief Integral Transformation Program
 **
 ** A program to transform one- and two-electron integrals from the
 ** symmetry-orbital basis to the molecular-orbital basis.

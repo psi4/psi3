@@ -1,5 +1,9 @@
-/*! \file main.cc
-    \defgroup CINTS CINTS:The integral computation suite.
+/*! \defgroup CINTS cints: The Integral Computation Suite */
+
+/*! 
+  \file main.cc
+  \ingroup CINTS
+  \brief Integral Computation Module
 */
 #include<cstdio>
 #include<cstdlib>

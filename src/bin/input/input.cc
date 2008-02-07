@@ -1,7 +1,11 @@
-/*! \file 
-    \ingroup (INPUT)
-    \brief Enter brief description of file here 
+/*! \defgroup INPUT input: Set up a PSI computation based on user input */
+
+/*! 
+** \file input.cc
+** \ingroup INPUT
+** \brief Set up a PSI computation based on user input
 */
+
 #include <stdio.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
