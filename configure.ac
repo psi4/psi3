@@ -834,6 +834,7 @@ AC_CONFIG_FILES([include/Makefile
           src/bin/stable/Makefile
           src/bin/response/Makefile
           src/bin/psirb/Makefile
+          src/bin/psimrcc/Makefile
 
           src/bin/nonbonded/Makefile
 

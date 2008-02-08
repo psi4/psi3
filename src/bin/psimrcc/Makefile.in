@@ -1,0 +1,92 @@
+srcdir = @srcdir@
+VPATH = @srcdir@
+
+include ../MakeVars
+
+LDLIBS += $(LAPACK) $(BLAS)
+CDEF += -DUSE_BLAS
+PSILIBS = -lPSI_iwl -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
+
+CXXSRC = index.cc\
+mrcc_add_matrices.cc\
+mcscf.cc\
+mrcc_t_amps.cc\
+sqproduct.cc\
+idmrpt2_Heff_singles.cc\
+sqvector.cc\
+sort_out_of_core.cc\
+transform_block.cc\
+mrcc_mkccsd.cc\
+matrix.cc\
+mrcc_t3_amps_diag34.cc\
+blas_compatibile.cc\
+calculation_options.cc\
+transform.cc\
+matrixtmp.cc\
+sort_in_core.cc\
+sq.cc\
+moinfo_model_space.cc\
+mrcc_tau.cc\
+idmrpt2_t2_amps.cc\
+memory.cc\
+mrcc_w_t3_int.cc\
+blas_algorithms.cc\
+blas_interface.cc\
+idmrpt2_t1_amps.cc\
+mrcc_Heff.cc\
+blas.cc\
+matrix_addressing.cc\
+operation.cc\
+mrcc_canonicalization.cc\
+operation_contraction.cc\
+mrcc_w_int.cc\
+algebra_interface.cc\
+mrcc_energy.cc\
+mrcc_mkccsd_residual.cc\
+mrcc_t2_amps.cc\
+idmrpt2_Heff_doubles.cc\
+moinfo_mappings.cc\
+mrcc.cc\
+debugging.cc\
+blas_diis.cc\
+mrcc_z_int.cc\
+idmrpt2_add_matrices.cc\
+mrcc_compute.cc\
+mrcc_t1_amps.cc\
+idmrpt2_Heff.cc\
+psimrcc.cc\
+mrcc_f_int.cc\
+memory_manager.cc\
+blas_parser.cc\
+mrcc_bwccsd.cc\
+manybody.cc\
+idmrpt2_f_int.cc\
+blas_solve.cc\
+moinfo_slaterdeterminant.cc\
+moinfo.cc\
+moinfo_system_tuning.cc\
+mrcc_t3_amps.cc\
+operation_sort.cc\
+main.cc\
+idmrpt2.cc\
+transform_mrpt2.cc\
+utilities.cc\
+sort.cc\
+operation_compute.cc\
+error.cc\
+sqsort.cc\
+sqoperator.cc\
+blas_resorting.cc\
+matrix_memory_and_io.cc\
+squlli.cc\
+sort_mrpt2.cc
+
+LD = ${CXX}
+BINOBJ = $(CXXSRC:%.cc=%.o)
+
+include ../MakeRules
+
+ifneq ($(DODEPEND),no)
+$(BINOBJ:%.o=%.d): $(DEPENDINCLUDE)
+include $(BINOBJ:%.o=%.d)
+endif
