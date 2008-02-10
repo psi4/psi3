@@ -141,8 +141,7 @@ void read_calculation_options()
   options->add_int_option("MULTP",1);
   options->add_int_option("NUM_THREADS",1);
   options->add_int_option("NEL",0);
-  options->add_int_option("ROOT",0);
-  options->add_int_option("WFN_SYM",0);
+  options->add_int_option("ROOT",1);
   options->add_int_option("E_CONVERGENCE",9);
   options->add_int_option("PT_E_CONVERGENCE",9);
   options->add_int_option("MAX_ITERATIONS",100);
@@ -161,6 +160,7 @@ void read_calculation_options()
   options->add_str_option_with_choices("CORR_ANSATZ","MK","SR MK BW APBW");
   options->add_str_option_with_choices("CORR_CODE","PSIMRCC","PSIMRCC SQ LOOPMRCC");
   options->add_str_option_with_choices("COUPLING","CUBIC","NONE LINEAR QUADRATIC CUBIC");
+  options->add_str_option_with_choices("WFN_SYM","1","A AG AU AP APP A1 A2 B BG BU B1 B2 B3 B1G B2G B3G B1U B2U B3U 0 1 2 3 4 5 6 7 8");
   options->read_options();
   options->print();
 }
@@ -203,7 +203,7 @@ void init_psi(int argc, char *argv[])
 
   fprintf(outfile,"\n  MRCC          MRCC");
   fprintf(outfile,"\n   MRCC  MRCC  MRCC");
-  fprintf(outfile,"\n   MRCC  MRCC  MRCC      PSIMRCC Version 0.7.0, November 07, 2007");
+  fprintf(outfile,"\n   MRCC  MRCC  MRCC      PSIMRCC Version 0.7.2, November 07, 2007");
   fprintf(outfile,"\n   MRCC  MRCC  MRCC      Multireference Coupled Cluster, written by");
   fprintf(outfile,"\n     MRCCMRCCMRCC        Francesco A. Evangelista and Andrew C. Simmonett");
   fprintf(outfile,"\n         MRCC            Compiled on %s at %s",__DATE__,__TIME__);

@@ -35,6 +35,7 @@ std::string add_reference(std::string& str, int reference);
 void append_reference(std::string& str, int reference);
 
 std::string find_and_replace(std::string & source, const std::string & target, const std::string & replace);
+void trim_spaces(std::string& str);
 
 /**
   @author Francesco Evangelista <frank@ccc.uga.edu>

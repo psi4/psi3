@@ -35,8 +35,25 @@ MOInfo::MOInfo(int argc, char* argv[],char* id)
   compute_mo_mappings();
   print_info();
   print_mo();
-  wfn_sym             = options->get_int_option("WFN_SYM");
-  root                = options->get_int_option("ROOT");
+  
+  // The first irrep in the input is 1
+  wfn_sym = 1;
+  string wavefunction_sym_str = options->get_str_option("WFN_SYM");
+  to_lower(wavefunction_sym_str);
+  for(int h=0; h < nirreps; ++h){
+    string irr_label_str = irr_labs[h];
+    trim_spaces(irr_label_str);
+    to_lower(irr_label_str);
+    if(wavefunction_sym_str==irr_label_str){
+      wfn_sym = h;
+    }
+    if(to_string(h+1) == wavefunction_sym_str){
+      wfn_sym = h;
+    }
+  }
+
+  // The lowest root in the input is 1, here we subtract one
+  root                = options->get_int_option("ROOT") - 1;
 }
 
 void MOInfo::setup_model_space()
