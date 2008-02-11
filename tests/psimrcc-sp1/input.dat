@@ -1,0 +1,37 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Mk-MRCCSD single point. O2 triplet sigma minus state described using
+% the Ms = 0 component of the triplet.  Uses ROHF triplet orbitals.
+% E(Mk-MRCCSD) = -150.108419685404442 Eh
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+psi: (
+  wfn             = psimrcc                 % Execute PSIMRCC
+  reference       = rohf                    % ROHF Reference
+  label           = "O2 3 Sigma minus cc-pVTZ"
+  jobtype         = sp                      % Single-point
+  dertype         = none
+  multp           = 3
+  docc            = (3 0 0 0 0 2 1 1)       % Doubly occupied MOs in the reference 
+  socc            = (0 0 1 1 0 0 0 0)       % Singly occupied MOs in the reference 
+  basis           = cc-pVTZ
+  zmat= (
+    O
+    O 1 1.19865141
+  )
+)
+
+scf: (
+  convergence =  12
+)
+
+mrcc:(
+  corr_wfn         = ccsd                   % Do Mk-MRCCSD 
+  corr_focc        = (1 0 0 0 0 1 0 0)      % Frozen MOs
+  corr_docc        = (2 0 0 0 0 1 1 1)      % Doubly occupied MOs
+  corr_actv        = (0 0 1 1 0 0 0 0)      % Active MOs
+  corr_fvir        = (0 0 0 0 0 0 0 0)      % Frozen virtual MOs
+  multp            = 1                      % Select the Ms = 0 component
+  wfn_sym          = B1g                    % Select the B1g state
+  e_convergence    = 12                     % Converge to 10^-12 Eh
+)
+

@@ -44,7 +44,7 @@ $PSITEST_SUMMARY_FILE = "../../test-case-results";
 @PSITEST_WFNS = ("SCF", "MP2", "MP2R12", "DETCI", "DETCAS", "CASSCF",
 "RASSCF", "ZAPTN", "BCCD", "BCCD_T", "CC2", "CCSD", "CCSD_T", "CC3", 
 "EOM_CC2", "LEOM_CC2", "EOM_CCSD", "LEOM_CCSD", "OOCCD", "CIS", "EOM_CC3",
-"SCF_MVD");
+"SCF_MVD","PSIMRCC");
 @PSITEST_REFTYPES = ("RHF", "ROHF", "UHF", "TWOCON");
 @PSITEST_DERTYPES = ("NONE", "FIRST", "SECOND", "RESPONSE");
 
@@ -61,6 +61,7 @@ $PSITEST_OPTROTTOL = 10**-3;      # Default test criterion for optical rotation
 $PSITEST_STABTOL = 10**-4;        # Default test criterion for Hessian eigenvalues
 $PSITEST_MPOPTOL = 10**-5;        # Default test criterion for Mulliken populations
 $PSITEST_CIDIPTOL = 10**-4;       # Default test criterion for CI dipoles
+$PSIMRCCTEST_ETOL = 10**-10;      # Default test criterion for PSIMRCC energies
 ##################################################
 #
 # This is a "smart" tester -- it parses the input and figures out
@@ -171,6 +172,7 @@ sub do_tests
           if ($wfn eq "MP2" && $direct == 0)
                                   { $fail |= compare_mp2_energy(); last SWITCH2; }
           if ($wfn eq "MP2R12")   { $fail |= compare_mp2r12_energy(); last SWITCH2; }
+          if ($wfn eq "PSIMRCC")  { $fail |= compare_psimrcc_energy(); last SWITCH2; }
 
       }
       
@@ -1285,6 +1287,24 @@ sub compare_pair_energies
     
   return $fail;
 }
+
+sub compare_psimrcc_energy
+{
+  my $fail = 0;
+  my $REF_FILE = "$SRC_PATH/output.ref";
+  my $TEST_FILE = "output.dat";
+
+  if(abs(seek_psimrcc($REF_FILE) - seek_psimrcc($TEST_FILE)) > $PSIMRCCTEST_ETOL) {
+    fail_test("PSIMRCC energy"); $fail = 1;
+  }
+  else {
+    pass_test("PSIMRCC energy");
+  }
+  
+  return $fail;
+}
+
+
 
 sub seek_nirreps
 {
@@ -2618,6 +2638,24 @@ sub seek_rot_str
   printf "Error: Check $_[1] in $_[0].\n";
   exit 1;
 }
+
+sub seek_psimrcc
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/\@CC\@/) {
+      @data = split(/ +/, $_);
+      $psimrcc = $data[4];
+      return $psimrcc;
+    }
+  }
+  close(OUT);
+
+  printf "Error: Could not find PSIMRCC energy in $_[0].\n";
+  exit 1;
+}
+
 
 sub compare_arrays
 {
