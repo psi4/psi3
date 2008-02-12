@@ -12,11 +12,9 @@ CCMCSCF::CCMCSCF()
 {
 }
 
-
 CCMCSCF::~CCMCSCF()
 {
 }
 
-
-
 }} /* End Namespaces */
+

@@ -6,6 +6,8 @@
  *  A multireference coupled cluster code
  ***************************************************************************/
 
+namespace psi{ namespace psimrcc{
+
 /**
 	@author Francesco A. Evangelista and Andrew C. Simmonett <frank@ccc.uga.edu>
 */
@@ -17,4 +19,7 @@ public:
 
 };
 
+}} /* End Namespaces */
+
 #endif // _psi_src_bin_psimrcc_mcscf_h
+
