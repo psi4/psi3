@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INPUT)
+/*! \file read_charges.cc
+    \ingroup INPUT
     \brief Enter brief description of file here 
 */
 /*

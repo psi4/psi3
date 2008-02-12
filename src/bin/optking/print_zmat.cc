@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file print_zmat.cc
+    \ingroup OPTKING
     \brief PRINT_ZMAT() printout z-matrix
 */
 

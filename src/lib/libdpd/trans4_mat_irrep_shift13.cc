@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DPD)
+/*! \file trans4_mat_irrep_shift13.cc
+    \ingroup DPD
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

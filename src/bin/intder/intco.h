@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INTDER)
+/*! \file intco.h
+    \ingroup INTDER
     \brief Enter brief description of file here 
 */
 #ifndef _psi_bin_intder_intco_h_

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCEOM)
+/*! \file amp_write.cc
+    \ingroup CCEOM
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

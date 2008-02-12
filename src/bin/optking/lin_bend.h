@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file lin_bend.h
+    \ingroup OPTKING
     \brief Class for pairs of orthogonal linear bend coordinates;
  lin with linval1 is toward an axis perpendicular with A-B-C with maximum
  overlap with the y-axis;

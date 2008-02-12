@@ -1,6 +1,6 @@
 /*
  \file init_array.cc
- \ingroup (CIOMR)
+ \ingroup CIOMR
 */
 
 #include <psifiles.h>
@@ -13,7 +13,7 @@ extern "C" {
 /*!
 ** init_array(): This function initializes an array of doubles of
 ** length 'size' and returns a pointer to the first element
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 double * init_array(unsigned long int size)
    {

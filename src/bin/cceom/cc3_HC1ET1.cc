@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCEOM)
+/*! \file cc3_HC1ET1.cc
+    \ingroup CCEOM
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>

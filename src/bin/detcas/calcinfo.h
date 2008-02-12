@@ -2,7 +2,7 @@
 
 /*! 
   \file calcinfo.h
-  \ingroup (DETCAS)
+  \ingroup DETCAS
   \brief Enter brief description of file here 
  
    CALCINFO.H

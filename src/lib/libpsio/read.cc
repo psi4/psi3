@@ -1,6 +1,6 @@
 /*!
  \file read.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <stdlib.h> 
@@ -74,7 +74,7 @@ extern "C" {
    **  \param end    = A pointer to the entry-relative page/offset for the next
    **                  byte after the end of the read request.
    ** 
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
   int psio_read(unsigned int unit, char *key, char *buffer, ULI size,
                 psio_address start, psio_address *end) {

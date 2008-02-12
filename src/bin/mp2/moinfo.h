@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MP2)
+/*! \file moinfo.h
+    \ingroup MP2
     \brief Enter brief description of file here 
 */
 #ifndef _psi_src_bin_mp2_moinfo_h_

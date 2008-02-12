@@ -2,7 +2,7 @@
 #define _psi_src_bin_cints_global_h
 
 /*! \file global.h
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 /*-----------------

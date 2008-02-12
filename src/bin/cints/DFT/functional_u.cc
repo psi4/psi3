@@ -1,5 +1,5 @@
 /*! \file functional_u.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     functionals go here
     
     ----------------------------------------- */ 

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INPUT)
+/*! \file input.h
+    \ingroup INPUT
     \brief Enter brief description of file here 
 */
 /**************************

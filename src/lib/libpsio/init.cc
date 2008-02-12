@@ -1,6 +1,6 @@
 /*!
  \file init.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <stdio.h>
@@ -55,7 +55,7 @@ extern "C" {
    **
    ** No arguments.
    **
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
 
   int psio_init(void) {
@@ -75,7 +75,7 @@ extern "C" {
    **
    ** No arguments.
    **
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
 
   int psio_state() {

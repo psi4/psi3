@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCSORT)
+/*! \file b_sort.cc
+    \ingroup CCSORT
     \brief Enter brief description of file here 
 */
 #include <math.h>

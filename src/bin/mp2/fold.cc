@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MP2)
+/*! \file fold.cc
+    \ingroup MP2
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (R12)
+/*! \file build_libr12.h
+    \ingroup R12
     \brief Enter brief description of file here 
 */
 /*-------------------------------------------------------------------------

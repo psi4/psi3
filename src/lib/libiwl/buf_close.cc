@@ -1,8 +1,8 @@
 /*! \defgroup IWL libiwl: I/O Library for Integrals with Labels */
 
 /*!
-  \file buf_close.c
-  \ingroup (IWL)
+  \file buf_close.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,7 +18,7 @@ extern "C" {
 **	\param keep    Do not delete if keep==1
 **
 ** Close a Integrals With Labels Buffer
-** \ingroup (IWL)
+** \ingroup IWL
 */
 void iwl_buf_close(struct iwlbuf *Buf, int keep)
 {

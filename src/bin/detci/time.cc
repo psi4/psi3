@@ -1,5 +1,5 @@
 /*! \file time.cc
-    \ingroup (DETCI)
+    \ingroup DETCI
     \brief DETCI-specific timing routines
 */
 

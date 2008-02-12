@@ -1,5 +1,5 @@
 /*! \file deriv1.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Driver for the computation of first derivatives.
 */
 #include<cstdio>

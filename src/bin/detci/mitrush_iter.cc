@@ -1,5 +1,5 @@
 /*! \file mitrush_iter.cc
-**  \ingroup (DETCI)
+**  \ingroup DETCI
 **  \brief Mitrushenkov iterative scheme for RAS CI's
 **
 ** C. David Sherrill

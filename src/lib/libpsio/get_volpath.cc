@@ -1,6 +1,6 @@
 /*!
  \file get_volpath.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <stdio.h>
@@ -60,7 +60,7 @@ extern "C" {
    ** PSIO_GET_VOLPATH_DEFAULT(): Get the default path for the nth volume
    ** of any file.
    **
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
   int psio_get_volpath_default(unsigned int volume, char **path) {
     std::string kval;

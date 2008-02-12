@@ -1,5 +1,5 @@
 /*! \file init_unf_conc_grid.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 #include<stdio.h>

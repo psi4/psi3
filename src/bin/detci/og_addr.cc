@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DETCI)
+/*! \file og_addr.cc
+    \ingroup DETCI
     \brief Enter brief description of file here 
 */
 

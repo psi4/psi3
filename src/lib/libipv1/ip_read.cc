@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (IPV1)
+/*! \file ip_read.cc
+    \ingroup IPV1
     \brief Enter brief description of file here 
 */
 /* This file provides the routines to do the initial parse of the input

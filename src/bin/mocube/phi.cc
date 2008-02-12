@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MOCUBE)
+/*! \file phi.cc
+    \ingroup MOCUBE
     \brief Enter brief description of file here 
 */
 /*

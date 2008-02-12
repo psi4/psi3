@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (IPV1)
+/*! \file ip_cwk.cc
+    \ingroup IPV1
     \brief Enter brief description of file here 
 */
 /* These routines manipulate the current working keyword.  This

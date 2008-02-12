@@ -1,6 +1,6 @@
 /*!
-  \file nprim.c
-  \ingroup (CHKPT)
+  \file nprim.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -42,7 +42,7 @@ extern "C" {
 ** (only primitives of symmetry independent atoms are taken into account!).
 **
 ** returns: nprim = total number of primitive Gaussian functions.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int chkpt_rd_nprim(void)
 	{
@@ -57,7 +57,7 @@ extern "C" {
 ** \param nprim = total number of primitive Gaussian functions.
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_nprim(int nprim)
 	{

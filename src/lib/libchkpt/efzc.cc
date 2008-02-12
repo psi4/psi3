@@ -44,7 +44,7 @@ extern "C" {
 **   takes no arguments.
 **
 **   returns: double efzc  the frozen-core energy.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	double chkpt_rd_efzc(void)
 	{
@@ -59,7 +59,7 @@ extern "C" {
 ** \param efzc = the frozen-core energy.
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_efzc(double efzc)
 	{

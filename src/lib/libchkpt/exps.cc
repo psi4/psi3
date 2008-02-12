@@ -54,7 +54,7 @@ extern "C" {
 **
 ** returns: double *exps   
 ** The exponents are returned as an array of doubles.
-** \ingroup(CHKPT)
+** \ingroup CHKPT
 */
 	double *chkpt_rd_exps(void)
 	{
@@ -71,7 +71,7 @@ extern "C" {
 **  \param exps = The exponents are returned as an array of doubles.
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_exps(double *exps)
 	{

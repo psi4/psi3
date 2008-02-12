@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCENERGY)
+/*! \file WmnijT2.cc
+    \ingroup CCENERGY
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

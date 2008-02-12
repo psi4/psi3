@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file cartesians.cc
+    \ingroup OPTKING
     \brief cartesians.cc : contains member functions for cartesian class
 */
 

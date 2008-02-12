@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file out_of_plane.h
+    \ingroup OPTKING
     \brief Class for out-of-plane angles
 */
 

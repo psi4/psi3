@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCENERGY)
+/*! \file sort_amps.cc
+    \ingroup CCENERGY
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

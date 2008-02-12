@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file opt.h
+    \ingroup OPTKING
     \brief opt.h header file
 */
 

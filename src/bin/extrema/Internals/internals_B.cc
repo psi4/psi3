@@ -1,6 +1,7 @@
 /*###########################################################################*/
-/*! \file 
-   \ingroup (EXTREMA)
+/*! 
+   \file Internals_B.cc
+   \ingroup EXTREMA
    \brief Member functions of internals derived class  
    associated with the B matrix. */
 /*						Joseph P. Kenny 11/29/01

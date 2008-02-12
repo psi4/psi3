@@ -1,5 +1,5 @@
 /*! \file gprgid.cc
-  \ingroup (CINTS)
+  \ingroup CINTS
   \brief program id
 */
 extern "C" {

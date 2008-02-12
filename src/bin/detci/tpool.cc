@@ -1,5 +1,5 @@
 /*! \file tpool.cc
- *  \ingroup (DETCI)
+ *  \ingroup DETCI
  *  \brief Thread pools
  *
  * An example source module to accompany...

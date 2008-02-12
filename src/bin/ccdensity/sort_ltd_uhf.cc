@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCDENSITY)
+/*! \file sort_ltd_uhf.cc
+    \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

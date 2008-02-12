@@ -1,5 +1,5 @@
 /*! 
-  \file at_num.cc
+  \file atom_num.cc
   \ingroup INPUT
   \brief Determine atomic number for atoms input by the user
 */

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCSORT)
+/*! \file globals.h
+    \ingroup CCSORT
     \brief Enter brief description of file here 
 */
 #include <ccfiles.h>

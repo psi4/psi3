@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CPHF)
+/*! \file zval_to_symbol.cc
+    \ingroup CPHF
     \brief Enter brief description of file here 
 */
 /*** ZVAL_TO_SYMBOL() return atom symbol ***/ 

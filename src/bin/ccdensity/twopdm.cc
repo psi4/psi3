@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCDENSITY)
+/*! \file twopdm.cc
+    \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */
 

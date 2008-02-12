@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DPD)
+/*! \file 4mat_irrep_print.cc
+    \ingroup DPD
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

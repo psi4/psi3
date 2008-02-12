@@ -1,6 +1,6 @@
 /*!
 ** \file mxmb.cc
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
  
 #include <stdio.h>
@@ -18,7 +18,7 @@ extern "C" {
 ** mxmb: multiplies two rectangular matrices together.  If in=1 (n=a,b,c),
 ** then normal multiply.  If jn=1 (n=a,b,c) then multiply the transpose
 ** of matrix n.
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void mxmb(double **a, int ia, int ja, double **b, int ib, int jb, 
           double **c, int ic, int jc, int nrow, int nlnk, int ncol)

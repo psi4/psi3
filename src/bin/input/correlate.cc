@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INPUT)
+/*! \file correlate.cc
+    \ingroup INPUT
     \brief Enter brief description of file here 
 */
 /** This function returns a lookup array that correlates irreps of a point group

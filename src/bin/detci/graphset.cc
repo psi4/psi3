@@ -1,5 +1,5 @@
 /*! \file graphset.cc
-**  \ingroup (DETCI)
+**  \ingroup DETCI
 **  \brief Routines needed to maintain the GraphSet Object.  
 **
 ** The graph for alpha/beta strings has a different subgraph for each value 

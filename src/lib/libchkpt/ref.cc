@@ -1,6 +1,6 @@
 /*!
-  \file ref.c
-  \ingroup (CHKPT)
+  \file ref.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -42,7 +42,7 @@ extern "C" {
 ** 0 = RHF | 1 = UHF | 2 = ROHF | 3 = TCSCF 
 **
 ** returns: refnum = number indicating the reference.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int chkpt_rd_ref(void)
 	{
@@ -55,7 +55,7 @@ extern "C" {
 ** 0 = RHF | 1 = UHF | 2 = ROHF | 3 = TCSCF 
 **
 ** \param refnum = number indicating the reference.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_ref(int refnum)
 	{

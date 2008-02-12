@@ -9,7 +9,7 @@
  */
 
 /* ! \file
-     \ingroup (NONBONDED)
+     \ingroup NONBONDED
      \brief Evaluate empirical non-bonded interactions
 */
 
@@ -96,7 +96,7 @@ namespace psi { namespace nonbonded {
  *
  * Initiate PSI IO routines
  *
- * \ingroup (NONBONDED)
+ * \ingroup NONBONDED
  */
 void start_io(int argc, char *argv[])
 {
@@ -133,7 +133,7 @@ void stop_io(void)
  * 
  * Print an intro for the module
  *
- * \ingroup (NONBONDED)
+ * \ingroup NONBONDED
  */
 void print_intro(void)
 {
@@ -152,7 +152,7 @@ void print_intro(void)
  * Compute the distances between each pair of atoms.  Convert to Angstrom
  * because those are the units Grimme's parameters are in
  *
- * \ingroup (NONBONDED)
+ * \ingroup NONBONDED
  */
 void compute_R(int natom, double **geom, double *R)
 {
@@ -179,7 +179,7 @@ void compute_R(int natom, double **geom, double *R)
  * Compute damped dispersion terms (ala S. Grimme, J. Comput. Chem. 27,
  * 1787, 2006)
  *
- * \ingroup (NONBONDED)
+ * \ingroup NONBONDED
  */
 double compute_ddisp(int natom, double *R, double *AN, double s6, double d)
 {

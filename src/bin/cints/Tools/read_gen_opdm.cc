@@ -1,5 +1,5 @@
 /*! \file read_gen_opdm.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 #include<cstdio>

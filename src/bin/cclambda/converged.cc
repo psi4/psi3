@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCLAMBDA)
+/*! \file converged.cc
+    \ingroup CCLAMBDA
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

@@ -1,6 +1,6 @@
 /*!
   \file psi_stop.cc
-  \ingroup (CIOMR)
+  \ingroup CIOMR
 */
 
 #include <stdio.h>
@@ -20,7 +20,7 @@ extern "C" {
 ** Arguments: none
 **
 ** Returns: one of standard PSI error codes
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 
 int psi_stop(FILE* infile, FILE* outfile, char* psi_file_prefix)

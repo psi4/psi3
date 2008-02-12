@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCEOM)
+/*! \file schmidt_add.cc
+    \ingroup CCEOM
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

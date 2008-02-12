@@ -1,6 +1,6 @@
 /*!
-  \file snuc.c
-  \ingroup (CHKPT)
+  \file snuc.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -53,7 +53,7 @@ extern "C" {
 **  returns: snuc = an array of the nuclei numbers to which shells 
 **                  belong to.
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int *chkpt_rd_snuc(void)
 	{
@@ -67,7 +67,7 @@ extern "C" {
 **
 **  returns: none
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_snuc(int *snuc)
 	{

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (IPV1)
+/*! \file ip_lib.h
+    \ingroup IPV1
     \brief Enter brief description of file here 
 */
 

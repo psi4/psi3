@@ -1,6 +1,6 @@
 /*!
  \file toclast.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <libpsio/psio.h>

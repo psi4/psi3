@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (STABLE)
+/*! \file globals.h
+    \ingroup STABLE
     \brief Enter brief description of file here 
 */
 #include <ccfiles.h>

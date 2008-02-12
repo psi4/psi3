@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCDENSITY)
+/*! \file zero_pdm.cc
+    \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

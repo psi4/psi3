@@ -1,6 +1,6 @@
 /*!
-  \file statespi.c
-  \ingroup (CHKPT)
+  \file statespi.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -58,7 +58,7 @@ extern "C" {
 **                 with a non-zero number of basis functions). each 
 **                 element contains the number of excited states of that
 **                 irrep to be studied.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int *chkpt_rd_statespi(void)
 	{
@@ -75,7 +75,7 @@ extern "C" {
 **                 irrep to be studied.
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_statespi(int *statespi)
 	{

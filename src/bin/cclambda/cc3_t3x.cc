@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCLAMBDA)
+/*! \file cc3_t3x.cc
+    \ingroup CCLAMBDA
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

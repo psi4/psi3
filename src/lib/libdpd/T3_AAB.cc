@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DPD)
+/*! \file T3_AAB.cc
+    \ingroup DPD
     \brief Enter brief description of file here 
 */
 

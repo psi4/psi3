@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CIS)
+/*! \file MOInfo.h
+    \ingroup CIS
     \brief Enter brief description of file here 
 */
 

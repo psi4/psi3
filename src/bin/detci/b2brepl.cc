@@ -1,6 +1,6 @@
 /*! 
-  \file b2brepl.c
-  \ingroup (DETCI)
+  \file b2brepl.cc
+  \ingroup DETCI
   \brief Contains code to do block-to-block single replacement lists
 */
 

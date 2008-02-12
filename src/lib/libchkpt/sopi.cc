@@ -1,6 +1,6 @@
 /*!
-  \file sopi.c
-  \ingroup (CHKPT)
+  \file sopi.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -56,7 +56,7 @@ extern "C" {
 **            element contains the number of symmetry orbitals for
 **            that irrep. Also, see chkpt_rd_orbspi().
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int *chkpt_rd_sopi(void)
 	{
@@ -74,7 +74,7 @@ extern "C" {
 **
 ** returns: none
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_sopi(int *sopi)
 	{

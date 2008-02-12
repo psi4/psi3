@@ -1,6 +1,6 @@
 /*!
-  \file stype.c
-  \ingroup (CHKPT)
+  \file stype.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -54,7 +54,7 @@ extern "C" {
 **
 **  returns: stype = an array of the angular momentum numbers of the shells
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int *chkpt_rd_stype(void)
 	{
@@ -69,7 +69,7 @@ extern "C" {
 **
 **  returns: none
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_stype(int *stype)
 	{

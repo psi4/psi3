@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INT)
+/*! \file emit_order.c
+    \ingroup INT
     \brief Enter brief description of file here 
 */
 /*------------------------------------------------------------------------------------------------------

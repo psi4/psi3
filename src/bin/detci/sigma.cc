@@ -1,5 +1,5 @@
-/*! \file 
-**  \ingroup (DETCI)
+/*! \file sigma.cc
+**  \ingroup DETCI
 **  \brief Routines to compute sigma = H * c
 **
 ** Here collect the stuff to calculate the sigma vector within the

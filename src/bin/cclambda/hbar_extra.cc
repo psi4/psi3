@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCLAMBDA)
+/*! \file hbar_extra.cc
+    \ingroup CCLAMBDA
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

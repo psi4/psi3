@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MP2R12)
+/*! \file mp2r12_energy.cc
+    \ingroup MP2R12
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

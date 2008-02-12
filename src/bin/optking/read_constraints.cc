@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file read_constraints.cc
+    \ingroup OPTKING
     \brief READ_CONSTRAINTS reads constraints from  "FIXED_INTCO" section of input
    or intco files, the constrained internals must already be present in the
    list of all of the simple internal coordinates

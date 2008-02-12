@@ -1,5 +1,5 @@
 /*! \file init_globals.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Initialise global variables.
 */
 #include<stdio.h>

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCSORT)
+/*! \file get_moinfo.cc
+    \ingroup CCSORT
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

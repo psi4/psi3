@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CUSP)
+/*! \file local.cc
+    \ingroup CUSP
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

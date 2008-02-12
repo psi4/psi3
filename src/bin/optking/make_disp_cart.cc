@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file make_disp_cart.cc
+    \ingroup OPTKING
     \brief displaces + and - along all cartesian coordinates
 */
 

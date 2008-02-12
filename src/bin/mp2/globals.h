@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MP2)
+/*! \file globals.h
+    \ingroup MP2
     \brief Enter brief description of file here 
 */
 

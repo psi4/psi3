@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DPD)
+/*! \file file2_mat_rd.cc
+    \ingroup DPD
     \brief Enter brief description of file here 
 */
 #include <libpsio/psio.h>

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (RESPONSE)
+/*! \file Params.h
+    \ingroup RESPONSE
     \brief Enter brief description of file here 
 */
 

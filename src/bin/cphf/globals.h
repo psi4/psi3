@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CPHF)
+/*! \file globals.h
+    \ingroup CPHF
     \brief Enter brief description of file here 
 */
 

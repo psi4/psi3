@@ -1,4 +1,4 @@
-/*! \file 
+/*! \file Frozen.h
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */

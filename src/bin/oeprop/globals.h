@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OEPROP)
+/*! \file globals.h
+    \ingroup OEPROP
     \brief Enter brief description of file here 
 */
 

@@ -1,6 +1,6 @@
 /*!
-  \file buf_rd_all_mp2r12a.c
-  \ingroup (IWL)
+  \file buf_rd_all_mp2r12a.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <math.h>
@@ -35,7 +35,7 @@ extern "C" {
 **    \param outfile       =  pointer to output file for printing
 **
 ** Returns: 0 if end of file, otherwise 1
-** \ingroup (IWL)
+** \ingroup IWL
 */
 int iwl_buf_rd_all_mp2r12a(struct iwlbuf *Buf, double *ints,
 			   int *ioff_lt, int *ioff_rt, int bra_ket_symm, 

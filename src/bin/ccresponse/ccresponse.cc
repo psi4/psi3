@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCRESPONSE)
+/*! \file ccresponse.cc
+    \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */
 /*

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CSCF)
+/*! \file orb_mix.cc
+    \ingroup CSCF
     \brief Enter brief description of file here 
 */
 /*-----------------------------------------------------------

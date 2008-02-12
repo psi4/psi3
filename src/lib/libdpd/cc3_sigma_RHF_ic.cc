@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DPD)
+/*! \file cc3_sigma_RHF_ic.cc
+    \ingroup DPD
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

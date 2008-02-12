@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCLAMBDA)
+/*! \file halftrans.cc
+    \ingroup CCLAMBDA
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>

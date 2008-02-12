@@ -1,6 +1,6 @@
 /*!
  \file tocprint.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <stdio.h>
@@ -39,7 +39,7 @@ extern "C" {
   /*!
    ** PSIO_TOCPRINT(): Print the table of contents for the given unit
    **
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
   void psio_tocprint(unsigned int unit, FILE *output) {
     return _default_psio_lib_->tocprint(unit, output);

@@ -1,5 +1,5 @@
 /*!
-  \file eccsd.cc
+  \file e_t.cc
   \ingroup CHKPT
 */
 
@@ -45,7 +45,7 @@ extern "C" {
 **   takes no arguments.
 **
 **   returns: double e_t  the (T) energy.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	double chkpt_rd_e_t(void)
 	{
@@ -60,7 +60,7 @@ extern "C" {
 ** \param e_t = the (T) energy.
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_e_t(double e_t)
 	{

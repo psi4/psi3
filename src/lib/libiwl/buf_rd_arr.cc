@@ -1,6 +1,6 @@
 /*!
-  \file buf_rd_arr.c
-  \ingroup (IWL)
+  \file buf_rd_arr.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <math.h>
@@ -25,7 +25,7 @@ extern "C" {
 ** Returns: 0 if end of file, otherwise 1
 **
 ** Revised 6/27/96 by CDS for new format
-** \ingroup (IWL)
+** \ingroup IWL
 */
 int iwl_buf_rd_arr(struct iwlbuf *Buf, int target_pq, double *ints,
       int *rlist, int *slist, int *size, int *ioff, 

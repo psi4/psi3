@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCEOM)
+/*! \file dgeev_eom.cc
+    \ingroup CCEOM
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

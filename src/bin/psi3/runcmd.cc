@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (PSI3)
+/*! \file runcmd.cc
+    \ingroup PSI3
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

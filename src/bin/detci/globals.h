@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DETCI)
+/*! \file globals.h
+    \ingroup DETCI
     \brief Enter brief description of file here 
 */
 

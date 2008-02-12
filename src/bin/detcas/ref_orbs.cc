@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DETCAS)
+/*! \file ref_orbs.cc
+    \ingroup DETCAS
     \brief Enter brief description of file here 
 */
 /*

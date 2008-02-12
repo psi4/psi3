@@ -1,5 +1,5 @@
-/*! \file ip_data.c
-    \ingroup (IPV1)
+/*! \file ip_data.cc
+    \ingroup IPV1
     \brief Rudimentary data retrieval routines from the input file 
 */
 #include <stdio.h>

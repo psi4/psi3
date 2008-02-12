@@ -1,5 +1,5 @@
 /*! \file angmom_ints.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 #include<cmath>

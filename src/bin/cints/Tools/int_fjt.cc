@@ -1,5 +1,5 @@
 /*! \file int_fjt.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     * These routines are based on the gamfun program of
     * Trygve Ulf Helgaker (fall 1984)
     * and calculates the incomplete gamma function as

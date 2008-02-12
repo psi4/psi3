@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCHBAR)
+/*! \file HET1_Wabef.cc
+    \ingroup CCHBAR
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

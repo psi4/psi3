@@ -1,6 +1,6 @@
 /*!
   \file block_matrix.cc
-  \ingroup (CIOMR)
+  \ingroup CIOMR
 */
 
 #include<stdio.h>
@@ -25,7 +25,7 @@ extern "C" {
 ** Sometime in 1994
 **
 ** Based on init_matrix() from libciomr
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 
 double ** block_matrix(unsigned long int n, unsigned long int m)
@@ -60,7 +60,7 @@ double ** block_matrix(unsigned long int n, unsigned long int m)
 /*!
 ** free_block(): Free a block matrix
 **
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void free_block(double **array)
    {

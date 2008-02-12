@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DETCI)
+/*! \file civect.h
+    \ingroup DETCI
     \brief Enter brief description of file here 
 */
 #ifndef _psi_src_bin_detci_civect_h

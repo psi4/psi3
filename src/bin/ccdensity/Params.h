@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCDENSITY)
+/*! \file Params.h
+    \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */
 

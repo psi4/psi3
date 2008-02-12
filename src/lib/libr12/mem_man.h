@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (R12)
+/*! \file mem_man.h
+    \ingroup R12
     \brief Enter brief description of file here 
 */
 void init_mem(int memory);

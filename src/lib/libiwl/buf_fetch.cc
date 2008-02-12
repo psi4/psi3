@@ -1,6 +1,6 @@
 /*!
-  \file buf_fetch.c
-  \ingroup (IWL)
+  \file buf_fetch.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <libpsio/psio.h>
@@ -13,7 +13,7 @@ extern "C" {
 **
 ** Fetch an IWL buffer from disk
 ** David Sherrill, 26 June 1996
-** \ingroup (IWL)
+** \ingroup IWL
 */
 void iwl_buf_fetch(struct iwlbuf *Buf)
 {

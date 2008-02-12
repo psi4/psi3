@@ -1,5 +1,5 @@
 /*!
-  \file cdsalc2cd.cc
+  \file cdsalcpi.cc
   \ingroup CHKPT
 */
 

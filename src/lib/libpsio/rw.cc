@@ -1,6 +1,6 @@
 /*!
  \file rw.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <stdio.h>
@@ -110,7 +110,7 @@ extern "C" {
    ** \params size    = The number of bytes to read/write.
    ** \params         = Indicates if the call is to read (0) or write (0) the input data.
    **
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
   int psio_rw(unsigned int unit, char *buffer, psio_address address, ULI size,
               int wrt) {

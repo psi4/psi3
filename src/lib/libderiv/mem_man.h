@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DERIV)
+/*! \file mem_man.h
+    \ingroup DERIV
     \brief Enter brief description of file here 
 */
 void init_mem(int memory);

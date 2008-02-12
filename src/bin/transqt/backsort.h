@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (TRANSQT)
+/*! \file backsort.h
+    \ingroup TRANSQT
     \brief Enter brief description of file here 
 */
 #ifndef _psi3_bin_transqt_backsort_h_

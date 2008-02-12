@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file misc.cc
+    \ingroup OPTKING
     \brief miscellaneous little matrix and print functions
 */
 

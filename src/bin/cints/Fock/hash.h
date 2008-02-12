@@ -2,7 +2,7 @@
 #define _psi_src_bin_cints_Fock_hash_h
 
 /*! \file hash.h
-    \ingroup (CINTS)
+    \ingroup CINTS
 -----------------------------------
   Declarations of htable_entry, etc.
  -----------------------------------*/

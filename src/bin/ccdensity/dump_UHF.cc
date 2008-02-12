@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCDENSITY)
+/*! \file dump_UHF.cc
+    \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

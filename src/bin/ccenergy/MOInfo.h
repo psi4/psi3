@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCENERGY)
+/*! \file MOInfo.h
+    \ingroup CCENERGY
     \brief Enter brief description of file here 
 */
 

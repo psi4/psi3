@@ -1,6 +1,6 @@
 /*!
  \file open.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <stdio.h>
@@ -122,7 +122,7 @@ extern "C" {
    **  \param status = Indicates if the file is old (PSIO_OPEN_OLD) or new
    **                  (PSIO_OPEN_NEW). 
    **
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
   int psio_open(unsigned int unit, int status) {
     _default_psio_lib_->open(unit, status);

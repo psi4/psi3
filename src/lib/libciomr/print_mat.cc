@@ -1,6 +1,6 @@
 /*!
 ** \file print_mat.cc
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 
 #include <stdio.h>
@@ -16,7 +16,7 @@ extern "C" {
 **  \param n   = number of columns in matrix
 **  \param out = file pointer for output
 **
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void print_mat(double **a, int m, int n, FILE *out)
    {

@@ -2,7 +2,7 @@
 #define _psi_src_bin_cints_Default_Ints_oe_osrr_h
 
 /*! \file oe_osrr.h
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */namespace psi { namespace CINTS {
 

@@ -1,6 +1,6 @@
 /*!
-  \file ua2a.c
-  \ingroup (CHKPT)
+  \file ua2a.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -50,7 +50,7 @@ extern "C" {
 **
 ** returns: ua2a = Read in an array num_unique_atom long
 ** 
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int *chkpt_rd_ua2a(void)
 	{

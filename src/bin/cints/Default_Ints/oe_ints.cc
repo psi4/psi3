@@ -1,5 +1,5 @@
 /*! \file oe_ints.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief One-electron integrals.
 */
 #include<cmath>

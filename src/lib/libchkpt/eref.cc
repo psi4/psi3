@@ -45,7 +45,7 @@ extern "C" {
 **
 **   returns: double eref  the reference energy.
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	double chkpt_rd_eref(void)
 	{
@@ -62,7 +62,7 @@ extern "C" {
 **
 ** returns: none
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_eref(double eref)
 	{

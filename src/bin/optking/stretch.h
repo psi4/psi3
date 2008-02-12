@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file stretch.h
+    \ingroup OPTKING
     \brief Class for stretches
 */
 

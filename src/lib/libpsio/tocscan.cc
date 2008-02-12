@@ -1,6 +1,6 @@
 /*!
  \file tocscan.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <string.h>
@@ -34,7 +34,7 @@ extern "C" {
    ** PSIO_TOCSCAN(): Scans the TOC for a particular keyword and returns either
    ** a pointer to the entry or NULL to the caller.
    **
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
 
   psio_tocentry *psio_tocscan(unsigned int unit, char *key) {

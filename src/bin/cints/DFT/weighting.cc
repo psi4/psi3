@@ -1,5 +1,5 @@
 /*! \file weighting.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \author Shawn Brown
    
     This code contains some functions used for 

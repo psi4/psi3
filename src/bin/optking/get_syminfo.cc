@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file get_syminfo.cc
+    \ingroup OPTKING
     \brief GET_SYMINFO: gets symmetry info from chkpt and char_table.c
 */
 

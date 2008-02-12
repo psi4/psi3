@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCDENSITY)
+/*! \file lag.cc
+    \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file char_table.cc
+    \ingroup OPTKING
     \brief This file contains functions which provide information
      from the group character tables as given in Cotton 
 */

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DERIV)
+/*! \file build_libderiv.c
+    \ingroup DERIV
     \brief Enter brief description of file here 
 */
 

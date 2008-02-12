@@ -1,6 +1,6 @@
 /*!
-  \file usotao.c
-  \ingroup (CHKPT)
+  \file usotao.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -60,7 +60,7 @@ extern "C" {
 **
 ** returns: usotao = A num_so by num_ao matrix of doubles
 ** 
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	double **chkpt_rd_usotao(void)
 	{
@@ -74,7 +74,7 @@ extern "C" {
 **
 ** returns: none
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_usotao(double **usotao)
 	{

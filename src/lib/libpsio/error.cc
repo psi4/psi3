@@ -1,6 +1,6 @@
 /*!
  ** \file error.cc
- ** \ingroup (PSIO)
+ ** \ingroup PSIO
  */
 
 #include <stdio.h>
@@ -12,7 +12,7 @@ using namespace psi;
 
 extern "C" {
   /*!
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    **
    ** PSIO_ERROR(): Print out an error message for libpsio.
    **

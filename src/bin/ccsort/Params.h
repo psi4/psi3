@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCSORT)
+/*! \file Params.h
+    \ingroup CCSORT
     \brief Enter brief description of file here 
 */
 

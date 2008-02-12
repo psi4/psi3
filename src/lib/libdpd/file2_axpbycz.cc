@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DPD)
+/*! \file file2_axpbycz.cc
+    \ingroup DPD
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

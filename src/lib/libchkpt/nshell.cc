@@ -1,6 +1,6 @@
 /*!
-  \file nshell.c
-  \ingroup (CHKPT)
+  \file nshell.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -44,7 +44,7 @@ extern "C" {
 ** Shells of all atoms are counted (compare nprim).
 **
 ** returns: nshell = total number of shells.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int chkpt_rd_nshell(void)
 	{
@@ -63,7 +63,7 @@ extern "C" {
 **
 ** returns:none 
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_nshell(int nshell)
 	{

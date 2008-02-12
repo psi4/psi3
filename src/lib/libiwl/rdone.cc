@@ -1,6 +1,6 @@
 /*!
-  \file rdone.c
-  \ingroup (IWL)
+  \file rdone.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <math.h>
@@ -31,7 +31,7 @@ extern "C" {
 **   \param printflg   = printing flag.  Set to 1 to print ints; 
 **                       otherwise, set to 0
 **   \param outfile    = file pointer for output of ints or error messages
-** \ingroup (IWL)
+** \ingroup IWL
 */
 int iwl_rdone(int itap, char *label, double *ints, int ntri, int erase, 
               int printflg, FILE *outfile)

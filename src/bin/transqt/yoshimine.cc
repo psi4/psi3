@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (TRANSQT)
+/*! \file yoshimine.cc
+    \ingroup TRANSQT
     \brief Enter brief description of file here 
 */
 /*

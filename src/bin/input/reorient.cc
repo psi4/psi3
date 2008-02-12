@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INPUT)
+/*! \file reorient.cc
+    \ingroup INPUT
     \brief Enter brief description of file here 
 */
 #define EXTERN

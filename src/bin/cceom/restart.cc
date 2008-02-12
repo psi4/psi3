@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCEOM)
+/*! \file restart.cc
+    \ingroup CCEOM
     \brief Enter brief description of file here 
 */
 /* restart() collapses L vectors down to num vectors */

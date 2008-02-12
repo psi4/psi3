@@ -1,6 +1,6 @@
 /*!
   \file nfzv.cc
-  \ingroup (CHKPT)
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -41,7 +41,7 @@ extern "C" {
 ** Reads in the total number of frozen unoccupied molecular orbitals.
 **
 ** returns: nfzv = total number of frozen unoccupied molecular orbitals.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int chkpt_rd_nfzv(void)
 	{
@@ -54,7 +54,7 @@ extern "C" {
 **
 ** \param nfzv = total number of frozen unoccupied molecular orbitals.
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_nfzv(int nfzv)
 	{

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CIS)
+/*! \file Fij.cc
+    \ingroup CIS
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>

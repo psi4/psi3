@@ -1,6 +1,6 @@
 /*!
-  \file sym_label.c
-  \ingroup (CHKPT)
+  \file sym_label.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -47,7 +47,7 @@ extern "C" {
 **
 **   returns: symmetry = symmetry label.
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	char *chkpt_rd_sym_label(void)
 	{
@@ -61,7 +61,7 @@ extern "C" {
 **
 ** returns none
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_sym_label(char *sym_label)
 	{

@@ -1,6 +1,6 @@
 /*!
-  \file buf_wrt_arr.c
-  \ingroup (IWL)
+  \file buf_wrt_arr.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <math.h>
@@ -17,7 +17,7 @@ extern "C" {
 ** David Sherrill, March 1995
 **
 ** Revised 6/27/96 by CDS for new format
-** \ingroup (IWL)
+** \ingroup IWL
 */
 void iwl_buf_wrt_arr(struct iwlbuf *Buf, double *arr, int *p, int *q, 
 		     int *r, int *s, long int size)

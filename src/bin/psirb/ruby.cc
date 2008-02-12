@@ -1,5 +1,5 @@
 /*! \file ruby.cc
-	\ingroup (psirb)
+	\ingroup psirb
 	\brief Contains Ruby initialization and some global functions.
 */
 #include <ruby.h>

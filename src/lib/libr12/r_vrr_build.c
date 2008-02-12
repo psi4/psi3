@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (R12)
+/*! \file r_vrr_build.c
+    \ingroup R12
     \brief Enter brief description of file here 
 */
 #include <math.h>

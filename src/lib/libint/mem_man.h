@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INT)
+/*! \file mem_man.h
+    \ingroup INT
     \brief Enter brief description of file here 
 */
 void init_mem(int memory);

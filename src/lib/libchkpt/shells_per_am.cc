@@ -1,6 +1,6 @@
 /*!
-  \file shells_per_am.c
-  \ingroup (CHKPT)
+  \file shells_per_am.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -51,7 +51,7 @@ extern "C" {
 **
 ** returns: shells_per_am = array of shells per angular momentum
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int *chkpt_rd_shells_per_am(void)
 	{
@@ -66,7 +66,7 @@ extern "C" {
 **
 ** returns: none
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_shells_per_am(int *shells_per_am)
 	{

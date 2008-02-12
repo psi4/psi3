@@ -1,6 +1,6 @@
 /*!
  \file write_entry.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <libpsio/psio.h>
@@ -18,7 +18,7 @@ extern "C" {
   /*!
    ** PSIO_WRITE_ENTRY()
    **
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
   int psio_write_entry(unsigned int unit, char *key, char *buffer, ULI size) {
     _default_psio_lib_->write_entry(unit, key, buffer, size);

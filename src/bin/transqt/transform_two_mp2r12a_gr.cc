@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (TRANSQT)
+/*! \file transform_two_mp2r12a_gr.cc
+    \ingroup TRANSQT
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

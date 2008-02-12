@@ -1,6 +1,6 @@
 /*!
-  \file wrttwo.c
-  \ingroup (IWL)
+  \file wrttwo.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <math.h>
@@ -25,7 +25,7 @@ extern "C" {
 **    \param outfile  =  output file
 **
 ** Revised 6/27/96 by CDS
-** \ingroup (IWL)
+** \ingroup IWL
 */
 void iwl_wrttwo(int itap, int nbfso, double *ints, int *ioff, double toler, 
                 int printflg, FILE *outfile)

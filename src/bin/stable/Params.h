@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (STABLE)
+/*! \file Params.h
+    \ingroup STABLE
     \brief Enter brief description of file here 
 */
 

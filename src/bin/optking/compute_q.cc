@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file compute_q.cc
+    \ingroup OPTKING
     \brief Returns the values of salcs given the simple internals
     and salc_set the value of the simple internals must already be computed.
 */

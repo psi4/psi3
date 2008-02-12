@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCEOM)
+/*! \file Local.h
+    \ingroup CCEOM
     \brief Enter brief description of file here 
 */
 

@@ -1,6 +1,6 @@
 /*###########################################################################*/
-/*! \file 
-    \ingroup (EXTREMA)
+/*! \file small_functions.cc
+    \ingroup EXTREMA
   \brief Small utility functions. */ 
 /*						Joseph P. Kenny 11/29/01
   ###########################################################################*/

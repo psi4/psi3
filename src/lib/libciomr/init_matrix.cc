@@ -1,6 +1,6 @@
 /*!
   \file init_matrix.cc
-  \ingroup (CIOMR)
+  \ingroup CIOMR
 */ 
 
 #include <psifiles.h>
@@ -20,7 +20,7 @@ extern "C" {
 ** 
 ** \param n = number of rows
 ** \param m = number of columns
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 
 double ** init_matrix(unsigned long int n, unsigned long int m)
@@ -52,7 +52,7 @@ double ** init_matrix(unsigned long int n, unsigned long int m)
 **
 ** \param array = matrix to free
 ** \param size = number of rows
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void free_matrix(double **array, unsigned long int size)
    {

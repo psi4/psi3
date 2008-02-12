@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DPD)
+/*! \file file2_mat_close.cc
+    \ingroup DPD
     \brief Enter brief description of file here 
 */
 #include "dpd.h"

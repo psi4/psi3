@@ -1,5 +1,5 @@
 /*! \file te_ints.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Two-electron integrals.
 */
 #include<cmath>

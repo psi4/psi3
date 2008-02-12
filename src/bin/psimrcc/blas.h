@@ -6,7 +6,7 @@
  *  A multireference coupled cluster code
  ***************************************************************************/
 
-/*! \file 
+/*! \file blas.h
     \ingroup (PSIMRCC)
     \brief   A class to perform contractions
 */

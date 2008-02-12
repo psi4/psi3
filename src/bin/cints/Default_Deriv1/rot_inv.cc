@@ -1,5 +1,5 @@
 /*! \file rot_inv.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Routines for determining the rotational invariance of gradients.
 */
 #include <stdio.h>

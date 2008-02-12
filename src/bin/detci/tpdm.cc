@@ -1,5 +1,5 @@
 /*! \file tpdm.cc
-**  \ingroup (DETCI)
+**  \ingroup DETCI
 **  \brief Compute the two-particle density matrix (TPDM)
 **
 **  C. David Sherrill

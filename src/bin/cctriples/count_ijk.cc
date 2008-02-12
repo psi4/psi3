@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCTRIPLES)
+/*! \file count_ijk.cc
+    \ingroup CCTRIPLES
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

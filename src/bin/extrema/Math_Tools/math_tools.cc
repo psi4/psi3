@@ -1,7 +1,8 @@
 /*###########################################################################*/
-/*! \file 
-    \ingroup (EXTREMA)
-  \brief Member functions for math tools concrete class. */
+/*! 
+** \file math_tools.cc
+** \ingroup EXTREMA
+** \brief Member functions for math tools concrete class. */
 /*						Joseph P. Kenny 11/29/01
   ###########################################################################*/
 

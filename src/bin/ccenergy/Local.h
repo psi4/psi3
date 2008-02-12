@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCENERGY)
+/*! \file Local.h
+    \ingroup CCENERGY
     \brief Enter brief description of file here 
 */
 

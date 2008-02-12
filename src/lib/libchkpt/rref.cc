@@ -1,6 +1,6 @@
 /*!
-  \file rref.c
-  \ingroup (CHKPT)
+  \file rref.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -54,7 +54,7 @@ extern "C" {
 **            calculations (gradients at displaced geometries) to a 
 **            common frame.
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	double **chkpt_rd_rref(void)
 	{
@@ -75,7 +75,7 @@ extern "C" {
 **
 ** returns: none
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_rref(double **Rref)
 	{

@@ -1,6 +1,7 @@
 /*###########################################################################*/
-/*! \file 
-    \ingroup (EXTREMA)
+/*! 
+  \file deloc_symm.cc
+  \ingroup EXTREMA
   \brief Symmetry related functions. */
 /*						Joseph P. Kenny 12/06/01
   ###########################################################################*/

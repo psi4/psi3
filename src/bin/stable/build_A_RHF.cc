@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (STABLE)
+/*! \file build_A_RHF.cc
+    \ingroup STABLE
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>

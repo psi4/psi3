@@ -1,5 +1,5 @@
 /*! \file oe_osrr.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

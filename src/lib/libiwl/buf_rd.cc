@@ -1,6 +1,6 @@
 /*!
-  \file buf_rd.c
-  \ingroup (IWL)
+  \file buf_rd.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <math.h>
@@ -30,7 +30,7 @@ extern "C" {
 ** -Daniel, November 9, 1995
 **
 ** Revised 6/26/96 by CDS for new format
-** \ingroup (IWL)
+** \ingroup IWL
 */
 int iwl_buf_rd(struct iwlbuf *Buf, int target_pq, double *ints,
 	       int *ioff_lt, int *ioff_rt, int mp2, int printflg, 

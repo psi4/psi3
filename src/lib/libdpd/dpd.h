@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DPD)
+/*! \file dpd.h
+    \ingroup DPD
     \brief Enter brief description of file here 
 */
 #ifndef _psi_src_lib_libdpd_dpd_h

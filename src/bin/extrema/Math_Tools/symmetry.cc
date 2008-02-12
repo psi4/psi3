@@ -1,9 +1,11 @@
 /*###########################################################################*/
-/*! \file 
-    \ingroup (EXTREMA)
-  \brief Symmetry related functions. */
-/*						Joseph P. Kenny 12/10/01
-  ###########################################################################*/
+/*! 
+  \file symmetry.cc
+  \ingroup EXTREMA
+  \brief Symmetry related functions. 
+
+  Joseph P. Kenny 12/10/01
+  ########################################################################### */
 
 #define EXTERN
 #include "extrema.h"

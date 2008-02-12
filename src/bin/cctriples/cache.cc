@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCTRIPLES)
+/*! \file cache.cc
+    \ingroup CCTRIPLES
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

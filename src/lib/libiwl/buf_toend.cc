@@ -1,6 +1,6 @@
 /*!
-  \file buf_toend.c
-  \ingroup (IWL)
+  \file buf_toend.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,7 +18,7 @@ extern FILE *outfile;
 ** an already existing file
 **
 ** Edward Valeev, January 2001
-** \ingroup (IWL)
+** \ingroup IWL
 */
 void iwl_buf_toend(struct iwlbuf *Buf)
 {

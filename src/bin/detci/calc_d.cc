@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DETCI)
+/*! \file calc_d.cc
+    \ingroup DETCI
     \brief Enter brief description of file here 
 */
 

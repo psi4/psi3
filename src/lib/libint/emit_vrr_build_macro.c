@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INT)
+/*! \file emit_vrr_build_macro.c
+    \ingroup INT
     \brief Enter brief description of file here 
 */
 #include <math.h>

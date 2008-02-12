@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCDENSITY)
+/*! \file globals.h
+    \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */
 #include <ccfiles.h>

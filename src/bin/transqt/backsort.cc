@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (TRANSQT)
+/*! \file backsort.cc
+    \ingroup TRANSQT
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

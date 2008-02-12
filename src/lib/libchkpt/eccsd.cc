@@ -44,7 +44,7 @@ extern "C" {
 **   takes no arguments.
 **
 **   returns: double eccsd  the CCSD energy.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	double chkpt_rd_eccsd(void)
 	{
@@ -59,7 +59,7 @@ extern "C" {
 ** \param eccsd = the CCSD energy.
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_eccsd(double eccsd)
 	{

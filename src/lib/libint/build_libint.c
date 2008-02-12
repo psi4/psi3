@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INT)
+/*! \file build_libint.c
+    \ingroup INT
     \brief Enter brief description of file here 
 */
 

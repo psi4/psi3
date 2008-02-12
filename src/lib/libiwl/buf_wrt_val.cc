@@ -1,6 +1,6 @@
 /*!
-  \file buf_wrt_val.c
-  \ingroup (IWL)
+  \file buf_wrt_val.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <math.h>
@@ -23,7 +23,7 @@ extern "C" {
 ** is not as nice as being able to write entire arrays of values to the
 ** buffer, but may be necessary at times.
 ** Daniel Crawford, Novemeber 1995
-** \ingroup (IWL)
+** \ingroup IWL
 */
 void iwl_buf_wrt_val(struct iwlbuf *Buf, int p, int q, int r, int s,
                      double value, int printflag, FILE *outfile, int dirac)

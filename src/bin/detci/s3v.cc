@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DETCI)
+/*! \file s3v.cc
+    \ingroup DETCI
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

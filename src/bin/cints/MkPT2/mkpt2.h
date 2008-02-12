@@ -2,7 +2,7 @@
 #define _psi_src_bin_cints_mkpt2_mkpt2_h
 
 /*! \file mkpt2.h
-    \ingroup (CINTS)
+    \ingroup CINTS
 */
 
 namespace psi { 

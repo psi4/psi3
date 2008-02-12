@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file zval_to_symbol.cc
+    \ingroup OPTKING
     \brief ZVAL_TO_SYMBOL() return atom symbol
 */
 

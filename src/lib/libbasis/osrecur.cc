@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (BASIS)
+/*! \file osrecur.cc
+    \ingroup BASIS
     \brief Enter brief description of file here 
 */
 

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CUSP)
+/*! \file phi.cc
+    \ingroup CUSP
     \brief Enter brief description of file here 
 */
 /*

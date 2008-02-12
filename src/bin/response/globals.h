@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (RESPONSE)
+/*! \file globals.h
+    \ingroup RESPONSE
     \brief Enter brief description of file here 
 */
 #include <ccfiles.h>

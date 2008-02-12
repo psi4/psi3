@@ -42,7 +42,7 @@ extern "C" {
 **  takes no arguments.
 **
 **  returns: double escf  the scf energy.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	double chkpt_rd_escf(void)
 	{
@@ -58,7 +58,7 @@ extern "C" {
 **   \param double escf  the scf energy.
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 
 	void chkpt_wt_escf(double escf)

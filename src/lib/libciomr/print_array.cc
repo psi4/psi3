@@ -1,6 +1,6 @@
 /*!
 ** \file print_array.cc
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 
 #include <stdio.h>
@@ -16,7 +16,7 @@ extern "C" {
 ** \param m     = dimension of matrix (mxm)
 ** \param out   = file pointer for output
 **
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void print_array(double *a, int m, FILE *out)
    {

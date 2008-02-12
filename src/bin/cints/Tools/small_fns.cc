@@ -1,5 +1,5 @@
 /*! \file small_fns.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 #include<cstdio>

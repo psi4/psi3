@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CSCF)
+/*! \file occ_fun.cc
+    \ingroup CSCF
     \brief Enter brief description of file here 
 */
 /*****************************************************/

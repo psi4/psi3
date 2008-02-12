@@ -1,6 +1,6 @@
 /*!
  \file volseek.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <unistd.h>
@@ -13,7 +13,7 @@ extern "C" {
   /*!
    ** PSIO_VOLSEEK()
    **
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
   int psio_volseek(psio_vol *vol, ULI page, ULI offset, ULI numvols) {
     int stream, errcod;

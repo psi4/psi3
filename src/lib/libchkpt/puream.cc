@@ -1,6 +1,6 @@
 /*!
   \file puream.cc
-  \ingroup (CHKPT)
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -43,7 +43,7 @@ extern "C" {
 **  limited to only using one type of functions at a time)
 **
 **  returns: 1 (harmonics) or 0 (cartesian)
-**  \ingroup (CHKPT)
+**  \ingroup CHKPT
 */
 	int chkpt_rd_puream(void)
 	{
@@ -58,7 +58,7 @@ extern "C" {
 **  \param 1 (harmonics) or 0 (cartesian)
 **
 **  returns: none
-**  \ingroup (CHKPT)
+**  \ingroup CHKPT
 */
 	void chkpt_wt_puream(int puream)
 	{

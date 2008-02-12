@@ -1,6 +1,6 @@
 /*!
-  \file buf_wrt_mp2.c
-  \ingroup (IWL)
+  \file buf_wrt_mp2.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <math.h>
@@ -21,7 +21,7 @@ extern "C" {
 ** This routine is a modified form of iwl_buf_wrt() specific to mp2-type
 ** restricted transforms.  It's not general, but it should work.
 ** Daniel, 9/25/95
-** \ingroup (IWL)
+** \ingroup IWL
 */
 void iwl_buf_wrt_mp2(struct iwlbuf *Buf, int p, int q, int pq, int pqsym,
    double **arr, int rsym, int *firstr, int *lastr, int *firsts, int *lasts,

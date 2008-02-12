@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (TRANSQT)
+/*! \file semicanonical.cc
+    \ingroup TRANSQT
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCRESPONSE)
+/*! \file amp_write.cc
+    \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

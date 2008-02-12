@@ -1,5 +1,5 @@
 /*!
-  \file ccvecs.c
+  \file ccvecs.cc
   \ingroup CHKPT
 */
 

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCEOM)
+/*! \file sigmaCC3.cc
+    \ingroup CCEOM
     \brief Enter brief description of file here 
 */
 #include "MOInfo.h"

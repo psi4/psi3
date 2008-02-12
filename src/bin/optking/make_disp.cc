@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file make_disp.cc
+    \ingroup OPTKING
     \brief displaces along all coordinates + and - by disp_size
     need to save geometry to last step for gradients by energy
 */

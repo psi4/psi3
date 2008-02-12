@@ -1,6 +1,6 @@
 /*!
  \file tocwrite.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <stdlib.h>
@@ -44,7 +44,7 @@ extern "C" {
    **
    ** NB: This function should NOT call psio_error because the latter calls it!
    **
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
   int psio_tocwrite(unsigned int unit) {
     _default_psio_lib_->tocwrite(unit);

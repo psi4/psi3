@@ -1,6 +1,6 @@
 /*!
   \file psi_start.cc
-  \ingroup (CIOMR)
+  \ingroup CIOMR
 */
 
 #include <stdio.h>
@@ -34,7 +34,7 @@ static char *fprefix = NULL;
 **                      Most PSI modules will want to append.
 **
 ** Returns: one of standard PSI error codes
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 
 int psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix, int argc, char *argv[], int overwrite_output)
@@ -244,7 +244,7 @@ int psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix, int argc, c
 **
 ** Returns: the pointer to the string containing the input
 **          file name if it has been determined, NULL otherwise
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 
 char* psi_ifname()
@@ -261,7 +261,7 @@ char* psi_ifname()
 **
 ** Returns: the pointer to the string containing the output
 **          file name if it has been determined, NULL otherwise
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 
 char* psi_ofname()
@@ -278,7 +278,7 @@ char* psi_ofname()
 **
 ** Returns: the pointer to the string containing the PSI
 **          file prefix if it has been determined, NULL otherwise
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 
 char* psi_fprefix()

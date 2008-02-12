@@ -1,5 +1,5 @@
 /*! \file functional.cc
-  \ingroup (CINTS)
+  \ingroup CINTS
   functionals go here
 
   The way the nomenclature workes is

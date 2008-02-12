@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file fragment.cc
+    \ingroup OPTKING
     \brief six coordinates for non-bonded fragments
 */
 

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OEPROP)
+/*! \file grid_dens_2d.cc
+    \ingroup OEPROP
     \brief Enter brief description of file here 
 */
 #define EXTERN

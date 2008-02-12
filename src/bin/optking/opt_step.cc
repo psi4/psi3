@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file opt_step.cc
+    \ingroup OPTKING
     \brief OPT_STEP.CC takes geometry steps using
     gradients -- optking's default operation
 */

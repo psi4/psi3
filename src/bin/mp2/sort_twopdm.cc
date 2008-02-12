@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MP2)
+/*! \file sort_twopdm.cc
+    \ingroup MP2
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CIS)
+/*! \file Params.h
+    \ingroup CIS
     \brief Enter brief description of file here 
 */
 

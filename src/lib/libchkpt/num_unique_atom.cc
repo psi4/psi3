@@ -1,6 +1,6 @@
 /*!
-  \file num_unique_atom.c
-  \ingroup (CHKPT)
+  \file num_unique_atom.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -41,7 +41,7 @@ extern "C" {
 ** Reads in the number of symmetry unique atoms.
 **
 ** returns: nunique = number of symmetry unique atoms.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int chkpt_rd_num_unique_atom(void)
 	{
@@ -55,7 +55,7 @@ extern "C" {
 ** \param nunique = number of symmetry unique atoms.
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_num_unique_atom(int nunique)
 	{

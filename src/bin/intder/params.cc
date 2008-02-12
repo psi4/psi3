@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INTDER)
+/*! \file params.cc
+    \ingroup INTDER
     \brief Enter brief description of file here 
 */
 #include "params.h"

@@ -1,5 +1,5 @@
-/*! \file init_prune_conc_grid.cc
-    \ingroup (CINTS)
+/*! \file init_prun_conc_grid.cc
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 #include<stdio.h>

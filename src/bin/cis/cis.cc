@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CIS)
+/*! \file cis.cc
+    \ingroup CIS
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

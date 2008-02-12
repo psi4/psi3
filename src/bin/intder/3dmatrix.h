@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INTDER)
+/*! \file 3dmatrix.h
+    \ingroup INTDER
     \brief Enter brief description of file here 
 */
 

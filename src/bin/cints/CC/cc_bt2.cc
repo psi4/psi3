@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CINTS)
+/*! \file cc_bt2.cc
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 #include<memory.h>

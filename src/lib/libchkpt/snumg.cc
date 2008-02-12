@@ -1,6 +1,6 @@
 /*!
-  \file snumg.c
-  \ingroup (CHKPT)
+  \file snumg.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -55,7 +55,7 @@ extern "C" {
 **    snumg = Reads in array of the numbers of the primitive Gaussians
 **            in shells
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int *chkpt_rd_snumg(void)
 	{
@@ -70,7 +70,7 @@ extern "C" {
 **  \param snumg = array of the numbers of the primitive Gaussians
 **                 in shells
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_snumg(int *snumg)
 	{

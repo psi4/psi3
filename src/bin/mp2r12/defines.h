@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MP2R12)
+/*! \file defines.h
+    \ingroup MP2R12
     \brief Enter brief description of file here 
 */
 /*--- Useful and not-so-useful macro definitions ---*/

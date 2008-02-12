@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CSCF)
+/*! \file includes.h
+    \ingroup CSCF
     \brief Enter brief description of file here 
 */
 

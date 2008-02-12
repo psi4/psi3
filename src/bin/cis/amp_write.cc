@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CIS)
+/*! \file amp_write.cc
+    \ingroup CIS
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

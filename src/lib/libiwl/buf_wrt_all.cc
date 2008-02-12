@@ -1,6 +1,6 @@
 /*!
-  \file buf_wrt_all.c
-  \ingroup (IWL)
+  \file buf_wrt_all.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <math.h>
@@ -31,7 +31,7 @@ extern "C" {
 ** integrals to disk, the SCF code will most likely give incorrect data
 ** if it uses the resulting integrals.
 ** TDC 12/24/01
-** \ingroup (IWL)
+** \ingroup IWL
 */
 void iwl_buf_wrt_all(struct iwlbuf *Buf, int nbfso, double *ints, int *ioff,
       int printflg, FILE *outfile)

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file bond_lengths.h
+    \ingroup OPTKING
     \brief Atomic covalent radii in picometers
 */
 

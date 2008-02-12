@@ -1,7 +1,7 @@
 #ifndef _psi_src_bin_psimrcc_moinfo_h
 #define _psi_src_bin_psimrcc_moinfo_h
 
-/*! \file 
+/*! \file moinfo.h
     \ingroup (PSIMRCC)
     \brief   This class stores all the info regarding MOs
 */

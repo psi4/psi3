@@ -1,5 +1,5 @@
 /*! \file rmp2r12_energy.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 #include<cmath>

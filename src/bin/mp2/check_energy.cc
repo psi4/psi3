@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MP2)
+/*! \file check_energy.cc
+    \ingroup MP2
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>

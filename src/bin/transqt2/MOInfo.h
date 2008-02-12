@@ -1,5 +1,5 @@
 /*! 
-** \file MOInfo.h 
+** \file MOInfo.h
 ** \ingroup TRANSQT2
 ** \brief MOInfo structure with information about MO's from checkpoint
 */

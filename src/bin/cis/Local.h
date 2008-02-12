@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CIS)
+/*! \file Local.h
+    \ingroup CIS
     \brief Enter brief description of file here 
 */
 

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCTRIPLES)
+/*! \file ET_UHF_ABB.cc
+    \ingroup CCTRIPLES
     \brief Enter brief description of file here 
 */
  #include <stdio.h>

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DPD)
+/*! \file file4_mat_irrep_wrt_block.cc
+    \ingroup DPD
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

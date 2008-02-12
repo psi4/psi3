@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file salc.h
+    \ingroup OPTKING
     \brief Class for salcs
 */
 

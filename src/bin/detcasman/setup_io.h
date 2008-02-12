@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DETCASMAN)
+/*! \file setup_io.h
+    \ingroup DETCASMAN
     \brief Enter brief description of file here 
 */
 

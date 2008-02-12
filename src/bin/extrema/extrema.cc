@@ -1,6 +1,6 @@
 /*###########################################################################*/
-/*! \file 
-    \ingroup (EXTREMA)
+/*! \file extrema.cc
+    \ingroup EXTREMA
   \brief Main function and related small functions for extrema.
 
   Provides main function and just enough input parsing to know what

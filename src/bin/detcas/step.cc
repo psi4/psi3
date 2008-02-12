@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DETCAS)
+/*! \file step.cc
+    \ingroup DETCAS
     \brief Enter brief description of file here 
 */
 #include <stdlib.h>

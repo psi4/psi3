@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MP2R12)
+/*! \file Params.h
+    \ingroup MP2R12
     \brief Enter brief description of file here 
 */
 /* Struct for input parameters */

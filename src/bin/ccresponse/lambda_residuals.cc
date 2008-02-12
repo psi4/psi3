@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCRESPONSE)
+/*! \file lambda_residuals.cc
+    \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCDENSITY)
+/*! \file build_A_UHF.cc
+    \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>

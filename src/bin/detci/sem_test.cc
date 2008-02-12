@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DETCI)
+/*! \file sem_test.cc
+    \ingroup DETCI
     \brief Enter brief description of file here 
 */
 

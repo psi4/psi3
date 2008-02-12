@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OEPROP)
+/*! \file get_opdm_lbl.cc
+    \ingroup OEPROP
     \brief Enter brief description of file here 
 */
 #define EXTERN

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (STABLE)
+/*! \file cache.cc
+    \ingroup STABLE
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

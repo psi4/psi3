@@ -1,5 +1,5 @@
 /*! \file calc_close_basis_u.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 #include <cmath>

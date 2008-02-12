@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DETCI)
+/*! \file set_ciblks.cc
+    \ingroup DETCI
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

@@ -1,6 +1,6 @@
 /*!
   \file num_unique_shell.cc
-  \ingroup (CHKPT)
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -41,7 +41,7 @@ extern "C" {
 ** Reads in the number of symmetry unique shells. 
 **
 ** returns: nunique = number of symmetry unique shells.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int chkpt_rd_num_unique_shell(void)
 	{
@@ -55,7 +55,7 @@ extern "C" {
 ** \param nunique = number of symmetry unique shells.
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_num_unique_shell(int nunique)
 	{

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file compute_H.cc
+    \ingroup OPTKING
     \brief This function reads in Force Constants H from
     PSIF_OPTKING (in redundant internal coodinates) does a
     BFGS update on H inverts H to form H_inv and returns H_inv.

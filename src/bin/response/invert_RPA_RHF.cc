@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (RESPONSE)
+/*! \file invert_RPA_RHF.cc
+    \ingroup RESPONSE
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

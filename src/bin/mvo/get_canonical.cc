@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MVO)
+/*! \file get_canonical.cc
+    \ingroup MVO
     \brief Enter brief description of file here 
 */
 /*

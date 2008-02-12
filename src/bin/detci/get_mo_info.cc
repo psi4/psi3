@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DETCI)
+/*! \file get_mo_info.cc
+    \ingroup DETCI
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

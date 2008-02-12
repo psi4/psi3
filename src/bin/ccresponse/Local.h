@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCRESPONSE)
+/*! \file Local.h
+    \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */
 

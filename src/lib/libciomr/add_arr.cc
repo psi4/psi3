@@ -2,14 +2,14 @@
 
 /*!
   \file add_arr.cc
-  \ingroup (CIOMR)
+  \ingroup CIOMR
 */
 
 extern "C" {
 /*!
 ** add_arr: Add arrays a and b and put the result in array c.  Adds
 ** the first n elements
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void add_arr(double *a, double *b, double *c, int n)
    {

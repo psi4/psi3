@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OEPROP)
+/*! \file read_density.cc
+    \ingroup OEPROP
     \brief Enter brief description of file here 
 */
 #define EXTERN

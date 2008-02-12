@@ -1,6 +1,6 @@
 /*!
-  \file buf_rd_all_act.c
-  \ingroup (IWL)
+  \file buf_rd_all_act.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <math.h>
@@ -34,7 +34,7 @@ extern "C" {
 **    \param outfile       =  pointer to output file for printing
 **
 ** Returns: 0 if end of file, otherwise 1
-** \ingroup (IWL)
+** \ingroup IWL
 */
 int iwl_buf_rd_all_act(struct iwlbuf *Buf, double *ints,
                        int *ioff_lt, int *ioff_rt, int no_pq_perm, int *ioff,

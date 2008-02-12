@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CSCF)
+/*! \file scf_input.cc
+    \ingroup CSCF
     \brief Enter brief description of file here 
 */
 #define EXTERN

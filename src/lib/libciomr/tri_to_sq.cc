@@ -1,6 +1,6 @@
 /*!
    \file tri_to_sq.cc
-   \ingroup (CIOMR)
+   \ingroup CIOMR
 */
 
 extern "C" {
@@ -11,7 +11,7 @@ extern "C" {
 ** \param amat = lower triangle matrix
 ** \param bmat = square matrix
 ** \param size = number of rows/cols of matrix
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void tri_to_sq(double *amat, double **bmat, int size)
 {

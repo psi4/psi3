@@ -1,6 +1,6 @@
 /*!
   \file eigout.cc
-  \ingroup (CIOMR)
+  \ingroup CIOMR
 */
 
 #include <stdio.h>
@@ -14,7 +14,7 @@ extern "C" {
 ** useful for printing, for example, the SCF eigenvectors with their
 ** associated eigenvalues (orbital energies) and also the population.
 **
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void eigout(double **a, double *b, double *c, int m, int n, FILE *out)
    {

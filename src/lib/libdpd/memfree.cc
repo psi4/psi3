@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DPD)
+/*! \file memfree.cc
+    \ingroup DPD
     \brief Enter brief description of file here 
 */
 /*

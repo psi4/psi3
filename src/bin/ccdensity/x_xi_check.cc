@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCDENSITY)
+/*! \file x_xi_check.cc
+    \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */
 /*

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCEOM)
+/*! \file sort_C.cc
+    \ingroup CCEOM
     \brief Enter brief description of file here 
 */
 /* sorts C vectors each iteration to prepare for hbar contractions */

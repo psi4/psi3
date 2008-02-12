@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MP2R12)
+/*! \file gprgid.cc
+    \ingroup MP2R12
     \brief Enter brief description of file here 
 */
 

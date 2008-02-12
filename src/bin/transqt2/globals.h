@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (TRANSQT2)
+/*! \file globals.h
+    \ingroup TRANSQT2
     \brief Enter brief description of file here 
 */
 

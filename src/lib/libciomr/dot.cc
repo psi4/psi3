@@ -1,6 +1,6 @@
 /*!
  \file dot.cc
- \ingroup (CIOMR)
+ \ingroup CIOMR
 */
 
 extern "C" {
@@ -9,7 +9,7 @@ extern "C" {
 ** dot_mat():
 ** Takes the dot product between two 2D matrices a and b with dimensions
 ** n x n and returns the value
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void dot_mat(double **a, double **b, int n, double *value)
    {
@@ -31,7 +31,7 @@ void dot_mat(double **a, double **b, int n, double *value)
 ** dot_arr():
 ** Take the dot product of the first n elements of two arrays a and b
 ** and put the result in variable value.
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void dot_arr(double *a, double *b, int n, double *value)
    {

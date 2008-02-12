@@ -1,5 +1,5 @@
 /*!
-  \file calcs.cc
+  \file ncalcs.cc
   \ingroup CHKPT
 */
 

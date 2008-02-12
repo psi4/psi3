@@ -1,6 +1,6 @@
 /*!
  \file open_check.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <libpsio/psio.h>
@@ -26,7 +26,7 @@ extern "C" {
    **
    ** \param unit = the PSI unit number.
    **
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
 
   int psio_open_check(unsigned int unit) {

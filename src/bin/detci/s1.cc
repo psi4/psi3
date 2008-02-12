@@ -1,6 +1,6 @@
 /*!
-  \file s1.c
-  \ingroup (DETCI)
+  \file s1.cc
+  \ingroup DETCI
   \brief Enter brief description of file here 
 */
 
@@ -51,7 +51,7 @@ extern void b2brepl(unsigned char **occs, int *Jcnt, int **Jij, int **Joij,
 ** Modified 4/10/94 to make FCI-only (for now) and use new string structs
 ** Modified 6/21/95 for use in new RAS program
 **
-** \ingroup (DETCI)
+** \ingroup DETCI
 */
 void s1_block_fci(struct stringwr **alplist, struct stringwr **betlist, 
       double **C, double **S, double *oei, double *tei, double *F,

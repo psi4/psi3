@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MP2)
+/*! \file Iai.cc
+    \ingroup MP2
     \brief Enter brief description of file here 
 */
 #include <math.h>

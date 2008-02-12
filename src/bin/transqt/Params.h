@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (TRANSQT)
+/*! \file Params.h
+    \ingroup TRANSQT
     \brief Enter brief description of file here 
 */
 /* Struct for input parameters */

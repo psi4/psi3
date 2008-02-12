@@ -43,7 +43,7 @@ extern "C" {
 **
 **   returns: double enuc  the nuclear repulsion energy.
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	double chkpt_rd_enuc(void)
 	{
@@ -58,7 +58,7 @@ extern "C" {
 ** \param enuc = the nuclear repulsion energy.
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_enuc(double enuc)
 	{

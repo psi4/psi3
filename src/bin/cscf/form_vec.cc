@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CSCF)
+/*! \file form_vec.cc
+    \ingroup CSCF
     \brief Enter brief description of file here 
 */
 /* $Log$

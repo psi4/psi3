@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DPD)
+/*! \file buf4_symm2.cc
+    \ingroup DPD
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

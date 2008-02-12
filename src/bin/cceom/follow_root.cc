@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCEOM)
+/*! \file follow_root.cc
+    \ingroup CCEOM
     \brief Enter brief description of file here 
 */
 /*

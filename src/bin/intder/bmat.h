@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INTDER)
+/*! \file bmat.h
+    \ingroup INTDER
     \brief Enter brief description of file here 
 */
 #ifndef _psi_bin_intder_bmat_h_

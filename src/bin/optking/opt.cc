@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file opt.cc
+    \ingroup OPTKING
     \brief main optking function
     OPT.CC Rollin King, begun 1999 
 command-line      internal specifier   what it does

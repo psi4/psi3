@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCHBAR)
+/*! \file cc2_Wmbij.cc
+    \ingroup CCHBAR
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

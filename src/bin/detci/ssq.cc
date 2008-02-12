@@ -1,5 +1,5 @@
-/*! \file ssq.c
-**  \ingroup (DETCI)
+/*! \file ssq.cc
+**  \ingroup DETCI
 **  \brief Compute expectation value of S^2
 **
 ** Routine for computing the expectation value of S^2.

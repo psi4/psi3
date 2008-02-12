@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CSCF)
+/*! \file guess.cc
+    \ingroup CSCF
     \brief Enter brief description of file here 
 */
 /*--------------------------------------------------------

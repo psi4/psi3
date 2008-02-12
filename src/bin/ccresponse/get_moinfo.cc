@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCRESPONSE)
+/*! \file get_moinfo.cc
+    \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

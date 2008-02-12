@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file internals.h
+    \ingroup OPTKING
     \brief Class declaration for internals
 */
 

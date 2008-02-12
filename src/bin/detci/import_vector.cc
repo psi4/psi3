@@ -1,5 +1,5 @@
-/*! \file import_vector.c
-**  \ingroup (DETCI)
+/*! \file import_vector.cc
+**  \ingroup DETCI
 **  \brief Enter brief description of file here 
 **
 ** contains code to import a vector from a previous calculation using

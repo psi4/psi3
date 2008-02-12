@@ -1,6 +1,6 @@
 /*!
   \file fndcor.cc
-  \ingroup (CIOMR)
+  \ingroup CIOMR
 */
 
 #include <stdio.h>
@@ -37,7 +37,7 @@ static void fndcor_abort(FILE *infile, FILE *outfile);
 ** raised the default to 256 MB.  
 ** TDC, January 2003
 **
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 
 void fndcor(long int *maxcrb, FILE *infile, FILE *outfile)

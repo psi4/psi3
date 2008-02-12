@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DETCAS)
+/*! \file detcas.cc
+    \ingroup DETCAS
     \brief Orbital optimizer for detci
 **
 ** DETCAS
@@ -245,7 +245,7 @@ void form_independent_pairs(void)
 **
 ** This function calculates the MO gradient from the MO Lagrangian
 **
-** \ingroup (DETCAS)
+** \ingroup DETCAS
 */
 void calc_gradient(void)
 {
@@ -354,7 +354,7 @@ void calc_gradient(void)
 ** C. David Sherrill
 ** March 2004
 **
-** \ingroup (DETCAS)
+** \ingroup DETCAS
 */
 void bfgs_hessian(void)
 {
@@ -610,7 +610,7 @@ void bfgs_hessian(void)
 ** C. David Sherrill
 ** March 2004
 **
-** \ingroup (DETCAS)
+** \ingroup DETCAS
 */
 void ds_hessian(void)
 {
@@ -732,7 +732,7 @@ void ds_hessian(void)
 ** C. David Sherrill
 ** April 1998
 **
-** \ingroup (DETCAS)
+** \ingroup DETCAS
 */
 void calc_hessian(void)
 {
@@ -798,7 +798,7 @@ void calc_hessian(void)
 **
 ** Scales the orbital gradient by the approximate orbital Hessian
 **
-** \ingroup (DETCAS)
+** \ingroup DETCAS
 */
 void scale_gradient(void)
 {
@@ -866,7 +866,7 @@ void scale_gradient(void)
 **
 ** Returns: type of step taken; 1=regular (Newton-Raphson), 2=diis
 **
-** \ingroup (DETCAS)
+** \ingroup DETCAS
 */
 int take_step(void)
 {
@@ -908,7 +908,7 @@ int take_step(void)
 **
 ** Rotate the orbitals, irrep by irrep
 **
-** \ingroup (DETCAS)
+** \ingroup DETCAS
 */
 void rotate_orbs(void)
 {
@@ -976,7 +976,7 @@ void rotate_orbs(void)
 **
 ** Returns: 1 if converged, otherwise 0
 **
-** \ingroup (DETCAS)
+** \ingroup DETCAS
 */
 int check_conv(void)
 {

@@ -1,6 +1,6 @@
 /*!
-  \file rdtwo.c
-  \ingroup (IWL)
+  \file rdtwo.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <math.h>
@@ -28,7 +28,7 @@ extern "C" {
 **    \param outfile  = output file pointer
 **
 ** David Sherrill, 1995
-** \ingroup (IWL)
+** \ingroup IWL
 */
 void iwl_rdtwo(int itap, double *ints, int *ioff, int norbs, 
       int nfzc, int nfzv, int printflg, FILE *outfile)

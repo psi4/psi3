@@ -1,5 +1,5 @@
-/*! \file oe_deriv1_darwin1_test.c
-  \ingroup (CINTS)
+/*! \file oe_deriv1_darwin1_test.cc
+  \ingroup CINTS
   Computes derivatives of one-electron Darwin integrals numerically.
   \author R.A. King
 */

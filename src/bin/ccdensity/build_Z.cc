@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCDENSITY)
+/*! \file build_Z.cc
+    \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */
 #include "MOInfo.h"

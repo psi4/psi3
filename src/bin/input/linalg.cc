@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INPUT)
+/*! \file linalg.cc
+    \ingroup INPUT
     \brief Enter brief description of file here 
 */
 #include <stdlib.h>

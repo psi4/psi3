@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INPUT)
+/*! \file parsing.cc
+    \ingroup INPUT
     \brief Enter brief description of file here 
 */
 #define EXTERN

@@ -1,5 +1,5 @@
 /*! \file vector.cc
-**  \ingroup (DETCI)
+**  \ingroup DETCI
 **  \brief Contains C code for vector operations
 **
 ** C. David Sherrill

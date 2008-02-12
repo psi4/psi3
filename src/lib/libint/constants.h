@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INT)
+/*! \file constants.h
+    \ingroup INT
     \brief Enter brief description of file here 
 */
 

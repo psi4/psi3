@@ -47,7 +47,7 @@ extern "C" {
 ** returns: e_corr = the correlated energy.  To get some
 **        information (a label) on the type of correlated wavefunction
 **        used to get this energy, see rd_corr_lab().
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	double chkpt_rd_ecorr(void)
 	{
@@ -64,7 +64,7 @@ extern "C" {
 **        used to get this energy, see rd_corr_lab().
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_ecorr(double ecorr)
 	{

@@ -1,5 +1,5 @@
 /*! \file giao_deriv.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 

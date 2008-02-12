@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CSCF)
+/*! \file packit_o.cc
+    \ingroup CSCF
     \brief Enter brief description of file here 
 */
 /* $Log$

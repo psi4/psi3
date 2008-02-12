@@ -1,6 +1,6 @@
 /*!
  \file read_entry.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <libpsio/psio.h>
@@ -27,7 +27,7 @@ extern "C" {
    ** size of the entry, but care is taken to ensure that the end of the
    ** entry is not surpassed.
    **
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
 
   int psio_read_entry(unsigned int unit, char *key, char *buffer, ULI size) {

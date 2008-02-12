@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file disp_freq_grad_cart.cc
+    \ingroup OPTKING
     \brief disp_freq_grad_cart(): makes cartesian displacements for each atom
      displaces + and - along all cartesian coordinates
 */

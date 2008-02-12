@@ -1,5 +1,5 @@
-/*! \file 
- \ingroup (INPUT)
+/*! \file build_so_classes.cc
+ \ingroup INPUT
  \brief Enter brief description of file here 
  */
 #define EXTERN

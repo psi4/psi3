@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCDENSITY)
+/*! \file x_oe_intermediates.cc
+    \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */
 #include "MOInfo.h"

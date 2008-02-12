@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CIS)
+/*! \file U.cc
+    \ingroup CIS
     \brief Enter brief description of file here 
 */
 #include <math.h>

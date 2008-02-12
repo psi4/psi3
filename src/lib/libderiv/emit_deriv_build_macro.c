@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DERIV)
+/*! \file emit_deriv_build_macro.c
+    \ingroup DERIV
     \brief Enter brief description of file here 
 */
 #include <math.h>

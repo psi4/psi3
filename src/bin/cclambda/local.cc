@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCLAMBDA)
+/*! \file local.cc
+    \ingroup CCLAMBDA
     \brief Enter brief description of file here 
 */
 

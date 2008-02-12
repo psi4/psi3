@@ -1,6 +1,7 @@
 /*###########################################################################*/
-/*! \file 
-    \ingroup (EXTREMA)
+/*! 
+  \file coord_base_carts.cc
+  \ingroup EXTREMA
   \brief Member function definitions. */
 /*						Joseph P. Kenny 12/07/01
   ###########################################################################*/

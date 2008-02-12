@@ -1,6 +1,6 @@
 /*!
   \file eivout.cc
-  \ingroup (CIOMR)
+  \ingroup CIOMR
 */
  
 #include <stdio.h>
@@ -16,7 +16,7 @@ extern "C" {
 ** \param n = columns of a
 ** \param out = output file pointer
 **
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void eivout(double **a, double *b, int m, int n, FILE *out)
    {

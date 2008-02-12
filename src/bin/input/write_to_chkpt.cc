@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INPUT)
+/*! \file write_to_chkpt.cc
+    \ingroup INPUT
     \brief Enter brief description of file here 
 */
 #define EXTERN

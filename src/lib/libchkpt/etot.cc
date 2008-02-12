@@ -42,7 +42,7 @@ extern "C" {
 **  takes no arguments.
 **
 **  returns: double etot  the total energy.
-**  \ingroup (CHKPT)
+**  \ingroup CHKPT
 */
 	double chkpt_rd_etot(void)
 	{
@@ -58,7 +58,7 @@ extern "C" {
 **   \param double etot  the total energy.
 **
 **  returns: none
-**  \ingroup (CHKPT)
+**  \ingroup CHKPT
 */
 	void chkpt_wt_etot(double etot)
 	{

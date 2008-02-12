@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCLAMBDA)
+/*! \file Local.h
+    \ingroup CCLAMBDA
     \brief Enter brief description of file here 
 */
 

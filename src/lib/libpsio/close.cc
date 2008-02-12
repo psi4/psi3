@@ -2,7 +2,7 @@
 
 /*!
  ** \file close.cc
- ** \ingroup (PSIO)
+ ** \ingroup PSIO
  */
 
 #include <unistd.h>

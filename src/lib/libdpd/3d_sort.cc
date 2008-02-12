@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DPD)
+/*! \file 3d_sort.cc
+    \ingroup DPD
     \brief Enter brief description of file here 
 */
 

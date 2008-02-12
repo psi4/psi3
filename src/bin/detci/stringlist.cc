@@ -1,5 +1,5 @@
-/*! \file stringlist.c
-**  \ingroup (DETCI)
+/*! \file stringlist.cc
+**  \ingroup DETCI
 **  \brief Code to form the CI space as strings with all single replacements.
 **
 ** C. David Sherrill

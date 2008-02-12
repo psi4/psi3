@@ -34,7 +34,7 @@ extern "C" {
 **  
 **   returns: 1 if entry exists, 0 otherwise
 **        
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int chkpt_exist(char *keyword)
 	{

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (BASIS)
+/*! \file overlap.h
+    \ingroup BASIS
     \brief Enter brief description of file here 
 */
 

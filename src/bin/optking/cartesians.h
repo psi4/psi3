@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file cartesians.h
+    \ingroup OPTKING
     \brief Class declaration for cartesian coordinates
 */
 

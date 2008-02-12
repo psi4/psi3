@@ -1,6 +1,6 @@
 /*!
-  \file bufg_wrt_val_SI.c
-  \ingroup (IWL)
+  \file buf_wrt_val_SI.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <math.h>
@@ -26,7 +26,7 @@ extern "C" {
 **
 ** Uses short int's as indices. May be useful.
 ** Ed Valeev, February 1999
-** \ingroup (IWL)
+** \ingroup IWL
 */
 void iwl_buf_wrt_val_SI(struct iwlbuf *Buf, short int p, short int q, 
                         short int r, short int s, double value, int printflag, 

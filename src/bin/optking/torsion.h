@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file torsion.h
+    \ingroup OPTKING
     \brief Class for torsions
 */
 

@@ -1,5 +1,5 @@
-/*! \file form_ov.c
-**  \ingroup (DETCI)
+/*! \file form_ov.cc
+**  \ingroup DETCI
 **  \brief Form OV arrays of Bendazzoli and Evangelisti, JCP 98, 3141 (1993)
 **
 ** David Sherrill

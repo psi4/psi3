@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DBOC)
+/*! \file rhf.cc
+    \ingroup DBOC
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

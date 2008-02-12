@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (IPV1)
+/*! \file ip_print.cc
+    \ingroup IPV1
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

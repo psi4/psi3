@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INTDER)
+/*! \file atom.h
+    \ingroup INTDER
     \brief Enter brief description of file here 
 */
 #ifndef _psi_bin_intder_atom_h_

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OEPROP)
+/*! \file main.cc
+    \ingroup OEPROP
     \brief Enter brief description of file here 
 */
 #include "includes.h"

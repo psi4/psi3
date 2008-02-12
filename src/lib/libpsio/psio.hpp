@@ -92,7 +92,7 @@ namespace psi {
        ** \params size    = The number of bytes to read/write.
        ** \params         = Indicates if the call is to read (0) or write (0) the input data.
        **
-       ** \ingroup (PSIO)
+       ** \ingroup PSIO
        */
       void rw(unsigned int unit, char *buffer, psio_address address, ULI size,
               int wrt);
@@ -149,7 +149,7 @@ namespace psi {
        **
        ** \param unit = PSI unit number to which to write the toclen.
        **
-       ** \ingroup (PSIO)
+       ** \ingroup PSIO
        */
       void wt_toclen(unsigned int unit, ULI toclen);
       /// Read the table of contents for file number 'unit'.

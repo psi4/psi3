@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file irrep.cc
+    \ingroup OPTKING
     \brief 
 IRREP.CC :  symmetrizes set of delocalized internal coordinates
   also places irreps of coordinates in global array 'irr'

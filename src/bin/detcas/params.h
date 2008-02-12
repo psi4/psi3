@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DETCAS)
+/*! \file params.h
+    \ingroup DETCAS
     \brief Enter brief description of file here 
 */
 /*

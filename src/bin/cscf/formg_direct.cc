@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CSCF)
+/*! \file formg_direct.cc
+    \ingroup CSCF
     \brief Enter brief description of file here 
 */
 static char *rcsid = "$Id$";

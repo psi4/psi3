@@ -1,6 +1,6 @@
 /*!
-  \file sloc_new.c
-  \ingroup (CHKPT)
+  \file sloc_new.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MP2)
+/*! \file params.h
+    \ingroup MP2
     \brief Enter brief description of file here 
 */
 #ifndef _psi_src_bin_mp2_params_h_

@@ -1,5 +1,5 @@
-/*! \file oe_deriv1_darwin1.c
-  \ingroup (CINTS)
+/*! \file oe_deriv1_darwin1.cc
+  \ingroup CINTS
   \brief Compute the derivative of the one-electron Darwin relativistic correction.
   \author R.A. King
 */

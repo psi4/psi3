@@ -1,5 +1,5 @@
 /*! \file compute_cc.cc
-**  \ingroup (DETCI)
+**  \ingroup DETCI
 **  \brief Arbitrary-order coupled-cluster code
 ** 
 ** C. David Sherrill

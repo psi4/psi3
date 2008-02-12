@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (PSI3)
+/*! \file gprgid.cc
+    \ingroup PSI3
     \brief Enter brief description of file here 
 */
 

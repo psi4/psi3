@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INTDER)
+/*! \file cartesian.h
+    \ingroup INTDER
     \brief Enter brief description of file here 
 */
 #ifndef _psi_bin_intder_cartesian_h_

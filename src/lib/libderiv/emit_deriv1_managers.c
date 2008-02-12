@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DERIV)
+/*! \file emit_deriv1_managers.c
+    \ingroup DERIV
     \brief Enter brief description of file here 
 */
 /*------------------------------------------------------------------------------------------------------

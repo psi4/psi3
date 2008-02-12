@@ -1,5 +1,5 @@
 /*! \file bas_comp_functions.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 #include <cmath>

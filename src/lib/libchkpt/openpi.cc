@@ -1,6 +1,6 @@
 /*!
-  \file openpi.c
-  \ingroup (CHKPT)
+  \file openpi.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>

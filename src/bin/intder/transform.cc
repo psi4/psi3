@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INTDER)
+/*! \file transform.cc
+    \ingroup INTDER
     \brief Enter brief description of file here 
 */
 #include "intco.h"

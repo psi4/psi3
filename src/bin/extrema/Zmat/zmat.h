@@ -4,8 +4,9 @@
 namespace psi { namespace extrema {
 
 /*###########################################################################*/
-/*! \file 
-    \ingroup (EXTREMA)
+/*! 
+  \file zmat.h 
+  \ingroup EXTREMA
   \brief Header file for the zmat class. */
 
 /*! \class zmat

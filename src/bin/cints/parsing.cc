@@ -1,5 +1,5 @@
 /*! \file parsing.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Parse the input file and command line for CINTS specific options.
 */
 #include<stdio.h>

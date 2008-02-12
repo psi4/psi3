@@ -2,7 +2,7 @@
 #define _psi_src_bin_cints_Default_Deriv1_deriv1_h
 
 /*! \file deriv1.h
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief deriv1 header
 */namespace psi { namespace CINTS {
 

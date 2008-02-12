@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DETCAS)
+/*! \file gradient.cc
+    \ingroup DETCAS
     \brief Enter brief description of file here 
 */
 #include <stdlib.h>

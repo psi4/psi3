@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCRESPONSE)
+/*! \file MOInfo.h
+    \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */
 

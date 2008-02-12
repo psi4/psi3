@@ -1,5 +1,5 @@
 /*! \file xc_grad_fock.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 #include<cmath>

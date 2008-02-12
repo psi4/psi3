@@ -1,5 +1,5 @@
 /*! \file shell_block_matrix.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 #include<stdlib.h>

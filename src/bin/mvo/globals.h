@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MVO)
+/*! \file globals.h
+    \ingroup MVO
     \brief Enter brief description of file here 
 */
 #ifndef _psi_src_bin_mvo_globals_h

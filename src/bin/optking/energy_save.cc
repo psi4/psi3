@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file energy_save.cc
+    \ingroup OPTKING
     \brief ENERGY_SAVE.CC Rollin King, 2002 
      function executes if optinfo.mode == MODE_GRAD_SAVE
 */

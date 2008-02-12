@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (RESPONSE)
+/*! \file build_A_ROHF.cc
+    \ingroup RESPONSE
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>

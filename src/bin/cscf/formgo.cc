@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CSCF)
+/*! \file formgo.cc
+    \ingroup CSCF
     \brief Enter brief description of file here 
 */
 /* $Log$

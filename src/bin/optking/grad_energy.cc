@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file grad_energy.cc
+    \ingroup OPTKING
     \brief GRAD_ENERGY computes a file11 entry from energies in chkpt Rollin King, 2002
 */
 

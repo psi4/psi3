@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCENERGY)
+/*! \file cc3_Wmbij.cc
+    \ingroup CCENERGY
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>

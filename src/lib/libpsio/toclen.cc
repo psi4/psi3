@@ -1,6 +1,6 @@
 /*!
  \file toclen.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <stdio.h>
@@ -71,7 +71,7 @@ void PSIO::wt_toclen(unsigned int unit, ULI toclen) {
       /*!
        ** PSIO_TOCLEN(): Compute the length of the TOC for a given unit using the in-core TOC list.
        **
-       ** \ingroup (PSIO)
+       ** \ingroup PSIO
        */
 
       unsigned int psio_toclen(unsigned int unit)
@@ -90,7 +90,7 @@ void PSIO::wt_toclen(unsigned int unit, ULI toclen) {
        ** to open files with status PSIO_OPEN_OLD even if they don't exist,
        ** because sometimes you can't know this in advance.)
        **
-       ** \ingroup (PSIO)
+       ** \ingroup PSIO
        */
       ULI psio_rd_toclen(unsigned int unit)
       {
@@ -102,7 +102,7 @@ void PSIO::wt_toclen(unsigned int unit, ULI toclen) {
        **
        ** \param unit = PSI unit number to which to write the toclen.
        **
-       ** \ingroup (PSIO)
+       ** \ingroup PSIO
        */
       void psio_wt_toclen(unsigned int unit, ULI toclen)
       {

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCEOM)
+/*! \file Params.h
+    \ingroup CCEOM
     \brief Enter brief description of file here 
 */
 

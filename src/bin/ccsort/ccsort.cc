@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCSORT)
+/*! \file ccsort.cc
+    \ingroup CCSORT
     \brief Enter brief description of file here 
 */
 /*

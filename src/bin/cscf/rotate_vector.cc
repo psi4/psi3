@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CSCF)
+/*! \file rotate_vector.cc
+    \ingroup CSCF
     \brief Enter brief description of file here 
 */
 /* $Log$

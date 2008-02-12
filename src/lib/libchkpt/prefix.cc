@@ -1,6 +1,6 @@
 /*!
-  \file prefix.c
-  \ingroup (CHKPT)
+  \file prefix.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -64,7 +64,7 @@ extern "C" {
 	**  Reads the global default chkpt prefix keyword stored in the CHKPT file.
 	**
 	**  returns: the prefix string
-	** \ingroup (CHKPT)
+	** \ingroup CHKPT
 */
 	char *chkpt_rd_prefix(void)
 	{  
@@ -80,7 +80,7 @@ extern "C" {
 	**  \param prefix = the prefix string (must be CHKPT_PREFIX_LEN long)
 	**
 	**  returns: none
-	** \ingroup (CHKPT)
+	** \ingroup CHKPT
 */
 	void chkpt_wt_prefix(char *prefix)
 	{ 
@@ -97,7 +97,7 @@ extern "C" {
 	**  \param prefix = the prefix string
 	**
 	**  returns: none
-	** \ingroup (CHKPT)
+	** \ingroup CHKPT
 */
 	void chkpt_set_prefix(char *prefix)
 	{
@@ -111,7 +111,7 @@ extern "C" {
 	**  arguments: none
 	**
 	**  returns: none
-	** \ingroup (CHKPT)
+	** \ingroup CHKPT
 */
 	void chkpt_commit_prefix(void)
 	{
@@ -126,7 +126,7 @@ extern "C" {
 	**  arguments: none
 	**
 	**  returns: none
-	** \ingroup (CHKPT)
+	** \ingroup CHKPT
 */
 	void chkpt_reset_prefix(void)
 	{
@@ -141,7 +141,7 @@ extern "C" {
 	**  arguments: none
 	**
 	**  returns: prefix = the current global prefix
-	** \ingroup (CHKPT)
+	** \ingroup CHKPT
 */
 	char *chkpt_get_prefix(void)
 	{

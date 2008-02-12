@@ -1,6 +1,6 @@
 /*!
  ** \file done.cc
- ** \ingroup (PSIO)
+ ** \ingroup PSIO
  */
 
 #include <stdlib.h>
@@ -49,7 +49,7 @@ PSIO::~PSIO() {
 
 extern "C" {
   /*!
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    **
    ** PSIO_DONE(): Frees global data used by the I/O routines.
    **

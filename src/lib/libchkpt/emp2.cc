@@ -45,7 +45,7 @@ extern "C" {
 **   takes no arguments.
 **
 **   returns: double emp2  the MP2 energy.
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	double chkpt_rd_emp2(void)
 	{
@@ -60,7 +60,7 @@ extern "C" {
 ** \param emp2 = the MP2 energy.
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_emp2(double emp2)
 	{

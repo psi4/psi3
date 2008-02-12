@@ -1,5 +1,5 @@
 /*! \file shell_pairs.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 #include<cmath>

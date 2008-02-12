@@ -1,6 +1,6 @@
 /*!
  \file tocclean.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <string.h>
@@ -48,7 +48,7 @@ extern "C" {
    ** PSIO_TOCCLEAN(): Delete all TOC entries after the given key.
    ** If a blank key is given, the entire TOC will be wiped.
    **
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
 
   int psio_tocclean(unsigned int unit, char *key) {

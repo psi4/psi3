@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (TRANSQT)
+/*! \file globals.h
+    \ingroup TRANSQT
     \brief Enter brief description of file here 
 */
 #ifndef _psi_bin_transqt_global_h_

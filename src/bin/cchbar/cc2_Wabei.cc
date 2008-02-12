@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCHBAR)
+/*! \file cc2_Wabei.cc
+    \ingroup CCHBAR
     \brief Enter brief description of file here 
 */
 #include <string.h>

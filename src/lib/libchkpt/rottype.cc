@@ -1,6 +1,6 @@
 /*!
-  \file rottype.c
-  \ingroup (CHKPT)
+  \file rottype.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -46,7 +46,7 @@ extern "C" {
 **            2 - spherical top
 **            3 - linear molecule
 **            6 - atom
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int chkpt_rd_rottype(void)
 	{
@@ -65,7 +65,7 @@ extern "C" {
 **            6 - atom
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_rottype(int rottype)
 	{

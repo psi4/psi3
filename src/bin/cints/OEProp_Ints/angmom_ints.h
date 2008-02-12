@@ -2,7 +2,7 @@
 #define _psi_src_bin_cints_OEProp_Ints_angmom_ints_h
 
 /*! \file angmom_ints.h
-    \ingroup (CINTS)
+    \ingroup CINTS
 */namespace psi { namespace CINTS {
 void angmom_ints(void);
 }}

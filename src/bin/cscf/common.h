@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CSCF)
+/*! \file common.h
+    \ingroup CSCF
     \brief Enter brief description of file here 
 */
 /* $Id$ */

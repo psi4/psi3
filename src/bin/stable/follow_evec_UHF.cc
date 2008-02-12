@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (STABLE)
+/*! \file follow_evec_UHF.cc
+    \ingroup STABLE
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

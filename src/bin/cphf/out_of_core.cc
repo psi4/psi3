@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CPHF)
+/*! \file out_of_core.cc
+    \ingroup CPHF
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

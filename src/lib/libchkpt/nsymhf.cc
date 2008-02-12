@@ -1,6 +1,6 @@
 /*!
-  \file nsymhf.c
-  \ingroup (CHKPT)
+  \file nsymhf.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -45,7 +45,7 @@ extern "C" {
 ** returns: nirreps = total number of irreducible representations
 **      with a non-zero number of basis functions. For STO or DZ water, for
 **      example, this is three, even though nirreps is 4 (see rd_nirreps()).
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int chkpt_rd_nsymhf(void)
 	{
@@ -61,7 +61,7 @@ extern "C" {
 ** \param nirreps = total number of irreducible representations
 **      with a non-zero number of basis functions. For STO or DZ water, for
 **      example, this is three, even though nirreps is 4 (see rd_nirreps()).
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_nsymhf(int nsymhf)
 	{

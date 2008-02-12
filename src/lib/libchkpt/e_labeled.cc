@@ -50,7 +50,7 @@ extern "C" {
 **   \param char * label
 **
 **  returns: double E, the energy
-**  \ingroup (CHKPT)
+**  \ingroup CHKPT
 */
 	double chkpt_rd_e_labeled(char *label)
 	{
@@ -67,7 +67,7 @@ extern "C" {
 **   \param double E, the energy
 **
 **  returns: none
-**  \ingroup (CHKPT)
+**  \ingroup CHKPT
 */
 	void chkpt_wt_e_labeled(char *label, double E)
 	{

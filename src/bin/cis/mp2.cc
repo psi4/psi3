@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CIS)
+/*! \file mp2.cc
+    \ingroup CIS
     \brief Enter brief description of file here 
 */
 #include <math.h>

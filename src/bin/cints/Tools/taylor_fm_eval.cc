@@ -1,5 +1,5 @@
 /*! \file taylor_fm_eval.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 #include <cstdio>

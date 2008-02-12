@@ -1,4 +1,4 @@
-/*! \file 
+/*! \file clag.h
     \ingroup CLAG
     \brief Header file for CI Lagrangian program
 */

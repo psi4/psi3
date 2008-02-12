@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CIS)
+/*! \file globals.h
+    \ingroup CIS
     \brief Enter brief description of file here 
 */
 #include <ccfiles.h>

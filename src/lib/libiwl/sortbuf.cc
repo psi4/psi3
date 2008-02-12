@@ -1,6 +1,6 @@
 /*!
-  \file sortbuf.c
-  \ingroup (IWL)
+  \file sortbuf.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <math.h>
@@ -69,7 +69,7 @@ extern "C" {
 **
 ** Revised 6/27/96 by CDS for new IWL format
 ** N.B. Now need to iwl_flush the output buffer...not done in here!!
-** \ingroup (IWL)
+** \ingroup IWL
 */
 void sortbuf(struct iwlbuf *Inbuf, struct iwlbuf *Outbuf,
       double *ints, int fpq, int lpq, int *ioff, int *ioff2, 

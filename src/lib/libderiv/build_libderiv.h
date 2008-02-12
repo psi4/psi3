@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DERIV)
+/*! \file build_libderiv.h
+    \ingroup DERIV
     \brief Enter brief description of file here 
 */
 #define MAX_AM 16

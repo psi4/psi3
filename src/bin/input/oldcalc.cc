@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INPUT)
+/*! \file oldcalc.cc
+    \ingroup INPUT
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

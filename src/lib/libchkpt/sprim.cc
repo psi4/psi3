@@ -1,6 +1,6 @@
 /*!
-  \file sprim.c
-  \ingroup (CHKPT)
+  \file sprim.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -54,7 +54,7 @@ extern "C" {
 **  returns: sprim = an array of the numbers of first primitives
 **           from the shells.
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int *chkpt_rd_sprim(void)
 	{
@@ -70,7 +70,7 @@ extern "C" {
 **
 **  returns: none
 ** 
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_sprim(int *sprim)
 	{

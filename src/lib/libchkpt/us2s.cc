@@ -1,6 +1,6 @@
 /*!
-  \file us2c.c
-  \ingroup (CHKPT)
+  \file us2s.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -50,7 +50,7 @@ extern "C" {
 **
 ** returns: us2s = Read in an array num_unique_shell
 ** 
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int *chkpt_rd_us2s(void)
 	{
@@ -66,7 +66,7 @@ extern "C" {
 **
 ** returns: none
 ** 
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_us2s(int *us2s)
 	{

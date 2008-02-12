@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (RESPONSE)
+/*! \file trans_mu.cc
+    \ingroup RESPONSE
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

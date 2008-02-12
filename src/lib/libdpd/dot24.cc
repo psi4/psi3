@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DPD)
+/*! \file dot24.cc
+    \ingroup DPD
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

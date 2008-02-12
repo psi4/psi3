@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INT)
+/*! \file build_libint.h
+    \ingroup INT
     \brief Enter brief description of file here 
 */
 #define MAX_AM 22

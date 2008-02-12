@@ -60,7 +60,7 @@ extern "C" {
 **   takes no arguments.
 **
 **   returns: char **label element label matrix
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	char **chkpt_rd_felement(void)
 	{
@@ -74,7 +74,7 @@ extern "C" {
 **   \param label = element label matrix.
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_felement(char **label)
 	{

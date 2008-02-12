@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DETCAS)
+/*! \file globaldefs.h
+    \ingroup DETCAS
     \brief Enter brief description of file here 
 */
 /*

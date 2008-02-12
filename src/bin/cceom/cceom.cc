@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCEOM)
+/*! \file cceom.cc
+    \ingroup CCEOM
     \brief Enter brief description of file here 
 */
 /*

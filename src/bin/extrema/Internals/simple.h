@@ -4,8 +4,9 @@
 namespace psi { namespace extrema {
 
 /*##########################################################################*/
-/*! \file 
-    \ingroup (EXTREMA)
+/*! 
+  \file simple.h
+  \ingroup EXTREMA
   \brief Simple coordinate concrete class declaration and definition.
   
   definition for the internal type:

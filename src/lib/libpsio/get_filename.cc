@@ -1,6 +1,6 @@
 /*!
  \file get_filename.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <stdio.h>

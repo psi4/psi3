@@ -2,7 +2,7 @@
 
 /*! 
 ** \file psirb.cc
-** \ingroup (psirb)
+** \ingroup psirb
 ** \brief PSI3 Ruby driver module
 */
 

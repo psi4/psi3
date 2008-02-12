@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file internals.cc
+    \ingroup OPTKING
     \brief INTERNALS.CC member functions for internals class
 */
 

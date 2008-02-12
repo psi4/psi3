@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MP2R12)
+/*! \file globals.h
+    \ingroup MP2R12
     \brief Enter brief description of file here 
 */
 #ifndef _psi_src_bin_mp2r12_globals_h_

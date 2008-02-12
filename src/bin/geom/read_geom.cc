@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (GEOM)
+/*! \file read_geom.cc
+    \ingroup GEOM
     \brief Enter brief description of file here 
 */
 /*

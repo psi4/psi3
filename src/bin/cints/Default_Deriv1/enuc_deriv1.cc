@@ -1,5 +1,5 @@
 /*! \file enuc_deriv1.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Compute the energy derivative of the nuclear repulsion.
 */
 #include<stdio.h>

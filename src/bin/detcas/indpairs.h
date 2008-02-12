@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DETCAS)
+/*! \file indpairs.h
+    \ingroup DETCAS
     \brief Enter brief description of file here 
 */
 #ifndef _psi_src_bin_detcas_indpairs_h

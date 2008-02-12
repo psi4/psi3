@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CPHF)
+/*! \file cphf.cc
+    \ingroup CPHF
     \brief Enter brief description of file here 
 */
 /*

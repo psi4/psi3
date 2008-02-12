@@ -1,4 +1,4 @@
-/*! \file 
+/*! \file ci_energy.cc
     \ingroup CLAG
     \brief Compute the CI Lagrangian
 */

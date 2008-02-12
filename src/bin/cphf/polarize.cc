@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CPHF)
+/*! \file polarize.cc
+    \ingroup CPHF
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

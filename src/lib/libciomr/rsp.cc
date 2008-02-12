@@ -1,6 +1,6 @@
 /*!
 ** \file rsp.cc
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 
 #include <psifiles.h>
@@ -31,7 +31,7 @@ extern void tqli(int n, double *d, double **z, double *e, int matz, double toler
 **   \param e_vecs = matrix of eigenvectors (one column for each eigvector)
 **   \param toler  = tolerance for eigenvalues?  Often 1.0E-14.
 **
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void rsp(int nm, int n,int nv,double *array, double *e_vals, int matz,
          double ** e_vecs, double toler)

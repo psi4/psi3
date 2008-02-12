@@ -1,5 +1,5 @@
-/*! \file scf_opdm.cc
-    \ingroup (CINTS)
+/*! \file compute_scf_opdm.cc
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 #include<cstdio>

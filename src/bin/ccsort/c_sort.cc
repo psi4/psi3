@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCSORT)
+/*! \file c_sort.cc
+    \ingroup CCSORT
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>

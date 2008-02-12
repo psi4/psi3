@@ -1,6 +1,6 @@
 /*!
  \file get_numvols.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <stdio.h>
@@ -45,7 +45,7 @@ extern "C" {
    ** PSIO_GET_NUMVOLS_DEFAULT(): Get the number of volumes that file 
    ** number 'unit' is split across.
    **
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
   unsigned int psio_get_numvols_default(void) {
     std::string charnum;

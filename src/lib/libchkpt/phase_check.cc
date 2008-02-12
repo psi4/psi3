@@ -1,6 +1,6 @@
 /*!
-  \file phase_check.c
-  \ingroup (CHKPT)
+  \file phase_check.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -47,7 +47,7 @@ extern "C" {
 **
 ** returns: pcheck = Phase check flag (1 if phase has been checked, else 0)
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int chkpt_rd_phase_check(void)
 	{
@@ -65,7 +65,7 @@ extern "C" {
 **
 ** returns: none
 ** 
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_phase_check(int pcheck)
 	{

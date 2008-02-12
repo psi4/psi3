@@ -2,7 +2,7 @@
 #define _psi_src_bin_cints_parsing_h
 
 /*! \file parsing.h
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief parsing header file.
 */
 namespace psi { namespace CINTS {

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MVO)
+/*! \file params.h
+    \ingroup MVO
     \brief Enter brief description of file here 
 */
 /*

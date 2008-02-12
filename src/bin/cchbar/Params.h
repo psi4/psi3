@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCHBAR)
+/*! \file Params.h
+    \ingroup CCHBAR
     \brief Enter brief description of file here 
 */
 

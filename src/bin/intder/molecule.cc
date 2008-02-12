@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INTDER)
+/*! \file molecule.cc
+    \ingroup INTDER
     \brief Enter brief description of file here 
 */
 /********************************************************************

@@ -4,8 +4,9 @@
 namespace psi { namespace extrema {
 
 /*##########################################################################*/
-/*! \file 
-    \ingroup (EXTREMA)
+/*! 
+  \file bondl.h
+  \ingroup EXTREMA
   \brief Contains bond length array. 
 */ 
 /*                                                  J. Kenny 12/08/01

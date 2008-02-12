@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (R12)
+/*! \file emit_gr_order.c
+    \ingroup R12
     \brief Enter brief description of file here 
 */
 /*------------------------------------------------------------------------------------------------------

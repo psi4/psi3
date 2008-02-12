@@ -1,6 +1,6 @@
 /*!
    \file mmult.cc
-   \ingroup (CIOMR)
+   \ingroup CIOMR
 */
 
 #include <math.h>
@@ -36,7 +36,7 @@ static double **aa,**bb;
 ** add is 1 if this matrix is to be added to the one passed    
 **        in as CF, 0 otherwise                                
 **
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void mmult(double **AF, int ta, double **BF, int tb, double **CF, int tc,
 	   int nr, int nl, int nc, int add)

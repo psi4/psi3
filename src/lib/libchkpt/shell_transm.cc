@@ -1,6 +1,6 @@
 /*!
-  \file shell_transm.c
-  \ingroup (CHKPT)
+  \file shell_transm.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -64,7 +64,7 @@ extern "C" {
 **  returns: 
 **    shell_transm = matrix of nshell*nirrpes ints w/ symmetry info
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int **chkpt_rd_shell_transm(void)
 	{
@@ -79,7 +79,7 @@ extern "C" {
 **
 ** returns: none
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_shell_transm(int **shell_transm)
 	{

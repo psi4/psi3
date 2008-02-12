@@ -1,6 +1,6 @@
 /*!
-  \file symoper.c
-  \ingroup (CHKPT)
+  \file symoper.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -50,7 +50,7 @@ extern "C" {
 **
 ** returns: symoper = Array nirrep long
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int *chkpt_rd_symoper(void)
 	{
@@ -66,7 +66,7 @@ extern "C" {
 **
 ** returns: none
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_symoper(int *symoper)
 	{

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MVO)
+/*! \file form_fock_full.cc
+    \ingroup MVO
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

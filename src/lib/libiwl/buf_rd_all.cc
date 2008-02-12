@@ -1,6 +1,6 @@
 /*!
-  \file buf_rd_all.c
-  \ingroup (IWL)
+  \file buf_rd_all.cc
+  \ingroup IWL
 */
 #include <stdio.h>
 #include <math.h>
@@ -31,7 +31,7 @@ extern "C" {
 **    \param outfile       =  pointer to output file for printing
 **
 ** Returns: 0 if end of file, otherwise 1
-** \ingroup (IWL)
+** \ingroup IWL
 */
 int iwl_buf_rd_all(struct iwlbuf *Buf, double *ints,
 		   int *ioff_lt, int *ioff_rt, int no_pq_perm, int *ioff,
@@ -118,7 +118,7 @@ int iwl_buf_rd_all(struct iwlbuf *Buf, double *ints,
 ** UHF transqt code.
 **
 ** TDC, 6/01
-** \ingroup (IWL)
+** \ingroup IWL
 */
 
 int iwl_buf_rd_all2(struct iwlbuf *Buf, double **ints,

@@ -1,6 +1,6 @@
 /*!
 ** \file ffile.cc
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */ 
 
 #include <stdio.h>
@@ -17,7 +17,7 @@ extern char *psi_file_prefix;
 **
 ** \param suffix = name of the file, not including automatic prefix
 ** \param code = 0 (write), 1 (write/append), 2 (read)
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void ffile(FILE **fptr, char *suffix, int code)
 {
@@ -52,7 +52,7 @@ void ffile(FILE **fptr, char *suffix, int code)
 **
 ** \param suffix = name of the file, not including automatic prefix
 ** \param code = 0 (write), 1 (write/append), 2 (read)
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void ffile_noexit(FILE **fptr, char *suffix, int code)
 {
@@ -82,7 +82,7 @@ void ffile_noexit(FILE **fptr, char *suffix, int code)
 **
 ** \param suffix = name of the file, not including automatic prefix
 ** \param code = 0 (write), 1 (write/append), 2 (read)
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void ffileb(FILE **fptr, char *suffix, int code)
 {
@@ -119,7 +119,7 @@ void ffileb(FILE **fptr, char *suffix, int code)
 **
 ** \param suffix = name of the file, not including automatic prefix
 ** \param code = 0 (write), 1 (write/append), 2 (read)
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void ffileb_noexit(FILE **fptr, char *suffix, int code)
 {

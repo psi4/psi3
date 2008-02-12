@@ -1,5 +1,5 @@
 /*! \file civect.cc
-**  \ingroup (DETCI)
+**  \ingroup DETCI
 **  \brief Code for the CI vector class
 ** 
 ** David Sherrill, 15 June 1995

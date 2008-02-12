@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCLAMBDA)
+/*! \file cc3_t3z.cc
+    \ingroup CCLAMBDA
     \brief Enter brief description of file here 
 */
 /* cc3_t3z(): Builds the following intermediates, which are required

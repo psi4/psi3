@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCRESPONSE)
+/*! \file cc2_LHX1Y1.cc
+    \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */
 #include <stdlib.h>

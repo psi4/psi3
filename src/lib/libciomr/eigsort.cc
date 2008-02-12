@@ -1,6 +1,6 @@
 /*!
   \file eigsort.cc
-  \ingroup (CIOMR)
+  \ingroup CIOMR
 */
 
 
@@ -11,7 +11,7 @@ extern "C" {
 /*!
 ** eigsort: Sort the eigenvalues in d and eigenvectors in v in ascending
 ** (n>0) or descending (n<0) order.  abs(n) is the number of eigenvalues. 
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void eigsort(double *d, double **v, int n)
 {

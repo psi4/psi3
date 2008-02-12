@@ -2,7 +2,7 @@
 #define _psi_src_bin_cints_Default_Deriv1_te_deriv1_scf_h
 
 /*! \file te_deriv1_scf.h
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */namespace psi { namespace CINTS {
 

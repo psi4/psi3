@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (MOCUBE)
+/*! \file delta.cc
+    \ingroup MOCUBE
     \brief Enter brief description of file here 
 */
 

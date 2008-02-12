@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (TRANSQT2)
+/*! \file file_build_presort.cc
+    \ingroup TRANSQT2
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

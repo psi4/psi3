@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CCLAMBDA)
+/*! \file globals.h
+    \ingroup CCLAMBDA
     \brief Enter brief description of file here 
 */
 #include <ccfiles.h>

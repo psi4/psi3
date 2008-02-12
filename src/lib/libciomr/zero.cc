@@ -1,6 +1,6 @@
 /*!
    \file zero.cc
-   \ingroup (CIOMR)
+   \ingroup CIOMR
 */
 
 #include <strings.h>
@@ -9,7 +9,7 @@ extern "C" {
 
 /*!
 ** zero_arr: zero out an array of length 'size'.
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void zero_arr(double *a, int size)
 {
@@ -18,7 +18,7 @@ void zero_arr(double *a, int size)
 
 /*!
 ** zero_mat: zero out a matrix 'a' with n rows and m columns 
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void zero_mat(double **a, int n, int m)
 {

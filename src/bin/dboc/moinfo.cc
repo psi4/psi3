@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DBOC)
+/*! \file moinfo.cc
+    \ingroup DBOC
     \brief Enter brief description of file here 
 */
 

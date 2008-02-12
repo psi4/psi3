@@ -1,6 +1,6 @@
 /*!
-  \file usotbf.c
-  \ingroup (CHKPT)
+  \file usotbf.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -57,7 +57,7 @@ extern "C" {
 **
 ** returns: usotbf = Read in a num_so by num_so matrix of doubles
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	double **chkpt_rd_usotbf(void)
 	{
@@ -72,7 +72,7 @@ extern "C" {
 **
 ** returns: none
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_usotbf(double **usotbf)
 	{

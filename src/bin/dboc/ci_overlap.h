@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DBOC)
+/*! \file ci_overlap.h
+    \ingroup DBOC
     \brief Enter brief description of file here 
 */
 

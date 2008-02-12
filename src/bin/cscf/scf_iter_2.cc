@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CSCF)
+/*! \file scf_iter_2.cc
+    \ingroup CSCF
     \brief Enter brief description of file here 
 */
 /* $Log$

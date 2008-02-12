@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CSCF)
+/*! \file rdtwo.cc
+    \ingroup CSCF
     \brief Enter brief description of file here 
 */
 /* $Log$

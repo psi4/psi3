@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (DPD)
+/*! \file block_matrix.cc
+    \ingroup DPD
     \brief Enter brief description of file here 
 */
 

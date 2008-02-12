@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CIS)
+/*! \file diag.cc
+    \ingroup CIS
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

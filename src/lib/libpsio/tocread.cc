@@ -1,6 +1,6 @@
 /*!
  \file tocread.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <unistd.h>
@@ -57,7 +57,7 @@ extern "C" {
    **
    ** \params unit = The PSI unit number from which to read the TOC.
    ** 
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
   int psio_tocread(unsigned int unit)
   {

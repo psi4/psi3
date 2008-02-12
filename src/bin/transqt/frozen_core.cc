@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (TRANSQT)
+/*! \file frozen_core.cc
+    \ingroup TRANSQT
     \brief Enter brief description of file here 
 */
 /*

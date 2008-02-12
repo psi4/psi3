@@ -1,8 +1,9 @@
 /*###########################################################################*/
-/*! \file 
-    \ingroup (EXTREMA)
-  \brief Character table class. */
-/*
+/*! 
+** \file char_table.cc
+** \ingroup EXTREMA
+** \brief Character table class. 
+**
 ** This file contains functions which provide information
 **  from the group character tables as given in Cotton 
 **             Rollin King       1996

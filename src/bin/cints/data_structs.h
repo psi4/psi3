@@ -2,7 +2,7 @@
 #define _psi_src_bin_cints_data_structs_h
 
 /*! \file data_structs.h
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 #ifndef DATA_STRUCTS_H

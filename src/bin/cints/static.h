@@ -2,7 +2,7 @@
 #define _psi_src_bin_cints_static_h
 
 /*! \file static.h
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Static variables.
 */
 //namespace psi {

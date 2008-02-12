@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INPUT)
+/*! \file overlap_float.cc
+    \ingroup INPUT
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

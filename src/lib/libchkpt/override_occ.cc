@@ -1,6 +1,6 @@
 /*!
-  \file override_occ.c
-  \ingroup (CHKPT)
+  \file override_occ.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -68,7 +68,7 @@ extern "C" {
 **  
 ** returns: 1 if chkpt occupations should be forced; 0 otherwise
 **        
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int chkpt_rd_override_occ(void)
 	{
@@ -83,7 +83,7 @@ extern "C" {
 **  
 ** returns: none
 **        
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_override_occ(int override)
 	{

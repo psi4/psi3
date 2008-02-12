@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CSCF)
+/*! \file uhf_iter.cc
+    \ingroup CSCF
     \brief Enter brief description of file here 
 */
 /* $Log$

@@ -1,6 +1,6 @@
 /*!
  \file write.cc
- \ingroup (PSIO)
+ \ingroup PSIO
  */
 
 #include <stdlib.h>
@@ -125,7 +125,7 @@ extern "C" {
    **  \param end     = A pointer to the entry-relative page/offset for the next
    **                   byte after the end of the write request.
    **
-   ** \ingroup (PSIO)
+   ** \ingroup PSIO
    */
 
   int psio_write(unsigned int unit, char *key, char *buffer, ULI size,

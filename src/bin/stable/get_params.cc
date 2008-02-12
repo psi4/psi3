@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (STABLE)
+/*! \file get_params.cc
+    \ingroup STABLE
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

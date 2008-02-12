@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file bend.h
+    \ingroup OPTKING
     \brief Enter brief description of file here 
 */
 

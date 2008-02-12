@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (STABLE)
+/*! \file print_evals.cc
+    \ingroup STABLE
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

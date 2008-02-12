@@ -1,6 +1,6 @@
 /*!
 ** \file add_mat.cc
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 
 extern "C" {
@@ -8,7 +8,7 @@ extern "C" {
 /*!
 ** add_mat(): Add matrices a and b into c for n rows and m columns
 **
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void add_mat(double **a, double **b, double **c, int n, int m)
    {

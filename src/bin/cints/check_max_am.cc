@@ -1,5 +1,5 @@
 /*! \file check_max_am.cc
-    \ingroup (CINTS)
+    \ingroup CINTS
     \brief Enter brief description of file here 
 */
 

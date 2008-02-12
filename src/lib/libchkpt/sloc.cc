@@ -1,6 +1,6 @@
 /*!
-  \file sloc.c
-  \ingroup (CHKPT)
+  \file sloc.cc
+  \ingroup CHKPT
 */
 
 #include <stdio.h>
@@ -54,7 +54,7 @@ extern "C" {
 **  returns: sloc = An array nshell long of the numbers of 
 **                  the first AOs from the shells.
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	int *chkpt_rd_sloc(void)
 	{
@@ -69,7 +69,7 @@ extern "C" {
 **                from the shells.
 **  returns: none
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_sloc(int *sloc)
 	{

@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CUSP)
+/*! \file cache.cc
+    \ingroup CUSP
     \brief Enter brief description of file here 
 */
 

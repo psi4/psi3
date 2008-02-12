@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (CSCF)
+/*! \file phases.cc
+    \ingroup CSCF
     \brief Enter brief description of file here 
 */
 #include <stdio.h>

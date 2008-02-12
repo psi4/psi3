@@ -1,4 +1,4 @@
-/*! \file 
+/*! \file lagcalc.cc
     \ingroup CLAG
     \brief Routine that does the work for the CI Lagrangian computation
 */

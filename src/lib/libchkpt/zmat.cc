@@ -1,6 +1,6 @@
 /*!
-  \file zmat.c
-  \ingroup (CHKPT)
+  \file zmat.cc
+  \ingroup CHKPT
 */
 
 #include <stdlib.h>
@@ -53,7 +53,7 @@ extern "C" {
 **   returns: z_geom = An array natom long which contains 
 **     a z_entry struct for each atom
 ** 
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	struct z_entry *chkpt_rd_zmat(void)
 	{
@@ -68,7 +68,7 @@ extern "C" {
 **
 ** returns: none
 **
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_zmat(struct z_entry *z_geom)
 	{

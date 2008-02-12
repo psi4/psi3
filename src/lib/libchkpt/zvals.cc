@@ -1,5 +1,5 @@
 /*!
-    \file zvals.c
+    \file zvals.cc
 */
 
 #include <stdio.h>

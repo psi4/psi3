@@ -1,7 +1,7 @@
 /*!
 ** \file tstart.cc
 ** \brief Controls starting and stopping of timers
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 
 #include <stdio.h>
@@ -22,7 +22,7 @@ extern "C" {
 **
 ** \param outfile = output file pointer
 **
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */
 void tstart(FILE *outfile)
 {
@@ -50,7 +50,7 @@ void tstart(FILE *outfile)
 **
 ** \param outfile = output file pointer.
 **
-** \ingroup (CIOMR)
+** \ingroup CIOMR
 */ 
 void tstop(FILE *outfile)
 {

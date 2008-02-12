@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (OPTKING)
+/*! \file delocalize.cc
+    \ingroup OPTKING
     \brief This function forms a set of delocalized, symmetry-adapted
      internal coordinates, given a set of simples and their
      s-vectors.  The new coordinates will not mix coordinates of

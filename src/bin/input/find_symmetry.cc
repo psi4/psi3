@@ -1,5 +1,5 @@
-/*! \file 
-    \ingroup (INPUT)
+/*! \file find_symmetry.cc
+    \ingroup INPUT
     \brief Enter brief description of file here 
 */
 #define EXTERN

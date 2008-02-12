@@ -103,7 +103,7 @@ extern "C" {
 **      (i.e. for sto water, the four a1 eigenvalues all come first, and 
 **      those four are ordered from lowest energy to highest energy,
 **      followed by the single b1 eigenvalue, etc.)
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	double *chkpt_rd_evals(void)
 	{
@@ -122,7 +122,7 @@ extern "C" {
 **      (i.e. for sto water, the four a1 eigenvalues all come first, and 
 **      those four are ordered from lowest energy to highest energy,
 **      followed by the single b1 eigenvalue, etc.)
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	double *chkpt_rd_alpha_evals(void)
 	{
@@ -141,7 +141,7 @@ extern "C" {
 **      (i.e. for sto water, the four a1 eigenvalues all come first, and 
 **      those four are ordered from lowest energy to highest energy,
 **      followed by the single b1 eigenvalue, etc.)
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	double *chkpt_rd_beta_evals(void)
 	{
@@ -161,7 +161,7 @@ extern "C" {
 **      followed by the single b1 eigenvalue, etc.)
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_evals(double *energies)
 	{
@@ -179,7 +179,7 @@ extern "C" {
 **      followed by the single b1 eigenvalue, etc.)
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_alpha_evals(double *energies)
 	{
@@ -197,7 +197,7 @@ extern "C" {
 **      followed by the single b1 eigenvalue, etc.)
 **
 ** returns: none
-** \ingroup (CHKPT)
+** \ingroup CHKPT
 */
 	void chkpt_wt_beta_evals(double *energies)
 	{
