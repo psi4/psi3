@@ -1,5 +1,6 @@
 /*!
 ** \file mxmb.cc
+** \brief Wrapper for the mmult function
 ** \ingroup CIOMR
 */
  
@@ -10,14 +11,31 @@
 extern "C" {
 
   static void mxmbol(double **a, int ia, int ja, double **b, int ib, int jb, 
-                     double **c, int ic, int jc, int nrow, int nlnk, int ncol) {
-    abort();
+    double **c, int ic, int jc, int nrow, int nlnk, int ncol) 
+  {
+  abort();
   }
+
   
 /*!
-** mxmb: multiplies two rectangular matrices together.  If in=1 (n=a,b,c),
-** then normal multiply.  If jn=1 (n=a,b,c) then multiply the transpose
-** of matrix n.
+** mxmb: multiplies two rectangular matrices together (wrapper for mmult).  
+** Deprecated; use C_DGEMM instead.
+**
+** \param a    = first matrix to multiply
+** \param ia   = if 1, normal multiplication of a
+** \param ja   = if 1, transpose a before multiplication
+** \param b    = second matrix to multiply
+** \param ib   = if 1, normal multiplication of b
+** \param jb   = if 1, transpose b before multiplication
+** \param c    = matrix to store the result
+** \param ic   = if 1, normal multiplication into c
+** \param jb   = if 1, transpose c after multiplication
+** \param nrow = number of rows of a
+** \param nlnk = number of columns of a and rows of b
+** \param ncol = number of columns of b
+** 
+** Returns: none
+**
 ** \ingroup CIOMR
 */
 void mxmb(double **a, int ia, int ja, double **b, int ib, int jb, 

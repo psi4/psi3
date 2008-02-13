@@ -1,14 +1,25 @@
+/*!
+** \file tred2.cc
+** \brief Converts a symmetric matrix to tridiagonal form for use in tqli
+** \ingroup CIOMR
+*/
+
 #include <math.h>
 
 #define DSIGN(a,b) ((b) >= 0.0) ? (fabs(a)) : (-fabs(a))
 
 extern "C" {
   
-  /* converts symmetric matrix to a tridagonal form for use in tqli */
-  /* if matz = 0, only find eigenvalues, else find both eigenvalues and */
-  /* eigenvectors */
-
-  void tred2(int n, double** a, double* d, double* e, int matz) {
+/*!
+** tred2(): converts symmetric matrix to a tridagonal form for use in tqli 
+**
+** if matz = 0, only find eigenvalues, else find both eigenvalues and
+** eigenvectors 
+**
+** Returns: none
+** \ingroup CIOMR
+*/
+void tred2(int n, double** a, double* d, double* e, int matz) {
     int i, j, k, l, il, ik, jk, kj;
     double f, g, h, hh, scale, scale_inv, h_inv;
     double temp;
@@ -99,6 +110,6 @@ extern "C" {
         }
       }
     }
-  }
+}
 
 } /* extern "C" */

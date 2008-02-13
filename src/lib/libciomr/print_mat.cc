@@ -1,5 +1,6 @@
 /*!
 ** \file print_mat.cc
+** \brief Print a matrix of doubles
 ** \ingroup CIOMR
 */
 
@@ -10,11 +11,12 @@ extern "C" {
 /*!
 ** print_mat: Print a matrix a of dimensions mxn to file pointer out.
 **
-** Arguments:
-**  \param a   = matrix to print
-**  \param m   = number of rows in matrix
-**  \param n   = number of columns in matrix
-**  \param out = file pointer for output
+** \param a   = matrix to print
+** \param m   = number of rows in matrix
+** \param n   = number of columns in matrix
+** \param out = file pointer for output
+**
+** Returns: none
 **
 ** \ingroup CIOMR
 */

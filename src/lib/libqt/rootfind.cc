@@ -34,24 +34,23 @@ extern "C" {
 
 
 /*!
-** BISECT(): Finds the root of a function between two points to within a 
-**   given tolerance.  Iterations are limited to a given maximum, and
-**   a print flag specifies whether this function should print the results
-**   of each iteration to stdout.  Note that the values of the function at
-**   the two endpoints of the interval must have _different_ signs for the
-**   bisection method to work!  This routine checks for this initially.
+** bisect(): Finds the root of a function between two points to within a 
+** given tolerance.  Iterations are limited to a given maximum, and
+** a print flag specifies whether this function should print the results
+** of each iteration to stdout.  Note that the values of the function at
+** the two endpoints of the interval must have _different_ signs for the
+** bisection method to work!  This routine checks for this initially.
 **
-**   \param function  = pointer to function we want to examine 
-**                      (must return double)
-**   \param low       = lower bound of interval to search for root
-**   \param high      = upper bound of interval
-**   \param tolerance = how small is the maximum allowable error
-**   \param maxiter   = maximum number of iterations
-**   \param printflag = whether or not to print results for each iteration 
-**                      (1 or 0)
+** \param function  = pointer to function we want to examine 
+**                    (must return double)
+** \param low       = lower bound of interval to search for root
+** \param high      = upper bound of interval
+** \param tolerance = how small is the maximum allowable error
+** \param maxiter   = maximum number of iterations
+** \param printflag = whether or not to print results for each iteration 
+**                    (1 or 0)
 **
-** Returns:
-**   the value of the root
+** Returns: the value of the root
 ** \ingroup QT
 */
 double bisect(double (*function)(double), double low, double high, 
@@ -107,25 +106,26 @@ double bisect(double (*function)(double), double low, double high,
 
 
 /*!
-** NEWTON(): Find the root of a function by Newton's method.  Iterations are
-**   limited to a maximum value.  The algorithm stops when the difference
-**   between successive estimates of the root is less than the specified
-**   tolerance.  An initial guess for the root must be given, as well as
-**   the function AND it's derivative.
+** newton(): Find the root of a function by Newton's method.  Iterations are
+** limited to a maximum value.  The algorithm stops when the difference
+** between successive estimates of the root is less than the specified
+** tolerance.  An initial guess for the root must be given, as well as
+** the function AND it's derivative.
 **
-**   \param F         = pointer to function we want to examine 
-**                      (must return double)
-**   \param dF        = pointer to _derivative_ of function F
-**   \param x         = initial guess for root
-**   \param tolerance = how close successive guesses must get before convergence
-**   \param maxiter   = maximum number of iterations
-**   \param printflag = whether or not to print results for each iteration 
-**                      (1 or 0)
+** \param F         = pointer to function we want to examine 
+**                    (must return double)
+** \param dF        = pointer to _derivative_ of function F
+** \param x         = initial guess for root
+** \param tolerance = how close successive guesses must get before convergence
+** \param maxiter   = maximum number of iterations
+** \param printflag = whether or not to print results for each iteration 
+**                    (1 or 0)
 **
 ** Returns: the value of the root
 ** \ingroup QT
 */
-double newton(double (*F)(double), double (*dF)(double), double x, double tolerance, int maxiter, int printflag)
+double newton(double (*F)(double), double (*dF)(double), double x, 
+  double tolerance, int maxiter, int printflag)
 {
    int iter = 1 ;
    double newx ;
@@ -150,20 +150,20 @@ double newton(double (*F)(double), double (*dF)(double), double x, double tolera
 
 
 /*!
-** SECANT(): Find the root of a function by the Secant Method.  Iterations are
-**   limited to a maximum value.  The algorithm stops when the relative 
-**   difference between successive guesses is less than the specified
-**   tolerance.  An initial TWO guesses for the root must be given, as well
-**   as the function itself.
+** secant(): Find the root of a function by the Secant Method.  Iterations are
+** limited to a maximum value.  The algorithm stops when the relative 
+** difference between successive guesses is less than the specified
+** tolerance.  An initial TWO guesses for the root must be given, as well
+** as the function itself.
 **
-**   \param F         = pointer to function we want to examine 
-**                      (must return double)
-**   \param x0        = 1st guess for root
-**   \param x1        = 2nd guess for root
-**   \param tolerance = how close successive guesses must get before convergence
-**   \param maxiter   = maximum number of iterations
-**   \param printflag = whether or not to print results for each iteration 
-**                      (1 or 0)
+** \param F         = pointer to function we want to examine 
+**                    (must return double)
+** \param x0        = 1st guess for root
+** \param x1        = 2nd guess for root
+** \param tolerance = how close successive guesses must get before convergence
+** \param maxiter   = maximum number of iterations
+** \param printflag = whether or not to print results for each iteration 
+**                    (1 or 0)
 **
 ** Returns: the value of the root
 ** \ingroup QT

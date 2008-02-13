@@ -5,7 +5,7 @@
  ***************************************************************************/
 /**
  *  @file ccsort_mrpt2.cpp
- *  @ingroup (PSIMRCC)
+ *  @ingroup PSIMRCC
 */
 
 #include "transform.h"

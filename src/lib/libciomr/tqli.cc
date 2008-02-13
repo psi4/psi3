@@ -1,6 +1,7 @@
 /*!
-   \file tqli.cc
-   \ingroup CIOMR
+** \file tqli.cc
+** \brief Diagonalizes a tridiagonal matrix output by tred2
+** \ingroup CIOMR
 */ 
 
 #include <psifiles.h>
@@ -12,7 +13,7 @@
 extern "C" {
 
 /*!
-** tqli: diagonalizes tridiagonal matrix output by tred2.  Gives only
+** tqli(): diagonalizes tridiagonal matrix output by tred2.  Gives only
 ** eigenvalues if matz=0, both eigenvalues and eigenvectors if matz=1
 **
 ** \ingroup CIOMR

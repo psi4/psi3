@@ -5,7 +5,7 @@
  ***************************************************************************/
 /**
  *  @file ccsort.cpp
- *  @ingroup (PSIMRCC)
+ *  @ingroup PSIMRCC
 */
 #include <cmath>
 #include <algorithm>

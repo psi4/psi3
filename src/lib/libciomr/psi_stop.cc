@@ -1,6 +1,7 @@
 /*!
-  \file psi_stop.cc
-  \ingroup CIOMR
+** \file psi_stop.cc
+** \brief Close input and output, stop input parser
+** \ingroup CIOMR
 */
 
 #include <stdio.h>
@@ -13,9 +14,8 @@
 extern "C" {
 
 /*!
-** psi_stop(infile,outfile,psi_file_prefix)
-**
-** This function closes input and output files and deinitializes Input Parsing library.
+** psi_stop(): This function closes input and output files and 
+** deinitializes Input Parsing library.
 **
 ** Arguments: none
 **

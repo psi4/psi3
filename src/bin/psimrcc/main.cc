@@ -6,9 +6,9 @@
  ***************************************************************************/
 
 /**
- *  @defgroup PSIMRCC PSIMRCC is a code for SR/MRCC computations
+ *  @defgroup PSIMRCC psimrcc: a code for SR/MRCC computations
  *  @file psimrcc.cpp
- *  @ingroup (PSIMRCC)
+ *  @ingroup PSIMRCC
  *  @brief Contains main() and global variables
 */
 

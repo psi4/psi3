@@ -7,7 +7,7 @@
  ***************************************************************************/
 /**
  *  @file sort.h
- *  @ingroup (PSIMRCC)
+ *  @ingroup PSIMRCC
 */
 
 #include <iostream>

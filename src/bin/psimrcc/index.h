@@ -1,9 +1,10 @@
 #ifndef _psi_src_bin_psimrcc_ccindex_h
 #define _psi_src_bin_psimrcc_ccindex_h
 
-/*! \file index.h
-    \ingroup (PSIMRCC)
-    \brief   This class is used to store n-tuples of MOs indices (p,q,r,..)
+/*! 
+  \file index.h
+  \ingroup PSIMRCC
+  \brief   This class is used to store n-tuples of MOs indices (p,q,r,..)
 */
 
 /***************************************************************************

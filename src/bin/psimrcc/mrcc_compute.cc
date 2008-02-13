@@ -6,7 +6,7 @@
 
 /**
  *  @file ccmrcc_compute.cpp
- *  @ingroup (PSIMRCC)
+ *  @ingroup PSIMRCC
  *  @brief Contains all the methods to compute the energy
 */
 

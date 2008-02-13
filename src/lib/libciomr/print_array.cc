@@ -1,5 +1,6 @@
 /*!
 ** \file print_array.cc
+** \brief Print a lower-triangle array of doubles
 ** \ingroup CIOMR
 */
 
@@ -8,13 +9,14 @@
 extern "C" {
 
 /*!
-** print_array: Prints a lower-triangle of a symmetric matrix packed as
+** print_array(): Prints a lower-triangle of a symmetric matrix packed as
 **  an array of doubles.
 **
-** Arguments:
-** \param a     = array (packed lower triangle of matrix) to print
-** \param m     = dimension of matrix (mxm)
-** \param out   = file pointer for output
+** \param a   = array (packed lower triangle of matrix) to print
+** \param m   = dimension of matrix (mxm)
+** \param out = file pointer for output
+**
+** Returns: none
 **
 ** \ingroup CIOMR
 */

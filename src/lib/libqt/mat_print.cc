@@ -2,8 +2,9 @@
 #include <stdlib.h>
 
 /*!
-  \file mat_print.cc
-  \ingroup QT
+** \file mat_print.cc
+** \brief Print a matrix to a file in a formatted style
+** \ingroup QT
 */
 
 extern "C" {

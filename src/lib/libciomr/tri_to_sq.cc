@@ -1,16 +1,20 @@
 /*!
-   \file tri_to_sq.cc
-   \ingroup CIOMR
+** \file tri_to_sq.cc
+** \brief Converts lower triangle to square matrix
+** \ingroup CIOMR
 */
 
 extern "C" {
 
 /*!
-** tri_to_sq: converts lower triangle to square matrix.
+** tri_to_sq(): converts lower triangle to square matrix
 **
 ** \param amat = lower triangle matrix
 ** \param bmat = square matrix
 ** \param size = number of rows/cols of matrix
+**
+** Returns: none
+**
 ** \ingroup CIOMR
 */
 void tri_to_sq(double *amat, double **bmat, int size)

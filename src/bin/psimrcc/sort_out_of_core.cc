@@ -5,7 +5,7 @@
  ***************************************************************************/
 /**
  *  @file ccsort_out_of_core.cpp
- *  @ingroup (PSIMRCC)
+ *  @ingroup PSIMRCC
 */
 
 #include "memory_manager.h"

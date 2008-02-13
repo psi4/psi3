@@ -8,10 +8,12 @@ extern void lubksb(double **, int, int *, double *);
 
 /*!
 ** \file flin.cc
+** \brief Linear equation solver for A * x = b
 ** \ingroup CIOMR
 */ 
 
-/*
+
+/*!
 ** flin(): solves linear equations A * x = b.
 **
 ** \param a   = coefficient matrix
@@ -20,23 +22,25 @@ extern void lubksb(double **, int, int *, double *);
 ** \param im  = number of b vectors
 ** \param det = pointer to hold determinant of matrix a
 **
+** Returns: none
+**
 ** \ingroup CIOMR
 */
-
 void flin(double **a, double *b, int in, int im, double *det)
 {
-    int i,j,k,*indx;
+  int i,j,k,*indx;
 
-    indx = (int *) init_array(in);
+  indx = (int *) init_array(in);
 
-   ludcmp(a,in,indx,det);
+  ludcmp(a,in,indx,det);
 
-   for (i=0; i < in ; i++) *det *= a[i][i];
+  for (i=0; i < in ; i++) *det *= a[i][i];
 
-   for (j=0; j<im; j++)
-      lubksb(a,in,indx,b+j*in);
+  for (j=0; j<im; j++)
+    lubksb(a,in,indx,b+j*in);
 
-   free(indx);
+  free(indx);
 }
 
 } /* extern "C" */
+

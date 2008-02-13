@@ -1,8 +1,9 @@
 /*! \defgroup QT libqt: The Quantum-Trio Miscellaneous Library */
 
-/*! \file blas_intfc.cc
-    \ingroup QT
-    \brief The PSI3 BLAS interface routines
+/*! 
+ \file blas_intfc.cc
+ \ingroup QT
+ \brief The PSI3 BLAS interface routines
 
  Interface to the BLAS routines
 

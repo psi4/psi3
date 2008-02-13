@@ -36,9 +36,9 @@ void block_mat_dealloc(double ***array,int num_ir,int *num_so);
 double ** block_arr_alloc(int n_so_typs,int num_ir,int *num_so);
 void block_arr_dealloc(double **array,int n_so_typs);
 
-/* Functions under dot.c */
+/* Functions under dot.cc */
 void dot_arr(double *a, double *b, int size, double *value) ;
-void dot_mat(double **a,double **b,int n,double *value);
+double dot_mat(double **a,double **b,int n);
 
 void eigout(double **a,double *b,double *c,int m,int n,FILE *out);
 void eigsort(double *d,double **v,int n);

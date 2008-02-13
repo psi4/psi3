@@ -1,6 +1,7 @@
 /*!
-  \file psi_start.cc
-  \ingroup CIOMR
+** \file psi_start.cc
+** \brief Initialize input, output, file prefix, etc.
+** \ingroup CIOMR
 */
 
 #include <stdio.h>
@@ -21,23 +22,21 @@ static char *ofname = NULL;
 static char *fprefix = NULL;
 
 /*!
-** psi_start()
-**
+** psi_start():
 ** This function initializes the input, output files, file prefix, etc.,
 ** by checking command line arguments and environmental variables. It also 
 ** initializes the Input Parsing library.
 **
-** Arguments: 
-**  \param argc       = number of command-line arguments passed
-**  \param argv       = command-line arguments
-**  \param overwrite  = whether to overwrite output file (1) or append to it (0).
-**                      Most PSI modules will want to append.
+** \param argc       = number of command-line arguments passed
+** \param argv       = command-line arguments
+** \param overwrite  = whether to overwrite output file (1) or append to it (0).
+**                     Most PSI modules will want to append.
 **
 ** Returns: one of standard PSI error codes
 ** \ingroup CIOMR
 */
-
-int psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix, int argc, char *argv[], int overwrite_output)
+int psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix, 
+  int argc, char *argv[], int overwrite_output)
 {
   int i, errcod;
                                 /* state flags */
@@ -91,28 +90,34 @@ int psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix, int argc, c
   }
   
 
-  /* check if some arguments were specified in both prefixed and nonprefixed form */
+  /* check if some args were specified in both prefixed and nonprefixed form */
   if (found_if_p && found_if_np) {
-    fprintf(stderr, "Error: input file name specified both with and without -f\n");
-    fprintf(stderr, "Usage: (module) [options] -f input -o output [-p prefix]  OR\n");
+    fprintf(stderr, 
+      "Error: input file name specified both with and without -f\n");
+    fprintf(stderr, 
+      "Usage: (module) [options] -f input -o output [-p prefix]  OR\n");
     fprintf(stderr, "       (module) [options] input output [prefix]\n");
     return(PSI_RETURN_FAILURE);
   }
   if (found_of_p && found_of_np) {
-    fprintf(stderr, "Error: output file name specified both with and without -o\n");
-    fprintf(stderr, "Usage: (module) [options] -f input -o output [-p prefix]  OR\n");
+    fprintf(stderr, 
+      "Error: output file name specified both with and without -o\n");
+    fprintf(stderr, 
+      "Usage: (module) [options] -f input -o output [-p prefix]  OR\n");
     fprintf(stderr, "       (module) [options] input output [prefix]\n");
     return(PSI_RETURN_FAILURE);
   }
   if (found_fp_p && found_fp_np) {
-    fprintf(stderr, "Error: file prefix specified both with and without -p\n");
-    fprintf(stderr, "Usage: (module) [options] -f input -o output -p prefix  OR\n");
+    fprintf(stderr, 
+      "Error: file prefix specified both with and without -p\n");
+    fprintf(stderr, 
+      "Usage: (module) [options] -f input -o output -p prefix  OR\n");
     fprintf(stderr, "       (module) [options] input output prefix\n");
     return(PSI_RETURN_FAILURE);
   }
 
   
-  /* if some arguments were not specified on command-line - check the environment */
+  /* if some args were not specified on command-line - check the environment */
   if (ifname == NULL)
     ifname = getenv("PSI_INPUT");
   if (ofname == NULL)
@@ -125,7 +130,8 @@ int psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix, int argc, c
     ifname = strdup("input.dat");
   if (ofname == NULL)
     ofname = strdup("output.dat");
-  /* default prefix is not assigned here yet because need to check input file first */
+  /* default prefix is not assigned here yet because need to check 
+     input file first */
 
   /* open input and output files */
   if(ifname[0]=='-' && ifname[1]=='\x0')
@@ -137,19 +143,19 @@ int psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix, int argc, c
     return(PSI_RETURN_FAILURE);
   }
   if (overwrite_output)
-    {
-      if(ofname[0]=='-' && ofname[1]=='\x0')
-	*outfile=stdout;
-      else
-	*outfile = fopen(ofname, "w");
-    }
+  {
+    if(ofname[0]=='-' && ofname[1]=='\x0')
+      *outfile=stdout;
+    else
+      *outfile = fopen(ofname, "w");
+  }
   else
-    {
-      if(ofname[0]=='-' && ofname[1]=='\x0')
-	*outfile=stdout;
-      else
-	*outfile = fopen(ofname, "a");
-    }
+  {
+    if(ofname[0]=='-' && ofname[1]=='\x0')
+      *outfile=stdout;
+    else
+      *outfile = fopen(ofname, "a");
+  }
   if (*outfile == NULL) {
     fprintf(stderr, "Error: could not open output file %s\n",ofname);
     return(PSI_RETURN_FAILURE);
@@ -195,8 +201,8 @@ int psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix, int argc, c
   }
   *psi_file_prefix = strdup(fprefix);
 
-  /* other Psi modules called by this module should read from the same input file
-     set the value of PSI_INPUT for the duration of this run */
+  /* other Psi modules called by this module should read from the same input 
+     file set the value of PSI_INPUT for the duration of this run */
 #if HAVE_PUTENV
   tmpstr1 = (char *) malloc(11+strlen(ifname));
   sprintf(tmpstr1, "PSI_INPUT=%s", ifname);
@@ -207,8 +213,9 @@ int psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix, int argc, c
 #error "Have neither putenv nor setenv. Something must be very broken on this system."
 #endif
 
-  /* By default, other Psi modules called by this module should write to the same output file
-     set the value of PSI_OUTPUT for the duration of this run */
+  /* By default, other Psi modules called by this module should write to 
+     the same output file set the value of PSI_OUTPUT for the duration of 
+     this run */
 #if HAVE_PUTENV
   tmpstr1 = (char *) malloc(12+strlen(ofname));
   sprintf(tmpstr1, "PSI_OUTPUT=%s", ofname);
@@ -219,8 +226,8 @@ int psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix, int argc, c
 #error "Have neither putenv nor setenv. Something must be very broken on this system."
 #endif
 
-  /* By default, other Psi modules called by this module should use the same prefix too
-     set the value of PSI_PREFIX for the duration of this run */
+  /* By default, other Psi modules called by this module should use the same
+     prefix too set the value of PSI_PREFIX for the duration of this run */
 #if HAVE_PUTENV
   tmpstr1 = (char *) malloc(12+strlen(fprefix));
   sprintf(tmpstr1, "PSI_PREFIX=%s", fprefix);

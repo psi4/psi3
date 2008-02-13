@@ -6,7 +6,7 @@
 
 /**
  *  @file ccmanybody.cpp
- *  @ingroup (PSIMRCC)
+ *  @ingroup PSIMRCC
  *  @brief The base class for all the many-body computations
 */
 

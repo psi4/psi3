@@ -1,6 +1,7 @@
 /*!
-  \file normalize.cc
-  \ingroup QT
+** \file normalize.cc
+** \brief Normalize a set of vectors
+** \ingroup QT
 */
 
 #include <stdio.h>
@@ -28,15 +29,15 @@ extern "C" {
 
 void normalize(double **A, int rows, int cols)
 {
-   double normval ;
-   register int i, j ;
+  double normval;
+  register int i, j;
 
-   /* divide each row by the square root of its norm */
-   for (i=0; i<rows; i++) {
-      dot_arr(A[i], A[i], cols, &normval) ;
-      normval = sqrt(normval) ;
-      for (j=0; j<cols; j++) A[i][j] /= normval ;
-      }
+  /* divide each row by the square root of its norm */
+  for (i=0; i<rows; i++) {
+    dot_arr(A[i], A[i], cols, &normval);
+    normval = sqrt(normval);
+    for (j=0; j<cols; j++) A[i][j] /= normval;
+  }
 
 }
 
