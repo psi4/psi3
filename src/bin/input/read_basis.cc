@@ -1,4 +1,4 @@
-/*! \file read_basis.cc
+/*! \file
     \ingroup INPUT
     \brief Enter brief description of file here 
 */

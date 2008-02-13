@@ -1,5 +1,5 @@
 /*!
-  \file invert.cc
+  \file
   \brief Invert a small matrix
   \ingroup QT
 */

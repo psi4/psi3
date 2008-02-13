@@ -1,7 +1,7 @@
 #ifndef _psi_src_bin_cints_Default_Deriv1_oe_deriv1_h
 #define _psi_src_bin_cints_Default_Deriv1_oe_deriv1_h
 
-/*! \file oe_deriv1.h
+/*! \file
     \ingroup CINTS
 */
 namespace psi { 

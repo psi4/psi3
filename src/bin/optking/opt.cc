@@ -1,4 +1,4 @@
-/*! \file opt.cc
+/*! \file
     \ingroup OPTKING
     \brief main optking function
     OPT.CC Rollin King, begun 1999 

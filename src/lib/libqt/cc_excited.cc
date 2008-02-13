@@ -1,5 +1,5 @@
 /*!
-  \file cc_excited.cc
+  \file
   \brief Determine if a wavefunction is a CC-excited wavefunction type
   \ingroup QT
 */

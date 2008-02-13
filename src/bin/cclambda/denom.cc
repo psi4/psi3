@@ -1,4 +1,4 @@
-/*! \file denom.cc
+/*! \file
     \ingroup CCLAMBDA
     \brief Enter brief description of file here 
 */

@@ -1,5 +1,5 @@
 /*!
- \file tocscan.cc
+ \file
  \ingroup PSIO
  */
 

@@ -1,5 +1,5 @@
 /*!
-  \file nallatom.cc
+  \file
   \ingroup CHKPT
 */
 

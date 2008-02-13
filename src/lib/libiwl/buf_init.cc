@@ -1,5 +1,5 @@
 /*!
-  \file buf_init.cc
+  \file
   \ingroup IWL
 */
 #include <stdio.h>

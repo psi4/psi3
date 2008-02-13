@@ -1,7 +1,7 @@
 /*! \defgroup GEOM geom: Compute and print geometrical parameters */
 
 /*! 
-** \file geom.cc
+** \file
 ** \brief Compute geometrical parameters
 ** \ingroup GEOM
 **

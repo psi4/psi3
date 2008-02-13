@@ -1,5 +1,5 @@
 /*!
-** \file sq_to_tri.cc
+** \file
 ** \brief Convert square matrix to lower triangle packing
 ** \ingroup CIOMR
 */

@@ -1,5 +1,5 @@
 /*!
-** \file fndcor.cc
+** \file
 ** \brief Get the amount of core memory available from input
 ** \ingroup CIOMR
 */

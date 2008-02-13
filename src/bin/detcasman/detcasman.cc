@@ -1,7 +1,7 @@
 /*! \defgroup DETCASMAN detcasman: Determinant CASSCF/MCSCF manager */
 
 /*! 
-** \file detcasman.cc
+** \file
 ** \ingroup DETCASMAN
 ** \brief Determinant CASSCF/MCSCF manager
 **

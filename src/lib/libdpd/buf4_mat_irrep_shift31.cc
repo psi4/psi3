@@ -1,4 +1,4 @@
-/*! \file buf4_mat_irrep_shift31.cc
+/*! \file
     \ingroup DPD
     \brief Enter brief description of file here 
 */

@@ -1,6 +1,6 @@
 /*###########################################################################*/
 /*! 
-** \file math_tools.cc
+** \file
 ** \ingroup EXTREMA
 ** \brief Member functions for math tools concrete class. */
 /*						Joseph P. Kenny 11/29/01

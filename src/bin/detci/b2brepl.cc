@@ -1,5 +1,5 @@
 /*! 
-  \file b2brepl.cc
+  \file
   \ingroup DETCI
   \brief Contains code to do block-to-block single replacement lists
 */

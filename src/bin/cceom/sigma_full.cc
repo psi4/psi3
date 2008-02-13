@@ -1,4 +1,4 @@
-/*! \file sigma_full.cc
+/*! \file
     \ingroup CCEOM
     \brief Enter brief description of file here 
 */

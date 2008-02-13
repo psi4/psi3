@@ -1,4 +1,4 @@
-/*! \file opt.h
+/*! \file
     \ingroup OPTKING
     \brief opt.h header file
 */

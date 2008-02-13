@@ -1,4 +1,4 @@
-/*! \file ip_data.cc
+/*! \file
     \ingroup IPV1
     \brief Rudimentary data retrieval routines from the input file 
 */

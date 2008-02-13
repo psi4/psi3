@@ -5,7 +5,7 @@ namespace psi { namespace extrema {
 
 /*###########################################################################*/
 /*! 
-  \file internals.h
+  \file
   \ingroup EXTREMA
   \brief Derived class <b>internals</b> declaration. */
 

@@ -5,7 +5,7 @@ namespace psi { namespace extrema {
 
 /*###########################################################################*/
 /*! 
-  \file deloc.h
+  \file
   \ingroup EXTREMA
   \brief Header file for the deloc (delocalized internals) class. */
 

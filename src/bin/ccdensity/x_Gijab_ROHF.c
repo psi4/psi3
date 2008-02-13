@@ -1,4 +1,4 @@
-/*! \file x_Gijab_ROHF.c
+/*! \file
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */

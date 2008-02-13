@@ -1,4 +1,4 @@
-/*! \file ltdensity_intermediates.cc
+/*! \file
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */

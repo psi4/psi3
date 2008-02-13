@@ -1,4 +1,4 @@
-/*! \file converged.cc
+/*! \file
     \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */

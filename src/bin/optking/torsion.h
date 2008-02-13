@@ -1,4 +1,4 @@
-/*! \file torsion.h
+/*! \file
     \ingroup OPTKING
     \brief Class for torsions
 */

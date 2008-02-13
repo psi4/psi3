@@ -1,4 +1,4 @@
-/*! \file gprgid.cc
+/*! \file
   \ingroup CINTS
   \brief program id
 */

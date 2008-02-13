@@ -1,4 +1,4 @@
-/*! \file sort_amps.cc
+/*! \file
     \ingroup CCLAMBDA
     \brief Enter brief description of file here 
 */

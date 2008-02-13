@@ -1,5 +1,5 @@
 /*!
-  \file enuc.cc
+  \file
   \ingroup CHKPT
 */
 

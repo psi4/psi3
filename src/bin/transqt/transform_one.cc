@@ -1,4 +1,4 @@
-/*! \file transform_one.cc
+/*! \file
     \ingroup TRANSQT
     \brief Enter brief description of file here 
 */

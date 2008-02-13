@@ -1,7 +1,7 @@
 /*! \defgroup PSIO libpsio: The PSI I/O Library */
 
 /*!
- ** \file close.cc
+ ** \file
  ** \ingroup PSIO
  */
 

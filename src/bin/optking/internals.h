@@ -1,4 +1,4 @@
-/*! \file internals.h
+/*! \file
     \ingroup OPTKING
     \brief Class declaration for internals
 */

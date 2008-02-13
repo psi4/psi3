@@ -1,4 +1,4 @@
-/*! \file transform_two_uhf.cc
+/*! \file
     \ingroup TRANSQT
     \brief Enter brief description of file here 
 */

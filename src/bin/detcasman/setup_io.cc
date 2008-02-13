@@ -1,5 +1,5 @@
 /*! 
-** \file setup_io.cc
+** \file
 ** \ingroup DETCASMAN
 ** \brief Set up and shut down I/O for detcasman
 **

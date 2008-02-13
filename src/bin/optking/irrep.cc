@@ -1,4 +1,4 @@
-/*! \file irrep.cc
+/*! \file
     \ingroup OPTKING
     \brief 
 IRREP.CC :  symmetrizes set of delocalized internal coordinates

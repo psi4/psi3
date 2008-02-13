@@ -1,5 +1,5 @@
 /*!
-  \file block_matrix.cc
+  \file
   \brief Allocate a blocked (memory-contiguous) 2D matrix of doubles
   \ingroup CIOMR
 */

@@ -1,4 +1,4 @@
-/*! \file tpool.cc
+/*! \file
  *  \ingroup DETCI
  *  \brief Thread pools
  *

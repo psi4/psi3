@@ -1,6 +1,7 @@
-/*! \file check_energy.cc
-    \ingroup DETCI
-    \brief Enter brief description of file here 
+/*! 
+  \file
+  \ingroup DETCI
+  \brief Check the SCF energy
 */
 #include <stdio.h>
 #include <math.h>
@@ -15,22 +16,24 @@ void scf_energy(double *H, double *TE, double *energy_1, double *energy_2,
       double *energy_e, int *docc, int *frozen_docc, int fzc_flag, 
       int nirreps, int *reorder, int *opi);
 
-/*
+/*!
 ** check_energy(): check the SCF energy by calculating it from the two-electr.
 **    integrals in the MO basis
 ** 
-** Arguments: 
-**    H        =  lower triangle of one-electron integrals matrix (MO basis)
-**  twoel_ints =  two electron integrals (lexically indexed, MO basis)
-**    nocc     =  number of occupied orbitals (assume closed shell case) and
-**                exclude frozen core
-**    escf     =  scf energy to compare to
-**    enuc     =  nuclear repulsion energy
-**    efzc     =  frozen core energy
-**    nirreps  =  number of irreps 
-**    reorder  =  reordering array for Pitzer->CI ordering
-**    opi      =  orbs per irrep in Pitzer ordering
-**    outfile  =  file to write output to
+** \param  H         =  lwr tri of one-electron integrals matrix (MO basis)
+** \param twoel_ints =  two electron integrals (lexically indexed, MO basis)
+** \param   nocc     =  num occupied orbitals (assume closed shell case) and
+**                      exclude frozen core
+** \param   escf     =  scf energy to compare to
+** \param   enuc     =  nuclear repulsion energy
+** \param   efzc     =  frozen core energy
+** \param   nirreps  =  number of irreps 
+** \param   reorder  =  reordering array for Pitzer->CI ordering
+** \param   opi      =  orbs per irrep in Pitzer ordering
+** \param   outfile  =  file to write output to
+**
+** Returns: the computed SCF energy
+** \ingroup DETCI
 */
 double check_energy(double *H, double *twoel_ints, int *docc, int *frozen_docc,
       int fzc_flag, double escf, double enuc, double efzc, 
@@ -64,26 +67,29 @@ double check_energy(double *H, double *twoel_ints, int *docc, int *frozen_docc,
 }   
 
 
-/*
-** SCF_ENERGY() : Function calculates the SCF energy from the one- and
+/*!
+** scf_energy(): Function calculates the SCF energy from the one- and
 **   two-electron integrals in MO form (closed-shell case).
 **
 ** David Sherrill, Sept 1993
 **
-** Arguments: 
-**  H        = Matrix of one-electron integrals in MO basis (lwr triangle)
-**  TE       = Two-electron integrals in MO basis, stored in ijkl-indexed array
-**  energy_1 = pointer to hold one-electron energy
-**  energy_2 = pointer to hold two-electron energy
-**  energy_e = pointer to hold total electronic energy (sum of two terms above)
-**  docc     = array of doubly-occupied orbitals per irrep
-**  frozen_docc = array of frozen doubly-occupied orbitals per irrep
-**  fzc_flag = remove explicit consideration of frozen core orbitals or not 
-**  nirreps  = number of irreps 
-**  reorder  = reordering array Pitzer->CI order
-**  opi      = orbitals per irrep
+** \param H        = Matrix of one-electron integrals in MO basis (lwr triangle)
+** \param TE       = Two-electron integrals in MO basis, stored in 
+**                   ijkl-indexed array
+** \param energy_1 = pointer to hold one-electron energy
+** \param energy_2 = pointer to hold two-electron energy
+** \param energy_e = pointer to hold total electronic energy (sum of two 
+**                   terms above)
+** \param docc     = array of doubly-occupied orbitals per irrep
+** \param frozen_docc = array of frozen doubly-occupied orbitals per irrep
+** \param fzc_flag = remove explicit consideration of frozen core orbitals ?
+** \param nirreps  = number of irreps 
+** \param reorder  = reordering array Pitzer->CI order
+** \param opi      = orbitals per irrep
 **
 ** Returns: none
+**
+** \ingroup DETCI
 */
 
 void scf_energy(double *H, double *TE, double *energy_1, double *energy_2, 

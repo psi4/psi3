@@ -1,5 +1,5 @@
 /*!
- \file get_length.cc
+ \file
  \ingroup PSIO
  */
 

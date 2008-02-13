@@ -1,5 +1,5 @@
 /*!
-  \file zmat.cc
+  \file
   \ingroup CHKPT
 */
 

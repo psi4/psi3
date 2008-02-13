@@ -1,7 +1,7 @@
 /*! \defgroup TRANSQT transqt: Integral Transformation Program */
 
 /*! 
-** \file transqt.cc
+** \file
 ** \ingroup TRANSQT
 ** \brief The SO-to-MO integral transformation program
 **

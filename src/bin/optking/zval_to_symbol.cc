@@ -1,4 +1,4 @@
-/*! \file zval_to_symbol.cc
+/*! \file
     \ingroup OPTKING
     \brief ZVAL_TO_SYMBOL() return atom symbol
 */

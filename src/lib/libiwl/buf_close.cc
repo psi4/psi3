@@ -1,7 +1,7 @@
 /*! \defgroup IWL libiwl: I/O Library for Integrals with Labels */
 
 /*!
-  \file buf_close.cc
+  \file
   \ingroup IWL
 */
 #include <stdio.h>

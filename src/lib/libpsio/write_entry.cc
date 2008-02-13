@@ -1,5 +1,5 @@
 /*!
- \file write_entry.cc
+ \file
  \ingroup PSIO
  */
 

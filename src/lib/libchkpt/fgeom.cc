@@ -1,5 +1,5 @@
 /*!
-  \file fgeom.cc
+  \file
   \ingroup CHKPT
 */
 

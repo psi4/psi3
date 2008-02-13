@@ -1,4 +1,4 @@
-/*! \file cartesians.h
+/*! \file
     \ingroup OPTKING
     \brief Class declaration for cartesian coordinates
 */

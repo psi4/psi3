@@ -1,11 +1,9 @@
-/*! \file dboc.cc
+/*! \defgroup DBOC dboc: Diagonal Born-Oppenheimer Correction */
+
+/*! \file
     \ingroup DBOC
-    \brief Enter brief description of file here 
-*/
-/*
-**
-**  DBOC: Driver program for computing the Diagonal Born-Oppenheimer Correction
-**
+    \brief Driver program for computing the Diagonal 
+      Born-Oppenheimer Correction
 */
 
 #include <stdexcept>

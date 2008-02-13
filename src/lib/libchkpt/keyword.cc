@@ -1,5 +1,5 @@
 /*!
-  \file keyword.cc
+  \file
   \ingroup CHKPT
 */
 

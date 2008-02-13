@@ -1,4 +1,4 @@
-/*! \file disp_user.cc
+/*! \file
     \ingroup OPTKING
     \brief DISP_USER only performs input-specified displacements
 */

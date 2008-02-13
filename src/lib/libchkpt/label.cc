@@ -1,5 +1,5 @@
 /*!
-  \file label.cc
+  \file
   \ingroup CHKPT
 */
 

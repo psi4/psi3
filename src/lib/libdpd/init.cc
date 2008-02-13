@@ -1,4 +1,4 @@
-/*! \file init.cc
+/*! \file
     \ingroup DPD
     \brief Enter brief description of file here 
 */

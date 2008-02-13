@@ -1,4 +1,4 @@
-/*! \file init_elem_names.cc
+/*! \file
     \ingroup INPUT
     \brief Enter brief description of file here 
 */

@@ -1,4 +1,4 @@
-/*! \file fragment.cc
+/*! \file
     \ingroup OPTKING
     \brief six coordinates for non-bonded fragments
 */

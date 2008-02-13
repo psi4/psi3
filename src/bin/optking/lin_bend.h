@@ -1,4 +1,4 @@
-/*! \file lin_bend.h
+/*! \file
     \ingroup OPTKING
     \brief Class for pairs of orthogonal linear bend coordinates;
  lin with linval1 is toward an axis perpendicular with A-B-C with maximum

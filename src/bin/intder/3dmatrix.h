@@ -1,4 +1,4 @@
-/*! \file 3dmatrix.h
+/*! \file
     \ingroup INTDER
     \brief Enter brief description of file here 
 */

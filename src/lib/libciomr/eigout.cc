@@ -1,5 +1,5 @@
 /*!
-  \file eigout.cc
+  \file
   \brief Print eigenvectors and eigenvalues
   \ingroup CIOMR
 */

@@ -1,4 +1,4 @@
-/*! \file te_ints.cc
+/*! \file
     \ingroup CINTS
     \brief Two-electron integrals.
 */

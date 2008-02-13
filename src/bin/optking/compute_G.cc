@@ -1,4 +1,4 @@
-/*! \file compute_G.cc
+/*! \file
     \ingroup OPTKING
     \brief This function computes G via BuB^t where u is a diagonal matrix
     of inverse masses.

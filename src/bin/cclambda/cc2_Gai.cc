@@ -1,4 +1,4 @@
-/*! \file cc2_Gai.cc
+/*! \file
     \ingroup CCLAMBDA
     \brief Enter brief description of file here 
 */

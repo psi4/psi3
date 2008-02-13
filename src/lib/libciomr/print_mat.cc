@@ -1,5 +1,5 @@
 /*!
-** \file print_mat.cc
+** \file
 ** \brief Print a matrix of doubles
 ** \ingroup CIOMR
 */

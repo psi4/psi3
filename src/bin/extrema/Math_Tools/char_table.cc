@@ -1,6 +1,6 @@
 /*###########################################################################*/
 /*! 
-** \file char_table.cc
+** \file
 ** \ingroup EXTREMA
 ** \brief Character table class. 
 **

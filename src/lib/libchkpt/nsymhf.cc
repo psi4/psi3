@@ -1,5 +1,5 @@
 /*!
-  \file nsymhf.cc
+  \file
   \ingroup CHKPT
 */
 

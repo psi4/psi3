@@ -1,4 +1,4 @@
-/*! \file correlate.cc
+/*! \file
     \ingroup INPUT
     \brief Enter brief description of file here 
 */

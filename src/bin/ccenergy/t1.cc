@@ -1,4 +1,4 @@
-/*! \file t1.cc
+/*! \file
     \ingroup CCENERGY
     \brief Enter brief description of file here 
 */

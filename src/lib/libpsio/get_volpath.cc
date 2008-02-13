@@ -1,5 +1,5 @@
 /*!
- \file get_volpath.cc
+ \file
  \ingroup PSIO
  */
 

@@ -1,4 +1,4 @@
-/*! \file mem_man.c
+/*! \file
     \ingroup DERIV
     \brief Enter brief description of file here 
 */

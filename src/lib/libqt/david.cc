@@ -1,5 +1,5 @@
 /*! 
-  \file david.cc
+  \file
   \brief In-core Davidson-Liu diagonalization of symm matrices
   \ingroup QT
 */

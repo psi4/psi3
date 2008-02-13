@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 /*!
-** \file mat_print.cc
+** \file
 ** \brief Print a matrix to a file in a formatted style
 ** \ingroup QT
 */

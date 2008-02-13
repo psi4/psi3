@@ -1,4 +1,4 @@
-/*! \file read_lag.cc
+/*! \file
     \ingroup DETCAS
     \brief Enter brief description of file here 
 */

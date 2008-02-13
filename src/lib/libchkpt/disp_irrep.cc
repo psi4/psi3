@@ -1,5 +1,5 @@
 /*!
-  \file disp_irrep.cc
+  \file
   \ingroup CHKPT
 */
 

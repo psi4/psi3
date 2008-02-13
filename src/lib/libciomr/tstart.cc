@@ -1,5 +1,5 @@
 /*!
-** \file tstart.cc
+** \file
 ** \brief Controls starting and stopping of timers
 ** \ingroup CIOMR
 */

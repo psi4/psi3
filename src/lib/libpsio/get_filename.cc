@@ -1,5 +1,5 @@
 /*!
- \file get_filename.cc
+ \file
  \ingroup PSIO
  */
 

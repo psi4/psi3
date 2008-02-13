@@ -1,4 +1,4 @@
-/*! \file Wabei_ROHF.cc
+/*! \file
     \ingroup CCHBAR
     \brief Enter brief description of file here 
 */

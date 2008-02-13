@@ -1,4 +1,4 @@
-/*! \file grad_energy.cc
+/*! \file
     \ingroup OPTKING
     \brief GRAD_ENERGY computes a file11 entry from energies in chkpt Rollin King, 2002
 */

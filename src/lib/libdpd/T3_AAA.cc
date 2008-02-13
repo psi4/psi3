@@ -1,4 +1,4 @@
-/*! \file T3_AAA.cc
+/*! \file
     \ingroup DPD
     \brief Enter brief description of file here 
 */

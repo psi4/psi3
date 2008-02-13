@@ -1,7 +1,7 @@
 /*! \defgroup RESPONSE response: Compute various response properties */
 
 /*! 
-** \file response.cc
+** \file
 ** \ingroup RESPONSE
 ** \brief Module to compute various response properties
 */

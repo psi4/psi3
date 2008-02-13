@@ -1,5 +1,5 @@
 /*!
- \file get_global_address.cc
+ \file
  \ingroup PSIO
  */
 

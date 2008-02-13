@@ -1,4 +1,4 @@
-/*! \file ip_karray.cc
+/*! \file
     \ingroup IPV1
     \brief These routines manipulate keyword arrays.  A keyword
  * array differs from a data array in that its indices are indicated

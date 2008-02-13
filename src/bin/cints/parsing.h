@@ -1,7 +1,7 @@
 #ifndef _psi_src_bin_cints_parsing_h
 #define _psi_src_bin_cints_parsing_h
 
-/*! \file parsing.h
+/*! \file
     \ingroup CINTS
     \brief parsing header file.
 */

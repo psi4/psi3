@@ -1,4 +1,4 @@
-/*! \file get_optinfo.cc
+/*! \file
     \ingroup OPTKING
     \brief GET_OPTINFO   reads optimization parameters from input.dat
 */

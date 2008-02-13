@@ -1,5 +1,5 @@
 /*!
-  \file nfzc.cc
+  \file
   \ingroup CHKPT
 */
 

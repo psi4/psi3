@@ -1,5 +1,5 @@
 /*! 
-** \file MOInfo.h
+** \file
 ** \ingroup STABLE
 ** \brief MOInfo structure with info about MO's from checkpoint
 */

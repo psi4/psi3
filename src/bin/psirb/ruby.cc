@@ -1,4 +1,4 @@
-/*! \file ruby.cc
+/*! \file
 	\ingroup psirb
 	\brief Contains Ruby initialization and some global functions.
 */

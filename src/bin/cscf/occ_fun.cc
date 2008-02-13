@@ -1,4 +1,4 @@
-/*! \file occ_fun.cc
+/*! \file
     \ingroup CSCF
     \brief Enter brief description of file here 
 */

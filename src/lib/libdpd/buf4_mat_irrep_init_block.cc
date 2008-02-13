@@ -1,4 +1,4 @@
-/*! \file buf4_mat_irrep_init_block.cc
+/*! \file
     \ingroup DPD
     \brief Enter brief description of file here 
 */

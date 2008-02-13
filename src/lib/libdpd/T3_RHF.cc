@@ -1,4 +1,4 @@
-/*! \file T3_RHF.cc
+/*! \file
     \ingroup DPD
     \brief Enter brief description of file here 
 */

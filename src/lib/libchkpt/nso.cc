@@ -1,5 +1,5 @@
 /*!
-  \file nso.cc
+  \file
   \ingroup CHKPT
 */
 

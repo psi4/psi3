@@ -1,7 +1,7 @@
 #ifndef _psi_src_bin_cints_data_structs_h
 #define _psi_src_bin_cints_data_structs_h
 
-/*! \file data_structs.h
+/*! \file
     \ingroup CINTS
     \brief Enter brief description of file here 
 */

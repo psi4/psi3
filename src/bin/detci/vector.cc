@@ -1,4 +1,4 @@
-/*! \file vector.cc
+/*! \file
 **  \ingroup DETCI
 **  \brief Contains C code for vector operations
 **

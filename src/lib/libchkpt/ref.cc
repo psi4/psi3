@@ -1,5 +1,5 @@
 /*!
-  \file ref.cc
+  \file
   \ingroup CHKPT
 */
 

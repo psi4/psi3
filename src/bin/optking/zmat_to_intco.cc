@@ -1,4 +1,4 @@
-/*! \file zmat_to_intco.cc
+/*! \file
     \ingroup OPTKING
     \brief ZMAT_TO_INTCO() determine simples from z-matrix coordinates 
   - may not work for dummy atoms

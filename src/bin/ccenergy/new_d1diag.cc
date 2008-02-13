@@ -1,4 +1,4 @@
-/*! \file new_d1diag.cc
+/*! \file
     \ingroup CCENERGY
     \brief Enter brief description of file here 
 */

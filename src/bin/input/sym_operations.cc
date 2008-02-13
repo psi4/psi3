@@ -1,4 +1,4 @@
-/*! \file sym_operations.cc
+/*! \file
     \ingroup INPUT
     \brief Enter brief description of file here 
 */

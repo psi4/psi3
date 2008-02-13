@@ -1,4 +1,4 @@
-/*! \file cc3_HC1ET1.cc
+/*! \file
     \ingroup CCEOM
     \brief Enter brief description of file here 
 */

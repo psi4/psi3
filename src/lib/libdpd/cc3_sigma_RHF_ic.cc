@@ -1,4 +1,4 @@
-/*! \file cc3_sigma_RHF_ic.cc
+/*! \file
     \ingroup DPD
     \brief Enter brief description of file here 
 */

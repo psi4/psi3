@@ -1,5 +1,5 @@
 /*!
-** \file rsp.cc
+** \file
 ** \brief Diagonalize a symmetric matrix in packed (lower triangular) form
 ** \ingroup CIOMR
 */

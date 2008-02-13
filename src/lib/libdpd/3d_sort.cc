@@ -1,4 +1,4 @@
-/*! \file 3d_sort.cc
+/*! \file
     \ingroup DPD
     \brief Enter brief description of file here 
 */

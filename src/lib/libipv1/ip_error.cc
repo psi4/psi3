@@ -1,4 +1,4 @@
-/*! \file ip_error.cc
+/*! \file
     \ingroup IPV1
     \brief Enter brief description of file here 
 */

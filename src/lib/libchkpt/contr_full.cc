@@ -1,5 +1,5 @@
 /*!
-  \file contr_full.cc
+  \file
   \ingroup CHKPT
 */
 

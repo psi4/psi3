@@ -1,5 +1,5 @@
 /*!
-  \file rottype.cc
+  \file
   \ingroup CHKPT
 */
 

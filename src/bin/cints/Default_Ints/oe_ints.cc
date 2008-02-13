@@ -1,4 +1,4 @@
-/*! \file oe_ints.cc
+/*! \file
     \ingroup CINTS
     \brief One-electron integrals.
 */

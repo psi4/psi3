@@ -1,4 +1,4 @@
-/*! \file salc.cc
+/*! \file
     \ingroup OPTKING
     \brief SALC.CC : constructor functions for salc_set
 */

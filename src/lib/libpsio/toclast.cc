@@ -1,5 +1,5 @@
 /*!
- \file toclast.cc
+ \file
  \ingroup PSIO
  */
 

@@ -1,4 +1,4 @@
-/*! \file zero_pdm.cc
+/*! \file
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */

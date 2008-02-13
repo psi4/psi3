@@ -1,5 +1,5 @@
 /*!
-** \file sq_rsp.cc
+** \file
 ** \brief Diagnoalize a symmetrix square matrix
 ** \ingroup CIOMR
 */

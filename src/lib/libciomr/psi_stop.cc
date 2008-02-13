@@ -1,5 +1,5 @@
 /*!
-** \file psi_stop.cc
+** \file
 ** \brief Close input and output, stop input parser
 ** \ingroup CIOMR
 */

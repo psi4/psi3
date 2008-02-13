@@ -1,5 +1,5 @@
 /*!
- ** \file error.cc
+ ** \file
  ** \ingroup PSIO
  */
 

@@ -1,4 +1,4 @@
-/*! \file file2_dot.cc
+/*! \file
     \ingroup DPD
     \brief Enter brief description of file here 
 */

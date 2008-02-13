@@ -1,4 +1,4 @@
-/*! \file setup_io.cc
+/*! \file
     \ingroup DETCAS
     \brief Enter brief description of file here 
 */

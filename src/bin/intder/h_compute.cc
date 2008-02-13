@@ -1,4 +1,4 @@
-/*! \file h_compute.cc
+/*! \file
     \ingroup INTDER
     \brief Enter brief description of file here 
 */

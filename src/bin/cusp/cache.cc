@@ -1,9 +1,7 @@
-/*! \file cache.cc
+/*! \file
     \ingroup CUSP
     \brief Enter brief description of file here 
 */
-
-/*! \defgroup CUSP Add a description of the group CUSP */
 
 #include <stdio.h>
 #include <stdlib.h>

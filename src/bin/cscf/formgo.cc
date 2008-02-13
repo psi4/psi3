@@ -1,4 +1,4 @@
-/*! \file formgo.cc
+/*! \file
     \ingroup CSCF
     \brief Enter brief description of file here 
 */

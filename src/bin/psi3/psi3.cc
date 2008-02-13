@@ -1,4 +1,4 @@
-/*! \file psi3.cc
+/*! \file
     \ingroup PSI3
     \brief Enter brief description of file here 
 */

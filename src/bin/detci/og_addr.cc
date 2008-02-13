@@ -1,4 +1,4 @@
-/*! \file og_addr.cc
+/*! \file
     \ingroup DETCI
     \brief Enter brief description of file here 
 */

@@ -1,5 +1,5 @@
 /*!
-  \file irr_labs.cc
+  \file
   \ingroup CHKPT
 */
 

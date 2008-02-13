@@ -1,5 +1,5 @@
 /*!
-  \file buf_toend.cc
+  \file
   \ingroup IWL
 */
 #include <stdio.h>

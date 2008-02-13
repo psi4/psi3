@@ -1,5 +1,5 @@
 /*!
- \file open_check.cc
+ \file
  \ingroup PSIO
  */
 

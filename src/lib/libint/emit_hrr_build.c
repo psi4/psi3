@@ -1,4 +1,4 @@
-/*! \file emit_hrr_build.c
+/*! \file
     \ingroup INT
     \brief Enter brief description of file here 
 */

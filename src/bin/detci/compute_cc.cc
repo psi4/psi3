@@ -1,4 +1,4 @@
-/*! \file compute_cc.cc
+/*! \file
 **  \ingroup DETCI
 **  \brief Arbitrary-order coupled-cluster code
 ** 

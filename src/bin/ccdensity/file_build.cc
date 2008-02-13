@@ -1,4 +1,4 @@
-/*! \file file_build.cc
+/*! \file
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */

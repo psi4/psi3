@@ -1,4 +1,4 @@
-/*! \file oe_deriv1.cc
+/*! \file
     \ingroup CINTS
     \brief Computation of the one-electron integral derivatives
 */

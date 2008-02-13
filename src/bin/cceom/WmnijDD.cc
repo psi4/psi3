@@ -1,4 +1,4 @@
-/*! \file WmnijDD.cc
+/*! \file
     \ingroup CCEOM
     \brief Enter brief description of file here 
 */

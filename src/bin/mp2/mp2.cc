@@ -1,7 +1,7 @@
 /*! \defgroup MP2 mp2: Canonical Evaluation of MP2 Energy and Gradients */
 
 /*! 
-** \file mp2.cc
+** \file
 ** \ingroup MP2
 ** \brief Canonical evaluation of MP2 energy and gradients
 */

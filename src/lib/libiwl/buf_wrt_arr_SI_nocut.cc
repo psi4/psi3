@@ -1,5 +1,5 @@
 /*!
-  \file buf_wrt_arr_SI_nocut.cc
+  \file
   \ingroup IWL
 */
 #include <stdio.h>

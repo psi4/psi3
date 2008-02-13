@@ -1,5 +1,5 @@
 /*!
-** \file add_mat.cc
+** \file
 ** \brief Add two matrices
 ** \ingroup CIOMR
 */

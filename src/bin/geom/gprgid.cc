@@ -1,4 +1,4 @@
-/*! \file gprgid.cc
+/*! \file
     \ingroup GEOM
     \brief Enter brief description of file here 
 */

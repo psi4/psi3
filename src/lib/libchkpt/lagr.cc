@@ -1,5 +1,5 @@
 /*!
-  \file lagr.cc
+  \file
   \ingroup CHKPT
 */
 

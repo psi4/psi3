@@ -2,7 +2,7 @@
 
 
 /*! 
-** \file transqt.cc
+** \file
 ** \ingroup TRANSQT2
 ** \brief Integral Transformation Program
 **

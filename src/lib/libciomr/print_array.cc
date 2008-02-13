@@ -1,5 +1,5 @@
 /*!
-** \file print_array.cc
+** \file
 ** \brief Print a lower-triangle array of doubles
 ** \ingroup CIOMR
 */

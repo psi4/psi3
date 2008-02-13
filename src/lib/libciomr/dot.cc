@@ -1,5 +1,5 @@
 /*!
-** \file dot.cc
+** \file
 ** \brief Take dot product between two matrices   
 ** \ingroup CIOMR
 */

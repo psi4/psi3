@@ -1,5 +1,5 @@
 /*!
-  \file scf.cc
+  \file
   \ingroup CHKPT
 */
 

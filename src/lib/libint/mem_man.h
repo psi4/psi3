@@ -1,4 +1,4 @@
-/*! \file mem_man.h
+/*! \file
     \ingroup INT
     \brief Enter brief description of file here 
 */

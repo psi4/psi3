@@ -1,5 +1,5 @@
 /*!
-  \file rdtwo.cc
+  \file
   \ingroup IWL
 */
 #include <stdio.h>

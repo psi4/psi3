@@ -1,4 +1,4 @@
-/*! \file sort_lamps.cc
+/*! \file
     \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */

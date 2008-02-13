@@ -1,4 +1,4 @@
-/*! \file frozen_core.cc
+/*! \file
     \ingroup TRANSQT
     \brief Enter brief description of file here 
 */

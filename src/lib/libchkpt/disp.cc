@@ -1,5 +1,5 @@
 /*!
-  \file disp.cc
+  \file
   \ingroup CHKPT
 */
 

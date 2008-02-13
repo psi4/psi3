@@ -1,6 +1,6 @@
 
 /*!
-** \file slaterdset.cc
+** \file
 ** \brief Utility functions for importing/exporting sets of Slater determinants
 **   from the CI codes
 ** \ingroup QT

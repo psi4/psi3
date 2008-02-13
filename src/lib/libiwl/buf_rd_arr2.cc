@@ -1,5 +1,5 @@
 /*!
-  \file buf_rd_arr2.cc
+  \file
 */
 #include <stdio.h>
 #include <math.h>

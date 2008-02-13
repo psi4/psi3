@@ -1,10 +1,7 @@
-/*! \file ci_overlap.cc
+/*! \file
     \ingroup DBOC
     \brief Enter brief description of file here 
 */
-
-/*! \defgroup DBOC Add a description of the group DBOC */
-
 
 #include <pthread.h>
 #include "ci_overlap.h"

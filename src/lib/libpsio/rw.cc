@@ -1,5 +1,5 @@
 /*!
- \file rw.cc
+ \file
  \ingroup PSIO
  */
 

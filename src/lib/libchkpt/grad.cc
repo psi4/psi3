@@ -1,5 +1,5 @@
 /*!
-  \file grad.cc
+  \file
   \ingroup CHKPT
 */
 

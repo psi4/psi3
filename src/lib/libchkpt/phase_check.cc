@@ -1,5 +1,5 @@
 /*!
-  \file phase_check.cc
+  \file
   \ingroup CHKPT
 */
 

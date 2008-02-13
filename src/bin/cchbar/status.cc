@@ -1,4 +1,4 @@
-/*! \file status.cc
+/*! \file
     \ingroup CCHBAR
     \brief Enter brief description of file here 
 */

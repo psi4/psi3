@@ -1,4 +1,4 @@
-/*! \file td_setup.cc
+/*! \file
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */

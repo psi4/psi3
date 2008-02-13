@@ -1,4 +1,4 @@
-/*! \file build_transmat.cc
+/*! \file
     \ingroup INPUT
     \brief Enter brief description of file here 
 */

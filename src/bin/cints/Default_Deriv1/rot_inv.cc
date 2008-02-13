@@ -1,4 +1,4 @@
-/*! \file rot_inv.cc
+/*! \file
     \ingroup CINTS
     \brief Routines for determining the rotational invariance of gradients.
 */

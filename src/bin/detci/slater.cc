@@ -1,4 +1,4 @@
-/*! \file slater.cc
+/*! \file
     \ingroup DETCI
     \brief Some of the Slater determinant routines
 */

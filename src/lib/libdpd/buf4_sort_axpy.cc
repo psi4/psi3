@@ -1,4 +1,4 @@
-/*! \file buf4_sort_axpy.cc
+/*! \file
     \ingroup DPD
     \brief Enter brief description of file here 
 */

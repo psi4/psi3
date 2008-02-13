@@ -1,4 +1,4 @@
-/*! \file compute_H.cc
+/*! \file
     \ingroup OPTKING
     \brief This function reads in Force Constants H from
     PSIF_OPTKING (in redundant internal coodinates) does a

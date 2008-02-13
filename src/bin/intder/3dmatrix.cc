@@ -1,5 +1,5 @@
 /*! 
-** \file 3dmatrix.cc
+** \file
 ** \ingroup INTDER
 ** \brief Enter brief description of file here 
 */

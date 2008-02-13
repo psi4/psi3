@@ -1,5 +1,5 @@
 /*!
-** \file int_array.cc
+** \file
 ** \brief This file includes the integer versions of several psi routines
 ** for handling arrays and matrices of doubles 
 **

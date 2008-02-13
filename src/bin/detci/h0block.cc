@@ -1,4 +1,4 @@
-/*! \file h0block.cc
+/*! \file
 **  \ingroup DETCI
 **  \brief Some code associated with the H0block structure, which does
 **    the preconditioning for the Olsen/Davidson procedure.

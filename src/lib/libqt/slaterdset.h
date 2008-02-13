@@ -1,6 +1,6 @@
 
 /*!
-  \file slaterdset.h
+  \file
   \brief Header file for SlaterDetSets
   \ingroup QT
   Edward Valeev, June 2002

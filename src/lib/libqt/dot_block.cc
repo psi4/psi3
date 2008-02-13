@@ -1,5 +1,5 @@
 /*!
-  \file dot_block.cc
+  \file
   \brief Take dot product of two block matrices
   \ingroup QT
 */

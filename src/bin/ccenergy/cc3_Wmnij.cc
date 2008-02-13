@@ -1,4 +1,4 @@
-/*! \file cc3_Wmnij.cc
+/*! \file
     \ingroup CCENERGY
     \brief Enter brief description of file here 
 */

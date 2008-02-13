@@ -1,4 +1,4 @@
-/*! \file build_dipder.cc
+/*! \file
     \ingroup CPHF
     \brief Evaluate total dipole moment derivatives
 */

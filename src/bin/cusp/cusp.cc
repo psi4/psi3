@@ -1,6 +1,8 @@
-/*! \file cusp.cc
+/*! \defgroup CUSP Add a description of the group CUSP */
+
+/*! \file
     \ingroup CUSP
-    \brief Enter brief description of file here 
+    \brief Enter brief description of file here
 */
 #include <stdio.h>
 #include <stdlib.h>

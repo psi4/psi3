@@ -1,5 +1,5 @@
 /*!
-  \file sprim.cc
+  \file
   \ingroup CHKPT
 */
 

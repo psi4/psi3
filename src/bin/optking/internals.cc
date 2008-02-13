@@ -1,4 +1,4 @@
-/*! \file internals.cc
+/*! \file
     \ingroup OPTKING
     \brief INTERNALS.CC member functions for internals class
 */

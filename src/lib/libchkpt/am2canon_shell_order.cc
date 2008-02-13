@@ -1,7 +1,7 @@
 /*! \defgroup CHKPT libchkpt: The Checkpoint Interface library */
 
 /*!
-  \file am2canon_shell_order.cc
+  \file
   \ingroup CHKPT
 */
 

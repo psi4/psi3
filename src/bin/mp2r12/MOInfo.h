@@ -1,5 +1,5 @@
 /*! 
-** \file MOInfo.h
+** \file
 ** \ingroup MP2R12
 ** \brief MOInfo structure header file
 */

@@ -1,7 +1,7 @@
 #ifndef _psi_src_bin_cints_mkpt2_ints_h
 #define _psi_src_bin_cints_mkpt2_ints_h
 
-/*! \file mkpt2_ints.h
+/*! \file
     \ingroup CINTS
     \brief Enter brief description of file here 
 */

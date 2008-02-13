@@ -1,4 +1,4 @@
-/*! \file fragment.h
+/*! \file
     \ingroup OPTKING
     \brief Six coordinates for non-bonded fragments
 */

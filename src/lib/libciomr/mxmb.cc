@@ -1,5 +1,5 @@
 /*!
-** \file mxmb.cc
+** \file
 ** \brief Wrapper for the mmult function
 ** \ingroup CIOMR
 */

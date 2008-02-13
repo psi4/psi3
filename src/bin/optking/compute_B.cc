@@ -1,4 +1,4 @@
-/*! \file compute_B.cc
+/*! \file
     \ingroup OPTKING
     \brief This function constructs the B matrix for a set of salcs
 */

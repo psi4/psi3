@@ -1,6 +1,6 @@
 /*###########################################################################*/
 /*! 
-  \file symmetry.cc
+  \file
   \ingroup EXTREMA
   \brief Symmetry related functions. 
 

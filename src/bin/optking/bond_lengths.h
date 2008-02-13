@@ -1,4 +1,4 @@
-/*! \file bond_lengths.h
+/*! \file
     \ingroup OPTKING
     \brief Atomic covalent radii in picometers
 */

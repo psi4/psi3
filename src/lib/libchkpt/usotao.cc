@@ -1,5 +1,5 @@
 /*!
-  \file usotao.cc
+  \file
   \ingroup CHKPT
 */
 

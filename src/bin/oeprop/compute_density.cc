@@ -1,5 +1,5 @@
 /*! 
-** \file compute_density.cc
+** \file
 ** \ingroup OEPROP
 ** \brief Compute the density for Hartree-Fock wavefunctions
 */

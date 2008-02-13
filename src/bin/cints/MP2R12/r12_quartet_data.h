@@ -1,7 +1,7 @@
 #ifndef _psi_src_bin_cints_MP2R12_r12_quartet_data_h
 #define _psi_src_bin_cints_MP2R12_r12_quartet_data_h
 
-/*! \file r12_quartet_data.h
+/*! \file
     \ingroup CINTS
 */namespace psi { namespace CINTS {
 

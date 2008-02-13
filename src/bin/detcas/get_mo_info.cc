@@ -1,4 +1,4 @@
-/*! \file get_mo_info.cc
+/*! \file
     \ingroup DETCAS
     \brief Enter brief description of file here 
 */

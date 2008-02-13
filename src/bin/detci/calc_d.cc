@@ -1,4 +1,4 @@
-/*! \file calc_d.cc
+/*! \file
     \ingroup DETCI
     \brief Enter brief description of file here 
 */

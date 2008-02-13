@@ -1,4 +1,4 @@
-/*! \file emit_d1hrr_build_macro.c
+/*! \file
     \ingroup DERIV
     \brief Enter brief description of file here 
 */

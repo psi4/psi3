@@ -1,5 +1,5 @@
 /*!
-** \file normalize.cc
+** \file
 ** \brief Normalize a set of vectors
 ** \ingroup QT
 */

@@ -1,5 +1,5 @@
 /*!
-  \file newmm_rking.cc
+  \file
   \brief Matrix multiplication routine (deprecated)
   \ingroup QT
 */

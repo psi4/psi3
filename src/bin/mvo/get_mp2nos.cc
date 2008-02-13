@@ -1,4 +1,4 @@
-/*! \file get_mp2nos.cc
+/*! \file
     \ingroup MVO
     \brief Enter brief description of file here 
 */

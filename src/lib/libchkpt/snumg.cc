@@ -1,5 +1,5 @@
 /*!
-  \file snumg.cc
+  \file
   \ingroup CHKPT
 */
 

@@ -1,4 +1,4 @@
-/*! \file x_oe_intermediates_rhf.cc
+/*! \file
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */

@@ -1,5 +1,5 @@
 /*!
-  \file ecorr.cc
+  \file
   \ingroup CHKPT
 */
 

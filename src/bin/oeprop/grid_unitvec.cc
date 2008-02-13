@@ -1,4 +1,4 @@
-/*! \file grid_unitvec.cc
+/*! \file
     \ingroup OEPROP
     \brief Enter brief description of file here 
 */

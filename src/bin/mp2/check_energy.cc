@@ -1,6 +1,7 @@
-/*! \file check_energy.cc
-    \ingroup MP2
-    \brief Enter brief description of file here 
+/*! 
+  \file
+  \ingroup MP2
+  \brief Check the SCF energy (only RHF working for now)
 */
 #include <libdpd/dpd.h>
 #define EXTERN
@@ -11,6 +12,16 @@ namespace psi{ namespace mp2{
 void rhf_check_energy(int);
 void uhf_check_energy(int);
 
+/*!
+** check_energy(): Recompute the SCF energy from the integrals and various
+** choices of the density.
+**
+** \param chk = 1 for MP2 density, 2 for Fock-adjusted MP2 density, 
+**   3 = MP2 Mulliken density
+** 
+** Returns: none
+** \ingroup MP2
+*/
 void check_energy(int chk)
 {
   if(params.ref == 0) return(rhf_check_energy(chk));

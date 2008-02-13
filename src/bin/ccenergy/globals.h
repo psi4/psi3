@@ -1,4 +1,4 @@
-/*! \file globals.h
+/*! \file
     \ingroup CCENERGY
     \brief Enter brief description of file here 
 */

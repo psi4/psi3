@@ -1,4 +1,4 @@
-/*! \file molecule.h
+/*! \file
     \ingroup DBOC
     \brief Enter brief description of file here 
 */

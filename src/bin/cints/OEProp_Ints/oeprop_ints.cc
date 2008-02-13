@@ -1,4 +1,4 @@
-/*! \file oeprop_ints.cc
+/*! \file
     \ingroup CINTS
     \brief Enter brief description of file here 
 */

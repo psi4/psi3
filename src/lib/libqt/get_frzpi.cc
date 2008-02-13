@@ -1,5 +1,5 @@
 /*!
-  \file get_frzpi.cc
+  \file
   \brief Get frozen core/virtuals per irrep
   \ingroup QT
 */

@@ -1,5 +1,5 @@
 /*!
- \file init.cc
+ \file
  \ingroup PSIO
  */
 

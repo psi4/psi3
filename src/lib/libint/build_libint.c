@@ -1,4 +1,4 @@
-/*! \file build_libint.c
+/*! \file
     \ingroup INT
     \brief Enter brief description of file here 
 */

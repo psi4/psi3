@@ -1,5 +1,5 @@
 /*!
-  \file us2s.cc
+  \file
   \ingroup CHKPT
 */
 

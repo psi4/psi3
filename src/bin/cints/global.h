@@ -1,7 +1,7 @@
 #ifndef _psi_src_bin_cints_global_h
 #define _psi_src_bin_cints_global_h
 
-/*! \file global.h
+/*! \file
     \ingroup CINTS
     \brief Enter brief description of file here 
 */

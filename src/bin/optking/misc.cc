@@ -1,4 +1,4 @@
-/*! \file misc.cc
+/*! \file
     \ingroup OPTKING
     \brief miscellaneous little matrix and print functions
 */

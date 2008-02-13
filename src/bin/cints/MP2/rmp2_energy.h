@@ -1,7 +1,7 @@
 #ifndef _psi_src_bin_cints_MP2_rmp2_energy_h
 #define _psi_src_bin_cints_MP2_rmp2_energy_h
 
-/*! \file rmp2_energy.h
+/*! \file
     \ingroup CINTS
     \brief Enter brief description of file here 
 */

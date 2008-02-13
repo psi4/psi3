@@ -1,7 +1,7 @@
 extern "C" {
 
 /*!
-** \file timer.cc
+** \file
 ** \brief Obtain user and system timings for blocks of code
 ** \ingroup QT
 **

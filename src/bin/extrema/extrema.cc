@@ -1,5 +1,5 @@
 /*###########################################################################*/
-/*! \file extrema.cc
+/*! \file
     \ingroup EXTREMA
   \brief Main function and related small functions for extrema.
 

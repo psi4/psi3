@@ -1,5 +1,5 @@
 /*###########################################################################*/
-/*! \file inline.h
+/*! \file
     \ingroup EXTREMA
   \brief Inline functions, used to compute simple internal values. */
 /*						Joseph P. Kenny 11/29/01

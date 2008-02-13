@@ -1,4 +1,4 @@
-/*! \file civect.cc
+/*! \file
 **  \ingroup DETCI
 **  \brief Code for the CI vector class
 ** 

@@ -1,5 +1,5 @@
 /*!
-  \file ras_set.cc
+  \file
   \brief Obtain orbital space and reordering for CI/MCSCF wavefunctions
   \ingroup QT
 */

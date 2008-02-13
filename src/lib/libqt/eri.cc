@@ -1,5 +1,5 @@
 /*!
-  \file eri.cc
+  \file
   \brief Inefficient electron repulsion integral evaluation
   By Edward Valeev
   \ingroup QT

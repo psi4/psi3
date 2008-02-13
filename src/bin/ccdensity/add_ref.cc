@@ -1,4 +1,4 @@
-/*! \file add_ref.cc
+/*! \file
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */

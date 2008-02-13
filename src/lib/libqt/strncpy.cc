@@ -1,5 +1,5 @@
 /*!
-  \file strncpy.cc
+  \file
   \brief Override strncpy to ensure strings are terminated
   \ingroup QT
   By Edward Valeev

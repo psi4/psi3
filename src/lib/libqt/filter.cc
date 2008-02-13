@@ -1,5 +1,5 @@
 /*!
-  \file filter.cc
+  \file
   \brief Filter out unneeded frozen core/virt integrals
   \ingroup QT
 */

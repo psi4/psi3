@@ -1,5 +1,5 @@
 /*!
-  \file etot.cc
+  \file
   \ingroup CHKPT
 */
 

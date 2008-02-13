@@ -1,4 +1,4 @@
-/*! \file diis_UHF.cc
+/*! \file
     \ingroup CCENERGY
     \brief Enter brief description of file here 
 */

@@ -1,4 +1,4 @@
-/*! \file uhf.cc
+/*! \file
     \ingroup DBOC
     \brief Enter brief description of file here 
 */

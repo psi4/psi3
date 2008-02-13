@@ -1,4 +1,4 @@
-/*! \file ci_tol.h
+/*! \file
     \ingroup DETCI
     \brief Enter brief description of file here 
 */

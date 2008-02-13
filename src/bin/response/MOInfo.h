@@ -1,5 +1,5 @@
 /*! 
-** \file MOInfo.h
+** \file
 ** \ingroup RESPONSE
 ** \brief MOInfo structure with checkpoint information about MO's
 */

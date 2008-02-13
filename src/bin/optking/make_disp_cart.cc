@@ -1,4 +1,4 @@
-/*! \file make_disp_cart.cc
+/*! \file
     \ingroup OPTKING
     \brief displaces + and - along all cartesian coordinates
 */

@@ -1,5 +1,5 @@
 /*!
- \file open.cc
+ \file
  \ingroup PSIO
  */
 

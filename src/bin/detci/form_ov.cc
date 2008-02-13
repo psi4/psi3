@@ -1,4 +1,4 @@
-/*! \file form_ov.cc
+/*! \file
 **  \ingroup DETCI
 **  \brief Form OV arrays of Bendazzoli and Evangelisti, JCP 98, 3141 (1993)
 **

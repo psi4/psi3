@@ -1,5 +1,5 @@
 /*
-** \file init_array.cc
+** \file
 ** \brief Initialize an array of doubles
 ** \ingroup CIOMR
 */

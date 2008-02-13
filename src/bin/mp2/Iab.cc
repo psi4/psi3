@@ -1,5 +1,5 @@
 /*! 
-** \file Iab.cc
+** \file
 ** \ingroup MP2
 ** \brief Enter brief description of file here 
 */

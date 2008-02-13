@@ -1,4 +1,4 @@
-/*! \file detcas.cc
+/*! \file
     \ingroup DETCAS
     \brief Orbital optimizer for detci
 **

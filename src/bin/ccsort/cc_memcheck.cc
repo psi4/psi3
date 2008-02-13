@@ -1,4 +1,4 @@
-/*! \file cc_memcheck.cc
+/*! \file
     \ingroup CCSORT
     \brief Enter brief description of file here 
 */

@@ -1,4 +1,4 @@
-/*! \file d_corr.cc
+/*! \file
     \ingroup CIS
     \brief Enter brief description of file here 
 */

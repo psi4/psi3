@@ -1,7 +1,7 @@
 /*! \defgroup CSCF cscf: Hartree-Fock Self-Consistent-Field Module */
 
 /*! 
-** \file check_rot.cc
+** \file
 ** \ingroup CSCF
 ** \brief Check MO rotation to make sure C cols haven't swapped
 ** 

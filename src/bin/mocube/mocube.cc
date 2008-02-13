@@ -1,7 +1,7 @@
 /*! \defgroup MOCUBE mocube: Make a Gaussian-compatible cube file */
 
 /*! 
-** \file mocube.cc
+** \file
 ** \ingroup MOCUBE
 ** \brief Make Gaussian-compatible cube file 
 */

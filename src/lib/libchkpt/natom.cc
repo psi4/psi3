@@ -1,5 +1,5 @@
 /*!
-  \file natom.cc
+  \file
   \ingroup CHKPT
 */
 

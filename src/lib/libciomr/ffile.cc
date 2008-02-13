@@ -1,5 +1,5 @@
 /*!
-** \file ffile.cc
+** \file
 ** \brief Open PSI ASCII or small local binary (non-libpsio) files for 
 **   reading/writing
 ** \ingroup CIOMR

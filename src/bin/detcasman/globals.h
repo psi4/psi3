@@ -1,4 +1,4 @@
-/*! \file globals.h
+/*! \file
     \ingroup DETCASMAN
     \brief Enter brief description of file here 
 */

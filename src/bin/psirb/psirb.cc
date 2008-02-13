@@ -1,7 +1,7 @@
 /*! \defgroup psirb psirb: PSI3 Ruby Input Driver */
 
 /*! 
-** \file psirb.cc
+** \file
 ** \ingroup psirb
 ** \brief PSI3 Ruby driver module
 */

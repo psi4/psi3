@@ -1,4 +1,4 @@
-/*! \file local.cc
+/*! \file
     \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */

@@ -1,5 +1,5 @@
 /*!
-  \file usotbf.cc
+  \file
   \ingroup CHKPT
 */
 

@@ -1,5 +1,5 @@
 /*!
-  \file reorder_qt.cc
+  \file
   \brief Obtain the QT orbital reordering array between Pitzer and correlated 
     order
   \ingroup QT

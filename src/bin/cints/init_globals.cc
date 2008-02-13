@@ -1,4 +1,4 @@
-/*! \file init_globals.cc
+/*! \file
     \ingroup CINTS
     \brief Initialise global variables.
 */

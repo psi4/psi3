@@ -1,7 +1,7 @@
 /*! \defgroup MVO mvo: Compute modified virtual orbitals, etc */
 
 /*! 
-** \file mvo.cc
+** \file
 ** \ingroup MVO
 ** \brief Compute modified virtual orbitals, etc.
 **

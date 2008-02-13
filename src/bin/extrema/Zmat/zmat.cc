@@ -1,6 +1,6 @@
 /*###########################################################################*/
 /*! 
-  \file zmat.cc
+  \file
   \ingroup EXTREMA
   \brief Member functions for z-matrix derived class
   

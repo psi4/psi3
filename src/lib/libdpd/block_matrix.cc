@@ -1,4 +1,4 @@
-/*! \file block_matrix.cc
+/*! \file
     \ingroup DPD
     \brief Enter brief description of file here 
 */

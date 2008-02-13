@@ -1,4 +1,4 @@
-/*! \file get_params.cc
+/*! \file
     \ingroup CCENERGY
     \brief Enter brief description of file here 
 */

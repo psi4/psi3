@@ -1,4 +1,4 @@
-/*! \file ssq.cc
+/*! \file
 **  \ingroup DETCI
 **  \brief Compute expectation value of S^2
 **

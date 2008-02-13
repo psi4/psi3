@@ -1,4 +1,4 @@
-/*! \file sigma.cc
+/*! \file
 **  \ingroup DETCI
 **  \brief Routines to compute sigma = H * c
 **

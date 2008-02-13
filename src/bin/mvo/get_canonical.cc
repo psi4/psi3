@@ -1,4 +1,4 @@
-/*! \file get_canonical.cc
+/*! \file
     \ingroup MVO
     \brief Enter brief description of file here 
 */

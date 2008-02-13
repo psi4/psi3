@@ -1,5 +1,5 @@
 /*!
-** \file tqli.cc
+** \file
 ** \brief Diagonalizes a tridiagonal matrix output by tred2
 ** \ingroup CIOMR
 */ 

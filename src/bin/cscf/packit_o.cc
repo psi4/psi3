@@ -1,4 +1,4 @@
-/*! \file packit_o.cc
+/*! \file
     \ingroup CSCF
     \brief Enter brief description of file here 
 */

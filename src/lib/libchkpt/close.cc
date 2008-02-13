@@ -1,5 +1,5 @@
 /*!
-  \file close.cc
+  \file
   \ingroup CHKPT
 */
 

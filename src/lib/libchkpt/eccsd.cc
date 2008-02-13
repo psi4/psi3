@@ -1,5 +1,5 @@
 /*!
-  \file eccsd.cc
+  \file
   \ingroup CHKPT
 */
 

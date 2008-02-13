@@ -1,5 +1,5 @@
 /*!
- \file volseek.cc
+ \file
  \ingroup PSIO
  */
 

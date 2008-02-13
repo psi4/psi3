@@ -1,4 +1,4 @@
-/*! \file get_opdm_lbl.cc
+/*! \file
     \ingroup OEPROP
     \brief Enter brief description of file here 
 */

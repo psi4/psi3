@@ -1,5 +1,5 @@
 /*!
- \file read.cc
+ \file
  \ingroup PSIO
  */
 

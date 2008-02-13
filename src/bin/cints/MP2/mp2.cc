@@ -1,4 +1,4 @@
-/*! \file mp2.cc
+/*! \file
     \ingroup CINTS
     \brief Enter brief description of file here 
 */

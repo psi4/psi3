@@ -1,5 +1,5 @@
 /*!
-  \file ci_wfn.cc
+  \file
   \brief Check if wavefunction is CI-type
   \ingroup QT
 */

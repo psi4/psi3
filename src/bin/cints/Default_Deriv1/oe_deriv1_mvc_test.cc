@@ -1,4 +1,4 @@
-/*! \file oe_deriv1_mvc_test.cc
+/*! \file
   \ingroup CINTS
   Compute the derivative of the mass-velocity relativistic correction.
   Energy code adapted from oeprop by E.F. Valeev.

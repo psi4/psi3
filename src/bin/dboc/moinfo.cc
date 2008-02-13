@@ -1,4 +1,4 @@
-/*! \file moinfo.cc
+/*! \file
     \ingroup DBOC
     \brief Enter brief description of file here 
 */

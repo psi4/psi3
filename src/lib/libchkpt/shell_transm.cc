@@ -1,5 +1,5 @@
 /*!
-  \file shell_transm.cc
+  \file
   \ingroup CHKPT
 */
 

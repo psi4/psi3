@@ -1,5 +1,5 @@
 /*! 
-** \file MOInfo.h
+** \file
 ** \ingroup MVO
 ** \brief MOInfo structure of checkpoint information
 */

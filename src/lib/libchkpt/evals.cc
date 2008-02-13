@@ -1,5 +1,5 @@
 /*!
-  \file evals.cc
+  \file
   \ingroup CHKPT
 */
 

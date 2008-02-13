@@ -1,4 +1,4 @@
-/*! \file resort_tei.cc
+/*! \file
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */

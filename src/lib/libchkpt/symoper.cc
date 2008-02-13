@@ -1,5 +1,5 @@
 /*!
-  \file symoper.cc
+  \file
   \ingroup CHKPT
 */
 

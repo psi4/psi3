@@ -1,5 +1,5 @@
 /*!
-  \file fill_sym_matrix.cc
+  \file
   \brief Fill a symmetric matrix from a lower triangle
   \ingroup QT
 */

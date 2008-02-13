@@ -1,4 +1,4 @@
-/*! \file enuc_deriv1.cc
+/*! \file
     \ingroup CINTS
     \brief Compute the energy derivative of the nuclear repulsion.
 */

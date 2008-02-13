@@ -1,4 +1,4 @@
-/*! \file print_zmat.cc
+/*! \file
     \ingroup OPTKING
     \brief PRINT_ZMAT() printout z-matrix
 */

@@ -1,5 +1,5 @@
 /*!
-  \file iopen.cc
+  \file
   \ingroup CHKPT
 */
 

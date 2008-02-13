@@ -1,7 +1,7 @@
 /*! \defgroup LOCALIZE localize: Localize the orbitals */
 
 /*! 
-** \file local.cc
+** \file
 ** \ingroup LOCALIZE
 ** \brief Localize the orbitals
 */

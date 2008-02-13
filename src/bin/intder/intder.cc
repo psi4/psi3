@@ -1,7 +1,7 @@
 /*! \defgroup INTDER intder: Internal Coordinates and their Derivatives */
 
 /*! 
-** \file intder.cc
+** \file
 ** \ingroup INTDER
 ** \brief Transform Internal Coordinates and their Derivatives
 */

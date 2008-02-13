@@ -1,6 +1,7 @@
-/*! \file amp_write.cc
-    \ingroup CCENERGY
-    \brief Enter brief description of file here 
+/*! 
+  \file
+  \ingroup CCENERGY
+  \brief Write the amplitudes from ccenergy
 */
 #include <stdio.h>
 #include <stdlib.h>

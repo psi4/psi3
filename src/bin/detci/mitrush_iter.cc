@@ -1,4 +1,4 @@
-/*! \file mitrush_iter.cc
+/*! \file
 **  \ingroup DETCI
 **  \brief Mitrushenkov iterative scheme for RAS CI's
 **

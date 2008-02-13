@@ -1,5 +1,5 @@
 /*!
-  \file eigsort.cc
+  \file
   \brief Sort eigenvalues and eigenvectors in ascending or descending order
   \ingroup CIOMR
 */

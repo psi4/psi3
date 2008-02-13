@@ -1,4 +1,4 @@
-/*! \file stringlist.cc
+/*! \file
 **  \ingroup DETCI
 **  \brief Code to form the CI space as strings with all single replacements.
 **

@@ -1,4 +1,4 @@
-/*! \file get_mo_info.cc
+/*! \file
     \ingroup DETCI
     \brief Enter brief description of file here 
 */

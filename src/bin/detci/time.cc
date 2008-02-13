@@ -1,4 +1,4 @@
-/*! \file time.cc
+/*! \file
     \ingroup DETCI
     \brief DETCI-specific timing routines
 */

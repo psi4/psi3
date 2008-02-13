@@ -1,4 +1,4 @@
-/*! \file f_act.cc
+/*! \file
     \ingroup DETCAS
     \brief Enter brief description of file here 
 */

@@ -1,4 +1,4 @@
-/*! \file mp2r12_energy.cc
+/*! \file
     \ingroup MP2R12
     \brief Enter brief description of file here 
 */

@@ -1,5 +1,5 @@
 /*!
-** \file tred2.cc
+** \file
 ** \brief Converts a symmetric matrix to tridiagonal form for use in tqli
 ** \ingroup CIOMR
 */

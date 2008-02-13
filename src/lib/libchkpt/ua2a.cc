@@ -1,5 +1,5 @@
 /*!
-  \file ua2a.cc
+  \file
   \ingroup CHKPT
 */
 

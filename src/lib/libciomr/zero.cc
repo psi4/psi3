@@ -1,5 +1,5 @@
 /*!
-** \file zero.cc
+** \file
 ** \brief Zero arrays or matrices of doubles
 ** \ingroup CIOMR
 */

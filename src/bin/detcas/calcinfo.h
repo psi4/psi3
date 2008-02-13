@@ -1,7 +1,7 @@
 /*! \defgroup DETCAS detcas: Orbital optimizer for detci */
 
 /*! 
-  \file calcinfo.h
+  \file
   \ingroup DETCAS
   \brief Enter brief description of file here 
  

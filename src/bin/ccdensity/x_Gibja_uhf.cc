@@ -1,4 +1,4 @@
-/*! \file x_Gibja_uhf.cc
+/*! \file
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */

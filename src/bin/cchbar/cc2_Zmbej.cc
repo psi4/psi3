@@ -1,4 +1,4 @@
-/*! \file cc2_Zmbej.cc
+/*! \file
     \ingroup CCHBAR
     \brief Enter brief description of file here 
 */

@@ -1,5 +1,5 @@
 /*!
- \file tocclean.cc
+ \file
  \ingroup PSIO
  */
 

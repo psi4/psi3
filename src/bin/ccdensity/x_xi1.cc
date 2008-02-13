@@ -1,4 +1,4 @@
-/*! \file x_xi1.cc
+/*! \file
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */

@@ -1,6 +1,6 @@
 /*! \defgroup CIS cis: Compute CI singles for excited states */
 
-/*! \file Fab.cc
+/*! \file
     \ingroup CIS
     \brief Compute CI singles for excited states
 */

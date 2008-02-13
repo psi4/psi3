@@ -1,5 +1,5 @@
 /*!
-  \file puream.cc
+  \file
   \ingroup CHKPT
 */
 

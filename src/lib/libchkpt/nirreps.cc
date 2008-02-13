@@ -1,5 +1,5 @@
 /*!
-  \file nirreps.cc
+  \file
   \ingroup CHKPT
 */
 

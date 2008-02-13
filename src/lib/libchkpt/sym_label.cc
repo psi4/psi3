@@ -1,5 +1,5 @@
 /*!
-  \file sym_label.cc
+  \file
   \ingroup CHKPT
 */
 

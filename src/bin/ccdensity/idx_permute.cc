@@ -1,4 +1,4 @@
-/*! \file idx_permute.cc
+/*! \file
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */

@@ -1,4 +1,4 @@
-/*! \file oe_deriv1_darwin1.cc
+/*! \file
   \ingroup CINTS
   \brief Compute the derivative of the one-electron Darwin relativistic correction.
   \author R.A. King

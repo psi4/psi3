@@ -1,5 +1,5 @@
 /*!
-  \file nshell.cc
+  \file
   \ingroup CHKPT
 */
 

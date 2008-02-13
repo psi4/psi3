@@ -1,5 +1,5 @@
 /*!
-  \file openpi.cc
+  \file
   \ingroup CHKPT
 */
 

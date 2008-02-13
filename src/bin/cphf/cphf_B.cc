@@ -1,4 +1,4 @@
-/*! \file cphf_B.cc
+/*! \file
     \ingroup CPHF
     \brief Enter brief description of file here 
 */

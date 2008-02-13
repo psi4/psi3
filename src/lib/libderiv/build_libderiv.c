@@ -1,4 +1,4 @@
-/*! \file build_libderiv.c
+/*! \file
     \ingroup DERIV
     \brief Enter brief description of file here 
 */

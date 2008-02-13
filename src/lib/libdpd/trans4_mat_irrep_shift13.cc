@@ -1,4 +1,4 @@
-/*! \file trans4_mat_irrep_shift13.cc
+/*! \file
     \ingroup DPD
     \brief Enter brief description of file here 
 */

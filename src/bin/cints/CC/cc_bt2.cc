@@ -1,4 +1,4 @@
-/*! \file cc_bt2.cc
+/*! \file
     \ingroup CINTS
     \brief Enter brief description of file here 
 */

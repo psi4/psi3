@@ -1,5 +1,5 @@
 /*!
-** \file lapack_intfc.cc
+** \file
 ** \brief Interface to LAPACK routines
 ** \ingroup QT
 **

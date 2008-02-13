@@ -1,4 +1,4 @@
-/*! \file Params.h
+/*! \file
     \ingroup MP2R12
     \brief Enter brief description of file here 
 */

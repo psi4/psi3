@@ -1,7 +1,7 @@
 /*! \defgroup CIOMR libciomr: The PSI I/O and Math Library */
 
 /*!
-  \file add_arr.cc
+  \file
   \brief Add two arrays
   \ingroup CIOMR
 */

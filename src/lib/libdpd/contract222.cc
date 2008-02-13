@@ -1,4 +1,4 @@
-/*! \file contract222.cc
+/*! \file
     \ingroup DPD
     \brief Enter brief description of file here 
 */

@@ -1,6 +1,6 @@
 /*! \defgroup DETCI detci: The Determinant CI code */
 
-/*! \file detci.cc
+/*! \file
     \ingroup DETCI
     \brief Determinant-based CI program
 

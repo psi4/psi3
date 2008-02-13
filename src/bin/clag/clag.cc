@@ -1,4 +1,4 @@
-/*! \file clag.cc
+/*! \file
     \ingroup CLAG
     \brief Main file for CI Lagrangian computation
 */

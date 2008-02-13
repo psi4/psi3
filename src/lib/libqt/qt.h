@@ -1,5 +1,5 @@
 /*!
-** \file qt.h
+** \file
 ** \brief Header file for the Quantum Trio Library 
 ** \ingroup QT
 **

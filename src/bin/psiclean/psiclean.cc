@@ -1,7 +1,7 @@
 /*! \defgroup PSICLEAN psiclean: Delete scratch files */
 
 /*! 
-** \file psiclean.cc
+** \file
 ** \ingroup PSICLEAN
 ** \brief Delete scratch files
 **

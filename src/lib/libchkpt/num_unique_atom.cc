@@ -1,5 +1,5 @@
 /*!
-  \file num_unique_atom.cc
+  \file
   \ingroup CHKPT
 */
 

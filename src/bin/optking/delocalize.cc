@@ -1,4 +1,4 @@
-/*! \file delocalize.cc
+/*! \file
     \ingroup OPTKING
     \brief This function forms a set of delocalized, symmetry-adapted
      internal coordinates, given a set of simples and their

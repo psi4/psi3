@@ -307,16 +307,20 @@ title ``The PSI I/O Library.'' Each file belonging to this group will
 have a special comment of the following form:
 \begin{verbatim}
 /*!
-** \file close.cc [make sure matches actual filename]
+** \file
 ** \ingroup PSIO
 ** \brief A brief descriptor of the file should go here
 **
 ** A more detailed description of the file can go here
 */
 \end{verbatim}
-This tells {\tt doxygen} that file \file{close.cc} should be
+This tells {\tt doxygen} that this file should be
 documented, it should be added to the list of documented files, and it
-belongs to the {\tt PSIO} group.
+belongs to the {\tt PSIO} group.  Do not put the actual filename after
+the \celem{file} directive, because current versions of doxygen have
+trouble when duplicate filenames appear in different modules.  Leaving
+the filename blank after the \celem{file} directive lets doxygen create
+a unique filename using part of the file path.
 
 All functions should be commented as in the following:
 \begin{verbatim}

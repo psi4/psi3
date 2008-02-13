@@ -1,5 +1,5 @@
 /*!
-** \file init_matrix.cc
+** \file
 ** \brief Initialize a matrix of doubles
 ** \ingroup CIOMR
 */ 

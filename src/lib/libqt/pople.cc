@@ -1,5 +1,5 @@
 /*!
-  \file pople.cc
+  \file
   \brief Pople's method for solving linear equations
   \ingroup QT
 */

@@ -1,4 +1,4 @@
-/*! \file get_params.cc
+/*! \file
     \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */

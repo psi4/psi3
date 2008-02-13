@@ -1,5 +1,5 @@
 /*!
-  \file buf_wrt_mp2r12a.cc
+  \file
   \ingroup IWL
 */
 #include <stdio.h>

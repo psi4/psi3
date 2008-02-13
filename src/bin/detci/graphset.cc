@@ -1,4 +1,4 @@
-/*! \file graphset.cc
+/*! \file
 **  \ingroup DETCI
 **  \brief Routines needed to maintain the GraphSet Object.  
 **

@@ -1,5 +1,5 @@
 /*!
-  \file cc_wfn.cc
+  \file
   \brief Check if wavefunction is coupled-cluster type
   \ingroup QT
 */

@@ -1,4 +1,4 @@
-/*! \file build_B_RHF.cc
+/*! \file
     \ingroup CCSORT
     \brief Enter brief description of file here 
 */

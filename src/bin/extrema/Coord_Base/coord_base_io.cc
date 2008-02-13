@@ -1,6 +1,6 @@
 /*###########################################################################*/
 /*! 
-  \file coord_base_io.cc
+  \file
   \ingroup EXTREMA
   \brief File read and write functions common to all coordinate types. */ 
 /*						Joseph P. Kenny 11/28/01

@@ -1,4 +1,4 @@
-/*! \file sort_rtd_uhf.cc
+/*! \file
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */

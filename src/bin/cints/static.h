@@ -1,7 +1,7 @@
 #ifndef _psi_src_bin_cints_static_h
 #define _psi_src_bin_cints_static_h
 
-/*! \file static.h
+/*! \file
     \ingroup CINTS
     \brief Static variables.
 */

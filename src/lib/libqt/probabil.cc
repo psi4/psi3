@@ -1,5 +1,5 @@
 /*!
-  \file probabil.cc
+  \file
   \brief Contains some probability functions
   \ingroup QT
 */

@@ -1,5 +1,5 @@
 /*!
-  \file shells_per_am.cc
+  \file
   \ingroup CHKPT
 */
 

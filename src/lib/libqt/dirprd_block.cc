@@ -1,5 +1,5 @@
 /*!
-  \file dirprd_block.cc
+  \file
   \brief Take a direct product of two matrices
   \ingroup QT
 */

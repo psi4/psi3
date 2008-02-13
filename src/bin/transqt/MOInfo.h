@@ -1,5 +1,5 @@
 /*! 
-** \file MOInfo.h
+** \file
 ** \ingroup TRANSQT
 ** \brief MOInfo structure
 */

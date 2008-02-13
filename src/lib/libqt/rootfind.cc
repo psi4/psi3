@@ -1,7 +1,7 @@
 extern "C" {
 
 /*!
-** \file rootfind.cc
+** \file
 ** \brief Simple root finding methods
 ** \ingroup QT
 **

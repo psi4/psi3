@@ -1,4 +1,4 @@
-/*! \file find_symmetry.cc
+/*! \file
     \ingroup INPUT
     \brief Enter brief description of file here 
 */

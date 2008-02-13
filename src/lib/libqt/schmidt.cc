@@ -1,5 +1,5 @@
 /*!
-  \file schmidt.cc
+  \file
   \brief Gram-Schmidt orthogonalize a set of vectors
   \ingroup QT
 */

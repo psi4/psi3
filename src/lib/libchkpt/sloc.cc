@@ -1,5 +1,5 @@
 /*!
-  \file sloc.cc
+  \file
   \ingroup CHKPT
 */
 

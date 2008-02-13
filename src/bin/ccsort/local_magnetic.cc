@@ -1,4 +1,4 @@
-/*! \file local_magnetic.cc
+/*! \file
     \ingroup CCSORT
     \brief Enter brief description of file here 
 */

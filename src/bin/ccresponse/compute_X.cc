@@ -1,4 +1,4 @@
-/*! \file compute_X.cc
+/*! \file
     \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */

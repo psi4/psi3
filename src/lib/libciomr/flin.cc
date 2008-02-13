@@ -7,7 +7,7 @@ extern void ludcmp(double **, int, int *, double *);
 extern void lubksb(double **, int, int *, double *);
 
 /*!
-** \file flin.cc
+** \file
 ** \brief Linear equation solver for A * x = b
 ** \ingroup CIOMR
 */ 

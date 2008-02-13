@@ -1,4 +1,4 @@
-/*! \file read_constraints.cc
+/*! \file
     \ingroup OPTKING
     \brief READ_CONSTRAINTS reads constraints from  "FIXED_INTCO" section of input
    or intco files, the constrained internals must already be present in the

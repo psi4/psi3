@@ -1,4 +1,4 @@
-/*! \file rotational_strength.cc
+/*! \file
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */

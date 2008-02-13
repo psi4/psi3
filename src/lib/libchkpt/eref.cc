@@ -1,5 +1,5 @@
 /*!
-  \file eref.cc
+  \file
   \ingroup CHKPT
 */
 

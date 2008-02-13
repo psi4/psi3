@@ -1,4 +1,4 @@
-/*! \file Params.h
+/*! \file
     \ingroup CCHBAR
     \brief Enter brief description of file here 
 */

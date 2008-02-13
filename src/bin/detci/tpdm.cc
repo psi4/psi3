@@ -1,4 +1,4 @@
-/*! \file tpdm.cc
+/*! \file
 **  \ingroup DETCI
 **  \brief Compute the two-particle density matrix (TPDM)
 **

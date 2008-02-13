@@ -1,4 +1,4 @@
-/*! \file globals.h
+/*! \file
     \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */

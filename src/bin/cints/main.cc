@@ -1,7 +1,7 @@
 /*! \defgroup CINTS cints: The Integral Computation Suite */
 
 /*! 
-  \file main.cc
+  \file
   \ingroup CINTS
   \brief Integral Computation Module
 */

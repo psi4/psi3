@@ -1,5 +1,5 @@
 /*!
-  \file frzcpi.cc
+  \file
   \ingroup CHKPT
 */
 

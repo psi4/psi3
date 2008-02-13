@@ -1,5 +1,5 @@
 /*!
-  \file exps.cc
+  \file
   \ingroup CHKPT
 */
 

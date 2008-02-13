@@ -1,7 +1,7 @@
 /*! \defgroup INPUT input: Set up a PSI computation based on user input */
 
 /*! 
-** \file input.cc
+** \file
 ** \ingroup INPUT
 ** \brief Set up a PSI computation based on user input
 */

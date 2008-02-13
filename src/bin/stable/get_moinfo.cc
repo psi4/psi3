@@ -1,4 +1,4 @@
-/*! \file get_moinfo.cc
+/*! \file
     \ingroup STABLE
     \brief Enter brief description of file here 
 */

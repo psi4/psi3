@@ -1,4 +1,4 @@
-/*! \file transone.cc
+/*! \file
     \ingroup TRANSQT2
     \brief Enter brief description of file here 
 */

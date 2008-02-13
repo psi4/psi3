@@ -1,5 +1,5 @@
 /*!
-** \file mmult.cc
+** \file
 ** \brief Multiply two matrices (superceded by C_DGEMM)
 ** \ingroup CIOMR
 */

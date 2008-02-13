@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 /*!
-  \file mat_in.cc
+  \file
   \brief read in a matrix from an input stream (deprecated)
   \ingroup QT
 */

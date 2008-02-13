@@ -1,4 +1,4 @@
-/*! \file idx_permute_presort.cc
+/*! \file
     \ingroup CCSORT
     \brief Enter brief description of file here 
 */

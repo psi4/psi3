@@ -1,4 +1,4 @@
-/*! \file overlap.cc
+/*! \file
     \ingroup BASIS
     \brief Enter brief description of file here 
 */

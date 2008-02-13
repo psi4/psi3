@@ -1,5 +1,5 @@
 /*!
-  \file orbspi.cc
+  \file
 */
 
 #include <stdio.h>

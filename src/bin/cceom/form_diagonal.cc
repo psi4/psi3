@@ -1,4 +1,4 @@
-/*! \file form_diagonal.cc
+/*! \file
     \ingroup CCEOM
     \brief Enter brief description of file here 
 */

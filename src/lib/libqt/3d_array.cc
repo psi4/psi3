@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 /*!
-  \file 3d_array.cc
+  \file
   \brief Routines for 3d arrays
   \ingroup QT
 */

@@ -1,6 +1,7 @@
-/*! \file amp_write.cc
-    \ingroup CCRESPONSE
-    \brief Enter brief description of file here 
+/*! 
+  \file
+  \ingroup CCRESPONSE
+  \brief Write the amplitudes from ccresponse
 */
 #include <stdio.h>
 #include <stdlib.h>

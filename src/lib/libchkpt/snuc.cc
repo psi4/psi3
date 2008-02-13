@@ -1,5 +1,5 @@
 /*!
-  \file snuc.cc
+  \file
   \ingroup CHKPT
 */
 

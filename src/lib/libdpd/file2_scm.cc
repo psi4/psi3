@@ -1,4 +1,4 @@
-/*! \file file2_scm.cc
+/*! \file
     \ingroup DPD
     \brief Enter brief description of file here 
 */

@@ -1,5 +1,5 @@
 /*!
-  \file atom_pos.cc
+  \file
   \ingroup CHKPT
 */
 

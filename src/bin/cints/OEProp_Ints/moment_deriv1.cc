@@ -1,4 +1,4 @@
-/*! \file moment_deriv1.cc
+/*! \file
     \ingroup CINTS
     \brief Enter brief description of file here 
 */

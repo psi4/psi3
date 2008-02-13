@@ -1,4 +1,4 @@
-/*! \file build_A_UHF.cc
+/*! \file
     \ingroup STABLE
     \brief Enter brief description of file here 
 */

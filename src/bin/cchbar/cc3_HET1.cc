@@ -1,4 +1,4 @@
-/*! \file cc3_HET1.cc
+/*! \file
     \ingroup CCHBAR
     \brief Enter brief description of file here 
 */

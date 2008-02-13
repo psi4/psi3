@@ -1,4 +1,4 @@
-/*! \file ET_AAA.cc
+/*! \file
     \ingroup CCTRIPLES
     \brief Enter brief description of file here 
 */

@@ -1,5 +1,5 @@
 /*!
-  \file sort.cc
+  \file
   \brief Sort eigenvalues and eigenvectors into ascending order
   \ingroup QT
 */

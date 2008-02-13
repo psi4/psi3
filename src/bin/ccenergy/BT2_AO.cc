@@ -1,4 +1,4 @@
-/*! \file BT2_AO.cc
+/*! \file
     \ingroup CCENERGY
     \brief Enter brief description of file here 
 */

@@ -1,4 +1,4 @@
-/*! \file freq_grad_cart.cc
+/*! \file
     \ingroup OPTKING
     \brief freq_grad_cart(): computes frequencies from gradients and cartesian disps
 */

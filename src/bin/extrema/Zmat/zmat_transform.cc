@@ -1,6 +1,6 @@
 /*###########################################################################*/
 /*! 
-  \file zmat_transform.cc
+  \file
   \ingroup EXTREMA
   \brief zmat transformation functions
 

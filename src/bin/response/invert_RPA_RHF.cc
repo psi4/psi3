@@ -1,4 +1,4 @@
-/*! \file invert_RPA_RHF.cc
+/*! \file
     \ingroup RESPONSE
     \brief Enter brief description of file here 
 */

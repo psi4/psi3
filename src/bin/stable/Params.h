@@ -1,4 +1,4 @@
-/*! \file Params.h
+/*! \file
     \ingroup STABLE
     \brief Enter brief description of file here 
 */

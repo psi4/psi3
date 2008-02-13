@@ -1,7 +1,7 @@
 /*! \defgroup STABLE stable: Perform MO Stability Analysis */
 
 /*! 
-** \file stable.cc
+** \file
 ** \ingroup STABLE
 ** \brief Module to calculate eigenvalues and eigenvectors of the molecular
 **   orbital Hessian

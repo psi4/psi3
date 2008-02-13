@@ -1,4 +1,4 @@
-/*! \file salc.h
+/*! \file
     \ingroup OPTKING
     \brief Class for salcs
 */

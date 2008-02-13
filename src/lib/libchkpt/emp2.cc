@@ -1,5 +1,5 @@
 /*!
-  \file emp2.cc
+  \file
   \ingroup CHKPT
 */
 

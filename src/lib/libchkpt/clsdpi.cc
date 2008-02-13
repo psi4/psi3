@@ -1,5 +1,5 @@
 /*!
-  \file clsdpi.cc
+  \file
   \ingroup CHKPT
 */
 

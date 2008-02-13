@@ -1,5 +1,5 @@
 /*!
-  \file statespi.cc
+  \file
   \ingroup CHKPT
 */
 

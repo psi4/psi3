@@ -1,7 +1,7 @@
 /*! \defgroup OEPROP oeprop: Compute One-Electron Properties */
 
 /*! 
-** \file oeprop.cc
+** \file
 ** \ingroup OEPROP
 ** \brief Compute One-Electron Properties
 */

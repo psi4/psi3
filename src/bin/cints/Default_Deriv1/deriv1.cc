@@ -1,4 +1,4 @@
-/*! \file deriv1.cc
+/*! \file
     \ingroup CINTS
     \brief Driver for the computation of first derivatives.
 */

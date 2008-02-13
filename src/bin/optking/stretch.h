@@ -1,4 +1,4 @@
-/*! \file stretch.h
+/*! \file
     \ingroup OPTKING
     \brief Class for stretches
 */

@@ -1,4 +1,4 @@
-/*! \file prototypes.h
+/*! \file
     \ingroup OEPROP
     \brief Enter brief description of file here 
 */

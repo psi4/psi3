@@ -1,4 +1,4 @@
-/*! \file FT2_cc2.cc
+/*! \file
     \ingroup CCENERGY
     \brief Enter brief description of file here 
 */

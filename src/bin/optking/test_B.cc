@@ -1,4 +1,4 @@
-/*! \file test_B.cc
+/*! \file
     \ingroup OPTKING
     \brief TEST_BMAT.CC : compares analytic and numerical B matrices
 */

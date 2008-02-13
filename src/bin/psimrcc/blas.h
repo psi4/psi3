@@ -7,7 +7,7 @@
  ***************************************************************************/
 
 /*! 
-  \file blas.h
+  \file
   \ingroup PSIMRCC
   \brief   A class to perform contractions
 */

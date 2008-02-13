@@ -1,4 +1,4 @@
-/*! \file new_geom.cc
+/*! \file
     \ingroup OPTKING
     \brief NEW_GEOM performs the back-transformation to cartesian coordinates.
 It computes a new cartesian geometry from an old cartesian geometry

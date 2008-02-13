@@ -1,4 +1,4 @@
-/*! \file test_bfgs.cc
+/*! \file
     \ingroup DETCAS
     \brief Enter brief description of file here 
 */

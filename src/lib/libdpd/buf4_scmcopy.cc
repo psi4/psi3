@@ -1,4 +1,4 @@
-/*! \file buf4_scmcopy.cc
+/*! \file
     \ingroup DPD
     \brief Enter brief description of file here 
 */

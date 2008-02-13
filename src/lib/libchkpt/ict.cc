@@ -1,5 +1,5 @@
 /*!
-  \file ict.cc
+  \file
   \ingroup CHKPT
 */
 

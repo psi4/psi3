@@ -2,7 +2,7 @@
 
 /*###########################################################################*/
 /*! 
-   \file defines.h
+   \file
    \ingroup EXTREMA
    \brief #define parameters 
 */

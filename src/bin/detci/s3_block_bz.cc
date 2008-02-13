@@ -1,4 +1,4 @@
-/*! \file s3_block_bz.cc
+/*! \file
     \ingroup DETCI
     \brief Enter brief description of file here 
 */

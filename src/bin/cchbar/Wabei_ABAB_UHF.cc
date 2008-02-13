@@ -1,4 +1,4 @@
-/*! \file Wabei_ABAB_UHF.cc
+/*! \file
     \ingroup CCHBAR
     \brief Enter brief description of file here 
 */

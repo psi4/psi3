@@ -1,4 +1,4 @@
-/*! \file freq_grad.cc
+/*! \file
     \ingroup OPTKING
     \brief freq_grad_irrep(): computes frequencies from gradients for an irrep block
            freq_grad_nosymm(): computes frequencies from gradients for all coordinates

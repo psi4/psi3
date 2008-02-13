@@ -1,4 +1,4 @@
-/*! \file disp_freq_energy_cart.cc
+/*! \file
     \ingroup OPTKING
     \brief 
  DISP_FREQ_ENERGY_CART makes symmetry-adapted cartesian coordinates and displaces

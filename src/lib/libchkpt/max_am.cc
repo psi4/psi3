@@ -1,5 +1,5 @@
 /*!
-  \file max_am.cc
+  \file
   \ingroup CHKPT
 */
 

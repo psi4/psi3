@@ -1,5 +1,5 @@
 /*!
-  \file exist.cc
+  \file
   \ingroup CHKPT
 */
 

@@ -1,4 +1,4 @@
-/*! \file initialize.cc
+/*! \file
     \ingroup OEPROP
     \brief Enter brief description of file here 
 */

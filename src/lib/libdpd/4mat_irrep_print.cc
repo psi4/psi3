@@ -1,4 +1,4 @@
-/*! \file 4mat_irrep_print.cc
+/*! \file
     \ingroup DPD
     \brief Enter brief description of file here 
 */

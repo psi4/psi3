@@ -1,4 +1,4 @@
-/*! \file shift.cc
+/*! \file
 **  \ingroup DETCI
 **  \brief Shifts SCF eigenvalues corresponding to SOCC orbitals for ZAPTn 
 **

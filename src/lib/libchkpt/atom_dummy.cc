@@ -1,5 +1,5 @@
 /*!
-  \file atom_dummy.cc
+  \file
   \ingroup CHKPT
 */
 

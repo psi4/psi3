@@ -5,7 +5,7 @@ namespace psi { namespace extrema {
 
 /*###########################################################################*/
 /*! 
-  \file math_tools.h
+  \file
   \ingroup EXTREMA
   \brief Math tools concrete class header file. 
 */

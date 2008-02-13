@@ -1,5 +1,5 @@
 /*!
-** \file psi_start.cc
+** \file
 ** \brief Initialize input, output, file prefix, etc.
 ** \ingroup CIOMR
 */

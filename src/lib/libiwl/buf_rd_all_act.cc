@@ -1,5 +1,5 @@
 /*!
-  \file buf_rd_all_act.cc
+  \file
   \ingroup IWL
 */
 #include <stdio.h>

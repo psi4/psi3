@@ -1,5 +1,5 @@
 /*!
-  \file wrtone.cc
+  \file
   \ingroup IWL
 */
 #include <stdio.h>

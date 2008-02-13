@@ -1,5 +1,5 @@
 /*!
-  \file stype.cc
+  \file
   \ingroup CHKPT
 */
 

@@ -1,7 +1,7 @@
 /*! \defgroup GIAO giao: Gauge-Including Atomic Orbitals */
 
 /*! 
-** \file giao.cc
+** \file
 ** \ingroup GIAO
 ** \brief Gauge-Including Atomic Orbitals
 */

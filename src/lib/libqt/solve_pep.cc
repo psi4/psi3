@@ -1,5 +1,5 @@
 /*!
-  \file solve_pep.cc
+  \file
   \brief Solve a 2x2 pseudo-eigenvalue problem
   \ingroup QT
 */

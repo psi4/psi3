@@ -1,4 +1,4 @@
-/*! \file norm_HC1.cc
+/*! \file
     \ingroup CCEOM
     \brief Enter brief description of file here 
 */

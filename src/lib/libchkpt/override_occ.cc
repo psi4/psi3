@@ -1,5 +1,5 @@
 /*!
-  \file override_occ.cc
+  \file
   \ingroup CHKPT
 */
 

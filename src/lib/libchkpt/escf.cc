@@ -1,5 +1,5 @@
 /*!
-  \file escf.cc
+  \file
   \ingroup CHKPT
 */
 

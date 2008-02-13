@@ -1,4 +1,4 @@
-/*! \file hbar_extra.cc
+/*! \file
     \ingroup CCEOM
     \brief Enter brief description of file here 
 */

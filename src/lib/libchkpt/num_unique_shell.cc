@@ -1,5 +1,5 @@
 /*!
-  \file num_unique_shell.cc
+  \file
   \ingroup CHKPT
 */
 

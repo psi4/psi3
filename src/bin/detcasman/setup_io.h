@@ -1,4 +1,4 @@
-/*! \file setup_io.h
+/*! \file
     \ingroup DETCASMAN
     \brief Enter brief description of file here 
 */

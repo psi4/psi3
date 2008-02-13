@@ -1,4 +1,4 @@
-/*! \file transform_two_mp2r12a_t.cc
+/*! \file
     \ingroup TRANSQT
     \brief Enter brief description of file here 
 */

@@ -1,4 +1,4 @@
-/*! \file hbar_extra.cc
+/*! \file
     \ingroup CCLAMBDA
     \brief Enter brief description of file here 
 */
