@@ -1,7 +1,4 @@
-/*! 
-  \file genci.cc
-  \ingroup (DETCI)
-  \brief Part of the General Configuration interaction (GENCI) package
+/* 
 
    GENCI.CC
   

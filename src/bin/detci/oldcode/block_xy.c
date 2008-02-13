@@ -1,7 +1,3 @@
-/*! \file 
-    \ingroup (DETCI)
-    \brief Enter brief description of file here 
-*/
 #include <stdio.h>
 #include <math.h>
 

@@ -1,8 +1,3 @@
-/*! \file 
-    \ingroup (DETCI)
-    \brief Enter brief description of file here 
-*/
-
 /*
 ** GENCIC.CC
 **

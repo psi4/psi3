@@ -1,7 +1,3 @@
-/*! \file 
-    \ingroup (DETCI)
-    \brief Enter brief description of file here 
-*/
 /*
 ** no M_s = 0 simplifications here yet: assumes everything available
 */
