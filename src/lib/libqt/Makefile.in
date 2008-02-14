@@ -38,6 +38,3 @@ install_inc:: qt.h
 	$(MKDIRS) $(incdir)/libqt
 	$(INSTALL_INCLUDE) $^ $(incdir)/libqt
 
-install_man:: libqt.txt
-	$(MKDIRS) $(txtdir)
-	$(INSTALL_INCLUDE) $^ $(txtdir)
