@@ -117,9 +117,11 @@ int main(int argc, char *argv[])
       -----------------*/
      if (chkpt_geom == 0 && geomdat_geom == 0) { /* read geometry from input.dat */
        if (cartOn)
-	 read_cart();
+         read_cart();
        else
-	 read_zmat();
+         read_zmat();
+       if (nfragments > 1)
+         orient_fragments();
      }
      else if (chkpt_geom) { /* else read the next molecular geometry from checkpoint file */
        read_chkpt_geom();
@@ -552,6 +554,10 @@ void cleanup()
   free(ioff);
   free(df);
   free(z_geom);
+  free(frag_num_atoms);
+  free(frag_num_allatoms);
+  free(frag_atom);
+  free(frag_allatom);
   
   return;
 }

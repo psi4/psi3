@@ -109,6 +109,11 @@ EXTERN int nirreps;                 /*Number of irreducible representations in t
 
 EXTERN int num_allatoms;            /*Total number of all atoms (including dummies)*/
 EXTERN int num_atoms;               /*Total number of atoms*/
+EXTERN int nfragments;              /*Number of molecular fragments in input to read*/
+EXTERN int *frag_num_atoms;         /*Total number of atoms in each fragment*/
+EXTERN int *frag_num_allatoms;      /*Total number of all atoms (including dummies) in each fragment*/
+EXTERN int *frag_atom;              /* a fragment number -> first atom lookup array */
+EXTERN int *frag_allatom;              /* a fragment number -> first atom lookup array */
 EXTERN int num_uniques;             /*Number of unique atoms*/
 EXTERN int num_shells;              /*Total number of shells*/
 EXTERN int num_unique_shells;       /*Number of unique shells*/

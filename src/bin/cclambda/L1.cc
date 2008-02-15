@@ -67,8 +67,8 @@ void L1_build(struct L_Params L_params) {
       dpd_file2_init(&newLIA, CC_LAMBDA, L_irr, 0, 1, "New LIA");
       dpd_file2_init(&Lia, CC_LAMBDA, L_irr, 0, 1, "Lia");
       dpd_file2_init(&newLia, CC_LAMBDA, L_irr, 0, 1, "New Lia");
-      dpd_file2_axpy(&LIA, &newLIA, -1.0 * L_params.cceom_energy,0.0);
-      dpd_file2_axpy(&Lia, &newLia, -1.0 * L_params.cceom_energy,0.0);
+      dpd_file2_axpy(&LIA, &newLIA, -1.0 * L_params.cceom_energy, 0.0);
+      dpd_file2_axpy(&Lia, &newLia, -1.0 * L_params.cceom_energy, 0.0);
       dpd_file2_close(&LIA);
       dpd_file2_close(&newLIA);
       dpd_file2_close(&Lia);

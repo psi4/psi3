@@ -94,7 +94,7 @@ int dpd_contract444(dpdbuf4 *X, dpdbuf4 *Y, dpdbuf4 *Z,
       if(!rows_per_bucket)
 	dpd_error("contract444: Not enough memory for one row", stderr);
 
-      nbuckets = ceil((double) X->params->rowtot[Hx]/
+      nbuckets = (int) ceil((double) X->params->rowtot[Hx]/
 		      (double) rows_per_bucket);
 
       rows_left = X->params->rowtot[Hx] % rows_per_bucket;

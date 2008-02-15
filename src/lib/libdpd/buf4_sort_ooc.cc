@@ -70,7 +70,7 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 
 	if(!rows_per_bucket) dpd_error("buf4_sort_pqsr: Not enough memory for one row!", stderr);
 
-	nbuckets = ceil(((double) InBuf->params->rowtot[h])/((double) rows_per_bucket));
+	nbuckets = (int) ceil(((double) InBuf->params->rowtot[h])/((double) rows_per_bucket));
 
 	rows_left = InBuf->params->rowtot[h] % rows_per_bucket;
 
@@ -1109,3 +1109,4 @@ int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 }
 
 } /* extern "C" */
+

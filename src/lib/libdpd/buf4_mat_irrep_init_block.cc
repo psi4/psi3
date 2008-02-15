@@ -33,3 +33,4 @@ int dpd_buf4_mat_irrep_init_block(dpdbuf4 *Buf, int irrep, int num_pq)
 }
 
 } /* extern "C" */
+

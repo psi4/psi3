@@ -64,6 +64,17 @@ void read_geomdat()
     atom_dummy[i] = 0;
   }
 
+  // --read_geomdat implies only 1 frament - but we create these here so
+  // that read_charges() works and a general free call can be made later
+  frag_num_atoms = (int *) malloc(nfragments*sizeof(int));
+  frag_num_allatoms = (int *) malloc(nfragments*sizeof(int));
+  frag_atom = (int *) malloc(nfragments*sizeof(int));
+  frag_allatom = (int *) malloc(nfragments*sizeof(int));
+  frag_num_atoms[0] = num_atoms;
+  frag_num_allatoms[0] = num_allatoms;
+  frag_atom[0] = 0;
+  frag_allatom[0] = 0;
+
   read_charges();
 
   return;

@@ -47,7 +47,7 @@ int dpd_buf4_axpy(dpdbuf4 *BufX, dpdbuf4 *BufY, double alpha)
 
       if(!rows_per_bucket) dpd_error("buf4_axpy: Not enough memory for one row!", stderr);
 
-      nbuckets = ceil(((double) BufX->params->rowtot[h])/((double) rows_per_bucket));
+      nbuckets = (int) ceil(((double) BufX->params->rowtot[h])/((double) rows_per_bucket));
 
       rows_left = BufX->params->rowtot[h] % rows_per_bucket;
 

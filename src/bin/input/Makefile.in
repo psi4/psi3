@@ -13,7 +13,7 @@ init_elem_names.cc read_basis.cc build_transmat.cc build_cart2pureang.cc \
 build_so_classes.cc build_usotao.cc write_to_chkpt.cc projection.cc oe_osrr.cc \
 overlap.cc gto.cc oldcalc.cc write_scf_to_chkpt.cc globals.cc read_chkpt.cc \
 read_charges.cc read_geomdat.cc linalg.cc overlap_float.cc oe_osrr_float.cc \
-freeze_orbs.cc correlate.cc build_cdsalc.cc
+freeze_orbs.cc correlate.cc build_cdsalc.cc orient_fragments.cc
 
 BINOBJ = $(CXXSRC:%.cc=%.o)
 

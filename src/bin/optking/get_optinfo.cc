@@ -69,7 +69,7 @@ void get_optinfo() {
     optinfo.redundant = 0;
 
   /* default for fragments is to is use 1/R */
-  optinfo.frag_dist_rho = 1;
+  optinfo.frag_dist_rho = 0;
   ip_boolean("FRAGMENT_DISTANCE_INVERSE", &(optinfo.frag_dist_rho),0);
   optinfo.fix_intrafragment = 0;
   ip_boolean("FIX_INTRAFRAGMENT", &(optinfo.fix_intrafragment),0);

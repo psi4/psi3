@@ -86,3 +86,4 @@ int dpd_buf4_init(dpdbuf4 *Buf, int inputfile, int irrep, int pqnum, int rsnum,
 }
 
 } /* extern "C" */
+

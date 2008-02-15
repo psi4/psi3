@@ -82,3 +82,4 @@ int dpd_4mat_irrep_print(double **matrix, dpdparams4 *Params,
 }
 
 } /* extern "C" */
+

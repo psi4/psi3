@@ -194,6 +194,7 @@ void freeze_core();
 void init_globals();
 void read_cart();
 void read_zmat();
+void orient_fragments();
 void read_chkpt_geom();
 void read_geomdat();
 void freeze_virt();
@@ -216,6 +217,7 @@ int vect_equiv(double *A, double *B);
   Make canonical and reference frames equivalent
   */
 void canon_eq_ref_frame();
+void rotate_3D(double *w, double phi, double **pts, int npts);
 
 }} // namespace psi::input
 

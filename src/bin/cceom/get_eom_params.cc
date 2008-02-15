@@ -101,7 +101,7 @@ void get_eom_params()
     eom_params.vectors_cc3 = eom_params.vectors_per_root;
 
   eom_params.collapse_with_last = 1;
-  errcod = ip_data("COLLAPSE_WITH_LAST","%d",&(eom_params.collapse_with_last),0);
+  errcod = ip_boolean("COLLAPSE_WITH_LAST",&(eom_params.collapse_with_last),0);
 
   eom_params.complex_tol = 1E-12;
   errcod = ip_data("COMPLEX_TOL","%d",&(iconv),0);

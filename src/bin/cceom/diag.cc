@@ -833,13 +833,13 @@ timer_off("INIT GUESS");
           ignore_G_old = 1;
         }
         else {
-           restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 1,alpha_old,L_old,eom_params.collapse_with_last);
-            L_old = L;
-           if (eom_params.collapse_with_last)
-             L = 2 * eom_params.cs_per_irrep[C_irr];
-           else
-             L = eom_params.cs_per_irrep[C_irr];
-             already_sigma = L;
+          restart(alpha, L, eom_params.cs_per_irrep[C_irr], C_irr, 1,alpha_old,L_old,eom_params.collapse_with_last);
+          L_old = L;
+          if (eom_params.collapse_with_last)
+            L = 2 * eom_params.cs_per_irrep[C_irr];
+          else
+            L = eom_params.cs_per_irrep[C_irr];
+          already_sigma = L;
           ignore_G_old = 1;
         }
         keep_going = 1;
