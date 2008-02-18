@@ -8,9 +8,10 @@
  * January 2008
  */
 
-/* ! \file
-     \ingroup NONBONDED
-     \brief Evaluate empirical non-bonded interactions
+/*! 
+** \file
+** \ingroup NONBONDED
+** \brief Evaluate empirical non-bonded interactions
 */
 
 #include <stdio.h>
