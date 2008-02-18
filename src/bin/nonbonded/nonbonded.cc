@@ -56,6 +56,7 @@ int main(int argc, char *argv[]) {
   double d=20.0;                  /* exponent for damping term (Grimme) */
   double energy_dd;               /* damped dispersion energy (J/mol)   */
   double energy_dd_hartree;       /* in hartree                         */
+  double e_scf;                   /* Hartree-Fock energy (hartree)      */
   int errcod;
 
   start_io(argc,argv);
@@ -75,10 +76,17 @@ int main(int argc, char *argv[]) {
   energy_dd = compute_ddisp(natom, R, AN, s6, d);
   energy_dd_hartree = energy_dd / (_na * _hartree2J);
 
-  fprintf(outfile, "\nDamped dispersion energy:");
-  fprintf(outfile, " %12.9lf hartree (%12.9lf kcal/mol)\n\n", 
-    energy_dd_hartree, (energy_dd / 4184));
+  fprintf(outfile, "\n");
+  fprintf(outfile, "Damped dispersion energy  = %14.9lf hartree ", 
+    energy_dd_hartree);
+  fprintf(outfile, "(%14.9lf kcal/mol)\n", (energy_dd / 4184));
   fflush(outfile);
+
+  /* get the SCF energy so we can print HF+D */
+  e_scf = chkpt_rd_escf();
+  fprintf(outfile, "Hartree-Fock energy       = %14.9lf hartree\n", e_scf);
+  fprintf(outfile, "Hartree-Fock + dispersion = %14.9lf hartree\n", 
+    e_scf + energy_dd_hartree);
 
   /* clean up */
   free(AN);
@@ -138,12 +146,11 @@ void stop_io(void)
  */
 void print_intro(void)
 {
- fprintf(outfile,"             ------------------------------------------\n");
+ fprintf(outfile,"             ---------------------------------------\n");
  fprintf(outfile,"                            NONBONDED                  \n");
- fprintf(outfile,"              Evaluate empirical non-bonded terms      \n");
- fprintf(outfile,"                                                       \n");
+ fprintf(outfile,"               Evaluate empirical non-bonded terms     \n");
  fprintf(outfile,"                        C. David Sherrill              \n");
- fprintf(outfile,"             ------------------------------------------\n");
+ fprintf(outfile,"             ---------------------------------------\n");
 }
 
 
