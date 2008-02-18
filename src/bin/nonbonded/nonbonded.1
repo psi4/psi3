@@ -1,0 +1,87 @@
+.TH nonbonded 1 " 18 Feb, 2008" "" ""
+.  \"
+.  \" Notice of Document Modification
+.  \"
+.  \"   man page created by David Sherrill, 18 Feb 2008
+.  \"
+.  \"
+.SH NAME
+nonbonded \- Compute non-bonded interactions empirically
+
+.SH DESCRIPTION
+.LP
+The program
+.B nonbonded
+computes various empirical terms for non-bonded interactions
+(electrostatic and damped dispersion, presently).  It was initially
+developed to test various Hartree-Fock + empirical dispersion models.
+This is an experimental module and not meant for production use at
+this time.
+
+.SH REFERENCES
+.LP
+Empirical damped dispersion terms:
+.IP "1."
+Semiempirical GGA-Type Density Functional Constructed with a 
+Long-Range Dispersion Correction,
+S. Grimme, J. Comput. Chem. 27, 1787-1799 (2006).
+.IP "2."
+Hartree-Fock Dispersion Probe of the Equilibrium Structures of Small
+Microclusters of Benzene and Naphthalene: Comparison with Second-Order
+Moeller-Plesset Geometries, C. Gonzalez, T. C. Allison, and E. C. Lim,
+J. Phys. Chem. A 105, 10583-10587 (2001).
+.IP "3."
+Evaluation of the Hartree-Fock Dispersion (HFD) Model as a Practical
+Tool for Probing Intermolecular Potentials of Small Aromatic Clusters:
+Comprison of the HFD and MP2 Intermolecular Potentials,
+C. Gonzalez and E. C. Lim,
+J. Phys. Chem. A 107, 10105-10110 (2003).
+
+.SH FILES REQUIRED
+.nf
+    input.dat          \- Input file
+    file32             \- Checkpoint file containing molecular geometry
+.fi
+
+.SH TEMPORARY FILES USED
+.nf
+    NONE
+.fi
+
+.SH FILES UPDATED
+.nf
+    output.dat         \- Output file
+.fi
+
+.SH INPUT FORMAT
+.LP
+The following command-line arguments are available:
+.IP "\fI-i fname\fP"
+Gives the filename for the input file.  Defaults to input.dat.
+
+.IP "\fI-o fname\fP"
+Gives the filename for the output file.  Defaults to output.dat.
+
+.LP
+Additional input for this program is read from the file
+.pN INPUT .
+The following keywords are valid:
+
+.IP "\fIPARTIAL_CHARGES\fP = \fIdouble_array\fP"
+Partial charges on each atom, used for computation of empirical
+electrostatics.  Not yet implemented.
+
+.IP "\fIS6\fP = \fIdouble\fP"
+Global scaling parameter for all C6 coefficients in the damped
+dispersion terms.
+
+.IP "\fID_DMP\fP = \fIdouble\fP"
+Global damping exponent for damped dispersion terms.  The larger 
+this factor, the faster the dispersion interaction will be damped out
+as the interatomic distance decreases below the sum of the van der 
+Waals radii.  With Grimme's damping factor, the damped dispersion term is
+always 1/2 its undamped value when the atoms are at a distance equal to the
+sum of the van der Waals radii.  For larger interatomic distances, the
+larger D_DMP, the faster the damping term approaches 1 (leaving dispersion
+undamped).
+
