@@ -89,3 +89,16 @@ sum of the van der Waals radii.  For larger interatomic distances, the
 larger D_DMP, the faster the damping term approaches 1 (leaving dispersion
 undamped).
 
+.IP "\fIVDW_RADII\fP = \fImixed array\fP"
+The user can specify custom van der Walls radii for use in the dispersion
+computation.  The array VDW_RADII contains a list of atomic symbols
+and their associated van der Walls radii.  Example: vdw_radii = (Ne 0.95 Ar
+1.50) will set the van der Walls radii of all neon atoms to 0.95 and all
+argon atoms to 1.50.
+
+.IP "\fIC6\fP = \fImixed array\fP"
+The user can specify custom C6 coefficients for use in the dispersion
+computation.  The array C6 contains a list of atomic symbols and their
+associated C6 coefficients.  Example: C6 = (Ne 0.40 Ar 4.50) will set the
+C6 coefficients of all neon atoms to 0.40 and all argon atoms to 4.50.
+

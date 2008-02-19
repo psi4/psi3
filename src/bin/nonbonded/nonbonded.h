@@ -17,7 +17,7 @@
  * used in the revised DFT-D method, B97-D
  * S. Grimme, J. Comput. Chem. 27, 1787-1799 (2006)
  */
-static double vdw_radii_grimme[] =
+double vdw_radii_grimme[] =
 {
   2.000, /* Default element or ghost */
   1.001, /* H  */
@@ -83,7 +83,7 @@ static double vdw_radii_grimme[] =
  * obtained for the revised DFT-D method, B97-D
  * S. Grimme, J. Comput. Chem. 27, 1787-1799 (2006)
  */
-static double vdw_C6_grimme[] =
+double vdw_C6_grimme[] =
 {
   0.00, /* Default element or ghost */
   0.14, /* H  */
