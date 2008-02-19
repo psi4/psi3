@@ -87,10 +87,12 @@ int main(int argc, char *argv[]) {
   fflush(outfile);
 
   /* get the SCF energy so we can print HF+D */
-  e_scf = chkpt_rd_escf();
-  fprintf(outfile, "Hartree-Fock energy       = %14.9lf hartree\n", e_scf);
-  fprintf(outfile, "Hartree-Fock + dispersion = %14.9lf hartree\n", 
-    e_scf + energy_dd_hartree);
+  if (psio_tocscan(PSIF_CHKPT, "SCF energy") != NULL) {
+    e_scf = chkpt_rd_escf();
+    fprintf(outfile, "Hartree-Fock energy       = %14.9lf hartree\n", e_scf);
+    fprintf(outfile, "Hartree-Fock + dispersion = %14.9lf hartree\n", 
+      e_scf + energy_dd_hartree);
+  }
 
   /* clean up */
   free(AN);
