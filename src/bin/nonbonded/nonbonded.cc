@@ -36,7 +36,8 @@ void start_io(int argc, char *argv[]);
 void stop_io(void);
 void print_intro(void);
 void compute_R(int natom, double **geom, double *R);
-double compute_ddisp(int natom, double *R, double *AN, double s6, double d);
+double compute_ddisp(int natom, double *R, double *AN, double s6, double d,
+  int damp_flag);
 
 }}; // close namespace decl
 
@@ -57,6 +58,7 @@ int main(int argc, char *argv[]) {
   double energy_dd;               /* damped dispersion energy (J/mol)   */
   double energy_dd_hartree;       /* in hartree                         */
   double e_scf;                   /* Hartree-Fock energy (hartree)      */
+  int damp_flag;                  /* damp the dispersion? 1=yes,0=no    */
   int errcod;
 
   start_io(argc,argv);
@@ -70,10 +72,12 @@ int main(int argc, char *argv[]) {
   }
   errcod = ip_data("S6","%lf",&s6,0);
   errcod = ip_data("D_DMP","%lf",&d,0);
+  damp_flag = 1;
+  errcod = ip_boolean("DAMP",&(damp_flag),0);
 
   R = init_array((natom*(natom+1))/2);
   compute_R(natom, geom, R);
-  energy_dd = compute_ddisp(natom, R, AN, s6, d);
+  energy_dd = compute_ddisp(natom, R, AN, s6, d, damp_flag);
   energy_dd_hartree = energy_dd / (_na * _hartree2J);
 
   fprintf(outfile, "\n");
@@ -189,11 +193,12 @@ void compute_R(int natom, double **geom, double *R)
  *
  * \ingroup NONBONDED
  */
-double compute_ddisp(int natom, double *R, double *AN, double s6, double d)
+double compute_ddisp(int natom, double *R, double *AN, double s6, double d,
+  int damp_flag)
 {
   int i, j, ij, Zi, Zj;
   double energy=0.0, tval, r, r_i, r_j, r_vdw;
-  double C6i, C6j; 
+  double C6i, C6j, fdmp; 
 
   /* loop over unique pairs of atoms and evaluate the C6 dispersion terms */
   for (i=0,ij=0; i<natom; i++) {
@@ -208,7 +213,12 @@ double compute_ddisp(int natom, double *R, double *AN, double s6, double d)
       r_vdw = r_i + r_j;
       tval = sqrt(C6i * C6j) * 1000000.0; /* nm^6 -> Ang^6 */
       tval = tval/pow(r, 6.0);
-      tval = tval / (1.0 + exp(-d * (r / r_vdw - 1.0))); 
+      printf("Undamped Dispersion term: %14.9lf\n", tval / 4184);
+      if (damp_flag) {
+        fdmp = 1.0 / (1.0 + exp(-d * (r / r_vdw - 1.0))); 
+        printf("Damping factor          : %14.9lf\n", fdmp);
+        tval *= fdmp;
+      }
       energy += tval;
     }
   } 
