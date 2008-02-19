@@ -162,9 +162,9 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
       J = simples.frag.get_J(i);
       if (J==0) {
         if (optinfo.frag_dist_rho == 1)
-          val = 20.0;
+          val = 30.0;
         else
-          val = 0.1;
+          val = 0.50;
       }
       else if ( (J==1) || (J==2) )
         val = 0.05;

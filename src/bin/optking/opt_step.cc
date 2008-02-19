@@ -277,6 +277,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   tval = tval/((double) symm.get_num());
   tval = sqrt(tval);
   fprintf(outfile,"   MAX force: %15.10lf   RMS force: %15.10lf\n",tval2,tval);
+  printf("Energy: %15.10lf MAX force: %6.2e RMS force: %6.2e\n",carts.get_energy(),tval2,tval);
   if (tval2 < optinfo.conv) {
     fprintf(outfile,"\nMAX force is < %5.1e.  Optimization is complete.\n",
             optinfo.conv);

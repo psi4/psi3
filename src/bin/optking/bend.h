@@ -157,7 +157,7 @@ class bend_set {
         dot_arr(eBA,eBC,3,&dotprod);
     
         if (dotprod > 1.0) angle = 0.0;
-        else if (dotprod < -1.0) angle = _pi;
+        else if (dotprod < -1.0) angle = 180.0;
         else angle = acos(dotprod)*180.0/_pi;
     
         set_val(i,angle);

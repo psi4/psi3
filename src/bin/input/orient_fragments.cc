@@ -52,7 +52,7 @@ void orient_fragments()
     /* Read in reference points linear combinations - normalize them if necessary */
     errcod = ip_count(ref_pts_lbl, &ival, 0);
     if (ival < P[f]) {
-      fprintf(outfile,"Caution: Too few reference pts for full optimization, unless fragment %d is non-linear\n",f+1);
+      fprintf(outfile,"Caution: Too few reference pts for full geometry specification, unless fragment %d is non-linear\n",f+1);
       P[f] = ival;
     }
     else if (ival > P[f]) {
@@ -97,6 +97,15 @@ void orient_fragments()
       for (xyz=0; xyz<3; ++xyz)
         for (i=0; i<frag_num_atoms[f-1];++i)
           ref_A[pts][xyz] += ref_pts_lc[f-1][pts][i] * geometry[frag_atom[f-1]+i][xyz];
+    /* add missing ref pts anywhere - just as long as they are not collinear, we're OK */
+    if (P[f-1] < 3) {
+      for (xyz=0; xyz<3; ++xyz)
+        ref_A[2][xyz] = (xyz+1)/_pi;
+    }
+    if (P[f-1] < 2) {
+      for (xyz=0; xyz<3; ++xyz)
+        ref_A[1][xyz] = (xyz+1)/(2*_pi);
+    }
 
     B = block_matrix(frag_num_atoms[f],3);
     for (i=0; i<frag_num_atoms[f];++i)
@@ -191,34 +200,36 @@ print_mat(B,frag_num_atoms[f],3,outfile);
       unit_vec(ref_B_final[1], ref_B[0], e12b); /* v B1->B2_final */
       B_angle = acos(dot_prod(e12b,e12));
       fprintf(outfile,"Rotation by %f degrees (to fix point B2)\n", 180.0*B_angle/_pi); 
-      cross_prod(e12,e12b,erot);
+      if (fabs(B_angle) > 1.0e-14) { 
+        cross_prod(e12,e12b,erot);
 
-      /* Move B to put B1 at origin */
-      for (xyz=0; xyz<3; ++xyz) 
-        for (i=0; i<frag_num_atoms[f];++i)
-          B[i][xyz] -= ref_B[0][xyz];
-
-      /* Rotate B */
-      rotate_3D(erot, B_angle, B, frag_num_atoms[f]);
-
-      /* Move B back to coordinate system of A */
-      for (xyz=0; xyz<3; ++xyz) 
-        for (i=0; i<frag_num_atoms[f];++i)
-          B[i][xyz] += ref_B[0][xyz];
-
-fprintf(outfile,"Coordinates for fragment:\n");
-print_mat(B,frag_num_atoms[f],3,outfile);
-    
-      /* Check location of reference points now */
-      for (pts=0; pts<P[f]; ++pts)
-        for (xyz=0; xyz<3; ++xyz) {
-          ref_B[pts][xyz] = 0.0;
+        /* Move B to put B1 at origin */
+        for (xyz=0; xyz<3; ++xyz) 
           for (i=0; i<frag_num_atoms[f];++i)
-            ref_B[pts][xyz] += ref_pts_lc[f][pts][i] * B[i][xyz];
-        }
+            B[i][xyz] -= ref_B[0][xyz];
+  
+        /* Rotate B */
+        rotate_3D(erot, B_angle, B, frag_num_atoms[f]);
+  
+        /* Move B back to coordinate system of A */
+        for (xyz=0; xyz<3; ++xyz) 
+          for (i=0; i<frag_num_atoms[f];++i)
+            B[i][xyz] += ref_B[0][xyz];
+  
+  fprintf(outfile,"Coordinates for fragment:\n");
+  print_mat(B,frag_num_atoms[f],3,outfile);
+      
+        /* Check location of reference points now */
+        for (pts=0; pts<P[f]; ++pts)
+          for (xyz=0; xyz<3; ++xyz) {
+            ref_B[pts][xyz] = 0.0;
+            for (i=0; i<frag_num_atoms[f];++i)
+              ref_B[pts][xyz] += ref_pts_lc[f][pts][i] * B[i][xyz];
+          }
 
-      fprintf(outfile,"Reference points after rotation (to fix point B2) \n");
-      print_mat(ref_B,P[f],3,outfile);
+        fprintf(outfile,"Reference points after rotation (to fix point B2) \n");
+        print_mat(ref_B,P[f],3,outfile);
+      }
     }
 
     if (P[f]==3) { /* move fragment B to place reference point B3 in correct location */
