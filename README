@@ -21,8 +21,11 @@ Rollin A. King, Matthew L. Leininger, Micah L. Abrams, Nicholas J. Russ,
 Shawn T. Brown, Curtis L. Janssen, Edward T. Seidl, Joseph P. Kenny, and 
 Wesley D. Allen, PSI 3.3, 2007.
 
-A manuscript describing the PSI programs is in press in the Journal of
-Computational Chemistry.
+Please cite the manuscript describing the PSI3 program:
+"PSI3: An open-source ab initio electronic structure package",
+T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+and W. D. Allen, J. Comp. Chem. 28, 1610 (2007).
 
 ------------------------------------------------------------------------------
 
@@ -51,12 +54,3 @@ Should the program prove defective, you assume the cost of all necessary
 servicing, repair or correction.
 
 ------------------------------------------------------------------------------
-
-*** SPECIAL NOTE for LaTeX2HTML users *** EFV 6/15/00 At least the
-latest version of LaTeX2HTML translator (v0.99_1) has a bug in it which
-prevents The Psi 3 User's and Programmer's manuals from being converted
-into HTML form. Included in psi3/misc is a patch file which should be
-applied directly to the latex2html script (type 'which latex2html' to
-find its precise location on your system). To apply the patch just type
-'patch latex2html misc/latex2html.v0.99_1.patch'. You might need superuser
-privileges to do that.
