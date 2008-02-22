@@ -19,7 +19,7 @@
 #include <cstring>
 #include <cmath>
 
-#include <ctype.h>
+#include <cctype>
 #include <psifiles.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>

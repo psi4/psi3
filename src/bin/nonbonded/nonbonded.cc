@@ -18,7 +18,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
-#include <ctype.h>               // for toupper()
+#include <cctype>               // for toupper()
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <libchkpt/chkpt.h>

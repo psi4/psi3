@@ -1,5 +1,3 @@
-extern "C" {
-
 /*!
 ** \file
 ** \brief Obtain user and system timings for blocks of code
@@ -37,7 +35,7 @@ extern "C" {
 #include <cstdlib>
 #include <unistd.h>
 #include <cstring>
-#include <time.h>
+#include <ctime>
 #include <sys/param.h>
 #include <sys/times.h>
 #include <libciomr/libciomr.h>
@@ -51,6 +49,8 @@ extern "C" {
 #define TIMER_KEYLEN 32
 #define TIMER_OFF 0
 #define TIMER_ON 1
+
+extern "C" {
 
 struct timer {
     char key[TIMER_KEYLEN];

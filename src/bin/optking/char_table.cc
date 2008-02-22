@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <cstdio>
-#include <ctype.h>
+#include <cctype>
 #include <libciomr/libciomr.h>
 
 #define EXTERN

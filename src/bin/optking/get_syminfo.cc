@@ -7,7 +7,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <ctype.h>
+#include <cctype>
 #include <libqt/qt.h>
 #include <libchkpt/chkpt.h>
 #include <libciomr/libciomr.h>

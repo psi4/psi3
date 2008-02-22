@@ -9,7 +9,7 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
-#include <sys/time.h>
+#include <sys/<ctime>>
 
 namespace psi{ namespace psimrcc{
 

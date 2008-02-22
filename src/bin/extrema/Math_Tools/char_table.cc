@@ -13,7 +13,7 @@
 #include<cstdlib>
 #include<cstring>
 #include<cstdio>
-#include <ctype.h>
+#include <cctype>
 #include"math_tools.h"
 
 using namespace psi::extrema;

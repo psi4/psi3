@@ -16,7 +16,7 @@
 #include <cstdio>
 #include <cmath>
 #include <cstring>
-#include <ctype.h> // for toupper()
+#include <cctype> // for toupper()
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include "structs.h"

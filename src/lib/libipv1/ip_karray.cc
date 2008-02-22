@@ -11,7 +11,7 @@
 
 #include <cstdio>
 #include <cstdlib>
-#include <stdarg.h>
+#include <cstdarg>
 #include <cstring>
 #include "tmpl.h"
 #include "ip_types.h"

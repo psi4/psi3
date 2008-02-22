@@ -8,7 +8,7 @@
 #include <libpsio/psio.hpp>
 
 #ifdef PSIO_STATS
-#include <time.h>
+#include <<ctime>>
 #endif
 
 using namespace psi;

@@ -43,7 +43,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
-#include <ctype.h>
+#include <cctype>
 #include <cstring>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>

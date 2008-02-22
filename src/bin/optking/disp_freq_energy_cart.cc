@@ -28,7 +28,7 @@ Formulas for finite differences
 #include <libchkpt/chkpt.h>
 #include <cstdlib>
 #include <cstring>
-#include <ctype.h>
+#include <cctype>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libipv1/ip_lib.h>

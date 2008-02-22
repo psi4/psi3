@@ -5,7 +5,7 @@
 #define EXTERN
 #include <cstdio>
 #include <cstdlib>
-#include <ctype.h>
+#include <cctype>
 #include <cmath>
 #include <cstring>
 #include <libciomr/libciomr.h>

@@ -4,7 +4,7 @@
 */
 #include <cstdio>
 #include <cstdlib>
-#include <stdarg.h>
+#include <cstdarg>
 #include <libciomr/libciomr.h>
 #include "dpd.h"
 #include "dpd.gbl"

@@ -36,7 +36,7 @@ command-line      internal specifier   what it does
 #include <libchkpt/chkpt.h>
 #include <cstdlib>
 #include <cstring>
-#include <ctype.h>
+#include <cctype>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <physconst.h>

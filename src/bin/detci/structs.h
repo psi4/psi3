@@ -19,7 +19,7 @@ namespace psi { namespace detci {
 /*** INCLUDES ***/
 // do I really need these?  22 Jan 2008 CDS
 // #include <unistd.h>
-// #include <sys/time.h>
+// #include <sys/<ctime>>
 
 /*** DEFINES ***/
 /*
