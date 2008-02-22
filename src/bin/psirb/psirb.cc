@@ -90,7 +90,7 @@ void parse_command_line(int argc, char *argv[])
 	Globals::g_bVerbose = false;
 	
 	// A string listing of valid short option letters
-	const char* const short_options = "IhvV:o:";
+	const char* const short_options = "IhvVo:";
 	const struct option long_options[] = {
 		{ "irb",     0, NULL, 'I' },
 		{ "help",    0, NULL, 'h' },
