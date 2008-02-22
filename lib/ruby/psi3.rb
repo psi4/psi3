@@ -513,4 +513,7 @@ require 'propint'
 require 'cphf'
 require 'frequencies'
 require 'cceom'
+if File.exist?( File.expand_path("~/.psi.rb"))
+load "~/.psi.rb"
+end
 
