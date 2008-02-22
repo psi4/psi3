@@ -3,9 +3,9 @@
     \brief six coordinates for non-bonded fragments
 */
 
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <physconst.h>

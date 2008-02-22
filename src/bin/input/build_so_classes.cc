@@ -3,8 +3,8 @@
  \brief Enter brief description of file here 
  */
 #define EXTERN
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <strings.h>
 #include <libciomr/libciomr.h>
 #include <cmath>

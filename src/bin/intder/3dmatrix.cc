@@ -12,7 +12,7 @@ A small batch of functions in order to manipulate 3d/4d/5d matrices
 
 *******************************************************************/
 
-#include <stdlib.h>
+#include <cstdlib>
 #include "3dmatrix.h"
 
 #include <libciomr/libciomr.h>

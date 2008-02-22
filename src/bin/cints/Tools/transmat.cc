@@ -3,7 +3,7 @@
     \brief Enter brief description of file here 
 */
 #include<cstdio>
-#include<stdlib.h>
+#include<cstdlib>
 #include<libciomr/libciomr.h>
 #include<cmath>
 #include<symmetry.h>

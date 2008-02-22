@@ -7,7 +7,7 @@
 #if HAVE_CMATH
 # include <cmath>
 #else
-# include <math.h>
+# include <cmath>
 #endif
 extern "C" {
 #include <libciomr/libciomr.h>

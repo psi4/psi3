@@ -15,6 +15,7 @@
 #include "mrcc.h"
 #include "debugging.h"
 #include "moinfo.h"
+#include <cstdlib>
 
 namespace psi{ namespace psimrcc{
 

@@ -5,6 +5,7 @@
  ***************************************************************************/
 
 #include "squlli.h"
+#include <libciomr/libciomr.h>
 
 extern FILE *infile, *outfile;
 

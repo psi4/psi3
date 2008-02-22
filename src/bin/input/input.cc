@@ -6,13 +6,13 @@
 ** \brief Set up a PSI computation based on user input
 */
 
-#include <stdio.h>
+#include <cstdio>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <chkpt_params.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
 #include <psifiles.h>
 #include "input.h"
 #include <physconst.h>

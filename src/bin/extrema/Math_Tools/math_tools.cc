@@ -6,8 +6,8 @@
 /*						Joseph P. Kenny 11/29/01
   ###########################################################################*/
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <libciomr/libciomr.h>
 #include"math_tools.h"
 

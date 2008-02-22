@@ -3,10 +3,10 @@
     \brief SALC.CC : constructor functions for salc_set
 */
 
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 

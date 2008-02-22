@@ -4,8 +4,8 @@
 */
 /* restart() collapses L vectors down to num vectors */
 
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
 #include <libqt/qt.h>
 #include "MOInfo.h"
 #include "Params.h"

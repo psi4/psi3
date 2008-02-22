@@ -2,8 +2,8 @@
     \ingroup CCLAMBDA
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
 #include <libipv1/ip_lib.h>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>

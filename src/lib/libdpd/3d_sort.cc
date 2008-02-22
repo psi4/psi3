@@ -44,7 +44,7 @@
 **  Moved to libdpd for use by (T) and CC3 codes by TDC, July 2004.
 */
 
-#include <stdio.h>
+#include <cstdio>
 #include "dpd.h"
 
 extern "C" {

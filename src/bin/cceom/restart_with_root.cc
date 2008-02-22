@@ -9,8 +9,8 @@
  also put copy in CC3_MISC for root_following
 */
 
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
 #include "MOInfo.h"
 #include "Params.h"
 #include "Local.h"

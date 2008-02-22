@@ -3,7 +3,7 @@
     \brief Enter brief description of file here 
 */
 #include<cstdio>
-#include<stdlib.h>
+#include<cstdlib>
 #include<cstring>
 #include<libciomr/libciomr.h>
 #include<libchkpt/chkpt.h>

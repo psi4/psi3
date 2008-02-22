@@ -2,8 +2,8 @@
     \ingroup CCLAMBDA
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
 #include "MOInfo.h"
 #include "Params.h"
 #define EXTERN

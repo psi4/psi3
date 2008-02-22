@@ -6,6 +6,8 @@
 
 #include <iostream>
 #include <cmath>
+#include <cstdlib>
+#include <cstring>
 #include "moinfo.h"
 #include "utilities.h"
 #include "calculation_options.h"

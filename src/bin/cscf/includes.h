@@ -6,10 +6,10 @@
 #ifndef _psi_bin_cscf_includes_h_
 #define _psi_bin_cscf_includes_h_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libqt/qt.h>

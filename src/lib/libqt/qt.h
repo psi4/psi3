@@ -11,7 +11,7 @@
 #ifndef _psi_src_lib_libqt_qt_h_
 #define _psi_src_lib_libqt_qt_h_
 
-#include <stdio.h>
+#include <cstdio>
 
 #ifdef __cplusplus
 extern "C" {

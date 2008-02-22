@@ -4,7 +4,7 @@
 ** \ingroup CIOMR
 */
 
-#include <math.h>
+#include <cmath>
 
 #define DSIGN(a,b) ((b) >= 0.0) ? (fabs(a)) : (-fabs(a))
 

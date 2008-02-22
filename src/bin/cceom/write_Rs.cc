@@ -6,9 +6,9 @@
  *   write_Rs writes out all of the converged R's to RAMPS for the current irrep
  */
 
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
 #include <libchkpt/chkpt.h>
 #include "MOInfo.h"
 #include "Params.h"

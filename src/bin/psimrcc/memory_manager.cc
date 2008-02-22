@@ -9,8 +9,8 @@
 #include <map>
 #include <vector>
 #include <string>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include "calculation_options.h"
 #include "memory_manager.h"
 

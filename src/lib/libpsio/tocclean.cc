@@ -3,8 +3,8 @@
  \ingroup PSIO
  */
 
-#include <string.h>
-#include <stdlib.h>
+#include <cstring>
+#include <cstdlib>
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 

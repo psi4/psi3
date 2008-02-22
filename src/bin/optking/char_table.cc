@@ -4,9 +4,9 @@
      from the group character tables as given in Cotton 
 */
 
-#include <stdlib.h>
-#include <string.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstring>
+#include <cstdio>
 #include <ctype.h>
 #include <libciomr/libciomr.h>
 

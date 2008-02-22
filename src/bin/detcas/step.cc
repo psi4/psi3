@@ -2,14 +2,14 @@
     \ingroup DETCAS
     \brief Enter brief description of file here 
 */
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
-#include <math.h>
+#include <cmath>
 #include "globaldefs.h"
 #include "globals.h"
 

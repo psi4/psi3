@@ -2,9 +2,9 @@
     \ingroup CIS
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <libdpd/dpd.h>
 #include <libpsio/psio.h>
 #include "MOInfo.h"

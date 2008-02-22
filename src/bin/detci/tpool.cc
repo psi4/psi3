@@ -14,11 +14,11 @@
  * Example thread pooling library
  */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include <unistd.h>
 #include <sys/types.h>
-#include <string.h>
+#include <cstring>
 
 #include <pthread.h>
 #include "tpool.h"

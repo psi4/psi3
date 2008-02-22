@@ -19,11 +19,11 @@
    
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 #include <libipv1/ip_lib.h>
-#include <string.h>
+#include <cstring>
 #include <psifiles.h>
 #include <libqt/qt.h>
 #include <libciomr/libciomr.h>

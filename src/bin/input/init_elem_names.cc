@@ -3,8 +3,8 @@
     \brief Enter brief description of file here 
 */
 #define EXTERN
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include "input.h"
 #include "global.h"
 #include "defines.h"

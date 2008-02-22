@@ -9,7 +9,7 @@
 #ifndef _psi_src_lib_libciomr_libciomr_h_
 #define _psi_src_lib_libciomr_libciomr_h_
 
-#include <stdio.h>
+#include <cstdio>
 
 #ifdef __cplusplus
 extern "C" {

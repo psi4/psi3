@@ -2,7 +2,7 @@
     \ingroup INTDER
     \brief Enter brief description of file here 
 */
-#include <math.h>
+#include <cmath>
 #include "cartesian.h"
 
 using namespace psi::intder;

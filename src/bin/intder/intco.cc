@@ -10,9 +10,9 @@
 #define EXTERN
 #include "globals.h"
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>

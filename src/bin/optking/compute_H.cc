@@ -5,11 +5,11 @@
     BFGS update on H inverts H to form H_inv and returns H_inv.
 */
 
-#include <math.h>
-#include <stdio.h>
+#include <cmath>
+#include <cstdio>
 #include <libchkpt/chkpt.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <libciomr/libciomr.h>
 #include <physconst.h>
 #include <libipv1/ip_lib.h>

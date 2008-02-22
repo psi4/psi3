@@ -2,9 +2,9 @@
     \ingroup CCSORT
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <libqt/qt.h>
 #include <libdpd/dpd.h>
 #include <libciomr/libciomr.h>

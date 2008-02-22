@@ -2,8 +2,8 @@
     \ingroup CINTS
     \brief Parse the input file and command line for CINTS specific options.
 */
-#include<stdio.h>
-#include<stdlib.h>
+#include<cstdio>
+#include<cstdlib>
 #include<cstring>
 #include<cmath>
 #include<vector>

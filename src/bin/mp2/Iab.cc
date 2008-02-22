@@ -4,7 +4,7 @@
 ** \brief Enter brief description of file here 
 */
 
-#include <math.h>
+#include <cmath>
 #include <libdpd/dpd.h>
 #define EXTERN
 #include "globals.h"

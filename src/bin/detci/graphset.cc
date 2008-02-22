@@ -12,8 +12,8 @@
 
 #define EXTERN
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include "structs.h"

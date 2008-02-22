@@ -3,8 +3,8 @@
   \ingroup DETCI
   \brief Check the SCF energy
 */
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
 
 namespace psi { namespace detci {
 

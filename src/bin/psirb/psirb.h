@@ -7,7 +7,7 @@
 #define EXT extern
 #endif
 
-#include <stdio.h>
+#include <cstdio>
 #include <string>
 #include <ruby.h>
 #include <libpsio/psio.hpp>

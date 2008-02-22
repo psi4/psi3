@@ -2,8 +2,8 @@
     \ingroup CCSORT
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <psifiles.h>
 
 namespace psi { namespace ccsort {

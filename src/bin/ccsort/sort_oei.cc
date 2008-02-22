@@ -28,8 +28,8 @@
 ** to correctly build the Fock matrix later on.
 */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 #include <libiwl/iwl.h>

@@ -13,8 +13,8 @@
 ** May 1998
 */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>

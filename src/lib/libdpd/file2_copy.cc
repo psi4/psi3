@@ -2,8 +2,8 @@
     \ingroup DPD
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include "dpd.h"
 
 extern "C" {

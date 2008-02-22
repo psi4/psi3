@@ -2,9 +2,9 @@
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
+#include <cstdio>
 #include <libdpd/dpd.h>
-#include <math.h>
+#include <cmath>
 #include <libciomr/libciomr.h>
 #include <libiwl/iwl.h>
 #include "MOInfo.h"

@@ -2,7 +2,7 @@
     \ingroup CCSORT
     \brief Enter brief description of file here 
 */
-#include <math.h>
+#include <cmath>
 #include <libpsio/psio.h>
 #include <libdpd/dpd.h>
 #include "MOInfo.h"

@@ -2,7 +2,7 @@
     \ingroup CCEOM
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
+#include <cstdio>
 #include <libqt/qt.h>
 #include "MOInfo.h"
 #include "Params.h"

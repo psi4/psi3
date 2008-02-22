@@ -11,7 +11,7 @@
 **
 */
  
-#include <stdio.h>
+#include <cstdio>
 #include "structs.h"
 #define EXTERN
 #include "globals.h"

@@ -1,5 +1,5 @@
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <psifiles.h>
 #include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>

@@ -12,6 +12,7 @@
 #include "utilities.h"
 #include "calculation_options.h"
 #include <libchkpt/chkpt.h>
+#include <cstdlib>
 
 extern FILE* outfile;
 

@@ -3,7 +3,7 @@
     \brief Some of the Slater determinant routines
 */
 
-#include <stdio.h>
+#include <cstdio>
 
 namespace psi { namespace detci {
 

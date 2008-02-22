@@ -2,8 +2,8 @@
     \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include <libdpd/dpd.h>
 #include <libpsio/psio.h>
 #include "MOInfo.h"

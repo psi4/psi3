@@ -6,10 +6,10 @@
 ** \brief Canonical evaluation of MP2 energy and gradients
 */
 
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstring>
+#include <cstdlib>
+#include <cmath>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libdpd/dpd.h>

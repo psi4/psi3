@@ -5,9 +5,9 @@
 **  C. David Sherrill
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 /* may no longer need #include <libc.h> */
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>

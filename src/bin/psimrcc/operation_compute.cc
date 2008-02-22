@@ -11,6 +11,7 @@
 #include "debugging.h"
 #include "algebra_interface.h"
 #include "moinfo.h"
+#include <cstdlib>
 
 extern FILE *infile, *outfile;
 

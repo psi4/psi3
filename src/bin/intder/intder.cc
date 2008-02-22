@@ -6,8 +6,8 @@
 ** \brief Transform Internal Coordinates and their Derivatives
 */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include "cartesian.h"
 #include "atom.h"
 #include "molecule.h"

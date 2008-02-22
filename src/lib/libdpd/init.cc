@@ -2,8 +2,8 @@
     \ingroup DPD
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <stdarg.h>
 #include <libciomr/libciomr.h>
 #include "dpd.h"

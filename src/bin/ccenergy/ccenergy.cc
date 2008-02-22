@@ -6,10 +6,10 @@
 **  CCENERGY: Program to calculate coupled cluster energies.
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
 #include <sys/types.h>
 #include <unistd.h>
 #include <libipv1/ip_lib.h>

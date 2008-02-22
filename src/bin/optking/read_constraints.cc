@@ -5,11 +5,11 @@
    list of all of the simple internal coordinates
 */
 
-#include <math.h>
-#include <stdio.h>
+#include <cmath>
+#include <cstdio>
 #include <libchkpt/chkpt.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <physconst.h>

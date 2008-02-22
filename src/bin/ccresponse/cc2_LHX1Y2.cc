@@ -2,8 +2,8 @@
     \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include <libciomr/libciomr.h>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>

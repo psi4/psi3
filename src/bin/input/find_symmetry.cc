@@ -3,11 +3,11 @@
     \brief Enter brief description of file here 
 */
 #define EXTERN
-#include <stdio.h>
+#include <cstdio>
 #include <libciomr/libciomr.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
 #include "input.h"
 #include "global.h"
 #include "defines.h"

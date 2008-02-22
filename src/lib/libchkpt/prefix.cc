@@ -3,8 +3,8 @@
   \ingroup CHKPT
 */
 
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {

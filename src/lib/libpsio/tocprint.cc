@@ -3,7 +3,7 @@
  \ingroup PSIO
  */
 
-#include <stdio.h>
+#include <cstdio>
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 

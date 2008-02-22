@@ -17,10 +17,10 @@
 
 #include "globaldefs.h"
 #include <iostream.h>
-#include <math.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#include <cmath>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
 #include <libipv1/ip_lib.h>
 #include <libqt/qt.h>
 #include <libciomr/libciomr.h>

@@ -2,8 +2,8 @@
     \ingroup DBOC
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <string.h>
+#include <cstdio>
+#include <cstring>
 #include "params.h"
 #include "molecule.h"
 #include "float.h"

@@ -4,8 +4,8 @@
 ** \ingroup QT
 */
 
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
 #include <libciomr/libciomr.h>
 
 extern "C" {

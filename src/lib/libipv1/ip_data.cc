@@ -2,10 +2,10 @@
     \ingroup IPV1
     \brief Rudimentary data retrieval routines from the input file 
 */
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <stdarg.h>
-#include <string.h>
+#include <cstring>
 #include "tmpl.h"
 
 #ifdef DEC

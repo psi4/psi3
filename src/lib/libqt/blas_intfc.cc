@@ -15,7 +15,7 @@
  Additions by TD Crawford and EF Valeev, June 1999.
 */
 
-#include <stdio.h>
+#include <cstdio>
 
 extern "C" {
 

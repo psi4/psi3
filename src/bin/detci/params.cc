@@ -12,9 +12,9 @@
 
 #define EXTERN
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
 #include <libipv1/ip_lib.h>
 #include <libipv1/ip_data.gbl>
 #include <libciomr/libciomr.h>

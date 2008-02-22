@@ -3,12 +3,12 @@
     \brief Enter brief description of file here 
 */
 #define EXTERN
-#include <stdio.h>
+#include <cstdio>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
-#include <stdlib.h>
-#include <math.h>
-#include <string.h>
+#include <cstdlib>
+#include <cmath>
+#include <cstring>
 #include "input.h"
 #include <physconst.h>
 #include "global.h"

@@ -14,8 +14,8 @@
 ** Updated to new libpsio libraries 8/03
 */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include <libiwl/iwl.h>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>

@@ -2,12 +2,12 @@
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
+#include <cstdio>
 #include <libqt/qt.h>
 #include <psifiles.h>
 #define EXTERN
 #include "globals.h"
-#include <math.h>
+#include <cmath>
 
 /** AEL() computes the approximate excitation level according to
  ** Stanton and Bartlett, JCP, 98, 1993, 7034.

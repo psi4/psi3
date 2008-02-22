@@ -13,9 +13,9 @@
 ** May 1998
 */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cmath>
 #include <libciomr/libciomr.h>
 #include "globaldefs.h"
 #include "globals.h"

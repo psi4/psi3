@@ -2,10 +2,10 @@
     \ingroup PSI3
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <unistd.h>
-#include <string.h>
+#include <cstring>
 #include <sys/types.h>
 #include <sys/wait.h>
 

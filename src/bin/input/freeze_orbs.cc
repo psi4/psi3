@@ -3,7 +3,7 @@
     \brief Enter brief description of file here 
 */
 #define EXTERN
-#include <stdio.h>
+#include <cstdio>
 #include <cstring>
 #include <cstdlib>
 #include <libipv1/ip_lib.h>

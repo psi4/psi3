@@ -13,9 +13,9 @@
 ** University of Georgia
 */
 
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
+#include <cstdio>
+#include <cmath>
+#include <cstring>
 #include <ctype.h> // for toupper()
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>

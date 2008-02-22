@@ -7,7 +7,7 @@
 #define _psi3_bin_input_linalg_h_
 
 #include "float.h"
-#include <stdio.h>
+#include <cstdio>
 
 namespace psi { namespace input {
 

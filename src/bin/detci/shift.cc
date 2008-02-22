@@ -13,8 +13,8 @@
 ** 12/23/2007
 */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <libiwl/iwl.h>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>

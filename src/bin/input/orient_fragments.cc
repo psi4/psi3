@@ -9,7 +9,7 @@
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libipv1/ip_lib.h>
-#include <math.h>
+#include <cmath>
 #include "input.h"
 #include "global.h"
 #include "defines.h"

@@ -1,7 +1,7 @@
 #ifndef PSIO_H
 #define PSIO_H
 
-#include <stdio.h>
+#include <cstdio>
 #include <libpsio/config.h>
 
 #ifdef __cplusplus

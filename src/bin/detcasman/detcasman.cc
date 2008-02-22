@@ -28,9 +28,9 @@
 **
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include "setup_io.h"

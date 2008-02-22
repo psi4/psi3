@@ -1,5 +1,3 @@
-extern "C" {
-
 /*!
 ** \file
 ** \brief Simple root finding methods
@@ -29,9 +27,10 @@ extern "C" {
 
 
 /* INCLUDES */
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
 
+extern "C" {
 
 /*!
 ** bisect(): Finds the root of a function between two points to within a 

@@ -4,11 +4,11 @@
     need to save geometry to last step for gradients by energy
 */
 
-#include <math.h>
-#include <stdio.h>
+#include <cmath>
+#include <cstdio>
 #include <libchkpt/chkpt.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <ctype.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>

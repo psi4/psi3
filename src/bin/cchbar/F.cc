@@ -5,9 +5,9 @@
 
 /*! \defgroup CCHBAR cchbar: Compute the similarity-transformed Hamiltonian */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 #include "MOInfo.h"

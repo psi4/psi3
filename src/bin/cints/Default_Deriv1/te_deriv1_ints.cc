@@ -7,9 +7,9 @@
 #include <algorithm>
 #include<cmath>
 #include<cstring>
-#include<stdio.h>
+#include<cstdio>
 #include<memory.h>
-#include<stdlib.h>
+#include<cstdlib>
 
 #include<psitypes.h>
 #include<libipv1/ip_lib.h>

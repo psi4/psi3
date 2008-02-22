@@ -2,8 +2,8 @@
     \ingroup CCDENSITY
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <libdpd/dpd.h>
 #include "MOInfo.h"
 #include "Params.h"

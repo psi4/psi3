@@ -10,9 +10,9 @@
     
     ----------------------------------------------*/
 #include <cmath>
-#include <stdio.h>
+#include <cstdio>
 #include <memory.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libint/libint.h>

@@ -59,7 +59,7 @@ double factorial(int n)
 /*
 ** test combinations routines
 **
-#include <stdio.h>
+#include <cstdio>
 
 main()
 {

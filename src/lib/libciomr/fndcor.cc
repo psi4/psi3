@@ -4,8 +4,8 @@
 ** \ingroup CIOMR
 */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <libipv1/ip_lib.h>
 #include <psifiles.h>

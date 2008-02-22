@@ -6,9 +6,9 @@
 ** \brief Make Gaussian-compatible cube file 
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <libipv1/ip_lib.h>
 #include <libchkpt/chkpt.h>
 #include <libciomr/libciomr.h>

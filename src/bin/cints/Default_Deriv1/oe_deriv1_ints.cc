@@ -3,8 +3,8 @@
     \brief Enter brief description of file here 
 */
 #include <cmath>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 
 #include <libciomr/libciomr.h>

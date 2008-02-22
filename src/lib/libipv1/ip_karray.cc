@@ -9,10 +9,10 @@
  * only the first place in the cwk in which a keyword array name is
  * found will be used. */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <stdarg.h>
-#include <string.h>
+#include <cstring>
 #include "tmpl.h"
 #include "ip_types.h"
 #include "ip_global.h"

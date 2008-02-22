@@ -4,8 +4,8 @@
   \ingroup QT
 */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include "qt.h"

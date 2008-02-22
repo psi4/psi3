@@ -2,8 +2,8 @@
     \ingroup IPV1
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <stdarg.h>
 #include "tmpl.h"
 #include "ip_types.h"

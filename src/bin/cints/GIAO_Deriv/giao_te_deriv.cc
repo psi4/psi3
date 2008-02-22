@@ -6,7 +6,7 @@
 #include <cstdio>
 #include <cstring>
 #include <memory.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <libipv1/ip_lib.h>
 #include <libiwl/iwl.h>
 #include <libciomr/libciomr.h>

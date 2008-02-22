@@ -6,6 +6,7 @@
 
 #include "blas.h"
 #include "utilities.h"
+#include <cstdlib>
 
 extern FILE *infile, *outfile;
 

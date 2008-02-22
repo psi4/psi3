@@ -2,7 +2,7 @@
     \ingroup DPD
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
+#include <cstdio>
 #include <libpsio/psio.h>
 #include <libqt/qt.h>
 #include "dpd.h"

@@ -2,13 +2,13 @@
     \ingroup CCEOM
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libqt/qt.h>
-#include <math.h>
+#include <cmath>
 #include "MOInfo.h"
 #include "Params.h"
 #include "Local.h"

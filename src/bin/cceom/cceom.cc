@@ -5,9 +5,9 @@
 /*
 **  CCEOM: Program to calculate the EOM CCSD right-hand eigenvector and  energy
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>

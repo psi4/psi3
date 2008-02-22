@@ -12,9 +12,9 @@
 ** April 1998
 */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cstring>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <psifiles.h>

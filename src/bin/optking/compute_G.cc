@@ -4,9 +4,9 @@
     of inverse masses.
 */
 
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
 #include <libciomr/libciomr.h>
 
 #define EXTERN

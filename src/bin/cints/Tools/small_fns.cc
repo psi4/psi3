@@ -3,10 +3,10 @@
     \brief Enter brief description of file here 
 */
 #include<cstdio>
-#include<stdlib.h>
+#include<cstdlib>
 #include <cstring>
 #include<libipv1/ip_lib.h>
-#include<math.h>
+#include<cmath>
 #include<libciomr/libciomr.h>
 #include<libchkpt/chkpt.h>
 #include <psifiles.h>

@@ -2,10 +2,10 @@
     \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 #include <libpsio/psio.h>

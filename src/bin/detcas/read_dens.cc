@@ -14,8 +14,8 @@
 ** April 1998
 */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include <libiwl/iwl.h>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>

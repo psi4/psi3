@@ -2,8 +2,8 @@
   \file
   \ingroup IWL
 */
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
 #include <libciomr/libciomr.h>
 #include "iwl.h"
 

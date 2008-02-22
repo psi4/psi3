@@ -4,7 +4,7 @@
 */
 #include <cstdio>
 #include <cmath>
-#include <stdlib.h>
+#include <cstdlib>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libint/libint.h>

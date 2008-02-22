@@ -4,11 +4,11 @@
     salcs according to Schlegel, Theor. Chim. Acta, 66, 333 (1984).
 */
 
-#include <math.h>
-#include <stdio.h>
+#include <cmath>
+#include <cstdio>
 #include <libchkpt/chkpt.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <libciomr/libciomr.h>
 #include <physconst.h>
 #include <libipv1/ip_lib.h>

@@ -3,7 +3,7 @@
     \brief Enter brief description of file here 
 */
 
-#include <stdio.h>
+#include <cstdio>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include "structs.h"

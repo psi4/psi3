@@ -12,7 +12,7 @@
 **
 */
 
-#include <stdio.h>
+#include <cstdio>
 #include <libciomr/libciomr.h>
 #include "structs.h"
 #include "CalcInfo.h"

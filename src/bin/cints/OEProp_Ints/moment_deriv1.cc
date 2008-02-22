@@ -4,7 +4,7 @@
 */
 #include<cmath>
 #include<cstdio>
-#include<stdlib.h>
+#include<cstdlib>
 #include<cstring>
 #include<libipv1/ip_lib.h>
 #include<libiwl/iwl.h>

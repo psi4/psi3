@@ -3,9 +3,9 @@
     \brief Enter brief description of file here 
 */
 
-#include <stdio.h>
-#include <stdlib.h> /* was libc.h */
-/* gcc 2.7.0 doesn't like #include <string.h> */
+#include <cstdio>
+#include <cstdlib> /* was libc.h */
+/* gcc 2.7.0 doesn't like #include <cstring> */
 #include "slaterd.h"
 
 namespace psi { namespace detci {

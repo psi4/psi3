@@ -9,8 +9,8 @@
 ** August 2003
 */
 
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include <psifiles.h>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>

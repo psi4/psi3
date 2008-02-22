@@ -2,9 +2,9 @@
     \ingroup CCLAMBDA
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 #include <libdpd/dpd.h>
 #include "MOInfo.h"
 #include "Params.h"

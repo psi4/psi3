@@ -17,9 +17,9 @@
 ** Updated 3/28/95 to exclude frozen core orbitals.
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <libiwl/iwl.h>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>

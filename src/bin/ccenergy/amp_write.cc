@@ -3,9 +3,9 @@
   \ingroup CCENERGY
   \brief Write the amplitudes from ccenergy
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 #include <libdpd/dpd.h>
 #include "Params.h"
 #define EXTERN

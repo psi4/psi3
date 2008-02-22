@@ -10,8 +10,8 @@
 #include "globals.h"
 #undef EXTERN
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <libchkpt/chkpt.h>
 #include <libciomr/libciomr.h>

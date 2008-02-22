@@ -15,7 +15,7 @@ while developing PSI code.
 \begin{description}
 \item [{\em Malloc() calls on IBM}:] The current IBM compilers (Visual Age
   C/C++ 5) do not properly prototype {\tt malloc()} unless one includes
-  {\tt stdlib.h}.  Please make sure that you {\tt \#include <stdlib.h>}
+  {\tt stdlib.h}.  Please make sure that you {\tt \#include <cstdlib>}
   anytime you call {\tt malloc()} in a file.  If you forget, it will
   still work in gcc but not on an IBM.
 \end{description}

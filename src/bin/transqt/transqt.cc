@@ -118,11 +118,11 @@
 /* Max length of ioff array */
 #define IOFF_MAX 32641
 
-#include <math.h>
+#include <cmath>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>

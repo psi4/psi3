@@ -4,7 +4,7 @@
   \ingroup CIOMR
 */
  
-#include <stdio.h>
+#include <cstdio>
 
 extern "C" {
 

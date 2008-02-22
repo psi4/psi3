@@ -8,8 +8,8 @@
  * Here we try to parse the exec list from psi.dat or the user's exec
  */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <libipv1/ip_lib.h>
 

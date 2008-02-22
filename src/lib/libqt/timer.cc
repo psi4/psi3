@@ -33,10 +33,10 @@ extern "C" {
 ** T. Daniel Crawford, August 1999.  
 */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <unistd.h>
-#include <string.h>
+#include <cstring>
 #include <time.h>
 #include <sys/param.h>
 #include <sys/times.h>

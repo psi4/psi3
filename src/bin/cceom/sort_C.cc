@@ -4,8 +4,8 @@
 */
 /* sorts C vectors each iteration to prepare for hbar contractions */
 
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
 #include "MOInfo.h"
 #include "Params.h"
 #include "Local.h"

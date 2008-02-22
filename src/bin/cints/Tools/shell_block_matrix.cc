@@ -2,7 +2,7 @@
     \ingroup CINTS
     \brief Enter brief description of file here 
 */
-#include<stdlib.h>
+#include<cstdlib>
 #include<cstdio>
 #include<libciomr/libciomr.h>
 #include<libint/libint.h>

@@ -3,10 +3,10 @@
     \brief GET_SYMINFO: gets symmetry info from chkpt and char_table.c
 */
 
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <ctype.h>
 #include <libqt/qt.h>
 #include <libchkpt/chkpt.h>

@@ -11,7 +11,7 @@
 ** University of Georgia
 */
 
-#include <stdio.h>
+#include <cstdio>
 #include "odometer.h"
 
 namespace psi { namespace detci {

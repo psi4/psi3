@@ -1,5 +1,5 @@
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
 
 #define HD_MIN 1.0E-4                     /* for H(diag) calculations */
 

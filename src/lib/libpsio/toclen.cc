@@ -3,9 +3,9 @@
  \ingroup PSIO
  */
 
-#include <stdio.h>
+#include <cstdio>
 #include <unistd.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 

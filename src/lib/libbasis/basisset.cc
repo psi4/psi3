@@ -6,9 +6,9 @@
 /*! \defgroup BASIS libbasis: The Basis Set Library */
 
 #include <stdexcept>
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 extern "C" {
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>

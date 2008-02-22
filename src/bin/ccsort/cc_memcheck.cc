@@ -2,7 +2,7 @@
     \ingroup CCSORT
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
+#include <cstdio>
 #include <libdpd/dpd.h>
 #include "Params.h"
 #include "MOInfo.h"

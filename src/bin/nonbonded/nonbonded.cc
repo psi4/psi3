@@ -15,16 +15,16 @@
 ** \brief Evaluate empirical non-bonded interactions
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 #include <ctype.h>               // for toupper()
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <libchkpt/chkpt.h>
 #include <libpsio/psio.h>
 #include <psifiles.h>
-#include <string.h>
+#include <cstring>
 #include <physconst.h>
 #include <psifiles.h>
 #include <masses.h>

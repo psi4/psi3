@@ -16,7 +16,7 @@
 ** University of Georgia
 ** Athens, GA 30606
 ** 
-** Need to #include <stdio.h> before this file
+** Need to #include <cstdio> before this file
 **
 ** Assume number of alpha electrons is greater than or equal to the number
 ** of beta electrons

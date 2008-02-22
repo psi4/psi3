@@ -10,7 +10,7 @@
 #ifndef _psi_src_lib_libiwl_iwl_h_
 #define _psi_src_lib_libiwl_iwl_h_
 
-#include <stdio.h>
+#include <cstdio>
 #include <libpsio/psio.h>
 
 #ifdef __cplusplus

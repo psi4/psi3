@@ -3,11 +3,11 @@
     \brief GRAD_ENERGY computes a file11 entry from energies in chkpt Rollin King, 2002
 */
 
-#include <math.h>
-#include <stdio.h>
+#include <cmath>
+#include <cstdio>
 #include <libchkpt/chkpt.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <ctype.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>

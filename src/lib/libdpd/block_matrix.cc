@@ -27,9 +27,9 @@
 ** TDC, 6/24/00
 */
 
-#include<stdio.h>
-#include<stdlib.h>
-#include<string.h>
+#include<cstdio>
+#include<cstdlib>
+#include<cstring>
 #include <libqt/qt.h>
 #include "dpd.h"
 #define EXTERN

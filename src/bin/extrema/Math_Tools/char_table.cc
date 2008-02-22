@@ -10,9 +10,9 @@
 */
 /*##########################################################################*/
 
-#include<stdlib.h>
-#include<string.h>
-#include<stdio.h>
+#include<cstdlib>
+#include<cstring>
+#include<cstdio>
 #include <ctype.h>
 #include"math_tools.h"
 

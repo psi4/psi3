@@ -2,7 +2,7 @@
   \file
   \ingroup IWL
 */
-#include <stdio.h>
+#include <cstdio>
 #include <libciomr/libciomr.h>
 #include "iwl.h"
 

@@ -2,8 +2,8 @@
     \ingroup CCEOM
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
 #include <libqt/qt.h>
 #include "MOInfo.h"
 #include "Params.h"

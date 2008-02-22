@@ -3,7 +3,7 @@
     \brief Enter brief description of file here 
 */
 #include<memory.h>
-#include<stdlib.h>
+#include<cstdlib>
 #include<pthread.h>
 #include<cstdio>
 #include<cstring>

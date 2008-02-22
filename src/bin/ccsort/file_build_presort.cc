@@ -2,9 +2,9 @@
     \ingroup CCSORT
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libiwl/iwl.h>

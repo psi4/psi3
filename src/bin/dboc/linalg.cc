@@ -9,9 +9,9 @@
 // NOTE: on IBM AIX 4.3.3 with IBM VisualAge C++ 5.0.2.0 delete[] doesn't seem
 // to release the memory and memory leaks result. Using malloc/free instead.
 #include <iostream>
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 #include "params.h"
 #include "linalg.h"
 

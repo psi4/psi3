@@ -6,15 +6,15 @@
 #ifndef _psi_bin_oeprop_defines_h_
 #define _psi_bin_oeprop_defines_h_
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <libchkpt/chkpt.h>
 #include <libpsio/psio.h>
 #include <psifiles.h>
-#include <string.h>
+#include <cstring>
 #include <physconst.h>
 #include <psifiles.h>
 

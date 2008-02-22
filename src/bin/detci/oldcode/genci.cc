@@ -27,9 +27,9 @@
 #define EXTERN
 
 /*** INCLUDES ***/
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cmath>
 #include <libipv1/ip_lib.h>
 #include <libqt/qt.h>
 #include <libciomr/libciomr.h>

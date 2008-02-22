@@ -4,7 +4,7 @@
 */
 
 #include <stdexcept>
-#include <stdlib.h>
+#include <cstdlib>
 #include <psifiles.h>
 #include <libchkpt/chkpt.h>
 #include <libciomr/libciomr.h>

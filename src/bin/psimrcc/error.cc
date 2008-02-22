@@ -11,6 +11,7 @@
 #include <iostream>
 #endif
 #include "error.h"
+#include <cstdlib>
 
 extern FILE *infile, *outfile;
 

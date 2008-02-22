@@ -4,7 +4,7 @@
 ** \ingroup CIOMR
 */
 
-#include <math.h>
+#include <cmath>
 #include <libciomr/libciomr.h>
 
 extern "C" {

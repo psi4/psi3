@@ -2,7 +2,7 @@
     \ingroup INPUT
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
+#include <cstdio>
 
 #include "defines.h"
 #define EXTERN

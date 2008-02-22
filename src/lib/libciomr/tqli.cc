@@ -5,8 +5,8 @@
 */ 
 
 #include <psifiles.h>
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
 
 #define DSIGN(a,b) ((b) >= 0.0) ? (fabs(a)) : (-fabs(a))
 

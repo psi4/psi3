@@ -14,8 +14,8 @@
 ** May 1998
 */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include "indpairs.h"
 
 namespace psi { namespace detcas {

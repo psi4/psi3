@@ -7,7 +7,7 @@
 */
 
 #include <getopt.h>
-#include <stdio.h>
+#include <cstdio>
 #include <ruby.h>
 #define MAIN
 #include "psirb.h"

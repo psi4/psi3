@@ -5,7 +5,7 @@
   By Edward Valeev
 */
 
-#include <string.h>
+#include <cstring>
 #include <libqt/qt.h>
 
 /*!

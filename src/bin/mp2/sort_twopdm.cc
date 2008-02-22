@@ -2,7 +2,7 @@
     \ingroup MP2
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
+#include <cstdio>
 #include <libdpd/dpd.h>
 #include <libiwl/iwl.h>
 #define EXTERN

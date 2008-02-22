@@ -9,6 +9,8 @@
 #include "calculation_options.h"
 #include "utilities.h"
 #include <libipv1/ip_lib.h>
+#include <cstdlib>
+#include <cstring>
 
 extern FILE* outfile;
 

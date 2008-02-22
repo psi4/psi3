@@ -8,7 +8,7 @@
     */
 
 #include <cstdio>
-#include <stdlib.h>
+#include <cstdlib>
 #include <cmath>
 #include <libciomr/libciomr.h>
 #include <libint/libint.h>

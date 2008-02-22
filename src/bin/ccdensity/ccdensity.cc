@@ -7,15 +7,15 @@
 **             two-particle densities.
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 #include <libdpd/dpd.h>
 #include <libiwl/iwl.h>
-#include <math.h>
+#include <cmath>
 #include <psifiles.h>
 #include "MOInfo.h"
 #include "Params.h"

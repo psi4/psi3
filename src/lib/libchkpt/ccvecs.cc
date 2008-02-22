@@ -3,9 +3,9 @@
   \ingroup CHKPT
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 #include <psifiles.h>
 #include <libpsio/psio.hpp>
 extern "C" {

@@ -6,7 +6,7 @@
 #include<cstdio>
 #include<cstring>
 #include<memory.h>
-#include<stdlib.h>
+#include<cstdlib>
 #include<libiwl/iwl.h>
 #include<libciomr/libciomr.h>
 #include<libint/libint.h>

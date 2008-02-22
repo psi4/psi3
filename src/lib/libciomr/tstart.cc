@@ -4,10 +4,10 @@
 ** \ingroup CIOMR
 */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <unistd.h>
-#include <string.h>
+#include <cstring>
 #include <time.h>
 
 #include <sys/times.h>

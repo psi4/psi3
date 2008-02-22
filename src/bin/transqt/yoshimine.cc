@@ -15,10 +15,10 @@
 **
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
+#include <cstring>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libiwl/iwl.h>

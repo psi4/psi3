@@ -15,9 +15,9 @@
  * July 2002
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <psifiles.h>          /* where return values are */

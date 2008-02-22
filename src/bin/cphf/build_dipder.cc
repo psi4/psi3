@@ -5,9 +5,9 @@
 
 /*! \defgroup CPHF cphf: Solve the Coupled-Perturbed Hartree-Fock Equations */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libiwl/iwl.h>

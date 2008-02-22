@@ -5,7 +5,7 @@
 #ifndef _psi_src_lib_libdpd_dpd_h
 #define _psi_src_lib_libdpd_dpd_h
 
-#include <stdio.h>
+#include <cstdio>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 #include <libiwl/iwl.h>

@@ -6,10 +6,10 @@
 ** \brief Localize the orbitals
 */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <libint/libint.h>

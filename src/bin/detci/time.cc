@@ -5,8 +5,8 @@
 
 #include <unistd.h>
 #include <sys/time.h>
-#include <stdlib.h>
-#include <stdio.h>
+#include <cstdlib>
+#include <cstdio>
 #include "structs.h"
 #define EXTERN
 #include "globals.h"

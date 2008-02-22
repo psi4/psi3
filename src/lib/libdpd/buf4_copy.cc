@@ -2,9 +2,9 @@
     \ingroup DPD
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <string.h>
-#include <math.h>
+#include <cstdio>
+#include <cstring>
+#include <cmath>
 #include "dpd.h"
 
 extern "C" {

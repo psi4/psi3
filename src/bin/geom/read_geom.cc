@@ -13,9 +13,9 @@
 */
 
 /* include's */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 
 /* define's */
 #define MAX_LINE 132

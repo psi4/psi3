@@ -8,9 +8,9 @@
 
 
 #include <stdexcept>
-#include <stdio.h>
-#include <stdlib.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cmath>
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 #include <libiwl/iwl.h>

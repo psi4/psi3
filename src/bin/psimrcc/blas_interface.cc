@@ -10,6 +10,7 @@
 #include "utilities.h"
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
+#include <cstdlib>
 
 extern FILE *infile, *outfile;
 

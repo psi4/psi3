@@ -25,7 +25,7 @@
 
 static char *rcsid = "$Id$";
 
-#include <stdio.h>
+#include <cstdio>
 #include <libipv1/ip_lib.h>
 
 namespace psi { namespace cscf {

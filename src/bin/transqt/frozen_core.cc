@@ -12,7 +12,7 @@
 **
 */
 
-#include <stdio.h>
+#include <cstdio>
 
 extern FILE *outfile;
 

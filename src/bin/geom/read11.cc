@@ -10,8 +10,8 @@
 */
 
 /* include's */
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 
 /* define's */
 #define MAX_LINE 132

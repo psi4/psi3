@@ -3,11 +3,11 @@
     \brief cartesians.cc : contains member functions for cartesian class
 */
 
-#include <math.h>
+#include <cmath>
 
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <libchkpt/chkpt.h>

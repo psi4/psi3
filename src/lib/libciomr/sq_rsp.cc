@@ -6,7 +6,7 @@
 
 #include <psifiles.h>
 #include "libciomr.h"
-#include <stdlib.h>
+#include <cstdlib>
 
 extern "C" {
 

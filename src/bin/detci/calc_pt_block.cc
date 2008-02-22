@@ -5,7 +5,7 @@
 
 #define EXTERN
 
-#include <stdio.h>
+#include <cstdio>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include "structs.h"

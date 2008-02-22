@@ -2,7 +2,7 @@
     \ingroup CCTRIPLES
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
+#include <cstdio>
 #include <ccfiles.h>
 #include <libdpd/dpd.h>
 

@@ -8,7 +8,7 @@
 ** 
 */
 
-#include <stdio.h>
+#include <cstdio>
 
 namespace psi { namespace detci {
 

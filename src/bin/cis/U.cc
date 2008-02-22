@@ -2,7 +2,7 @@
     \ingroup CIS
     \brief Enter brief description of file here 
 */
-#include <math.h>
+#include <cmath>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 #include "MOInfo.h"

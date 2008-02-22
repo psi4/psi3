@@ -4,11 +4,11 @@
     and salc_set the value of the simple internals must already be computed.
 */
 
-#include <math.h>
-#include <stdio.h>
+#include <cmath>
+#include <cstdio>
 #include <libchkpt/chkpt.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <libciomr/libciomr.h>
 #include <physconst.h>
 

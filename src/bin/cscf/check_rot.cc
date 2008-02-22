@@ -13,7 +13,7 @@
 **
 */
 
-#include <stdio.h>
+#include <cstdio>
 #include <libciomr/libciomr.h>
 #define EXTERN
 #include "includes.h"

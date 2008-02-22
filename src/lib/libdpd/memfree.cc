@@ -6,7 +6,7 @@
 ** Function to return number of double words available for allocation.
 */
 
-#include <stdio.h>
+#include <cstdio>
 #include "dpd.h"
 #define EXTERN
 #include "dpd.gbl"

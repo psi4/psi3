@@ -5,8 +5,8 @@
 
 /*! \defgroup IPV1 libipv1: The Input Parsing Library */
 
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include "tmpl.h"
 #include "ip_types.h"
 #include "ip_global.h"

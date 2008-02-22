@@ -2,8 +2,8 @@
     \ingroup CIS
     \brief Enter brief description of file here 
 */
-#include <math.h>
-#include <stdlib.h>
+#include <cmath>
+#include <cstdlib>
 #include <libdpd/dpd.h>
 #include <psifiles.h>
 #include "MOInfo.h"

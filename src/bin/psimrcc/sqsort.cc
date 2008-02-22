@@ -16,6 +16,7 @@
 #include <libipv1/ip_lib.h>
 #include <libiwl/iwl.h>
 #include <psifiles.h>
+#include <cmath>
 
 extern FILE *infile, *outfile;
 
@@ -112,7 +113,7 @@ void SQSort::read_two_electron_integrals()
       int nbuf  = ERIIN.inbuf;
       int fi    = 0;
       for(int index = 0; index < nbuf; index++){
-        int p  = abs(ERIIN.labels[fi]);
+        int p  = (int)abs((double)ERIIN.labels[fi]);
         int q  = ERIIN.labels[fi+1];
         int r  = ERIIN.labels[fi+2];
         int s  = ERIIN.labels[fi+3];

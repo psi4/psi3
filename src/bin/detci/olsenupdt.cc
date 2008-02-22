@@ -14,8 +14,8 @@
 */
 
 #define EXTERN
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
 #include "globals.h"
 #include "structs.h"
 #include "ci_tol.h"

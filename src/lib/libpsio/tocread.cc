@@ -4,7 +4,7 @@
  */
 
 #include <unistd.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 

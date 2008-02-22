@@ -6,7 +6,7 @@
 **  X_XI_CHECK: check sum for xi
 */
 
-#include <stdio.h>
+#include <cstdio>
 #include <libdpd/dpd.h>
 #include "MOInfo.h"
 #include "Params.h"

@@ -8,8 +8,8 @@
 ** July-2001 GST
 */
 #define EXTERN
-#include <stdio.h>
-#include <stdlib.h>
+#include <cstdio>
+#include <cstdlib>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include "input.h"

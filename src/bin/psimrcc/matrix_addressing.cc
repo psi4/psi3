@@ -8,6 +8,7 @@
 #include <iostream>
 #include "moinfo.h"
 #include "matrix.h"
+#include <cstdlib>
 
 #include <libciomr/libciomr.h>
 

@@ -3,9 +3,9 @@
     \brief Enter brief description of file here 
 */
 
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
 extern "C" {
   #include <libciomr/libciomr.h>
   #include <physconst.h>

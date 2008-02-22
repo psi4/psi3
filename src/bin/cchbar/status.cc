@@ -2,7 +2,7 @@
     \ingroup CCHBAR
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
+#include <cstdio>
 
 namespace psi { namespace cchbar {
 

@@ -2,8 +2,8 @@
     \ingroup CCRESPONSE
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <math.h>
+#include <cstdio>
+#include <cmath>
 #include <libdpd/dpd.h>
 #include <libchkpt/chkpt.h>
 #include <libqt/qt.h>

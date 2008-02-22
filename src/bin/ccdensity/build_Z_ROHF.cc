@@ -5,7 +5,7 @@
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 #include <libciomr/libciomr.h>
-#include <math.h>
+#include <cmath>
 #include "MOInfo.h"
 #include "Params.h"
 #include "Frozen.h"

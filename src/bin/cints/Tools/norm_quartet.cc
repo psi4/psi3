@@ -6,7 +6,7 @@
 #include<cstdio>
 #include<cstring>
 #include<memory.h>
-#include<stdlib.h>
+#include<cstdlib>
 #include<libint/libint.h>
 #include"defines.h"
 #define EXTERN

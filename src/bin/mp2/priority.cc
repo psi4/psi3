@@ -2,9 +2,9 @@
     \ingroup MP2
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <libciomr/libciomr.h>
 #include <ccfiles.h>
 #include <libdpd/dpd.h>

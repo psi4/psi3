@@ -2,7 +2,7 @@
     \ingroup MP2
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
+#include <cstdio>
 #include <libiwl/iwl.h>
 #include <libdpd/dpd.h>
 #include <psifiles.h>

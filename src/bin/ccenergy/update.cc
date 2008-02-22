@@ -2,7 +2,7 @@
     \ingroup CCENERGY
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
+#include <cstdio>
 #include "MOInfo.h"
 #define EXTERN
 #include "globals.h"

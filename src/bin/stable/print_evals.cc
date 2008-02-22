@@ -2,7 +2,7 @@
     \ingroup STABLE
     \brief Enter brief description of file here 
 */
-#include <stdio.h>
+#include <cstdio>
 #include "MOInfo.h"
 #include "Params.h"
 #define EXTERN

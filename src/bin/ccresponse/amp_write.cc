@@ -3,10 +3,10 @@
   \ingroup CCRESPONSE
   \brief Write the amplitudes from ccresponse
 */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
+#include <cmath>
 #include <libdpd/dpd.h>
 #include "MOInfo.h"
 #include "Params.h"

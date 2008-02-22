@@ -3,10 +3,10 @@
     \brief INTERNALS.CC member functions for internals class
 */
 
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cmath>
+#include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libipv1/ip_lib.h>

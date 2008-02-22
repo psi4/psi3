@@ -6,11 +6,11 @@ and a set of internal coordinate displacements
 it returns 1 if a new cartesian geometry was successfully determined
 */
 
-#include <math.h>
-#include <stdio.h>
+#include <cmath>
+#include <cstdio>
 #include <libchkpt/chkpt.h>
-#include <stdlib.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstring>
 #include <libciomr/libciomr.h>
 #include <physconst.h>
 #include <psifiles.h>

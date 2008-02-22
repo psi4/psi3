@@ -18,7 +18,7 @@
 
 #include <iostream>
 #include <complex>
-
+#include <cstdlib>
 
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>

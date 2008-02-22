@@ -2,10 +2,10 @@
     \ingroup CCEOM
     \brief Enter brief description of file here 
 */
-#include <stdlib.h>
-#include <stdio.h>
-#include <math.h>
-#include <string.h>
+#include <cstdlib>
+#include <cstdio>
+#include <cmath>
+#include <cstring>
 #include <libqt/qt.h>
 #include "MOInfo.h"
 #include "Params.h"
