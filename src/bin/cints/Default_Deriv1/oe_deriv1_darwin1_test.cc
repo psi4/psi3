@@ -11,8 +11,9 @@
 #include <libciomr/libciomr.h>
 #include <libint/libint.h>
 #include <libderiv/libderiv.h>
-#include<libqt/qt.h>
-#include<physconst.h>
+#include <libqt/qt.h>
+#include <physconst.h>
+#include <psiconfig.h>
 
 #include "defines.h"
 #define EXTERN
@@ -22,6 +23,8 @@
 
 namespace psi {
   namespace CINTS {
+
+    static const int use_cca_integrals_standard = (PSI_INTEGRALS_STANDARD == 1);
 
 void oe_deriv1_darwin1_test(void) {
   double **AO_at_nuc, contr, ax, ay, az, Rab, ai, e_darwin1, zval, **norm_bf;
@@ -46,7 +49,7 @@ void oe_deriv1_darwin1_test(void) {
         xpow_bf[l][ibf] = l - i;
         ypow_bf[l][ibf] = i - j;
         zpow_bf[l][ibf] = j;
-        norm_bf[l][ibf] = sqrt(df[2*l]/(df[2*(l-i)]*df[2*(i-j)]*df[2*j]));
+        norm_bf[l][ibf] = use_cca_integrals_standard ? 1.0 : sqrt(df[2*l]/(df[2*(l-i)]*df[2*(i-j)]*df[2*j]));
         ibf++;
       }
     }

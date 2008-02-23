@@ -1,3 +1,8 @@
+2/22/08 Switched the integrals standard to CCA by default.  -EFV
+
+2/22/08 Replaced legacy headers (math.h, etc.) with their C++
+equivalents.  -EFV
+
 2/13/08 Completed/updated doxygen documentation for libciomr.  -CDS
 
 2/12/08 Corrected all \file and \ingroup directives for doxygen 
@@ -123,7 +128,8 @@ an upcoming paper by Kenny et al. (the ordering of spherical harmonics
 is not yet determined). UPDATE (08/20/07): the native Psi3 ordering of spherical
 harmonics is the same as CCA ordering. UPDATE (08/29/07): in violation of the
 reasonable behavior, Psi assumed that if # of AO == # of SO, then no spherical
-harmonics were used. Changed Psi to respect puream input. Whether cartesian or spherical harmonics are used is now stored in the checkpoint file. -EFV
+harmonics were used. Changed Psi to respect puream input. Whether cartesian
+or spherical harmonics are used is now stored in the checkpoint file. -EFV
 
 08/07/07 Libchkpt is now fully object-oriented. The current C-style interface is
 unchanged. Only the default single instance of the library can be accessed and

@@ -97,9 +97,9 @@ AC_ARG_WITH(max-am-r12,[  --with-max-am-r12       maximum AM in R12 integrals],[
 AC_SUBST(LIBR12_NEW_AM)
 AC_SUBST(LIBR12_OPT_AM)
 
-PSI_INTEGRALS_STANDARD=0
+PSI_INTEGRALS_STANDARD=1
 AC_ARG_WITH(integrals-standard,[  --with-integrals-standard     specifies the standard for the basis normalization, etc.
-                                The allowed values are cca and psi (default).],[
+                                The allowed values are cca (default) and psi.],[
 case $withval in
   psi)
     PSI_INTEGRALS_STANDARD=0
