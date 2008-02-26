@@ -15,9 +15,6 @@ using namespace psi;
 StatCombData::StatCombData(int imax) :
   imax_(imax)
 {
-  if (imax < 1)
-    throw std::runtime_error("ERROR: StatCombData::StatCombData -- argument out of range");
-
   Fact_ = new PSI_FLOAT[imax+1];
   Fact_[0] = 1.0;
   for(int i=1; i<=imax; i++)
