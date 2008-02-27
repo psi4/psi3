@@ -206,15 +206,15 @@ void parsing()
     }
   }
 
-  int isotopes_given = ip_exist(":DBOC:ISOTOPES",0);
+  int isotopes_given = ip_exist("ISOTOPES",0);
   if (isotopes_given) {
     Params.nisotope = 0;
-    ip_count(":DBOC:ISOTOPES",&Params.nisotope,0);
+    ip_count("ISOTOPES",&Params.nisotope,0);
     if (Params.nisotope == 0)
       done("Keyword ISOTOPES should be a vector of num_atoms elements");
     Params.isotopes = new char*[Params.nisotope];
     for(int atom=0; atom<Params.nisotope; atom++) {
-      ip_string(":DBOC:ISOTOPES",&(Params.isotopes[atom]),1,atom);
+      ip_string("ISOTOPES",&(Params.isotopes[atom]),1,atom);
     }
   }
   else {
