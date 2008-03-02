@@ -4,6 +4,11 @@
 subdirs = \
 installation progman userman
 
+DOXYGEN = @DOXYGEN@
+ifneq ($(DOXYGEN),NO)
+  subdirs += doxygen
+endif
+
 all: default
 
 default:

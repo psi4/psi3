@@ -288,6 +288,27 @@ AC_PROG_LATEX2HTML
 AC_PROG_DVIPS
 AC_PROG_BIBTEX
 
+####
+# Check for doxygen and it buddies
+####
+AC_CHECK_PROGS(DOXYGEN,doxygen,NO)
+DOT=yes
+AC_ARG_WITH(dot,
+[  --with-dot              Gives the path to the dot graph generator.],
+DOT=$withval
+)
+DOT_PATH=""
+if test X$DOT = Xno; then
+  HAVE_DOT=NO
+elif test X$DOT = Xyes; then
+  AC_CHECK_PROG(HAVE_DOT,dot,YES,NO)
+else
+  HAVE_DOT=YES
+  DOT_PATH=$DOT
+fi
+AC_SUBST(DOT_PATH)
+AC_SUBST(HAVE_DOT)
+
 ########
 ## Check for libraries
 ########
@@ -777,6 +798,8 @@ AC_CONFIG_FILES([include/Makefile
           doc/installation/Makefile
           doc/progman/Makefile doc/userman/Makefile
           doc/userman/prsty.bst
+          doc/doxygen/Makefile
+          doc/doxygen/doxygen.cfg
 
           src/lib/libdpd/Makefile
           src/lib/libiwl/Makefile
