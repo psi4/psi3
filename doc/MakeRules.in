@@ -79,11 +79,6 @@ htmlclean:
 # keep the configuration information and makefiles up-to-date
 #
 
-top_srcdir = @top_srcdir@
-mysrcdir = @srcdir@
-# this is checked from the documentation subdirs, so we need two-levels up
-top_objdir = ../..
-
 $(top_srcdir)/configure: $(top_srcdir)/configure.ac $(top_srcdir)/aclocal.m4
 	cd $(top_srcdir) && autoconf
 
