@@ -9,6 +9,7 @@
 // NOTE: on IBM AIX 4.3.3 with IBM VisualAge C++ 5.0.2.0 delete[] doesn't seem
 // to release the memory and memory leaks result. Using malloc/free instead.
 #include <iostream>
+#include <sstream>
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
@@ -28,8 +29,13 @@ FLOAT** create_matrix(int a, int b)
 
     // Enough memory given by user?
     size_t memory_needed = sizeof(FLOAT*)*a + sizeof(FLOAT)*a*b;
-    if (memory_needed > Params.memory)
-      done("create_matrix failed -- would exceed user-specified memory");
+    if (memory_needed > Params.memory) {
+      std::ostringstream oss;
+      oss << "create_matrix failed -- would exceed user-specified memory" << std::endl
+          << "  need " << memory_needed << " bytes (nrow = " << a << ", ncol = " << b << ")" << std::endl
+          << "  have " << Params.memory << " bytes" << std::endl;
+      done(oss.str().c_str());
+    }
     Params.memory -= memory_needed;
 
     M = (FLOAT**) malloc(sizeof(FLOAT*)*a);
