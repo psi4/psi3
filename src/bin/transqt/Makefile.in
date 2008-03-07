@@ -36,6 +36,6 @@ include $(BINOBJ:%.o=%.d)
 endif
 
 install_man:: transqt.1
-	$(MKDIRS) $(mandir)/man1
-	$(INSTALL_INCLUDE) $^ $(mandir)/man1
+	$(MKDIRS) $(DESTDIR)$(mandir)/man1
+	$(INSTALL_INCLUDE) $^ $(DESTDIR)$(mandir)/man1
 

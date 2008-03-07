@@ -17,5 +17,5 @@ include $(BINOBJ:%.o=%.d)
 endif
 
 install_man:: tocprint.1
-	$(MKDIRS) $(mandir)/man1
-	$(INSTALL_PROGRAM) $(srcdir)/tocprint.1 $(mandir)/man1
+	$(MKDIRS) $(DESTDIR)$(mandir)/man1
+	$(INSTALL_PROGRAM) $(srcdir)/tocprint.1 $(DESTDIR)$(mandir)/man1

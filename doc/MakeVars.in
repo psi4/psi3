@@ -11,7 +11,6 @@ dvidir = $(docdir)/dvi
 psdir = $(docdir)/ps
 htmldir = $(docdir)/html
 top_srcdir = @top_srcdir@
-datarootdir = @datarootdir@
 # this file is used by the subdirectories, so top_objdir is relative to those
 top_objdir = ../..
 currdir = $(shell echo `pwd`)

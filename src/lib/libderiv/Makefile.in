@@ -66,11 +66,11 @@ dclean:
 targetclean:
 
 install: $(PSITARGET) $(TARGET_HEADERS)
-	$(MKDIRS) $(libdir)
-	$(INSTALL_DATA) $< $(libdir)
-	$(RANLIB) $(libdir)/`basename $(PSITARGET)`
-	$(MKDIRS) $(incdir)/libderiv
-	$(INSTALL_INCLUDE) $(TARGET_HEADERS) $(incdir)/libderiv
+	$(MKDIRS) $(DESTDIR)$(libdir)
+	$(INSTALL_DATA) $< $(DESTDIR)$(libdir)
+	$(RANLIB) $(DESTDIR)$(libdir)/`basename $(PSITARGET)`
+	$(MKDIRS) $(DESTDIR)$(incdir)/libderiv
+	$(INSTALL_INCLUDE) $(TARGET_HEADERS) $(DESTDIR)$(incdir)/libderiv
 
 #
 # keep the configuration information and makefiles up-to-date

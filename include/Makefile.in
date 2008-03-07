@@ -26,8 +26,8 @@ HEADERS = psiconfig.h psitypes.h ccfiles.h masses.h physconst.h psifiles.h symme
 install: install_inc
 
 install_inc: $(HEADERS)
-	$(MKDIRS) $(incdir)
-	$(INSTALL_INCLUDE) $^ $(incdir)
+	$(MKDIRS) $(DESTDIR)$(incdir)
+	$(INSTALL_INCLUDE) $^ $(DESTDIR)$(incdir)
 
 $(top_srcdir)/configure: $(top_srcdir)/configure.ac $(top_srcdir)/aclocal.m4
 	cd $(top_srcdir) && autoconf

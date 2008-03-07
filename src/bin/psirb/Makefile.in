@@ -15,7 +15,7 @@ LDFLAGS += $(RUBYLDFLAGS)
 # It's only there to fix some link references.
 PSILIBS = -lPSI_chkpt -lPSI_psio
 
-CXXINC += $(RUBYINC) -DINSTALLEDPSIDATADIR=\"$(datadir)\"
+CXXINC += $(RUBYINC) -DINSTALLEDPSIDATADIR=\"$(pkgdatadir)\"
 CXXSRC = psirb.cc ruby.cc task.cc zentry.cc irb.cc common.cc matrix.cc
 
 BINOBJ = $(CXXSRC:%.cc=%.o)

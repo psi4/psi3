@@ -26,19 +26,26 @@ srcdir=`(cd $srcdir; pwd)`
 
 
 objincdir='$(top_objdir)/include'
-AC_SUBST(objincdir)
+AC_SUBST([objincdir])
 
-docdir='$(prefix)/doc'
-mandir='$(docdir)/man'
-txtdir='$(docdir)/txt'
-htmldir='$(docdir)/html'
-dvidir='$(docdir)/dvi'
-
-AC_SUBST(docdir)
-AC_SUBST(mandir)
-AC_SUBST(htmldir)
-AC_SUBST(dvidir)
-AC_SUBST(txtdir)
+if test -z $docdir; then
+       docdir='$(datadir)/doc/$(PACKAGE)'
+       AC_SUBST([docdir])
+fi
+if test -z $txtdir; then
+       txtdir='$(docdir)/txt'
+       AC_SUBST([txtdir])
+fi
+if test -z $htmldir; then
+       htmldir='$(docdir)/html'
+       AC_SUBST([htmldir])
+fi
+if test -z $dvidir; then
+       dvidir='$(docdir)/dvi'
+       AC_SUBST([dvidir])
+fi
+pkgdatadir='$(datadir)/psi'
+AC_SUBST([pkgdatadir])
 
 INSTALL_INCLUDE='$(top_srcdir)/bin/installinc.sh' AC_SUBST(INSTALL_INCLUDE)
 MKDIRS='$(top_srcdir)/bin/mkdirs.sh' AC_SUBST(MKDIRS)

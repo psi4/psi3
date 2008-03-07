@@ -5,7 +5,7 @@ include ../MakeVars
 
 PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CXXINC += -DINSTALLEDPSIDATADIR=\"$(datadir)\"
+CXXINC += -DINSTALLEDPSIDATADIR=\"$(pkgdatadir)\"
 
 CXXSRC = input.cc parsing.cc read_cart.cc read_zmat.cc reorient.cc io.cc \
 find_symmetry.cc count_uniques.cc functions.cc sym_operations.cc atom_num.cc \
@@ -25,6 +25,6 @@ include $(BINOBJ:%.o=%.d)
 endif
 
 install_man:: input.1
-	$(MKDIRS) $(mandir)/man1
-	$(INSTALL_INCLUDE) $^ $(mandir)/man1
+	$(MKDIRS) $(DESTDIR)$(mandir)/man1
+	$(INSTALL_INCLUDE) $^ $(DESTDIR)$(mandir)/man1
 

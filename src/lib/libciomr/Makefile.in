@@ -4,8 +4,6 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-CXXDEF += -DBUFF=0 -DSITEDIR=\"$(datadir)\"
-
 PSITARGET = $(top_objdir)/lib/libPSI_ciomr.a
 
 CXXSRC = \
@@ -53,5 +51,5 @@ include $(LIBOBJ:%.o=%.d)
 endif
 
 install_inc:: libciomr.h
-	$(MKDIRS) $(incdir)/libciomr
-	$(INSTALL_INCLUDE) $^ $(incdir)/libciomr
+	$(MKDIRS) $(DESTDIR)$(incdir)/libciomr
+	$(INSTALL_INCLUDE) $^ $(DESTDIR)$(incdir)/libciomr

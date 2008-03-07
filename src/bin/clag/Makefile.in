@@ -21,5 +21,5 @@ include $(BINOBJ:%.o=%.d)
 endif
 
 install_man:: clag.1
-	$(MKDIRS) $(mandir)/man1
-	$(INSTALL_INCLUDE) $^ $(mandir)/man1
+	$(MKDIRS) $(DESTDIR)$(mandir)/man1
+	$(INSTALL_INCLUDE) $^ $(DESTDIR)$(mandir)/man1

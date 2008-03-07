@@ -35,6 +35,6 @@ include $(LIBOBJ:%.o=%.d)
 endif
 
 install_inc:: qt.h
-	$(MKDIRS) $(incdir)/libqt
-	$(INSTALL_INCLUDE) $^ $(incdir)/libqt
+	$(MKDIRS) $(DESTDIR)$(incdir)/libqt
+	$(INSTALL_INCLUDE) $^ $(DESTDIR)$(incdir)/libqt
 

@@ -51,8 +51,8 @@ $(PSITARGET): $(ALLOC) $(BINOBJ) $(PSILIBS)
 	$(LD) $(LDFLAGS) -o $@ $^ $(LDLIBS)
 
 install_target:: $(PSITARGET)
-	$(MKDIRS) $(bindir)
-	$(INSTALL_PROGRAM) $< $(bindir)
+	$(MKDIRS) $(DESTDIR)$(bindir)
+	$(INSTALL_PROGRAM) $< $(DESTDIR)$(bindir)
 
 #
 # clean up
