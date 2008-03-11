@@ -17,7 +17,9 @@
 
 #include <cstdio>
 #include <cstdlib>
+#include <unistd.h>
 #include <cstring>
+#include <ctime>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <psifiles.h>          /* where return values are */
@@ -25,6 +27,8 @@
 #include <sys/wait.h>
 #include <libpsio/psio.h>
 #include <psifiles.h>
+
+#include <sys/times.h>
 
 #define MXEXEC 100
 #define MAX_EXEC_STR 80
@@ -39,6 +43,11 @@ char *psi_file_prefix;
 }
 
 namespace psi { namespace psi3 {
+
+time_t time_start, time_end;
+struct tms total_tmstime;
+
+
 int get_ndisp(void);
 /* 
   the following must stay in scope throughout the run, else the 
@@ -54,6 +63,8 @@ extern char **parse_var(int *nvars, int mxvars, char *name);
 extern void runcmd(int *errcod, char *cmd);
 int parse_cmdline(int argc, char *argv[]);
 void print_welcome(FILE *outfile);
+void tstart_psi3driver(FILE *outfile);
+void tstop_psi3driver(FILE *outfile);
 
 /* boolean for automatically running input program first in all procedures */
 int auto_input;
@@ -103,7 +114,7 @@ int main(int argc, char *argv[])
     psi3_abort();
 
   if (have_outfile) {
-    tstart(outfile);
+    tstart_psi3driver(outfile);
     print_welcome(outfile);
   }
 
@@ -538,10 +549,10 @@ int main(int argc, char *argv[])
       exit(1);
     }
 
-    fprintf(outfile,"\n                         ---------------------------\n");
+    fprintf(outfile,"\n                          --------------------------\n");
     fprintf(outfile,"                          PSI3 Computation Completed\n");
     fprintf(outfile,"                          --------------------------\n");
-    tstop(outfile);
+    tstop_psi3driver(outfile);
   }
 
   exit(0);
@@ -866,6 +877,63 @@ fprintf(outfile,
 "    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)\n");
 fprintf(outfile,
 "    -----------------------------------------------------------------------    \n");
+}
+
+void tstart_psi3driver(FILE *outfile)
+{
+  using namespace psi::psi3;
+
+  int i,error;
+  char *name;
+  name = (char *) malloc(40 * sizeof(char));
+  error = gethostname(name, 40);
+  if(error != 0) strncpy(name,"nohostname", 11);
+
+  time_start = time(NULL);
+
+  for (i=0; i < 78 ; i++) {
+    fprintf(outfile,"*");
+  }
+  fprintf(outfile,"\n");
+
+  fprintf(outfile,"PSI3 started on %s at %s\n", name, ctime(&time_start));
+
+  free(name);
+}
+
+void tstop_psi3driver(FILE *outfile)
+{
+  using namespace psi::psi3;
+
+  int i;
+  int error;
+  time_t total_time;
+  struct tms total_tmstime;
+  char *name;
+  double user_s, sys_s;
+
+  name = (char *) malloc(40 * sizeof(char));
+  error = gethostname(name, 40);
+  if(error != 0) strncpy(name,"nohostname", 11);
+
+  time_end = time(NULL);
+  total_time = time_end - time_start;
+
+  times(&total_tmstime);
+  const long clk_tck = sysconf(_SC_CLK_TCK);
+  user_s = ((double) total_tmstime.tms_utime)/clk_tck;
+  sys_s = ((double) total_tmstime.tms_stime)/clk_tck;
+
+  fprintf(outfile,"\n");
+  fprintf(outfile,"PSI3 stopped on %s at %s\n", name, ctime(&time_end));
+  fprintf(outfile,"Total PSI3 wall time %10d seconds = %10.2f minutes\n",
+          total_time, ((double) total_time)/60.0);
+
+  for (i=0; i < 78 ; i++) {
+    fprintf(outfile,"*");
+  }
+
+  free(name);
 }
 
 }} // namespace psi::psi3
