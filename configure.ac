@@ -808,6 +808,7 @@ AC_CONFIG_FILES([include/Makefile
           doc/doxygen/Makefile
           doc/doxygen/doxygen.cfg
 
+          src/lib/liboptions/Makefile
           src/lib/libdpd/Makefile
           src/lib/libiwl/Makefile
           src/lib/libpsio/Makefile

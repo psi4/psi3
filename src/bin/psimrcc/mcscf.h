@@ -13,9 +13,9 @@ namespace psi{ namespace psimrcc{
 */
 class CCMCSCF{
 public:
-    CCMCSCF();
+  CCMCSCF();
 
-    ~CCMCSCF();
+  ~CCMCSCF();
 
 };
 
