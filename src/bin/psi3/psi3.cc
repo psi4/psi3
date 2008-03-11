@@ -1,6 +1,6 @@
 /*! \file
     \ingroup PSI3
-    \brief Enter brief description of file here 
+    \brief This is the main PSI3 driver program
 */
 /*
  * PSI3
@@ -46,12 +46,14 @@ int get_ndisp(void);
 */
 
 char tmpstr_input[200], tmpstr_output[200], tmpstr_prefix[200];
+char *ofname = NULL;
 
 void psi3_abort(void);
 int execut(char **module_names, int num_modules, int depth);
 extern char **parse_var(int *nvars, int mxvars, char *name);
 extern void runcmd(int *errcod, char *cmd);
 int parse_cmdline(int argc, char *argv[]);
+void print_welcome(FILE *outfile);
 
 /* boolean for automatically running input program first in all procedures */
 int auto_input;
@@ -61,6 +63,10 @@ int auto_check;
 int called_from_dboc;
 /* boolean for whether $done should be called */
 int call_done;
+/* boolean to know if the driver should write to the output file or not 
+   (the psi test driver wants to get stdout info only by running
+   auto_check, and in such a case we don't want to write to output...) */
+int have_outfile;
 }} // namespace psi::psi3
 
 int main(int argc, char *argv[])
@@ -96,7 +102,12 @@ int main(int argc, char *argv[])
   if (!parse_cmdline(argc,argv))
     psi3_abort();
 
-  fprintf(outfile, "\n\n The PSI3 Execution Driver \n");
+  if (have_outfile) {
+    tstart(outfile);
+    print_welcome(outfile);
+  }
+
+  fprintf(stdout, "\n\n The PSI3 Execution Driver \n");
 
   /* To find psi.dat first check the environment, then its location 
      after installation */
@@ -110,13 +121,13 @@ int main(int argc, char *argv[])
     psidat_filename = strdup(INSTALLEDPSIDATADIR "/psi.dat");
   psidat = fopen( psidat_filename, "r");
   if (psidat == NULL) {
-    fprintf(outfile, "Warning: didn't find psi.dat at %s\n", psidat_filename);
+    fprintf(stdout, "Warning: didn't find psi.dat at %s\n", psidat_filename);
   }
   free(psidat_filename);
 
   ip_set_uppercase(1);
-  ip_initialize(infile, outfile);
-  ip_append(psidat,outfile);
+  ip_initialize(infile, stdout);
+  ip_append(psidat,stdout);
   ip_cwk_clear();
   ip_cwk_add(":DEFAULT");
   ip_cwk_add(":PSI");
@@ -126,7 +137,7 @@ int main(int argc, char *argv[])
   /* read in input parameters */
   errcod = ip_string("WFN",&wfn,0);
   if (errcod != IPE_OK) {
-    fprintf(outfile,"Error: Could not read required keyword WFN from input\n");
+    fprintf(stdout,"Error: Could not read required keyword WFN from input\n");
     psi3_abort();
   }
 
@@ -143,7 +154,7 @@ int main(int argc, char *argv[])
     if (errcod == IPE_KEY_NOT_FOUND)
       check = 0;
     else if (errcod != IPE_OK) {
-      fprintf(outfile, 
+      fprintf(stdout, 
               "Error: A problem arose reading the optional keyword 'check'.\n");
       psi3_abort();
     }
@@ -155,7 +166,7 @@ int main(int argc, char *argv[])
      if (errcod == IPE_KEY_NOT_FOUND)
      disp = 0;
      else if (errcod != IPE_OK) {
-     fprintf(outfile, 
+     fprintf(stdout, 
      "Error: A problem arose reading the optional keyword 'disp'.\n");
      psi3_abort();
      }
@@ -164,7 +175,7 @@ int main(int argc, char *argv[])
      if (errcod == IPE_KEY_NOT_FOUND)
      opt = 0;
      else if (errcod != IPE_OK) {
-     fprintf(outfile, 
+     fprintf(stdout, 
      "Error: A problem arose reading the optional keyword 'opt'.\n");
      psi3_abort();
      }
@@ -173,7 +184,7 @@ int main(int argc, char *argv[])
      if (errcod == IPE_KEY_NOT_FOUND)
      freq = 0;
      else if (errcod != IPE_OK) {
-     fprintf(outfile, 
+     fprintf(stdout, 
      "Error: A problem arose reading the optional keyword 'freq'.\n");
      psi3_abort();
      }
@@ -186,7 +197,7 @@ int main(int argc, char *argv[])
     strcpy(calctyp,"SP");
   }
   else if (errcod != IPE_OK) {
-    fprintf(outfile, "Trouble reading JOBTYPE from input file\n");
+    fprintf(stdout, "Trouble reading JOBTYPE from input file\n");
     psi3_abort();
   }
 
@@ -213,7 +224,7 @@ int main(int argc, char *argv[])
       JobType = DBOC;
   }
   else {
-    fprintf(outfile,"Error: Unrecognized calculation type %s\n", calctyp);
+    fprintf(stdout,"Error: Unrecognized calculation type %s\n", calctyp);
     psi3_abort();
   }
 
@@ -241,73 +252,142 @@ int main(int argc, char *argv[])
   if ((strcmp(reftyp,"RHF")!=0) && (strcmp(reftyp,"ROHF")!=0) &&
       (strcmp(reftyp,"UHF")!=0) && (strcmp(reftyp,"TWOCON")!=0)) 
     {
-      fprintf(outfile,"Error: bad 'reference'.\n");
-      fprintf(outfile,"Must be one of: RHF, ROHF, UHF, TWOCON\n");
+      fprintf(stdout,"Error: bad 'reference'.\n");
+      fprintf(stdout,"Must be one of: RHF, ROHF, UHF, TWOCON\n");
       psi3_abort();
     }
 
   if ((strcmp(dertyp,"NONE")!=0) && (strcmp(dertyp,"FIRST")!=0) &&
       (strcmp(dertyp,"SECOND")!=0) && (strcmp(dertyp,"RESPONSE")!=0))
     {
-      fprintf(outfile,"Error: bad 'dertype'.\n");
-      fprintf(outfile,"Must be one of: NONE, FIRST, SECOND, or RESPONSE\n");
+      fprintf(stdout,"Error: bad 'dertype'.\n");
+      fprintf(stdout,"Must be one of: NONE, FIRST, SECOND, or RESPONSE\n");
       psi3_abort();
     }
 
   /* print out what type of calculation it is */
+  fprintf(stdout, "\nPSI3 will perform a %s %s ", reftyp, wfn);
+  if (have_outfile)
   fprintf(outfile, "\nPSI3 will perform a %s %s ", reftyp, wfn);
   if (JobType == OPT) {
-    if (strcmp(dertyp,"FIRST")==0) 
+    if (strcmp(dertyp,"FIRST")==0) {
+      fprintf(stdout,"optimization via analytic gradients.\n");
+      if (have_outfile)
       fprintf(outfile,"optimization via analytic gradients.\n");
-    else if (strcmp(dertyp,"NONE")==0)
+    }
+    else if (strcmp(dertyp,"NONE")==0) {
+      fprintf(stdout,"optimization via energy points.\n");
+      if (have_outfile)
       fprintf(outfile,"optimization via energy points.\n");
-    else 
+    }
+    else {
+      fprintf(stdout,"optimization using DERTYPE=%s.\n", dertyp);
+      if (have_outfile)
       fprintf(outfile,"optimization using DERTYPE=%s.\n", dertyp);
+    }
   }
   else if (JobType == DISP) {
-    if (strcmp(dertyp,"NONE")==0)
+    if (strcmp(dertyp,"NONE")==0) {
+      fprintf(stdout,"displacement computation.\n");
+      if (have_outfile)
       fprintf(outfile,"displacement computation.\n");
-    else if (strcmp(dertyp,"FIRST")==0)
+    }
+    else if (strcmp(dertyp,"FIRST")==0) {
+      fprintf(stdout, "gradient displacement computation.\n");
+      if (have_outfile)
       fprintf(outfile, "gradient displacement computation.\n");
-    else if (strcmp(dertyp,"SECOND")==0)
+    }
+    else if (strcmp(dertyp,"SECOND")==0) {
+      fprintf(stdout, "Hessian displacement computation.\n");
+      if (have_outfile)
       fprintf(outfile, "Hessian displacement computation.\n");
+    }
   }
   else if (JobType == FREQ) {
-    if (strcmp(dertyp,"NONE")==0)
+    if (strcmp(dertyp,"NONE")==0) {
+      fprintf(stdout,"frequency computation via energies.\n");
+      if (have_outfile)
       fprintf(outfile,"frequency computation via energies.\n");
-    else if (strcmp(dertyp,"FIRST")==0)
+    }
+    else if (strcmp(dertyp,"FIRST")==0) {
+      fprintf(stdout,"frequency computation via gradients.\n");
+      if (have_outfile)
       fprintf(outfile,"frequency computation via gradients.\n");
-    else if (strcmp(dertyp,"SECOND")==0)
+    }
+    else if (strcmp(dertyp,"SECOND")==0) {
+      fprintf(stdout, "analytic frequency computation.\n");
+      if (have_outfile)
       fprintf(outfile, "analytic frequency computation.\n");
+    }
   }
   else if (JobType == SYMM_FC) {
-    if (strcmp(dertyp,"NONE")==0)
+    if (strcmp(dertyp,"NONE")==0) {
+      fprintf(stdout,"symmetric frequency computation via energies.\n");
+      if (have_outfile)
       fprintf(outfile,"symmetric frequency computation via energies.\n");
-    else if (strcmp(dertyp,"FIRST")==0)
+    }
+    else if (strcmp(dertyp,"FIRST")==0) {
+      fprintf(stdout,"symmetric frequency computation via gradients.\n");
+      if (have_outfile)
       fprintf(outfile,"symmetric frequency computation via gradients.\n");
-    else if (strcmp(dertyp,"SECOND")==0)
+    }
+    else if (strcmp(dertyp,"SECOND")==0) {
+      fprintf(stdout, "analytic symmetric frequency computation.\n");
+      if (have_outfile)
       fprintf(outfile, "analytic symmetric frequency computation.\n");
+    }
   }
   else if (JobType == SP) { 
-    if (strcmp(dertyp,"NONE")==0) fprintf(outfile, "energy");
-    else if (strcmp(dertyp,"FIRST")==0) fprintf(outfile, "gradient");
-    else if (strcmp(dertyp,"SECOND")==0) fprintf(outfile, "Hessian");
-    else if (strcmp(dertyp,"RESPONSE")==0) fprintf(outfile,"response property");
-    else fprintf(outfile, "unrecognized-dertype");
+    if (strcmp(dertyp,"NONE")==0) {
+      fprintf(stdout, "energy");
+      if (have_outfile)
+      fprintf(outfile, "energy");
+    }
+    else if (strcmp(dertyp,"FIRST")==0) {
+      fprintf(stdout, "gradient");
+      if (have_outfile)
+      fprintf(outfile, "gradient");
+    }
+    else if (strcmp(dertyp,"SECOND")==0) {
+      fprintf(stdout, "Hessian");
+      if (have_outfile)
+      fprintf(outfile, "Hessian");
+    }
+    else if (strcmp(dertyp,"RESPONSE")==0) {
+      fprintf(stdout,"response property");
+      if (have_outfile)
+      fprintf(outfile,"response property");
+    }
+    else {
+      fprintf(stdout, "unrecognized-dertype");
+      if (have_outfile)
+      fprintf(outfile, "unrecognized-dertype");
+    }
+    fprintf(stdout, " computation.\n");
+    if (have_outfile)
     fprintf(outfile, " computation.\n");
   }
   else if (JobType == OEPROP) {
+    fprintf(stdout, "one-electron properties computation.\n");
+    if (have_outfile)
     fprintf(outfile, "one-electron properties computation.\n");
   }
   else if (JobType == DBOC) {
-    fprintf(outfile, 
+    fprintf(stdout,  
+      "Diagonal Born-Oppenheimer Correction (DBOC) computation.\n");
+    if (have_outfile)
+    fprintf(outfile,  
       "Diagonal Born-Oppenheimer Correction (DBOC) computation.\n");
   }
   else { 
+    fprintf(stdout, "calculation of unrecognized type.\n");
+    if (have_outfile)
     fprintf(outfile, "calculation of unrecognized type.\n");
   }
 
   if (ip_exist("EXEC",0)) { /* User-specified EXEC statement */
+    fprintf(stdout,"Using the user provided execution list from 'exec'.\n"); 
+    if (have_outfile)
     fprintf(outfile,"Using the user provided execution list from 'exec'.\n"); 
     exec = parse_var(&nexec,MXEXEC,"EXEC");
     /* turn off auto-run of $input command */
@@ -355,21 +435,34 @@ int main(int argc, char *argv[])
     if (strcmp(jobtype,"SP"))
       strcat(proced,jobtype);
 
-    if (check || auto_check) {
+    if (auto_check || check) {
+      fprintf(stdout, "Calculation type string = %s\n", proced);
+      if (have_outfile)
       fprintf(outfile, "Calculation type string = %s\n", proced);
+      fprintf(stdout, "Wavefunction            = %s\n", wfn);
+      if (have_outfile)
       fprintf(outfile, "Wavefunction            = %s\n", wfn);
+      fprintf(stdout, "Reference               = %s\n", reftyp);
+      if (have_outfile)
       fprintf(outfile, "Reference               = %s\n", reftyp);
+      fprintf(stdout, "Jobtype                 = %s\n", jobtype);
+      if (have_outfile)
       fprintf(outfile, "Jobtype                 = %s\n", jobtype);
+      fprintf(stdout, "Dertype                 = %s\n", dertyp);
+      if (have_outfile)
       fprintf(outfile, "Dertype                 = %s\n", dertyp);
+      fprintf(stdout, "Direct                  = %s\n", 
+        (direct ? "true" : "false"));
+      if (have_outfile)
       fprintf(outfile, "Direct                  = %s\n", 
         (direct ? "true" : "false"));
     }
 
     if (!ip_exist(proced,0)) {
-      fprintf(outfile,"Error: Did not find a valid calculation type,\n");
-      fprintf(outfile,
+      fprintf(stdout,"Error: Did not find a valid calculation type,\n");
+      fprintf(stdout,
               "probably because of incompatible wfn,dertype,reference.\n");
-      fprintf(outfile,"Full calculation type is: %s\n", proced); 
+      fprintf(stdout,"Full calculation type is: %s\n", proced); 
       psi3_abort();
     }
     exec = parse_var(&nexec,MXEXEC,proced);
@@ -377,37 +470,57 @@ int main(int argc, char *argv[])
   }
 
 
-  if (check || auto_check) {
+  if (auto_check || check) {
+    fprintf(stdout,"\n'CHECK' is YES, so nothing will be executed.\n");
+    fprintf(stdout,
+      "\nThe following programs would otherwise be executed:\n\n");
+    if (have_outfile) {
     fprintf(outfile,"\n'CHECK' is YES, so nothing will be executed.\n");
-    fprintf(outfile,"\nThe following programs would otherwise be executed:\n\n");
+    fprintf(outfile,
+      "\nThe following programs would otherwise be executed:\n\n");
+    }
   }
-  else
-    fprintf(outfile,"\nThe following programs will be executed:\n\n");
+  else {
+    fprintf(stdout,"\nThe following programs will be executed:\n\n");
+    if (have_outfile)
+      fprintf(outfile,"\nThe following programs will be executed:\n\n");
+  }
 
   if(auto_input) {
     /* set up the "input" program execution, which should occur before the 
        rest of the procedure */
     input_exec = parse_var(&nexec_input, MXEXEC, "INPUT");
+    fprintf(stdout, " %s\n", input_exec[0]);
+    if (have_outfile)
     fprintf(outfile, " %s\n", input_exec[0]);
   }
 
   rdepth = 0;
   for (i=0; i<nexec; i++) {
     if (strcmp(exec[i],"END")==0) rdepth=rdepth-1;
-    for (j=0; j<rdepth; j++) fprintf(outfile," ");
+    for (j=0; j<rdepth; j++) {
+      fprintf(stdout," ");
+      if (have_outfile) fprintf(outfile," ");
+    }
     if (strcmp(exec[i],"REPEAT")==0) {
       rdepth=rdepth+1;
-      fprintf(outfile," %s %s\n",exec[i],exec[i+1]);
+      fprintf(stdout," %s %s\n",exec[i],exec[i+1]);
+      if (have_outfile) fprintf(outfile," %s %s\n",exec[i],exec[i+1]);
       i++;
     }
     else if (strlen(exec[i]) != 0)
-	fprintf(outfile," %s\n",exec[i]);
+      fprintf(stdout," %s\n",exec[i]);
+      if (have_outfile) fprintf(outfile," %s\n",exec[i]);
   }
 
-  fprintf(outfile,"\n");
+  fprintf(stdout,"\n");
+  if (have_outfile) fprintf(outfile,"\n");
+  
+  /* don't write in between, b/c modules will be writing there...*/
+  if (have_outfile) fclose(outfile);
+  
   if(auto_input && !check && !auto_check) execut(input_exec,1,0);
   if (!check && !auto_check) execut(exec,nexec,0); 
-
 
   /* clean up and free memory */
   free(wfn);
@@ -418,6 +531,19 @@ int main(int argc, char *argv[])
   ip_done();
 
   /* Normal completion */
+  if (have_outfile) {
+    outfile = fopen(ofname, "a");
+    if (outfile == NULL) {
+      fprintf(stderr, "Error: could not open output file %s\n", ofname);
+      exit(1);
+    }
+
+    fprintf(outfile,"\n                         ---------------------------\n");
+    fprintf(outfile,"                          PSI3 Computation Completed\n");
+    fprintf(outfile,"                          --------------------------\n");
+    tstop(outfile);
+  }
+
   exit(0);
 }
 
@@ -447,14 +573,14 @@ int execut(char **exec, int nexec, int depth)
   for (i=0; i<nexec; i++) {
     if (strcmp(exec[i],"END")==0) return(i);
     if (strcmp(exec[i],"REPEAT")!=0) {
-      fprintf(outfile,"%s%s\n", spaces, exec[i]);
+      fprintf(stdout,"%s%s\n", spaces, exec[i]);
       runcmd(&errcod,exec[i]);
 
       /* fprintf(stderr,"%serrcod before filter is %d\n",spaces,errcod); */
 
       /* exited with signal */
       if (WIFSIGNALED(errcod)) {
-        fprintf(outfile,"\nCommand %s was terminated with signal %d",
+        fprintf(stdout,"\nCommand %s was terminated with signal %d",
                 exec[i], WTERMSIG(errcod));
 	psi3_abort();
       }
@@ -470,9 +596,9 @@ int execut(char **exec, int nexec, int depth)
         || !(strcmp(exec[i],"optking --disp_freq_grad_cart")) 
         || !(strcmp(exec[i],"optking --disp_freq_energy_cart")) 
         ) {
-        /* fprintf(outfile, "optking got exit code %d\n", errcod); */
+        /* fprintf(stdout, "optking got exit code %d\n", errcod); */
         for (j=i; j<nexec; j++) {
-          /* fprintf(outfile,"Scanning exec[%d] = %s\n", j, exec[j]);  */
+          /* fprintf(stdout,"Scanning exec[%d] = %s\n", j, exec[j]);  */
           if (strcmp(exec[j],"NUM_DISP")==0) {	
             sprintf(exec[j],"%d",errcod);
          /*   sprintf(exec[j], "%d", get_ndisp() ); */
@@ -488,22 +614,22 @@ int execut(char **exec, int nexec, int depth)
           if (strcmp(exec[j],"END")==0) break;
 	}
 	if (j==nexec) {
-          fprintf(outfile,"PSI3 caught ENDLOOP signal but no END below!\n");
+          fprintf(stdout,"PSI3 caught ENDLOOP signal but no END below!\n");
           psi3_abort();
         }
         else return(-j);
       }
       /* if we got a 'command failed' failed flag */
       else if (errcod == PSI_RETURN_FAILURE) {
-        fprintf(outfile,"\nCommand %s has returned a fail status.", exec[i]);
+        fprintf(stdout,"\nCommand %s has returned a fail status.", exec[i]);
 	psi3_abort();
       }
     }
     else {
       sscanf(exec[i+1], "%d", &nrep);
-      fprintf(outfile, "%sREPEAT (%d)\n", spaces, nrep);
+      fprintf(stdout, "%sREPEAT (%d)\n", spaces, nrep);
       for (j=0; j<nrep; j++) {
-        fprintf(outfile, "%s CYCLE %d\n", spaces, j+1);
+        fprintf(stdout, "%s CYCLE %d\n", spaces, j+1);
         inloop = execut(&(exec[i+2]),nexec-i-2,depth+1);
 	if (inloop < 0) {
           inloop = -inloop;
@@ -516,7 +642,9 @@ int execut(char **exec, int nexec, int depth)
   return(i);
 }
 
-/* this code is essentially the same as in the psi_start(&infile,&outfile,&psi_file_prefix,) lib funct */
+/* this code is essentially the same as in the 
+psi_start(&infile,&outfile,&psi_file_prefix,) lib funct 
+*/
 int parse_cmdline(int argc, char *argv[])
 {
   int i,errcod;
@@ -526,13 +654,14 @@ int parse_cmdline(int argc, char *argv[])
   int found_if_p = 0;           /* found input file name with -i */
   int found_of_p = 0;           /* found output file name with -o */
   int found_fp_p = 0;           /* found file prefix name with -p */
-  char *ifname=NULL, *ofname=NULL, *fprefix=NULL, *arg;
+  char *ifname=NULL, *fprefix=NULL, *arg;
 
   /* defaults */
   auto_input = 1;
   auto_check = 0;
   called_from_dboc = 0;
   call_done = 1;
+  have_outfile = 1;
 
   /* process command-line arguments in sequence */
   for(i=1; i<argc; i++) {
@@ -654,7 +783,24 @@ int parse_cmdline(int argc, char *argv[])
 #error "Have neither putenv nor setenv. Something must be very broken on this system."
 #endif
   }
-  outfile = stdout;
+  else {
+    ofname = "output.dat";
+  }
+
+  // CDS 3/08
+  //outfile = stdout;
+  if ((ofname[0]=='-' && ofname[1]=='\x0') || auto_check==1) {
+    outfile=stdout;
+    have_outfile = 0;
+  }
+  else {
+    outfile = fopen(ofname, "w");
+    if (outfile == NULL) {
+      fprintf(stderr, "Error: could not open output file %s\n", ofname);
+      return(0);
+    }
+  }
+
   if (fprefix != NULL) {
 #if HAVE_PUTENV
     sprintf(tmpstr_prefix,"PSI_PREFIX=%s",fprefix);
@@ -702,6 +848,24 @@ int get_ndisp(void) {
   printf("ndisp: %d\n",ndisp);
   outfile = outfile_psi3;
   return ndisp;
+}
+
+void print_welcome(FILE *outfile)
+{
+fprintf(outfile, 
+"    -----------------------------------------------------------------------    \n");
+fprintf(outfile,
+"            PSI3: An Open-Source Ab Initio Electronic Structure Package \n");
+fprintf(outfile,
+"                                Version 3.4 Alpha\n\n");
+fprintf(outfile,
+"    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,\n");
+fprintf(outfile,
+"    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,\n");
+fprintf(outfile,
+"    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)\n");
+fprintf(outfile,
+"    -----------------------------------------------------------------------    \n");
 }
 
 }} // namespace psi::psi3

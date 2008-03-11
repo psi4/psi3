@@ -30,7 +30,7 @@ void start_io(int argc, char *argv[])
   dont_project_mos = 0; 
   geomdat_geom = 0;
   save_oldcalc = 0;
-  overwrite_output = 1;
+  overwrite_output = 0;
   no_comshift = 0;
   no_reorient = 0;
 			  

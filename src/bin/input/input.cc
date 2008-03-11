@@ -304,8 +304,7 @@ void print_intro()
 {
   if (print_lvl) {
       fprintf(outfile,"                                --------------\n");
-      fprintf(outfile,"                                  WELCOME TO\n");
-      fprintf(outfile,"                                    PSI  3\n");
+      fprintf(outfile,"                                    INPUT\n");
       fprintf(outfile,"                                --------------\n\n");
       fflush(outfile);
   }

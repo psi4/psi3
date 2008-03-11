@@ -1,7 +1,9 @@
-/*! \file
-    \ingroup GEOM
-    \brief Enter brief description of file here 
+/*! 
+** \file
+** \ingroup GEOM
+** \brief Enter brief description of file here 
 */
+
 /*
 ** READ_GEOM() : Function reads geometry (bohr) from file (usu. geom.dat)
 **
@@ -51,7 +53,8 @@ extern int label2an(char *label);
 **        is encountered.  Actually, also beware that the geometry data can
 **        be enclosed in "geometry = ( ... )"
 */
-int read_geom(int maxlines, int* natom, double** X, double** Y, double** Z, char* fname) 
+int read_geom(int maxlines, int* natom, double** X, double** Y, double** Z, 
+  char* fname) 
 {
 int i ;                      /* loop variable */
 int datalines = 0 ;          /* number of data-containing lines read */

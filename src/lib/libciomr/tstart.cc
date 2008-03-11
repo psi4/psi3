@@ -17,7 +17,7 @@ struct tms total_tmstime;
 
 extern "C" {
 
-/*
+/*!
 ** tstart(): Starts a timer
 **
 ** \param outfile = output file pointer
