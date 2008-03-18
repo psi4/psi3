@@ -42,6 +42,7 @@ namespace psi {
 		char *build_keyword(char *key);
 
 		int exist(char *keyword);
+		int exist_add_prefix(char *keyword);
 
 		char *rd_label();
 		void wt_label(char *label);

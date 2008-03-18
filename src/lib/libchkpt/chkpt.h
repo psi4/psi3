@@ -274,6 +274,7 @@ double *chkpt_rd_exps();
 void chkpt_wt_exps(double*);
 
 int chkpt_exist(char *);
+int chkpt_exist_add_prefix(char *);
 
 int chkpt_rd_override_occ(void);
 void chkpt_wt_override_occ(int);

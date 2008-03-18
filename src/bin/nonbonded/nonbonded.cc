@@ -39,8 +39,12 @@ void start_io(int argc, char *argv[]);
 void stop_io(void);
 void print_intro(void);
 void compute_R(int natom, double **geom, double *R);
+void compute_dXdYdZ(int natom, double **geom, double **dX, double **dY,
+  double **dZ);
 double compute_ddisp(int natom, double *R, double *AN, double s6, double d,
   int damp_flag);
+void compute_ddisp_gradient(int natom, double *AN, double **geom,
+  double s6, double d, int damp_flag, double *gradient);
 int label2an(char *label);
 
 }}; // close namespace decl
@@ -53,6 +57,7 @@ int main(int argc, char *argv[]) {
   double *AC;                     /* atomic charges                     */
   double *AN;                     /* atomic numbers                     */
   double *R;                      /* distance matrix (lwr triangle)     */
+  double **dX, **dY, **dZ;        /* x, y, z differences (lwr triangle) */
   int natom;                      /* number of atoms                    */
   int have_partial_charges=0;     /* flag for partial charges available */
   double s6=1.0;                  /* global scaling parameter (Grimme),
@@ -62,13 +67,16 @@ int main(int argc, char *argv[]) {
   double energy_dd;               /* damped dispersion energy (J/mol)   */
   double energy_dd_hartree;       /* in hartree                         */
   double e_scf;                   /* Hartree-Fock energy (hartree)      */
+  double etot;                    /* prev tot energy+energy_dd_hartree  */
   int damp_flag;                  /* damp the dispersion? 1=yes,0=no    */
   int num_array;                  /* count elements in parsed array     */
   int errcod;                     /* input parsing error code           */
   double tval;                    /* temp var                           */
   char tmpstr[100];               /* temp string for parsing input      */
+  char *dertype;                  /* derivative type from input         */
+  double *gradient;               /* gradient vector                    */
+  int do_deriv;                   /* do a derivative calculation? 1=yes */
   int i,j;
-
 
   start_io(argc,argv);
   print_intro();
@@ -143,7 +151,7 @@ int main(int argc, char *argv[]) {
   fflush(outfile);
 
   /* get the SCF energy so we can print HF+D */
-  if (psio_tocscan(PSIF_CHKPT, "SCF energy") != NULL) {
+  if (chkpt_exist_add_prefix("SCF energy")) { 
     e_scf = chkpt_rd_escf();
     fprintf(outfile, "  Hartree-Fock energy       = %14.9lf hartree\n", e_scf);
     fprintf(outfile, "  Hartree-Fock + dispersion = %14.9lf hartree\n", 
@@ -152,10 +160,54 @@ int main(int argc, char *argv[]) {
 
   fprintf(outfile, "\n");
 
+  /* write the total energy to checkpoint so OPTKING can grab it */
+  if (chkpt_exist_add_prefix("Total energy")) {
+    etot = chkpt_rd_etot();
+  }
+  else etot = 0.0;
+
+  etot += energy_dd_hartree;
+  chkpt_wt_etot(etot);
+
+  /* calculate the gradient if requested */
+  errcod = ip_string("DERTYPE", &dertype, 0);
+  if (errcod == IPE_KEY_NOT_FOUND) {
+     dertype = (char *) malloc(sizeof(char)*5);
+     strcpy(dertype, "NONE");
+   }
+  if (strcmp(dertype, "NONE")==0) do_deriv = 0;
+  else do_deriv = 1; 
+
+  if (do_deriv) {
+    if (chkpt_exist_add_prefix("Energy Gradient")) {
+      gradient = chkpt_rd_grad();
+      fprintf(outfile, "  Energy gradient from checkpoint (hartree/bohr)\n");
+      for (i=0; i<natom; i++) {
+        fprintf(outfile, "  %12.9lf  %12.9lf  %12.9lf\n",
+          gradient[i*3], gradient[i*3+1], gradient[i*3+2]);
+      }
+      fprintf(outfile, "\n");
+    }
+    else {
+      gradient = init_array(3*natom);
+    }
+   
+    compute_ddisp_gradient(natom, AN, geom, s6, d, damp_flag, gradient);
+
+    fprintf(outfile, "  Total energy gradient (hartree/bohr)\n");
+    for (i=0; i<natom; i++) {
+      fprintf(outfile, "  %12.9lf  %12.9lf  %12.9lf\n",
+        gradient[i*3], gradient[i*3+1], gradient[i*3+2]);
+    }
+    fprintf(outfile, "\n");
+    chkpt_wt_grad(gradient);
+  }
+
   /* clean up */
   free(AN);
   free(R);
   if (have_partial_charges) free(AC);
+  if (do_deriv) free(gradient);
   /* free geom --- how exactly is it allocated now? */
   stop_io();
 }
@@ -253,6 +305,35 @@ void compute_R(int natom, double **geom, double *R)
 }
 
 
+/*!
+** compute_dXdYdZ(): Compute the X, Y, and Z differences between each pair 
+** of atoms.  Need this for the gradients.
+**
+** \param natom = number of atoms
+** \param geom  = geometry matrix (cols are x, y, z; rows are atoms)
+** \param dX    = matrix of X distances
+** \param dY    = matrix of Y distances
+** \param dZ    = matrix of Z distances
+**
+** Returns: none
+**
+** \ingroup NONBONDED
+*/
+void compute_dXdYdZ(int natom, double **geom, double **dX, double **dY,
+  double **dZ)
+{
+  int i, j;
+
+  for (i=0; i<natom; i++) {
+    for (j=0; j<natom; j++) {
+      dX[i][j] = (geom[i][0] - geom[j][0]) * _bohr2angstroms;
+      dY[i][j] = (geom[i][1] - geom[j][1]) * _bohr2angstroms;
+      dZ[i][j] = (geom[i][2] - geom[j][2]) * _bohr2angstroms;
+    }
+  }
+
+}
+
 
 /*!
 ** compute_ddisp(): Compute damped dispersion terms 
@@ -290,10 +371,10 @@ double compute_ddisp(int natom, double *R, double *AN, double s6, double d,
       r_vdw = r_i + r_j;
       tval = sqrt(C6i * C6j) * 1000000.0; /* nm^6 -> Ang^6 */
       tval = tval/pow(r, 6.0);
-      printf("Undamped Dispersion term: %14.9lf\n", tval / 4184);
+      // printf("Undamped Dispersion term: %14.9lf\n", tval / 4184);
       if (damp_flag) {
         fdmp = 1.0 / (1.0 + exp(-d * (r / r_vdw - 1.0))); 
-        printf("Damping factor          : %14.9lf\n", fdmp);
+        // printf("Damping factor          : %14.9lf\n", fdmp);
         tval *= fdmp;
       }
       energy += tval;
@@ -302,6 +383,82 @@ double compute_ddisp(int natom, double *R, double *AN, double s6, double d,
 
   energy = -s6 * energy; /* in J mol^-1 */
   return energy;
+}
+
+
+/*!
+** compute_ddisp_gradient(): Compute the gradient of the damped dispersion 
+** terms from S. Grimme, J. Comput. Chem. 27, 1787, 2006
+**
+** \param natom      = number of atoms
+** \param AN         = atomic number for each atom
+** \param geom       = geometry matrix (in bohr)
+** \param s6         = s6 universal dispersion scaling parameter
+** \param d          = d universal dispersion damping exponent
+** \param damp_flag  = 1 to damp dispersion, 0 otherwise (should be 1
+**                     except for testing)
+** \param gradient   = gradient vector to add the results to (x1, y1, z1, ..)
+**
+** Returns: None
+**
+** Don't forget to convert to hartree/bohr
+**
+** \ingroup NONBONDED
+*/
+void compute_ddisp_gradient(int natom, double *AN, double **geom,
+  double s6, double d, int damp_flag, double *gradient)
+{
+  int i, j, ij, Zi, Zj;
+  double energy=0.0, tval, r, r_i, r_j, r_vdw;
+  double C6i, C6j, C6, fdmp, qdmp, prefact, unitconv;
+  double dx, dy, dz;
+
+  /* loop over unique pairs of atoms and evaluate gradient */
+  for (i=0; i<natom; i++) {
+    Zi = (int) AN[i];
+    C6i = vdw_C6_grimme[Zi];
+    r_i = vdw_radii_grimme[Zi];
+    for (j=0; j<natom; j++) {
+      if (j==i) continue;
+
+      dx = (geom[i][0] - geom[j][0]) * _bohr2angstroms;
+      dy = (geom[i][1] - geom[j][1]) * _bohr2angstroms;
+      dz = (geom[i][2] - geom[j][2]) * _bohr2angstroms;
+      r =  sqrt(dx * dx + dy * dy + dz * dz); /* already ang now */
+
+      Zj = (int) AN[j];
+      C6j = vdw_C6_grimme[Zj];
+      r_j = vdw_radii_grimme[Zj];
+      r_vdw = r_i + r_j;
+      prefact = s6 * sqrt(C6i * C6j) * 1000000.0; /* nm^6 -> Ang^6 */
+      tval = 6.0/pow(r, 8.0);
+      if (damp_flag) {
+        qdmp = exp(-d * (r / r_vdw - 1.0));
+        fdmp = 1.0 / (1.0 + qdmp);
+        tval *= fdmp;
+
+        tval -= (d / (r_vdw * pow(r, 7.0))) * (qdmp * fdmp * fdmp);
+        
+      }
+
+      tval *= prefact;
+
+      /* right now we're in J / (mol * Angstrom) */
+      unitconv = _bohr2angstroms / (_na * _hartree2J);
+      tval *= unitconv;
+
+      /* x */
+      gradient[i*3] += tval * dx;
+
+      /* y */
+      gradient[i*3+1] += tval * dy;
+  
+      /* z */
+      gradient[i*3+2] += tval * dz;
+
+    } /* end loop over j */
+  } /* end loop over i */
+
 }
 
 
