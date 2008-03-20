@@ -866,7 +866,6 @@ AC_CONFIG_FILES([include/Makefile
           src/bin/response/Makefile
           src/bin/psirb/Makefile
           src/bin/psimrcc/Makefile
-
           src/bin/nonbonded/Makefile
 
           tests/Makefile
@@ -1005,6 +1004,7 @@ AC_CONFIG_FILES([include/Makefile
           tests/scf-mvd-opt-numer/Makefile
           tests/scf-mvd-opt-puream/Makefile
           tests/scf-mvd-opt-numer-puream/Makefile
+          tests/scf+d-opt1/Makefile
           src/bin/giao/Makefile
 ])
 

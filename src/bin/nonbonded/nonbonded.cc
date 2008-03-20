@@ -106,7 +106,7 @@ int main(int argc, char *argv[]) {
         if ((j = label2an(tmpstr)) != -1) {
           vdw_radii_grimme[j] = tval;
           fprintf(outfile, 
-            "  Using custom value of %6.3lf for vdW radius of element %s\n",
+            "   Using custom value of %6.3lf for vdW radius of element %s\n",
             tval, tmpstr);
         }
       }
@@ -126,7 +126,7 @@ int main(int argc, char *argv[]) {
         if ((j = label2an(tmpstr)) != -1) {
           vdw_C6_grimme[j] = tval;
           fprintf(outfile, 
-            "  Using custom value of %6.3lf for C6 for element %s\n",
+            "   Using custom value of %6.3lf for C6 for element %s\n",
             tval, tmpstr);
         }
       }
@@ -134,9 +134,9 @@ int main(int argc, char *argv[]) {
   } /* end parsing overridden C6 coefficients */
  
   fprintf(outfile, "\n");
-  fprintf(outfile, "  Universal scaling coefficient s6 = %6.4lf\n", s6);
-  fprintf(outfile, "  Universal damping exponent d     = %6.4lf\n", d);
-  fprintf(outfile, "  Damp dispersion                  = %6s\n", 
+  fprintf(outfile, "   Universal scaling coefficient s6 = %6.4lf\n", s6);
+  fprintf(outfile, "   Universal damping exponent d     = %6.4lf\n", d);
+  fprintf(outfile, "   Damp dispersion                  = %6s\n", 
     (damp_flag==1) ? "yes" : "no");
 
   R = init_array((natom*(natom+1))/2);
@@ -145,16 +145,16 @@ int main(int argc, char *argv[]) {
   energy_dd_hartree = energy_dd / (_na * _hartree2J);
 
   fprintf(outfile, "\n");
-  fprintf(outfile, "  Damped dispersion energy  = %14.9lf hartree ", 
+  fprintf(outfile, "   Damped dispersion energy  = %14.9lf hartree ", 
     energy_dd_hartree);
-  fprintf(outfile, "(%14.9lf kcal/mol)\n", (energy_dd / 4184));
+  fprintf(outfile, "(%10.4lf kcal/mol)\n", (energy_dd / 4184));
   fflush(outfile);
 
   /* get the SCF energy so we can print HF+D */
   if (chkpt_exist_add_prefix("SCF energy")) { 
     e_scf = chkpt_rd_escf();
-    fprintf(outfile, "  Hartree-Fock energy       = %14.9lf hartree\n", e_scf);
-    fprintf(outfile, "  Hartree-Fock + dispersion = %14.9lf hartree\n", 
+    fprintf(outfile, "   SCF energy                = %14.9lf hartree\n", e_scf);
+    fprintf(outfile, " * Total SCF+D energy        = %14.9lf hartree\n", 
       e_scf + energy_dd_hartree);
   }
 
@@ -179,6 +179,8 @@ int main(int argc, char *argv[]) {
   else do_deriv = 1; 
 
   if (do_deriv) {
+
+    /* this should never happen if called before $deriv
     if (chkpt_exist_add_prefix("Energy Gradient")) {
       gradient = chkpt_rd_grad();
       fprintf(outfile, "  Energy gradient from checkpoint (hartree/bohr)\n");
@@ -191,10 +193,12 @@ int main(int argc, char *argv[]) {
     else {
       gradient = init_array(3*natom);
     }
-   
+    */
+
+    gradient = init_array(3*natom);
     compute_ddisp_gradient(natom, AN, geom, s6, d, damp_flag, gradient);
 
-    fprintf(outfile, "  Total energy gradient (hartree/bohr)\n");
+    fprintf(outfile, "  Gradient of empirical contribution (hartree/bohr)\n");
     for (i=0; i<natom; i++) {
       fprintf(outfile, "  %12.9lf  %12.9lf  %12.9lf\n",
         gradient[i*3], gradient[i*3+1], gradient[i*3+2]);

@@ -95,6 +95,9 @@ psi: (
   transqt_psimrcc   = "transqt --psimrcc"
   psimrcc           = "psimrcc"
 
+  % NONBONDED
+  nonbonded = "nonbonded"
+
   % -------------------------------- SCF Procedures
   % *** SCF energy ***
   SCFEnergy = ($ints $scf)
@@ -198,6 +201,94 @@ psi: (
   SCFROHFEnergyOEPROP = ($SCFROHFEnergy $oeprop $done)
   SCFTwoConEnergyOEPROP = ERROR
 
+  % -------------------------------- SCF+D Procedures
+  % wfn=scf but it's changed to SCF+D in psi3 driver 
+  % *** SCF+D energy ***
+  SCF+DEnergy = ($ints $scf $nonbonded)
+  SCF+DRHFEnergy = $SCF+DEnergy
+  SCF+DROHFEnergy = $SCF+DEnergy
+  SCF+DUHFEnergy = $SCF+DEnergy
+  SCF+DTwoConEnergy = $SCF+DEnergy
+
+  % *** SCF+D gradients ***
+  SCF+DFirst = ($ints $scf $nonbonded $deriv)
+  SCF+DRHFFirst = ($SCF+DFirst $done)
+  SCF+DROHFFirst = ($SCF+DFirst $done)
+  SCF+DUHFFirst = ($SCF+DFirst $done)
+  SCF+DTwoConFirst = ($SCF+DFirst $done)
+
+  % *** SCF+D second derivatives ***
+  SCF+DSecond = ERROR
+  SCF+DRHFSecond = ERROR
+  SCF+DROHFSecond = ERROR
+  SCF+DUHFSecond = ERROR
+  SCF+DTwoConSecond = ERROR
+
+  % Optimizing geometries with SCF+D gradients
+  SCF+DFirstOpt = (repeat $nopt $SCF+DFirst $geomupdate end $done)
+  SCF+DRHFFirstOpt  = $SCF+DFirstOpt
+  SCF+DROHFFirstOpt  = $SCF+DFirstOpt
+  SCF+DUHFFirstOpt  = $SCF+DFirstOpt
+  SCF+DTwoConFirstOpt  = $SCF+DFirstOpt
+
+  % Optimizing geometries with SCF+D energies
+  SCF+DEnergyOpt = (repeat $nopt $SCF+DEnergy $findif_disp_symm 
+    repeat NUM_DISP $findif_next $findif_input $SCF+DEnergy
+    $findif_energy_save end $findif_grad_energy $geomupdate end $done)
+  SCF+DRHFEnergyOpt = $SCF+DEnergyOpt
+  SCF+DROHFEnergyOpt = $SCF+DEnergyOpt
+  SCF+DUHFEnergyOpt = $SCF+DEnergyOpt
+  SCF+DTwoConEnergyOpt = $SCF+DEnergyOpt
+
+  % *** SCF+D Frequencies by Second Derivatives ***
+  SCF+DSecondFreq = ERROR
+  SCF+DRHFSecondFreq = ERROR
+  SCF+DROHFSecondFreq = ERROR
+  SCF+DUHFSecondFreq = ERROR
+  SCF+DTwoConSecondFreq = ERROR
+
+  % *** SCF+D Frequencies by finite differences of analytic gradients ***
+  SCF+DFirstFreq  = 
+    ($SCF+DEnergy $findif_disp_freq_grad_cart repeat NUM_DISP 
+     $findif_next $findif_input $SCF+DFirst $findif_grad_save end 
+     $findif_freq_grad_cart $done)
+  SCF+DRHFFirstFreq  = $SCF+DFirstFreq
+  SCF+DROHFFirstFreq  = $SCF+DFirstFreq
+  SCF+DUHFFirstFreq  = $SCF+DFirstFreq
+  SCF+DTwoConFirstFreq  = $SCF+DFirstFreq
+
+  % *** SCF+D Frequencies by finite differences of energies ***
+  SCF+DEnergyFreq  = 
+    ($SCF+DEnergy $findif_disp_freq_energy_cart repeat NUM_DISP 
+     $findif_next $findif_input $SCF+DEnergy $findif_energy_save end 
+     $findif_freq_energy_cart $done)
+  SCF+DRHFEnergyFreq  = $SCF+DEnergyFreq
+  SCF+DROHFEnergyFreq  = $SCF+DEnergyFreq
+  SCF+DUHFEnergyFreq  = $SCF+DEnergyFreq
+  SCF+DTwoConEnergyFreq  = $SCF+DEnergyFreq
+
+  % Procedures for symm force constants via differences of analytic gradients
+  SCF+DFirstSymm_FC  = 
+    ($SCF+DEnergy $findif_disp_symm repeat NUM_DISP 
+     $findif_next $findif_input $SCF+DFirst $findif_grad_save end 
+     $findif_freq_grad_symm $done)
+  SCF+DRHFFirstSymm_FC  = $SCF+DFirstSymm_FC
+  SCF+DROHFFirstSymm_FC  = $SCF+DFirstSymm_FC
+  SCF+DUHFFirstSymm_FC  = $SCF+DFirstSymm_FC
+  SCF+DTwoConFirstSymm_FC  = $SCF+DFirstSymm_FC
+
+  % Procedures for force constants via differences of analytic gradients
+  SCF+DFirstFC = 
+    ($SCF+DEnergy $findif_disp_nosymm repeat NUM_DISP 
+     $findif_next $findif_input $SCF+DFirst $findif_grad_save end 
+     $findif_freq_grad_nosymm $done)
+  SCF+DRHFFirstFC  = $SCF+DFirstFC
+  SCF+DROHFFirstFC  = $SCF+DFirstFC
+  SCF+DUHFFirstFC  = $SCF+DFirstFC
+  SCF+DTwoConFirstFC  = $SCF+DFirstFC
+
+
+  % -------------------------------- SCF_MVD Procedures
   % *** SCF_MVD energy ***
   SCF_MVDEnergy = $SCFEnergyOEPROP
   SCF_MVDRHFEnergy = $SCF_MVDEnergy

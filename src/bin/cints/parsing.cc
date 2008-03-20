@@ -59,11 +59,16 @@ namespace psi { namespace CINTS {
     if (UserOptions.make_eri)
       errcod = ip_data("ERI_FILE","%d",&(IOUnits.itap33),0);
     
+    UserOptions.empirical_dispersion = 0;
+    errcod = ip_boolean("EMPIRICAL_DISPERSION", 
+      &UserOptions.empirical_dispersion, 0);
+    
     UserOptions.scf_only = 0;
     errcod = ip_string("WFN",&UserOptions.wfn,0);
     if (UserOptions.wfn == NULL)
       throw std::domain_error("Keyword WFN is missing");
-    if ((!strcmp("SCF",UserOptions.wfn)) || (!strcmp("SCF_MVD",UserOptions.wfn)))
+    if ((!strcmp("SCF",UserOptions.wfn)) || 
+        (!strcmp("SCF_MVD",UserOptions.wfn)))
       UserOptions.scf_only = 1;
     
     UserOptions.num_threads = 1;
@@ -203,9 +208,9 @@ namespace psi { namespace CINTS {
 	UserOptions.make_eri = 0;
 	UserOptions.make_fock = 0;
 	UserOptions.make_deriv1 = 1;
-    UserOptions.make_deriv1_mvd = 0;
-    if (!strcmp("SCF_MVD",UserOptions.wfn))
-      UserOptions.make_deriv1_mvd = 1;
+        UserOptions.make_deriv1_mvd = 0;
+        if (!strcmp("SCF_MVD",UserOptions.wfn))
+          UserOptions.make_deriv1_mvd = 1;
 	UserOptions.symm_ints = 0;
 	UserOptions.dertype = strdup("FIRST");
 	if (!strcmp("SCF",UserOptions.wfn)) {

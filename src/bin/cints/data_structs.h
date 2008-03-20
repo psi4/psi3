@@ -152,6 +152,7 @@ namespace psi {
       double E[3];                       /* electric field vector */
       bool E_given;                      /* Was EFIELD given? */
       enum frametype E_frame;            /* in which frame is the field given? the default is canonical */
+      int empirical_dispersion;          /* add grad to empirical dispersion terms? */
     } UserOptions_t;
     
     typedef struct {

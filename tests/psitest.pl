@@ -5,10 +5,13 @@
 
 #
 # Rules of use:
-# 1) environment must define variable $SRCDIR which points to the source directory where
-#    the input and reference output files are located
-# 2) variable $EXECDIR can be used to specify location of Psi3 executables relative to the directory
-#    where testing is performed
+# 1) environment must define variable $SRCDIR which points to the source 
+#    directory where the input and reference output files are located
+# 2) variable $EXECDIR can be used to specify location of Psi3 executables 
+#    relative to the directory where testing is performed
+#
+# Escape metacharacters in wavefunction match string for file11
+# to enable wfn=SCF+D --- CDS 3/20/08
 #
 
 #
@@ -38,13 +41,13 @@ $PSITEST_TEST_SCRIPT = "runtest.pl";
 
 $PSITEST_SUMMARY_FILE = "../../test-case-results";
 
-# These are definitions that default tester knows about -- should match Psi driver!
+# definitions that default tester knows about -- should match Psi driver!
 @PSITEST_JOBTYPES = ("SP", "OPT", "DISP", "FREQ", "SYMM_FC", "FC", 
 "OEPROP", "DBOC");
 @PSITEST_WFNS = ("SCF", "MP2", "MP2R12", "DETCI", "DETCAS", "CASSCF",
 "RASSCF", "ZAPTN", "BCCD", "BCCD_T", "CC2", "CCSD", "CCSD_T", "CC3", 
 "EOM_CC2", "LEOM_CC2", "EOM_CCSD", "LEOM_CCSD", "OOCCD", "CIS", "EOM_CC3",
-"SCF_MVD","PSIMRCC");
+"SCF_MVD","PSIMRCC","SCF+D");
 @PSITEST_REFTYPES = ("RHF", "ROHF", "UHF", "TWOCON");
 @PSITEST_DERTYPES = ("NONE", "FIRST", "SECOND", "RESPONSE");
 
@@ -173,7 +176,7 @@ sub do_tests
                                   { $fail |= compare_mp2_energy(); last SWITCH2; }
           if ($wfn eq "MP2R12")   { $fail |= compare_mp2r12_energy(); last SWITCH2; }
           if ($wfn eq "PSIMRCC")  { $fail |= compare_psimrcc_energy(); last SWITCH2; }
-
+          if ($wfn eq "SCF+D")  { $fail |= compare_scf_d_energy(); last SWITCH2; }
       }
       
       if ($jobtype eq "SP" && $dertype eq "FIRST") {
@@ -1304,6 +1307,23 @@ sub compare_psimrcc_energy
   return $fail;
 }
 
+sub compare_scf_d_energy
+{
+  my $fail = 0;
+  my $REF_FILE = "$SRC_PATH/output.ref";
+  my $TEST_FILE = "output.dat";
+
+  if(abs(seek_scf_d($REF_FILE) - seek_scf_d($TEST_FILE)) > $PSITEST_ETOL) {
+    fail_test("SCF+D energy"); $fail = 1;
+  }
+  else {
+    pass_test("SCF+D energy");
+  }
+  
+  return $fail;
+}
+
+
 
 
 sub seek_nirreps
@@ -1413,6 +1433,23 @@ sub seek_scf
   close(OUT);
 
   printf "Error: Could not find SCF energy in $_[0].\n";
+  exit 1;
+}
+
+sub seek_scf_d
+{
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  seek(OUT,0,0);
+  while(<OUT>) {
+    if (/\* Total SCF+D energy/) {
+      @data = split(/ =\s+/, $_);
+      ($scf,$junk) = split(/ /, $data[1]);
+      return $scf;
+    }
+  }
+  close(OUT);
+
+  printf "Error: Could not find SCF+D energy in $_[0].\n";
   exit 1;
 }
 
@@ -1694,7 +1731,7 @@ sub seek_energy_file11
   @datafile = <OUT>;
   close(OUT);
 
-  $match = "$_[1]";
+  $match = quotemeta($_[1]);
   $linenum = 0;
   $lasiter = 0;
 
@@ -1722,7 +1759,7 @@ sub seek_natom_file11
   @datafile = <OUT>;
   close(OUT);
 
-  $match = "$_[1]";
+  $match = quotemeta($_[1]);
   $linenum = 0;
   $lasiter = 0;
 
@@ -1750,7 +1787,7 @@ sub seek_geom_file11
   @datafile = <OUT>;
   close(OUT);
 
-  $match = "$_[1]";
+  $match = quotemeta($_[1]);
   $linenum = 0;
   $lasiter = 0;
   $foundit = 0;
@@ -1787,7 +1824,7 @@ sub seek_grad_file11
   @datafile = <OUT>;
   close(OUT);
 
-  $match = "$_[1]";
+  $match = quotemeta($_[1]);
   $linenum = 0;
   $lasiter = 0;
   $foundit = 0;

@@ -1,11 +1,6 @@
 /*! \file
     \ingroup PSI3
-    \brief Enter brief description of file here 
-*/
-/*
- * parse_var.c
- *
- * Here we try to parse the exec list from psi.dat or the user's exec
+    \brief Parse the exec list from psi.dat or the user's exec
  */
 
 #include <cstdio>

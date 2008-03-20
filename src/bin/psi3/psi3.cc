@@ -91,6 +91,7 @@ int main(int argc, char *argv[])
   int i,j,nexec=0,rdepth=0;
   int direct=0;
   int errcod;
+  int plus_d=0;
   char **input_exec;
   int nexec_input;
 
@@ -152,7 +153,20 @@ int main(int argc, char *argv[])
     psi3_abort();
   }
 
+  errcod = ip_boolean("EMPIRICAL_DISPERSION",&plus_d,0);
+  if (plus_d) {
+    if (strcmp(wfn,"SCF")==0) {
+      free(wfn);
+      wfn = strdup("SCF+D");  
+    }
+    else {
+      fprintf(outfile, "Error: EMPIRICAL_DISPERSION not supported for\n");
+      fprintf(outfile, " wavefunctions other than wfn=SCF.\n");
+    }
+  }
+
   errcod = ip_boolean("DIRECT",&direct,0);
+
     
   errcod = ip_string("REFERENCE",&reftyp,0);
   if (errcod == IPE_KEY_NOT_FOUND) {
@@ -478,7 +492,7 @@ int main(int argc, char *argv[])
     }
     exec = parse_var(&nexec,MXEXEC,proced);
     /* fprintf(outfile, "nexec = %d\n", nexec); */
-  }
+  } /* end default sequence from psi.dat */
 
 
   if (auto_check || check) {
