@@ -39,6 +39,6 @@ extern "C" {
 */
 	int chkpt_exist_add_prefix(char *keyword)
 	{
-		_default_chkpt_lib_->exist_add_prefix(keyword);
+		return(_default_chkpt_lib_->exist_add_prefix(keyword));
 	}
 }

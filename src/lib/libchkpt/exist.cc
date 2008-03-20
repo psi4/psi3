@@ -38,6 +38,6 @@ extern "C" {
 */
 	int chkpt_exist(char *keyword)
 	{
-		_default_chkpt_lib_->exist(keyword);
+		return(_default_chkpt_lib_->exist(keyword));
 	}
 }
