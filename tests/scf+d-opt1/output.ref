@@ -1,0 +1,2043 @@
+******************************************************************************
+PSI3 started on julius.chemistry.gatech.edu at Thu Mar 20 11:53:41 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF SCF+D optimization via analytic gradients.
+
+The following programs will be executed:
+
+ input
+ REPEAT 20
+ 20
+  cints
+  cscf
+  nonbonded
+  cints --deriv1
+  optking --opt_step
+ END
+ psiclean
+
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:41 2008
+
+                                --------------
+                                    INPUT
+                                --------------
+
+  LABEL       =	Ar2 HF+D/aug-cc-pVDZ optimization
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /theoryfs/ds/home/sherrill/psi3-bin/share/psi/pbasis.dat
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+           ARGON      0.000000000000     0.000000000000     0.000000000000
+           ARGON      0.000000000000     0.000000000000     6.803013558884
+
+
+  -Rotational constants (cm-1) :
+    A = **********  B =    0.06510  C =    0.06510
+    It is a linear molecule.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+           ARGON      0.000000000000     0.000000000000    -3.401506779442
+           ARGON      0.000000000000     0.000000000000     3.401506779442
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is D2h 
+    Number of irr. rep.      = 8
+    Number of atoms          = 2
+    Number of unique atoms   = 1
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (145700.00000000     0.00023670)
+           ( 21840.00000000     0.00183523)
+           (  4972.00000000     0.00952860)
+           (  1408.00000000     0.03862830)
+           (   459.70000000     0.12408100)
+           (   165.90000000     0.29647100)
+           (    64.69000000     0.42206800)
+           (    26.44000000     0.24171100)
+           (     7.62800000     0.02005090)
+           (     2.99600000    -0.00361000)
+           (     0.65040000     0.00097561) )
+        (S (145700.00000000    -0.00006749)
+           ( 21840.00000000    -0.00051852)
+           (  4972.00000000    -0.00274825)
+           (  1408.00000000    -0.01110070)
+           (   459.70000000    -0.03848200)
+           (   165.90000000    -0.09975990)
+           (    64.69000000    -0.20308800)
+           (    26.44000000    -0.13560800)
+           (     7.62800000     0.50719500)
+           (     2.99600000     0.61289800)
+           (     0.65040000     0.04429680) )
+        (S (145700.00000000     0.00002105)
+           ( 21840.00000000     0.00016257)
+           (  4972.00000000     0.00085546)
+           (  1408.00000000     0.00349745)
+           (   459.70000000     0.01201560)
+           (   165.90000000     0.03213680)
+           (    64.69000000     0.06552790)
+           (    26.44000000     0.04993700)
+           (     7.62800000    -0.22976900)
+           (     2.99600000    -0.42100600)
+           (     0.65040000     0.64233100) )
+        (S (     0.23370000     1.00000000) )
+        (P (   453.70000000     0.00570555)
+           (   106.80000000     0.04304600)
+           (    33.73000000     0.17659100)
+           (    12.13000000     0.40686300)
+           (     4.59400000     0.45254900)
+           (     1.67800000     0.12280100)
+           (     0.59090000    -0.00445996) )
+        (P (   453.70000000    -0.00160655)
+           (   106.80000000    -0.01217140)
+           (    33.73000000    -0.05207890)
+           (    12.13000000    -0.12373700)
+           (     4.59400000    -0.15161900)
+           (     1.67800000     0.14242500)
+           (     0.59090000     0.58450100) )
+        (P (     0.18520000     1.00000000) )
+        (D (     0.73800000     1.00000000) )
+        (S (     0.07090000     1.00000000) )
+        (P (     0.05330000     1.00000000) )
+        (D (     0.24000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 22
+    Number of primitives   = 53
+    Number of AO           = 58
+    Number of SO           = 54
+
+    Irrep    Number of SO
+    -----    ------------
+      1           13
+      2            2
+      3            6
+      4            6
+      5            2
+      6           13
+      7            6
+      8            6
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+           ARGON      0.000000000000     0.000000000000     3.401506779442
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+           ARGON      0.000000000000     0.000000000000    -3.401506779442
+           ARGON      0.000000000000     0.000000000000     3.401506779442
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+           ARGON      0.000000000000     0.000000000000    -1.800000000000
+           ARGON      0.000000000000     0.000000000000     1.800000000000
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+           ARGON      0.000000000000     0.000000000000    -3.401506779442
+           ARGON      0.000000000000     0.000000000000     3.401506779442
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =      47.625952410000
+
+  -The Interatomic Distances in angstroms:
+
+           1           2
+
+    1   0.0000000
+    2   3.6000000   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:42 2008
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:42 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Ar2 HF+D/aug-cc-pVDZ optimization
+    Number of atoms             = 2
+    Number of atomic orbitals   = 58
+    Number of symmetry orbitals = 54
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = D2h
+    Number of irreps                 = 8
+
+    Wrote 134055 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:44 2008
+
+user time   =       1.98 seconds =       0.03 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:44 2008
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = Ar2 HF+D/aug-cc-pVDZ optimization
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy       47.6259524100000
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 594128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.984636e-02
+
+  Using core guess to determine occupations
+
+
+  Symmetry block:   Ag    B1g   B2g   B3g   Au    B1u   B2u   B3u  
+  DOCC:              5     0     2     2     0     5     2     2   
+  SOCC:              0     0     0     0     0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 30792 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1     -1045.6903615039    1.093316e+03    0.000000e+00    0.000000e+00
+    2     -1051.6038457996    5.913484e+00    5.727480e-02    7.758635e-01
+    3     -1053.5425221910    1.938676e+00    1.212184e-02    4.447634e-01
+    4     -1053.5986303761    5.610819e-02    2.391301e-03    1.023402e-01
+    5     -1053.6012428078    2.612432e-03    6.939508e-04    1.948559e-02
+    6     -1053.6012685863    2.577847e-05    7.731657e-05    1.311540e-03
+    7     -1053.6012690292    4.429751e-07    6.144500e-06    1.711344e-04
+    8     -1053.6012690644    3.515970e-08    2.581466e-06    5.091212e-05
+    9     -1053.6012690651    7.553353e-10    3.898952e-07    6.297606e-06
+   10     -1053.6012690652    3.410605e-12    2.520835e-08    5.511224e-07
+   11     -1053.6012690652   -6.821210e-13    4.176405e-09    1.264605e-07
+   12     -1053.6012690652    4.547474e-13    3.417084e-10    1.164531e-08
+   13     -1053.6012690652   -1.136868e-12    1.042202e-10    3.461228e-09
+   14     -1053.6012690652    9.094947e-13    1.928835e-11    7.042272e-10
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1B1u  -118.610057     1Ag   -118.610057     2B1u   -12.322274  
+   2Ag    -12.322265     1B2g    -9.570854     1B3g    -9.570854  
+   1B3u    -9.570853     1B2u    -9.570853     3B1u    -9.570849  
+   3Ag     -9.570847     4Ag     -1.279804     4B1u    -1.277493  
+   5Ag     -0.602301     2B3u    -0.593465     2B2u    -0.593465  
+   2B3g    -0.590463     2B2g    -0.590463     5B1u    -0.581998  
+
+  Unoccupied orbitals
+   6B1u     0.131492     3B2u     0.137599     3B3u     0.137599  
+   6Ag      0.147255     3B2g     0.174994     3B3g     0.174994  
+   7Ag      0.182405     7B1u     0.279712     8Ag      0.486766  
+   4B2u     0.515792     4B3u     0.515792     9Ag      0.537896  
+   1B1g     0.537896     1Au      0.545133     8B1u     0.545133  
+   4B3g     0.578372     4B2g     0.578372     9B1u     0.658241  
+  10Ag      0.946306     5B2u     0.964754     5B3u     0.964754  
+   5B3g     0.983276     5B2g     0.983276    10B1u     1.035157  
+  11Ag      1.335624    11B1u     1.402608     6B2u     1.577487  
+   6B3u     1.577487    12Ag      1.585246     2B1g     1.605593  
+  13Ag      1.605593     2Au      1.615474    12B1u     1.615474  
+   6B3g     1.660384     6B2g     1.660384    13B1u     1.805465  
+
+
+        SCF total energy   =   -1053.601269065153
+        kinetic energy     =    1053.614105303533
+        nuc. attr. energy  =   -2605.270118539842
+        elec. rep. energy  =     498.054744171156
+        potential energy   =   -2107.215374368686
+        virial theorem     =       2.000012183203
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:44 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:44 2008
+
+             ---------------------------------------
+                            NONBONDED                  
+               Evaluate empirical non-bonded terms     
+                        C. David Sherrill              
+             ---------------------------------------
+
+
+   Universal scaling coefficient s6 = 1.0000
+   Universal damping exponent d     = 20.0000
+   Damp dispersion                  =    yes
+
+   Damped dispersion energy  =   -0.000749312 hartree (   -0.4702 kcal/mol)
+   SCF energy                = -1053.601269065 hartree
+ * Total SCF+D energy        = -1053.602018377 hartree
+
+  Gradient of empirical contribution (hartree/bohr)
+   0.000000000   0.000000000  -0.000484211
+   0.000000000   0.000000000   0.000484211
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:44 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:44 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Ar2 HF+D/aug-cc-pVDZ optimization
+    Number of atoms             = 2
+    Number of atomic orbitals   = 58
+    Number of symmetry orbitals = 54
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = D2h
+    Number of irreps                 = 8
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF+D forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.000921820671
+       2        0.000000000000     0.000000000000    -0.000921820671
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:52 2008
+
+user time   =       7.74 seconds =       0.13 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          8 seconds =       0.13 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+ 18.0    39.96238312   0.0000000000   0.0000000000  -3.4015067794
+ 18.0    39.96238312   0.0000000000   0.0000000000   3.4015067794
+                       0.0000000000   0.0000000000   0.0009218207
+                       0.0000000000   0.0000000000  -0.0009218207
+
+Generating simple internals
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (3.60000000)
+
+Putting simple, possibly redundant, internal coordinates in intco.dat.
+ 
+ ** Taking normal optimization step. **
+
+Current SCF energy before step     -1053.6020183767
+
+Taking geometry step number 1
+
+BuB^t Determinant: 5.004707e-02
+
+Generating empirical Hessian.
+
+Force Constants read from PSIF_OPTKING
+
+No BFGS update performed.
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    3.60000000    0.00759462    0.02986498    3.62986498
+   MAX force:    0.0075946235   RMS force:    0.0075946235
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.008621276451  0.000000000000
+    3  0.000000000000  0.000000000000
+Convergence to displaced geometry took 3 iterations.
+
+New Cartesian Geometry in a.u.
+ 18.0   0.0000000000   0.0000000000  -3.4297250917
+ 18.0   0.0000000000   0.0000000000   3.4297250917
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:52 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Ar2 HF+D/aug-cc-pVDZ optimization
+    Number of atoms             = 2
+    Number of atomic orbitals   = 58
+    Number of symmetry orbitals = 54
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = D2h
+    Number of irreps                 = 8
+
+    Wrote 134055 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:54 2008
+
+user time   =       2.02 seconds =       0.03 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:54 2008
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = Ar2 HF+D/aug-cc-pVDZ optimization
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy       47.2341064282893
+
+  using old vector from file30 as initial guess
+  energy from old vector: -1053.60126907
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 594128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 3.023886e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   Ag    B1g   B2g   B3g   Au    B1u   B2u   B3u  
+  DOCC:              5     0     2     2     0     5     2     2   
+  SOCC:              0     0     0     0     0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 30792 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1     -1053.6013439174    1.100835e+03    0.000000e+00    0.000000e+00
+    2     -1053.6013443017    3.843268e-07    6.614548e-06    3.220119e-04
+    3     -1053.6013443083    6.607479e-09    1.036570e-06    2.831614e-05
+    4     -1053.6013443085    1.889475e-10    1.620753e-07    3.970295e-06
+    5     -1053.6013443085    1.023182e-11    2.788510e-08    9.630120e-07
+    6     -1053.6013443085   -4.547474e-13    8.497524e-09    1.858323e-07
+    7     -1053.6013443085    1.136868e-12    1.344493e-09    4.249004e-08
+    8     -1053.6013443085    4.547474e-13    1.894943e-10    3.412863e-09
+    9     -1053.6013443085   -2.273737e-12    5.121013e-11    1.259507e-09
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1B1u  -118.610103     1Ag   -118.610103     2B1u   -12.322314  
+   2Ag    -12.322305     1B2g    -9.570894     1B3g    -9.570894  
+   1B2u    -9.570893     1B3u    -9.570893     3B1u    -9.570888  
+   3Ag     -9.570887     4Ag     -1.279728     4B1u    -1.277589  
+   5Ag     -0.601767     2B3u    -0.593387     2B2u    -0.593387  
+   2B3g    -0.590572     2B2g    -0.590572     5B1u    -0.582533  
+
+  Unoccupied orbitals
+   6B1u     0.131841     3B2u     0.137463     3B3u     0.137463  
+   6Ag      0.147043     3B3g     0.174845     3B2g     0.174845  
+   7Ag      0.181838     7B1u     0.278825     8Ag      0.487890  
+   4B2u     0.517195     4B3u     0.517195     1B1g     0.538155  
+   9Ag      0.538155     8B1u     0.544867     1Au      0.544867  
+   4B2g     0.576463     4B3g     0.576463     9B1u     0.655581  
+  10Ag      0.948756     5B2u     0.965199     5B3u     0.965199  
+   5B3g     0.982789     5B2g     0.982789    10B1u     1.030127  
+  11Ag      1.336094    11B1u     1.401089     6B2u     1.578854  
+   6B3u     1.578854    12Ag      1.582559     2B1g     1.605922  
+  13Ag      1.605922     2Au      1.615104    12B1u     1.615104  
+   6B2g     1.657877     6B3g     1.657877    13B1u     1.799821  
+
+
+        SCF total energy   =   -1053.601344308486
+        kinetic energy     =    1053.613274459242
+        nuc. attr. energy  =   -2604.484754500412
+        elec. rep. energy  =     497.270135732684
+        potential energy   =   -2107.214618767728
+        virial theorem     =       2.000011323211
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:54 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:54 2008
+
+             ---------------------------------------
+                            NONBONDED                  
+               Evaluate empirical non-bonded terms     
+                        C. David Sherrill              
+             ---------------------------------------
+
+
+   Universal scaling coefficient s6 = 1.0000
+   Universal damping exponent d     = 20.0000
+   Damp dispersion                  =    yes
+
+   Damped dispersion energy  =   -0.000721833 hartree (   -0.4530 kcal/mol)
+   SCF energy                = -1053.601344308 hartree
+ * Total SCF+D energy        = -1053.602066141 hartree
+
+  Gradient of empirical contribution (hartree/bohr)
+   0.000000000   0.000000000  -0.000488541
+   0.000000000   0.000000000   0.000488541
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:54 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:53:54 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Ar2 HF+D/aug-cc-pVDZ optimization
+    Number of atoms             = 2
+    Number of atomic orbitals   = 58
+    Number of symmetry orbitals = 54
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = D2h
+    Number of irreps                 = 8
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF+D forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.000774435235
+       2        0.000000000000     0.000000000000    -0.000774435235
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:02 2008
+
+user time   =       7.86 seconds =       0.13 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          8 seconds =       0.13 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+ 18.0    39.96238312   0.0000000000   0.0000000000  -3.4297250917
+ 18.0    39.96238312   0.0000000000   0.0000000000   3.4297250917
+                       0.0000000000   0.0000000000   0.0007744352
+                       0.0000000000   0.0000000000  -0.0007744352
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (3.62986498)
+ 
+ ** Taking normal optimization step. **
+
+Current SCF energy before step     -1053.6020661410
+
+Taking geometry step number 2
+
+BuB^t Determinant: 5.004707e-02
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 1 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    3.62986498    0.00638036    0.15692521    3.78679019
+   MAX force:    0.0063803560   RMS force:    0.0063803560
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.045300406992  0.000000000000
+    3  0.000000000000  0.000000000000
+Convergence to displaced geometry took 3 iterations.
+
+New Cartesian Geometry in a.u.
+ 18.0   0.0000000000   0.0000000000  -3.5779979183
+ 18.0   0.0000000000   0.0000000000   3.5779979183
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:02 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Ar2 HF+D/aug-cc-pVDZ optimization
+    Number of atoms             = 2
+    Number of atomic orbitals   = 58
+    Number of symmetry orbitals = 54
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = D2h
+    Number of irreps                 = 8
+
+    Wrote 134055 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:04 2008
+
+user time   =       2.00 seconds =       0.03 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:04 2008
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = Ar2 HF+D/aug-cc-pVDZ optimization
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy       45.2767172305397
+
+  using old vector from file30 as initial guess
+  energy from old vector: -1053.60134431
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 594128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 3.223099e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   Ag    B1g   B2g   B3g   Au    B1u   B2u   B3u  
+  DOCC:              5     0     2     2     0     5     2     2   
+  SOCC:              0     0     0     0     0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 30792 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1     -1053.6016221240    1.098878e+03    0.000000e+00    0.000000e+00
+    2     -1053.6016301048    7.980877e-06    3.041141e-05    1.625698e-03
+    3     -1053.6016302305    1.256824e-07    4.496297e-06    1.177287e-04
+    4     -1053.6016302344    3.837613e-09    7.330772e-07    1.985200e-05
+    5     -1053.6016302345    1.657554e-10    1.291644e-07    3.717980e-06
+    6     -1053.6016302345    9.777068e-12    3.346854e-08    7.700745e-07
+    7     -1053.6016302345    0.000000e+00    5.763557e-09    1.868210e-07
+    8     -1053.6016302345    4.547474e-13    8.947222e-10    1.645963e-08
+    9     -1053.6016302345   -4.547474e-13    1.705051e-10    3.778833e-09
+   10     -1053.6016302345    4.547474e-13    1.526116e-11    3.385818e-10
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1B1u  -118.610292     1Ag   -118.610292     2B1u   -12.322478  
+   2Ag    -12.322470     1B3g    -9.571059     1B2g    -9.571059  
+   1B3u    -9.571058     1B2u    -9.571058     3B1u    -9.571054  
+   3Ag     -9.571053     4Ag     -1.279418     4B1u    -1.277998  
+   5Ag     -0.599387     2B3u    -0.593055     2B2u    -0.593055  
+   2B3g    -0.591044     2B2g    -0.591044     5B1u    -0.584928  
+
+  Unoccupied orbitals
+   6B1u     0.133651     3B3u     0.136837     3B2u     0.136837  
+   6Ag      0.145703     3B2g     0.174019     3B3g     0.174019  
+   7Ag      0.178858     7B1u     0.274298     8Ag      0.495494  
+   4B2u     0.523765     4B3u     0.523765     1B1g     0.539264  
+   9Ag      0.539264     8B1u     0.543724     1Au      0.543724  
+   4B2g     0.567556     4B3g     0.567556     9B1u     0.640851  
+  10Ag      0.963063     5B3u     0.966905     5B2u     0.966905  
+   5B2g     0.980789     5B3g     0.980789    10B1u     1.007332  
+  11Ag      1.336603    11B1u     1.394562    12Ag      1.573706  
+   6B3u     1.586090     6B2u     1.586090     2B1g     1.607365  
+  13Ag      1.607365     2Au      1.613492    12B1u     1.613492  
+   6B3g     1.645981     6B2g     1.645981    13B1u     1.770449  
+
+
+        SCF total energy   =   -1053.601630234539
+        kinetic energy     =    1053.610131995855
+        nuc. attr. energy  =   -2600.563223945088
+        elec. rep. energy  =     493.351461714693
+        potential energy   =   -2107.211762230395
+        virial theorem     =       2.000008069237
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:04 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:04 2008
+
+             ---------------------------------------
+                            NONBONDED                  
+               Evaluate empirical non-bonded terms     
+                        C. David Sherrill              
+             ---------------------------------------
+
+
+   Universal scaling coefficient s6 = 1.0000
+   Universal damping exponent d     = 20.0000
+   Damp dispersion                  =    yes
+
+   Damped dispersion energy  =   -0.000581678 hartree (   -0.3650 kcal/mol)
+   SCF energy                = -1053.601630235 hartree
+ * Total SCF+D energy        = -1053.602211913 hartree
+
+  Gradient of empirical contribution (hartree/bohr)
+   0.000000000   0.000000000  -0.000443006
+   0.000000000   0.000000000   0.000443006
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:04 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:04 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Ar2 HF+D/aug-cc-pVDZ optimization
+    Number of atoms             = 2
+    Number of atomic orbitals   = 58
+    Number of symmetry orbitals = 54
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = D2h
+    Number of irreps                 = 8
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF+D forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.000272122711
+       2        0.000000000000     0.000000000000    -0.000272122711
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:12 2008
+
+user time   =       7.65 seconds =       0.13 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          8 seconds =       0.13 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+ 18.0    39.96238312   0.0000000000   0.0000000000  -3.5779979183
+ 18.0    39.96238312   0.0000000000   0.0000000000   3.5779979183
+                       0.0000000000   0.0000000000   0.0002721227
+                       0.0000000000   0.0000000000  -0.0002721227
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (3.78679019)
+ 
+ ** Taking normal optimization step. **
+
+Current SCF energy before step     -1053.6022119126
+
+Taking geometry step number 3
+
+BuB^t Determinant: 5.004707e-02
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 2 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    3.78679019    0.00224194    0.08501264    3.87180283
+   MAX force:    0.0022419431   RMS force:    0.0022419431
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.024541035695  0.000000000000
+    3  0.000000000000  0.000000000000
+Convergence to displaced geometry took 3 iterations.
+
+New Cartesian Geometry in a.u.
+ 18.0   0.0000000000   0.0000000000  -3.6583232172
+ 18.0   0.0000000000   0.0000000000   3.6583232172
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:12 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Ar2 HF+D/aug-cc-pVDZ optimization
+    Number of atoms             = 2
+    Number of atomic orbitals   = 58
+    Number of symmetry orbitals = 54
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = D2h
+    Number of irreps                 = 8
+
+    Wrote 134055 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:14 2008
+
+user time   =       2.03 seconds =       0.03 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:14 2008
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = Ar2 HF+D/aug-cc-pVDZ optimization
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy       44.2825825878340
+
+  using old vector from file30 as initial guess
+  energy from old vector: -1053.60163023
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 594128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 3.326014e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   Ag    B1g   B2g   B3g   Au    B1u   B2u   B3u  
+  DOCC:              5     0     2     2     0     5     2     2   
+  SOCC:              0     0     0     0     0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 30792 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1     -1053.6017272372    1.097884e+03    0.000000e+00    0.000000e+00
+    2     -1053.6017287744    1.537237e-06    1.414148e-05    8.073193e-04
+    3     -1053.6017287973    2.288084e-08    1.907501e-06    4.535759e-05
+    4     -1053.6017287981    8.305960e-10    3.327655e-07    1.001885e-05
+    5     -1053.6017287981    3.637979e-11    6.895108e-08    1.851580e-06
+    6     -1053.6017287981    9.094947e-13    1.411700e-08    3.273148e-07
+    7     -1053.6017287981    4.547474e-13    2.275122e-09    6.788870e-08
+    8     -1053.6017287981   -4.547474e-13    3.427843e-10    7.039324e-09
+    9     -1053.6017287981    2.273737e-13    7.652195e-11    2.335690e-09
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1B1u  -118.610363     1Ag   -118.610363     2B1u   -12.322543  
+   2Ag    -12.322535     1B3g    -9.571123     1B2g    -9.571123  
+   1B3u    -9.571122     1B2u    -9.571122     3B1u    -9.571118  
+   3Ag     -9.571118     4Ag     -1.279298     4B1u    -1.278163  
+   5Ag     -0.598354     2B2u    -0.592917     2B3u    -0.592917  
+   2B2g    -0.591241     2B3g    -0.591241     5B1u    -0.585974  
+
+  Unoccupied orbitals
+   6B1u     0.134616     3B3u     0.136559     3B2u     0.136559  
+   6Ag      0.144811     3B2g     0.173542     3B3g     0.173542  
+   7Ag      0.177297     7B1u     0.271926     8Ag      0.500334  
+   4B2u     0.526756     4B3u     0.526756     1B1g     0.539715  
+   9Ag      0.539715     8B1u     0.543255     1Au      0.543255  
+   4B2g     0.563485     4B3g     0.563485     9B1u     0.632534  
+   5B2u     0.967406     5B3u     0.967406    10Ag      0.971267  
+   5B2g     0.980049     5B3g     0.980049    10B1u     0.997504  
+  11Ag      1.335505    11B1u     1.391874    12Ag      1.572256  
+   6B2u     1.589802     6B3u     1.589802    13Ag      1.607966  
+   2B1g     1.607966    12B1u     1.612826     2Au      1.612826  
+   6B2g     1.640466     6B3g     1.640466    13B1u     1.755147  
+
+
+        SCF total energy   =   -1053.601728798148
+        kinetic energy     =    1053.609107825652
+        nuc. attr. energy  =   -2598.572459965698
+        elec. rep. energy  =     491.361623341899
+        potential energy   =   -2107.210836623799
+        virial theorem     =       2.000007003621
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:14 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:14 2008
+
+             ---------------------------------------
+                            NONBONDED                  
+               Evaluate empirical non-bonded terms     
+                        C. David Sherrill              
+             ---------------------------------------
+
+
+   Universal scaling coefficient s6 = 1.0000
+   Universal damping exponent d     = 20.0000
+   Damp dispersion                  =    yes
+
+   Damped dispersion energy  =   -0.000514052 hartree (   -0.3226 kcal/mol)
+   SCF energy                = -1053.601728798 hartree
+ * Total SCF+D energy        = -1053.602242851 hartree
+
+  Gradient of empirical contribution (hartree/bohr)
+   0.000000000   0.000000000  -0.000398138
+   0.000000000   0.000000000   0.000398138
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:14 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:14 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Ar2 HF+D/aug-cc-pVDZ optimization
+    Number of atoms             = 2
+    Number of atomic orbitals   = 58
+    Number of symmetry orbitals = 54
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = D2h
+    Number of irreps                 = 8
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF+D forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.000123139116
+       2        0.000000000000     0.000000000000    -0.000123139116
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:22 2008
+
+user time   =       7.87 seconds =       0.13 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          8 seconds =       0.13 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+ 18.0    39.96238312   0.0000000000   0.0000000000  -3.6583232172
+ 18.0    39.96238312   0.0000000000   0.0000000000   3.6583232172
+                       0.0000000000   0.0000000000   0.0001231391
+                       0.0000000000   0.0000000000  -0.0001231391
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (3.87180283)
+ 
+ ** Taking normal optimization step. **
+
+Current SCF energy before step     -1053.6022428506
+
+Taking geometry step number 4
+
+BuB^t Determinant: 5.004707e-02
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 3 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    3.87180283    0.00101451    0.07026533    3.94206816
+   MAX force:    0.0010145088   RMS force:    0.0010145088
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.020283853664  0.000000000000
+    3  0.000000000000  0.000000000000
+Convergence to displaced geometry took 3 iterations.
+
+New Cartesian Geometry in a.u.
+ 18.0   0.0000000000   0.0000000000  -3.7247143276
+ 18.0   0.0000000000   0.0000000000   3.7247143276
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:22 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Ar2 HF+D/aug-cc-pVDZ optimization
+    Number of atoms             = 2
+    Number of atomic orbitals   = 58
+    Number of symmetry orbitals = 54
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = D2h
+    Number of irreps                 = 8
+
+    Wrote 134055 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:25 2008
+
+user time   =       2.10 seconds =       0.04 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          3 seconds =       0.05 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:25 2008
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = Ar2 HF+D/aug-cc-pVDZ optimization
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy       43.4932684102881
+
+  using old vector from file30 as initial guess
+  energy from old vector: -1053.60172880
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 594128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 3.408403e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   Ag    B1g   B2g   B3g   Au    B1u   B2u   B3u  
+  DOCC:              5     0     2     2     0     5     2     2   
+  SOCC:              0     0     0     0     0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 30792 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1     -1053.6017887078    1.097095e+03    0.000000e+00    0.000000e+00
+    2     -1053.6017895188    8.110580e-07    1.069811e-05    6.371176e-04
+    3     -1053.6017895307    1.182366e-08    1.376519e-06    2.916351e-05
+    4     -1053.6017895311    4.615686e-10    2.487210e-07    7.793376e-06
+    5     -1053.6017895311    2.182787e-11    5.470370e-08    1.495044e-06
+    6     -1053.6017895311    0.000000e+00    1.269587e-08    2.747475e-07
+    7     -1053.6017895311    1.364242e-12    1.548113e-09    4.065006e-08
+    8     -1053.6017895311   -2.273737e-13    2.262558e-10    4.916193e-09
+    9     -1053.6017895311    2.273737e-13    4.887231e-11    1.755539e-09
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1B1u  -118.610409     1Ag   -118.610409     2B1u   -12.322585  
+   2Ag    -12.322578     1B3g    -9.571165     1B2g    -9.571165  
+   1B2u    -9.571164     1B3u    -9.571164     3B1u    -9.571161  
+   3Ag     -9.571161     4Ag     -1.279219     4B1u    -1.278276  
+   5Ag     -0.597613     2B3u    -0.592821     2B2u    -0.592821  
+   2B2g    -0.591380     2B3g    -0.591380     5B1u    -0.586728  
+
+  Unoccupied orbitals
+   6B1u     0.135404     3B3u     0.136365     3B2u     0.136365  
+   6Ag      0.143984     3B3g     0.173133     3B2g     0.173133  
+   7Ag      0.176065     7B1u     0.270000     8Ag      0.504454  
+   4B3u     0.528933     4B2u     0.528933     1B1g     0.540023  
+   9Ag      0.540023     8B1u     0.542932     1Au      0.542932  
+   4B2g     0.560497     4B3g     0.560497     9B1u     0.625612  
+   5B3u     0.967618     5B2u     0.967618    10Ag      0.977937  
+   5B2g     0.979591     5B3g     0.979591    10B1u     0.990652  
+  11Ag      1.333957    11B1u     1.390009    12Ag      1.572534  
+   6B3u     1.592654     6B2u     1.592654    13Ag      1.608381  
+   2B1g     1.608381     2Au      1.612368    12B1u     1.612368  
+   6B3g     1.636398     6B2g     1.636398    13B1u     1.743005  
+
+
+        SCF total energy   =   -1053.601789531137
+        kinetic energy     =    1053.608530140531
+        nuc. attr. energy  =   -2596.992247942652
+        elec. rep. energy  =     489.781928270984
+        potential energy   =   -2107.210319671668
+        virial theorem     =       2.000006397682
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:25 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:25 2008
+
+             ---------------------------------------
+                            NONBONDED                  
+               Evaluate empirical non-bonded terms     
+                        C. David Sherrill              
+             ---------------------------------------
+
+
+   Universal scaling coefficient s6 = 1.0000
+   Universal damping exponent d     = 20.0000
+   Damp dispersion                  =    yes
+
+   Damped dispersion energy  =   -0.000463737 hartree (   -0.2910 kcal/mol)
+   SCF energy                = -1053.601789531 hartree
+ * Total SCF+D energy        = -1053.602253268 hartree
+
+  Gradient of empirical contribution (hartree/bohr)
+   0.000000000   0.000000000  -0.000359847
+   0.000000000   0.000000000   0.000359847
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:25 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:25 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Ar2 HF+D/aug-cc-pVDZ optimization
+    Number of atoms             = 2
+    Number of atomic orbitals   = 58
+    Number of symmetry orbitals = 54
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = D2h
+    Number of irreps                 = 8
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF+D forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.000038545383
+       2        0.000000000000     0.000000000000    -0.000038545383
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:33 2008
+
+user time   =       8.42 seconds =       0.14 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          8 seconds =       0.13 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+ 18.0    39.96238312   0.0000000000   0.0000000000  -3.7247143276
+ 18.0    39.96238312   0.0000000000   0.0000000000   3.7247143276
+                       0.0000000000   0.0000000000   0.0000385454
+                       0.0000000000   0.0000000000  -0.0000385454
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (3.94206816)
+ 
+ ** Taking normal optimization step. **
+
+Current SCF energy before step     -1053.6022532677
+
+Taking geometry step number 5
+
+BuB^t Determinant: 5.004707e-02
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 4 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    3.94206816    0.00031756    0.03201660    3.97408477
+   MAX force:    0.0003175647   RMS force:    0.0003175647
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.009242397605  0.000000000000
+    3  0.000000000000  0.000000000000
+Convergence to displaced geometry took 3 iterations.
+
+New Cartesian Geometry in a.u.
+ 18.0   0.0000000000   0.0000000000  -3.7549656323
+ 18.0   0.0000000000   0.0000000000   3.7549656323
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:33 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Ar2 HF+D/aug-cc-pVDZ optimization
+    Number of atoms             = 2
+    Number of atomic orbitals   = 58
+    Number of symmetry orbitals = 54
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = D2h
+    Number of irreps                 = 8
+
+    Wrote 134055 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:36 2008
+
+user time   =       2.17 seconds =       0.04 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          3 seconds =       0.05 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:36 2008
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = Ar2 HF+D/aug-cc-pVDZ optimization
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy       43.1428715633111
+
+  using old vector from file30 as initial guess
+  energy from old vector: -1053.60178953
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 594128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 3.445143e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   Ag    B1g   B2g   B3g   Au    B1u   B2u   B3u  
+  DOCC:              5     0     2     2     0     5     2     2   
+  SOCC:              0     0     0     0     0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 30792 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1     -1053.6018120433    1.096745e+03    0.000000e+00    0.000000e+00
+    2     -1053.6018121869    1.435401e-07    4.618010e-06    2.788663e-04
+    3     -1053.6018121890    2.099569e-09    5.809097e-07    1.217052e-05
+    4     -1053.6018121890    8.435563e-11    1.072250e-07    3.372905e-06
+    5     -1053.6018121890    4.320100e-12    2.450786e-08    6.704247e-07
+    6     -1053.6018121890   -2.273737e-13    6.033813e-09    1.199230e-07
+    7     -1053.6018121890    4.547474e-13    6.006751e-10    1.589837e-08
+    8     -1053.6018121890   -9.094947e-13    8.919536e-11    2.250183e-09
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1B1u  -118.610427     1Ag   -118.610427     2B1u   -12.322602  
+   2Ag    -12.322595     1B3g    -9.571181     1B2g    -9.571181  
+   1B2u    -9.571181     1B3u    -9.571181     3B1u    -9.571178  
+   3Ag     -9.571177     4Ag     -1.279188     4B1u    -1.278322  
+   5Ag     -0.597306     2B2u    -0.592781     2B3u    -0.592781  
+   2B3g    -0.591436     2B2g    -0.591436     5B1u    -0.587041  
+
+  Unoccupied orbitals
+   6B1u     0.135760     3B2u     0.136287     3B3u     0.136287  
+   6Ag      0.143581     3B2g     0.172942     3B3g     0.172942  
+   7Ag      0.175524     7B1u     0.269130     8Ag      0.506328  
+   4B3u     0.529841     4B2u     0.529841     9Ag      0.540146  
+   1B1g     0.540146     1Au      0.542803     8B1u     0.542803  
+   4B3g     0.559243     4B2g     0.559243     9B1u     0.622467  
+   5B2u     0.967661     5B3u     0.967661     5B2g     0.979423  
+   5B3g     0.979423    10Ag      0.980882    10B1u     0.987895  
+  11Ag      1.333090    11B1u     1.389251    12Ag      1.573036  
+   6B3u     1.593877     6B2u     1.593877     2B1g     1.608547  
+  13Ag      1.608547     2Au      1.612184    12B1u     1.612184  
+   6B2g     1.634687     6B3g     1.634687    13B1u     1.737647  
+
+
+        SCF total energy   =   -1053.601812189040
+        kinetic energy     =    1053.608333761433
+        nuc. attr. energy  =   -2596.290854316563
+        elec. rep. energy  =     489.080708366089
+        potential energy   =   -2107.210145950474
+        virial theorem     =       2.000006189789
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:36 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:36 2008
+
+             ---------------------------------------
+                            NONBONDED                  
+               Evaluate empirical non-bonded terms     
+                        C. David Sherrill              
+             ---------------------------------------
+
+
+   Universal scaling coefficient s6 = 1.0000
+   Universal damping exponent d     = 20.0000
+   Damp dispersion                  =    yes
+
+   Damped dispersion energy  =   -0.000442482 hartree (   -0.2777 kcal/mol)
+   SCF energy                = -1053.601812189 hartree
+ * Total SCF+D energy        = -1053.602254671 hartree
+
+  Gradient of empirical contribution (hartree/bohr)
+   0.000000000   0.000000000  -0.000342836
+   0.000000000   0.000000000   0.000342836
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:36 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:36 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Ar2 HF+D/aug-cc-pVDZ optimization
+    Number of atoms             = 2
+    Number of atomic orbitals   = 58
+    Number of symmetry orbitals = 54
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = D2h
+    Number of irreps                 = 8
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF+D forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.000008619030
+       2        0.000000000000     0.000000000000    -0.000008619030
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:45 2008
+
+user time   =       8.75 seconds =       0.15 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          9 seconds =       0.15 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+ 18.0    39.96238312   0.0000000000   0.0000000000  -3.7549656323
+ 18.0    39.96238312   0.0000000000   0.0000000000   3.7549656323
+                       0.0000000000   0.0000000000   0.0000086190
+                       0.0000000000   0.0000000000  -0.0000086190
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (3.97408477)
+ 
+ ** Taking normal optimization step. **
+
+Current SCF energy before step     -1053.6022546706
+
+Taking geometry step number 6
+
+BuB^t Determinant: 5.004707e-02
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 5 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    3.97408477    0.00007101    0.00922104    3.98330581
+   MAX force:    0.0000710098   RMS force:    0.0000710098
+
+Back-transformation to cartesian coordinates...
+ Iter   RMS Delta(dx)   RMS Delta(dq)
+    2  0.002661884570  0.000000000000
+    3  0.000000000000  0.000000000000
+Convergence to displaced geometry took 3 iterations.
+
+New Cartesian Geometry in a.u.
+ 18.0   0.0000000000   0.0000000000  -3.7636782505
+ 18.0   0.0000000000   0.0000000000   3.7636782505
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:45 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Ar2 HF+D/aug-cc-pVDZ optimization
+    Number of atoms             = 2
+    Number of atomic orbitals   = 58
+    Number of symmetry orbitals = 54
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = D2h
+    Number of irreps                 = 8
+
+    Wrote 134055 two-electron integrals to IWL file 33
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:47 2008
+
+user time   =       2.20 seconds =       0.04 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:47 2008
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = Ar2 HF+D/aug-cc-pVDZ optimization
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 10
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy       43.0429992198008
+
+  using old vector from file30 as initial guess
+  energy from old vector: -1053.60181219
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 594128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 3.455632e-02
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   Ag    B1g   B2g   B3g   Au    B1u   B2u   B3u  
+  DOCC:              5     0     2     2     0     5     2     2   
+  SOCC:              0     0     0     0     0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 30792 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1     -1053.6018181916    1.096645e+03    0.000000e+00    0.000000e+00
+    2     -1053.6018182028    1.120634e-08    1.302199e-06    7.882512e-05
+    3     -1053.6018182030    1.653007e-10    1.627331e-07    3.385834e-06
+    4     -1053.6018182030    5.456968e-12    3.027122e-08    9.481616e-07
+    5     -1053.6018182030    2.273737e-13    7.013456e-09    1.914498e-07
+    6     -1053.6018182030    9.094947e-13    1.759930e-09    3.370807e-08
+    7     -1053.6018182030   -4.547474e-13    1.610665e-10    4.290438e-09
+    8     -1053.6018182030    2.273737e-13    2.429558e-11    6.434538e-10
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1B1u  -118.610432     1Ag   -118.610431     2B1u   -12.322607  
+   2Ag    -12.322599     1B2g    -9.571186     1B3g    -9.571186  
+   1B3u    -9.571186     1B2u    -9.571186     3B1u    -9.571182  
+   3Ag     -9.571182     4Ag     -1.279179     4B1u    -1.278335  
+   5Ag     -0.597221     2B3u    -0.592771     2B2u    -0.592771  
+   2B2g    -0.591452     2B3g    -0.591452     5B1u    -0.587129  
+
+  Unoccupied orbitals
+   6B1u     0.135862     3B2u     0.136266     3B3u     0.136266  
+   6Ag      0.143462     3B3g     0.172886     3B2g     0.172886  
+   7Ag      0.175372     7B1u     0.268880     8Ag      0.506864  
+   4B3u     0.530092     4B2u     0.530092     1B1g     0.540180  
+   9Ag      0.540180     1Au      0.542767     8B1u     0.542767  
+   4B2g     0.558894     4B3g     0.558894     9B1u     0.621565  
+   5B2u     0.967667     5B3u     0.967667     5B2g     0.979379  
+   5B3g     0.979379    10Ag      0.981715    10B1u     0.987141  
+  11Ag      1.332824    11B1u     1.389042    12Ag      1.573219  
+   6B2u     1.594220     6B3u     1.594220     2B1g     1.608593  
+  13Ag      1.608593     2Au      1.612133    12B1u     1.612133  
+   6B2g     1.634210     6B3g     1.634210    13B1u     1.736125  
+
+
+        SCF total energy   =   -1053.601818202967
+        kinetic energy     =    1053.608284085903
+        nuc. attr. energy  =   -2596.090949560249
+        elec. rep. energy  =     488.880847271380
+        potential energy   =   -2107.210102288869
+        virial theorem     =       2.000006136932
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:47 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:47 2008
+
+             ---------------------------------------
+                            NONBONDED                  
+               Evaluate empirical non-bonded terms     
+                        C. David Sherrill              
+             ---------------------------------------
+
+
+   Universal scaling coefficient s6 = 1.0000
+   Universal damping exponent d     = 20.0000
+   Damp dispersion                  =    yes
+
+   Damped dispersion energy  =   -0.000436550 hartree (   -0.2739 kcal/mol)
+   SCF energy                = -1053.601818203 hartree
+ * Total SCF+D energy        = -1053.602254753 hartree
+
+  Gradient of empirical contribution (hartree/bohr)
+   0.000000000   0.000000000  -0.000338020
+   0.000000000   0.000000000   0.000338020
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:47 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:47 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Ar2 HF+D/aug-cc-pVDZ optimization
+    Number of atoms             = 2
+    Number of atomic orbitals   = 58
+    Number of symmetry orbitals = 54
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = D2h
+    Number of irreps                 = 8
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF+D forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.000000846098
+       2        0.000000000000     0.000000000000    -0.000000846098
+
+******************************************************************************
+tstop called on julius.chemistry.gatech.edu
+Thu Mar 20 11:54:56 2008
+
+user time   =       8.92 seconds =       0.15 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          9 seconds =       0.15 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+ 18.0    39.96238312   0.0000000000   0.0000000000  -3.7636782505
+ 18.0    39.96238312   0.0000000000   0.0000000000   3.7636782505
+                       0.0000000000   0.0000000000   0.0000008461
+                       0.0000000000   0.0000000000  -0.0000008461
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (3.98330581)
+ 
+ ** Taking normal optimization step. **
+
+Current SCF energy before step     -1053.6022547525
+
+Taking geometry step number 7
+
+BuB^t Determinant: 5.004707e-02
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS Hessian update with previous 6 gradient(s).
+
+Scaling displacements by 1.000000
+
+Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+       Value         Force        Displacement  New Value
+ 1    3.98330581    0.00000697    0.00100373    3.98430953
+   MAX force:    0.0000069708   RMS force:    0.0000069708
+
+MAX force is < 1.0e-05.  Optimization is complete.
+Final SCF energy is -1053.6022547525
+The Optimized geometry in a.u.
+  ( AR   0.0000000000   0.0000000000  -3.7636782505 )
+  ( AR   0.0000000000   0.0000000000   3.7636782505 )
+
+******** OPTKING execution completed ********
+
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on julius.chemistry.gatech.edu at Thu Mar 20 11:54:56 2008
+
+Total PSI3 wall time         75 seconds =       1.25 minutes
+******************************************************************************

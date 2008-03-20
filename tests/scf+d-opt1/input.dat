@@ -1,0 +1,15 @@
+psi: (
+  label = "Ar2 HF+D/aug-cc-pVDZ optimization"
+  jobtype = opt 
+  wfn = scf
+  empirical_dispersion = true
+  reference = rhf
+  dertype = first
+  multp = 1
+  basis = "aug-cc-pVDZ"
+  geometry = (
+    (Ar        .000000         .000000        .000000)
+    (Ar        .000000         .000000       3.600000)
+  )
+)
+
