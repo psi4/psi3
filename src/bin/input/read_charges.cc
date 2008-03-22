@@ -24,7 +24,7 @@ void read_charges()
   char charge_lbl[20], error_message[80];
 
   nuclear_charges = init_array(num_atoms);
-  element = (char **) malloc(sizeof(char *)*num_atoms);
+//  element = (char **) malloc(sizeof(char *)*num_atoms);
 
   atomcount = 0;
 
@@ -46,14 +46,14 @@ void read_charges()
         sprintf(error_message,"Problem reading the %s array!", charge_lbl);
         punt(error_message);
       }
-      for(i=0;i<frag_num_atoms[f];i++)
-        element[i+atomcount] = elem_name[(int)nuclear_charges[i+atomcount]];
+//      for(i=0;i<frag_num_atoms[f];i++)
+//        element[i+atomcount] = elem_name[(int)nuclear_charges[i+atomcount]];
     }
     /* IF USER DOES NOT SPECIFY CHARGES, POINT TO DEFAULT CHARGES */
     else {
       for(i=0;i<frag_num_atoms[f];i++) {
         nuclear_charges[i+atomcount] = elemsymb_charges[i+atomcount];
-        element[i+atomcount] = elem_name[(int)elemsymb_charges[i+atomcount]];
+//        element[i+atomcount] = elem_name[(int)elemsymb_charges[i+atomcount]];
       }
     }
 

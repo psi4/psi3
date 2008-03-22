@@ -99,6 +99,7 @@ EXTERN double **unit_mat(int dim);
 EXTERN void swap(int *a, int *b);
 EXTERN void swap_tors(int *a, int *b, int *c, int *d);
 EXTERN void zval_to_symbol(double zval, char *sym);
+EXTERN void symmetrize_geom(double *x);
 
 struct OPTInfo {
 
@@ -158,6 +159,7 @@ struct OPTInfo {
   int frag_dist_rho;
   int fix_interfragment;
   int fix_intrafragment;
+  int freeze_intrafragment;
 
 /* Back-transformation parameters */
   int bt_max_iter;
@@ -168,6 +170,12 @@ struct OPTInfo {
   double cos_tors_near_1_tol;
   double cos_tors_near_neg1_tol;
   double sin_phi_denominator_tol;
+
+  int nfragment;
+  int *natom_per_fragment;
+  int *nallatom_per_fragment;
+  int *nref_per_fragment;
+  double ***fragment_coeff;
 };
 
 struct SYMInfo {

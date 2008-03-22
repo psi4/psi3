@@ -163,55 +163,85 @@ void fragment_class::compute(double *geom) {
     cross_product(e12A,eRA,v);
     cross_product(e12B,eRA,v2);
     dot_arr(v, v2, 3, &dot);
-    dot /= sin(theta_A) * sin(theta_B);
-    value = acos(dot)/_pi*180.0;
-    // determine sign
-    cross_product(e12B,eRA,v);
-    dot_arr(e12A, v, 3, &dot);
-    if (dot < 0)
-      value *= -1;
-/* using the sin formula
-    cross_product(e12B,eRA,v);
-    dot_arr(e12A, v, 3, &dot);
-    dot /= sin(theta_A) * sin(theta_B);
-    value = asin(dot)/_pi*180.0;
-*/
+
+    if ((sin(theta_A) > optinfo.sin_phi_denominator_tol) &&
+        (sin(theta_B) > optinfo.sin_phi_denominator_tol)) {
+         dot /= sin(theta_A);
+         dot /= sin(theta_B);
+    }
+    else dot = 2.0 ;
+
+fprintf(outfile,"dot: %15.10lf\n",dot);
+
+    if (dot > optinfo.cos_tors_near_1_tol) value = 0.0 ;
+    else if (dot < optinfo.cos_tors_near_neg1_tol) value = 180.0 ;
+    else {
+fprintf(outfile,"using acos to get value (J=3)\n");
+      value = acos(dot) / _pi * 180.0;
+      // determine sign
+      cross_product(e12B,eRA,v);
+      dot_arr(e12A, v, 3, &dot);
+      if (dot < 0) value *= -1;
+      /* using the sin formula
+          cross_product(e12B,eRA,v);
+          dot_arr(e12A, v, 3, &dot);
+          dot /= sin(theta_A) * sin(theta_B);
+          value = asin(dot)/_pi*180.0; */
+    }
   }
   else if (J==4) { /* monomer-monomer internal rotation angles */
     cross_product(e32A,e12A,v);
     cross_product(e12A,eRA,v2);
     dot_arr(v, v2, 3, &dot);
-    dot /= sin(theta_A) * sin(alpha_A);
-    value = acos(dot)/_pi*180.0;
-    // determine sign
-    cross_product(eRA,e12A,v);
-    dot_arr(e32A, v, 3, &dot);
-    if (dot < 0)
-      value *= -1;
-/* using the sine formula
-    cross_product(eRA,e12A,v);
-    dot_arr(e32A, v, 3, &dot);
-    dot /= sin(theta_A) * sin(alpha_A);
-    value = asin(dot)/_pi*180.0;
-*/
+
+    if ((sin(theta_A) > optinfo.sin_phi_denominator_tol) &&
+        (sin(alpha_A) > optinfo.sin_phi_denominator_tol)) {
+        dot /= sin(theta_A);
+        dot /= sin(alpha_A);
+    }
+    else dot = 2.0;
+
+    if (dot > optinfo.cos_tors_near_1_tol) value = 0.0 ;
+    else if (dot < optinfo.cos_tors_near_neg1_tol) value = 180.0 ;
+    else {
+      value = acos(dot) / _pi * 180.0;
+      // determine sign
+      cross_product(eRA,e12A,v);
+      dot_arr(e32A, v, 3, &dot);
+      if (dot < 0) value *= -1;
+      /* using the sine formula
+          cross_product(eRA,e12A,v);
+          dot_arr(e32A, v, 3, &dot);
+          dot /= sin(theta_A) * sin(alpha_A);
+          value = asin(dot)/_pi*180.0; */
+    }
   }
   else if (J==5) {
     cross_product(e32B,e12B,v);
     cross_product(e12B,eRB,v2);
     dot_arr(v, v2, 3, &dot);
-    dot /= sin(theta_B) * sin(alpha_B);
-    value = acos(dot)/_pi*180.0;
-    // determine sign
-    cross_product(eRB,e12B,v);
-    dot_arr(e32B, v, 3, &dot);
-    if (dot < 0)
-      value *= -1;
-/* using the sine formula
-    cross_product(eRB,e12B,v); // (e12B x eRA) = (eRB x e12B)
-    dot_arr(e32B, v, 3, &dot);
-    dot /= sin(theta_B) * sin(alpha_B);
-    value = asin(dot)/_pi*180.0;
-*/
+    if ((sin(theta_B) > optinfo.sin_phi_denominator_tol) &&
+        (sin(alpha_B) > optinfo.sin_phi_denominator_tol)) {
+      dot /= sin(theta_B);
+      dot /= sin(alpha_B);
+    }
+    else
+      dot = 2.0;
+
+    if (dot > optinfo.cos_tors_near_1_tol) value = 0.0 ;
+    else if (dot < optinfo.cos_tors_near_neg1_tol) value = 180.0 ;
+    else {
+      value = acos(dot) / _pi * 180.0;
+      // determine sign
+      cross_product(eRB,e12B,v);
+      dot_arr(e32B, v, 3, &dot);
+      if (dot < 0) value *= -1;
+      /* using the sine formula
+          cross_product(eRB,e12B,v); // (e12B x eRA) = (eRB x e12B)
+          dot_arr(e32B, v, 3, &dot);
+          dot /= sin(theta_B) * sin(alpha_B);
+          value = asin(dot)/_pi*180.0; */
+    }
   }
 
   free(e12A); free(e12B);

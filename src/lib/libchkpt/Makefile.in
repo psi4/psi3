@@ -89,7 +89,12 @@ override_occ.cc \
 statespi.cc \
 eccsd.cc \
 e_t.cc \
-emp2.cc 
+emp2.cc \
+nfragment.cc \
+natom_per_fragment.cc \
+nallatom_per_fragment.cc  \
+nref_per_fragment.cc \
+fragment_coeff.cc
 
 DEPENDINCLUDE = chkpt.h chkpt.hpp config.h
 

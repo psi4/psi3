@@ -27,6 +27,7 @@ namespace psi { namespace optking {
 
 void bfgs(double **H, internals &simples, salc_set &symm, cartesians &carts);
 extern double *compute_q(internals &simples, salc_set &symm);
+extern void empirical_H(internals &simples, salc_set &symm, cartesians &carts);
 
 double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &carts) {
   double **H, **H_inv, **H_inv_new, **H_new, **temp_mat;
@@ -46,8 +47,8 @@ double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &c
   // Do BFGS update on H if desired and possible
   nbfgs = 0;
   open_PSIF();
-  if ( psio_tocscan(PSIF_OPTKING, "Num. of BFGS Entries") != NULL)
-    psio_read_entry(PSIF_OPTKING, "Num. of BFGS Entries", (char *) &nbfgs, sizeof(int));
+  if ( psio_tocscan(PSIF_OPTKING, "Num. of Previous Entries") != NULL)
+    psio_read_entry(PSIF_OPTKING, "Num. of Previous Entries", (char *) &nbfgs, sizeof(int));
   close_PSIF();
 
   if (optinfo.bfgs && (nbfgs > 1) )
@@ -59,13 +60,6 @@ double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &c
     fprintf(outfile,"The Hessian (Second Derivative) Matrix\n");
     print_mat5(H,dim,dim,outfile);
   }
-  /*
-  for (i=0;i<dim;++i)
-    if (H[i][i] < 0.0) {
-      for (j=0;j<dim;++j)
-        H[i][j] = H[j][i] = -1.0*H[i][j];
-    }
- */
 
   // Project redundancies out of H according to Peng JCC 1996
   // and produce invertible Hessian
@@ -115,11 +109,11 @@ void bfgs(double **H, internals &simples, salc_set &symm, cartesians &carts) {
 
   /*** read old internals and forces from PSIF_OPTKING ***/
   open_PSIF();
-  psio_read_entry(PSIF_OPTKING, "Num. of BFGS Entries", (char *) &nbfgs, sizeof(int));
+  psio_read_entry(PSIF_OPTKING, "Num. of Previous Entries", (char *) &nbfgs, sizeof(int));
   close_PSIF();
 
-  sprintf(force_string,"BFGS Internal Forces %d", nbfgs-1);
-  sprintf(x_string,"BFGS Cartesian Values %d", nbfgs-1);
+  sprintf(force_string,"Previous Internal Forces %d", nbfgs-1);
+  sprintf(x_string,"Previous Cartesian Values %d", nbfgs-1);
   open_PSIF();
   psio_read_entry(PSIF_OPTKING, force_string, (char *) &(f[0]), dim * sizeof(double));
   psio_read_entry(PSIF_OPTKING, x_string, (char *) &(x[0]), 3*natom*sizeof(double));
@@ -150,8 +144,8 @@ void bfgs(double **H, internals &simples, salc_set &symm, cartesians &carts) {
   fprintf(outfile," with previous %d gradient(s).\n", nbfgs-1-bfgs_start);
 
   for (i_bfgs=bfgs_start; i_bfgs<(nbfgs-1); ++i_bfgs) {
-    sprintf(force_string,"BFGS Internal Forces %d", i_bfgs);
-    sprintf(x_string,"BFGS Cartesian Values %d", i_bfgs);
+    sprintf(force_string,"Previous Internal Forces %d", i_bfgs);
+    sprintf(x_string,"Previous Cartesian Values %d", i_bfgs);
     open_PSIF();
     psio_read_entry(PSIF_OPTKING, force_string, (char *) &(f_old[0]), dim * sizeof(double));
     psio_read_entry(PSIF_OPTKING, x_string, (char *) &(x_old[0]), 3*natom*sizeof(double));
@@ -209,6 +203,114 @@ void bfgs(double **H, internals &simples, salc_set &symm, cartesians &carts) {
   free(x);
   free(x_old);
   return;
+}
+
+/*! \file fconst_init()
+    \ingroup OPTKING
+    \brief 
+  FCONST_INIT -- make sure there are _some_ force constants in PSIF_OPTKING
+  1) Confirm PSIF_OPTKING has them
+  2) read them from FCONST: section of input
+  3) read them from fconst.dat
+  4) generate empirical force constants
+*/
+
+void fconst_init(cartesians &carts, internals &simples, salc_set &symm) {
+  int i, j, dim, count, constants_in_PSIF, cnt;
+  char *buffer;
+  double **F, **temp_mat;
+  buffer = new char[MAX_LINELENGTH];
+
+  open_PSIF();
+  if (psio_tocscan(PSIF_OPTKING, "Symmetric Force Constants") != NULL) {
+    close_PSIF();
+    return;
+  }
+  close_PSIF();
+
+   /* read force constants from fconst section of input */
+  if (ip_exist(":FCONST",0) ) {
+    ip_cwk_add(":FCONST");
+    fprintf(outfile,"Reading force constants from FCONST: \n");
+    dim = symm.get_num();
+    temp_mat = block_matrix(dim,dim);
+    ip_count("SYMM_FC",&i,0);
+    if (i != (dim*(dim+1))/2) {
+      fprintf(outfile,"fconst has wrong number of entries\n");
+      exit(2);
+    }
+    cnt = -1;
+    for (i=0;i<dim;++i) {
+      for (j=0;j<=i;++j) {
+        ++cnt;
+        ip_data("SYMM_FC","%lf",&(temp_mat[i][j]), 1, cnt);
+      }
+    }
+    for (i=0;i<dim;++i)
+      for (j=0;j<=i;++j)
+        temp_mat[j][i] = temp_mat[i][j];
+
+    /*** write to PSIF_OPTKING ***/
+    open_PSIF();
+    psio_write_entry(PSIF_OPTKING, "Symmetric Force Constants",
+        (char *) &(temp_mat[0][0]),dim*dim*sizeof(double));
+    close_PSIF();
+
+    free_block(temp_mat);
+    return;
+  }
+
+  ffile_noexit(&fp_fconst, "fconst.dat",2);
+  if (fp_fconst == NULL) { // generate empirical Hessian
+    fprintf(outfile, "\nGenerating empirical Hessian.\n");
+    empirical_H(simples,symm,carts);
+    return;
+  }
+  else { // read force constants from fconst.dat
+    ip_append(fp_fconst, outfile);
+    if (ip_exist(":FCONST",0) ) { // file has libipv1 format
+      ip_cwk_add(":FCONST");
+      fprintf(outfile,"Reading force constants from FCONST: \n");
+      dim = symm.get_num();
+      temp_mat = block_matrix(dim,dim);
+      ip_count("SYMM_FC",&i,0);
+      if (i != (dim*(dim+1))/2) {
+        fprintf(outfile,"fconst has wrong number of entries\n");
+        exit(2);
+      }
+      cnt = -1;
+      for (i=0;i<dim;++i) {
+        for (j=0;j<=i;++j) {
+          ++cnt;
+          ip_data("SYMM_FC","%lf",&(temp_mat[i][j]), 1, cnt);
+        }
+      }
+    }
+  
+/*    else {
+      fprintf(outfile,"Reading force constants from fconst.dat\n");
+      dim = symm.get_num();
+      temp_mat = block_matrix(dim,dim);
+      for (i=0;i<dim;i++) {
+        for (j=0;j<=i;j++) {
+          fscanf(fp_fconst,"%lf",&(temp_mat[i][j]));
+          temp_mat[j][i] = temp_mat[i][j];
+        }
+      }
+    } */
+    fclose(fp_fconst);
+
+    for (i=0;i<dim;++i)
+      for (j=0;j<i;++j)
+        temp_mat[j][i] = temp_mat[i][j];
+
+    open_PSIF();
+    psio_write_entry(PSIF_OPTKING, "Symmetric Force Constants",
+        (char *) &(temp_mat[0][0]),dim*dim*sizeof(double));
+    close_PSIF();
+    free_block(temp_mat);
+  }
+  delete [] buffer;
 }
 
 }} /* namespace psi::optking */

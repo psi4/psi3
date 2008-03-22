@@ -114,6 +114,8 @@ EXTERN int *frag_num_atoms;         /*Total number of atoms in each fragment*/
 EXTERN int *frag_num_allatoms;      /*Total number of all atoms (including dummies) in each fragment*/
 EXTERN int *frag_atom;              /* a fragment number -> first atom lookup array */
 EXTERN int *frag_allatom;              /* a fragment number -> first atom lookup array */
+EXTERN int *nref_per_fragment;      /* number of reference points on each fragment */
+EXTERN double ***ref_pts_lc;        /* coefficients that determine reference points on each fragment */
 EXTERN int num_uniques;             /*Number of unique atoms*/
 EXTERN int num_shells;              /*Total number of shells*/
 EXTERN int num_unique_shells;       /*Number of unique shells*/

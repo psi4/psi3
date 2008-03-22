@@ -75,6 +75,8 @@ void get_optinfo() {
   ip_boolean("FIX_INTRAFRAGMENT", &(optinfo.fix_intrafragment),0);
   optinfo.fix_interfragment = 0;
   ip_boolean("FIX_INTERFRAGMENT", &(optinfo.fix_interfragment),0);
+  optinfo.freeze_intrafragment = 0;
+  ip_boolean("FREEZE_INTRAFRAGMENT", &(optinfo.freeze_intrafragment),0);
 
   /* print options */
   optinfo.print_simples = 0;
@@ -166,12 +168,12 @@ void get_optinfo() {
   optinfo.bt_dx_conv  = power(10.0, -1*a);
 
 
-  /* Obscure limits in intco evaluation */
-  optinfo.cos_tors_near_1_tol = 0.999999999;
+  /* These determing how seriously to take torsions very near 180 */
+  optinfo.cos_tors_near_1_tol    =  0.9999999;
   ip_data("COS_TORS_NEAR_1_TOL","%lf",&(optinfo.cos_tors_near_1_tol),0);
-  optinfo.cos_tors_near_neg1_tol = -0.999999999;
+  optinfo.cos_tors_near_neg1_tol = -0.9999999;
   ip_data("COS_TORS_NEAR_NEG1_TOL","%lf",&(optinfo.cos_tors_near_neg1_tol),0);
-  optinfo.sin_phi_denominator_tol = 0.000000001;
+  optinfo.sin_phi_denominator_tol = 1.0e-7;
   ip_data("SIN_PHI_DENOMINATOR_TOL","%lf",&(optinfo.sin_phi_denominator_tol),0);
 
 
@@ -181,6 +183,13 @@ void get_optinfo() {
   optinfo.natom = natom = chkpt_rd_natom();
   optinfo.nallatom = nallatom = chkpt_rd_nallatom();
   optinfo.atom_dummy = chkpt_rd_atom_dummy();
+  optinfo.nfragment = chkpt_rd_nfragment();
+  if (optinfo.nfragment > 1) {
+    optinfo.natom_per_fragment = chkpt_rd_natom_per_fragment();
+    optinfo.nallatom_per_fragment = chkpt_rd_nallatom_per_fragment();
+    optinfo.nref_per_fragment = chkpt_rd_nref_per_fragment();
+    optinfo.fragment_coeff = chkpt_rd_fragment_coeff();
+  }
   chkpt_close();
 
   optinfo.to_dummy = init_int_array(natom);
@@ -238,6 +247,7 @@ void get_optinfo() {
     fprintf(outfile,"bt_max_iter:   %d\n",optinfo.bt_max_iter);
     fprintf(outfile,"bt_max_dq_conv:    %.1e\n",optinfo.bt_dq_conv);
     fprintf(outfile,"bt_max_dx_conv:    %.1e\n",optinfo.bt_dx_conv);
+    fprintf(outfile,"freeze_intrafragment:    %d\n",optinfo.freeze_intrafragment);
     fprintf(outfile,"cos_tors_near_1_tol:     %10.6e\n",
         optinfo.cos_tors_near_1_tol);
     fprintf(outfile,"cos_tors_near_neg1_tol: %10.6e\n",

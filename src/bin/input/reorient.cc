@@ -7,6 +7,7 @@
 #include <libciomr/libciomr.h>
 #include <cstdlib>
 #include <cmath>
+#include <libqt/qt.h>
 #include "input.h"
 #include "global.h"
 #include "defines.h"

@@ -74,23 +74,6 @@ double ***unit_vectors(double **Geom, double **Distances) {
   return (E);
 }
 
-/* 
- UNIT_VEC(): Function calculates the unit vector between a
- pair of atoms and stores it in AB. 
- */
-
-void unit_vec(double *B, double *A, double *AB) {
-  double norm = 0.0;
-  int i;
-  
-  for (i=0; i<3; i++)
-    norm += (A[i]-B[i])*(A[i]-B[i]);
-  norm = sqrt(norm);
-  for (i=0; i<3; i++)
-    AB[i] = (B[i] - A[i]) / norm;
-  return;
-}
-
 /*
  ** CALC_BOND_ANGLES(): Function calculates all non-redundant bond angles
  **   between all combinations of three atoms, and writes to file fpo.
@@ -282,25 +265,6 @@ void Nuc_repulsion(double *Distance, double *repulsion) {
 }
 
 /*
- Function to take the dot product
- */
-
-double dot_prod(double *v1, double *v2) {
-  return v1[0]*v2[0]+ v1[1]*v2[1]+ v1[2]*v2[2];
-}
-
-/*
- Function to compute the cross product of 2 vectors
- */
-
-void cross_prod(double *v1, double *v2, double *out) {
-  out[0] = v1[1]*v2[2]-v1[2]*v2[1];
-  out[1] = -v1[0]*v2[2]+v1[2]*v2[0];
-  out[2] = v1[0]*v2[1]-v1[1]*v2[0];
-  return;
-}
-
-/*
  Function returns 1 if vectors are equivalent and 0 if they are not
  */
 
@@ -479,49 +443,6 @@ void canon_eq_ref_frame() {
       Rref[i][j] = (i == j) ? 1.0 : 0.0;
   
   return;
-}
-
-/* rotation of object in 3D about an arbitrary axis
- w    = double *  : axis to rotate around (wx, wy, wz) - gets normalized here
- phi  = double    : magnitude of rotation
- pts  = double ** : points to rotate - column dim is 3; overwritten on exit
- npts = int       :
-*/
-
-void rotate_3D(double *w, double phi, double **pts, int npts)
-{
-  int i, j;
-  double **R, **pts_new, wx, wy, wz, cp, norm;
-
-  norm = sqrt(w[0]*w[0] + w[1]*w[1] + w[2]*w[2]);
-  w[0] /= norm;
-  w[1] /= norm;
-  w[2] /= norm;
-
-  wx = w[0]; wy = w[1]; wz = w[2];
-  cp = 1.0 - cos(phi);
-
-  R = block_matrix(3,3);
-
-  R[0][0] =     cos(phi) + wx*wx*cp;
-  R[0][1] = -wz*sin(phi) + wx*wy*cp;
-  R[0][2] =  wy*sin(phi) + wx*wz*cp;
-  R[1][0] =  wz*sin(phi) + wx*wy*cp;
-  R[1][1] =     cos(phi) + wy*wy*cp;
-  R[1][2] = -wx*sin(phi) + wy*wz*cp;
-  R[2][0] = -wy*sin(phi) + wx*wz*cp;
-  R[2][1] =  wx*sin(phi) + wy*wz*cp;
-  R[2][2] =     cos(phi) + wz*wz*cp;
-
-  pts_new = block_matrix(npts,3);
-  mmult(R, 0, pts, 1, pts_new, 1, 3, 3, npts, 0);
-
-  for (i=0; i<npts; ++i)
-    for (j=0; j<3; ++j)
-      pts[i][j] = pts_new[i][j];
-
-  free_block(pts_new);
-  free_block(R);
 }
 
 }} // namespace psi::input

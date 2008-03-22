@@ -73,6 +73,13 @@ void write_to_chkpt(double repulsion)
   chkpt_wt_nallatom(num_allatoms);
   chkpt_wt_nfzc(nfzc);
   chkpt_wt_nfzv(nfzv);
+  chkpt_wt_nfragment(nfragments);
+  if (nfragments > 1) {
+    chkpt_wt_natom_per_fragment(frag_num_atoms);
+    chkpt_wt_nallatom_per_fragment(frag_num_allatoms);
+    chkpt_wt_nref_per_fragment(nref_per_fragment);
+    chkpt_wt_fragment_coeff(ref_pts_lc);
+  }
   free(calc_label);
 
 

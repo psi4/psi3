@@ -172,20 +172,32 @@ class fragment_set {
     double get_B_s(int index, int atom_xyz)
       { return fragment_array[index].get_B_s(atom_xyz); }
 
-/*
-    int get_id_from_atoms(int a, int b, int c) {
-      int i;
-       for (i=0;i<num;++i) {
-         if ( (a == get_A(i)) && (b == get_B(i)) && (c == get_C(i)) ) break;
+    int get_id_from_atoms(int a_natom, int b_natom, int *a_atom, int *b_atom, int j) {
+      int i, a, b, match=0;
+      while ((match==0) && (i<num)) {
+         match = 1;
+         if ( (a_natom == get_A_natom(i)) && (b_natom == get_B_natom(i)) ) {
+           for (a=0; a<a_natom; ++a) {
+             if (a_atom[a] != get_A_atom(i,a))
+               match=0;
+           }
+           for (b=0; b<b_natom; ++b) {
+             if (b_atom[b] != get_B_atom(i,b))
+               match=0;
+           }
+           if (get_J(i) != j) match = 0;
+         }
+         else match = 0;
+         ++i;
        }
-       if (i == num) {
-         fprintf(outfile,"Could not find simple fragment for atoms  \
-             %d %d %d in list.\n", a+1, b+1, c+1);
+       
+       if ((i == num) || (match == 0)) {
+         fprintf(outfile,"Could not find simple fragment with natoms %d %d and J=%d.\n",
+          a_natom, b_natom, j);
          exit(2);
        }
-       return get_id(i);
+       return get_id(i-1);
     }
-*/
 };
 
 }} /* namespace psi::optking */

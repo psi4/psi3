@@ -557,6 +557,12 @@ void cleanup()
   free(frag_num_allatoms);
   free(frag_atom);
   free(frag_allatom);
+  free(nref_per_fragment);
+  for (i=0; i<(nfragments-1); ++i) {
+    if (nref_per_fragment[i] > 0)
+      free_block(ref_pts_lc[i]);
+  }
+  free(ref_pts_lc);
   
   return;
 }

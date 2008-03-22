@@ -292,6 +292,21 @@ namespace psi {
 		
 		int* rd_cdsalcpi();
 		void wt_cdsalcpi(const int*);
+
+        int rd_nfragment(void);
+        void wt_nfragment(int);
+
+        int *rd_natom_per_fragment(void);
+        void wt_natom_per_fragment(int *);
+
+        int *rd_nallatom_per_fragment(void);
+        void wt_nallatom_per_fragment(int *);
+
+        int *rd_nref_per_fragment(void);
+        void wt_nref_per_fragment(int *);
+
+        double ***rd_fragment_coeff(void);
+        void wt_fragment_coeff(double ***);
 		
 		/// allocate a block matrix -- analogous to libciomr's block_matrix
 		template <typename T> static T** matrix(int nrow, int ncol) {

@@ -652,6 +652,12 @@ void free_info(int nsimples) {
   // free optinfo
   free(optinfo.to_dummy);
   free(optinfo.to_nodummy);
+  if (optinfo.nfragment > 1) {
+    free(optinfo.natom_per_fragment);
+    free(optinfo.nallatom_per_fragment);
+    free(optinfo.nref_per_fragment);
+    free(optinfo.fragment_coeff);
+  }
   return;
 }
 

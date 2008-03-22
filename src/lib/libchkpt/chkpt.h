@@ -282,6 +282,22 @@ void chkpt_wt_override_occ(int);
 int *chkpt_rd_statespi(void);
 void chkpt_wt_statespi(int *);
 
+int chkpt_rd_nfragment(void);
+void chkpt_wt_nfragment(int);
+
+int *chkpt_rd_natom_per_fragment(void);
+void chkpt_wt_natom_per_fragment(int *);
+
+int *chkpt_rd_nallatom_per_fragment(void);
+void chkpt_wt_nallatom_per_fragment(int *);
+
+int *chkpt_rd_nref_per_fragment(void);
+void chkpt_wt_nref_per_fragment(int *);
+
+double ***chkpt_rd_fragment_coeff(void);
+void chkpt_wt_fragment_coeff(double ***);
+
+
 #ifdef __cplusplus
 }
 #endif

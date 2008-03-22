@@ -193,8 +193,8 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
     /* reset BFGS update */
     open_PSIF();
     i = 0;
-    if ( psio_tocscan(PSIF_OPTKING, "Num. of BFGS Entries") != NULL)
-      psio_write_entry(PSIF_OPTKING, "Num. of BFGS Entries", (char *) &i, sizeof(int));
+    if ( psio_tocscan(PSIF_OPTKING, "Num. of Previous Entries") != NULL)
+      psio_write_entry(PSIF_OPTKING, "Num. of Previous Entries", (char *) &i, sizeof(int));
     close_PSIF();
   }
 

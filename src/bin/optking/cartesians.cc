@@ -308,27 +308,16 @@ void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
 
     fprintf(outfile,"\nGeometry written to chkpt\n");
 
-    double **geom;
-    geom = block_matrix(nallatom,3);
+  //  double **geom;
+  //  geom = block_matrix(nallatom,3);
   //  for (i=0; i<nallatom; ++i)
-    for (i=0; i<natom; ++i)
-      for (j=0; j<3; ++j)
-        geom[optinfo.to_dummy[i]][j] = coord[3*i+j];
+  //  for (i=0; i<natom; ++i)
+  //    for (j=0; j<3; ++j)
+  //      geom[optinfo.to_dummy[i]][j] = coord[3*i+j];
     chkpt_init(PSIO_OPEN_OLD);
-    chkpt_wt_fgeom(geom);
+    chkpt_wt_fgeom(&fcoord);
     chkpt_close();
-    free_block(geom);
-
-    /*
-    double **tmp2d;
-    chkpt_init(PSIO_OPEN_OLD);
-    tmp2d = chkpt_rd_fgeom();
-    chkpt_close();
-    for (i=0; i<nallatom; ++i)
-      for (j=0; j<3; ++j)
-        fprintf(outfile,"%15.10lf\n", tmp2d[i][j]);
-    free_block(tmp2d);
-    */
+  //  free_block(geom);
 
   }
   else if (print_flag == 12) { 

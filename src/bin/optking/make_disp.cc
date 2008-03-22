@@ -11,6 +11,7 @@
 #include <cstring>
 #include <cctype>
 #include <libciomr/libciomr.h>
+#include <libqt/qt.h>
 #include <libipv1/ip_lib.h>
 #include <physconst.h>
 #include <libpsio/psio.h>
@@ -26,6 +27,7 @@
 
 namespace psi { namespace optking {
 
+extern double *compute_q(internals &simples, salc_set &symm);
 extern int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs, 
     double *dq, int print_to_geom_file, int restart_geom_file,
     char *disp_label, int disp_num, int last_disp, double *return_geom);
@@ -38,7 +40,7 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
   int i,j,a,b, cnt,dim, dim_carts, ndisps, nsalcs, *irrep_salcs, irrep;
   int *irrep_per_disp, success;
   double *fgeom, energy, **micro_geoms, **displacements;
-  double *f, *q, tval, **fgeom2D;
+  double *f, *q, tval;
   char *disp_label, **disp_irrep_lbls, *salc_lbl;
 
   disp_label = new char[MAX_LINELENGTH];
@@ -126,14 +128,106 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
 
   /*** generate and store Micro_iteration cartesian geometries ***/
   micro_geoms = block_matrix(ndisps, dim_carts);
-  for (i=0;i<ndisps;++i)  {
-    sprintf(disp_label,"Displaced geometry %d in a.u.\n",i+1);
-    success = new_geom(carts,simples,all_salcs,displacements[i],0,
-        0, disp_label, i, 0, micro_geoms[i]);
-    if (!success) {
-      fprintf(outfile,"Unable to generate displaced geometry.\n");
-      fclose(outfile);
-      exit(PSI_RETURN_FAILURE);
+  if (optinfo.freeze_intrafragment) { // compute new geometry analytically
+    int simple, intco_type, sub_index, J, simple_b, nf, disp, xyz, frag;
+    int A_natom, B_natom, *A_atom, *B_atom, *frag_atom, *frag_allatom;
+    double **geom_A, **geom_B, **geom_2D;
+    double R_AB, theta_A, theta_B, tau, phi_A, phi_B;
+
+    // make sure that all coordinates are simple and inter-fragment
+    for (i=0;i<all_salcs.get_num();++i) {
+      if (all_salcs.get_length(i) != 1) {
+        printf("Only simple coordinates can be used with freeze_intrafragment\n");
+        exit(PSI_RETURN_FAILURE);
+      }
+      simple = all_salcs.get_simple(i,0);
+      simples.locate_id(simple,&intco_type,&sub_index);
+      if (intco_type != FRAG_TYPE) {
+        printf("Only inter-fragment coordinates can be used with freeze_intrafragment\n");
+        exit(PSI_RETURN_FAILURE);
+      }
+    }
+
+    nf = optinfo.nfragment; // move to getoptinfo at some point
+    frag_atom = (int *) malloc(nf*sizeof(int));
+    frag_allatom = (int *) malloc(nf*sizeof(int));
+    frag_atom[0] = frag_allatom[0] = 0;
+    for (frag=1; frag<nf; ++frag) {
+      frag_atom[frag] = frag_atom[frag-1] + optinfo.natom_per_fragment[frag-1];
+      frag_allatom[frag] = frag_allatom[frag-1] + optinfo.natom_per_fragment[frag-1];
+    }
+  
+    for (disp=0;disp<ndisps;++disp)  { // loop over displacements
+      geom_2D = carts.get_coord_2d(); // in bohr
+
+      //load first fragment
+      a = optinfo.natom_per_fragment[0];
+      for (i=0; i<a; ++i)
+        for (xyz=0; xyz<3; ++xyz)
+            micro_geoms[disp][3*i+xyz] = geom_2D[i][xyz];
+
+      cnt = all_salcs.get_num();
+      for (frag=1; frag<optinfo.nfragment; ++frag) { // loop over remaining fragments
+        a = optinfo.natom_per_fragment[frag-1];
+        b = optinfo.natom_per_fragment[frag];
+        geom_A = block_matrix(a,3);
+        geom_B = block_matrix(b,3);
+        for (xyz=0;xyz<3;++xyz) {
+          for (i=0;i<a;++i)
+            geom_A[i][xyz] = geom_2D[frag_atom[frag-1]+i][xyz];
+          for (i=0;i<b;++i)
+            geom_B[i][xyz] = geom_2D[frag_atom[frag]+i][xyz];
+        }
+
+        q = compute_q(simples,all_salcs);
+
+        R_AB = theta_A = theta_B = tau = phi_A = phi_B = 0.0;
+        if (cnt > 0) R_AB    = q[6*(frag-1)+0] + displacements[disp][6*(frag-1)+0];
+        --cnt;
+        if (cnt > 0) theta_A = q[6*(frag-1)+1] + displacements[disp][6*(frag-1)+1];
+        --cnt;
+        if (cnt > 0) theta_B = q[6*(frag-1)+2] + displacements[disp][6*(frag-1)+2];
+        --cnt;
+        if (cnt > 0) tau     = q[6*(frag-1)+3] + displacements[disp][6*(frag-1)+3];
+        --cnt;
+        if (cnt > 0) phi_A   = q[6*(frag-1)+4] + displacements[disp][6*(frag-1)+4];
+        --cnt;
+        if (cnt > 0) phi_B   = q[6*(frag-1)+5] + displacements[disp][6*(frag-1)+5];
+        --cnt;
+
+        R_AB /= _bohr2angstroms;
+        theta_A *= 180.0/_pi;
+        theta_B *= 180.0/_pi;
+        tau *= 180.0/_pi; 
+        phi_A *= 180.0/_pi; 
+        phi_B *= 180.0/_pi; 
+
+        orient_fragment(a, b, optinfo.nref_per_fragment[frag-1], optinfo.nref_per_fragment[frag],
+          geom_A, geom_B, optinfo.fragment_coeff[frag-1], optinfo.fragment_coeff[frag],
+          R_AB, theta_A, theta_B, tau, phi_A, phi_B, outfile);
+
+        for (i=0; i<b; ++i)
+          for (xyz=0; xyz<3; ++xyz)
+            micro_geoms[disp][3*(frag_atom[frag]+i)+xyz] = geom_B[i][xyz];
+
+         free_block(geom_A);
+         free_block(geom_B);
+      }
+      free_block(geom_2D);
+    }
+    free(frag_atom);
+    free(frag_allatom);
+  }
+  else {  /* do iterative back-transformation */
+    for (i=0;i<ndisps;++i)  {
+      sprintf(disp_label,"Displaced geometry %d in a.u.\n",i+1);
+      success = new_geom(carts,simples,all_salcs,displacements[i],0,
+          0, disp_label, i, 0, micro_geoms[i]);
+      if (!success) {
+        fprintf(outfile,"Unable to generate displaced geometry.\n");
+        fclose(outfile);
+        exit(PSI_RETURN_FAILURE);
+      }
     }
   }
   free_block(displacements);
@@ -211,7 +305,7 @@ int make_disp_nosymm(cartesians &carts, internals &simples, salc_set &all_salcs)
 {
   int i,j,a,b, dim, dim_carts, ndisps, nsalcs, *irrep_per_disp, cnt, success;
   double *fgeom, energy, **micro_geoms, **displacements;
-  double *f, *q, tval, **fgeom2D;
+  double *f, *q, tval;
   char *disp_label, **disp_irrep_lbls, *lbl;
 
   disp_label = new char[MAX_LINELENGTH];

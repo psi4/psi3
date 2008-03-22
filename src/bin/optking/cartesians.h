@@ -35,18 +35,29 @@ class cartesians {
     }
     void print(int flag, FILE *fp_out, int new_geom_file, char *disp_label,
                int disp_num);
+
     void set_coord(double *geom) {
-      int i;
-      for (i=0;i<natom*3;++i)
-        coord[i] = geom[i];
+      int i, xyz, cnt;
+      for (i=0;i<natom;++i) {
+        for (xyz=0; xyz<3; ++xyz) {
+          coord[3*i+xyz] = geom[3*i+xyz];
+          fcoord[3*optinfo.to_dummy[i]+xyz] = geom[3*i+xyz];
+        }
+      }
       return;
     }
+
     void set_fcoord(double *geom) {
-      int i;
-      for (i=0; i<nallatom*3; ++i)
-        fcoord[i] = geom[i];
+      int i, cnt, xyz;
+      for (i=0; i<nallatom; ++i) {
+        for (xyz=0; xyz<3; ++xyz) {
+          fcoord[3*i+xyz] = geom[3*i+xyz];
+          coord[3*optinfo.to_nodummy[i]+xyz] = geom[3*i+xyz];
+        }
+      }
       return;
     }
+
     void set_grad(double *gradient) {
       int i;
       for (i=0;i<natom*3;++i)

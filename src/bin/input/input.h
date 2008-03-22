@@ -74,11 +74,6 @@ void atom_num(char *A,  double *C);
 double ***unit_vectors(double **, double **);
 
 /*
-   Function to compute the unit vector between a pair of atoms
-*/
-void unit_vec(double *, double *, double *);
-
-/*
    Function to calculate all non-redundant bond angles
 */
 double ***calc_bond_angles(double ***, double **);
@@ -94,17 +89,6 @@ void calc_oop_angles(double ***, double ***, double **);
 */
 
 void calc_tors_angles(double ***, double ***, double **);
-
-/*
-   Takes a dot product
-*/
-double dot_prod(double *A, double *B);
-
-/*
-   Computes the cross product
-*/
-void cross_prod(double *v1, double *v2, double *out);
-
 
 /*
    Function to calculate all internuclear distances
@@ -217,7 +201,6 @@ int vect_equiv(double *A, double *B);
   Make canonical and reference frames equivalent
   */
 void canon_eq_ref_frame();
-void rotate_3D(double *w, double phi, double **pts, int npts);
 
 }} // namespace psi::input
 

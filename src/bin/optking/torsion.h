@@ -177,7 +177,7 @@ class torsion_set {
     double get_s_D(int index, int i) { return tors_array[index].get_s_D(i); }
 
     void compute(int natom, double *geom) {
-      int i,j,k,A,B,C,D,sign;
+      int i,j,k,A,B,C,D;
       double rAB,rBC,rCD,phi_123,phi_234,val = 0.0;
       double eAB[3], eBC[3], eCD[3], tmp[3], tmp2[3], tmp3[3];
       double *geom_ang, dotprod, angle;
@@ -246,19 +246,18 @@ class torsion_set {
         }
         else dotprod = 2.0 ;
     
-        if (dotprod > optinfo.cos_tors_near_1_tol) angle = 0.0000 ;
-        else if (dotprod < optinfo.cos_tors_near_neg1_tol) angle = _pi ;
-        else angle = acos(dotprod) ;
-
-        // determine sign of torsions
-        //cross_product(tmp,tmp2,tmp3);
-        //dot_arr(tmp3,eBC,3,&dotprod);
-        cross_product(eBC,eCD,tmp);
-        dot_arr(eAB,tmp,3,&dotprod);
-        if (dotprod < 0) sign = -1; else sign = 1;
+        if (dotprod > optinfo.cos_tors_near_1_tol) angle = 0.0 ;
+        else if (dotprod < optinfo.cos_tors_near_neg1_tol) angle = 180.0 ;
+        else {
+          angle = acos(dotprod) ;
+          // determine sign of torsions
+          cross_product(eBC,eCD,tmp);
+          dot_arr(eAB,tmp,3,&dotprod);
+          if (dotprod < 0) angle *= -1;
+          angle *= 180.0 / _pi;
+        }
 
         // extend domain of torsions so delta(values) can be calculated
-        angle = sign * angle * 180.0 / _pi;
         if ((get_near_lin(i) == -1) && (angle > 160.0)) {
 // fprintf(outfile,"get_near_lin(%d)=%d angle %15.10lf angle %15.10lf\n",
     // i, get_near_lin(i), angle, -180.0 - (180.0 - angle) );

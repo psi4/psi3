@@ -76,6 +76,8 @@ void read_zmat()
   frag_num_allatoms = (int *) malloc(nfragments*sizeof(int));
   frag_atom = (int *) malloc(nfragments*sizeof(int));
   frag_allatom = (int *) malloc(nfragments*sizeof(int));
+  nref_per_fragment = (int *) malloc(nfragments*sizeof(int));
+  ref_pts_lc = (double ***) malloc(nfragments*sizeof(double **));
   num_atoms = 0;
   num_allatoms = 0;
       
