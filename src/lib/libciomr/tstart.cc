@@ -17,6 +17,8 @@ struct tms total_tmstime;
 
 extern "C" {
 
+extern char* gprgid(void);
+
 /*!
 ** tstart(): Starts a timer
 **
@@ -38,7 +40,7 @@ void tstart(FILE *outfile)
     fprintf(outfile,"*");
   }
   fprintf(outfile,"\n");
-
+  fprintf(outfile,"%s ", gprgid());
   fprintf(outfile,"tstart called on %s\n", name);
   fprintf(outfile,"%s\n",ctime(&time_start));
 
@@ -77,6 +79,7 @@ void tstop(FILE *outfile)
     fprintf(outfile,"*");
   }
   fprintf(outfile,"\n");
+  fprintf(outfile,"%s ", gprgid());
   fprintf(outfile,"tstop called on %s\n", name);
   fprintf(outfile,"%s\n",ctime(&time_end));
   fprintf(outfile,"user time   = %10.2f seconds = %10.2f minutes\n",
