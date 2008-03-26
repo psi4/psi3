@@ -1,10 +1,32 @@
 ******************************************************************************
-tstart called on julius.chemistry.gatech.edu
-Wed Aug  2 17:54:41 2006
+PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:12:39 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF DETCI energy computation.
+
+The following programs will be executed:
+
+ input
+ cints
+ cscf
+ transqt2
+ detci
+ psiclean
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:12:39 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	H2O DZ
@@ -12,7 +34,7 @@ Wed Aug  2 17:54:41 2006
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /cds/psi3-bin/share/pbasis.dat
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -29,9 +51,9 @@ Wed Aug  2 17:54:41 2006
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.111757309641     0.000000000000
-        HYDROGEN     -1.494958998200    -0.886834802259     0.000000000000
-        HYDROGEN      1.494958998200    -0.886834802259     0.000000000000
+          OXYGEN      0.000000000000     0.111757309654     0.000000000000
+        HYDROGEN     -1.494958998200    -0.886834802246     0.000000000000
+        HYDROGEN      1.494958998200    -0.886834802246     0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -85,32 +107,32 @@ Wed Aug  2 17:54:41 2006
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000     0.111757309641
-        HYDROGEN      0.000000000000     1.494958998200    -0.886834802259
+          OXYGEN      0.000000000000     0.000000000000     0.111757309654
+        HYDROGEN      0.000000000000     1.494958998200    -0.886834802246
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000     0.111757309641
-        HYDROGEN      0.000000000000    -1.494958998200    -0.886834802259
-        HYDROGEN      0.000000000000     1.494958998200    -0.886834802259
+          OXYGEN      0.000000000000     0.000000000000     0.111757309654
+        HYDROGEN      0.000000000000    -1.494958998200    -0.886834802246
+        HYDROGEN      0.000000000000     1.494958998200    -0.886834802246
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000     0.059139425672
-        HYDROGEN      0.000000000000    -0.791098290035    -0.469292800977
-        HYDROGEN      0.000000000000     0.791098290035    -0.469292800977
+          OXYGEN      0.000000000000     0.000000000000     0.059139425678
+        HYDROGEN      0.000000000000    -0.791098290035    -0.469292800970
+        HYDROGEN      0.000000000000     0.791098290035    -0.469292800970
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000     0.111757309641
-        HYDROGEN      0.000000000000    -1.494958998200    -0.886834802259
-        HYDROGEN      0.000000000000     1.494958998200    -0.886834802259
+          OXYGEN      0.000000000000     0.000000000000     0.111757309654
+        HYDROGEN      0.000000000000    -1.494958998200    -0.886834802246
+        HYDROGEN      0.000000000000     1.494958998200    -0.886834802246
 
 
   --------------------------------------------------------------------------
@@ -130,15 +152,15 @@ Wed Aug  2 17:54:41 2006
 
 
 ******************************************************************************
-tstop called on julius.chemistry.gatech.edu
-Wed Aug  2 17:54:41 2006
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:12:39 2008
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on julius.chemistry.gatech.edu
-Wed Aug  2 17:54:41 2006
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:12:39 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -167,15 +189,15 @@ Wed Aug  2 17:54:41 2006
     Wrote 1270 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on julius.chemistry.gatech.edu
-Wed Aug  2 17:54:41 2006
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:12:39 2008
 
-user time   =       0.00 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on julius.chemistry.gatech.edu
-Wed Aug  2 17:54:41 2006
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:12:39 2008
 
 
              ------------------------------------------
@@ -185,6 +207,10 @@ Wed Aug  2 17:54:41 2006
               Written by too many people to mention here
 
              ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
   label        = H2O DZ
   wfn          = DETCI
   reference    = RHF
@@ -193,24 +219,24 @@ Wed Aug  2 17:54:41 2006
   direct       = false
   dertype      = NONE
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        9.2342185209120
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 13856 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 7.512165e-02
+  The lowest eigenvalue of the overlap matrix was 6.914584e-02
 
-
-  Using DOCC and SOCC to 
-  determine occupations
+  Using core guess to determine occupations
 
 
   Symmetry block:   A1    A2    B1    B2   
@@ -222,21 +248,21 @@ Wed Aug  2 17:54:41 2006
 
   iter       total energy        delta E         delta P          diiser
     1       -69.6481965652    7.888242e+01    0.000000e+00    0.000000e+00
-    2       -71.9332180777    2.285022e+00    2.674586e-01    9.628117e-01
-    3       -75.8929735818    3.959756e+00    2.196693e-01    9.449561e-01
-    4       -75.9780616540    8.508807e-02    1.746245e-02    1.710999e-01
-    5       -75.9848563776    6.794724e-03    6.389747e-03    3.772661e-02
-    6       -75.9851536550    2.972774e-04    5.432860e-04    1.020797e-02
-    7       -75.9853226530    1.689980e-04    8.828157e-04    5.710474e-03
-    8       -75.9853236468    9.937899e-07    1.157243e-04    4.011976e-04
-    9       -75.9853236650    1.820226e-08    7.863718e-06    8.341422e-05
-   10       -75.9853236653    2.445546e-10    8.071323e-07    5.871018e-06
-   11       -75.9853236653    2.842171e-12    1.201811e-07    8.200001e-07
-   12       -75.9853236653    1.421085e-14    9.535325e-09    7.852794e-08
-   13       -75.9853236653   -1.421085e-14    3.584898e-09    2.749802e-08
-   14       -75.9853236653    7.105427e-14    2.101072e-10    1.858807e-09
-   15       -75.9853236653   -5.684342e-14    1.094374e-10    6.735991e-10
-   16       -75.9853236653   -2.842171e-14    4.455165e-11    1.976272e-10
+    2       -71.9332180777    2.285022e+00    3.366880e-01    9.628117e-01
+    3       -75.8929735818    3.959756e+00    2.921836e-01    9.449561e-01
+    4       -75.9780616540    8.508807e-02    2.170364e-02    1.710999e-01
+    5       -75.9848563776    6.794724e-03    7.834688e-03    3.772661e-02
+    6       -75.9851536550    2.972774e-04    6.469860e-04    1.020797e-02
+    7       -75.9853226530    1.689980e-04    1.072542e-03    5.710474e-03
+    8       -75.9853236468    9.937899e-07    1.412447e-04    4.011976e-04
+    9       -75.9853236650    1.820227e-08    9.540334e-06    8.341422e-05
+   10       -75.9853236653    2.444978e-10    1.003736e-06    5.871018e-06
+   11       -75.9853236653    2.899014e-12    1.551904e-07    8.200001e-07
+   12       -75.9853236653    1.421085e-14    1.023704e-08    7.852794e-08
+   13       -75.9853236653   -1.421085e-14    4.142088e-09    2.749802e-08
+   14       -75.9853236653   -1.421085e-14    2.239677e-10    1.858808e-09
+   15       -75.9853236653    0.000000e+00    1.360427e-10    6.735990e-10
+   16       -75.9853236653   -1.421085e-14    5.458203e-11    1.976273e-10
 
 Orbital energies (a.u.):
 
@@ -251,7 +277,7 @@ Orbital energies (a.u.):
    4B2      1.389485     7A1      1.673595  
 
 
-        SCF total energy   =     -75.985323665263
+      * SCF total energy   =     -75.985323665263
         kinetic energy     =      76.005864259816
         nuc. attr. energy  =    -199.096452988091
         elec. rep. energy  =      47.105265063012
@@ -259,109 +285,71 @@ Orbital energies (a.u.):
         virial theorem     =       2.000270323183
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on julius.chemistry.gatech.edu
-Wed Aug  2 17:54:41 2006
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:12:39 2008
 
 user time   =       0.00 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on julius.chemistry.gatech.edu
-Wed Aug  2 17:54:41 2006
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:12:39 2008
 
 
 	**************************************************
-	* TRANSQT:  Program to transform integrals from  *
+	* TRANSQT2: Program to transform integrals from  *
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  DETCI
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            =  Yes
-	Delete Restricted Docc =  Yes
-	Do All TEI             =  No
-	Memory (Mbytes)        =   20.0
-	Max Buckets            =  199
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  No
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Semicanonical orbitals =  No
-	Pitzer                 =  No
+	Wave function   =	DETCI
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 13
+	Number of MOs        = 13
+	Number of active MOs = 13
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 13
-	Number of MOs    = 13
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   7	    0	    3	    0	    4	    0
+	 A2 	   0	    0	    0	    0	    0	    0
+	 B1 	   2	    0	    1	    0	    1	    0
+	 B2 	   4	    0	    1	    0	    3	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   7	   7	    0	    3	    0	    4	    0
-	 A2 	   0	   0	    0	    0	    0	    0	    0
-	 B1 	   2	   2	    0	    1	    0	    1	    0
-	 B2 	   4	   4	    0	    1	    0	    3	    0
+	Nuclear Rep. energy (chkpt) =      9.23421852091198
+	SCF energy          (chkpt) =    -75.98532366526261
 
-	Nuclear Repulsion Energy    =         9.2342185209
-	Total SCF Energy            =       -75.9853236653
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	Frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on julius.chemistry.gatech.edu
-Wed Aug  2 17:54:41 2006
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:12:40 2008
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on julius.chemistry.gatech.edu
-Wed Aug  2 17:54:41 2006
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:12:40 2008
 
 
 *******************************************************
@@ -374,9 +362,12 @@ Wed Aug  2 17:54:41 2006
 
 
 
+Note: Calculation requested is a full CI.
+Resetting EX_LVL to 10 and turning on all excitations
+
 
 PARAMETERS: 
-   EX LVL        =        2      H0 BLOCKSIZE =      400
+   EX LVL        =       10      H0 BLOCKSIZE =      400
    VAL EX LVL    =        0      H0 GUESS SIZE=      400
    H0COUPLINGSIZE=        0      H0 COUPLING  =       no
    NPRINT        =       20      MAX DET      =    10000
@@ -393,11 +384,12 @@ PARAMETERS:
    TEI ERASE     =       no      MAXNVECT     =       13
    RESTART       =       no      RESTART VECS =        0
    GUESS VECTOR  =  H0BLOCK      OPENTYPE     =     NONE
-   GENCI ALG     =       no      REF SYM      =     auto
+      REF SYM      =     auto
    COLLAPSE SIZE =        1      HD AVE       = EVANGELISTI
    LSE           =       no      LSE ITER     =        0
    HD OTF        =      yes      NO DFILE     =       no
    MPN           =       no      MPN SCHMIDT  =       no
+ ZAPTN           =       no
    WIGNER        =       no      ZERO BLOCKS  =       no
    PERT Z        =   1.0000      ROOT         =        0
    PTHREADS      =       no      NTHREADS     =        1
@@ -407,11 +399,9 @@ PARAMETERS:
 
    FILES         =  50 51 52 53
 
-   EX_TYPE       =  1  1 
+   EX_TYPE       =  1  1  1  1  1  1  1  1  1  1 
    STATE AVERAGE =  1(1.00) 
-
-Note: Calculation requested is a full CI.
-Resetting EX_LVL to 10 and turning on all excitations
+   STATE AVERAGE =  1(1.00) 
 
 ORBITALS:
    NMO          =       13      NUM ALP      =        5
@@ -476,30 +466,30 @@ Iter  6  Root  1 = -76.121097823   Delta_E -2.386E-07   Delta_C  3.664E-04
 Iter  7  Root  1 = -76.121097845   Delta_E -2.165E-08   Delta_C  1.260E-04  
 Iter  8  Root  1 = -76.121097847   Delta_E -2.674E-09   Delta_C  4.669E-05 c
 
-ROOT 1 ECI = -76.1210978474779
+* ROOT 1 CI total energy = -76.1210978474781
 
 
 The 20 most important determinants
 
-    1   -0.977794  (  315,  315)  1A1 X  2A1 X  3A1 X  1B1 X  1B2 X  
-    2    0.052512  (  350,  350)  1A1 X  2A1 X  3A1 X  1B2 X  2B1 X  
-    3    0.046447  (  325,  325)  1A1 X  2A1 X  1B1 X  1B2 X  6A1 X  
-    4    0.038629  (  385,  385)  1A1 X  2A1 X  3A1 X  1B1 X  2B2 X  
-    5   -0.033839  (  325,  350)  1A1 X  2A1 X  3A1 B  1B1 A  1B2 X  6A1 A  2B1 B  
-    6   -0.033839  (  350,  325)  1A1 X  2A1 X  3A1 A  1B1 B  1B2 X  6A1 B  2B1 A  
-    7    0.028935  (  652,  652)  1A1 X  2A1 X  3A1 X  1B1 X  5A1 X  
-*   8    0.026827  (  539,  539)  1A1 X  2A1 X  3A1 X  1B1 X  4B2 X  
-    9    0.026439  (  455,  455)  1A1 X  2A1 X  3A1 X  1B1 X  3B2 X  
-   10   -0.025781  (  350,  539)  1A1 X  2A1 X  3A1 X  1B1 B  1B2 A  2B1 A  4B2 B  
-   11   -0.025781  (  539,  350)  1A1 X  2A1 X  3A1 X  1B1 A  1B2 B  2B1 B  4B2 A  
+    1    0.977794  (  315,  315)  1A1 X  2A1 X  3A1 X  1B1 X  1B2 X  
+    2   -0.052512  (  350,  350)  1A1 X  2A1 X  3A1 X  1B2 X  2B1 X  
+    3   -0.046447  (  325,  325)  1A1 X  2A1 X  1B1 X  1B2 X  6A1 X  
+    4   -0.038629  (  385,  385)  1A1 X  2A1 X  3A1 X  1B1 X  2B2 X  
+    5    0.033839  (  325,  350)  1A1 X  2A1 X  3A1 B  1B1 A  1B2 X  6A1 A  2B1 B  
+    6    0.033839  (  350,  325)  1A1 X  2A1 X  3A1 A  1B1 B  1B2 X  6A1 B  2B1 A  
+    7   -0.028935  (  652,  652)  1A1 X  2A1 X  3A1 X  1B1 X  5A1 X  
+*   8   -0.026827  (  539,  539)  1A1 X  2A1 X  3A1 X  1B1 X  4B2 X  
+    9   -0.026439  (  455,  455)  1A1 X  2A1 X  3A1 X  1B1 X  3B2 X  
+   10    0.025781  (  350,  539)  1A1 X  2A1 X  3A1 X  1B1 B  1B2 A  2B1 A  4B2 B  
+   11    0.025781  (  539,  350)  1A1 X  2A1 X  3A1 X  1B1 A  1B2 B  2B1 B  4B2 A  
    12   -0.024396  (  350,  385)  1A1 X  2A1 X  3A1 X  1B1 B  1B2 A  2B1 A  2B2 B  
    13   -0.024396  (  385,  350)  1A1 X  2A1 X  3A1 X  1B1 A  1B2 B  2B1 B  2B2 A  
    14    0.024273  (  385,  539)  1A1 X  2A1 X  3A1 X  1B1 X  2B2 A  4B2 B  
    15    0.024273  (  539,  385)  1A1 X  2A1 X  3A1 X  1B1 X  2B2 B  4B2 A  
-   16    0.023691  (  315,  360)  1A1 X  2A1 X  3A1 A  1B1 A  1B2 X  6A1 B  2B1 B  
-   17    0.023691  (  360,  315)  1A1 X  2A1 X  3A1 B  1B1 B  1B2 X  6A1 A  2B1 A  
-   18    0.023227  (  325,  539)  1A1 X  2A1 X  3A1 B  1B1 X  1B2 A  6A1 A  4B2 B  
-   19    0.023227  (  539,  325)  1A1 X  2A1 X  3A1 A  1B1 X  1B2 B  6A1 B  4B2 A  
+   16   -0.023691  (  315,  360)  1A1 X  2A1 X  3A1 A  1B1 A  1B2 X  6A1 B  2B1 B  
+   17   -0.023691  (  360,  315)  1A1 X  2A1 X  3A1 B  1B1 B  1B2 X  6A1 A  2B1 A  
+   18   -0.023227  (  325,  539)  1A1 X  2A1 X  3A1 B  1B1 X  1B2 A  6A1 A  4B2 B  
+   19   -0.023227  (  539,  325)  1A1 X  2A1 X  3A1 A  1B1 X  1B2 B  6A1 B  4B2 A  
    20    0.022840  (  325,  385)  1A1 X  2A1 X  3A1 B  1B1 X  1B2 A  6A1 A  2B2 B  
 
 
@@ -507,11 +497,11 @@ The 20 most important determinants
 
         Total Time (s)     %Time 		%Relative
  -----------------------------------------------------
- Read      1.036952
- Write     0.398415
+ Read      0.984679
+ Write     0.538662
  Sigma1    0.000000
- Sigma2    2.326192
- Sigma3    11.402270
+ Sigma2    1.172519
+ Sigma3    6.560437
  S1 Thread 0.000000
  S2 Thread 0.000000
  S3 Thread 0.000000
@@ -525,9 +515,18 @@ The 20 most important determinants
 			 - Edward Valeev
 
 ******************************************************************************
-tstop called on julius.chemistry.gatech.edu
-Wed Aug  2 17:54:59 2006
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:12:50 2008
 
-user time   =      16.12 seconds =       0.27 minutes
-system time =       1.41 seconds =       0.02 minutes
-total time  =         18 seconds =       0.30 minutes
+user time   =       9.33 seconds =       0.16 minutes
+system time =       1.38 seconds =       0.02 minutes
+total time  =         10 seconds =       0.17 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:12:51 2008
+
+Total PSI3 wall time         12 seconds =       0.20 minutes
+******************************************************************************

@@ -1,16 +1,49 @@
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Mar  8 12:46:25 2003
+PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:10:13 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF CCSD energy computation.
+Using the user provided execution list from 'exec'.
+
+The following programs will be executed:
+
+ input
+ cints
+ cscf
+ transqt2
+ ccsort
+ stable
+ psiclean
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:13 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	cc-pVDZ SCF H2O
   SHOWNORM    =	0
-  PUREAM      =	1
+  PUREAM      =	0
   PRINT_LVL   =	1
+
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
+Coordinates after reading z-matrices
+
+           1           2           3
+
+    1   0.0000000   0.0000000   0.0000000
+    2   0.0000000   0.0000000   1.8897260
+    3   1.8405477   0.0000000  -0.4283089
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -27,9 +60,9 @@ Sat Mar  8 12:46:25 2003
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.131510165098     0.000000000000
-        HYDROGEN      1.479940996653    -1.043580877476     0.000000000000
-        HYDROGEN     -1.479940996653    -1.043580877476     0.000000000000
+          OXYGEN      0.000000000000    -0.131510165113     0.000000000000
+        HYDROGEN      1.479940996653     1.043580877461    -0.000000000000
+        HYDROGEN     -1.479940996653     1.043580877461    -0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -96,32 +129,32 @@ Sat Mar  8 12:46:25 2003
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000     0.131510165098
-        HYDROGEN      0.000000000000     1.479940996653    -1.043580877476
+          OXYGEN      0.000000000000     0.000000000000    -0.131510165113
+        HYDROGEN     -0.000000000000     1.479940996653     1.043580877461
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000     0.131510165098
-        HYDROGEN      0.000000000000     1.479940996653    -1.043580877476
-        HYDROGEN      0.000000000000    -1.479940996653    -1.043580877476
+          OXYGEN      0.000000000000     0.000000000000    -0.131510165113
+        HYDROGEN     -0.000000000000     1.479940996653     1.043580877461
+        HYDROGEN     -0.000000000000    -1.479940996653     1.043580877461
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000     0.069592187382
-        HYDROGEN      0.000000000000     0.783151105291    -0.552239257852
-        HYDROGEN      0.000000000000    -0.783151105291    -0.552239257852
+          OXYGEN      0.000000000000     0.000000000000    -0.069592187390
+        HYDROGEN     -0.000000000000     0.783151105291     0.552239257844
+        HYDROGEN     -0.000000000000    -0.783151105291     0.552239257844
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000     0.131510165098
-        HYDROGEN      0.000000000000     1.479940996653    -1.043580877476
-        HYDROGEN      0.000000000000    -1.479940996653    -1.043580877476
+          OXYGEN      0.000000000000     0.000000000000    -0.131510165113
+        HYDROGEN     -0.000000000000     1.479940996653     1.043580877461
+        HYDROGEN     -0.000000000000    -1.479940996653     1.043580877461
 
 
   --------------------------------------------------------------------------
@@ -136,17 +169,20 @@ Sat Mar  8 12:46:25 2003
     2   1.0000000   0.0000000
     3   1.0000000   1.5663022   0.0000000
 
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
 
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Mar  8 12:46:25 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:13 2008
 
-user time   =       0.10 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Mar  8 12:46:25 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:13 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -162,27 +198,28 @@ Sat Mar  8 12:46:25 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = cc-pVDZ SCF H2O                                                                 
+    Label                       = cc-pVDZ SCF H2O
     Number of atoms             = 3
     Number of atomic orbitals   = 25
     Number of symmetry orbitals = 24
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
+
     Wrote 11412 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Mar  8 12:46:25 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:13 2008
 
-user time   =       0.21 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Mar  8 12:46:25 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:13 2008
 
 
              ------------------------------------------
@@ -192,30 +229,30 @@ Sat Mar  8 12:46:25 2003
               Written by too many people to mention here
 
              ------------------------------------------
-
-
-  label       = cc-pVDZ SCF H2O
+  label        = cc-pVDZ SCF H2O
   wfn          = CCSD
   reference    = RHF
   multiplicity = 1
   charge       = 0
-  direct SCF   = false
+  direct       = false
   dertype      = NONE
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        8.8046872909987
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 92528 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 2.038828e-02
+  The lowest eigenvalue of the overlap matrix was 1.831970e-02
 
   Using core guess to determine occupations
 
@@ -229,21 +266,21 @@ Sat Mar  8 12:46:25 2003
 
   iter       total energy        delta E         delta P          diiser
     1       -68.9201478455    7.772484e+01    0.000000e+00    0.000000e+00
-    2       -71.3024474068    2.382300e+00    1.989683e-01    9.034321e-01
-    3       -73.6820635256    2.379616e+00    1.045899e-01    9.759624e-01
-    4       -75.8488175036    2.166754e+00    5.290438e-02    7.167124e-01
-    5       -76.0151580498    1.663405e-01    1.348480e-02    1.971233e-01
-    6       -76.0208033329    5.645283e-03    2.080814e-03    5.863016e-02
-    7       -76.0214803224    6.769895e-04    1.088519e-03    1.985196e-02
-    8       -76.0214949062    1.458381e-05    1.180528e-04    1.489419e-03
-    9       -76.0214954802    5.739839e-07    2.344100e-05    2.784410e-04
-   10       -76.0214955276    4.743339e-08    6.239528e-06    7.881886e-05
-   11       -76.0214955310    3.317155e-09    1.976938e-06    1.863782e-05
-   12       -76.0214955310    2.258105e-11    2.044869e-07    1.725229e-06
-   13       -76.0214955310    7.958079e-13    3.877704e-08    4.745055e-07
-   14       -76.0214955310    0.000000e+00    2.106278e-09    2.995296e-08
-   15       -76.0214955310    0.000000e+00    5.144429e-10    6.501083e-09
-   16       -76.0214955310   -1.421085e-14    5.373183e-11    6.511595e-10
+    2       -71.3024474068    2.382300e+00    2.100524e-01    9.034321e-01
+    3       -76.0015419177    4.699095e+00    9.993851e-02    9.759624e-01
+    4       -76.0201157536    1.857384e-02    6.358601e-03    4.859896e-02
+    5       -76.0213738329    1.258079e-03    1.574257e-03    1.384981e-02
+    6       -76.0214718918    9.805894e-05    3.833347e-04    3.813555e-03
+    7       -76.0214951955    2.330369e-05    1.987128e-04    2.131522e-03
+    8       -76.0214954988    3.032959e-07    2.351200e-05    3.312347e-04
+    9       -76.0214955294    3.060403e-08    6.466234e-06    5.117861e-05
+   10       -76.0214955310    1.535483e-09    1.604971e-06    1.064475e-05
+   11       -76.0214955310    2.232525e-11    1.953175e-07    2.370219e-06
+   12       -76.0214955310    1.179501e-12    5.372683e-08    5.102440e-07
+   13       -76.0214955310    2.842171e-14    9.889151e-09    9.136001e-08
+   14       -76.0214955310    2.842171e-14    1.351523e-09    8.996793e-09
+   15       -76.0214955310   -1.421085e-14    1.056485e-10    8.011731e-10
+   16       -76.0214955310    2.842171e-14    1.421467e-11    1.124472e-10
 
 Orbital energies (a.u.):
 
@@ -262,117 +299,79 @@ Orbital energies (a.u.):
    7B2      4.106060  
 
 
-        SCF total energy   =     -76.021495530987
-        kinetic energy     =      75.838056402151
-        nuc. attr. energy  =    -198.284437103235
-        elec. rep. energy  =      46.424885170096
-        potential energy   =    -151.859551933139
-        virial theorem     =       1.997587009733
+      * SCF total energy   =     -76.021495530987
+        kinetic energy     =      75.838056402059
+        nuc. attr. energy  =    -198.284437103337
+        elec. rep. energy  =      46.424885170291
+        potential energy   =    -151.859551933046
+        virial theorem     =       1.997587009731
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Mar  8 12:46:25 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:13 2008
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Mar  8 12:46:25 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:13 2008
 
 
 	**************************************************
-	* TRANSQT:  Program to transform integrals from  *
+	* TRANSQT2: Program to transform integrals from  *
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  CCSD
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            = Yes
-	Delete Restricted Docc =  No
-	Do All TEI             = No
-	Memory (Mbytes)        =   20.0
-	Max Buckets            =  199
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Pitzer                 =  No
+	Wave function   =	CCSD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 24
+	Number of MOs        = 24
+	Number of active MOs = 24
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 24
-	Number of MOs    = 24
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   11	    0	    3	    0	    8	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   11	   11	    0	    3	    0	    8	    0
-	 A2 	   2	   2	    0	    0	    0	    2	    0
-	 B1 	   4	   4	    0	    1	    0	    3	    0
-	 B2 	   7	   7	    0	    1	    0	    6	    0
+	Nuclear Rep. energy (chkpt) =      8.80468729099867
+	SCF energy          (chkpt) =    -76.02149553098745
 
-	Nuclear Repulsion Energy    =         8.8046872910
-	Total SCF Energy            =       -76.0214955310
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Mar  8 12:46:25 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:13 2008
 
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.19 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Mar  8 12:46:25 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:13 2008
 
 
 			**************************
@@ -384,12 +383,15 @@ Sat Mar  8 12:46:25 2003
 
 	Input parameters:
 	-----------------
-	Reference wfn   =      RHF
-	Derivative      =     None
-	Memory (Mbytes) =     20.0
-	AO Basis        =      NONE
-	Cache Level     =        2
-	Cache Type      =      LRU
+	Wave function   =	CCSD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
 
 
 	Chkpt Parameters:
@@ -406,24 +408,50 @@ Sat Mar  8 12:46:25 2003
 	 B2 	   7	    0	    1	    0	    6	    0
 
 	Nuclear Rep. energy (chkpt) =      8.80468729099867
-	SCF energy          (chkpt) =    -76.02149553098739
-	One-electron energy          =   -122.44638070108314
-	Two-electron (AA) energy     =     14.34413288173976
-	Two-electron (BB) energy     =     14.34413288173976
-	Two-electron (AB) energy     =     23.27606499735732
-	Two-electron energy          =     37.62019787909708
-	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -76.02149553098738
-******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Mar  8 12:46:26 2003
+	SCF energy          (chkpt) =    -76.02149553098745
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.09 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+	Size of irrep 0 of <ab|cd> integrals:      0.013 (MW) /      0.102 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.037 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.012 (MW) /      0.093 (MB)
+	Total:                                     0.034 (MW) /      0.274 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.004 (MW) /      0.030 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.008 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.001 (MW) /      0.011 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.003 (MW) /      0.024 (MB)
+	Total:                                     0.009 (MW) /      0.073 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.001 (MW) /      0.010 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.000 (MW) /      0.003 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.005 (MB)
+	Total:                                     0.002 (MW) /      0.020 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	One-electron energy          =   -122.44638070127846
+	Two-electron (AA) energy     =     14.34413288182187
+	Two-electron (BB) energy     =     14.34413288182187
+	Two-electron (AB) energy     =     23.27606499747047
+	Two-electron energy          =     37.62019787929233
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.02149553098745
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Mar  8 12:46:26 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:13 2008
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:13 2008
 
 
 	     RHF->RHF stability eigenvalues:
@@ -448,9 +476,18 @@ Sat Mar  8 12:46:26 2003
 	  4    0.9342   1.5268   1.4174   1.1273 
 
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Mar  8 12:46:26 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:13 2008
 
-user time   =       0.03 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:10:13 2008
+
+Total PSI3 wall time          0 seconds =       0.00 minutes
+******************************************************************************

@@ -179,7 +179,7 @@ int ecalc(double incr)
     fprintf(outfile, "one-electron energy = %25.15f\n", oe_energy);
     fprintf(outfile, "two-electron energy = %25.15f\n", te_energy);
     fprintf(outfile, "coulomb energy      = %25.15f\n",coulomb_energy);
-    fprintf(outfile, "SCF total energy    = %25.15f\n", etot);
+    fprintf(outfile, "* SCF total energy  = %25.15f\n", etot);
   }
   fflush(outfile);
   diiser=0.0;

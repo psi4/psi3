@@ -1,10 +1,42 @@
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:17:06 2007
+PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:29:46 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF EOM_CCSD gradient computation.
+
+The following programs will be executed:
+
+ input
+ cints
+ cscf
+ transqt2
+ ccsort
+ ccenergy
+ cchbar
+ cceom
+ cclambda
+ ccdensity --calc_xi
+ cclambda --zeta
+ ccdensity --use_zeta
+ oeprop
+ transqt --backtr
+ cints --deriv1
+ psiclean
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:46 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	EOM CCSD gradient
@@ -12,7 +44,7 @@ Sun Oct 14 14:17:06 2007
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /Users/crawdad/psi3/lib/pbasis.dat
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -29,9 +61,9 @@ Sun Oct 14 14:17:06 2007
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        HYDROGEN     -1.443627918148     1.134274838595     0.000000000000
-          OXYGEN     -0.000000000000    -0.142939253210     0.000000000000
-        HYDROGEN      1.443627918148     1.134274838595     0.000000000000
+        HYDROGEN     -1.443627918148     1.134274838578     0.000000000000
+          OXYGEN     -0.000000000000    -0.142939253226    -0.000000000000
+        HYDROGEN      1.443627918148     1.134274838578     0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -85,32 +117,32 @@ Sun Oct 14 14:17:06 2007
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000    -0.000000000000    -0.142939253210
-        HYDROGEN      0.000000000000     1.443627918148     1.134274838595
+          OXYGEN     -0.000000000000    -0.000000000000    -0.142939253226
+        HYDROGEN      0.000000000000     1.443627918148     1.134274838578
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        HYDROGEN      0.000000000000    -1.443627918148     1.134274838595
-          OXYGEN      0.000000000000    -0.000000000000    -0.142939253210
-        HYDROGEN      0.000000000000     1.443627918148     1.134274838595
+        HYDROGEN      0.000000000000    -1.443627918148     1.134274838578
+          OXYGEN     -0.000000000000    -0.000000000000    -0.142939253226
+        HYDROGEN      0.000000000000     1.443627918148     1.134274838578
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        HYDROGEN      0.000000000000    -0.763935050305     0.600232438697
-          OXYGEN      0.000000000000    -0.000000000000    -0.075640200788
-        HYDROGEN      0.000000000000     0.763935050305     0.600232438697
+        HYDROGEN      0.000000000000    -0.763935050305     0.600232438689
+          OXYGEN     -0.000000000000    -0.000000000000    -0.075640200796
+        HYDROGEN      0.000000000000     0.763935050305     0.600232438689
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        HYDROGEN      0.000000000000    -1.443627918148     1.134274838595
-          OXYGEN      0.000000000000    -0.000000000000    -0.142939253210
-        HYDROGEN      0.000000000000     1.443627918148     1.134274838595
+        HYDROGEN      0.000000000000    -1.443627918148     1.134274838578
+          OXYGEN     -0.000000000000    -0.000000000000    -0.142939253226
+        HYDROGEN      0.000000000000     1.443627918148     1.134274838578
 
 
   --------------------------------------------------------------------------
@@ -130,15 +162,15 @@ Sun Oct 14 14:17:06 2007
 
 
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:17:06 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:46 2008
 
 user time   =       0.03 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:17:06 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:46 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -167,15 +199,15 @@ Sun Oct 14 14:17:06 2007
     Wrote 1709 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:17:06 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:46 2008
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:17:06 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:46 2008
 
 
              ------------------------------------------
@@ -197,7 +229,7 @@ Sun Oct 14 14:17:06 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        8.6471668881519
@@ -212,7 +244,7 @@ Sun Oct 14 14:17:06 2007
 
   keeping integrals in 19680 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 6.530461e-02
+  The lowest eigenvalue of the overlap matrix was 6.075653e-02
 
 
   Using DOCC and SOCC to 
@@ -228,21 +260,21 @@ Sun Oct 14 14:17:06 2007
 
   iter       total energy        delta E         delta P          diiser
     1       -70.4651094230    7.911228e+01    0.000000e+00    0.000000e+00
-    2       -72.1792770760    1.714168e+00    2.100355e-01    1.682491e+00
-    3       -75.6155044332    3.436227e+00    1.693347e-01    8.880737e-01
-    4       -75.9882842194    3.727798e-01    1.696167e-02    3.064702e-01
-    5       -75.9978784811    9.594262e-03    3.786133e-03    4.845424e-02
-    6       -75.9982214704    3.429893e-04    1.140718e-03    1.114202e-02
-    7       -75.9982367292    1.525887e-05    2.069616e-04    1.929674e-03
-    8       -75.9982373449    6.156854e-07    3.807031e-05    3.196635e-04
-    9       -75.9982373755    3.060489e-08    7.916039e-06    9.101227e-05
-   10       -75.9982373763    7.491820e-10    1.607589e-06    8.762358e-06
-   11       -75.9982373763    3.578293e-11    3.384974e-07    1.951088e-06
-   12       -75.9982373763    1.222134e-12    7.358948e-08    3.941813e-07
-   13       -75.9982373763    5.684342e-14    9.529009e-09    4.611994e-08
-   14       -75.9982373763   -2.842171e-14    8.057365e-10    3.815938e-09
-   15       -75.9982373763   -1.421085e-14    1.016987e-10    6.413037e-10
-   16       -75.9982373763    4.263256e-14    2.085890e-11    2.390920e-10
+    2       -72.1792770760    1.714168e+00    2.551759e-01    1.682491e+00
+    3       -75.6155044332    3.436227e+00    2.224568e-01    8.880737e-01
+    4       -75.9882842194    3.727798e-01    1.753141e-02    3.064702e-01
+    5       -75.9978784811    9.594262e-03    4.342993e-03    4.845424e-02
+    6       -75.9982214704    3.429893e-04    1.297589e-03    1.114202e-02
+    7       -75.9982367292    1.525887e-05    2.327647e-04    1.929674e-03
+    8       -75.9982373449    6.156854e-07    4.635843e-05    3.196635e-04
+    9       -75.9982373755    3.060492e-08    9.041342e-06    9.101227e-05
+   10       -75.9982373763    7.491820e-10    1.919222e-06    8.762358e-06
+   11       -75.9982373763    3.572609e-11    4.041105e-07    1.951088e-06
+   12       -75.9982373763    1.250555e-12    8.829930e-08    3.941813e-07
+   13       -75.9982373763    2.842171e-14    1.161208e-08    4.611994e-08
+   14       -75.9982373763   -1.421085e-14    9.490302e-10    3.815937e-09
+   15       -75.9982373763    1.421085e-14    1.249029e-10    6.413047e-10
+   16       -75.9982373763   -1.421085e-14    2.265069e-11    2.390918e-10
 
 Orbital energies (a.u.):
 
@@ -257,7 +289,7 @@ Orbital energies (a.u.):
    6A1      1.179815     7A1      1.683365     8A1     43.310472  
 
 
-        SCF total energy   =     -75.998237376296
+      * SCF total energy   =     -75.998237376296
         kinetic energy     =      75.854506587236
         nuc. attr. energy  =    -197.821976659782
         elec. rep. energy  =      45.969232696250
@@ -265,19 +297,19 @@ Orbital energies (a.u.):
         virial theorem     =       1.998108761545
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:17:06 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:46 2008
 
-user time   =       0.01 seconds =       0.00 minutes
+user time   =       0.00 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:17:06 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:46 2008
 
 
 	**************************************************
-	* TRANSQT:  Program to transform integrals from  *
+	* TRANSQT2: Program to transform integrals from  *
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
@@ -287,6 +319,7 @@ Sun Oct 14 14:17:06 2007
 	Input parameters:
 	-----------------
 	Wave function   =	EOM_CCSD
+	Backtransform   =	No
 	Print Level     =	1
 	Print TEIs      =	No
 	Reference wfn   =	RHF
@@ -310,7 +343,7 @@ Sun Oct 14 14:17:06 2007
 	 B2 	   4	    0	    1	    0	    3	    0
 
 	Nuclear Rep. energy (chkpt) =      8.64716688815186
-	SCF energy          (chkpt) =    -75.99823737629573
+	SCF energy          (chkpt) =    -75.99823737629569
 
 	Presorting SO-basis two-electron integrals.
 	Sorting File: SO Ints (pq,rs) nbuckets = 1
@@ -320,15 +353,15 @@ Sun Oct 14 14:17:06 2007
 	Starting second half-transformation.
 	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:17:06 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:46 2008
 
 user time   =       0.01 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:17:06 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:46 2008
 
 
 			**************************
@@ -365,7 +398,7 @@ Sun Oct 14 14:17:06 2007
 	 B2 	   4	    0	    1	    0	    3	    0
 
 	Nuclear Rep. energy (chkpt) =      8.64716688815186
-	SCF energy          (chkpt) =    -75.99823737629573
+	SCF energy          (chkpt) =    -75.99823737629569
 
 	Size of irrep 0 of <ab|cd> integrals:      0.001 (MW) /      0.010 (MB)
 	Size of irrep 1 of <ab|cd> integrals:      0.000 (MW) /      0.000 (MB)
@@ -386,25 +419,31 @@ Sun Oct 14 14:17:06 2007
 	Total:                                     0.001 (MW) /      0.005 (MB)
 
 
+	Sorting File: A <ij|kl> nbuckets = 1
 	Sorting File: B <ab|cd> nbuckets = 1
 	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
 	One-electron energy          =   -121.96747007254542
-	Two-electron (AA) energy     =     14.22169875635852
-	Two-electron (BB) energy     =     14.22169875635852
+	Two-electron (AA) energy     =     14.22169875635853
+	Two-electron (BB) energy     =     14.22169875635853
 	Two-electron (AB) energy     =     23.10036705173933
-	Two-electron energy          =     37.32206580809785
+	Two-electron energy          =     37.32206580809786
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -75.99823737629572
+	Reference energy             =    -75.99823737629571
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:17:06 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:46 2008
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:17:06 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:46 2008
 
 			**************************
 			*                        *
@@ -413,8 +452,8 @@ Sun Oct 14 14:17:06 2007
 			**************************
 
 	Nuclear Rep. energy (chkpt)   =    8.647166888151858
-	SCF energy          (chkpt)   =  -75.998237376295734
-	Reference energy    (file100) =  -75.998237376295720
+	SCF energy          (chkpt)   =  -75.998237376295691
+	Reference energy    (file100) =  -75.998237376295705
 
 	Input parameters:
 	-----------------
@@ -448,10 +487,10 @@ Sun Oct 14 14:17:06 2007
      4        -0.151900625065775    8.321e-04    0.007763    0.014442    0.014442
      5        -0.151921497603427    2.190e-04    0.007783    0.014420    0.014420
      6        -0.151918722158298    6.144e-05    0.007791    0.014423    0.014423
-     7        -0.151917819819860    1.491e-05    0.007794    0.014422    0.014422
+     7        -0.151917819819861    1.491e-05    0.007794    0.014422    0.014422
      8        -0.151917913320491    3.893e-06    0.007794    0.014422    0.014422
      9        -0.151917790658378    1.013e-06    0.007794    0.014422    0.014422
-    10        -0.151917814022380    1.708e-07    0.007794    0.014422    0.014422
+    10        -0.151917814022381    1.708e-07    0.007794    0.014422    0.014422
     11        -0.151917810348040    4.031e-08    0.007794    0.014422    0.014422
 
 	Iterations converged.
@@ -481,23 +520,23 @@ Sun Oct 14 14:17:06 2007
 	  2   4   0   6         0.0300239094
 	  4   2   6   0         0.0300239094
 
-	SCF energy       (chkpt)   =  -75.998237376295734
-	Reference energy (file100) =  -75.998237376295720
+	SCF energy       (chkpt)   =  -75.998237376295691
+	Reference energy (file100) =  -75.998237376295705
 	MP2 correlation energy     =   -0.145040822042186
-	Total MP2 energy           =  -76.143278198337910
+      * MP2 total energy           =  -76.143278198337896
 	CCSD correlation energy    =   -0.151917810348040
-	Total CCSD energy          =  -76.150155186643758
+      * CCSD total energy          =  -76.150155186643744
 
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:17:07 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:46 2008
 
-user time   =       0.15 seconds =       0.00 minutes
-system time =       0.10 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.14 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:17:07 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:46 2008
 
 
 			**************************
@@ -507,15 +546,15 @@ Sun Oct 14 14:17:07 2007
 			**************************
 
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:17:07 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:46 2008
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:17:07 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:46 2008
 
 
 	**********************************************************
@@ -523,8 +562,8 @@ Sun Oct 14 14:17:07 2007
 	**********************************************************
 
 	Nuclear Rep. energy (chkpt)   =    8.647166888151858
-	SCF energy          (chkpt)   =  -75.998237376295734
-	Reference energy    (file100) =  -75.998237376295720
+	SCF energy          (chkpt)   =  -75.998237376295691
+	Reference energy    (file100) =  -75.998237376295705
 	CCSD energy         (file100) =   -0.151917810348040
 
 	Input parameters:
@@ -556,78 +595,901 @@ Sun Oct 14 14:17:07 2007
 	Sym of state for properties =    B2 
 	Guess vectors taken from    = SINGLES
 	Restart EOM CC3             = NO
+	Collapse with last vector   = YES
 
 
+
+Fae   dot Fae   total 1883.4699490595
+Fmi   dot Fmi   total  427.7079389598
+Fme   dot Fme   total    0.0001429379
+WMBIJ dot WMBIJ total    0.0000000000
+Wmbij dot Wmbij total    0.0000000000
+WMbIj dot WMbIj total    3.1517689647
+WmBiJ dot WmBiJ total    0.0000000000
 Symmetry of ground state: A1 
 Symmetry of excited state: B2 
 Symmetry of right eigenvector: B2 
 Seeking states with multiplicity of 1
-Obtaining initial guess from singles-singles block of Hbar...Done.
+Obtaining initial guess from singles-singles block of Hbar...SigmaSS, D(norm sigma)=   1.3144320825
+SigmaSS, D(norm sigma)=   0.5660184259
+SigmaSS, D(norm sigma)=  -1.2869967889
+SigmaSS, D(norm sigma)=   0.5477448904
+SigmaSS, D(norm sigma)=  -0.5385358698
+SigmaSS, D(norm sigma)=   0.5880464933
+SigmaSS, D(norm sigma)=  -0.6083249290
+SigmaSS, D(norm sigma)=   0.0000000000
+SigmaSS, D(norm sigma)=   0.8344460668
+SigmaSS, D(norm sigma)=  -0.8534959128
+SigmaSS, D(norm sigma)=   0.0000000000
+SigmaSS, D(norm sigma)=   0.7116375891
+SigmaSS, D(norm sigma)=  -0.7116375891
+SigmaSS, D(norm sigma)=   0.7116375891
+SigmaSS, D(norm sigma)=   0.5935875806
+SigmaSS, D(norm sigma)=  -1.3052251697
+SigmaSS, D(norm sigma)=   0.7116375891
+SigmaSS, D(norm sigma)=   0.5935875806
+SigmaSS, D(norm sigma)=   5.9431595822
+SigmaSS, D(norm sigma)=  -7.2483847519
+SigmaSS, D(norm sigma)=   0.7116375891
+SigmaSS, D(norm sigma)=   0.5935875806
+SigmaSS, D(norm sigma)=   5.9431595822
+SigmaSS, D(norm sigma)=   8.5859711149
+SigmaSS, D(norm sigma)= -15.8343558668
+SigmaSS, D(norm sigma)=   0.7116375891
+SigmaSS, D(norm sigma)=   0.5935875806
+SigmaSS, D(norm sigma)=   5.9431595822
+SigmaSS, D(norm sigma)=   8.5859711149
+SigmaSS, D(norm sigma)=  -6.2231305024
+SigmaSS, D(norm sigma)=  -9.6114806159
+SigmaSS, D(norm sigma)=   0.0000000000
+SigmaSS, D(norm sigma)=   4.0818236606
+SigmaSS, D(norm sigma)=  -4.0818236606
+SigmaSS, D(norm sigma)=   4.0818236606
+SigmaSS, D(norm sigma)=  11.9514026781
+Done.
 
-Iter=1    L=1     Root    EOM Energy     Delta E   Res. Norm    Conv?
+
+	DPD File2: CME 0
+	DPD Parameters:
+	------------------
+	pnum = 0   qnum = 1   irrep = 3 
+	Irreps = 4
+
+	   Row and column dimensions for DPD Block:
+	   ----------------------------------------
+	   Irrep: 0 row =     3	col =     3
+	   Irrep: 1 row =     0	col =     1
+	   Irrep: 2 row =     1	col =     0
+	   Irrep: 3 row =     1	col =     5
+
+	File 141 DPD File2: CME 0
+	Matrix for Irrep 0
+	----------------------------------------
+
+                         0                  1                  2     
+                      (  6)              (  7)              (  8)    
+
+    0  (  0) -0.000389934489284 -0.000384540645848 -0.000640713791892
+    1  (  1)  0.003655264473481 -0.002234932264523 -0.001557115215436
+    2  (  2)  0.599038688483205  0.030718538575495  0.074291573926409
+
+	File 141 DPD File2: CME 0
+	Matrix for Irrep 1
+	----------------------------------------
+
+                         0     
+                      (  5)    
+
+
+	File 141 DPD File2: CME 0
+	Matrix for Irrep 2
+	----------------------------------------
+
+	File 141 DPD File2: CME 0
+	Matrix for Irrep 3
+	----------------------------------------
+
+                         0                  1                  2                  3                  4     
+                      (  0)              (  1)              (  2)              (  3)              (  4)    
+
+    0  (  4)  0.363011020529726  0.037167803838138 -0.037588940289294  0.009844523711275 -0.000049611668857
+resetting norm
+Iter=1    L=1   resetting norm
+SigmaSS, D(norm sigma)=   0.5630792270
+FSD    , D(norm sigma)=   0.0000000000
+WamefSD, D(norm sigma)=   0.0000000000
+WmnieSD, D(norm sigma)=   0.0000000000
+WmaijDS, D(norm sigma)=   0.1070083919
+WabejDS, D(norm sigma)=  -0.0088312954
+WnmjeDS, D(norm sigma)=   0.0024649775
+WbmfeDS, D(norm sigma)=  -0.0004687398
+FDD_Fbe, D(norm sigma)=   0.0000000000
+FDD_Fmj, D(norm sigma)=   0.0000000000
+WmnijDD, D(norm sigma)=   0.0000000000
+WabefDD, D(norm sigma)=   0.0000000000
+WmbejDD, D(norm sigma)=   0.0000000000
+WmnefDD XAF, D(norm sigma)=   0.0000000000
+WmnefDD XLI, D(norm sigma)=   0.0000000000
+resetting norm
+The G Matrix
+
+                0        
+
+    0   0.563079227032430
+  Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector 0  before precondition    0.3504935720924
+Norm of residual vector 0  after precondition    0.3504935720924
                      1   0.5630792270   5.63e-01    3.50e-01      N
-Iter=2    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector af preconditioning    0.1664493738119
+Norm of final new C in schmidt_add():    1.000000000000000
+Iter=2    L=2   resetting norm
+SigmaSS, D(norm sigma)=   0.0000032908
+FSD    , D(norm sigma)=   0.0081889056
+WamefSD, D(norm sigma)=   0.0648672303
+WmnieSD, D(norm sigma)=   0.3326354393
+WmaijDS, D(norm sigma)=   0.0000000000
+WabejDS, D(norm sigma)=   0.0000000000
+WnmjeDS, D(norm sigma)=  -0.0000000000
+WbmfeDS, D(norm sigma)=  -0.0000000000
+FDD_Fbe, D(norm sigma)=   0.8986419221
+FDD_Fmj, D(norm sigma)=   1.3543592384
+WmnijDD, D(norm sigma)=   0.6011209438
+WabefDD, D(norm sigma)=   0.4077523161
+WmbejDD, D(norm sigma)=  -1.4063616113
+WmnefDD XAF, D(norm sigma)=   0.0163716761
+WmnefDD XLI, D(norm sigma)=   0.0055818130
+resetting norm
+The G Matrix
+
+                0                  1        
+
+    0   0.563079227032430 -0.356663005079883
+    1  -0.314972602048794  2.028243264363217
+  Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector 0  before precondition    0.0838627886889
+Norm of residual vector 0  after precondition    0.0838627886889
                      1   0.4900462701  -7.30e-02    8.39e-02      N
-Iter=3    L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector af preconditioning    0.0484211682047
+Norm of final new C in schmidt_add():    1.000000000000000
+Iter=3    L=3   resetting norm
+SigmaSS, D(norm sigma)=   0.8943301688
+FSD    , D(norm sigma)=   0.0024821371
+WamefSD, D(norm sigma)=  -0.0106961773
+WmnieSD, D(norm sigma)=   0.1146393087
+WmaijDS, D(norm sigma)=   0.0518476646
+WabejDS, D(norm sigma)=   0.0005872570
+WnmjeDS, D(norm sigma)=   0.0002631864
+WbmfeDS, D(norm sigma)=  -0.0007548210
+FDD_Fbe, D(norm sigma)=   0.4049452583
+FDD_Fmj, D(norm sigma)=   0.7829297128
+WmnijDD, D(norm sigma)=   0.3381858865
+WabefDD, D(norm sigma)=   0.2375675044
+WmbejDD, D(norm sigma)=  -0.9071298798
+WmnefDD XAF, D(norm sigma)=   0.0043166630
+WmnefDD XLI, D(norm sigma)=   0.0005196080
+resetting norm
+The G Matrix
+
+                0                  1                  2        
+
+    0   0.563079227032430 -0.356663005079883 -0.042192897608866
+    1  -0.314972602048794  2.028243264363217  0.429361325393538
+    2  -0.022798333724106  0.459051757795627  1.563715388748029
+  Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector 0  before precondition    0.0330613271446
+Norm of residual vector 0  after precondition    0.0330613271446
                      1   0.4859741919  -4.07e-03    3.31e-02      N
-Iter=4    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector af preconditioning    0.0156410553984
+Norm of final new C in schmidt_add():    1.000000000000000
+Iter=4    L=4   resetting norm
+SigmaSS, D(norm sigma)=   0.8230310882
+FSD    , D(norm sigma)=   0.0005793128
+WamefSD, D(norm sigma)=   0.0352356331
+WmnieSD, D(norm sigma)=   0.0875320359
+WmaijDS, D(norm sigma)=   0.0342752183
+WabejDS, D(norm sigma)=   0.0034696621
+WnmjeDS, D(norm sigma)=   0.0005064998
+WbmfeDS, D(norm sigma)=  -0.0008738641
+FDD_Fbe, D(norm sigma)=   0.5751969803
+FDD_Fmj, D(norm sigma)=   1.0990785792
+WmnijDD, D(norm sigma)=   0.4369426189
+WabefDD, D(norm sigma)=   0.2991360154
+WmbejDD, D(norm sigma)=  -1.0193628499
+WmnefDD XAF, D(norm sigma)=   0.0057863039
+WmnefDD XLI, D(norm sigma)=   0.0006904925
+resetting norm
+The G Matrix
+
+                0                  1                  2                  3        
+
+    0   0.563079227032430 -0.356663005079883 -0.042192897608866 -0.036561804056454
+    1  -0.314972602048794  2.028243264363217  0.429361325393538  0.124148116826096
+    2  -0.022798333724106  0.459051757795627  1.563715388748029 -0.484964643445719
+    3  -0.032014942124944  0.100210299609741 -0.480651872501646  1.816641426337823
+  Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector 0  before precondition    0.0139870763083
+Norm of residual vector 0  after precondition    0.0139870763083
                      1   0.4854148783  -5.59e-04    1.40e-02      N
-Iter=5    L=5     Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector af preconditioning    0.0129412902112
+Norm of final new C in schmidt_add():    1.000000000000000
+Iter=5    L=5   resetting norm
+SigmaSS, D(norm sigma)=   0.6825058970
+FSD    , D(norm sigma)=   0.0022305681
+WamefSD, D(norm sigma)=  -0.0056169635
+WmnieSD, D(norm sigma)=   0.1005824619
+WmaijDS, D(norm sigma)=   0.0520700626
+WabejDS, D(norm sigma)=  -0.0020192779
+WnmjeDS, D(norm sigma)=   0.0013722431
+WbmfeDS, D(norm sigma)=  -0.0018131193
+FDD_Fbe, D(norm sigma)=   0.4672394893
+FDD_Fmj, D(norm sigma)=   0.8304266447
+WmnijDD, D(norm sigma)=   0.3247074287
+WabefDD, D(norm sigma)=   0.2006903193
+WmbejDD, D(norm sigma)=  -0.7296842599
+WmnefDD XAF, D(norm sigma)=   0.0049845470
+WmnefDD XLI, D(norm sigma)=   0.0000053056
+resetting norm
+The G Matrix
+
+                0                  1                  2                  3                  4        
+
+    0   0.563079227032430 -0.356663005079883 -0.042192897608866 -0.036561804056454  0.034406317611954
+    1  -0.314972602048794  2.028243264363217  0.429361325393538  0.124148116826096 -0.208075867088722
+    2  -0.022798333724106  0.459051757795627  1.563715388748029 -0.484964643445719 -0.200321407993572
+    3  -0.032014942124944  0.100210299609741 -0.480651872501646  1.816641426337823 -0.693572249254040
+    4   0.023436210104901 -0.211218859106997 -0.199013093259334 -0.706519736116592  1.363318919269562
+  Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector 0  before precondition    0.0167053143443
+Norm of residual vector 0  after precondition    0.0167053143443
                      1   0.4850179772  -3.97e-04    1.67e-02      N
-Iter=6    L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector af preconditioning    0.0085186337349
+Norm of final new C in schmidt_add():    1.000000000000000
+Iter=6    L=6   resetting norm
+SigmaSS, D(norm sigma)=   0.8487280188
+FSD    , D(norm sigma)=   0.0015784405
+WamefSD, D(norm sigma)=   0.0207162708
+WmnieSD, D(norm sigma)=   0.0923531049
+WmaijDS, D(norm sigma)=   0.0209002952
+WabejDS, D(norm sigma)=   0.0023028784
+WnmjeDS, D(norm sigma)=   0.0000796667
+WbmfeDS, D(norm sigma)=  -0.0000351634
+FDD_Fbe, D(norm sigma)=   0.6529929011
+FDD_Fmj, D(norm sigma)=   1.2729784755
+WmnijDD, D(norm sigma)=   0.5057987904
+WabefDD, D(norm sigma)=   0.3141006454
+WmbejDD, D(norm sigma)=  -1.1606449634
+WmnefDD XAF, D(norm sigma)=   0.0057689225
+WmnefDD XLI, D(norm sigma)=   0.0004814157
+resetting norm
+The G Matrix
+
+                0                  1                  2                  3                  4        
+
+    0   0.563079227032430 -0.356663005079883 -0.042192897608866 -0.036561804056454  0.034406317611954
+    1  -0.314972602048794  2.028243264363217  0.429361325393538  0.124148116826096 -0.208075867088722
+    2  -0.022798333724106  0.459051757795627  1.563715388748029 -0.484964643445719 -0.200321407993572
+    3  -0.032014942124944  0.100210299609741 -0.480651872501646  1.816641426337823 -0.693572249254040
+    4   0.023436210104901 -0.211218859106997 -0.199013093259334 -0.706519736116592  1.363318919269562
+    5   0.017500071261162 -0.102626996812661 -0.045775142631244  0.091428562618550 -0.567117618671026
+
+                5        
+
+    0   0.017417105084751
+    1  -0.115579781437034
+    2  -0.063166062499407
+    3   0.093928992259324
+    4  -0.576419659830360
+    5   2.112394244343257
+  Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector 0  before precondition    0.0117821367152
+Norm of residual vector 0  after precondition    0.0117821367152
                      1   0.4847377831  -2.80e-04    1.18e-02      N
-Iter=7    L=7     Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector af preconditioning    0.0041226163667
+Norm of final new C in schmidt_add():    1.000000000000000
+Iter=7    L=7   resetting norm
+SigmaSS, D(norm sigma)=   0.9776136272
+FSD    , D(norm sigma)=   0.0003305150
+WamefSD, D(norm sigma)=   0.0407187536
+WmnieSD, D(norm sigma)=   0.0111704696
+WmaijDS, D(norm sigma)=   0.0180225314
+WabejDS, D(norm sigma)=   0.0029718065
+WnmjeDS, D(norm sigma)=  -0.0000013824
+WbmfeDS, D(norm sigma)=  -0.0000873533
+FDD_Fbe, D(norm sigma)=   1.1063576071
+FDD_Fmj, D(norm sigma)=   1.5781449917
+WmnijDD, D(norm sigma)=   0.5035611501
+WabefDD, D(norm sigma)=   0.4448521602
+WmbejDD, D(norm sigma)=  -1.3721509288
+WmnefDD XAF, D(norm sigma)=   0.0027597564
+WmnefDD XLI, D(norm sigma)=   0.0031592496
+resetting norm
+The G Matrix
+
+                0                  1                  2                  3                  4        
+
+    0   0.563079227032430 -0.356663005079883 -0.042192897608866 -0.036561804056454  0.034406317611954
+    1  -0.314972602048794  2.028243264363217  0.429361325393538  0.124148116826096 -0.208075867088722
+    2  -0.022798333724106  0.459051757795627  1.563715388748029 -0.484964643445719 -0.200321407993572
+    3  -0.032014942124944  0.100210299609741 -0.480651872501646  1.816641426337823 -0.693572249254040
+    4   0.023436210104901 -0.211218859106997 -0.199013093259334 -0.706519736116592  1.363318919269562
+    5   0.017500071261162 -0.102626996812661 -0.045775142631244  0.091428562618550 -0.567117618671026
+    6  -0.000595688887796 -0.022654983239510 -0.112005248939678  0.292940521263633 -0.201946582750783
+
+                5                  6        
+
+    0   0.017417105084751  0.010127158066017
+    1  -0.115579781437034 -0.024554549062868
+    2  -0.063166062499407 -0.120640101154916
+    3   0.093928992259324  0.303610820136488
+    4  -0.576419659830360 -0.207478591120295
+    5   2.112394244343257 -0.344319287776668
+    6  -0.347027815307092  2.504802897565326
+  Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector 0  before precondition    0.0031772303072
+Norm of residual vector 0  after precondition    0.0031772303072
                      1   0.4846430321  -9.48e-05    3.18e-03      N
-Iter=8    L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector af preconditioning    0.0010900058644
+Norm of final new C in schmidt_add():    1.000000000000000
+Iter=8    L=8   resetting norm
+SigmaSS, D(norm sigma)=   0.7993049676
+FSD    , D(norm sigma)=   0.0022396122
+WamefSD, D(norm sigma)=  -0.0198926042
+WmnieSD, D(norm sigma)=   0.0802350187
+WmaijDS, D(norm sigma)=   0.0150801142
+WabejDS, D(norm sigma)=   0.0034002492
+WnmjeDS, D(norm sigma)=  -0.0000386379
+WbmfeDS, D(norm sigma)=  -0.0002077033
+FDD_Fbe, D(norm sigma)=   1.0065726577
+FDD_Fmj, D(norm sigma)=   1.5282945669
+WmnijDD, D(norm sigma)=   0.5480819735
+WabefDD, D(norm sigma)=   0.3778182008
+WmbejDD, D(norm sigma)=  -1.3095248142
+WmnefDD XAF, D(norm sigma)=   0.0044369422
+WmnefDD XLI, D(norm sigma)=   0.0015241464
+resetting norm
+The G Matrix
+
+                0                  1                  2                  3                  4        
+
+    0   0.563079227032430 -0.356663005079883 -0.042192897608866 -0.036561804056454  0.034406317611954
+    1  -0.314972602048794  2.028243264363217  0.429361325393538  0.124148116826096 -0.208075867088722
+    2  -0.022798333724106  0.459051757795627  1.563715388748029 -0.484964643445719 -0.200321407993572
+    3  -0.032014942124944  0.100210299609741 -0.480651872501646  1.816641426337823 -0.693572249254040
+    4   0.023436210104901 -0.211218859106997 -0.199013093259334 -0.706519736116592  1.363318919269562
+    5   0.017500071261162 -0.102626996812661 -0.045775142631244  0.091428562618550 -0.567117618671026
+    6  -0.000595688887796 -0.022654983239510 -0.112005248939678  0.292940521263633 -0.201946582750783
+    7   0.008961897810967 -0.037376377045910  0.037533184880709 -0.140213557638961  0.061346191224419
+
+                5                  6                  7        
+
+    0   0.017417105084751  0.010127158066017  0.006385475143765
+    1  -0.115579781437034 -0.024554549062868 -0.030188801120280
+    2  -0.063166062499407 -0.120640101154916  0.044288237300762
+    3   0.093928992259324  0.303610820136488 -0.130610145652607
+    4  -0.576419659830360 -0.207478591120295  0.060562508543264
+    5   2.112394244343257 -0.344319287776668  0.036270471882808
+    6  -0.347027815307092  2.504802897565326  0.507873459618951
+    7   0.045877636598286  0.508569677831918  2.381796364162650
+  Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector 0  before precondition    0.0006674592483
+Norm of residual vector 0  after precondition    0.0006674592483
                      1   0.4846320296  -1.10e-05    6.67e-04      N
-Iter=9    L=9     Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector af preconditioning    0.0002223730472
+Norm of final new C in schmidt_add():    1.000000000000000
+Iter=9    L=9   resetting norm
+SigmaSS, D(norm sigma)=   0.7632535014
+FSD    , D(norm sigma)=   0.0002308587
+WamefSD, D(norm sigma)=   0.0067108545
+WmnieSD, D(norm sigma)=  -0.0031085015
+WmaijDS, D(norm sigma)=   0.0137059086
+WabejDS, D(norm sigma)=  -0.0006965785
+WnmjeDS, D(norm sigma)=   0.0000011121
+WbmfeDS, D(norm sigma)=  -0.0001358508
+FDD_Fbe, D(norm sigma)=   1.0147661221
+FDD_Fmj, D(norm sigma)=   1.6958651732
+WmnijDD, D(norm sigma)=   0.5835423960
+WabefDD, D(norm sigma)=   0.3688238580
+WmbejDD, D(norm sigma)=  -1.4132802147
+WmnefDD XAF, D(norm sigma)=   0.0042937166
+WmnefDD XLI, D(norm sigma)=   0.0023328959
+resetting norm
+The G Matrix
+
+                0                  1                  2                  3                  4        
+
+    0   0.563079227032430 -0.356663005079883 -0.042192897608866 -0.036561804056454  0.034406317611954
+    1  -0.314972602048794  2.028243264363217  0.429361325393538  0.124148116826096 -0.208075867088722
+    2  -0.022798333724106  0.459051757795627  1.563715388748029 -0.484964643445719 -0.200321407993572
+    3  -0.032014942124944  0.100210299609741 -0.480651872501646  1.816641426337823 -0.693572249254040
+    4   0.023436210104901 -0.211218859106997 -0.199013093259334 -0.706519736116592  1.363318919269562
+    5   0.017500071261162 -0.102626996812661 -0.045775142631244  0.091428562618550 -0.567117618671026
+    6  -0.000595688887796 -0.022654983239510 -0.112005248939678  0.292940521263633 -0.201946582750783
+    7   0.008961897810967 -0.037376377045910  0.037533184880709 -0.140213557638961  0.061346191224419
+    8   0.001729494680889 -0.027503488012858 -0.031341128340529 -0.084518768813346  0.090373018521301
+
+                5                  6                  7                  8        
+
+    0   0.017417105084751  0.010127158066017  0.006385475143765  0.000520141215554
+    1  -0.115579781437034 -0.024554549062868 -0.030188801120280 -0.027039463779275
+    2  -0.063166062499407 -0.120640101154916  0.044288237300762 -0.028726893694053
+    3   0.093928992259324  0.303610820136488 -0.130610145652607 -0.082622147746297
+    4  -0.576419659830360 -0.207478591120295  0.060562508543264  0.089428057235108
+    5   2.112394244343257 -0.344319287776668  0.036270471882808 -0.012169589598180
+    6  -0.347027815307092  2.504802897565326  0.507873459618951 -0.186475273422604
+    7   0.045877636598286  0.508569677831918  2.381796364162650  0.377454301324167
+    8  -0.003706394609616 -0.184103819910828  0.372868768304382  2.245706271184888
+  Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector 0  before precondition    0.0002265757524
+Norm of residual vector 0  after precondition    0.0002265757524
                      1   0.4846320267  -2.84e-09    2.27e-04      N
-Iter=10   L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector af preconditioning    0.0000590994528
+Norm of final new C in schmidt_add():    1.000000000000000
+Iter=10   L=10  resetting norm
+SigmaSS, D(norm sigma)=   1.0849660349
+FSD    , D(norm sigma)=   0.0005741768
+WamefSD, D(norm sigma)=  -0.0128070617
+WmnieSD, D(norm sigma)=   0.0326804574
+WmaijDS, D(norm sigma)=   0.0071611468
+WabejDS, D(norm sigma)=  -0.0000124409
+WnmjeDS, D(norm sigma)=  -0.0000276506
+WbmfeDS, D(norm sigma)=   0.0000127679
+FDD_Fbe, D(norm sigma)=   1.1478519847
+FDD_Fmj, D(norm sigma)=   2.3619969810
+WmnijDD, D(norm sigma)=   0.5723313925
+WabefDD, D(norm sigma)=   0.2756299835
+WmbejDD, D(norm sigma)=  -1.0972472004
+WmnefDD XAF, D(norm sigma)=   0.0013494775
+WmnefDD XLI, D(norm sigma)=   0.0006243313
+resetting norm
+The G Matrix
+
+                0                  1                  2                  3                  4        
+
+    0   0.563079227032430 -0.356663005079883 -0.042192897608866 -0.036561804056454  0.034406317611954
+    1  -0.314972602048794  2.028243264363217  0.429361325393538  0.124148116826096 -0.208075867088722
+    2  -0.022798333724106  0.459051757795627  1.563715388748029 -0.484964643445719 -0.200321407993572
+    3  -0.032014942124944  0.100210299609741 -0.480651872501646  1.816641426337823 -0.693572249254040
+    4   0.023436210104901 -0.211218859106997 -0.199013093259334 -0.706519736116592  1.363318919269562
+    5   0.017500071261162 -0.102626996812661 -0.045775142631244  0.091428562618550 -0.567117618671026
+    6  -0.000595688887796 -0.022654983239510 -0.112005248939678  0.292940521263633 -0.201946582750783
+    7   0.008961897810967 -0.037376377045910  0.037533184880709 -0.140213557638961  0.061346191224419
+    8   0.001729494680889 -0.027503488012858 -0.031341128340529 -0.084518768813346  0.090373018521301
+    9  -0.001016419785343 -0.010345712247114 -0.059798521996700  0.033161172891319  0.029677013333815
+
+                5                  6                  7                  8                  9        
+
+    0   0.017417105084751  0.010127158066017  0.006385475143765  0.000520141215554  0.000758026202469
+    1  -0.115579781437034 -0.024554549062868 -0.030188801120280 -0.027039463779275 -0.018872095909048
+    2  -0.063166062499407 -0.120640101154916  0.044288237300762 -0.028726893694053 -0.070411647504377
+    3   0.093928992259324  0.303610820136488 -0.130610145652607 -0.082622147746297  0.038393326987268
+    4  -0.576419659830360 -0.207478591120295  0.060562508543264  0.089428057235108  0.027283655679690
+    5   2.112394244343257 -0.344319287776668  0.036270471882808 -0.012169589598180 -0.012542633628578
+    6  -0.347027815307092  2.504802897565326  0.507873459618951 -0.186475273422604 -0.127399044060616
+    7   0.045877636598286  0.508569677831918  2.381796364162650  0.377454301324167 -0.119050008886093
+    8  -0.003706394609616 -0.184103819910828  0.372868768304382  2.245706271184888  0.748959851956778
+    9  -0.012128941083825 -0.124279012022126 -0.121456390195908  0.746195617028391  2.481862130615230
+  Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector 0  before precondition    0.0000749925607
+Norm of residual vector 0  after precondition    0.0000749925607
                      1   0.4846320190  -7.71e-09    7.50e-05      N
-Iter=11   L=11    Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector af preconditioning    0.0000184557918
+Norm of final new C in schmidt_add():    0.999999999999999
+Iter=11   L=11  resetting norm
+SigmaSS, D(norm sigma)=   1.2295819602
+FSD    , D(norm sigma)=   0.0016113405
+WamefSD, D(norm sigma)=  -0.0099944453
+WmnieSD, D(norm sigma)=   0.0869281043
+WmaijDS, D(norm sigma)=   0.0197983030
+WabejDS, D(norm sigma)=  -0.0002078259
+WnmjeDS, D(norm sigma)=   0.0000705262
+WbmfeDS, D(norm sigma)=  -0.0000566442
+FDD_Fbe, D(norm sigma)=   1.1157305048
+FDD_Fmj, D(norm sigma)=   2.8322139812
+WmnijDD, D(norm sigma)=   0.6233344550
+WabefDD, D(norm sigma)=   0.2501244663
+WmbejDD, D(norm sigma)=  -0.8866396046
+WmnefDD XAF, D(norm sigma)=   0.0025512249
+WmnefDD XLI, D(norm sigma)=   0.0003358583
+resetting norm
+The G Matrix
+
+                0                  1                  2                  3                  4        
+
+    0   0.563079227032430 -0.356663005079883 -0.042192897608866 -0.036561804056454  0.034406317611954
+    1  -0.314972602048794  2.028243264363217  0.429361325393538  0.124148116826096 -0.208075867088722
+    2  -0.022798333724106  0.459051757795627  1.563715388748029 -0.484964643445719 -0.200321407993572
+    3  -0.032014942124944  0.100210299609741 -0.480651872501646  1.816641426337823 -0.693572249254040
+    4   0.023436210104901 -0.211218859106997 -0.199013093259334 -0.706519736116592  1.363318919269562
+    5   0.017500071261162 -0.102626996812661 -0.045775142631244  0.091428562618550 -0.567117618671026
+    6  -0.000595688887796 -0.022654983239510 -0.112005248939678  0.292940521263633 -0.201946582750783
+    7   0.008961897810967 -0.037376377045910  0.037533184880709 -0.140213557638961  0.061346191224419
+    8   0.001729494680889 -0.027503488012858 -0.031341128340529 -0.084518768813346  0.090373018521301
+    9  -0.001016419785343 -0.010345712247114 -0.059798521996700  0.033161172891319  0.029677013333815
+   10   0.003145555956249  0.025773989545117  0.141872686266474 -0.113443832326826 -0.017908054547737
+
+                5                  6                  7                  8                  9        
+
+    0   0.017417105084751  0.010127158066017  0.006385475143765  0.000520141215554  0.000758026202469
+    1  -0.115579781437034 -0.024554549062868 -0.030188801120280 -0.027039463779275 -0.018872095909048
+    2  -0.063166062499407 -0.120640101154916  0.044288237300762 -0.028726893694053 -0.070411647504377
+    3   0.093928992259324  0.303610820136488 -0.130610145652607 -0.082622147746297  0.038393326987268
+    4  -0.576419659830360 -0.207478591120295  0.060562508543264  0.089428057235108  0.027283655679690
+    5   2.112394244343257 -0.344319287776668  0.036270471882808 -0.012169589598180 -0.012542633628578
+    6  -0.347027815307092  2.504802897565326  0.507873459618951 -0.186475273422604 -0.127399044060616
+    7   0.045877636598286  0.508569677831918  2.381796364162650  0.377454301324167 -0.119050008886093
+    8  -0.003706394609616 -0.184103819910828  0.372868768304382  2.245706271184888  0.748959851956778
+    9  -0.012128941083825 -0.124279012022126 -0.121456390195908  0.746195617028391  2.481862130615230
+   10   0.060125760864070 -0.068567549887554 -0.004419533849464  0.069569128877958  0.944392153263437
+
+               10        
+
+    0  -0.002156168013946
+    1   0.036749502631042
+    2   0.144891257826403
+    3  -0.126615885561065
+    4  -0.013006246675425
+    5   0.058761050376640
+    6  -0.077024161007202
+    7  -0.006424769819144
+    8   0.072844827164411
+    9   0.939933988285709
+   10   2.844893525596936
+  Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector 0  before precondition    0.0000176378855
+Norm of residual vector 0  after precondition    0.0000176378855
                      1   0.4846319926  -2.65e-08    1.76e-05      N
-Iter=12   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector af preconditioning    0.0000046229984
+Norm of final new C in schmidt_add():    1.000000000000001
+Iter=12   L=12  resetting norm
+SigmaSS, D(norm sigma)=   0.8906134669
+FSD    , D(norm sigma)=   0.0016573472
+WamefSD, D(norm sigma)=  -0.0415380955
+WmnieSD, D(norm sigma)=   0.0847564269
+WmaijDS, D(norm sigma)=   0.0141396572
+WabejDS, D(norm sigma)=   0.0009538014
+WnmjeDS, D(norm sigma)=   0.0001250094
+WbmfeDS, D(norm sigma)=  -0.0002248759
+FDD_Fbe, D(norm sigma)=   1.0209121605
+FDD_Fmj, D(norm sigma)=   2.6037353787
+WmnijDD, D(norm sigma)=   0.6618667937
+WabefDD, D(norm sigma)=   0.3093338381
+WmbejDD, D(norm sigma)=  -1.1109114771
+WmnefDD XAF, D(norm sigma)=   0.0031264127
+WmnefDD XLI, D(norm sigma)=   0.0006554170
+resetting norm
+The G Matrix
+
+                0                  1                  2                  3                  4        
+
+    0   0.563079227032430 -0.356663005079883 -0.042192897608866 -0.036561804056454  0.034406317611954
+    1  -0.314972602048794  2.028243264363217  0.429361325393538  0.124148116826096 -0.208075867088722
+    2  -0.022798333724106  0.459051757795627  1.563715388748029 -0.484964643445719 -0.200321407993572
+    3  -0.032014942124944  0.100210299609741 -0.480651872501646  1.816641426337823 -0.693572249254040
+    4   0.023436210104901 -0.211218859106997 -0.199013093259334 -0.706519736116592  1.363318919269562
+    5   0.017500071261162 -0.102626996812661 -0.045775142631244  0.091428562618550 -0.567117618671026
+    6  -0.000595688887796 -0.022654983239510 -0.112005248939678  0.292940521263633 -0.201946582750783
+    7   0.008961897810967 -0.037376377045910  0.037533184880709 -0.140213557638961  0.061346191224419
+    8   0.001729494680889 -0.027503488012858 -0.031341128340529 -0.084518768813346  0.090373018521301
+    9  -0.001016419785343 -0.010345712247114 -0.059798521996700  0.033161172891319  0.029677013333815
+   10   0.003145555956249  0.025773989545117  0.141872686266474 -0.113443832326826 -0.017908054547737
+   11   0.003657041041451 -0.013619496705875  0.056107599471149 -0.178047280035132  0.090882627087859
+
+                5                  6                  7                  8                  9        
+
+    0   0.017417105084751  0.010127158066017  0.006385475143765  0.000520141215554  0.000758026202469
+    1  -0.115579781437034 -0.024554549062868 -0.030188801120280 -0.027039463779275 -0.018872095909048
+    2  -0.063166062499407 -0.120640101154916  0.044288237300762 -0.028726893694053 -0.070411647504377
+    3   0.093928992259324  0.303610820136488 -0.130610145652607 -0.082622147746297  0.038393326987268
+    4  -0.576419659830360 -0.207478591120295  0.060562508543264  0.089428057235108  0.027283655679690
+    5   2.112394244343257 -0.344319287776668  0.036270471882808 -0.012169589598180 -0.012542633628578
+    6  -0.347027815307092  2.504802897565326  0.507873459618951 -0.186475273422604 -0.127399044060616
+    7   0.045877636598286  0.508569677831918  2.381796364162650  0.377454301324167 -0.119050008886093
+    8  -0.003706394609616 -0.184103819910828  0.372868768304382  2.245706271184888  0.748959851956778
+    9  -0.012128941083825 -0.124279012022126 -0.121456390195908  0.746195617028391  2.481862130615230
+   10   0.060125760864070 -0.068567549887554 -0.004419533849464  0.069569128877958  0.944392153263437
+   11   0.023731670639566 -0.132131282716935 -0.092384768668069  0.056289373429580  0.109226841306937
+
+               10                 11        
+
+    0  -0.002156168013946 -0.004852590842478
+    1   0.036749502631042 -0.013558254442518
+    2   0.144891257826403  0.071255971723264
+    3  -0.126615885561065 -0.171103655267521
+    4  -0.013006246675425  0.096768483003602
+    5   0.058761050376640  0.023556603873207
+    6  -0.077024161007202 -0.131654146831127
+    7  -0.006424769819144 -0.094924215447166
+    8   0.072844827164411  0.051465233739806
+    9   0.939933988285709  0.113377374391143
+   10   2.844893525596936 -0.678379855518035
+   11  -0.676648950772667  2.628034778530824
+  Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector 0  before precondition    0.0000057257498
+Norm of residual vector 0  after precondition    0.0000057257498
                      1   0.4846320586   6.61e-08    5.73e-06      N
-Iter=13   L=1     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4846320586   5.55e-17    5.73e-06      N
-Iter=14   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4846320527  -5.95e-09    1.94e-06      N
-Iter=15   L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
-                     1   0.4846320554   2.70e-09    5.64e-07      Y
+Norm of residual vector af preconditioning    0.0000010469810
+Norm of final new C in schmidt_add():    1.000000000000000
+alpha
+
+           1           2           3           4           5           6           7           8           9          10
+
+    1   0.9572337   0.1734978   0.0707898  -0.1333445   0.0761412  -0.0652855  -0.0179042  -0.1534412  -0.0001308  -0.0235555
+    2   0.2247615  -0.0012248  -0.1735142   0.3908760  -0.2044337   0.2547122   0.0619785   0.7312468   0.0436433   0.1128738
+    3  -0.1320710   0.3982239   0.3223625  -0.4477662   0.4342714  -0.1368446  -0.1563239   0.5171865   0.2449075   0.0383750
+    4  -0.0842270   0.4978331   0.0513972  -0.3150388  -0.3574691   0.2399543   0.2494620  -0.0784483  -0.5389581   0.1534480
+    5  -0.0886467   0.7039203  -0.1404991   0.3604502  -0.1457094   0.0521483   0.0621822  -0.2493192   0.4333127  -0.2064409
+    6  -0.0273564   0.2491388  -0.1358708   0.3755762   0.2095576  -0.3241869  -0.5433483   0.1551293  -0.4800613   0.2813486
+    7  -0.0062954   0.0714649  -0.1867263   0.1793864   0.4265756  -0.2657411   0.3732342  -0.0053534  -0.1004365  -0.3897087
+    8   0.0015889  -0.0231450   0.2506289  -0.0328543  -0.4557814  -0.1391420  -0.5176885   0.2455800  -0.0136462  -0.5828662
+    9  -0.0003677   0.0115405  -0.4441977  -0.2196960   0.2838441   0.4967947  -0.1809911   0.0640141  -0.2477018  -0.4497284
+   10   0.0001022  -0.0093726   0.5662710   0.3145553   0.0650101  -0.0229953   0.3052427  -0.0483957  -0.2608519  -0.1896956
+   11  -0.0000273   0.0052757  -0.4024799  -0.2303651  -0.2264906  -0.3969299   0.0369542   0.0223009   0.1750209   0.1737820
+   12  -0.0000065   0.0033414  -0.2060955  -0.1586537  -0.2123505  -0.5018690   0.2747254   0.1208187  -0.2431359  -0.2826034
+
+          11          12
+
+    1   0.0078056   0.0004683
+    2  -0.0446372  -0.0068230
+    3   0.0743630  -0.0285002
+    4  -0.2802285   0.0476968
+    5   0.1900107  -0.0164197
+    6   0.0499721  -0.0266083
+    7  -0.5820910   0.1183658
+    8  -0.2711496  -0.0079937
+    9   0.2395222  -0.2923143
+   10   0.2299129  -0.5790079
+   11  -0.1806217  -0.6967446
+   12   0.5657565   0.2750695
+alpha_old
+
+           1           2           3           4           5           6           7           8           9          10
+
+    1  -0.9572336  -0.1741979  -0.1195986   0.0987905  -0.0694990  -0.1048755   0.1231052  -0.0640848   0.0358155  -0.0076518
+    2  -0.2247615   0.0010618   0.3263171  -0.2927882   0.1893581   0.4426823  -0.5927591   0.3355955  -0.1489528   0.0360204
+    3   0.1320717  -0.3984239  -0.4699716   0.3193610  -0.4355504  -0.0188168  -0.4823826   0.3002495   0.1092607   0.0819253
+    4   0.0842264  -0.4973159  -0.2184117   0.1789594   0.4089320   0.2943745   0.1462537  -0.2009797  -0.5724920  -0.1175836
+    5   0.0886474  -0.7039893   0.2878363  -0.2678577   0.1288099  -0.0296125   0.2334902   0.1235618   0.5042537   0.0163253
+    6   0.0273568  -0.2492885   0.3050346  -0.2359737  -0.2785481  -0.4519587  -0.3277240  -0.4452236  -0.3612099   0.2123268
+    7   0.0062952  -0.0713653   0.2674335  -0.0135441  -0.4766238   0.0477788   0.1503796   0.2596010  -0.2728519  -0.7121119
+    8  -0.0015891   0.0232190  -0.2771429  -0.1889428   0.3935178  -0.3577296  -0.3907831  -0.1771949   0.1951201  -0.6107185
+    9   0.0003672  -0.0112471   0.3339060   0.4922984  -0.0828859   0.3569752  -0.1477539  -0.5011123   0.2722776  -0.2042280
+   10  -0.0001003   0.0083738  -0.3603507  -0.5306882  -0.2405097   0.2830686   0.1407567  -0.1169210  -0.0722512  -0.0906857
+   11   0.0000246  -0.0038500   0.2122871   0.2884367   0.2479138  -0.4038156   0.0225575   0.4191179  -0.2454091  -0.0523808
+
+          11
+
+    1   0.0003359
+    2  -0.0000667
+    3   0.0408273
+    4  -0.0930173
+    5   0.0474176
+    6   0.0300708
+    7  -0.1887918
+    8  -0.0173714
+    9   0.3493169
+   10   0.6414506
+   11   0.6458350
+alpha_tot
+
+           1           2           3           4           5           6           7           8           9          10
+
+    1   0.9572337  -0.9572336   0.1734978   0.0707898  -0.1333445   0.0761412  -0.0652855  -0.0179042  -0.1534412  -0.0001308
+    2   0.2247615  -0.2247615  -0.0012248  -0.1735142   0.3908760  -0.2044337   0.2547122   0.0619785   0.7312468   0.0436433
+    3  -0.1320710   0.1320717   0.3982239   0.3223625  -0.4477662   0.4342714  -0.1368446  -0.1563239   0.5171865   0.2449075
+    4  -0.0842270   0.0842264   0.4978331   0.0513972  -0.3150388  -0.3574691   0.2399543   0.2494620  -0.0784483  -0.5389581
+    5  -0.0886467   0.0886474   0.7039203  -0.1404991   0.3604502  -0.1457094   0.0521483   0.0621822  -0.2493192   0.4333127
+    6  -0.0273564   0.0273568   0.2491388  -0.1358708   0.3755762   0.2095576  -0.3241869  -0.5433483   0.1551293  -0.4800613
+    7  -0.0062954   0.0062952   0.0714649  -0.1867263   0.1793864   0.4265756  -0.2657411   0.3732342  -0.0053534  -0.1004365
+    8   0.0015889  -0.0015891  -0.0231450   0.2506289  -0.0328543  -0.4557814  -0.1391420  -0.5176885   0.2455800  -0.0136462
+    9  -0.0003677   0.0003672   0.0115405  -0.4441977  -0.2196960   0.2838441   0.4967947  -0.1809911   0.0640141  -0.2477018
+   10   0.0001022  -0.0001003  -0.0093726   0.5662710   0.3145553   0.0650101  -0.0229953   0.3052427  -0.0483957  -0.2608519
+   11  -0.0000273   0.0000246   0.0052757  -0.4024799  -0.2303651  -0.2264906  -0.3969299   0.0369542   0.0223009   0.1750209
+   12  -0.0000065   0.0000000   0.0033414  -0.2060955  -0.1586537  -0.2123505  -0.5018690   0.2747254   0.1208187  -0.2431359
+
+          11          12          13          14          15          16          17          18          19          20
+
+    1  -0.0235555   0.0078056   0.0004683  -0.1741979  -0.1195986   0.0987905  -0.0694990  -0.1048755   0.1231052  -0.0640848
+    2   0.1128738  -0.0446372  -0.0068230   0.0010618   0.3263171  -0.2927882   0.1893581   0.4426823  -0.5927591   0.3355955
+    3   0.0383750   0.0743630  -0.0285002  -0.3984239  -0.4699716   0.3193610  -0.4355504  -0.0188168  -0.4823826   0.3002495
+    4   0.1534480  -0.2802285   0.0476968  -0.4973159  -0.2184117   0.1789594   0.4089320   0.2943745   0.1462537  -0.2009797
+    5  -0.2064409   0.1900107  -0.0164197  -0.7039893   0.2878363  -0.2678577   0.1288099  -0.0296125   0.2334902   0.1235618
+    6   0.2813486   0.0499721  -0.0266083  -0.2492885   0.3050346  -0.2359737  -0.2785481  -0.4519587  -0.3277240  -0.4452236
+    7  -0.3897087  -0.5820910   0.1183658  -0.0713653   0.2674335  -0.0135441  -0.4766238   0.0477788   0.1503796   0.2596010
+    8  -0.5828662  -0.2711496  -0.0079937   0.0232190  -0.2771429  -0.1889428   0.3935178  -0.3577296  -0.3907831  -0.1771949
+    9  -0.4497284   0.2395222  -0.2923143  -0.0112471   0.3339060   0.4922984  -0.0828859   0.3569752  -0.1477539  -0.5011123
+   10  -0.1896956   0.2299129  -0.5790079   0.0083738  -0.3603507  -0.5306882  -0.2405097   0.2830686   0.1407567  -0.1169210
+   11   0.1737820  -0.1806217  -0.6967446  -0.0038500   0.2122871   0.2884367   0.2479138  -0.4038156   0.0225575   0.4191179
+   12  -0.2826034   0.5657565   0.2750695   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000
+
+          21          22          23
+
+    1   0.0358155  -0.0076518   0.0003359
+    2  -0.1489528   0.0360204  -0.0000667
+    3   0.1092607   0.0819253   0.0408273
+    4  -0.5724920  -0.1175836  -0.0930173
+    5   0.5042537   0.0163253   0.0474176
+    6  -0.3612099   0.2123268   0.0300708
+    7  -0.2728519  -0.7121119  -0.1887918
+    8   0.1951201  -0.6107185  -0.0173714
+    9   0.2722776  -0.2042280   0.3493169
+   10  -0.0722512  -0.0906857   0.6414506
+   11  -0.2454091  -0.0523808   0.6458350
+   12   0.0000000   0.0000000   0.0000000
+Iter=13   L=2   The G Matrix
+
+                0                  1        
+
+    0   0.484632058640917  0.008915689743896
+    1   0.000000000019013  1.882164592360170
+  Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector 0  before precondition    0.0000057257217
+Norm of residual vector 0  after precondition    0.0000057257217
+                     1   0.4846320586  -1.21e-13    5.73e-06      N
+Norm of residual vector af preconditioning    0.0000010469809
+Norm of final new C in schmidt_add():    0.999999999999999
+Iter=14   L=3   resetting norm
+SigmaSS, D(norm sigma)=   1.3333072235
+FSD    , D(norm sigma)=   0.0004454127
+WamefSD, D(norm sigma)=  -0.0226531813
+WmnieSD, D(norm sigma)=   0.0314569072
+WmaijDS, D(norm sigma)=   0.0073584785
+WabejDS, D(norm sigma)=   0.0012094756
+WnmjeDS, D(norm sigma)=   0.0000477451
+WbmfeDS, D(norm sigma)=  -0.0001179284
+FDD_Fbe, D(norm sigma)=   1.5422401646
+FDD_Fmj, D(norm sigma)=   3.4017979843
+WmnijDD, D(norm sigma)=   0.6466864925
+WabefDD, D(norm sigma)=   0.2850982695
+WmbejDD, D(norm sigma)=  -1.0457402554
+WmnefDD XAF, D(norm sigma)=   0.0013052797
+WmnefDD XLI, D(norm sigma)=   0.0004521731
+resetting norm
+The G Matrix
+
+                0                  1                  2        
+
+    0   0.484632058640917  0.008915689743896  0.006404802176208
+    1   0.000000000019013  1.882164592360170  0.733375035986025
+    2   0.000003180429188  0.737532474998570  3.112734015040176
+  Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector 0  before precondition    0.0000013823199
+Norm of residual vector 0  after precondition    0.0000013823199
+                     1   0.4846320562  -2.45e-09    1.38e-06      N
+Norm of residual vector af preconditioning    0.0000002971464
+Norm of final new C in schmidt_add():    1.000000000000000
+Iter=15   L=4   resetting norm
+SigmaSS, D(norm sigma)=   1.5035717842
+FSD    , D(norm sigma)=   0.0004481887
+WamefSD, D(norm sigma)=  -0.0384870527
+WmnieSD, D(norm sigma)=   0.0321554323
+WmaijDS, D(norm sigma)=   0.0055326708
+WabejDS, D(norm sigma)=   0.0014821111
+WnmjeDS, D(norm sigma)=  -0.0000178568
+WbmfeDS, D(norm sigma)=  -0.0000417775
+FDD_Fbe, D(norm sigma)=   1.4772278984
+FDD_Fmj, D(norm sigma)=   3.9141108893
+WmnijDD, D(norm sigma)=   0.6959397929
+WabefDD, D(norm sigma)=   0.2542186259
+WmbejDD, D(norm sigma)=  -0.9303820932
+WmnefDD XAF, D(norm sigma)=   0.0011364710
+WmnefDD XLI, D(norm sigma)=   0.0007521410
+resetting norm
+The G Matrix
+
+                0                  1                  2                  3        
+
+    0   0.484632058640917  0.008915689743896  0.006404802176208  0.000835524165725
+    1   0.000000000019013  1.882164592360170  0.733375035986025  0.252504745537902
+    2   0.000003180429188  0.737532474998570  3.112734015040176  1.519773031849056
+    3   0.000001151864593  0.256193312940391  1.521658292850263  3.258093827892572
+  Root    EOM Energy     Delta E   Res. Norm    Conv?
+Norm of residual vector 0  before precondition    0.0000003923065
+Norm of residual vector 0  after precondition    0.0000003923065
+                     1   0.4846320554  -8.06e-10    3.92e-07      Y
 Collapsing to only 1 vector(s).
+alpha
+
+           1           2           3           4
+
+    1  -1.0000000  -0.0025854  -0.0052511   0.0016007
+    2  -0.0000008  -0.6613897  -0.7134509   0.2274026
+    3   0.0000017   0.6278555  -0.3606602   0.6898376
+    4  -0.0000004  -0.4103102   0.6007366   0.6873206
+alpha_old
+
+           1           2           3
+
+    1   1.0000000  -0.0050820  -0.0032206
+    2   0.0000007  -0.9055269  -0.4222977
+    3  -0.0000014   0.4242585  -0.9064515
+alpha_tot
+
+           1           2           3           4
+
+    1  -1.0000000  -0.0025854  -0.0052511   0.0016007
+    2  -0.0000008  -0.6613897  -0.7134509   0.2274026
+    3   0.0000017   0.6278555  -0.3606602   0.6898376
+    4  -0.0000004  -0.4103102   0.6007366   0.6873206
 
 Procedure converged for 1 root(s).
-Energy written to chkpt:Etot  -75.6655231312
+Energy written to chkpt:Etot  -75.6655231313
 EOM CCSD R0 for root 0 =   0.00000000000
+Norm with produced ROHF-like quantities =    1.0000000000
+
+	DPD File2: RIA 3 0
+	DPD Parameters:
+	------------------
+	pnum = 0   qnum = 1   irrep = 3 
+	Irreps = 4
+
+	   Row and column dimensions for DPD Block:
+	   ----------------------------------------
+	   Irrep: 0 row =     3	col =     3
+	   Irrep: 1 row =     0	col =     1
+	   Irrep: 2 row =     1	col =     0
+	   Irrep: 3 row =     1	col =     5
+
+	File 122 DPD File2: RIA 3 0
+	Matrix for Irrep 0
+	----------------------------------------
+
+                         0                  1                  2     
+                      (  6)              (  7)              (  8)    
+
+    0  (  0)  0.000512687953414  0.000401732489608  0.000610709118776
+    1  (  1)  0.011888456224487 -0.003225027846618  0.000119042096680
+    2  (  2) -0.636346712838844 -0.016244143699195 -0.054433450997230
+
+	File 122 DPD File2: RIA 3 0
+	Matrix for Irrep 1
+	----------------------------------------
+
+                         0     
+                      (  5)    
+
+
+	File 122 DPD File2: RIA 3 0
+	Matrix for Irrep 2
+	----------------------------------------
+
+	File 122 DPD File2: RIA 3 0
+	Matrix for Irrep 3
+	----------------------------------------
+
+                         0                  1                  2                  3                  4     
+                      (  0)              (  1)              (  2)              (  3)              (  4)    
+
+    0  (  4) -0.250210219285587 -0.023085255802719  0.032246858116258 -0.002858578349046  0.000072023990285
 
 Final Energetic Summary for Converged Roots of Irrep B2 
                      Excitation Energy              Total Energy
                 (eV)     (cm^-1)     (au)             (au)
-EOM State 1     13.188   106364.4   0.4846320554   -75.6655231312
+EOM State 1     13.188   106364.4   0.4846320554   -75.6655231313
 
 Largest components of excited wave function #1:
-	          2   6         0.6363467305
-	          4   0         0.2502101786
-	          2   8         0.0544334238
-	          4   2        -0.0322468594
-	          4   1         0.0230852523
-	  2   2   0   6         0.0914375734
-	  2   2   6   0         0.0914375734
-	  2   4   6   6        -0.0558249266
-	  4   2   6   6        -0.0558249266
-	  2   2   1   6         0.0478972515
+	          2   6        -0.6363467128
+	          4   0        -0.2502102193
+	          2   8        -0.0544334510
+	          4   2         0.0322468581
+	          4   1        -0.0230852558
+	  2   2   0   6        -0.0914375698
+	  2   2   6   0        -0.0914375698
+	  2   4   6   6         0.0558248874
+	  4   2   6   6         0.0558248874
+	  2   2   1   6        -0.0478972412
 
 
+	Total # of sigma evaluations: 14
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:17:07 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:47 2008
 
-user time   =       0.15 seconds =       0.00 minutes
-system time =       0.17 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.09 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:17:07 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:47 2008
 
 
 			**************************
@@ -637,10 +1499,10 @@ Sun Oct 14 14:17:07 2007
 
 	Nuclear Rep. energy (chkpt)   =    8.647166888151858
 	Reference           (chkpt)   = 0
-	SCF energy          (chkpt)   =  -75.998237376295734
-	Reference energy    (CC_INFO) =  -75.998237376295720
+	SCF energy          (chkpt)   =  -75.998237376295691
+	Reference energy    (CC_INFO) =  -75.998237376295705
 	CCSD energy         (CC_INFO) =   -0.151917810348040
-	Total CCSD energy   (CC_INFO) =  -76.150155186643758
+	Total CCSD energy   (CC_INFO) =  -76.150155186643744
 
 	Input parameters:
 	-----------------
@@ -658,6 +1520,7 @@ Sun Oct 14 14:17:07 2007
 	  1   3     1         No       0.4846320554   0.0000000000
 	Labels for eigenvector 1:
 	LIA 3 0, Lia 3 0, LIJAB 3 0, Lijab 3 0, LIjAb 3 0, 2LIjAb - LIjbA 3 0
+Deleting old CC_LAMBDA data.
 	Symmetry of left-hand state: B2 
 	Symmetry of left-hand eigenvector: B2 
 	Initial overlap of initial guess <L|R> =    1.0000000000
@@ -668,65 +1531,65 @@ Sun Oct 14 14:17:07 2007
 	Iter     PseudoEnergy or Norm         RMS  
 	----     ---------------------     --------
 	   0         1.000000000000000    0.000e+00
-	   1         0.986512739151227    2.834e-02
-	   2         0.988672249830427    7.229e-03
-	   3         0.989424352817022    2.552e-03
-	   4         0.989704092572910    6.811e-04
-	   5         0.989749944972809    1.597e-04
-	   6         0.989758567262979    9.038e-05
-	   7         0.989761177510545    6.924e-05
-	   8         0.989763166339864    5.277e-05
-	   9         0.989763650546628    2.418e-05
-	  10         0.989763721880440    3.378e-06
-	  11         0.989763950087360    1.125e-06
-	  12         0.989763990921648    3.203e-07
-	  13         0.989764006617111    1.047e-07
-	  14         0.989764003752944    2.691e-08
+	   1         0.986512742977213    2.834e-02
+	   2         0.988672254389878    7.229e-03
+	   3         0.989424358206384    2.552e-03
+	   4         0.989704097792230    6.811e-04
+	   5         0.989749950104315    1.597e-04
+	   6         0.989758572300088    9.038e-05
+	   7         0.989761182523075    6.924e-05
+	   8         0.989763171245118    5.278e-05
+	   9         0.989763655373121    2.418e-05
+	  10         0.989763726702003    3.378e-06
+	  11         0.989763954893551    1.126e-06
+	  12         0.989763995701778    3.204e-07
+	  13         0.989764011368565    1.047e-07
+	  14         0.989764008485230    2.691e-08
 
-	Initial  <L|R>  =        0.9890827353
+	Initial  <L|R>  =        0.9890827395
 	Normalizing L...
 	L0 * R0 =        0.0000000000
-	L1 * R1 =        0.9415277640
-	L2 * R2 =        0.0584722360
+	L1 * R1 =        0.9415277649
+	L2 * R2 =        0.0584722351
 	 <L|R>  =        1.0000000000
-	Pseudoenergy or Norm of normalized L =    1.000688788136859
+	Pseudoenergy or Norm of normalized L =    1.000688788628340
 
 	Largest LIA Amplitudes:
-	          2   0         0.6347174438
-	          4   6         0.2481997300
-	          2   2         0.0520178440
-	          4   8        -0.0312741844
-	          4   7         0.0221481223
-	          2   1         0.0154128536
-	          1   0        -0.0118768074
-	          1   1         0.0032095819
-	          4   0         0.0025523475
-	          1   2        -0.0009106983
+	          2   0        -0.6347174441
+	          4   6        -0.2481997301
+	          2   2        -0.0520178440
+	          4   8         0.0312741844
+	          4   7        -0.0221481223
+	          2   1        -0.0154128536
+	          1   0         0.0118768074
+	          1   1        -0.0032095819
+	          4   0        -0.0025523475
+	          1   2         0.0009106983
 
 	Largest LIjAb Amplitudes:
-	  2   2   0   6         0.0906288365
-	  2   2   6   0         0.0906288365
-	  2   4   6   6        -0.0587143245
-	  4   2   6   6        -0.0587143245
-	  2   2   1   6         0.0532217631
-	  2   2   6   1         0.0532217631
-	  4   4   0   6        -0.0457061798
-	  4   4   6   0        -0.0457061798
-	  2   3   6   5         0.0355468351
-	  3   2   5   6         0.0355468351
+	  2   2   0   6        -0.0906288366
+	  2   2   6   0        -0.0906288366
+	  2   4   6   6         0.0587143246
+	  4   2   6   6         0.0587143246
+	  2   2   1   6        -0.0532217631
+	  2   2   6   1        -0.0532217631
+	  4   4   0   6         0.0457061799
+	  4   4   6   0         0.0457061799
+	  2   3   6   5        -0.0355468351
+	  3   2   5   6        -0.0355468351
 
 	Iterations converged.
 
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:17:07 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:47 2008
 
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.05 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:17:07 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:47 2008
 
 
 			**************************
@@ -737,10 +1600,10 @@ Sun Oct 14 14:17:07 2007
 
 
 	Nuclear Rep. energy (chkpt)   =    8.647166888151858
-	SCF energy          (chkpt)   =  -75.998237376295734
-	Reference energy    (file100) =  -75.998237376295720
+	SCF energy          (chkpt)   =  -75.998237376295691
+	Reference energy    (file100) =  -75.998237376295705
 	CCSD energy         (CC_INFO) =   -0.151917810348040
-	Total CCSD energy   (CC_INFO) =  -76.150155186643758
+	Total CCSD energy   (CC_INFO) =  -76.150155186643744
 
 	Input parameters:
 	-----------------
@@ -756,18 +1619,18 @@ Sun Oct 14 14:17:07 2007
 
 	Ground?  State     EOM Energy       R0
 	   No     1B2     0.4846320554   0.00000000
-XI_IA amplitudes: Norm=   0.1872596805, Dot=   0.0350661880
-XI amplitudes   : Norm=   1.2692159859, Dot=   1.6109092189
+XI_IA amplitudes: Norm=   0.1872596740, Dot=   0.0350661855
+XI amplitudes   : Norm=   1.2692159843, Dot=   1.6109092148
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:17:07 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:47 2008
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:17:07 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:47 2008
 
 
 			**************************
@@ -777,10 +1640,10 @@ Sun Oct 14 14:17:07 2007
 
 	Nuclear Rep. energy (chkpt)   =    8.647166888151858
 	Reference           (chkpt)   = 0
-	SCF energy          (chkpt)   =  -75.998237376295734
-	Reference energy    (CC_INFO) =  -75.998237376295720
+	SCF energy          (chkpt)   =  -75.998237376295691
+	Reference energy    (CC_INFO) =  -75.998237376295705
 	CCSD energy         (CC_INFO) =   -0.151917810348040
-	Total CCSD energy   (CC_INFO) =  -76.150155186643758
+	Total CCSD energy   (CC_INFO) =  -76.150155186643744
 	Irrep of Zeta       (CC_INFO) = 0
 
 	Input parameters:
@@ -799,6 +1662,7 @@ Sun Oct 14 14:17:07 2007
 	  1   0     1         No       0.0000000000   0.0000000000
 	Labels for eigenvector 1:
 	ZIA, Zia, ZIJAB, Zijab, ZIjAb, 2ZIjAb - ZIjbA
+Deleting old CC_LAMBDA data.
 	Symmetry of left-hand state: A1 
 	Symmetry of left-hand eigenvector: A1 
 
@@ -806,55 +1670,55 @@ Sun Oct 14 14:17:07 2007
 	          ------------------------
 	Iter     PseudoEnergy or Norm         RMS  
 	----     ---------------------     --------
-	   0         0.136947939718115    0.000e+00
-	   1         0.177379033356438    2.696e-02
-	   2         0.187784531868968    1.263e-02
-	   3         0.190944000577290    4.108e-03
-	   4         0.191809806582293    1.410e-03
-	   5         0.191894701743983    3.051e-04
-	   6         0.191900346072720    5.942e-05
-	   7         0.191901345464773    1.183e-05
-	   8         0.191901445252055    1.825e-06
-	   9         0.191901459024851    2.936e-07
-	  10         0.191901462428026    7.909e-08
+	   0         0.136947935945566    0.000e+00
+	   1         0.177379027348141    2.696e-02
+	   2         0.187784525127855    1.263e-02
+	   3         0.190943993628145    4.108e-03
+	   4         0.191809799579346    1.410e-03
+	   5         0.191894694736837    3.051e-04
+	   6         0.191900339065910    5.942e-05
+	   7         0.191901338458229    1.183e-05
+	   8         0.191901438245553    1.825e-06
+	   9         0.191901452018362    2.936e-07
+	  10         0.191901455421542    7.909e-08
 
 	Largest LIA Amplitudes:
-	          2   0         0.0573093411
-	          4   6        -0.0519150431
-	          2   1         0.0348161190
-	          4   8        -0.0321814944
-	          1   0         0.0263855238
-	          3   5         0.0209690304
-	          2   2        -0.0148324399
-	          1   2        -0.0108982969
-	          1   3         0.0083411979
-	          4   7        -0.0052660526
+	          2   0         0.0573093366
+	          4   6        -0.0519150385
+	          2   1         0.0348161168
+	          4   8        -0.0321814934
+	          1   0         0.0263855231
+	          3   5         0.0209690313
+	          2   2        -0.0148324383
+	          1   2        -0.0108982972
+	          1   3         0.0083411985
+	          4   7        -0.0052660530
 
 	Largest LIjAb Amplitudes:
-	  3   3   5   5        -0.0558984693
-	  4   4   0   0        -0.0273226171
-	  4   4   8   8        -0.0246825965
+	  3   3   5   5        -0.0558984694
+	  4   4   0   0        -0.0273226176
+	  4   4   8   8        -0.0246825957
 	  1   3   3   5        -0.0205797062
 	  3   1   5   3        -0.0205797062
-	  3   4   5   8         0.0193811948
-	  4   3   8   5         0.0193811948
-	  1   3   0   5        -0.0181391385
-	  3   1   5   0        -0.0181391385
-	  2   3   1   5        -0.0179825528
+	  3   4   5   8         0.0193811944
+	  4   3   8   5         0.0193811944
+	  1   3   0   5        -0.0181391381
+	  3   1   5   0        -0.0181391381
+	  2   3   1   5        -0.0179825533
 
 	Iterations converged.
 
-Norm of Zeta:    0.191901462428026
+Norm of Zeta:    0.191901455421542
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:17:07 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:47 2008
 
 user time   =       0.05 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:17:07 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:47 2008
 
 
 			**************************
@@ -865,10 +1729,10 @@ Sun Oct 14 14:17:07 2007
 
 
 	Nuclear Rep. energy (chkpt)   =    8.647166888151858
-	SCF energy          (chkpt)   =  -75.998237376295734
-	Reference energy    (file100) =  -75.998237376295720
+	SCF energy          (chkpt)   =  -75.998237376295691
+	Reference energy    (file100) =  -75.998237376295705
 	CCSD energy         (CC_INFO) =   -0.151917810348040
-	Total CCSD energy   (CC_INFO) =  -76.150155186643758
+	Total CCSD energy   (CC_INFO) =  -76.150155186643744
 
 	Input parameters:
 	-----------------
@@ -887,64 +1751,64 @@ Sun Oct 14 14:17:07 2007
 
 	Energies re-computed from CC density:
 	-------------------------------------
-	One-electron energy        =    1.028510155064066
-	IJKL energy                =    0.052107654872021
-	IJKA energy                =   -0.119140635945320
-	IJAB energy                =   -0.172154945990230
-	IBJA energy                =   -0.470076374428540
-	CIAB energy                =   -0.026882983718684
-	ABCD energy                =    0.040351375316050
-	Total two-electron energy  =   -0.695795909894704
-	Total EOM CCSD correlation energy        =    0.332714245169363
-	CCSD correlation + EOM excitation energy =    0.332714245047671
-	Total EOM CCSD energy                    =  -75.665523131126363
+	One-electron energy        =    1.028510156240073
+	IJKL energy                =    0.052107653286377
+	IJKA energy                =   -0.119140625038669
+	IJAB energy                =   -0.172154942923882
+	IBJA energy                =   -0.470076381215669
+	CIAB energy                =   -0.026882990382450
+	ABCD energy                =    0.040351375203583
+	Total two-electron energy  =   -0.695795911070711
+	Total EOM CCSD correlation energy        =    0.332714245169362
+	CCSD correlation + EOM excitation energy =    0.332714245037449
+	Total EOM CCSD energy                    =  -75.665523131126349
 
 	Virial Theorem Data:
 	--------------------
 	Kinetic energy (ref)   =   75.854506587236472
-	Kinetic energy (corr)  =    0.347293245303712
-	Kinetic energy (total) =   76.201799832540189
+	Kinetic energy (corr)  =    0.347293201649436
+	Kinetic energy (total) =   76.201799788885907
 	-V/T (ref)             =    2.001894822015538
-	-V/T (corr)            =    1.437433818256921
-	-V/T (total)           =    1.999322264749521
+	-V/T (corr)            =    1.437433873241749
+	-V/T (total)           =    1.999322265322010
 
 	Energies re-computed from Fock-adjusted CC density:
 	---------------------------------------------------
-	One-electron energy        =    1.548779059413071
-	IJKL energy                =   -6.689579920286915
-	IJKA energy                =    1.060503076387456
-	IJAB energy                =   -0.172154945990230
-	IBJA energy                =    4.571698584049768
-	CIAB energy                =   -0.026882983718684
-	ABCD energy                =    0.040351375316050
-	Total two-electron energy  =   -1.216064814242555
+	One-electron energy        =    1.548779043086022
+	IJKL energy                =   -6.689579881881970
+	IJKA energy                =    1.060502996077624
+	IJAB energy                =   -0.172154942923882
+	IBJA energy                =    4.571698645991590
+	CIAB energy                =   -0.026882990382450
+	ABCD energy                =    0.040351375203583
+	Total two-electron energy  =   -1.216064797915506
 	Total EOM CCSD correlation energy        =    0.332714245170516
-	CCSD correlation + EOM excitation energy =    0.332714245047671
-	Total EOM CCSD energy                    =  -75.665523131125198
+	CCSD correlation + EOM excitation energy =    0.332714245037449
+	Total EOM CCSD energy                    =  -75.665523131125184
 
 	Energies re-computed from Mulliken density:
 	-------------------------------------------
-	One-electron energy        =    1.548779059413071
-	IJKL energy                =   -6.689579920286914
-	IJKA energy                =    1.060503076387457
-	IJAB energy                =   -0.301973402262200
-	IBJA energy                =    4.701517040321738
-	CIAB energy                =   -0.026882983718684
-	ABCD energy                =    0.040351375316050
-	Total two-electron energy  =   -1.216064814242552
-	Total EOM CCSD correlation energy        =    0.332714245170519
-	CCSD correlation + EOM excitation energy =    0.332714245047671
-	Total EOM CCSD energy                    =  -75.665523131125198
+	One-electron energy        =    1.548779043086022
+	IJKL energy                =   -6.689579881881970
+	IJKA energy                =    1.060502996077624
+	IJAB energy                =   -0.301973409927316
+	IBJA energy                =    4.701517112995024
+	CIAB energy                =   -0.026882990382450
+	ABCD energy                =    0.040351375203582
+	Total two-electron energy  =   -1.216064797915507
+	Total EOM CCSD correlation energy        =    0.332714245170515
+	CCSD correlation + EOM excitation energy =    0.332714245037449
+	Total EOM CCSD energy                    =  -75.665523131125184
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:17:08 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:47 2008
 
-user time   =       0.11 seconds =       0.00 minutes
-system time =       0.12 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.08 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:17:08 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:47 2008
 
     **********************************************
     *                    OEPROP                  *
@@ -996,13 +1860,13 @@ Sun Oct 14 14:17:08 2007
   ------  ----        ---      -----------
      2      1          0        1.13205620
      2      2          0        0.86248839
-     2      3          0        0.92456615
-     2      4          0        0.87255245
+     2      3          0        0.92456616
+     2      4          0        0.87255246
      2      5          1        1.40164084
-     2      6          1        1.18604206
+     2      6          1        1.18604204
      2      7          1        0.78444651
      2      8          1        0.59676226
-     2      9          1        0.22615220
+     2      9          1        0.22615219
      2     10          1        0.26466535
      3     11          0        0.38505208
      3     12          0        0.48926172
@@ -1014,9 +1878,9 @@ Sun Oct 14 14:17:08 2007
 
            1           2           3
 
-    1   1.8651584  -0.4182587  -0.7090886
+    1   1.8651583  -0.4182587  -0.7090885
     2  -0.4182587   7.6828743  -0.4182587
-    3  -0.7090886  -0.4182587   1.8651584
+    3  -0.7090885  -0.4182587   1.8651583
 
 
  -Gross atomic populations and net charges :
@@ -1035,14 +1899,14 @@ Sun Oct 14 14:17:08 2007
  -Coordinates of the reference point (a.u.) :
            x                     y                     z
   --------------------  --------------------  --------------------
-          0.0000000000         -0.0000000000          0.0000000000
+         -0.0000000000         -0.0000000000         -0.0000000000
 
  -Electric dipole moment (expectation values) :
 
-    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
-    mu(Y)  =  -0.00000 D  =  -5.64772090e-45 C*m  =  -0.00000000 a.u.
-    mu(Z)  =   0.04247 D  =   1.41657378e-31 C*m  =   0.01670811 a.u.
-    |mu|   =   0.04247 D  =   1.41657378e-31 C*m  =   0.01670811 a.u.
+    mu(X)  =   0.00000 D  =   6.77673569e-47 C*m  =   0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -1.88257363e-45 C*m  =  -0.00000000 a.u.
+    mu(Z)  =   0.04247 D  =   1.41657764e-31 C*m  =   0.01670816 a.u.
+    |mu|   =   0.04247 D  =   1.41657764e-31 C*m  =   0.01670816 a.u.
 
 
  --------------------------------------------------------------
@@ -1052,7 +1916,7 @@ Sun Oct 14 14:17:08 2007
  -Coordinates of the reference point (a.u.) :
            x                     y                     z
   --------------------  --------------------  --------------------
-          0.0000000000          0.0000000000         -0.0000000000
+          0.0000000000          0.0000000000          0.0000000000
 
  -Electronic angular momentum (expectation values) :
 
@@ -1069,7 +1933,7 @@ Sun Oct 14 14:17:08 2007
     #   Charge           x                     y                     z
    ---  ------  --------------------  --------------------  --------------------
     1      1            0.0000000000         -1.4436279181          1.1342748386
-    2      8            0.0000000000         -0.0000000000         -0.1429392532
+    2      8           -0.0000000000         -0.0000000000         -0.1429392532
     3      1            0.0000000000          1.4436279181          1.1342748386
 
 
@@ -1077,24 +1941,24 @@ Sun Oct 14 14:17:08 2007
 
     Center         phi            Ex             Ey           Ez
     ------    ------------   ------------  ------------  ------------
-       1       -0.87250841     0.00000000   -0.16825018    0.07369857
-       2      -22.20344368     0.00000000   -0.00000000   -0.09715251
-       3       -0.87250841     0.00000000    0.16825018    0.07369857
+       1       -0.87250841    -0.00000000   -0.16825019    0.07369857
+       2      -22.20344369    -0.00000000   -0.00000000   -0.09715252
+       3       -0.87250841     0.00000000    0.16825019    0.07369857
 
 
  -Electric field gradient (regular form) (a.u.):
 
     Center           XX                    YY                    ZZ
     ------  --------------------  --------------------  --------------------
-       1             -1.10934693           -1.52162766           -1.33242858
-       2          -1233.42490212        -1235.37060511        -1238.43363856
-       3             -1.10934693           -1.52162766           -1.33242858
+       1             -1.10934694           -1.52162768           -1.33242860
+       2          -1233.42490302        -1235.37060610        -1238.43363948
+       3             -1.10934694           -1.52162768           -1.33242860
 
     Center           XY                    XZ                    YZ
     ------  --------------------  --------------------  --------------------
-       1              0.00000000            0.00000000           -1.44082456
-       2              0.00000000            0.00000000           -0.00000000
-       3              0.00000000            0.00000000            1.44082456
+       1              0.00000000           -0.00000000           -1.44082455
+       2             -0.00000000           -0.00000000           -0.00000000
+       3             -0.00000000           -0.00000000            1.44082455
 
 
  -Electric field gradient (traceless tensor form) (a.u.):
@@ -1102,23 +1966,23 @@ Sun Oct 14 14:17:08 2007
     Center        XX - RR/3             YY - RR/3             ZZ - RR/3
     ------  --------------------  --------------------  --------------------
        1              0.21178746           -0.20049327           -0.01129419
-       2              2.31814647            0.37244349           -2.69058996
+       2              2.31814652            0.37244343           -2.69058995
        3              0.21178746           -0.20049327           -0.01129419
 
     Center           XY                    XZ                    YZ
     ------  --------------------  --------------------  --------------------
-       1              0.00000000            0.00000000           -1.44082456
-       2              0.00000000            0.00000000           -0.00000000
-       3              0.00000000            0.00000000            1.44082456
+       1              0.00000000           -0.00000000           -1.44082455
+       2             -0.00000000           -0.00000000           -0.00000000
+       3             -0.00000000           -0.00000000            1.44082455
 
 
  -Electron density (a.u.):
 
     Center           rho
     ------  --------------------
-       1              0.31539760
-       2            295.01192186
-       3              0.31539760
+       1              0.31539761
+       2            295.01192209
+       3              0.31539761
 
 
  --------------------------------------------------------------
@@ -1127,20 +1991,20 @@ Sun Oct 14 14:17:08 2007
 
  -Relativistic MVD one-electron corrections to the energy (a.u.):
 
-    Mass-velocity (p^4) term     :   -0.249803161925681
-    One-electron Darwin term     :   0.197467765298959
-    Total one-electron MVD terms :   -0.052335396626722
+    Mass-velocity (p^4) term     :   -0.249803162151655
+    One-electron Darwin term     :   0.197467765449066
+    Total one-electron MVD terms :   -0.052335396702589
 
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:17:08 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:47 2008
 
-user time   =       0.01 seconds =       0.00 minutes
+user time   =       0.00 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:17:08 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:47 2008
 
 
 	**************************************************
@@ -1189,7 +2053,6 @@ Sun Oct 14 14:17:08 2007
 	Check C Orthonormality =  No
 	QRHF orbitals          =  No
 	IVO orbitals           =  No
-	Semicanonical orbitals =  No
 	Pitzer                 =  No
 
 	Chkpt File Parameters:
@@ -1224,15 +2087,15 @@ Sun Oct 14 14:17:08 2007
 	Transforming one-electron integrals...
 	One-pdm and lagrangian written to file76.
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:17:09 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:47 2008
 
-user time   =       0.29 seconds =       0.00 minutes
-system time =       0.65 seconds =       0.01 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:17:09 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:47 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1265,14 +2128,23 @@ Sun Oct 14 14:17:09 2007
   -EOM_CCSD forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.126073451759    -0.035920825106
-       2        0.000000000000     0.000000000000     0.071841650212
-       3        0.000000000000    -0.126073451759    -0.035920825106
+       1       -0.000000000000     0.126073457907    -0.035920831996
+       2        0.000000000000     0.000000000000     0.071841663993
+       3        0.000000000000    -0.126073457907    -0.035920831996
 
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:17:09 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:29:47 2008
 
-user time   =       0.03 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:29:47 2008
+
+Total PSI3 wall time          1 seconds =       0.02 minutes
+******************************************************************************

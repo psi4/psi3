@@ -1,10 +1,38 @@
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:15:24 2007
+PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:22:58 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF SCF_MVD optimization via analytic gradients.
+
+The following programs will be executed:
+
+ input
+ REPEAT 20
+ 20
+  cints
+  cscf
+  transqt2
+  cints --deriv2
+  cphf --X_only
+  cints --deriv1
+  optking --opt_step
+ END
+ psiclean
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:22:58 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	mass-velocity and darwin gradient test with 5d/7f
@@ -12,7 +40,7 @@ Sun Oct 21 20:15:24 2007
   PUREAM      =	1
   PRINT_LVL   =	1
 
-  Parsed basis sets from /usr/local/psi/share/pbasis.dat
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -29,9 +57,9 @@ Sun Oct 21 20:15:24 2007
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000    -0.120139520507     0.000000000000
-        HYDROGEN     -1.428782293400     0.953350686893     0.000000000000
-        HYDROGEN      1.428782293400     0.953350686893     0.000000000000
+          OXYGEN      0.000000000000    -0.120139520520     0.000000000000
+        HYDROGEN     -1.428782293400     0.953350686880     0.000000000000
+        HYDROGEN      1.428782293400     0.953350686880     0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -95,32 +123,32 @@ Sun Oct 21 20:15:24 2007
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.120139520507
-        HYDROGEN      0.000000000000     1.428782293400     0.953350686893
+          OXYGEN      0.000000000000     0.000000000000    -0.120139520520
+        HYDROGEN      0.000000000000     1.428782293400     0.953350686880
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.120139520507
-        HYDROGEN      0.000000000000    -1.428782293400     0.953350686893
-        HYDROGEN      0.000000000000     1.428782293400     0.953350686893
+          OXYGEN      0.000000000000     0.000000000000    -0.120139520520
+        HYDROGEN      0.000000000000    -1.428782293400     0.953350686880
+        HYDROGEN      0.000000000000     1.428782293400     0.953350686880
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.063575100958
-        HYDROGEN      0.000000000000    -0.756079083441     0.504491493823
-        HYDROGEN      0.000000000000     0.756079083441     0.504491493823
+          OXYGEN      0.000000000000     0.000000000000    -0.063575100965
+        HYDROGEN      0.000000000000    -0.756079083441     0.504491493815
+        HYDROGEN      0.000000000000     0.756079083441     0.504491493815
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.120139520507
-        HYDROGEN      0.000000000000    -1.428782293400     0.953350686893
-        HYDROGEN      0.000000000000     1.428782293400     0.953350686893
+          OXYGEN      0.000000000000     0.000000000000    -0.120139520520
+        HYDROGEN      0.000000000000    -1.428782293400     0.953350686880
+        HYDROGEN      0.000000000000     1.428782293400     0.953350686880
 
 
   --------------------------------------------------------------------------
@@ -140,15 +168,15 @@ Sun Oct 21 20:15:24 2007
 
 
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:15:24 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:22:58 2008
 
-user time   =       0.09 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:15:24 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:22:58 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -177,15 +205,15 @@ Sun Oct 21 20:15:24 2007
     Wrote 374912 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:15:24 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:22:58 2008
 
-user time   =       0.31 seconds =       0.01 minutes
-system time =       0.06 seconds =       0.00 minutes
+user time   =       0.17 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:15:24 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:22:58 2008
 
 
              ------------------------------------------
@@ -207,7 +235,7 @@ Sun Oct 21 20:15:24 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        9.3028975361489
@@ -222,7 +250,7 @@ Sun Oct 21 20:15:24 2007
 
   keeping integrals in 2398128 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.499476e-03
+  The lowest eigenvalue of the overlap matrix was 1.196156e-03
 
   Using core guess to determine occupations
 
@@ -236,20 +264,20 @@ Sun Oct 21 20:15:24 2007
 
   iter       total energy        delta E         delta P          diiser
     1       -63.6059367242    7.290883e+01    0.000000e+00    0.000000e+00
-    2       -67.4861629106    3.880226e+00    2.369314e-02    1.622189e+00
-    3       -73.6508826505    6.164720e+00    2.044153e-02    7.832788e-01
-    4       -75.4594112145    1.808529e+00    1.926611e-03    7.222018e-01
-    5       -76.0579622132    5.985510e-01    1.999595e-03    3.490096e-01
-    6       -76.0615601029    3.597890e-03    1.896829e-04    4.137372e-02
-    7       -76.0624811423    9.210394e-04    8.136757e-05    1.632183e-02
-    8       -76.0625076586    2.651621e-05    1.643431e-05    1.662798e-03
-    9       -76.0625115721    3.913542e-06    6.785886e-06    5.326759e-04
-   10       -76.0625116212    4.906713e-08    7.506317e-07    8.900874e-05
-   11       -76.0625116228    1.658250e-09    2.045804e-07    1.296622e-05
-   12       -76.0625116229    6.352252e-11    3.484827e-08    2.145011e-06
-   13       -76.0625116229    1.094236e-12    5.555746e-09    2.965066e-07
-   14       -76.0625116229    1.421085e-14    7.121645e-10    3.359700e-08
-   15       -76.0625116229   -4.263256e-14    7.948781e-11    5.101070e-09
+    2       -67.4861629106    3.880226e+00    3.204872e-02    1.622189e+00
+    3       -73.6508826505    6.164720e+00    2.901142e-02    7.832788e-01
+    4       -75.4594112145    1.808529e+00    1.976217e-03    7.222018e-01
+    5       -76.0579622132    5.985510e-01    2.106188e-03    3.490096e-01
+    6       -76.0615601029    3.597890e-03    2.090750e-04    4.137372e-02
+    7       -76.0624811423    9.210394e-04    8.605301e-05    1.632183e-02
+    8       -76.0625076586    2.651621e-05    1.722992e-05    1.662798e-03
+    9       -76.0625115721    3.913542e-06    7.382321e-06    5.326759e-04
+   10       -76.0625116212    4.906715e-08    8.347254e-07    8.900874e-05
+   11       -76.0625116228    1.658236e-09    2.367613e-07    1.296622e-05
+   12       -76.0625116229    6.346568e-11    4.288460e-08    2.145011e-06
+   13       -76.0625116229    1.108447e-12    6.402302e-09    2.965066e-07
+   14       -76.0625116229    0.000000e+00    7.806689e-10    3.359699e-08
+   15       -76.0625116229   -2.842171e-14    9.389919e-11    5.101070e-09
 
 Orbital energies (a.u.):
 
@@ -279,118 +307,79 @@ Orbital energies (a.u.):
   17B2      7.692195    23A1      8.411859    24A1     47.467119  
 
 
-        SCF total energy   =     -76.062511622889
+      * SCF total energy   =     -76.062511622889
         kinetic energy     =      76.042176316324
-        nuc. attr. energy  =    -199.319549789685
+        nuc. attr. energy  =    -199.319549789684
         elec. rep. energy  =      47.214861850472
         potential energy   =    -152.104687939213
         virial theorem     =       1.999732650078
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:15:25 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:22:58 2008
 
-user time   =       0.18 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:15:25 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:22:58 2008
 
 
 	**************************************************
-	* TRANSQT:  Program to transform integrals from  *
+	* TRANSQT2: Program to transform integrals from  *
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  SCF_MVD
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            =  Yes
-	Delete Restricted Docc =  Yes
-	Do All TEI             =  Yes
-	Memory (Mbytes)        =  256.0
-	Max Buckets            =  499
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Semicanonical orbitals =  No
-	Pitzer                 =  Yes
+	Wave function   =	SCF_MVD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	First
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 59
+	Number of MOs        = 59
+	Number of active MOs = 59
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 59
-	Number of MOs    = 59
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   24	    0	    3	    0	    21	    0
+	 A2 	   7	    0	    0	    0	    7	    0
+	 B1 	   11	    0	    1	    0	    10	    0
+	 B2 	   17	    0	    1	    0	    16	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   24	   24	    0	    3	    0	    21	    0
-	 A2 	   7	   7	    0	    0	    0	    7	    0
-	 B1 	   11	   11	    0	    1	    0	    10	    0
-	 B2 	   17	   17	    0	    1	    0	    16	    0
+	Nuclear Rep. energy (chkpt) =      9.30289753614894
+	SCF energy          (chkpt) =    -76.06251162288874
 
-	Nuclear Repulsion Energy    =         9.3028975361
-	Total SCF Energy            =       -76.0625116229
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:15:29 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:22:59 2008
 
-user time   =       1.07 seconds =       0.02 minutes
-system time =       1.92 seconds =       0.03 minutes
-total time  =          4 seconds =       0.07 minutes
+user time   =       0.50 seconds =       0.01 minutes
+system time =       0.18 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:15:29 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:22:59 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -416,15 +405,15 @@ Sun Oct 21 20:15:29 2007
     Computational point group        = C2v
     Number of irreps                 = 4
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:15:52 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:09 2008
 
-user time   =      20.92 seconds =       0.35 minutes
-system time =       0.39 seconds =       0.01 minutes
-total time  =         23 seconds =       0.38 minutes
+user time   =       9.40 seconds =       0.16 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =         10 seconds =       0.17 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:15:52 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:09 2008
 
 			**************************
 			*                        *
@@ -432,15 +421,15 @@ Sun Oct 21 20:15:52 2007
 			*                        *
 			**************************
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:15:52 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:09 2008
 
-user time   =       0.27 seconds =       0.00 minutes
-system time =       0.12 seconds =       0.00 minutes
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:15:52 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:09 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -483,12 +472,12 @@ Sun Oct 21 20:15:52 2007
        3        0.000000000000     0.005136116574     0.003756585334
 
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:15:54 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:10 2008
 
-user time   =       1.85 seconds =       0.03 minutes
-system time =       0.05 seconds =       0.00 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.88 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -555,8 +544,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:15:55 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:11 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -585,15 +574,15 @@ Sun Oct 21 20:15:55 2007
     Wrote 374912 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:15:55 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:11 2008
 
-user time   =       0.30 seconds =       0.01 minutes
-system time =       0.06 seconds =       0.00 minutes
+user time   =       0.17 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:15:55 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:11 2008
 
 
              ------------------------------------------
@@ -615,10 +604,10 @@ Sun Oct 21 20:15:55 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy        9.3598214479455
+  nuclear repulsion energy        9.3598214479458
 
   using old vector from file30 as initial guess
   energy from old vector:   -76.06251162
@@ -632,7 +621,7 @@ Sun Oct 21 20:15:55 2007
 
   keeping integrals in 2398128 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.466682e-03
+  The lowest eigenvalue of the overlap matrix was 1.170001e-03
 
 
   Reading Occupations from checkpoint file.
@@ -646,16 +635,16 @@ Sun Oct 21 20:15:55 2007
 
   iter       total energy        delta E         delta P          diiser
     1       -76.0625553038    8.542238e+01    0.000000e+00    0.000000e+00
-    2       -76.0625748222    1.951837e-05    1.284668e-05    2.138017e-03
-    3       -76.0625768142    1.991998e-06    4.993939e-06    7.305528e-04
-    4       -76.0625772719    4.577019e-07    1.476453e-06    2.372595e-04
-    5       -76.0625773130    4.116342e-08    7.850686e-07    6.460697e-05
-    6       -76.0625773168    3.740467e-09    2.853119e-07    1.986597e-05
-    7       -76.0625773169    9.255530e-11    3.708684e-08    2.271672e-06
-    8       -76.0625773169    2.188472e-12    7.011967e-09    4.710610e-07
-    9       -76.0625773169   -1.421085e-14    2.096664e-09    7.900248e-08
-   10       -76.0625773169    5.684342e-14    2.920025e-10    1.123974e-08
-   11       -76.0625773169   -2.842171e-14    2.246583e-11    2.280435e-09
+    2       -76.0625748222    1.951837e-05    1.509809e-05    2.138017e-03
+    3       -76.0625768142    1.991998e-06    5.484845e-06    7.305528e-04
+    4       -76.0625772719    4.577019e-07    1.710845e-06    2.372595e-04
+    5       -76.0625773130    4.116340e-08    9.148693e-07    6.460697e-05
+    6       -76.0625773168    3.740595e-09    3.313139e-07    1.986597e-05
+    7       -76.0625773169    9.262635e-11    4.089188e-08    2.271672e-06
+    8       -76.0625773169    2.074785e-12    7.703111e-09    4.710610e-07
+    9       -76.0625773169   -5.684342e-14    2.324301e-09    7.900249e-08
+   10       -76.0625773169    1.421085e-13    3.348777e-10    1.123974e-08
+   11       -76.0625773169   -7.105427e-14    2.672160e-11    2.280437e-09
 
  Correcting phases of orbitals.
 
@@ -687,118 +676,79 @@ Orbital energies (a.u.):
   17B2      7.713059    23A1      8.428699    24A1     47.472321  
 
 
-        SCF total energy   =     -76.062577316859
+      * SCF total energy   =     -76.062577316859
         kinetic energy     =      76.065849790573
-        nuc. attr. energy  =    -199.443150888964
+        nuc. attr. energy  =    -199.443150888965
         elec. rep. energy  =      47.314723781532
         potential energy   =    -152.128427107433
         virial theorem     =       2.000043023440
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:15:55 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:11 2008
 
-user time   =       0.15 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:15:55 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:11 2008
 
 
 	**************************************************
-	* TRANSQT:  Program to transform integrals from  *
+	* TRANSQT2: Program to transform integrals from  *
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  SCF_MVD
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            =  Yes
-	Delete Restricted Docc =  Yes
-	Do All TEI             =  Yes
-	Memory (Mbytes)        =  256.0
-	Max Buckets            =  499
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Semicanonical orbitals =  No
-	Pitzer                 =  Yes
+	Wave function   =	SCF_MVD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	First
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 59
+	Number of MOs        = 59
+	Number of active MOs = 59
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 59
-	Number of MOs    = 59
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   24	    0	    3	    0	    21	    0
+	 A2 	   7	    0	    0	    0	    7	    0
+	 B1 	   11	    0	    1	    0	    10	    0
+	 B2 	   17	    0	    1	    0	    16	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   24	   24	    0	    3	    0	    21	    0
-	 A2 	   7	   7	    0	    0	    0	    7	    0
-	 B1 	   11	   11	    0	    1	    0	    10	    0
-	 B2 	   17	   17	    0	    1	    0	    16	    0
+	Nuclear Rep. energy (chkpt) =      9.35982144794581
+	SCF energy          (chkpt) =    -76.06257731685943
 
-	Nuclear Repulsion Energy    =         9.3598214479
-	Total SCF Energy            =       -76.0625773169
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:16:00 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:12 2008
 
-user time   =       1.07 seconds =       0.02 minutes
-system time =       1.90 seconds =       0.03 minutes
-total time  =          5 seconds =       0.08 minutes
+user time   =       0.51 seconds =       0.01 minutes
+system time =       0.17 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:16:00 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:12 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -824,15 +774,15 @@ Sun Oct 21 20:16:00 2007
     Computational point group        = C2v
     Number of irreps                 = 4
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:16:22 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:22 2008
 
-user time   =      20.85 seconds =       0.35 minutes
-system time =       0.38 seconds =       0.01 minutes
-total time  =         22 seconds =       0.37 minutes
+user time   =       9.46 seconds =       0.16 minutes
+system time =       0.08 seconds =       0.00 minutes
+total time  =         10 seconds =       0.17 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:16:22 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:22 2008
 
 			**************************
 			*                        *
@@ -840,15 +790,15 @@ Sun Oct 21 20:16:22 2007
 			*                        *
 			**************************
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:16:23 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:22 2008
 
-user time   =       0.27 seconds =       0.00 minutes
-system time =       0.12 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:16:23 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:22 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -891,12 +841,12 @@ Sun Oct 21 20:16:23 2007
        3        0.000000000000    -0.000472387767     0.000095549115
 
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:16:25 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:23 2008
 
-user time   =       1.83 seconds =       0.03 minutes
-system time =       0.05 seconds =       0.00 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.88 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -948,7 +898,7 @@ Back-transformation to cartesian coordinates...
 Convergence to displaced geometry took 4 iterations.
 
 New Cartesian Geometry in a.u.
-  8.0   0.0000000000   0.0000000000  -0.1192105363
+  8.0   0.0000000000   0.0000000000  -0.1192105364
   1.0   0.0000000000  -1.4218817633   0.9459788605
   1.0   0.0000000000   1.4218817633   0.9459788605
 
@@ -957,8 +907,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:16:25 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:23 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -987,15 +937,15 @@ Sun Oct 21 20:16:25 2007
     Wrote 374912 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:16:25 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:23 2008
 
-user time   =       0.30 seconds =       0.01 minutes
-system time =       0.06 seconds =       0.00 minutes
+user time   =       0.16 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:16:25 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:23 2008
 
 
              ------------------------------------------
@@ -1017,10 +967,10 @@ Sun Oct 21 20:16:25 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy        9.3575152075332
+  nuclear repulsion energy        9.3575152075337
 
   using old vector from file30 as initial guess
   energy from old vector:   -76.06257732
@@ -1034,7 +984,7 @@ Sun Oct 21 20:16:25 2007
 
   keeping integrals in 2398128 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.464505e-03
+  The lowest eigenvalue of the overlap matrix was 1.168175e-03
 
 
   Reading Occupations from checkpoint file.
@@ -1048,15 +998,15 @@ Sun Oct 21 20:16:25 2007
 
   iter       total energy        delta E         delta P          diiser
     1       -76.0625788335    8.542009e+01    0.000000e+00    0.000000e+00
-    2       -76.0625792821    4.485851e-07    2.097890e-06    3.780191e-04
-    3       -76.0625793030    2.091727e-08    5.511170e-07    5.392074e-05
-    4       -76.0625793039    9.122374e-10    1.899376e-07    1.009707e-05
-    5       -76.0625793040    5.897505e-11    4.539781e-08    2.880673e-06
-    6       -76.0625793040    7.858603e-12    1.391084e-08    1.212749e-06
-    7       -76.0625793040    1.065814e-12    5.199662e-09    3.195842e-07
-    8       -76.0625793040   -2.842171e-14    7.096852e-10    4.865382e-08
-    9       -76.0625793040    5.684342e-14    2.225136e-10    1.228136e-08
-   10       -76.0625793040   -5.684342e-14    2.985079e-11    1.762701e-09
+    2       -76.0625792821    4.485850e-07    2.571996e-06    3.780191e-04
+    3       -76.0625793030    2.091724e-08    6.717776e-07    5.392074e-05
+    4       -76.0625793039    9.122232e-10    2.272438e-07    1.009707e-05
+    5       -76.0625793040    5.906031e-11    5.378537e-08    2.880673e-06
+    6       -76.0625793040    7.858603e-12    1.590985e-08    1.212749e-06
+    7       -76.0625793040    1.065814e-12    6.010143e-09    3.195842e-07
+    8       -76.0625793040    0.000000e+00    8.444493e-10    4.865382e-08
+    9       -76.0625793040   -1.136868e-13    2.442267e-10    1.228136e-08
+   10       -76.0625793040    5.684342e-14    3.388725e-11    1.762701e-09
 
  Correcting phases of orbitals.
 
@@ -1088,118 +1038,79 @@ Orbital energies (a.u.):
   17B2      7.709141    23A1      8.431063    24A1     47.472487  
 
 
-        SCF total energy   =     -76.062579303987
+      * SCF total energy   =     -76.062579303987
         kinetic energy     =      76.064709056730
-        nuc. attr. energy  =    -199.438488688676
-        elec. rep. energy  =      47.311200327959
+        nuc. attr. energy  =    -199.438488688677
+        elec. rep. energy  =      47.311200327960
         potential energy   =    -152.127288360717
         virial theorem     =       2.000028000007
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:16:25 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:23 2008
 
-user time   =       0.15 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:16:25 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:23 2008
 
 
 	**************************************************
-	* TRANSQT:  Program to transform integrals from  *
+	* TRANSQT2: Program to transform integrals from  *
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  SCF_MVD
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            =  Yes
-	Delete Restricted Docc =  Yes
-	Do All TEI             =  Yes
-	Memory (Mbytes)        =  256.0
-	Max Buckets            =  499
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Semicanonical orbitals =  No
-	Pitzer                 =  Yes
+	Wave function   =	SCF_MVD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	First
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 59
+	Number of MOs        = 59
+	Number of active MOs = 59
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 59
-	Number of MOs    = 59
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   24	    0	    3	    0	    21	    0
+	 A2 	   7	    0	    0	    0	    7	    0
+	 B1 	   11	    0	    1	    0	    10	    0
+	 B2 	   17	    0	    1	    0	    16	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   24	   24	    0	    3	    0	    21	    0
-	 A2 	   7	   7	    0	    0	    0	    7	    0
-	 B1 	   11	   11	    0	    1	    0	    10	    0
-	 B2 	   17	   17	    0	    1	    0	    16	    0
+	Nuclear Rep. energy (chkpt) =      9.35751520753368
+	SCF energy          (chkpt) =    -76.06257930398672
 
-	Nuclear Repulsion Energy    =         9.3575152075
-	Total SCF Energy            =       -76.0625793040
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:16:29 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:24 2008
 
-user time   =       1.07 seconds =       0.02 minutes
-system time =       1.90 seconds =       0.03 minutes
-total time  =          4 seconds =       0.07 minutes
+user time   =       0.50 seconds =       0.01 minutes
+system time =       0.18 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:16:29 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:24 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1225,15 +1136,15 @@ Sun Oct 21 20:16:29 2007
     Computational point group        = C2v
     Number of irreps                 = 4
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:16:52 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:34 2008
 
-user time   =      20.99 seconds =       0.35 minutes
-system time =       0.39 seconds =       0.01 minutes
-total time  =         23 seconds =       0.38 minutes
+user time   =       9.39 seconds =       0.16 minutes
+system time =       0.06 seconds =       0.00 minutes
+total time  =         10 seconds =       0.17 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:16:52 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:34 2008
 
 			**************************
 			*                        *
@@ -1241,15 +1152,15 @@ Sun Oct 21 20:16:52 2007
 			*                        *
 			**************************
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:16:52 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:34 2008
 
-user time   =       0.27 seconds =       0.00 minutes
-system time =       0.12 seconds =       0.00 minutes
+user time   =       0.14 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:16:52 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:34 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1292,19 +1203,19 @@ Sun Oct 21 20:16:52 2007
        3        0.000000000000     0.000010928694    -0.000008632335
 
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:16:54 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:35 2008
 
-user time   =       1.85 seconds =       0.03 minutes
-system time =       0.05 seconds =       0.00 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.87 seconds =       0.01 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  8.0    15.99491462   0.0000000000   0.0000000000  -0.1192105363
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1192105364
   1.0     1.00782503   0.0000000000  -1.4218817633   0.9459788605
   1.0     1.00782503   0.0000000000   1.4218817633   0.9459788605
                        0.0000000000   0.0000000000   0.0000172647
@@ -1357,8 +1268,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:16:55 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:35 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1387,15 +1298,15 @@ Sun Oct 21 20:16:55 2007
     Wrote 374912 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:16:55 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:35 2008
 
-user time   =       0.30 seconds =       0.01 minutes
-system time =       0.06 seconds =       0.00 minutes
+user time   =       0.16 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:16:55 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:36 2008
 
 
              ------------------------------------------
@@ -1417,10 +1328,10 @@ Sun Oct 21 20:16:55 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy        9.3575282540465
+  nuclear repulsion energy        9.3575282540467
 
   using old vector from file30 as initial guess
   energy from old vector:   -76.06257930
@@ -1434,7 +1345,7 @@ Sun Oct 21 20:16:55 2007
 
   keeping integrals in 2398128 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.464629e-03
+  The lowest eigenvalue of the overlap matrix was 1.168277e-03
 
 
   Reading Occupations from checkpoint file.
@@ -1448,13 +1359,13 @@ Sun Oct 21 20:16:55 2007
 
   iter       total energy        delta E         delta P          diiser
     1       -76.0625792776    8.542011e+01    0.000000e+00    0.000000e+00
-    2       -76.0625792782    6.427427e-10    7.982811e-08    1.330528e-05
-    3       -76.0625792783    3.586820e-11    2.584137e-08    1.734301e-06
-    4       -76.0625792783    2.856382e-12    5.668172e-09    6.125136e-07
-    5       -76.0625792783    5.400125e-13    4.233367e-09    2.462146e-07
-    6       -76.0625792783    2.842171e-14    8.571698e-10    5.281211e-08
-    7       -76.0625792783   -5.684342e-14    2.062904e-10    1.375455e-08
-    8       -76.0625792783    2.842171e-14    3.641741e-11    2.128894e-09
+    2       -76.0625792782    6.427854e-10    9.829331e-08    1.330528e-05
+    3       -76.0625792783    3.586820e-11    3.082402e-08    1.734301e-06
+    4       -76.0625792783    2.742695e-12    6.686356e-09    6.125136e-07
+    5       -76.0625792783    6.821210e-13    4.959555e-09    2.462146e-07
+    6       -76.0625792783   -4.263256e-14    9.913673e-10    5.281212e-08
+    7       -76.0625792783    0.000000e+00    2.390481e-10    1.375455e-08
+    8       -76.0625792783    1.421085e-14    4.196147e-11    2.128896e-09
 
  Correcting phases of orbitals.
 
@@ -1486,118 +1397,79 @@ Orbital energies (a.u.):
   17B2      7.709261    23A1      8.430953    24A1     47.472474  
 
 
-        SCF total energy   =     -76.062579278254
+      * SCF total energy   =     -76.062579278254
         kinetic energy     =      76.064721214664
-        nuc. attr. energy  =    -199.438504132430
+        nuc. attr. energy  =    -199.438504132431
         elec. rep. energy  =      47.311203639512
         potential energy   =    -152.127300492918
         virial theorem     =       2.000028160186
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:16:55 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:36 2008
 
-user time   =       0.13 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:16:55 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:36 2008
 
 
 	**************************************************
-	* TRANSQT:  Program to transform integrals from  *
+	* TRANSQT2: Program to transform integrals from  *
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  SCF_MVD
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            =  Yes
-	Delete Restricted Docc =  Yes
-	Do All TEI             =  Yes
-	Memory (Mbytes)        =  256.0
-	Max Buckets            =  499
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Semicanonical orbitals =  No
-	Pitzer                 =  Yes
+	Wave function   =	SCF_MVD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	First
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 59
+	Number of MOs        = 59
+	Number of active MOs = 59
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 59
-	Number of MOs    = 59
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   24	    0	    3	    0	    21	    0
+	 A2 	   7	    0	    0	    0	    7	    0
+	 B1 	   11	    0	    1	    0	    10	    0
+	 B2 	   17	    0	    1	    0	    16	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   24	   24	    0	    3	    0	    21	    0
-	 A2 	   7	   7	    0	    0	    0	    7	    0
-	 B1 	   11	   11	    0	    1	    0	    10	    0
-	 B2 	   17	   17	    0	    1	    0	    16	    0
+	Nuclear Rep. energy (chkpt) =      9.35752825404668
+	SCF energy          (chkpt) =    -76.06257927825432
 
-	Nuclear Repulsion Energy    =         9.3575282540
-	Total SCF Energy            =       -76.0625792783
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:16:59 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:37 2008
 
-user time   =       1.07 seconds =       0.02 minutes
-system time =       1.91 seconds =       0.03 minutes
-total time  =          4 seconds =       0.07 minutes
+user time   =       0.50 seconds =       0.01 minutes
+system time =       0.18 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:16:59 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:37 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1623,15 +1495,15 @@ Sun Oct 21 20:16:59 2007
     Computational point group        = C2v
     Number of irreps                 = 4
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:17:21 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:47 2008
 
-user time   =      20.77 seconds =       0.35 minutes
-system time =       0.39 seconds =       0.01 minutes
-total time  =         22 seconds =       0.37 minutes
+user time   =       9.43 seconds =       0.16 minutes
+system time =       0.08 seconds =       0.00 minutes
+total time  =         10 seconds =       0.17 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:17:22 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:47 2008
 
 			**************************
 			*                        *
@@ -1639,15 +1511,15 @@ Sun Oct 21 20:17:22 2007
 			*                        *
 			**************************
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:17:23 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:47 2008
 
-user time   =       0.27 seconds =       0.00 minutes
-system time =       0.12 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:17:23 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:47 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1690,12 +1562,12 @@ Sun Oct 21 20:17:23 2007
        3        0.000000000000     0.000000137284     0.000000092790
 
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:17:25 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:48 2008
 
-user time   =       1.85 seconds =       0.03 minutes
-system time =       0.05 seconds =       0.00 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.89 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -1754,8 +1626,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:17:25 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:48 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1784,15 +1656,15 @@ Sun Oct 21 20:17:25 2007
     Wrote 374912 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:17:25 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:49 2008
 
-user time   =       0.30 seconds =       0.01 minutes
-system time =       0.06 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.16 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:17:25 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:49 2008
 
 
              ------------------------------------------
@@ -1814,7 +1686,7 @@ Sun Oct 21 20:17:25 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        9.3575296725432
@@ -1831,7 +1703,7 @@ Sun Oct 21 20:17:25 2007
 
   keeping integrals in 2398128 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.464628e-03
+  The lowest eigenvalue of the overlap matrix was 1.168276e-03
 
 
   Reading Occupations from checkpoint file.
@@ -1845,9 +1717,9 @@ Sun Oct 21 20:17:25 2007
 
   iter       total energy        delta E         delta P          diiser
     1       -76.0625792783    8.542011e+01    0.000000e+00    0.000000e+00
-    2       -76.0625792783    9.947598e-14    3.277614e-10    5.303915e-08
-    3       -76.0625792783    0.000000e+00    1.284876e-10    1.826153e-08
-    4       -76.0625792783   -1.421085e-13    3.796825e-11    6.074791e-09
+    2       -76.0625792783    2.842171e-14    3.853440e-10    5.303917e-08
+    3       -76.0625792783    1.421085e-14    1.415194e-10    1.826153e-08
+    4       -76.0625792783   -1.563194e-13    4.410680e-11    6.074789e-09
 
  Correcting phases of orbitals.
 
@@ -1879,7 +1751,7 @@ Orbital energies (a.u.):
   17B2      7.709262    23A1      8.430953    24A1     47.472474  
 
 
-        SCF total energy   =     -76.062579278256
+      * SCF total energy   =     -76.062579278256
         kinetic energy     =      76.064721819225
         nuc. attr. energy  =    -199.438507234753
         elec. rep. energy  =      47.311206137272
@@ -1887,110 +1759,71 @@ Orbital energies (a.u.):
         virial theorem     =       2.000028168135
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:17:26 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:49 2008
 
-user time   =       0.10 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:17:26 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:49 2008
 
 
 	**************************************************
-	* TRANSQT:  Program to transform integrals from  *
+	* TRANSQT2: Program to transform integrals from  *
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  SCF_MVD
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            =  Yes
-	Delete Restricted Docc =  Yes
-	Do All TEI             =  Yes
-	Memory (Mbytes)        =  256.0
-	Max Buckets            =  499
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Semicanonical orbitals =  No
-	Pitzer                 =  Yes
+	Wave function   =	SCF_MVD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	First
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 59
+	Number of MOs        = 59
+	Number of active MOs = 59
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 59
-	Number of MOs    = 59
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   24	    0	    3	    0	    21	    0
+	 A2 	   7	    0	    0	    0	    7	    0
+	 B1 	   11	    0	    1	    0	    10	    0
+	 B2 	   17	    0	    1	    0	    16	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   24	   24	    0	    3	    0	    21	    0
-	 A2 	   7	   7	    0	    0	    0	    7	    0
-	 B1 	   11	   11	    0	    1	    0	    10	    0
-	 B2 	   17	   17	    0	    1	    0	    16	    0
+	Nuclear Rep. energy (chkpt) =      9.35752967254323
+	SCF energy          (chkpt) =    -76.06257927825598
 
-	Nuclear Repulsion Energy    =         9.3575296725
-	Total SCF Energy            =       -76.0625792783
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:17:29 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:50 2008
 
-user time   =       1.07 seconds =       0.02 minutes
-system time =       1.91 seconds =       0.03 minutes
-total time  =          3 seconds =       0.05 minutes
+user time   =       0.51 seconds =       0.01 minutes
+system time =       0.17 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:17:29 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:23:50 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2016,15 +1849,15 @@ Sun Oct 21 20:17:29 2007
     Computational point group        = C2v
     Number of irreps                 = 4
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:17:52 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:24:00 2008
 
-user time   =      20.86 seconds =       0.35 minutes
-system time =       0.39 seconds =       0.01 minutes
-total time  =         23 seconds =       0.38 minutes
+user time   =       9.46 seconds =       0.16 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =         10 seconds =       0.17 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:17:52 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:24:00 2008
 
 			**************************
 			*                        *
@@ -2032,15 +1865,15 @@ Sun Oct 21 20:17:52 2007
 			*                        *
 			**************************
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:17:53 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:24:00 2008
 
-user time   =       0.27 seconds =       0.00 minutes
-system time =       0.12 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Sun Oct 21 20:17:53 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:24:00 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2083,12 +1916,12 @@ Sun Oct 21 20:17:53 2007
        3        0.000000000000    -0.000000002753    -0.000000002622
 
 ******************************************************************************
-tstop called on mac4704.local
-Sun Oct 21 20:17:55 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:24:01 2008
 
-user time   =       1.84 seconds =       0.03 minutes
-system time =       0.05 seconds =       0.00 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.89 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -2141,3 +1974,12 @@ The Optimized geometry in a.u.
 
 ******** OPTKING execution completed ********
 
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:24:01 2008
+
+Total PSI3 wall time         63 seconds =       1.05 minutes
+******************************************************************************

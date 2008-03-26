@@ -1078,7 +1078,7 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
                Dvec.civ_xpeay(tval, Cvec, i, j);
                }
 
-            fprintf(outfile, "\nROOT %d ECI = %17.13lf", i+1, 
+            fprintf(outfile, "\n* ROOT %d CI total energy = %17.13lf", i+1, 
                evals[i] + enuc + efzc);
 
             if (nroots > 1) {

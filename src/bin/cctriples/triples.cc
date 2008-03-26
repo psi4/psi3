@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
 
     ET = ET_RHF();
     fprintf(outfile, "\t(T) energy                    = %20.15f\n", ET);
-    fprintf(outfile, "\tTotal CCSD(T) energy          = %20.15f\n", 
+    fprintf(outfile, "      * CCSD(T) total energy          = %20.15f\n", 
 	    ET + moinfo.ecc + moinfo.eref);
   }
   else if(params.ref == 1) { /** ROHF --- don't use this right now! **/
@@ -104,7 +104,7 @@ int main(int argc, char *argv[])
     fprintf(outfile, "\tBBB (T) energy                = %20.15f\n", ETBBB);
     ET = ETAAA + ETAAB + ETABB + ETBBB;
     fprintf(outfile, "\t(T) energy                    = %20.15f\n", ET);
-    fprintf(outfile, "\tTotal CCSD(T) energy          = %20.15f\n", 
+    fprintf(outfile, "      * CCSD(T) total energy          = %20.15f\n", 
 	    ET + moinfo.ecc + moinfo.eref);
   }
   else if(params.ref == 2) { /** UHF **/
@@ -127,7 +127,7 @@ int main(int argc, char *argv[])
 
     ET = ETAAA + ETAAB + ETABB + ETBBB;
     fprintf(outfile, "\t(T) energy                    = %20.15f\n", ET);
-    fprintf(outfile, "\tTotal CCSD(T) energy          = %20.15f\n", 
+    fprintf(outfile, "      * CCSD(T) total energy          = %20.15f\n", 
 	    ET + moinfo.ecc + moinfo.eref);
   }
 

@@ -1,10 +1,41 @@
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:28 2007
+PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:10:02 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF SCF symmetric frequency computation via gradients.
+
+The following programs will be executed:
+
+ input
+ cints
+ cscf
+ optking --disp_irrep --irrep 1
+ REPEAT NUM_DISP
+ NUM_DISP
+  optking --disp_load
+  input --keepchkpt --chkptgeom --noreorient
+  cints
+  cscf
+  cints --deriv1
+  optking --grad_save
+ END
+ optking --freq_grad_irrep --irrep 1
+ psiclean
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:02 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	6-31G** SCF H2O
@@ -12,7 +43,14 @@ Fri Apr  6 13:43:28 2007
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /usr/local/psi/share/pbasis.dat
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
+Coordinates after reading z-matrices
+
+           1           2           3
+
+    1   0.0000000   0.0000000   0.0000000
+    2   0.0000000   0.0000000   1.7821186
+    3   1.7133499   0.0000000  -0.4902846
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -29,9 +67,9 @@ Fri Apr  6 13:43:28 2007
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.120072753754    -0.000000000000
-        HYDROGEN      1.422970856939     0.952820868490     0.000000000000
-        HYDROGEN     -1.422970856939     0.952820868490     0.000000000000
+          OXYGEN      0.000000000000    -0.120072753768     0.000000000000
+        HYDROGEN      1.422970856939     0.952820868476    -0.000000000000
+        HYDROGEN     -1.422970856939     0.952820868476    -0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -87,32 +125,32 @@ Fri Apr  6 13:43:28 2007
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.120072753754
-        HYDROGEN      0.000000000000     1.422970856939     0.952820868490
+          OXYGEN      0.000000000000     0.000000000000    -0.120072753768
+        HYDROGEN     -0.000000000000     1.422970856939     0.952820868476
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.120072753754
-        HYDROGEN      0.000000000000     1.422970856939     0.952820868490
-        HYDROGEN      0.000000000000    -1.422970856939     0.952820868490
+          OXYGEN      0.000000000000     0.000000000000    -0.120072753768
+        HYDROGEN     -0.000000000000     1.422970856939     0.952820868476
+        HYDROGEN     -0.000000000000    -1.422970856939     0.952820868476
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.063539769512
-        HYDROGEN      0.000000000000     0.753003803482     0.504211125977
-        HYDROGEN      0.000000000000    -0.753003803482     0.504211125977
+          OXYGEN      0.000000000000     0.000000000000    -0.063539769519
+        HYDROGEN     -0.000000000000     0.753003803482     0.504211125970
+        HYDROGEN     -0.000000000000    -0.753003803482     0.504211125970
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.120072753754
-        HYDROGEN      0.000000000000     1.422970856939     0.952820868490
-        HYDROGEN      0.000000000000    -1.422970856939     0.952820868490
+          OXYGEN      0.000000000000     0.000000000000    -0.120072753768
+        HYDROGEN     -0.000000000000     1.422970856939     0.952820868476
+        HYDROGEN     -0.000000000000    -1.422970856939     0.952820868476
 
 
   --------------------------------------------------------------------------
@@ -132,15 +170,15 @@ Fri Apr  6 13:43:28 2007
 
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:28 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:02 2008
 
-user time   =       0.12 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:28 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:02 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -169,15 +207,15 @@ Fri Apr  6 13:43:28 2007
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:28 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:02 2008
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:28 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:02 2008
 
 
              ------------------------------------------
@@ -195,20 +233,22 @@ Fri Apr  6 13:43:28 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        9.3294555420901
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 114320 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 2.228303e-02
+  The lowest eigenvalue of the overlap matrix was 2.143212e-02
 
   Using core guess to determine occupations
 
@@ -222,20 +262,20 @@ Fri Apr  6 13:43:28 2007
 
   iter       total energy        delta E         delta P          diiser
     1       -68.2404187674    7.756987e+01    0.000000e+00    0.000000e+00
-    2       -71.3491093419    3.108691e+00    1.221368e-01    1.193652e+00
-    3       -75.8522208728    4.503112e+00    1.134429e-01    8.579907e-01
-    4       -76.0117357945    1.595149e-01    3.480000e-03    2.178019e-01
-    5       -76.0234215132    1.168572e-02    1.304079e-03    5.490365e-02
-    6       -76.0235932102    1.716970e-04    1.468539e-04    1.098714e-02
-    7       -76.0236145476    2.133738e-05    7.249877e-05    3.770031e-03
-    8       -76.0236149991    4.515247e-07    1.146860e-05    2.562759e-04
-    9       -76.0236150181    1.899522e-08    3.290433e-06    6.090118e-05
-   10       -76.0236150193    1.147924e-09    9.265917e-07    1.158733e-05
-   11       -76.0236150193    2.408740e-11    1.032909e-07    1.789992e-06
-   12       -76.0236150193    2.032152e-12    4.001988e-08    4.763080e-07
-   13       -76.0236150193   -4.263256e-14    2.272365e-09    3.708585e-08
-   14       -76.0236150193    7.105427e-14    5.634911e-10    1.076085e-08
-   15       -76.0236150193    4.263256e-14    9.437598e-11    4.229862e-09
+    2       -71.3491093419    3.108691e+00    1.523894e-01    1.193652e+00
+    3       -75.8522208728    4.503112e+00    1.450925e-01    8.579907e-01
+    4       -76.0117357945    1.595149e-01    3.758287e-03    2.178019e-01
+    5       -76.0234215132    1.168572e-02    1.422520e-03    5.490365e-02
+    6       -76.0235932102    1.716970e-04    1.566328e-04    1.098714e-02
+    7       -76.0236145476    2.133738e-05    7.509670e-05    3.770031e-03
+    8       -76.0236149991    4.515247e-07    1.281085e-05    2.562759e-04
+    9       -76.0236150181    1.899527e-08    3.994850e-06    6.090118e-05
+   10       -76.0236150193    1.147782e-09    1.127717e-06    1.158733e-05
+   11       -76.0236150193    2.417266e-11    1.298071e-07    1.789992e-06
+   12       -76.0236150193    2.088996e-12    4.991325e-08    4.763080e-07
+   13       -76.0236150193   -4.263256e-14    2.532138e-09    3.708586e-08
+   14       -76.0236150193    0.000000e+00    6.818264e-10    1.076085e-08
+   15       -76.0236150193    5.684342e-14    9.858624e-11    4.229863e-09
 
 Orbital energies (a.u.):
 
@@ -254,7 +294,7 @@ Orbital energies (a.u.):
    7B2      3.945219    12A1      4.128460  
 
 
-        SCF total energy   =     -76.023615019311
+      * SCF total energy   =     -76.023615019311
         kinetic energy     =      75.864589309181
         nuc. attr. energy  =    -199.203693739112
         elec. rep. energy  =      47.315489410620
@@ -262,19 +302,19 @@ Orbital energies (a.u.):
         virial theorem     =       1.997908206416
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:28 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:02 2008
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 ******* OPTKING: --disp_irrep --irrep 1 
 
-Cartesian geometry and possibly gradient in a.u. with masses
-  8.0    15.99491462  -0.0000000000  -0.0000000000  -0.1200727538
-  1.0     1.00782503   0.0000000000   1.4229708569   0.9528208685
-  1.0     1.00782503   0.0000000000  -1.4229708569   0.9528208685
+Cartesian geometry in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1200727538
+  1.0     1.00782503  -0.0000000000   1.4229708569   0.9528208685
+  1.0     1.00782503  -0.0000000000  -1.4229708569   0.9528208685
 
 Generating simple internals
 
@@ -315,9 +355,9 @@ Convergence to displaced geometry took 4 iterations.
 
 Displaced geometry 1 in a.u.
 
-  8.0  -0.0000000000  -0.0000000000  -0.1204958824
-  1.0   0.0000000000   1.4284698245   0.9561785482
-  1.0   0.0000000000  -1.4284698245   0.9561785482
+  8.0   0.0000000000   0.0000000000  -0.1204958825
+  1.0  -0.0000000000   1.4284698245   0.9561785482
+  1.0  -0.0000000000  -1.4284698245   0.9561785482
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
@@ -328,9 +368,9 @@ Convergence to displaced geometry took 4 iterations.
 
 Displaced geometry 2 in a.u.
 
-  8.0  -0.0000000000  -0.0000000000  -0.1196494276
-  1.0   0.0000000000   1.4174731605   0.9494616216
-  1.0   0.0000000000  -1.4174731605   0.9494616216
+  8.0   0.0000000000   0.0000000000  -0.1196494276
+  1.0  -0.0000000000   1.4174731605   0.9494616216
+  1.0  -0.0000000000  -1.4174731605   0.9494616216
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
@@ -341,9 +381,9 @@ Convergence to displaced geometry took 4 iterations.
 
 Displaced geometry 3 in a.u.
 
-  8.0  -0.0000000000  -0.0000000000  -0.1204991200
-  1.0   0.0000000000   1.4206372205   0.9562042391
-  1.0   0.0000000000  -1.4206372205   0.9562042391
+  8.0   0.0000000000   0.0000000000  -0.1204991200
+  1.0  -0.0000000000   1.4206372205   0.9562042391
+  1.0  -0.0000000000  -1.4206372205   0.9562042391
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
@@ -354,9 +394,9 @@ Convergence to displaced geometry took 4 iterations.
 
 Displaced geometry 4 in a.u.
 
-  8.0  -0.0000000000   0.0000000000  -0.1196458346
-  1.0   0.0000000000   1.4252943287   0.9494331099
-  1.0   0.0000000000  -1.4252943287   0.9494331099
+  8.0   0.0000000000   0.0000000000  -0.1196458346
+  1.0  -0.0000000000   1.4252943287   0.9494331099
+  1.0  -0.0000000000  -1.4252943287   0.9494331099
 Produced a total of 4 displacements.
 
 ******** OPTKING execution completed ********
@@ -371,23 +411,23 @@ Setting chkpt prefix to irrep A1 .
 
            1           2           3
 
-    1  -0.0000000  -0.0000000  -0.1204959
-    2   0.0000000   1.4284698   0.9561785
-    3   0.0000000  -1.4284698   0.9561785
+    1   0.0000000   0.0000000  -0.1204959
+    2  -0.0000000   1.4284698   0.9561785
+    3  -0.0000000  -1.4284698   0.9561785
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:29 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:03 2008
 
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.120495882443
-        HYDROGEN      0.000000000000     1.428469824549     0.956178548166
-        HYDROGEN      0.000000000000    -1.428469824549     0.956178548166
+          OXYGEN      0.000000000000     0.000000000000    -0.120495882457
+        HYDROGEN     -0.000000000000     1.428469824549     0.956178548152
+        HYDROGEN     -0.000000000000    -1.428469824549     0.956178548152
 
 
   -Rotational constants (cm-1) :
@@ -397,9 +437,9 @@ Fri Apr  6 13:43:29 2007
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.120495882443
-        HYDROGEN      0.000000000000     1.428469824549     0.956178548166
-        HYDROGEN      0.000000000000    -1.428469824549     0.956178548166
+          OXYGEN      0.000000000000    -0.000000000000    -0.120495882457
+        HYDROGEN     -0.000000000000     1.428469824549     0.956178548152
+        HYDROGEN     -0.000000000000    -1.428469824549     0.956178548152
 
 
   -SYMMETRY INFORMATION:
@@ -455,32 +495,32 @@ Fri Apr  6 13:43:29 2007
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.120495882443
-        HYDROGEN      0.000000000000     1.428469824549     0.956178548166
+          OXYGEN      0.000000000000    -0.000000000000    -0.120495882457
+        HYDROGEN     -0.000000000000     1.428469824549     0.956178548152
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.120495882443
-        HYDROGEN      0.000000000000     1.428469824549     0.956178548166
-        HYDROGEN      0.000000000000    -1.428469824549     0.956178548166
+          OXYGEN      0.000000000000    -0.000000000000    -0.120495882457
+        HYDROGEN     -0.000000000000     1.428469824549     0.956178548152
+        HYDROGEN     -0.000000000000    -1.428469824549     0.956178548152
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.063763679587
-        HYDROGEN      0.000000000000     0.755913732035     0.505987933671
-        HYDROGEN      0.000000000000    -0.755913732035     0.505987933671
+          OXYGEN      0.000000000000    -0.000000000000    -0.063763679595
+        HYDROGEN     -0.000000000000     0.755913732035     0.505987933664
+        HYDROGEN     -0.000000000000    -0.755913732035     0.505987933664
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.120495882443
-        HYDROGEN      0.000000000000     1.428469824549     0.956178548166
-        HYDROGEN      0.000000000000    -1.428469824549     0.956178548166
+          OXYGEN      0.000000000000    -0.000000000000    -0.120495882457
+        HYDROGEN     -0.000000000000     1.428469824549     0.956178548152
+        HYDROGEN     -0.000000000000    -1.428469824549     0.956178548152
 
 
   --------------------------------------------------------------------------
@@ -500,15 +540,15 @@ Fri Apr  6 13:43:29 2007
 
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:29 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:03 2008
 
-user time   =       0.12 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:29 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:03 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -537,15 +577,15 @@ Fri Apr  6 13:43:29 2007
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:29 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:03 2008
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:29 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:03 2008
 
 
              ------------------------------------------
@@ -563,20 +603,22 @@ Fri Apr  6 13:43:29 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        9.2946408028833
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 114320 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 2.240928e-02
+  The lowest eigenvalue of the overlap matrix was 2.155605e-02
 
 
   Reading Occupations from checkpoint file.
@@ -590,20 +632,21 @@ Fri Apr  6 13:43:29 2007
 
   iter       total energy        delta E         delta P          diiser
     1       -68.2490962127    7.754374e+01    0.000000e+00    0.000000e+00
-    2       -71.3534513528    3.104355e+00    1.215559e-01    1.191501e+00
-    3       -75.8555500901    4.502099e+00    1.128274e-01    8.594263e-01
-    4       -76.0120751117    1.565250e-01    3.450162e-03    2.153285e-01
-    5       -76.0233942824    1.131917e-02    1.282414e-03    5.272955e-02
-    6       -76.0235652856    1.710033e-04    1.469474e-04    1.098896e-02
-    7       -76.0235866588    2.137314e-05    7.290548e-05    3.778465e-03
-    8       -76.0235871069    4.481203e-07    1.135781e-05    2.580198e-04
-    9       -76.0235871256    1.869864e-08    3.247748e-06    6.087591e-05
-   10       -76.0235871267    1.129635e-09    9.132015e-07    1.141430e-05
-   11       -76.0235871268    2.424372e-11    1.029917e-07    1.792622e-06
-   12       -76.0235871268    2.103206e-12    4.054810e-08    4.830415e-07
-   13       -76.0235871268    0.000000e+00    2.310693e-09    3.776182e-08
-   14       -76.0235871268    5.684342e-14    5.625536e-10    1.096685e-08
-   15       -76.0235871268   -4.263256e-14    9.593788e-11    4.305621e-09
+    2       -71.3534513528    3.104355e+00    1.516035e-01    1.191501e+00
+    3       -75.8555500901    4.502099e+00    1.442842e-01    8.594263e-01
+    4       -76.0120751117    1.565250e-01    3.730088e-03    2.153285e-01
+    5       -76.0233942824    1.131917e-02    1.400425e-03    5.272955e-02
+    6       -76.0235652856    1.710033e-04    1.566245e-04    1.098896e-02
+    7       -76.0235866588    2.137314e-05    7.547980e-05    3.778465e-03
+    8       -76.0235871069    4.481204e-07    1.269171e-05    2.580198e-04
+    9       -76.0235871256    1.869853e-08    3.944554e-06    6.087591e-05
+   10       -76.0235871267    1.129663e-09    1.111527e-06    1.141430e-05
+   11       -76.0235871268    2.420109e-11    1.294339e-07    1.792622e-06
+   12       -76.0235871268    2.160050e-12    5.057471e-08    4.830415e-07
+   13       -76.0235871268    4.263256e-14    2.576181e-09    3.776182e-08
+   14       -76.0235871268   -2.842171e-14    6.804253e-10    1.096685e-08
+   15       -76.0235871268    4.263256e-14    1.001606e-10    4.305622e-09
+   16       -76.0235871268   -8.526513e-14    1.562780e-11    2.831885e-10
 
 Orbital energies (a.u.):
 
@@ -622,23 +665,23 @@ Orbital energies (a.u.):
    7B2      3.938909    12A1      4.125379  
 
 
-        SCF total energy   =     -76.023587126757
-        kinetic energy     =      75.850152522263
-        nuc. attr. energy  =    -199.127861686397
-        elec. rep. energy  =      47.254122037378
-        potential energy   =    -151.873739649020
-        virial theorem     =       1.997718673756
+      * SCF total energy   =     -76.023587126757
+        kinetic energy     =      75.850152518540
+        nuc. attr. energy  =    -199.127861679689
+        elec. rep. energy  =      47.254122034392
+        potential energy   =    -151.873739645297
+        virial theorem     =       1.997718673707
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:29 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:03 2008
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:29 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:03 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -671,27 +714,27 @@ Fri Apr  6 13:43:29 2007
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.004588064134
-       2        0.000000000000     0.003474342440     0.002294032067
-       3        0.000000000000    -0.003474342440     0.002294032067
+       1        0.000000000000     0.000000000000    -0.004588064303
+       2        0.000000000000     0.003474342547     0.002294032151
+       3        0.000000000000    -0.003474342547     0.002294032151
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:29 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:03 2008
 
-user time   =       0.28 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 ******* OPTKING: --grad_save 
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  8.0    15.99491462  -0.0000000000  -0.0000000000  -0.1204958824
-  1.0     1.00782503   0.0000000000   1.4284698245   0.9561785482
-  1.0     1.00782503   0.0000000000  -1.4284698245   0.9561785482
-                       0.0000000000   0.0000000000  -0.0045880641
-                       0.0000000000   0.0034743424   0.0022940321
-                       0.0000000000  -0.0034743424   0.0022940321
+  8.0    15.99491462   0.0000000000  -0.0000000000  -0.1204958825
+  1.0     1.00782503  -0.0000000000   1.4284698245   0.9561785482
+  1.0     1.00782503  -0.0000000000  -1.4284698245   0.9561785482
+                       0.0000000000   0.0000000000  -0.0045880643
+                       0.0000000000   0.0034743425   0.0022940322
+                       0.0000000000  -0.0034743425   0.0022940322
 
 Simple Internal Coordinates and Values
 Stretches
@@ -714,23 +757,23 @@ Setting chkpt prefix to irrep A1 .
 
            1           2           3
 
-    1  -0.0000000  -0.0000000  -0.1196494
-    2   0.0000000   1.4174732   0.9494616
-    3   0.0000000  -1.4174732   0.9494616
+    1   0.0000000   0.0000000  -0.1196494
+    2  -0.0000000   1.4174732   0.9494616
+    3  -0.0000000  -1.4174732   0.9494616
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:29 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:03 2008
 
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.119649427574
-        HYDROGEN      0.000000000000     1.417473160499     0.949461621649
-        HYDROGEN      0.000000000000    -1.417473160499     0.949461621649
+          OXYGEN      0.000000000000     0.000000000000    -0.119649427588
+        HYDROGEN     -0.000000000000     1.417473160499     0.949461621635
+        HYDROGEN     -0.000000000000    -1.417473160499     0.949461621635
 
 
   -Rotational constants (cm-1) :
@@ -740,9 +783,9 @@ Fri Apr  6 13:43:29 2007
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.119649427574
-        HYDROGEN      0.000000000000     1.417473160499     0.949461621649
-        HYDROGEN      0.000000000000    -1.417473160499     0.949461621649
+          OXYGEN      0.000000000000    -0.000000000000    -0.119649427588
+        HYDROGEN     -0.000000000000     1.417473160499     0.949461621635
+        HYDROGEN     -0.000000000000    -1.417473160499     0.949461621635
 
 
   -SYMMETRY INFORMATION:
@@ -798,32 +841,32 @@ Fri Apr  6 13:43:29 2007
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.119649427574
-        HYDROGEN      0.000000000000     1.417473160499     0.949461621649
+          OXYGEN      0.000000000000    -0.000000000000    -0.119649427588
+        HYDROGEN     -0.000000000000     1.417473160499     0.949461621635
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.119649427574
-        HYDROGEN      0.000000000000     1.417473160499     0.949461621649
-        HYDROGEN      0.000000000000    -1.417473160499     0.949461621649
+          OXYGEN      0.000000000000    -0.000000000000    -0.119649427588
+        HYDROGEN     -0.000000000000     1.417473160499     0.949461621635
+        HYDROGEN     -0.000000000000    -1.417473160499     0.949461621635
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.063315754928
-        HYDROGEN      0.000000000000     0.750094547604     0.502433488975
-        HYDROGEN      0.000000000000    -0.750094547604     0.502433488975
+          OXYGEN      0.000000000000    -0.000000000000    -0.063315754935
+        HYDROGEN     -0.000000000000     0.750094547604     0.502433488968
+        HYDROGEN     -0.000000000000    -0.750094547604     0.502433488968
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.119649427574
-        HYDROGEN      0.000000000000     1.417473160499     0.949461621649
-        HYDROGEN      0.000000000000    -1.417473160499     0.949461621649
+          OXYGEN      0.000000000000    -0.000000000000    -0.119649427588
+        HYDROGEN     -0.000000000000     1.417473160499     0.949461621635
+        HYDROGEN     -0.000000000000    -1.417473160499     0.949461621635
 
 
   --------------------------------------------------------------------------
@@ -843,15 +886,15 @@ Fri Apr  6 13:43:29 2007
 
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:29 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:03 2008
 
-user time   =       0.12 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:29 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:03 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -880,15 +923,15 @@ Fri Apr  6 13:43:29 2007
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:29 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:03 2008
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:29 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:03 2008
 
 
              ------------------------------------------
@@ -906,7 +949,7 @@ Fri Apr  6 13:43:29 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        9.3645317655841
@@ -915,13 +958,15 @@ Fri Apr  6 13:43:29 2007
   energy from old vector:   -76.02358713
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 114320 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 2.215688e-02
+  The lowest eigenvalue of the overlap matrix was 2.130831e-02
 
 
   Reading Occupations from checkpoint file.
@@ -935,16 +980,16 @@ Fri Apr  6 13:43:29 2007
 
   iter       total energy        delta E         delta P          diiser
     1       -76.0235533299    8.538809e+01    0.000000e+00    0.000000e+00
-    2       -76.0235833620    3.003207e-05    8.318895e-05    2.043440e-03
-    3       -76.0235860675    2.705519e-06    2.776054e-05    1.001367e-03
-    4       -76.0235866189    5.513356e-07    1.138580e-05    3.242219e-04
-    5       -76.0235866629    4.406922e-08    4.499492e-06    8.511624e-05
-    6       -76.0235866658    2.912984e-09    1.462747e-06    2.057339e-05
-    7       -76.0235866659    8.797940e-11    2.510638e-07    3.162547e-06
-    8       -76.0235866659    1.577405e-12    2.236345e-08    3.989414e-07
-    9       -76.0235866659    7.105427e-14    5.026765e-09    8.904516e-08
-   10       -76.0235866659   -1.421085e-14    7.868534e-10    9.611650e-09
-   11       -76.0235866659    4.263256e-14    7.695896e-11    2.966239e-09
+    2       -76.0235833620    3.003207e-05    1.069878e-04    2.043440e-03
+    3       -76.0235860675    2.705519e-06    2.979722e-05    1.001367e-03
+    4       -76.0235866189    5.513356e-07    1.434155e-05    3.242219e-04
+    5       -76.0235866629    4.406921e-08    5.552967e-06    8.511624e-05
+    6       -76.0235866658    2.912927e-09    1.787878e-06    2.057339e-05
+    7       -76.0235866659    8.802203e-11    2.981845e-07    3.162546e-06
+    8       -76.0235866659    1.634248e-12    2.665500e-08    3.989414e-07
+    9       -76.0235866659    2.842171e-14    6.177212e-09    8.904517e-08
+   10       -76.0235866659    0.000000e+00    9.951249e-10    9.611649e-09
+   11       -76.0235866659    5.684342e-14    8.504690e-11    2.966240e-09
 
  Correcting phases of orbitals.
 
@@ -965,7 +1010,7 @@ Orbital energies (a.u.):
    7B2      3.951720    12A1      4.131688  
 
 
-        SCF total energy   =     -76.023586665932
+      * SCF total energy   =     -76.023586665932
         kinetic energy     =      75.879205201533
         nuc. attr. energy  =    -199.280054910610
         elec. rep. energy  =      47.377263043146
@@ -973,15 +1018,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.998100833298
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:29 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:04 2008
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:29 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:04 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1015,25 +1060,25 @@ Fri Apr  6 13:43:29 2007
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000     0.004708204742
-       2       -0.000000000000    -0.003558828254    -0.002354102371
+       2        0.000000000000    -0.003558828254    -0.002354102371
        3        0.000000000000     0.003558828254    -0.002354102371
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:30 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:04 2008
 
-user time   =       0.28 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 
 ******* OPTKING: --grad_save 
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  8.0    15.99491462  -0.0000000000  -0.0000000000  -0.1196494276
-  1.0     1.00782503   0.0000000000   1.4174731605   0.9494616216
-  1.0     1.00782503   0.0000000000  -1.4174731605   0.9494616216
+  8.0    15.99491462   0.0000000000  -0.0000000000  -0.1196494276
+  1.0     1.00782503  -0.0000000000   1.4174731605   0.9494616216
+  1.0     1.00782503  -0.0000000000  -1.4174731605   0.9494616216
                        0.0000000000   0.0000000000   0.0047082047
-                      -0.0000000000  -0.0035588283  -0.0023541024
+                       0.0000000000  -0.0035588283  -0.0023541024
                        0.0000000000   0.0035588283  -0.0023541024
 
 Simple Internal Coordinates and Values
@@ -1057,23 +1102,23 @@ Setting chkpt prefix to irrep A1 .
 
            1           2           3
 
-    1  -0.0000000  -0.0000000  -0.1204991
-    2   0.0000000   1.4206372   0.9562042
-    3   0.0000000  -1.4206372   0.9562042
+    1   0.0000000   0.0000000  -0.1204991
+    2  -0.0000000   1.4206372   0.9562042
+    3  -0.0000000  -1.4206372   0.9562042
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:30 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:04 2008
 
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.120499119964
-        HYDROGEN      0.000000000000     1.420637220467     0.956204239070
-        HYDROGEN      0.000000000000    -1.420637220467     0.956204239070
+          OXYGEN      0.000000000000     0.000000000000    -0.120499119978
+        HYDROGEN     -0.000000000000     1.420637220467     0.956204239056
+        HYDROGEN     -0.000000000000    -1.420637220467     0.956204239056
 
 
   -Rotational constants (cm-1) :
@@ -1083,9 +1128,9 @@ Fri Apr  6 13:43:30 2007
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.120499119964
-        HYDROGEN      0.000000000000     1.420637220467     0.956204239070
-        HYDROGEN      0.000000000000    -1.420637220467     0.956204239070
+          OXYGEN      0.000000000000    -0.000000000000    -0.120499119978
+        HYDROGEN     -0.000000000000     1.420637220467     0.956204239056
+        HYDROGEN     -0.000000000000    -1.420637220467     0.956204239056
 
 
   -SYMMETRY INFORMATION:
@@ -1141,32 +1186,32 @@ Fri Apr  6 13:43:30 2007
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.120499119964
-        HYDROGEN      0.000000000000     1.420637220467     0.956204239070
+          OXYGEN      0.000000000000    -0.000000000000    -0.120499119978
+        HYDROGEN     -0.000000000000     1.420637220467     0.956204239056
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.120499119964
-        HYDROGEN      0.000000000000     1.420637220467     0.956204239070
-        HYDROGEN      0.000000000000    -1.420637220467     0.956204239070
+          OXYGEN      0.000000000000    -0.000000000000    -0.120499119978
+        HYDROGEN     -0.000000000000     1.420637220467     0.956204239056
+        HYDROGEN     -0.000000000000    -1.420637220467     0.956204239056
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.063765392810
-        HYDROGEN      0.000000000000     0.751768896154     0.506001528713
-        HYDROGEN      0.000000000000    -0.751768896154     0.506001528713
+          OXYGEN      0.000000000000    -0.000000000000    -0.063765392817
+        HYDROGEN     -0.000000000000     0.751768896154     0.506001528706
+        HYDROGEN     -0.000000000000    -0.751768896154     0.506001528706
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.120499119964
-        HYDROGEN      0.000000000000     1.420637220467     0.956204239070
-        HYDROGEN      0.000000000000    -1.420637220467     0.956204239070
+          OXYGEN      0.000000000000    -0.000000000000    -0.120499119978
+        HYDROGEN     -0.000000000000     1.420637220467     0.956204239056
+        HYDROGEN     -0.000000000000    -1.420637220467     0.956204239056
 
 
   --------------------------------------------------------------------------
@@ -1186,15 +1231,15 @@ Fri Apr  6 13:43:30 2007
 
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:30 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:04 2008
 
-user time   =       0.12 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:30 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:04 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1223,15 +1268,15 @@ Fri Apr  6 13:43:30 2007
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:30 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:04 2008
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:30 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:04 2008
 
 
              ------------------------------------------
@@ -1249,7 +1294,7 @@ Fri Apr  6 13:43:30 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        9.3278378200733
@@ -1258,13 +1303,15 @@ Fri Apr  6 13:43:30 2007
   energy from old vector:   -76.02358667
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 114320 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 2.228465e-02
+  The lowest eigenvalue of the overlap matrix was 2.143354e-02
 
 
   Reading Occupations from checkpoint file.
@@ -1278,16 +1325,16 @@ Fri Apr  6 13:43:30 2007
 
   iter       total energy        delta E         delta P          diiser
     1       -76.0236016575    8.535144e+01    0.000000e+00    0.000000e+00
-    2       -76.0236116092    9.951697e-06    5.110264e-05    1.243363e-03
-    3       -76.0236125854    9.762437e-07    1.668704e-05    5.733018e-04
-    4       -76.0236127905    2.050988e-07    7.322501e-06    1.937369e-04
-    5       -76.0236128065    1.595541e-08    2.783124e-06    4.973773e-05
-    6       -76.0236128074    9.130474e-10    8.086105e-07    1.140751e-05
-    7       -76.0236128074    3.186074e-11    1.506134e-07    1.663987e-06
-    8       -76.0236128074    6.394885e-13    1.334372e-08    2.428503e-07
-    9       -76.0236128074    1.421085e-14    3.041699e-09    5.631859e-08
-   10       -76.0236128074    1.421085e-14    5.030038e-10    5.953620e-09
-   11       -76.0236128074   -5.684342e-14    5.501685e-11    2.382731e-09
+    2       -76.0236116092    9.951697e-06    6.555754e-05    1.243363e-03
+    3       -76.0236125854    9.762438e-07    1.810419e-05    5.733018e-04
+    4       -76.0236127905    2.050988e-07    9.217567e-06    1.937369e-04
+    5       -76.0236128065    1.595534e-08    3.427397e-06    4.973773e-05
+    6       -76.0236128074    9.131327e-10    9.886150e-07    1.140751e-05
+    7       -76.0236128074    3.183231e-11    1.799303e-07    1.663987e-06
+    8       -76.0236128074    5.684342e-13    1.586026e-08    2.428503e-07
+    9       -76.0236128074    5.684342e-14    3.737492e-09    5.631859e-08
+   10       -76.0236128074    1.421085e-14    6.344310e-10    5.953620e-09
+   11       -76.0236128074   -5.684342e-14    5.915950e-11    2.382730e-09
 
  Correcting phases of orbitals.
 
@@ -1308,7 +1355,7 @@ Orbital energies (a.u.):
    7B2      3.945902    12A1      4.126620  
 
 
-        SCF total energy   =     -76.023612807433
+      * SCF total energy   =     -76.023612807433
         kinetic energy     =      75.864146027984
         nuc. attr. energy  =    -199.199372914467
         elec. rep. energy  =      47.311614079051
@@ -1316,15 +1363,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.997902404614
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:30 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:04 2008
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:30 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:04 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1362,19 +1409,19 @@ Fri Apr  6 13:43:30 2007
        3        0.000000000000     0.000196845570     0.000460453930
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:30 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:04 2008
 
-user time   =       0.28 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 ******* OPTKING: --grad_save 
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  8.0    15.99491462  -0.0000000000  -0.0000000000  -0.1204991200
-  1.0     1.00782503   0.0000000000   1.4206372205   0.9562042391
-  1.0     1.00782503   0.0000000000  -1.4206372205   0.9562042391
+  8.0    15.99491462   0.0000000000  -0.0000000000  -0.1204991200
+  1.0     1.00782503  -0.0000000000   1.4206372205   0.9562042391
+  1.0     1.00782503  -0.0000000000  -1.4206372205   0.9562042391
                        0.0000000000   0.0000000000  -0.0009209079
                       -0.0000000000  -0.0001968456   0.0004604539
                        0.0000000000   0.0001968456   0.0004604539
@@ -1400,23 +1447,23 @@ Setting chkpt prefix to irrep A1 .
 
            1           2           3
 
-    1  -0.0000000   0.0000000  -0.1196458
-    2   0.0000000   1.4252943   0.9494331
-    3   0.0000000  -1.4252943   0.9494331
+    1   0.0000000   0.0000000  -0.1196458
+    2  -0.0000000   1.4252943   0.9494331
+    3  -0.0000000  -1.4252943   0.9494331
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:30 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:05 2008
 
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000     0.000000000000    -0.119645834581
-        HYDROGEN      0.000000000000     1.425294328679     0.949433109945
-        HYDROGEN      0.000000000000    -1.425294328679     0.949433109945
+          OXYGEN      0.000000000000     0.000000000000    -0.119645834595
+        HYDROGEN     -0.000000000000     1.425294328679     0.949433109931
+        HYDROGEN     -0.000000000000    -1.425294328679     0.949433109931
 
 
   -Rotational constants (cm-1) :
@@ -1426,9 +1473,9 @@ Fri Apr  6 13:43:30 2007
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000     0.000000000000    -0.119645834581
-        HYDROGEN      0.000000000000     1.425294328679     0.949433109945
-        HYDROGEN      0.000000000000    -1.425294328679     0.949433109945
+          OXYGEN      0.000000000000    -0.000000000000    -0.119645834595
+        HYDROGEN     -0.000000000000     1.425294328679     0.949433109931
+        HYDROGEN     -0.000000000000    -1.425294328679     0.949433109931
 
 
   -SYMMETRY INFORMATION:
@@ -1484,32 +1531,32 @@ Fri Apr  6 13:43:30 2007
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000     0.000000000000    -0.119645834581
-        HYDROGEN      0.000000000000     1.425294328679     0.949433109945
+          OXYGEN      0.000000000000    -0.000000000000    -0.119645834595
+        HYDROGEN     -0.000000000000     1.425294328679     0.949433109931
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000     0.000000000000    -0.119645834581
-        HYDROGEN      0.000000000000     1.425294328679     0.949433109945
-        HYDROGEN      0.000000000000    -1.425294328679     0.949433109945
+          OXYGEN      0.000000000000    -0.000000000000    -0.119645834595
+        HYDROGEN     -0.000000000000     1.425294328679     0.949433109931
+        HYDROGEN     -0.000000000000    -1.425294328679     0.949433109931
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000     0.000000000000    -0.063313853598
-        HYDROGEN      0.000000000000     0.754233331866     0.502418401230
-        HYDROGEN      0.000000000000    -0.754233331866     0.502418401230
+          OXYGEN      0.000000000000    -0.000000000000    -0.063313853605
+        HYDROGEN     -0.000000000000     0.754233331866     0.502418401223
+        HYDROGEN     -0.000000000000    -0.754233331866     0.502418401223
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000     0.000000000000    -0.119645834581
-        HYDROGEN      0.000000000000     1.425294328679     0.949433109945
-        HYDROGEN      0.000000000000    -1.425294328679     0.949433109945
+          OXYGEN      0.000000000000    -0.000000000000    -0.119645834595
+        HYDROGEN     -0.000000000000     1.425294328679     0.949433109931
+        HYDROGEN     -0.000000000000    -1.425294328679     0.949433109931
 
 
   --------------------------------------------------------------------------
@@ -1529,15 +1576,15 @@ Fri Apr  6 13:43:30 2007
 
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:31 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:05 2008
 
-user time   =       0.12 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:31 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:05 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1566,15 +1613,15 @@ Fri Apr  6 13:43:31 2007
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:31 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:05 2008
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:31 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:05 2008
 
 
              ------------------------------------------
@@ -1592,7 +1639,7 @@ Fri Apr  6 13:43:31 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        9.3310787297230
@@ -1601,13 +1648,15 @@ Fri Apr  6 13:43:31 2007
   energy from old vector:   -76.02361281
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 114320 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 2.228150e-02
+  The lowest eigenvalue of the overlap matrix was 2.143078e-02
 
 
   Reading Occupations from checkpoint file.
@@ -1621,16 +1670,16 @@ Fri Apr  6 13:43:31 2007
 
   iter       total energy        delta E         delta P          diiser
     1       -76.0236088704    8.535469e+01    0.000000e+00    0.000000e+00
-    2       -76.0236125506    3.680146e-06    3.561794e-05    8.121030e-04
-    3       -76.0236127877    2.371669e-07    9.371839e-06    2.465577e-04
-    4       -76.0236128105    2.272223e-08    2.325277e-06    6.743204e-05
-    5       -76.0236128136    3.169305e-09    1.203618e-06    2.479929e-05
-    6       -76.0236128138    1.411706e-10    3.311818e-07    4.455567e-06
-    7       -76.0236128138    2.856382e-12    4.185223e-08    4.760650e-07
-    8       -76.0236128138    1.136868e-13    6.798031e-09    1.254356e-07
-    9       -76.0236128138    1.421085e-14    1.233227e-09    2.224622e-08
-   10       -76.0236128138    1.421085e-14    2.236927e-10    3.773555e-09
-   11       -76.0236128138    4.263256e-14    3.439521e-11    1.429879e-09
+    2       -76.0236125506    3.680146e-06    4.474660e-05    8.121030e-04
+    3       -76.0236127877    2.371670e-07    1.122875e-05    2.465577e-04
+    4       -76.0236128105    2.272222e-08    2.810680e-06    6.743204e-05
+    5       -76.0236128136    3.169291e-09    1.456370e-06    2.479929e-05
+    6       -76.0236128138    1.411422e-10    4.082660e-07    4.455567e-06
+    7       -76.0236128138    2.870593e-12    5.031389e-08    4.760650e-07
+    8       -76.0236128138    1.421085e-13    8.083139e-09    1.254356e-07
+    9       -76.0236128138    1.421085e-14    1.503330e-09    2.224622e-08
+   10       -76.0236128138   -1.421085e-14    2.755438e-10    3.773555e-09
+   11       -76.0236128138    2.842171e-14    3.681007e-11    1.429879e-09
 
  Correcting phases of orbitals.
 
@@ -1651,7 +1700,7 @@ Orbital energies (a.u.):
    7B2      3.944533    12A1      4.130336  
 
 
-        SCF total energy   =     -76.023612813779
+      * SCF total energy   =     -76.023612813779
         kinetic energy     =      75.865032576821
         nuc. attr. energy  =    -199.208020792337
         elec. rep. energy  =      47.319375401737
@@ -1659,15 +1708,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.997914066024
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:31 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:05 2008
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 13:43:31 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:05 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1701,25 +1750,25 @@ Fri Apr  6 13:43:31 2007
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000     0.000920977967
-       2       -0.000000000000     0.000192466705    -0.000460488984
+       2        0.000000000000     0.000192466705    -0.000460488984
        3        0.000000000000    -0.000192466705    -0.000460488984
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 13:43:31 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:05 2008
 
-user time   =       0.28 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 ******* OPTKING: --grad_save 
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  8.0    15.99491462  -0.0000000000   0.0000000000  -0.1196458346
-  1.0     1.00782503   0.0000000000   1.4252943287   0.9494331099
-  1.0     1.00782503   0.0000000000  -1.4252943287   0.9494331099
+  8.0    15.99491462   0.0000000000  -0.0000000000  -0.1196458346
+  1.0     1.00782503  -0.0000000000   1.4252943287   0.9494331099
+  1.0     1.00782503  -0.0000000000  -1.4252943287   0.9494331099
                        0.0000000000   0.0000000000   0.0009209780
-                      -0.0000000000   0.0001924667  -0.0004604890
+                       0.0000000000   0.0001924667  -0.0004604890
                        0.0000000000  -0.0001924667  -0.0004604890
 
 Simple Internal Coordinates and Values
@@ -1737,10 +1786,10 @@ Last displacement done, resetting checkpoint prefix.
 
 ******* OPTKING: --freq_grad_irrep --irrep 1 
 
-Cartesian geometry and possibly gradient in a.u. with masses
-  8.0    15.99491462  -0.0000000000  -0.0000000000  -0.1200727538
-  1.0     1.00782503   0.0000000000   1.4229708569   0.9528208685
-  1.0     1.00782503   0.0000000000  -1.4229708569   0.9528208685
+Cartesian geometry in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1200727538
+  1.0     1.00782503  -0.0000000000   1.4229708569   0.9528208685
+  1.0     1.00782503  -0.0000000000  -1.4229708569   0.9528208685
 
 Simple Internal Coordinates and Values
 Stretches
@@ -1766,18 +1815,30 @@ BuB^t Determinant: 2.670376e+00
 BuB^t Determinant: 2.674485e+00
 Applying 3-point formula
 
-Force Constants
+	** Force Constants
 
            1           2           3
 
-    1   9.8091640   0.2340641   0.0000000
+    1   9.8091642   0.2340641   0.0000000
     2   0.2340641   0.7703484   0.0000000
     3   0.0000000   0.0000000   0.0000000
 
+	 ** Writing symmetric force constants to PSIF_OPTKING ** 
+
   Harmonic Vibrational Frequencies in cm^(-1) for Irrep A1 
   -----------------------------------------------------------
-    2                4147.2
+    0                4147.2
     1                1770.3
+    2                   0.0
 
 ******** OPTKING execution completed ********
 
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:10:05 2008
+
+Total PSI3 wall time          3 seconds =       0.05 minutes
+******************************************************************************

@@ -1,10 +1,33 @@
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:22:00 2007
+PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:34:01 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a UHF CC2 energy computation.
+
+The following programs will be executed:
+
+ input
+ cints
+ cscf
+ transqt2
+ ccsort
+ ccenergy
+ psiclean
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:34:01 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	CC2 H2O+ Test
@@ -12,7 +35,7 @@ Sun Oct 14 14:22:00 2007
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /Users/crawdad/psi3/lib/pbasis.dat
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -29,9 +52,9 @@ Sun Oct 14 14:22:00 2007
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.117499201605     0.000000000000
-        HYDROGEN     -1.515263000000    -0.932398798395     0.000000000000
-        HYDROGEN      1.515263000000    -0.932398798395     0.000000000000
+          OXYGEN      0.000000000000     0.117499201619     0.000000000000
+        HYDROGEN     -1.515263000000    -0.932398798381     0.000000000000
+        HYDROGEN      1.515263000000    -0.932398798381     0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -98,32 +121,32 @@ Sun Oct 14 14:22:00 2007
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000     0.117499201605
-        HYDROGEN      0.000000000000     1.515263000000    -0.932398798395
+          OXYGEN      0.000000000000     0.000000000000     0.117499201619
+        HYDROGEN      0.000000000000     1.515263000000    -0.932398798381
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000     0.117499201605
-        HYDROGEN      0.000000000000    -1.515263000000    -0.932398798395
-        HYDROGEN      0.000000000000     1.515263000000    -0.932398798395
+          OXYGEN      0.000000000000     0.000000000000     0.117499201619
+        HYDROGEN      0.000000000000    -1.515263000000    -0.932398798381
+        HYDROGEN      0.000000000000     1.515263000000    -0.932398798381
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000     0.062177904265
-        HYDROGEN      0.000000000000    -0.801842705851    -0.493404231105
-        HYDROGEN      0.000000000000     0.801842705851    -0.493404231105
+          OXYGEN      0.000000000000     0.000000000000     0.062177904272
+        HYDROGEN      0.000000000000    -0.801842705851    -0.493404231098
+        HYDROGEN      0.000000000000     0.801842705851    -0.493404231098
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000     0.117499201605
-        HYDROGEN      0.000000000000    -1.515263000000    -0.932398798395
-        HYDROGEN      0.000000000000     1.515263000000    -0.932398798395
+          OXYGEN      0.000000000000     0.000000000000     0.117499201619
+        HYDROGEN      0.000000000000    -1.515263000000    -0.932398798381
+        HYDROGEN      0.000000000000     1.515263000000    -0.932398798381
 
 
   --------------------------------------------------------------------------
@@ -143,15 +166,15 @@ Sun Oct 14 14:22:00 2007
 
 
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:22:00 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:34:01 2008
 
 user time   =       0.03 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:22:00 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:34:01 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -180,15 +203,15 @@ Sun Oct 14 14:22:00 2007
     Wrote 11412 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:22:00 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:34:01 2008
 
 user time   =       0.04 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:22:00 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:34:01 2008
 
 
              ------------------------------------------
@@ -212,7 +235,7 @@ your occupations
   direct       = false
   dertype      = NONE
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        9.0093542296627
@@ -227,7 +250,7 @@ your occupations
 
   keeping integrals in 92528 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 2.076066e-02
+  The lowest eigenvalue of the overlap matrix was 1.859833e-02
 
 
   Using DOCC and SOCC to 
@@ -246,24 +269,24 @@ your occupations
 
   iter       total energy        delta E         delta P          diiser
     1       -70.6855432533    7.969490e+01    0.000000e+00    0.000000e+00
-    2       -73.5391931502    2.853650e+00    1.352219e-01    8.172962e-01
-    3       -75.5998924677    2.060699e+00    2.881181e-02    7.245944e-01
-    4       -75.6320036788    3.211121e-02    4.673192e-03    9.830106e-02
-    5       -75.6339063092    1.902630e-03    1.001759e-03    1.868169e-02
-    6       -75.6340507346    1.444254e-04    2.761482e-04    4.102917e-03
-    7       -75.6340607058    9.971154e-06    8.382803e-05    1.188551e-03
-    8       -75.6340621026    1.396837e-06    2.768964e-05    5.438843e-04
-    9       -75.6340624115    3.089278e-07    1.753040e-05    1.935265e-04
-   10       -75.6340624206    9.081333e-09    3.297448e-06    5.298352e-05
-   11       -75.6340624208    1.853806e-10    4.613137e-07    5.952168e-06
-   12       -75.6340624208    1.095657e-11    8.627494e-08    1.267520e-06
-   13       -75.6340624208    1.151079e-12    3.246977e-08    3.877439e-07
-   14       -75.6340624208    4.263256e-14    5.408793e-09    9.139777e-08
-   15       -75.6340624208    4.263256e-14    1.486974e-09    2.882504e-08
-   16       -75.6340624208   -4.263256e-14    5.557951e-10    1.195639e-08
-   17       -75.6340624208    1.421085e-14    3.339849e-10    4.555355e-09
-   18       -75.6340624208    1.421085e-14    1.723130e-10    2.234105e-09
-   19       -75.6340624208   -2.842171e-14    3.289143e-11    3.934095e-10
+    2       -73.5391931502    2.853650e+00    1.375701e-01    8.172962e-01
+    3       -75.5998924677    2.060699e+00    3.332260e-02    7.245944e-01
+    4       -75.6320036788    3.211121e-02    5.469306e-03    9.830106e-02
+    5       -75.6339063092    1.902630e-03    1.212661e-03    1.868169e-02
+    6       -75.6340507346    1.444254e-04    3.341635e-04    4.102917e-03
+    7       -75.6340607058    9.971154e-06    1.020090e-04    1.188551e-03
+    8       -75.6340621026    1.396837e-06    3.662096e-05    5.438843e-04
+    9       -75.6340624115    3.089278e-07    2.290712e-05    1.935265e-04
+   10       -75.6340624206    9.081347e-09    4.133773e-06    5.298352e-05
+   11       -75.6340624208    1.853664e-10    5.053404e-07    5.952168e-06
+   12       -75.6340624208    1.098499e-11    9.949145e-08    1.267520e-06
+   13       -75.6340624208    1.151079e-12    3.633581e-08    3.877439e-07
+   14       -75.6340624208    1.136868e-13    6.286456e-09    9.139777e-08
+   15       -75.6340624208   -8.526513e-14    1.677814e-09    2.882504e-08
+   16       -75.6340624208    0.000000e+00    7.105889e-10    1.195639e-08
+   17       -75.6340624208    2.842171e-14    4.396289e-10    4.555352e-09
+   18       -75.6340624208   -2.842171e-14    2.242878e-10    2.234108e-09
+   19       -75.6340624208    2.842171e-14    3.806469e-11    3.934103e-10
 
 Orbital energies (a.u.):
 
@@ -294,28 +317,28 @@ Orbital energies (a.u.):
   11A1      3.443997     7B2      3.615709  
 
 
-        SCF total energy   =     -75.634062420797
+      * SCF total energy   =     -75.634062420797
         kinetic energy     =      75.610303136448
-        nuc. attr. energy  =    -193.411849517748
+        nuc. attr. energy  =    -193.411849517749
         elec. rep. energy  =      42.167483960504
         potential energy   =    -151.244365557245
         virial theorem     =       1.999685865289
         wavefunction norm  =       1.000000000000
         <S^2>              =       0.756409684071
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:22:00 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:34:01 2008
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:22:00 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:34:01 2008
 
 
 	**************************************************
-	* TRANSQT:  Program to transform integrals from  *
+	* TRANSQT2: Program to transform integrals from  *
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
@@ -325,6 +348,7 @@ Sun Oct 14 14:22:00 2007
 	Input parameters:
 	-----------------
 	Wave function   =	CC2
+	Backtransform   =	No
 	Print Level     =	1
 	Print TEIs      =	No
 	Reference wfn   =	UHF
@@ -348,7 +372,7 @@ Sun Oct 14 14:22:00 2007
 	 B2 	   7	    0	    1	    0	    6	    0
 
 	Nuclear Rep. energy (chkpt) =      9.00935422966266
-	SCF energy          (chkpt) =    -75.63406242079732
+	SCF energy          (chkpt) =    -75.63406242079735
 
 	Presorting SO-basis two-electron integrals.
 	Sorting File: SO Ints (pq,rs) nbuckets = 1
@@ -362,15 +386,15 @@ Sun Oct 14 14:22:00 2007
 	Starting BB second half-transformation.
 	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:22:00 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:34:02 2008
 
 user time   =       0.03 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:22:00 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:34:02 2008
 
 
 			**************************
@@ -407,7 +431,7 @@ Sun Oct 14 14:22:00 2007
 	 B2 	   7	    0	    1	    0	    6	    0
 
 	Nuclear Rep. energy (chkpt) =      9.00935422966266
-	SCF energy          (chkpt) =    -75.63406242079732
+	SCF energy          (chkpt) =    -75.63406242079735
 
 	Size of irrep 0 of <AB|CD> integrals:      0.002 (MW) /      0.018 (MB)
 	Size of irrep 1 of <AB|CD> integrals:      0.001 (MW) /      0.009 (MB)
@@ -458,23 +482,48 @@ Sun Oct 14 14:22:00 2007
 	Total:                                     0.002 (MW) /      0.017 (MB)
 
 
-	One-electron energy          =   -117.80154638130084
+	Sorting File: A <IJ|KL> nbuckets = 1
+	Sorting File: B <AB|CD> nbuckets = 1
+	Sorting File: C <IA|JB> nbuckets = 1
+	Sorting File: D <IJ|AB> nbuckets = 1
+	Sorting File: E <AI|JK> nbuckets = 1
+	Sorting File: F <IA|BC> nbuckets = 1
+	Sorting File: F <AI|BC> nbuckets = 1
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
+	Sorting File: A <Ij|Kl> nbuckets = 1
+	Sorting File: B <Ab|Cd> nbuckets = 1
+	Sorting File: C <Ia|Jb> nbuckets = 1
+	Sorting File: C <Ai|Bj> nbuckets = 1
+	Sorting File: D <Ij|Ab> nbuckets = 1
+	Sorting File: E <Ai|Jk> nbuckets = 1
+	Sorting File: E <Ij|Ka> nbuckets = 1
+	Sorting File: F <Ia|Bc> nbuckets = 1
+	Sorting File: F <aI|bC> nbuckets = 1
+	Sorting File: F <Ab|Ci> nbuckets = 1
+	Sorting File: F <Ai|Bc> nbuckets = 1
+	One-electron energy          =   -117.80154638130098
 	Two-electron (AA) energy     =      7.85329580951590
-	Two-electron (BB) energy     =      4.64043020362860
-	Two-electron (AB) energy     =     20.66440371769635
-	Two-electron energy          =     33.15812973084084
+	Two-electron (BB) energy     =      4.64043020362864
+	Two-electron (AB) energy     =     20.66440371769641
+	Two-electron energy          =     33.15812973084095
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -75.63406242079733
+	Reference energy             =    -75.63406242079736
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:22:00 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:34:03 2008
 
 user time   =       0.06 seconds =       0.00 minutes
-system time =       0.06 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on ganymede.local
-Sun Oct 14 14:22:00 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:34:03 2008
 
 			**************************
 			*                        *
@@ -483,8 +532,8 @@ Sun Oct 14 14:22:00 2007
 			**************************
 
 	Nuclear Rep. energy (chkpt)   =    9.009354229662664
-	SCF energy          (chkpt)   =  -75.634062420797321
-	Reference energy    (file100) =  -75.634062420797335
+	SCF energy          (chkpt)   =  -75.634062420797349
+	Reference energy    (file100) =  -75.634062420797363
 
 	Input parameters:
 	-----------------
@@ -511,11 +560,11 @@ Sun Oct 14 14:22:00 2007
 	            ------------------------------
   Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
   ----     ---------------------    ---------   ----------  ----------  ----------
-     0        -0.153680329892008    0.000e+00    0.000000    0.000000    0.000000
-     1        -0.153665031116913    1.713e-02    0.005709    0.000000    0.000000
-     2        -0.154319296198789    4.207e-03    0.006917    0.000000    0.000000
+     0        -0.153680329892009    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.153665031116914    1.713e-02    0.005709    0.000000    0.000000
+     2        -0.154319296198790    4.207e-03    0.006917    0.000000    0.000000
      3        -0.154396655679987    1.579e-03    0.007523    0.000000    0.000000
-     4        -0.154388862407620    4.065e-04    0.007606    0.000000    0.000000
+     4        -0.154388862407621    4.065e-04    0.007606    0.000000    0.000000
      5        -0.154389784113236    7.499e-05    0.007619    0.000000    0.000000
      6        -0.154389989922193    1.562e-05    0.007618    0.000000    0.000000
      7        -0.154389965159684    3.893e-06    0.007619    0.000000    0.000000
@@ -531,72 +580,81 @@ Sun Oct 14 14:22:00 2007
 	          4  13        -0.0084681145
 	          3  10         0.0080629533
 	          1   0        -0.0046170748
-	          4  17         0.0043085998
+	          4  17        -0.0043085998
 	          2   1         0.0042739946
-	          4  14        -0.0041604686
+	          4  14         0.0041604686
 	          2   2        -0.0038566487
 	          2   5         0.0028039551
 	          1   2         0.0025796682
 
 	Largest Tia Amplitudes:
-	          2   0        -0.0067364679
+	          2   0         0.0067364679
 	          3  18         0.0056707345
-	          1   5        -0.0048750584
-	          1   1        -0.0039835282
+	          1   5         0.0048750584
+	          1   1         0.0039835282
 	          3  14        -0.0036057672
 	          2   1         0.0034706216
 	          3  16         0.0031314121
 	          2   4        -0.0026165935
-	          2   3        -0.0025312058
+	          2   3         0.0025312058
 	          2   5        -0.0021020019
 
 	Largest TIJAB Amplitudes:
 	  3   2  10   2         0.0232051175
 	  4   3  13  10         0.0192601214
 	  4   2  13   2        -0.0186862021
-	  4   3  15  10        -0.0178445241
-	  4   2  14   2        -0.0144661574
-	  4   2  15   2         0.0130542368
+	  4   3  15  10         0.0178445241
+	  4   2  14   2         0.0144661574
+	  4   2  15   2        -0.0130542368
 	  3   2  10   1        -0.0111933470
-	  4   3  14  10         0.0110676040
-	  4   3   8   1        -0.0110013457
+	  4   3  14  10        -0.0110676040
+	  4   3   8   1         0.0110013457
 	  3   1  10   0         0.0106184619
 
 	Largest Tijab Amplitudes:
-	  3   2  14   2        -0.0193532930
-	  3   2  15   2        -0.0152645950
-	  3   2  16   2        -0.0131425485
+	  3   2  14   2         0.0193532930
+	  3   2  15   2         0.0152645950
+	  3   2  16   2         0.0131425485
 	  3   2  16   1         0.0094551655
-	  2   1   2   0        -0.0092491490
-	  3   2  18   2        -0.0088073617
-	  3   2  15   3        -0.0087556255
+	  2   1   2   0         0.0092491490
+	  3   2  18   2         0.0088073617
+	  3   2  15   3         0.0087556255
 	  3   1  14   0        -0.0086285843
-	  2   1  13  10        -0.0084862570
-	  3   1  10   8        -0.0084782226
+	  2   1  13  10         0.0084862570
+	  3   1  10   8         0.0084782226
 
 	Largest TIjAb Amplitudes:
-	  2   2   2   2        -0.0327121996
-	  3   2  10   2         0.0279215715
+	  2   2   2   2         0.0327121996
+	  3   2  10   2        -0.0279215715
 	  4   3  13  14        -0.0253331285
-	  4   3  14  15        -0.0246193132
+	  4   3  14  15         0.0246193132
 	  3   3  10  14         0.0217738593
 	  3   3  10  16         0.0207614168
-	  4   3   1   1         0.0206642137
-	  4   3  15  16         0.0200699119
-	  4   2  13   2        -0.0195384492
+	  4   3   1   1        -0.0206642137
+	  4   3  15  16        -0.0200699119
+	  4   2  13   2         0.0195384492
 	  2   3   2  14        -0.0192232890
 
-	SCF energy       (chkpt)   =  -75.634062420797321
-	Reference energy (file100) =  -75.634062420797335
-	MP2 correlation energy     =   -0.153680329892008
-	Total MP2 energy           =  -75.787742750689347
+	SCF energy       (chkpt)   =  -75.634062420797349
+	Reference energy (file100) =  -75.634062420797363
+	MP2 correlation energy     =   -0.153680329892009
+      * MP2 total energy           =  -75.787742750689375
 	CC2 correlation energy     =   -0.154389962821848
-	Total CC2 energy           =  -75.788452383619187
+      * CC2 total energy           =  -75.788452383619216
 
 ******************************************************************************
-tstop called on ganymede.local
-Sun Oct 14 14:22:01 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:34:03 2008
 
-user time   =       0.28 seconds =       0.00 minutes
-system time =       0.25 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.21 seconds =       0.00 minutes
+system time =       0.16 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:34:03 2008
+
+Total PSI3 wall time          2 seconds =       0.03 minutes
+******************************************************************************

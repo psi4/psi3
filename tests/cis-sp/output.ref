@@ -1,16 +1,48 @@
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Wed Jul  9 00:48:26 2003
+PSI3 started on augustus.chemistry.gatech.edu at Sun Mar 16 17:57:08 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF CIS energy computation.
+
+The following programs will be executed:
+
+ input
+ cints
+ cscf
+ transqt2
+ ccsort
+ cis
+ psiclean
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Sun Mar 16 17:57:08 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	6-31G** CIS H2O
   SHOWNORM    =	0
   PUREAM      =	0
   PRINT_LVL   =	1
+
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
+Coordinates after reading z-matrices
+
+           1           2           3
+
+    1   0.0000000   0.0000000   0.0000000
+    2   0.0000000   0.0000000   1.8330342
+    3   1.7860537   0.0000000  -0.4123430
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -27,9 +59,9 @@ Wed Jul  9 00:48:26 2003
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.127705012620     0.000000000000
-        HYDROGEN      1.434547523692     1.013385611891     0.000000000000
-        HYDROGEN     -1.434547523692     1.013385611891     0.000000000000
+          OXYGEN      0.000000000000    -0.127705012634     0.000000000000
+        HYDROGEN      1.434547523692     1.013385611877    -0.000000000000
+        HYDROGEN     -1.434547523692     1.013385611877    -0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -85,32 +117,32 @@ Wed Jul  9 00:48:26 2003
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000    -0.000000000000    -0.127705012620
-        HYDROGEN      0.000000000000     1.434547523692     1.013385611891
+          OXYGEN      0.000000000000     0.000000000000    -0.127705012634
+        HYDROGEN     -0.000000000000     1.434547523692     1.013385611877
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000    -0.000000000000    -0.127705012620
-        HYDROGEN      0.000000000000     1.434547523692     1.013385611891
-        HYDROGEN      0.000000000000    -1.434547523692     1.013385611891
+          OXYGEN      0.000000000000     0.000000000000    -0.127705012634
+        HYDROGEN     -0.000000000000     1.434547523692     1.013385611877
+        HYDROGEN     -0.000000000000    -1.434547523692     1.013385611877
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000    -0.000000000000    -0.067578587262
-        HYDROGEN      0.000000000000     0.759129912147     0.536260610277
-        HYDROGEN      0.000000000000    -0.759129912147     0.536260610277
+          OXYGEN      0.000000000000     0.000000000000    -0.067578587269
+        HYDROGEN     -0.000000000000     0.759129912147     0.536260610269
+        HYDROGEN     -0.000000000000    -0.759129912147     0.536260610269
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000    -0.000000000000    -0.127705012620
-        HYDROGEN      0.000000000000     1.434547523692     1.013385611891
-        HYDROGEN      0.000000000000    -1.434547523692     1.013385611891
+          OXYGEN      0.000000000000     0.000000000000    -0.127705012634
+        HYDROGEN     -0.000000000000     1.434547523692     1.013385611877
+        HYDROGEN     -0.000000000000    -1.434547523692     1.013385611877
 
 
   --------------------------------------------------------------------------
@@ -125,17 +157,20 @@ Wed Jul  9 00:48:26 2003
     2   0.9700000   0.0000000
     3   0.9700000   1.5182598   0.0000000
 
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
 
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Wed Jul  9 00:48:26 2003
+tstop called on augustus.chemistry.gatech.edu
+Sun Mar 16 17:57:08 2008
 
-user time   =       0.13 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Wed Jul  9 00:48:26 2003
+tstart called on augustus.chemistry.gatech.edu
+Sun Mar 16 17:57:08 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -151,27 +186,28 @@ Wed Jul  9 00:48:26 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = 6-31G** CIS H2O                                                                 
+    Label                       = 6-31G** CIS H2O
     Number of atoms             = 3
     Number of atomic orbitals   = 25
     Number of symmetry orbitals = 25
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
+
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Wed Jul  9 00:48:26 2003
+tstop called on augustus.chemistry.gatech.edu
+Sun Mar 16 17:57:08 2008
 
-user time   =       0.07 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Wed Jul  9 00:48:26 2003
+tstart called on augustus.chemistry.gatech.edu
+Sun Mar 16 17:57:08 2008
 
 
              ------------------------------------------
@@ -182,35 +218,33 @@ Wed Jul  9 00:48:26 2003
 
              ------------------------------------------
 
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
 
-
-And I think the multiplicity is 1
-
-
-If this is wrong, the specify MULTP keyword
-
-  label       = 6-31G** CIS H2O
+  label        = 6-31G** CIS H2O
   wfn          = CIS
   reference    = RHF
   multiplicity = 1
   charge       = 0
-  direct SCF   = false
+  direct       = false
   dertype      = NONE
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        9.0772388468036
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 114320 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 2.317737e-02
+  The lowest eigenvalue of the overlap matrix was 2.230864e-02
 
   Using core guess to determine occupations
 
@@ -224,21 +258,21 @@ If this is wrong, the specify MULTP keyword
 
   iter       total energy        delta E         delta P          diiser
     1       -68.2945751265    7.737181e+01    0.000000e+00    0.000000e+00
-    2       -71.3448673106    3.050292e+00    1.175931e-01    1.190466e+00
-    3       -75.8123517397    4.467484e+00    1.087722e-01    8.573611e-01
-    4       -75.9961794287    1.838277e-01    6.819372e-03    2.382498e-01
-    5       -76.0216884129    2.550898e-02    2.101159e-03    1.107446e-01
-    6       -76.0219767110    2.882981e-04    2.694031e-04    9.026552e-03
-    7       -76.0219975816    2.087063e-05    7.993684e-05    2.664357e-03
-    8       -76.0219978494    2.678180e-07    1.082934e-05    1.814146e-04
-    9       -76.0219978755    2.608594e-08    3.722423e-06    7.448960e-05
-   10       -76.0219978763    7.493952e-10    5.621769e-07    1.368229e-05
-   11       -76.0219978763    1.701039e-11    6.958839e-08    1.715712e-06
-   12       -76.0219978763    5.030643e-12    5.173390e-08    7.621513e-07
-   13       -76.0219978763    2.842171e-13    1.585170e-08    1.768814e-07
-   14       -76.0219978763    1.421085e-14    9.976817e-10    1.840993e-08
-   15       -76.0219978763   -1.421085e-14    1.752684e-10    2.276903e-09
-   16       -76.0219978763    1.421085e-14    1.368488e-11    3.999931e-10
+    2       -71.3448673106    3.050292e+00    1.461731e-01    1.190466e+00
+    3       -75.8740206500    4.529153e+00    1.386292e-01    8.573611e-01
+    4       -76.0127771706    1.387565e-01    3.571875e-03    1.989130e-01
+    5       -76.0218018537    9.024683e-03    1.255711e-03    4.393924e-02
+    6       -76.0219748189    1.729652e-04    1.594762e-04    1.118920e-02
+    7       -76.0219974063    2.258741e-05    7.979152e-05    3.902789e-03
+    8       -76.0219978577    4.514293e-07    1.227064e-05    2.893048e-04
+    9       -76.0219978753    1.754033e-08    3.631956e-06    6.228041e-05
+   10       -76.0219978763    1.006896e-09    9.827202e-07    1.132714e-05
+   11       -76.0219978763    2.329159e-11    1.193354e-07    1.728025e-06
+   12       -76.0219978763    2.486900e-12    5.349900e-08    5.148786e-07
+   13       -76.0219978763   -2.842171e-14    2.824306e-09    3.877380e-08
+   14       -76.0219978763    2.842171e-14    6.149917e-10    1.019689e-08
+   15       -76.0219978763    4.263256e-14    1.063461e-10    4.573084e-09
+   16       -76.0219978763   -1.421085e-14    1.439425e-11    2.909375e-10
 
 Orbital energies (a.u.):
 
@@ -257,117 +291,79 @@ Orbital energies (a.u.):
    7B2      3.913091    12A1      4.093637  
 
 
-        SCF total energy   =     -76.021997876298
-        kinetic energy     =      75.764070729670
-        nuc. attr. energy  =    -198.644160741602
-        elec. rep. energy  =      46.858092135634
-        potential energy   =    -151.786068605968
-        virial theorem     =       1.996607203785
+      * SCF total energy   =     -76.021997876298
+        kinetic energy     =      75.764070728969
+        nuc. attr. energy  =    -198.644160740606
+        elec. rep. energy  =      46.858092135338
+        potential energy   =    -151.786068605268
+        virial theorem     =       1.996607203776
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Wed Jul  9 00:48:26 2003
+tstop called on augustus.chemistry.gatech.edu
+Sun Mar 16 17:57:09 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Sun Mar 16 17:57:09 2008
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	CIS
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 25
+	Number of MOs        = 25
+	Number of active MOs = 25
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   12	    0	    3	    0	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.07723884680363
+	SCF energy          (chkpt) =    -76.02199787629841
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+tstop called on augustus.chemistry.gatech.edu
+Sun Mar 16 17:57:09 2008
 
 user time   =       0.02 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Wed Jul  9 00:48:26 2003
-
-
-	**************************************************
-	* TRANSQT:  Program to transform integrals from  *
-	*           the SO basis to the MO basis.        *
-	*                                                *
-	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
-	**************************************************
-
-	Input Parameters:
-	-----------------
-	Wavefunction           =  CIS
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            = Yes
-	Delete Restricted Docc =  No
-	Do All TEI             = No
-	Memory (Mbytes)        =  256.0
-	Max Buckets            =  199
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Pitzer                 =  No
-
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 25
-	Number of MOs    = 25
-
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   12	   12	    0	    3	    0	    9	    0
-	 A2 	   2	   2	    0	    0	    0	    2	    0
-	 B1 	   4	   4	    0	    1	    0	    3	    0
-	 B2 	   7	   7	    0	    1	    0	    6	    0
-
-	Nuclear Repulsion Energy    =         9.0772388468
-	Total SCF Energy            =       -76.0219978763
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
-******************************************************************************
-tstop called on orion.chem.vt.edu
-Wed Jul  9 00:48:28 2003
-
-user time   =       0.17 seconds =       0.00 minutes
-system time =       1.79 seconds =       0.03 minutes
-total time  =          2 seconds =       0.03 minutes
-******************************************************************************
-tstart called on orion.chem.vt.edu
-Wed Jul  9 00:48:28 2003
+tstart called on augustus.chemistry.gatech.edu
+Sun Mar 16 17:57:09 2008
 
 
 			**************************
@@ -387,6 +383,7 @@ Wed Jul  9 00:48:28 2003
 	Make (ab|cd)    =	True
 	Cache Level     =	2
 	Cache Type      =	LRU
+	Local CC        =     No
 
 
 	Chkpt Parameters:
@@ -403,29 +400,50 @@ Wed Jul  9 00:48:28 2003
 	 B2 	   7	    0	    1	    0	    6	    0
 
 	Nuclear Rep. energy (chkpt) =      9.07723884680363
-	SCF energy          (chkpt) =    -76.02199787629840
+	SCF energy          (chkpt) =    -76.02199787629841
 
-	Size of <ab|cd> integrals:     0.017 (MW) /     0.135 (MB)
-	Size of <ia|bc> integrals:     0.005 (MW) /     0.037 (MB)
-	Size of Tijab amplitudes:      0.001 (MW) /     0.011 (MB)
+	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.006 (MW) /      0.049 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.014 (MW) /      0.115 (MB)
+	Total:                                     0.043 (MW) /      0.341 (MB)
 
-	One-electron energy          =   -122.88009001193257
-	Two-electron (AA) energy     =     14.41616333316420
-	Two-electron (BB) energy     =     14.41616333316420
-	Two-electron (AB) energy     =     23.36468995566635
-	Two-electron energy          =     37.78085328883055
+	Size of irrep 0 of <ia|bc> integrals:      0.005 (MW) /      0.037 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.012 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.003 (MW) /      0.028 (MB)
+	Total:                                     0.011 (MW) /      0.086 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.001 (MW) /      0.011 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.000 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.022 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	One-electron energy          =   -122.88009001163681
+	Two-electron (AA) energy     =     14.41616333304432
+	Two-electron (BB) energy     =     14.41616333304432
+	Two-electron (AB) energy     =     23.36468995549046
+	Two-electron energy          =     37.78085328853478
 	Frozen-core energy (transqt) =      0.00000000000000
 	Reference energy             =    -76.02199787629840
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Wed Jul  9 00:48:28 2003
+tstop called on augustus.chemistry.gatech.edu
+Sun Mar 16 17:57:09 2008
 
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.05 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Wed Jul  9 00:48:28 2003
+tstart called on augustus.chemistry.gatech.edu
+Sun Mar 16 17:57:09 2008
 
 			*************************
 			*                       *
@@ -433,8 +451,8 @@ Wed Jul  9 00:48:28 2003
 			*                       *
 			*************************
 
-	Nuclear Rep. energy (chkpt)   =    9.077238846803626
-	SCF energy          (chkpt)   =  -76.021997876298400
+	Nuclear Rep. energy (chkpt)   =    9.077238846803628
+	SCF energy          (chkpt)   =  -76.021997876298414
 	Reference energy    (file100) =  -76.021997876298400
 
 	Input parameters:
@@ -449,202 +467,211 @@ Wed Jul  9 00:48:28 2003
 	Print Level            =    0
 	Local CC        =     No
 
-	   RHF-CIS Singlet Excitation Energies:
-	   ------------------------------------
+	RHF-CIS Singlet Excitation Energies:
+	------------------------------------
 
-	   Root Irrep       Hartree          eV          cm-1  
-	   ---- ----- ------------------  ---------  ----------
-CIS State    0   A1    0.45200894780590   12.29979    99204.50
+	  Root Irrep       Hartree          eV          cm-1  
+	  ---- ----- ------------------  ---------  ----------
+CIS State    0   A1    0.45200894782019   12.29979    99204.50
 
 Largest components of singlet excited wave function #0/#0:
 	          2   0         0.9825341379
-	          4  14        -0.1322985419
-	          2   1         0.0773191193
-	          3  11        -0.0565348865
+	          4  14         0.1322985418
+	          2   1        -0.0773191193
+	          3  11        -0.0565348864
 	          2   3        -0.0513411981
-CIS State    1   A1    0.69465549668719   18.90255   152459.26
+CIS State    1   A1    0.69465549668984   18.90255   152459.26
 
 Largest components of singlet excited wave function #0/#1:
-	          4  14         0.9645483255
+	          4  14        -0.9645483255
 	          3  11        -0.1743763038
-	          2   0         0.1249426349
-	          2   2        -0.0975673203
-	          2   1        -0.0843004773
-CIS State    0   A2    0.41520410130123   11.29828    91126.77
+	          2   0         0.1249426348
+	          2   2        -0.0975673204
+	          2   1         0.0843004772
+CIS State    0   A2    0.41520410130086   11.29828    91126.77
 
 Largest components of singlet excited wave function #1/#0:
 	          3  11         0.9828665407
-	          3  13         0.1324400183
+	          3  13        -0.1324400183
 	          3  12        -0.1266545861
-	          3  14        -0.0154824433
-	          3  15         0.0097593607
-CIS State    1   A2    1.04805262595540   28.51898   230020.96
+	          3   0         0.0154824433
+	          3   0         0.0097593607
+CIS State    1   A2    1.04805262594689   28.51898   230020.96
 
 Largest components of singlet excited wave function #1/#1:
-	          3  12         0.9901908926
-	          3  11         0.1295745558
-	          3  14         0.0499903861
+	          3  12        -0.9901908926
+	          3  11        -0.1295745559
+	          3   0         0.0499903861
 	          4  14         0.0086064267
 	          3  13        -0.0077689985
-CIS State    0   B1    0.34819967886269    9.47500    76421.00
+CIS State    0   B1    0.34819967886911    9.47500    76421.00
 
 Largest components of singlet excited wave function #2/#0:
-	          3  11        -0.9905508467
+	          3  11         0.9905508467
 	          3  12        -0.1143254385
-	          3  33         0.0713502378
-	          3  14         0.0126428005
-	          3  17         0.0122328280
-CIS State    1   B1    1.06972777018549   29.10879   234778.11
+	          3   0        -0.0713502378
+	          3   0        -0.0126428005
+	          3   0        -0.0122328280
+CIS State    1   B1    1.06972777017967   29.10879   234778.11
 
 Largest components of singlet excited wave function #2/#1:
-	          3  12        -0.8128340657
-	          3  13        -0.5631019462
-	          3  33         0.0992924284
+	          3  12         0.8128340654
+	          3  13        -0.5631019466
+	          3   0         0.0992924284
 	          3  11         0.0992770479
-	          3  17         0.0256183486
-CIS State    0   B2    0.52083924323200   14.17276   114311.00
+	          3   0         0.0256183486
+CIS State    0   B2    0.52083924324920   14.17276   114311.00
 
 Largest components of singlet excited wave function #3/#0:
 	          2   0         0.9713910118
-	          4  14        -0.1788917239
-	          2   2         0.1191662483
+	          4  14         0.1788917237
+	          2   2        -0.1191662483
 	          2   1        -0.0737247525
 	          4  15        -0.0526375953
-CIS State    1   B2    0.55929382997206   15.21917   122750.81
+CIS State    1   B2    0.55929382998873   15.21917   122750.81
 
 Largest components of singlet excited wave function #3/#1:
 	          4  14        -0.9768425476
-	          2   0        -0.1810707377
-	          4  15        -0.0754081461
+	          2   0         0.1810707375
+	          4  15         0.0754081461
 	          4  17         0.0602492772
 	          1   0         0.0464958173
 
-	   RHF-CIS Triplet Excitation Energies:
-	   ------------------------------------
+	RHF-CIS Triplet Excitation Energies:
+	------------------------------------
 
-	   Root Irrep       Hartree          eV          cm-1  
-	   ---- ----- ------------------  ---------  ----------
-CIS State    0   A1    0.38799282193725   10.55783    85154.58
+	  Root Irrep       Hartree          eV          cm-1  
+	  ---- ----- ------------------  ---------  ----------
+CIS State    0   A1    0.38799282197770   10.55783    85154.58
 
 Largest components of triplet excited wave function #0/#0:
-	          2   0         0.9656620216
+	          2   0        -0.9656620216
 	          4  14         0.1759538509
-	          2   1         0.1440604584
-	          1   0        -0.0748869862
-	          2   3        -0.0713503224
+	          2   1         0.1440604585
+	          1   0        -0.0748869863
+	          2   3         0.0713503224
 
-CIS State    1   A1    0.55875914239228   15.20462   122633.46
+CIS State    1   A1    0.55875914240343   15.20462   122633.46
 
 Largest components of triplet excited wave function #0/#1:
-	          4  14        -0.9480194464
-	          2   0         0.1957892108
+	          4  14        -0.9480194463
+	          2   0        -0.1957892108
 	          4  15         0.1558725390
-	          4  16        -0.1467013469
+	          4  16         0.1467013469
 	          1   0         0.1036400985
 
-CIS State    0   A2    0.39100181007430   10.63971    85814.98
+CIS State    0   A2    0.39100181007906   10.63971    85814.98
 
 Largest components of triplet excited wave function #1/#0:
-	          3  11        -0.9778050549
+	          3  11         0.9778050549
 	          3  13        -0.1491018831
-	          3  12         0.1429795204
-	          3  14         0.0185505334
+	          3  12        -0.1429795204
+	          3   0         0.0185505334
 	          4  14        -0.0148512926
 
-CIS State    1   A2    1.03369252483125   28.12822   226869.29
+CIS State    1   A2    1.03369252482148   28.12822   226869.29
 
 Largest components of triplet excited wave function #1/#1:
-	          3  12        -0.9872661665
-	          3  11        -0.1457026760
-	          3  14        -0.0544293769
+	          3  12         0.9872661665
+	          3  11         0.1457026761
+	          3   0        -0.0544293769
 	          2   0        -0.0228464905
 	          4  15         0.0162115459
 
-CIS State    0   B1    0.31243319566894    8.50174    68571.16
+CIS State    0   B1    0.31243319567585    8.50174    68571.16
 
 Largest components of triplet excited wave function #2/#0:
-	          3  11        -0.9841730861
+	          3  11         0.9841730861
 	          3  12        -0.1478621671
-	          3  33         0.0831114320
-	          3  13         0.0296594865
+	          3   0        -0.0831114320
+	          3  13        -0.0296594865
 	          1   0         0.0288862113
 
-CIS State    1   B1    1.02525339688353   27.89858   225017.11
+CIS State    1   B1    1.02525339687817   27.89858   225017.11
 
 Largest components of triplet excited wave function #2/#1:
-	          3  12        -0.7835462985
-	          3  13        -0.5671310462
+	          3  12         0.7835462983
+	          3  13        -0.5671310466
 	          2   0        -0.2188956336
 	          3  11         0.1027550895
-	          3  33         0.0407739716
+	          3   0         0.0407739716
 
-CIS State    0   B2    0.44568691326677   12.12776    97816.97
+CIS State    0   B2    0.44568691329983   12.12776    97816.97
 
 Largest components of triplet excited wave function #3/#0:
 	          2   0         0.8235266763
-	          4  14         0.5196221121
+	          4  14        -0.5196221122
 	          2   1        -0.1473994915
-	          2   2         0.1155084947
+	          2   2        -0.1155084947
 	          4  15         0.1070158987
 
-CIS State    1   B2    0.50667577905770   13.78736   111202.48
+CIS State    1   B2    0.50667577907205   13.78736   111202.48
 
 Largest components of triplet excited wave function #3/#1:
-	          4  14        -0.8301219739
-	          2   0         0.5233147565
+	          4  14         0.8301219739
+	          2   0         0.5233147566
 	          4  15        -0.1171954954
-	          2   1        -0.0764861808
-	          1   0         0.0730204529
+	          2   1        -0.0764861809
+	          1   0        -0.0730204529
 
 
 
 	Solving for MP2 wave function:
 	-------------------------------
-	iter = 0  MP2 Energy =    -0.20028458317453
-	iter = 1   MP2 Energy =    -0.20028458317403   RMS = 7.781e-13
+	iter = 0  MP2 Energy =    -0.20028458317173
+	iter = 1   MP2 Energy =    -0.20028458317457   RMS = 4.435e-12
 
 	MP2 iterations converged.
 
-	U2(0)[0] iterations converged. iter = 0   RMS = 1.372e-12
-	U2(1)[0] iterations converged. iter = 0   RMS = 1.012e-12
-	U2(0)[1] iterations converged. iter = 0   RMS = 1.042e-12
-	U2(1)[1] iterations converged. iter = 0   RMS = 1.428e-12
-	U2(0)[2] iterations converged. iter = 0   RMS = 1.141e-12
-	U2(1)[2] iterations converged. iter = 0   RMS = 1.210e-12
-	U2(0)[3] iterations converged. iter = 0   RMS = 1.284e-12
-	U2(1)[3] iterations converged. iter = 0   RMS = 8.939e-13
+	U2(0)[0] iterations converged. iter = 0   RMS = 7.279e-12
+	U2(1)[0] iterations converged. iter = 0   RMS = 5.448e-12
+	U2(0)[1] iterations converged. iter = 0   RMS = 5.688e-12
+	U2(1)[1] iterations converged. iter = 0   RMS = 7.001e-12
+	U2(0)[2] iterations converged. iter = 0   RMS = 6.154e-12
+	U2(1)[2] iterations converged. iter = 0   RMS = 6.131e-12
+	U2(0)[3] iterations converged. iter = 0   RMS = 7.000e-12
+	U2(1)[3] iterations converged. iter = 0   RMS = 4.663e-12
 
-	   RHF-CIS(D) Singlet Corrections:
-	   -------------------------------
-	   Root Irrep       Hartree          eV          cm-1  
-	   ---- ----- ------------------  ---------  ----------
-CIS State    0   A1   -0.03793677383569   -1.03231    -8326.16
-CIS State    1   A1   -0.01405603770264   -0.38248    -3084.94
-CIS State    0   A2   -0.02267229893102   -0.61694    -4975.99
-CIS State    1   A2   -0.06040035872277   -1.64358   -13256.35
-CIS State    0   B1   -0.03817063204380   -1.03868    -8377.49
-CIS State    1   B1    0.00433636480169    0.11800      951.72
-CIS State    0   B2   -0.02053222646141   -0.55871    -4506.30
-CIS State    1   B2   -0.00509599419731   -0.13867    -1118.44
+	RHF-CIS(D) Singlet Corrections:
+	-------------------------------
+	  Root Irrep       Hartree          eV          cm-1  
+	  ---- ----- ------------------  ---------  ----------
+CIS State    0   A1   -0.03793677384833   -1.03231    -8326.16
+CIS State    1   A1   -0.01405603770447   -0.38248    -3084.94
+CIS State    0   A2   -0.02267229891776   -0.61694    -4975.99
+CIS State    1   A2   -0.06040035869580   -1.64358   -13256.35
+CIS State    0   B1   -0.03817063203226   -1.03868    -8377.49
+CIS State    1   B1    0.00433636481992    0.11800      951.72
+CIS State    0   B2   -0.02053222647266   -0.55871    -4506.30
+CIS State    1   B2   -0.00509599420719   -0.13867    -1118.44
 
-	   RHF-CIS(D) Singlet Excitation Energies:
-	   ---------------------------------------
+	RHF-CIS(D) Singlet Excitation Energies:
+	---------------------------------------
 
-	   Root Irrep       Hartree          eV          cm-1  
-	   ---- ----- ------------------  ---------  ----------
-CIS State    0   A1    0.41407217397021   11.26748    90878.34
-CIS State    1   A1    0.68059945898455   18.52006   149374.32
-CIS State    0   A2    0.39253180237022   10.68134    86150.77
-CIS State    1   A2    0.98765226723263   26.87540   216764.62
-CIS State    0   B1    0.31002904681890    8.43632    68043.51
-CIS State    1   B1    1.07406413498718   29.22678   235729.83
-CIS State    0   B2    0.50030701677058   13.61405   109804.70
-CIS State    1   B2    0.55419783577474   15.08050   121632.37
+	  Root Irrep       Hartree          eV          cm-1  
+	  ---- ----- ------------------  ---------  ----------
+CIS State    0   A1    0.41407217397186   11.26748    90878.34
+CIS State    1   A1    0.68059945898537   18.52006   149374.32
+CIS State    0   A2    0.39253180238310   10.68134    86150.77
+CIS State    1   A2    0.98765226725109   26.87540   216764.62
+CIS State    0   B1    0.31002904683685    8.43632    68043.51
+CIS State    1   B1    1.07406413499959   29.22678   235729.83
+CIS State    0   B2    0.50030701677654   13.61405   109804.70
+CIS State    1   B2    0.55419783578154   15.08050   121632.37
 
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Wed Jul  9 00:48:28 2003
+tstop called on augustus.chemistry.gatech.edu
+Sun Mar 16 17:57:09 2008
 
-user time   =       0.14 seconds =       0.00 minutes
-system time =       0.14 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Sun Mar 16 17:57:09 2008
+
+Total PSI3 wall time          1 seconds =       0.02 minutes
+******************************************************************************

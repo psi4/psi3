@@ -1424,7 +1424,7 @@ sub seek_scf
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   seek(OUT,0,0);
   while(<OUT>) {
-    if (/SCF total energy/) {
+    if (/\* SCF total energy/) {
       @data = split(/ +/, $_);
       $scf = $data[5];
       return $scf;
@@ -1458,9 +1458,8 @@ sub seek_mp2
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   seek(OUT,0,0);
   while(<OUT>) {
-    if (/\s+MP2 total energy/) {
-      @data = split(/ +/, $_);
-      $mp2 = $data[4];
+    if (/\s+\* MP2 total energy/) {
+      ($junk,$mp2) = split(/=\s+/, $_);
       return $mp2;
     }
   }
@@ -1492,9 +1491,8 @@ sub seek_scs_mp2
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   seek(OUT,0,0);
   while(<OUT>) {
-    if (/SCS-MP2 total energy/) {
-      @data = split(/ +/, $_);
-      $scs_mp2 = $data[4];
+    if (/\* SCS-MP2 total energy/) {
+      ($junk,$scs_mp2) = split(/=\s+/, $_);
       return $scs_mp2;
     }
   }
@@ -1544,9 +1542,8 @@ sub seek_cc2
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   seek(OUT,0,0);
   while(<OUT>) {
-    if (/Total CC2 energy/) {
-      @data = split(/ +/, $_);
-      $cc2 = $data[4];
+    if (/\* CC2 total energy/) {
+      ($junk, $cc2) = split(/=\s+/, $_);
       return $cc2;
     }
   }
@@ -1561,9 +1558,8 @@ sub seek_ccsd
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   seek(OUT,0,0);
   while(<OUT>) {
-    if (/Total CCSD energy/) {
-      @data = split(/ +/, $_);
-      $ccsd = $data[4];
+    if (/\* CCSD total energy/) {
+      ($junk, $ccsd) = split(/=\s+/, $_);
       return $ccsd;
     }
   }
@@ -1578,9 +1574,8 @@ sub seek_ccsd_t
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   seek(OUT,0,0);
   while(<OUT>) {
-    if (/Total CCSD\(T\) energy/) {
-      @data = split(/ +/, $_);
-      $ccsd_t = $data[4];
+    if (/\* CCSD\(T\) total energy/) {
+      ($junk, $ccsd_t) = split(/=\s+/, $_);
       return $ccsd_t;
     }
   }
@@ -1595,9 +1590,8 @@ sub seek_cc3
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   seek(OUT,0,0);
   while(<OUT>) {
-    if (/Total CC3 energy/) {
-      @data = split(/ +/, $_);
-      $ccsd = $data[4];
+    if (/\* CC3 total energy/) {
+      ($junk, $ccsd) = split(/=\s+/, $_);
       return $ccsd;
     }
   }
@@ -1613,7 +1607,7 @@ sub seek_bccd
   @datafile = <OUT>;
   close(OUT);
 
-  $match = "Total CCSD energy";
+  $match = "\* CCSD total energy";
   $linenum = 0;
   $lastiter = 0;
 
@@ -1624,8 +1618,7 @@ sub seek_bccd
     $linenum++;
   }
 
-  @line = split (/ +/, $datafile[$lastiter]);
-  $bccd = $line[5];
+  ($junk, $bccd) = split (/=\s+/, $datafile[$lastiter]);
 
   if($bccd != 0.0) {
     return $bccd;
@@ -1658,9 +1651,8 @@ sub seek_casscf
 
 #Added to handle David's new CASSCF output format
   while (<OUT>) {
-      if (/Final CASSCF Energy/) {
-	  @data = split(/=/, $_);
-	  $casscf = $data[2];
+      if (/\* CASSCF total energy/) {
+	  ($junk,$casscf) = split(/=\s+/, $_);
 	  return $casscf;
       }
   }
@@ -1675,9 +1667,8 @@ sub seek_rasscf
 
 #Added to handle David's new RASSCF output format
   while (<OUT>) {
-      if (/Final RASSCF Energy/) {
-	  @data = split(/=/, $_);
-	  $casscf = $data[2];
+      if (/\* RASSCF total energy/) {
+          ($junk,$casscf) = split(/=\s+/, $_);
 	  return $casscf;
       }
   }
@@ -1691,9 +1682,9 @@ sub seek_ci
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   seek(OUT,0,0);
   while (<OUT>) {
-    if (/ROOT 1/) {
-    @data = split(/ +/, $_);
-    $ci = $data[4];
+    if (/\* ROOT 1 CI total energy/) {
+    @data = split(/=\s+/, $_);
+    ($ci,$junk) = split(/ /, $data[1]);
     }
   }
 

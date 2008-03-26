@@ -602,7 +602,7 @@ void cleanup()
   /* TDC (04/04/07) -- some old cleanups */
   free(reference);
       
-  fprintf(outfile,"\n%8cSCF total energy   = %20.12f\n",' ',etot);
+  fprintf(outfile,"\n%6c* SCF total energy   = %20.12f\n",' ',etot);
       
   if(ksdft){
     fprintf(outfile,"%8ccoulomb energy     = %20.12f\n"

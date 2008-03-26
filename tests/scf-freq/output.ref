@@ -1,16 +1,49 @@
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 07:27:23 2003
+PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:10:10 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF SCF analytic frequency computation.
+
+The following programs will be executed:
+
+ input
+ cints
+ cscf
+ transqt2
+ cints --deriv2
+ cints --oeprop
+ cphf
+ psiclean
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:10 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	6-31G** SCF H2O
   SHOWNORM    =	0
   PUREAM      =	0
   PRINT_LVL   =	1
+
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
+Coordinates after reading z-matrices
+
+           1           2           3
+
+    1   0.0000000   0.0000000   0.0000000
+    2   0.0000000   0.0000000   1.7821186
+    3   1.7133499   0.0000000  -0.4902846
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -27,9 +60,9 @@ Mon May 19 07:27:23 2003
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000    -0.120072753754     0.000000000000
-        HYDROGEN      1.422970856939     0.952820868490     0.000000000000
-        HYDROGEN     -1.422970856939     0.952820868490     0.000000000000
+          OXYGEN      0.000000000000    -0.120072753768     0.000000000000
+        HYDROGEN      1.422970856939     0.952820868476    -0.000000000000
+        HYDROGEN     -1.422970856939     0.952820868476    -0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -85,32 +118,32 @@ Mon May 19 07:27:23 2003
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.120072753754
-        HYDROGEN      0.000000000000     1.422970856939     0.952820868490
+          OXYGEN      0.000000000000     0.000000000000    -0.120072753768
+        HYDROGEN     -0.000000000000     1.422970856939     0.952820868476
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.120072753754
-        HYDROGEN      0.000000000000     1.422970856939     0.952820868490
-        HYDROGEN      0.000000000000    -1.422970856939     0.952820868490
+          OXYGEN      0.000000000000     0.000000000000    -0.120072753768
+        HYDROGEN     -0.000000000000     1.422970856939     0.952820868476
+        HYDROGEN     -0.000000000000    -1.422970856939     0.952820868476
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.063539769512
-        HYDROGEN      0.000000000000     0.753003803482     0.504211125977
-        HYDROGEN      0.000000000000    -0.753003803482     0.504211125977
+          OXYGEN      0.000000000000     0.000000000000    -0.063539769519
+        HYDROGEN     -0.000000000000     0.753003803482     0.504211125970
+        HYDROGEN     -0.000000000000    -0.753003803482     0.504211125970
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.120072753754
-        HYDROGEN      0.000000000000     1.422970856939     0.952820868490
-        HYDROGEN      0.000000000000    -1.422970856939     0.952820868490
+          OXYGEN      0.000000000000     0.000000000000    -0.120072753768
+        HYDROGEN     -0.000000000000     1.422970856939     0.952820868476
+        HYDROGEN     -0.000000000000    -1.422970856939     0.952820868476
 
 
   --------------------------------------------------------------------------
@@ -125,17 +158,20 @@ Mon May 19 07:27:23 2003
     2   0.9430566   0.0000000
     3   0.9430566   1.5060076   0.0000000
 
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 07:27:23 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:11 2008
 
-user time   =       0.05 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 07:27:23 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:11 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -151,27 +187,28 @@ Mon May 19 07:27:23 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = 6-31G** SCF H2O                                                                 
+    Label                       = 6-31G** SCF H2O
     Number of atoms             = 3
     Number of atomic orbitals   = 25
     Number of symmetry orbitals = 25
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
+
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 07:27:23 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:11 2008
 
-user time   =       0.03 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 07:27:23 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:11 2008
 
 
              ------------------------------------------
@@ -181,30 +218,30 @@ Mon May 19 07:27:23 2003
               Written by too many people to mention here
 
              ------------------------------------------
-
-
-  label       = 6-31G** SCF H2O
+  label        = 6-31G** SCF H2O
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
   charge       = 0
-  direct SCF   = false
+  direct       = false
   dertype      = SECOND
   convergence  = 12
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        9.3294555420901
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 114320 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 2.228303e-02
+  The lowest eigenvalue of the overlap matrix was 2.143212e-02
 
   Using core guess to determine occupations
 
@@ -218,23 +255,23 @@ Mon May 19 07:27:23 2003
 
   iter       total energy        delta E         delta P          diiser
     1       -68.2404187674    7.756987e+01    0.000000e+00    0.000000e+00
-    2       -71.3491093419    3.108691e+00    1.221368e-01    1.193652e+00
-    3       -75.7520881010    4.402979e+00    1.136920e-01    8.579907e-01
-    4       -75.9938076905    2.417196e-01    7.759704e-03    2.751098e-01
-    5       -76.0233222761    2.951459e-02    2.254976e-03    1.178402e-01
-    6       -76.0235937028    2.714267e-04    2.542805e-04    8.060517e-03
-    7       -76.0236147069    2.100411e-05    8.005625e-05    2.772339e-03
-    8       -76.0236149937    2.867866e-07    1.160884e-05    1.849207e-04
-    9       -76.0236150182    2.450263e-08    3.904615e-06    6.507607e-05
-   10       -76.0236150193    1.044910e-09    7.691761e-07    1.458648e-05
-   11       -76.0236150193    2.374634e-11    7.100890e-08    2.131783e-06
-   12       -76.0236150193    8.526513e-12    7.536086e-08    1.062463e-06
-   13       -76.0236150193    2.842171e-13    1.604488e-08    1.710866e-07
-   14       -76.0236150193   -1.421085e-14    1.133042e-09    1.910489e-08
-   15       -76.0236150193    0.000000e+00    1.661232e-10    2.120220e-09
-   16       -76.0236150193   -1.421085e-14    1.119055e-11    3.516198e-10
-   17       -76.0236150193    2.842171e-14    2.159874e-12    5.140820e-11
-   18       -76.0236150193    0.000000e+00    6.695311e-13    1.585837e-11
+    2       -71.3491093419    3.108691e+00    1.523894e-01    1.193652e+00
+    3       -75.8522208728    4.503112e+00    1.450925e-01    8.579907e-01
+    4       -76.0117357945    1.595149e-01    3.758287e-03    2.178019e-01
+    5       -76.0234215132    1.168572e-02    1.422520e-03    5.490365e-02
+    6       -76.0235932102    1.716970e-04    1.566328e-04    1.098714e-02
+    7       -76.0236145476    2.133738e-05    7.509670e-05    3.770031e-03
+    8       -76.0236149991    4.515247e-07    1.281085e-05    2.562759e-04
+    9       -76.0236150181    1.899527e-08    3.994850e-06    6.090118e-05
+   10       -76.0236150193    1.147782e-09    1.127717e-06    1.158733e-05
+   11       -76.0236150193    2.417266e-11    1.298071e-07    1.789992e-06
+   12       -76.0236150193    2.088996e-12    4.991325e-08    4.763080e-07
+   13       -76.0236150193   -4.263256e-14    2.532138e-09    3.708586e-08
+   14       -76.0236150193    0.000000e+00    6.818264e-10    1.076085e-08
+   15       -76.0236150193    5.684342e-14    9.858624e-11    4.229863e-09
+   16       -76.0236150193    1.421085e-14    1.558630e-11    2.783144e-10
+   17       -76.0236150193    0.000000e+00    4.702233e-12    8.066238e-11
+   18       -76.0236150193    0.000000e+00    8.839664e-13    1.122846e-11
 
 Orbital energies (a.u.):
 
@@ -253,117 +290,79 @@ Orbital energies (a.u.):
    7B2      3.945219    12A1      4.128460  
 
 
-        SCF total energy   =     -76.023615019311
-        kinetic energy     =      75.864589306057
-        nuc. attr. energy  =    -199.203693733306
-        elec. rep. energy  =      47.315489407938
-        potential energy   =    -151.888204325369
+      * SCF total energy   =     -76.023615019311
+        kinetic energy     =      75.864589306044
+        nuc. attr. energy  =    -199.203693733287
+        elec. rep. energy  =      47.315489407932
+        potential energy   =    -151.888204325356
         virial theorem     =       1.997908206375
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 07:27:23 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:11 2008
 
 user time   =       0.01 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 07:27:23 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:11 2008
 
 
 	**************************************************
-	* TRANSQT:  Program to transform integrals from  *
+	* TRANSQT2: Program to transform integrals from  *
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  SCF
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            = Yes
-	Delete Restricted Docc =  No
-	Do All TEI             = No
-	Memory (Mbytes)        =   20.0
-	Max Buckets            =  199
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Pitzer                 =  Yes
+	Wave function   =	SCF
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	Second
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 25
+	Number of MOs        = 25
+	Number of active MOs = 25
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 25
-	Number of MOs    = 25
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   12	    0	    3	    0	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   12	   12	    0	    3	    0	    9	    0
-	 A2 	   2	   2	    0	    0	    0	    2	    0
-	 B1 	   4	   4	    0	    1	    0	    3	    0
-	 B2 	   7	   7	    0	    1	    0	    6	    0
+	Nuclear Rep. energy (chkpt) =      9.32945554209011
+	SCF energy          (chkpt) =    -76.02361501931128
 
-	Nuclear Repulsion Energy    =         9.3294555421
-	Total SCF Energy            =       -76.0236150193
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 07:27:23 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:11 2008
 
-user time   =       0.03 seconds =       0.00 minutes
-system time =       0.13 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 07:27:23 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:11 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -379,74 +378,25 @@ Mon May 19 07:27:23 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = 6-31G** SCF H2O                                                                 
+    Label                       = 6-31G** SCF H2O
     Number of atoms             = 3
     Number of atomic orbitals   = 25
     Number of symmetry orbitals = 25
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
-    Number of irreps                 = 4
-AO-basis Overlap Derivs (0)AO-basis Overlap Derivs (1)AO-basis Overlap Derivs (2)AO-basis Overlap Derivs (3)AO-basis Overlap Derivs (4)AO-basis Overlap Derivs (5)AO-basis Overlap Derivs (6)AO-basis Overlap Derivs (7)AO-basis Overlap Derivs (8)
-  -Skeleton contribution to the molecular Hessian (a.u.):
-
-           1           2           3           4           5           6           7           8           9
-
-    1  -0.0473338   0.0000000   0.0000000   0.0236669   0.0000000   0.0000000   0.0236669   0.0000000   0.0000000
-    2   0.0000000   0.4365360   0.0000000   0.0000000  -0.2182680  -0.1125535   0.0000000  -0.2182680   0.1125535
-    3   0.0000000   0.0000000   0.3290836   0.0000000  -0.2168986  -0.1645418   0.0000000   0.2168986  -0.1645418
-    4   0.0236669   0.0000000   0.0000000  -0.0355963   0.0000000   0.0000000   0.0119294   0.0000000   0.0000000
-    5   0.0000000  -0.2182680  -0.2168986   0.0000000   0.2441383   0.1647260   0.0000000  -0.0258703   0.0521726
-    6   0.0000000  -0.1125535  -0.1645418   0.0000000   0.1647260   0.1340725   0.0000000  -0.0521726   0.0304693
-    7   0.0236669   0.0000000   0.0000000   0.0119294   0.0000000   0.0000000  -0.0355963   0.0000000   0.0000000
-    8   0.0000000  -0.2182680   0.2168986   0.0000000  -0.0258703  -0.0521726   0.0000000   0.2441383  -0.1647260
-    9   0.0000000   0.1125535  -0.1645418   0.0000000   0.0521726   0.0304693   0.0000000  -0.1647260   0.1340725
-
-******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 07:27:24 2003
-
-user time   =       1.39 seconds =       0.02 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
-******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 07:27:24 2003
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = 6-31G** SCF H2O                                                                 
-    Number of atoms             = 3
-    Number of atomic orbitals   = 25
-    Number of symmetry orbitals = 25
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 07:27:25 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:12 2008
 
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.67 seconds =       0.01 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 07:27:25 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:12 2008
 
 			**************************
 			*                        *
@@ -456,7 +406,7 @@ Mon May 19 07:27:25 2003
 
 	Hartree-Fock Electric Dipole Moments:
 	------------------------------------
-	mu[0] =   0.000000 (e a0) =   0.000000 (debye)
+	mu[0] =  -0.000000 (e a0) =  -0.000000 (debye)
 	mu[1] =   0.000000 (e a0) =   0.000000 (debye)
 	mu[2] =   0.844926 (e a0) =   2.147591 (debye)
 
@@ -467,56 +417,135 @@ Mon May 19 07:27:25 2003
 
            1           2           3
 
-    1   2.9314408   0.0000000   0.0000000
-    2   0.0000000   6.7675386   0.0000000
-    3   0.0000000   0.0000000   4.9028411
-SCF Molecular Hessian:
+    1   2.9314408   0.0000000  -0.0000000
+    2   0.0000000   6.7675386  -0.0000000
+    3  -0.0000000  -0.0000000   4.9028411
 
-           1           2           3           4           5           6           7           8           9
+	Atomic Polar Tensor:
 
-    1  -0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000
-    2   0.0000000   0.8186878   0.0000000   0.0000000  -0.4093439  -0.3086377   0.0000000  -0.4093439   0.3086377
-    3   0.0000000   0.0000000   0.5336871   0.0000000  -0.2391116  -0.2668435   0.0000000   0.2391116  -0.2668435
-    4   0.0000000   0.0000000   0.0000000  -0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000
-    5   0.0000000  -0.4093439  -0.2391116   0.0000000   0.4422013   0.2738747   0.0000000  -0.0328573  -0.0347631
-    6   0.0000000  -0.3086377  -0.2668435   0.0000000   0.2738747   0.2497753   0.0000000   0.0347631   0.0170682
-    7   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000   0.0000000  -0.0000000   0.0000000   0.0000000
-    8   0.0000000  -0.4093439   0.2391116   0.0000000  -0.0328573   0.0347631   0.0000000   0.4422013  -0.2738747
-    9   0.0000000   0.3086377  -0.2668435   0.0000000  -0.0347631   0.0170682   0.0000000  -0.2738747   0.2497753
+	Units: au
 
-	Dipole Derivatives W.R.T. Cartesian Coordinates (debye/A):
+	Terms: Electronic
 
-           1           2           3           4           5           6           7           8           9
+	     Ex		     Ey		     Ez
+  Ox	 -8.787521	  0.000000	 -0.000000
+  Oy	  0.000000	 -8.529987	  0.000000
+  Oz	 -0.000000	 -0.000000	 -8.457200
 
-    1  -3.7826298   0.0000000   0.0000000   1.8913149   0.0000000   0.0000000   1.8913149   0.0000000   0.0000000
-    2   0.0000000  -2.5456390   0.0000000   0.0000000   1.2728195  -0.4663341   0.0000000   1.2728195   0.4663341
-    3   0.0000000  -0.0000000  -2.1960298   0.0000000  -0.2898626   1.0980149   0.0000000   0.2898626   1.0980149
+  Hx	 -0.606239	  0.000000	  0.000000
+  Hy	 -0.000000	 -0.735007	 -0.060348
+  Hz	  0.000000	 -0.097088	 -0.771400
 
-	Dipole Derivatives W.R.T Normal Coordinates (debye/A-amu+1/2):
+  Hx	 -0.606239	 -0.000000	  0.000000
+  Hy	 -0.000000	 -0.735007	  0.060348
+  Hz	  0.000000	  0.097088	 -0.771400
 
-           1           2           3           4           5           6           7           8           9
 
-    1   0.0000013   0.0000000  -2.8272159   0.0000199   0.0000000  -0.0000000  -0.0000000  -0.0000000   0.0000000
-    2   0.0000000  -1.6375631  -0.0000000   0.0000000   0.0000002  -0.0000017   0.0000000   0.0000000  -1.1705010
-    3  -0.0000000  -0.0000000  -0.0000000   0.0000000   0.0000000   0.0000000   1.5732960   0.6209125   0.0000000
+	Atomic Polar Tensor:
+
+	Units: au
+
+	Terms: Electronic + Nuclear
+
+	     Ex		     Ey		     Ez
+  Ox	 -0.787521	  0.000000	 -0.000000
+  Oy	  0.000000	 -0.529987	  0.000000
+  Oz	 -0.000000	 -0.000000	 -0.457200
+
+  Hx	  0.393761	  0.000000	  0.000000
+  Hy	 -0.000000	  0.264993	 -0.060348
+  Hz	  0.000000	 -0.097088	  0.228600
+
+  Hx	  0.393761	 -0.000000	  0.000000
+  Hy	 -0.000000	  0.264993	  0.060348
+  Hz	  0.000000	  0.097088	  0.228600
+
 
 	        Harmonic Frequency   Infrared Intensity
 	              (cm-1)               (km/mol)    
 	-----------------------------------------------
-	    8            4264.590           57.8938
-	    7            4147.571           16.2910
-	    6            1769.625          104.5946
-	    5               0.001            0.0000
+	    1            4264.590           57.8938
+	    2            4147.571           16.2910
+	    3            1769.625          104.5946
 	    4               0.001            0.0000
-	    3               0.001i           0.0000
-	    2               0.307i         337.7584
-	    1               0.406i         113.3142
-	    0               0.448i           0.0000
+	    5               0.001i           0.0000
+	    6               0.001i           0.0000
+	    7               0.307i         337.7584
+	    8               0.406i         113.3142
+	    9               0.448i           0.0000
 	-----------------------------------------------
-******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 07:27:25 2003
 
-user time   =       0.07 seconds =       0.00 minutes
+	Electronic Contributions to AAT (au):
+
+	     Bx		     By		     Bz
+  Ox	  0.000000	  0.063989	 -0.000000
+  Oy	 -0.102668	 -0.000000	 -0.000000
+  Oz	 -0.000000	  0.000000	  0.000000
+
+  Hx	 -0.000000	 -0.061524	  0.112470
+  Hy	  0.056760	  0.000000	  0.000000
+  Hz	 -0.096615	  0.000000	  0.000000
+
+  Hx	 -0.000000	 -0.061524	 -0.112470
+  Hy	  0.056760	 -0.000000	 -0.000000
+  Hz	  0.096615	  0.000000	  0.000000
+
+
+	Atomic Axial Tensor:
+
+	Units: au
+
+	Terms: Electronic + Nuclear
+
+	     Bx		     By		     Bz
+  Ox	  0.000000	 -0.176156	 -0.000000
+  Oy	  0.137477	 -0.000000	 -0.000000
+  Oz	 -0.000000	 -0.000000	  0.000000
+
+  Hx	 -0.000000	  0.176681	 -0.243272
+  Hy	 -0.181446	  0.000000	 -0.000000
+  Hz	  0.259128	  0.000000	  0.000000
+
+  Hx	 -0.000000	  0.176681	  0.243272
+  Hy	 -0.181446	 -0.000000	 -0.000000
+  Hz	 -0.259128	  0.000000	  0.000000
+
+
+	Atomic Axial Tensor:
+
+	Units: au
+
+	Terms: Electronic + Nuclear
+
+	     Bx		     By		     Bz
+  Q1	 -0.000000	  0.000000	 -0.342701
+  Q2	  0.443749	 -0.000000	 -0.000000
+  Q3	  0.000000	 -0.249287	 -0.000000
+
+	Rotational Strength (au):
+
+  Q1	  -0.000000000000000
+  Q2	   0.000000000000000
+  Q3	  -0.000000000000000
+
+	Rotational Strength (10^-44 esu^2 cm^2):
+
+  Q1	   0.000000000000003
+  Q2	  -0.000000000000003
+  Q3	   0.000000000000016
+******************************************************************************
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:12 2008
+
+user time   =       0.05 seconds =       0.00 minutes
 system time =       0.04 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:10:12 2008
+
+Total PSI3 wall time          2 seconds =       0.03 minutes
+******************************************************************************

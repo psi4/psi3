@@ -1,16 +1,43 @@
 ******************************************************************************
-tstart called on tool.chemistry.gatech.edu
-Mon Aug 25 11:04:38 2003
+PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:38:50 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a ROHF SCF Diagonal Born-Oppenheimer Correction (DBOC) computation.
+
+The following programs will be executed:
+
+ input
+ input
+ dboc
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:38:50 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	cc-pVDZ ROHF DBOC for F2+
   SHOWNORM    =	0
-  PUREAM      =	1
+  PUREAM      =	0
   PRINT_LVL   =	1
+
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
+Coordinates after reading z-matrices
+
+           1           2           3
+
+    1   0.0000000   0.0000000   0.0000000
+    2   0.0000000   0.0000000   2.4566438
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -124,211 +151,222 @@ Mon Aug 25 11:04:38 2003
     1   0.0000000
     2   1.3000000   0.0000000
 
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
 
 ******************************************************************************
-tstop called on tool.chemistry.gatech.edu
-Mon Aug 25 11:04:38 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:38:50 2008
 
-user time   =       0.15 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on tool.chemistry.gatech.edu
-Mon Aug 25 11:04:38 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:38:50 2008
 
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
+                                --------------
+                                    INPUT
+                                --------------
+
+  LABEL       =	cc-pVDZ ROHF DBOC for F2+
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
+Coordinates after reading z-matrices
+
+           1           2           3
+
+    1   0.0000000   0.0000000   0.0000000
+    2   0.0000000   0.0000000   2.4566438
+
+  -Geometry before Center-of-Mass shift (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        FLUORINE      0.000000000000     0.000000000000     0.000000000000
+        FLUORINE      0.000000000000     0.000000000000     2.456643785153
 
 
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
+  -Rotational constants (cm-1) :
+    A = **********  B =    1.05008  C =    1.05008
+    It is a linear molecule.
 
-  -CALCULATION CONSTANTS:
-    Label                       = cc-pVDZ ROHF DBOC for F2+                                                       
-    Number of atoms             = 2
-    Number of atomic orbitals   = 30
-    Number of symmetry orbitals = 28
-    Maximum AM in the basis     = 2
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        FLUORINE      0.000000000000     0.000000000000    -1.228321892576
+        FLUORINE      0.000000000000     0.000000000000     1.228321892576
 
-  -SYMMETRY INFORMATION;
-    Computational point group        =  D2h
-    Number of irreps                 = 8
-    Wrote 10381 two-electron integrals to IWL file 33
+
+  -SYMMETRY INFORMATION:
+    Computational point group is D2h 
+    Number of irr. rep.      = 8
+    Number of atoms          = 2
+    Number of unique atoms   = 1
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S ( 14710.00000000     0.00072100)
+           (  2207.00000000     0.00555300)
+           (   502.80000000     0.02826700)
+           (   142.60000000     0.10644400)
+           (    46.47000000     0.28681400)
+           (    16.70000000     0.44864100)
+           (     6.35600000     0.26476100)
+           (     1.31600000     0.01533300)
+           (     0.38970000    -0.00233200) )
+        (S ( 14710.00000000    -0.00016500)
+           (  2207.00000000    -0.00130800)
+           (   502.80000000    -0.00649500)
+           (   142.60000000    -0.02669100)
+           (    46.47000000    -0.07369000)
+           (    16.70000000    -0.17077600)
+           (     6.35600000    -0.11232700)
+           (     1.31600000     0.56281400)
+           (     0.38970000     0.56877800) )
+        (S (     0.38970000     1.00000000) )
+        (P (    22.67000000     0.04487800)
+           (     4.97700000     0.23571800)
+           (     1.34700000     0.50852100)
+           (     0.34710000     0.45812000) )
+        (P (     0.34710000     1.00000000) )
+        (D (     1.64000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 25
+    Number of AO           = 30
+    Number of SO           = 28
+
+    Irrep    Number of SO
+    -----    ------------
+      1            7
+      2            1
+      3            3
+      4            3
+      5            1
+      6            7
+      7            3
+      8            3
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        FLUORINE      0.000000000000     0.000000000000     1.228321892576
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        FLUORINE      0.000000000000     0.000000000000    -1.228321892576
+        FLUORINE      0.000000000000     0.000000000000     1.228321892576
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        FLUORINE      0.000000000000     0.000000000000    -0.650000000000
+        FLUORINE      0.000000000000     0.000000000000     0.650000000000
+
+
+  -Geometry in the reference coordinate system (a.u.):
+       Center              X                  Y                   Z
+    ------------   -----------------  -----------------  -----------------
+        FLUORINE      0.000000000000     0.000000000000    -1.228321892576
+        FLUORINE      0.000000000000     0.000000000000     1.228321892576
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =      32.971813206923
+
+  -The Interatomic Distances in angstroms:
+
+           1           2
+
+    1   0.0000000
+    2   1.3000000   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
 
 ******************************************************************************
-tstop called on tool.chemistry.gatech.edu
-Mon Aug 25 11:04:39 2003
-
-user time   =       0.74 seconds =       0.01 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
-******************************************************************************
-tstart called on tool.chemistry.gatech.edu
-Mon Aug 25 11:04:39 2003
-
-
-             ------------------------------------------
-
-                CSCF3.0: An SCF program written in C
-
-              Written by too many people to mention here
-
-             ------------------------------------------
-
-Cannot check consistency of the multiplicity
-
-and number of electrons, double check
-your occupations
-
-  label       = cc-pVDZ ROHF DBOC for F2+
-  wfn          = SCF
-  reference    = ROHF
-  multiplicity = 2
-  charge       = 1
-  direct       = false
-  dertype      = NONE
-  convergence  = 14
-  maxiter      = 40
-  guess        = AUTO
-
-  nuclear repulsion energy       32.9718132069231
-  first run, so defaulting to core-hamiltonian guess
-
-  level shift                      = 1.000000
-  diis scale factor                = 1.020000
-  iterations before extrapolation  = 0
-  4 error matrices will be kept
-
-  keeping integrals in 81792 bytes of core
-
-  The lowest eigenvalue of the overlap matrix was 3.988145e-02
-
-
-  Using DOCC and SOCC to 
-  determine occupations
-
-
-  Symmetry block:   Ag    B1g   B2g   B3g   Au    B1u   B2u   B3u  
-  DOCC:              3     0     1     1     0     1     1     1   
-  SOCC:              0     0     0     0     0     1     0     0   
-
-
-  open-shell energy coeffs
-  open shell pair    alpha         beta
-        1  1       0.000000     -1.000000
-  reading integrals in the IWL format from files 33,35,36,37
-
-       274 integrals written to file92 in   1 buffers
-      2577 integrals written to file93 in   1 buffers
-  wrote 0 integrals to file92
-
-  iter       total energy        delta E         delta P          diiser
-    1      -189.8358712063    2.228077e+02    0.000000e+00    0.000000e+00
-    2      -197.0658376520    7.229966e+00    1.070218e-01    9.418857e-01
-    3      -197.2567964437    1.909588e-01    9.809635e-03    2.105910e-01
-    4      -197.2682837285    1.148728e-02    2.280187e-03    5.663622e-02
-    5      -197.2692170300    9.333015e-04    5.980052e-04    1.865235e-02
-    6      -197.2693131121    9.608214e-05    1.970815e-04    5.913899e-03
-    7      -197.2693245153    1.140317e-05    7.288216e-05    2.030922e-03
-    8      -197.2693256970    1.181703e-06    2.346043e-05    6.581565e-04
-    9      -197.2693258394    1.423659e-07    7.460008e-06    2.062721e-04
-   10      -197.2693258582    1.884410e-08    2.420643e-06    6.390993e-05
-   11      -197.2693258604    2.159368e-09    7.868462e-07    1.970198e-05
-   12      -197.2693258605    1.698481e-10    2.343828e-07    6.025974e-06
-   13      -197.2693258606    8.867573e-12    6.260860e-08    1.829128e-06
-   14      -197.2693258606    7.958079e-13    1.712533e-08    5.561126e-07
-   15      -197.2693258606    1.989520e-13    7.323983e-09    2.025368e-07
-   16      -197.2693258606    5.684342e-14    2.987859e-09    7.150692e-08
-   17      -197.2693258606    0.000000e+00    8.584756e-10    1.908525e-08
-   18      -197.2693258606    0.000000e+00    2.433888e-10    6.266456e-09
-   19      -197.2693258606    0.000000e+00    8.953976e-11    2.217116e-09
-   20      -197.2693258606    0.000000e+00    3.274712e-11    7.745706e-10
-   21      -197.2693258606    0.000000e+00    8.950642e-12    2.208317e-10
-   22      -197.2693258606    0.000000e+00    2.555679e-12    7.062896e-11
-   23      -197.2693258606   -2.842171e-14    9.899879e-13    2.290075e-11
-   24      -197.2693258606    0.000000e+00    4.062154e-13    9.022997e-12
-   25      -197.2693258606    2.842171e-14    1.304104e-13    3.017454e-12
-   26      -197.2693258606    0.000000e+00    3.691246e-14    9.765107e-13
-   27      -197.2693258606    0.000000e+00    1.261122e-14    2.999531e-13
-   28      -197.2693258606    0.000000e+00    4.884353e-15    1.286809e-13
-
-        WFN is SCF so no rotation
-
-Orbital energies (a.u.):
-
-  Doubly occupied orbitals
-   1Ag    -26.997289     1B1u   -26.996935     2Ag     -2.272706  
-   1B3u    -1.332203     1B2u    -1.332203     3Ag     -1.257377  
-   1B3g    -1.139144     1B2g    -1.139144  
-
-  Singly occupied orbitals
-   2B1u    -2.026488  
-
-  Unoccupied orbitals
-   3B1u    -0.332782     2B3u     0.869689     2B2u     0.869689  
-   4B1u     0.876268     2B2g     1.058615     2B3g     1.058615  
-   4Ag      1.117926     5Ag      1.369195     5B1u     1.895379  
-   6Ag      2.973094     3B2u     3.011901     3B3u     3.011901  
-   7Ag      3.324933     1B1g     3.324933     6B1u     3.407931  
-   1Au      3.432225     3B3g     3.812352     3B2g     3.812352  
-   7B1u     4.739634  
-
-
-        SCF total energy   =    -197.269325860552
-        kinetic energy     =     197.058529217758
-        nuc. attr. energy  =    -530.580315491877
-        elec. rep. energy  =     136.252460413567
-        potential energy   =    -394.327855078310
-        virial theorem     =       1.998931427165
-        wavefunction norm  =       1.000000000000
-******************************************************************************
-tstop called on tool.chemistry.gatech.edu
-Mon Aug 25 11:04:39 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:38:50 2008
 
 user time   =       0.03 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on tool.chemistry.gatech.edu
-Mon Aug 25 11:04:39 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:38:50 2008
 
                   ----------------------------------------------
                     DBOC: diagonal Born-Oppenheimer correction
                       evaluation by numerical differentiation
                   ----------------------------------------------
 
-
-  -OPTIONS:
-    Label                       = cc-pVDZ ROHF DBOC for F2+
-    sizeof(double)              = 8
-    sizeof(long double)         = 12
-    sizeof(FLOAT)               = 8
-    Print level                 = 1
-    Displacement size           = 0.000500 a.u.
-    Wave function               = ROHF SCF
-
-    Makeing displacements along all cartesian degrees of freedom
-
-    By default, using the most abundant isotope for each element
-
   -Reference Geometry:
 
    9         0.0000000000          0.0000000000         -1.2283218926  
    9         0.0000000000          0.0000000000          1.2283218926  
 
-  E(DBOC) =         0.005109313636021 a.u.
+
+  -OPTIONS:
+    Label                       = cc-pVDZ ROHF DBOC for F2+
+    # of disp. per coord        = 2
+    Displacement size           = 0.000500 a.u.
+    Wave function               = ROHF SCF
+    Print level                 = 1
+    Memory                      = 244 MB
+    Number of threads           = 1
+    sizeof(double)              = 8
+    sizeof(long double)         = 16
+    sizeof(FLOAT)               = 8
+
+    Cartesian displacements:
+      atom 2  x     symm   degen   2.0
+
+      atom 2  y     symm   degen   2.0
+
+      atom 2  z  nonsymm   degen   2.0
+
+    By default, using the most abundant isotope for each element
+
+  <d2/dx2>                    =       -58.592402538470978
+  DBOC contribution           =         0.0016922985 a.u.
+
+  <d2/dx2>                    =       -58.592402539359156
+  DBOC contribution           =         0.0016922985 a.u.
+
+  <d2/dx2>                    =       -59.714809283351045
+  DBOC contribution           =         0.0017247165 a.u.
+
+  E(DBOC) =         0.005109313628048 a.u.
   E(DBOC) =                1121.36473 cm^{-1}
 
 ******************************************************************************
-tstop called on tool.chemistry.gatech.edu
-Mon Aug 25 11:04:51 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:38:53 2008
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =         12 seconds =       0.20 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          3 seconds =       0.05 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:38:54 2008
+
+Total PSI3 wall time          4 seconds =       0.07 minutes
+******************************************************************************

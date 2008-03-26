@@ -458,7 +458,8 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
 
          for (i=0; i<nroots; i++) {
             fprintf(outfile, 
-               "\n\nROOT%2d ECI = %17.13lf\n",i+1,evals[i]+nucrep);
+               "\n\n* ROOT %2d CI total energy = %17.13lf\n",
+               i+1,evals[i]+nucrep);
             Cvec.setarray(evecs[i], size);
             zero_arr(mi_coeff, Parameters.nprint);
             Cvec.max_abs_vals(Parameters.nprint, mi_iac, mi_ibc, mi_iaidx,
@@ -757,7 +758,8 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
 
          for (i=0; i<nroots; i++) {
             fprintf(outfile, 
-               "\n\nROOT%2d ECI = %17.13lf\n",i+1,evals[i]+nucrep);
+               "\n\n* ROOT %2d CI total energy = %17.13lf\n",
+               i+1,evals[i]+nucrep);
             Cvec.setarray(evecs[i], size);
             zero_arr(mi_coeff, Parameters.nprint);
             Cvec.max_abs_vals(Parameters.nprint, mi_iac, mi_ibc, mi_iaidx,

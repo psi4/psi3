@@ -485,7 +485,7 @@ void mitrush_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
         free_matrix(H2x2,2);
         free(evals2x2);
         free_matrix(evecs2x2,2);
-        fprintf(outfile, "\n\nROOT 1 ECI = %19.15lf\n", E + enuc);
+        fprintf(outfile, "\n\n* ROOT 1 CI total energy = %19.15lf\n", E + enuc);
 
         Cvec.max_abs_vals(Parameters.nprint, mi_iac, mi_ibc, mi_iaidx,
            mi_ibidx, mi_coeff, Parameters.neg_only);

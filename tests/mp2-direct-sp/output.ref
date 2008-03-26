@@ -1,16 +1,38 @@
 ******************************************************************************
-tstart called on plato.chemistry.gatech.edu
-Fri Aug 29 20:20:06 2003
+PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:11:10 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF MP2 energy computation.
+
+The following programs will be executed:
+
+ input
+ cscf
+ cints --mp2
+ psiclean
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:10 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	BH cc-pVDZ MP2
   SHOWNORM    =	0
-  PUREAM      =	1
+  PUREAM      =	0
   PRINT_LVL   =	1
+
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -26,8 +48,8 @@ Fri Aug 29 20:20:06 2003
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-           BORON      0.000000000000     0.000000000000    -0.158483187814
-        HYDROGEN      0.000000000000     0.000000000000     1.731242800765
+           BORON      0.000000000000     0.000000000000    -0.158483189049
+        HYDROGEN      0.000000000000     0.000000000000     1.731242799530
 
 
   -SYMMETRY INFORMATION:
@@ -94,29 +116,29 @@ Fri Aug 29 20:20:06 2003
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-           BORON      0.000000000000     0.000000000000    -0.158483187814
-        HYDROGEN      0.000000000000     0.000000000000     1.731242800765
+           BORON      0.000000000000     0.000000000000    -0.158483189049
+        HYDROGEN      0.000000000000     0.000000000000     1.731242799530
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-           BORON      0.000000000000     0.000000000000    -0.158483187814
-        HYDROGEN      0.000000000000     0.000000000000     1.731242800765
+           BORON      0.000000000000     0.000000000000    -0.158483189049
+        HYDROGEN      0.000000000000     0.000000000000     1.731242799530
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-           BORON      0.000000000000     0.000000000000    -0.083865697340
-        HYDROGEN      0.000000000000     0.000000000000     0.916134302660
+           BORON      0.000000000000     0.000000000000    -0.083865697994
+        HYDROGEN      0.000000000000     0.000000000000     0.916134302006
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-           BORON      0.000000000000     0.000000000000    -0.158483187814
-        HYDROGEN      0.000000000000     0.000000000000     1.731242800765
+           BORON      0.000000000000     0.000000000000    -0.158483189049
+        HYDROGEN      0.000000000000     0.000000000000     1.731242799530
 
 
   --------------------------------------------------------------------------
@@ -130,53 +152,20 @@ Fri Aug 29 20:20:06 2003
     1   0.0000000
     2   1.0000000   0.0000000
 
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
 
 ******************************************************************************
-tstop called on plato.chemistry.gatech.edu
-Fri Aug 29 20:20:06 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:10 2008
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on plato.chemistry.gatech.edu
-Fri Aug 29 20:20:06 2003
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = BH cc-pVDZ MP2                                                                  ÿÿÿÿ
-    Number of atoms             = 2
-    Number of atomic orbitals   = 20
-    Number of symmetry orbitals = 19
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
-    Number of irreps                 = 4
-    Wrote 4125 two-electron integrals to IWL file 33
-
-******************************************************************************
-tstop called on plato.chemistry.gatech.edu
-Fri Aug 29 20:20:06 2003
-
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on plato.chemistry.gatech.edu
-Fri Aug 29 20:20:06 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:11 2008
 
 
              ------------------------------------------
@@ -190,7 +179,7 @@ Fri Aug 29 20:20:06 2003
   I think the multiplicity is 1.
   If this is wrong, please specify the MULTP keyword
 
-  label       = BH cc-pVDZ MP2
+  label        = BH cc-pVDZ MP2
   wfn          = MP2
   reference    = RHF
   multiplicity = 1
@@ -199,13 +188,15 @@ Fri Aug 29 20:20:06 2003
   dyn_acc      = true
   dertype      = NONE
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        2.6458862450000
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
@@ -231,32 +222,32 @@ Fri Aug 29 20:20:06 2003
   Schwartz prescreening of ERIs will be ineffective
     2       -25.0882758223    9.406126e-01    2.409729e-01    4.087889e-01
   Schwartz prescreening of ERIs will be ineffective
-    3       -25.0922554035    3.979581e-03    8.894806e-03    2.790479e-02
+    3       -25.0922612713    3.985449e-03    8.948219e-03    2.790479e-02
   Schwartz prescreening of ERIs will be ineffective
-    4       -25.0923862873    1.308838e-04    2.851332e-03    3.622668e-03
+    4       -25.0923849269    1.236556e-04    2.720518e-03    3.492104e-03
   Schwartz prescreening of ERIs will be ineffective
-    5       -25.0923915801    5.292826e-06    6.690250e-04    5.753121e-04
+    5       -25.0923917673    6.840383e-06    7.816337e-04    6.610884e-04
   Schwartz prescreening of ERIs will be ineffective
-    6       -25.0923918893    3.092052e-07    6.450878e-05    1.008333e-04
+    6       -25.0923906712   -1.096047e-06    4.554771e-05    9.188283e-05
   Schwartz prescreening of ERIs will be ineffective
-    7       -25.0923879509   -3.938414e-06    7.666066e-06    2.264329e-05
+    7       -25.0923905205   -1.506801e-07    7.697775e-06    2.125870e-05
   Schwartz prescreening of ERIs will be ineffective
   Switching to full integral accuracy
-    8       -25.0923902402    2.289352e-06    0.000000e+00    4.532844e-06
+    8       -25.0923902403   -2.801948e-07    0.000000e+00    4.807817e-06
   Schwartz prescreening of ERIs will be ineffective
-    9       -25.0923902404    1.046097e-10    1.881364e-06    4.873134e-06
+    9       -25.0923902404    1.147527e-11    3.752162e-07    3.956236e-06
   Schwartz prescreening of ERIs will be ineffective
-   10       -25.0923902404    5.645262e-12    5.696478e-07    1.376428e-06
+   10       -25.0923902404    1.563194e-12    1.417061e-07    1.795167e-06
   Schwartz prescreening of ERIs will be ineffective
-   11       -25.0923902404    5.435652e-13    1.541704e-07    3.919553e-07
+   11       -25.0923902404    1.492140e-13    2.614800e-08    6.317730e-07
   Schwartz prescreening of ERIs will be ineffective
-   12       -25.0923902404    1.136868e-13    8.026357e-08    2.573360e-07
+   12       -25.0923902404    7.105427e-15    1.150238e-08    1.917376e-07
   Schwartz prescreening of ERIs will be ineffective
-   13       -25.0923902404    2.131628e-14    1.962173e-08    6.402496e-08
+   13       -25.0923902404    7.105427e-15    2.889808e-09    9.595460e-09
   Schwartz prescreening of ERIs will be ineffective
-   14       -25.0923902404   -2.131628e-14    3.272304e-09    6.927251e-09
+   14       -25.0923902404    7.105427e-15    2.963115e-10    2.225431e-09
   Schwartz prescreening of ERIs will be ineffective
-   15       -25.0923902404    1.065814e-14    5.886211e-11    1.088581e-10
+   15       -25.0923902404   -1.421085e-14    2.462718e-11    4.287360e-11
 
 Orbital energies (a.u.):
 
@@ -264,31 +255,31 @@ Orbital energies (a.u.):
    1A1     -7.661362     2A1     -0.712188     3A1     -0.337078  
 
   Unoccupied orbitals
-   1B2      0.062983     1B1      0.062983     4A1      0.297975  
+   1B1      0.062983     1B2      0.062983     4A1      0.297975  
    5A1      0.347511     2B2      0.501454     2B1      0.501454  
    6A1      0.546419     3B1      0.879579     3B2      0.879579  
-   7A1      0.905962     1A2      0.909128     8A1      0.909128  
-   9A1      1.554404     4B2      1.983769     4B1      1.983769  
+   7A1      0.905962     8A1      0.909128     1A2      0.909128  
+   9A1      1.554404     4B1      1.983769     4B2      1.983769  
   10A1      2.925097  
 
 
-        SCF total energy   =     -25.092390240359
-        kinetic energy     =      25.399069303330
-        nuc. attr. energy  =     -63.454367415767
-        elec. rep. energy  =      12.962907872078
-        potential energy   =     -50.491459543689
-        virial theorem     =       2.012221994797
+      * SCF total energy   =     -25.092390240359
+        kinetic energy     =      25.399069303357
+        nuc. attr. energy  =     -63.454367415831
+        elec. rep. energy  =      12.962907872116
+        potential energy   =     -50.491459543716
+        virial theorem     =       2.012221994798
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on plato.chemistry.gatech.edu
-Fri Aug 29 20:20:08 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:12 2008
 
-user time   =       0.00 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on plato.chemistry.gatech.edu
-Fri Aug 29 20:20:08 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:12 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -304,14 +295,14 @@ Fri Aug 29 20:20:08 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = BH cc-pVDZ MP2                                                                  ÿÿÿÿ
+    Label                       = BH cc-pVDZ MP2
     Number of atoms             = 2
     Number of atomic orbitals   = 20
     Number of symmetry orbitals = 19
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
 
   -MO information:
@@ -347,9 +338,18 @@ Fri Aug 29 20:20:08 2003
   Total MBPT[2] Energy                 =       -25.1512436049
 
 ******************************************************************************
-tstop called on plato.chemistry.gatech.edu
-Fri Aug 29 20:20:08 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:12 2008
 
-user time   =       0.13 seconds =       0.00 minutes
+user time   =       0.06 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:11:12 2008
+
+Total PSI3 wall time          2 seconds =       0.03 minutes
+******************************************************************************

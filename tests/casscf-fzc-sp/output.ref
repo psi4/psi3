@@ -1,10 +1,31 @@
 ******************************************************************************
-tstart called on julius.chemistry.gatech.edu
-Thu Aug  3 12:31:11 2006
+PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:15:28 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF CASSCF energy computation.
+
+The following programs will be executed:
+
+ input
+ cints
+ cscf
+ detcasman
+ psiclean
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:15:28 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	6-31G** CASSCF H2O
@@ -12,7 +33,14 @@ Thu Aug  3 12:31:11 2006
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /cds/psi3-bin/share/pbasis.dat
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
+Coordinates after reading z-matrices
+
+           1           2           3
+
+    1   0.0000000   0.0000000   0.0000000
+    2   0.0000000   0.0000000   1.8897260
+    3   1.8405477   0.0000000  -0.4283089
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -29,9 +57,9 @@ Thu Aug  3 12:31:11 2006
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.131510165098    -0.000000000000
-        HYDROGEN      1.479940996653     1.043580877476     0.000000000000
-        HYDROGEN     -1.479940996653     1.043580877476     0.000000000000
+          OXYGEN      0.000000000000    -0.131510165113     0.000000000000
+        HYDROGEN      1.479940996653     1.043580877461    -0.000000000000
+        HYDROGEN     -1.479940996653     1.043580877461    -0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -87,32 +115,32 @@ Thu Aug  3 12:31:11 2006
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.131510165098
-        HYDROGEN      0.000000000000     1.479940996653     1.043580877476
+          OXYGEN      0.000000000000     0.000000000000    -0.131510165113
+        HYDROGEN     -0.000000000000     1.479940996653     1.043580877461
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.131510165098
-        HYDROGEN      0.000000000000     1.479940996653     1.043580877476
-        HYDROGEN      0.000000000000    -1.479940996653     1.043580877476
+          OXYGEN      0.000000000000     0.000000000000    -0.131510165113
+        HYDROGEN     -0.000000000000     1.479940996653     1.043580877461
+        HYDROGEN     -0.000000000000    -1.479940996653     1.043580877461
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.069592187382
-        HYDROGEN      0.000000000000     0.783151105291     0.552239257852
-        HYDROGEN      0.000000000000    -0.783151105291     0.552239257852
+          OXYGEN      0.000000000000     0.000000000000    -0.069592187390
+        HYDROGEN     -0.000000000000     0.783151105291     0.552239257844
+        HYDROGEN     -0.000000000000    -0.783151105291     0.552239257844
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN     -0.000000000000    -0.000000000000    -0.131510165098
-        HYDROGEN      0.000000000000     1.479940996653     1.043580877476
-        HYDROGEN      0.000000000000    -1.479940996653     1.043580877476
+          OXYGEN      0.000000000000     0.000000000000    -0.131510165113
+        HYDROGEN     -0.000000000000     1.479940996653     1.043580877461
+        HYDROGEN     -0.000000000000    -1.479940996653     1.043580877461
 
 
   --------------------------------------------------------------------------
@@ -132,15 +160,15 @@ Thu Aug  3 12:31:11 2006
 
 
 ******************************************************************************
-tstop called on julius.chemistry.gatech.edu
-Thu Aug  3 12:31:11 2006
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:15:28 2008
 
-user time   =       0.03 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on julius.chemistry.gatech.edu
-Thu Aug  3 12:31:11 2006
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:15:28 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -169,15 +197,15 @@ Thu Aug  3 12:31:11 2006
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on julius.chemistry.gatech.edu
-Thu Aug  3 12:31:11 2006
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:15:28 2008
 
-user time   =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on julius.chemistry.gatech.edu
-Thu Aug  3 12:31:11 2006
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:15:28 2008
 
 
              ------------------------------------------
@@ -199,20 +227,22 @@ Thu Aug  3 12:31:11 2006
   direct       = false
   dertype      = NONE
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        8.8046872909987
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 114320 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 2.424690e-02
+  The lowest eigenvalue of the overlap matrix was 2.336125e-02
 
   Using core guess to determine occupations
 
@@ -226,20 +256,21 @@ Thu Aug  3 12:31:11 2006
 
   iter       total energy        delta E         delta P          diiser
     1       -68.3548843162    7.715957e+01    0.000000e+00    0.000000e+00
-    2       -71.3777628421    3.022879e+00    1.130296e-01    1.175783e+00
-    3       -75.8950385812    4.517276e+00    1.036435e-01    8.860959e-01
-    4       -76.0105072924    1.154687e-01    3.026496e-03    1.777807e-01
-    5       -76.0171082477    6.600955e-03    9.746678e-04    3.660637e-02
-    6       -76.0172750266    1.667789e-04    1.541154e-04    1.105642e-02
-    7       -76.0172961424    2.111579e-05    7.769737e-05    3.795642e-03
-    8       -76.0172965569    4.145116e-07    9.936256e-06    3.044370e-04
-    9       -76.0172965711    1.418179e-08    2.507429e-06    6.058786e-05
-   10       -76.0172965718    7.222951e-10    6.336629e-07    1.135728e-05
-   11       -76.0172965718    1.453770e-11    6.963182e-08    1.414942e-06
-   12       -76.0172965718    2.131628e-12    3.927837e-08    5.031535e-07
-   13       -76.0172965718    5.684342e-14    3.518255e-09    3.847156e-08
-   14       -76.0172965718   -1.421085e-14    4.321534e-10    9.017729e-09
-   15       -76.0172965718    5.684342e-14    9.781878e-11    4.425817e-09
+    2       -71.3777628421    3.022879e+00    1.399601e-01    1.175783e+00
+    3       -75.8950385812    4.517276e+00    1.321230e-01    8.860959e-01
+    4       -76.0105072924    1.154687e-01    3.342620e-03    1.777807e-01
+    5       -76.0171082477    6.600955e-03    1.087341e-03    3.660637e-02
+    6       -76.0172750266    1.667789e-04    1.631839e-04    1.105642e-02
+    7       -76.0172961424    2.111579e-05    8.028996e-05    3.795642e-03
+    8       -76.0172965569    4.145115e-07    1.112082e-05    3.044370e-04
+    9       -76.0172965711    1.418182e-08    3.058291e-06    6.058786e-05
+   10       -76.0172965718    7.222667e-10    7.688486e-07    1.135728e-05
+   11       -76.0172965718    1.453770e-11    8.776689e-08    1.414942e-06
+   12       -76.0172965718    2.188472e-12    4.924212e-08    5.031535e-07
+   13       -76.0172965718    0.000000e+00    4.096309e-09    3.847156e-08
+   14       -76.0172965718    1.421085e-14    5.212206e-10    9.017730e-09
+   15       -76.0172965718    5.684342e-14    1.019475e-10    4.425818e-09
+   16       -76.0172965718   -4.263256e-14    1.512737e-11    3.058840e-10
 
 Orbital energies (a.u.):
 
@@ -258,23 +289,23 @@ Orbital energies (a.u.):
    7B2      3.874917    12A1      4.077741  
 
 
-        SCF total energy   =     -76.017296571842
-        kinetic energy     =      75.657182107040
-        nuc. attr. energy  =    -198.046615219797
-        elec. rep. energy  =      46.372136540916
-        potential energy   =    -151.674478678881
-        virial theorem     =       1.995262729918
+      * SCF total energy   =     -76.017296571842
+        kinetic energy     =      75.657182102721
+        nuc. attr. energy  =    -198.046615211838
+        elec. rep. energy  =      46.372136537275
+        potential energy   =    -151.674478674563
+        virial theorem     =       1.995262729861
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on julius.chemistry.gatech.edu
-Thu Aug  3 12:31:11 2006
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:15:28 2008
 
-user time   =       0.00 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on julius.chemistry.gatech.edu
-Thu Aug  3 12:31:11 2006
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:15:28 2008
 
 
 *******************************************************
@@ -287,8 +318,8 @@ Thu Aug  3 12:31:11 2006
 
 
 ******************************************************************************
-tstart called on julius.chemistry.gatech.edu
-Thu Aug  3 12:31:11 2006
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:15:29 2008
 
 
 *******************************************************
@@ -301,9 +332,12 @@ Thu Aug  3 12:31:11 2006
 
 
 
+Note: Calculation requested is a full CI.
+Resetting EX_LVL to 8 and turning on all excitations
+
 
 PARAMETERS: 
-   EX LVL        =        2      H0 BLOCKSIZE =      400
+   EX LVL        =        8      H0 BLOCKSIZE =      400
    VAL EX LVL    =        0      H0 GUESS SIZE=      400
    H0COUPLINGSIZE=        0      H0 COUPLING  =       no
    NPRINT        =       20      MAX DET      =    10000
@@ -320,11 +354,12 @@ PARAMETERS:
    TEI ERASE     =       no      MAXNVECT     =       13
    RESTART       =       no      RESTART VECS =        0
    GUESS VECTOR  =   D FILE      OPENTYPE     =     NONE
-   GENCI ALG     =       no      REF SYM      =     auto
+      REF SYM      =     auto
    COLLAPSE SIZE =        1      HD AVE       = EVANGELISTI
    LSE           =       no      LSE ITER     =        0
    HD OTF        =      yes      NO DFILE     =       no
    MPN           =       no      MPN SCHMIDT  =       no
+ ZAPTN           =       no
    WIGNER        =       no      ZERO BLOCKS  =       no
    PERT Z        =   1.0000      ROOT         =        0
    PTHREADS      =       no      NTHREADS     =        1
@@ -334,11 +369,9 @@ PARAMETERS:
 
    FILES         =  50 51 52 53
 
-   EX_TYPE       =  1  1 
+   EX_TYPE       =  1  1  1  1  1  1  1  1 
    STATE AVERAGE =  1(1.00) 
-
-Note: Calculation requested is a full CI.
-Resetting EX_LVL to 8 and turning on all excitations
+   STATE AVERAGE =  1(1.00) 
 
 ORBITALS:
    NMO          =       25      NUM ALP      =        5
@@ -378,8 +411,8 @@ Check SCF Energy from 1- and 2-electron integrals
 
 SCF Energy (ref):            -76.0172965718
 Nuclear repulsion energy:      8.8046872910
-One-electron energy:         -41.0924073970
-Two-electron energy:          17.4879358160
+One-electron energy:         -41.0924073951
+Two-electron energy:          17.4879358141
 Frozen core energy:          -61.2175122819
 Total electronic energy:     -84.8219838628
 Total SCF energy:            -76.0172965718
@@ -394,35 +427,36 @@ RMS CI vector convergence = 0.001
 
 D file contains 0 not 1 vectors.  Attempting H0block guess.
 Using 1 initial trial vectors
-Iter  0  Root  1 = -76.029934018   Delta_E -2.362E+01   Delta_C  1.788E-13  
+Iter  0  Root  1 = -76.029934018   Delta_E -2.362E+01   Delta_C  1.845E-13  
 Warning: Norm of correction (root 0) is < 1.0E-13
-Iter  1  Root  1 = -76.029934018   Delta_E  0.000E+00   Delta_C  1.873E-12 c
+Iter  1  Root  1 = -76.029934018   Delta_E  0.000E+00   Delta_C  1.935E-12 c
 
-ROOT 1 ECI = -76.0299340181856
+* ROOT 1 CI total energy = -76.0299340181545
 
 
 The 20 most important determinants
 
-    1    0.995549  (    3,    3)  2A1 X  3A1 X  1B1 X  1B2 X  
-    2   -0.047925  (    6,    6)  2A1 X  3A1 X  1B1 X  2B2 X  
+    1   -0.995549  (    3,    3)  2A1 X  3A1 X  1B1 X  1B2 X  
+    2    0.047925  (    6,    6)  2A1 X  3A1 X  1B1 X  2B2 X  
     3    0.028911  (    4,    6)  2A1 X  3A1 B  4A1 A  1B1 X  1B2 A  2B2 B  
     4    0.028911  (    6,    4)  2A1 X  3A1 A  4A1 B  1B1 X  1B2 B  2B2 A  
-    5   -0.027691  (    4,    4)  2A1 X  4A1 X  1B1 X  1B2 X  
-    6   -0.018759  (    5,    6)  2A1 B  3A1 X  4A1 A  1B1 X  1B2 A  2B2 B  
-    7   -0.018759  (    6,    5)  2A1 A  3A1 X  4A1 B  1B1 X  1B2 B  2B2 A  
-    8   -0.018141  (    9,    9)  2A1 X  3A1 X  4A1 X  1B1 X  
+    5    0.027691  (    4,    4)  2A1 X  4A1 X  1B1 X  1B2 X  
+    6    0.018759  (    5,    6)  2A1 B  3A1 X  4A1 A  1B1 X  1B2 A  2B2 B  
+    7    0.018759  (    6,    5)  2A1 A  3A1 X  4A1 B  1B1 X  1B2 B  2B2 A  
+    8    0.018141  (    9,    9)  2A1 X  3A1 X  4A1 X  1B1 X  
     9    0.016772  (    4,    5)  2A1 A  3A1 B  4A1 X  1B1 X  1B2 X  
    10    0.016772  (    5,    4)  2A1 B  3A1 A  4A1 X  1B1 X  1B2 X  
-   11   -0.015764  (   10,   10)  2A1 X  1B1 X  1B2 X  2B2 X  
+   11    0.015764  (   10,   10)  2A1 X  1B1 X  1B2 X  2B2 X  
    12    0.015464  (    3,    7)  2A1 X  3A1 A  4A1 B  1B1 X  1B2 A  2B2 B  
    13    0.015464  (    7,    3)  2A1 X  3A1 B  4A1 A  1B1 X  1B2 B  2B2 A  
-   14   -0.014888  (    5,    5)  3A1 X  4A1 X  1B1 X  1B2 X  
+   14    0.014888  (    5,    5)  3A1 X  4A1 X  1B1 X  1B2 X  
    15   -0.013447  (    9,   10)  2A1 X  3A1 A  4A1 A  1B1 X  1B2 B  2B2 B  
    16   -0.013447  (   10,    9)  2A1 X  3A1 B  4A1 B  1B1 X  1B2 A  2B2 A  
-   17    0.012904  (    3,    4)  2A1 X  3A1 A  4A1 B  1B1 X  1B2 X  
-   18    0.012904  (    4,    3)  2A1 X  3A1 B  4A1 A  1B1 X  1B2 X  
-   19   -0.011681  (    3,    8)  2A1 A  3A1 X  4A1 B  1B1 X  1B2 A  2B2 B  
-   20   -0.011681  (    8,    3)  2A1 B  3A1 X  4A1 A  1B1 X  1B2 B  2B2 A  
+   17   -0.012904  (    3,    4)  2A1 X  3A1 A  4A1 B  1B1 X  1B2 X  
+   18   -0.012904  (    4,    3)  2A1 X  3A1 B  4A1 A  1B1 X  1B2 X  
+   19    0.011681  (    3,    8)  2A1 A  3A1 X  4A1 B  1B1 X  1B2 A  2B2 B  
+   20    0.011681  (    8,    3)  2A1 B  3A1 X  4A1 A  1B1 X  1B2 B  2B2 A  
+
 
 
 
@@ -432,11 +466,11 @@ Wrote MO-basis OPDM to disk
 
         Total Time (s)     %Time 		%Relative
  -----------------------------------------------------
- Read      0.000174
- Write     0.000092
+ Read      0.000150
+ Write     0.000123
  Sigma1    0.000000
  Sigma2    0.000043
- Sigma3    0.000136
+ Sigma3    0.000116
  S1 Thread 0.000000
  S2 Thread 0.000000
  S3 Thread 0.000000
@@ -450,8 +484,8 @@ Wrote MO-basis OPDM to disk
 			 - Edward Valeev
 
 ******************************************************************************
-tstop called on julius.chemistry.gatech.edu
-Thu Aug  3 12:31:11 2006
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:15:29 2008
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
@@ -473,7 +507,7 @@ Iter  2  Root  1 = -76.070051539   Delta_E -5.493E-04   Delta_C  4.993E-03
 Iter  3  Root  1 = -76.070063637   Delta_E -1.210E-05   Delta_C  1.017E-03  
 Iter  4  Root  1 = -76.070064101   Delta_E -4.645E-07   Delta_C  2.303E-04 c
 
-ROOT 1 ECI = -76.0700641012591
+* ROOT 1 CI total energy = -76.0700641012579
 
 CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
 WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
@@ -492,7 +526,7 @@ Iter  0  Root  1 = -76.072862111   Delta_E -2.366E+01   Delta_C  1.096E-02
 Iter  1  Root  1 = -76.072921199   Delta_E -5.909E-05   Delta_C  1.933E-03  
 Iter  2  Root  1 = -76.072922663   Delta_E -1.464E-06   Delta_C  4.566E-04 c
 
-ROOT 1 ECI = -76.0729226631807
+* ROOT 1 CI total energy = -76.0729226631788
 
 CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
 WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
@@ -512,7 +546,7 @@ Iter  1  Root  1 = -76.073524340   Delta_E -1.373E-05   Delta_C  2.148E-03
 Iter  2  Root  1 = -76.073526536   Delta_E -2.195E-06   Delta_C  3.892E-04  
 Iter  3  Root  1 = -76.073526596   Delta_E -6.085E-08   Delta_C  1.020E-04 c
 
-ROOT 1 ECI = -76.0735265964125
+* ROOT 1 CI total energy = -76.0735265964113
 
 CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
 WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
@@ -532,7 +566,7 @@ Iter  1  Root  1 = -76.073693044   Delta_E -5.169E-06   Delta_C  1.203E-03
 Iter  2  Root  1 = -76.073693723   Delta_E -6.789E-07   Delta_C  3.163E-04  
 Iter  3  Root  1 = -76.073693763   Delta_E -4.044E-08   Delta_C  8.217E-05 c
 
-ROOT 1 ECI = -76.0736937634040
+* ROOT 1 CI total energy = -76.0736937634034
 
 CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
 WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
@@ -553,7 +587,7 @@ Iter  2  Root  1 = -76.073770032   Delta_E -1.160E-06   Delta_C  4.786E-04
 Iter  3  Root  1 = -76.073770125   Delta_E -9.336E-08   Delta_C  1.297E-04  
 Iter  4  Root  1 = -76.073770131   Delta_E -5.908E-09   Delta_C  2.126E-05 c
 
-ROOT 1 ECI = -76.0737701310427
+* ROOT 1 CI total energy = -76.0737701310427
 
 CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
 WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
@@ -574,7 +608,7 @@ Iter  2  Root  1 = -76.073772411   Delta_E -6.359E-08   Delta_C  1.341E-04
 Iter  3  Root  1 = -76.073772418   Delta_E -6.992E-09   Delta_C  3.529E-05  
 Iter  4  Root  1 = -76.073772419   Delta_E -4.582E-10   Delta_C  4.779E-06 c
 
-ROOT 1 ECI = -76.0737724185254
+* ROOT 1 CI total energy = -76.0737724185253
 
 CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
 WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
@@ -595,7 +629,7 @@ Iter  2  Root  1 = -76.073772920   Delta_E -1.654E-08   Delta_C  7.220E-05
 Iter  3  Root  1 = -76.073772922   Delta_E -1.957E-09   Delta_C  2.172E-05  
 Iter  4  Root  1 = -76.073772922   Delta_E -1.768E-10   Delta_C  2.869E-06 c
 
-ROOT 1 ECI = -76.0737729219599
+* ROOT 1 CI total energy = -76.0737729219599
 
 CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
 WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
@@ -616,7 +650,7 @@ Iter  2  Root  1 = -76.073773050   Delta_E -4.480E-09   Delta_C  3.118E-05
 Iter  3  Root  1 = -76.073773050   Delta_E -3.465E-10   Delta_C  1.134E-05  
 Iter  4  Root  1 = -76.073773050   Delta_E -4.845E-11   Delta_C  1.528E-06 c
 
-ROOT 1 ECI = -76.0737730500032
+* ROOT 1 CI total energy = -76.0737730500033
 
 CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
 WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
@@ -638,9 +672,9 @@ Iter  1  Root  1 = -76.073773087   Delta_E -7.264E-08   Delta_C  1.029E-04
 Iter  2  Root  1 = -76.073773091   Delta_E -4.496E-09   Delta_C  3.122E-05  
 Iter  3  Root  1 = -76.073773092   Delta_E -3.666E-10   Delta_C  1.118E-05  
 Iter  4  Root  1 = -76.073773092   Delta_E -4.579E-11   Delta_C  1.387E-06  
-Iter  5  Root  1 = -76.073773092   Delta_E -6.288E-13   Delta_C  2.066E-07 c
+Iter  5  Root  1 = -76.073773092   Delta_E -6.324E-13   Delta_C  2.066E-07 c
 
-ROOT 1 ECI = -76.0737730916661
+* ROOT 1 CI total energy = -76.0737730916662
 
 CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
 WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
@@ -663,7 +697,7 @@ Iter  2  Root  1 = -76.073773094   Delta_E -7.238E-11   Delta_C  4.163E-06
 Iter  3  Root  1 = -76.073773094   Delta_E -6.729E-12   Delta_C  9.223E-07  
 Iter  4  Root  1 = -76.073773094   Delta_E -3.126E-13   Delta_C  1.793E-07 c
 
-ROOT 1 ECI = -76.0737730935093
+* ROOT 1 CI total energy = -76.0737730935093
 
 CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
 WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
@@ -687,7 +721,7 @@ Iter  3  Root  1 = -76.073773094   Delta_E -9.077E-12   Delta_C  9.618E-07
 Iter  4  Root  1 = -76.073773094   Delta_E -3.446E-13   Delta_C  1.942E-07  
 Iter  5  Root  1 = -76.073773094   Delta_E -1.066E-14   Delta_C  2.588E-08 c
 
-ROOT 1 ECI = -76.0737730944573
+* ROOT 1 CI total energy = -76.0737730944573
 
 CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
 WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
@@ -711,13 +745,13 @@ Iter  3  Root  1 = -76.073773095   Delta_E -3.020E-12   Delta_C  5.633E-07
 Iter  4  Root  1 = -76.073773095   Delta_E -1.172E-13   Delta_C  1.138E-07  
 Iter  5  Root  1 = -76.073773095   Delta_E -7.105E-15   Delta_C  1.495E-08 c
 
-ROOT 1 ECI = -76.0737730946055
+* ROOT 1 CI total energy = -76.0737730946056
 
 CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
 WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
 
 	Trace of one-pdm =  10.000000000000
-	Trace of two-pdm =  45.000000000000
+	Trace of two-pdm =  45.000000000001
 
 D E T C A S: C. David Sherrill, April 27 1998
 
@@ -733,7 +767,7 @@ Iter  1  Root  1 = -76.073773095   Delta_E -1.531E-12   Delta_C  5.186E-07
 Iter  2  Root  1 = -76.073773095   Delta_E -9.592E-14   Delta_C  1.635E-07  
 Iter  3  Root  1 = -76.073773095   Delta_E -1.066E-14   Delta_C  3.042E-08 c
 
-ROOT 1 ECI = -76.0737730946072
+* ROOT 1 CI total energy = -76.0737730946073
 
 CLAG: PROGRAM TO FORM LAGRANGIAN AND CALCULATE CI ENERGY
 WRITTEN BY DAVID SHERRILL, BRIAN HOFFMAN, AND MATT LEININGER
@@ -749,7 +783,7 @@ Forming approximate diagonal orbital Hessian
 *******************************************************
                   ORBITALS CONVERGED
 
-  Final CASSCF Energy =  -76.073773094606
+  * CASSCF total energy =  -76.073773094606
 
                 DETCAS MANAGER EXITING
 *******************************************************
@@ -757,9 +791,18 @@ Forming approximate diagonal orbital Hessian
 
 
 ******************************************************************************
-tstop called on julius.chemistry.gatech.edu
-Thu Aug  3 12:31:22 2006
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:15:38 2008
 
 user time   =       0.00 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =         11 seconds =       0.18 minutes
+total time  =         10 seconds =       0.17 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:15:38 2008
+
+Total PSI3 wall time         10 seconds =       0.17 minutes
+******************************************************************************

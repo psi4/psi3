@@ -34,16 +34,17 @@ double rhf_energy(void)
     s_energy = dpd_buf4_dot(&S, &tIjAb);
     dpd_buf4_close(&S);
     t_energy = (E - s_energy);
-    fprintf(outfile,"\n\tSinglet correlation energy  = %20.15f\n",s_energy);
-    fprintf(outfile,"\tTriplet correlation energy  = %20.15f\n",t_energy);
+    fprintf(outfile,"\n     Singlet correlation energy  = %20.15f\n",s_energy);
+    fprintf(outfile,"     Triplet correlation energy  = %20.15f\n",t_energy);
     
     s_energy = params.scs_scale_s * s_energy;
     t_energy = params.scs_scale_t * t_energy;
     scs_energy = s_energy + t_energy;
 
-    fprintf(outfile,"\n\tScale_S correlation energy  = %20.15f\n",s_energy);
-    fprintf(outfile,"\tScale_T correlation energy  = %20.15f\n",t_energy);
-    fprintf(outfile,"\tSCS-MP2 total energy        = %20.15f\n",mo.Escf + 
+    fprintf(outfile,"\n        Scale_S correlation energy  = %20.15f\n",
+      s_energy);
+    fprintf(outfile,"        Scale_T correlation energy  = %20.15f\n",t_energy);
+    fprintf(outfile,"      * SCS-MP2 total energy        = %20.15f\n",mo.Escf + 
       scs_energy);
   }
 

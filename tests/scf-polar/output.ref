@@ -1,16 +1,48 @@
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 07:27:25 2003
+PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:10:12 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF SCF response property computation.
+
+The following programs will be executed:
+
+ input
+ cints
+ cscf
+ transqt2
+ ccsort
+ cints --oeprop
+ response
+ psiclean
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:12 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	DZ/SCF H2O
   SHOWNORM    =	0
   PUREAM      =	0
   PRINT_LVL   =	1
+
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
+Coordinates after reading z-matrices
+
+           1           2           3
+
+    1   0.0000000   0.0000000   0.0000000
+    2   0.0000000   0.0000000   4.0000000
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -20,14 +52,14 @@ Mon May 19 07:27:25 2003
 
 
   -Rotational constants (cm-1) :
-    A = **********  B =    4.35877  C =    4.35877
+    A = **********  B =    4.26954  C =    4.26954
     It is a linear molecule.
 
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-         LITHIUM      0.000000000000     0.000000000000    -0.574018277195
-        HYDROGEN      0.000000000000     0.000000000000     3.425981722805
+         LITHIUM      0.000000000000     0.000000000000    -0.502415970834
+        HYDROGEN      0.000000000000     0.000000000000     3.497584029166
 
 
   -SYMMETRY INFORMATION:
@@ -77,29 +109,29 @@ Mon May 19 07:27:25 2003
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-         LITHIUM      0.000000000000     0.000000000000    -0.574018277195
-        HYDROGEN      0.000000000000     0.000000000000     3.425981722805
+         LITHIUM      0.000000000000     0.000000000000    -0.502415970834
+        HYDROGEN      0.000000000000     0.000000000000     3.497584029166
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-         LITHIUM      0.000000000000     0.000000000000    -0.574018277195
-        HYDROGEN      0.000000000000     0.000000000000     3.425981722805
+         LITHIUM      0.000000000000     0.000000000000    -0.502415970834
+        HYDROGEN      0.000000000000     0.000000000000     3.497584029166
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-         LITHIUM      0.000000000000     0.000000000000    -0.303757412802
-        HYDROGEN      0.000000000000     0.000000000000     1.812951583198
+         LITHIUM      0.000000000000     0.000000000000    -0.265867101300
+        HYDROGEN      0.000000000000     0.000000000000     1.850841894700
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-         LITHIUM      0.000000000000     0.000000000000    -0.574018277195
-        HYDROGEN      0.000000000000     0.000000000000     3.425981722805
+         LITHIUM      0.000000000000     0.000000000000    -0.502415970834
+        HYDROGEN      0.000000000000     0.000000000000     3.497584029166
 
 
   --------------------------------------------------------------------------
@@ -113,17 +145,20 @@ Mon May 19 07:27:25 2003
     1   0.0000000
     2   2.1167090   0.0000000
 
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 07:27:25 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:12 2008
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 07:27:25 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:12 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -139,27 +174,28 @@ Mon May 19 07:27:25 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = DZ/SCF H2O                                                                      
+    Label                       = DZ/SCF H2O
     Number of atoms             = 2
     Number of atomic orbitals   = 6
     Number of symmetry orbitals = 6
     Maximum AM in the basis     = 0
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
+
     Wrote 231 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 07:27:25 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:12 2008
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 07:27:25 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:12 2008
 
 
              ------------------------------------------
@@ -170,22 +206,26 @@ Mon May 19 07:27:25 2003
 
              ------------------------------------------
 
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
 
-  label       = DZ/SCF H2O
-  wfn          = CCSD
+  label        = DZ/SCF H2O
+  wfn          = SCF
   reference    = RHF
   multiplicity = 1
   charge       = 0
-  direct SCF   = false
-  dertype      = FIRST
-  convergence  = 10
-  maxiter      = 40
+  direct       = false
+  dertype      = RESPONSE
+  convergence  = 7
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        0.7500000000000
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
@@ -207,15 +247,13 @@ Mon May 19 07:27:25 2003
   iter       total energy        delta E         delta P          diiser
     1        -7.5604675894    8.310468e+00    0.000000e+00    0.000000e+00
     2        -7.9353412017    3.748736e-01    1.236568e-01    4.484390e-01
-    3        -7.9443627548    9.021553e-03    2.584657e-02    4.006057e-02
-    4        -7.9450243683    6.616135e-04    9.000669e-03    9.091404e-03
-    5        -7.9450838277    5.945943e-05    3.564778e-03    2.695904e-03
-    6        -7.9450838657    3.800379e-08    8.162902e-05    6.689981e-05
-    7        -7.9450838659    1.506582e-10    4.360436e-06    4.731480e-06
-    8        -7.9450838659    1.413980e-12    2.310501e-07    7.215728e-07
-    9        -7.9450838659    0.000000e+00    8.377626e-09    2.529343e-08
-   10        -7.9450838659    1.776357e-15    5.702638e-10    5.313492e-10
-   11        -7.9450838659   -1.776357e-15    4.694896e-11    5.688079e-11
+    3        -7.9444080732    9.066872e-03    2.623624e-02    4.006057e-02
+    4        -7.9450332151    6.251418e-04    8.899978e-03    8.923564e-03
+    5        -7.9450838465    5.063147e-05    3.315273e-03    2.501316e-03
+    6        -7.9450838658    1.924857e-08    5.538883e-05    5.923004e-05
+    7        -7.9450838659    1.035811e-10    2.248360e-06    4.271454e-06
+    8        -7.9450838659    1.229239e-12    2.002896e-07    5.967610e-07
+    9        -7.9450838659   -3.552714e-15    7.939134e-09    2.653594e-08
 
 Orbital energies (a.u.):
 
@@ -228,117 +266,79 @@ Orbital energies (a.u.):
    6A1      2.928632  
 
 
-        SCF total energy   =      -7.945083865890
-        kinetic energy     =       7.891929647786
-        nuc. attr. energy  =     -19.755065159337
-        elec. rep. energy  =       3.918051645661
-        potential energy   =     -15.837013513675
-        virial theorem     =       1.993309797731
+      * SCF total energy   =      -7.945083865890
+        kinetic energy     =       7.891929648515
+        nuc. attr. energy  =     -19.755065160210
+        elec. rep. energy  =       3.918051645806
+        potential energy   =     -15.837013514404
+        virial theorem     =       1.993309797823
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 07:27:25 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:12 2008
 
 user time   =       0.00 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 07:27:25 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:12 2008
 
 
 	**************************************************
-	* TRANSQT:  Program to transform integrals from  *
+	* TRANSQT2: Program to transform integrals from  *
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  CCSD
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            = Yes
-	Delete Restricted Docc =  No
-	Do All TEI             = Yes
-	Memory (Mbytes)        =   20.0
-	Max Buckets            =  199
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Pitzer                 =  No
+	Wave function   =	SCF
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	Response
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 6
+	Number of MOs        = 6
+	Number of active MOs = 6
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 6
-	Number of MOs    = 6
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   6	    0	    2	    0	    4	    0
+	 A2 	   0	    0	    0	    0	    0	    0
+	 B1 	   0	    0	    0	    0	    0	    0
+	 B2 	   0	    0	    0	    0	    0	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   6	   6	    0	    2	    0	    4	    0
-	 A2 	   0	   0	    0	    0	    0	    0	    0
-	 B1 	   0	   0	    0	    0	    0	    0	    0
-	 B2 	   0	   0	    0	    0	    0	    0	    0
+	Nuclear Rep. energy (chkpt) =      0.75000000000000
+	SCF energy          (chkpt) =     -7.94508386588956
 
-	Nuclear Repulsion Energy    =         0.7500000000
-	Total SCF Energy            =        -7.9450838659
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 07:27:25 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:12 2008
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.09 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 07:27:25 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:12 2008
 
 
 			**************************
@@ -350,12 +350,15 @@ Mon May 19 07:27:25 2003
 
 	Input parameters:
 	-----------------
-	Reference wfn   =      RHF
-	Derivative      =    First
-	Memory (Mbytes) =     20.0
-	AO Basis        =      NONE
-	Cache Level     =        2
-	Cache Type      =      LRU
+	Wave function   =	SCF
+	Reference wfn   =	RHF
+	Derivative      =	Response
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
 
 
 	Chkpt Parameters:
@@ -374,67 +377,54 @@ Mon May 19 07:27:25 2003
 	Nuclear Rep. energy (chkpt) =      0.75000000000000
 	SCF energy          (chkpt) =     -7.94508386588956
 
-	Size of <ab|cd> integrals:     0.000 (MW) /     0.002 (MB)
-	Size of <ia|bc> integrals:     0.000 (MW) /     0.001 (MB)
-	Size of Tijab amplitudes:      0.000 (MW) /     0.001 (MB)
+	Size of irrep 0 of <ab|cd> integrals:      0.000 (MW) /      0.002 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.000 (MW) /      0.000 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.000 (MW) /      0.000 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.000 (MW) /      0.000 (MB)
+	Total:                                     0.000 (MW) /      0.002 (MB)
 
-	One-electron energy          =    -11.86313551155097
-	Two-electron (AA) energy     =      0.54013771396977
-	Two-electron (BB) energy     =      0.54013771396977
-	Two-electron (AB) energy     =      2.62791393169164
-	Two-electron energy          =      3.16805164566141
+	Size of irrep 0 of <ia|bc> integrals:      0.000 (MW) /      0.001 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.000 (MW) /      0.000 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.000 (MW) /      0.000 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.000 (MW) /      0.000 (MB)
+	Total:                                     0.000 (MW) /      0.001 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.000 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.000 (MW) /      0.000 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.000 (MW) /      0.000 (MB)
+	Total:                                     0.000 (MW) /      0.001 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	One-electron energy          =    -11.86313551169512
+	Two-electron (AA) energy     =      0.54013771406988
+	Two-electron (BB) energy     =      0.54013771406988
+	Two-electron (AB) energy     =      2.62791393173568
+	Two-electron energy          =      3.16805164580556
 	Frozen-core energy (transqt) =      0.00000000000000
 	Reference energy             =     -7.94508386588956
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 07:27:25 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:13 2008
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 07:27:25 2003
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = DZ/SCF H2O                                                                      
-    Number of atoms             = 2
-    Number of atomic orbitals   = 6
-    Number of symmetry orbitals = 6
-    Maximum AM in the basis     = 0
-
-  -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
-    Number of irreps                 = 4
-******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 07:27:25 2003
-
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on rasala.giga.net
-Mon May 19 07:27:25 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:13 2008
 
 
 	Input parameters:
 	-----------------
 	Reference wfn   =      RHF
-	Memory (Mbytes) =   20.0
+	Memory (Mbytes) =  256.0
 	Cache Level     =    0
 	Print Level     =    1
 	Applied field   =    0.100 E_h
@@ -448,9 +438,18 @@ Mon May 19 07:27:25 2003
     2   0.0000000   0.0000000   0.0000000
     3   0.0000000   0.0000000  65.1836990
 ******************************************************************************
-tstop called on rasala.giga.net
-Mon May 19 07:27:25 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:10:13 2008
 
-user time   =       0.00 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:10:13 2008
+
+Total PSI3 wall time          1 seconds =       0.02 minutes
+******************************************************************************

@@ -1,10 +1,36 @@
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:53 2004
+PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:39:57 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF SCF gradient computation.
+Using the user provided execution list from 'exec'.
+
+The following programs will be executed:
+
+ input
+ REPEAT 20
+ 20
+  cints
+  cscf
+  cints --deriv1
+  extrema
+ END
+ psiclean
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:57 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	STO-3G SCF NO2 opt using extrema/zmatrix
@@ -12,7 +38,14 @@ Thu Sep 16 16:17:53 2004
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /home/rking/psi3/lib/pbasis.dat
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
+Coordinates after reading z-matrices
+
+           1           2           3
+
+    1   0.0000000   0.0000000   1.8897260
+    2   2.4276957   0.0000000   1.2392269
+    3  -2.4276957   0.0000000   1.2392269
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -29,9 +62,9 @@ Thu Sep 16 16:17:53 2004
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        NITROGEN     -0.000000000000     0.452447095339    -0.000000000000
-          OXYGEN      2.427695732181    -0.198052015567     0.000000000000
-          OXYGEN     -2.427695732181    -0.198052015567    -0.000000000000
+        NITROGEN      0.000000000000     0.452447095321    -0.000000000000
+          OXYGEN      2.427695732181    -0.198052015585     0.000000000000
+          OXYGEN     -2.427695732181    -0.198052015585     0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -85,40 +118,40 @@ Thu Sep 16 16:17:53 2004
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        NITROGEN     -0.000000000000    -0.000000000000     0.452447095339
-          OXYGEN      0.000000000000     2.427695732181    -0.198052015567
+        NITROGEN     -0.000000000000     0.000000000000     0.452447095321
+          OXYGEN      0.000000000000     2.427695732181    -0.198052015585
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        NITROGEN     -0.000000000000    -0.000000000000     0.452447095339
-          OXYGEN      0.000000000000     2.427695732181    -0.198052015567
-          OXYGEN     -0.000000000000    -2.427695732181    -0.198052015567
+        NITROGEN     -0.000000000000     0.000000000000     0.452447095321
+          OXYGEN      0.000000000000     2.427695732181    -0.198052015585
+          OXYGEN      0.000000000000    -2.427695732181    -0.198052015585
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        NITROGEN     -0.000000000000    -0.000000000000     0.239424709230
-          OXYGEN      0.000000000000     1.284681348964    -0.104804620757
-          OXYGEN     -0.000000000000    -1.284681348964    -0.104804620757
+        NITROGEN     -0.000000000000     0.000000000000     0.239424709220
+          OXYGEN      0.000000000000     1.284681348964    -0.104804620766
+          OXYGEN      0.000000000000    -1.284681348964    -0.104804620766
 
 
   -Full geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-             X      0.000000000000    -0.000000000000    -1.437278893240
-      NITROGEN     -0.000000000000    -0.000000000000     0.452447095339
-        OXYGEN      0.000000000000     2.427695732181    -0.198052015567
-        OXYGEN     -0.000000000000    -2.427695732181    -0.198052015567
+             X      0.000000000000     0.000000000000    -1.437278893258
+      NITROGEN     -0.000000000000     0.000000000000     0.452447095321
+        OXYGEN      0.000000000000     2.427695732181    -0.198052015585
+        OXYGEN      0.000000000000    -2.427695732181    -0.198052015585
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-        NITROGEN     -0.000000000000    -0.000000000000     0.452447095339
-          OXYGEN      0.000000000000     2.427695732181    -0.198052015567
-          OXYGEN     -0.000000000000    -2.427695732181    -0.198052015567
+        NITROGEN     -0.000000000000     0.000000000000     0.452447095321
+          OXYGEN      0.000000000000     2.427695732181    -0.198052015585
+          OXYGEN      0.000000000000    -2.427695732181    -0.198052015585
 
 
   --------------------------------------------------------------------------
@@ -138,15 +171,15 @@ Thu Sep 16 16:17:53 2004
 
 
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:57 2008
 
-user time   =       0.07 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:57 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -175,15 +208,15 @@ Thu Sep 16 16:17:53 2004
     Wrote 1970 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:57 2008
 
-user time   =       0.05 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:57 2008
 
 
              ------------------------------------------
@@ -205,20 +238,22 @@ Thu Sep 16 16:17:53 2004
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy       57.7435181378559
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 18128 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 4.857562e-01
+  The lowest eigenvalue of the overlap matrix was 3.680861e-01
 
   Using core guess to determine occupations
 
@@ -232,20 +267,20 @@ Thu Sep 16 16:17:53 2004
 
   iter       total energy        delta E         delta P          diiser
     1      -196.6109353106    2.543545e+02    0.000000e+00    0.000000e+00
-    2      -200.4514303852    3.840495e+00    1.388871e-01    4.237868e-01
-    3      -200.9850425594    5.336122e-01    3.042643e-02    3.079700e-01
-    4      -201.0048010836    1.975852e-02    6.313392e-03    5.982603e-02
-    5      -201.0112688524    6.467769e-03    3.616097e-03    3.078507e-02
-    6      -201.0129164980    1.647646e-03    2.295929e-03    1.202741e-02
-    7      -201.0130574857    1.409877e-04    8.011969e-04    4.621418e-03
-    8      -201.0130576976    2.118780e-07    2.538392e-05    1.894594e-04
-    9      -201.0130577134    1.582617e-08    7.294721e-06    4.605254e-05
-   10      -201.0130577142    8.183179e-10    1.942436e-06    1.160360e-05
-   11      -201.0130577143    1.045919e-11    2.423655e-07    1.208421e-06
-   12      -201.0130577143    5.684342e-14    2.090637e-08    1.475412e-07
-   13      -201.0130577143    5.684342e-14    4.327380e-09    2.548026e-08
-   14      -201.0130577143    0.000000e+00    6.274901e-10    3.040968e-09
-   15      -201.0130577143    5.684342e-14    1.967272e-11    1.140362e-10
+    2      -200.4514303852    3.840495e+00    1.959931e-01    4.237868e-01
+    3      -200.9850425594    5.336122e-01    4.021876e-02    3.079700e-01
+    4      -201.0048010836    1.975852e-02    9.175850e-03    5.982603e-02
+    5      -201.0112688524    6.467769e-03    5.097509e-03    3.078507e-02
+    6      -201.0129164980    1.647646e-03    3.156483e-03    1.202741e-02
+    7      -201.0130574857    1.409877e-04    1.086814e-03    4.621418e-03
+    8      -201.0130576976    2.118780e-07    3.460363e-05    1.894594e-04
+    9      -201.0130577134    1.582623e-08    1.054804e-05    4.605254e-05
+   10      -201.0130577142    8.182042e-10    2.760765e-06    1.160360e-05
+   11      -201.0130577143    1.045919e-11    3.391145e-07    1.208421e-06
+   12      -201.0130577143    1.705303e-13    2.775786e-08    1.475412e-07
+   13      -201.0130577143    0.000000e+00    6.306620e-09    2.548026e-08
+   14      -201.0130577143    5.684342e-14    8.778285e-10    3.040965e-09
+   15      -201.0130577143   -5.684342e-14    2.761876e-11    1.140368e-10
 
 Orbital energies (a.u.):
 
@@ -259,7 +294,7 @@ Orbital energies (a.u.):
    6A1      0.579424     7A1      0.895168     5B2      1.309172  
 
 
-        SCF total energy   =    -201.013057714254
+      * SCF total energy   =    -201.013057714254
         kinetic energy     =     201.587726326615
         nuc. attr. energy  =    -605.089757786754
         elec. rep. energy  =     202.488973745886
@@ -267,15 +302,15 @@ Orbital energies (a.u.):
         virial theorem     =       2.002858862100
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:57 2008
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:57 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -309,19 +344,19 @@ Thu Sep 16 16:17:53 2004
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000     0.016845441504
-       2        0.000000000000    -0.018922853381    -0.008422720752
-       3        0.000000000000     0.018922853381    -0.008422720752
+       2       -0.000000000000    -0.018922853382    -0.008422720752
+       3        0.000000000000     0.018922853382    -0.008422720752
 
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:58 2008
 
-user time   =       0.27 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:58 2008
 
                   --------------------------------------------
                                    EXTREMA 
@@ -343,17 +378,17 @@ Thu Sep 16 16:17:53 2004
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.7605752908
-      NITROGEN    -0.0000000000   -0.0000000000    0.2394247092
+             X     0.0000000000    0.0000000000   -0.7605752908
+      NITROGEN    -0.0000000000    0.0000000000    0.2394247092
         OXYGEN     0.0000000000    1.2846813490   -0.1048046208
-        OXYGEN    -0.0000000000   -1.2846813490   -0.1048046208
+        OXYGEN     0.0000000000   -1.2846813490   -0.1048046208
 
   Cartesian Gradients (a.u):
                        x              y                z
                 --------------- --------------- ---------------
              X     0.0000000000    0.0000000000    0.0000000000
       NITROGEN     0.0000000000    0.0000000000    0.0168454415
-        OXYGEN     0.0000000000   -0.0189228534   -0.0084227208
+        OXYGEN    -0.0000000000   -0.0189228534   -0.0084227208
         OXYGEN     0.0000000000    0.0189228534   -0.0084227208
 
   RMS gradient = 0.0079485100
@@ -406,19 +441,19 @@ Thu Sep 16 16:17:53 2004
   ----------------------------------------------------------------------------
   Iter    dq (internals)          dx (cartesians)
   ---- ----------------------  ----------------------
-    1  0.00342103179799927793  0.04666770991513970873
-    2  0.00000121819571989127  0.00209814645424032933
-    3  0.00000000000382445927  0.00000151677070260688
-    4  0.00000000000000003701  0.00000000000234461896
+    1  0.00342103179799938895  0.04666770991513926464
+    2  0.00000121819572000229  0.00209814645424056352
+    3  0.00000000000382438525  0.00000151677070265104
+    4  0.00000000000000003701  0.00000000000234455311
   Back transformation to cartesians completed
 
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.8366803679
-      NITROGEN    -0.0000000000   -0.0000000000    0.1633196321
+             X     0.0000000000    0.0000000000   -0.8366803679
+      NITROGEN    -0.0000000000    0.0000000000    0.1633196321
         OXYGEN     0.0000000000    1.3181836472   -0.0691117105
-        OXYGEN    -0.0000000000   -1.3181836472   -0.0691117105
+        OXYGEN     0.0000000000   -1.3181836472   -0.0691117105
 
   Z-matrix (angstroms and degrees):
 
@@ -427,15 +462,15 @@ Thu Sep 16 16:17:53 2004
         OXYGEN    2    1.3385187548    1   80.0000000000
         OXYGEN    2    1.3385187548    1   80.0000000000    3  180.0000000000
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:58 2008
 
-user time   =       0.01 seconds =       0.00 minutes
+user time   =       0.00 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:58 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -464,15 +499,15 @@ Thu Sep 16 16:17:53 2004
     Wrote 1970 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:58 2008
 
-user time   =       0.05 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:58 2008
 
 
              ------------------------------------------
@@ -494,7 +529,7 @@ Thu Sep 16 16:17:53 2004
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy       57.1249022618519
@@ -503,13 +538,15 @@ Thu Sep 16 16:17:53 2004
   energy from old vector:  -201.01305771
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 18128 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 4.818770e-01
+  The lowest eigenvalue of the overlap matrix was 3.653672e-01
 
 
   Reading Occupations from checkpoint file.
@@ -523,19 +560,19 @@ Thu Sep 16 16:17:53 2004
 
   iter       total energy        delta E         delta P          diiser
     1      -201.0045407562    2.581294e+02    0.000000e+00    0.000000e+00
-    2      -201.0144317623    9.891006e-03    4.173606e-03    4.537238e-02
-    3      -201.0175061989    3.074437e-03    3.411096e-03    1.860085e-02
-    4      -201.0176583465    1.521475e-04    8.015696e-04    3.775882e-03
-    5      -201.0176680257    9.679214e-06    1.712588e-04    1.500446e-03
-    6      -201.0176691691    1.143379e-06    5.309074e-05    3.602013e-04
-    7      -201.0176693431    1.740581e-07    2.747037e-05    1.458558e-04
-    8      -201.0176693436    4.985736e-10    1.329555e-06    8.004900e-06
-    9      -201.0176693436    1.449507e-11    2.509098e-07    1.412784e-06
-   10      -201.0176693436   -5.684342e-14    6.982270e-09    5.799839e-08
-   11      -201.0176693436    5.684342e-14    1.981207e-09    1.577154e-08
-   12      -201.0176693436    1.136868e-13    7.594214e-10    4.817673e-09
-   13      -201.0176693436   -1.136868e-13    4.037875e-10    2.181326e-09
-   14      -201.0176693436    0.000000e+00    4.816854e-11    2.955025e-10
+    2      -201.0144317623    9.891006e-03    6.482951e-03    4.537238e-02
+    3      -201.0175061989    3.074437e-03    5.177412e-03    1.860085e-02
+    4      -201.0176583465    1.521475e-04    1.110533e-03    3.775882e-03
+    5      -201.0176680257    9.679215e-06    2.270563e-04    1.500446e-03
+    6      -201.0176691691    1.143379e-06    6.784315e-05    3.602013e-04
+    7      -201.0176693431    1.740581e-07    3.650259e-05    1.458558e-04
+    8      -201.0176693436    4.984599e-10    1.833974e-06    8.004900e-06
+    9      -201.0176693436    1.449507e-11    3.502801e-07    1.412784e-06
+   10      -201.0176693436    5.684342e-14    1.014122e-08    5.799839e-08
+   11      -201.0176693436    5.684342e-14    2.879535e-09    1.577154e-08
+   12      -201.0176693436    0.000000e+00    1.086201e-09    4.817673e-09
+   13      -201.0176693436   -5.684342e-14    5.754143e-10    2.181327e-09
+   14      -201.0176693436    0.000000e+00    6.775185e-11    2.955053e-10
 
  Correcting phases of orbitals.
 
@@ -551,7 +588,7 @@ Orbital energies (a.u.):
    6A1      0.597945     7A1      0.840111     5B2      1.320634  
 
 
-        SCF total energy   =    -201.017669343639
+      * SCF total energy   =    -201.017669343639
         kinetic energy     =     201.574594457341
         nuc. attr. energy  =    -603.854962503399
         elec. rep. energy  =     201.262698702419
@@ -559,15 +596,15 @@ Orbital energies (a.u.):
         virial theorem     =       2.002770528161
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:58 2008
 
 user time   =       0.01 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:58 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -605,15 +642,15 @@ Thu Sep 16 16:17:53 2004
        3        0.000000000000     0.001430387489    -0.007044688415
 
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:58 2008
 
-user time   =       0.28 seconds =       0.00 minutes
+user time   =       0.09 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:58 2008
 
                   --------------------------------------------
                                    EXTREMA 
@@ -635,10 +672,10 @@ Thu Sep 16 16:17:53 2004
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.8366803679
-      NITROGEN    -0.0000000000   -0.0000000000    0.1633196321
+             X     0.0000000000    0.0000000000   -0.8366803679
+      NITROGEN    -0.0000000000    0.0000000000    0.1633196321
         OXYGEN     0.0000000000    1.3181836472   -0.0691117105
-        OXYGEN    -0.0000000000   -1.3181836472   -0.0691117105
+        OXYGEN     0.0000000000   -1.3181836472   -0.0691117105
 
   Cartesian Gradients (a.u):
                        x              y                z
@@ -700,19 +737,19 @@ Thu Sep 16 16:17:53 2004
   ----------------------------------------------------------------------------
   Iter    dq (internals)          dx (cartesians)
   ---- ----------------------  ----------------------
-    1  0.00329071429740431442  0.04278967879147077547
-    2  0.00000036347482845756  0.00183675481762332941
-    3  0.00000000000043491137  0.00000047115107929174
-    4  0.00000000000000000000  0.00000000000024269983
+    1  0.00329071429740420340  0.04278967879147111547
+    2  0.00000036347482842055  0.00183675481762313945
+    3  0.00000000000043476334  0.00000047115107931018
+    4  0.00000000000000000000  0.00000000000024261744
   Back transformation to cartesians completed
 
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9154507961
-      NITROGEN    -0.0000000000   -0.0000000000    0.0845492039
+             X     0.0000000000    0.0000000000   -0.9154507961
+      NITROGEN    -0.0000000000    0.0000000000    0.0845492039
         OXYGEN     0.0000000000    1.3340924733   -0.0321687636
-        OXYGEN    -0.0000000000   -1.3340924733   -0.0321687636
+        OXYGEN     0.0000000000   -1.3340924733   -0.0321687636
 
   Z-matrix (angstroms and degrees):
 
@@ -721,15 +758,15 @@ Thu Sep 16 16:17:53 2004
         OXYGEN    2    1.3391884899    1   85.0000000000
         OXYGEN    2    1.3391884899    1   85.0000000000    3  180.0000000000
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:58 2008
 
-user time   =       0.00 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:58 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -758,15 +795,15 @@ Thu Sep 16 16:17:53 2004
     Wrote 1970 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:58 2008
 
-user time   =       0.05 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:58 2008
 
 
              ------------------------------------------
@@ -788,7 +825,7 @@ Thu Sep 16 16:17:53 2004
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy       56.9495693171588
@@ -797,13 +834,15 @@ Thu Sep 16 16:17:53 2004
   energy from old vector:  -201.01766934
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 18128 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 4.753297e-01
+  The lowest eigenvalue of the overlap matrix was 3.603838e-01
 
 
   Reading Occupations from checkpoint file.
@@ -817,18 +856,18 @@ Thu Sep 16 16:17:53 2004
 
   iter       total energy        delta E         delta P          diiser
     1      -201.0067662935    2.579563e+02    0.000000e+00    0.000000e+00
-    2      -201.0167463744    9.980081e-03    4.273903e-03    4.605069e-02
-    3      -201.0198123555    3.065981e-03    3.536150e-03    2.024554e-02
-    4      -201.0199341391    1.217837e-04    7.697921e-04    4.084230e-03
-    5      -201.0199388119    4.672741e-06    1.279427e-04    9.583388e-04
-    6      -201.0199391086    2.967494e-07    2.767712e-05    2.316188e-04
-    7      -201.0199391679    5.930644e-08    1.586939e-05    8.748222e-05
-    8      -201.0199391682    2.492584e-10    9.485670e-07    5.036192e-06
-    9      -201.0199391682    5.968559e-12    1.558953e-07    9.878059e-07
-   10      -201.0199391682    0.000000e+00    5.330302e-09    4.457606e-08
-   11      -201.0199391682    1.136868e-13    1.548074e-09    9.115707e-09
-   12      -201.0199391682   -1.136868e-13    3.756525e-10    1.933552e-09
-   13      -201.0199391682   -1.136868e-13    7.365718e-11    6.395202e-10
+    2      -201.0167463744    9.980081e-03    6.697224e-03    4.605069e-02
+    3      -201.0198123555    3.065981e-03    5.417872e-03    2.024554e-02
+    4      -201.0199341391    1.217837e-04    1.081608e-03    4.084230e-03
+    5      -201.0199388119    4.672742e-06    1.710634e-04    9.583388e-04
+    6      -201.0199391086    2.967495e-07    3.498964e-05    2.316188e-04
+    7      -201.0199391679    5.930650e-08    2.080881e-05    8.748222e-05
+    8      -201.0199391682    2.492015e-10    1.301620e-06    5.036192e-06
+    9      -201.0199391682    5.911716e-12    2.255012e-07    9.878059e-07
+   10      -201.0199391682    5.684342e-14    7.459285e-09    4.457606e-08
+   11      -201.0199391682    0.000000e+00    2.256877e-09    9.115707e-09
+   12      -201.0199391682    0.000000e+00    5.539320e-10    1.933553e-09
+   13      -201.0199391682    0.000000e+00    9.897335e-11    6.395242e-10
 
  Correcting phases of orbitals.
 
@@ -844,23 +883,23 @@ Orbital energies (a.u.):
    6A1      0.616251     7A1      0.806334     5B2      1.336015  
 
 
-        SCF total energy   =    -201.019939168165
+      * SCF total energy   =    -201.019939168165
         kinetic energy     =     201.571158661936
-        nuc. attr. energy  =    -603.498278626146
+        nuc. attr. energy  =    -603.498278626147
         elec. rep. energy  =     200.907180796045
         potential energy   =    -402.591097830101
         virial theorem     =       2.002742113524
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:58 2008
 
 user time   =       0.00 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:53 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:58 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -894,19 +933,19 @@ Thu Sep 16 16:17:53 2004
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000     0.007138700601
-       2        0.000000000000     0.003199608741    -0.003569350300
-       3        0.000000000000    -0.003199608741    -0.003569350300
+       2        0.000000000000     0.003199608742    -0.003569350300
+       3        0.000000000000    -0.003199608742    -0.003569350300
 
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:54 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
-user time   =       0.27 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:54 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
                   --------------------------------------------
                                    EXTREMA 
@@ -928,10 +967,10 @@ Thu Sep 16 16:17:54 2004
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9154507961
-      NITROGEN    -0.0000000000   -0.0000000000    0.0845492039
+             X     0.0000000000    0.0000000000   -0.9154507961
+      NITROGEN    -0.0000000000    0.0000000000    0.0845492039
         OXYGEN     0.0000000000    1.3340924733   -0.0321687636
-        OXYGEN    -0.0000000000   -1.3340924733   -0.0321687636
+        OXYGEN     0.0000000000   -1.3340924733   -0.0321687636
 
   Cartesian Gradients (a.u):
                        x              y                z
@@ -993,19 +1032,19 @@ Thu Sep 16 16:17:54 2004
   ----------------------------------------------------------------------------
   Iter    dq (internals)          dx (cartesians)
   ---- ----------------------  ----------------------
-    1  0.00236007762911842134  0.03334999075419258635
-    2  0.00000001313176474967  0.00118656058748736358
-    3  0.00000000000000074015  0.00000001664223311665
-    4  0.00000000000000014803  0.00000000000000042445
+    1  0.00236007762911827346  0.03334999075419149694
+    2  0.00000001313176474967  0.00118656058748801236
+    3  0.00000000000000074015  0.00000001664223307136
+    4  0.00000000000000022204  0.00000000000000037893
   Back transformation to cartesians completed
 
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9834769903
-      NITROGEN    -0.0000000000   -0.0000000000    0.0165230097
+             X     0.0000000000    0.0000000000   -0.9834769903
+      NITROGEN    -0.0000000000    0.0000000000    0.0165230097
         OXYGEN     0.0000000000    1.3363396511   -0.0002648100
-        OXYGEN    -0.0000000000   -1.3363396511   -0.0002648100
+        OXYGEN     0.0000000000   -1.3363396511   -0.0002648100
 
   Z-matrix (angstroms and degrees):
 
@@ -1014,15 +1053,15 @@ Thu Sep 16 16:17:54 2004
         OXYGEN    2    1.3364450958    1   89.2802573667
         OXYGEN    2    1.3364450958    1   89.2802573667    3  180.0000000000
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:54 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
 user time   =       0.00 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:54 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1051,15 +1090,15 @@ Thu Sep 16 16:17:54 2004
     Wrote 1970 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:54 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:54 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
 
              ------------------------------------------
@@ -1081,7 +1120,7 @@ Thu Sep 16 16:17:54 2004
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy       57.0190726570184
@@ -1090,13 +1129,15 @@ Thu Sep 16 16:17:54 2004
   energy from old vector:  -201.01993917
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 18128 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 4.703873e-01
+  The lowest eigenvalue of the overlap matrix was 3.565452e-01
 
 
   Reading Occupations from checkpoint file.
@@ -1110,18 +1151,18 @@ Thu Sep 16 16:17:54 2004
 
   iter       total energy        delta E         delta P          diiser
     1      -201.0109522201    2.580300e+02    0.000000e+00    0.000000e+00
-    2      -201.0183451429    7.392923e-03    3.709547e-03    3.992947e-02
-    3      -201.0205863239    2.241181e-03    3.075845e-03    1.785527e-02
-    4      -201.0206655139    7.919005e-05    6.498023e-04    3.729257e-03
-    5      -201.0206670297    1.515791e-06    8.098106e-05    4.107894e-04
-    6      -201.0206670867    5.700286e-08    1.312152e-05    1.049495e-04
-    7      -201.0206670873    5.256879e-10    1.248121e-06    7.300169e-06
-    8      -201.0206670873    5.462653e-11    3.713923e-07    2.718159e-06
-    9      -201.0206670873    6.821210e-12    1.737445e-07    9.515482e-07
-   10      -201.0206670873    0.000000e+00    2.466039e-09    2.607062e-08
-   11      -201.0206670873   -5.684342e-14    9.034661e-10    4.430002e-09
-   12      -201.0206670873    1.136868e-13    1.201336e-10    7.770430e-10
-   13      -201.0206670873    0.000000e+00    9.476104e-12    6.468565e-11
+    2      -201.0183451429    7.392923e-03    5.843238e-03    3.992947e-02
+    3      -201.0205863239    2.241181e-03    4.729544e-03    1.785527e-02
+    4      -201.0206655139    7.919005e-05    9.170573e-04    3.729257e-03
+    5      -201.0206670297    1.515791e-06    1.076729e-04    4.107894e-04
+    6      -201.0206670867    5.700286e-08    1.664077e-05    1.049495e-04
+    7      -201.0206670873    5.257448e-10    1.773693e-06    7.300169e-06
+    8      -201.0206670873    5.468337e-11    4.839868e-07    2.718159e-06
+    9      -201.0206670873    6.764367e-12    2.281653e-07    9.515481e-07
+   10      -201.0206670873    0.000000e+00    3.337730e-09    2.607062e-08
+   11      -201.0206670873    0.000000e+00    1.325223e-09    4.430002e-09
+   12      -201.0206670873   -5.684342e-14    1.880830e-10    7.770429e-10
+   13      -201.0206670873    5.684342e-14    1.244544e-11    6.468952e-11
 
  Correcting phases of orbitals.
 
@@ -1137,23 +1178,23 @@ Orbital energies (a.u.):
    6A1      0.625265     7A1      0.796376     5B2      1.346699  
 
 
-        SCF total energy   =    -201.020667087318
-        kinetic energy     =     201.571336363847
+      * SCF total energy   =    -201.020667087318
+        kinetic energy     =     201.571336363848
         nuc. attr. energy  =    -603.628305582345
         elec. rep. energy  =     201.036302131179
         potential energy   =    -402.592003451166
         virial theorem     =       2.002739366477
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:54 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.00 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:54 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1187,19 +1228,19 @@ Thu Sep 16 16:17:54 2004
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000     0.000962632280
-       2        0.000000000000     0.001283589142    -0.000481316140
-       3        0.000000000000    -0.001283589142    -0.000481316140
+       2        0.000000000000     0.001283589143    -0.000481316140
+       3        0.000000000000    -0.001283589143    -0.000481316140
 
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:54 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
-user time   =       0.26 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:54 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
                   --------------------------------------------
                                    EXTREMA 
@@ -1221,10 +1262,10 @@ Thu Sep 16 16:17:54 2004
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9834769903
-      NITROGEN    -0.0000000000   -0.0000000000    0.0165230097
+             X     0.0000000000    0.0000000000   -0.9834769903
+      NITROGEN    -0.0000000000    0.0000000000    0.0165230097
         OXYGEN     0.0000000000    1.3363396511   -0.0002648100
-        OXYGEN    -0.0000000000   -1.3363396511   -0.0002648100
+        OXYGEN     0.0000000000   -1.3363396511   -0.0002648100
 
   Cartesian Gradients (a.u):
                        x              y                z
@@ -1286,19 +1327,19 @@ Thu Sep 16 16:17:54 2004
   ----------------------------------------------------------------------------
   Iter    dq (internals)          dx (cartesians)
   ---- ----------------------  ----------------------
-    1  0.00007091190359657477  0.00558391017740507162
-    2  0.00000000024797996989  0.00003752980010400567
-    3  0.00000000000000025905  0.00000000029170433551
-    4  0.00000000000000025905  0.00000000000000012011
+    1  0.00007091190359661177  0.00558391017740248689
+    2  0.00000000024798008091  0.00003752980010391596
+    3  0.00000000000000007401  0.00000000029170439080
+    4  0.00000000000000007401  0.00000000000000003742
   Back transformation to cartesians completed
 
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9950529623
-      NITROGEN    -0.0000000000   -0.0000000000    0.0049470377
+             X     0.0000000000    0.0000000000   -0.9950529623
+      NITROGEN    -0.0000000000    0.0000000000    0.0049470377
         OXYGEN     0.0000000000    1.3355180602    0.0051642644
-        OXYGEN    -0.0000000000   -1.3355180602    0.0051642644
+        OXYGEN     0.0000000000   -1.3355180602    0.0051642644
 
   Z-matrix (angstroms and degrees):
 
@@ -1307,15 +1348,15 @@ Thu Sep 16 16:17:54 2004
         OXYGEN    2    1.3355180778    1   90.0093193591
         OXYGEN    2    1.3355180778    1   90.0093193591    3  180.0000000000
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:54 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
 user time   =       0.00 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:54 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1344,15 +1385,15 @@ Thu Sep 16 16:17:54 2004
     Wrote 1970 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:54 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
-user time   =       0.06 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:54 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
 
              ------------------------------------------
@@ -1374,7 +1415,7 @@ Thu Sep 16 16:17:54 2004
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy       57.0576507681653
@@ -1383,13 +1424,15 @@ Thu Sep 16 16:17:54 2004
   energy from old vector:  -201.02066709
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 18128 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 4.694641e-01
+  The lowest eigenvalue of the overlap matrix was 3.558191e-01
 
 
   Reading Occupations from checkpoint file.
@@ -1403,17 +1446,17 @@ Thu Sep 16 16:17:54 2004
 
   iter       total energy        delta E         delta P          diiser
     1      -201.0204018724    2.580781e+02    0.000000e+00    0.000000e+00
-    2      -201.0206173192    2.154468e-04    6.325589e-04    6.833167e-03
-    3      -201.0206823628    6.504363e-05    5.271183e-04    3.038593e-03
-    4      -201.0206845421    2.179296e-06    1.104574e-04    6.204129e-04
-    5      -201.0206845606    1.850350e-08    1.065402e-05    4.889219e-05
-    6      -201.0206845609    2.898446e-10    6.663317e-07    1.074305e-05
-    7      -201.0206845609    2.120260e-11    2.317802e-07    1.543231e-06
-    8      -201.0206845609    2.046363e-12    7.374376e-08    5.101198e-07
-    9      -201.0206845609    1.705303e-13    3.079558e-08    1.325070e-07
-   10      -201.0206845609    5.684342e-14    4.794725e-10    4.381192e-09
-   11      -201.0206845609   -5.684342e-14    1.255785e-10    6.539105e-10
-   12      -201.0206845609   -5.684342e-14    3.575711e-11    1.807591e-10
+    2      -201.0206173192    2.154468e-04    9.975405e-04    6.833167e-03
+    3      -201.0206823628    6.504363e-05    8.105262e-04    3.038593e-03
+    4      -201.0206845421    2.179296e-06    1.554310e-04    6.204129e-04
+    5      -201.0206845606    1.850344e-08    1.389638e-05    4.889219e-05
+    6      -201.0206845609    2.899014e-10    8.562335e-07    1.074305e-05
+    7      -201.0206845609    2.120260e-11    3.242438e-07    1.543231e-06
+    8      -201.0206845609    1.932676e-12    9.604260e-08    5.101198e-07
+    9      -201.0206845609    2.842171e-13    4.077742e-08    1.325070e-07
+   10      -201.0206845609    0.000000e+00    6.449333e-10    4.381193e-09
+   11      -201.0206845609    0.000000e+00    1.815799e-10    6.539107e-10
+   12      -201.0206845609    5.684342e-14    5.332639e-11    1.807594e-10
 
  Correcting phases of orbitals.
 
@@ -1429,7 +1472,7 @@ Orbital energies (a.u.):
    6A1      0.625884     7A1      0.796961     5B2      1.348554  
 
 
-        SCF total energy   =    -201.020684560938
+      * SCF total energy   =    -201.020684560938
         kinetic energy     =     201.571688071311
         nuc. attr. energy  =    -603.703111784994
         elec. rep. energy  =     201.110739152745
@@ -1437,15 +1480,15 @@ Orbital energies (a.u.):
         virial theorem     =       2.002741028922
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:54 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:54 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1479,19 +1522,19 @@ Thu Sep 16 16:17:54 2004
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000    -0.000012181154
-       2        0.000000000000     0.000244892254     0.000006090577
-       3        0.000000000000    -0.000244892254     0.000006090577
+       2        0.000000000000     0.000244892255     0.000006090577
+       3        0.000000000000    -0.000244892255     0.000006090577
 
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:59 2008
 
-user time   =       0.27 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
                   --------------------------------------------
                                    EXTREMA 
@@ -1513,10 +1556,10 @@ Thu Sep 16 16:17:55 2004
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9950529623
-      NITROGEN    -0.0000000000   -0.0000000000    0.0049470377
+             X     0.0000000000    0.0000000000   -0.9950529623
+      NITROGEN    -0.0000000000    0.0000000000    0.0049470377
         OXYGEN     0.0000000000    1.3355180602    0.0051642644
-        OXYGEN    -0.0000000000   -1.3355180602    0.0051642644
+        OXYGEN     0.0000000000   -1.3355180602    0.0051642644
 
   Cartesian Gradients (a.u):
                        x              y                z
@@ -1578,18 +1621,18 @@ Thu Sep 16 16:17:55 2004
   ----------------------------------------------------------------------------
   Iter    dq (internals)          dx (cartesians)
   ---- ----------------------  ----------------------
-    1  0.00000000048835372783  0.00004546684683707518
-    2  0.00000000000000014803  0.00000000056096442406
+    1  0.00000000048835372783  0.00004546684683625637
+    2  0.00000000000000014803  0.00000000056096442405
     3  0.00000000000000007401  0.00000000000000009707
   Back transformation to cartesians completed
 
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9950410070
-      NITROGEN    -0.0000000000   -0.0000000000    0.0049589930
+             X     0.0000000000    0.0000000000   -0.9950410070
+      NITROGEN    -0.0000000000    0.0000000000    0.0049589930
         OXYGEN     0.0000000000    1.3353912639    0.0051586574
-        OXYGEN    -0.0000000000   -1.3353912639    0.0051586574
+        OXYGEN     0.0000000000   -1.3353912639    0.0051586574
 
   Z-matrix (angstroms and degrees):
 
@@ -1598,15 +1641,15 @@ Thu Sep 16 16:17:55 2004
         OXYGEN    2    1.3353912788    1   90.0085667220
         OXYGEN    2    1.3353912788    1   90.0085667220    3  180.0000000000
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1635,15 +1678,15 @@ Thu Sep 16 16:17:55 2004
     Wrote 1970 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
-user time   =       0.05 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
 
              ------------------------------------------
@@ -1665,7 +1708,7 @@ Thu Sep 16 16:17:55 2004
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy       57.0630685197274
@@ -1674,13 +1717,15 @@ Thu Sep 16 16:17:55 2004
   energy from old vector:  -201.02068456
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 18128 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 4.693447e-01
+  The lowest eigenvalue of the overlap matrix was 3.557250e-01
 
 
   Reading Occupations from checkpoint file.
@@ -1694,15 +1739,15 @@ Thu Sep 16 16:17:55 2004
 
   iter       total energy        delta E         delta P          diiser
     1      -201.0206846293    2.580838e+02    0.000000e+00    0.000000e+00
-    2      -201.0206846403    1.091360e-08    4.534890e-06    4.659728e-05
-    3      -201.0206846432    2.951253e-09    2.748201e-06    1.968488e-05
-    4      -201.0206846437    4.773710e-10    1.391669e-06    6.261935e-06
-    5      -201.0206846437    9.777068e-12    1.471720e-07    1.245339e-06
-    6      -201.0206846437    7.389644e-13    4.817849e-08    5.700335e-07
-    7      -201.0206846437    0.000000e+00    3.820130e-09    2.746656e-08
-    8      -201.0206846437    1.136868e-13    1.567452e-09    1.050674e-08
-    9      -201.0206846437   -5.684342e-14    5.719217e-10    2.719384e-09
-   10      -201.0206846437   -5.684342e-14    7.764501e-12    5.688481e-11
+    2      -201.0206846403    1.091365e-08    5.969957e-06    4.659728e-05
+    3      -201.0206846432    2.951197e-09    3.627550e-06    1.968488e-05
+    4      -201.0206846437    4.773142e-10    1.828077e-06    6.261935e-06
+    5      -201.0206846437    9.890755e-12    1.934036e-07    1.245339e-06
+    6      -201.0206846437    7.389644e-13    6.178131e-08    5.700335e-07
+    7      -201.0206846437    0.000000e+00    5.555046e-09    2.746656e-08
+    8      -201.0206846437   -5.684342e-14    2.281298e-09    1.050674e-08
+    9      -201.0206846437   -5.684342e-14    8.447392e-10    2.719386e-09
+   10      -201.0206846437    1.136868e-13    1.050029e-11    5.688507e-11
 
  Correcting phases of orbitals.
 
@@ -1718,7 +1763,7 @@ Orbital energies (a.u.):
    6A1      0.625945     7A1      0.797080     5B2      1.348791  
 
 
-        SCF total energy   =    -201.020684643690
+      * SCF total energy   =    -201.020684643690
         kinetic energy     =     201.571739866036
         nuc. attr. energy  =    -603.713632270518
         elec. rep. energy  =     201.121207760792
@@ -1726,15 +1771,15 @@ Orbital energies (a.u.):
         virial theorem     =       2.002741286168
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
 user time   =       0.00 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1769,18 +1814,18 @@ Thu Sep 16 16:17:55 2004
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000    -0.000011161641
        2        0.000000000000     0.000098828320     0.000005580820
-       3        0.000000000000    -0.000098828320     0.000005580820
+       3       -0.000000000000    -0.000098828320     0.000005580820
 
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
-user time   =       0.26 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
                   --------------------------------------------
                                    EXTREMA 
@@ -1802,10 +1847,10 @@ Thu Sep 16 16:17:55 2004
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9950410070
-      NITROGEN    -0.0000000000   -0.0000000000    0.0049589930
+             X     0.0000000000    0.0000000000   -0.9950410070
+      NITROGEN    -0.0000000000    0.0000000000    0.0049589930
         OXYGEN     0.0000000000    1.3353912639    0.0051586574
-        OXYGEN    -0.0000000000   -1.3353912639    0.0051586574
+        OXYGEN     0.0000000000   -1.3353912639    0.0051586574
 
   Cartesian Gradients (a.u):
                        x              y                z
@@ -1813,7 +1858,7 @@ Thu Sep 16 16:17:55 2004
              X     0.0000000000    0.0000000000    0.0000000000
       NITROGEN     0.0000000000    0.0000000000   -0.0000111616
         OXYGEN     0.0000000000    0.0000988283    0.0000055808
-        OXYGEN     0.0000000000   -0.0000988283    0.0000055808
+        OXYGEN    -0.0000000000   -0.0000988283    0.0000055808
 
   RMS gradient = 0.0000244422
 
@@ -1867,18 +1912,18 @@ Thu Sep 16 16:17:55 2004
   ----------------------------------------------------------------------------
   Iter    dq (internals)          dx (cartesians)
   ---- ----------------------  ----------------------
-    1  0.00000001184878632247  0.00008769782985019960
-    2  0.00000000000000051810  0.00000000827696456347
-    3  0.00000000000000037007  0.00000000000000018827
+    1  0.00000001184878624845  0.00008769782984682416
+    2  0.00000000000000022204  0.00000000827696445033
+    3  0.00000000000000018504  0.00000000000000022120
   Back transformation to cartesians completed
 
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9949098165
-      NITROGEN    -0.0000000000   -0.0000000000    0.0050901835
+             X     0.0000000000    0.0000000000   -0.9949098165
+      NITROGEN    -0.0000000000    0.0000000000    0.0050901835
         OXYGEN     0.0000000000    1.3353055344    0.0050971297
-        OXYGEN    -0.0000000000   -1.3353055344    0.0050971297
+        OXYGEN     0.0000000000   -1.3353055344    0.0050971297
 
   Z-matrix (angstroms and degrees):
 
@@ -1887,15 +1932,15 @@ Thu Sep 16 16:17:55 2004
         OXYGEN    2    1.3353055344    1   90.0002980495
         OXYGEN    2    1.3353055344    1   90.0002980495    3  180.0000000000
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1921,18 +1966,18 @@ Thu Sep 16 16:17:55 2004
     Computational point group        = C2v
     Number of irreps                 = 4
 
-    Wrote 1969 two-electron integrals to IWL file 33
+    Wrote 1961 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
-user time   =       0.05 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
 
              ------------------------------------------
@@ -1954,7 +1999,7 @@ Thu Sep 16 16:17:55 2004
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy       57.0667325886828
@@ -1963,13 +2008,15 @@ Thu Sep 16 16:17:55 2004
   energy from old vector:  -201.02068464
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 18128 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 4.692639e-01
+  The lowest eigenvalue of the overlap matrix was 3.556614e-01
 
 
   Reading Occupations from checkpoint file.
@@ -1983,15 +2030,15 @@ Thu Sep 16 16:17:55 2004
 
   iter       total energy        delta E         delta P          diiser
     1      -201.0206846191    2.580874e+02    0.000000e+00    0.000000e+00
-    2      -201.0206846516    3.254240e-08    7.781724e-06    7.756005e-05
-    3      -201.0206846613    9.606822e-09    6.018269e-06    3.444587e-05
-    4      -201.0206846618    5.409788e-10    1.674787e-06    8.677912e-06
-    5      -201.0206846618    7.503331e-12    1.712278e-07    8.714930e-07
-    6      -201.0206846618    2.842171e-13    2.543459e-08    4.210449e-07
-    7      -201.0206846618    1.705303e-13    2.006202e-08    1.063050e-07
-    8      -201.0206846618    5.684342e-14    3.590321e-09    2.306296e-08
-    9      -201.0206846618   -5.684342e-14    6.177186e-10    3.779896e-09
-   10      -201.0206846618    5.684342e-14    1.569307e-11    2.216428e-10
+    2      -201.0206846516    3.254240e-08    1.198354e-05    7.756005e-05
+    3      -201.0206846613    9.606822e-09    9.090250e-06    3.444587e-05
+    4      -201.0206846618    5.410357e-10    2.389847e-06    8.677912e-06
+    5      -201.0206846618    7.503331e-12    2.226323e-07    8.714930e-07
+    6      -201.0206846618    3.410605e-13    3.246726e-08    4.210449e-07
+    7      -201.0206846618    5.684342e-14    2.673952e-08    1.063050e-07
+    8      -201.0206846618    5.684342e-14    4.785900e-09    2.306296e-08
+    9      -201.0206846618   -5.684342e-14    8.499037e-10    3.779899e-09
+   10      -201.0206846618    5.684342e-14    2.196075e-11    2.216439e-10
 
  Correcting phases of orbitals.
 
@@ -2007,7 +2054,7 @@ Orbital energies (a.u.):
    6A1      0.625986     7A1      0.797160     5B2      1.348952  
 
 
-        SCF total energy   =    -201.020684661800
+      * SCF total energy   =    -201.020684661800
         kinetic energy     =     201.571775061338
         nuc. attr. energy  =    -603.720747414038
         elec. rep. energy  =     201.128287690899
@@ -2015,15 +2062,15 @@ Orbital energies (a.u.):
         virial theorem     =       2.002741461161
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
-user time   =       0.00 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2057,19 +2104,19 @@ Thu Sep 16 16:17:55 2004
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000    -0.000000387421
-       2        0.000000000000    -0.000000017783     0.000000193710
-       3        0.000000000000     0.000000017783     0.000000193710
+       2        0.000000000000    -0.000000017784     0.000000193710
+       3        0.000000000000     0.000000017784     0.000000193710
 
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
-user time   =       0.28 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
                   --------------------------------------------
                                    EXTREMA 
@@ -2091,10 +2138,10 @@ Thu Sep 16 16:17:55 2004
   Cartesian Coordinates (angstroms):
                        x              y                z
                 --------------- --------------- ---------------
-             X     0.0000000000   -0.0000000000   -0.9949098165
-      NITROGEN    -0.0000000000   -0.0000000000    0.0050901835
+             X     0.0000000000    0.0000000000   -0.9949098165
+      NITROGEN    -0.0000000000    0.0000000000    0.0050901835
         OXYGEN     0.0000000000    1.3353055344    0.0050971297
-        OXYGEN    -0.0000000000   -1.3353055344    0.0050971297
+        OXYGEN     0.0000000000   -1.3353055344    0.0050971297
 
   Cartesian Gradients (a.u):
                        x              y                z
@@ -2109,9 +2156,18 @@ Thu Sep 16 16:17:55 2004
   All gradients below convergence criteria of 10^-5
   Optimization completed
 ******************************************************************************
-tstop called on boromir.chem
-Thu Sep 16 16:17:55 2004
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:40:00 2008
 
-user time   =       0.00 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:40:01 2008
+
+Total PSI3 wall time          4 seconds =       0.07 minutes
+******************************************************************************

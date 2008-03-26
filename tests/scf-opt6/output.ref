@@ -1,10 +1,35 @@
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:33 2007
+PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:03:13 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF SCF optimization via analytic gradients.
+
+The following programs will be executed:
+
+ input
+ REPEAT 20
+ 20
+  cints
+  cscf
+  cints --deriv1
+  optking --opt_step
+ END
+ psiclean
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:13 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	DZP RHF optimization of CO2
@@ -12,7 +37,14 @@ Fri Apr  6 12:38:33 2007
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /usr/local/psi/share/pbasis.dat
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
+Coordinates after reading z-matrices
+
+           1           2           3
+
+    1   0.0000000   0.0000000   0.0000000
+    2   0.0000000   0.0000000   2.0786986
+    3   0.7109568   0.0000000  -1.9533377
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -29,9 +61,9 @@ Fri Apr  6 12:38:33 2007
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON     -0.000000000000    -0.262495218369    -0.000000000000
-          OXYGEN      2.047118485083     0.098467003258     0.000000000000
-          OXYGEN     -2.047118485083     0.098467003258     0.000000000000
+          CARBON     -0.000000000000    -0.262495218357    -0.000000000000
+          OXYGEN      2.047118485083     0.098467003270     0.000000000000
+          OXYGEN     -2.047118485083     0.098467003270     0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -97,32 +129,32 @@ Fri Apr  6 12:38:33 2007
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON     -0.000000000000    -0.000000000000    -0.262495218369
-          OXYGEN      0.000000000000     2.047118485083     0.098467003258
+          CARBON     -0.000000000000    -0.000000000000    -0.262495218357
+          OXYGEN      0.000000000000     2.047118485083     0.098467003270
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON     -0.000000000000    -0.000000000000    -0.262495218369
-          OXYGEN      0.000000000000     2.047118485083     0.098467003258
-          OXYGEN      0.000000000000    -2.047118485083     0.098467003258
+          CARBON     -0.000000000000    -0.000000000000    -0.262495218357
+          OXYGEN      0.000000000000     2.047118485083     0.098467003270
+          OXYGEN      0.000000000000    -2.047118485083     0.098467003270
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON     -0.000000000000    -0.000000000000    -0.138906497532
-          OXYGEN      0.000000000000     1.083288528313     0.052106497902
-          OXYGEN      0.000000000000    -1.083288528313     0.052106497902
+          CARBON     -0.000000000000    -0.000000000000    -0.138906497526
+          OXYGEN      0.000000000000     1.083288528313     0.052106497908
+          OXYGEN      0.000000000000    -1.083288528313     0.052106497908
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON     -0.000000000000    -0.000000000000    -0.262495218369
-          OXYGEN      0.000000000000     2.047118485083     0.098467003258
-          OXYGEN      0.000000000000    -2.047118485083     0.098467003258
+          CARBON     -0.000000000000    -0.000000000000    -0.262495218357
+          OXYGEN      0.000000000000     2.047118485083     0.098467003270
+          OXYGEN      0.000000000000    -2.047118485083     0.098467003270
 
 
   --------------------------------------------------------------------------
@@ -142,15 +174,15 @@ Fri Apr  6 12:38:33 2007
 
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:33 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:13 2008
 
-user time   =       0.12 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:33 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:13 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -179,15 +211,15 @@ Fri Apr  6 12:38:33 2007
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:33 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:13 2008
 
-user time   =       0.52 seconds =       0.01 minutes
-system time =       0.05 seconds =       0.00 minutes
+user time   =       0.15 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:33 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:13 2008
 
 
              ------------------------------------------
@@ -209,20 +241,22 @@ Fri Apr  6 12:38:33 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy       61.8144700520462
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 1245120 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.144531e-02
+  The lowest eigenvalue of the overlap matrix was 7.130145e-03
 
   Using core guess to determine occupations
 
@@ -236,21 +270,21 @@ Fri Apr  6 12:38:33 2007
 
   iter       total energy        delta E         delta P          diiser
     1      -174.5466869775    2.363612e+02    0.000000e+00    0.000000e+00
-    2      -182.3860359574    7.839349e+00    3.078085e-02    1.465478e+00
-    3      -187.0147048557    4.628669e+00    2.401511e-02    6.326432e-01
-    4      -187.6394535159    6.247487e-01    2.108917e-03    3.132438e-01
-    5      -187.6484261229    8.972607e-03    5.730794e-04    3.066566e-02
-    6      -187.6490266510    6.005281e-04    1.492733e-04    8.220660e-03
-    7      -187.6490786341    5.198313e-05    6.996817e-05    2.144478e-03
-    8      -187.6490802769    1.642815e-06    7.779015e-06    4.533130e-04
-    9      -187.6490803388    6.191931e-08    1.389650e-06    7.779054e-05
-   10      -187.6490803397    8.742234e-10    1.544572e-07    7.317092e-06
-   11      -187.6490803397    3.987566e-11    3.611555e-08    1.407497e-06
-   12      -187.6490803397    1.762146e-12    5.189436e-09    3.978227e-07
-   13      -187.6490803397    6.252776e-13    1.730510e-09    1.585362e-07
-   14      -187.6490803397   -1.136868e-13    9.048476e-10    4.460091e-08
-   15      -187.6490803397   -8.526513e-14    2.625884e-10    1.170005e-08
-   16      -187.6490803397    8.526513e-14    6.376193e-11    3.431419e-09
+    2      -182.3860359574    7.839349e+00    4.718921e-02    1.465478e+00
+    3      -187.0147048557    4.628669e+00    3.301711e-02    6.326432e-01
+    4      -187.6394535159    6.247487e-01    3.377011e-03    3.132438e-01
+    5      -187.6484261229    8.972607e-03    9.119666e-04    3.066566e-02
+    6      -187.6490266510    6.005281e-04    2.285563e-04    8.220660e-03
+    7      -187.6490786341    5.198313e-05    1.041986e-04    2.144478e-03
+    8      -187.6490802769    1.642815e-06    1.130258e-05    4.533130e-04
+    9      -187.6490803388    6.191937e-08    2.163297e-06    7.779054e-05
+   10      -187.6490803397    8.743370e-10    2.449136e-07    7.317092e-06
+   11      -187.6490803397    3.987566e-11    5.622004e-08    1.407497e-06
+   12      -187.6490803397    1.904255e-12    7.783861e-09    3.978227e-07
+   13      -187.6490803397    3.126388e-13    2.672141e-09    1.585362e-07
+   14      -187.6490803397    5.684342e-14    1.350604e-09    4.460091e-08
+   15      -187.6490803397    0.000000e+00    3.914971e-10    1.170005e-08
+   16      -187.6490803397   -1.421085e-13    9.142019e-11    3.431420e-09
 
 Orbital energies (a.u.):
 
@@ -277,23 +311,23 @@ Orbital energies (a.u.):
   15B2     45.448178  
 
 
-        SCF total energy   =    -187.649080339748
+      * SCF total energy   =    -187.649080339748
         kinetic energy     =     188.001206970479
         nuc. attr. energy  =    -567.090106545666
         elec. rep. energy  =     191.439819235438
-        potential energy   =    -375.650287310227
+        potential energy   =    -375.650287310228
         virial theorem     =       2.001876516688
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:34 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:13 2008
 
-user time   =       0.15 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:34 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:13 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -327,15 +361,15 @@ Fri Apr  6 12:38:34 2007
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000    -0.035577239093
-       2        0.000000000000    -0.155320128671     0.017788619547
+       2       -0.000000000000    -0.155320128671     0.017788619547
        3        0.000000000000     0.155320128671     0.017788619547
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:35 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:14 2008
 
-user time   =       2.58 seconds =       0.04 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.85 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
@@ -347,10 +381,11 @@ Cartesian geometry and possibly gradient in a.u. with masses
   8.0    15.99491462   0.0000000000   2.0471184851   0.0984670033
   8.0    15.99491462   0.0000000000  -2.0471184851   0.0984670033
                        0.0000000000   0.0000000000  -0.0355772391
-                       0.0000000000  -0.1553201287   0.0177886195
+                      -0.0000000000  -0.1553201287   0.0177886195
                        0.0000000000   0.1553201287   0.0177886195
 
 Generating simple internals
+
 Searching for geometrical constraints...none found.
 
 Simple Internal Coordinates and Values
@@ -388,66 +423,66 @@ Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
     2  0.064789690711  0.019978988880
-    3  0.009246873038  0.024293148109
-    4  0.006610180118  0.024079848658
-    5  0.006552904516  0.024083504229
-    6  0.006553869700  0.024083412047
-    7  0.006553845114  0.024083413617
-    8  0.006553845528  0.024083413577
-    9  0.006553845518  0.024083413578
-   10  0.006553845518  0.024083413578
-   11  0.006553845518  0.024083413578
-   12  0.006553845518  0.024083413578
-   13  0.006553845518  0.024083413578
-   14  0.006553845518  0.024083413578
-   15  0.006553845518  0.024083413578
-   16  0.006553845518  0.024083413578
-   17  0.006553845518  0.024083413578
-   18  0.006553845518  0.024083413578
-   19  0.006553845518  0.024083413578
-   20  0.006553845518  0.024083413578
-   21  0.006553845518  0.024083413578
-   22  0.006553845518  0.024083413578
-   23  0.006553845518  0.024083413578
-   24  0.006553845518  0.024083413578
-   25  0.006553845518  0.024083413578
-   26  0.006553845518  0.024083413578
-   27  0.006553845518  0.024083413578
-   28  0.006553845518  0.024083413578
-   29  0.006553845518  0.024083413578
-   30  0.006553845518  0.024083413578
-   31  0.006553845518  0.024083413578
-   32  0.006553845518  0.024083413578
-   33  0.006553845518  0.024083413578
-   34  0.006553845518  0.024083413578
-   35  0.006553845518  0.024083413578
-   36  0.006553845518  0.024083413578
-   37  0.006553845518  0.024083413578
-   38  0.006553845518  0.024083413578
-   39  0.006553845518  0.024083413578
-   40  0.006553845518  0.024083413578
-   41  0.006553845518  0.024083413578
-   42  0.006553845518  0.024083413578
-   43  0.006553845518  0.024083413578
-   44  0.006553845518  0.024083413578
-   45  0.006553845518  0.024083413578
-   46  0.006553845518  0.024083413578
-   47  0.006553845518  0.024083413578
-   48  0.006553845518  0.024083413578
-   49  0.006553845518  0.024083413578
-   50  0.006553845518  0.024083413578
-   51  0.006553845518  0.024083413578
-   52  0.006553845518  0.024083413578
-   53  0.006553845518  0.024083413578
-   54  0.006553845518  0.024083413578
-   55  0.006553845518  0.024083413578
-   56  0.006553845518  0.024083413578
-   57  0.006553845518  0.024083413578
-   58  0.006553845518  0.024083413578
-   59  0.006553845518  0.024083413578
-   60  0.006553845518  0.024083413578
+    3  0.009246873038  0.024293148110
+    4  0.006610180118  0.024079848659
+    5  0.006552904517  0.024083504230
+    6  0.006553869700  0.024083412048
+    7  0.006553845114  0.024083413618
+    8  0.006553845528  0.024083413578
+    9  0.006553845518  0.024083413579
+   10  0.006553845518  0.024083413579
+   11  0.006553845518  0.024083413579
+   12  0.006553845518  0.024083413579
+   13  0.006553845518  0.024083413579
+   14  0.006553845518  0.024083413579
+   15  0.006553845518  0.024083413579
+   16  0.006553845518  0.024083413579
+   17  0.006553845518  0.024083413579
+   18  0.006553845518  0.024083413579
+   19  0.006553845518  0.024083413579
+   20  0.006553845518  0.024083413579
+   21  0.006553845518  0.024083413579
+   22  0.006553845518  0.024083413579
+   23  0.006553845518  0.024083413579
+   24  0.006553845518  0.024083413579
+   25  0.006553845518  0.024083413579
+   26  0.006553845518  0.024083413579
+   27  0.006553845518  0.024083413579
+   28  0.006553845518  0.024083413579
+   29  0.006553845518  0.024083413579
+   30  0.006553845518  0.024083413579
+   31  0.006553845518  0.024083413579
+   32  0.006553845518  0.024083413579
+   33  0.006553845518  0.024083413579
+   34  0.006553845518  0.024083413579
+   35  0.006553845518  0.024083413579
+   36  0.006553845518  0.024083413579
+   37  0.006553845518  0.024083413579
+   38  0.006553845518  0.024083413579
+   39  0.006553845518  0.024083413579
+   40  0.006553845518  0.024083413579
+   41  0.006553845518  0.024083413579
+   42  0.006553845518  0.024083413579
+   43  0.006553845518  0.024083413579
+   44  0.006553845518  0.024083413579
+   45  0.006553845518  0.024083413579
+   46  0.006553845518  0.024083413579
+   47  0.006553845518  0.024083413579
+   48  0.006553845518  0.024083413579
+   49  0.006553845518  0.024083413579
+   50  0.006553845518  0.024083413579
+   51  0.006553845518  0.024083413579
+   52  0.006553845518  0.024083413579
+   53  0.006553845518  0.024083413579
+   54  0.006553845518  0.024083413579
+   55  0.006553845518  0.024083413579
+   56  0.006553845518  0.024083413579
+   57  0.006553845518  0.024083413579
+   58  0.006553845518  0.024083413579
+   59  0.006553845518  0.024083413579
+   60  0.006553845518  0.024083413579
 Could not converge new geometry in 60 iterations.
-Scaling back displacements by half
+Scaling back displacements by half...
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
@@ -467,8 +502,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:35 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:15 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -497,15 +532,15 @@ Fri Apr  6 12:38:35 2007
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:36 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:15 2008
 
-user time   =       0.52 seconds =       0.01 minutes
-system time =       0.05 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:36 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:15 2008
 
 
              ------------------------------------------
@@ -527,22 +562,24 @@ Fri Apr  6 12:38:36 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy       60.3969101176174
+  nuclear repulsion energy       60.3969101176138
 
   using old vector from file30 as initial guess
   energy from old vector:  -187.64908034
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 1245120 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.209626e-02
+  The lowest eigenvalue of the overlap matrix was 7.488502e-03
 
 
   Reading Occupations from checkpoint file.
@@ -556,19 +593,19 @@ Fri Apr  6 12:38:36 2007
 
   iter       total energy        delta E         delta P          diiser
     1      -187.6588526374    2.480558e+02    0.000000e+00    0.000000e+00
-    2      -187.6692896007    1.043696e-02    5.352781e-04    3.431762e-02
-    3      -187.6701849431    8.953424e-04    1.592097e-04    9.935730e-03
-    4      -187.6702375181    5.257507e-05    3.633747e-05    1.873264e-03
-    5      -187.6702448245    7.306335e-06    1.432079e-05    1.163889e-03
-    6      -187.6702453907    5.662623e-07    4.550574e-06    2.990900e-04
-    7      -187.6702454349    4.412027e-08    1.223172e-06    6.755396e-05
-    8      -187.6702454370    2.164825e-09    2.131161e-07    1.159627e-05
-    9      -187.6702454371    1.342642e-10    5.703690e-08    3.137987e-06
-   10      -187.6702454372    6.082246e-12    1.088280e-08    7.544110e-07
-   11      -187.6702454372    5.684342e-13    2.694608e-09    1.533610e-07
-   12      -187.6702454372   -2.273737e-13    6.044127e-10    3.634078e-08
-   13      -187.6702454372    8.526513e-14    1.373223e-10    1.108953e-08
-   14      -187.6702454372    1.136868e-13    6.006462e-11    4.593373e-09
+    2      -187.6692896007    1.043696e-02    8.660813e-04    3.431762e-02
+    3      -187.6701849431    8.953424e-04    2.476377e-04    9.935730e-03
+    4      -187.6702375181    5.257507e-05    5.337118e-05    1.873264e-03
+    5      -187.6702448245    7.306336e-06    2.054977e-05    1.163889e-03
+    6      -187.6702453907    5.662623e-07    6.254523e-06    2.990900e-04
+    7      -187.6702454349    4.412030e-08    1.702585e-06    6.755396e-05
+    8      -187.6702454370    2.164882e-09    3.063985e-07    1.159627e-05
+    9      -187.6702454371    1.339231e-10    8.083194e-08    3.137987e-06
+   10      -187.6702454372    6.480150e-12    1.578320e-08    7.544110e-07
+   11      -187.6702454372    3.694822e-13    3.793036e-09    1.533610e-07
+   12      -187.6702454372   -1.421085e-13    8.318514e-10    3.634077e-08
+   13      -187.6702454372    0.000000e+00    2.037363e-10    1.108953e-08
+   14      -187.6702454372    8.526513e-14    8.529161e-11    4.593368e-09
 
  No phase correction possible.
 
@@ -597,23 +634,23 @@ Orbital energies (a.u.):
   15B2     45.455719  
 
 
-        SCF total energy   =    -187.670245437157
+      * SCF total energy   =    -187.670245437157
         kinetic energy     =     187.721669130459
-        nuc. attr. energy  =    -564.035586019082
-        elec. rep. energy  =     188.643671451467
+        nuc. attr. energy  =    -564.035586019075
+        elec. rep. energy  =     188.643671451460
         potential energy   =    -375.391914567615
         virial theorem     =       2.000274010902
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:36 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:15 2008
 
-user time   =       0.13 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:36 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:15 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -647,16 +684,16 @@ Fri Apr  6 12:38:36 2007
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000    -0.026477986818
-       2        0.000000000000    -0.068484231749     0.013238993409
-       3        0.000000000000     0.068484231749     0.013238993409
+       2        0.000000000000    -0.068484231748     0.013238993409
+       3        0.000000000000     0.068484231748     0.013238993409
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:38 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:16 2008
 
-user time   =       2.58 seconds =       0.04 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.83 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -669,6 +706,7 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000000000   0.0000000000  -0.0264779868
                        0.0000000000  -0.0684842317   0.0132389934
                        0.0000000000   0.0684842317   0.0132389934
+
 Searching for geometrical constraints...none found.
 
 Simple Internal Coordinates and Values
@@ -717,8 +755,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:38 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:17 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -747,15 +785,15 @@ Fri Apr  6 12:38:38 2007
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:38 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:17 2008
 
-user time   =       0.52 seconds =       0.01 minutes
-system time =       0.05 seconds =       0.00 minutes
+user time   =       0.14 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:38 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:17 2008
 
 
              ------------------------------------------
@@ -777,22 +815,24 @@ Fri Apr  6 12:38:38 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy       59.3786563835605
+  nuclear repulsion energy       59.3786563835780
 
   using old vector from file30 as initial guess
   energy from old vector:  -187.67024544
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 1245120 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.267891e-02
+  The lowest eigenvalue of the overlap matrix was 7.829043e-03
 
 
   Reading Occupations from checkpoint file.
@@ -806,19 +846,19 @@ Fri Apr  6 12:38:38 2007
 
   iter       total energy        delta E         delta P          diiser
     1      -187.6695403977    2.470482e+02    0.000000e+00    0.000000e+00
-    2      -187.6755063322    5.965935e-03    4.090232e-04    2.744412e-02
-    3      -187.6760293961    5.230638e-04    1.233402e-04    7.712038e-03
-    4      -187.6760628485    3.345246e-05    2.873998e-05    1.820352e-03
-    5      -187.6760675473    4.698764e-06    1.188148e-05    8.152269e-04
-    6      -187.6760678221    2.748602e-07    3.452408e-06    1.804254e-04
-    7      -187.6760678353    1.313947e-08    8.426796e-07    3.293154e-05
-    8      -187.6760678357    4.066578e-10    9.560878e-08    6.611690e-06
-    9      -187.6760678357    2.250999e-11    2.571260e-08    1.226210e-06
-   10      -187.6760678357    1.278977e-12    5.454633e-09    2.689554e-07
-   11      -187.6760678357   -2.842171e-14    1.156305e-09    8.771635e-08
-   12      -187.6760678357    1.136868e-13    3.637186e-10    2.170089e-08
-   13      -187.6760678357   -2.273737e-13    1.112811e-10    1.096641e-08
-   14      -187.6760678357    8.526513e-14    4.139385e-11    2.726141e-09
+    2      -187.6755063322    5.965935e-03    6.641607e-04    2.744412e-02
+    3      -187.6760293961    5.230638e-04    1.919480e-04    7.712038e-03
+    4      -187.6760628485    3.345246e-05    4.231140e-05    1.820352e-03
+    5      -187.6760675473    4.698764e-06    1.701936e-05    8.152269e-04
+    6      -187.6760678221    2.748600e-07    4.755899e-06    1.804254e-04
+    7      -187.6760678353    1.313956e-08    1.160258e-06    3.293154e-05
+    8      -187.6760678357    4.066578e-10    1.354658e-07    6.611690e-06
+    9      -187.6760678357    2.256684e-11    3.571509e-08    1.226210e-06
+   10      -187.6760678357    9.947598e-13    7.625195e-09    2.689554e-07
+   11      -187.6760678357    1.989520e-13    1.697518e-09    8.771635e-08
+   12      -187.6760678357    1.705303e-13    5.104160e-10    2.170089e-08
+   13      -187.6760678357   -5.684342e-14    1.594830e-10    1.096641e-08
+   14      -187.6760678357   -1.705303e-13    5.736579e-11    2.726142e-09
 
  Correcting phases of orbitals.
 
@@ -847,23 +887,23 @@ Orbital energies (a.u.):
   15B2     45.453938  
 
 
-        SCF total energy   =    -187.676067835715
-        kinetic energy     =     187.523344629297
-        nuc. attr. energy  =    -561.848311795125
-        elec. rep. energy  =     186.648899330113
-        potential energy   =    -375.199412465012
+      * SCF total energy   =    -187.676067835715
+        kinetic energy     =     187.523344629300
+        nuc. attr. energy  =    -561.848311795162
+        elec. rep. energy  =     186.648899330147
+        potential energy   =    -375.199412465015
         virial theorem     =       1.999186240376
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:38 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:17 2008
 
-user time   =       0.13 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:38 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:17 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -896,17 +936,17 @@ Fri Apr  6 12:38:38 2007
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.004879456954
-       2        0.000000000000    -0.012279195126     0.002439728477
-       3        0.000000000000     0.012279195126     0.002439728477
+       1        0.000000000000     0.000000000000    -0.004879456955
+       2        0.000000000000    -0.012279195127     0.002439728477
+       3        0.000000000000     0.012279195127     0.002439728477
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:40 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:18 2008
 
-user time   =       2.58 seconds =       0.04 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.84 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -919,6 +959,7 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000000000   0.0000000000  -0.0048794570
                        0.0000000000  -0.0122791951   0.0024397285
                        0.0000000000   0.0122791951   0.0024397285
+
 Searching for geometrical constraints...none found.
 
 Simple Internal Coordinates and Values
@@ -951,7 +992,7 @@ Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.004094986139  0.000077524160
+    2  0.004094986140  0.000077524160
     3  0.000037670728  0.000000003210
     4  0.000000000962  0.000000000000
 Convergence to displaced geometry took 4 iterations.
@@ -966,8 +1007,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:40 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:18 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -996,15 +1037,15 @@ Fri Apr  6 12:38:40 2007
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:40 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:18 2008
 
-user time   =       0.52 seconds =       0.01 minutes
-system time =       0.05 seconds =       0.00 minutes
+user time   =       0.14 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:40 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:18 2008
 
 
              ------------------------------------------
@@ -1026,22 +1067,24 @@ Fri Apr  6 12:38:40 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy       59.1679430155589
+  nuclear repulsion energy       59.1679430155459
 
   using old vector from file30 as initial guess
   energy from old vector:  -187.67606784
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 1245120 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.279989e-02
+  The lowest eigenvalue of the overlap matrix was 7.901669e-03
 
 
   Reading Occupations from checkpoint file.
@@ -1055,17 +1098,17 @@ Fri Apr  6 12:38:40 2007
 
   iter       total energy        delta E         delta P          diiser
     1      -187.6760519968    2.468440e+02    0.000000e+00    0.000000e+00
-    2      -187.6762227282    1.707313e-04    6.951245e-05    4.352546e-03
-    3      -187.6762378024    1.507426e-05    2.086640e-05    1.388244e-03
-    4      -187.6762389194    1.117009e-06    5.278821e-06    3.027056e-04
-    5      -187.6762390635    1.440657e-07    2.057851e-06    1.101745e-04
-    6      -187.6762390739    1.042969e-08    6.533893e-07    3.670125e-05
-    7      -187.6762390744    4.326637e-10    1.517600e-07    5.138303e-06
-    8      -187.6762390744    1.199396e-11    1.682439e-08    1.207719e-06
-    9      -187.6762390744    2.273737e-13    4.203622e-09    2.168018e-07
-   10      -187.6762390744    1.421085e-13    8.322338e-10    3.511963e-08
-   11      -187.6762390744    0.000000e+00    1.207053e-10    4.017938e-09
-   12      -187.6762390744    0.000000e+00    2.055086e-11    1.115651e-09
+    2      -187.6762227282    1.707313e-04    1.124457e-04    4.352546e-03
+    3      -187.6762378024    1.507426e-05    3.241980e-05    1.388244e-03
+    4      -187.6762389194    1.117009e-06    7.789850e-06    3.027056e-04
+    5      -187.6762390635    1.440657e-07    2.953830e-06    1.101745e-04
+    6      -187.6762390739    1.042932e-08    9.000488e-07    3.670125e-05
+    7      -187.6762390744    4.328626e-10    2.092711e-07    5.138303e-06
+    8      -187.6762390744    1.202238e-11    2.383838e-08    1.207719e-06
+    9      -187.6762390744    2.842171e-13    5.798295e-09    2.168018e-07
+   10      -187.6762390744    2.842171e-14    1.141020e-09    3.511963e-08
+   11      -187.6762390744   -5.684342e-14    1.752694e-10    4.017938e-09
+   12      -187.6762390744    5.684342e-14    2.979075e-11    1.115651e-09
 
  Correcting phases of orbitals.
 
@@ -1094,23 +1137,23 @@ Orbital energies (a.u.):
   15B2     45.452783  
 
 
-        SCF total energy   =    -187.676239074371
-        kinetic energy     =     187.482734711428
-        nuc. attr. energy  =    -561.396659905873
-        elec. rep. energy  =     186.237686120074
-        potential energy   =    -375.158973785800
+      * SCF total energy   =    -187.676239074371
+        kinetic energy     =     187.482734711426
+        nuc. attr. energy  =    -561.396659905845
+        elec. rep. energy  =     186.237686120048
+        potential energy   =    -375.158973785797
         virial theorem     =       1.998968945862
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:41 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:19 2008
 
-user time   =       0.12 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:41 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:19 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1144,16 +1187,16 @@ Fri Apr  6 12:38:41 2007
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000    -0.000270009131
-       2        0.000000000000    -0.001424729354     0.000135004566
-       3        0.000000000000     0.001424729354     0.000135004566
+       2        0.000000000000    -0.001424729353     0.000135004565
+       3        0.000000000000     0.001424729353     0.000135004565
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:42 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:19 2008
 
-user time   =       2.58 seconds =       0.04 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.84 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -1166,6 +1209,7 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000000000   0.0000000000  -0.0002700091
                        0.0000000000  -0.0014247294   0.0001350046
                        0.0000000000   0.0014247294   0.0001350046
+
 Searching for geometrical constraints...none found.
 
 Simple Internal Coordinates and Values
@@ -1199,66 +1243,66 @@ Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
     2  0.000329555844  0.000149345585
-    3  0.000040647133  0.000149713876
-    4  0.000040747191  0.000149713840
-    5  0.000040747181  0.000149713837
+    3  0.000040647133  0.000149713877
+    4  0.000040747191  0.000149713839
+    5  0.000040747181  0.000149713839
     6  0.000040747181  0.000149713839
-    7  0.000040747181  0.000149713837
-    8  0.000040747180  0.000149713838
-    9  0.000040747181  0.000149713840
-   10  0.000040747181  0.000149713837
-   11  0.000040747180  0.000149713839
+    7  0.000040747181  0.000149713838
+    8  0.000040747181  0.000149713839
+    9  0.000040747181  0.000149713837
+   10  0.000040747181  0.000149713839
+   11  0.000040747181  0.000149713838
    12  0.000040747181  0.000149713839
-   13  0.000040747181  0.000149713839
+   13  0.000040747181  0.000149713836
    14  0.000040747181  0.000149713839
-   15  0.000040747181  0.000149713839
+   15  0.000040747181  0.000149713836
    16  0.000040747181  0.000149713839
-   17  0.000040747181  0.000149713842
-   18  0.000040747182  0.000149713842
+   17  0.000040747181  0.000149713836
+   18  0.000040747181  0.000149713842
    19  0.000040747182  0.000149713842
-   20  0.000040747182  0.000149713840
-   21  0.000040747181  0.000149713837
-   22  0.000040747180  0.000149713839
+   20  0.000040747183  0.000149713843
+   21  0.000040747182  0.000149713839
+   22  0.000040747181  0.000149713839
    23  0.000040747181  0.000149713839
    24  0.000040747181  0.000149713839
-   25  0.000040747181  0.000149713838
-   26  0.000040747181  0.000149713839
-   27  0.000040747181  0.000149713840
+   25  0.000040747181  0.000149713837
+   26  0.000040747180  0.000149713837
+   27  0.000040747180  0.000149713838
    28  0.000040747181  0.000149713839
-   29  0.000040747181  0.000149713840
-   30  0.000040747181  0.000149713839
-   31  0.000040747181  0.000149713840
-   32  0.000040747181  0.000149713838
-   33  0.000040747181  0.000149713839
-   34  0.000040747181  0.000149713840
-   35  0.000040747181  0.000149713839
-   36  0.000040747181  0.000149713840
-   37  0.000040747181  0.000149713837
-   38  0.000040747180  0.000149713839
-   39  0.000040747181  0.000149713839
-   40  0.000040747181  0.000149713839
+   29  0.000040747181  0.000149713839
+   30  0.000040747181  0.000149713837
+   31  0.000040747180  0.000149713838
+   32  0.000040747181  0.000149713839
+   33  0.000040747181  0.000149713836
+   34  0.000040747180  0.000149713839
+   35  0.000040747181  0.000149713837
+   36  0.000040747180  0.000149713838
+   37  0.000040747181  0.000149713839
+   38  0.000040747181  0.000149713836
+   39  0.000040747180  0.000149713839
+   40  0.000040747181  0.000149713838
    41  0.000040747181  0.000149713839
-   42  0.000040747181  0.000149713839
-   43  0.000040747181  0.000149713840
-   44  0.000040747181  0.000149713838
-   45  0.000040747181  0.000149713839
-   46  0.000040747181  0.000149713840
-   47  0.000040747181  0.000149713839
-   48  0.000040747181  0.000149713840
-   49  0.000040747181  0.000149713839
-   50  0.000040747181  0.000149713840
-   51  0.000040747181  0.000149713839
-   52  0.000040747181  0.000149713840
-   53  0.000040747181  0.000149713837
-   54  0.000040747181  0.000149713840
-   55  0.000040747181  0.000149713839
-   56  0.000040747181  0.000149713840
-   57  0.000040747181  0.000149713837
-   58  0.000040747181  0.000149713841
-   59  0.000040747182  0.000149713840
-   60  0.000040747181  0.000149713837
+   42  0.000040747181  0.000149713838
+   43  0.000040747181  0.000149713839
+   44  0.000040747181  0.000149713837
+   45  0.000040747180  0.000149713838
+   46  0.000040747181  0.000149713839
+   47  0.000040747181  0.000149713836
+   48  0.000040747180  0.000149713839
+   49  0.000040747181  0.000149713838
+   50  0.000040747181  0.000149713842
+   51  0.000040747182  0.000149713842
+   52  0.000040747182  0.000149713843
+   53  0.000040747182  0.000149713839
+   54  0.000040747181  0.000149713838
+   55  0.000040747181  0.000149713842
+   56  0.000040747182  0.000149713842
+   57  0.000040747182  0.000149713841
+   58  0.000040747182  0.000149713842
+   59  0.000040747182  0.000149713842
+   60  0.000040747182  0.000149713841
 Could not converge new geometry in 60 iterations.
-Scaling back displacements by half
+Scaling back displacements by half...
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
@@ -1276,8 +1320,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:42 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:20 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1306,15 +1350,15 @@ Fri Apr  6 12:38:42 2007
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:43 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:20 2008
 
-user time   =       0.52 seconds =       0.01 minutes
-system time =       0.05 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.14 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:43 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:20 2008
 
 
              ------------------------------------------
@@ -1336,22 +1380,24 @@ Fri Apr  6 12:38:43 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy       59.1546803849793
+  nuclear repulsion energy       59.1546803849818
 
   using old vector from file30 as initial guess
   energy from old vector:  -187.67623907
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 1245120 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.280751e-02
+  The lowest eigenvalue of the overlap matrix was 7.906258e-03
 
 
   Reading Occupations from checkpoint file.
@@ -1365,15 +1411,15 @@ Fri Apr  6 12:38:43 2007
 
   iter       total energy        delta E         delta P          diiser
     1      -187.6762400175    2.468309e+02    0.000000e+00    0.000000e+00
-    2      -187.6762402570    2.394684e-07    2.589623e-06    1.374076e-04
-    3      -187.6762402777    2.073753e-08    7.346608e-07    4.329500e-05
-    4      -187.6762402803    2.573813e-09    2.477082e-07    1.598723e-05
-    5      -187.6762402806    3.304592e-10    9.295009e-08    5.530454e-06
-    6      -187.6762402807    2.881961e-11    3.308792e-08    2.170533e-06
-    7      -187.6762402807    1.051603e-12    6.466977e-09    3.007619e-07
-    8      -187.6762402807    1.705303e-13    8.902162e-10    5.117486e-08
-    9      -187.6762402807   -2.273737e-13    1.831723e-10    8.646538e-09
-   10      -187.6762402807    2.842171e-14    3.271796e-11    1.556985e-09
+    2      -187.6762402570    2.394681e-07    4.091019e-06    1.374076e-04
+    3      -187.6762402777    2.073779e-08    1.138418e-06    4.329500e-05
+    4      -187.6762402803    2.573586e-09    3.594439e-07    1.598723e-05
+    5      -187.6762402806    3.306013e-10    1.336484e-07    5.530454e-06
+    6      -187.6762402807    2.879119e-11    4.535415e-08    2.170533e-06
+    7      -187.6762402807    1.165290e-12    8.943917e-09    3.007619e-07
+    8      -187.6762402807   -2.842171e-14    1.254590e-09    5.117485e-08
+    9      -187.6762402807   -1.136868e-13    2.526158e-10    8.646538e-09
+   10      -187.6762402807    5.684342e-14    4.480391e-11    1.556984e-09
 
  Correcting phases of orbitals.
 
@@ -1402,23 +1448,23 @@ Orbital energies (a.u.):
   15B2     45.452704  
 
 
-        SCF total energy   =    -187.676240280653
-        kinetic energy     =     187.480187625510
-        nuc. attr. energy  =    -561.368241248428
-        elec. rep. energy  =     186.211813342265
-        potential energy   =    -375.156427906163
+      * SCF total energy   =    -187.676240280653
+        kinetic energy     =     187.480187625511
+        nuc. attr. energy  =    -561.368241248434
+        elec. rep. energy  =     186.211813342270
+        potential energy   =    -375.156427906164
         virial theorem     =       1.998955367739
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:43 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:20 2008
 
-user time   =       0.10 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:43 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:20 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1456,12 +1502,12 @@ Fri Apr  6 12:38:43 2007
        3        0.000000000000     0.000750307071     0.000060878220
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:45 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:21 2008
 
-user time   =       2.58 seconds =       0.04 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.84 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -1474,6 +1520,7 @@ Cartesian geometry and possibly gradient in a.u. with masses
                        0.0000000000   0.0000000000  -0.0001217564
                        0.0000000000  -0.0007503071   0.0000608782
                        0.0000000000   0.0007503071   0.0000608782
+
 Searching for geometrical constraints...none found.
 
 Simple Internal Coordinates and Values
@@ -1508,65 +1555,65 @@ Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
     2  0.000164280332  0.000027425420
     3  0.000007464506  0.000027512125
-    4  0.000007488072  0.000027512123
-    5  0.000007488075  0.000027512141
-    6  0.000007488079  0.000027512128
-    7  0.000007488071  0.000027512112
-    8  0.000007488071  0.000027512141
-    9  0.000007488081  0.000027512147
-   10  0.000007488080  0.000027512128
-   11  0.000007488072  0.000027512120
-   12  0.000007488073  0.000027512139
-   13  0.000007488079  0.000027512144
-   14  0.000007488080  0.000027512131
-   15  0.000007488071  0.000027512109
-   16  0.000007488070  0.000027512141
-   17  0.000007488081  0.000027512147
-   18  0.000007488080  0.000027512128
-   19  0.000007488072  0.000027512123
-   20  0.000007488075  0.000027512141
-   21  0.000007488079  0.000027512131
-   22  0.000007488072  0.000027512114
-   23  0.000007488070  0.000027512125
-   24  0.000007488072  0.000027512123
-   25  0.000007488074  0.000027512141
-   26  0.000007488081  0.000027512144
-   27  0.000007488078  0.000027512125
-   28  0.000007488072  0.000027512120
-   29  0.000007488072  0.000027512125
-   30  0.000007488072  0.000027512123
-   31  0.000007488074  0.000027512136
-   32  0.000007488076  0.000027512125
-   33  0.000007488072  0.000027512123
-   34  0.000007488072  0.000027512125
-   35  0.000007488073  0.000027512125
-   36  0.000007488074  0.000027512128
+    4  0.000007488073  0.000027512125
+    5  0.000007488073  0.000027512125
+    6  0.000007488071  0.000027512120
+    7  0.000007488073  0.000027512139
+    8  0.000007488079  0.000027512144
+    9  0.000007488080  0.000027512131
+   10  0.000007488071  0.000027512109
+   11  0.000007488071  0.000027512144
+   12  0.000007488080  0.000027512131
+   13  0.000007488071  0.000027512112
+   14  0.000007488072  0.000027512141
+   15  0.000007488079  0.000027512139
+   16  0.000007488079  0.000027512141
+   17  0.000007488078  0.000027512139
+   18  0.000007488080  0.000027512147
+   19  0.000007488079  0.000027512125
+   20  0.000007488072  0.000027512123
+   21  0.000007488074  0.000027512139
+   22  0.000007488079  0.000027512144
+   23  0.000007488080  0.000027512131
+   24  0.000007488072  0.000027512117
+   25  0.000007488073  0.000027512144
+   26  0.000007488080  0.000027512131
+   27  0.000007488071  0.000027512109
+   28  0.000007488071  0.000027512131
+   29  0.000007488070  0.000027512106
+   30  0.000007488070  0.000027512141
+   31  0.000007488078  0.000027512128
+   32  0.000007488072  0.000027512120
+   33  0.000007488074  0.000027512144
+   34  0.000007488080  0.000027512131
+   35  0.000007488072  0.000027512112
+   36  0.000007488070  0.000027512125
    37  0.000007488072  0.000027512123
-   38  0.000007488075  0.000027512141
-   39  0.000007488079  0.000027512131
-   40  0.000007488072  0.000027512114
-   41  0.000007488070  0.000027512125
-   42  0.000007488072  0.000027512123
-   43  0.000007488073  0.000027512139
-   44  0.000007488080  0.000027512147
-   45  0.000007488079  0.000027512125
-   46  0.000007488071  0.000027512120
-   47  0.000007488074  0.000027512141
-   48  0.000007488079  0.000027512131
-   49  0.000007488071  0.000027512109
-   50  0.000007488070  0.000027512139
-   51  0.000007488080  0.000027512144
-   52  0.000007488079  0.000027512128
-   53  0.000007488072  0.000027512120
-   54  0.000007488073  0.000027512139
-   55  0.000007488079  0.000027512144
-   56  0.000007488080  0.000027512131
-   57  0.000007488072  0.000027512112
-   58  0.000007488069  0.000027512125
-   59  0.000007488073  0.000027512125
-   60  0.000007488072  0.000027512120
+   38  0.000007488074  0.000027512139
+   39  0.000007488080  0.000027512144
+   40  0.000007488078  0.000027512125
+   41  0.000007488071  0.000027512120
+   42  0.000007488073  0.000027512139
+   43  0.000007488080  0.000027512144
+   44  0.000007488078  0.000027512125
+   45  0.000007488072  0.000027512123
+   46  0.000007488074  0.000027512141
+   47  0.000007488079  0.000027512141
+   48  0.000007488080  0.000027512141
+   49  0.000007488079  0.000027512141
+   50  0.000007488081  0.000027512147
+   51  0.000007488079  0.000027512125
+   52  0.000007488071  0.000027512120
+   53  0.000007488073  0.000027512141
+   54  0.000007488081  0.000027512144
+   55  0.000007488079  0.000027512125
+   56  0.000007488071  0.000027512120
+   57  0.000007488073  0.000027512139
+   58  0.000007488080  0.000027512144
+   59  0.000007488079  0.000027512128
+   60  0.000007488071  0.000027512112
 Could not converge new geometry in 60 iterations.
-Scaling back displacements by half
+Scaling back displacements by half...
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
@@ -1584,8 +1631,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:45 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:21 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1614,15 +1661,15 @@ Fri Apr  6 12:38:45 2007
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:45 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:22 2008
 
-user time   =       0.52 seconds =       0.01 minutes
-system time =       0.05 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.15 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:45 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:22 2008
 
 
              ------------------------------------------
@@ -1644,22 +1691,24 @@ Fri Apr  6 12:38:45 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy       59.1473460789445
+  nuclear repulsion energy       59.1473460789381
 
   using old vector from file30 as initial guess
   energy from old vector:  -187.67624028
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 1245120 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.281173e-02
+  The lowest eigenvalue of the overlap matrix was 7.908798e-03
 
 
   Reading Occupations from checkpoint file.
@@ -1673,14 +1722,15 @@ Fri Apr  6 12:38:45 2007
 
   iter       total energy        delta E         delta P          diiser
     1      -187.6762405515    2.468236e+02    0.000000e+00    0.000000e+00
-    2      -187.6762406073    5.584974e-08    1.246875e-06    6.078560e-05
-    3      -187.6762406121    4.828308e-09    3.475367e-07    1.845116e-05
-    4      -187.6762406128    6.753282e-10    1.274086e-07    8.873664e-06
-    5      -187.6762406129    9.117684e-11    4.809014e-08    2.915077e-06
-    6      -187.6762406129    8.071765e-12    1.741804e-08    1.187775e-06
-    7      -187.6762406129    0.000000e+00    3.174361e-09    1.594677e-07
-    8      -187.6762406129   -5.684342e-14    4.654477e-10    2.366019e-08
-    9      -187.6762406129    1.989520e-13    8.769109e-11    4.177705e-09
+    2      -187.6762406073    5.584985e-08    1.946255e-06    6.078560e-05
+    3      -187.6762406121    4.828109e-09    5.379893e-07    1.845116e-05
+    4      -187.6762406128    6.755272e-10    1.827978e-07    8.873664e-06
+    5      -187.6762406129    9.100631e-11    6.907883e-08    2.915077e-06
+    6      -187.6762406129    8.014922e-12    2.381247e-08    1.187775e-06
+    7      -187.6762406129    1.989520e-13    4.399506e-09    1.594677e-07
+    8      -187.6762406129    8.526513e-14    6.547295e-10    2.366020e-08
+    9      -187.6762406129   -1.421085e-13    1.213057e-10    4.177705e-09
+   10      -187.6762406129    1.989520e-13    2.108298e-11    7.545018e-10
 
  Correcting phases of orbitals.
 
@@ -1700,8 +1750,8 @@ Orbital energies (a.u.):
    2A2      0.867898     7B2      0.867898    11A1      1.056152  
    4B1      1.056152    12A1      1.387535     8B2      1.390598  
    9B2      1.425310     5B1      1.588992    13A1      1.588992  
-   3A2      1.706753    10B2      1.706753    11B2      2.122283  
-   4A2      2.122283    14A1      2.397386     6B1      2.397386  
+   3A2      1.706753    10B2      1.706753     4A2      2.122283  
+  11B2      2.122283    14A1      2.397386     6B1      2.397386  
   15A1      2.555120     7B1      2.555120    16A1      2.728518  
   12B2      3.150918     5A2      3.359573    13B2      3.359573  
   17A1      3.371086    18A1      4.359313    14B2      4.525404  
@@ -1709,23 +1759,23 @@ Orbital energies (a.u.):
   15B2     45.452661  
 
 
-        SCF total energy   =    -187.676240612908
-        kinetic energy     =     187.478779705045
-        nuc. attr. energy  =    -561.352525829484
-        elec. rep. energy  =     186.197505511531
-        potential energy   =    -375.155020317953
-        virial theorem     =       1.998947864113
+      * SCF total energy   =    -187.676240612908
+        kinetic energy     =     187.478779708216
+        nuc. attr. energy  =    -561.352525834674
+        elec. rep. energy  =     186.197505513550
+        potential energy   =    -375.155020321124
+        virial theorem     =       1.998947864130
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:45 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:22 2008
 
-user time   =       0.10 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:45 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:22 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1758,17 +1808,17 @@ Fri Apr  6 12:38:45 2007
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.000058461259
-       2        0.000000000000    -0.000377743926     0.000029230629
-       3        0.000000000000     0.000377743926     0.000029230629
+       1        0.000000000000     0.000000000000    -0.000058460670
+       2        0.000000000000    -0.000377744356     0.000029230335
+       3        0.000000000000     0.000377744356     0.000029230335
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:47 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:23 2008
 
-user time   =       2.58 seconds =       0.04 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.87 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -1778,9 +1828,10 @@ Cartesian geometry and possibly gradient in a.u. with masses
   6.0    12.00000000   0.0000000000   0.0000000000  -0.0002196521
   8.0    15.99491462   0.0000000000   2.1640869380   0.0000823957
   8.0    15.99491462   0.0000000000  -2.1640869380   0.0000823957
-                       0.0000000000   0.0000000000  -0.0000584613
-                       0.0000000000  -0.0003777439   0.0000292306
-                       0.0000000000   0.0003777439   0.0000292306
+                       0.0000000000   0.0000000000  -0.0000584607
+                       0.0000000000  -0.0003777444   0.0000292303
+                       0.0000000000   0.0003777444   0.0000292303
+
 Searching for geometrical constraints...none found.
 
 Simple Internal Coordinates and Values
@@ -1806,93 +1857,93 @@ Scaling displacements by 1.000000
 
 Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
        Value         Force        Displacement  New Value
- 1    1.14518558    0.00311209    0.00014383    1.14532941
- 2    1.14518558    0.00311209    0.00014383    1.14532941
- 3    3.14131351    0.00027628    0.00028152    3.14159502
-   MAX force:    0.0031120932   RMS force:    0.0025460153
+ 1    1.14518558    0.00311210    0.00014383    1.14532941
+ 2    1.14518558    0.00311210    0.00014383    1.14532941
+ 3    3.14131351    0.00027628    0.00028151    3.14159502
+   MAX force:    0.0031120968   RMS force:    0.0025460181
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.000080959665  0.000002716281
-    3  0.000000739350  0.000002736809
-    4  0.000000744892  0.000002736620
-    5  0.000000744829  0.000002736593
-    6  0.000000744842  0.000002736647
-    7  0.000000744824  0.000002736458
-    8  0.000000744767  0.000002736539
-    9  0.000000744851  0.000002736836
-   10  0.000000744909  0.000002736647
-   11  0.000000744824  0.000002736458
-   12  0.000000744769  0.000002736485
-   13  0.000000744801  0.000002736620
-   14  0.000000744836  0.000002736620
-   15  0.000000744843  0.000002736647
-   16  0.000000744844  0.000002736620
-   17  0.000000744841  0.000002736620
-   18  0.000000744827  0.000002736485
-   19  0.000000744761  0.000002736404
-   20  0.000000744782  0.000002736620
-   21  0.000000744829  0.000002736593
-   22  0.000000744842  0.000002736647
-   23  0.000000744826  0.000002736458
-   24  0.000000744764  0.000002736431
-   25  0.000000744772  0.000002736485
-   26  0.000000744769  0.000002736431
-   27  0.000000744780  0.000002736593
-   28  0.000000744834  0.000002736620
-   29  0.000000744827  0.000002736485
-   30  0.000000744759  0.000002736404
-   31  0.000000744785  0.000002736647
-   32  0.000000744840  0.000002736593
-   33  0.000000744830  0.000002736620
-   34  0.000000744838  0.000002736620
-   35  0.000000744836  0.000002736620
-   36  0.000000744844  0.000002736647
-   37  0.000000744842  0.000002736620
-   38  0.000000744847  0.000002736647
-   39  0.000000744831  0.000002736485
-   40  0.000000744770  0.000002736431
-   41  0.000000744777  0.000002736593
-   42  0.000000744844  0.000002736647
-   43  0.000000744818  0.000002736431
-   44  0.000000744765  0.000002736458
-   45  0.000000744770  0.000002736566
-   46  0.000000744865  0.000002736836
-   47  0.000000744887  0.000002736593
-   48  0.000000744843  0.000002736647
-   49  0.000000744822  0.000002736458
-   50  0.000000744775  0.000002736512
-   51  0.000000744804  0.000002736620
-   52  0.000000744851  0.000002736647
-   53  0.000000744818  0.000002736431
-   54  0.000000744763  0.000002736512
-   55  0.000000744819  0.000002736647
-   56  0.000000744826  0.000002736458
-   57  0.000000744761  0.000002736431
-   58  0.000000744780  0.000002736593
-   59  0.000000744835  0.000002736620
-   60  0.000000744823  0.000002736458
+    2  0.000080959357  0.000002710417
+    3  0.000000737714  0.000002730800
+    4  0.000000743257  0.000002730827
+    5  0.000000743249  0.000002730773
+    6  0.000000743253  0.000002730827
+    7  0.000000743241  0.000002730746
+    8  0.000000743255  0.000002730908
+    9  0.000000743279  0.000002730800
+   10  0.000000743249  0.000002730800
+   11  0.000000743251  0.000002730800
+   12  0.000000743246  0.000002730800
+   13  0.000000743260  0.000002730827
+   14  0.000000743240  0.000002730746
+   15  0.000000743256  0.000002730908
+   16  0.000000743274  0.000002730800
+   17  0.000000743265  0.000002730854
+   18  0.000000743248  0.000002730746
+   19  0.000000743255  0.000002730908
+   20  0.000000743279  0.000002730800
+   21  0.000000743251  0.000002730800
+   22  0.000000743245  0.000002730800
+   23  0.000000743264  0.000002730854
+   24  0.000000743251  0.000002730773
+   25  0.000000743268  0.000002730935
+   26  0.000000743284  0.000002730800
+   27  0.000000743259  0.000002730827
+   28  0.000000743244  0.000002730773
+   29  0.000000743268  0.000002730935
+   30  0.000000743283  0.000002730800
+   31  0.000000743262  0.000002730827
+   32  0.000000743235  0.000002730637
+   33  0.000000743184  0.000002730746
+   34  0.000000743269  0.000002730962
+   35  0.000000743281  0.000002730773
+   36  0.000000743266  0.000002730935
+   37  0.000000743288  0.000002730854
+   38  0.000000743290  0.000002730935
+   39  0.000000743285  0.000002730800
+   40  0.000000743254  0.000002730827
+   41  0.000000743259  0.000002730800
+   42  0.000000743245  0.000002730800
+   43  0.000000743263  0.000002730827
+   44  0.000000743231  0.000002730610
+   45  0.000000743174  0.000002730746
+   46  0.000000743279  0.000002730990
+   47  0.000000743272  0.000002730719
+   48  0.000000743273  0.000002730990
+   49  0.000000743269  0.000002730719
+   50  0.000000743279  0.000002731098
+   51  0.000000743338  0.000002730881
+   52  0.000000743296  0.000002730935
+   53  0.000000743289  0.000002730854
+   54  0.000000743287  0.000002730908
+   55  0.000000743272  0.000002730773
+   56  0.000000743250  0.000002730827
+   57  0.000000743251  0.000002730773
+   58  0.000000743247  0.000002730827
+   59  0.000000743257  0.000002730800
+   60  0.000000743251  0.000002730800
 Could not converge new geometry in 60 iterations.
-Scaling back displacements by half
+Scaling back displacements by half...
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.000040479832  0.000000005604
+    2  0.000040479679  0.000000005604
     3  0.000000001928  0.000000000001
 Convergence to displaced geometry took 3 iterations.
 
 New Cartesian Geometry in a.u.
-  6.0   0.0000000000   0.0000000000  -0.0001089004
-  8.0   0.0000000000   2.1642228527   0.0000408506
-  8.0   0.0000000000  -2.1642228527   0.0000408506
+  6.0   0.0000000000   0.0000000000  -0.0001089024
+  8.0   0.0000000000   2.1642228530   0.0000408514
+  8.0   0.0000000000  -2.1642228530   0.0000408514
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:47 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:23 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1921,15 +1972,15 @@ Fri Apr  6 12:38:47 2007
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:47 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:23 2008
 
-user time   =       0.52 seconds =       0.01 minutes
-system time =       0.05 seconds =       0.00 minutes
+user time   =       0.14 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:47 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:24 2008
 
 
              ------------------------------------------
@@ -1951,22 +2002,24 @@ Fri Apr  6 12:38:47 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy       59.1436319104510
+  nuclear repulsion energy       59.1436319024175
 
   using old vector from file30 as initial guess
   energy from old vector:  -187.67624061
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 1245120 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.281386e-02
+  The lowest eigenvalue of the overlap matrix was 7.910086e-03
 
 
   Reading Occupations from checkpoint file.
@@ -1980,14 +2033,14 @@ Fri Apr  6 12:38:47 2007
 
   iter       total energy        delta E         delta P          diiser
     1      -187.6762406820    2.468199e+02    0.000000e+00    0.000000e+00
-    2      -187.6762406953    1.329704e-08    6.078150e-07    3.077546e-05
-    3      -187.6762406964    1.150056e-09    1.686229e-07    8.577323e-06
-    4      -187.6762406966    1.656417e-10    6.321361e-08    4.500182e-06
-    5      -187.6762406966    2.268052e-11    2.396259e-08    1.456743e-06
-    6      -187.6762406966    2.359002e-12    8.713075e-09    6.004135e-07
-    7      -187.6762406966   -5.684342e-14    1.550982e-09    7.938565e-08
-    8      -187.6762406966   -5.684342e-14    2.316499e-10    1.129897e-08
-    9      -187.6762406966    8.526513e-14    4.244947e-11    2.012364e-09
+    2      -187.6762406953    1.329701e-08    9.449424e-07    3.077553e-05
+    3      -187.6762406964    1.149886e-09    2.609419e-07    8.577223e-06
+    4      -187.6762406966    1.655280e-10    9.035175e-08    4.500163e-06
+    5      -187.6762406966    2.287948e-11    3.440160e-08    1.456736e-06
+    6      -187.6762406966    2.160050e-12    1.190149e-08    6.004101e-07
+    7      -187.6762406966    5.684342e-14    2.151179e-09    7.938492e-08
+    8      -187.6762406966    1.421085e-13    3.255924e-10    1.129900e-08
+    9      -187.6762406966   -1.989520e-13    5.878941e-11    2.012350e-09
 
  Correcting phases of orbitals.
 
@@ -2007,8 +2060,8 @@ Orbital energies (a.u.):
    2A2      0.867901     7B2      0.867901    11A1      1.056136  
    4B1      1.056136    12A1      1.387513     8B2      1.390386  
    9B2      1.425296     5B1      1.589010    13A1      1.589010  
-   3A2      1.706669    10B2      1.706669    11B2      2.122289  
-   4A2      2.122289     6B1      2.397320    14A1      2.397320  
+   3A2      1.706669    10B2      1.706669     4A2      2.122289  
+  11B2      2.122289     6B1      2.397320    14A1      2.397320  
   15A1      2.555001     7B1      2.555001    16A1      2.728471  
   12B2      3.150815     5A2      3.359434    13B2      3.359434  
   17A1      3.370904    18A1      4.359292    14B2      4.525370  
@@ -2016,23 +2069,23 @@ Orbital energies (a.u.):
   15B2     45.452639  
 
 
-        SCF total energy   =    -187.676240696621
-        kinetic energy     =     187.478066901920
-        nuc. attr. energy  =    -561.344567444238
-        elec. rep. energy  =     186.190259845697
-        potential energy   =    -375.154307598541
-        virial theorem     =       1.998944065621
+      * SCF total energy   =    -187.676240696621
+        kinetic energy     =     187.478066900378
+        nuc. attr. energy  =    -561.344567427025
+        elec. rep. energy  =     186.190259830025
+        potential energy   =    -375.154307596999
+        virial theorem     =       1.998944065613
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:47 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:24 2008
 
-user time   =       0.10 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:48 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:24 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2065,16 +2118,16 @@ Fri Apr  6 12:38:48 2007
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.000029001071
-       2        0.000000000000    -0.000189180058     0.000014500535
-       3        0.000000000000     0.000189180058     0.000014500535
+       1        0.000000000000     0.000000000000    -0.000029001597
+       2        0.000000000000    -0.000189179649     0.000014500798
+       3        0.000000000000     0.000189179649     0.000014500798
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:49 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:25 2008
 
-user time   =       2.58 seconds =       0.04 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.84 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
@@ -2082,12 +2135,13 @@ total time  =          1 seconds =       0.02 minutes
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  6.0    12.00000000   0.0000000000   0.0000000000  -0.0001089004
-  8.0    15.99491462   0.0000000000   2.1642228527   0.0000408506
-  8.0    15.99491462   0.0000000000  -2.1642228527   0.0000408506
-                       0.0000000000   0.0000000000  -0.0000290011
-                       0.0000000000  -0.0001891801   0.0000145005
-                       0.0000000000   0.0001891801   0.0000145005
+  6.0    12.00000000   0.0000000000   0.0000000000  -0.0001089024
+  8.0    15.99491462   0.0000000000   2.1642228530   0.0000408514
+  8.0    15.99491462   0.0000000000  -2.1642228530   0.0000408514
+                       0.0000000000   0.0000000000  -0.0000290016
+                       0.0000000000  -0.0001891796   0.0000145008
+                       0.0000000000   0.0001891796   0.0000145008
+
 Searching for geometrical constraints...none found.
 
 Simple Internal Coordinates and Values
@@ -2095,7 +2149,7 @@ Stretches
     (1 1 2) (1.14525750)
     (2 1 3) (1.14525750)
 Bends
-    (3 2 1 3) (179.99207096)
+    (3 2 1 3) (179.99207082)
  
  ** Taking normal optimization step. **
 
@@ -2115,27 +2169,27 @@ Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
        Value         Force        Displacement  New Value
  1    1.14525750    0.00155859    0.00007214    1.14532964
  2    1.14525750    0.00155859    0.00007214    1.14532964
- 3    3.14145427    0.00013694    0.00013851    3.14159277
-   MAX force:    0.0015585935   RMS force:    0.0012750399
+ 3    3.14145426    0.00013695    0.00013851    3.14159277
+   MAX force:    0.0015585901   RMS force:    0.0012750373
 
 Back-transformation to cartesian coordinates...
  Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.000040377441  0.000000131404
-    3  0.000000035176  0.000000134835
+    2  0.000040377728  0.000000136166
+    3  0.000000037679  0.000000143066
 Convergence to displaced geometry took 3 iterations.
 
 New Cartesian Geometry in a.u.
-  6.0   0.0000000000   0.0000000000  -0.0000000892
-  8.0   0.0000000000   2.1643591876   0.0000000335
-  8.0   0.0000000000  -2.1643591876   0.0000000335
+  6.0   0.0000000000   0.0000000000  -0.0000001000
+  8.0   0.0000000000   2.1643591873   0.0000000375
+  8.0   0.0000000000  -2.1643591873   0.0000000375
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:49 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:25 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2161,18 +2215,18 @@ Fri Apr  6 12:38:49 2007
     Computational point group        = C2v
     Number of irreps                 = 4
 
-    Wrote 167600 two-electron integrals to IWL file 33
+    Wrote 167514 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:50 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:25 2008
 
-user time   =       0.50 seconds =       0.01 minutes
-system time =       0.05 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.15 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:50 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:25 2008
 
 
              ------------------------------------------
@@ -2194,22 +2248,24 @@ Fri Apr  6 12:38:50 2007
   direct       = false
   dertype      = FIRST
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy       59.1399065056142
+  nuclear repulsion energy       59.1399065130037
 
   using old vector from file30 as initial guess
   energy from old vector:  -187.67624070
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 1245120 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 1.281601e-02
+  The lowest eigenvalue of the overlap matrix was 7.911377e-03
 
 
   Reading Occupations from checkpoint file.
@@ -2219,18 +2275,18 @@ Fri Apr  6 12:38:50 2007
   SOCC:              0     0     0     0   
 
   reading integrals in the IWL format from files 33,35,36,37
-  wrote 70129 integrals to file92
+  wrote 70100 integrals to file92
 
   iter       total energy        delta E         delta P          diiser
     1      -187.6762407101    2.468161e+02    0.000000e+00    0.000000e+00
-    2      -187.6762407233    1.315496e-08    6.044138e-07    3.086448e-05
-    3      -187.6762407244    1.137806e-09    1.675097e-07    8.430195e-06
-    4      -187.6762407246    1.652154e-10    6.311804e-08    4.518700e-06
-    5      -187.6762407246    2.262368e-11    2.395594e-08    1.455781e-06
-    6      -187.6762407246    2.074785e-12    8.718309e-09    6.025717e-07
-    7      -187.6762407246    5.684342e-14    1.543146e-09    7.938436e-08
-    8      -187.6762407246    2.842171e-14    2.315067e-10    1.117941e-08
-    9      -187.6762407246   -5.684342e-14    4.214514e-11    1.994281e-09
+    2      -187.6762407233    1.315422e-08    9.387198e-07    3.086435e-05
+    3      -187.6762407244    1.137778e-09    2.591888e-07    8.429515e-06
+    4      -187.6762407246    1.649880e-10    9.012998e-08    4.518683e-06
+    5      -187.6762407246    2.285105e-11    3.438608e-08    1.455761e-06
+    6      -187.6762407246    2.103206e-12    1.190592e-08    6.025677e-07
+    7      -187.6762407246    1.421085e-13    2.140645e-09    7.938264e-08
+    8      -187.6762407246   -1.421085e-13    3.253150e-10    1.117879e-08
+    9      -187.6762407246    0.000000e+00    5.838240e-11    1.994180e-09
 
  Correcting phases of orbitals.
 
@@ -2244,38 +2300,38 @@ Orbital energies (a.u.):
 
 
   Unoccupied orbitals
-   2B1      0.213489     6A1      0.213489     7A1      0.228667  
+   6A1      0.213489     2B1      0.213489     7A1      0.228667  
    5B2      0.353915     8A1      0.402385     3B1      0.402385  
    9A1      0.697811    10A1      0.752030     6B2      0.785494  
    2A2      0.867905     7B2      0.867905     4B1      1.056120  
   11A1      1.056120    12A1      1.387490     8B2      1.390174  
    9B2      1.425283    13A1      1.589027     5B1      1.589027  
-   3A2      1.706585    10B2      1.706585     4A2      2.122296  
-  11B2      2.122296    14A1      2.397253     6B1      2.397253  
-   7B1      2.554882    15A1      2.554882    16A1      2.728425  
+   3A2      1.706585    10B2      1.706585    11B2      2.122296  
+   4A2      2.122296    14A1      2.397253     6B1      2.397253  
+  15A1      2.554882     7B1      2.554882    16A1      2.728425  
   12B2      3.150712     5A2      3.359295    13B2      3.359295  
   17A1      3.370721    18A1      4.359272    14B2      4.525336  
   19A1      4.527430    20A1     27.370691    21A1     45.390918  
   15B2     45.452616  
 
 
-        SCF total energy   =    -187.676240724599
-        kinetic energy     =     187.477352063203
-        nuc. attr. energy  =    -561.336585019827
-        elec. rep. energy  =     186.182992232026
-        potential energy   =    -375.153592787801
-        virial theorem     =       1.998940256579
+      * SCF total energy   =    -187.676240724599
+        kinetic energy     =     187.477352064620
+        nuc. attr. energy  =    -561.336585035661
+        elec. rep. energy  =     186.182992246442
+        potential energy   =    -375.153592789219
+        virial theorem     =       1.998940256587
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:50 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:25 2008
 
-user time   =       0.10 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on mac4704.local
-Fri Apr  6 12:38:50 2007
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:25 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2308,16 +2364,16 @@ Fri Apr  6 12:38:50 2007
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.000000024128
-       2        0.000000000000    -0.000000116407     0.000000012064
-       3        0.000000000000     0.000000116407     0.000000012064
+       1        0.000000000000     0.000000000000    -0.000000026993
+       2        0.000000000000    -0.000000116781     0.000000013497
+       3        0.000000000000     0.000000116781     0.000000013497
 
 ******************************************************************************
-tstop called on mac4704.local
-Fri Apr  6 12:38:51 2007
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:03:26 2008
 
-user time   =       2.58 seconds =       0.04 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.86 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
@@ -2325,12 +2381,13 @@ total time  =          1 seconds =       0.02 minutes
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  6.0    12.00000000   0.0000000000   0.0000000000  -0.0000000892
-  8.0    15.99491462   0.0000000000   2.1643591876   0.0000000335
-  8.0    15.99491462   0.0000000000  -2.1643591876   0.0000000335
-                       0.0000000000   0.0000000000  -0.0000000241
-                       0.0000000000  -0.0000001164   0.0000000121
-                       0.0000000000   0.0000001164   0.0000000121
+  6.0    12.00000000   0.0000000000   0.0000000000  -0.0000001000
+  8.0    15.99491462   0.0000000000   2.1643591873   0.0000000375
+  8.0    15.99491462   0.0000000000  -2.1643591873   0.0000000375
+                       0.0000000000   0.0000000000  -0.0000000270
+                       0.0000000000  -0.0000001168   0.0000000135
+                       0.0000000000   0.0000001168   0.0000000135
+
 Searching for geometrical constraints...none found.
 
 Simple Internal Coordinates and Values
@@ -2338,7 +2395,7 @@ Stretches
     (1 1 2) (1.14532964)
     (2 1 3) (1.14532964)
 Bends
-    (3 2 1 3) (179.99999344)
+    (3 2 1 3) (179.99999276)
  
  ** Taking normal optimization step. **
 
@@ -2346,7 +2403,7 @@ Current SCF energy before step      -187.6762407246
 
 Taking geometry step number 8
 
-BuB^t Determinant: 4.909957e-03
+BuB^t Determinant: 5.052049e-03
 
 Force Constants read from PSIF_OPTKING
 
@@ -2358,15 +2415,15 @@ Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
        Value         Force        Displacement  New Value
  1    1.14532964    0.00000096    0.00000004    1.14532969
  2    1.14532964    0.00000096    0.00000004    1.14532969
- 3    3.14159254    0.00000011    0.00000012    3.14159265
-   MAX force:    0.0000009590   RMS force:    0.0000007859
+ 3    3.14159253    0.00000013    0.00000013    3.14159265
+   MAX force:    0.0000009621   RMS force:    0.0000007890
 
 MAX force is < 1.0e-05.  Optimization is complete.
 Final SCF energy is -187.6762407246
 The Optimized geometry in a.u.
-  (  C   0.0000000000   0.0000000000  -0.0000000892 )
-  (  O   0.0000000000   2.1643591876   0.0000000335 )
-  (  O   0.0000000000  -2.1643591876   0.0000000335 )
+  (  C   0.0000000000   0.0000000000  -0.0000001000 )
+  (  O   0.0000000000   2.1643591873   0.0000000375 )
+  (  O   0.0000000000  -2.1643591873   0.0000000375 )
   zmat = ( 
     ( C )
     ( O  1 CO)
@@ -2380,3 +2437,12 @@ The Optimized geometry in a.u.
 
 ******** OPTKING execution completed ********
 
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:03:27 2008
+
+Total PSI3 wall time         14 seconds =       0.23 minutes
+******************************************************************************

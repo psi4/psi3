@@ -1,16 +1,46 @@
 ******************************************************************************
-tstart called on tool.chemistry.gatech.edu
-Thu Jul  3 18:14:34 2003
+PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:39:41 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF SCF one-electron properties computation.
+
+The following programs will be executed:
+
+ input
+ cints
+ cscf
+ oeprop
+ psiclean
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:41 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	6-31G** SCF H2O
   SHOWNORM    =	0
   PUREAM      =	0
   PRINT_LVL   =	1
+
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
+Coordinates after reading z-matrices
+
+           1           2           3
+
+    1   0.0000000   0.0000000   0.0000000
+    2   0.0000000   0.0000000   1.8897260
+    3   1.8405477   0.0000000  -0.4283089
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -27,9 +57,9 @@ Thu Jul  3 18:14:34 2003
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000    -0.131510165098     0.000000000000
-        HYDROGEN      1.479940996653     1.043580877476     0.000000000000
-        HYDROGEN     -1.479940996653     1.043580877476     0.000000000000
+          OXYGEN      0.000000000000    -0.131510165113     0.000000000000
+        HYDROGEN      1.479940996653     1.043580877461    -0.000000000000
+        HYDROGEN     -1.479940996653     1.043580877461    -0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -85,32 +115,32 @@ Thu Jul  3 18:14:34 2003
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.131510165098
-        HYDROGEN      0.000000000000     1.479940996653     1.043580877476
+          OXYGEN      0.000000000000     0.000000000000    -0.131510165113
+        HYDROGEN     -0.000000000000     1.479940996653     1.043580877461
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.131510165098
-        HYDROGEN      0.000000000000     1.479940996653     1.043580877476
-        HYDROGEN      0.000000000000    -1.479940996653     1.043580877476
+          OXYGEN      0.000000000000     0.000000000000    -0.131510165113
+        HYDROGEN     -0.000000000000     1.479940996653     1.043580877461
+        HYDROGEN     -0.000000000000    -1.479940996653     1.043580877461
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.069592187382
-        HYDROGEN      0.000000000000     0.783151105291     0.552239257852
-        HYDROGEN      0.000000000000    -0.783151105291     0.552239257852
+          OXYGEN      0.000000000000     0.000000000000    -0.069592187390
+        HYDROGEN     -0.000000000000     0.783151105291     0.552239257844
+        HYDROGEN     -0.000000000000    -0.783151105291     0.552239257844
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.131510165098
-        HYDROGEN      0.000000000000     1.479940996653     1.043580877476
-        HYDROGEN      0.000000000000    -1.479940996653     1.043580877476
+          OXYGEN      0.000000000000     0.000000000000    -0.131510165113
+        HYDROGEN     -0.000000000000     1.479940996653     1.043580877461
+        HYDROGEN     -0.000000000000    -1.479940996653     1.043580877461
 
 
   --------------------------------------------------------------------------
@@ -125,17 +155,20 @@ Thu Jul  3 18:14:34 2003
     2   1.0000000   0.0000000
     3   1.0000000   1.5663022   0.0000000
 
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
 
 ******************************************************************************
-tstop called on tool.chemistry.gatech.edu
-Thu Jul  3 18:14:34 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:41 2008
 
-user time   =       0.10 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on tool.chemistry.gatech.edu
-Thu Jul  3 18:14:36 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:41 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -151,27 +184,28 @@ Thu Jul  3 18:14:36 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = 6-31G** SCF H2O                                                                 
+    Label                       = 6-31G** SCF H2O
     Number of atoms             = 3
     Number of atomic orbitals   = 25
     Number of symmetry orbitals = 25
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
+
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on tool.chemistry.gatech.edu
-Thu Jul  3 18:14:36 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:41 2008
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on tool.chemistry.gatech.edu
-Thu Jul  3 18:14:36 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:41 2008
 
 
              ------------------------------------------
@@ -182,8 +216,10 @@ Thu Jul  3 18:14:36 2003
 
              ------------------------------------------
 
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
 
-  label       = 6-31G** SCF H2O
+  label        = 6-31G** SCF H2O
   wfn          = SCF
   reference    = RHF
   multiplicity = 1
@@ -191,20 +227,22 @@ Thu Jul  3 18:14:36 2003
   direct       = false
   dertype      = NONE
   convergence  = 7
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy        8.8046872909987
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   keeping integrals in 114320 bytes of core
 
-  The lowest eigenvalue of the overlap matrix was 2.424690e-02
+  The lowest eigenvalue of the overlap matrix was 2.336125e-02
 
   Using core guess to determine occupations
 
@@ -218,51 +256,51 @@ Thu Jul  3 18:14:36 2003
 
   iter       total energy        delta E         delta P          diiser
     1       -68.3548843162    7.715957e+01    0.000000e+00    0.000000e+00
-    2       -71.3777628421    3.022879e+00    1.130296e-01    1.175783e+00
-    3       -75.8581629361    4.480400e+00    1.037941e-01    8.860959e-01
-    4       -75.9956701999    1.375073e-01    5.906119e-03    2.044394e-01
-    5       -76.0169750721    2.130487e-02    1.931266e-03    1.024212e-01
-    6       -76.0172760736    3.010015e-04    2.842273e-04    9.429688e-03
-    7       -76.0172962933    2.021965e-05    7.939114e-05    2.474006e-03
-    8       -76.0172965444    2.510913e-07    9.894937e-06    1.856559e-04
-    9       -76.0172965714    2.696443e-08    3.411769e-06    8.255086e-05
-   10       -76.0172965718    4.839507e-10    3.849065e-07    1.190427e-05
-   11       -76.0172965718    5.911716e-12    4.827812e-08    9.566678e-07
+    2       -71.3777628421    3.022879e+00    1.399601e-01    1.175783e+00
+    3       -75.8950385812    4.517276e+00    1.321230e-01    8.860959e-01
+    4       -76.0105072924    1.154687e-01    3.342620e-03    1.777807e-01
+    5       -76.0171082477    6.600955e-03    1.087341e-03    3.660637e-02
+    6       -76.0172750266    1.667789e-04    1.631839e-04    1.105642e-02
+    7       -76.0172961424    2.111579e-05    8.028996e-05    3.795642e-03
+    8       -76.0172965569    4.145115e-07    1.112082e-05    3.044370e-04
+    9       -76.0172965711    1.418182e-08    3.058291e-06    6.058786e-05
+   10       -76.0172965718    7.222667e-10    7.688486e-07    1.135728e-05
+   11       -76.0172965718    1.453770e-11    8.776689e-08    1.414942e-06
 
 Orbital energies (a.u.):
 
   Doubly occupied orbitals
-   1A1    -20.568998     2A1     -1.320609     1B2     -0.678724  
-   3A1     -0.563930     1B1     -0.495003  
+   1A1    -20.569000     2A1     -1.320609     1B2     -0.678724  
+   3A1     -0.563931     1B1     -0.495004  
 
 
   Unoccupied orbitals
    4A1      0.202466     2B2      0.292719     3B2      0.981164  
-   5A1      1.056318     6A1      1.129180     2B1      1.168639  
+   5A1      1.056318     6A1      1.129179     2B1      1.168639  
    4B2      1.294986     7A1      1.413596     1A2      1.802875  
-   8A1      1.806917     3B1      1.918872     9A1      2.513249  
-   5B2      2.537822     6B2      2.713578     2A2      2.921065  
-   4B1      2.947486    10A1      3.291755    11A1      3.620731  
-   7B2      3.874917    12A1      4.077741  
+   8A1      1.806916     3B1      1.918871     9A1      2.513249  
+   5B2      2.537822     6B2      2.713577     2A2      2.921065  
+   4B1      2.947486    10A1      3.291755    11A1      3.620730  
+   7B2      3.874917    12A1      4.077740  
 
 
-        SCF total energy   =     -76.017296571840
-        kinetic energy     =      75.657176480828
-        nuc. attr. energy  =    -198.046606262313
-        elec. rep. energy  =      46.372133209644
-        potential energy   =    -151.674473052669
-        virial theorem     =       1.995262655905
+      * SCF total energy   =     -76.017296571839
+        kinetic energy     =      75.657182052464
+        nuc. attr. energy  =    -198.046616063193
+        elec. rep. energy  =      46.372137438889
+        potential energy   =    -151.674478624304
+        virial theorem     =       1.995262729200
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on tool.chemistry.gatech.edu
-Thu Jul  3 18:14:36 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:41 2008
 
 user time   =       0.01 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on tool.chemistry.gatech.edu
-Thu Jul  3 18:14:42 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:41 2008
 
     **********************************************
     *                    OEPROP                  *
@@ -281,18 +319,18 @@ Thu Jul  3 18:14:42 2003
     $Electrostatic properties at the nuclei will be evaluated.
 will be evaluated over a rectangular 40x40 grid.
 
-  Title : '6-31G** SCF H2O                                                                 '
+  Title : '6-31G** SCF H2O'
 
   List of PARAMETERS :
-    # of atoms                 =	3
-    # of molecular orbitals    =	25
-    # of basis functions       =	25
-    # of atomic orbitals       =	25
-    # of irreps                =	4
-    Total charge               =	0
-    # of unique shells         =	12
-    # of primitives            =	20
-    Print level                =	1
+    # of atoms                 =      3
+    # of molecular orbitals    =     25
+    # of basis functions       =     25
+    # of atomic orbitals       =     25
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     12
+    # of primitives            =     20
+    Print level                =      1
 
   List of GRID PARAMETERS :
     GRID_ORIGIN                =	( -4.00000 -4.00000 -4.00000 )
@@ -303,6 +341,8 @@ will be evaluated over a rectangular 40x40 grid.
     NIY                        =	  40
     NIZ                        =	  40
 
+	Densities available up to root 1
+	** Analyzing density number 1 **
  --------------------------------------------------------------
    ** Mulliken population analysis of one-particle density **
  --------------------------------------------------------------
@@ -312,46 +352,46 @@ will be evaluated over a rectangular 40x40 grid.
   Center   AO          L          Q(AO)
   ------  ----        ---      -----------
      1      1          0        1.99546097
-     1      2          0        0.90536020
-     1      3          0        0.91192851
-     1      4          1        1.14764460
-     1      5          1        0.77862789
-     1      6          1        0.91698335
-     1      7          1        0.83243731
-     1      8          1        0.49607745
-     1      9          1        0.66326399
-     1     10          2        0.00472906
+     1      2          0        0.90536070
+     1      3          0        0.91192795
+     1      4          1        1.14764547
+     1      5          1        0.77862698
+     1      6          1        0.91698442
+     1      7          1        0.83243646
+     1      8          1        0.49607709
+     1      9          1        0.66326356
+     1     10          2        0.00472907
      1     11          2        0.00000000
-     1     12          2        0.00191567
-     1     13          2        0.01003172
-     1     14          2        0.01425632
+     1     12          2        0.00191566
+     1     13          2        0.01003169
+     1     14          2        0.01425634
      1     15          2        0.00449155
-     2     16          0        0.46371916
-     2     17          0        0.15715195
-     2     18          1        0.00900121
-     2     19          1        0.01610324
-     2     20          1        0.01242015
-     3     21          0        0.46371916
-     3     22          0        0.15715195
-     3     23          1        0.00900121
-     3     24          1        0.01610324
-     3     25          1        0.01242015
+     2     16          0        0.46371921
+     2     17          0        0.15715227
+     2     18          1        0.00900120
+     2     19          1        0.01610323
+     2     20          1        0.01242013
+     3     21          0        0.46371921
+     3     22          0        0.15715227
+     3     23          1        0.00900120
+     3     24          1        0.01610323
+     3     25          1        0.01242013
 
 
  -Atomic bond populations :
 
            1           2           3
 
-    1   7.0949687   0.2932585   0.2932585
-    2   0.2932585   0.3216917  -0.0234583
-    3   0.2932585  -0.0234583   0.3216917
+    1   7.0949679   0.2932587   0.2932587
+    2   0.2932587   0.3216921  -0.0234587
+    3   0.2932587  -0.0234587   0.3216921
 
 
  -Gross atomic populations and net charges :
 
     Center    Atomic Population    Net Charge
     ------    -----------------    ----------
-       1            8.683209        -0.683209
+       1            8.683208        -0.683208
        2            0.658396        +0.341604
        3            0.658396        +0.341604
 
@@ -366,31 +406,31 @@ will be evaluated over a rectangular 40x40 grid.
  -Coordinates of the reference point (a.u.) :
            x                     y                     z
   --------------------  --------------------  --------------------
-          0.0000000000         -0.0000000000         -0.0000000000
+          0.0000000000         -0.0000000000          0.0000000000
 
  -Electric dipole moment (expectation values) :
 
-    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
-    mu(Y)  =  -0.00000 D  =  -9.41286816e-45 C*m  =  -0.00000000 a.u.
-    mu(Z)  =   2.24145 D  =   7.47667986e-30 C*m  =   0.88185471 a.u.
-    |mu|   =   2.24145 D  =   7.47667986e-30 C*m  =   0.88185471 a.u.
+    mu(X)  =  -0.00000 D  =  -3.53289614e-45 C*m  =  -0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -1.56268319e-44 C*m  =  -0.00000000 a.u.
+    mu(Z)  =   2.24145 D  =   7.47667957e-30 C*m  =   0.88185468 a.u.
+    |mu|   =   2.24145 D  =   7.47667957e-30 C*m  =   0.88185468 a.u.
 
  -Components of electric quadrupole moment (expectation values) (a.u.) :
 
-     Q(XX) =   -1.76092233   Q(YY) =    1.75857095   Q(ZZ) =    0.00235138
-     Q(XY) =    0.00000000   Q(XZ) =    0.00000000   Q(YZ) =    0.09791257
+     Q(XX) =   -1.76092058   Q(YY) =    1.75856812   Q(ZZ) =    0.00235246
+     Q(XY) =    0.00000000   Q(XZ) =   -0.00000000   Q(YZ) =    0.09791202
 
  -Principal values (a.u.) and axis of electric quadrupole moment :
 
-    Q1     =   -1.76092233      V1 = ( 1.00000000  0.00000000  0.00000000)
-    Q2     =   -0.00309057      V2 = ( 0.00000000 -0.05549403  0.99845902)
-    Q3     =    1.76401290      V3 = ( 0.00000000 -0.99845902 -0.05549403)
+    Q1     =   -1.76092058      V1 = ( 1.00000000 -0.00000000  0.00000000)
+    Q2     =   -0.00308944      V2 = (-0.00000000 -0.05549384  0.99845903)
+    Q3     =    1.76401002      V3 = (-0.00000000 -0.99845903 -0.05549384)
 
  -Components of electric octopole moment (expectation values) (a.u.) :
 
-    O(XXX) =    0.00000000  O(XXY) =    0.00000000  O(XXZ) =   -1.39735155
-    O(YYY) =   -0.00000000  O(XYY) =    0.00000000  O(YYZ) =    3.34015457
-    O(ZZZ) =   -1.94280302  O(XZZ) =    0.00000000  O(YZZ) =    0.00000000
+    O(XXX) =    0.00000000  O(XXY) =    0.00000000  O(XXZ) =   -1.39735097
+    O(YYY) =   -0.00000000  O(XYY) =   -0.00000000  O(YYZ) =    3.34015037
+    O(ZZZ) =   -1.94279940  O(XZZ) =   -0.00000000  O(YZZ) =    0.00000000
                             O(XYZ) =    0.00000000 
 
 
@@ -401,7 +441,7 @@ will be evaluated over a rectangular 40x40 grid.
  -Coordinates of the reference point (a.u.) :
            x                     y                     z
   --------------------  --------------------  --------------------
-          0.0000000000          0.0000000000          0.0000000000
+         -0.0000000000          0.0000000000          0.0000000000
 
  -Electronic angular momentum (expectation values) :
 
@@ -422,56 +462,56 @@ will be evaluated over a rectangular 40x40 grid.
     #   Charge           x                     y                     z
    ---  ------  --------------------  --------------------  --------------------
     1      8            0.0000000000          0.0000000000         -0.1315101651
-    2      1            0.0000000000          1.4799409967          1.0435808775
-    3      1            0.0000000000         -1.4799409967          1.0435808775
+    2      1           -0.0000000000          1.4799409967          1.0435808775
+    3      1           -0.0000000000         -1.4799409967          1.0435808775
 
 
  -Electrostatic potential and electric field (a.u.) :
 
     Center         phi            Ex             Ey           Ez
     ------    ------------   ------------  ------------  ------------
-       1      -22.30375315     0.00000000   -0.00000000   -0.11900142
-       2       -1.00360324     0.00000000   -0.03191577   -0.03315459
-       3       -1.00360324     0.00000000    0.03191577   -0.03315459
+       1      -22.30375435     0.00000000    0.00000000   -0.11900150
+       2       -1.00360335     0.00000000   -0.03191574   -0.03315468
+       3       -1.00360335    -0.00000000    0.03191574   -0.03315468
 
 
  -Electric field gradient (regular form) (a.u.):
 
     Center           XX                    YY                    ZZ
     ------  --------------------  --------------------  --------------------
-       1          -1214.68596459        -1218.42231060        -1217.05544729
-       2             -1.34576666           -1.73327541           -1.60376479
-       3             -1.34576666           -1.73327541           -1.60376479
+       1          -1214.68597290        -1218.42233591        -1217.05545437
+       2             -1.34576694           -1.73327534           -1.60376510
+       3             -1.34576694           -1.73327534           -1.60376510
 
     Center           XY                    XZ                    YZ
     ------  --------------------  --------------------  --------------------
-       1              0.00000000            0.00000000           -0.00000000
-       2              0.00000000            0.00000000            1.48137886
-       3              0.00000000            0.00000000           -1.48137886
+       1              0.00000000           -0.00000000            0.00000000
+       2              0.00000000            0.00000000            1.48137900
+       3             -0.00000000            0.00000000           -1.48137900
 
 
  -Electric field gradient (traceless tensor form) (a.u.):
 
     Center        XX - RR/3             YY - RR/3             ZZ - RR/3
     ------  --------------------  --------------------  --------------------
-       1              2.03527623           -1.70106977           -0.33420646
-       2              0.21516896           -0.17233979           -0.04282917
-       3              0.21516896           -0.17233979           -0.04282917
+       1              2.03528149           -1.70108151           -0.33419998
+       2              0.21516886           -0.17233955           -0.04282931
+       3              0.21516886           -0.17233955           -0.04282931
 
     Center           XY                    XZ                    YZ
     ------  --------------------  --------------------  --------------------
-       1              0.00000000            0.00000000           -0.00000000
-       2              0.00000000            0.00000000            1.48137886
-       3              0.00000000            0.00000000           -1.48137886
+       1              0.00000000           -0.00000000            0.00000000
+       2              0.00000000            0.00000000            1.48137900
+       3             -0.00000000            0.00000000           -1.48137900
 
 
  -Electron density (a.u.):
 
     Center           rho
     ------  --------------------
-       1            290.47079976
-       2              0.37264593
-       3              0.37264593
+       1            290.47080300
+       2              0.37264597
+       3              0.37264597
 
 
  --------------------------------------------------------------
@@ -490,10 +530,9 @@ will be evaluated over a rectangular 40x40 grid.
 
  -Relativistic MVD one-electron corrections to the energy (a.u.):
 
-    Mass-velocity (p^4) term     :    -0.24538837
-    One-electron Darwin term     :     0.19443853
-    Total one-electron MVD terms :    -0.05094984
-
+    Mass-velocity (p^4) term     :   -0.245388373142584
+    One-electron Darwin term     :   0.194438533266886
+    Total one-electron MVD terms :   -0.050949839875699
 
   NOTE : Spatial extents are computed with respect to the same reference point
          as multipole moments.
@@ -534,9 +573,18 @@ will be evaluated over a rectangular 40x40 grid.
      26     B2       0.0000       0.0000       0.0000       4.1835
 
 ******************************************************************************
-tstop called on tool.chemistry.gatech.edu
-Thu Jul  3 18:14:43 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:39:42 2008
 
-user time   =       1.03 seconds =       0.02 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.26 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:39:42 2008
+
+Total PSI3 wall time          1 seconds =       0.02 minutes
+******************************************************************************

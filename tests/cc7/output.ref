@@ -1,16 +1,42 @@
 ******************************************************************************
-tstart called on castor.giga.net
-Tue Dec 10 16:40:38 2002
+PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 19 13:39:27 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF CCSD_T energy computation.
+
+The following programs will be executed:
+
+ input
+ cints
+ cscf
+ transqt2
+ ccsort
+ ccenergy
+ cctriples
+ psiclean
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 19 13:39:27 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	PRC Calcs: PVTZ/CCSD(T) Pyramidal
   SHOWNORM    =	0
-  PUREAM      =	1
+  PUREAM      =	0
   PRINT_LVL   =	2
+
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -33,15 +59,15 @@ Tue Dec 10 16:40:38 2002
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON      1.919452863900    -0.000000000000    -0.250355806257
-        NITROGEN      4.082364013922    -0.000000000000     0.407834480807
-          CARBON     -0.600054781174     0.000000000000    -1.240270557891
-          CARBON     -2.535943826553     1.443314290000     0.376633361588
-          CARBON     -2.535943826553    -1.443314290000     0.376633361588
-        HYDROGEN     -1.955859549342     2.348215820000     2.163609102754
-        HYDROGEN     -4.064912991533     2.454030870000    -0.607099205130
-        HYDROGEN     -1.955859549342    -2.348215820000     2.163609102754
-        HYDROGEN     -4.064912991533    -2.454030870000    -0.607099205130
+          CARBON      1.919452863920    -0.000000000000    -0.250355806251
+        NITROGEN      4.082364013942    -0.000000000000     0.407834480816
+          CARBON     -0.600054781152    -0.000000000000    -1.240270557888
+          CARBON     -2.535943826533     1.443314290000     0.376633361588
+          CARBON     -2.535943826533    -1.443314290000     0.376633361588
+        HYDROGEN     -1.955859549324     2.348215820000     2.163609102756
+        HYDROGEN     -4.064912991512     2.454030870000    -0.607099205131
+        HYDROGEN     -1.955859549324    -2.348215820000     2.163609102756
+        HYDROGEN     -4.064912991512    -2.454030870000    -0.607099205131
 
 
   -SYMMETRY INFORMATION:
@@ -257,54 +283,54 @@ Tue Dec 10 16:40:38 2002
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON     -0.250355806257     1.919452863900    -0.000000000000
-        NITROGEN      0.407834480807     4.082364013922    -0.000000000000
-          CARBON     -1.240270557891    -0.600054781174     0.000000000000
-          CARBON      0.376633361588    -2.535943826553     1.443314290000
-        HYDROGEN      2.163609102754    -1.955859549342     2.348215820000
-        HYDROGEN     -0.607099205130    -4.064912991533     2.454030870000
+          CARBON     -0.250355806251     1.919452863920    -0.000000000000
+        NITROGEN      0.407834480816     4.082364013942    -0.000000000000
+          CARBON     -1.240270557888    -0.600054781152    -0.000000000000
+          CARBON      0.376633361588    -2.535943826533     1.443314290000
+        HYDROGEN      2.163609102756    -1.955859549324     2.348215820000
+        HYDROGEN     -0.607099205131    -4.064912991512     2.454030870000
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON     -0.250355806257     1.919452863900    -0.000000000000
-        NITROGEN      0.407834480807     4.082364013922    -0.000000000000
-          CARBON     -1.240270557891    -0.600054781174     0.000000000000
-          CARBON      0.376633361588    -2.535943826553     1.443314290000
-          CARBON      0.376633361588    -2.535943826553    -1.443314290000
-        HYDROGEN      2.163609102754    -1.955859549342     2.348215820000
-        HYDROGEN     -0.607099205130    -4.064912991533     2.454030870000
-        HYDROGEN      2.163609102754    -1.955859549342    -2.348215820000
-        HYDROGEN     -0.607099205130    -4.064912991533    -2.454030870000
+          CARBON     -0.250355806251     1.919452863920    -0.000000000000
+        NITROGEN      0.407834480816     4.082364013942    -0.000000000000
+          CARBON     -1.240270557888    -0.600054781152    -0.000000000000
+          CARBON      0.376633361588    -2.535943826533     1.443314290000
+          CARBON      0.376633361588    -2.535943826533    -1.443314290000
+        HYDROGEN      2.163609102756    -1.955859549324     2.348215820000
+        HYDROGEN     -0.607099205131    -4.064912991512     2.454030870000
+        HYDROGEN      2.163609102756    -1.955859549324    -2.348215820000
+        HYDROGEN     -0.607099205131    -4.064912991512    -2.454030870000
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON     -0.132482596826     1.015730786104    -0.000000000000
-        NITROGEN      0.215816728601     2.160294158304    -0.000000000000
-          CARBON     -0.656322961841    -0.317535338351     0.000000000000
-          CARBON      0.199305806167    -1.341963777754     0.763769085425
-          CARBON      0.199305806167    -1.341963777754    -0.763769085425
-        HYDROGEN      1.144932712907    -1.034996375751     1.242622387686
-        HYDROGEN     -0.321263087241    -2.151059474284     1.298617304748
-        HYDROGEN      1.144932712907    -1.034996375751    -1.242622387686
-        HYDROGEN     -0.321263087241    -2.151059474284    -1.298617304748
+          CARBON     -0.132482596823     1.015730786115    -0.000000000000
+        NITROGEN      0.215816728606     2.160294158314    -0.000000000000
+          CARBON     -0.656322961839    -0.317535338339    -0.000000000000
+          CARBON      0.199305806167    -1.341963777743     0.763769085425
+          CARBON      0.199305806167    -1.341963777743    -0.763769085425
+        HYDROGEN      1.144932712908    -1.034996375742     1.242622387686
+        HYDROGEN     -0.321263087242    -2.151059474272     1.298617304748
+        HYDROGEN      1.144932712908    -1.034996375742    -1.242622387686
+        HYDROGEN     -0.321263087242    -2.151059474272    -1.298617304748
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON     -0.250355806257     1.919452863900    -0.000000000000
-        NITROGEN      0.407834480807     4.082364013922    -0.000000000000
-          CARBON     -1.240270557891    -0.600054781174     0.000000000000
-          CARBON      0.376633361588    -2.535943826553     1.443314290000
-          CARBON      0.376633361588    -2.535943826553    -1.443314290000
-        HYDROGEN      2.163609102754    -1.955859549342     2.348215820000
-        HYDROGEN     -0.607099205130    -4.064912991533     2.454030870000
-        HYDROGEN      2.163609102754    -1.955859549342    -2.348215820000
-        HYDROGEN     -0.607099205130    -4.064912991533    -2.454030870000
+          CARBON     -0.250355806251     1.919452863920    -0.000000000000
+        NITROGEN      0.407834480816     4.082364013942    -0.000000000000
+          CARBON     -1.240270557888    -0.600054781152    -0.000000000000
+          CARBON      0.376633361588    -2.535943826533     1.443314290000
+          CARBON      0.376633361588    -2.535943826533    -1.443314290000
+        HYDROGEN      2.163609102756    -1.955859549324     2.348215820000
+        HYDROGEN     -0.607099205131    -4.064912991512     2.454030870000
+        HYDROGEN      2.163609102756    -1.955859549324    -2.348215820000
+        HYDROGEN     -0.607099205131    -4.064912991512    -2.454030870000
 
 
   --------------------------------------------------------------------------
@@ -325,17 +351,20 @@ Tue Dec 10 16:40:38 2002
     8   2.7168699   3.5520766   2.3029075   2.2392066   1.1035124   2.4852448   3.1389849   0.0000000
     9   3.4279156   4.5346038   2.2716696   2.2757560   1.1007681   3.1389849   2.5972346   1.8434919   0.0000000
 
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
 
 ******************************************************************************
-tstop called on castor.giga.net
-Tue Dec 10 16:40:38 2002
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 19 13:39:27 2008
 
-user time   =       0.21 seconds
-system time =       0.01 seconds
-total time  =          0 seconds
+user time   =       0.11 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on castor.giga.net
-Tue Dec 10 16:41:32 2002
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 19 13:39:28 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -351,41 +380,42 @@ Tue Dec 10 16:41:32 2002
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = PRC Calcs: PVTZ/CCSD(T) Pyramidal                                               
+    Label                       = PRC Calcs: PVTZ/CCSD(T) Pyramidal
     Number of atoms             = 9
     Number of atomic orbitals   = 375
     Number of symmetry orbitals = 322
     Maximum AM in the basis     = 3
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  Cs 
+    Computational point group        = Cs 
     Number of irreps                 = 2
 
   -CARTESIAN COORDINATES (a.u.):
      Nuc. charge           X                  Y                   Z
     -------------   -----------------  -----------------  -----------------
-         6.000        -0.250355806257     1.919452863900    -0.000000000000
-         7.000         0.407834480807     4.082364013922    -0.000000000000
-         6.000        -1.240270557891    -0.600054781174     0.000000000000
-         6.000         0.376633361588    -2.535943826553     1.443314290000
-         6.000         0.376633361588    -2.535943826553    -1.443314290000
-         1.000         2.163609102754    -1.955859549342     2.348215820000
-         1.000        -0.607099205130    -4.064912991533     2.454030870000
-         1.000         2.163609102754    -1.955859549342    -2.348215820000
-         1.000        -0.607099205130    -4.064912991533    -2.454030870000
+         6.000        -0.250355806251     1.919452863920    -0.000000000000
+         7.000         0.407834480816     4.082364013942    -0.000000000000
+         6.000        -1.240270557888    -0.600054781152    -0.000000000000
+         6.000         0.376633361588    -2.535943826533     1.443314290000
+         6.000         0.376633361588    -2.535943826533    -1.443314290000
+         1.000         2.163609102756    -1.955859549324     2.348215820000
+         1.000        -0.607099205131    -4.064912991512     2.454030870000
+         1.000         2.163609102756    -1.955859549324    -2.348215820000
+         1.000        -0.607099205131    -4.064912991512    -2.454030870000
 
-    Wrote 664725641 two-electron integrals to IWL file 33
+
+    Wrote 664223768 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on castor.giga.net
-Tue Dec 10 16:50:27 2002
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 19 13:43:58 2008
 
-user time   =     376.80 seconds
-system time =     103.48 seconds
-total time  =        535 seconds
+user time   =     212.55 seconds =       3.54 minutes
+system time =      48.05 seconds =       0.80 minutes
+total time  =        270 seconds =       4.50 minutes
 ******************************************************************************
-tstart called on castor.giga.net
-Tue Dec 10 16:50:27 2002
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 19 13:43:59 2008
 
 
              ------------------------------------------
@@ -396,35 +426,33 @@ Tue Dec 10 16:50:27 2002
 
              ------------------------------------------
 
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
 
-
-And I think the multiplicity is 1
-
-
-If this is wrong, the specify MULTP keyword
-
-  label       = PRC Calcs: PVTZ/CCSD(T) Pyramidal
+  label        = PRC Calcs: PVTZ/CCSD(T) Pyramidal
   wfn          = CCSD_T
   reference    = RHF
   multiplicity = 1
   charge       = -1
-  direct SCF   = false
+  direct       = false
   dertype      = NONE
   convergence  = 10
-  maxiter      = 40
+  maxiter      = 100
   guess        = AUTO
 
   nuclear repulsion energy      137.1616394516097
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.000000
   iterations before extrapolation  = 0
   6 error matrices will be kept
 
   using buffered io, 796 buffers, each 7070336 bytes in size
 
-  The lowest eigenvalue of the overlap matrix was 1.653239e-05
+  The lowest eigenvalue of the overlap matrix was 8.474388e-06
 
 
   Using DOCC and SOCC to 
@@ -436,32 +464,33 @@ If this is wrong, the specify MULTP keyword
   SOCC:              0     0   
 
   reading integrals in the IWL format from files 33,35,36,37
-  wrote 349154432 integrals to file92
+  wrote 349127040 integrals to file92
 
   iter       total energy        delta E         delta P          diiser
-    1      -157.7330405751    2.948947e+02    0.000000e+00    0.000000e+00
-    2      -167.6121348419    9.879094e+00    1.256845e-01    1.018984e+00
-    3      -194.8659166532    2.725378e+01    1.256473e-01    7.178859e-01
-    4      -179.6047027497   -1.526121e+01    1.243159e-03    3.789373e-01
-    5      -189.9915822977    1.038688e+01    3.931172e-04    1.163816e+00
-    6      -207.5001062295    1.750852e+01    6.731827e-04    9.979720e-01
-    7      -208.1032698069    6.031636e-01    2.785003e-04    2.298894e-01
-    8      -208.2267022187    1.234324e-01    2.064570e-04    5.242886e-02
-    9      -208.2310640766    4.361858e-03    3.248217e-05    5.863243e-03
-   10      -208.2319071791    8.431024e-04    1.267335e-05    3.024971e-03
-   11      -208.2320879795    1.808004e-04    6.005536e-06    1.250276e-03
-   12      -208.2321111635    2.318405e-05    1.060384e-06    6.766154e-04
-   13      -208.2321182561    7.092510e-06    5.921777e-07    2.968615e-04
-   14      -208.2321200046    1.748528e-06    2.357426e-07    2.538485e-04
-   15      -208.2321204962    4.915647e-07    1.210727e-07    8.830287e-05
-   16      -208.2321206869    1.907940e-07    7.027737e-08    5.504042e-05
-   17      -208.2321207331    4.612104e-08    4.430521e-08    2.292692e-05
-   18      -208.2321207365    3.405319e-09    1.189258e-08    8.172694e-06
-   19      -208.2321207366    1.617764e-10    6.121358e-09    1.069594e-06
-   20      -208.2321207367    2.353318e-11    2.393966e-09    5.445371e-07
-   21      -208.2321207367    5.229595e-12    1.349276e-09    2.088791e-07
-   22      -208.2321207367    2.273737e-13    3.174880e-10    8.253061e-08
-   23      -208.2321207367    1.136868e-13    7.898809e-11    3.985809e-08
+    1      -157.7330405752    2.948947e+02    0.000000e+00    0.000000e+00
+    2      -167.6121348401    9.879094e+00    1.340922e-01    1.018984e+00
+    3      -192.7026204663    2.509049e+01    1.340898e-01    7.178859e-01
+    4      -205.6592539229    1.295663e+01    7.287603e-04    9.445209e-01
+    5      -207.8526357095    2.193382e+00    2.928603e-04    5.002992e-01
+    6      -208.1924878735    3.398522e-01    1.132899e-04    1.304817e-01
+    7      -208.2243389088    3.185104e-02    4.111256e-05    3.196646e-02
+    8      -208.2309597243    6.620816e-03    1.342797e-05    1.163134e-02
+    9      -208.2318791485    9.194242e-04    7.904629e-06    7.251684e-03
+   10      -208.2320552889    1.761404e-04    3.001315e-06    1.324661e-03
+   11      -208.2321022532    4.696426e-05    1.797008e-06    1.027973e-03
+   12      -208.2321159176    1.366441e-05    9.425387e-07    4.292637e-04
+   13      -208.2321202164    4.298742e-06    5.286174e-07    2.352741e-04
+   14      -208.2321206625    4.460953e-07    1.264158e-07    8.041468e-05
+   15      -208.2321207249    6.246472e-08    6.599735e-08    4.196929e-05
+   16      -208.2321207352    1.024159e-08    4.066221e-08    8.430308e-06
+   17      -208.2321207364    1.256524e-09    1.660393e-08    5.672992e-06
+   18      -208.2321207366    1.969056e-10    5.938886e-09    1.675281e-06
+   19      -208.2321207366    3.092282e-11    1.817626e-09    9.208855e-07
+   20      -208.2321207366    7.105427e-12    6.565318e-10    3.634075e-07
+   21      -208.2321207367    6.366463e-12    7.751553e-10    2.258644e-07
+   22      -208.2321207367   -1.477929e-12    2.079759e-10    8.498173e-08
+   23      -208.2321207367   -2.728484e-12    1.330092e-10    8.006669e-08
+   24      -208.2321207367    1.477929e-12    7.400615e-11    3.089986e-08
 
 Orbital energies (a.u.):
 
@@ -469,7 +498,7 @@ Orbital energies (a.u.):
    1Ap    -15.353783     2Ap    -11.081822     3Ap    -11.065356  
    1App   -11.064742     4Ap    -11.020220     5Ap     -0.991371  
    6Ap     -0.930522     7Ap     -0.667057     2App    -0.643226  
-   8Ap     -0.484346     9Ap     -0.445392    10Ap     -0.356512  
+   8Ap     -0.484346     9Ap     -0.445391    10Ap     -0.356512  
    3App    -0.342507     4App    -0.294980    11Ap     -0.278133  
   12Ap     -0.261260     5App    -0.191082    13Ap     -0.102773  
 
@@ -495,7 +524,7 @@ Orbital energies (a.u.):
   28App     0.660576    46Ap      0.677004    29App     0.685082  
   47Ap      0.687570    30App     0.699943    48Ap      0.718647  
   49Ap      0.734265    31App     0.735097    32App     0.747016  
-  50Ap      0.782122    33App     0.786308    34App     0.808826  
+  50Ap      0.782122    33App     0.786308    34App     0.808827  
   51Ap      0.809999    52Ap      0.826962    53Ap      0.847651  
   35App     0.865037    54Ap      0.881526    36App     0.890254  
   55Ap      0.923968    56Ap      0.936533    57Ap      0.943054  
@@ -510,9 +539,9 @@ Orbital energies (a.u.):
   48App     1.252639    71Ap      1.264273    49App     1.264474  
   72Ap      1.279651    73Ap      1.308758    50App     1.315962  
   51App     1.327182    74Ap      1.331987    75Ap      1.345797  
-  52App     1.355812    76Ap      1.365870    53App     1.372849  
+  52App     1.355813    76Ap      1.365870    53App     1.372849  
   77Ap      1.375167    78Ap      1.410556    79Ap      1.423845  
-  54App     1.424557    80Ap      1.448871    55App     1.457477  
+  54App     1.424558    80Ap      1.448871    55App     1.457477  
   56App     1.471889    57App     1.504336    81Ap      1.505829  
   58App     1.544416    59App     1.556099    82Ap      1.571986  
   83Ap      1.613277    84Ap      1.626103    60App     1.635399  
@@ -532,7 +561,7 @@ Orbital energies (a.u.):
  107Ap      2.274361    78App     2.296620   108Ap      2.352335  
   79App     2.383063   109Ap      2.414765    80App     2.442435  
  110Ap      2.453676    81App     2.496991   111Ap      2.516661  
-  82App     2.519023    83App     2.543642   112Ap      2.544625  
+  82App     2.519023    83App     2.543642   112Ap      2.544626  
   84App     2.568757   113Ap      2.584802    85App     2.613977  
   86App     2.653788   114Ap      2.765422    87App     2.778279  
  115Ap      2.795051   116Ap      2.816061    88App     2.832745  
@@ -578,133 +607,93 @@ Orbital energies (a.u.):
  182Ap     18.724247  
 
 
-        SCF total energy   =    -208.232120736664
-        kinetic energy     =     207.599132556760
-        nuc. attr. energy  =    -767.236488987854
-        elec. rep. energy  =     351.405235694430
-        potential energy   =    -415.831253293424
-        virial theorem     =       1.996960179930
+      * SCF total energy   =    -208.232120736653
+        kinetic energy     =     207.599132241340
+        nuc. attr. energy  =    -767.236488348561
+        elec. rep. energy  =     351.405235370568
+        potential energy   =    -415.831252977994
+        virial theorem     =       1.996960178415
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on castor.giga.net
-Tue Dec 10 17:27:12 2002
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 19 14:02:05 2008
 
-user time   =     233.46 seconds
-system time =     555.23 seconds
-total time  =       2205 seconds
+user time   =     147.60 seconds =       2.46 minutes
+system time =     180.86 seconds =       3.01 minutes
+total time  =       1086 seconds =      18.10 minutes
 ******************************************************************************
-tstart called on castor.giga.net
-Tue Dec 10 17:27:12 2002
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 19 14:02:05 2008
 
 
 	**************************************************
-	* TRANSQT:  Program to transform integrals from  *
+	* TRANSQT2: Program to transform integrals from  *
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  CCSD_T
-	Reference orbitals     =  RHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            = Yes
-	Delete Restricted Docc =  No
-	Do All TEI             = No
-	Memory (Mbytes)        =  1600.0
-	Max Buckets            =  199
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  No
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  2
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Pitzer                 =  No
+	Wave function   =	CCSD_T
+	Backtransform   =	No
+	Print Level     =	2
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	No
+	Memory (Mbytes) =	1600.0
+	Cache Level     =	0
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 2
+	Number of SOs        = 322
+	Number of MOs        = 322
+	Number of active MOs = 317
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 2
-	Number of SOs    = 322
-	Number of MOs    = 322
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 Ap 	   182	    4	    9	    0	    169	    0
+	 App	   140	    1	    4	    0	    135	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 Ap 	   182	   182	    4	    13	    0	    169	    0
-	 App	   140	   140	    1	    5	    0	    135	    0
+	Nuclear Rep. energy (chkpt) =    137.16163945160969
+	SCF energy          (chkpt) =   -208.23212073665326
 
-	Nuclear Repulsion Energy    =       137.1616394516
-	Total SCF Energy            =      -208.2321207367
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-	Presort Yoshimine structure:
-	bra_indices  =      52003
-	ket_indices  =      52003
-	bin size   =    4759916
-	bins       =         14
-	core loads =         14
-	pq/bin     =       3714
-	cutoff     =   1.00E-14
-
-
-	Frozen core energy = -241.401115566477898
-	Transforming two-electron ints...
-
-	Half-transform Yoshimine structure:
-	bra_indices  =      52003
-	ket_indices  =      52003
-	bin size   =    4759916
-	bins       =         14
-	core loads =         14
-	pq/bin     =       3714
-	cutoff     =   1.00E-14
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 7
+	Frozen-core energy = -241.401115565208670
+	Starting first half-transformation.
+	h = 0; memfree         = 199896271
+	h = 0; rows_per_bucket = 1895
+	h = 0; rows_left       = 1888
+	h = 0; nbuckets        = 14
+	h = 1; memfree         = 199899556
+	h = 1; rows_per_bucket = 1961
+	h = 1; rows_left       = 1948
+	h = 1; nbuckets        = 13
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	h = 0; memfree         = 199896271
+	h = 0; rows_per_bucket = 1895
+	h = 0; rows_left       = 1026
+	h = 0; nbuckets        = 14
+	h = 1; memfree         = 199899556
+	h = 1; rows_per_bucket = 1961
+	h = 1; rows_left       = 1210
+	h = 1; nbuckets        = 13
+	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on castor.giga.net
-Tue Dec 10 18:56:36 2002
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 19 15:58:33 2008
 
-user time   =    1636.83 seconds
-system time =    1356.17 seconds
-total time  =       5364 seconds
+user time   =    5668.20 seconds =      94.47 minutes
+system time =     384.53 seconds =       6.41 minutes
+total time  =       6988 seconds =     116.47 minutes
 ******************************************************************************
-tstart called on castor.giga.net
-Tue Dec 10 18:56:36 2002
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 19 15:58:33 2008
 
 
 			**************************
@@ -716,12 +705,15 @@ Tue Dec 10 18:56:36 2002
 
 	Input parameters:
 	-----------------
-	Reference wfn   =      RHF
-	Derivative      =     None
-	Memory (Mbytes) =    1600.0
-	AO Basis        =      Yes
-	Cache Level     =        0
-	Cache Type      =      LRU
+	Wave function   =	CCSD_T
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	1600.0
+	AO Basis        =	DISK
+	Make (ab|cd)    =	False
+	Cache Level     =	0
+	Cache Type      =	LRU
+	Local CC        =     No
 
 
 	Chkpt Parameters:
@@ -736,24 +728,43 @@ Tue Dec 10 18:56:36 2002
 	 App	   140	    1	    4	    0	    135	    0
 
 	Nuclear Rep. energy (chkpt) =    137.16163945160969
-	SCF energy          (chkpt) =   -208.23212073666389
-	One-electron energy          =   -196.00696889515930
-	Two-electron (AA) energy     =     41.04516772979849
-	Two-electron (BB) energy     =     41.04516772979849
-	Two-electron (AB) energy     =     50.96915654356791
-	Two-electron energy          =     92.01432427336641
-	Frozen-core energy (transqt) =   -241.40111556647790
-	Reference energy             =   -208.23212073666110
-******************************************************************************
-tstop called on castor.giga.net
-Tue Dec 10 19:16:39 2002
+	SCF energy          (chkpt) =   -208.23212073665326
 
-user time   =     165.12 seconds
-system time =     281.21 seconds
-total time  =       1203 seconds
+	Size of irrep 0 of <ab|cd> integrals:   2188.930 (MW) /  17511.438 (MB)
+	Size of irrep 1 of <ab|cd> integrals:   2082.097 (MW) /  16656.775 (MB)
+	Total:                                  4271.027 (MW) /  34168.214 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:     96.426 (MW) /    771.408 (MB)
+	Size of irrep 1 of <ia|bc> integrals:     86.286 (MW) /    690.291 (MB)
+	Total:                                   182.712 (MW) /   1461.698 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       4.538 (MW) /     36.306 (MB)
+	Size of irrep 1 of tijab amplitudes:       3.285 (MW) /     26.283 (MB)
+	Total:                                     7.824 (MW) /     62.589 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	One-electron energy          =   -196.00696872385492
+	Two-electron (AA) energy     =     41.04516765047771
+	Two-electron (BB) energy     =     41.04516765047771
+	Two-electron (AB) energy     =     50.96915645031336
+	Two-electron energy          =     92.01432410079107
+	Frozen-core energy (transqt) =   -241.40111556520867
+	Reference energy             =   -208.23212073666284
 ******************************************************************************
-tstart called on castor.giga.net
-Tue Dec 10 19:16:39 2002
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 19 16:01:52 2008
+
+user time   =      50.09 seconds =       0.83 minutes
+system time =      53.87 seconds =       0.90 minutes
+total time  =        199 seconds =       3.32 minutes
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 19 16:01:52 2008
 
 			**************************
 			*                        *
@@ -762,8 +773,8 @@ Tue Dec 10 19:16:39 2002
 			**************************
 
 	Nuclear Rep. energy (chkpt)   =  137.161639451609688
-	SCF energy          (chkpt)   = -208.232120736663887
-	Reference energy    (file100) = -208.232120736661102
+	SCF energy          (chkpt)   = -208.232120736653258
+	Reference energy    (file100) = -208.232120736662836
 
 	Input parameters:
 	-----------------
@@ -774,17 +785,23 @@ Tue Dec 10 19:16:39 2002
 	Convergence     = 1.0e-07
 	Restart         =     Yes
 	DIIS            =     Yes
-	Local CC        =     No
-	AO Basis        =     Yes
+	AO Basis        =     DISK
+	ABCD            =     NEW
 	Cache Level     =    0
 	Cache Type      =     LOW
 	Print Level     =    2
+	Num. of threads =     1
+	# Amps to Print =    10
+	Print MP2 Amps? =    No
+	Analyze T2 Amps =    No
+	Print Pair Ener =    No
+	Local CC        =     No
 
-	                     Solving CCSD Equations
-	                     ----------------------
-	Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
-	----     ---------------------    ---------   ----------  ----------  ----------
-	   0        -0.872354321730882    0.000e+00    0.000000    0.000000    0.000000
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.872354301569570    0.000e+00    0.000000    0.000000    0.000000
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -793,7 +810,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -801,7 +818,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   1        -0.852029245274053    9.568e-02    0.012082    0.033090    0.033090
+     1        -0.852029244146172    9.568e-02    0.012082    0.033090    0.033090
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -810,7 +827,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -818,7 +835,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   2        -0.877093004096719    3.715e-02    0.011380    0.030217    0.030217
+     2        -0.877093004147294    3.715e-02    0.011380    0.030217    0.030217
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -827,7 +844,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -835,7 +852,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   3        -0.883326901294028    1.451e-02    0.013513    0.037166    0.037166
+     3        -0.883326900970352    1.451e-02    0.013513    0.037166    0.037166
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -844,7 +861,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -852,7 +869,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   4        -0.883132868042673    4.394e-03    0.013902    0.038306    0.038306
+     4        -0.883132867775749    4.394e-03    0.013902    0.038306    0.038306
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -861,7 +878,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -869,7 +886,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   5        -0.883231457762702    2.257e-03    0.014149    0.039196    0.039196
+     5        -0.883231457562449    2.257e-03    0.014149    0.039196    0.039196
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -878,7 +895,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -886,7 +903,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   6        -0.883299977272641    9.195e-04    0.014255    0.039618    0.039618
+     6        -0.883299976943348    9.195e-04    0.014255    0.039618    0.039618
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -895,7 +912,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -903,7 +920,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   7        -0.883289310457445    4.816e-04    0.014290    0.039739    0.039739
+     7        -0.883289310053150    4.816e-04    0.014290    0.039739    0.039739
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -912,7 +929,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -920,7 +937,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   8        -0.883279141806982    2.384e-04    0.014307    0.039789    0.039789
+     8        -0.883279141371981    2.384e-04    0.014307    0.039789    0.039789
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -929,7 +946,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -937,7 +954,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	   9        -0.883284250703075    1.146e-04    0.014315    0.039807    0.039807
+     9        -0.883284250286288    1.146e-04    0.014315    0.039807    0.039807
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -946,7 +963,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -954,7 +971,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  10        -0.883281169781347    5.889e-05    0.014318    0.039805    0.039805
+    10        -0.883281169346953    5.889e-05    0.014318    0.039805    0.039805
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -963,7 +980,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -971,7 +988,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  11        -0.883280627896172    2.196e-05    0.014317    0.039799    0.039799
+    11        -0.883280627468934    2.196e-05    0.014317    0.039799    0.039799
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -980,7 +997,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -988,7 +1005,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  12        -0.883279948539563    1.141e-05    0.014317    0.039796    0.039796
+    12        -0.883279948109247    1.141e-05    0.014317    0.039796    0.039796
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -997,7 +1014,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -1005,7 +1022,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  13        -0.883279653568204    5.338e-06    0.014317    0.039794    0.039794
+    13        -0.883279653138795    5.338e-06    0.014317    0.039794    0.039794
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -1014,7 +1031,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -1022,7 +1039,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  14        -0.883279613268102    2.623e-06    0.014317    0.039793    0.039793
+    14        -0.883279612838903    2.623e-06    0.014317    0.039793    0.039793
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -1031,7 +1048,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -1039,7 +1056,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  15        -0.883279592627613    1.368e-06    0.014317    0.039793    0.039793
+    15        -0.883279592198010    1.368e-06    0.014317    0.039793    0.039793
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -1048,7 +1065,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -1056,7 +1073,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  16        -0.883279579105557    7.012e-07    0.014317    0.039793    0.039793
+    16        -0.883279578676001    7.012e-07    0.014317    0.039793    0.039793
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -1065,7 +1082,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -1073,7 +1090,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  17        -0.883279575366262    3.461e-07    0.014317    0.039793    0.039793
+    17        -0.883279574936437    3.461e-07    0.014317    0.039793    0.039793
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -1082,7 +1099,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -1090,7 +1107,7 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  18        -0.883279575006906    1.689e-07    0.014317    0.039793    0.039793
+    18        -0.883279574577752    1.688e-07    0.014317    0.039793    0.039793
      F intermediates...complete
      T1 amplitudes  ...complete
      Wmbej          ...complete
@@ -1099,7 +1116,7 @@ Tue Dec 10 19:16:39 2002
      <ij||ab> -> T2 ...complete
      F -> T2        ...complete
      Wmnij -> T2    ...complete
-     *** Processed 664725641 SO integrals for <ab||cd> --> T2
+     *** Processed 664223768 SO integrals for <ab||cd> --> T2
      <ab||cd> -> T2 ...complete
      Z -> T2        ...complete
      <ia||bc> -> T2 ...complete
@@ -1107,25 +1124,52 @@ Tue Dec 10 19:16:39 2002
      Wmbej -> T2    ...complete
      <ia||jb> -> T2 ...complete
      T2 amplitudes  ...complete
-	  19        -0.883279574143909    8.931e-08    0.014317    0.039793    0.039793
+    19        -0.883279573713898    8.930e-08    0.014317    0.039793    0.039793
 
 	Iterations converged.
 
-	SCF energy       (chkpt)   = -208.232120736663887
-	Reference energy (file100) = -208.232120736661102
-	CCSD correlation energy    =   -0.883279574143909
-	Total CCSD energy          = -209.115400310805001
+
+	Largest TIA Amplitudes:
+	         11 178        -0.0137354344
+	          6  17        -0.0134377368
+	          6  16         0.0113670415
+	         11 177        -0.0112254021
+	          6  12        -0.0111130681
+	          6  15         0.0110670902
+	          8   1        -0.0106082602
+	          8  20        -0.0099676470
+	          6  23         0.0090569244
+	         11 181         0.0089603318
+
+	Largest TIjAb Amplitudes:
+	 12  12 178 178        -0.0353788363
+	 11  11 178 178        -0.0325843182
+	 11  11 177 178        -0.0157833013
+	 11  11 178 177        -0.0157833013
+	 12  12 177 178        -0.0149912780
+	 12  12 178 177        -0.0149912780
+	 11  12 178 196        -0.0134527124
+	 12  11 196 178        -0.0134527124
+	 11  12 178 189        -0.0124827793
+	 12  11 189 178        -0.0124827793
+
+	SCF energy       (chkpt)   = -208.232120736653258
+	Reference energy (file100) = -208.232120736662836
+	MP2 correlation energy     =   -0.872354301569577
+      * MP2 total energy           = -209.104475038232408
+	CCSD correlation energy    =   -0.883279573713898
+      * CCSD total energy          = -209.115400310376742
 
 ******************************************************************************
-tstop called on castor.giga.net
-Wed Dec 11 17:41:57 2002
+tstop called on augustus.chemistry.gatech.edu
+Thu Mar 20 02:55:55 2008
 
-user time   =   64586.57 seconds
-system time =    3926.21 seconds
-total time  =      80718 seconds
+user time   =   37299.09 seconds =     621.65 minutes
+system time =     998.43 seconds =      16.64 minutes
+total time  =      39243 seconds =     654.05 minutes
 ******************************************************************************
-tstart called on castor.giga.net
-Wed Dec 11 17:41:57 2002
+tstart called on augustus.chemistry.gatech.edu
+Thu Mar 20 02:55:55 2008
 
 			**************************
 			*                        *
@@ -1133,21 +1177,34 @@ Wed Dec 11 17:41:57 2002
 			*                        *
 			**************************
 
+
+	Wave function   =    CCSD_T
+	Reference wfn   =      RHF
+
 	Nuclear Rep. energy (chkpt)   =  137.161639451609688
-	SCF energy          (chkpt)   = -208.232120736663887
-	Reference energy    (file100) = -208.232120736661102
-	CCSD energy         (file100) =   -0.883279574143909
-	Total CCSD energy   (file100) = -209.115400310805001
+	SCF energy          (chkpt)   = -208.232120736653258
+	Reference energy    (file100) = -208.232120736662836
+	CCSD energy         (file100) =   -0.883279573713898
+	Total CCSD energy   (file100) = -209.115400310376742
 
 	Number of ijk index combinations: 455
 
-	(T) energy                    =   -0.048651053522408
-	Total CCSD(T) energy          = -209.164051364327406
+	(T) energy                    =   -0.048651052134053
+      * CCSD(T) total energy          = -209.164051362510776
 
 ******************************************************************************
-tstop called on castor.giga.net
-Thu Dec 12 00:31:23 2002
+tstop called on augustus.chemistry.gatech.edu
+Fri Mar 21 07:36:53 2008
 
-user time   =    7002.62 seconds
-system time =    2386.82 seconds
-total time  =      24566 seconds
+user time   =  102210.83 seconds =    1703.51 minutes
+system time =     989.30 seconds =      16.49 minutes
+total time  =     103258 seconds =    1720.97 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Fri Mar 21 07:37:15 2008
+
+Total PSI3 wall time     151068 seconds =    2517.80 minutes
+******************************************************************************

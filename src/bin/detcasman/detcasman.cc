@@ -114,7 +114,7 @@ int main(int argc, char *argv[])
 
   if (converged) {
     fprintf(outfile,"                  ORBITALS CONVERGED\n");
-    fprintf(outfile,"\n  Final %s Energy = %17.12lf\n", wfn, energy_last);
+    fprintf(outfile,"\n  * %s total energy = %17.12lf\n", wfn, energy_last);
   }
   else
     fprintf(outfile,"               ORBITALS DID NOT CONVERGE\n");

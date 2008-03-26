@@ -1,16 +1,48 @@
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Mar  8 12:53:24 2003
+PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:11:06 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a ROHF CCSD energy computation.
+Using the user provided execution list from 'exec'.
+
+The following programs will be executed:
+
+ input
+ cints
+ cscf
+ transqt2
+ ccsort
+ stable
+ psiclean
+
+******************************************************************************
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:06 2008
 
                                 --------------
-                                  WELCOME TO
-                                    PSI  3
+                                    INPUT
                                 --------------
 
   LABEL       =	cc-pVDZ ROHF CN
   SHOWNORM    =	0
-  PUREAM      =	1
+  PUREAM      =	0
   PRINT_LVL   =	1
+
+  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
+Coordinates after reading z-matrices
+
+           1           2           3
+
+    1   0.0000000   0.0000000   0.0000000
+    2   0.0000000   0.0000000   2.2204280
 
   -Geometry before Center-of-Mass shift (a.u.):
        Center              X                  Y                   Z
@@ -26,8 +58,8 @@ Sat Mar  8 12:53:24 2003
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON      0.000000000000     0.000000000000     1.195736246924
-        NITROGEN      0.000000000000     0.000000000000    -1.024691789657
+          CARBON      0.000000000000     0.000000000000    -1.195736246907
+        NITROGEN      0.000000000000     0.000000000000     1.024691789673
 
 
   -SYMMETRY INFORMATION:
@@ -113,29 +145,29 @@ Sat Mar  8 12:53:24 2003
   -Unique atoms in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON      0.000000000000     0.000000000000     1.195736246924
-        NITROGEN      0.000000000000     0.000000000000    -1.024691789657
+          CARBON      0.000000000000     0.000000000000    -1.195736246907
+        NITROGEN      0.000000000000     0.000000000000     1.024691789673
 
 
   -Geometry in the canonical coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON      0.000000000000     0.000000000000     1.195736246924
-        NITROGEN      0.000000000000     0.000000000000    -1.024691789657
+          CARBON      0.000000000000     0.000000000000    -1.195736246907
+        NITROGEN      0.000000000000     0.000000000000     1.024691789673
 
 
   -Geometry in the canonical coordinate system (Angstrom):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON      0.000000000000     0.000000000000     0.632756417677
-        NITROGEN      0.000000000000     0.000000000000    -0.542243582323
+          CARBON      0.000000000000     0.000000000000    -0.632756417668
+        NITROGEN      0.000000000000     0.000000000000     0.542243582332
 
 
   -Geometry in the reference coordinate system (a.u.):
        Center              X                  Y                   Z
     ------------   -----------------  -----------------  -----------------
-          CARBON      0.000000000000     0.000000000000     1.195736246924
-        NITROGEN      0.000000000000     0.000000000000    -1.024691789657
+          CARBON      0.000000000000     0.000000000000    -1.195736246907
+        NITROGEN      0.000000000000     0.000000000000     1.024691789673
 
 
   --------------------------------------------------------------------------
@@ -149,17 +181,20 @@ Sat Mar  8 12:53:24 2003
     1   0.0000000
     2   1.1750000   0.0000000
 
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
 
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Mar  8 12:53:24 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:07 2008
 
-user time   =       0.09 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Mar  8 12:53:24 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:07 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -175,27 +210,28 @@ Sat Mar  8 12:53:24 2003
     LIBINT's real type length   = 64 bit
 
   -CALCULATION CONSTANTS:
-    Label                       = cc-pVDZ ROHF CN                                                                 
+    Label                       = cc-pVDZ ROHF CN
     Number of atoms             = 2
     Number of atomic orbitals   = 30
     Number of symmetry orbitals = 28
     Maximum AM in the basis     = 2
 
   -SYMMETRY INFORMATION;
-    Computational point group        =  C2v
+    Computational point group        = C2v
     Number of irreps                 = 4
+
     Wrote 19125 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Mar  8 12:53:25 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:07 2008
 
-user time   =       1.18 seconds =       0.02 minutes
-system time =       0.03 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.23 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Mar  8 12:53:25 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:07 2008
 
 
              ------------------------------------------
@@ -206,28 +242,28 @@ Sat Mar  8 12:53:25 2003
 
              ------------------------------------------
 
-
-
 Cannot check consistency of the multiplicity
 
 and number of electrons, double check
 your occupations
 
-  label       = cc-pVDZ ROHF CN
+  label        = cc-pVDZ ROHF CN
   wfn          = CCSD
   reference    = ROHF
   multiplicity = 2
   charge       = 0
-  direct SCF   = false
+  direct       = false
   dertype      = NONE
   convergence  = 10
-  maxiter      = 100
+  maxiter      = 50
   guess        = AUTO
 
   nuclear repulsion energy       18.9152718791489
   first run, so defaulting to core-hamiltonian guess
 
   level shift                      = 1.000000
+
+  level shifting will stop after 10 cycles
   diis scale factor                = 1.020000
   iterations before extrapolation  = 0
   4 error matrices will be kept
@@ -258,48 +294,45 @@ your occupations
   iter       total energy        delta E         delta P          diiser
     1       -83.1984135320    1.021137e+02    0.000000e+00    0.000000e+00
     2       -88.3429024467    5.144489e+00    1.829208e-01    7.859851e-01
-    3       -91.7145540191    3.371652e+00    5.149231e-02    6.570929e-01
-    4       -92.0764143754    3.618604e-01    1.469718e-02    2.748465e-01
-    5       -92.1837243321    1.073100e-01    7.364259e-03    1.441922e-01
-    6       -92.1941062187    1.038189e-02    2.436428e-03    4.039363e-02
-    7       -92.1951608807    1.054662e-03    1.104471e-03    1.120993e-02
-    8       -92.1954374786    2.765979e-04    6.000804e-04    6.391033e-03
-    9       -92.1955153383    7.785974e-05    2.904107e-04    3.588011e-03
-   10       -92.1955425985    2.726019e-05    1.557979e-04    2.026464e-03
-   11       -92.1955514284    8.829885e-06    8.613452e-05    1.087231e-03
-   12       -92.1955548093    3.380894e-06    4.716771e-05    5.908474e-04
-   13       -92.1955560079    1.198621e-06    2.599293e-05    3.013557e-04
-   14       -92.1955564124    4.044760e-07    1.398186e-05    1.983685e-04
-   15       -92.1955565491    1.366977e-07    7.987207e-06    1.265186e-04
-   16       -92.1955565950    4.595479e-08    4.325057e-06    8.493787e-05
-   17       -92.1955566116    1.650925e-08    2.606854e-06    4.930564e-05
-   18       -92.1955566186    7.054624e-09    1.693063e-06    2.788779e-05
-   19       -92.1955566207    2.097394e-09    9.220408e-07    1.325837e-05
-   20       -92.1955566211    4.061036e-10    3.447440e-07    5.303508e-06
-   21       -92.1955566212    1.316067e-10    2.138757e-07    2.989915e-06
-   22       -92.1955566213    8.702727e-11    1.999329e-07    2.123339e-06
-   23       -92.1955566214    3.133493e-11    1.093872e-07    1.332899e-06
-   24       -92.1955566214    1.580247e-11    8.404888e-08    8.215253e-07
-   25       -92.1955566214    5.186962e-12    5.274221e-08    6.363947e-07
-   26       -92.1955566214    1.605827e-12    3.319124e-08    4.887429e-07
-   27       -92.1955566214    3.410605e-13    2.442211e-08    3.608670e-07
-   28       -92.1955566214   -1.136868e-13    1.604947e-08    2.418871e-07
-   29       -92.1955566214   -2.842171e-14    9.370868e-09    1.580361e-07
-   30       -92.1955566214    2.131628e-13    8.521282e-09    1.575520e-07
-   31       -92.1955566214    2.273737e-13    8.939446e-09    1.176115e-07
-   32       -92.1955566214    8.526513e-14    4.993184e-09    6.199655e-08
-   33       -92.1955566214    2.842171e-14    1.552056e-09    3.609897e-08
-   34       -92.1955566214    2.842171e-14    2.338109e-09    2.712461e-08
-   35       -92.1955566214    0.000000e+00    1.340591e-09    2.191933e-08
-   36       -92.1955566214    0.000000e+00    8.790765e-10    1.713191e-08
-   37       -92.1955566214   -1.421085e-14    5.496590e-10    1.210571e-08
-   38       -92.1955566214    2.842171e-14    4.189553e-10    7.994620e-09
-   39       -92.1955566214   -1.421085e-14    2.924624e-10    5.491039e-09
-   40       -92.1955566214   -1.421085e-14    1.679140e-10    3.473533e-09
-   41       -92.1955566214    1.421085e-14    1.391206e-10    3.383593e-09
-   42       -92.1955566214    0.000000e+00    1.881120e-10    2.681427e-09
-   43       -92.1955566214    0.000000e+00    1.122886e-10    1.432575e-09
-   44       -92.1955566214    0.000000e+00    3.680526e-11    7.210651e-10
+    3       -90.1784745152    1.835572e+00    3.126349e-02    6.570929e-01
+    4       -91.4107195483    1.232245e+00    1.264362e-02    4.989588e-01
+    5       -92.0100841051    5.993646e-01    7.278561e-03    3.855891e-01
+    6       -92.1393475965    1.292635e-01    3.505913e-03    1.818348e-01
+    7       -92.1725161649    3.316857e-02    2.794358e-03    7.192013e-02
+    8       -92.1867098529    1.419369e-02    2.347206e-03    3.235918e-02
+    9       -92.1921564976    5.446645e-03    1.477729e-03    1.621939e-02
+   10       -92.1940868518    1.930354e-03    7.823449e-04    1.107726e-02
+   11       -92.1948903141    8.034623e-04    4.847801e-04    6.942965e-03
+   12       -92.1952702038    3.798897e-04    3.231373e-04    5.181050e-03
+   13       -92.1954555739    1.853701e-04    2.414012e-04    3.774146e-03
+   14       -92.1955264126    7.083866e-05    1.647815e-04    2.793982e-03
+   15       -92.1955483580    2.194544e-05    1.189913e-04    1.947990e-03
+   16       -92.1955523311    3.973088e-06    7.347990e-05    1.412969e-03
+   17       -92.1955540369    1.705768e-06    4.623227e-05    9.003899e-04
+   18       -92.1955559860    1.949067e-06    3.883852e-05    4.827014e-04
+   19       -92.1955565130    5.270391e-07    1.986730e-05    1.659424e-04
+   20       -92.1955566028    8.978660e-08    7.407489e-06    6.639042e-05
+   21       -92.1955566176    1.481062e-08    2.652104e-06    2.381300e-05
+   22       -92.1955566203    2.742311e-09    1.006845e-06    1.547405e-05
+   23       -92.1955566210    6.985914e-10    5.505637e-07    1.051189e-05
+   24       -92.1955566212    2.115286e-10    2.974642e-07    5.826522e-06
+   25       -92.1955566213    8.898837e-11    1.863748e-07    3.405968e-06
+   26       -92.1955566214    3.245759e-11    1.170846e-07    2.050342e-06
+   27       -92.1955566214    9.478640e-12    7.353790e-08    1.306330e-06
+   28       -92.1955566214    1.719513e-12    4.487398e-08    8.559536e-07
+   29       -92.1955566214    1.051603e-12    2.778563e-08    5.443620e-07
+   30       -92.1955566214    1.548983e-12    2.506698e-08    3.259270e-07
+   31       -92.1955566214    7.531753e-13    1.950845e-08    2.105713e-07
+   32       -92.1955566214    1.278977e-13    7.855050e-09    8.613663e-08
+   33       -92.1955566214    1.278977e-13    3.473829e-09    4.524247e-08
+   34       -92.1955566214   -8.526513e-14    2.016530e-09    3.354505e-08
+   35       -92.1955566214   -1.421085e-14    1.303841e-09    2.176729e-08
+   36       -92.1955566214    1.421085e-14    8.574435e-10    1.314033e-08
+   37       -92.1955566214    2.842171e-14    4.909298e-10    8.491296e-09
+   38       -92.1955566214    0.000000e+00    2.885069e-10    5.308194e-09
+   39       -92.1955566214    0.000000e+00    1.959524e-10    3.149090e-09
+   40       -92.1955566214   -2.842171e-14    1.179648e-10    1.581362e-09
+   41       -92.1955566214    8.526513e-14    7.544438e-11    9.376476e-10
 
  ci_typ is CCSD so mo vector will be rotated
 
@@ -307,132 +340,94 @@ Orbital energies (a.u.):
 
   Doubly occupied orbitals
    1A1    -15.636443     2A1    -11.359535     3A1     -1.246019  
-   4A1     -0.626091     1B2     -0.507352     1B1     -0.507352  
+   4A1     -0.626091     1B1     -0.507352     1B2     -0.507352  
 
   Singly occupied orbitals
    5A1     -0.337390  
 
   Unoccupied orbitals
    2B2      0.177180     2B1      0.177180     6A1      0.384745  
-   3B2      0.655939     3B1      0.655939     7A1      0.699522  
-   8A1      0.869525     4B2      1.036480     4B1      1.036480  
-   9A1      1.044979    10A1      1.314443     1A2      1.314443  
+   3B1      0.655939     3B2      0.655939     7A1      0.699522  
+   8A1      0.869525     4B1      1.036480     4B2      1.036480  
+   9A1      1.044979     1A2      1.314443    10A1      1.314443  
    5B1      1.503400     5B2      1.503400    11A1      1.564388  
-  12A1      2.160944     2A2      2.160944    13A1      2.254479  
+   2A2      2.160944    12A1      2.160944    13A1      2.254479  
    6B1      2.677031     6B2      2.677031    14A1      3.095851  
 
 
-        SCF total energy   =     -92.195556621382
-        kinetic energy     =      91.922587813434
-        nuc. attr. energy  =    -253.718623722145
-        elec. rep. energy  =      69.600479287329
-        potential energy   =    -184.118144434816
-        virial theorem     =       1.997039241174
+      * SCF total energy   =     -92.195556621383
+        kinetic energy     =      91.922587808772
+        nuc. attr. energy  =    -253.718623712896
+        elec. rep. energy  =      69.600479282742
+        potential energy   =    -184.118144430155
+        virial theorem     =       1.997039241124
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Mar  8 12:53:25 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:07 2008
 
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Mar  8 12:53:25 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:07 2008
 
 
 	**************************************************
-	* TRANSQT:  Program to transform integrals from  *
+	* TRANSQT2: Program to transform integrals from  *
 	*           the SO basis to the MO basis.        *
 	*                                                *
 	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
 	**************************************************
 
-	Input Parameters:
+
+	Input parameters:
 	-----------------
-	Wavefunction           =  CCSD
-	Reference orbitals     =  ROHF
-	Backtrans              =  No
-	Print MOs              =  No
-	Freeze Core            = Yes
-	Delete Restricted Docc =  No
-	Do All TEI             = No
-	Memory (Mbytes)        =  256.0
-	Max Buckets            =  199
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  33
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  72
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  Yes
-	Do FZC  OEI tranform   =  Yes
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Pitzer                 =  No
+	Wave function   =	CCSD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	ROHF
+	Derivative      =	None
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 28
+	Number of MOs        = 28
+	Number of active MOs = 28
 
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 28
-	Number of MOs    = 28
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   14	    0	    4	    1	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   6	    0	    1	    0	    5	    0
+	 B2 	   6	    0	    1	    0	    5	    0
 
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   14	   14	    0	    4	    1	    9	    0
-	 A2 	   2	   2	    0	    0	    0	    2	    0
-	 B1 	   6	   6	    0	    1	    0	    5	    0
-	 B2 	   6	   6	    0	    1	    0	    5	    0
+	Nuclear Rep. energy (chkpt) =     18.91527187914894
+	SCF energy          (chkpt) =    -92.19555662138252
 
-	Nuclear Repulsion Energy    =        18.9152718791
-	Total SCF Energy            =       -92.1955566214
-
-	Reading one-electron integrals...done.
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file72.
-
-	Transforming one-electron integrals...
-	One-electron integrals written to file 35.
-	Frozen-core operator written to file 35.
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Mar  8 12:53:27 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:07 2008
 
-user time   =       0.28 seconds =       0.00 minutes
-system time =       1.70 seconds =       0.03 minutes
-total time  =          2 seconds =       0.03 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Mar  8 12:53:27 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:07 2008
 
 
 			**************************
@@ -444,12 +439,15 @@ Sat Mar  8 12:53:27 2003
 
 	Input parameters:
 	-----------------
-	Reference wfn   =     ROHF
-	Derivative      =     None
-	Memory (Mbytes) =    256.0
-	AO Basis        =      NONE
-	Cache Level     =        2
-	Cache Type      =      LRU
+	Wave function   =	CCSD
+	Reference wfn   =	ROHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
 
 
 	Chkpt Parameters:
@@ -466,24 +464,51 @@ Sat Mar  8 12:53:27 2003
 	 B2 	   6	    0	    1	    0	    5	    0
 
 	Nuclear Rep. energy (chkpt) =     18.91527187914894
-	SCF energy          (chkpt) =    -92.19555662138242
-	One-electron energy          =   -161.79603590871130
-	Two-electron (AA) energy     =     22.38410270526042
-	Two-electron (BB) energy     =     16.99141403788587
-	Two-electron (AB) energy     =     30.99744903660674
-	Two-electron energy          =     50.68520740817988
+	SCF energy          (chkpt) =    -92.19555662138252
+
+	Size of irrep 0 of <ab|cd> integrals:      0.024 (MW) /      0.190 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.008 (MW) /      0.065 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.014 (MW) /      0.115 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.014 (MW) /      0.115 (MB)
+	Total:                                     0.061 (MW) /      0.485 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.009 (MW) /      0.074 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.002 (MW) /      0.014 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.004 (MW) /      0.036 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.004 (MW) /      0.036 (MB)
+	Total:                                     0.020 (MW) /      0.159 (MB)
+
+	Size of irrep 0 of tIjAb amplitudes:       0.004 (MW) /      0.033 (MB)
+	Size of irrep 1 of tIjAb amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tIjAb amplitudes:       0.001 (MW) /      0.010 (MB)
+	Size of irrep 3 of tIjAb amplitudes:       0.001 (MW) /      0.010 (MB)
+	Total:                                     0.007 (MW) /      0.054 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
+	One-electron energy          =   -161.79603590412444
+	Two-electron (AA) energy     =     22.38410270210727
+	Two-electron (BB) energy     =     16.99141403737571
+	Two-electron (AB) energy     =     30.99744903385154
+	Two-electron energy          =     50.68520740359303
 	Frozen-core energy (transqt) =      0.00000000000000
 	Reference energy             =    -92.19555662138248
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Mar  8 12:53:28 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:07 2008
 
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.11 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on orion.chem.vt.edu
-Sat Mar  8 12:53:28 2003
+tstart called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:07 2008
 
 
 	     ROHF->ROHF stability eigenvalues:
@@ -497,9 +522,18 @@ Sat Mar  8 12:53:28 2003
 	  4    0.4137   0.8334   0.6186   0.6186 
 
 ******************************************************************************
-tstop called on orion.chem.vt.edu
-Sat Mar  8 12:53:28 2003
+tstop called on augustus.chemistry.gatech.edu
+Wed Mar 12 18:11:07 2008
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:11:07 2008
+
+Total PSI3 wall time          1 seconds =       0.02 minutes
+******************************************************************************
