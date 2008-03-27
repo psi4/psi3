@@ -84,7 +84,7 @@ namespace psi {
         clss = uc2c[uc];
         class_first = clss;
         class_last = clss + unique_class_degen[uc];
-        const double norm_pfac = 1.0 / std::sqrt(unique_class_degen[uc]);
+        const double norm_pfac = 1.0 / std::sqrt((double) unique_class_degen[uc]);
         
         lmax = max_angmom_class[clss];
         for (l=0; l<=lmax; l++) {
