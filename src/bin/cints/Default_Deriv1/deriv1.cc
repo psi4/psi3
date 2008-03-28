@@ -4,6 +4,7 @@
 */
 #include<cstdio>
 #include<cstring>
+#include<cstdlib>
 
 #include<pthread.h>
 #include<libipv1/ip_lib.h>

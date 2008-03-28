@@ -8,6 +8,7 @@
 #include <vector>
 #include <cstdlib>
 #include <cstring>
+#include <algorithm>
 
 #include <libipv1/ip_lib.h>
 
