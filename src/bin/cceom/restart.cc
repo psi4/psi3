@@ -68,12 +68,14 @@ timer_on("RESTART");
       for (j=0;j<L;++j)
         alpha_tot[i][j] = alpha[i][j];
   }
+  /*
   fprintf(outfile,"alpha\n");
   print_mat(alpha,L,L,outfile);
   fprintf(outfile,"alpha_old\n");
   print_mat(alpha_old,L_old,L_old,outfile);
   fprintf(outfile,"alpha_tot\n");
   print_mat(alpha_tot,L,L_tot,outfile);
+  */
 
   /* Orthonormalize alpha[1] through alpha[num] */
   if ((ortho) || (use_alpha_old)) {
