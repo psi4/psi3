@@ -12,7 +12,7 @@ namespace psi { namespace oeprop {
 
 void get_nmo()
 {
-  throw std::runtime_error("Computing natural orbitals has not been tested and should not be used.");
+  // throw std::runtime_error("Computing natural orbitals has not been tested and should not be used."); turn this back off for testing, CDS 4/08
   
   int i,k,l,count,dim_i;
   double *evals, *evals_symbl;
