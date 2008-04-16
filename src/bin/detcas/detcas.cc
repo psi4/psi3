@@ -16,7 +16,7 @@
 */
 
 #include "globaldefs.h"
-#include <iostream.h>
+#include <iostream>
 #include <cmath>
 #include <cstdlib>
 #include <cstdio>
