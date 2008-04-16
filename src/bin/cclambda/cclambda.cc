@@ -154,7 +154,9 @@ int main(int argc, char *argv[])
     /* Keep the old lambda amps if this is a ground-state geomopt */
     if(!(params.dertype==1 && !cc_excited(params.wfn))) {
       psio_close(CC_LAMBDA,0);
-      psio_open(CC_LAMBDA,0);
+      psio_open(CC_LAMBDA,PSIO_OPEN_NEW);
+      psio_close(CC_DENOM,0);
+      psio_open(CC_DENOM,PSIO_OPEN_NEW);
     }
 
     fprintf(outfile,"\tSymmetry of left-hand state: %s\n",
