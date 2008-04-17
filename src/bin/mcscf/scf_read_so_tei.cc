@@ -119,7 +119,7 @@ void SCF::read_so_tei_form_PK()
       fi=0;
       for(index=0;index<nbuf;index++){
         // Compute the [pq] index for this pqrs combination
-        p = abs(ERIIN.labels[fi]);
+        p = (short int)abs((float)ERIIN.labels[fi]);
         q = ERIIN.labels[fi+1];
         r = ERIIN.labels[fi+2];
         s = ERIIN.labels[fi+3];
@@ -200,7 +200,7 @@ void SCF::read_so_tei_form_PK_and_K()
       fi=0;
       for(index=0;index<nbuf;index++){
         // Compute the [pq] index for this pqrs combination
-        p = abs(ERIIN.labels[fi]);
+        p = (short int)abs((float)ERIIN.labels[fi]);
         q = ERIIN.labels[fi+1];
         r = ERIIN.labels[fi+2];
         s = ERIIN.labels[fi+3];

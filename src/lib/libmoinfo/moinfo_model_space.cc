@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cmath>
+#include <cstdlib>
 
 #include <psifiles.h>
 #include <liboptions/liboptions.h>

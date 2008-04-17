@@ -5,7 +5,7 @@ include ../MakeVars
 
 LDLIBS += $(LAPACK) $(BLAS)
 CDEF += -DUSE_BLAS
-PSILIBS = -lPSI_iwl -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1 -lPSI_util -lPSI_options -lPSI_moinfo
+PSILIBS = -lPSI_options -lPSI_moinfo -lPSI_iwl -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1 -lPSI_util
 
 CXXSRC = \
 algebra_interface.cc  sblock_matrix.cc             scf_density_matrix.cc  scf_initial_guess.cc              scf_save_info.cc \

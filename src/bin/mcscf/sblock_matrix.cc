@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <psifiles.h>
 #include "sblock_matrix.h"
 
