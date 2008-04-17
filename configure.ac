@@ -852,6 +852,7 @@ AC_CONFIG_FILES([include/Makefile
           src/bin/geom/Makefile
           src/bin/input/Makefile
           src/bin/intder/Makefile
+          src/bin/mcscf/Makefile
           src/bin/mp2/Makefile
           src/bin/mp2r12/Makefile
           src/bin/oeprop/Makefile
