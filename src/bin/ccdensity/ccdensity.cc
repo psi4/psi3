@@ -277,27 +277,23 @@ int main(int argc, char *argv[])
       iwl_buf_close(&OutBuf_AB, 1);
     }
     free_block(moinfo.opdm);
+
+    psio_close(CC_TMP,0);   psio_open(CC_TMP,PSIO_OPEN_NEW);
+    psio_close(EOM_TMP0,0); psio_open(EOM_TMP0,PSIO_OPEN_NEW);
+    psio_close(EOM_TMP1,0); psio_open(EOM_TMP1,PSIO_OPEN_NEW);
+    psio_close(CC_GLG,0);   psio_open(CC_GLG,PSIO_OPEN_NEW);
+    psio_close(CC_GL,0);    psio_open(CC_GL,PSIO_OPEN_NEW);
+    psio_close(CC_GR,0);    psio_open(CC_GR,PSIO_OPEN_NEW);
+    if (!params.calc_xi) {
+      psio_close(EOM_TMP,0);
+      psio_open(EOM_TMP,PSIO_OPEN_NEW);
+    }
   }
 
   /* if ( params.ael && (params.nstates > 1) ) 
     ael(rho_params); */
 
   if(params.transition) {
-    psio_close(CC_TMP,0);
-    psio_close(EOM_TMP,0);
-    psio_close(EOM_TMP0,0);
-    psio_close(EOM_TMP1,0);
-    psio_close(CC_GLG,0);
-    psio_close(CC_GL,0);
-    psio_close(CC_GR,0);
-
-    psio_open(CC_TMP,PSIO_OPEN_NEW);
-    psio_open(EOM_TMP,PSIO_OPEN_NEW);
-    psio_open(EOM_TMP0,PSIO_OPEN_NEW);
-    psio_open(EOM_TMP1,PSIO_OPEN_NEW);
-    psio_open(CC_GLG,PSIO_OPEN_NEW);
-    psio_open(CC_GL,PSIO_OPEN_NEW);
-    psio_open(CC_GR,PSIO_OPEN_NEW);
 
     get_td_params();
     for(i=0; i < params.nstates; i++) {
