@@ -140,7 +140,7 @@ void MOInfo::build_model_space()
         docc_det.set(index+nmo);
         index++;
       }
-      index+=actv[h];
+      index+=actv[h] - actv_docc[h];
       index+=avir[h];
     }   
     closed_shell_refs.push_back(references.size());
