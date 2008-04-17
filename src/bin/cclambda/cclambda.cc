@@ -151,12 +151,11 @@ int main(int argc, char *argv[])
     psio_close(CC_TMP1,0); psio_close(CC_TMP2,0); 
     psio_open(CC_TMP,0); psio_open(CC_TMP0,0); 
     psio_open(CC_TMP1,0); psio_open(CC_TMP2,0); 
-    psio_close(CC_DENOM,0); psio_open(CC_DENOM,PSIO_OPEN_NEW);
     /* Keep the old lambda amps if this is a ground-state geomopt */
     if(!(params.dertype==1 && !cc_excited(params.wfn))) {
       psio_close(CC_LAMBDA,0);
       psio_open(CC_LAMBDA,PSIO_OPEN_NEW);
-      psio_close(CC_DENOM,0);
+      psio_close(CC_DENOM,0); /* aren't these recomputed anyway - perhaps should always delete? */
       psio_open(CC_DENOM,PSIO_OPEN_NEW);
     }
 
