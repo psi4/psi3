@@ -91,6 +91,9 @@ psi: (
   mp2r12 = "mp2r12"
   mp2r12_moints = "cints --mp2r12"
 
+  % MCSCF
+  mcscf             = "mcscf"
+
   % PSIMRCC
   transqt_psimrcc   = "transqt --psimrcc"
   psimrcc           = "psimrcc"
@@ -1220,20 +1223,51 @@ psi: (
   CISUHFEnergy = ($CISEnergy $done)
   CISTwoConEnergy = ERROR
 
+  % -------------------------------- MCSCF Procedures
+  % *** MCSCF energy ***
+  MCSCFEnergy = ($ints $mcscf)
+  SCFMCSCFEnergy = ($MCSCFEnergy $done)
+
+
   % Procedures for the PSIMRCC energy 
-  PSIMRCCEnergy       = ($SCFEnergy $transqt_psimrcc $psimrcc)
-  PSIMRCCRHFEnergy    = ($PSIMRCCEnergy $done)
-  PSIMRCCROHFEnergy   = ($PSIMRCCEnergy $done)
-  PSIMRCCTWOCONEnergy = ($PSIMRCCEnergy $done)
+  PSIMRCCSCFEnergy    = ($SCFEnergy $transqt_psimrcc $psimrcc)
+  PSIMRCCMCSCFEnergy  = ($MCSCFEnergy $transqt_psimrcc $psimrcc)
+  PSIMRCCRHFEnergy    = ($PSIMRCCSCFEnergy $done)
+  PSIMRCCROHFEnergy   = ($PSIMRCCSCFEnergy $done)
+  PSIMRCCTWOCONEnergy = ($PSIMRCCSCFEnergy $done)
+  PSIMRCCMCSCFEnergy  = ($PSIMRCCMCSCFEnergy $done)
   PSIMRCCUHFEnergy    = ERROR
 
   % Procedures for the PSIMRCC optimization 
-  PSIMRCCEnergyOpt = (repeat $nopt $PSIMRCCEnergy $findif_disp_symm
-    repeat NUM_DISP $findif_next $findif_input $PSIMRCCEnergy $findif_energy_save end
+
+  PSIMRCCSCFEnergyOpt = (repeat $nopt $PSIMRCCSCFEnergy $findif_disp_symm
+    repeat NUM_DISP $findif_next $findif_input $PSIMRCCSCFEnergy $findif_energy_save end
     $findif_grad_energy $geomupdate end $done)
-  PSIMRCCRHFEnergyOpt    = $PSIMRCCEnergyOpt
-  PSIMRCCROHFEnergyOpt   = $PSIMRCCEnergyOpt
-  PSIMRCCTWOCONEnergyOpt = $PSIMRCCEnergyOpt
+
+  PSIMRCCMCSCFEnergyOpt = (repeat $nopt $PSIMRCCMCSCFEnergy $findif_disp_symm
+    repeat NUM_DISP $findif_next $findif_input $PSIMRCCMCSCFEnergy $findif_energy_save end
+    $findif_grad_energy $geomupdate end $done)
+
+  PSIMRCCRHFEnergyOpt    = $PSIMRCCSCFEnergyOpt
+  PSIMRCCROHFEnergyOpt   = $PSIMRCCSCFEnergyOpt
+  PSIMRCCTWOCONEnergyOpt = $PSIMRCCSCFEnergyOpt
+  PSIMRCCMCSCFEnergyOpt  = $PSIMRCCMCSCFEnergyOpt
   PSIMRCCUHFEnergyOpt    = ERROR
+
+  PSIMRCCEnergyFreq  =
+    ($SCFEnergy $transqt_psimrcc $psimrcc $findif_disp_freq_energy_cart repeat NUM_DISP
+     $findif_next $findif_input $ints $scf $transqt_psimrcc $psimrcc $findif_energy_save end
+     $findif_freq_energy_cart $done)
+
+  PSIMRCCMCSCFEnergyFreq  =
+    ($MCSCFEnergy $transqt_psimrcc $psimrcc $findif_disp_freq_energy_cart repeat NUM_DISP
+     $findif_next $findif_input $ints $mcscf $transqt_psimrcc $psimrcc $findif_energy_save end
+     $findif_freq_energy_cart $done)
+
+  PSIMRCCRHFEnergyFreq    = ($PSIMRCCEnergyFreq)
+  PSIMRCCROHFEnergyFreq   = ($PSIMRCCEnergyFreq)
+  PSIMRCCTWOCONEnergyFreq = ($PSIMRCCEnergyFreq)
+  PSIMRCCMCSCFEnergyFreq  = ($PSIMRCCMCSCFEnergyFreq)
+
 ) 
 
