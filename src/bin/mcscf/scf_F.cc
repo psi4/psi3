@@ -89,18 +89,11 @@ void SCF::construct_F()
             T = G;
             T.scale(- ci[I] * ci[J]);
             Ftc[J] += T;
+            // Compute off-diagonal elements of H
             H_tcscf[I][J] -= dot(Dtc[J],G);
           }
         }
       }
-
-//     // Compute off-diagonal elements of H
-//     for(int I = 0 ; I < nci; ++I){
-//       for(int J = I + 1; J < nci; ++J){
-//         construct_G(Dtc[I],G,"K");
-//         H_tcscf[I][J] = H_tcscf[J][I] = - dot(Dtc[J],G);
-//       }
-//     }
 
     }
   }

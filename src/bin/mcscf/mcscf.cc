@@ -94,11 +94,14 @@ void add_calculation_options()
   options_add_int("MEMORY",1800);
   options_add_int("NDIIS",7);
   options_add_int("ROOT",1);
-  options_add_int("TURN_ON_ACTV",4);
+  options_add_int("START_FAVG",5);
+  options_add_int("TURN_ON_ACTV",0);
+
 
   options_add_bool("CI_DIIS",true);
   options_add_bool("USE_DIIS",true);
   options_add_bool("READ_MOS",true);
+  options_add_bool("USE_FAVG",false);
 
 
   options_add_str_with_choices("REFERENCE","RHF","RHF ROHF UHF TCSCF MCSCF GENERAL");

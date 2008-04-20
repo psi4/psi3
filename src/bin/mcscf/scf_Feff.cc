@@ -1,3 +1,5 @@
+#include <liboptions/liboptions.h>
+
 #include "scf.h"
 
 namespace psi{ namespace mcscf{
@@ -6,9 +8,14 @@ void SCF::construct_Feff(int cycle)
 {
   Feff_t = Fc_t;
 
-//   if(reference == tcscf){
-//     Feff_t = Favg_t;
-//   }
+  if(options_get_bool("USE_FAVG")){
+    if(cycle >= options_get_int("START_FAVG")){
+      Feff_t = Favg_t;
+    }
+    if(cycle == options_get_int("START_FAVG")){
+      fprintf(outfile,"\n  *** Switching from Fc to F_avg ***");
+    }
+  }
 
   // Set the diagonal blocks Fock 
 //   for(int h =0; h < nirreps; ++h){
