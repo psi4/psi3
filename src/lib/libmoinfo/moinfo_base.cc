@@ -19,7 +19,7 @@ MOInfoBase::MOInfoBase()
 {
   startup();
   charge       = options_get_int("CHARGE");
-  multiplicity = options_get_int("MULTIPLICITY");
+  multiplicity = options_get_int("MULTP");
 }
 
 MOInfoBase::~MOInfoBase()

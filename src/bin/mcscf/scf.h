@@ -8,7 +8,7 @@
 
 namespace psi{ namespace mcscf{
 
-enum reference_type {rhf, rohf, uhf, tcscf};
+enum ReferenceType {rhf, rohf, uhf, tcscf};
 
 class SCF
 {
@@ -17,7 +17,7 @@ public:
   ~SCF();
   void compute_energy();
 private:
-  reference_type reference;
+  ReferenceType reference;
   static const int maxci   = 8;
   static const int maxdiis = 10;
   static const int maxbatches = 10;
@@ -91,14 +91,14 @@ private:
   SBlockMatrix diis_e[maxdiis];           // The error matrices saved for DIIS
   double       diis_ci[maxci][maxdiis];   // The ci vector saved for DIIS
 
-  // TCSCF Specific
+  // TWOCON Specific
   int          nci;         // Number of references
   double   norm_ci_grad;    // Norm of the CI gradient (sum_I |C_I|)
-  double*       ci;         // TCSCF CI coefficients
-  double*       ci_grad;    // TCSCF CI coefficients gradient
-  double** H_tcscf;         // TCSCF Hamiltonian
-  int tcscf_mos[maxci];     // Number of the TCSCF mos (relative to the irrep)
-  int tcscf_sym[maxci];     // Symmetry of the TCSCF mos
+  double*       ci;         // TWOCON CI coefficients
+  double*       ci_grad;    // TWOCON CI coefficients gradient
+  double** H_tcscf;         // TWOCON Hamiltonian
+  int tcscf_mos[maxci];     // Number of the TWOCON mos (relative to the irrep)
+  int tcscf_sym[maxci];     // Symmetry of the TWOCON mos
 
   // Private functions
   void startup();
@@ -144,7 +144,7 @@ private:
 
   int* so_sym;
 
-  // TCSCF
+  // TWOCON
 
 
 

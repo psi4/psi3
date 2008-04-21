@@ -17,6 +17,8 @@ casscf-opt-numer casscf-opt
 
 psimrcc_subdirs = psimrcc-sp1
 
+scf_subdirs   = mcscf-rhf1 mcscf-rohf1 mcscf-twocon1
+
 subdirs = \
 scf-opt scf-opt-fragments scf-opt2 scf-opt3 scf-opt4 scf-opt5 scf-opt6 scf-opt7 \
 scf-opt9 scf-opt10 scf-opt11 scf-opt12 \
@@ -31,6 +33,7 @@ scf-mvd-opt scf-mvd-opt-numer scf-mvd-opt-puream \
 scf-mvd-opt-numer-puream \
 $(cc_subdirs) \
 $(psimrcc_subdirs) \
+$(scf_subdirs) \
 dboc-rhf1 dboc-rohf1 dboc-uhf1 dboc-rcisd1 dboc-rocisd1 \
 rhf-oeprop mp2-oeprop mp2-opt \
 extrema-deloc extrema-zmat mp2r12-sp1 \
@@ -76,6 +79,12 @@ ci_tests:
 
 mcscf_tests:
 	for dir in $(mcscf_subdirs); \
+	do \
+	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
+	done
+
+scf_tests:
+	for dir in $(scf_subdirs); \
 	do \
 	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
 	done

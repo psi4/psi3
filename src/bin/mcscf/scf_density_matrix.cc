@@ -24,7 +24,7 @@ void SCF::density_matrix()
     transform(O,Do,C_T);
   }
 
-  // TCSCF density
+  // TWOCON density
   if(reference == tcscf){
     for(int I = 0 ; I < nci; ++I){
       O->zero();

@@ -60,6 +60,3 @@ void SCF::save_info()
 }
 
 }} /* End Namespaces */
-
-
-

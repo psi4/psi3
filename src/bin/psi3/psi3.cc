@@ -275,11 +275,10 @@ int main(int argc, char *argv[])
 
   /* make some basic checks on the requested computation type */
   if ((strcmp(reftyp,"RHF")!=0) && (strcmp(reftyp,"ROHF")!=0) &&
-      (strcmp(reftyp,"UHF")!=0) && (strcmp(reftyp,"TWOCON")!=0) &&
-      (strcmp(reftyp,"MCSCF")!=0)) 
+      (strcmp(reftyp,"UHF")!=0) && (strcmp(reftyp,"TWOCON")!=0))
     {
       fprintf(stdout,"Error: bad 'reference'.\n");
-      fprintf(stdout,"Must be one of: RHF, ROHF, UHF, TWOCON, MCSCF\n");
+      fprintf(stdout,"Must be one of: RHF, ROHF, UHF, TWOCON\n");
       psi3_abort();
     }
 

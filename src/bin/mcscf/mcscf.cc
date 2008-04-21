@@ -66,10 +66,13 @@ int main(int argc, char *argv[])
   if(options_get_str("REFERENCE") == "RHF"  ||
      options_get_str("REFERENCE") == "ROHF" ||
      options_get_str("REFERENCE") == "UHF"  ||
-     options_get_str("REFERENCE") == "TCSCF"){
+     options_get_str("REFERENCE") == "TWOCON"){
     SCF scf;
     scf.compute_energy();
   }else if(options_get_str("REFERENCE") == "MCSCF"){
+    fprintf(outfile,"\n\nREFERENCE = MCSCF not implemented yet");
+    fflush(outfile);
+    return PSI_RETURN_FAILURE;
   }
 
   if(options_get_int("DEBUG") > 0)
@@ -95,7 +98,7 @@ void add_calculation_options()
   options_add_int("NDIIS",7);
   options_add_int("ROOT",1);
   options_add_int("START_FAVG",5);
-  options_add_int("TURN_ON_ACTV",0);
+  options_add_int("TURN_ON_ACTV",5);
 
 
   options_add_bool("CI_DIIS",true);
@@ -104,7 +107,7 @@ void add_calculation_options()
   options_add_bool("USE_FAVG",false);
 
 
-  options_add_str_with_choices("REFERENCE","RHF","RHF ROHF UHF TCSCF MCSCF GENERAL");
+  options_add_str_with_choices("REFERENCE","RHF","RHF ROHF UHF TWOCON MCSCF GENERAL");
   options_add_str_with_choices("WFN_SYM","1","A AG AU AP APP A1 A2 B BG BU B1 B2 B3 B1G B2G B3G B1U B2U B3U 0 1 2 3 4 5 6 7 8");
 }
 

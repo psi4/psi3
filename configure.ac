@@ -991,6 +991,9 @@ AC_CONFIG_FILES([include/Makefile
           tests/extrema-zmat/extrema-zmat.pl
           tests/extrema-deloc/Makefile
           tests/extrema-deloc/extrema-deloc.pl
+          tests/mcscf-rhf1/Makefile
+          tests/mcscf-rohf1/Makefile
+          tests/mcscf-twocon1/Makefile
           tests/mp2r12-sp1/Makefile
           tests/mp2-opt-numer/Makefile
           tests/mp2-opt/Makefile

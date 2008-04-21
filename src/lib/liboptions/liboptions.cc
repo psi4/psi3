@@ -26,7 +26,7 @@ void options_init()
 {
   _default_psi_options_ = new Options();
   _default_psi_options_->add_int_option("CHARGE",0);
-  _default_psi_options_->add_int_option("MULTIPLICITY",1);
+  _default_psi_options_->add_int_option("MULTP",1);
 }
 
 /*!

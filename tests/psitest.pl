@@ -47,7 +47,7 @@ $PSITEST_SUMMARY_FILE = "../../test-case-results";
 @PSITEST_WFNS = ("SCF", "MP2", "MP2R12", "DETCI", "DETCAS", "CASSCF",
 "RASSCF", "ZAPTN", "BCCD", "BCCD_T", "CC2", "CCSD", "CCSD_T", "CC3", 
 "EOM_CC2", "LEOM_CC2", "EOM_CCSD", "LEOM_CCSD", "OOCCD", "CIS", "EOM_CC3",
-"SCF_MVD","PSIMRCC","SCF+D");
+"SCF_MVD","PSIMRCC","SCF+D","MCSCF");
 @PSITEST_REFTYPES = ("RHF", "ROHF", "UHF", "TWOCON");
 @PSITEST_DERTYPES = ("NONE", "FIRST", "SECOND", "RESPONSE");
 
@@ -1427,6 +1427,11 @@ sub seek_scf
     if (/\* SCF total energy/) {
       @data = split(/ +/, $_);
       $scf = $data[5];
+      return $scf;
+    }
+    if (/\@SCF\@/) {
+      @data = split(/ +/, $_);
+      $scf = $data[3];
       return $scf;
     }
   }
