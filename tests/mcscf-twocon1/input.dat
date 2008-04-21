@@ -1,0 +1,17 @@
+%  @SCF@     E(SCF) =     -224.359390149846
+
+psi: (
+  label        = "cc-pVDZ CAS(2,2) O3 Single Point"
+  jobtype      = sp
+  wfn          = mcscf
+  reference    = twocon
+  basis        = cc-pVDZ
+  zmat = (
+   O
+   O 1 1.29470102
+   O 1 1.27450102 2 116.18610031
+  )
+  docc         = (10 1)
+  actv         = ( 0 2)
+  convergence  = 13
+)
