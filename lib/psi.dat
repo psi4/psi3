@@ -1245,8 +1245,8 @@ psi: (
     repeat NUM_DISP $findif_next $findif_input $PSIMRCCSCFEnergy $findif_energy_save end
     $findif_grad_energy $geomupdate end $done)
 
-  PSIMRCC_MCSCF_EnergyOpt = (repeat $nopt $PSIMRCCMCSCFEnergy $findif_disp_symm
-    repeat NUM_DISP $findif_next $findif_input $PSIMRCCMCSCFEnergy $findif_energy_save end
+  PSIMRCC_MCSCF_EnergyOpt = (repeat $nopt $PSIMRCC_MCSCF_Energy $findif_disp_symm
+    repeat NUM_DISP $findif_next $findif_input $PSIMRCC_MCSCF_Energy $findif_energy_save end
     $findif_grad_energy $geomupdate end $done)
 
   PSIMRCCRHFEnergyOpt    = $PSIMRCC_MCSCF_EnergyOpt
