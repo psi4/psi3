@@ -99,4 +99,25 @@ void SCF::construct_F()
   }
 }
 
+void SCF::construct_Favg()
+{
+  if(reference == tcscf){
+    Favg  = H;
+    for(int I = 0 ; I < nci; ++I){
+      Dsum[I]  = Dc;
+      Dsum[I] += Dtc[I];
+    }
+
+    for(int batch = 0; batch < nbatch; ++batch){
+      read_Raffanetti("PK",PK,batch);
+      // Dsum * PK Contributions to the Hamiltonian
+      for(int I = 0 ; I < nci; ++I){
+        construct_G(Dsum[I],G,PK,batch);
+        G.scale(ci[I] * ci[I]);
+        Favg += G;
+      }
+    }
+  }
+}
+
 }} /* End Namespaces */

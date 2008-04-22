@@ -105,7 +105,8 @@ void add_calculation_options()
   options_add_bool("USE_DIIS",true);
   options_add_bool("READ_MOS",true);
   options_add_bool("USE_FAVG",false);
-
+  options_add_bool("CANONICALIZE_ACTIVE_FAVG",false);
+  options_add_bool("CANONICALIZE_INACTIVE_FAVG",false);
 
   options_add_str_with_choices("REFERENCE","RHF","RHF ROHF UHF TWOCON MCSCF GENERAL");
   options_add_str_with_choices("WFN_SYM","1","A AG AU AP APP A1 A2 B BG BU B1 B2 B3 B1G B2G B3G B1U B2U B3U 0 1 2 3 4 5 6 7 8");

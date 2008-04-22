@@ -124,6 +124,7 @@ private:
   void construct_G(SBlockMatrix& density,SBlockMatrix& G,double* integrals,int batch, double factor);
   void construct_G(SBlockMatrix& density,SBlockMatrix& G,double* integrals,int batch);
   void construct_F();
+  void construct_Favg();
   void construct_Feff(int cycle);
   double energy(int cycle,double old_energy);
 

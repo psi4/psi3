@@ -7,27 +7,35 @@ namespace psi{ namespace mcscf{
 void SCF::construct_Feff(int cycle)
 {
   Feff_t = Fc_t;
-
+ 
   if(options_get_bool("USE_FAVG")){
     if(cycle >= options_get_int("START_FAVG")){
-      Feff_t = Favg_t;
+      // Set the diagonal blocks Fock 
+      for(int h =0; h < nirreps; ++h){
+        // Set the (closed,closed) blocks
+        for(int i = 0; i < docc[h]; ++i){
+          for(int j = 0; j < docc[h]; ++j){
+            Feff_t->set(h,i,j,Favg_t->get(h,i,j));
+          }
+        }
+        // Set the (active,active) blocks
+        for(int i = docc[h]; i< docc[h] + actv[h]; ++i){
+          for(int j = docc[h]; j < docc[h] + actv[h]; ++j){
+            Feff_t->set(h,i,j,Favg_t->get(h,i,j));
+          }
+        }
+        // Set the (virtual,virtual) blocks        
+        for(int i = docc[h] + actv[h]; i < sopi[h]; ++i){
+          for(int j = docc[h] + actv[h]; j < sopi[h]; ++j){
+            Feff_t->set(h,i,j,Favg_t->get(h,i,j));
+          }
+        }        
+      }
     }
     if(cycle == options_get_int("START_FAVG")){
       fprintf(outfile,"\n  *** Switching from Fc to F_avg ***");
     }
   }
-
-  // Set the diagonal blocks Fock 
-//   for(int h =0; h < nirreps; ++h){
-//     // Set the (virtual,virtual) blocks
-//     for(int i = docc[h] + actv[h]; i < sopi[h]; ++i){
-//       for(int j = docc[h] + actv[h]; j < sopi[h]; ++j){
-//         
-//         double element = 2.0 * Fo_t->get(h,i,j);
-//         Feff_t->set(h,i,j,element);
-//       }
-//     }
-//   }
 
   if(reference == rohf  && (cycle > turn_on_actv)){
     for(int h =0; h < nirreps; ++h){
@@ -83,7 +91,6 @@ void SCF::construct_Feff(int cycle)
       }
     }
   }
-
 }
 
 }} /* End Namespaces */
