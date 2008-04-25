@@ -24,6 +24,8 @@ void read_charges()
   char charge_lbl[20], error_message[80];
 
   nuclear_charges = init_array(num_atoms);
+// element gets set by read_zmat, read_cart or read_geomdat
+// so there is no point in doing it here (RAK, 2008)
 //  element = (char **) malloc(sizeof(char *)*num_atoms);
 
   atomcount = 0;
@@ -46,8 +48,6 @@ void read_charges()
         sprintf(error_message,"Problem reading the %s array!", charge_lbl);
         punt(error_message);
       }
-//      for(i=0;i<frag_num_atoms[f];i++)
-//        element[i+atomcount] = elem_name[(int)nuclear_charges[i+atomcount]];
     }
     /* IF USER DOES NOT SPECIFY CHARGES, POINT TO DEFAULT CHARGES */
     else {
