@@ -16470,7 +16470,7 @@ BERYLLIUM:"H_CCPV5Z" = (
         (GET "AUG-CC-PV6Z")
         )
   CARBON:"aug-cc-pV6Z" = (
-        (GET "AUG-CC-PV56")
+        (GET "AUG-CC-PV6Z")
         )
   NITROGEN:"aug-cc-pV6Z" = (
         (GET "AUG-CC-PV6Z")
@@ -16500,7 +16500,7 @@ BERYLLIUM:"H_CCPV5Z" = (
         (GET "AUG-CC-PV6Z")
         )
   ARGON:"aug-cc-pV6Z" = (
-        (GET "AUG-CC-PV5Z")
+        (GET "AUG-CC-PV6Z")
         )
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
