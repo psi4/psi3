@@ -273,7 +273,7 @@ void MOInfo::read_mo_spaces()
     read_mo_space(nirreps,ndocc,docc,"CORR_DOCC");
     read_mo_space(nirreps,nactv,actv,"CORR_ACTV");
     read_mo_space(nirreps,nfvir,fvir,"CORR_FVIR");
-    if(options_get_str("CORR_WFN") == "CCSD_MP2"){
+    if(options_get_str("CORR_WFN") == "MP2-CCSD"){
       actv_docc = new int[nirreps];
       read_mo_space(nirreps,nactv_docc,actv_docc,"CORR_ACTV_DOCC");
     }
@@ -345,7 +345,7 @@ void MOInfo::print_mo()
   print_mo_space(ndocc,docc,"Doubly Occupied                 ");
   print_mo_space(nactv,actv,"Active                          ");
 
-  if(options_get_str("CORR_WFN") == "CCSD_MP2"){  
+  if(options_get_str("CORR_WFN") == "MP2-CCSD"){  
     print_mo_space(nactv_docc,actv_docc,"Active Doubly Occupied          ");
   }
 
