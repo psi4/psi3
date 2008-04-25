@@ -61,6 +61,7 @@ void PSIO::open(unsigned int unit, int status) {
       if (n != names.end())
         psio_error(unit, PSIO_ERROR_IDENTVOLPATH);
       names[fullpath] = 1;
+      free(path);
     }
   }
   
