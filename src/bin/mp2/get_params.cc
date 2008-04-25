@@ -83,6 +83,11 @@ void get_params()
     params.relax_opdm = 0;
     params.gradient = 1;
   }
+  else if(!strcmp(params.jobtype,"SYMM_FC") && !strcmp(params.dertype,"FIRST")) {
+    params.opdm = 0;
+    params.relax_opdm = 0;
+    params.gradient = 1;
+  }
   else if(!strcmp(params.jobtype,"FREQ") && !strcmp(params.dertype,"NONE")) {
     params.opdm = 0;
     params.relax_opdm = 0;
