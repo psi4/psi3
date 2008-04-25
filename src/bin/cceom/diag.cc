@@ -824,11 +824,11 @@ timer_off("INIT GUESS");
       /* restart with new B vectors if there are too many */
       if (L >= vectors_per_root * eom_params.cs_per_irrep[C_irr]) {
         if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) ) {
-          fprintf(outfile,"Collapsing to %d vector(s).\n",cc3_index+1);
           restart(alpha, L, cc3_index+1, C_irr, 1, alpha_old, L_old, eom_params.collapse_with_last);
           L_old = L;
           L = cc3_index+1;
           if (eom_params.collapse_with_last) L *= 2;
+          fprintf(outfile,"Collapsing to %d vector(s).\n",L);
           already_sigma = 0;
           ignore_G_old = 1;
         }
