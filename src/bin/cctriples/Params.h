@@ -9,6 +9,7 @@ struct Params {
   int ref;
   char *wfn;
   int semicanonical;
+  int nthreads;
 };
 
 }} // namespace psi::cctriples

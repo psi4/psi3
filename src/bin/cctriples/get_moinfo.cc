@@ -50,6 +50,11 @@ void get_moinfo(void)
     exit(PSI_RETURN_FAILURE);
   }
 
+  i=0;
+  params.nthreads = 1;
+  errcod = ip_data("NTHREADS", "%d", &i, 0);
+  if (errcod == IPE_OK) params.nthreads = i;
+
   params.semicanonical = 0;
   errcod = ip_string("REFERENCE", &(junk),0);
   /* if no reference is given, assume rhf */
