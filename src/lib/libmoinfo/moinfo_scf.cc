@@ -44,7 +44,8 @@ void MOInfoSCF::read_mo_spaces()
   }
 
   // For single-point geometry optimizations and frequencies
-  if(chkpt_exist(chkpt_build_keyword(const_cast<char*>("Current Displacement Irrep")))){
+  char *current_displacement_label = chkpt_build_keyword(const_cast<char*>("Current Displacement Irrep"));
+  if(chkpt_exist(current_displacement_label)){
     int   disp_irrep  = chkpt_rd_disp_irrep();
     char *save_prefix = chkpt_rd_prefix();
     int nirreps_ref;
@@ -88,6 +89,8 @@ void MOInfoSCF::read_mo_spaces()
 
   nactive_ael = nael  - ndocc;
   nactive_bel = nbel  - ndocc;
+  
+  free(current_displacement_label);
 }
 
 void MOInfoSCF::print_mo()
