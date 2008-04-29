@@ -22,7 +22,6 @@
 namespace psi { namespace dboc {
 
 extern void done(const char * message);
-extern MOInfo_t MOInfo;
 extern "C" FILE *outfile;
 extern BasisSet* BasisSets[MAX_NUM_DISP];
 extern HFWavefunction* HFVectors[MAX_NUM_DISP];
@@ -42,6 +41,7 @@ FLOAT **eval_S_alpha(DisplacementIndex LDisp, DisplacementIndex RDisp)
   double** rref_r = HFWfn_R->rref();
 
 #if USE_MOINFO
+  extern MOInfo_t MOInfo;
   int num_mo = MOInfo.num_mo;
   int num_so = MOInfo.num_so;
 #else
@@ -147,6 +147,7 @@ FLOAT **eval_S_beta(DisplacementIndex LDisp, DisplacementIndex RDisp)
   double** rref_r = HFWfn_R->rref();
 
 #if USE_MOINFO
+  extern MOInfo_t MOInfo;
   int num_mo = MOInfo.num_mo;
   int num_so = MOInfo.num_so;
 #else
