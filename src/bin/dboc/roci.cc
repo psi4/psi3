@@ -88,7 +88,7 @@ namespace psi {
           for(int i=0; i<nfzc; i++) {
             int ii = fzc_occ[i];
             for(int j=0; j<nact_a; j++)
-              CSC_a[j+nfzc][i] = CSC_full[str_j->occ[j]][i];
+              CSC_a[j+nfzc][i] = CSC_full[str_j->occ[j]][ii];
           }
 
           for(int j=0; j<nfzc; j++) {
