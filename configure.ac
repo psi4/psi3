@@ -4,7 +4,8 @@
 #
 #
 
-define([psi_version],[3.3.0])
+define([psi_version],[3.4.0])
+define([psi_buildid],[alpha])
 define([psi_bugreport],[psicode@users.sourceforge.net])
 AC_PREREQ(2.57)
 AC_INIT([psi],[psi_version],[psi_bugreport])
@@ -12,8 +13,10 @@ AC_INIT([psi],[psi_version],[psi_bugreport])
 AC_CONFIG_HEADER(include/psiconfig.h)
 
 PSI_VERSION=psi_version
+PSI_BUILDID=psi_buildid
 PSI_BUGREPORT=psi_bugreport
 AC_SUBST(PSI_VERSION)
+AC_SUBST(PSI_BUILDID)
 AC_SUBST(PSI_BUGREPORT)
 AC_CONFIG_AUX_DIR(bin)
 
