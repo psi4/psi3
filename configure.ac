@@ -160,15 +160,18 @@ AC_PROG_CXX([$CXX_LIST])
 AC_ARG_WITH(fc,[  --with-fc               which Fortran compiler to use],[
 case $withval in
   no)
-    F77=
+    F77="no"
     ;;
   *)
     F77=$withval
     ;;
 esac
 ])
-if test X"$F77" != X; then
-  AC_PROG_F77([$F77_LIST])
+
+if test -z "$F77"; then
+  AC_PROG_F77
+elif test "$F77" = "no"; then
+  F77=""
 fi
 AC_SUBST(FC,[$F77])
 
