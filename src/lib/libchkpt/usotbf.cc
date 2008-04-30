@@ -16,6 +16,7 @@ using namespace psi;
 
 double **Chkpt::rd_usotbf(void)
 {
+  if (rd_puream()) {
 	double **usotbf;
 	int num_so, i;
 	psio_address ptr;
@@ -31,6 +32,9 @@ double **Chkpt::rd_usotbf(void)
 
 	free(keyword);
 	return usotbf;
+  }
+  else
+    return rd_usotao();
 }
 
 void Chkpt::wt_usotbf(double **usotbf)
