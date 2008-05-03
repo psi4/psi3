@@ -12,13 +12,11 @@
 
 #include <cstdio>
 #include <libpsio/psio.h>
+#include "config.h"
 
 #ifdef __cplusplus
 extern "C" {
 #endif
-
-typedef short int Label;
-typedef double Value;
 
 struct iwlbuf {
   int itap;                   /* tape number for input file */
@@ -33,10 +31,6 @@ struct iwlbuf {
   Value *values;              /* integral values */
 };
 
-#define IWL_KEY_BUF "IWL Buffers"
-#define IWL_KEY_ONEL "IWL One-electron matrix elements"
-
-#define IWL_INTS_PER_BUF 2980
 
 void iwl_buf_fetch(struct iwlbuf *Buf);
 void iwl_buf_put(struct iwlbuf *Buf);

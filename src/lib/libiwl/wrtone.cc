@@ -5,6 +5,16 @@
 #include <cstdio>
 #include <libpsio/psio.h>
 #include "iwl.h"
+#include "iwl.hpp"
+
+using namespace psi;
+ 
+void IWL::write_one(PSIO *psio, int itap, char *label, int ntri, double *onel_ints)
+{
+    psio->open(itap, PSIO_OPEN_OLD);
+    psio->write_entry(itap, label, (char*)onel_ints, ntri*sizeof(double));
+    psio->close(itap, 1);
+}
 
 extern "C" {
 	

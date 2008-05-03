@@ -7,7 +7,28 @@
 #include <cstdio>
 #include <cstdlib>
 #include <libpsio/psio.h>
+extern "C" {
 #include "iwl.h"
+}
+#include "iwl.hpp"
+
+using namespace psi;
+
+IWL::~IWL()
+{
+    close();
+}
+
+void IWL::close()
+{
+    psio_->close(itap_, keep_);
+    if (labels_)
+        delete[](labels_);
+    if (values_)
+        delete[](values_);
+    labels_ = NULL;
+    values_ = NULL;
+}
 
 extern "C" {
 

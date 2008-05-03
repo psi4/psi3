@@ -6,11 +6,24 @@
 #include <cmath>
 #include <libciomr/libciomr.h>
 #include "iwl.h"
+#include "iwl.hpp"
 
-extern "C" {
-	
 #define MIN0(a,b) (((a)<(b)) ? (a) : (b))
 #define MAX0(a,b) (((a)>(b)) ? (a) : (b))
+
+using namespace psi;
+  
+void IWL::read_two(PSIO *psio, int itap, double *ints, int *ioff, int norbs, 
+    int nfzc, int nfzv, int printflg, FILE *outfile)
+{
+    IWL Buf(psio, itap, 0.0, 1, 1);
+    if ((nfzc == 0) && (nfzv == 0))
+        Buf.read_all(ints, ioff, ioff, 0, ioff, printflg, outfile);
+    else
+        Buf.read_all_active(ints, ioff, ioff, 0, ioff, nfzc, norbs-nfzv-1, printflg, outfile);
+}
+
+extern "C" {
 
 /*!
 ** iwl_rdtwo(): read two electron ints from the given file.

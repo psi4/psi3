@@ -5,12 +5,75 @@
 #include <cstdio>
 #include <cstdlib>
 #include <libpsio/psio.h>
+extern "C" {
 #include "iwl.h"
+}
+#include "iwl.hpp"
+
+using namespace psi;
 
 extern "C" {
 	
 extern FILE *outfile;
 
+}
+
+IWL::IWL()
+{
+    /*! set up buffer info */
+    itap_ = -1;
+    bufpos_ = PSIO_ZERO;
+    ints_per_buf_ = IWL_INTS_PER_BUF;
+    cutoff_ = 1.e-14;
+    bufszc_ = 2 * sizeof(int) + ints_per_buf_ * 4 * sizeof(Label) +
+        ints_per_buf_ * sizeof(Value);
+    lastbuf_ = 0;
+    inbuf_ = 0;
+    idx_ = 0;    
+}
+
+IWL::IWL(PSIO *psio, int itap, double cutoff, int oldfile, int readflag):
+    keep_(true)
+{
+    init(psio, itap, cutoff, oldfile, readflag);
+}
+
+void IWL::init(PSIO *psio, int itap, double cutoff, int oldfile, int readflag)
+{
+    psio_ = psio;
+    
+    /*! set up buffer info */
+    itap_ = itap;
+    bufpos_ = PSIO_ZERO;
+    ints_per_buf_ = IWL_INTS_PER_BUF;
+    cutoff_ = cutoff;
+    bufszc_ = 2 * sizeof(int) + ints_per_buf_ * 4 * sizeof(Label) +
+        ints_per_buf_ * sizeof(Value);
+    lastbuf_ = 0;
+    inbuf_ = 0;
+    idx_ = 0;
+
+    /*! make room in the buffer */
+    // labels_ = (Label *) malloc (4 * ints_per_buf_ * sizeof(Label));
+    // values_ = (Value *) malloc (ints_per_buf_ * sizeof(Value));
+    labels_ = new Label[4 * ints_per_buf_];
+    values_ = new Value[ints_per_buf_];
+
+    /*! open the output file */
+    /*! Note that we assume that if oldfile isn't set, we O_CREAT the file */
+    psio_->open(itap_, oldfile ? PSIO_OPEN_OLD : PSIO_OPEN_NEW);
+    if (oldfile && (psio_->tocscan(itap_, IWL_KEY_BUF) == NULL)) {
+        fprintf(stderr,"iwl_buf_init: Can't open file %d\n", itap_);
+        psio_->close(itap_,0);
+        return;
+    } 
+
+    /*! go ahead and read a buffer */
+    if (readflag) fetch();
+}
+
+extern "C" {
+    
 /*!
 ** iwl_buf_init()
 **

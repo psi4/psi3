@@ -6,6 +6,17 @@
 #include <cmath>
 #include <libciomr/libciomr.h>
 #include "iwl.h"
+#include "iwl.hpp"
+
+using namespace psi;
+  
+void IWL::write_two(PSIO *psio, int itap, int nbfso, double *ints, int *ioff, 
+    double toler, int printflg, FILE *outfile)
+{
+    IWL Buf(psio, itap, toler, 0, 0);
+    Buf.write_all(nbfso, ints, ioff, printflg, outfile);
+    Buf.flush(1);
+}
 
 extern "C" {
 	

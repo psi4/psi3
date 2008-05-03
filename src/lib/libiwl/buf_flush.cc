@@ -5,6 +5,37 @@
 #include <cstdio>
 #include <libciomr/libciomr.h>
 #include "iwl.h"
+#include "iwl.hpp"
+
+using namespace psi;
+
+void IWL::flush(int lastbuf)
+{
+    int idx;
+    Label *lblptr;
+    Value *valptr;
+
+    inbuf_ = idx_;
+    lblptr = labels_;
+    valptr = values_;
+
+    idx = 4 * idx_;
+
+    while (idx_ < ints_per_buf_) {
+        lblptr[idx++] = 0;
+        lblptr[idx++] = 0;
+        lblptr[idx++] = 0;
+        lblptr[idx++] = 0;
+        valptr[idx_] = 0.0;
+        idx_++;
+    }
+
+    if (lastbuf) lastbuf_ = 1;
+    else lastbuf_ = 0;
+
+    put();
+    idx_ = 0;
+}
 
 extern "C" {
 	

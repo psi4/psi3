@@ -7,6 +7,24 @@
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 #include "iwl.h"
+#include "iwl.hpp"
+
+using namespace psi;
+  
+void IWL::read_one(PSIO *psio, int itap, char *label, double *ints, 
+    int ntri, int erase, int printflg, FILE *outfile)  
+{
+    int nmo;
+
+    psio->open(itap, PSIO_OPEN_OLD);
+    psio->read_entry(itap, label, (char *) ints, ntri*sizeof(double));
+    psio->close(itap, !erase);
+
+    if (printflg) {
+        nmo = (sqrt((double) (1 + 8 * ntri)) - 1)/2;
+        print_array(ints, nmo, outfile);
+    }
+}
 
 extern "C" {
 	

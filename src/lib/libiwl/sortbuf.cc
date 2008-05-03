@@ -6,14 +6,206 @@
 #include <cmath>
 #include <libciomr/libciomr.h>
 #include "iwl.h"
+#include "iwl.hpp"
 
-extern "C" {
-	
 #define MIN0(a,b) (((a)<(b)) ? (a) : (b))
 #define MAX0(a,b) (((a)>(b)) ? (a) : (b))
 
 #define BIGNUM 40000
 
+using namespace psi;
+
+void IWL::sort_buffer(IWL *Inbuf, IWL *Outbuf,
+    double *ints, int fpq, int lpq, int *ioff, int *ioff2, 
+    int nbfso, int elbert, int intermediate, int no_pq_perm, 
+    int qdim, int add, int printflg, FILE *outfile)
+{
+    int i;
+    Value *valptr;              /* array of integral values */
+    Label *lblptr;              /* array of integral labels */
+    int idx;                    /* index for curr integral (0..ints_per_buf) */
+    int lastbuf;                /* last buffer flag */
+    int p, q, qmax, qmin, r, rmin, rmax, s, smin, smax, pq, rs;
+    long int pqrs, offset;
+    int first_p, first_q, first_pq, last_p, last_q;
+    int nbstri;
+
+    if (printflg) {
+        fprintf(outfile, "\nsortbuf for pq=%d to %d\n", fpq, lpq);
+    }
+
+    if (no_pq_perm && !intermediate) {
+        fprintf(outfile,"(sortbuf): illegal parameter combination.\n");
+        fprintf(stderr, "(sortbuf): illegal parameter combination.\n");
+    }
+
+    nbstri = nbfso * (nbfso + 1) / 2;
+
+    /* figure out ranges on things */
+    /* I believe this section works fine, even with different ioff arrays */
+    i = 0;
+    while (fpq >= ioff[i] && i < BIGNUM) i++;
+    if (i == BIGNUM) {
+        fprintf(outfile, "(sortbuf): parameter error\n") ;
+        return;
+    }
+    first_p = i-1 ; first_q = fpq - ioff[i-1];
+    first_pq = ioff[first_p] + first_q;
+    if (first_pq != fpq) {
+        fprintf(outfile, "(sortbuf): fpq != first_pq.\n");
+        fprintf(stderr,  "(sortbuf): fpq != first_pq.\n");
+    }
+
+    if (!intermediate) {
+        if (elbert) offset = ioff2[first_pq] + first_pq ;
+        else offset = ioff[first_pq] ;
+    }
+    else offset = 0;
+
+    i=0; 
+    while (lpq >= ioff[i] && i < BIGNUM) i++ ;
+    if (i == BIGNUM) {
+        fprintf(outfile, "(sortbuf): parameter error\n") ;
+        return ;
+    }
+    last_p = i-1 ; last_q = lpq - ioff[i-1] ;
+
+
+    lblptr = Inbuf->labels_;
+    valptr = Inbuf->values_;
+
+    /* read a buffer at a time until we're done */
+
+    do {
+        Inbuf->fetch();
+        lastbuf = Inbuf->lastbuf_;
+        for (idx=4*Inbuf->idx_; Inbuf->idx_<Inbuf->inbuf_; Inbuf->idx_++) {
+            p = (int) lblptr[idx++];
+            q = (int) lblptr[idx++];
+            r = (int) lblptr[idx++];
+            s = (int) lblptr[idx++];
+
+            /* if (no_pq_perm) ioff is the appropriate offset array for the left
+               indices (ioff[p] = nvirt * p for MP2); ioff2 is then the usual
+               ioff offset array, used for the right indices */
+            if (no_pq_perm) {
+                pq = ioff[p] + q;
+                rs = ioff2[MAX0(r,s)] + MIN0(r,s);
+            }
+            else {
+                pq = ioff[MAX0(p,q)] + MIN0(p,q);
+                rs = ioff[MAX0(r,s)] + MIN0(r,s);
+            }
+
+            if (!intermediate) {
+                if (elbert)
+                    pqrs = ioff2[pq] + rs;
+                else {
+                    pqrs = ioff[MAX0(pq,rs)];
+                    pqrs += MIN0(pq,rs);
+                }
+            }
+            else {
+                pqrs = (pq - first_pq);
+                pqrs *= nbstri;
+                pqrs += rs;
+            }
+
+            if (printflg && ints[pqrs-offset] != 0.0) 
+                fprintf(outfile, "Adding %10.6f to el %d %d %d %d = %10.6lf\n", 
+                valptr[Inbuf->idx_], p, q, r, s, ints[pqrs-offset]);
+
+            if (add) ints[pqrs-offset] += valptr[Inbuf->idx_];
+            else ints[pqrs-offset] += valptr[Inbuf->idx_];
+
+            if (printflg) 
+                fprintf(outfile, "<%d %d %d %d | %d %d [%ld] = %10.6f\n",
+                p, q, r, s, pq, rs, pqrs, ints[pqrs-offset]) ;
+        }
+    } while (!lastbuf);
+
+    /* now write them out again, in order */
+    lblptr = Outbuf->labels_;
+    valptr = Outbuf->values_;
+
+    idx = 0;
+
+    for (p=first_p; p<=last_p; p++) {
+        qmax = (p==last_p) ? last_q : p ;
+        qmin = (p==first_p) ? first_q : 0 ;
+        if(no_pq_perm) {
+            qmax = (p==last_p) ? last_q : (qdim-1);
+            qmin = (p==first_p) ? first_q: 0;
+        }
+        for (q=qmin; q<=qmax; q++) {
+            pq = ioff[p] + q ; /* This should be fine even with MP2 */
+
+            if (!intermediate) {
+                rmin = (elbert) ? p : 0 ; 
+                rmax = (elbert) ? nbfso : p+1 ;
+            }
+            else {  /* This should be fine with MP2, also */
+                rmin = 0;
+                rmax = nbfso;
+            }
+
+            for (r=rmin; r<rmax; r++) {
+
+                if (!intermediate) {
+                    if (elbert) {
+                        smax = r+1 ;
+                        smin = (p==r) ? q : 0 ;
+                    }
+                    else {
+                        smax = (p==r) ? (q+1) : (r+1) ;
+                        smin = 0 ;
+                    }
+                }
+                else { /* This should be fine with MP2, also */
+                    smax = r + 1;
+                    smin = 0;
+                }
+
+                for (s=smin; s < smax; s++) {
+                    if(no_pq_perm) rs = ioff2[r] + s;
+                    else rs = ioff[r] + s;
+
+                    /* Again, this should be fine with MP2 */
+                    if (elbert) pqrs = ioff2[pq] + rs ;
+                    else if (intermediate) {
+                        pqrs = (pq - first_pq);
+                        pqrs *= nbstri;
+                        pqrs += rs;
+                    }
+                    else pqrs = ioff[pq] + rs ;
+
+                    if (fabs(ints[pqrs-offset]) > Outbuf->cutoff_) {
+                        idx = 4*Outbuf->idx_;
+                        lblptr[idx++] = p;
+                        lblptr[idx++] = q;
+                        lblptr[idx++] = r;
+                        lblptr[idx++] = s;
+                        valptr[Outbuf->idx_] = ints[pqrs-offset];
+                        if (printflg) 
+                            fprintf(outfile, ">%d %d %d %d | %d %d [%ld] = %10.6f\n",
+                            p, q, r, s, pq, rs, pqrs, ints[pqrs-offset]) ;
+
+                        Outbuf->idx_++;
+                        if (Outbuf->idx_ == Outbuf->ints_per_buf_) {
+                            Outbuf->lastbuf_ = 0;
+                            Outbuf->inbuf_ = Outbuf->idx_;
+                            Outbuf->put();
+                            Outbuf->idx_ = 0;
+                        } 
+                    }
+                }
+            }
+        }
+    }
+}
+
+extern "C" {
+	
 /*!
 ** sortbuf()
 **

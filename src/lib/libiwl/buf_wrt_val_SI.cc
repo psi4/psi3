@@ -6,6 +6,58 @@
 #include <cmath>
 #include <libciomr/libciomr.h>
 #include "iwl.h"
+#include "iwl.hpp"
+
+  using namespace psi;
+  
+void IWL::write_value_SI(short int p, short int q,
+    short int r, short int s, double value, int printflag,
+    FILE *outfile, int dirac)
+{
+    int idx;
+    Label *lblptr;
+    Value *valptr;
+
+    lblptr = labels_;
+    valptr = values_;
+
+    if (fabs(value) > cutoff_) {
+        idx = 4 * idx_;
+        if(dirac) {
+            lblptr[idx++] = (Label) p;
+            lblptr[idx++] = (Label) r;
+            lblptr[idx++] = (Label) q;
+            lblptr[idx++] = (Label) s;
+        }
+        else {
+            lblptr[idx++] = (Label) p;
+            lblptr[idx++] = (Label) q;
+            lblptr[idx++] = (Label) r;
+            lblptr[idx++] = (Label) s;
+        }
+        valptr[idx_] = (Value) value;
+
+        idx_++;
+
+        if (idx_ == ints_per_buf_) {
+            lastbuf_ = 0;
+            inbuf_ = idx_;
+            put();
+            idx_ = 0;
+        }
+
+        if (printflag) {
+            if(dirac) {
+                fprintf(outfile, ">%d %d %d %d = %20.10f\n",
+                    p, r, q, s, value);
+            }
+            else {
+                fprintf(outfile, ">%d %d %d %d = %20.10f\n",
+                    p, q, r, s, value);
+            }
+        }
+    }
+}
 
 extern "C" {
 	
