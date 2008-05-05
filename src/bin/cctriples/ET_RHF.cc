@@ -27,8 +27,8 @@ void *ET_RHF_thread(void *thread_data);
 
 double ET_RHF(void)
 {
-  int i,j,k,I,J,K,Gi,Gj,Gk, h, nirreps, cnt, cnt_all;
-  int nijk, nthreads, thread, ijk_part, errcod;
+  int i,j,k,I,J,K,Gi,Gj,Gk, h, nirreps, cnt;
+  int nijk, nthreads, thread, *ijk_part, errcod;
   int *occpi, *virtpi, *occ_off, *vir_off;
   double ET, *ET_array;
   dpdfile2 fIJ, fAB, fIA, T1;
@@ -83,6 +83,7 @@ double ET_RHF(void)
   for (thread=0; thread<nthreads;++thread)
     dpd_buf4_init(&(Fints_array[thread]), CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
   ET_array = (double *) malloc(nthreads*sizeof(double));
+  ijk_part = new int [nthreads];
 
   for (thread=0;thread<nthreads;++thread) {
     thread_data_array[thread].fIJ = &fIJ;
@@ -118,14 +119,7 @@ double ET_RHF(void)
     for(Gj=0; Gj < nirreps; Gj++) {
       for(Gk=0; Gk < nirreps; Gk++) {
 
-        for (thread=0; thread<nthreads;++thread) {
-          thread_data_array[thread].Gi = Gi;
-          thread_data_array[thread].Gj = Gj;
-          thread_data_array[thread].Gk = Gk;
-          ET_array[thread] = 0.0;
-        }
-
-        nijk = 0; /* number of ijk for this irrep combination */
+        nijk = 0; // total number of ijk for these irreps
         for(i=0; i < occpi[Gi]; i++) {
           I = occ_off[Gi] + i;
           for(j=0; j < occpi[Gj]; j++) {
@@ -139,74 +133,44 @@ double ET_RHF(void)
         fprintf(ijkfile, "Num. of IJK with (Gi,Gj,Gk)=(%d,%d,%d) =: %d\n",
           Gi, Gj, Gk, nijk);
         if (nijk == 0) continue;
-        ijk_part = nijk / nthreads; 
 
-        if ((ijk_part) && (nthreads>1)) { /* there is >= 1 ijk for each thread */
-          thread_data_array[0].first_ijk = 0;
-          thread = 0;
-          cnt_all = 0;
-          cnt = 0;
-           /* assign ijk start and stop for each thread */
-          for(i=0; i < occpi[Gi]; i++) {
-            I = occ_off[Gi] + i;
-            for(j=0; j < occpi[Gj]; j++) {
-              J = occ_off[Gj] + j;
-              for(k=0; k < occpi[Gk]; k++) {
-                K = occ_off[Gk] + k;
-                if(I >= J && J >= K) {
-                  ++cnt_all;
-                  ++cnt;
-                  if (cnt == ijk_part) {
-                    if (thread < nthreads)
-                      thread_data_array[thread].last_ijk = cnt_all-1;
-                    ++thread;
-                    cnt = 0;
-                    if (thread < nthreads)
-                      thread_data_array[thread].first_ijk = cnt_all;
-                  }
-                }
-              }
-            }
-          }
-          /* last thread does the extra ijk's too */
-          thread_data_array[nthreads-1].last_ijk = nijk-1;
-
-           /* execute threads */
-          for (i=0; i<nthreads;++i)
-            fprintf(ijkfile,"\tthread %d: first_ijk=%d,  last_ijk=%d\n", i,
-              thread_data_array[i].first_ijk, thread_data_array[i].last_ijk);
-
-          for (thread=0;thread<nthreads;++thread) {
-            errcod = pthread_create(&(p_thread[thread]), NULL, ET_RHF_thread,
-                       (void *) &thread_data_array[thread]);
-            if (errcod) {
-              fprintf(stderr,"pthread_create in ET_RHF() failed\n");
-              exit(PSI_RETURN_FAILURE);
-            }
-          }
-          for (thread=0; thread<nthreads;++thread) {
-            errcod = pthread_join(p_thread[thread], NULL);
-            if (errcod) {
-              fprintf(stderr,"pthread_join in ET_RHF() failed\n");
-              exit(PSI_RETURN_FAILURE);
-            }
-          }
+        for (thread=0; thread<nthreads;++thread) {
+          thread_data_array[thread].Gi = Gi;
+          thread_data_array[thread].Gj = Gj;
+          thread_data_array[thread].Gk = Gk;
+          ET_array[thread] = 0.0;
+          ijk_part[thread] = nijk / nthreads; // number of ijk for each thread
+          if (thread < (nijk % nthreads)) ++ijk_part[thread];
         }
 
-        else { /* there'll only be one thread */
-          thread_data_array[0].first_ijk = 0;
-          thread_data_array[0].last_ijk = nijk-1;
+        cnt = 0;
+        for (thread=0; thread<nthreads; ++thread) {
+          if (!ijk_part[thread]) continue;  // there are more threads than nijk
+          thread_data_array[thread].first_ijk = cnt;
+          cnt += ijk_part[thread];
+          thread_data_array[thread].last_ijk = cnt-1;
+        }
 
-          fprintf(ijkfile,"\tthread 0: first_ijk=%d,  last_ijk=%d\n",
-              thread_data_array[0].first_ijk, thread_data_array[0].last_ijk);
+        /* execute threads */
+        for (thread=0; thread<nthreads;++thread) {
+          if (!ijk_part[thread]) continue;
+          fprintf(ijkfile,"\tthread %d: first_ijk=%d,  last_ijk=%d\n", thread,
+            thread_data_array[thread].first_ijk, thread_data_array[thread].last_ijk);
+        }
 
-          errcod = pthread_create(&(p_thread[0]), NULL, ET_RHF_thread,
-                       (void *) &thread_data_array[0]);
+        for (thread=0;thread<nthreads;++thread) {
+          if (!ijk_part[thread]) continue;
+          errcod = pthread_create(&(p_thread[thread]), NULL, ET_RHF_thread,
+                   (void *) &thread_data_array[thread]);
           if (errcod) {
             fprintf(stderr,"pthread_create in ET_RHF() failed\n");
             exit(PSI_RETURN_FAILURE);
           }
-          errcod = pthread_join(p_thread[0], NULL);
+        }
+
+        for (thread=0; thread<nthreads;++thread) {
+          if (!ijk_part[thread]) continue;
+          errcod = pthread_join(p_thread[thread], NULL);
           if (errcod) {
             fprintf(stderr,"pthread_join in ET_RHF() failed\n");
             exit(PSI_RETURN_FAILURE);
@@ -246,6 +210,7 @@ double ET_RHF(void)
 
   free(Fints_array);
   free(ET_array);
+  delete [] ijk_part;
 
   free(thread_data_array);
   free(p_thread);
