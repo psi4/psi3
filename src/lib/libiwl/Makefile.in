@@ -26,7 +26,7 @@ ifneq ($(DODEPEND),no)
 include $(LIBOBJ:%.o=%.d)
 endif
 
-install_inc:: iwl.h
+install_inc:: iwl.h iwl.hpp config.h
 	$(MKDIRS) $(DESTDIR)$(incdir)/libiwl
 	$(INSTALL_INCLUDE) $^ $(DESTDIR)$(incdir)/libiwl
 
