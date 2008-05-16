@@ -609,6 +609,7 @@ void done(const char *message)
   char* errmsg;
   errmsg = (char *) new char[strlen(message)+7];
   sprintf(errmsg,"DBOC: %s",message);
+  fprintf(outfile,"ERROR %s",errmsg);
   exit_io();
   throw std::runtime_error(errmsg);
   delete[] errmsg;
