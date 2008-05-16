@@ -191,7 +191,7 @@ namespace psi {
       delete_matrix(CSC_a);
       delete_matrix(CSC_full);
       delete_matrix(CSC_b);
-      delete_matrix(S_a,nstr_a,nstr_b);
+      delete_matrix(S_a,nstr_a,nstr_a);
       delete_matrix(S_b,nstr_b,nstr_b);
       double S_tot_double = (double) S_tot;
       return fabs(S_tot_double);
