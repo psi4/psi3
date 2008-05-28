@@ -16,6 +16,7 @@
 #include <psifiles.h>
 #include "input.h"
 #include <physconst.h>
+#include <masses.h>
 #include "global.h"
 #include "defines.h"
 
@@ -342,11 +343,13 @@ void print_geometry(double conv_factor)
 {
   int i,j;
 
-  fprintf(outfile,"       Center              X                  Y                   Z\n");
-  fprintf(outfile,"    ------------   -----------------  -----------------  -----------------\n");
+  fprintf(outfile,"   Atom            X                  Y                   Z\n");
+  fprintf(outfile,"  ------   -----------------  -----------------  -----------------\n");
 
   for(i=0;i<num_atoms;i++){
-    fprintf(outfile,"    %12s ",element[i]); fflush(outfile);
+    // fprintf(outfile,"    %12s ",element[i]); fflush(outfile);
+    fprintf(outfile,"    %-4s ",atomic_labels[(int) elemsymb_charges[i]]); 
+    fflush(outfile);
     for(j=0;j<3;j++)
       fprintf(outfile,"  %17.12lf",geometry[i][j]*conv_factor);
     fprintf(outfile,"\n");
@@ -360,13 +363,20 @@ void print_geometry(double conv_factor)
 
 void print_full_geometry(double conv_factor)
 {
-  int i,j;
+  int i,j,cnt;
 
-  fprintf(outfile,"       Center              X                  Y                   Z\n");
-  fprintf(outfile,"    ------------   -----------------  -----------------  -----------------\n");
 
-  for(i=0;i<num_allatoms;i++){
-    fprintf(outfile,"  %12s ",full_element[i]); fflush(outfile);
+  fprintf(outfile,"   Atom            X                  Y                   Z\n");
+  fprintf(outfile,"  ------   -----------------  -----------------  -----------------\n");
+
+  for(i=0,cnt=0;i<num_allatoms;i++){
+    if (strcmp(full_element[i],"X")==0) {
+      fprintf(outfile,"    %-4s ",full_element[i]); 
+    }
+    else {
+      fprintf(outfile,"    %-4s ",atomic_labels[(int) elemsymb_charges[cnt++]]);
+    }
+    fflush(outfile);
     for(j=0;j<3;j++)
       fprintf(outfile,"  %17.12lf",full_geom[i][j]*conv_factor);
     fprintf(outfile,"\n");
@@ -381,10 +391,10 @@ void print_unique_geometry(double conv_factor)
 {
   int i,j;
   
-  fprintf(outfile,"       Center              X                  Y                   Z\n");
-  fprintf(outfile,"    ------------   -----------------  -----------------  -----------------\n");
+  fprintf(outfile,"   Atom            X                  Y                   Z\n");
+  fprintf(outfile,"  ------   -----------------  -----------------  -----------------\n");
   for(i=0;i<num_uniques;i++){
-    fprintf(outfile,"    %12s ",element[u2a[i]]);
+    fprintf(outfile,"    %-4s ",atomic_labels[(int) elemsymb_charges[u2a[i]]]);
     for(j=0;j<3;j++)
       fprintf(outfile,"  %17.12lf",geometry[u2a[i]][j]*conv_factor);
     fprintf(outfile,"\n");
