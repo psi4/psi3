@@ -201,6 +201,7 @@ cartesians::cartesians() {
  *   11        coord, grad                           file11.dat
  *   32        fcoord (implicitly coord)             chkpt
  *   12        fatomic_symb, fcoord                  fp_out
+ *   13        fatomic_symb, fcoord ANGSTROM         fp_out
  * disp_label is only used for geom.dat writing ***/
 
 void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
@@ -324,7 +325,16 @@ void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
     for (i = 0; i < natom; ++i) {
       x = coord[++cnt]; y = coord[++cnt]; z = coord[++cnt];
       zval_to_symbol(atomic_num[i],sym);
-      fprintf(fp_out,"  (%3s%15.10f%15.10f%15.10f )\n",sym,x,y,z);
+      fprintf(fp_out,"  (%3s %15.10f %15.10f %15.10f )\n",sym,x,y,z);
+    }
+  }
+  else if (print_flag == 13) { 
+    for (i = 0; i < natom; ++i) {
+      x = coord[++cnt] * _bohr2angstroms; 
+      y = coord[++cnt] * _bohr2angstroms; 
+      z = coord[++cnt] * _bohr2angstroms;
+      zval_to_symbol(atomic_num[i],sym);
+      fprintf(fp_out,"  (%3s %15.10f %15.10f %15.10f )\n",sym,x,y,z);
     }
   }
   return;

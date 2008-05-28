@@ -291,6 +291,9 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     fprintf(stderr,"\n  OPTKING:  optimization is complete\n");
     fprintf(outfile,"The Optimized geometry in a.u.\n");
     carts.print(12,outfile,0,disp_label,0);
+    fprintf(outfile,"\nThe Optimized geometry in Angstrom\n");
+    carts.print(13,outfile,0,disp_label,0);
+    fprintf(outfile, "\n");
     fflush(outfile);
 
     if (optinfo.zmat) {
