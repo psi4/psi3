@@ -129,24 +129,26 @@ void Chkpt::wt_beta_scf(double **scf)
 double **Chkpt::rd_scf_irrep(int irrep)
 {
 	int i, j, row, col;
-	int nirreps, nso, nmo;
 	int *sopi, *mopi;
 	double **scf, **scf_full;
 
-	nirreps = rd_nirreps();
 	sopi = rd_sopi();
 	mopi = rd_orbspi();
-	nso = rd_nso();
-	nmo = rd_nmo();
 
-	scf = matrix<double>(sopi[irrep],mopi[irrep]);
+	if (!sopi[irrep] || !mopi[irrep]) {
+		free(sopi);
+		free(mopi);
+		return NULL;
+    }
+
 	scf_full = rd_scf();
 	if (scf_full == NULL) {
-		free(scf);
 		free(sopi);
 		free(mopi);
 		return NULL;
 	}
+
+	scf = matrix<double>(sopi[irrep],mopi[irrep]);
 
 /* compute row and column offsets */
 	for(i=0,row=0,col=0; i < irrep; i++) {
