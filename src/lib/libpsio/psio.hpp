@@ -155,11 +155,11 @@ namespace psi {
       /// Read the table of contents for file number 'unit'.
       void tocread(unsigned int unit);
 
+      friend int psio_tocread(unsigned int unit);
+
   };
   
-extern "C" {
   extern int psiopp_ipv1_config(PSIO *psio_obj);
-}
   extern PSIO* _default_psio_lib_;
 }
 

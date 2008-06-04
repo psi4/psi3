@@ -6,9 +6,8 @@
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 
-using namespace psi;
+namespace psi {
 
-extern "C" {
   /*!
    ** PSIO_GET_ADDRESS(): Given a starting page/offset and a shift length
    ** (in bytes), return the page/offset of the next position in the file.
@@ -32,4 +31,6 @@ extern "C" {
     
     return address;
   }
+
 }
+

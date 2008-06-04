@@ -5,19 +5,15 @@
 
 #include <cstdio>
 #include <cstdlib>
-extern "C" {
 #include <libpsio/psio.h>
-}
 #include <libpsio/psio.hpp>
 
-using namespace psi;
+namespace psi {
 
 /* Definition of global data */
-PSIO* psi::_default_psio_lib_ = 0;
+PSIO* _default_psio_lib_ = 0;
 int PSIO::_error_exit_code_ = 1;
-extern "C" {
-  psio_address PSIO_ZERO = { 0, 0 };
-}
+psio_address PSIO_ZERO = { 0, 0 };
 
 PSIO::PSIO() {
   int i, j;
@@ -48,8 +44,6 @@ PSIO::PSIO() {
   }
 }
 
-extern "C" {
-  
   /*!
    ** PSIO_INIT(): Allocates global memory needed by the I/O routines.
    **
@@ -83,3 +77,4 @@ extern "C" {
   }
 
 }
+

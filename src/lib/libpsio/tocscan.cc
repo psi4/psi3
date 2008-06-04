@@ -7,7 +7,7 @@
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 
-using namespace psi;
+namespace psi {
 
 psio_tocentry*PSIO::tocscan(unsigned int unit, char *key) {
   psio_tocentry *this_entry;
@@ -29,7 +29,6 @@ psio_tocentry*PSIO::tocscan(unsigned int unit, char *key) {
   return (NULL);
 }
 
-extern "C" {
   /*!
    ** PSIO_TOCSCAN(): Scans the TOC for a particular keyword and returns either
    ** a pointer to the entry or NULL to the caller.
@@ -40,4 +39,6 @@ extern "C" {
   psio_tocentry *psio_tocscan(unsigned int unit, char *key) {
     return _default_psio_lib_->tocscan(unit, key);
   }
+
 }
+

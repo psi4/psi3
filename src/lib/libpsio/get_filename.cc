@@ -8,12 +8,9 @@
 #include <cstring>
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
+#include <psi4.h> // need gprgid
 
-using namespace psi;
-
-extern "C" {
-  extern char *gprgid();
-}
+namespace psi {
 
 void PSIO::get_filename(unsigned int unit, char **name) {
   std::string kval;
@@ -52,7 +49,6 @@ void PSIO::get_filename(unsigned int unit, char **name) {
   abort();
 }
 
-extern "C" {
   /*!
    ** PSIO_GET_FILENAME_DEFAULT(): Get the default filename
    */
@@ -72,5 +68,6 @@ extern "C" {
     // assume that the default has been provided already
     abort();
   }
+
 }
 

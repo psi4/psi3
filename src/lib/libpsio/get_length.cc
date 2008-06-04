@@ -5,7 +5,7 @@
 
 #include <libpsio/psio.h>
 
-extern "C" {
+namespace psi {
   /*!
    ** PSIO_GET_LENGTH(): Given a start page and offset for two data sets,
    ** compute the number of bytes between them.  Note that eadd denotes the
@@ -29,5 +29,6 @@ extern "C" {
       return ((PSIO_PAGELEN - sadd.offset) + full_page_bytes + eadd.offset);
     }
   }
+
 }
 

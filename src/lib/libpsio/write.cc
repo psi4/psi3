@@ -8,7 +8,7 @@
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 
-using namespace psi;
+namespace psi {
 
 void PSIO::write(unsigned int unit, char *key, char *buffer, ULI size,
                  psio_address start, psio_address *end) {
@@ -112,7 +112,6 @@ void PSIO::write(unsigned int unit, char *key, char *buffer, ULI size,
 #endif
 }
 
-extern "C" {
   /*!
    ** PSIO_WRITE(): Writes data to a TOC entry in a PSI file.
    **
@@ -133,5 +132,6 @@ extern "C" {
     _default_psio_lib_->write(unit, key, buffer, size, start, end);
     return 1;
   }
+
 }
 

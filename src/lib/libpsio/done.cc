@@ -11,7 +11,7 @@
 #include <<ctime>>
 #endif
 
-using namespace psi;
+namespace psi {
 
 PSIO::~PSIO() {
 #ifdef PSIO_STATS
@@ -47,7 +47,6 @@ PSIO::~PSIO() {
   state_ = 0;
 }
 
-extern "C" {
   /*!
    ** \ingroup PSIO
    **

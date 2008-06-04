@@ -8,7 +8,7 @@
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 
-using namespace psi;
+namespace psi {
 
 void PSIO::tocwrite(unsigned int unit) {
   unsigned int i;
@@ -36,7 +36,6 @@ void PSIO::tocwrite(unsigned int unit) {
   }
 }
 
-extern "C" {
   /*!
    ** PSIO_TOCWRITE(): Write the table of contents for file number 'unit'.
    **
@@ -50,4 +49,6 @@ extern "C" {
     _default_psio_lib_->tocwrite(unit);
     return 1;
   }
+
 }
+

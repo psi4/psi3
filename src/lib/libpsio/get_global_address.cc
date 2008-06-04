@@ -5,7 +5,8 @@
 
 #include <libpsio/psio.h>
 
-extern "C" {
+namespace psi {
+
   /*!
    ** PSIO_GET_GLOBAL_ADDRESS(): Given the global starting address for a
    ** TOC entry and a relative offset within the entry, compute the global
@@ -27,5 +28,6 @@ extern "C" {
     
     return (address);
   }
+
 }
 

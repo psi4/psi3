@@ -6,7 +6,7 @@
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 
-using namespace psi;
+namespace psi {
 
 int PSIO::open_check(unsigned int unit) {
   psio_ud *this_unit;
@@ -19,7 +19,6 @@ int PSIO::open_check(unsigned int unit) {
     return 0;
 }
 
-extern "C" {
   /*!
    ** PSIO_OPEN_CHECK(): Check to see if a given PSI direct access file
    ** is already open.
@@ -32,4 +31,6 @@ extern "C" {
   int psio_open_check(unsigned int unit) {
     return _default_psio_lib_->open_check(unit);
   }
+
 }
+
