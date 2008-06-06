@@ -8,7 +8,7 @@
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 
-namespace psi {
+using namespace psi;
 
 void PSIO::tocclean(unsigned int unit, char *key) {
   psio_tocentry *this_entry, *last_entry, *prev_entry;
@@ -43,6 +43,7 @@ void PSIO::tocclean(unsigned int unit, char *key) {
   tocwrite(unit);
 }
 
+extern "C" {
   /*!
    ** PSIO_TOCCLEAN(): Delete all TOC entries after the given key.
    ** If a blank key is given, the entire TOC will be wiped.
@@ -54,6 +55,4 @@ void PSIO::tocclean(unsigned int unit, char *key) {
     _default_psio_lib_->tocclean(unit, key);
     return 0;
   }
-
 }
-

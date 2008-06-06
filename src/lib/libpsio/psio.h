@@ -4,7 +4,9 @@
 #include <cstdio>
 #include <libpsio/config.h>
 
-namespace psi {
+#ifdef __cplusplus
+extern "C" {
+#endif
   
   int psio_init(void);
   int psio_ipv1_config(void);
@@ -55,6 +57,8 @@ namespace psi {
   const char* psio_get_filescfg_kwd(const char* kwdgrp, const char* kwd,
                                     int unit);
 
+#ifdef __cplusplus
 }
+#endif
 
 #endif    /* #ifndef PSIO_H */

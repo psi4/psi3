@@ -8,6 +8,7 @@
 #include <cctype>
 
 using namespace std;
+using namespace psi;
 
 namespace {
   std::string fullkwd(const char* kwdgrp, const char* kwd, int unit) {
@@ -28,8 +29,6 @@ namespace {
   }
 }
 
-namespace psi {
-
 void PSIO::filecfg_kwd(const char* kwdgrp, const char* kwd, int unit,
                        const char* kwdval) {
   std::string fkwd = fullkwd(kwdgrp, kwd, unit);
@@ -48,6 +47,8 @@ const std::string&PSIO::filecfg_kwd(const char* kwdgrp, const char* kwd,
     return nullstr;
 }
 
+extern "C" {
+  
   int psio_set_filescfg_kwd(const char* kwdgrp, const char* kwd, int unit,
                             const char* kwdval) {
     _default_psio_lib_->filecfg_kwd(kwdgrp, kwd, unit, kwdval);
@@ -60,4 +61,3 @@ const std::string&PSIO::filecfg_kwd(const char* kwdgrp, const char* kwd,
   }
 
 }
-

@@ -16,7 +16,7 @@
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 
-namespace psi {
+using namespace psi;
 
 void PSIO::open(unsigned int unit, int status) {
   unsigned int i, j;
@@ -113,6 +113,7 @@ PSIO::rehash(unsigned int unit)
   }
 }
 
+extern "C" {
   /*!
    ** PSIO_OPEN(): Opens a multivolume PSI direct access file for
    ** reading/writing data.
@@ -128,6 +129,5 @@ PSIO::rehash(unsigned int unit)
     _default_psio_lib_->open(unit, status);
     return 1;
   }
-
 }
 

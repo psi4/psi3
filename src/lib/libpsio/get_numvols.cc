@@ -7,9 +7,12 @@
 #include <cstdlib>
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
-#include <psi4.h> // need gprgid
 
-namespace psi {
+using namespace psi;
+
+extern "C" {
+  extern char *gprgid();
+}
 
 unsigned int PSIO::get_numvols(unsigned int unit) {
   std::string charnum;
@@ -37,6 +40,7 @@ unsigned int PSIO::get_numvols(unsigned int unit) {
   abort();
 }
 
+extern "C" {
   /*!
    ** PSIO_GET_NUMVOLS_DEFAULT(): Get the number of volumes that file 
    ** number 'unit' is split across.
@@ -56,6 +60,5 @@ unsigned int PSIO::get_numvols(unsigned int unit) {
     // assume that the default has been provided already
     abort();
   }
-
 }
 

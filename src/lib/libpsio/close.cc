@@ -11,7 +11,7 @@
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 
-namespace psi {
+using namespace psi;
 
 void PSIO::close(unsigned int unit, int keep) {
   unsigned int i;
@@ -54,9 +54,10 @@ void PSIO::close(unsigned int unit, int keep) {
   this_unit->toclen = 0;
 }
 
-int psio_close(unsigned int unit, int keep) {
-  _default_psio_lib_->close(unit, keep);
-}
-
+extern "C" {
+  int psio_close(unsigned int unit, int keep) {
+    _default_psio_lib_->close(unit, keep);
+    return 0;
+  }
 }
 

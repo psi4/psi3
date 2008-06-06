@@ -6,13 +6,14 @@
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 
-namespace psi {
+using namespace psi;
 
 void PSIO::read_entry(unsigned int unit, char *key, char *buffer, ULI size) {
   psio_address end;
   read(unit, key, buffer, size, PSIO_ZERO, &end);
 }
 
+extern "C" {
   /*!
    ** PSIO_READ_ENTRY(): Reads an entire TOC entry from a PSI file.
    **
@@ -33,6 +34,5 @@ void PSIO::read_entry(unsigned int unit, char *key, char *buffer, ULI size) {
     psio_address end;
     return psio_read(unit, key, buffer, size, PSIO_ZERO, &end);
   }
-
 }
 

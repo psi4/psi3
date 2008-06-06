@@ -8,7 +8,7 @@
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 
-namespace psi {
+using namespace psi;
 
 void PSIO::rw(unsigned int unit, char *buffer, psio_address address, ULI size,
               int wrt) {
@@ -100,6 +100,7 @@ void PSIO::rw(unsigned int unit, char *buffer, psio_address address, ULI size,
   }
 }
 
+extern "C" {
   /*!
    ** PSIO_RW(): Central function for all reads and writes on a PSIO unit.
    **
@@ -116,6 +117,5 @@ void PSIO::rw(unsigned int unit, char *buffer, psio_address address, ULI size,
     _default_psio_lib_->rw(unit, buffer, address, size, wrt);
     return 1;
   }
-
 }
 

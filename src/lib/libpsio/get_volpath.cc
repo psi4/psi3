@@ -8,9 +8,12 @@
 #include <cstring>
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
-#include <psi4.h> //need gprgid
 
-namespace psi {
+using namespace psi;
+
+extern "C" {
+  extern char *gprgid();
+}
 
 void PSIO::get_volpath(unsigned int unit, unsigned int volume, char **path) {
   std::string kval;
@@ -52,6 +55,7 @@ void PSIO::get_volpath(unsigned int unit, unsigned int volume, char **path) {
   abort();
 }
 
+extern "C" {
   /*
    ** PSIO_GET_VOLPATH_DEFAULT(): Get the default path for the nth volume
    ** of any file.
@@ -77,6 +81,5 @@ void PSIO::get_volpath(unsigned int unit, unsigned int volume, char **path) {
     // assume default has been provided
     abort();
   }
-
 }
 

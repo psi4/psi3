@@ -8,7 +8,7 @@
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 
-namespace psi {
+using namespace psi;
 
 void PSIO::tocread(unsigned int unit) {
   unsigned int i;
@@ -48,14 +48,22 @@ void PSIO::tocread(unsigned int unit) {
     address = this_entry->eadd;
     this_entry = this_entry->next;
   }
-
 }
 
+#if 0
+extern "C" {
+  /*!
+   ** PSIO_TOCREAD(): Read the table of contents for file number 'unit'.
+   **
+   ** \params unit = The PSI unit number from which to read the TOC.
+   ** 
+   ** \ingroup PSIO
+   */
   int psio_tocread(unsigned int unit)
   {
     _default_psio_lib_->tocread(unit);
     return 1;
   }
-
 }
+#endif
 

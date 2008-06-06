@@ -8,8 +8,9 @@
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 
-namespace psi {
+using namespace psi;
 
+extern "C" {
   /*!
    ** \ingroup PSIO
    **
@@ -88,6 +89,5 @@ namespace psi {
     }
     exit(PSIO::_error_exit_code_);
   }
-
 }
 

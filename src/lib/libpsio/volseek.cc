@@ -6,11 +6,10 @@
 #include <unistd.h>
 #include <libpsio/psio.h>
 
-namespace psi {
-
 /* This is strictly used to avoid overflow errors on lseek() calls */
 #define PSIO_BIGNUM 10000
 
+extern "C" {
   /*!
    ** PSIO_VOLSEEK()
    **
@@ -47,6 +46,4 @@ namespace psi {
     
     return (0);
   }
-
 }
-

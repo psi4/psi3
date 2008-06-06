@@ -9,7 +9,7 @@
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 
-namespace psi {
+using namespace psi;
 
 void PSIO::read(unsigned int unit, char *key, char *buffer, ULI size,
                 psio_address start, psio_address *end) {
@@ -61,6 +61,7 @@ void PSIO::read(unsigned int unit, char *key, char *buffer, ULI size,
 #endif  
 }
 
+extern "C" {
   /*!
    ** PSIO_READ(): Reads data from within a TOC entry from a PSI file.
    **
@@ -80,6 +81,5 @@ void PSIO::read(unsigned int unit, char *key, char *buffer, ULI size,
     _default_psio_lib_->read(unit, key, buffer, size, start, end);
     return 1;
   }
-
 }
 
