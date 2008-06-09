@@ -313,8 +313,10 @@ void read_basis()
    
    free(ang_mom);
    free(num_shells_per_unique);
-   free(ip_token1);
-   free(ip_token2);
+   free_char_matrix(ip_token1,MAXATOM);
+   free_char_matrix(ip_token2,MAXATOM);
+   free(first_prim_unique_shell);
+   free(last_prim_unique_shell);
    free_matrix(basis_set,MAXCONTRACTION);
 
 }
@@ -477,7 +479,7 @@ int *ang_mom)
 
      }
 
-   free(temp);
+   free_char_matrix(temp,MAXATOM);
    free(next_key);
 
 }    

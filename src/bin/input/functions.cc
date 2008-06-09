@@ -384,9 +384,6 @@ char **init_char_matrix(int A, int B) {
   
   mat = (char **)malloc(A*sizeof(char *));
   
-  for (i = 0; i<A; i++) {
-    mat[i] = (char *)malloc(B*sizeof(char));
-  }
   for (i=0; i<A; i++)
     mat[i] = init_char_array(B);
   return mat;
