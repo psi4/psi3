@@ -17,6 +17,7 @@ manext = 5
 mandir = @mandir@
 htmldir = @htmldir@
 txtdir = @txtdir@
+datarootdir = @datarootdir@
 datadir = @datadir@
 pkgdatadir=@pkgdatadir@
 top_srcdir = @top_srcdir@

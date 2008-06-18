@@ -16,6 +16,7 @@ targetclean:
 top_srcdir = @top_srcdir@
 prefix = @prefix@
 srcdir = @srcdir@
+datarootdir = @datarootdir@
 datadir = @datadir@
 pkgdatadir = @pkgdatadir@
 VPATH = @srcdir@
