@@ -107,14 +107,31 @@ void get_optinfo() {
     ip_data("FREQ_IRREP","%d",&(optinfo.freq_irrep),0);
   }
 
-  optinfo.bfgs = 1;
-  ip_boolean("BFGS",&(optinfo.bfgs),0);
+
+  optinfo.H_update = OPTInfo::BFGS;
+  if (ip_exist("H_UPDATE",0)) {
+    errcod = ip_string("H_UPDATE",&(junk),0);
+    if (!strcmp(junk,"NONE"))
+      optinfo.H_update = OPTInfo::NONE;
+    else if (!strcmp(junk,"BFGS"))
+      optinfo.H_update = OPTInfo::BFGS;
+    else if (!strcmp(junk,"MS"))
+      optinfo.H_update = OPTInfo::MS;
+    else if (!strcmp(junk,"POWELL"))
+      optinfo.H_update = OPTInfo::POWELL;
+    else if (!strcmp(junk,"BOFILL"))
+      optinfo.H_update = OPTInfo::BOFILL;
+    else
+      fprintf(outfile,"Unable to understand H_UPDATE keyword entry.\n");
+    free(junk);
+  }
+
   // ACS (11/06) Are we getting our energies from outside of PSI3?
   optinfo.external_energies = 0;
   ip_boolean("EXTERNAL_ENERGIES",&(optinfo.external_energies),0);
 
-  optinfo.bfgs_use_last = 6;
-  ip_data("BFGS_USE_LAST","%d",&(optinfo.bfgs_use_last),0);
+  optinfo.H_update_use_last = 6;
+  ip_data("H_UPDATE_USE_LAST","%d",&(optinfo.H_update_use_last),0);
   optinfo.mix_types = 1;
   ip_boolean("MIX_TYPES",&(optinfo.mix_types),0);
 
@@ -233,8 +250,19 @@ void get_optinfo() {
     fprintf(outfile,"sacc fd points:  %d\n",optinfo.points);
     fprintf(outfile,"zmat_simples:  %d\n",optinfo.zmat_simples);
     fprintf(outfile,"redundant:     %d\n",optinfo.redundant);
-    fprintf(outfile,"bfgs:          %d\n",optinfo.bfgs);
-    fprintf(outfile,"bfgs_use_last: %d\n",optinfo.bfgs_use_last);
+
+    if (optinfo.H_update == OPTInfo::NONE)
+      fprintf(outfile,"H_update:     None\n");
+    else if (optinfo.H_update == OPTInfo::BFGS)
+      fprintf(outfile,"H_update:     BFGS\n");
+    else if (optinfo.H_update == OPTInfo::MS)
+      fprintf(outfile,"H_update:     MS\n");
+    else if (optinfo.H_update == OPTInfo::POWELL)
+      fprintf(outfile,"H_update:     POWELL\n");
+    else if (optinfo.H_update == OPTInfo::BOFILL)
+      fprintf(outfile,"H_update:     Bofill\n");
+
+    fprintf(outfile,"H_update_use_last: %d\n",optinfo.H_update_use_last);
     fprintf(outfile,"mix_types:     %d\n",optinfo.mix_types);
     fprintf(outfile,"delocalize:    %d\n",optinfo.delocalize);
     fprintf(outfile,"conv:          %.1e\n",optinfo.conv);

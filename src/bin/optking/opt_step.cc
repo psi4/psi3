@@ -188,32 +188,30 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
    free(temp_arr);
 
   // Write Values and Forces of internals to opt.aux for later
-  //if (optinfo.bfgs) {
-    open_PSIF();
-    nbfgs = 0;
-    if (psio_tocscan(PSIF_OPTKING, "Num. of Previous Entries") != NULL)
-      psio_read_entry(PSIF_OPTKING, "Num. of Previous Entries", (char *) &nbfgs, sizeof(int));
+  open_PSIF();
+  nbfgs = 0;
+  if (psio_tocscan(PSIF_OPTKING, "Num. of Previous Entries") != NULL)
+    psio_read_entry(PSIF_OPTKING, "Num. of Previous Entries", (char *) &nbfgs, sizeof(int));
 
-    sprintf(value_string,"Previous Internal Values %d", nbfgs);
-    sprintf(force_string,"Previous Internal Forces %d", nbfgs);
-         
-    psio_write_entry(PSIF_OPTKING, value_string, (char *) &(q[0]),
-        symm.get_num()* sizeof(double));
-    psio_write_entry(PSIF_OPTKING, force_string, (char *) &(f_q[0]),
-        symm.get_num()* sizeof(double));
+  sprintf(value_string,"Previous Internal Values %d", nbfgs);
+  sprintf(force_string,"Previous Internal Forces %d", nbfgs);
+       
+  psio_write_entry(PSIF_OPTKING, value_string, (char *) &(q[0]),
+      symm.get_num()* sizeof(double));
+  psio_write_entry(PSIF_OPTKING, force_string, (char *) &(f_q[0]),
+      symm.get_num()* sizeof(double));
 
-    double *coord;
-    coord = carts.get_coord();
+  double *coord;
+  coord = carts.get_coord();
 
-    sprintf(value_string,"Previous Cartesian Values %d", nbfgs);
-    psio_write_entry(PSIF_OPTKING, value_string,
-        (char *) &(coord[0]), 3*carts.get_natom()*sizeof(double));
-    free(coord);
+  sprintf(value_string,"Previous Cartesian Values %d", nbfgs);
+  psio_write_entry(PSIF_OPTKING, value_string,
+      (char *) &(coord[0]), 3*carts.get_natom()*sizeof(double));
+  free(coord);
 
-    ++nbfgs;
-    psio_write_entry(PSIF_OPTKING, "Num. of Previous Entries", (char *) &nbfgs, sizeof(int));
-    close_PSIF();
-  //}
+  ++nbfgs;
+  psio_write_entry(PSIF_OPTKING, "Num. of Previous Entries", (char *) &nbfgs, sizeof(int));
+  close_PSIF();
 
   // make sure some force constant are in PSIF
   fconst_init(carts, simples, symm);

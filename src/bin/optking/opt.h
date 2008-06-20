@@ -132,8 +132,8 @@ struct OPTInfo {
   int do_only_displacements;
   int zmat;
   int zmat_simples;
-  int bfgs;
-  int bfgs_use_last;
+  enum { NONE, BFGS, MS, POWELL, BOFILL} H_update;
+  int H_update_use_last;
   int dertype;
   int numerical_dertype;
   int iteration;

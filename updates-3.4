@@ -1,3 +1,9 @@
+6/20/08 Added new Hessian update schemes and changed input options 
+accordingly. Default BFGS update has not changed.  Allowed keywords
+are now "H_update = [(BFGS), MS, POWELL, BOFILL, NONE]" and keyword which
+specifies number of old geometries to use in update is now
+"H_update_use_last = [(6) integer]".
+
 5/3/08 Added a C++ version of libiwl which depends on C++ libpsio. Many 
 routines had their names expanded (for instance, iwl_rd_one is now read_one). 
 The C version was not changed to use a C++ backend. -JMT
