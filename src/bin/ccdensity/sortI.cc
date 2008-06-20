@@ -19,12 +19,14 @@ namespace psi { namespace ccdensity {
 ** my sortone.c code here, so don't let some of the variable names
 ** confuse you. */
 
+void sortI_RHF(void);
 void sortI_ROHF(void);
 void sortI_UHF(void);
 
 void sortI(void)
 {
-  if(params.ref == 0 || params.ref == 1) sortI_ROHF();
+  if(params.ref == 0) sortI_RHF();
+  else if(params.ref == 1) sortI_ROHF();
   else if(params.ref == 2) sortI_UHF();
 }
 

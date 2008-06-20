@@ -122,6 +122,16 @@ void d_sort(void)
     dpd_buf4_sort(&D, CC_DINTS, qprs, 11, 10, "D <ij|ab> (ai,jb)");
     dpd_buf4_close(&D);
 
+    /* <ij|ab> (aj,ib) */
+    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+    dpd_buf4_sort(&D, CC_DINTS, rqps, 11, 10, "D <ij|ab> (aj,ib)");
+    dpd_buf4_close(&D);
+
+    /* <ij|ab> (bi,ja) */
+    dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+    dpd_buf4_sort(&D, CC_DINTS, spqr, 11, 10, "D <ij|ab> (bi,ja)");
+    dpd_buf4_close(&D);
+
     /* <ij||ab> (ia,jb) */
     dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij||ab>");
     dpd_buf4_sort(&D, CC_DINTS, prqs, 10, 10, "D <ij||ab> (ia,jb)");

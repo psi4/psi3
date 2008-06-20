@@ -3,6 +3,8 @@
     \brief Enter brief description of file here 
 */
 #include <cstdio>
+#include <strings.h>
+#include <strings.h>
 #include <libdpd/dpd.h>
 #include "MOInfo.h"
 #include "Params.h"
@@ -35,9 +37,9 @@ void onepdm(struct RHO_Params rho_params)
   dpdfile2 D, T1, L1, Z;
   dpdbuf4 T2, L2;
   double trace=0.0, dot_AI, dot_IA, dot_ai, dot_ia;
+  double factor=0.0;
 
   if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
-
     dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.DIJ_lbl);
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tIJAB");
     dpd_buf4_init(&L2, CC_GLG, 0, 0, 7, 2, 7, 0, "LIJAB");
@@ -265,10 +267,29 @@ void onepdm(struct RHO_Params rho_params)
   }
   else if(params.ref == 2) { /** UHF **/
 
+    if(!strcmp(params.wfn,"CCSD_T") && params.dertype == 1) {
+      /* For CCSD(T) gradients, some density contributions are
+	 calculated in cctriples */
+      factor = 1.0;
+      dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");
+      dpd_file2_copy(&D, CC_OEI, rho_params.DIJ_lbl);
+      dpd_file2_close(&D);
+      dpd_file2_init(&D, CC_OEI, 0, 2, 2, "Dij");
+      dpd_file2_copy(&D, CC_OEI, rho_params.Dij_lbl);
+      dpd_file2_close(&D);
+      dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
+      dpd_file2_copy(&D, CC_OEI, rho_params.DAB_lbl);
+      dpd_file2_close(&D);
+      dpd_file2_init(&D, CC_OEI, 0, 3, 3, "Dab");
+      dpd_file2_copy(&D, CC_OEI, rho_params.Dab_lbl);
+      dpd_file2_close(&D);
+    }
+    else factor = 0.0;
+
     dpd_file2_init(&D, CC_OEI, 0, 0, 0, rho_params.DIJ_lbl);
     dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 7, 2, 7, 0, "tIJAB");
     dpd_buf4_init(&L2, CC_GLG, 0, 0, 7, 2, 7, 0, "LIJAB");
-    dpd_contract442(&T2, &L2, &D, 0, 0, -1.0, 0.0);
+    dpd_contract442(&T2, &L2, &D, 0, 0, -1.0, factor);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&T2); 
     dpd_buf4_init(&T2, CC_TAMPS, 0, 22, 28, 22, 28, 0, "tIjAb");
@@ -287,7 +308,7 @@ void onepdm(struct RHO_Params rho_params)
     dpd_file2_init(&D, CC_OEI, 0, 2, 2, rho_params.Dij_lbl);
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 17, 12, 17, 0, "tijab");
     dpd_buf4_init(&L2, CC_GLG, 0, 10, 17, 12, 17, 0, "Lijab");
-    dpd_contract442(&T2, &L2, &D, 0, 0, -1.0, 0.0);
+    dpd_contract442(&T2, &L2, &D, 0, 0, -1.0, factor);
     dpd_buf4_close(&L2);
     dpd_buf4_close(&T2);
     dpd_buf4_init(&T2, CC_TAMPS, 0, 23, 29, 23, 29, 0, "tiJaB");
@@ -306,7 +327,7 @@ void onepdm(struct RHO_Params rho_params)
     dpd_file2_init(&D, CC_OEI, 0, 1, 1, rho_params.DAB_lbl);
     dpd_buf4_init(&L2, CC_GLG, 0, 2, 5, 2, 7, 0, "LIJAB");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 2, 5, 2, 7, 0, "tIJAB");
-    dpd_contract442(&L2, &T2, &D, 3, 3, 1.0, 0.0);
+    dpd_contract442(&L2, &T2, &D, 3, 3, 1.0, factor);
     dpd_buf4_close(&T2);
     dpd_buf4_close(&L2);
     dpd_buf4_init(&L2, CC_GLG, 0, 23, 29, 23, 29, 0, "LiJaB");
@@ -325,7 +346,7 @@ void onepdm(struct RHO_Params rho_params)
     dpd_file2_init(&D, CC_OEI, 0, 3, 3, rho_params.Dab_lbl);
     dpd_buf4_init(&L2, CC_GLG, 0, 12, 15, 12, 17, 0, "Lijab");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 12, 15, 12, 17, 0, "tijab");
-    dpd_contract442(&L2, &T2, &D, 3, 3, 1.0, 0.0);
+    dpd_contract442(&L2, &T2, &D, 3, 3, 1.0, factor);
     dpd_buf4_close(&T2);
     dpd_buf4_close(&L2);
     dpd_buf4_init(&L2, CC_GLG, 0, 22, 28, 22, 28, 0, "LIjAb");

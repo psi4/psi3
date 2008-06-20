@@ -24,29 +24,22 @@ void get_params()
 
   errcod = ip_string("WFN", &(params.wfn), 0);
 
-  if(!strcmp(params.wfn,"CC2") || !strcmp(params.wfn,"EOM_CC2")) {
-    psio_read_entry(CC_INFO, "CC2 Energy", (char *) &(moinfo.ecc),
-                    sizeof(double));
-    fprintf(outfile,  "\tCC2 energy          (CC_INFO) = %20.15f\n",moinfo.ecc);
-    fprintf(outfile,  "\tTotal CC2 energy    (CC_INFO) = %20.15f\n",
-            moinfo.eref+moinfo.ecc);
-  }
-  else if(!strcmp(params.wfn,"CCSD") || !strcmp(params.wfn,"EOM_CCSD")) {
-    psio_read_entry(CC_INFO, "CCSD Energy", (char *) &(moinfo.ecc),
-                    sizeof(double));
-    fprintf(outfile,  "\tCCSD energy         (CC_INFO) = %20.15f\n",moinfo.ecc);
-    fprintf(outfile,  "\tTotal CCSD energy   (CC_INFO) = %20.15f\n",
-            moinfo.eref+moinfo.ecc);
-  }
-  else if(!strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC3")) {
-    psio_read_entry(CC_INFO, "CC3 Energy", (char *) &(moinfo.ecc),
-                    sizeof(double));
-    fprintf(outfile,  "\tCC3 energy          (CC_INFO) = %20.15f\n",moinfo.ecc);
-    fprintf(outfile,  "\tTotal CC3 energy    (CC_INFO) = %20.15f\n",
-            moinfo.eref+moinfo.ecc);
+  errcod = ip_string("REFERENCE", &(junk),0);
+  if (errcod != IPE_OK) /* if no reference is given, assume rhf */
+    params.ref = 0;
+  else {
+    if(!strcmp(junk, "RHF")) params.ref = 0;
+    else if(!strcmp(junk, "ROHF")) params.ref = 1;
+    else if(!strcmp(junk, "UHF")) params.ref = 2;
+    else { 
+      printf("Invalid value of input keyword REFERENCE: %s\n", junk);
+      exit(PSI_RETURN_FAILURE); 
+    }
+    free(junk);
   }
 
-  fflush(outfile);
+  /* For EOM-CCSD Zeta calcs to use ROHF refs for now */
+  if(!strcmp(params.wfn,"EOM_CCSD") && params.ref==0 && params.use_zeta) params.ref = 1;
 
   params.tolerance = 1e-14;
   errcod = ip_data("TOLERANCE","%d",&(tol),0);
@@ -120,6 +113,8 @@ void get_params()
   
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
+  fprintf(outfile, "\tWave function    = %6s\n", params.wfn);
+  fprintf(outfile, "\tReference wfn    = %5s\n", (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
   fprintf(outfile, "\tTolerance        = %3.1e\n", params.tolerance);
   fprintf(outfile, "\tCache Level      = %1d\n", params.cachelev);
   fprintf(outfile, "\tAO Basis         = %s\n", 

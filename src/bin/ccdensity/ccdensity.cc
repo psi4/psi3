@@ -45,10 +45,12 @@ void relax_D(struct RHO_Params rho_params);
 void sortI(void);
 void fold(struct RHO_Params rho_params);
 void deanti(struct RHO_Params rho_params);
+void add_ref_RHF(struct iwlbuf *);
 void add_ref_ROHF(struct iwlbuf *);
 void add_ref_UHF(struct iwlbuf *, struct iwlbuf *, struct iwlbuf *);
 void add_core_ROHF(struct iwlbuf *);
 void add_core_UHF(struct iwlbuf *, struct iwlbuf *, struct iwlbuf *);
+void dump_RHF(struct iwlbuf *, struct RHO_Params rho_params);
 void dump_ROHF(struct iwlbuf *, struct RHO_Params rho_params);
 void dump_UHF(struct iwlbuf *, struct iwlbuf *, struct iwlbuf *, struct RHO_Params rho_params);
 void kinetic(void);
@@ -107,9 +109,9 @@ int main(int argc, char *argv[])
   
   init_io(argc,argv);
   title();
-  get_moinfo();
   /*  get_frozen(); */
   get_params();
+  get_moinfo();
   get_rho_params();
 
   if ((moinfo.nfzc || moinfo.nfzv) && params.relax_opdm) {
@@ -248,7 +250,18 @@ int main(int argc, char *argv[])
 
     /*  dpd_close(0); dpd_close(1); */
 
-    if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+    if(params.ref == 0) { /** RHF **/
+
+      iwl_buf_init(&OutBuf, PSIF_MO_TPDM, params.tolerance, 0, 0);
+
+      add_core_ROHF(&OutBuf);
+      add_ref_RHF(&OutBuf);
+      dump_RHF(&OutBuf, rho_params[i]);
+
+      iwl_buf_flush(&OutBuf, 1);
+      iwl_buf_close(&OutBuf, 1);
+    }
+    else if(params.ref == 1) { /** ROHF **/
 
       iwl_buf_init(&OutBuf, PSIF_MO_TPDM, params.tolerance, 0, 0);
 

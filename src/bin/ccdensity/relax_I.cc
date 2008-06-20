@@ -18,12 +18,14 @@ namespace psi { namespace ccdensity {
 ** with both RHF and ROHF cases.
 ** */
 
+void relax_I_RHF(void);
 void relax_I_ROHF(void);
 void relax_I_UHF(void);
 
 void relax_I(void)
 {
-  if(params.ref == 0 || params.ref == 1) relax_I_ROHF();
+  if(params.ref == 0) relax_I_RHF();
+  else if(params.ref == 1) relax_I_ROHF();
   else if(params.ref == 2) relax_I_UHF();
 }
  

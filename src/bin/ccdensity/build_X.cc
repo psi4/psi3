@@ -21,7 +21,19 @@ void build_X(void)
 {
   dpdfile2 X, I, X2;
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  if(params.ref == 0) { /** RHF **/
+    dpd_file2_init(&I, CC_OEI, 0, 1, 0, "I'AI");
+    dpd_file2_copy(&I, CC_OEI, "XAI");
+    dpd_file2_close(&I);
+
+    dpd_file2_init(&X, CC_OEI, 0, 1, 0, "XAI");
+    dpd_file2_scm(&X, -1.0);
+    dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I'IA");
+    dpd_file2_axpy(&I, &X, 1.0, 1);
+    dpd_file2_close(&I);
+    dpd_file2_close(&X);
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     dpd_file2_init(&I, CC_OEI, 0, 1, 0, "I'AI");
     dpd_file2_copy(&I, CC_OEI, "XAI");

@@ -62,7 +62,21 @@ void lag(struct RHO_Params rho_params)
   /* Multiply all I'pq components by -1/2 for compatibility with the
      final gradient expression */
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  if(params.ref == 0) { /** RHF **/
+    dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
+    dpd_file2_scm(&I, -0.5);
+    dpd_file2_close(&I);
+    dpd_file2_init(&I, CC_OEI, 0, 1, 1, "I'AB");
+    dpd_file2_scm(&I, -0.5);
+    dpd_file2_close(&I);
+    dpd_file2_init(&I, CC_OEI, 0, 0, 1, "I'IA");
+    dpd_file2_scm(&I, -0.5);
+    dpd_file2_close(&I);
+    dpd_file2_init(&I, CC_OEI, 0, 1, 0, "I'AI");
+    dpd_file2_scm(&I, -0.5);
+    dpd_file2_close(&I);
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
     dpd_file2_scm(&I, -0.5);

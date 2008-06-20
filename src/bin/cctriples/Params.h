@@ -10,6 +10,7 @@ struct Params {
   char *wfn;
   int semicanonical;
   int nthreads;
+  int dertype;
 };
 
 }} // namespace psi::cctriples

@@ -3,6 +3,8 @@
     \brief Enter brief description of file here 
 */
 #include <cstdio>
+#include <strings.h>
+#include <strings.h>
 #include <libdpd/dpd.h>
 #include "MOInfo.h"
 #include "Params.h"
@@ -777,10 +779,11 @@ void fold_UHF(struct RHO_Params rho_params)
 
   total_two_energy += two_energy;
   fprintf(outfile, "\tABCD energy                = %20.15f\n", two_energy);
+
   fprintf(outfile, "\tTotal two-electron energy  = %20.15f\n", total_two_energy);
-  fprintf(outfile, "\tCCSD correlation energy    = %20.15f\n",
+  fprintf(outfile, "\t%7s correlation energy = %20.15f\n", !strcmp(params.wfn,"CCSD_T") ? "CCSD(T)" : params.wfn,
 	  one_energy + total_two_energy);
-  fprintf(outfile, "\tTotal CCSD energy          = %20.15f\n",
+  fprintf(outfile, "\tTotal %7s energy       = %20.15f\n", !strcmp(params.wfn,"CCSD_T") ? "CCSD(T)" : params.wfn,
 	  one_energy + total_two_energy + moinfo.eref);
 }
 

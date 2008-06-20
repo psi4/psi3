@@ -3,6 +3,8 @@
     \brief Enter brief description of file here 
 */
 #include <cstdio>
+#include <strings.h>
+#include <strings.h>
 #include <libdpd/dpd.h>
 #include "MOInfo.h"
 #include "Params.h"
@@ -18,10 +20,123 @@ void Gciab(void)
   double value;
   dpdfile2 L1, T1, g;
   dpdbuf4 G, L, T, Z, Z1, Z2, V;
+  double factor=0.0;
 
   nirreps = moinfo.nirreps;
 
-  if(params.ref == 0 || params.ref == 1) { /** RHF/ROHF **/
+  if(params.ref == 0) { /** RHF **/
+    dpd_buf4_init(&G, CC_GAMMA, 0, 11, 5, 11, 5, 0, "GCiAb");
+    /* t(M,C) L(Mi,Ab) */
+    dpd_buf4_init(&L, CC_GLG, 0, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+    dpd_contract244(&T1, &L, &G, 0, 0, 0, 1.0, 0.0);
+    dpd_file2_close(&T1);
+    dpd_buf4_close(&L);
+    /* l(M,C) Tau(Mi,Ab) */
+    dpd_buf4_init(&T, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
+    dpd_file2_init(&L1, CC_GLG, 0, 0, 1, "LIA");
+    dpd_contract244(&L1, &T, &G, 0, 0, 0, 1.0, 1.0);
+    dpd_file2_close(&L1);
+    dpd_buf4_close(&T);
+    dpd_buf4_close(&G);
+    /* t(i,e) L(Mn,Ce) --> Z(Mn,Ci) */
+    dpd_buf4_init(&Z, CC_TMP0, 0, 0, 11, 0, 11, 0, "Z(Mn,Ci)");
+    dpd_buf4_init(&L, CC_GLG, 0, 0, 5, 0, 5, 0, "LIjAb");
+    dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
+    dpd_contract424(&L, &T1, &Z, 3, 1, 0, 1.0, 0.0);
+    dpd_file2_close(&T1);
+    dpd_buf4_close(&L);
+    /* -Z(Mn,Ci) Tau(Mn,Ab) --> G(Ci,Ab) */
+    dpd_buf4_init(&G, CC_GAMMA, 0, 11, 5, 11, 5, 0, "GCiAb");
+    dpd_buf4_init(&T, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
+    dpd_contract444(&Z, &T, &G, 1, 1, -1.0, 1.0);
+    dpd_buf4_close(&T);
+    dpd_buf4_close(&Z);
+    dpd_buf4_close(&G);
+    /* - V(iA,mC) T(m,b) --> Z(iA,bC) */
+    dpd_buf4_init(&Z, CC_TMP0, 0, 10, 5, 10, 5, 0, "Z(iA,bC)");
+    dpd_buf4_init(&V, CC_MISC, 0, 10, 10, 10, 10, 0, "ViAjB");
+    dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
+    dpd_contract244(&T1, &V, &Z, 0, 2, 1, -1.0, 0.0);
+    dpd_file2_close(&T1);
+    dpd_buf4_close(&V);
+    dpd_buf4_sort(&Z, CC_TMP1, psrq, 10, 5, "Z(iC,bA)");
+    dpd_buf4_close(&Z);
+    dpd_buf4_init(&Z, CC_TMP1, 0, 10, 5, 10, 5, 0, "Z(iC,bA)");
+    dpd_buf4_sort(&Z, CC_TMP2, qprs, 11, 5, "Z(Ci,bA)");
+    dpd_buf4_close(&Z);
+    dpd_buf4_init(&Z, CC_TMP2, 0, 11, 5, 11, 5, 0, "Z(Ci,bA)");
+    dpd_buf4_sort(&Z, CC_TMP0, pqsr, 11, 5, "Z(Ci,Ab)");
+    dpd_buf4_close(&Z);
+    /* V(ib,MC) T(M,A) --> Z(ib,AC) */
+    dpd_buf4_init(&Z, CC_TMP1, 0, 10, 5, 10, 5, 0, "Z(ib,AC)");
+    dpd_buf4_init(&V, CC_MISC, 0, 10, 10, 10, 10, 0, "ViaJB");
+    dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
+    dpd_contract244(&T1, &V, &Z, 0, 2, 1, 1.0, 0.0);
+    dpd_file2_close(&T1);
+    dpd_buf4_close(&V);
+    dpd_buf4_sort(&Z, CC_TMP2, psrq, 10, 5, "Z(iC,Ab)");
+    dpd_buf4_close(&Z);
+    dpd_buf4_init(&Z, CC_TMP2, 0, 10, 5, 10, 5, 0, "Z(iC,Ab)");
+    dpd_buf4_sort(&Z, CC_TMP1, qprs, 11, 5, "Z(Ci,Ab)");
+    dpd_buf4_close(&Z);
+    /* Z1(Ci,AB) + Z1(Ci,AB) --> G(Ci,AB) */
+    dpd_buf4_init(&Z1, CC_TMP0, 0, 11, 5, 11, 5, 0, "Z(Ci,Ab)");
+    dpd_buf4_init(&Z2, CC_TMP1, 0, 11, 5, 11, 5, 0, "Z(Ci,Ab)");
+    dpd_buf4_axpy(&Z1, &Z2, 1.0);
+    dpd_buf4_close(&Z1);
+    dpd_buf4_init(&G, CC_GAMMA, 0, 11, 5, 11, 5, 0, "GCiAb");
+    dpd_buf4_axpy(&Z2, &G, 1.0);
+    dpd_buf4_close(&Z2);
+    dpd_buf4_close(&G);
+
+    /* g(C,A) T(i,b) --> G(Ci,Ab) */
+    dpd_file2_init(&g, CC_GLG, 0, 1, 1, "GAE");
+    dpd_file2_mat_init(&g);
+    dpd_file2_mat_rd(&g);
+    dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tia");
+    dpd_file2_mat_init(&T1);
+    dpd_file2_mat_rd(&T1);
+
+    dpd_buf4_init(&G, CC_GAMMA, 0, 11, 5, 11, 5, 0, "GCiAb");
+  
+    for(h=0; h < nirreps; h++) {
+      dpd_buf4_mat_irrep_init(&G, h); 0,
+					dpd_buf4_mat_irrep_rd(&G, h);
+
+      for(row=0; row < G.params->rowtot[h]; row++) {
+	c = G.params->roworb[h][row][0];
+	i = G.params->roworb[h][row][1];
+	for(col=0; col < G.params->coltot[h]; col++) {
+	  a = G.params->colorb[h][col][0];
+	  b = G.params->colorb[h][col][1];
+
+	  value = 0.0;
+
+	  C = g.params->rowidx[c];  I = T1.params->rowidx[i];
+	  Csym = g.params->psym[c]; Isym = T1.params->psym[i];
+	  A = g.params->colidx[a];  B = T1.params->colidx[b];
+	  Asym = g.params->qsym[a];  Bsym = T1.params->qsym[b];
+	      
+	  if((Csym==Asym) && (Isym==Bsym))
+	    value += g.matrix[Csym][C][A] * T1.matrix[Isym][I][B];
+
+	  G.matrix[h][row][col] -= value;
+	}
+      }
+
+      dpd_buf4_mat_irrep_wrt(&G, h);
+      dpd_buf4_mat_irrep_close(&G, h);
+    }
+    dpd_buf4_scm(&G, 0.5);
+    dpd_buf4_close(&G);
+  
+    dpd_file2_mat_close(&g);
+    dpd_file2_close(&g);
+    dpd_file2_mat_close(&T1);
+    dpd_file2_close(&T1);
+  }
+  else if(params.ref == 1) { /** ROHF **/
 
     dpd_buf4_init(&G, CC_GAMMA, 0, 11, 7, 11, 7, 0, "GCIAB");
     /* t(M,C) L(MI,AB) */
@@ -455,11 +570,30 @@ void Gciab(void)
   }
   else if(params.ref == 2) { /** UHF **/
 
+    if(!strcmp(params.wfn,"CCSD_T") && params.dertype==1) {
+      /* For CCSD(T) gradients, some density contributions are
+	 calculated in cctriples */
+      dpd_buf4_init(&G, CC_GAMMA, 0, 20, 7, 20, 7, 0, "GIDAB");
+      dpd_buf4_sort(&G, CC_GAMMA, qprs, 21, 7, "GCIAB");
+      dpd_buf4_close(&G);
+      dpd_buf4_init(&G, CC_GAMMA, 0, 30, 17, 30, 17, 0, "Gidab");
+      dpd_buf4_sort(&G, CC_GAMMA, qprs, 31, 17, "Gciab");
+      dpd_buf4_close(&G);
+      dpd_buf4_init(&G, CC_GAMMA, 0, 24, 28, 24, 28, 0, "GIdAb");
+      dpd_buf4_sort(&G, CC_GAMMA, qpsr, 25, 29, "GcIaB");
+      dpd_buf4_close(&G);
+      dpd_buf4_init(&G, CC_GAMMA, 0, 27, 29, 27, 29, 0, "GiDaB");
+      dpd_buf4_sort(&G, CC_GAMMA, qpsr, 26, 28, "GCiAb");
+      dpd_buf4_close(&G);
+
+      factor = 1.0;
+    }
+
     dpd_buf4_init(&G, CC_GAMMA, 0, 21, 7, 21, 7, 0, "GCIAB");
     /* t(M,C) L(MI,AB) */
     dpd_buf4_init(&L, CC_GLG, 0, 0, 7, 2, 7, 0, "LIJAB");
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
-    dpd_contract244(&T1, &L, &G, 0, 0, 0, 1.0, 0.0);
+    dpd_contract244(&T1, &L, &G, 0, 0, 0, 1.0, factor);
     dpd_file2_close(&T1);
     dpd_buf4_close(&L);
     /* l(M,C) Tau(MI,AB) */
@@ -562,7 +696,7 @@ void Gciab(void)
     /* t(m,c) L(mi,ab) */
     dpd_buf4_init(&L, CC_GLG, 0, 10, 17, 12, 17, 0, "Lijab");
     dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
-    dpd_contract244(&T1, &L, &G, 0, 0, 0, 1.0, 0.0);
+    dpd_contract244(&T1, &L, &G, 0, 0, 0, 1.0, factor);
     dpd_file2_close(&T1);
     dpd_buf4_close(&L);
     /* l(m,c) Tau(mi,ab) */
@@ -665,7 +799,7 @@ void Gciab(void)
     /* t(M,C) L(Mi,Ab) */
     dpd_buf4_init(&L, CC_GLG, 0, 22, 28, 22, 28, 0, "LIjAb");
     dpd_file2_init(&T1, CC_OEI, 0, 0, 1, "tIA");
-    dpd_contract244(&T1, &L, &G, 0, 0, 0, 1.0, 0.0);
+    dpd_contract244(&T1, &L, &G, 0, 0, 0, 1.0, factor);
     dpd_file2_close(&T1);
     dpd_buf4_close(&L);
     /* l(M,C) Tau(Mi,Ab) */
@@ -778,7 +912,7 @@ void Gciab(void)
     /* t(m,c) L(mI,aB) */
     dpd_buf4_init(&L, CC_GLG, 0, 23, 29, 23, 29, 0, "LiJaB");
     dpd_file2_init(&T1, CC_OEI, 0, 2, 3, "tia");
-    dpd_contract244(&T1, &L, &G, 0, 0, 0, 1.0, 0.0);
+    dpd_contract244(&T1, &L, &G, 0, 0, 0, 1.0, factor);
     dpd_file2_close(&T1);
     dpd_buf4_close(&L);
     /* l(m,c) Tau(mI,aB) */

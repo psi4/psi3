@@ -18,28 +18,34 @@
 
 namespace psi { namespace cctriples {
 
-void init_io(int argc, char *argv[]);
-void title(void);
-void get_moinfo(void);
-void exit_io(void);
-void cleanup(void);
-double ET_RHF(void);
-double ET_AAA(void);
-double ET_AAB(void);
-double ET_ABB(void);
-double ET_BBB(void);
-double ET_UHF_AAA(void);
-double ET_UHF_BBB(void);
-double ET_UHF_AAB(void);
-double ET_UHF_ABB(void);
-void count_ijk(void);
-void setup(void);
-int **cacheprep_rhf(int level, int *cachefiles);
-int **cacheprep_uhf(int level, int *cachefiles);
-void cachedone_uhf(int **cachelist);
-void cachedone_rhf(int **cachelist);
+    void init_io(int argc, char *argv[]);
+    void title(void);
+    void get_moinfo(void);
+    void exit_io(void);
+    void cleanup(void);
+    double ET_RHF(void);
+    double ET_AAA(void);
+    double ET_AAB(void);
+    double ET_ABB(void);
+    double ET_BBB(void);
+    double ET_UHF_AAA(void);
+    double ET_UHF_BBB(void);
+    double ET_UHF_AAB(void);
+    double ET_UHF_ABB(void);
+    void count_ijk(void);
+    void setup(void);
+    int **cacheprep_rhf(int level, int *cachefiles);
+    int **cacheprep_uhf(int level, int *cachefiles);
+    void cachedone_uhf(int **cachelist);
+    void cachedone_rhf(int **cachelist);
 
-}} // namespace psi::cctriples
+    void T3_grad_RHF(void);
+    void T3_grad_UHF_AAA(void);
+    void T3_grad_UHF_BBB(void);
+    void T3_grad_UHF_AAB(void);
+    void T3_grad_UHF_BBA(void);
+
+  }} // namespace psi::cctriples
 
 using namespace psi::cctriples;
 
@@ -88,6 +94,9 @@ int main(int argc, char *argv[])
     fprintf(outfile, "\t(T) energy                    = %20.15f\n", ET);
     fprintf(outfile, "      * CCSD(T) total energy          = %20.15f\n", 
 	    ET + moinfo.ecc + moinfo.eref);
+
+    /* Compute triples contributions to the gradient */
+    if(params.dertype == 1) T3_grad_RHF();
   }
   else if(params.ref == 1) { /** ROHF --- don't use this right now! **/
 
@@ -129,6 +138,18 @@ int main(int argc, char *argv[])
     fprintf(outfile, "\t(T) energy                    = %20.15f\n", ET);
     fprintf(outfile, "      * CCSD(T) total energy          = %20.15f\n", 
 	    ET + moinfo.ecc + moinfo.eref);
+
+    if(params.dertype==1) {
+      fprintf(outfile, "\n\tComputing (T) contributions to CC density...\n");
+      T3_grad_UHF_AAA();
+      fprintf(outfile, "\tAAA contributions complete.\n");
+      T3_grad_UHF_BBB();
+      fprintf(outfile, "\tBBB contributions complete.\n");
+      T3_grad_UHF_AAB();
+      fprintf(outfile, "\tAAB contributions complete.\n");
+      T3_grad_UHF_BBA();
+      fprintf(outfile, "\tBBA contributions complete.\n");
+    }
   }
 
   fprintf(outfile, "\n");
@@ -164,6 +185,9 @@ int main(int argc, char *argv[])
     }
     fclose(efile);
   }
+
+  /* Dump triples energy to CC_INFO */
+  psio_write_entry(CC_INFO, "(T) Energy", (char *) &(ET), sizeof(double));
 
   dpd_close(0);
 

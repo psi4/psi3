@@ -20,12 +20,14 @@ namespace psi { namespace ccdensity {
 **
 */
 
+void build_Z_RHF(void);
 void build_Z_ROHF(void);
 void build_Z_UHF(void);
 
 void build_Z(void)
 {
-  if(params.ref == 0 || params.ref == 1) build_Z_ROHF();
+  if(params.ref == 0) build_Z_RHF();
+  else if(params.ref == 1) build_Z_ROHF();
   else if(params.ref == 2) build_Z_UHF();
 }
 

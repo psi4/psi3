@@ -39,12 +39,14 @@ namespace psi { namespace ccdensity {
 ** comments below.
 ** */
 
+void deanti_RHF(struct RHO_Params rho_params);
 void deanti_ROHF(struct RHO_Params rho_params);
 void deanti_UHF(struct RHO_Params rho_params);
 
 void deanti(struct RHO_Params rho_params)
 {
-  if(params.ref == 0 || params.ref == 1) deanti_ROHF(rho_params);
+  if(params.ref == 0) deanti_RHF(rho_params);
+  else if(params.ref == 1) deanti_ROHF(rho_params);
   else if(params.ref == 2) deanti_UHF(rho_params);
 }
 

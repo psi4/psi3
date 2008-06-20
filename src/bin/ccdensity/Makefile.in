@@ -44,7 +44,10 @@ deanti_UHF.cc     sort_ltd_uhf.cc             x_xi2_uhf.cc \
 dipole.cc         sort_rtd_rohf.cc            x_xi_check.cc \
 distribute.cc     sort_rtd_uhf.cc             x_xi_intermediates.cc \
 dump_ROHF.cc      sortone.cc                  zero_pdm.cc \
-dump_UHF.cc       sortone_ROHF.cc
+dump_UHF.cc       sortone_ROHF.cc \
+dump_RHF.cc add_ref_RHF.cc deanti_RHF.cc fold_RHF.cc sortI_RHF.cc sortone_RHF.cc \
+relax_I_RHF.cc build_Z_RHF.cc build_A_RHF.cc energy_RHF.cc energy_ROHF.cc energy_UHF.cc \
+Gijab_RHF.cc
 
 BINOBJ = $(CXXSRC:%.cc=%.o)
 

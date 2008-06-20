@@ -35,12 +35,14 @@ namespace psi { namespace ccdensity {
 ** G'mpmr = Dpr + Gmpmr
 ** */
 
+void fold_RHF(struct RHO_Params rho_params);
 void fold_ROHF(struct RHO_Params rho_params);
 void fold_UHF(struct RHO_Params rho_params);
 
 void fold(struct RHO_Params rho_params)
 {
-  if(params.ref == 0 || params.ref == 1) fold_ROHF(rho_params);
+  if(params.ref == 0) fold_RHF(rho_params);
+  else if(params.ref == 1) fold_ROHF(rho_params);
   else if(params.ref == 2) fold_UHF(rho_params);
 }
 

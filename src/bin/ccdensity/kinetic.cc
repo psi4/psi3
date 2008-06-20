@@ -1,6 +1,6 @@
 /*! \file
     \ingroup CCDENSITY
-    \brief Enter brief description of file here 
+    \brief Computes the kinetic energy and the virial ratio for CC wave functions.
 */
 #include <cstdio>
 #include <cstdlib>
@@ -61,13 +61,6 @@ void kinetic(void)
       for(j=0; j < nmo; j++) scf_qt[j][I] = scf_pitzer[j][i];
     }
 
-  /*
-  fprintf(outfile, "\tSCF eigenvectors (Pitzer):\n");
-  print_mat(scf_pitzer,nmo,nmo,outfile);
-  fprintf(outfile, "\tSCF eigenvectors (QT):\n");
-  print_mat(scf_qt,nmo,nmo,outfile);
-  */
-
   /*** Transform the kinetic energy integrals to the MO basis ***/
 
   t = init_array(noei);
@@ -83,13 +76,6 @@ void kinetic(void)
           S[i][j] = s[INDEX(i,j)];
         }
 
-  /*
-  fprintf(outfile, "\tKinetic energy integrals (SO):\n");
-  print_mat(T,nmo,nmo,outfile);
-  fprintf(outfile, "\tOverlap integrals (SO):\n");
-  print_mat(S,nmo,nmo,outfile);
-  */
-
   X = block_matrix(nmo,nmo);
 
   C_DGEMM('t','n',nmo,nmo,nmo,1,&(scf_qt[0][0]),nmo,&(T[0][0]),nmo,
@@ -97,19 +83,7 @@ void kinetic(void)
   C_DGEMM('n','n',nmo,nmo,nmo,1,&(X[0][0]),nmo,&(scf_qt[0][0]),nmo,
           0,&(T[0][0]),nmo);
 
-  /*
-  fprintf(outfile, "\tKinetic energy integrals (MO):\n");
-  print_mat(T,nmo,nmo,outfile);
-  fprintf(outfile, "\tOne-particle density:\n");
-  print_mat(moinfo.opdm,nmo,nmo,outfile);
-  */
-
   /*** Contract the correlated kinetic energy ***/
-
-  /*
-  fprintf(outfile, "\n\tOne-PDM:\n");
-  print_mat(moinfo.opdm, nmo, nmo, outfile);
-  */
 
   tcorr = 0.0;
   for(i=0; i < nmo; i++)

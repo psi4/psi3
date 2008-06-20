@@ -607,10 +607,10 @@ psi: (
   CCSD_TTwoConEnergy = ERROR
 
   % Procedures for the CCSD(T) gradient
-  CCSD_TFirst = ERROR
+  CCSD_TFirst = ($CCSD_TEnergy $cchbar $cclambda $ccdensity $backtransqt $deriv)
   CCSD_TRHFFirst = ERROR
   CCSD_TROHFFirst = ERROR
-  CCSD_TUHFFirst = ERROR
+  CCSD_TUHFFirst = $CCSD_TFirst
   CCSD_TTwoConFirst = ERROR
 
   % Procedures for optimization via energy points
@@ -625,13 +625,13 @@ psi: (
   % Procedures for the optimizing geomtries with CCSD(T) gradients
   CCSD_TRHFFirstOpt = ERROR
   CCSD_TROHFFirstOpt = ERROR
-  CCSD_TUHFFirstOpt  = ERROR
+  CCSD_TUHFFirstOpt  = (repeat $nopt $CCSD_TUHFFirst $geomupdate end $done)
   CCSD_TTwoConFirstOpt  = ERROR
 
   % Procedures for the finite displacements of CCSD(T) gradients
   CCSD_TRHFFirstDisp = ERROR
   CCSD_TROHFFirstDisp = ERROR
-  CCSD_TUHFFirstDisp  = ERROR
+  CCSD_TUHFFirstDisp  = (repeat $nopt $CCSD_TUHFFirst $geomupdate end $done)
   CCSD_TTwoConFirstDisp  = ERROR
 
   % -------------------------------- CC2 Procedures

@@ -56,7 +56,8 @@ struct MOInfo {
     double enuc;        /* Nuclear repulsion energy */
     double escf;        /* SCF energy from chkpt */
     double eref;        /* Reference energy */
-    double ecc;         /* CC energy from ccenergy */
+    double ecc;         /* CC energy (CC2, CCSD, or CC3) from ccenergy */
+    double et;          /* (T) energy from cctriples */
     double **opdm;      /* Onepdm in the full (fzc+clsd+socc+uocc) space */
     double **opdm_a;    /* Alpha Onepdm in the full (fzc+clsd+socc+uocc) space */
     double **opdm_b;    /* Beta Onepdm in the full (fzc+clsd+socc+uocc) space */
