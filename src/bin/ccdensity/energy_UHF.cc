@@ -5,6 +5,7 @@
 */
 #include <stdio.h>
 #include <strings.h>
+#include <string.h>
 #include <libdpd/dpd.h>
 #include "MOInfo.h"
 #include "Params.h"

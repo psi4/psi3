@@ -4,7 +4,7 @@
 */
 #include <cstdio>
 #include <strings.h>
-#include <strings.h>
+#include <string.h>
 #include <libiwl/iwl.h>
 #include <libdpd/dpd.h>
 #include <psifiles.h>

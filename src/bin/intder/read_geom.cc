@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <strings.h>
+#include <string.h>
 #include "displacements.h"
 #include "params.h"
 
