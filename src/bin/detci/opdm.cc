@@ -31,7 +31,7 @@ void orbsfile_rd_blk(int targetfile, int root, int irrep, double **orbs_vector);
 void orbsfile_wt_blk(int targetfile, int root, int irrep, double **orbs_vector);
 void ave(int targetfile);
 void opdm_block(struct stringwr **alplist, struct stringwr **betlist,
-		double **onepdm, double **CJ, double **CI, int Ja_list, 
+		double **onepdm_a, double **onepdm_b, double **CJ, double **CI, int Ja_list, 
 		int Jb_list, int Jnas, int Jnbs, int Ia_list, int Ib_list, 
 		int Inas, int Inbs);
 void opdm_ke(double **onepdm);
@@ -58,7 +58,7 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   int max_orb_per_irrep;
   double **transp_tmp = NULL;
   double **transp_tmp2 = NULL;
-  double *buffer1, *buffer2, **onepdm;
+  double *buffer1, *buffer2, **onepdm, **onepdm_a, **onepdm_b;
   int i_ci, j_ci, irrep, mo_offset, so_offset, orb_length=0, opdm_length=0;
   double *opdm_eigval, **opdm_eigvec, **opdm_blk, **scfvec;
   int Iblock, Iblock2, Ibuf, Iac, Ibc, Inas, Inbs, Iairr;
@@ -137,6 +137,8 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
   Ivec.buf_lock(buffer1);
   Jvec.buf_lock(buffer2);
   onepdm = block_matrix(populated_orbs, populated_orbs); 
+  onepdm_a = block_matrix(populated_orbs, populated_orbs); 
+  onepdm_b = block_matrix(populated_orbs, populated_orbs); 
 
   if ((Ivec.icore==2 && Ivec.Ms0 && CalcInfo.ref_sym != 0) || 
       (Ivec.icore==0 && Ivec.Ms0)) {
@@ -211,11 +213,14 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
 
   for (; Jroot<Parameters.num_roots; Jroot++) {
    
-    zero_mat(onepdm, populated_orbs, populated_orbs); 
+    zero_mat(onepdm_a, populated_orbs, populated_orbs); 
+    zero_mat(onepdm_b, populated_orbs, populated_orbs); 
 
     if (!transdens) {
-      for (i=0; i<CalcInfo.num_fzc_orbs; i++)
-        onepdm[i][i] = 2.0;
+      for (i=0; i<CalcInfo.num_fzc_orbs; i++) {
+        onepdm_a[i][i] = 1.0;
+        onepdm_b[i][i] = 1.0;
+      }
     }
 
     if (Parameters.icore == 0) {
@@ -247,14 +252,14 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
           Jvec.read(Jroot, Jbuf);
 	 
           if (do_Jblock) {
-            opdm_block(alplist, betlist, onepdm, Jvec.blocks[Jblock], 
+            opdm_block(alplist, betlist, onepdm_a, onepdm_b, Jvec.blocks[Jblock], 
                        Ivec.blocks[Iblock], Jac, Jbc, Jnas,
                        Jnbs, Iac, Ibc, Inas, Inbs);
             }
 	 
           if (do_Jblock2) {
             Jvec.transp_block(Jblock, transp_tmp);
-            opdm_block(alplist, betlist, onepdm, transp_tmp,
+            opdm_block(alplist, betlist, onepdm_a, onepdm_b, transp_tmp,
                        Ivec.blocks[Iblock], Jbc, Jac, Jnbs,
                        Jnas, Iac, Ibc, Inas, Inbs);
           }
@@ -289,14 +294,14 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
             Jvec.read(Jroot, Jbuf);
 	 
             if (do_Jblock) {
-              opdm_block(alplist, betlist, onepdm, Jvec.blocks[Jblock], 
+              opdm_block(alplist, betlist, onepdm_a, onepdm_b, Jvec.blocks[Jblock], 
                          transp_tmp2, Jac, Jbc, Jnas,
                          Jnbs, Iac, Ibc, Inas, Inbs);
             }
 	   
             if (do_Jblock2) {
               Jvec.transp_block(Jblock, transp_tmp);
-              opdm_block(alplist, betlist, onepdm, transp_tmp,
+              opdm_block(alplist, betlist, onepdm_a, onepdm_b, transp_tmp,
                          transp_tmp2, Jbc, Jac, Jnbs,
                          Jnas, Iac, Ibc, Inas, Inbs);
             }
@@ -320,7 +325,7 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
           Jnas = Jvec.Ia_size[Jblock];
           Jnbs = Jvec.Ib_size[Jblock];
           if (s1_contrib[Iblock][Jblock] || s2_contrib[Iblock][Jblock])
-            opdm_block(alplist, betlist, onepdm, Jvec.blocks[Jblock],
+            opdm_block(alplist, betlist, onepdm_a, onepdm_b, Jvec.blocks[Jblock],
                        Ivec.blocks[Iblock], Jac, Jbc, Jnas,
                        Jnbs, Iac, Ibc, Inas, Inbs);
         }
@@ -351,7 +356,7 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
             Jnbs = Jvec.Ib_size[Jblock];
 	   
             if (s1_contrib[Iblock][Jblock] || s2_contrib[Iblock][Jblock])
-              opdm_block(alplist, betlist, onepdm, Jvec.blocks[Jblock],
+              opdm_block(alplist, betlist, onepdm_a, onepdm_b, Jvec.blocks[Jblock],
                          Ivec.blocks[Iblock], Jac, Jbc, Jnas,
                          Jnbs, Iac, Ibc, Inas, Inbs);
 
@@ -360,7 +365,7 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
               if (s1_contrib[Iblock][Jblock2] ||
                   s2_contrib[Iblock][Jblock2]) {
               Jvec.transp_block(Jblock, transp_tmp);
-                opdm_block(alplist, betlist, onepdm, transp_tmp,
+                opdm_block(alplist, betlist, onepdm_a, onepdm_b, transp_tmp,
                   Ivec.blocks[Iblock], Jbc, Jac,
                   Jnbs, Jnas, Iac, Ibc, Inas, Inbs);
 	      }
@@ -384,7 +389,7 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
               Jnbs = Jvec.Ib_size[Jblock];
 	   
               if (s1_contrib[Iblock2][Jblock] || s2_contrib[Iblock2][Jblock])
-                opdm_block(alplist, betlist, onepdm, Jvec.blocks[Jblock],
+                opdm_block(alplist, betlist, onepdm_a, onepdm_b, Jvec.blocks[Jblock],
                            transp_tmp2, Jac, Jbc, Jnas, Jnbs, Iac, Ibc, 
                            Inas, Inbs);
 
@@ -393,7 +398,7 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
                   if (s1_contrib[Iblock][Jblock2] || 
                     s2_contrib[Iblock][Jblock2]) {
                     Jvec.transp_block(Jblock, transp_tmp);
-                    opdm_block(alplist, betlist, onepdm, transp_tmp,
+                    opdm_block(alplist, betlist, onepdm_a, onepdm_b, transp_tmp,
                       transp_tmp2, Jbc, Jac, Jnbs, Jnas, Iac, Ibc, Inas, Inbs);
                   }
 	        }
@@ -411,6 +416,9 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
       return;
     }
 
+    // form total density as a sum of alpha and beta components
+    add_mat(onepdm_a,onepdm_b,onepdm,populated_orbs,populated_orbs);
+    
     /* write and/or print the opdm */
     if (printflag) {
       fprintf(outfile, "\n\nOne-particle ");
@@ -439,6 +447,21 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
         if (Parameters.print_lvl) 
           fprintf(outfile, "Wrote MO-basis %s to disk\n", 
             transdens ? "TDM" : "OPDM");
+        
+        // print alpha and beta densities for the target root also
+        sprintf(opdm_key,"MO-basis Alpha %s", transdens ? "TDM" : "OPDM");
+        psio_write_entry(targetfile, opdm_key, (char *) onepdm_a[0],
+          populated_orbs * populated_orbs * sizeof(double));
+        if (Parameters.print_lvl) 
+          fprintf(outfile, "Wrote MO-basis Alpha %s to disk\n", 
+            transdens ? "TDM" : "OPDM");
+        sprintf(opdm_key,"MO-basis Beta %s", transdens ? "TDM" : "OPDM");
+        psio_write_entry(targetfile, opdm_key, (char *) onepdm_b[0],
+          populated_orbs * populated_orbs * sizeof(double));
+        if (Parameters.print_lvl) 
+          fprintf(outfile, "Wrote MO-basis Beta %s to disk\n", 
+            transdens ? "TDM" : "OPDM");
+
       }
     }
 
@@ -709,6 +732,8 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
     } /* end loop over roots */
 
     free_block(onepdm);
+    free_block(onepdm_a);
+    free_block(onepdm_b);
     free_block(opdm_eigvec);
     free(opdm_eigval); 
     chkpt_close();
@@ -722,7 +747,7 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
 }
 
 void opdm_block(struct stringwr **alplist, struct stringwr **betlist,
-		double **onepdm, double **CJ, double **CI, int Ja_list, 
+		double **onepdm_a, double **onepdm_b, double **CJ, double **CI, int Ja_list, 
 		int Jb_list, int Jnas, int Jnbs, int Ia_list, int Ib_list, 
 		int Inas, int Inbs)
 {
@@ -753,7 +778,7 @@ void opdm_block(struct stringwr **alplist, struct stringwr **betlist,
 	  C2 = CI[Ia_idx][Ib_idx];
           i = oij/CalcInfo.num_ci_orbs + nfzc;
           j = oij%CalcInfo.num_ci_orbs + nfzc;
-	  onepdm[i][j] += C1 * C2 * Ib_sgn;
+	  onepdm_b[i][j] += C1 * C2 * Ib_sgn;
 	}
       }
     }
@@ -777,7 +802,7 @@ void opdm_block(struct stringwr **alplist, struct stringwr **betlist,
 	  C2 = CI[Ia_idx][Ib_idx];
           i = oij/CalcInfo.num_ci_orbs + nfzc;
           j = oij%CalcInfo.num_ci_orbs + nfzc;
-	  onepdm[i][j] += C1 * C2 * Ia_sgn;
+	  onepdm_a[i][j] += C1 * C2 * Ia_sgn;
 	}
       }
     }
