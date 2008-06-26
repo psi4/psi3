@@ -438,6 +438,20 @@ void opdm(struct stringwr **alplist, struct stringwr **betlist,
         fprintf(outfile, "\nWrote MO-basis %s %d to disk\n", 
           transdens ? "TDM" : "OPDM", Jroot+1);
 
+      sprintf(opdm_key,"MO-basis Alpha %s Root %d", transdens ? "TDM" : "OPDM",Jroot);
+      psio_write_entry(targetfile, opdm_key, (char *) onepdm_a[0], 
+        populated_orbs * populated_orbs * sizeof(double));
+      if (Parameters.print_lvl) 
+        fprintf(outfile, "\nWrote MO-basis Alpha %s %d to disk\n", 
+          transdens ? "TDM" : "OPDM", Jroot+1);
+
+      sprintf(opdm_key,"MO-basis Beta %s Root %d", transdens ? "TDM" : "OPDM",Jroot);
+      psio_write_entry(targetfile, opdm_key, (char *) onepdm_b[0], 
+        populated_orbs * populated_orbs * sizeof(double));
+      if (Parameters.print_lvl) 
+        fprintf(outfile, "\nWrote MO-basis Beta %s %d to disk\n", 
+          transdens ? "TDM" : "OPDM", Jroot+1);
+
       /* write it without the "Root n" part if it's the desired root      */
       /* plain old "MO-basis OPDM" is what is searched by the rest of PSI */
       if (Jroot==Parameters.root) {
