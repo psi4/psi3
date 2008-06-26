@@ -9,6 +9,7 @@
 #include <cstdlib>
 #include <cmath>
 /* may no longer need #include <libc.h> */
+#include <psifiles.h>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libiwl/iwl.h>
@@ -20,11 +21,12 @@
 namespace psi { namespace detci {
 
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
+#define INDEX2(i,j,n) ((i)*(n) + (j))
 
 
 void tpdm_block(struct stringwr **alplist, struct stringwr **betlist,
 		int nbf, int nalpcodes, int nbetcodes,
-		double *twopdm, double **CJ, double **CI, int Ja_list, 
+		double *twopdm_aa, double *twopdm_bb, double *twopdm_ab, double **CJ, double **CI, int Ja_list, 
 		int Jb_list, int Jnas, int Jnbs, int Ia_list, int Ib_list, 
 		int Inas, int Inbs, double weight);
 
@@ -37,6 +39,9 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
 
    CIvect Ivec, Jvec;
    struct iwlbuf TBuff;
+   struct iwlbuf TBuff_aa;
+   struct iwlbuf TBuff_bb;
+   struct iwlbuf TBuff_ab;
    int i, j, k, l, lmax, ij, kl, ijkl, ijksym;
    int i2, j2, k2, l2, nfzc, populated_orbs;
    int *orbsym;
@@ -44,7 +49,9 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
    unsigned long bufsz;
    double **transp_tmp = NULL;
    double **transp_tmp2 = NULL;
-   double *buffer1, *buffer2, *twopdm, **onepdm, value;
+   double *buffer1, *buffer2, value;
+   double **onepdm_a, **onepdm_b;
+   double *twopdm_aa, *twopdm_bb, *twopdm_ab;
    int Iroot, Jroot;
    int Iblock, Iblock2, Ibuf, Iac, Ibc, Inas, Inbs, Iairr;
    int Jblock, Jblock2, Jbuf, Jac, Jbc, Jnas, Jnbs, Jairr;
@@ -58,7 +65,8 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
 
    if (nfzc) {
      psio_open(Parameters.opdm_file, PSIO_OPEN_OLD);
-     onepdm = block_matrix(populated_orbs, populated_orbs);
+     onepdm_a = block_matrix(populated_orbs, populated_orbs);
+     onepdm_b = block_matrix(populated_orbs, populated_orbs);
    }
 
    Ivec.set(CIblks.vectlen, CIblks.num_blocks, Parameters.icore, 1,
@@ -80,7 +88,9 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
 
    ntri = CalcInfo.num_ci_orbs * CalcInfo.num_ci_orbs;
    ntri2 = (ntri * (ntri + 1)) / 2;
-   twopdm = init_array(ntri2);
+   twopdm_aa = init_array(ntri2);
+   twopdm_bb = init_array(ntri2);
+   twopdm_ab = init_array(ntri * ntri);
 
    if ((Ivec.icore==2 && Ivec.Ms0 && CalcInfo.ref_sym != 0) || 
        (Ivec.icore==0 && Ivec.Ms0)) {
@@ -141,7 +151,7 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
 	 
            if (do_Jblock) {
              tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs, 
-               Ivec.num_alpcodes, Ivec.num_betcodes, twopdm, 
+               Ivec.num_alpcodes, Ivec.num_betcodes, twopdm_aa, twopdm_bb, twopdm_ab, 
                Jvec.blocks[Jblock], Ivec.blocks[Iblock], 
                Jac, Jbc, Jnas, Jnbs, Iac, Ibc, Inas, Inbs, weight);
            }
@@ -150,7 +160,7 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
              Jvec.transp_block(Jblock, transp_tmp);
              tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
                Ivec.num_alpcodes, Ivec.num_betcodes, 
-               twopdm, transp_tmp, Ivec.blocks[Iblock], 
+               twopdm_aa, twopdm_bb, twopdm_ab, transp_tmp, Ivec.blocks[Iblock], 
                Jbc, Jac, Jnbs, Jnas, Iac, Ibc, Inas, Inbs, weight);
            }
 	 
@@ -188,7 +198,7 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
              if (do_Jblock) {
                tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs, 
                  Ivec.num_alpcodes, Ivec.num_betcodes, 
-                 twopdm, Jvec.blocks[Jblock], 
+                 twopdm_aa, twopdm_bb, twopdm_ab, Jvec.blocks[Jblock], 
                  transp_tmp2, Jac, Jbc, Jnas,
                  Jnbs, Iac, Ibc, Inas, Inbs, weight);
              }
@@ -197,7 +207,7 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
                Jvec.transp_block(Jblock, transp_tmp);
                tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
                  Ivec.num_alpcodes, Ivec.num_betcodes,
-                 twopdm, transp_tmp, transp_tmp2, 
+                 twopdm_aa, twopdm_bb, twopdm_ab, transp_tmp, transp_tmp2, 
                  Jbc, Jac, Jnbs, Jnas, Iac, Ibc, Inas, Inbs, weight);
              }
            } /* end loop over Jbuf */
@@ -231,7 +241,7 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
              s3_contrib[Iblock][Jblock])
              tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
                Ivec.num_alpcodes, Ivec.num_betcodes, 
-               twopdm, Jvec.blocks[Jblock], Ivec.blocks[Iblock], 
+               twopdm_aa, twopdm_bb, twopdm_ab, Jvec.blocks[Jblock], Ivec.blocks[Iblock], 
                Jac, Jbc, Jnas, Jnbs, Iac, Ibc, Inas, Inbs, weight);
          }
        } /* end loop over Iblock */
@@ -270,7 +280,7 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
                  s3_contrib[Iblock][Jblock])
                tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs, 
                  Ivec.num_alpcodes, Ivec.num_betcodes,
-                 twopdm, Jvec.blocks[Jblock], Ivec.blocks[Iblock], 
+                 twopdm_aa, twopdm_bb, twopdm_ab, Jvec.blocks[Jblock], Ivec.blocks[Iblock], 
                  Jac, Jbc, Jnas, Jnbs, Iac, Ibc, Inas, Inbs, weight);
 
                if (Jvec.buf_offdiag[Jbuf]) {
@@ -281,7 +291,7 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
                    Jvec.transp_block(Jblock, transp_tmp);
                    tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
                      Ivec.num_alpcodes, Ivec.num_betcodes,
-                     twopdm, transp_tmp, Ivec.blocks[Iblock], 
+                     twopdm_aa, twopdm_bb, twopdm_ab, transp_tmp, Ivec.blocks[Iblock], 
                      Jbc, Jac, Jnbs, Jnas, Iac, Ibc, Inas, Inbs, weight);
                  }
                }
@@ -307,7 +317,7 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
                    || s3_contrib[Iblock2][Jblock])
                    tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
                      Ivec.num_alpcodes, Ivec.num_betcodes, 
-                     twopdm, Jvec.blocks[Jblock], transp_tmp2, 
+                     twopdm_aa, twopdm_bb, twopdm_ab, Jvec.blocks[Jblock], transp_tmp2, 
                      Jac, Jbc, Jnas, Jnbs, Iac, Ibc, Inas, Inbs, weight);
 
                  if (Jvec.buf_offdiag[Jbuf]) {
@@ -318,7 +328,7 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
                      Jvec.transp_block(Jblock, transp_tmp);
                      tpdm_block(alplist, betlist, CalcInfo.num_ci_orbs,
                      Ivec.num_alpcodes, Ivec.num_betcodes,
-                     twopdm, transp_tmp, transp_tmp2, Jbc, Jac,
+                     twopdm_aa, twopdm_bb, twopdm_ab, transp_tmp, transp_tmp2, Jbc, Jac,
                      Jnbs, Jnas, Iac, Ibc, Inas, Inbs, weight);
                    }
                  }
@@ -337,42 +347,74 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
      return;
    }
 
-   /* write and/or print the tpdm */
+   /* write and/or print the tpdm
+      total and spincases are written out. however, total 2-pdm must be scaled by 1/2
+      to conform the stupid psi convention. thus the sum of spincases does not equal
+      the total 2-pdm.
+    */
 
    if (writeflag) {
      
      if (printflag) fprintf(outfile, "\nTwo-particle density matrix\n\n");
      iwl_buf_init(&TBuff, targetfile, 0.0, 0, 0);
+     iwl_buf_init(&TBuff_aa, PSIF_MO_AA_TPDM, 0.0, 0, 0);
+     iwl_buf_init(&TBuff_bb, PSIF_MO_BB_TPDM, 0.0, 0, 0);
+     iwl_buf_init(&TBuff_ab, PSIF_MO_AB_TPDM, 0.0, 0, 0);
      orbsym = CalcInfo.orbsym + nfzc;
 
      /* do the core-core and core-active part here */
      if (nfzc) {
          if (Parameters.average_num == 1) 
-           sprintf(opdm_key, "MO-basis OPDM Root %d",
+           sprintf(opdm_key, "MO-basis Alpha OPDM Root %d",
              Parameters.average_states[0]);
          else
-           sprintf(opdm_key, "MO-basis OPDM");
+           sprintf(opdm_key, "MO-basis Alpha OPDM");
 
-         psio_read_entry(Parameters.opdm_file, opdm_key, (char *) onepdm[0],
+         psio_read_entry(Parameters.opdm_file, opdm_key, (char *) onepdm_a[0],
+           populated_orbs * populated_orbs * sizeof(double));
+
+         if (Parameters.average_num == 1) 
+           sprintf(opdm_key, "MO-basis Beta OPDM Root %d",
+             Parameters.average_states[0]);
+         else
+           sprintf(opdm_key, "MO-basis Beta OPDM");
+
+         psio_read_entry(Parameters.opdm_file, opdm_key, (char *) onepdm_b[0],
            populated_orbs * populated_orbs * sizeof(double));
 
        /* core-core part */
        for (i=0; i<nfzc; i++) {
          for (j=0; j<i; j++) {
            iwl_buf_wrt_val(&TBuff,i,i,j,j, 2.00,printflag,outfile,0);
+           iwl_buf_wrt_val(&TBuff_aa,i,i,j,j, 1.00,0,outfile,0);
+           iwl_buf_wrt_val(&TBuff_bb,i,i,j,j, 1.00,0,outfile,0);
+           iwl_buf_wrt_val(&TBuff_ab,i,i,j,j, 1.00,0,outfile,0);
+           iwl_buf_wrt_val(&TBuff_ab,j,j,i,i, 1.00,0,outfile,0);
+
            iwl_buf_wrt_val(&TBuff,i,j,j,i,-1.00,printflag,outfile,0);
+           iwl_buf_wrt_val(&TBuff_aa,i,j,j,i,-1.00,0,outfile,0);
+           iwl_buf_wrt_val(&TBuff_bb,i,j,j,i,-1.00,0,outfile,0);
          }
          iwl_buf_wrt_val(&TBuff,i,i,i,i,1.0,printflag,outfile,0);
+         iwl_buf_wrt_val(&TBuff_ab,i,i,i,i,1.0,0,outfile,0);
        }
 
        /* core-active part */
        for (i=nfzc; i<populated_orbs; i++) {
          for (j=nfzc; j<populated_orbs; j++) {
-           value = onepdm[i][j];
+           const double value_a = onepdm_a[i][j];
+           const double value_b = onepdm_b[i][j];
            for (k=0; k<nfzc; k++) {
-             iwl_buf_wrt_val(&TBuff,i,j,k,k,value,printflag,outfile,0);
-             iwl_buf_wrt_val(&TBuff,i,k,k,j,-0.5*value,printflag,outfile,0);
-           } 
+             iwl_buf_wrt_val(&TBuff,i,j,k,k,value_a + value_b,printflag,outfile,0);
+             iwl_buf_wrt_val(&TBuff_aa,i,j,k,k,value_a,0,outfile,0);
+             iwl_buf_wrt_val(&TBuff_bb,i,j,k,k,value_b,0,outfile,0);
+             iwl_buf_wrt_val(&TBuff_ab,i,j,k,k,value_a,0,outfile,0);
+             iwl_buf_wrt_val(&TBuff_ab,k,k,i,j,value_b,0,outfile,0);
+
+             iwl_buf_wrt_val(&TBuff,i,k,k,j,-0.5*(value_a+value_b),printflag,outfile,0);
+             iwl_buf_wrt_val(&TBuff_aa,i,k,k,j,-value_a,0,outfile,0);
+             iwl_buf_wrt_val(&TBuff_bb,i,k,k,j,-value_b,0,outfile,0);
+           }
          }
        }
      }
@@ -391,30 +433,49 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
 	     if ((orbsym[l] ^ ijksym) != 0) continue;
 	     ij = i * CalcInfo.num_ci_orbs + j;
 	     kl = k * CalcInfo.num_ci_orbs + l;
-	     ijkl = INDEX(ij,kl);
+	     const long int ijkl_tri = INDEX(ij,kl);
+         const long int ijkl = INDEX2(ij,kl,ntri);
+         const long int klij = INDEX2(kl,ij,ntri);
 	     
+         const double value_aa = twopdm_aa[ijkl_tri];
+         const double value_bb = twopdm_bb[ijkl_tri];
+         const double value_ab = twopdm_ab[ijkl];
+         const double value_ba = twopdm_ab[klij];
              // For PSI the factor of 1/2 is not pulled outside...so put
              // it back inside now and then write out to the IWL buffer.
-             value = 0.5 * twopdm[ijkl]; 
+             value = 0.5 * (value_aa + value_bb + value_ab + value_ba);
 	     iwl_buf_wrt_val(&TBuff,i2,j2,k2,l2,value,printflag,outfile,0);
+         iwl_buf_wrt_val(&TBuff_aa,i2,j2,k2,l2,value_aa,0,outfile,0);
+         iwl_buf_wrt_val(&TBuff_bb,i2,j2,k2,l2,value_bb,0,outfile,0);
+         iwl_buf_wrt_val(&TBuff_ab,i2,j2,k2,l2,value_ab,0,outfile,0);
+         iwl_buf_wrt_val(&TBuff_ab,k2,l2,i2,j2,value_ba,0,outfile,0);
 	   }
 	 }
        }
      }
      iwl_buf_flush(&TBuff, 1);
      iwl_buf_close(&TBuff, 1);
+     iwl_buf_flush(&TBuff_aa, 1);
+     iwl_buf_close(&TBuff_aa, 1);
+     iwl_buf_flush(&TBuff_bb, 1);
+     iwl_buf_close(&TBuff_bb, 1);
+     iwl_buf_flush(&TBuff_ab, 1);
+     iwl_buf_close(&TBuff_ab, 1);
      fprintf(outfile, "\n");
    }
 
 
    if (nfzc) {
      psio_close(Parameters.opdm_file, 1);
-     free_block(onepdm);
+     free_block(onepdm_a);
+     free_block(onepdm_b);
    }
 
    Ivec.buf_unlock();
    Jvec.buf_unlock();
-   free(twopdm);
+   free(twopdm_aa);
+   free(twopdm_bb);
+   free(twopdm_ab);
    if (transp_tmp != NULL) free_block(transp_tmp);
    if (transp_tmp2 != NULL) free_block(transp_tmp2);
    free(buffer1);
@@ -425,10 +486,11 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
 
 void tpdm_block(struct stringwr **alplist, struct stringwr **betlist,
 	        int nbf, int nalplists, int nbetlists,
-		double *twopdm, double **CJ, double **CI, int Ja_list, 
+		double *twopdm_aa, double *twopdm_bb, double *twopdm_ab, double **CJ, double **CI, int Ja_list, 
 		int Jb_list, int Jnas, int Jnbs, int Ia_list, int Ib_list, 
 		int Inas, int Inbs, double weight)
 {
+   const int nbf2 = nbf * nbf;
    int Ia_idx, Ib_idx, Ja_idx, Jb_idx, Ja_ex, Jb_ex, Jbcnt, Jacnt; 
    int Kbcnt, Kacnt, Kb_ex, Ka_ex, Kb_list, Ka_list, Kb_idx, Ka_idx;
    struct stringwr *Jb, *Ja, *Kb, *Ka;
@@ -464,7 +526,7 @@ void tpdm_block(struct stringwr **alplist, struct stringwr **betlist,
 		kl = j * nbf + l;
 		if (ij >= kl) {
 		  ijkl = INDEX(ij,kl);
-		  twopdm[ijkl] -= Kb_sgn * C1 * C2;
+		  twopdm_bb[ijkl] -= Kb_sgn * C1 * C2;
 		}
 	      }
 	    }
@@ -482,7 +544,7 @@ void tpdm_block(struct stringwr **alplist, struct stringwr **betlist,
 	      if (oij >= okl) {
 		C2 = CI[Ia_idx][Ib_idx];
 		ijkl = INDEX(oij,okl);
-		twopdm[ijkl] += Ib_sgn * Kb_sgn * C1 * C2;
+		twopdm_bb[ijkl] += Ib_sgn * Kb_sgn * C1 * C2;
 	      }
 	    }
 
@@ -519,7 +581,7 @@ void tpdm_block(struct stringwr **alplist, struct stringwr **betlist,
 		kl = j * nbf + l;
 		if (ij >= kl) {
 		  ijkl = INDEX(ij,kl);
-		  twopdm[ijkl] -= Ka_sgn * C1 * C2;
+		  twopdm_aa[ijkl] -= Ka_sgn * C1 * C2;
 		}
 	      }
 	    }
@@ -537,7 +599,7 @@ void tpdm_block(struct stringwr **alplist, struct stringwr **betlist,
 	      if (oij >= okl) {
 		C2 = CI[Ia_idx][Ib_idx];
 		ijkl = INDEX(oij,okl);
-		twopdm[ijkl] += Ia_sgn * Ka_sgn * C1 * C2;
+		twopdm_aa[ijkl] += Ia_sgn * Ka_sgn * C1 * C2;
 	      }
 	    }
 
@@ -578,10 +640,14 @@ void tpdm_block(struct stringwr **alplist, struct stringwr **betlist,
 	  Ib_idx = *Jbridx++;
 	  Ib_sgn = (double) *Jbsgn++;
 	  C2 = CI[Ia_idx][Ib_idx];
-	  ijkl = INDEX(oij, okl);
+	  // alpha-beta matrix is stored without packing bra and ket together
+	  ijkl = INDEX2(oij, okl, nbf2);
 	  tval = Ib_sgn * Ia_sgn * C1 * C2;
-	  if (oij == okl) tval *= 2.0;
-	  twopdm[ijkl] += tval;
+	  // in orbital (i.e. non-spi-orbital) code had to scale the diagonal by 2
+	  // because d(ij,kl) += d_ab(ij,kl) + d_ab(kl,ij), hence
+	  // d(ij,ij) += 2 d_ab(ij,ij)
+	  //if (oij == okl) tval *= 2.0;
+	  twopdm_ab[ijkl] += tval;
 	}
       } /* end loop over Jb */
     } /* end loop over Ja_ex */

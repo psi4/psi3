@@ -838,63 +838,52 @@ void ave(int targetfile)
   int root, root_count, i, j, populated_orbs;
   double **tmp_mat1, **tmp_mat2;
   char opdm_key[80];
+  
+  const char spinlabels[][10] = { "", "Alpha ", "Beta " };
+  const int nspincases = 3;
 
   populated_orbs = CalcInfo.nmo-CalcInfo.num_fzv_orbs;
   tmp_mat1 = block_matrix(populated_orbs, populated_orbs);  
-  tmp_mat2 = block_matrix(populated_orbs, populated_orbs);  
-  zero_mat(tmp_mat1, populated_orbs, populated_orbs);
+  tmp_mat2 = block_matrix(populated_orbs, populated_orbs);
+  
+  for(int spincase=0; spincase<nspincases; ++spincase) {
+    
+    zero_mat(tmp_mat1, populated_orbs, populated_orbs);
 
-  for(root_count=0; root_count<Parameters.average_num; root_count++) {
+    for(root_count=0; root_count<Parameters.average_num; root_count++) {
 
-    root = Parameters.average_states[root_count];
+      root = Parameters.average_states[root_count];
 
-    sprintf(opdm_key, "MO-basis OPDM Root %d", root);
+      sprintf(opdm_key, "MO-basis %sOPDM Root %d", spinlabels[spincase], root);
 
-    if (root_count==0) {
-      psio_read_entry(targetfile, opdm_key, (char *) tmp_mat1[0],
-        populated_orbs * populated_orbs * sizeof(double));
+      psio_read_entry(targetfile, opdm_key, (char *) tmp_mat2[0],
+                      populated_orbs * populated_orbs * sizeof(double));
 
       if (Parameters.opdm_print) {
-        fprintf(outfile,"\n\n\t\tOPDM for Root %d",root+1);
-        print_mat(tmp_mat1, populated_orbs, populated_orbs, outfile);
+        fprintf(outfile,"\n\n\t\t%sOPDM for Root %d",spinlabels[spincase],root+1);
+        print_mat(tmp_mat2, populated_orbs, populated_orbs, outfile);
       }
 
       for (i=0; i<populated_orbs; i++)
-        for (j=0; j<populated_orbs; j++) 
-           tmp_mat1[i][j] *= Parameters.average_weights[root];
+        for (j=0; j<populated_orbs; j++)
+          tmp_mat1[i][j] += Parameters.average_weights[root]*tmp_mat2[i][j];
 
     }
 
-    else {
-      psio_read_entry(targetfile, opdm_key, (char *) tmp_mat2[0],
-        populated_orbs * populated_orbs * sizeof(double));
-
-      for(i=0; i<populated_orbs; i++)
-         for(j=0; j<populated_orbs; j++) 
-            tmp_mat1[i][j] += Parameters.average_weights[root]*tmp_mat2[i][j];
-
-      if (Parameters.opdm_print) {
-        fprintf(outfile,"\n\n\t\tOPDM for Root %d",root+1);
-        print_mat(tmp_mat2, populated_orbs, populated_orbs, outfile);
-      }
+    sprintf(opdm_key, "MO-basis %sOPDM", spinlabels[spincase]);
+    psio_write_entry(targetfile, opdm_key, (char *) tmp_mat1[0],
+                     populated_orbs*populated_orbs*sizeof(double));
+    
+    if (Parameters.print_lvl> 0 || Parameters.opdm_print) {
+      fprintf(outfile,
+              "\n\t\t\t Averaged %sOPDM's for %d Roots written to opdm_file \n\n",
+              spinlabels[spincase], Parameters.average_num);
     }
-
-    zero_mat(tmp_mat2, populated_orbs, populated_orbs);
-
-  }
-
-
-  psio_write_entry(targetfile, "MO-basis OPDM", (char *) tmp_mat1[0],
-    populated_orbs*populated_orbs*sizeof(double));
-
-  if (Parameters.print_lvl > 0 || Parameters.opdm_print) {
-    fprintf(outfile,
-      "\n\t\t\t Averaged OPDM's for %d Roots written to opdm_file \n\n",
-      Parameters.average_num);
-  }
-  if (Parameters.opdm_print) {
-    print_mat(tmp_mat1, populated_orbs, populated_orbs, outfile);
-  }
+    if (Parameters.opdm_print) {
+      print_mat(tmp_mat1, populated_orbs, populated_orbs, outfile);
+    }
+    
+  } // loop over spincases
 
   free_block(tmp_mat1);
   free_block(tmp_mat2);
