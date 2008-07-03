@@ -448,7 +448,8 @@ void tpdm(struct stringwr **alplist, struct stringwr **betlist,
          iwl_buf_wrt_val(&TBuff_aa,i2,j2,k2,l2,value_aa,0,outfile,0);
          iwl_buf_wrt_val(&TBuff_bb,i2,j2,k2,l2,value_bb,0,outfile,0);
          iwl_buf_wrt_val(&TBuff_ab,i2,j2,k2,l2,value_ab,0,outfile,0);
-         iwl_buf_wrt_val(&TBuff_ab,k2,l2,i2,j2,value_ba,0,outfile,0);
+         if (ij != kl)
+           iwl_buf_wrt_val(&TBuff_ab,k2,l2,i2,j2,value_ba,0,outfile,0);
 	   }
 	 }
        }
