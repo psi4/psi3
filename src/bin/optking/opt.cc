@@ -280,7 +280,7 @@ int main(int argc, char **argv) {
     coord = carts.get_coord();
     simples.compute_internals(carts.get_natom(), coord);
     simples.compute_s(carts.get_natom(), coord);
-   // simples.print_s();
+ //simples.print_s();
     free(coord);
     if ( (optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_LOAD_REF)
       && (optinfo.mode != MODE_RESET_PREFIX) && (optinfo.mode != MODE_DISP_NUM_PLUS)

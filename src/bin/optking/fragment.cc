@@ -171,12 +171,12 @@ void fragment_class::compute(double *geom) {
     }
     else dot = 2.0 ;
 
-fprintf(outfile,"dot: %15.10lf\n",dot);
+//fprintf(outfile,"dot: %15.10lf\n",dot);
 
     if (dot > optinfo.cos_tors_near_1_tol) value = 0.0 ;
     else if (dot < optinfo.cos_tors_near_neg1_tol) value = 180.0 ;
     else {
-fprintf(outfile,"using acos to get value (J=3)\n");
+//fprintf(outfile,"using acos to get value (J=3)\n");
       value = acos(dot) / _pi * 180.0;
       // determine sign
       cross_product(e12B,eRA,v);

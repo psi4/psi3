@@ -70,6 +70,9 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   B = compute_B(simples,symm);
   G = compute_G(B,symm.get_num(),carts);
 
+  //fprintf(outfile,"B matrix\n");
+  //print_mat(B, symm.get_num(), dim_carts,outfile);
+
   // compute G_inv
   fprintf(outfile,"\nBuB^t ");
   G_inv = symm_matrix_invert(G,symm.get_num(),1,optinfo.redundant);
@@ -462,7 +465,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   
     if (!success) {
       int retry = 1;
-      for (retry=1; retry<5; ++retry) {
+      for (retry=1; retry<10; ++retry) {
         fprintf(outfile,"Scaling back displacements by half...\n");
         for (i=0;i<symm.get_num();++i) {
           dq[i] = dq[i] / 2.0;
@@ -471,7 +474,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
         success = new_geom(carts,simples,symm,dq_to_new_geom,32,0,disp_label,0,0,djunk);
         if (success) break;
       }
-      if (retry == 5) {
+      if (retry == 10) {
         fprintf(outfile,"Giving up - unable to back-transform to new cartesian coordinates.\n");
         fclose(outfile);
         exit(PSI_RETURN_FAILURE);
