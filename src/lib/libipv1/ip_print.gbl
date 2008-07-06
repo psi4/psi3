@@ -1,10 +1,12 @@
 #ifndef _psi_src_lib_libipv1_ipprint_gbl_
 #define _psi_src_lib_libipv1_ipprint_gbl_
 
-#include <cstdio>
 
 #ifdef __cplusplus
+#include <cstdio>
 extern "C" {
+#else
+#include <stdio.h>
 #endif
 
 void ip_print_keyword(FILE *fp, ip_keyword_tree_t *st);

@@ -5,9 +5,9 @@
 extern "C" {
 #endif
 
-char *ip_error_message(int errcod);
-void ip_error(char *msg, ...);
-void ip_warn(char *msg, ...);
+const char *ip_error_message(int errcod);
+void ip_error(const char *msg, ...);
+void ip_warn(const char *msg, ...);
 
 #ifdef __cplusplus
 }

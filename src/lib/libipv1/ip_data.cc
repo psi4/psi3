@@ -39,7 +39,7 @@ extern "C" {
 
 /*! Count the number of entries in an array 
   \param n =0 just count first level, >0 allocate array. */
-int ip_count(char *keyword, int *count, int n, ...)
+int ip_count(const char *keyword, int *count, int n, ...)
 {
   va_list args;
   int i;
@@ -64,7 +64,7 @@ int ip_count(char *keyword, int *count, int n, ...)
   }
 
 /*! Count the entries of an array and store in array.  \param n =0 just count first level, >0 allocate array.*/
-int ip_count_v(char *keyword, int *count, int n, int *v)
+int ip_count_v(const char *keyword, int *count, int n, int *v)
 {
   ip_value_t *val;
   int errcod;
@@ -78,7 +78,7 @@ int ip_count_v(char *keyword, int *count, int n, int *v)
   }
 
 /*! Retrieve the value of a boolean keyword.  \param n =0 just count first level, >0 allocate array. */
-int ip_boolean(char *keyword, int *boolean, int n, ...)
+int ip_boolean(const char *keyword, int *boolean, int n, ...)
 {
   va_list args;
   int i;
@@ -102,7 +102,7 @@ int ip_boolean(char *keyword, int *boolean, int n, ...)
     }
   }
 /*! Retrieve a boolean keyword.   \param n =0 just count first level, >0 allocate array.*/
-int ip_boolean_v(char *keyword, int *boolean, int n, int *v)
+int ip_boolean_v(const char *keyword, int *boolean, int n, int *v)
 {
   ip_value_t *val;
   int errcod;
@@ -132,7 +132,7 @@ int ip_boolean_v(char *keyword, int *boolean, int n, int *v)
   }
 
 /*! Check for existence of keyword. n should always be zero in this version of libip.  \param n =0 just count first level, >0 allocate array. */
-int ip_exist(char *keyword, int n, ...)
+int ip_exist(const char *keyword, int n, ...)
 {
   va_list args;
   int i;
@@ -160,7 +160,7 @@ int ip_exist(char *keyword, int n, ...)
   }
 
 /*! Check for existence of keyword. n should always be zero in this version of libip.   \param n =0 just count first level, >0 allocate array.*/
-int ip_exist_v(char *keyword, int n, int *v)
+int ip_exist_v(const char *keyword, int n, int *v)
 {
   if (ip_cwk_descend_tree(keyword)) return 1;
 
@@ -169,7 +169,7 @@ int ip_exist_v(char *keyword, int n, int *v)
 /*! Read data entries.   
   \param n =0 just count first level, >0 allocate array. 
   \param conv string conversion information a la snprintf. */
-int ip_data(char *keyword, char *conv, void *value, int n, ...)
+int ip_data(const char *keyword, const char *conv, void *value, int n, ...)
 {
   va_list args;
   int i;
@@ -196,7 +196,7 @@ int ip_data(char *keyword, char *conv, void *value, int n, ...)
 /*! Read data entries.   
   \param n =0 just count first level, >0 allocate array. 
   \param conv string conversion information a la snprintf. */
-int ip_data_v(char *keyword, char *conv, void *value, int n, int *v)
+int ip_data_v(const char *keyword, const char *conv, void *value, int n, int *v)
 {
   ip_value_t *val;
   int errcod;
@@ -211,7 +211,7 @@ int ip_data_v(char *keyword, char *conv, void *value, int n, int *v)
   }
 
 /*! Description */
-int ip_string(char *keyword, char **value, int n, ...)
+int ip_string(const char *keyword, char **value, int n, ...)
 {
   va_list args;
   int i;
@@ -237,7 +237,7 @@ int ip_string(char *keyword, char **value, int n, ...)
 
 
 /*! Description */
-int ip_string_v(char *keyword, char **value, int n, int *v)
+int ip_string_v(const char *keyword, char **value, int n, int *v)
 {
   ip_value_t *val;
   int errcod;
@@ -253,7 +253,7 @@ int ip_string_v(char *keyword, char **value, int n, int *v)
   }
 
 /*! Description */
-int ip_value(char *keyword, ip_value_t **value, int n, ...)
+int ip_value(const char *keyword, ip_value_t **value, int n, ...)
 {
   va_list args;
   int i;
@@ -279,7 +279,7 @@ int ip_value(char *keyword, ip_value_t **value, int n, ...)
 
 
 /*! Description */
-int ip_value_v(char *keyword, ip_value_t **value, int n, int *v)
+int ip_value_v(const char *keyword, ip_value_t **value, int n, int *v)
 {
   int i;
   ip_value_t *val;
@@ -320,7 +320,7 @@ int ip_value_v(char *keyword, ip_value_t **value, int n, int *v)
 **
 ** Note: keyword should ordinarily be an uppercase string.
 */
-int ip_int_array(char *keyword, int *arr, int len)
+int ip_int_array(const char *keyword, int *arr, int len)
 {
   int i, errcod, cnt;
 
@@ -360,7 +360,7 @@ int ip_int_array(char *keyword, int *arr, int len)
 **
 ** Returns: IP Error code
 */
-int ip_double_array(char *keyword, double *arr, int len)
+int ip_double_array(const char *keyword, double *arr, int len)
 {
   int i, errcod, cnt;
 

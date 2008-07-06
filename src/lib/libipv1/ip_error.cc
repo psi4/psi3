@@ -20,16 +20,16 @@
 extern "C" {
 
 /* Returns some text for an errcod. */
-char *ip_error_message(int errcod)
+const char *ip_error_message(int errcod)
 {
-  static char *ipe_ok = "No problem has been detected.";
-  static char *ipe_key_not_found = "No match was found for the given keyword.";
-  static char *ipe_out_of_bounds = "An array index is out of bounds.";
-  static char *ipe_malloc = "Memory allocation failed.";
-  static char *ipe_not_an_array = "An index was given for a scalar quantity.";
-  static char *ipe_not_a_scalar = "Expected a scalar, but found an array.";
-  static char *ipe_type = "The datum is not of the appropiate type.";
-  static char *huh = "The nature of the problem is unknown.";
+  static const char *ipe_ok = "No problem has been detected.";
+  static const char *ipe_key_not_found = "No match was found for the given keyword.";
+  static const char *ipe_out_of_bounds = "An array index is out of bounds.";
+  static const char *ipe_malloc = "Memory allocation failed.";
+  static const char *ipe_not_an_array = "An index was given for a scalar quantity.";
+  static const char *ipe_not_a_scalar = "Expected a scalar, but found an array.";
+  static const char *ipe_type = "The datum is not of the appropiate type.";
+  static const char *huh = "The nature of the problem is unknown.";
 
   if (errcod == IPE_OK) return ipe_ok;
   if (errcod == IPE_KEY_NOT_FOUND) return ipe_key_not_found;
@@ -41,7 +41,7 @@ char *ip_error_message(int errcod)
   return huh;
   }
 
-void ip_error(char *msg, ...)
+void ip_error(const char *msg, ...)
 {
   va_list args;
   va_start(args,msg);
@@ -53,7 +53,7 @@ void ip_error(char *msg, ...)
   exit(PSI_RETURN_FAILURE);
   }
 
-void ip_warn(char *msg, ...)
+void ip_warn(const char *msg, ...)
 {
   va_list args;
   va_start(args,msg);

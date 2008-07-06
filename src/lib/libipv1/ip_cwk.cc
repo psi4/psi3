@@ -49,7 +49,7 @@ void ip_cwk_clear(void)
 
 /* This adds a keyword to the keyword path. */
 /* NOTE: the last path to be searched must be added first. */
-void ip_cwk_add(char *keyword)
+void ip_cwk_add(const char *keyword)
 {
   ip_keyword_tree_t *kt;
   ip_keyword_tree_list_t *I,*old_cwk;
@@ -160,7 +160,7 @@ void ip_cwk_pop(void)
   }
 
 /* Descend the keyword tree using the cwk and obtain a new keyword tree. */
-ip_keyword_tree_t *ip_cwk_descend_tree(char *keyword)
+ip_keyword_tree_t *ip_cwk_descend_tree(const char *keyword)
 {
   ip_keyword_tree_list_t *I;
   ip_keyword_tree_t *kt=NULL;
@@ -186,7 +186,7 @@ ip_keyword_tree_t *ip_cwk_descend_tree(char *keyword)
 
 /* Descend the given keyword tree using the info in the passed string.
  * The new keyword tree or NULL, if it is not found, will be returned. */
-ip_keyword_tree_t *ip_descend_tree(ip_keyword_tree_t *kt, char *keyword)
+ip_keyword_tree_t *ip_descend_tree(ip_keyword_tree_t *kt, const char *keyword)
 {
   ip_keyword_tree_t *I,*r;
 #define KEYWORD_LENGTH 256
@@ -228,7 +228,7 @@ ip_keyword_tree_t *ip_descend_tree(ip_keyword_tree_t *kt, char *keyword)
   }
 
 /* Return the value of the given keyword. */
-ip_value_t *ip_key_value(char *keyword)
+ip_value_t *ip_key_value(const char *keyword)
 {
   ip_keyword_tree_t *kt;
 
