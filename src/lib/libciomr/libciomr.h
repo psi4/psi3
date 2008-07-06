@@ -9,10 +9,12 @@
 #ifndef _psi_src_lib_libciomr_libciomr_h_
 #define _psi_src_lib_libciomr_libciomr_h_
 
-#include <cstdio>
 
 #ifdef __cplusplus
+#include <cstdio>
 extern "C" {
+#else
+#include <stdio.h>
 #endif
 
 int psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix, int argc, char *argv[], int overwrite_output);
@@ -21,10 +23,10 @@ char* psi_ifname();
 char* psi_ofname();
 char* psi_fprefix();
 
-void ffile(FILE **fptr, char *suffix, int code);
-void ffile_noexit(FILE **fptr, char *suffix, int code);
-void ffileb(FILE **fptr, char *suffix, int code);
-void ffileb_noexit(FILE **fptr, char *suffix, int code);
+void ffile(FILE **fptr, const char *suffix, int code);
+void ffile_noexit(FILE **fptr, const char *suffix, int code);
+void ffileb(FILE **fptr, const char *suffix, int code);
+void ffileb_noexit(FILE **fptr, const char *suffix, int code);
 
 void add_arr(double *a, double *b, double *c, int n);
 void add_mat(double **a,double **b,double **c,int n,int m);

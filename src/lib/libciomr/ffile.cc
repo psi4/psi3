@@ -25,7 +25,7 @@ extern char *psi_file_prefix;
 **
 ** \ingroup CIOMR
 */
-void ffile(FILE **fptr, char *suffix, int code)
+void ffile(FILE **fptr, const char *suffix, int code)
 {
   char name[100];
 
@@ -64,7 +64,7 @@ void ffile(FILE **fptr, char *suffix, int code)
 **
 ** \ingroup CIOMR
 */
-void ffile_noexit(FILE **fptr, char *suffix, int code)
+void ffile_noexit(FILE **fptr, const char *suffix, int code)
 {
   char name[100];
 
@@ -98,7 +98,7 @@ void ffile_noexit(FILE **fptr, char *suffix, int code)
 **
 ** \ingroup CIOMR
 */
-void ffileb(FILE **fptr, char *suffix, int code)
+void ffileb(FILE **fptr, const char *suffix, int code)
 {
   char* name = (char*) malloc( (strlen(psi_file_prefix) + 
     strlen(suffix) + 2)*sizeof(char) );
@@ -140,7 +140,7 @@ void ffileb(FILE **fptr, char *suffix, int code)
 **
 ** \ingroup CIOMR
 */
-void ffileb_noexit(FILE **fptr, char *suffix, int code)
+void ffileb_noexit(FILE **fptr, const char *suffix, int code)
 {
   char* name = (char*) malloc( (strlen(psi_file_prefix) + 
     strlen(suffix) + 2)*sizeof(char) );
