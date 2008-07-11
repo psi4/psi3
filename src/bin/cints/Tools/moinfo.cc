@@ -71,11 +71,13 @@ void init_moinfo()
 
   /*--- Check the validity of the checkpoint file ---*/
   iopen = chkpt_rd_iopen();
-  switch (UserOptions.reftype) {
-  case rhf:     if (iopen != 0) throw std::domain_error("Content of checkpoint file inconsistent with REFERENCE\n"); break;
-  case uhf:     if (iopen != 0) throw std::domain_error("Content of checkpoint file inconsistent with REFERENCE\n"); break;
-  case rohf:    if (iopen <= 0) throw std::domain_error("Content of checkpoint file inconsistent with REFERENCE\n"); break;
-  case twocon:  if (iopen >= 0) throw std::domain_error("Content of checkpoint file inconsistent with REFERENCE\n"); break;
+  if(strcmp(UserOptions.wfn,"IDMKPT2")){//This check shouldn't be performed for integral direct mkpt2 
+	  switch (UserOptions.reftype) {
+	  case rhf:     if (iopen != 0) throw std::domain_error("Content of checkpoint file inconsistent with REFERENCE\n"); break;
+	  case uhf:     if (iopen != 0) throw std::domain_error("Content of checkpoint file inconsistent with REFERENCE\n"); break;
+	  case rohf:    if (iopen <= 0) throw std::domain_error("Content of checkpoint file inconsistent with REFERENCE\n"); break;
+	  case twocon:  if (iopen >= 0) throw std::domain_error("Content of checkpoint file inconsistent with REFERENCE\n"); break;
+	  }
   }
 
   /*--- Number of d.-o. MOs and s.-o. MOs ---*/
