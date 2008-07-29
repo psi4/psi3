@@ -283,7 +283,8 @@ z_geom[all_atomcount].bond_label[0]= z_geom[all_atomcount].angle_label[0]= z_geo
           if(!simple_zmat) parse_zmat(i,angle,&thetaABC,def_arr,num_vals,zvar_exist,zmat_lbl[f]);
           else parse_zmat_simple(i,angle,&thetaABC,def_arr,num_vals,zvar_exist,zmat_lbl[f]);
 	
-          if (thetaABC <= ZERO_BOND_ANGLE) {
+          //if (thetaABC <= ZERO_BOND_ANGLE) { // does not permit 0 bond angle with atoms 1-2-3
+          if (thetaABC < 0.0) {
             fprintf(outfile,"  Invalid bond angle in atom 3.\n");
             punt("Invalid ZMAT");
           }
