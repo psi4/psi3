@@ -1,4 +1,5 @@
 #include <libchkpt/chkpt.h>
+#include <libmoinfo/libmoinfo.h>
 
 #include "scf.h"
 #include "memory_manager.h"
@@ -14,11 +15,25 @@ void SCF::save_info()
   }
   chkpt_wt_nsymhf(n_so_typs);
 
-  // Writes out the total number of molecular orbitals.
+  // Write out the total number of molecular orbitals.
   chkpt_wt_nmo(nso); // TODO: find nmo
 
-  // Writes out the dimensionality of ALPHA and BETA vectors of two-electron coupling coefficients for open shells.
-  chkpt_wt_iopen(0);
+  // Write out the dimensionality of ALPHA and BETA vectors of two-electron coupling coefficients for open shells.
+  int tmp_iopen = ioff[moinfo_scf->get_nactv()];
+  if(reference == tcscf) tmp_iopen = -tmp_iopen;
+  chkpt_wt_iopen(tmp_iopen);
+  
+  // Write open-shell coupling coefficients
+  if(moinfo_scf->get_nactv() > 0){
+    double** ccvecs;
+    allocate2(double,ccvecs,2,ioff[moinfo_scf->get_nactv()]);
+    for(int i=0; i < ioff[reference == tcscf]; i++) {
+      ccvecs[0][i] = 0.0;
+      ccvecs[1][i] = 0.0;
+    }
+    chkpt_wt_ccvecs(ccvecs);
+    release2(ccvecs);
+  }
 
   // Writes out the total energy.
   chkpt_wt_etot(total_energy);
@@ -29,6 +44,8 @@ void SCF::save_info()
   chkpt_wt_orbspi(sopi);
   chkpt_wt_clsdpi(docc);
   chkpt_wt_openpi(actv);
+  
+  
 
   int* frz = new int[nirreps];
   for(int h = 0; h < nirreps; ++h) frz[h] = 0;

@@ -19,6 +19,7 @@ psi: (
   deriv      = "cints --deriv1"
   deriv2     = "cints --deriv2"
   propint    = "cints --oeprop"
+  mkpt2ints  = "cints --mkpt2"
   transqt    = "transqt2"  
   %transqt    = "transqt2"  
   cctrans    = "transqt2"  %testing with CC modules; eventually will replace transqt
@@ -33,6 +34,7 @@ psi: (
   cis         = "cis"
   ugeom       = "ugeom"
   rgeom       = ()
+  
 
   %freqs by finite differences of gradients
   findif_disp_freq_grad_cart      = "optking --disp_freq_grad_cart"
@@ -1269,5 +1271,10 @@ psi: (
   PSIMRCCTWOCONEnergyFreq = ($PSIMRCC_MCSCF_EnergyFreq)
   PSIMRCCTWOCONEnergyFreq = ERROR
 
+  % Procedures for IDMKPT2 energy
+  IDMKPT2_MCSCF_Energy = ($MCSCFEnergy $mkpt2ints $psimrcc)
+  IDMKPT2RHFEnergy     = ($IDMKPT2_MCSCF_Energy $done)
+  IDMKPT2ROHFEnergy    = ($IDMKPT2_MCSCF_Energy $done)
+  IDMKPT2TWOCONEnergy  = ($IDMKPT2_MCSCF_Energy $done)
+  IDMKPT2UHFEnergy     = ERROR
 ) 
-
