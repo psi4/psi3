@@ -1,16 +1,15 @@
-/***************************************************************************
- *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
+#include <cstdlib>
+
+#include <libmoinfo/libmoinfo.h>
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+
 #include "blas.h"
 #include "debugging.h"
 #include "memory_manager.h"
-#include "moinfo.h"
-#include "utilities.h"
-#include <libciomr/libciomr.h>
-#include <libqt/qt.h>
-#include <cstdlib>
+#include <libutil/libutil.h>
+
+
 
 extern FILE *infile, *outfile;
 
@@ -18,7 +17,7 @@ namespace psi{ namespace psimrcc{
 
 using namespace std;
 
-void CCBLAS::add_index(char* cstr)
+void CCBLAS::add_index(const char* cstr)
 {
   // Make sure that the element that we are adding is not present
   string str(cstr);
@@ -28,7 +27,7 @@ void CCBLAS::add_index(char* cstr)
   }
 }
 
-void CCBLAS::add_Matrix(char* cstr)
+void CCBLAS::add_Matrix(const char* cstr)
 {
   string str(cstr);
   vector<string> names = moinfo->get_matrix_names(str);
@@ -59,7 +58,7 @@ void CCBLAS::add_Matrix_ref(std::string& str)
   }
 }
 
-CCIndex* CCBLAS::get_index(char* cstr)
+CCIndex* CCBLAS::get_index(const char* cstr)
 {
   string str(cstr);
   to_lower(str);
@@ -124,14 +123,14 @@ CCMatIrTmp CCBLAS::get_MatIrTmp(CCMatrix* Matrix, int irrep, DiskOpt disk_option
   return(CCMatIrTmp(Matrix,irrep,disk_option));
 }
 
-CCMatrix* CCBLAS::get_Matrix(char* cstr, int reference)
+CCMatrix* CCBLAS::get_Matrix(const char* cstr, int reference)
 {
   string str(cstr);
   append_reference(str,reference);
   return(get_Matrix(str));
 }
 
-CCMatrix* CCBLAS::get_Matrix(char* cstr)
+CCMatrix* CCBLAS::get_Matrix(const char* cstr)
 {
   string str(cstr);
   return(get_Matrix(str));
@@ -160,7 +159,7 @@ CCMatrix* CCBLAS::get_Matrix(string& str, string& expression)
   exit(1);
 }
 
-void CCBLAS::set_scalar(char* cstr,int reference,double value)
+void CCBLAS::set_scalar(const char* cstr,int reference,double value)
 {
   string str(cstr);
   set_scalar(str,reference,value);
@@ -180,7 +179,7 @@ void CCBLAS::set_scalar(string& str,int reference,double value)
   print_error(err.c_str(),__FILE__,__LINE__);
 }
 
-double CCBLAS::get_scalar(char* cstr,int reference)
+double CCBLAS::get_scalar(const char* cstr,int reference)
 {
   string str(cstr);
   return(get_scalar(str,reference));

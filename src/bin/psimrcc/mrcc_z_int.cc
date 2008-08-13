@@ -6,7 +6,7 @@
 #include "mrcc.h"
 #include "matrix.h"
 #include "blas.h"
-#include "utilities.h"
+#include <libutil/libutil.h>
 
 extern FILE* outfile;
 

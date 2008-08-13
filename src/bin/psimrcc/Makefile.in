@@ -5,81 +5,19 @@ include ../MakeVars
 
 LDLIBS += $(LAPACK) $(BLAS)
 CDEF += -DUSE_BLAS
-PSILIBS = -lPSI_iwl -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
+PSILIBS = -lPSI_moinfo -lPSI_options -lPSI_util -lPSI_iwl -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1 
 
-CXXSRC = index.cc\
-mrcc_add_matrices.cc\
-mcscf.cc\
-mrcc_t_amps.cc\
-sqproduct.cc\
-idmrpt2_Heff_singles.cc\
-sqvector.cc\
-sort_out_of_core.cc\
-transform_block.cc\
-mrcc_mkccsd.cc\
-matrix.cc\
-mrcc_t3_amps_diag34.cc\
-blas_compatibile.cc\
-calculation_options.cc\
-transform.cc\
-matrixtmp.cc\
-sort_in_core.cc\
-sq.cc\
-moinfo_model_space.cc\
-mrcc_tau.cc\
-idmrpt2_t2_amps.cc\
-memory.cc\
-mrcc_w_t3_int.cc\
-blas_algorithms.cc\
-blas_interface.cc\
-idmrpt2_t1_amps.cc\
-mrcc_Heff.cc\
-blas.cc\
-matrix_addressing.cc\
-operation.cc\
-mrcc_canonicalization.cc\
-operation_contraction.cc\
-mrcc_w_int.cc\
-algebra_interface.cc\
-mrcc_energy.cc\
-mrcc_mkccsd_residual.cc\
-mrcc_t2_amps.cc\
-idmrpt2_Heff_doubles.cc\
-moinfo_mappings.cc\
-mrcc.cc\
-debugging.cc\
-blas_diis.cc\
-mrcc_z_int.cc\
-idmrpt2_add_matrices.cc\
-mrcc_compute.cc\
-mrcc_t1_amps.cc\
-idmrpt2_Heff.cc\
-psimrcc.cc\
-mrcc_f_int.cc\
-memory_manager.cc\
-blas_parser.cc\
-mrcc_bwccsd.cc\
-manybody.cc\
-idmrpt2_f_int.cc\
-blas_solve.cc\
-moinfo_slaterdeterminant.cc\
-moinfo.cc\
-moinfo_system_tuning.cc\
-mrcc_t3_amps.cc\
-operation_sort.cc\
-main.cc\
-idmrpt2.cc\
-transform_mrpt2.cc\
-utilities.cc\
-sort.cc\
-operation_compute.cc\
-error.cc\
-sqsort.cc\
-sqoperator.cc\
-blas_resorting.cc\
-matrix_memory_and_io.cc\
-squlli.cc\
-sort_mrpt2.cc
+CXXSRC = \
+algebra_interface.cc  idmrpt2_add_matrices.cc  manybody.cc               mp2_ccsd_f_int.cc         mrcc_energy.cc           mrcc_tau.cc               sort_in_core.cc \
+blas_algorithms.cc    idmrpt2.cc               matrix_addressing.cc      mp2_ccsd_t1_amps.cc       mrcc_f_int.cc            mrcc_w_int.cc             sort_mrpt2.cc \
+blas.cc               idmrpt2_f_int.cc         matrix.cc                 mp2_ccsd_t2_amps.cc       mrcc_Heff.cc             mrcc_w_t3_int.cc          sort_out_of_core.cc \
+blas_compatibile.cc   idmrpt2_Heff.cc          matrix_memory_and_io.cc   mp2_ccsd_w_int.cc         mrcc_mkccsd.cc           mrcc_z_int.cc             transform_block.cc \
+blas_diis.cc          idmrpt2_Heff_doubles.cc  matrixtmp.cc              mp2_ccsd_z_int.cc         mrcc_mkccsd_residual.cc  operation.cc              transform.cc \
+blas_interface.cc     idmrpt2_Heff_singles.cc  memory.cc                 mrcc_add_matrices.cc      mrcc_t1_amps.cc          operation_compute.cc      transform_mrpt2.cc \
+blas_parser.cc        idmrpt2_t1_amps.cc       memory_manager.cc         mrcc_bwccsd.cc            mrcc_t2_amps.cc          operation_contraction.cc  transform_read_so.cc \
+blas_resorting.cc     idmrpt2_t2_amps.cc       mp2_ccsd_add_matrices.cc  mrcc_canonicalization.cc  mrcc_t3_amps.cc          operation_sort.cc \
+blas_solve.cc         index.cc                 mp2_ccsd_amps.cc          mrcc.cc                   mrcc_t3_amps_diag34.cc   psimrcc.cc \
+debugging.cc          main.cc                  mp2_ccsd.cc               mrcc_compute.cc           mrcc_t_amps.cc           sort.cc
 
 LD = ${CXX}
 BINOBJ = $(CXXSRC:%.cc=%.o)

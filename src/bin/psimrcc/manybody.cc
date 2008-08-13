@@ -6,7 +6,7 @@
 
 /**
  *  @file ccmanybody.cpp
- *  @ingroup PSIMRCC
+ *  @ingroup (PSIMRCC)
  *  @brief The base class for all the many-body computations
 */
 
@@ -15,9 +15,9 @@
 #include <algorithm>
 
 #include "memory_manager.h"
-#include "calculation_options.h"
-#include "utilities.h"
-#include "moinfo.h"
+#include <liboptions/liboptions.h>
+#include <libutil/libutil.h>
+#include <libmoinfo/libmoinfo.h>
 #include "matrix.h"
 #include "manybody.h"
 #include "blas.h"
@@ -99,7 +99,7 @@ void CCManyBody::generate_denominators()
 //   for_each(blas->get_MatrixMap_begin(),blas->get_MatrixMap_end(),generate_denominator_element);  
 
   bool keep_denominators_in_core = false;
-  if(options->get_str_option("CORR_WFN")=="PT2")
+  if(options_get_str("CORR_WFN")=="PT2")
     keep_denominators_in_core = true;
 
   MatrixMap& matrix_map = blas->get_MatrixMap();
@@ -657,7 +657,7 @@ double CCManyBody::diagonalize_Heff(int root,int ndets, double** Heff,double*& e
       }
       energy = real[root];
       // Eliminate the triplet solution if required
-      if((options->get_bool_option("LOCK_SINGLET")==1)&&(ndets==4)){
+      if((options_get_bool("LOCK_SINGLET")==1)&&(ndets==4)){
         if((fabs(eigenvector[0])<5.0e-2)&& (fabs(eigenvector[3])<5.0e-2) && ((eigenvector[1]/eigenvector[2])<-0.5)){
           fprintf(outfile,"\n\tSelecting root %d since original root is a triplet\n",root+1,root);
           root++;
@@ -733,7 +733,7 @@ void CCManyBody::sort_eigensystem(int ndets,double*& real,double*& imaginary,dou
 
 void CCManyBody::zero_internal_amps()
 {
-  if(options->get_bool_option("ZERO_INTERNAL_AMPS")){
+  if(options_get_bool("ZERO_INTERNAL_AMPS")){
     // Zero internal amplitudes for unique reference i
     for(int i=0;i<moinfo->get_nunique();i++){
       int unique_i = moinfo->get_ref_number("u",i);
@@ -841,7 +841,7 @@ void CCManyBody::zero_internal_amps()
 
 void CCManyBody::zero_t1_internal_amps()
 {
-  if(options->get_bool_option("ZERO_INTERNAL_AMPS")){
+  if(options_get_bool("ZERO_INTERNAL_AMPS")){
     // Zero internal amplitudes for unique reference i
     for(int i=0;i<moinfo->get_nunique();i++){
       int unique_i = moinfo->get_ref_number("u",i);
@@ -878,7 +878,7 @@ void CCManyBody::zero_t1_internal_amps()
 
 void CCManyBody::zero_internal_delta_amps()
 {
-  if(options->get_bool_option("ZERO_INTERNAL_AMPS")){
+  if(options_get_bool("ZERO_INTERNAL_AMPS")){
     // Zero internal amplitudes for unique reference i
     for(int i=0;i<moinfo->get_nunique();i++){
       int unique_i = moinfo->get_ref_number("u",i);

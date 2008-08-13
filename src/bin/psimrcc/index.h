@@ -1,10 +1,9 @@
 #ifndef _psi_src_bin_psimrcc_ccindex_h
 #define _psi_src_bin_psimrcc_ccindex_h
 
-/*! 
-  \file
-  \ingroup PSIMRCC
-  \brief   This class is used to store n-tuples of MOs indices (p,q,r,..)
+/*! \file 
+    \ingroup (PSIMRCC)
+    \brief   This class is used to store n-tuples of MOs indices (p,q,r,..)
 */
 
 /***************************************************************************
@@ -31,7 +30,7 @@
 
 *********************************************************/
 
-#include "utilities.h"
+#include <libutil/libutil.h>
 #include <vector>
 
 extern FILE *infile, *outfile;

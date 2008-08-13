@@ -5,10 +5,9 @@
  *   SR/MRCC Code
  ***************************************************************************/
 
-#include "moinfo.h"
-#include "error.h"
+#include <libmoinfo/libmoinfo.h>
 #include "blas.h"
-#include "utilities.h"
+#include <libutil/libutil.h>
 #include <pthread.h>
 
 namespace psi{ namespace psimrcc{

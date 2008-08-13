@@ -1,10 +1,5 @@
-#ifndef _psi_src_bin_psimrcc_ccmrcc_h
-#define _psi_src_bin_psimrcc_ccmrcc_h
-/***************************************************************************
- *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
+#ifndef _psi_src_bin_psimrcc_ccmrcc_h_
+#define _psi_src_bin_psimrcc_ccmrcc_h_
 
 #include "manybody.h"
 
@@ -174,4 +169,4 @@ private:
 
 }} /* End Namespaces */
 
-#endif // _psi_src_bin_psimrcc_ccmrcc_h
+#endif // _psi_src_bin_psimrcc_ccmrcc_h_

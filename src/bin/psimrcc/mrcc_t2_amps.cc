@@ -3,12 +3,12 @@
  *  frank@ccc.uga.edu   andysim@ccc.uga.edu
  *  A multireference coupled cluster code
  ***************************************************************************/
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 #include "mrcc.h"
 #include "matrix.h"
 #include "blas.h"
 #include "debugging.h"
-#include "utilities.h"
+#include <libutil/libutil.h>
 #include "algebra_interface.h"
 #include "memory_manager.h"
 

@@ -1,10 +1,5 @@
 #ifndef _psi_src_bin_psimrcc_cctransform_h
 #define _psi_src_bin_psimrcc_cctransform_h
-/***************************************************************************
- *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
 
 #include "index.h"
 #include <map>
@@ -32,6 +27,7 @@ public:
   double tei_mrpt2(int p, int q, int r, int s);
 private:
   int*      ioff;
+  double**    s_so;
   double**  oei_mo;
   double**  oei_so;
   double**  tei_so;

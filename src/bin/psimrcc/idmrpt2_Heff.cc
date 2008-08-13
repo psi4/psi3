@@ -4,12 +4,12 @@
  *  frank@ccc.uga.edu   andysim@ccc.uga.edu
  *  A multireference coupled cluster code
  ***************************************************************************/
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 #include "idmrpt2.h"
 #include "matrix.h"
 #include "blas.h"
 #include "debugging.h"
-#include "utilities.h"
+#include <libutil/libutil.h>
 
 extern FILE* outfile;
 

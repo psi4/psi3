@@ -11,7 +11,7 @@
 #include <string>
 #include <cstdio>
 #include <cstdlib>
-#include "calculation_options.h"
+#include <liboptions/liboptions.h>
 #include "memory_manager.h"
 
 extern FILE *infile, *outfile;
@@ -23,9 +23,9 @@ using namespace std;
 MemoryManager::MemoryManager(){
   CurrentAllocated = 0;
   MaximumAllocated = 0;
-  MaximumAllowed   = 1024*1024*options->get_int_option("MEMORY");
+  MaximumAllowed   = 1024*1024*options_get_int("MEMORY");
   allocated_memory    = 0.0;
-  total_memory        = double(options->get_int_option("MEMORY"));
+  total_memory        = double(options_get_int("MEMORY"));
   integral_strip_size = total_memory * 0.05;
 }
 
@@ -40,7 +40,7 @@ void MemoryManager::RegisterMemory(void *mem, AllocationEntry& entry, size_t siz
   CurrentAllocated += size;
   if (CurrentAllocated > MaximumAllocated)
     MaximumAllocated = CurrentAllocated;
-  if(options->get_int_option("DEBUG") > 1){
+  if(options_get_int("DEBUG") > 1){
     fprintf(outfile, "\n  ==============================================================================");
     fprintf(outfile, "\n  MemoryManager Allocated   %12ld bytes (%8.1f Mb)",size,double(size)/1048576.0);
     fprintf(outfile, "\n  %-15s allocated   at %s:%d", entry.variableName.c_str(), entry.fileName.c_str(), entry.lineNumber);
@@ -51,11 +51,11 @@ void MemoryManager::RegisterMemory(void *mem, AllocationEntry& entry, size_t siz
   }
 }
 
-void MemoryManager::UnregisterMemory(void *mem, size_t size, char *fileName, size_t lineNumber)
+void MemoryManager::UnregisterMemory(void *mem, size_t size, const char *fileName, size_t lineNumber)
 {
   CurrentAllocated -= size;
   AllocationEntry& entry = AllocationTable[mem];
-  if(options->get_int_option("DEBUG") > 1){
+  if(options_get_int("DEBUG") > 1){
     fprintf(outfile, "\n  ==============================================================================");
     fprintf(outfile, "\n  MemoryManager Deallocated %12ld bytes (%8.1f Mb)",size,double(size)/1048576.0);
     fprintf(outfile, "\n  %-15s allocated   at %s:%d", entry.variableName.c_str(), entry.fileName.c_str(), entry.lineNumber);

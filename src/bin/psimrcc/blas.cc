@@ -1,15 +1,9 @@
-/***************************************************************************
- *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
-
-#include "calculation_options.h"
+#include <liboptions/liboptions.h>
 #include "blas.h"
 #include "memory_manager.h"
 #include "debugging.h"
-#include "moinfo.h"
-#include "utilities.h"
+#include <libmoinfo/libmoinfo.h>
+#include <libutil/libutil.h>
 #include <algorithm>
 
 #include <libciomr/libciomr.h>
@@ -57,7 +51,7 @@ void CCBLAS::allocate_work()
       if(work[n]!=NULL)
         delete[] work[n];
 
-  for(int n=0;n<options->get_int_option("NUM_THREADS");n++)
+  for(int n=0;n<options_get_int("NUM_THREADS");n++)
     work.push_back(NULL);
   // Compute the temporary work space size
   CCIndex* oo_pair = get_index("[oo]");
@@ -70,7 +64,7 @@ void CCBLAS::allocate_work()
       work_size += oo_pair->get_pairpi(h)*oo_pair->get_pairpi(h);
   }
   // Allocate the temporary work space
-  for(int n=0;n<options->get_int_option("NUM_THREADS");n++){
+  for(int n=0;n<options_get_int("NUM_THREADS");n++){
     allocate1(double,work[n],work_size);
 //     work[n]=new double[work_size]; MEM_
     zero_arr(work[n],work_size);
@@ -86,12 +80,12 @@ void CCBLAS::allocate_buffer()
       if(buffer[n]!=NULL)
         delete[] buffer[n];
 
-  for(int n=0;n<options->get_int_option("NUM_THREADS");n++)
+  for(int n=0;n<options_get_int("NUM_THREADS");n++)
     buffer.push_back(NULL);
   // Compute the temporary buffer space size, 101% of the actual strip size
   buffer_size = 1.01*mem->get_integral_strip_size() / to_MB(1);
   // Allocate the temporary buffer space
-  for(int n=0;n<options->get_int_option("NUM_THREADS");n++){
+  for(int n=0;n<options_get_int("NUM_THREADS");n++){
     buffer[n]=new double[buffer_size];
     zero_arr(buffer[n],buffer_size);
   }
@@ -163,7 +157,20 @@ void CCBLAS::add_indices()
   add_index("[ovv]");
   add_index("[vvo]");
   add_index("[ovo]");
-  if(options->get_str_option("CORR_WFN")!="PT2"){
+
+  // MP2-CCSD
+  if(options_get_str("CORR_WFN")=="MP2-CCSD"){
+    add_index("[oav]");
+    add_index("[ova]");
+    add_index("[avo]");
+    add_index("[aao]");
+    add_index("[aoa]");
+    add_index("[oaa]");
+    add_index("[vaa]");
+    add_index("[aav]");
+    add_index("[ava]");
+  }
+  if(options_get_str("CORR_WFN")!="PT2"){
     add_index("[vvv]");
   }
 
@@ -174,8 +181,6 @@ void CCBLAS::add_indices()
   // Not useful
   add_index("[oa]");
   add_index("[va]");
-
-
 }
 
 // void CCBLAS::allocate_matrices_in_core()
@@ -193,7 +198,7 @@ void CCBLAS::add_indices()
 //   }
 // }
 
-void CCBLAS::print(char* cstr)
+void CCBLAS::print(const char* cstr)
 {
   string str(cstr);
   vector<string> names = moinfo->get_matrix_names(str);

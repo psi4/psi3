@@ -1,23 +1,17 @@
-/***************************************************************************
- *  PSIMRCC
- *  Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
-
-#include "algebra_interface.h"
-#include "calculation_options.h"
-#include "blas.h"
-#include "moinfo.h"
-#include "memory_manager.h"
-#include "utilities.h"
-#include "error.h"
 #include <limits>
 #include <cmath>
 
+#include <psifiles.h>
+#include <liboptions/liboptions.h>
+#include <libmoinfo/libmoinfo.h>
+#include <libutil/libutil.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
+
+#include "algebra_interface.h"
+#include "blas.h"
+#include "memory_manager.h"
 
 extern FILE *infile, *outfile;
 
@@ -39,7 +33,7 @@ void CCBLAS::diis_add(string amps, string delta_amps)
 
 void CCBLAS::diis_save_t_amps(int cycle)
 {
-  int diis_step = cycle % options->get_int_option("MAXDIIS");
+  int diis_step = cycle % options_get_int("MAXDIIS");
   for(vector<pair<string,string> >::iterator it=diis_matrices.begin();it!=diis_matrices.end();++it){
     for(int h=0;h<moinfo->get_nirreps();h++){
       CCMatIrTmp Amps = get_MatIrTmp(it->first,h,none);
@@ -48,15 +42,15 @@ void CCBLAS::diis_save_t_amps(int cycle)
       if(block_sizepi>0){
         char data_label[80];
         sprintf(data_label,"%s_%s_%d_%d",(it->first).c_str(),"DIIS",h,diis_step);
-        psio_write_entry(MRCC_ON_DISK,data_label,(char*)&(matrix[0][0]),block_sizepi*sizeof(double));
+        psio_write_entry(PSIF_PSIMRCC_INTEGRALS,data_label,(char*)&(matrix[0][0]),block_sizepi*sizeof(double));
       }
     }
   }
 }
 
-void CCBLAS::diis(int cycle)
+void CCBLAS::diis(int cycle, double delta, DiisType diis_type)
 {
-  int diis_step = cycle % options->get_int_option("MAXDIIS");
+  int diis_step = cycle % options_get_int("MAXDIIS");
 
   for(vector<pair<string,string> >::iterator it=diis_matrices.begin();it!=diis_matrices.end();++it){
     if(it->second.find("t3_delta")==string::npos){
@@ -67,31 +61,41 @@ void CCBLAS::diis(int cycle)
         if(block_sizepi>0){
           char data_label[80];
           sprintf(data_label,"%s_%s_%d_%d",(it->second).c_str(),"DIIS",h,diis_step);
-          psio_write_entry(MRCC_ON_DISK,data_label,(char*)&(matrix[0][0]),block_sizepi*sizeof(double));
+          psio_write_entry(PSIF_PSIMRCC_INTEGRALS,data_label,(char*)&(matrix[0][0]),block_sizepi*sizeof(double));
         }
       }
     }
   }
-
   fprintf(outfile,"   S");
 
+  
+  // Decide if we are doing a DIIS extrapolation in this cycle
+  bool do_diis_extrapolation = false;
+  if(diis_type == DiisEachCycle){  
+    if(cycle >= options_get_int("MAXDIIS") + options_get_int("START_DIIS"))
+      do_diis_extrapolation = true;
+  }else if(diis_type == DiisCC){
+    if(diis_step == options_get_int("MAXDIIS")-1)
+      do_diis_extrapolation = true;
+  }  
+
   // Do a DIIS step 
-  if(diis_step==options->get_int_option("MAXDIIS")-1){
+  if(do_diis_extrapolation){
     double** diis_B;
     double*  diis_A;
-    allocate1(double,diis_A,options->get_int_option("MAXDIIS")+1);
-    allocate2(double,diis_B,options->get_int_option("MAXDIIS")+1,options->get_int_option("MAXDIIS")+1);
+    allocate1(double,diis_A,options_get_int("MAXDIIS")+1);
+    allocate2(double,diis_B,options_get_int("MAXDIIS")+1,options_get_int("MAXDIIS")+1);
     bool singularities_found = false;
     for(vector<pair<string,string> >::iterator it=diis_matrices.begin();it!=diis_matrices.end();++it){
       // Zero A and B
-      for(int i=0;i<options->get_int_option("MAXDIIS");i++){
+      for(int i=0;i<options_get_int("MAXDIIS");i++){
         diis_A[i]=0.0;
-        diis_B[i][options->get_int_option("MAXDIIS")]=diis_B[options->get_int_option("MAXDIIS")][i]=-1.0;
-        for(int j=0;j<options->get_int_option("MAXDIIS");j++)
+        diis_B[i][options_get_int("MAXDIIS")]=diis_B[options_get_int("MAXDIIS")][i]=-1.0;
+        for(int j=0;j<options_get_int("MAXDIIS");j++)
           diis_B[i][j]=0.0;
       }
-      diis_B[options->get_int_option("MAXDIIS")][options->get_int_option("MAXDIIS")]=0.0;
-      diis_A[options->get_int_option("MAXDIIS")]=-1.0;
+      diis_B[options_get_int("MAXDIIS")][options_get_int("MAXDIIS")]=0.0;
+      diis_A[options_get_int("MAXDIIS")]=-1.0;
 
       // Build B
       for(int h=0;h<moinfo->get_nirreps();h++){
@@ -104,17 +108,17 @@ void CCBLAS::diis(int cycle)
           allocate1(double,j_matrix,block_sizepi);
 
           // Build the diis_B matrix
-          for(int i=0;i<options->get_int_option("MAXDIIS");i++){
+          for(int i=0;i<options_get_int("MAXDIIS");i++){
             // Load vector i irrep h
             char i_data_label[80];
             sprintf(i_data_label,"%s_%s_%d_%d",(it->second).c_str(),"DIIS",h,i);
-            psio_read_entry(MRCC_ON_DISK,i_data_label,(char*)&(i_matrix[0]),block_sizepi*sizeof(double));
+            psio_read_entry(PSIF_PSIMRCC_INTEGRALS,i_data_label,(char*)&(i_matrix[0]),block_sizepi*sizeof(double));
 
-            for(int j=i;j<options->get_int_option("MAXDIIS");j++){
+            for(int j=i;j<options_get_int("MAXDIIS");j++){
               // Load vector j irrep h
               char j_data_label[80];
               sprintf(j_data_label,"%s_%s_%d_%d",(it->second).c_str(),"DIIS",h,j);
-              psio_read_entry(MRCC_ON_DISK,j_data_label,(char*)&(j_matrix[0]),block_sizepi*sizeof(double));
+              psio_read_entry(PSIF_PSIMRCC_INTEGRALS,j_data_label,(char*)&(j_matrix[0]),block_sizepi*sizeof(double));
 
               int dx = 1;
               int lenght = block_sizepi;
@@ -132,7 +136,7 @@ void CCBLAS::diis(int cycle)
       }
 
       // Solve B x = A
-      int  matrix_size = options->get_int_option("MAXDIIS") + 1;          
+      int  matrix_size = options_get_int("MAXDIIS") + 1;          
       int* IPIV = new int[matrix_size];
       int nrhs = 1;
       int info = 0;
@@ -152,10 +156,10 @@ void CCBLAS::diis(int cycle)
             allocate1(double,j_matrix,block_sizepi);
             double* t_matrix = &(Amps->get_matrix()[h][0][0]);
             Amps->zero_matrix_block(h);
-            for(int i=0;i<options->get_int_option("MAXDIIS");i++){
+            for(int i=0;i<options_get_int("MAXDIIS");i++){
               char i_data_label[80];
               sprintf(i_data_label,"%s_%s_%d_%d",(it->first).c_str(),"DIIS",h,i);
-              psio_read_entry(MRCC_ON_DISK,i_data_label,(char*)&(i_matrix[0]),block_sizepi*sizeof(double));
+              psio_read_entry(PSIF_PSIMRCC_INTEGRALS,i_data_label,(char*)&(i_matrix[0]),block_sizepi*sizeof(double));
               for(size_t n=0;n<block_sizepi;n++){
                 t_matrix[n] += diis_A[i]*i_matrix[n];
               }
@@ -176,86 +180,5 @@ void CCBLAS::diis(int cycle)
     release2(diis_B);
   }
 }
-
-
-/*
-SOME OLD CODE THAT WAS SUPPOSED TO BE FANCIER, IT DOESN'T REALLY IMPROVE
-
-//           // This is a stable matrix inversion routine
-// 
-
-//           double** eigenvectors;
-//           double** original_matrix;
-//           double*  eigenvalues;
-// 
-//           int  matrix_size = options->get_int_option("MAXDIIS") + 1;          
-//           init_matrix<double>(eigenvalues,matrix_size);
-//           init_matrix<double>(eigenvectors,matrix_size,matrix_size);
-//           init_matrix<double>(original_matrix,matrix_size,matrix_size);
-// 
-//           for(int i = 0; i < matrix_size;i++)
-//             for(int j = 0; j < matrix_size;j++)
-//               original_matrix[i][j] = diis_B[i][j];
-// 
-//           sq_rsp(matrix_size,matrix_size,diis_B,eigenvalues,1,eigenvectors,1e-14);
-// 
-//           fprintf(outfile,"\n DIIS %s[%d]",it->first.c_str(),h);
-//           for(int i=0;i<matrix_size;i++)
-//             fprintf(outfile,"\n eigenvalues[%d] = %20.12f",i,eigenvalues[i]);
-// 
-//           for(int k = 0; k < matrix_size;k++){
-//             if(fabs(eigenvalues[k]) < diis_singular_tollerance){
-//               eigenvalues[k]=0.0;
-//             }else{
-//               eigenvalues[k]=1/eigenvalues[k];
-//             }
-//           }
-//           for(int i=0;i<matrix_size;i++)
-//             fprintf(outfile,"\n eigenvalues[%d] = %20.12f",i,eigenvalues[i]);
-//           
-//           for(int i = 0; i < matrix_size;i++){
-//             for(int j = 0; j < matrix_size;j++){
-//               diis_B[i][j] = 0.0;
-//               for(int k = 0; k < matrix_size;k++){
-//                 diis_B[i][j] += eigenvectors[i][k]*eigenvectors[j][k]*eigenvalues[k];
-//               }
-//             }
-//           }
-//           print_dmatrix(diis_B,matrix_size,matrix_size,outfile,"diis_B");
-// 
-//           for(int i = 0; i < matrix_size;i++){
-//             for(int j = 0; j < matrix_size;j++){
-//               eigenvectors[i][j] = 0.0;
-//               for(int k = 0; k < matrix_size;k++){
-//                 eigenvectors[i][j] += original_matrix[i][k]*diis_B[k][j];
-//               }
-//             }
-//           }
-//           fprintf(outfile,"\n DIIS %s[%d] Testing inverse",it->first.c_str(),h);
-//           print_dmatrix(eigenvectors,matrix_size,matrix_size,outfile);
-// 
-//           for(int i = 0; i < matrix_size;i++){
-//             eigenvalues[i] = 0.0;
-//             for(int j = 0; j < matrix_size;j++){
-//               eigenvalues[i] += diis_B[i][j] * diis_A[j];
-//             }
-//           }
-//           for(int i = 0; i < matrix_size;i++)
-//             diis_A[i] = eigenvalues[i];
-//           for(int i=0;i<matrix_size;i++)
-//             fprintf(outfile,"\n A[%d] = %20.12f",i,diis_A[i]);
-// 
-//           free_matrix<double>(eigenvalues,matrix_size);
-//           free_matrix<double>(eigenvectors,matrix_size,matrix_size);
-//           free_matrix<double>(original_matrix,matrix_size,matrix_size);
-// 
-// 
-//           fprintf(outfile,"\n DIIS %s[%d]",it->first.c_str(),h);
-//           print_dmatrix(diis_B,matrix_size,matrix_size,outfile);
-//           for(int i=0;i<matrix_size;i++){
-//             fprintf(outfile,"\n A[%d] = %20.12f",i,diis_A[i]);
-//           }
-
-*/
 
 }} /* End Namespaces */

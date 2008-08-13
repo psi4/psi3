@@ -6,11 +6,10 @@
 
 #include "operation.h"
 #include "blas.h"
-#include "utilities.h"
-#include "error.h"
+#include <libutil/libutil.h>
 #include "debugging.h"
 #include "algebra_interface.h"
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 #include <cstdlib>
 
 extern FILE *infile, *outfile;

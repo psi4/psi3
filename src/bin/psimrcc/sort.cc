@@ -1,18 +1,13 @@
-/***************************************************************************
- *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
 /**
  *  @file ccsort.cpp
- *  @ingroup PSIMRCC
+ *  @ingroup (PSIMRCC)
 */
 #include <cmath>
 #include <algorithm>
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 #include "sort.h"
 #include "transform.h"
-#include "utilities.h"
+#include <libutil/libutil.h>
 #include "blas.h"
 
 #include <libciomr/libciomr.h>

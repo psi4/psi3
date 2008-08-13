@@ -1,46 +1,41 @@
-/***************************************************************************
- *  PSIMRCC
- *  Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
+/*******************************************************************
+ *  PSIMRCC (2008) by Francesco Evangelista and Andrew Simmonett
  *  frank@ccc.uga.edu   andysim@ccc.uga.edu
  *  A multireference coupled cluster code
- ***************************************************************************/
+ ******************************************************************/
 
 /**
- *  @defgroup PSIMRCC psimrcc: a code for SR/MRCC computations
+ *  @defgroup PSIMRCC PSIMRCC is a code for SR/MRCC computations
  *  @file psimrcc.cpp
- *  @ingroup PSIMRCC
+ *  @ingroup (PSIMRCC)
  *  @brief Contains main() and global variables
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
+// Standard libraries 
 #include <iostream>
 #include <complex>
 #include <cstdlib>
 
+// PSI libraries 
+#include <psifiles.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <libchkpt/chkpt.h>
+#include <libmoinfo/libmoinfo.h>
+#include <liboptions/liboptions.h>
+#include <libutil/libutil.h>
 #include <libqt/qt.h>
 
+#include "blas.h"
+#include "debugging.h"
 #include "git.h"
 #include "main.h"
-#include "psimrcc.h"
-#include "sq.h"
-#include "blas.h"
 #include "sort.h"
 #include "mrcc.h"
 #include "memory_manager.h"
+#include "psimrcc.h"
 #include "transform.h"
-#include "moinfo.h"
-#include "calculation_options.h"
-#include "debugging.h"
-
-#include "utilities.h"
-
 
 // PSI FILES
 FILE  *infile, *outfile;
@@ -51,14 +46,14 @@ extern "C" {
 
 using namespace std;
 
+MOInfo              *moinfo;
+
 namespace psi{ namespace psimrcc{
 
 // Global variables
 Timer               *global_timer;
-CalculationOptions  *options;
 Debugging           *debugging;
 MemoryManager       *mem;
-MOInfo              *moinfo;
 CCBLAS              *blas;
 CCSort              *sorter;
 CCTransform         *trans = NULL;
@@ -70,7 +65,7 @@ void read_calculation_options();
  * The main function
  * @param argc
  * @param argv[]
- * @return EXIT_SUCCESS if the program ran without any problem
+ * @return PSI_RETURN_SUCCESS if the program ran without any problem
  */
 int main(int argc, char *argv[])
 {
@@ -78,54 +73,28 @@ int main(int argc, char *argv[])
   init_psi(argc,argv);
 
   global_timer = new Timer;
-  options      = new CalculationOptions;
   read_calculation_options();
 
   debugging = new Debugging;
 
   mem    = new MemoryManager();
-  moinfo = new MOInfo(argc,argv,":MRCC");
+  moinfo = new MOInfo();
   moinfo->setup_model_space();
 
-  if(options->get_str_option("CORR_CODE")=="PSIMRCC")
-    run_psimrcc();
-  if(options->get_str_option("CORR_CODE")=="SQ")
-    run_sq();
-//   if(options->get_str_option("CORR_CODE")=="MCSCF")
-//     run_tcscf();
-//   switch (options->get_str_option("CORR_CODE")){
-//     case "PSIMRCC" :
-//       run_psimrcc();
-//       break;
-//     case "SQ" : 
-//       run_sq();
-//       break;
-//     case "MCSCF" : 
-//       break;
-//     default:
-//       break;
-//   }
+  run_psimrcc();
 
   fprintf(outfile,"\n\n\tPSIMRCC Execution Ended.");
   fprintf(outfile,"\n\tWall Time = %20.6f s",global_timer->get());
   fprintf(outfile,"\n\tGEMM Time = %20.6f s",moinfo->get_dgemm_timing());
   fflush(outfile);
 
-  double* my_vector;
-  allocate1(double,my_vector,10);
-
-  release1(my_vector);
-
   mem->MemCheck(outfile);
-
-
 
   delete moinfo;
   delete mem;
-  delete options;
   delete global_timer;
   close_psi();
-  return EXIT_SUCCESS;
+  return PSI_RETURN_SUCCESS;
 }
 
 
@@ -133,36 +102,42 @@ namespace psi{ namespace psimrcc{
 
 void read_calculation_options()
 {
-  options->add_int_option("CORR_CHARGE",0);
-  options->add_int_option("DEBUG",0);
-  options->add_int_option("DAMPING_FACTOR",0);
-  options->add_int_option("MAXDIIS",7);
-  options->add_int_option("MEMORY",1800);
-  options->add_int_option("MULTP",1);
-  options->add_int_option("NUM_THREADS",1);
-  options->add_int_option("NEL",0);
-  options->add_int_option("ROOT",1);
-  options->add_int_option("E_CONVERGENCE",9);
-  options->add_int_option("PT_E_CONVERGENCE",9);
-  options->add_int_option("MAX_ITERATIONS",100);
-  options->add_int_option("DENOMINATOR_SHIFT",0);
+  options_add_int("CORR_CHARGE",0);
+  options_add_int("DEBUG",0);
+  options_add_int("DAMPING_FACTOR",0);
+  options_add_int("MAXDIIS",7);
+  options_add_int("MEMORY",1800);
+  options_add_int("NUM_THREADS",1);
+  options_add_int("NEL",0);
+  options_add_int("ROOT",1);
+  options_add_int("E_CONVERGENCE",9);
+  options_add_int("PT_E_CONVERGENCE",9);
+  options_add_int("MAX_ITERATIONS",100);
+  options_add_int("DENOMINATOR_SHIFT",0);
+  options_add_int("START_DIIS",2);
 
-  options->add_bool_option("DIIS_TRIPLES",false);
-  options->add_bool_option("LOCK_SINGLET",false);
-  options->add_bool_option("MP2_GUESS",true);
-  options->add_bool_option("ONLY_CLOSED_SHELL",false);
-  options->add_bool_option("USE_DIIS",true);
-  options->add_bool_option("USE_SPIN_SYMMETRY",true);
-  options->add_bool_option("ZERO_INTERNAL_AMPS",true);
+  options_add_bool("DIIS_TRIPLES",false);
+  options_add_bool("LOCK_SINGLET",false);
+  options_add_bool("MP2_GUESS",true);
+  options_add_bool("ONLY_CLOSED_SHELL",false);
+  options_add_bool("USE_DIIS",true);
+  options_add_bool("USE_SPIN_SYMMETRY",true);
+  options_add_bool("ZERO_INTERNAL_AMPS",true);
+  options_add_bool("COUPLING_TERMS",true);
+  options_add_bool("PRINT_HEFF",false);
 
-  options->add_str_option_with_choices("PT_ENERGY","SECOND_ORDER","SECOND_ORDER SCS_SECOND_ORDER PSEUDO_SECOND_ORDER SCS_PSEUDO_SECOND_ORDER");
-  options->add_str_option_with_choices("CORR_WFN","CCSD","PT2 CCSD CCSD_T CCSDT-1A CCSDT-1B CCSDT-2 CCSDT-3 CCSDT");
-  options->add_str_option_with_choices("CORR_ANSATZ","MK","SR MK BW APBW");
-  options->add_str_option_with_choices("CORR_CODE","PSIMRCC","PSIMRCC SQ LOOPMRCC");
-  options->add_str_option_with_choices("COUPLING","CUBIC","NONE LINEAR QUADRATIC CUBIC");
-  options->add_str_option_with_choices("WFN_SYM","1","A AG AU AP APP A1 A2 B BG BU B1 B2 B3 B1G B2G B3G B1U B2U B3U 0 1 2 3 4 5 6 7 8");
-  options->read_options();
-  options->print();
+  options_add_str_with_choices("PT_ENERGY","SECOND_ORDER","SECOND_ORDER SCS_SECOND_ORDER PSEUDO_SECOND_ORDER SCS_PSEUDO_SECOND_ORDER");
+  options_add_str_with_choices("CORR_WFN","CCSD","PT2 CCSD CCSD_T CCSDT-1A CCSDT-1B CCSDT-2 CCSDT-3 CCSDT MP2-CCSD");
+  options_add_str_with_choices("CORR_REFERENCE","GENERAL","RHF ROHF TCSCF MCSCF GENERAL");
+  options_add_str_with_choices("CORR_ANSATZ","MK","SR MK BW APBW");
+  options_add_str_with_choices("COUPLING","CUBIC","NONE LINEAR QUADRATIC CUBIC");
+  options_add_str_with_choices("WFN_SYM","1","A AG AU AP APP A1 A2 B BG BU B1 B2 B3 B1G B2G B3G B1U B2U B3U 0 1 2 3 4 5 6 7 8");
+
+  // MP2_CCSD
+  options_add_str_with_choices("MP2_CCSD_METHOD","II","I IA II");
+
+  options_read();
+  options_print();
 }
 
 /**
@@ -194,16 +169,21 @@ void init_psi(int argc, char *argv[])
   psio_ipv1_config();
   chkpt_init(PSIO_OPEN_OLD);
   ip_cwk_clear();
-  ip_cwk_add(":PSI");
-  ip_cwk_add(":INPUT");
-  ip_cwk_add(":TRANSQT");
-  ip_cwk_add(":MRCC");
-  psio_open(MRCC_ON_DISK,PSIO_OPEN_NEW);
+  ip_cwk_add(const_cast<char*>(":PSI"));
+  ip_cwk_add(const_cast<char*>(":INPUT"));
+  ip_cwk_add(const_cast<char*>(":TRANSQT"));
+  ip_cwk_add(const_cast<char*>(":MRCC"));
+  options_init();
 
+  tstart(outfile);
+  
+  psio_open(PSIF_PSIMRCC_INTEGRALS,PSIO_OPEN_NEW);
+
+  
 
   fprintf(outfile,"\n  MRCC          MRCC");
   fprintf(outfile,"\n   MRCC  MRCC  MRCC");
-  fprintf(outfile,"\n   MRCC  MRCC  MRCC      PSIMRCC Version 0.7.2, November 07, 2007");
+  fprintf(outfile,"\n   MRCC  MRCC  MRCC      PSIMRCC Version 0.8.0, April, 2008");
   fprintf(outfile,"\n   MRCC  MRCC  MRCC      Multireference Coupled Cluster, written by");
   fprintf(outfile,"\n     MRCCMRCCMRCC        Francesco A. Evangelista and Andrew C. Simmonett");
   fprintf(outfile,"\n         MRCC            Compiled on %s at %s",__DATE__,__TIME__);
@@ -220,9 +200,11 @@ void close_psi()
     Close the checkpoint
   ***********************/
   fflush(outfile);
+  options_close();
   chkpt_close();
-  psio_close(MRCC_ON_DISK,1);
+  psio_close(PSIF_PSIMRCC_INTEGRALS,1);
   psio_done();
+  tstop(outfile);
   psi_stop(infile,outfile,psi_file_prefix);
 }
 
@@ -233,5 +215,5 @@ void close_psi()
  */
 char* gprgid()
 {
-  return(":MRCC");
+  return(const_cast<char*>(":MRCC"));
 }

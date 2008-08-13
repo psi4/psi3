@@ -6,15 +6,15 @@
 
 /**
  *  @file ccmrcc_compute.cpp
- *  @ingroup PSIMRCC
+ *  @ingroup (PSIMRCC)
  *  @brief Contains all the methods to compute the energy
 */
 
-#include "calculation_options.h"
+#include <liboptions/liboptions.h>
 #include "blas.h"
 #include "mrcc.h"
 #include "debugging.h"
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 #include <cstdlib>
 
 namespace psi{ namespace psimrcc{
@@ -65,7 +65,7 @@ void CCMRCC::compute_energy(void(*updater)())
   blas->diis_add("t2[oo][vv]{u}","t2_delta[oo][vv]{u}");
   blas->diis_add("t2[oO][vV]{u}","t2_delta[oO][vV]{u}");
   blas->diis_add("t2[OO][VV]{u}","t2_delta[OO][VV]{u}");
-  if(options->get_bool_option("DIIS_TRIPLES")){
+  if(options_get_bool("DIIS_TRIPLES")){
     blas->diis_add("t3[ooo][vvv]{u}","t3_delta[ooo][vvv]{u}");
     blas->diis_add("t3[ooO][vvV]{u}","t3_delta[ooO][vvV]{u}");
     blas->diis_add("t3[oOO][vVV]{u}","t3_delta[oOO][vVV]{u}");
@@ -77,7 +77,7 @@ void CCMRCC::compute_energy(void(*updater)())
   // Start CC cycle
   int cycle = 0;
   while(!converged){
-    diis_step = cycle % options->get_int_option("MAXDIIS");  
+    diis_step = cycle % options_get_int("MAXDIIS");  
 
     zero_internal_amps();
 
@@ -100,11 +100,11 @@ void CCMRCC::compute_energy(void(*updater)())
     if(!converged){
       blas->diis_save_t_amps(cycle);
       updater();
-      blas->diis(cycle);
+      blas->diis(cycle,delta_energy,DiisCC);
     }
 
-    if(cycle>options->get_int_option("MAX_ITERATIONS")){
-      fprintf(outfile,"\n\n\tThe calculation did not converge in %d cycles\n\tQuitting PSIMRCC\n",options->get_int_option("MAX_ITERATIONS"));
+    if(cycle>options_get_int("MAX_ITERATIONS")){
+      fprintf(outfile,"\n\n\tThe calculation did not converge in %d cycles\n\tQuitting PSIMRCC\n",options_get_int("MAX_ITERATIONS"));
       fflush(outfile);
       exit(1);
     }

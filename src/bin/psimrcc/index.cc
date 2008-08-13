@@ -3,12 +3,13 @@
  *  frank@ccc.uga.edu   andysim@ccc.uga.edu
  *  A multireference coupled cluster code
  ***************************************************************************/
-
-#include "memory_manager.h"
-#include "moinfo.h"
-#include "index.h"
 #include <iostream>
 #include <algorithm>
+
+#include <libmoinfo/libmoinfo.h>
+
+#include "index.h"
+#include "memory_manager.h"
 
 extern FILE *infile, *outfile;
 

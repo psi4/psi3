@@ -3,13 +3,13 @@
  *  frank@ccc.uga.edu   andysim@ccc.uga.edu
  *  A multireference coupled cluster code
  ***************************************************************************/
-#include "moinfo.h"
-#include "calculation_options.h"
+#include <libmoinfo/libmoinfo.h>
+#include <liboptions/liboptions.h>
 #include "mrcc.h"
 #include "matrix.h"
 #include "blas.h"
 #include "debugging.h"
-#include "utilities.h"
+#include <libutil/libutil.h>
 
 #include <libchkpt/chkpt.h>
 
@@ -36,14 +36,19 @@ bool CCMRCC::build_diagonalize_Heff(int cycle, double time)
     // Compute the energy difference
     old_energy=current_energy;
     current_energy=diagonalize_Heff(moinfo->get_root(),moinfo->get_nrefs(),Heff,eigenvector,false);
+
+    if(options_get_bool("PRINT_HEFF"))
+      print_eigensystem(moinfo->get_nrefs(),Heff,eigenvector);
     DEBUGGING(3,
       print_eigensystem(moinfo->get_nrefs(),Heff,eigenvector);
     )
     double delta_energy = current_energy-old_energy;
-    if(fabs(log10(fabs(delta_energy))) > options->get_int_option("E_CONVERGENCE"))
+    if(fabs(log10(fabs(delta_energy))) > options_get_int("E_CONVERGENCE"))
       converged = true;
+
+
 ///    TODO fix this code which is temporarly not working
-//     if(options->get_int_option("DAMPING_FACTOR")>0){
+//     if(options_get_int("DAMPING_FACTOR")>0){
 //       if(fabs(delta_energy) < moinfo->get_no_damp_convergence()){
 //         double damping_factor = moinfo->get_damping_factor();
 //         damping_factor *= 0.95;

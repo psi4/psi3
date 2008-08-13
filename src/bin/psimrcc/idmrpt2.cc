@@ -3,14 +3,14 @@
  *  frank@ccc.uga.edu   andysim@ccc.uga.edu
  *  A multireference coupled cluster code
  ***************************************************************************/
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 #include "idmrpt2.h"
 #include "matrix.h"
 #include "blas.h"
 #include "sort.h"
 #include "debugging.h"
-#include "utilities.h"
-#include "calculation_options.h"
+#include <libutil/libutil.h>
+#include <liboptions/liboptions.h>
 #include <libchkpt/chkpt.h>
 #include <cstdlib>
 
@@ -94,15 +94,15 @@ void IDMRPT2::compute_mrpt2_energy()
 
     // Compute the energy
     current_energy=c_H_c(moinfo->get_nrefs(),Heff_mrpt2,zeroth_order_eigenvector);
-    double delta_energy = current_energy-old_energy;
-    if(fabs(log10(fabs(delta_energy))) > options->get_int_option("PT_E_CONVERGENCE")){
+    delta_energy = current_energy - old_energy;
+    if(fabs(log10(fabs(delta_energy))) > options_get_int("PT_E_CONVERGENCE")){
       converged=true;
     }
     fprintf(outfile,"\n    @PT %5d   %20.15f  %11.4e",cycle,current_energy,delta_energy);
     old_energy=current_energy;
 
-    if(cycle>options->get_int_option("MAX_ITERATIONS")){
-      fprintf(outfile,"\n\n\tThe calculation did not converge in %d cycles\n\tQuitting PSIMRCC\n",options->get_int_option("MAX_ITERATIONS"));
+    if(cycle>options_get_int("MAX_ITERATIONS")){
+      fprintf(outfile,"\n\n\tThe calculation did not converge in %d cycles\n\tQuitting PSIMRCC\n",options_get_int("MAX_ITERATIONS"));
       fflush(outfile);
       exit(1);
     }
@@ -135,26 +135,26 @@ void IDMRPT2::compute_mrpt2_energy()
   double scs_pseudo_second_order_energy = current_energy;
 
   fprintf(outfile,"\n\n  ================================================================");
-  fprintf(outfile,"\n    @PT@           %-5s%-10s  Energy = %-20.15f",options->get_str_option("CORR_ANSATZ").c_str(),options->get_str_option("CORR_WFN").c_str(),second_order_energy);
-  fprintf(outfile,"\n    @SCSPT@        %-5s%-10s  Energy = %-20.15f",options->get_str_option("CORR_ANSATZ").c_str(),options->get_str_option("CORR_WFN").c_str(),scs_second_order_energy);
-  fprintf(outfile,"\n    @PT-i@         %-5s%-10s  Energy = %-20.15f",options->get_str_option("CORR_ANSATZ").c_str(),options->get_str_option("CORR_WFN").c_str(),pseudo_second_order_energy);
-  fprintf(outfile,"\n    @SCSPT-i@      %-5s%-10s  Energy = %-20.15f",options->get_str_option("CORR_ANSATZ").c_str(),options->get_str_option("CORR_WFN").c_str(),scs_pseudo_second_order_energy);
+  fprintf(outfile,"\n    @PT@           %-5s%-10s  Energy = %-20.15f",options_get_str("CORR_ANSATZ").c_str(),options_get_str("CORR_WFN").c_str(),second_order_energy);
+  fprintf(outfile,"\n    @SCSPT@        %-5s%-10s  Energy = %-20.15f",options_get_str("CORR_ANSATZ").c_str(),options_get_str("CORR_WFN").c_str(),scs_second_order_energy);
+  fprintf(outfile,"\n    @PT-i@         %-5s%-10s  Energy = %-20.15f",options_get_str("CORR_ANSATZ").c_str(),options_get_str("CORR_WFN").c_str(),pseudo_second_order_energy);
+  fprintf(outfile,"\n    @SCSPT-i@      %-5s%-10s  Energy = %-20.15f",options_get_str("CORR_ANSATZ").c_str(),options_get_str("CORR_WFN").c_str(),scs_pseudo_second_order_energy);
   fprintf(outfile,"\n  ================================================================");
 
 
-  if(options->get_str_option("PT_ENERGY")=="SECOND_ORDER"){
+  if(options_get_str("PT_ENERGY")=="SECOND_ORDER"){
     chkpt_wt_etot(second_order_energy);
     fprintf(outfile,"\n\n  Wrote second order energy to checkpoint file");
   }
-  if(options->get_str_option("PT_ENERGY")=="SCS_SECOND_ORDER"){
+  if(options_get_str("PT_ENERGY")=="SCS_SECOND_ORDER"){
     chkpt_wt_etot(scs_second_order_energy);
     fprintf(outfile,"\n\n  Wrote spin-component-scaled second order energy to checkpoint file");
   }
-  if(options->get_str_option("PT_ENERGY")=="PSEUDO_SECOND_ORDER"){
+  if(options_get_str("PT_ENERGY")=="PSEUDO_SECOND_ORDER"){
     chkpt_wt_etot(pseudo_second_order_energy);
     fprintf(outfile,"\n\n  Wrote pseudo-second order energy to checkpoint file");
   }
-  if(options->get_str_option("PT_ENERGY")=="SCS_PSEUDO_SECOND_ORDER"){
+  if(options_get_str("PT_ENERGY")=="SCS_PSEUDO_SECOND_ORDER"){
     chkpt_wt_etot(scs_pseudo_second_order_energy);
     fprintf(outfile,"\n\n  Wrote spin-component-scaled pseudo-second order energy to checkpoint file");
   }

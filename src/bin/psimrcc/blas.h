@@ -1,15 +1,9 @@
 #ifndef _psi_src_bin_psimrcc_ccblas_h
 #define _psi_src_bin_psimrcc_ccblas_h
-/***************************************************************************
- *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
 
-/*! 
-  \file
-  \ingroup PSIMRCC
-  \brief   A class to perform contractions
+/*! \file 
+    \ingroup (PSIMRCC)
+    \brief   A class to perform contractions
 */
 
 #include "index.h"
@@ -32,6 +26,8 @@ typedef std::map<std::string,CCIndex*>  IndexMap;
 typedef std::vector<double*>            ArrayVec;
 typedef std::map<std::string,double***> SortMap;
 
+enum DiisType {DiisEachCycle,DiisCC};
+
 /**
 	@author Francesco A. Evangelista and Andrew C. Simmonett <frank@ccc.uga.edu>
 */
@@ -45,34 +41,36 @@ public:
   CCBLAS();
   ~CCBLAS();
   // Add routines
-  void       add_Matrix(char* cstr);
+  void       add_Matrix(const char* cstr);
   void       add_Matrix(std::string str);
-  void       add_index(char* cstr);
+  void       add_index(const char* cstr);
   // Solve and sort
-  void       solve(char* cstr);
+  void       solve(const char* cstr);
   void       solve(std::string str);
-  void       solve_zero_two_diagonal(char* cstr);
-  void       zero_right_four_diagonal(char* cstr);
-  void       zero_left_four_diagonal(char* cstr);
-  void       zero_non_doubly_occupied(char* cstr);
-  void       zero_non_external(char* cstr);
-  void       reduce_spaces(char* out,char* in);
-  void       append(char* cstr);
+  void       solve_zero_two_diagonal(const char* cstr);
+  void       zero_right_four_diagonal(const char* cstr);
+  void       zero_left_four_diagonal(const char* cstr);
+  void       zero_non_doubly_occupied(const char* cstr);
+  void       zero_non_external(const char* cstr);
+  void       zero(const char* cstr);
+  void       reduce_spaces(const char* out,const char* in);
+  void       expand_spaces(const char* out,const char* in);
+  void       append(const char* cstr);
   void       append(std::string str);
-  void       append_zero_two_diagonal(char* cstr);
+  void       append_zero_two_diagonal(const char* cstr);
   void       compute();
   int        compute_storage_strategy();
   void       show_storage();
   // DIIS
   void       diis_add(std::string amps, std::string delta_amps);
   void       diis_save_t_amps(int cycle);
-  void       diis(int cycle);
+  void       diis(int cycle, double delta, DiisType diis_type);
   // Printing
-  void       print(char* cstr);
+  void       print(const char* cstr);
   void       print_ref(string& str);
   void       print_memory();
   // Safe get and set
-  CCIndex*   get_index(char* cstr);
+  CCIndex*   get_index(const char* cstr);
   CCIndex*   get_index(std::string& str);
   CCMatTmp   get_MatTmp(std::string str, int reference, DiskOpt disk_option);
   CCMatTmp   get_MatTmp(std::string str, DiskOpt disk_option);
@@ -82,9 +80,9 @@ public:
   CCMatIrTmp get_MatIrTmp(CCMatrix* Matrix, int irrep, DiskOpt disk_option);
 
   double     get_scalar(std::string str);
-  double     get_scalar(char* cstr,int reference);
+  double     get_scalar(const char* cstr,int reference);
   double     get_scalar(std::string& str,int reference);
-  void       set_scalar(char* cstr,int reference,double value);
+  void       set_scalar(const char* cstr,int reference,double value);
   void       set_scalar(std::string& str,int reference,double value);
 
   // These have to be improved
@@ -106,8 +104,8 @@ private:
 
   IndexMap&  get_IndexMap()  {return(indices);}
   CCMatrix*  get_Matrix(std::string& str);
-  CCMatrix*  get_Matrix(char* cstr);
-  CCMatrix*  get_Matrix(char* cstr, int reference);
+  CCMatrix*  get_Matrix(const char* cstr);
+  CCMatrix*  get_Matrix(const char* cstr, int reference);
   CCMatrix*  get_Matrix(std::string& str,std::string& expression); // Prints a clear error message
   double*    get_work(int n)   {return(work[n]);}
 //   double***  get_sortmap(CCIndex* T_left,CCIndex* T_right,int thread);
@@ -125,6 +123,7 @@ private:
   int        parse(std::string& str);
   void       process_operations();
   void       process_reduce_spaces(CCMatrix* out_Matrix,CCMatrix* in_Matrix);
+  void       process_expand_spaces(CCMatrix* out_Matrix,CCMatrix* in_Matrix);
   bool       get_factor(const std::string& str,double& factor);
   // General routines
 

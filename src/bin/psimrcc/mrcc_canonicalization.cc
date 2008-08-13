@@ -4,11 +4,11 @@
  *   SR/MRCC Code
  ***************************************************************************/
 #if 0
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 #include "mrcc.h"
 #include "matrix.h"
 #include "blas.h"
-#include "utilities.h"
+#include <libutil/libutil.h>
 
 namespace psi{ namespace psimrcc{
 

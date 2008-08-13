@@ -7,12 +7,11 @@
 #include <iostream>
 #include <cmath>
 #include "algebra_interface.h"
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 #include "blas.h"
 #include "operation.h"
 #include "debugging.h"
-#include "utilities.h"
-#include "error.h"
+#include <libutil/libutil.h>
 
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
@@ -460,7 +459,7 @@ void CCOperation::setup_contractions()
         for(int i=first_block;i<last_block;i++){
            int rows_per_block = B_Matrix->get_rows_per_block(irrep,i);
            sprintf(label,"%s_%d_%d",B_Matrix->get_label().c_str(),irrep,i);
-           psio_read_entry(MRCC_ON_DISK,label,(char*)&B_matrix[block_first_row][0],rows_per_block*B_in_core_cols*sizeof(double));
+           psio_read_entry(PSIF_PSIMRCC_INTEGRALS,label,(char*)&B_matrix[block_first_row][0],rows_per_block*B_in_core_cols*sizeof(double));
            block_first_row += rows_per_block;
         }
         rows_B = B_in_core_rows;
@@ -502,7 +501,7 @@ void CCOperation::setup_contractions()
         for(int i=first_block;i<last_block;i++){
            int rows_per_block = C_Matrix->get_rows_per_block(irrep,i);
            sprintf(label,"%s_%d_%d",C_Matrix->get_label().c_str(),irrep,i);
-           psio_read_entry(MRCC_ON_DISK,label,(char*)&C_matrix[block_first_row][0],rows_per_block*C_in_core_cols*sizeof(double));
+           psio_read_entry(PSIF_PSIMRCC_INTEGRALS,label,(char*)&C_matrix[block_first_row][0],rows_per_block*C_in_core_cols*sizeof(double));
            block_first_row += rows_per_block;
         }
         rows_B = B_Matrix->get_left_pairpi(h);

@@ -1,17 +1,11 @@
-/***************************************************************************
- *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
-
 #include <cmath>
 #include <algorithm>
 
 #include "memory_manager.h"
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 #include "transform.h"
 #include "matrix.h"
-#include "utilities.h"
+#include <libutil/libutil.h>
 #include "algebra_interface.h"
 #include "blas.h"
 
@@ -47,6 +41,7 @@ CCTransform::CCTransform()
   ioff = moinfo->get_ioff();
   first_irrep_in_core = 0;
   last_irrep_in_core  = 0;
+  s_so   = NULL;
   oei_so = NULL;
   oei_mo = NULL;
   tei_so = NULL;
@@ -385,7 +380,7 @@ void CCTransform::read_oei_mo_integrals()
   
   double* H = new double[norbs*(norbs+1)/2];
 //   if (moinfo->get_debug()<7)
-    iwl_rdone(PSIF_OEI,PSIF_MO_FZC,H,norbs*(norbs+1)/2,0,0,outfile);
+    iwl_rdone(PSIF_OEI,const_cast<char*>(PSIF_MO_FZC),H,norbs*(norbs+1)/2,0,0,outfile);
 //   else
 //     iwl_rdone(PSIF_OEI,PSIF_MO_FZC,H,norbs*(norbs+1)/2,0,1,outfile); //TODO fix it!
 
@@ -440,6 +435,10 @@ void CCTransform::allocate_oei_so()
     int nso = moinfo->get_nso();
     allocate2(double,oei_so,nso,nso);
   }
+  if(s_so==NULL){
+    int nso = moinfo->get_nso();
+    allocate2(double,s_so,nso,nso);
+  }
 }
 
 /**
@@ -450,6 +449,10 @@ void CCTransform::free_oei_so()
   if(oei_so!=NULL){
     release2(oei_so);
     oei_so = NULL;
+  }
+  if(s_so!=NULL){
+    release2(s_so);
+    s_so = NULL;
   }
 }
 
@@ -622,34 +625,7 @@ double CCTransform::tei(int p, int q, int r, int s)
   return(tei_mo[tei_mo_indexing->get_tuple_irrep(MAX(p,q),MIN(p,q))][INDEX(tei_mo_indexing->get_tuple_index(MAX(p,q),MIN(p,q)),tei_mo_indexing->get_tuple_index(MAX(r,s),MIN(r,s)))]);
 }
 
-/*!
-    \fn CCTransform::read_oei_integrals()
- */
-void CCTransform::read_oei_so_integrals()
-{
-  // Read all the (frozen + non-frozen) OEI in Pitzer order
-  allocate_oei_so();
 
-  int nso = moinfo->get_nso();
-  
-  double* H = new double[nso*(nso+1)/2];
-  
-  // Read the kinetic energy integrals
-  iwl_rdone(PSIF_OEI,PSIF_SO_T,H,nso*(nso+1)/2,0,0,outfile);
-
-  for(int i=0; i < nso; i++)
-    for(int j=0; j < nso; j++)
-      oei_so[i][j] = H[INDEX(i,j)];
-
-  // Read the potential energy integrals
-  iwl_rdone(PSIF_OEI,PSIF_SO_V,H,nso*(nso+1)/2,0,0,outfile);
-
-  for(int i=0; i < nso; i++)
-    for(int j=0; j < nso; j++)
-      oei_so[i][j] += H[INDEX(i,j)];
-
-  delete[] H;
-}
 
 /*!
     \fn CCTransform::transform_oei_so_integrals()

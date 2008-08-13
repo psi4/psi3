@@ -6,7 +6,7 @@
 
 #include "debugging.h"
 #include "blas.h"
-#include "utilities.h"
+#include <libutil/libutil.h>
 
 namespace psi{ namespace psimrcc{
 

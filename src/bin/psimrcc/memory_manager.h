@@ -38,22 +38,22 @@ public:
   double      get_integral_strip_size()          const {return(integral_strip_size);}
 
   template <typename T>
-  void allocate(char *type, T*& matrix, size_t size, char *variableName, char *fileName, size_t lineNumber);
+  void allocate(const char *type, T*& matrix, size_t size, const char *variableName, const char *fileName, size_t lineNumber);
   template <typename T>
-  void release_one(T*& matrix, char *fileName, size_t lineNumber);
+  void release_one(T*& matrix, const char *fileName, size_t lineNumber);
 
   template <typename T>
-  void allocate(char *type, T**& matrix, size_t size1, size_t size2, char *variableName, char *fileName, size_t lineNumber);
+  void allocate(const char *type, T**& matrix, size_t size1, size_t size2, const char *variableName, const char *fileName, size_t lineNumber);
   template <typename T>
-  void release_two(T**& matrix, char *fileName, size_t lineNumber);
+  void release_two(T**& matrix, const char *fileName, size_t lineNumber);
 
   template <typename T>
-  void allocate(char *type, T***& matrix,size_t size1,size_t size2,size_t size3, char *variableName, char *fileName, size_t lineNumber);
+  void allocate(const char *type, T***& matrix,size_t size1,size_t size2,size_t size3, const char *variableName, const char *fileName, size_t lineNumber);
   template <typename T>
-  void release_three(T***& matrix, char *fileName, size_t lineNumber);
+  void release_three(T***& matrix, const char *fileName, size_t lineNumber);
 private:
   void RegisterMemory(void *mem, AllocationEntry& entry, size_t size);
-  void UnregisterMemory(void *mem, size_t size, char *fileName, size_t lineNumber);
+  void UnregisterMemory(void *mem, size_t size, const char *fileName, size_t lineNumber);
 
   size_t CurrentAllocated;
   size_t MaximumAllocated;
@@ -68,7 +68,7 @@ private:
 extern MemoryManager *mem;
 
 template <typename T>
-void MemoryManager::allocate(char *type, T*& matrix, size_t size, char *variableName, char *fileName, size_t lineNumber)
+void MemoryManager::allocate(const char *type, T*& matrix, size_t size, const char *variableName, const char *fileName, size_t lineNumber)
 {
   AllocationEntry newEntry;
 	
@@ -90,7 +90,7 @@ void MemoryManager::allocate(char *type, T*& matrix, size_t size, char *variable
 }
 
 template <typename T>
-void MemoryManager::release_one(T*& matrix, char *fileName, size_t lineNumber)
+void MemoryManager::release_one(T*& matrix, const char *fileName, size_t lineNumber)
 {
   if(matrix == NULL)
     return;
@@ -104,7 +104,7 @@ void MemoryManager::release_one(T*& matrix, char *fileName, size_t lineNumber)
 }
 
 template <typename T>
-void MemoryManager::allocate(char *type, T**& matrix, size_t size1, size_t size2, char *variableName, char *fileName, size_t lineNumber)
+void MemoryManager::allocate(const char *type, T**& matrix, size_t size1, size_t size2, const char *variableName, const char *fileName, size_t lineNumber)
 {
   AllocationEntry newEntry;
   size_t size = size1*size2;
@@ -132,7 +132,7 @@ void MemoryManager::allocate(char *type, T**& matrix, size_t size1, size_t size2
 }
 
 template <typename T>
-void MemoryManager::release_two(T**& matrix, char *fileName, size_t lineNumber)
+void MemoryManager::release_two(T**& matrix, const char *fileName, size_t lineNumber)
 {
   if(matrix == NULL)
     return;
@@ -147,7 +147,7 @@ void MemoryManager::release_two(T**& matrix, char *fileName, size_t lineNumber)
 }
 
 template <typename T>
-void MemoryManager::allocate(char *type, T***& matrix,size_t size1,size_t size2,size_t size3, char *variableName, char *fileName, size_t lineNumber)
+void MemoryManager::allocate(const char *type, T***& matrix,size_t size1,size_t size2,size_t size3, const char *variableName, const char *fileName, size_t lineNumber)
 {
   AllocationEntry newEntry;
   size_t size = size1*size2*size3;
@@ -178,7 +178,7 @@ void MemoryManager::allocate(char *type, T***& matrix,size_t size1,size_t size2,
 }
 
 template <typename T>
-void MemoryManager::release_three(T***& matrix, char *fileName, size_t lineNumber)
+void MemoryManager::release_three(T***& matrix, const char *fileName, size_t lineNumber)
 {
   if(matrix == NULL)
     return;

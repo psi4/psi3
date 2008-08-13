@@ -6,9 +6,9 @@
  ***************************************************************************/
 
 /**
- *  @defgroup PSIMRCC psimrcc: a code for SR/MRCC computations
+ *  @defgroup PSIMRCC PSIMRCC is a code for SR/MRCC computations
  *  @file psimrcc.cpp
- *  @ingroup PSIMRCC
+ *  @ingroup (PSIMRCC)
  *  @brief Contains main() and global variables
 */
 
@@ -39,16 +39,17 @@
 #include <config.h>
 #endif
 
-#include "calculation_options.h"
+#include <liboptions/liboptions.h>
 #include "blas.h"
 #include "sort.h"
+#include "mp2_ccsd.h"
 #include "mrcc.h"
 #include "idmrpt2.h"
 #include "transform.h"
 #include "debugging.h"
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 #include "psimrcc.h"
-#include "utilities.h"
+#include <libutil/libutil.h>
 
 namespace psi{ namespace psimrcc{
 
@@ -59,8 +60,10 @@ void run_psimrcc()
   blas   = new CCBLAS();
   trans  = new CCTransform();
 
-  if(options->get_str_option("CORR_WFN")=="PT2"){
+  if(options_get_str("CORR_WFN")=="PT2"){
     mrpt2();
+  }else if(options_get_str("CORR_WFN")=="MP2-CCSD"){
+    mp2_ccsd();
   }else{
     mrccsd();
   }
@@ -79,13 +82,13 @@ void mrccsd()
   // Initialize the mp2 module (integrals,fock matrix(ces),denominators)
   CCMRCC        mrcc;
 
-  if(options->get_str_option("CORR_ANSATZ")=="SR")
+  if(options_get_str("CORR_ANSATZ")=="SR")
     mrcc.compute_ccsd_energy();
-  if(options->get_str_option("CORR_ANSATZ")=="MK")
+  if(options_get_str("CORR_ANSATZ")=="MK")
     mrcc.compute_mkccsd_energy();
-  if(options->get_str_option("CORR_ANSATZ")=="BW")
+  if(options_get_str("CORR_ANSATZ")=="BW")
       mrcc.compute_bwccsd_energy();
-  if(options->get_str_option("CORR_ANSATZ")=="APBW")
+  if(options_get_str("CORR_ANSATZ")=="APBW")
       mrcc.compute_apbwccsd_energy();
 }
 
@@ -106,6 +109,22 @@ void mrpt2()
 }
 
 /*!
+ * Runs a CCSD_MP2 computation
+ */
+void mp2_ccsd()
+{
+  // Initialize the mp2 module (integrals,fock matrix(ces),denominators)
+  MP2_CCSD        mp2_ccsd;
+
+  // Compute the initial amplitudes and CCSD_MP2 energy
+  mp2_ccsd.compute_mp2_ccsd_energy();
+
+  DEBUGGING(1,
+    blas->print_memory();
+  )
+}
+
+/*!
  * Runs a integral transformation
  * @todo CCTransform is still unused in the code
  */
@@ -114,6 +133,5 @@ void transform_integrals()
 //   CCTransform transf;
 //   transf.read_so_integrals();
 }
-
 
 }} /* End Namespaces */

@@ -5,7 +5,7 @@
  *  A multireference coupled cluster code
  ***************************************************************************/
 
-#include "calculation_options.h"
+#include <liboptions/liboptions.h>
 #include "debugging.h"
 
 namespace psi{ namespace psimrcc{
@@ -16,7 +16,7 @@ Debugging::Debugging()
   for(int n=0;n<=10;n++)
     level[n]=false;
 
-  int maxn = options->get_int_option("DEBUG");
+  int maxn = options_get_int("DEBUG");
   if(maxn>10)
     maxn = 10;
   for(int n=0;n<=maxn;n++)

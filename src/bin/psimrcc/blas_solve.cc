@@ -1,12 +1,6 @@
-/***************************************************************************
- *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
-
 #include "blas.h"
 #include "debugging.h"
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 
 namespace psi{ namespace psimrcc{
 
@@ -16,7 +10,7 @@ using namespace std;
  * Read and compute an expression
  * @param cstr 
  */
-void CCBLAS::solve(char* cstr)
+void CCBLAS::solve(const char* cstr)
 {
   string str(cstr);
   solve(str);
@@ -36,7 +30,7 @@ void CCBLAS::solve(string str)
  * Read and store expressions without computing them
  * @param cstr 
  */
-void CCBLAS::append(char* cstr)
+void CCBLAS::append(const char* cstr)
 {
   string str(cstr);
   append(str);
@@ -203,7 +197,7 @@ void CCBLAS::compute()
  * store a zero_two_diagonal operation without executing it
  * @param cstr 
  */
-void CCBLAS::append_zero_two_diagonal(char* cstr)
+void CCBLAS::append_zero_two_diagonal(const char* cstr)
 {
   string str(cstr);
   // To zero diagonals of things like "Fae[v][v]{u}"
@@ -219,7 +213,7 @@ void CCBLAS::append_zero_two_diagonal(char* cstr)
  * store a zero_two_diagonal operation and executing it
  * @param str 
  */
-void CCBLAS::solve_zero_two_diagonal(char* cstr)
+void CCBLAS::solve_zero_two_diagonal(const char* cstr)
 {
   append_zero_two_diagonal(cstr);
   compute();

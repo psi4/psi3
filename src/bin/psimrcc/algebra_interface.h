@@ -1,10 +1,5 @@
-#ifndef _psi_src_bin_psimrcc_algebra_interface_h
-#define _psi_src_bin_psimrcc_algebra_interface_h
-/***************************************************************************
- *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
+#ifndef _psi_src_bin_psimrcc_algebra_interface_h_
+#define _psi_src_bin_psimrcc_algebra_interface_h_
 
 #ifndef FC_SYMBOL
 #define FC_SYMBOL 2
@@ -54,7 +49,7 @@ extern "C" void F_DAXPY(int *length, double *a, double *x, int *inc_x,
                     double *y, int *inc_y);
 extern "C" void F_DCOPY(int *length, double *x, int *inc_x,
                     double *y, int *inc_y);
-extern "C" void F_DGEMM(char *transa, char *transb, int *m, int *n, int *k,
+extern "C" void F_DGEMM(const char *transa, const char *transb, int *m, int *n, int *k,
                     double *alpha, double *A, int *lda, double *B, int *ldb,
                     double *beta, double *C, int *ldc);
 extern "C" void F_DROT(int *ntot,double *x, int *incx,double *y, int *incy,
@@ -106,12 +101,14 @@ void C_DGEMM_22(int m, int n, int k, double alpha,double *A, int nca,
 #define F_DSYEV DSYEV_
 #endif
 
-extern "C" void F_DGEEV(char *jobvl, char *jobvr, int *n, double *a, int *lda,
+extern "C" void F_DGEEV(const char *jobvl, const char *jobvr, int *n, double *a, int *lda,
                     double *wr, double *wi, double *vl, int *ldvl, double *vr,
                     int *ldvr, double *work, int *lwork, int *info);
 extern "C" void F_DGESV(int *n, int *nrhs, double *A, int *lda, int *ipiv,
                     double *B, int *ldb, int *info);
 
+extern "C" void F_DSYEV(char *JOBZ, char *UPLO, int *N, double *A, int *LDA, double *W, double *WORK, int *LWORK, int *INFO );
+
 }}
 
-#endif // _psi_src_bin_psimrcc_algebra_interface_h
+#endif // _psi_src_bin_psimrcc_algebra_interface_h_

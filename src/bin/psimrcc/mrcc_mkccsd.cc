@@ -3,23 +3,24 @@
  *  frank@ccc.uga.edu   andysim@ccc.uga.edu
  *  A multireference coupled cluster code
  ***************************************************************************/
-#include "calculation_options.h"
-#include "moinfo.h"
-#include "memory_manager.h"`
-#include "mrcc.h"
-#include "matrix.h"
+
+#include <psifiles.h>
+#include <libmoinfo/libmoinfo.h>
+#include <liboptions/liboptions.h>
+#include <libpsio/psio.h>
+#include <libutil/libutil.h>
+
 #include "blas.h"
 #include "debugging.h"
-#include "utilities.h"
+#include "memory_manager.h"
+#include "mrcc.h"
+#include "matrix.h"
 
 extern FILE* outfile;
 
 using namespace std;
 
-#include <libpsio/psio.h>
-
 namespace psi{ namespace psimrcc{
-
 
 void CCMRCC::update_amps_mkccsd_wrapper()
 {
@@ -70,36 +71,45 @@ void CCMRCC::update_t1_t2_amps_mkccsd()
   blas->solve("d'2[oO][vV]{u}  = d2[oO][vV]{u}");
   blas->solve("d'2[OO][VV]{u}  = d2[OO][VV]{u}");
 
-  for(int n=0;n<moinfo->get_nunique();n++){
-    int m = moinfo->get_ref_number("u",n);
-    string shift = to_string(current_energy-Heff[m][m]);
-    blas->solve("d'1[o][v]{" + to_string(m) + "} += " + shift);
-    blas->solve("d'1[O][V]{" + to_string(m) + "} += " + shift);
-    blas->solve("d'2[oo][vv]{" + to_string(m) + "} += " + shift);
-    blas->solve("d'2[oO][vV]{" + to_string(m) + "} += " + shift);
-    blas->solve("d'2[OO][VV]{" + to_string(m) + "} += " + shift);
+  if(options_get_bool("COUPLING_TERMS")){
+    for(int n=0;n<moinfo->get_nunique();n++){
+      int m = moinfo->get_ref_number("u",n);
+      string shift = to_string(current_energy-Heff[m][m]);
+      blas->solve("d'1[o][v]{" + to_string(m) + "} += " + shift);
+      blas->solve("d'1[O][V]{" + to_string(m) + "} += " + shift);
+      blas->solve("d'2[oo][vv]{" + to_string(m) + "} += " + shift);
+      blas->solve("d'2[oO][vV]{" + to_string(m) + "} += " + shift);
+      blas->solve("d'2[OO][VV]{" + to_string(m) + "} += " + shift);
+    }
   }
 
   for(int i=0;i<moinfo->get_nunique();i++){
     int unique_i = moinfo->get_ref_number("u",i);
     string i_str = to_string(unique_i);
     // Form the coupling terms
-    for(int j=0;j<moinfo->get_nrefs();j++){
-      int unique_j = moinfo->get_ref_number("a",j);
-      string j_str = to_string(unique_j);
-      double term = eigenvector[j]/eigenvector[unique_i];
-      if(fabs(term)>1.0e5) term = 0.0;
-      blas->set_scalar("factor_mk",unique_j,Heff[unique_i][j]*term);
-      if(unique_i!=j){
-        if(j==unique_j){
-          blas->solve("t1_eqns[o][v]{" + i_str + "} += factor_mk{" + j_str + "} t1[o][v]{" + j_str + "}");
-          blas->solve("t1_eqns[O][V]{" + i_str + "} += factor_mk{" + j_str + "} t1[O][V]{" + j_str + "}");
-        }else{
-          blas->solve("t1_eqns[o][v]{" + i_str + "} += factor_mk{" + j_str + "} t1[O][V]{" + j_str + "}");
-          blas->solve("t1_eqns[O][V]{" + i_str + "} += factor_mk{" + j_str + "} t1[o][v]{" + j_str + "}");
+    if(options_get_bool("COUPLING_TERMS")){
+      for(int j=0;j<moinfo->get_nrefs();j++){
+        int unique_j = moinfo->get_ref_number("a",j);
+        string j_str = to_string(unique_j);
+        double term = eigenvector[j]/eigenvector[unique_i];
+        if(fabs(term)>1.0e5) {
+          term = 0.0;
+          fprintf(outfile,"\n  Warning: setting eigenvector[j]/eigenvector[unique_i] = 0.0 in T1 couplings");
+        }
+
+        blas->set_scalar("factor_mk",unique_j,Heff[unique_i][j]*term);
+        if(unique_i!=j){
+          if(j==unique_j){
+            blas->solve("t1_eqns[o][v]{" + i_str + "} += factor_mk{" + j_str + "} t1[o][v]{" + j_str + "}");
+            blas->solve("t1_eqns[O][V]{" + i_str + "} += factor_mk{" + j_str + "} t1[O][V]{" + j_str + "}");
+          }else{
+            blas->solve("t1_eqns[o][v]{" + i_str + "} += factor_mk{" + j_str + "} t1[O][V]{" + j_str + "}");
+            blas->solve("t1_eqns[O][V]{" + i_str + "} += factor_mk{" + j_str + "} t1[o][v]{" + j_str + "}");
+          }
         }
       }
     }
+
     if(fabs(eigenvector[unique_i])>1.0e-6){
     // Update t1 for reference i
     blas->solve("t1_delta[o][v]{" + i_str + "}  =   t1_eqns[o][v]{" + i_str + "} / d'1[o][v]{" + i_str + "} - t1[o][v]{" + i_str + "}");
@@ -107,15 +117,23 @@ void CCMRCC::update_t1_t2_amps_mkccsd()
 
     blas->solve("t1[o][v]{" + i_str + "} = t1_eqns[o][v]{" + i_str + "} / d'1[o][v]{" + i_str + "}");
     blas->solve("t1[O][V]{" + i_str + "} = t1_eqns[O][V]{" + i_str + "} / d'1[O][V]{" + i_str + "}");
+    }else{
+      fprintf(outfile,"\n  Warning: I am not updating T1 for reference %d",unique_i);
     }
+
     zero_internal_amps();
 
+    if(options_get_bool("COUPLING_TERMS")){
     // Add the contribution from the other references
     for(int j=0;j<moinfo->get_nrefs();j++){
       int unique_j = moinfo->get_ref_number("a",j);
       string j_str = to_string(unique_j);
       double term = eigenvector[j]/eigenvector[unique_i];
-      if(fabs(term)>1.0e5) term = 0.0;
+      if(fabs(term)>1.0e5){
+        term = 0.0;
+        fprintf(outfile,"\n  Warning: setting eigenvector[j]/eigenvector[unique_i] = 0.0 in T2 couplings");
+      }
+
       blas->set_scalar("factor_mk",unique_j,Heff[unique_i][j]*term);
       if(unique_i!=j){
         if(j==unique_j){
@@ -234,13 +252,14 @@ void CCMRCC::update_t1_t2_amps_mkccsd()
 
       }
     }
+    }
     blas->solve("t2_delta[oo][vv]{" + i_str + "} = t2_eqns[oo][vv]{" + i_str + "} / d'2[oo][vv]{" + i_str + "} - t2[oo][vv]{" + i_str + "}");
     blas->solve("t2_delta[oO][vV]{" + i_str + "} = t2_eqns[oO][vV]{" + i_str + "} / d'2[oO][vV]{" + i_str + "} - t2[oO][vV]{" + i_str + "}");
     blas->solve("t2_delta[OO][VV]{" + i_str + "} = t2_eqns[OO][VV]{" + i_str + "} / d'2[OO][VV]{" + i_str + "} - t2[OO][VV]{" + i_str + "}");
 
     if(fabs(eigenvector[unique_i])>1.0e-6){
-      string damp = to_string(double(options->get_int_option("DAMPING_FACTOR"))/1000.0);
-      string one_minus_damp = to_string(1.0-double(options->get_int_option("DAMPING_FACTOR"))/1000.0);
+      string damp = to_string(double(options_get_int("DAMPING_FACTOR"))/1000.0);
+      string one_minus_damp = to_string(1.0-double(options_get_int("DAMPING_FACTOR"))/1000.0);
       blas->solve("t2[oo][vv]{" + i_str + "} = " + one_minus_damp + " t2_eqns[oo][vv]{" + i_str + "} / d'2[oo][vv]{" + i_str + "}");
       blas->solve("t2[oO][vV]{" + i_str + "} = " + one_minus_damp + " t2_eqns[oO][vV]{" + i_str + "} / d'2[oO][vV]{" + i_str + "}");
       blas->solve("t2[OO][VV]{" + i_str + "} = " + one_minus_damp + " t2_eqns[OO][VV]{" + i_str + "} / d'2[OO][VV]{" + i_str + "}");
@@ -251,9 +270,10 @@ void CCMRCC::update_t1_t2_amps_mkccsd()
       blas->solve("t2_old[oo][vv]{" + i_str + "} = t2[oo][vv]{" + i_str + "}");
       blas->solve("t2_old[oO][vV]{" + i_str + "} = t2[oO][vV]{" + i_str + "}");
       blas->solve("t2_old[OO][VV]{" + i_str + "} = t2[OO][VV]{" + i_str + "}");
+    }else{
+      fprintf(outfile,"\n  Warning: I am not updating T2 for reference %d",unique_i);
     }
   }
-
 
 
 //   blas->solve("t1_norm{u}  = t1[o][v]{u} . t1[o][v]{u}");
@@ -485,6 +505,11 @@ void CCMRCC::update_t3_ijkabc_amps_mkccsd()
         int unique_nu = moinfo->get_ref_number("a",nu);
         double factor = Heff[unique_mu][nu]*eigenvector[nu]/eigenvector[unique_mu];
   
+        if(fabs(eigenvector[nu]/eigenvector[unique_mu])>1.0e5) {
+          factor = 0.0;
+          fprintf(outfile,"\n  Warning: setting Heff[unique_mu][nu]*eigenvector[j]/eigenvector[unique_i] = 0.0 in T3 couplings");
+        }
+
         // Linear Coupling Terms
         if(triples_coupling_type>=linear){
           double*** Tijkabc_nu_matrix;
@@ -593,43 +618,47 @@ void CCMRCC::update_t3_ijkabc_amps_mkccsd()
       }
     }
 
-    if(!options->get_bool_option("DIIS_TRIPLES")){
-      // Update the equations
-      double shift = current_energy - Heff[unique_mu][unique_mu];
-      for(int h =0; h < moinfo->get_nirreps();h++){
-        for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
-          double delta_abc = d3_vvv[mu][h][abc];
-          for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
-            double delta_ijk = d3_ooo[mu][h][ijk];
-            if(delta_ijk-delta_abc < 1.0e50)
-              Tijkabc_matrix[h][ijk][abc] = (Tijkabc_matrix[h][ijk][abc]*(delta_ijk-delta_abc) + Hijkabc_matrix[h][ijk][abc])/(delta_ijk-delta_abc + shift);
+    if(fabs(eigenvector[unique_mu])>1.0e-6){
+      if(!options_get_bool("DIIS_TRIPLES")){
+        // Update the equations
+        double shift = current_energy - Heff[unique_mu][unique_mu];
+        for(int h =0; h < moinfo->get_nirreps();h++){
+          for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
+            double delta_abc = d3_vvv[mu][h][abc];
+            for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
+              double delta_ijk = d3_ooo[mu][h][ijk];
+              if(delta_ijk-delta_abc < 1.0e50)
+                Tijkabc_matrix[h][ijk][abc] = (Tijkabc_matrix[h][ijk][abc]*(delta_ijk-delta_abc) + Hijkabc_matrix[h][ijk][abc])/(delta_ijk-delta_abc + shift);
+            }
           }
+        }
+      }else{
+        // Update the equations
+        double shift = current_energy - Heff[unique_mu][unique_mu];
+        for(int h =0; h < moinfo->get_nirreps();h++){
+          double* diis_error;
+          size_t  k = 0;
+          allocate1(double,diis_error,TijkabcMatTmp->get_block_sizepi(h));
+          for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
+            double delta_abc = d3_vvv[mu][h][abc];
+            for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
+              double delta_ijk = d3_ooo[mu][h][ijk];
+                diis_error[k]=0.0;
+                if(delta_ijk-delta_abc < 1.0e50){
+                  diis_error[k] = (Tijkabc_matrix[h][ijk][abc]*(delta_ijk-delta_abc) + Hijkabc_matrix[h][ijk][abc])/(delta_ijk-delta_abc + shift) - Tijkabc_matrix[h][ijk][abc];
+                  Tijkabc_matrix[h][ijk][abc] += diis_error[k];
+                }
+                k++;
+            }
+          }
+          char data_label[80];
+          sprintf(data_label,"%s%d%s_%s_%d_%d","t3_delta[ooo][vvv]{",unique_mu,"}","DIIS",h,diis_step);
+          psio_write_entry(PSIF_PSIMRCC_INTEGRALS,data_label,(char*)(diis_error),TijkabcMatTmp->get_block_sizepi(h)*sizeof(double));
+          release1(diis_error);
         }
       }
     }else{
-      // Update the equations
-      double shift = current_energy - Heff[unique_mu][unique_mu];
-      for(int h =0; h < moinfo->get_nirreps();h++){
-        double* diis_error;
-        size_t  k = 0;
-        allocate1(double,diis_error,TijkabcMatTmp->get_block_sizepi(h));
-        for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
-          double delta_abc = d3_vvv[mu][h][abc];
-          for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
-            double delta_ijk = d3_ooo[mu][h][ijk];
-              diis_error[k]=0.0;
-              if(delta_ijk-delta_abc < 1.0e50){
-                diis_error[k] = (Tijkabc_matrix[h][ijk][abc]*(delta_ijk-delta_abc) + Hijkabc_matrix[h][ijk][abc])/(delta_ijk-delta_abc + shift) - Tijkabc_matrix[h][ijk][abc];
-                Tijkabc_matrix[h][ijk][abc] += diis_error[k];
-              }
-              k++;
-          }
-        }
-        char data_label[80];
-        sprintf(data_label,"%s%d%s_%s_%d_%d","t3_delta[ooo][vvv]{",unique_mu,"}","DIIS",h,diis_step);
-        psio_write_entry(MRCC_ON_DISK,data_label,(char*)(diis_error),TijkabcMatTmp->get_block_sizepi(h)*sizeof(double));
-        release1(diis_error);
-      }
+      fprintf(outfile,"\n  Warning: I am not updating T3 for reference %d",unique_mu);
     }
   }
 }
@@ -652,6 +681,11 @@ void CCMRCC::update_t3_ijKabC_amps_mkccsd()
       if(unique_mu!=nu){
         int unique_nu = moinfo->get_ref_number("a",nu);
         double factor = Heff[unique_mu][nu]*eigenvector[nu]/eigenvector[unique_mu];
+
+        if(fabs(eigenvector[nu]/eigenvector[unique_mu])>1.0e5) {
+          factor = 0.0;
+          fprintf(outfile,"\n  Warning: setting Heff[unique_mu][nu]*eigenvector[j]/eigenvector[unique_i] = 0.0 in T3 couplings");
+        }
 
         // Linear Coupling Terms
         if(triples_coupling_type>=linear){
@@ -794,43 +828,48 @@ void CCMRCC::update_t3_ijKabC_amps_mkccsd()
         }
       }
     }
-    if(!options->get_bool_option("DIIS_TRIPLES")){
-      // Update the equations
-      double shift = current_energy - Heff[unique_mu][unique_mu];
-      for(int h =0; h < moinfo->get_nirreps();h++){
-        for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
-          double delta_abc = d3_vvV[mu][h][abc];
-          for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
-            double delta_ijk = d3_ooO[mu][h][ijk];
-            if(delta_ijk-delta_abc < 1.0e50)
-              Tijkabc_matrix[h][ijk][abc] = (Tijkabc_matrix[h][ijk][abc]*(delta_ijk-delta_abc) + Hijkabc_matrix[h][ijk][abc])/(delta_ijk-delta_abc + shift);
+
+    if(fabs(eigenvector[unique_mu])>1.0e-6){
+      if(!options_get_bool("DIIS_TRIPLES")){
+        // Update the equations
+        double shift = current_energy - Heff[unique_mu][unique_mu];
+        for(int h =0; h < moinfo->get_nirreps();h++){
+          for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
+            double delta_abc = d3_vvV[mu][h][abc];
+            for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
+              double delta_ijk = d3_ooO[mu][h][ijk];
+              if(delta_ijk-delta_abc < 1.0e50)
+                Tijkabc_matrix[h][ijk][abc] = (Tijkabc_matrix[h][ijk][abc]*(delta_ijk-delta_abc) + Hijkabc_matrix[h][ijk][abc])/(delta_ijk-delta_abc + shift);
+            }
           }
+        }
+      }else{
+        // Update the equations
+        double shift = current_energy - Heff[unique_mu][unique_mu];
+        for(int h =0; h < moinfo->get_nirreps();h++){
+          double* diis_error;
+          size_t  k = 0;
+          allocate1(double,diis_error,TijkabcMatTmp->get_block_sizepi(h));
+          for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
+            double delta_abc = d3_vvV[mu][h][abc];
+            for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
+              double delta_ijk = d3_ooO[mu][h][ijk];
+                diis_error[k]=0.0;
+                if(delta_ijk-delta_abc < 1.0e50){
+                  diis_error[k] = (Tijkabc_matrix[h][ijk][abc]*(delta_ijk-delta_abc) + Hijkabc_matrix[h][ijk][abc])/(delta_ijk-delta_abc + shift) - Tijkabc_matrix[h][ijk][abc];
+                  Tijkabc_matrix[h][ijk][abc] += diis_error[k];
+                }
+                k++;
+            }
+          }
+          char data_label[80];
+          sprintf(data_label,"%s%d%s_%s_%d_%d","t3_delta[ooO][vvV]{",unique_mu,"}","DIIS",h,diis_step);
+          psio_write_entry(PSIF_PSIMRCC_INTEGRALS,data_label,(char*)(diis_error),TijkabcMatTmp->get_block_sizepi(h)*sizeof(double));
+          release1(diis_error);
         }
       }
     }else{
-      // Update the equations
-      double shift = current_energy - Heff[unique_mu][unique_mu];
-      for(int h =0; h < moinfo->get_nirreps();h++){
-        double* diis_error;
-        size_t  k = 0;
-        allocate1(double,diis_error,TijkabcMatTmp->get_block_sizepi(h));
-        for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
-          double delta_abc = d3_vvV[mu][h][abc];
-          for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
-            double delta_ijk = d3_ooO[mu][h][ijk];
-              diis_error[k]=0.0;
-              if(delta_ijk-delta_abc < 1.0e50){
-                diis_error[k] = (Tijkabc_matrix[h][ijk][abc]*(delta_ijk-delta_abc) + Hijkabc_matrix[h][ijk][abc])/(delta_ijk-delta_abc + shift) - Tijkabc_matrix[h][ijk][abc];
-                Tijkabc_matrix[h][ijk][abc] += diis_error[k];
-              }
-              k++;
-          }
-        }
-        char data_label[80];
-        sprintf(data_label,"%s%d%s_%s_%d_%d","t3_delta[ooO][vvV]{",unique_mu,"}","DIIS",h,diis_step);
-        psio_write_entry(MRCC_ON_DISK,data_label,(char*)(diis_error),TijkabcMatTmp->get_block_sizepi(h)*sizeof(double));
-        release1(diis_error);
-      }
+      fprintf(outfile,"\n  Warning: I am not updating T3 for reference %d",unique_mu);
     }
   }
 }
@@ -854,6 +893,11 @@ void CCMRCC::update_t3_iJKaBC_amps_mkccsd()
       if(unique_mu!=nu){
         int unique_nu = moinfo->get_ref_number("a",nu);
         double factor = Heff[unique_mu][nu]*eigenvector[nu]/eigenvector[unique_mu];
+
+        if(fabs(eigenvector[nu]/eigenvector[unique_mu])>1.0e5) {
+          factor = 0.0;
+          fprintf(outfile,"\n  Warning: setting Heff[unique_mu][nu]*eigenvector[j]/eigenvector[unique_i] = 0.0 in T3 couplings");
+        }
 
         // Linear Coupling Terms
         if(triples_coupling_type>=linear){
@@ -999,44 +1043,47 @@ void CCMRCC::update_t3_iJKaBC_amps_mkccsd()
         }
       }
     }
-
-    if(!options->get_bool_option("DIIS_TRIPLES")){
-      // Update the equations
-      double shift = current_energy - Heff[unique_mu][unique_mu];
-      for(int h =0; h < moinfo->get_nirreps();h++){
-        for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
-          double delta_abc = d3_vVV[mu][h][abc];
-          for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
-            double delta_ijk = d3_oOO[mu][h][ijk];
-            if(delta_ijk-delta_abc < 1.0e50)
-              Tijkabc_matrix[h][ijk][abc] = (Tijkabc_matrix[h][ijk][abc]*(delta_ijk-delta_abc) + Hijkabc_matrix[h][ijk][abc])/(delta_ijk-delta_abc + shift);
+    if(fabs(eigenvector[unique_mu])>1.0e-6){
+      if(!options_get_bool("DIIS_TRIPLES")){
+        // Update the equations
+        double shift = current_energy - Heff[unique_mu][unique_mu];
+        for(int h =0; h < moinfo->get_nirreps();h++){
+          for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
+            double delta_abc = d3_vVV[mu][h][abc];
+            for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
+              double delta_ijk = d3_oOO[mu][h][ijk];
+              if(delta_ijk-delta_abc < 1.0e50)
+                Tijkabc_matrix[h][ijk][abc] = (Tijkabc_matrix[h][ijk][abc]*(delta_ijk-delta_abc) + Hijkabc_matrix[h][ijk][abc])/(delta_ijk-delta_abc + shift);
+            }
           }
+        }
+      }else{
+        // Update the equations
+        double shift = current_energy - Heff[unique_mu][unique_mu];
+        for(int h =0; h < moinfo->get_nirreps();h++){
+          double* diis_error;
+          size_t  k = 0;
+          allocate1(double,diis_error,TijkabcMatTmp->get_block_sizepi(h));
+          for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
+            double delta_abc = d3_vVV[mu][h][abc];
+            for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
+              double delta_ijk = d3_oOO[mu][h][ijk];
+                diis_error[k]=0.0;
+                if(delta_ijk-delta_abc < 1.0e50){
+                  diis_error[k] = (Tijkabc_matrix[h][ijk][abc]*(delta_ijk-delta_abc) + Hijkabc_matrix[h][ijk][abc])/(delta_ijk-delta_abc + shift) - Tijkabc_matrix[h][ijk][abc];
+                  Tijkabc_matrix[h][ijk][abc] += diis_error[k];
+                }
+                k++;
+            }
+          }
+          char data_label[80];
+          sprintf(data_label,"%s%d%s_%s_%d_%d","t3_delta[oOO][vVV]{",unique_mu,"}","DIIS",h,diis_step);
+          psio_write_entry(PSIF_PSIMRCC_INTEGRALS,data_label,(char*)(diis_error),TijkabcMatTmp->get_block_sizepi(h)*sizeof(double));
+          release1(diis_error);
         }
       }
     }else{
-      // Update the equations
-      double shift = current_energy - Heff[unique_mu][unique_mu];
-      for(int h =0; h < moinfo->get_nirreps();h++){
-        double* diis_error;
-        size_t  k = 0;
-        allocate1(double,diis_error,TijkabcMatTmp->get_block_sizepi(h));
-        for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
-          double delta_abc = d3_vVV[mu][h][abc];
-          for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
-            double delta_ijk = d3_oOO[mu][h][ijk];
-              diis_error[k]=0.0;
-              if(delta_ijk-delta_abc < 1.0e50){
-                diis_error[k] = (Tijkabc_matrix[h][ijk][abc]*(delta_ijk-delta_abc) + Hijkabc_matrix[h][ijk][abc])/(delta_ijk-delta_abc + shift) - Tijkabc_matrix[h][ijk][abc];
-                Tijkabc_matrix[h][ijk][abc] += diis_error[k];
-              }
-              k++;
-          }
-        }
-        char data_label[80];
-        sprintf(data_label,"%s%d%s_%s_%d_%d","t3_delta[oOO][vVV]{",unique_mu,"}","DIIS",h,diis_step);
-        psio_write_entry(MRCC_ON_DISK,data_label,(char*)(diis_error),TijkabcMatTmp->get_block_sizepi(h)*sizeof(double));
-        release1(diis_error);
-      }
+      fprintf(outfile,"\n  Warning: I am not updating T3 for reference %d",unique_mu);
     }
   }
 }
@@ -1061,6 +1108,11 @@ void CCMRCC::update_t3_IJKABC_amps_mkccsd()
       if(unique_mu!=nu){
         int unique_nu = moinfo->get_ref_number("a",nu);
         double factor = Heff[unique_mu][nu]*eigenvector[nu]/eigenvector[unique_mu];
+
+        if(fabs(eigenvector[nu]/eigenvector[unique_mu])>1.0e5) {
+          factor = 0.0;
+          fprintf(outfile,"\n  Warning: setting Heff[unique_mu][nu]*eigenvector[j]/eigenvector[unique_i] = 0.0 in T3 couplings");
+        }
 
         // Linear Coupling Terms
         if(triples_coupling_type>=linear){
@@ -1168,43 +1220,47 @@ void CCMRCC::update_t3_IJKABC_amps_mkccsd()
         }
       }
     }
-    if(!options->get_bool_option("DIIS_TRIPLES")){
-      // Update the equations
-      double shift = current_energy - Heff[unique_mu][unique_mu];
-      for(int h =0; h < moinfo->get_nirreps();h++){
-        for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
-          double delta_abc = d3_VVV[mu][h][abc];
-          for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
-            double delta_ijk = d3_OOO[mu][h][ijk];
-            if(delta_ijk-delta_abc < 1.0e50)
-              Tijkabc_matrix[h][ijk][abc] = (Tijkabc_matrix[h][ijk][abc]*(delta_ijk-delta_abc) + Hijkabc_matrix[h][ijk][abc]) / (delta_ijk-delta_abc + shift);
+    if(fabs(eigenvector[unique_mu])>1.0e-6){
+      if(!options_get_bool("DIIS_TRIPLES")){
+        // Update the equations
+        double shift = current_energy - Heff[unique_mu][unique_mu];
+        for(int h =0; h < moinfo->get_nirreps();h++){
+          for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
+            double delta_abc = d3_VVV[mu][h][abc];
+            for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
+              double delta_ijk = d3_OOO[mu][h][ijk];
+              if(delta_ijk-delta_abc < 1.0e50)
+                Tijkabc_matrix[h][ijk][abc] = (Tijkabc_matrix[h][ijk][abc]*(delta_ijk-delta_abc) + Hijkabc_matrix[h][ijk][abc]) / (delta_ijk-delta_abc + shift);
+            }
           }
+        }
+      }else{
+        // Update the equations
+        double shift = current_energy - Heff[unique_mu][unique_mu];
+        for(int h =0; h < moinfo->get_nirreps();h++){
+          double* diis_error;
+          size_t  k = 0;
+          allocate1(double,diis_error,TijkabcMatTmp->get_block_sizepi(h));
+          for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
+            double delta_abc = d3_VVV[mu][h][abc];
+            for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
+              double delta_ijk = d3_OOO[mu][h][ijk];
+                diis_error[k]=0.0;
+                if(delta_ijk-delta_abc < 1.0e50){
+                  diis_error[k] = (Tijkabc_matrix[h][ijk][abc]*(delta_ijk-delta_abc) + Hijkabc_matrix[h][ijk][abc])/(delta_ijk-delta_abc + shift) - Tijkabc_matrix[h][ijk][abc];
+                  Tijkabc_matrix[h][ijk][abc] += diis_error[k];
+                }
+                k++;
+            }
+          }
+          char data_label[80];
+          sprintf(data_label,"%s%d%s_%s_%d_%d","t3_delta[OOO][VVV]{",unique_mu,"}","DIIS",h,diis_step);
+          psio_write_entry(PSIF_PSIMRCC_INTEGRALS,data_label,(char*)(diis_error),TijkabcMatTmp->get_block_sizepi(h)*sizeof(double));
+          release1(diis_error);
         }
       }
     }else{
-      // Update the equations
-      double shift = current_energy - Heff[unique_mu][unique_mu];
-      for(int h =0; h < moinfo->get_nirreps();h++){
-        double* diis_error;
-        size_t  k = 0;
-        allocate1(double,diis_error,TijkabcMatTmp->get_block_sizepi(h));
-        for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
-          double delta_abc = d3_VVV[mu][h][abc];
-          for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
-            double delta_ijk = d3_OOO[mu][h][ijk];
-              diis_error[k]=0.0;
-              if(delta_ijk-delta_abc < 1.0e50){
-                diis_error[k] = (Tijkabc_matrix[h][ijk][abc]*(delta_ijk-delta_abc) + Hijkabc_matrix[h][ijk][abc])/(delta_ijk-delta_abc + shift) - Tijkabc_matrix[h][ijk][abc];
-                Tijkabc_matrix[h][ijk][abc] += diis_error[k];
-              }
-              k++;
-          }
-        }
-        char data_label[80];
-        sprintf(data_label,"%s%d%s_%s_%d_%d","t3_delta[OOO][VVV]{",unique_mu,"}","DIIS",h,diis_step);
-        psio_write_entry(MRCC_ON_DISK,data_label,(char*)(diis_error),TijkabcMatTmp->get_block_sizepi(h)*sizeof(double));
-        release1(diis_error);
-      }
+      fprintf(outfile,"\n  Warning: I am not updating T3 for reference %d",unique_mu);
     }
   }
 }

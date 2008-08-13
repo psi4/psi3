@@ -6,7 +6,7 @@
  ***************************************************************************/
 
 #include <iostream>
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 #include "matrix.h"
 #include <cstdlib>
 

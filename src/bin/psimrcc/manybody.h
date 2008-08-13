@@ -65,6 +65,7 @@ protected:
 
   // Effective Hamiltonian and the correpsonding eigenvectors
   double      current_energy;
+  double      delta_energy;
   double      cas_energy;
   double      old_energy;
 

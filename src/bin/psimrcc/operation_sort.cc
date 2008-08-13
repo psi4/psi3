@@ -7,10 +7,9 @@
 
 #include <iostream>
 #include <cmath>
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 #include "blas.h"
-#include "utilities.h"
-#include "error.h"
+#include <libutil/libutil.h>
 
 #include <libciomr/libciomr.h>
 

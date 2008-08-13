@@ -8,7 +8,7 @@
 #include "idmrpt2.h"
 #include "blas.h"
 #include "debugging.h"
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 
 namespace psi{ namespace psimrcc{
 

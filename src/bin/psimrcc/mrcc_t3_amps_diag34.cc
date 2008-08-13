@@ -4,10 +4,10 @@
  *  A multireference coupled cluster code
  ***************************************************************************/
 
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 #include "mrcc.h"
 #include "blas.h"
-#include "utilities.h"
+#include <libutil/libutil.h>
 #include "algebra_interface.h"
 #include "memory_manager.h"
 

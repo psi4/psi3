@@ -8,10 +8,9 @@
 #include <cmath>
 #include <algorithm>
 #include "memory_manager.h"
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 #include "matrix.h"
-#include "utilities.h"
-#include "error.h"
+#include <libutil/libutil.h>
 
 #include <libciomr/libciomr.h>
 
@@ -299,56 +298,58 @@ double CCMatrix::dot_product(CCMatrix* B_Matrix, CCMatrix* C_Matrix, int h)
 
 void CCMatrix::print_dpdmatrix(int irrep, FILE *out)
 {
-      int ii,jj,kk,nn,ll;
-      int i,j;
+  int ii,jj,kk,nn,ll;
+  int i,j;
 
-      double** mat=matrix[irrep];
-      int left_offset  = left->get_first(irrep);
-      int right_offset = right->get_first(irrep);
+  double** mat=matrix[irrep];
+  int left_offset  = left->get_first(irrep);
+  int right_offset = right->get_first(irrep);
 
-      int m=left->get_pairpi(irrep);
-      int n=right->get_pairpi(irrep);
+  int m=left->get_pairpi(irrep);
+  int n=right->get_pairpi(irrep);
 
-      ii=0;jj=0;
+  ii=0;jj=0;
 L200:
-      ii++;
-      jj++;
-      kk=10*jj;
-      nn=n;
-      if (nn > kk) nn=kk;
-      ll = 2*(nn-ii+1)+1;
-      fprintf (out,"\n            ");
-      for (i=ii; i <= nn; i++){
+  ii++;
+  jj++;
+  kk=10*jj;
+  nn=n;
+  if (nn > kk) nn=kk;
+  ll = 2*(nn-ii+1)+1;
+  fprintf (out,"\n            ");
+  for (i=ii; i <= nn; i++){
 
-        short* right_indices = right->get_tuple(i+right_offset-1);
-        fprintf(out,"(");
-        for(int p=0;p<right->get_nelements();p++)
-          fprintf(out,"%3d",right_indices[p]);
-        fprintf(out,")");
-        int nspaces = 10-3*right->get_nelements();
-        for(int p=0;p<nspaces;p++)
-          fprintf(out," ");
+    short* right_indices = right->get_tuple(i+right_offset-1);
+    fprintf(out,"(");
+    for(int p=0;p<right->get_nelements();p++)
+      fprintf(out,"%3d",right_indices[p]);
+    fprintf(out,")");
+    int nspaces = 10-3*right->get_nelements();
+    for(int p=0;p<nspaces;p++)
+      fprintf(out," ");
 
-      }
-      fprintf (out,"\n");
-      for (i=0; i < m; i++) {
+  }
+  fprintf (out,"\n");
+  for (i=0; i < m; i++) {
+    short* left_indices = left->get_tuple(i+left_offset);
+    fprintf(out,"\n(");
+    for(int p=0;p<left->get_nelements();p++)
+      fprintf(out,"%3d",left_indices[p]);
+    fprintf(out,")  ");
 
-        short* left_indices = left->get_tuple(i+left_offset);
-        fprintf(out,"\n(");
-        for(int p=0;p<left->get_nelements();p++)
-          fprintf(out,"%3d",left_indices[p]);
-        fprintf(out,")  ");
-
-         for (j=ii-1; j < nn; j++) {
-            fprintf (out,"%12.7f",mat[i][j]);
-            }
-         }
-      fprintf (out,"\n");
-      if (n <= kk) {
-         fflush(out);
-         return;
-         }
-      ii=kk; goto L200;
+    for (j=ii-1; j < nn; j++) {
+      if(fabs(mat[i][j]) < 100.0)
+        fprintf (out,"%12.7f",mat[i][j]);
+      else
+        fprintf (out,"    infinity");
+    }
+  }
+  fprintf (out,"\n");
+  if (n <= kk) {
+    fflush(out);
+    return;
+  }
+  ii=kk; goto L200;
 }
 
 void CCMatrix::set_scalar(double val)

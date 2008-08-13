@@ -1,17 +1,12 @@
-/***************************************************************************
- *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
 /**
  *  @file ccsort_in_core.cpp
- *  @ingroup PSIMRCC
+ *  @ingroup (PSIMRCC)
 */
 
 #include "transform.h"
 #include "sort.h"
 #include "matrix.h"
-#include "moinfo.h"
+#include <libmoinfo/libmoinfo.h>
 
 extern FILE* outfile;
 
@@ -33,7 +28,7 @@ void CCSort::frozen_core_energy_in_core()
   efzc=0.0;
   for(int i=0;i<nfzc;i++){
     int ii=frozen_core[i];
-    efzc+=2*trans->oei(ii,ii);
+    efzc+=2.0*trans->oei(ii,ii);
   }
   // Two electron contribution to the frozen core energy
   for(int i=0;i<nfzc;i++){
