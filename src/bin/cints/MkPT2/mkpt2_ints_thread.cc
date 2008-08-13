@@ -106,9 +106,9 @@ void *mkpt2_ints_thread(void *tnum_ptr)
   char ixjy_key_string[80];
   char ijab_key_string[80];
 #if MkPT2_USE_IWL
-  extern struct tebuf * iwl_buf;
   extern struct iwlbuf ERIOUT;
-  extern int iwl_count;
+  iwl_buf_init(&ERIOUT,PSIF_MO_TEI,UserOptions.cutoff,ibatch,0);
+
 #else
   extern double * xy_buf;
 #endif
@@ -847,54 +847,42 @@ void *mkpt2_ints_thread(void *tnum_ptr)
       if restart ever needed ---*/
 #if !MkPT2_USE_IWL
      psio_open(PSIF_MO_TEI, (ibatch != 0) ? PSIO_OPEN_OLD : PSIO_OPEN_NEW);
-#else
-     iwl_buf_init(&ERIOUT,PSIF_MO_TEI,UserOptions.cutoff,ibatch,0);
 #endif
      /*--------------------------------------------------------------------
        Write integrals out in num_mo by num_mo batches corresponding to
        each active ij pair for the (ix|jy) exchange like integrals.
-      --------------------------------------------------------------------*/
+      --------------------------------------------------------------------*/     
       for(int mo_i=0;mo_i<ibatch_length;mo_i++) {
-        int i = MOInfo.occ_to_pitzer[mo_i+imin];       /*--- mo_i+imin is the index in the occupied indexing scheme, convert to pitzer */
+        short int i = MOInfo.occ_to_pitzer[mo_i+imin];       /*--- mo_i+imin is the index in the occupied indexing scheme, convert to pitzer */
         int isym = MOInfo.mo2symblk_occ[0][mo_i+imin];
         for(int mo_j=0;mo_j<=mo_i+imin;mo_j++) {
           int jsym = MOInfo.mo2symblk_occ[0][mo_j];
-          int j = MOInfo.occ_to_pitzer[mo_j];    /*--- Again, get the "occupied" index converted to pitzer---*/
-#if MkPT2_USE_IWL
-          iwl_count = 0;
-#else
+          short int j = MOInfo.occ_to_pitzer[mo_j];    /*--- Again, get the "occupied" index converted to pitzer---*/
+#if !MkPT2_USE_IWL
           sprintf(ixjy_key_string,"Block_%d_x_%d_y",i,j);
           memset(xy_buf,0,MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
 #endif
           /*--- Put all integrals with common i and j into a buffer ---*/
           for(int mo_x=0,xy=0;mo_x<MOInfo.num_mo;mo_x++) {
-            int x = mo_x;    /*--- The second index is a virtual index, that's fine ---*/
+            short int x = mo_x;    /*--- The second index is a virtual index, that's fine ---*/
             int xsym = MOInfo.mo2symblk[x];
             for(int mo_y=0;mo_y<MOInfo.num_mo;mo_y++,xy++) {
-      	     int y = mo_y;                    /*--- Again, the Pitzer index here is what we need ---*/
+      	     short int y = mo_y;                    /*--- Again, the Pitzer index here is what we need ---*/
       	     int ysym = MOInfo.mo2symblk[y];
               /*--- Skip this integral if it's non-totally symmetric -
                 Pitzer's contribution theorem in Abelian case ---*/
               if ((isym ^ jsym) ^ (xsym ^ ysym)) continue;
               /*--- find the integral in ixjy_buf and put it in xy_buf ---*/
 #if MkPT2_USE_IWL
-              iwl_buf[iwl_count].i = (short int) i;
-              iwl_buf[iwl_count].j = (short int) x;
-              iwl_buf[iwl_count].k = (short int) j;
-              iwl_buf[iwl_count].l = (short int) y;
-              iwl_buf[iwl_count].val = jyix_buf[((mo_j * MOInfo.num_mo + mo_y) * ibatch_length + mo_i) * MOInfo.num_mo + mo_x];
-#if MkPT2_TEST
-              fprintf(outfile,"---> (%3d %3d | %3d %3d) = %16.10f\n", 
-              iwl_buf[iwl_count].i, iwl_buf[iwl_count].j, iwl_buf[iwl_count].k, iwl_buf[iwl_count].l,iwl_buf[iwl_count].val);
-#endif
-              iwl_count++;
+              double val = jyix_buf[((mo_j * MOInfo.num_mo + mo_y) * ibatch_length + mo_i) * MOInfo.num_mo + mo_x];
+              iwl_buf_wrt_val(&ERIOUT, i, x, j, y, val, PRINT, outfile, 0);
 #else
               xy_buf[xy] = jyix_buf[((mo_j * MOInfo.num_mo + mo_y) * ibatch_length + mo_i) * MOInfo.num_mo + mo_x];
 #endif         
             }
           }
 #if MkPT2_USE_IWL
-          iwl_buf_wrt_struct_nocut(&ERIOUT, iwl_buf, iwl_count);
+//          iwl_buf_wrt_struct_nocut(&ERIOUT, iwl_buf, iwl_count);
 #else
           psio_write_entry(PSIF_MO_TEI, ixjy_key_string, (char *)xy_buf, MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
 #endif         
@@ -906,23 +894,21 @@ void *mkpt2_ints_thread(void *tnum_ptr)
        each active ij pair for the (ij|ab) Coulomb integrals
       --------------------------------------------------------------------*/
       for(int mo_i=0;mo_i<ibatch_length;mo_i++) {
-        int i = MOInfo.occ_to_pitzer[mo_i+imin];       /*--- mo_i+imin is the index in the occupied indexing scheme, convert to pitzer */
+        short int i = MOInfo.occ_to_pitzer[mo_i+imin];       /*--- mo_i+imin is the index in the occupied indexing scheme, convert to pitzer */
         int isym = MOInfo.mo2symblk_occ[0][mo_i+imin];
         for(int mo_j=0;mo_j<=mo_i+imin;mo_j++) {
           int jsym = MOInfo.mo2symblk_occ[0][mo_j];
-          int j = MOInfo.occ_to_pitzer[mo_j];    /*--- Again, get the "occupied" index converted to pitzer---*/
-#if MkPT2_USE_IWL
-          iwl_count = 0;
-#else
+          short int j = MOInfo.occ_to_pitzer[mo_j];    /*--- Again, get the "occupied" index converted to pitzer---*/
+#if !MkPT2_USE_IWL
           sprintf(ijab_key_string,"Block_%d_%d_a_b",i,j);
           memset(xy_buf,0,MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
 #endif
           /*--- Put all integrals with common i and j into a buffer ---*/
           for(int mo_a=0;mo_a<MOInfo.nuocc;mo_a++) {
-            int a = MOInfo.vir_to_pitzer[mo_a]; 
+            short int a = MOInfo.vir_to_pitzer[mo_a]; 
             int asym = MOInfo.mo2symblk_uocc[0][mo_a];
             for(int mo_b=0;mo_b<=mo_a;mo_b++) {
-             int b = MOInfo.vir_to_pitzer[mo_b]; 
+             short int b = MOInfo.vir_to_pitzer[mo_b]; 
              int bsym = MOInfo.mo2symblk_uocc[0][mo_b];
               /*--- Skip this integral if it's non-totally symmetric -
                 Pitzer's contribution theorem in Abelian case ---*/
@@ -930,32 +916,19 @@ void *mkpt2_ints_thread(void *tnum_ptr)
               unsigned long int ab = a * MOInfo.nuocc + b;
               /*--- find the integral in ixjy_buf and put it in xy_buf ---*/
 #if MkPT2_USE_IWL
-              iwl_buf[iwl_count].i = (short int) i;
-              iwl_buf[iwl_count].j = (short int) j;
-              iwl_buf[iwl_count].k = (short int) a;
-              iwl_buf[iwl_count].l = (short int) b;
-              iwl_buf[iwl_count].val = abij_buf[((INDEX(mo_a,mo_b)) * ibatch_length + mo_i) * MOInfo.ndocc + mo_j];
-#if MkPT2_TEST
-              fprintf(outfile,"---> (%3d %3d | %3d %3d) = %16.10f\n", 
-              iwl_buf[iwl_count].i, iwl_buf[iwl_count].j, iwl_buf[iwl_count].k, iwl_buf[iwl_count].l,iwl_buf[iwl_count].val);
-#endif
-              iwl_count++;
+              double val = abij_buf[((INDEX(mo_a,mo_b)) * ibatch_length + mo_i) * MOInfo.ndocc + mo_j];
+              iwl_buf_wrt_val(&ERIOUT, i, j, a, b, val, PRINT, outfile, 0);
 #else
               xy_buf[ab] = abij_buf[((INDEX(mo_a,mo_b)) * ibatch_length + mo_i) * MOInfo.ndocc + mo_j];
 #endif         
             }
           }
-#if MkPT2_USE_IWL
-          iwl_buf_wrt_struct_nocut(&ERIOUT, iwl_buf, iwl_count);
-#else
+#if !MkPT2_USE_IWL
           psio_write_entry(PSIF_MO_TEI, ijab_key_string, (char *)xy_buf, MOInfo.num_mo*MOInfo.num_mo*sizeof(double));
 #endif         
         }
       }
-#if MkPT2_USE_IWL
-  iwl_buf_flush(&ERIOUT, 1);
-  iwl_buf_close(&ERIOUT, 1);  
-#else
+#if !MkPT2_USE_IWL
   psio_close(PSIF_MO_TEI, 1);
 #endif
 
@@ -972,6 +945,11 @@ void *mkpt2_ints_thread(void *tnum_ptr)
      pthread_mutex_unlock(&mkpt2_energy_mutex);
     }
   } /* End of "I"-loop */
+
+#if MkPT2_USE_IWL
+  iwl_buf_flush(&ERIOUT, 1);
+  iwl_buf_close(&ERIOUT, 1);  
+#endif
 
   /*---------
     Clean-up

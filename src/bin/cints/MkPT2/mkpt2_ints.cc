@@ -57,9 +57,7 @@ namespace psi {
     unsigned long int n_xy;
     unsigned long int n_ab;
 #if MkPT2_USE_IWL
-    tebuf *iwl_buf;
     iwlbuf ERIOUT;
-    int iwl_count;
 #else
     double * xy_buf;
 #endif
@@ -153,11 +151,9 @@ namespace psi {
 			      MOInfo.num_mo*MOInfo.ndocc*BasisSet.num_ao + /*jsix*/
 			      MOInfo.nuocc*MOInfo.ndocc*BasisSet.num_ao + /*asij*/
 			      n_ab*MOInfo.ndocc + /*abij*/
-			      MOInfo.num_mo*MOInfo.ndocc*MOInfo.num_mo + /*jyix*/
-#if MkPT2_USE_IWL
-                              MOInfo.num_mo*MOInfo.num_mo*sizeof(struct tebuf)/sizeof(double) /*iwl_buf*/
-#else
-                              MOInfo.num_mo*MOInfo.num_mo /*xy_buf*/
+			      MOInfo.num_mo*MOInfo.ndocc*MOInfo.num_mo /*jyix*/
+#if !MkPT2_USE_IWL
+                             + MOInfo.num_mo*MOInfo.num_mo /*xy_buf*/
 #endif
                              );
       if (num_i_per_ibatch > MOInfo.ndocc)
@@ -173,9 +169,7 @@ namespace psi {
       jyix_buf = init_array(MOInfo.ndocc*MOInfo.num_mo* num_i_per_ibatch*MOInfo.num_mo);
       asij_buf = init_array(MOInfo.nuocc*BasisSet.num_ao*num_i_per_ibatch*MOInfo.ndocc);
       abij_buf = init_array(n_ab* num_i_per_ibatch*MOInfo.ndocc);
-#if MkPT2_USE_IWL
-      iwl_buf = (struct tebuf*) malloc(MOInfo.num_mo*MOInfo.num_mo*sizeof(struct tebuf));
-#else
+#if !MkPT2_USE_IWL
       xy_buf = init_array(MOInfo.num_mo*MOInfo.num_mo);
 #endif
       fprintf(outfile,"  Using %d %s\n\n",num_ibatch, (num_ibatch == 1) ? "pass" : "passes");
@@ -224,9 +218,7 @@ namespace psi {
 	Clean-up
 	---------*/
       free(mkpt2_sindex_mutex);
-#if MkPT2_USE_IWL
-      free(iwl_buf);
-#else
+#if !MkPT2_USE_IWL
       free(xy_buf);
 #endif
       free(jyix_buf);
