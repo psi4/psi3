@@ -47,7 +47,7 @@ $PSITEST_SUMMARY_FILE = "../../test-case-results";
 @PSITEST_WFNS = ("SCF", "MP2", "MP2R12", "DETCI", "DETCAS", "CASSCF",
 "RASSCF", "ZAPTN", "BCCD", "BCCD_T", "CC2", "CCSD", "CCSD_T", "CC3", 
 "EOM_CC2", "LEOM_CC2", "EOM_CCSD", "LEOM_CCSD", "OOCCD", "CIS", "EOM_CC3",
-"SCF_MVD","PSIMRCC","SCF+D","MCSCF");
+"SCF_MVD","PSIMRCC","SCF+D","MCSCF","IDMKPT2");
 @PSITEST_REFTYPES = ("RHF", "ROHF", "UHF", "TWOCON");
 @PSITEST_DERTYPES = ("NONE", "FIRST", "SECOND", "RESPONSE");
 
@@ -176,6 +176,7 @@ sub do_tests
                                   { $fail |= compare_mp2_energy(); last SWITCH2; }
           if ($wfn eq "MP2R12")   { $fail |= compare_mp2r12_energy(); last SWITCH2; }
           if ($wfn eq "PSIMRCC")  { $fail |= compare_psimrcc_energy(); last SWITCH2; }
+          if ($wfn eq "IDMKPT2")  { $fail |= compare_psimrcc_energy(); last SWITCH2; }
           if ($wfn eq "SCF+D")  { $fail |= compare_scf_d_energy(); last SWITCH2; }
       }
       
@@ -1303,7 +1304,9 @@ sub compare_psimrcc_energy
   else {
     pass_test("PSIMRCC energy");
   }
-  
+
+#  printf("\nseek = %lf",seek_psimrcc($TEST_FILE));  
+
   return $fail;
 }
 
@@ -2679,7 +2682,12 @@ sub seek_psimrcc
   while(<OUT>) {
     if (/\@CC\@/) {
       @data = split(/ +/, $_);
-      $psimrcc = $data[4];
+      $psimrcc = $data[3];
+      return $psimrcc;
+    }
+    if (/\@PT\@/) {
+      @data = split(/ +/, $_);
+      $psimrcc = $data[6];
       return $psimrcc;
     }
   }
