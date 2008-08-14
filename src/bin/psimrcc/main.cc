@@ -169,10 +169,11 @@ void init_psi(int argc, char *argv[])
   psio_ipv1_config();
   chkpt_init(PSIO_OPEN_OLD);
   ip_cwk_clear();
-  ip_cwk_add(const_cast<char*>(":PSI"));
-  ip_cwk_add(const_cast<char*>(":INPUT"));
   ip_cwk_add(const_cast<char*>(":MRCC"));
   ip_cwk_add(const_cast<char*>(":PSIMRCC"));
+  ip_cwk_add(const_cast<char*>(":PSI"));
+  ip_cwk_add(const_cast<char*>(":INPUT"));
+
   
   options_init();
 
