@@ -107,7 +107,7 @@ void *mkpt2_ints_thread(void *tnum_ptr)
   char ijab_key_string[80];
 #if MkPT2_USE_IWL
   extern struct iwlbuf ERIOUT;
-  iwl_buf_init(&ERIOUT,PSIF_MO_TEI,UserOptions.cutoff,ibatch,0);
+
 
 #else
   extern double * xy_buf;
@@ -795,7 +795,7 @@ void *mkpt2_ints_thread(void *tnum_ptr)
 	  for(mo_j=0;mo_j<=mo_i+imin;mo_j++) {
 	    for(mo_y=0;mo_y<MOInfo.num_mo;mo_y++) {
 	      for(mo_x=0;mo_x<MOInfo.num_mo;mo_x++) {
-		if ((MOInfo.mo2symblk_occ[0][mo_i+imin] ^ MOInfo.mo2symblk_occ[0][mo_j]) ^
+	    	if ((MOInfo.mo2symblk_occ[0][mo_i+imin] ^ MOInfo.mo2symblk_occ[0][mo_j]) ^
 		    (MOInfo.mo2symblk[mo_x] ^ MOInfo.mo2symblk[mo_y]))
 		    jyix_buf[((mo_j * MOInfo.num_mo + mo_y) * ibatch_length + mo_i) * MOInfo.num_mo + mo_x] = 0.0;
 	      }
@@ -816,7 +816,7 @@ void *mkpt2_ints_thread(void *tnum_ptr)
          }
        }
 
-#if PRINT
+#if PRINT && !MkPT2_USE_IWL
     /*--- Print them out if needed ---*/
       for(mo_i=0;mo_i<ibatch_length;mo_i++) {
 	for(mo_j=0;mo_j<=mo_i+imin;mo_j++) {
@@ -946,10 +946,6 @@ void *mkpt2_ints_thread(void *tnum_ptr)
     }
   } /* End of "I"-loop */
 
-#if MkPT2_USE_IWL
-  iwl_buf_flush(&ERIOUT, 1);
-  iwl_buf_close(&ERIOUT, 1);  
-#endif
 
   /*---------
     Clean-up

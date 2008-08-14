@@ -169,7 +169,9 @@ namespace psi {
       jyix_buf = init_array(MOInfo.ndocc*MOInfo.num_mo* num_i_per_ibatch*MOInfo.num_mo);
       asij_buf = init_array(MOInfo.nuocc*BasisSet.num_ao*num_i_per_ibatch*MOInfo.ndocc);
       abij_buf = init_array(n_ab* num_i_per_ibatch*MOInfo.ndocc);
-#if !MkPT2_USE_IWL
+#if MkPT2_USE_IWL
+      iwl_buf_init(&ERIOUT,PSIF_MO_TEI,UserOptions.cutoff,0,0);
+#else
       xy_buf = init_array(MOInfo.num_mo*MOInfo.num_mo);
 #endif
       fprintf(outfile,"  Using %d %s\n\n",num_ibatch, (num_ibatch == 1) ? "pass" : "passes");
@@ -218,7 +220,10 @@ namespace psi {
 	Clean-up
 	---------*/
       free(mkpt2_sindex_mutex);
-#if !MkPT2_USE_IWL
+#if MkPT2_USE_IWL
+  iwl_buf_flush(&ERIOUT, 1);
+  iwl_buf_close(&ERIOUT, 1);  
+#else
       free(xy_buf);
 #endif
       free(jyix_buf);
