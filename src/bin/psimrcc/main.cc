@@ -171,8 +171,9 @@ void init_psi(int argc, char *argv[])
   ip_cwk_clear();
   ip_cwk_add(const_cast<char*>(":PSI"));
   ip_cwk_add(const_cast<char*>(":INPUT"));
-  ip_cwk_add(const_cast<char*>(":TRANSQT"));
   ip_cwk_add(const_cast<char*>(":MRCC"));
+  ip_cwk_add(const_cast<char*>(":PSIMRCC"));
+  
   options_init();
 
   tstart(outfile);
@@ -183,7 +184,7 @@ void init_psi(int argc, char *argv[])
 
   fprintf(outfile,"\n  MRCC          MRCC");
   fprintf(outfile,"\n   MRCC  MRCC  MRCC");
-  fprintf(outfile,"\n   MRCC  MRCC  MRCC      PSIMRCC Version 0.8.0, April, 2008");
+  fprintf(outfile,"\n   MRCC  MRCC  MRCC      PSIMRCC Version 0.8.0, August, 2008");
   fprintf(outfile,"\n   MRCC  MRCC  MRCC      Multireference Coupled Cluster, written by");
   fprintf(outfile,"\n     MRCCMRCCMRCC        Francesco A. Evangelista and Andrew C. Simmonett");
   fprintf(outfile,"\n         MRCC            Compiled on %s at %s",__DATE__,__TIME__);
@@ -215,5 +216,5 @@ void close_psi()
  */
 char* gprgid()
 {
-  return(const_cast<char*>(":MRCC"));
+  return(const_cast<char*>("PSIMRCC"));
 }

@@ -26,7 +26,7 @@ public:
   double tei_block(int p, int q, int r, int s);
   double tei_mrpt2(int p, int q, int r, int s);
 private:
-  int*      ioff;
+  size_t*     ioff;
   double**    s_so;
   double**  oei_mo;
   double**  oei_so;

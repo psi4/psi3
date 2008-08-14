@@ -10,7 +10,7 @@
 #define PSI_FREE(args) if(args != NULL) free(args);
 #define PSI_DELETE(args) if(args != NULL) delete args;
 #define PSI_DELETE_ARRAY(args) if(args != NULL) delete[] args;
-#define IOFF 500000
+#define IOFF 5000000
 
 #include <string>
 
@@ -29,7 +29,7 @@ public:
   int         get_nirreps()                      const {return(nirreps);}
   int         get_nso()                          const {return(nso);}
   
-  int*        get_ioff()                         const {return(ioff);}
+  size_t*     get_ioff()                         const {return(ioff);}
   int*        get_sopi()                         const {return(sopi);}
   int*        get_docc()                         const {return(docc);}
   int*        get_actv()                         const {return(actv);}
@@ -66,7 +66,7 @@ protected:
   int         nactive_ael;
   int         nactive_bel;
   
-  int*        ioff;
+  size_t*     ioff;
   int*        sopi;
   int*        docc;
   int*        actv;

@@ -24,7 +24,7 @@ private:
   
   int  nirreps;
   int  nso;
-  int* ioff;
+  size_t* ioff;
   int* sopi;
   int* docc;
   int* actv;

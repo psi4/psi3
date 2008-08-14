@@ -115,7 +115,6 @@ public:
   int*        get_orbspi()                       const {return(orbspi);}
   int*        get_focc()                         const {return(focc);}
 
-  int*        get_ioff()                         const {return(ioff);}
   int*        get_sopi()                         const {return(sopi);}
   int*        get_docc()                         const {return(docc);}
   int*        get_actv()                         const {return(actv);}

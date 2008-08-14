@@ -86,9 +86,9 @@ void MOInfoBase::compute_number_of_electrons()
 
 void MOInfoBase::compute_ioff()
 {
-  ioff    = new int[IOFF];
+  ioff    = new size_t[IOFF];
   ioff[0] = 0;
-  for(unsigned long int i=1; i < IOFF; i++)
+  for(size_t i=1; i < IOFF; i++)
     ioff[i] = ioff[i-1] + i;
 }
 
