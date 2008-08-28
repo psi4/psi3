@@ -107,6 +107,7 @@ void add_calculation_options()
   options_add_bool("USE_FAVG",false);
   options_add_bool("CANONICALIZE_ACTIVE_FAVG",false);
   options_add_bool("CANONICALIZE_INACTIVE_FAVG",false);
+  options_add_bool("INTERNAL_ROTATIONS",true);
 
   options_add_str_with_choices("REFERENCE","RHF","RHF ROHF UHF TWOCON MCSCF GENERAL");
   options_add_str_with_choices("WFN_SYM","1","A AG AU AP APP A1 A2 B BG BU B1 B2 B3 B1G B2G B3G B1U B2U B3U 0 1 2 3 4 5 6 7 8");
@@ -144,17 +145,22 @@ void init_psi(int argc, char *argv[])
   ip_cwk_add(const_cast<char*>(":PSI"));
   ip_cwk_add(const_cast<char*>(":SCF"));
   ip_cwk_add(const_cast<char*>(":MCSCF"));
-
+  
+  tstart(outfile);
+  
   fprintf(outfile,"\n  MCSCF Version 0.1.0, April, 2008");
   fprintf(outfile,"\n  Francesco Evangelista");
   fprintf(outfile,"\n  Compiled on %s at %s",__DATE__,__TIME__);
   fprintf(outfile,"\n  id =%s",GIT_ID); 
 
 
+
   options_init();
   add_calculation_options();
   options_read();
   options_print();
+
+
 
   psio_open(PSIF_MCSCF,PSIO_OPEN_NEW);
 }
@@ -164,7 +170,7 @@ void init_psi(int argc, char *argv[])
  */
 void close_psi()
 {
-  fprintf(outfile,"\n\n  MCSCF Execution Completed.");
+  fprintf(outfile,"\n\n  MCSCF Execution Completed.\n\n");
   fflush(outfile);
 
   options_close();
@@ -174,6 +180,8 @@ void close_psi()
   psio_close(PSIF_MCSCF,1);
 
   psio_done();
+
+  tstop(outfile);
 
   psi_stop(infile,outfile,psi_file_prefix);
 }
@@ -185,5 +193,5 @@ void close_psi()
  */
 char* gprgid()
 {
-  return(const_cast<char*>(":MCSCF"));
+  return(const_cast<char*>("MCSCF"));
 }

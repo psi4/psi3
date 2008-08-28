@@ -229,6 +229,28 @@ vector<int> MOInfo::get_bvir(std::string str,int i)
   return(references[i_ref].get_bvir());
 }
 
+vector<int> MOInfo::get_aocc(int i)
+{
+  return(references[i].get_aocc());
+}
+
+vector<int> MOInfo::get_bocc(int i)
+{
+  return(references[i].get_bocc());
+}
+
+vector<int> MOInfo::get_auoc(int i)
+{
+  return(references[i].get_avir());
+}
+
+vector<int> MOInfo::get_buoc(int i)
+{
+  return(references[i].get_bvir());
+}
+
+
+
 vector<pair<int,int> > MOInfo::get_alpha_internal_excitation(int i,int j)
 {
   return(alpha_internal_excitations[i][j]);

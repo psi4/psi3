@@ -18,6 +18,8 @@ private:
   void add_matrices();
   void read_mp2_ccsd_integrals();
   double compute_energy();
+  void compute_mp2_components();
+  void compute_mp2_ccsd_components();
   void synchronize_amps();
 
   /* AMPLITUDES EQUATIONS */

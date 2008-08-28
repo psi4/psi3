@@ -24,7 +24,7 @@ void SCF::read_so_tei()
   total_symmetric_block_size = INDEX(pairpi[0]-1,pairpi[0]-1)+1;
 
   size_t free_memory = mem->get_FreeMemory();
-
+  
   // Determine the number of matrix elements of the PK (and K) matrix to hold in core
   if(reference == rhf){
     nin_core        = min(free_memory / sizeof(double),total_symmetric_block_size);
@@ -68,26 +68,29 @@ void SCF::read_so_tei()
 
   for(int batch = 0; batch < nbatch; ++batch){
     batch_size[batch] = batch_index_max[ batch] - batch_index_min[batch];
-    fprintf(outfile,"\n  batch %2d pq = [%6d,%6d] index = [%12d,%12d]",
+    fprintf(outfile,"\n  batch %3d pq = [%8ld,%8ld] index = [%16ld,%16ld]",
                      batch,
                      batch_pq_min[batch],batch_pq_max[batch],
                      batch_index_min[batch],batch_index_max[batch]);
   }
+  fflush(outfile);
   
   // Allocate the PK matrix
   allocate1(double,PK,nin_core);
   for(size_t i=0; i < nin_core; i++)
     PK[i]    =0.0;
   fprintf(outfile,"\n\n  Allocated the PK matrix (%d elements) ",nin_core);
-
+  fflush(outfile);	
+  
   if(reference != rhf){
     // Allocate the K matrix
     allocate1(double,K,nin_core);
     for(size_t i=0; i < nin_core; i++)
       K[i]    =0.0;
     fprintf(outfile,"\n  Allocated the  K matrix (%d elements) ",nin_core);
+    fflush(outfile);
   }
-
+  
   if(reference == rhf)
     read_so_tei_form_PK();
   else
@@ -100,6 +103,8 @@ void SCF::read_so_tei_form_PK()
   fflush(outfile);
 
   for(int batch = 0; batch < nbatch; ++batch){
+	fprintf(outfile,"\n  batch %3d ... ",batch);
+	fflush(outfile);
     // Compute the minimum and maximum indices
     size_t min_index   = batch_index_min[batch];
     size_t max_index   = batch_index_max[batch];
@@ -167,9 +172,11 @@ void SCF::read_so_tei_form_PK()
 
     // Write the PK matrix to disk
     write_Raffanetti("PK",PK,batch);
-  }
 
-  fprintf(outfile,"done.");
+    fprintf(outfile,"done.");
+    fflush(outfile);
+  }
+  fprintf(outfile,"\n");
   fflush(outfile);
 }
 
@@ -179,6 +186,8 @@ void SCF::read_so_tei_form_PK_and_K()
   fflush(outfile);
 
   for(int batch = 0; batch < nbatch; ++batch){
+	fprintf(outfile,"\n  batch %3d ... ",batch);
+	fflush(outfile);
     // Compute the minimum and maximum indices
     size_t min_index   = batch_index_min[batch];
     size_t max_index   = batch_index_max[batch];
@@ -256,9 +265,11 @@ void SCF::read_so_tei_form_PK_and_K()
     // Write the PK matrix to disk
     write_Raffanetti("PK",PK,batch);
     write_Raffanetti("K",K,batch);
+    
+    fprintf(outfile,"done.");
+    fflush(outfile);
   }
-
-  fprintf(outfile,"done.");
+  fprintf(outfile,"\n");
   fflush(outfile);
 }
 

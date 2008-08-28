@@ -318,22 +318,13 @@ void CCMRCC::add_matrices()
   blas->add_Matrix("Mk2[oO][vV]{u}");
   blas->add_Matrix("Mk2[OO][VV]{u}");
 
-  fprintf(outfile,"\nI was here, triples_type = %d",triples_type);
-  fflush(outfile);
-
-
   // Triples
   if(triples_type >= ccsd_t){  // TODO: ccsd_t should not require storage
-
-
-  fprintf(outfile,"\nI was here2");
-  fflush(outfile);
 
     blas->add_Matrix("ERROR{u}");
     blas->add_Matrix("<[oo]:[ov]>");
     blas->add_Matrix("<[oo]|[ov]>");
-
-    
+   
 
 /*
     blas->add_Matrix("t2_test[oo][vv]{u}");

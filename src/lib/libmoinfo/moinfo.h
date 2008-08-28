@@ -192,6 +192,12 @@ public:
   intvec      get_bocc(std::string str,int i);
   intvec      get_avir(std::string str,int i);
   intvec      get_bvir(std::string str,int i);
+  
+  intvec      get_aocc(int i);
+  intvec      get_bocc(int i);
+  intvec      get_auoc(int i);
+  intvec      get_buoc(int i);
+  
   intpairvec  get_alpha_internal_excitation(int i,int j);
   intpairvec  get_beta_internal_excitation(int i,int j);
   double      get_sign_internal_excitation(int i,int j);

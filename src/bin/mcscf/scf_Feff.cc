@@ -77,18 +77,34 @@ void SCF::construct_Feff(int cycle)
       }
     }
     // Orbitals of the same symmetry
-    for(int I = 0 ; I < nci; ++I){
-      for(int J = I + 1 ; J < nci; ++J){
-        if(tcscf_sym[I] == tcscf_sym[J]){
-          int h = tcscf_sym[I];
-          int i = tcscf_mos[I];
-          int j = tcscf_mos[J];
-          // Set the (tc,tc) and (tc,tc) blocks to 2 (Ftc_a - Ftc_b)
-          double element = 2.0 * (Ftc_t[I]->get(h,i,j) - Ftc_t[J]->get(h,i,j));
-          Feff_t->set(h,i,j,element);
-          Feff_t->set(h,j,i,element);
-        }
+    if(options_get_bool("INTERNAL_ROTATIONS")){
+      for(int I = 0 ; I < nci; ++I){
+        for(int J = I + 1 ; J < nci; ++J){
+    	  if(tcscf_sym[I] == tcscf_sym[J]){
+    		int h = tcscf_sym[I];
+    		int i = tcscf_mos[I];
+    		int j = tcscf_mos[J];
+    		// Set the (tc,tc) and (tc,tc) blocks to 2 (Ftc_a - Ftc_b)
+    		double element = 2.0 * (Ftc_t[I]->get(h,i,j) - Ftc_t[J]->get(h,i,j));
+    		Feff_t->set(h,i,j,element);
+    		Feff_t->set(h,j,i,element);
+    	  }	
+    	}
       }
+    }else{
+      for(int I = 0 ; I < nci; ++I){
+        for(int J = I + 1 ; J < nci; ++J){
+          if(tcscf_sym[I] == tcscf_sym[J]){
+            int h = tcscf_sym[I];
+            int i = tcscf_mos[I];
+            int j = tcscf_mos[J];
+        	// Set the (tc,tc) and (tc,tc) blocks to 2 (Ftc_a - Ftc_b)
+            double element = 0.0;
+            Feff_t->set(h,i,j,element);
+            Feff_t->set(h,j,i,element);
+          }	
+        }
+      }    	  
     }
   }
 }

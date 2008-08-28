@@ -13,7 +13,7 @@ using namespace std;
 MemoryManager::MemoryManager(){
   CurrentAllocated = 0;
   MaximumAllocated = 0;
-  MaximumAllowed   = 1024*1024*options_get_int("MEMORY");
+  MaximumAllowed   = size_t(1024)*size_t(1024)*size_t(options_get_int("MEMORY"));
   allocated_memory    = 0.0;
   total_memory        = double(options_get_int("MEMORY"));
   integral_strip_size = total_memory * 0.05;

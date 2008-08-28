@@ -20,7 +20,7 @@ private:
   ReferenceType reference;
   static const int maxci   = 8;
   static const int maxdiis = 10;
-  static const int maxbatches = 10;
+  static const int maxbatches = 50;
   
   int  nirreps;
   int  nso;
