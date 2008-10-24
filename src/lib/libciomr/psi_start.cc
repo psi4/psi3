@@ -67,6 +67,7 @@ int psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix,
       fprefix = argv[++i];
       found_fp_p = 1;
     }
+    else if (!strcmp(arg,"-rp") || !strcmp(arg,"--randomprefix")) { }
     else if (arg[0] == '-') {
       fprintf(stderr, "Error: unrecognized command-line argument %s\n", arg);
       return(PSI_RETURN_FAILURE);
@@ -122,8 +123,6 @@ int psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix,
     ifname = getenv("PSI_INPUT");
   if (ofname == NULL)
     ofname = getenv("PSI_OUTPUT");
-  if (fprefix == NULL)
-    fprefix = getenv("PSI_PREFIX");
 
   /* if some arguments still not defined - assign default values */
   if (ifname == NULL)
@@ -194,6 +193,11 @@ int psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix,
     errcod = ip_string(":PSI:FILES:DEFAULT:NAME",&fprefix,0);
   if (fprefix == NULL)
     errcod = ip_string(":PSI:NAME",&fprefix,0);
+
+ /* Environmental varibles checked here so random prefixes do not overwrite
+  user supplied prefixes */
+  if (fprefix == NULL)
+    fprefix = getenv("PSI_PREFIX");
 
   /* copy over file prefix, etc. into their appropriate variables */
   if (fprefix == NULL) {
