@@ -719,6 +719,17 @@ int parse_cmdline(int argc, char *argv[])
       fprefix = argv[++i];
       found_fp_p = 1;
     }
+    else if (!strcmp(arg,"-rp") || !strcmp(arg,"--randomprefix")) {
+
+      char rand_prefix[8];
+      pid_t pid;
+
+      pid = getpid();
+
+      errcod = sprintf(rand_prefix,"psi%05d",pid);
+
+      setenv("PSI_PREFIX",rand_prefix,1);
+    }
     else if (arg[0] == '-') {
       fprintf(stderr, "Error: unrecognized command-line argument %s\n", arg);
       return(0);
