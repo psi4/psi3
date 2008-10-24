@@ -66,18 +66,24 @@ void get_params()
   if(errcod == IPE_OK) params.convergence = 1.0*pow(10.0,(double) -iconv);
 
   params.rpi = (int *) malloc(moinfo.nirreps * sizeof(int));
-  if (ip_exist("RPI",0)) {
-    ip_count("RPI", &i, 0);
+  if (ip_exist("STATES_PER_IRREP",0)) {
+    ip_count("STATES_PER_IRREP", &i, 0);
     if (i != moinfo.nirreps) {
-      fprintf(outfile,"Dim. of rpi vector must be %d\n", moinfo.nirreps) ;
+      fprintf(outfile,"Dim. of states_per_irrep vector must be %d\n", 
+        moinfo.nirreps) ;
       exit(PSI_RETURN_FAILURE);
     }
     for (i=0;i<moinfo.nirreps;++i)
-      errcod = ip_data("RPI","%d",&(params.rpi[i]),1,i);
+      errcod = ip_data("STATES_PER_IRREP","%d",&(params.rpi[i]),1,i);
   }
-  else { fprintf(outfile,"Must have rpi vector in input.\n"); exit(PSI_RETURN_FAILURE); } 
+  else { 
+    params.rpi = init_int_array(moinfo.nirreps);
+    for (i=0;i<moinfo.nirreps;i++) {
+      params.rpi[i] = 2;
+    }
+  } 
 
-  /* Test RPI vector for correct dimensions */
+  /* Test STATES_PER_IRREP vector for correct dimensions */
   for(h=0; h < moinfo.nirreps; h++) {
     max_dim = 0;
     for(i=0; i < moinfo.nirreps; i++) {
