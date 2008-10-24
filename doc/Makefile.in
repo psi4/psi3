@@ -14,25 +14,25 @@ all: default
 default:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo Making in $${dir}; $(MAKE) default) || exit 1; \
+            (cd $${dir} && echo Making in $${dir} && $(MAKE) default) || exit 1; \
           done
 
 install:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo Making install in $${dir}; $(MAKE) install) || exit 1; \
+            (cd $${dir} && echo Making install in $${dir} && $(MAKE) install) || exit 1; \
           done
 
 clean:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo Making clean in $${dir}; $(MAKE) clean) || exit 1; \
+            (cd $${dir} && echo Making clean in $${dir} && $(MAKE) clean) || exit 1; \
           done
 
 realclean:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo Making clean in $${dir}; $(MAKE) realclean) || exit 1; \
+            (cd $${dir} && echo Making clean in $${dir} && $(MAKE) realclean) || exit 1; \
           done
 
 top_srcdir = @top_srcdir@

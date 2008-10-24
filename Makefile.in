@@ -20,59 +20,59 @@ INSTALL_PROGRAM = @INSTALL_PROGRAM@
 all:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo Making in $${dir}; $(MAKE) all) || exit 1; \
+            (cd $${dir} && echo Making in $${dir} && $(MAKE) all) || exit 1; \
           done
 
 install: install_host
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo Making install in $${dir}; $(MAKE) install) || exit 1; \
+            (cd $${dir} && echo Making install in $${dir} && $(MAKE) install) || exit 1; \
           done
 
 install_inc:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo Making install in $${dir}; $(MAKE) install_inc) || exit 1; \
+            (cd $${dir} && echo Making install in $${dir} && $(MAKE) install_inc) || exit 1; \
           done
 
 install_man:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo Making install in $${dir}; $(MAKE) install_man) || exit 1; \
+            (cd $${dir} && echo Making install in $${dir} && $(MAKE) install_man) || exit 1; \
           done
 
 depend:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo Making depend in $${dir}; $(MAKE) depend) || exit 1; \
+            (cd $${dir} && echo Making depend in $${dir} && $(MAKE) depend) || exit 1; \
           done
 
 clean:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo Making clean in $${dir}; $(MAKE) clean) || exit 1; \
+            (cd $${dir} && echo Making clean in $${dir} && $(MAKE) clean) || exit 1; \
           done
 
 dclean:
 	for dir in $(subdirs); \
           do \
-            (cd $${dir}; echo Making dclean in $${dir}; $(MAKE) dclean) || exit 1; \
+            (cd $${dir} && echo Making dclean in $${dir} && $(MAKE) dclean) || exit 1; \
           done
 
 targetclean:
 	for dir in $(subdirs) tests doc; \
           do \
-            (cd $${dir}; echo Making clean in $${dir}; $(MAKE) targetclean) || exit 1; \
+            (cd $${dir} && echo Making clean in $${dir} && $(MAKE) targetclean) || exit 1; \
           done
 
 tests:
-	(cd tests; echo Running test suite...; $(MAKE)) || exit 1;
+	(cd tests && echo Running test suite... && $(MAKE)) || exit 1;
 
 testsclean:
-	(cd tests; echo Cleaning test suite...; $(MAKE) clean) || exit 1;
+	(cd tests && echo Cleaning test suite... && $(MAKE) clean) || exit 1;
 
 doc:
-	(cd doc; echo Building documentation...; $(MAKE)) || exit 1;
+	(cd doc && echo Building documentation... && $(MAKE)) || exit 1;
 
 $(top_srcdir)/configure: $(top_srcdir)/configure.ac $(top_srcdir)/aclocal.m4
 	cd $(top_srcdir) && autoconf

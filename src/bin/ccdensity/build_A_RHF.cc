@@ -12,19 +12,13 @@
 namespace psi { namespace ccdensity {
 
 /* BUILD_A_RHF(): Construct the molecular orbital Hessian, A, for
-** ROHF orbitals. At the moment we're actually building all symmetry
+** RHF orbitals. At the moment we're actually building all symmetry
 ** blocks of A, though for the orbital Z-vector equations we really
 ** only need the totally symmetric components.
 **
 ** In spatial orbitals:
 **
-** A(em,ai) = 4 <mi|ea> - <im|ea> - <me|ia> + del_mi fea - del_ea fmi
-**
-** A(EM,AI) = 2<MI|EA> - <IM|EA> - <ME|IA> + del_MI fEA - del_EA fMI
-**
-** A(em,ai) = 2<mi|ea> - <im|ea> - <me|ia> + del_mi fea - del_ea fmi
-**
-** A(EM,ai) = 2<Mi|Ea> + del_Ma fei
+** A(em,ai) = 4 <mi|ea> - <im|ea> - <me|ia> + (m==i) fea - (e==a) fmi
 **
 ** */
 
@@ -32,15 +26,10 @@ void build_A_RHF(void)
 {
   int h, nirreps, e, m, a, i, em, ai, E, M, A, I;
   int Esym, Msym, Asym, Isym;
-  int *virtpi, *openpi, *occpi, *occ_off, *vir_off;
-  int *qt_occ, *qt_vir; /* Spatial orbital translators */
-  dpdfile2 fIJ, fij, fAB, fab, fIA, fia;
-  dpdbuf4 Amat, Amat2, D, C;
+  dpdfile2 fIJ, fAB;
+  dpdbuf4 Amat, D, C;
 
   nirreps = moinfo.nirreps;
-  occpi = moinfo.occpi; openpi = moinfo.openpi; virtpi = moinfo.virtpi;
-  occ_off = moinfo.occ_off; vir_off = moinfo.vir_off;
-  qt_occ = moinfo.qt_occ; qt_vir = moinfo.qt_vir;
 
   /* Two-electron integral contributions */
   dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
@@ -63,9 +52,6 @@ void build_A_RHF(void)
   dpd_file2_init(&fAB, CC_OEI, 0, 1, 1, "fAB");
   dpd_file2_mat_init(&fAB);
   dpd_file2_mat_rd(&fAB);
-  dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
-  dpd_file2_mat_init(&fIA);
-  dpd_file2_mat_rd(&fIA);
 
   dpd_buf4_init(&Amat, CC_MISC, 0, 11, 11, 11, 11, 0, "A(EM,AI)");
   
@@ -105,8 +91,6 @@ void build_A_RHF(void)
   dpd_file2_close(&fIJ);
   dpd_file2_mat_close(&fAB);
   dpd_file2_close(&fAB);
-  dpd_file2_mat_close(&fIA);
-  dpd_file2_close(&fIA);
 }
 
 

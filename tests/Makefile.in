@@ -56,56 +56,56 @@ psi_start
 tests:
 	for dir in $(subdirs); \
 	do \
-	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
+	 (cd $${dir} && echo ...Testing $${dir}... && $(MAKE)) || exit 1; \
 	done
 
 quicktests:
 	for dir in $(quicktestdirs); \
 	do \
-	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
+	 (cd $${dir} && echo ...Testing $${dir}... && $(MAKE)) || exit 1; \
 	done
 
 cc_tests:
 	for dir in $(cc_subdirs); \
 	do \
-	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
+	 (cd $${dir} && echo ...Testing $${dir}... && $(MAKE)) || exit 1; \
 	done
 
 ci_tests:
 	for dir in $(ci_subdirs); \
 	do \
-	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
+	 (cd $${dir} && echo ...Testing $${dir}... && $(MAKE)) || exit 1; \
 	done
 
 mcscf_tests:
 	for dir in $(mcscf_subdirs); \
 	do \
-	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
+	 (cd $${dir} && echo ...Testing $${dir}... && $(MAKE)) || exit 1; \
 	done
 
 scf_tests:
 	for dir in $(scf_subdirs); \
 	do \
-	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
+	 (cd $${dir} && echo ...Testing $${dir}... && $(MAKE)) || exit 1; \
 	done
 
 psirb_tests:
 	for dir in $(rb_subdirs); \
 	do \
-	 (cd $${dir}; echo ...Testing $${dir}...; $(MAKE)) || exit 1; \
+	 (cd $${dir} && echo ...Testing $${dir}... && $(MAKE)) || exit 1; \
 	done
 
 clean:
 	for dir in $(subdirs); \
 	do \
-	 (cd $${dir}; echo ...Cleaning $${dir}...; $(MAKE) clean) || exit 1; \
+	 (cd $${dir} && echo ...Cleaning $${dir}... && $(MAKE) clean) || exit 1; \
 	done
 	rm -f ../test-case-results
 
 quicktestsclean:
 	for dir in $(quicktestdirs); \
 	do \
-	 (cd $${dir}; echo ...Cleaning $${dir}...; $(MAKE) clean) || exit 1; \
+	 (cd $${dir} && echo ...Cleaning $${dir}... && $(MAKE) clean) || exit 1; \
 	done
 	rm -f ../test-case-results
 
