@@ -12,7 +12,6 @@ psi: (
   uinput     = "input --chkptgeom"
   init       = $input
   done       = ("psiclean")
-  scfdone    = ()
   ints       = "cints"
   scf        = "cscf"
   localize   = "localize"
@@ -106,10 +105,10 @@ psi: (
   % -------------------------------- SCF Procedures
   % *** SCF energy ***
   SCFEnergy = ($ints $scf)
-  SCFRHFEnergy = $SCFEnergy
-  SCFROHFEnergy = $SCFEnergy
-  SCFUHFEnergy = $SCFEnergy
-  SCFTwoConEnergy = $SCFEnergy
+  SCFRHFEnergy = ($SCFEnergy $done)
+  SCFROHFEnergy = ($SCFEnergy $done)
+  SCFUHFEnergy = ($SCFEnergy $done)
+  SCFTwoConEnergy = ($SCFEnergy $done)
 
   % *** SCF gradients ***
   SCFFirst = ($ints $scf $deriv)
