@@ -141,14 +141,19 @@ int main(int argc, char *argv[])
 
     if(params.dertype==1) {
       fprintf(outfile, "\n\tComputing (T) contributions to CC density...\n");
+      fflush(outfile);
       T3_grad_UHF_AAA();
       fprintf(outfile, "\tAAA contributions complete.\n");
+      fflush(outfile);
       T3_grad_UHF_BBB();
       fprintf(outfile, "\tBBB contributions complete.\n");
+      fflush(outfile);
       T3_grad_UHF_AAB();
       fprintf(outfile, "\tAAB contributions complete.\n");
+      fflush(outfile);
       T3_grad_UHF_BBA();
       fprintf(outfile, "\tBBA contributions complete.\n");
+      fflush(outfile);
     }
   }
 
