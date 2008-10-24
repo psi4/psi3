@@ -5,7 +5,7 @@ psi: (
   jobtype = sp
   wfn = cis
   reference = rhf
-  rpi = (2 2 2 2)
+  states_per_irrep = (2 2 2 2)
   basis = "6-31G**"
   zmat = (
     o
