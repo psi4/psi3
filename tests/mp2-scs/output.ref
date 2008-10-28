@@ -1,5 +1,5 @@
 ******************************************************************************
-PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:11:12 2008
+PSI3 started on ender.chemistry.gatech.edu at Tue Oct 28 14:56:25 2008
 
     -----------------------------------------------------------------------    
             PSI3: An Open-Source Ab Initio Electronic Structure Package 
@@ -23,8 +23,8 @@ The following programs will be executed:
  psiclean
 
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:11:12 2008
+INPUT tstart called on ender.chemistry.gatech.edu
+Tue Oct 28 14:56:25 2008
 
                                 --------------
                                     INPUT
@@ -35,7 +35,7 @@ Wed Mar 12 18:11:12 2008
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
+  Parsed basis sets from /theoryfs2/ds/arnstein/psi-tait/share/psi/pbasis.dat
 Coordinates after reading z-matrices
 
            1           2           3
@@ -45,11 +45,11 @@ Coordinates after reading z-matrices
     3   1.8295338   0.0000000  -0.4731496
 
   -Geometry before Center-of-Mass shift (a.u.):
-       Center              X                  Y                   Z
-    ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000     0.000000000000
-        HYDROGEN      0.000000000000     0.000000000000     1.889725988579
-        HYDROGEN      1.829533756804     0.000000000000    -0.473149600682
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000     0.000000000000
+    H         0.000000000000     0.000000000000     1.889725988579
+    H         1.829533756804     0.000000000000    -0.473149600682
 
 
   -Rotational constants (cm-1) :
@@ -57,11 +57,11 @@ Coordinates after reading z-matrices
     It is an asymmetric top.
 
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
-       Center              X                  Y                   Z
-    ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000    -0.129476880270     0.000000000000
-        HYDROGEN      1.494186636402     1.027446024469    -0.000000000000
-        HYDROGEN     -1.494186636402     1.027446024469    -0.000000000000
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000    -0.129476880270     0.000000000000
+    H         1.494186636402     1.027446024469    -0.000000000000
+    H        -1.494186636402     1.027446024469    -0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -129,36 +129,43 @@ Coordinates after reading z-matrices
       3            7
       4           12
 
+  -Contraction Scheme:
+    Atom     All Primitives // Unique Primitives // Shells
+    ----     ---------------------------------------------
+       1      20s 6p 2d //  10s 5p 2d //  4s 3p 2d
+       2      6s 2p //  5s 2p //  3s 2p
+       3      6s 2p //  5s 2p //  3s 2p
+
 
   -Unique atoms in the canonical coordinate system (a.u.):
-       Center              X                  Y                   Z
-    ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.129476880270
-        HYDROGEN     -0.000000000000     1.494186636402     1.027446024469
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.129476880270
+    H        -0.000000000000     1.494186636402     1.027446024469
 
 
   -Geometry in the canonical coordinate system (a.u.):
-       Center              X                  Y                   Z
-    ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.129476880270
-        HYDROGEN     -0.000000000000     1.494186636402     1.027446024469
-        HYDROGEN     -0.000000000000    -1.494186636402     1.027446024469
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.129476880270
+    H        -0.000000000000     1.494186636402     1.027446024469
+    H        -0.000000000000    -1.494186636402     1.027446024469
 
 
   -Geometry in the canonical coordinate system (Angstrom):
-       Center              X                  Y                   Z
-    ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.068516219310
-        HYDROGEN     -0.000000000000     0.790689573744     0.543701060724
-        HYDROGEN     -0.000000000000    -0.790689573744     0.543701060724
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.068516219310
+    H        -0.000000000000     0.790689573744     0.543701060724
+    H        -0.000000000000    -0.790689573744     0.543701060724
 
 
   -Geometry in the reference coordinate system (a.u.):
-       Center              X                  Y                   Z
-    ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.129476880270
-        HYDROGEN     -0.000000000000     1.494186636402     1.027446024469
-        HYDROGEN     -0.000000000000    -1.494186636402     1.027446024469
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.129476880270
+    H        -0.000000000000     1.494186636402     1.027446024469
+    H        -0.000000000000    -1.494186636402     1.027446024469
 
 
   --------------------------------------------------------------------------
@@ -178,15 +185,15 @@ Coordinates after reading z-matrices
 
 
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:11:12 2008
+INPUT tstop called on ender.chemistry.gatech.edu
+Tue Oct 28 14:56:25 2008
 
 user time   =       0.03 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:11:12 2008
+cints tstart called on ender.chemistry.gatech.edu
+Tue Oct 28 14:56:25 2008
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -215,15 +222,15 @@ Wed Mar 12 18:11:12 2008
     Wrote 91307 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:11:12 2008
+cints tstop called on ender.chemistry.gatech.edu
+Tue Oct 28 14:56:25 2008
 
-user time   =       0.10 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:11:12 2008
+SCF tstart called on ender.chemistry.gatech.edu
+Tue Oct 28 14:56:25 2008
 
 
              ------------------------------------------
@@ -318,15 +325,15 @@ Orbital energies (a.u.):
         virial theorem     =       1.996501490812
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:11:12 2008
+SCF tstop called on ender.chemistry.gatech.edu
+Tue Oct 28 14:56:25 2008
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:11:13 2008
+TRANSQT tstart called on ender.chemistry.gatech.edu
+Tue Oct 28 14:56:25 2008
 
 
 	**************************************************
@@ -374,15 +381,15 @@ Wed Mar 12 18:11:13 2008
 	Starting second half-transformation.
 	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:11:13 2008
+TRANSQT tstop called on ender.chemistry.gatech.edu
+Tue Oct 28 14:56:25 2008
 
-user time   =       0.13 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:11:13 2008
+CCSORT tstart called on ender.chemistry.gatech.edu
+Tue Oct 28 14:56:25 2008
 
 
 			**************************
@@ -453,15 +460,15 @@ Wed Mar 12 18:11:13 2008
 	Frozen-core energy (transqt) =    -61.22180139200054
 	Reference energy             =    -76.03568946326720
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:11:13 2008
+CCSORT tstop called on ender.chemistry.gatech.edu
+Tue Oct 28 14:56:25 2008
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:11:13 2008
+MP2 tstart called on ender.chemistry.gatech.edu
+Tue Oct 28 14:56:25 2008
 
 			*************************
 			*                       *
@@ -482,24 +489,25 @@ Wed Mar 12 18:11:13 2008
 	Memory (MB)   	=	50.0
 	Print Level   	=	0
 	OPDM          	=	NO
-	SCS           	=	TRUE
-	SCS_SCALE_S   	=	1.200
-	SCS_SCALE_T   	=	0.333
+	SCS           	=	True
+	SCALE_OS      	=	1.200000
+	SCALE_SS      	=	0.333333
 
-     Singlet correlation energy  =   -0.166478408860000
-     Triplet correlation energy  =   -0.056669078295180
+	Scaled_OS correlation energy      =   -0.199774090632000
+	Scaled_SS correlation energy      =   -0.018889673875367
+	SCS-MP2 correlation energy        =   -0.218663764507367
+      * SCS-MP2 total energy              =  -76.254353227774587
 
-        Scale_S correlation energy  =   -0.199774090632000
-        Scale_T correlation energy  =   -0.018889673875367
-      * SCS-MP2 total energy        =  -76.254353227774587
+	Opposite-spin correlation energy  =   -0.166478408860000
+	Same-spin correlation energy      =   -0.056669078295180
+	MP2 correlation energy            =   -0.223147487155180
+      * MP2 total energy                  =  -76.258836950422392
 
-        MP2 correlation energy      =   -0.223147487155180
-      * MP2 total energy            =  -76.258836950422392
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:11:13 2008
+MP2 tstop called on ender.chemistry.gatech.edu
+Tue Oct 28 14:56:25 2008
 
-user time   =       0.01 seconds =       0.00 minutes
+user time   =       0.00 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
@@ -507,7 +515,7 @@ total time  =          0 seconds =       0.00 minutes
                           PSI3 Computation Completed
                           --------------------------
 
-PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:11:13 2008
+PSI3 stopped on ender.chemistry.gatech.edu at Tue Oct 28 14:56:25 2008
 
-Total PSI3 wall time          1 seconds =       0.02 minutes
+Total PSI3 wall time          0 seconds =       0.00 minutes
 ******************************************************************************

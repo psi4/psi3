@@ -24,8 +24,8 @@ input: (
 mp2: (
   scs = true
 % scs_n = true (to implement scs_n scaling factors)
-  scs_scale_s = 1.200000 
-  scs_scale_t = 0.333333
+  scale_os = 1.200000 
+  scale_ss = 0.333333
 
 %Default scalings for scs: scs_scale_s = 1.20000 and scs_scale_t = 0.333333
 %Refer to S. Grimme  J. Chem. Phys.  118, 9095 (2003) 

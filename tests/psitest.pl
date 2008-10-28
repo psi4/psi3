@@ -870,7 +870,7 @@ sub scs_check
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   seek(OUT,0,0);
   while(<OUT>) {
-    if (/SCS\s+=\s+TRUE/) {
+    if (/\s+SCS\s+=\s+True/) {
       close(OUT);
       return 1;
     }
@@ -1499,7 +1499,7 @@ sub seek_scs_mp2
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   seek(OUT,0,0);
   while(<OUT>) {
-    if (/\* SCS-MP2 total energy/) {
+    if (/\s+\* SCS-MP2 total energy/) {
       ($junk,$scs_mp2) = split(/=\s+/, $_);
       return $scs_mp2;
     }
