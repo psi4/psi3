@@ -53,6 +53,10 @@ struct moinfo {
   double Enuc;           /* Nuclear repulsion energy */
   double Escf;           /* SCF energy */
   double Emp2;           /* MP2 energy */
+  double emp2_ss;        /* Same-spin correlation energy*/
+  double emp2_os;        /* Opposite-spin correlation energy*/
+  double escsmp2_ss;     /* Scaled same-spin correlation energy*/
+  double escsmp2_os;     /* Scaled opposite-spin correlation energy*/
 
   double **opdm;         /* One-particle density matrix */
   double **W;            /* Energy-weighted One-particle density matrix */

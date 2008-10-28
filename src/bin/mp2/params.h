@@ -20,8 +20,8 @@ struct params {
   long int memory;
   int semicanonical;
   int scs;
-  double scs_scale_s;
-  double scs_scale_t;
+  double scs_scale_os;
+  double scs_scale_ss;
 };
 
 #endif /* Header guard */

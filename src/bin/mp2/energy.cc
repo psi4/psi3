@@ -5,6 +5,7 @@
 #include <libdpd/dpd.h>
 #define EXTERN
 #include "globals.h"
+#include "moinfo.h"
 
 namespace psi{ namespace mp2{
 
@@ -23,34 +24,35 @@ double rhf_energy(void)
   dpdbuf4 tIjAb;
   dpdbuf4 D;
   dpdbuf4 S;
-  double s_energy, t_energy, scs_energy;
+  double os_energy, ss_energy;
 
   dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
   dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
   E = dpd_buf4_dot(&D, &tIjAb);
 
-  if (params.scs == 1) {
-    dpd_buf4_init(&S, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
-    s_energy = dpd_buf4_dot(&S, &tIjAb);
-    dpd_buf4_close(&S);
-    t_energy = (E - s_energy);
-    fprintf(outfile,"\n     Singlet correlation energy  = %20.15f\n",s_energy);
-    fprintf(outfile,"     Triplet correlation energy  = %20.15f\n",t_energy);
-    
-    s_energy = params.scs_scale_s * s_energy;
-    t_energy = params.scs_scale_t * t_energy;
-    scs_energy = s_energy + t_energy;
+  dpd_buf4_init(&S, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+  os_energy = dpd_buf4_dot(&S, &tIjAb);
+  dpd_buf4_close(&S);
+  ss_energy = (E - os_energy);
+  
+  mo.emp2_os = os_energy;
+  mo.emp2_ss = ss_energy;
 
-    fprintf(outfile,"\n        Scale_S correlation energy  = %20.15f\n",
-      s_energy);
-    fprintf(outfile,"        Scale_T correlation energy  = %20.15f\n",t_energy);
-    fprintf(outfile,"      * SCS-MP2 total energy        = %20.15f\n",mo.Escf + 
-      scs_energy);
+  if (params.scs == 1) {
+    os_energy = params.scs_scale_os * os_energy;
+    ss_energy = params.scs_scale_ss * ss_energy;
   }
+
+  else {
+    os_energy = (6.0/5.6) * os_energy;
+    ss_energy = (1.0/3.0) * ss_energy;
+  }
+
+  mo.escsmp2_os = os_energy;
+  mo.escsmp2_ss = ss_energy;
 
   dpd_buf4_close(&tIjAb);
   dpd_buf4_close(&D);
-
 
   return(E);
 }
