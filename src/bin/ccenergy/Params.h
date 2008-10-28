@@ -39,6 +39,12 @@ struct Params {
   char *abcd;
   int t3_Ws_incore;
   int nthreads;
+  int scs;
+  double scsmp2_scale_os;
+  double scsmp2_scale_ss;
+  double scscc_scale_os;
+  double scscc_scale_ss;
+
 };
 
 }} // namespace psi::ccenergy

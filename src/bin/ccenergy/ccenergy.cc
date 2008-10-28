@@ -334,11 +334,20 @@ int main(int argc, char *argv[])
     exit(PSI_RETURN_FAILURE);
   }
 
-  fprintf(outfile, "\tSCF energy       (chkpt)   = %20.15f\n", moinfo.escf);
-  fprintf(outfile, "\tReference energy (file100) = %20.15f\n", moinfo.eref);
+  fprintf(outfile, "\tSCF energy       (chkpt)              = %20.15f\n", moinfo.escf);
+  fprintf(outfile, "\tReference energy (file100)            = %20.15f\n", moinfo.eref);
   if(params.ref == 0 || params.ref == 2) {
-    fprintf(outfile, "\tMP2 correlation energy     = %20.15f\n", moinfo.emp2);
-    fprintf(outfile, "      * MP2 total energy           = %20.15f\n", moinfo.eref + moinfo.emp2);
+    fprintf(outfile, "\n\tScaled_OS MP2 correlation energy      = %20.15f\n", moinfo.escsmp2_os);
+    fprintf(outfile, "\tScaled_SS MP2 correlation energy      = %20.15f\n", moinfo.escsmp2_ss);
+    fprintf(outfile, "\tSCS-MP2 correlation energy            = %20.15f\n", moinfo.escsmp2_os 
+          + moinfo.escsmp2_ss);
+    fprintf(outfile, "      * SCS-MP2 total energy                  = %20.15f\n", moinfo.eref 
+          + moinfo.escsmp2_os + moinfo.escsmp2_ss);
+
+    fprintf(outfile, "\n\tOpposite-spin MP2 correlation energy  = %20.15f\n", moinfo.emp2_os);
+    fprintf(outfile, "\tSame-spin MP2 correlation energy      = %20.15f\n", moinfo.emp2_ss);
+    fprintf(outfile, "\tMP2 correlation energy                = %20.15f\n", moinfo.emp2);
+    fprintf(outfile, "      * MP2 total energy                      = %20.15f\n", moinfo.eref + moinfo.emp2);
   }
   if( (!strcmp(params.wfn,"CC3")) || (!strcmp(params.wfn,"EOM_CC3"))) {
     fprintf(outfile, "\tCC3 correlation energy     = %20.15f\n", moinfo.ecc);
@@ -352,8 +361,16 @@ int main(int argc, char *argv[])
 	      moinfo.eref + moinfo.ecc + local.weak_pair_energy);
   }
   else {
-    fprintf(outfile, "\tCCSD correlation energy    = %20.15f\n", moinfo.ecc);
-    fprintf(outfile, "      * CCSD total energy          = %20.15f\n", moinfo.eref + moinfo.ecc);
+    fprintf(outfile, "\n\tScaled_OS CCSD correlation energy     = %20.15f\n", moinfo.escscc_os);
+    fprintf(outfile, "\tScaled_SS CCSD correlation energy     = %20.15f\n", moinfo.escscc_ss);
+    fprintf(outfile, "\tSCS-CCSD correlation energy           = %20.15f\n", moinfo.escscc_os + moinfo.escscc_ss);
+    fprintf(outfile, "      * SCS-CCSD total energy                 = %20.15f\n", moinfo.eref 
+          + moinfo.escscc_os + moinfo.escscc_ss);
+
+    fprintf(outfile, "\n\tOpposite-spin CCSD correlation energy = %20.15f\n", moinfo.ecc_os);
+    fprintf(outfile, "\tSame-spin CCSD correlation energy     = %20.15f\n", moinfo.ecc_ss);
+    fprintf(outfile, "\tCCSD correlation energy               = %20.15f\n", moinfo.ecc);
+    fprintf(outfile, "      * CCSD total energy                     = %20.15f\n", moinfo.eref + moinfo.ecc); 
     if(params.local && !strcmp(local.weakp,"MP2")) 
       fprintf(outfile, "      * LCCSD (+LMP2) total energy = %20.15f\n", 
 	      moinfo.eref + moinfo.ecc + local.weak_pair_energy);

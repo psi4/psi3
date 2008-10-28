@@ -10,6 +10,7 @@
 #include "Params.h"
 #define EXTERN
 #include "globals.h"
+#include "MOInfo.h"
 
 namespace psi { namespace ccenergy {
 
@@ -29,6 +30,8 @@ double rhf_energy(void)
   double tauIjAb_energy, tIA_energy;
   dpdfile2 fIA, tIA;
   dpdbuf4 tauIjAb, D, E;
+  dpdbuf4 S;
+  double os_energy, ss_energy, Energy;
 
   dpd_file2_init(&fIA, CC_OEI, 0, 0, 1, "fIA");
   dpd_file2_init(&tIA, CC_OEI, 0, 0, 1, "tIA");
@@ -40,6 +43,27 @@ double rhf_energy(void)
   dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
   dpd_buf4_init(&tauIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tauIjAb");
   tauIjAb_energy = dpd_buf4_dot(&D, &tauIjAb);
+
+  dpd_buf4_init(&S, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+  os_energy = dpd_buf4_dot(&S, &tauIjAb);
+  ss_energy = (tauIjAb_energy - os_energy);
+
+  moinfo.ecc_ss = ss_energy;
+  moinfo.ecc_os = os_energy;
+ 
+  if (params.scs == 1) {
+    os_energy = params.scscc_scale_os * os_energy;
+    ss_energy = params.scscc_scale_ss * ss_energy;
+  }
+
+  else {
+    os_energy = 1.27 * os_energy;
+    ss_energy = 1.13 * ss_energy;
+  }
+
+  moinfo.escscc_os = os_energy;
+  moinfo.escscc_ss = ss_energy;
+
   dpd_buf4_close(&tauIjAb);
   dpd_buf4_close(&D);
   
@@ -145,6 +169,9 @@ double uhf_energy(void)
   fprintf(outfile, "Two BB Energy = %20.14f\n", E2BB);
   fprintf(outfile, "Two AB Energy = %20.14f\n", E2AB);
   */
+  
+  fprintf(outfile,"\n\tOpposite-spin energy  = %20.15f\n",E2AB);
+  fprintf(outfile,"\tSame-spin energy  = %20.15f\n",E2AA+E2BB);
 
   return(T1A + T1B + E2AA + E2BB + E2AB);
 }

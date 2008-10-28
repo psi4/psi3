@@ -10,6 +10,7 @@
 #include "Params.h"
 #define EXTERN
 #include "globals.h"
+#include "MOInfo.h"
 
 namespace psi { namespace ccenergy {
 
@@ -32,6 +33,8 @@ double rhf_mp2_energy(void)
   double T2_energy, T1_energy;
   dpdfile2 F, T1, D1;
   dpdbuf4 T2, D;
+  dpdbuf4 S;
+  double os_energy, ss_energy, scs_energy;
   
   /* Initialize MP2 T1 Amps (zero for true HF references) */
   dpd_file2_init(&F, CC_OEI, 0, 0, 1, "fIA");
@@ -62,6 +65,28 @@ double rhf_mp2_energy(void)
   dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
   dpd_buf4_init(&T2, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb (MP2)");
   T2_energy = dpd_buf4_dot(&D, &T2);
+
+  dpd_buf4_init(&S, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
+  os_energy = dpd_buf4_dot(&S, &T2);
+  dpd_buf4_close(&S);
+  ss_energy = (T2_energy - os_energy);
+
+  moinfo.emp2_ss = ss_energy;
+  moinfo.emp2_os = os_energy;
+
+  if (params.scs == 1) {
+    os_energy = params.scsmp2_scale_os * os_energy;
+    ss_energy = params.scsmp2_scale_ss * ss_energy;
+  }
+
+  else {
+    os_energy = (6.0/5.6) * os_energy;
+    ss_energy = (1.0/3.0) * ss_energy;
+  }
+
+  moinfo.escsmp2_ss = ss_energy;
+  moinfo.escsmp2_os = os_energy;
+
   dpd_buf4_close(&T2);
   dpd_buf4_close(&D);
   

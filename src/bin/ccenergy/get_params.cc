@@ -243,51 +243,86 @@ void get_params()
   params.t3_Ws_incore = 0;
   errcod = ip_boolean("T3_WS_INCORE", &(params.t3_Ws_incore),0);
 
+  /* get parameters related to SCS-MP2 or SCS-N-MP2 */
+  /* see papers by S. Grimme or J. Platz */
+  params.scs = 0;
+  params.scsmp2_scale_os = 6.0/5.0;
+  params.scsmp2_scale_ss = 1.0/3.0;
+  errcod = ip_boolean("SCS_N_MP2",&(params.scs),0);
+  if (params.scs == 1) {
+    params.scsmp2_scale_os = 0.0;
+    params.scsmp2_scale_ss = 1.76;
+  }
+  errcod = ip_boolean("SCS",&(params.scs),0);
+  if (params.scs == 1) {
+      errcod = ip_data("MP2_SCALE_OS","%lf",&(params.scsmp2_scale_os),0);
+      errcod = ip_data("MP2_SCALE_SS","%lf",&(params.scsmp2_scale_ss),0);
+  }
+
+  /* see paper by T. Takatani*/
+  params.scs = 0;
+  params.scscc_scale_os = 1.27;
+  params.scscc_scale_ss = 1.13;
+  errcod = ip_boolean("SCS",&(params.scs),0);
+  if (params.scs == 1) {
+      errcod = ip_data("CC_SCALE_OS","%lf",&(params.scscc_scale_os),0);
+      errcod = ip_data("CC_SCALE_SS","%lf",&(params.scscc_scale_ss),0);
+  }
+
+  
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
-  fprintf(outfile, "\tWave function   =    %6s\n", params.wfn);
+  fprintf(outfile, "\tWave function   =   %6s\n", params.wfn);
+  
   if(params.semicanonical) {
-    fprintf(outfile, "\tReference wfn   =    ROHF changed to UHF for Semicanonical Orbitals\n");
+    fprintf(outfile, "\tReference wfn   =     ROHF changed to UHF for Semicanonical Orbitals\n");
   }
   else {
-    fprintf(outfile, "\tReference wfn   =    %5s\n",
+    fprintf(outfile, "\tReference wfn   =   %5s\n",
 	    (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
   }
   if(params.brueckner) 
-    fprintf(outfile, "\tBrueckner conv. =    %3.1e\n", params.bconv);
-  fprintf(outfile, "\tMemory (Mbytes) =  %5.1f\n",params.memory/1e6);
+    fprintf(outfile, "\tBrueckner conv. =     %3.1e\n", params.bconv);
+  fprintf(outfile, "\tMemory (Mbytes) =     %5.1f\n",params.memory/1e6);
   fprintf(outfile, "\tMaxiter         =   %4d\n", params.maxiter);
-  fprintf(outfile, "\tConvergence     = %3.1e\n", params.convergence);
+  fprintf(outfile, "\tConvergence     =     %3.1e\n", params.convergence);
   fprintf(outfile, "\tRestart         =     %s\n", 
 	  params.restart ? "Yes" : "No");
   fprintf(outfile, "\tDIIS            =     %s\n", params.diis ? "Yes" : "No");
   fprintf(outfile, "\tAO Basis        =     %s\n", params.aobasis);
   fprintf(outfile, "\tABCD            =     %s\n", params.abcd);
-  fprintf(outfile, "\tCache Level     =    %1d\n", params.cachelev);
+  fprintf(outfile, "\tCache Level     =     %1d\n", params.cachelev);
   fprintf(outfile, "\tCache Type      =    %4s\n", 
 	  params.cachetype ? "LOW" : "LRU");
-  fprintf(outfile, "\tPrint Level     =    %1d\n",  params.print);
+  fprintf(outfile, "\tPrint Level     =     %1d\n",  params.print);
   fprintf(outfile, "\tNum. of threads =     %d\n",  params.nthreads);
-  fprintf(outfile, "\t# Amps to Print =    %1d\n",  params.num_amps);
-  fprintf(outfile, "\tPrint MP2 Amps? =    %s\n",  params.print_mp2_amps ?
+  fprintf(outfile, "\t# Amps to Print =     %1d\n",  params.num_amps);
+  fprintf(outfile, "\tPrint MP2 Amps? =     %s\n",  params.print_mp2_amps ?
 	  "Yes" : "No" );
-  fprintf(outfile, "\tAnalyze T2 Amps =    %s\n",  params.analyze ? "Yes" : "No" );
-  fprintf(outfile, "\tPrint Pair Ener =    %s\n",  params.print_pair_energies ? "Yes" : "No" );
+  fprintf(outfile, "\tAnalyze T2 Amps =     %s\n",  params.analyze ? "Yes" : "No" );
+  fprintf(outfile, "\tPrint Pair Ener =     %s\n",  params.print_pair_energies ? "Yes" : "No" );
+
   if (params.print_pair_energies)
-    fprintf(outfile, "\tSpinadapt Ener. =    %s\n",  params.spinadapt_energies ? "Yes" : "No" );
+    fprintf(outfile, "\tSpinadapt Ener. =     %s\n",  params.spinadapt_energies ? "Yes" : "No" );
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
 
   if ( !strcmp(params.wfn,"CC3") || !strcmp(params.wfn,"EOM_CC3") )
     fprintf(outfile, "\tT3 Ws incore    =     %s\n", params.t3_Ws_incore ? "Yes" : "No");
 
   if(params.local) {
-    fprintf(outfile, "\tLocal Cutoff       = %3.1e\n", local.cutoff);
-    fprintf(outfile, "\tLocal Method      =    %s\n", local.method);
-    fprintf(outfile, "\tWeak pairs        =    %s\n", local.weakp);
-    fprintf(outfile, "\tFilter singles    =    %s\n", local.filter_singles ? "Yes" : "No");
-    fprintf(outfile, "\tLocal pairs       =    %s\n", local.pairdef);
-    fprintf(outfile, "\tLocal CPHF cutoff =  %3.1e\n", local.cphf_cutoff);
+    fprintf(outfile, "\tLocal Cutoff       =     %3.1e\n", local.cutoff);
+    fprintf(outfile, "\tLocal Method      =     %s\n", local.method);
+    fprintf(outfile, "\tWeak pairs        =     %s\n", local.weakp);
+    fprintf(outfile, "\tFilter singles    =     %s\n", local.filter_singles ? "Yes" : "No");
+    fprintf(outfile, "\tLocal pairs       =     %s\n", local.pairdef);
+    fprintf(outfile, "\tLocal CPHF cutoff =     %3.1e\n", local.cphf_cutoff);
   }
+  fprintf(outfile, "\tSCS             =     %s\n", (params.scs == 1) ? "True" : "False");
+  fprintf(outfile, "\tMP2_SCALE_OS    =     %.6f\n",params.scsmp2_scale_os);
+  fprintf(outfile, "\tMP2_SCALE_SS    =     %.6f\n",params.scsmp2_scale_ss);
+  fprintf(outfile, "\tCC_SCALE_OS     =     %.6f\n",params.scscc_scale_os);
+  fprintf(outfile, "\tCC_SCALE_SS     =     %.6f\n",params.scscc_scale_ss);
+
   fprintf(outfile, "\n");
 
 }
