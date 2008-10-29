@@ -63,6 +63,22 @@ void vibration(double **hessian, double **lx)
   double ds;
   double freq;
 
+  /* Print out the force constants for subsequent optimizations */
+  TMP = block_matrix(natom*3,natom*3);
+  for(i=0; i<3*natom; i++) {
+    for(j=0; j<3*natom; j++)
+      TMP[i][j] = hessian[i][j] * _hartree2J * 1.0E18 /
+        (_bohr2angstroms * _bohr2angstroms);
+  }
+  psio_open(PSIF_OPTKING,PSIO_OPEN_OLD);
+  fprintf(outfile,"\n\tWriting Cartesian Force Constants to PSIF_OPTKING file\n");
+  psio_write_entry(PSIF_OPTKING, "Cartesian Force Constants",
+        (char *) &(TMP[0][0]),3*natom*3*natom*sizeof(double));
+  psio_close(PSIF_OPTKING,1);
+  // fprintf(outfile, "\n\tHessian matrix in aJ/Ang^2:\n");
+  // print_mat(TMP, natom*3, natom*3, outfile);
+  free_block(TMP);
+
   /* mass-weight the hessian */
   M = block_matrix(natom*3, natom*3);
   for(i=0; i < natom; i++) {
