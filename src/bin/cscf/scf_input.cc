@@ -148,10 +148,18 @@ void scf_input(ip_value_t* ipvalue)
    errcod = ip_string("WFN",&wfn,0);
    if(ipvalue) ip_print_value(stdout,ipvalue);
    errcod = ip_string("DERTYPE",&dertype,0);
-   if(errcod == IPE_KEY_NOT_FOUND) {
-     dertype = (char *) malloc(sizeof(char)*5);
-     strcpy(dertype,"NONE");
+   if(errcod == IPE_KEY_NOT_FOUND) { // no dertype given
+     errcod = ip_string("JOBTYPE",&jobtype,0);
+     if (!strcmp(jobtype,"FREQ")) {
+       dertype = (char *) malloc(sizeof(char)*7);
+       strcpy(dertype,"SECOND");
      }
+     else {
+       dertype = (char *) malloc(sizeof(char)*5);
+       strcpy(dertype,"NONE");
+     }
+     free(jobtype);
+   }
    if(strcmp(wfn,"SCF")) scf_conv = 10;
    if(!strcmp(dertype,"FIRST")) scf_conv = 10;
    if(!strcmp(dertype,"SECOND")) scf_conv = 12;
