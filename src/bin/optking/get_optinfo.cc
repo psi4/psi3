@@ -59,6 +59,9 @@ void get_optinfo() {
       optinfo.numerical_dertype = 1;
   }
 
+  /* optimize in cartesian coordinates and ignore redundant/delocalize keywords */
+  optinfo.cartesian = 0;
+  ip_boolean("CARTESIAN", &(optinfo.cartesian),0);
   optinfo.redundant = 1; optinfo.delocalize = 0;
   if ((optinfo.mode == MODE_DISP_IRREP) || (optinfo.mode == MODE_DISP_NOSYMM) ) 
     { optinfo.redundant = 0; optinfo.delocalize =1; }
@@ -250,6 +253,7 @@ void get_optinfo() {
     fprintf(outfile,"sacc fd points:  %d\n",optinfo.points);
     fprintf(outfile,"zmat_simples:  %d\n",optinfo.zmat_simples);
     fprintf(outfile,"redundant:     %d\n",optinfo.redundant);
+    fprintf(outfile,"cartesian:     %d\n",optinfo.cartesian);
 
     if (optinfo.H_update == OPTInfo::NONE)
       fprintf(outfile,"H_update:     None\n");

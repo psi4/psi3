@@ -9,10 +9,11 @@ LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CXXSRC = opt.cc compute_B.cc compute_G.cc compute_H.cc compute_q.cc \
+CXXSRC = opt.cc compute_B.cc compute_G.cc compute_H.cc compute_H_cart.cc \
+         compute_q.cc \
          new_geom.cc empirical_H.cc salc.cc internals.cc cartesians.cc \
          delocalize.cc irrep.cc get_syminfo.cc \
-         opt_step.cc disp_user.cc make_disp.cc \
+         opt_step.cc opt_step_cart.cc disp_user.cc make_disp.cc \
          grad_save.cc freq_grad.cc grad_energy.cc energy_save.cc \
          print_zmat.cc read_constraints.cc disp_freq_grad_cart.cc freq_grad_cart.cc \
          freq_energy_cart.cc disp_freq_energy_cart.cc fragment.cc test_B.cc \

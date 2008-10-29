@@ -309,8 +309,6 @@ void delocalize(internals &simples, cartesians &carts) {
   return;
 }
 
-double repulsion(double *fatomic_num, double *geom);
-
 // removes rotations - returns number of rotations removed
 void rm_rotations(internals &simples, cartesians &carts, int &num_nonzero,
     double **evects) {
@@ -325,7 +323,7 @@ void rm_rotations(internals &simples, cartesians &carts, int &num_nonzero,
 
   coord = carts.get_coord();
 
-  energy = repulsion(fatomic_num,coord);
+  energy = nuclear_repulsion(fatomic_num,coord);
 
   disp_coord = new double [3*optinfo.natom];
   for (ivect=0; ivect<num_nonzero; ++ivect) {
@@ -380,7 +378,7 @@ void rm_rotations(internals &simples, cartesians &carts, int &num_nonzero,
         disp_coord[3*d+k] += scale * evects[cnt][ivect] * simples.out.get_D(i);
       }
     }
-    disp_energy = repulsion(fatomic_num, disp_coord);
+    disp_energy = nuclear_repulsion(fatomic_num, disp_coord);
     // fprintf(outfile,"dispenergy - energy: %16.12lf\n",disp_energy - energy);
     if (fabs(disp_energy - energy) < rot_tol) {
       fprintf(outfile,"rotational coordinate eliminated");
@@ -395,24 +393,6 @@ void rm_rotations(internals &simples, cartesians &carts, int &num_nonzero,
   free(coord);
   delete [] disp_coord;
   return;
-}
-
-double repulsion(double *fatomic_num, double *coord) {
-  int i, j, dim;
-  double dist, tval = 0.0;
-
-  dim = optinfo.natom;
-  for (i=0; i<dim; ++i)
-    for (j=0; j<i; ++j) {
-      dist = sqrt(
-          SQR(coord[3*i+0]-coord[3*j+0])
-          + SQR(coord[3*i+1]-coord[3*j+1])
-          + SQR(coord[3*i+2]-coord[3*j+2]) );
-
-      tval += fatomic_num[i]*fatomic_num[j] / dist;
-    }
-  fprintf(outfile,"returning repulsion: %15.10lf \n", tval);
-  return tval;
 }
 
 }} /* namespace psi::optking */

@@ -76,6 +76,7 @@ extern void grad_energy(cartesians &carts, internals &simples,
 extern void grad_save(cartesians &carts);
 extern void energy_save(cartesians &carts);
 extern int opt_step(cartesians &carts, internals &simples, salc_set &symm_salcs);
+extern int opt_step_cart(cartesians &carts, internals &simples, salc_set &symm_salcs);
 extern int *read_constraints(internals &simples);
 
 extern int disp_freq_grad_cart(cartesians &carts);
@@ -359,7 +360,10 @@ int main(int argc, char **argv) {
         simples.compute_internals(carts.get_natom(), coord);
         simples.compute_s(carts.get_natom(), coord);
       }
-      a = opt_step(carts, simples, symm_salcs);
+      if (optinfo.cartesian)
+        a = opt_step_cart(carts, simples, symm_salcs);
+      else
+        a = opt_step(carts, simples, symm_salcs);
       free_info(simples.get_num());
       exit_io();
       return a;

@@ -20,6 +20,24 @@
 
 namespace psi { namespace optking {
 
+double nuclear_repulsion(double *fatomic_num, double *coord) {
+  int i, j, dim;
+  double dist, tval = 0.0;
+
+  dim = optinfo.natom;
+  for (i=0; i<dim; ++i)
+    for (j=0; j<i; ++j) {
+      dist = sqrt(
+          SQR(coord[3*i+0]-coord[3*j+0])
+          + SQR(coord[3*i+1]-coord[3*j+1])
+          + SQR(coord[3*i+2]-coord[3*j+2]) );
+
+      tval += fatomic_num[i]*fatomic_num[j] / dist;
+    }
+//  fprintf(outfile,"returning repulsion: %15.10lf \n", tval);
+  return tval;
+}
+
 /*** PRINT_MAT2   prints a matrix to output file ***/
 void print_mat2(double **matrix, int rows, int cols, FILE *of) {
   int i,j,col;

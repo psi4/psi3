@@ -41,6 +41,7 @@ namespace psi { namespace optking {
 #define LABEL_LENGTH (4) // for point group and irrep labels
 /* step size limits */
 #define STEP_LIMIT (0.1)     /* max step size if coord has small value */
+#define STEP_LIMIT_CART (0.3) /* max change in value of one cartesian coordinate if cartesian=true */
 #define STEP_PERCENT (0.3)   /* if coord large valued, max percentage allowed for step */
 #define NONLINEAR_DIST (1.0E-4) /* designed to exclude angle for CO2 if angle exceeds 179 */
 #define MIN_DQ_STEP (1.0E-12)
@@ -84,6 +85,7 @@ EXTERN void punt(char *message);
 EXTERN void open_PSIF(void);
 EXTERN void close_PSIF(void);
 EXTERN void exit_io(void);
+EXTERN double nuclear_repulsion(double *fatomic_num, double *geom);
 EXTERN void print_mat2(double **matrix, int rows, int cols, FILE *of);
 EXTERN void print_mat5(double **matrix, int rows, int cols, FILE *of);
 EXTERN void cross_product(double *u,double *v,double *out);
@@ -126,6 +128,7 @@ struct OPTInfo {
   int print_fconst;
 
 /* optimization parameters */
+  int cartesian;
   int optimize;
   int redundant;
   int delocalize;

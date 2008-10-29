@@ -20,6 +20,10 @@ class fragment_class {
     double *B_weight; /* combination of atom locations, dimension is: 3 x A_natom */
     double *A_s;  /* S vectors for J in fragment A */
     double *B_s;  /* S vectors for J in fragment B */
+//    int P;        /* the number of reference points for the fragment - 
+//                     P=1 (for an atom); P=2 (for a linear fragment); P=3 (for non-linear fragments) */
+//    int dim;      /* the number of interfragment coordinates -
+//                     dim=1 (for an atom); 
 
   public:
 
