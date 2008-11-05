@@ -68,7 +68,7 @@ void MP2_CCSD::compute_mp2_ccsd_energy()
     delta_energy   = current_energy - old_energy;
     old_energy = current_energy;
 
-    if(fabs(log10(fabs(delta_energy))) > options_get_int("E_CONVERGENCE")){
+    if(fabs(log10(fabs(delta_energy))) > options_get_int("CONVERGENCE")){
       converged=true;
     }
 
@@ -120,7 +120,7 @@ void MP2_CCSD::compute_mp2_ccsd_energy()
     current_energy = compute_energy();
 
     delta_energy = current_energy-old_energy;
-    if(fabs(log10(fabs(delta_energy))) > options_get_int("E_CONVERGENCE")){
+    if(fabs(log10(fabs(delta_energy))) > options_get_int("CONVERGENCE")){
       converged=true;
     }
     old_energy=current_energy;

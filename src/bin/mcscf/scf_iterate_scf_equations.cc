@@ -87,7 +87,8 @@ void SCF::iterate_scf_equations()
   }
 
   fprintf(outfile,"\n  ===========================================================================");
-  fprintf(outfile,"\n\n  @SCF@     E(SCF) =  %20.12f",new_energy);
+  
+  fprintf(outfile,"\n\n%6c* SCF total energy   = %20.12f\n",' ',new_energy);
   
   fprintf(outfile,"\n\n  End of SCF");
   fflush(outfile);

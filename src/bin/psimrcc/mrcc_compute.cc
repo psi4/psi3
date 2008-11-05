@@ -65,12 +65,6 @@ void CCMRCC::compute_energy(void(*updater)())
   blas->diis_add("t2[oo][vv]{u}","t2_delta[oo][vv]{u}");
   blas->diis_add("t2[oO][vV]{u}","t2_delta[oO][vV]{u}");
   blas->diis_add("t2[OO][VV]{u}","t2_delta[OO][VV]{u}");
-  if(options_get_bool("DIIS_TRIPLES")){
-    blas->diis_add("t3[ooo][vvv]{u}","t3_delta[ooo][vvv]{u}");
-    blas->diis_add("t3[ooO][vvV]{u}","t3_delta[ooO][vvV]{u}");
-    blas->diis_add("t3[oOO][vVV]{u}","t3_delta[oOO][vVV]{u}");
-    blas->diis_add("t3[OOO][VVV]{u}","t3_delta[OOO][VVV]{u}");
-  }
 
   Timer cc_timer;
   bool converged = false;
@@ -85,7 +79,6 @@ void CCMRCC::compute_energy(void(*updater)())
     build_tau_intermediates();
     build_F_intermediates();
     build_W_intermediates();
-    build_W_T3_intermediates();
     build_Z_intermediates();
     build_t1_amplitudes();
     build_t2_amplitudes();
@@ -94,7 +87,6 @@ void CCMRCC::compute_energy(void(*updater)())
       build_t1_amplitudes_triples();
     if(triples_type>ccsd_t)
       build_t2_amplitudes_triples();
-    build_t3_amplitudes();
 
     converged=build_diagonalize_Heff(cycle,cc_timer.get());
     if(!converged){

@@ -92,33 +92,44 @@ void MOInfoBase::compute_ioff()
     ioff[i] = ioff[i-1] + i;
 }
 
-void MOInfoBase::read_mo_space(int nirreps_ref,int& n, int* mo, const char* label)
+void MOInfoBase::read_mo_space(int nirreps_ref,int& n, int* mo, string labels)
 {
-  // TODO Convert to liboptions
-  int size;
-  int stat = ip_count(const_cast<char *>(label),&size,0); // Cast to avoid warnings
-  n=0;
-  if(stat == IPE_OK){
-    if(size==nirreps_ref){
-      for(int i=0;i<size;i++){
-        stat=ip_data(const_cast<char *>(label),const_cast<char *>("%d"),(&(mo)[i]),1,i); // Cast to avoid warnings
-        n += mo[i];
+  // Defaults is to set all to zero
+  for(int i=0;i<nirreps_ref;i++)
+    mo[i]=0;
+  n = 0;
+  
+  bool read = false;
+  
+  vector<string> label_vec = split(labels);
+  for(int k = 0; k < label_vec.size(); ++k){
+    int size;
+    int stat = ip_count(const_cast<char *>(label_vec[k].c_str()),&size,0); // Cast to avoid warnings
+    if(stat == IPE_OK){
+      if(read){
+        fprintf(outfile,"\n\n  libmoinfo has found a redundancy in the input keywords %s , please fix it!",labels.c_str());
+        fflush(outfile);
+        exit(1);
+      }else{
+        read = true;
       }
-    }else{
-      fprintf(outfile,"\n\n  The size of the %s array (%d) does not match the number of irreps (%d), please fix the input file",label,size,nirreps_ref);
-      fflush(outfile);
-      exit(1);
+      if(size==nirreps_ref){
+        for(int i=0;i<size;i++){
+          stat=ip_data(const_cast<char *>(label_vec[k].c_str()),const_cast<char *>("%d"),(&(mo)[i]),1,i); // Cast to avoid warnings
+          n += mo[i];
+        }
+      }else{
+        fprintf(outfile,"\n\n  The size of the %s array (%d) does not match the number of irreps (%d), please fix the input file",label_vec[k].c_str(),size,nirreps_ref);
+        fflush(outfile);
+        exit(1);
+      }
     }
-  }else{ // The keyword label was not found
-    for(int i=0;i<nirreps_ref;i++)
-      mo[i]=0;
-    n = 0;
   }
 }
 
-void MOInfoBase::print_mo_space(int& n, int* mo, const char* label)
+void MOInfoBase::print_mo_space(int& n, int* mo, std::string labels)
 {
-  fprintf(outfile,"\n  %s",label);
+  fprintf(outfile,"\n  %s",labels.c_str());
 
   for(int i=nirreps;i<8;i++)
     fprintf(outfile,"     ");

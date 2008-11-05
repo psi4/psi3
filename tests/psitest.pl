@@ -64,6 +64,7 @@ $PSITEST_OPTROTTOL = 10**-3;      # Default test criterion for optical rotation
 $PSITEST_STABTOL = 10**-4;        # Default test criterion for Hessian eigenvalues
 $PSITEST_MPOPTOL = 10**-5;        # Default test criterion for Mulliken populations
 $PSITEST_CIDIPTOL = 10**-4;       # Default test criterion for CI dipoles
+$PSITEST_STRICT_ETOL = 10**-12;      # Strict  test criterion for energies
 $PSIMRCCTEST_ETOL = 10**-10;      # Default test criterion for PSIMRCC energies
 ##################################################
 #
@@ -1432,11 +1433,6 @@ sub seek_scf
       $scf = $data[5];
       return $scf;
     }
-    if (/\@SCF\@/) {
-      @data = split(/ +/, $_);
-      $scf = $data[3];
-      return $scf;
-    }
   }
   close(OUT);
 
@@ -2680,14 +2676,14 @@ sub seek_psimrcc
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   seek(OUT,0,0);
   while(<OUT>) {
-    if (/\@CC\@/) {
+    if (/\* MK-MRCCSD total energy/) {
       @data = split(/ +/, $_);
-      $psimrcc = $data[3];
+      $psimrcc = $data[5];
       return $psimrcc;
     }
-    if (/\@PT\@/) {
+    if (/\* MK-MRPT2 total energy/) {
       @data = split(/ +/, $_);
-      $psimrcc = $data[6];
+      $psimrcc = $data[5];
       return $psimrcc;
     }
   }

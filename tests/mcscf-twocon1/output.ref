@@ -469,7 +469,7 @@ total time  =          2 seconds =       0.03 minutes
     ci_grad = [-0.00000001,-0.00000001] S/E
   ===========================================================================
 
-  @SCF@     E(SCF) =     -224.359390149847
+     * SCF total energy   =    -224.359390149847
 
   End of SCF
   MOs orthonormality check passed.

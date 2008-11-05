@@ -266,7 +266,7 @@ total time  =          0 seconds =       0.00 minutes
   @SCF   14      -76.023615019286       -0.000000000000 S/E
   ===========================================================================
 
-  @SCF@     E(SCF) =      -76.023615019286
+     * SCF total energy   =     -76.02361501928
 
   End of SCF
   MOs orthonormality check passed.

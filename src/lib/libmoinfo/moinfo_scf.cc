@@ -66,7 +66,7 @@ void MOInfoSCF::read_mo_spaces()
 
     // build orbital information for current point group
     read_mo_space(nirreps_ref,ndocc,docc_ref,"DOCC");
-    read_mo_space(nirreps_ref,nactv,actv_ref,"ACTV");
+    read_mo_space(nirreps_ref,nactv,actv_ref,"ACTV ACTIVE SOCC");
     
     for (int h=0; h < nirreps_ref; h++) {
       docc[ correlation[h] ] += docc_ref[h];
@@ -84,7 +84,7 @@ void MOInfoSCF::read_mo_spaces()
   }else{
     // For a single-point only
     read_mo_space(nirreps,ndocc,docc,"DOCC");
-    read_mo_space(nirreps,nactv,actv,"ACTV");
+    read_mo_space(nirreps,nactv,actv,"ACTV ACTIVE SOCC");
   }
 
   nactive_ael = nael  - ndocc;
@@ -106,7 +106,7 @@ void MOInfoSCF::print_mo()
   fprintf(outfile,"\n  ----------------------------------------------------------------------------");
   print_mo_space(nso,sopi,"Total                         ");
   print_mo_space(ndocc,docc,"Doubly Occupied               ");
-  print_mo_space(nactv,actv,"Active                        ");
+  print_mo_space(nactv,actv,"Active/Singly Occupied        ");
   fprintf(outfile,"\n  ----------------------------------------------------------------------------");
   fflush(outfile);
 }

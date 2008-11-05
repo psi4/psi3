@@ -14,7 +14,7 @@ psi: (
   charge = 1
   multp  = 2
   docc = (3 0 1 0)
-  actv = (0 0 0 1)
+  socc = (0 0 0 1)
   convergence = 12
 )
 

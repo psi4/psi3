@@ -245,10 +245,10 @@ void MOInfo::read_mo_spaces()
     int *fvir_ref    = new int[nirreps_ref];
 
     // build orbital information for current point group
-    read_mo_space(nirreps_ref,nfocc,focc_ref,"CORR_FOCC");
-    read_mo_space(nirreps_ref,ndocc,docc_ref,"CORR_DOCC");
-    read_mo_space(nirreps_ref,nactv,actv_ref,"CORR_ACTV");
-    read_mo_space(nirreps_ref,nfvir,fvir_ref,"CORR_FVIR");
+    read_mo_space(nirreps_ref,nfocc,focc_ref,"CORR_FOCC FROZEN_DOCC");
+    read_mo_space(nirreps_ref,ndocc,docc_ref,"CORR_DOCC RESTRICTED_DOCC");
+    read_mo_space(nirreps_ref,nactv,actv_ref,"CORR_ACTV ACTIVE ACTV");
+    read_mo_space(nirreps_ref,nfvir,fvir_ref,"CORR_FVIR FROZEN_UOCC");
      
     
     for (int h=0; h < nirreps_ref; h++) {
@@ -269,13 +269,13 @@ void MOInfo::read_mo_spaces()
     delete [] fvir_ref;
   }else{
     // For a single-point only
-    read_mo_space(nirreps,nfocc,focc,"CORR_FOCC");
-    read_mo_space(nirreps,ndocc,docc,"CORR_DOCC");
-    read_mo_space(nirreps,nactv,actv,"CORR_ACTV");
-    read_mo_space(nirreps,nfvir,fvir,"CORR_FVIR");
+    read_mo_space(nirreps,nfocc,focc,"CORR_FOCC FROZEN_DOCC");
+    read_mo_space(nirreps,ndocc,docc,"CORR_DOCC RESTRICTED_DOCC");
+    read_mo_space(nirreps,nactv,actv,"CORR_ACTV ACTIVE ACTV");
+    read_mo_space(nirreps,nfvir,fvir,"CORR_FVIR FROZEN_UOCC");
     if(options_get_str("CORR_WFN") == "MP2-CCSD"){
       actv_docc = new int[nirreps];
-      read_mo_space(nirreps,nactv_docc,actv_docc,"CORR_ACTV_DOCC");
+      read_mo_space(nirreps,nactv_docc,actv_docc,"ACTIVE_DOCC");
     }
   }
 

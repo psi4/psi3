@@ -12,26 +12,21 @@ psi: (
   dertype         = none
   multp           = 3
   docc            = (3 0 0 0 0 2 1 1)       % Doubly occupied MOs in the reference 
-  actv            = (0 0 1 1 0 0 0 0)       % Singly occupied MOs in the reference 
+  active          = (0 0 1 1 0 0 0 0)       % Singly occupied MOs in the reference 
   basis           = cc-pVTZ
   zmat= (
     O
     O 1 1.19865141
   )
-)
-
-scf: (
-  convergence =  12
+  convergence    = 14                       % Converge to 10^-12 Eh
 )
 
 mrcc:(
   corr_wfn         = ccsd                   % Do Mk-MRCCSD 
-  corr_focc        = (1 0 0 0 0 1 0 0)      % Frozen MOs
-  corr_docc        = (2 0 0 0 0 1 1 1)      % Doubly occupied MOs
-  corr_actv        = (0 0 1 1 0 0 0 0)      % Active MOs
-  corr_fvir        = (0 0 0 0 0 0 0 0)      % Frozen virtual MOs
+  frozen_docc      = (1 0 0 0 0 1 0 0)      % Frozen MOs
+  restricted_docc  = (2 0 0 0 0 1 1 1)      % Doubly occupied MOs
+  active           = (0 0 1 1 0 0 0 0)      % Active MOs
+  frozen_uocc      = (0 0 0 0 0 0 0 0)      % Frozen virtual MOs
   multp            = 1                      % Select the Ms = 0 component
   wfn_sym          = B1g                    % Select the B1g state
-  e_convergence    = 12                     % Converge to 10^-12 Eh
 )
-

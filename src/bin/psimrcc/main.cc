@@ -75,6 +75,10 @@ int main(int argc, char *argv[])
   global_timer = new Timer;
   read_calculation_options();
 
+  ip_cwk_clear();
+  ip_cwk_add(const_cast<char*>(":MRCC"));
+  ip_cwk_add(const_cast<char*>(":PSIMRCC"));
+  
   debugging = new Debugging;
 
   mem    = new MemoryManager();
@@ -110,8 +114,7 @@ void read_calculation_options()
   options_add_int("NUM_THREADS",1);
   options_add_int("NEL",0);
   options_add_int("ROOT",1);
-  options_add_int("E_CONVERGENCE",9);
-  options_add_int("PT_E_CONVERGENCE",9);
+  options_add_int("CONVERGENCE",9);
   options_add_int("MAX_ITERATIONS",100);
   options_add_int("DENOMINATOR_SHIFT",0);
   options_add_int("START_DIIS",2);
@@ -127,7 +130,7 @@ void read_calculation_options()
   options_add_bool("PRINT_HEFF",false);
 
   options_add_str_with_choices("PT_ENERGY","SECOND_ORDER","SECOND_ORDER SCS_SECOND_ORDER PSEUDO_SECOND_ORDER SCS_PSEUDO_SECOND_ORDER");
-  options_add_str_with_choices("CORR_WFN","CCSD","PT2 CCSD CCSD_T CCSDT-1A CCSDT-1B CCSDT-2 CCSDT-3 CCSDT MP2-CCSD");
+  options_add_str_with_choices("CORR_WFN","CCSD","CCSD MP2-CCSD");
   options_add_str_with_choices("CORR_REFERENCE","GENERAL","RHF ROHF TCSCF MCSCF GENERAL");
   options_add_str_with_choices("CORR_ANSATZ","MK","SR MK BW APBW");
   options_add_str_with_choices("COUPLING","CUBIC","NONE LINEAR QUADRATIC CUBIC");
@@ -169,11 +172,10 @@ void init_psi(int argc, char *argv[])
   psio_ipv1_config();
   chkpt_init(PSIO_OPEN_OLD);
   ip_cwk_clear();
-  ip_cwk_add(const_cast<char*>(":MRCC"));
   ip_cwk_add(const_cast<char*>(":PSIMRCC"));
+  ip_cwk_add(const_cast<char*>(":MRCC"));
   ip_cwk_add(const_cast<char*>(":PSI"));
   ip_cwk_add(const_cast<char*>(":INPUT"));
-
   
   options_init();
 

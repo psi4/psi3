@@ -1,8 +1,3 @@
-/***************************************************************************
- *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
 #include <libmoinfo/libmoinfo.h>
 #include <liboptions/liboptions.h>
 #include "mrcc.h"
@@ -43,7 +38,7 @@ bool CCMRCC::build_diagonalize_Heff(int cycle, double time)
       print_eigensystem(moinfo->get_nrefs(),Heff,eigenvector);
     )
     double delta_energy = current_energy-old_energy;
-    if(fabs(log10(fabs(delta_energy))) > options_get_int("E_CONVERGENCE"))
+    if(fabs(log10(fabs(delta_energy))) > options_get_int("CONVERGENCE"))
       converged = true;
 
 

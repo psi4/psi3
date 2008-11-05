@@ -7,7 +7,6 @@ void run_psimrcc();
 void transform_integrals();
 void mrccsd();
 void mrccsd_check();
-void mrpt2();
 void mp2_ccsd();
 
 }} /* End Namespaces */

@@ -8,16 +8,14 @@ CDEF += -DUSE_BLAS
 PSILIBS = -lPSI_moinfo -lPSI_options -lPSI_util -lPSI_iwl -lPSI_qt -lPSI_chkpt -lPSI_psio -lPSI_ciomr -lPSI_ipv1 
 
 CXXSRC = \
-algebra_interface.cc  idmrpt2_add_matrices.cc  manybody.cc               mp2_ccsd_f_int.cc         mrcc_energy.cc           mrcc_tau.cc               sort_in_core.cc \
-blas_algorithms.cc    idmrpt2.cc               matrix_addressing.cc      mp2_ccsd_t1_amps.cc       mrcc_f_int.cc            mrcc_w_int.cc             sort_mrpt2.cc \
-blas.cc               idmrpt2_f_int.cc         matrix.cc                 mp2_ccsd_t2_amps.cc       mrcc_Heff.cc             mrcc_w_t3_int.cc          sort_out_of_core.cc \
-blas_compatibile.cc   idmrpt2_Heff.cc          matrix_memory_and_io.cc   mp2_ccsd_w_int.cc         mrcc_mkccsd.cc           mrcc_z_int.cc             transform_block.cc \
-blas_diis.cc          idmrpt2_Heff_doubles.cc  matrixtmp.cc              mp2_ccsd_z_int.cc         mrcc_mkccsd_residual.cc  operation.cc              transform.cc \
-blas_interface.cc     idmrpt2_Heff_singles.cc  memory.cc                 mrcc_add_matrices.cc      mrcc_t1_amps.cc          operation_compute.cc      transform_mrpt2.cc \
-blas_parser.cc        idmrpt2_t1_amps.cc       memory_manager.cc         mrcc_bwccsd.cc            mrcc_t2_amps.cc          operation_contraction.cc  transform_read_so.cc \
-blas_resorting.cc     idmrpt2_t2_amps.cc       mp2_ccsd_add_matrices.cc  mrcc_canonicalization.cc  mrcc_t3_amps.cc          operation_sort.cc \
-blas_solve.cc         index.cc                 mp2_ccsd_amps.cc          mrcc.cc                   mrcc_t3_amps_diag34.cc   psimrcc.cc \
-debugging.cc          main.cc                  mp2_ccsd.cc               mrcc_compute.cc           mrcc_t_amps.cc           sort.cc
+algebra_interface.cc  blas_solve.cc            matrixtmp.cc              mp2_ccsd_t2_amps.cc       mrcc_energy.cc           mrcc_tau.cc               sort.cc \
+blas_algorithms.cc    debugging.cc             memory.cc                 mp2_ccsd_w_int.cc         mrcc_f_int.cc            mrcc_w_int.cc             sort_in_core.cc \
+blas.cc               index.cc                 memory_manager.cc         mp2_ccsd_z_int.cc         mrcc_Heff.cc             mrcc_z_int.cc             sort_mrpt2.cc \
+blas_compatibile.cc   main.cc                  mp2_ccsd_add_matrices.cc  mrcc_add_matrices.cc      mrcc_mkccsd.cc           operation.cc              sort_out_of_core.cc \
+blas_diis.cc          manybody.cc              mp2_ccsd_amps.cc          mrcc_bwccsd.cc            mrcc_mkccsd_residual.cc  operation_compute.cc      transform_block.cc \
+blas_interface.cc     matrix_addressing.cc     mp2_ccsd.cc               mrcc_canonicalization.cc  mrcc_t1_amps.cc          operation_contraction.cc  transform.cc \
+blas_parser.cc        matrix.cc                mp2_ccsd_f_int.cc         mrcc.cc                   mrcc_t2_amps.cc          operation_sort.cc         transform_mrpt2.cc \
+blas_resorting.cc     matrix_memory_and_io.cc  mp2_ccsd_t1_amps.cc       mrcc_compute.cc           mrcc_t_amps.cc           psimrcc.cc                transform_read_so.cc
 
 LD = ${CXX}
 BINOBJ = $(CXXSRC:%.cc=%.o)
