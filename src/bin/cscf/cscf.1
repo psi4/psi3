@@ -289,8 +289,10 @@ This specifies a molecular orbital reordering vector.  It will only
 be used if \fBREORDER\fP is set.  This vector maps every orbital
 to its new index, e.g. \fBMOORDER = (0 2 1)\fP specifies that
 after reordering orbitals 1 and 2 will be swapped. The rank of this
-vector is the same as the number of MOs. The indices are given base-0.
-There is no default.
+vector is the same as the number of MOs. The indices are in Pitzer order
+(ordered by symmetry, then by energy within each symmetry block), base-0.
+CSCF will likely fail if the given MOORDER mixes orbitals from
+different irreps. There is no default.
 
 .if n .ds MM MM
 .if t .ds MM n\s-2\dsocc\u\s0
