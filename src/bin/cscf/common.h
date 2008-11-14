@@ -161,6 +161,8 @@
 #include <libchkpt/chkpt.h>
 #include <libpsio/psio.h>
 #include <libipv1/ip_lib.h>
+#include <string>
+#include <vector>
 
 #define MAX_BASIS 4096
 #define MAXIOFF 4096
@@ -273,6 +275,9 @@ EXTERN double *alpha, *beta;    /* arrays with energy coupling coeffs */
 EXTERN double *zvals;		/* array for nuclear charges */
 EXTERN int *symm_tot;           /* array containing the orbital symmetries in order of energy */
 EXTERN double *ener_tot;        /* array containing the orbital energies in order */
+
+EXTERN std::string reorder;     /* valid values are "BEFORE" and "AFTER" */
+EXTERN std::vector<int> moorder; /* maps MOs to the new order */
 
 EXTERN int *i10;  
 

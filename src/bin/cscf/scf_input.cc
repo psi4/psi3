@@ -21,7 +21,6 @@ void scf_input(ip_value_t* ipvalue)
    char *alabel,*optyp,*wfn,*dertype,*guess,*jobtype;
    char *grid_str;
    char cjunk[80];
-   int norder,*iorder,reordr;
    int nc,no,nh,nn,num_mo;
    int ncalcs;
    int optri,ierr,nat;
@@ -84,31 +83,36 @@ void scf_input(ip_value_t* ipvalue)
    reset_occ = 0;
    errcod = ip_boolean("RESET_OCCUPATIONS",&reset_occ,0);
 
-   reordr = 0;
-   norder = 0;
-   errcod = ip_boolean("REORDER",&reordr,0);
-   if(reordr) {
-     norder = 1;
+   char* reorder_cstr = 0;
+   errcod = ip_string("REORDER",&reorder_cstr,0);
+   if(reorder_cstr) {
+     reorder = std::string(reorder_cstr);
+     if (reorder != std::string("BEFORE") &&
+         reorder != std::string("AFTER") )
+       reorder.clear();
+   }
 
+   if (!reorder.empty()) {
      errcod = ip_count("MOORDER",&size,0);
      errchk(errcod,"MOORDER");
      if(errcod != IPE_OK) {
-       fprintf(outfile,"\ncannot find MOORDER. calculation continuing\n");
-       norder=0;
-       reordr=0;
-       }
-     else {
-       if(size != nbasis) {
-         fprintf(outfile,"\n you have not given enough mos to MOORDER\n");
-         exit(PSI_RETURN_FAILURE);
-         }
-       iorder = (int *) malloc(sizeof(int)*size);
-       for(i=0; i < size ; i++) {
-         errcod = ip_data("MOORDER","%d",&iorder[i],1,i);
-         errchk(errcod,"MOORDER");
-         }
-       }
+       fprintf(outfile,"\nREORDER given, but MOORDER not found\n");
+       exit(PSI_RETURN_FAILURE);
      }
+     else {
+       if(size >= nbasis) {
+         fprintf(outfile,"\nkeyword array MOORDER is too long\n");
+         exit(PSI_RETURN_FAILURE);
+       }
+       moorder.resize(size);
+       for(i=0; i < size ; i++) {
+         errcod = ip_data("MOORDER","%d",&(moorder[i]),1,i);
+         errchk(errcod,"MOORDER");
+       }
+       
+       // TODO need to make sure that reordering does not mix irreps
+     }
+   }
    
    /* Remove after debugging.  Stop cscf right before going to cints */
    exitflag = 0;
@@ -231,6 +235,7 @@ void scf_input(ip_value_t* ipvalue)
        mopi = chkpt_rd_orbspi();
        for(k=0; k < num_ir; k++) scf_info[k].num_mo = mopi[k];
        free(mopi);
+       const int nmo = chkpt_rd_nmo();
 
 /* ----------------------------------------------------
 ** This is the UHF part of the restarting algorithm
@@ -275,16 +280,21 @@ void scf_input(ip_value_t* ipvalue)
 	   }
 	   phase_check = 1;
 
-/* reorder vector if norder = 1 */
-	   
-	   if (norder) {
+	   /* reorder vector now if reorder == BEFORE */
+	   if (reorder == std::string("BEFORE")) {
 	       int loff = 0;
 	       int jnew;
-	       
+
 	       /* TDC(6/19/96) - If the vector is re-ordered, don't allow
-		  phase_checking */
+	       phase_checking */
 	       phase_check = 0;
-	       
+	        
+	       // just in case, check that the length of moorder equals the number of MOs
+	       if (moorder.size() != nmo) {
+	         fprintf(outfile,"\nlength of MOORDER != nmo\n");
+	         exit(PSI_RETURN_FAILURE);
+	       }
+
 	       fprintf(outfile,"\n  mo's will be reordered\n");
 	       for (m=0;m<2;m++){
 		   for (i=0; i < num_ir; i++) {
@@ -293,10 +303,10 @@ void scf_input(ip_value_t* ipvalue)
 			   num_mo = s->num_mo;
 			   scr_mat = (double **) init_matrix(nn,num_mo);
 			   for (j=0; j < num_mo; j++) {
-			       jnew = iorder[j+loff]-1;
+			       jnew = moorder[j+loff] - loff;
 			       for (k=0; k < nn ; k++) {
-				   scr_mat[k][j]
-				       =spin_info[m].scf_spin[i].cmat[k][jnew];
+				   scr_mat[k][jnew]
+				       =spin_info[m].scf_spin[i].cmat[k][j];
 			       }
 			   }
 			   for (j=0; j < nn ; j++)
@@ -311,7 +321,6 @@ void scf_input(ip_value_t* ipvalue)
 		       }
 		   }
 	       }
-	       free(iorder);
 	   }
        }
        else{
@@ -337,16 +346,21 @@ void scf_input(ip_value_t* ipvalue)
 
 	   phase_check = 1;
 	   
-/* reorder vector if norder = 1 */
-	   
-	   if (norder) {
+/* reorder vector now if reorder == BEFORE */
+	   if (reorder == std::string("BEFORE")) {
 	       int loff = 0;
 	       int jnew;
 	       
 	       /* TDC(6/19/96) - If the vector is re-ordered, don't allow
-		  phase_checking */
+		    phase_checking */
 	       phase_check = 0;
 	       
+           // just in case, check that the length of moorder equals the number of MOs
+           if (moorder.size() != nmo) {
+             fprintf(outfile,"\nlength of MOORDER != nmo\n");
+             exit(PSI_RETURN_FAILURE);
+           }
+
 	       fprintf(outfile,"\n  mo's will be reordered\n");
 	       for (i=0; i < num_ir; i++) {
 		   s = &scf_info[i];
@@ -354,9 +368,9 @@ void scf_input(ip_value_t* ipvalue)
 		       num_mo = s->num_mo;
 		       scr_mat = (double **) init_matrix(nn,num_mo);
 		       for (j=0; j < num_mo; j++) {
-			   jnew = iorder[j+loff]-1;
+			   jnew = moorder[j+loff] - loff;
 			   for (k=0; k < nn ; k++) {
-			       scr_mat[k][j]=s->cmat[k][jnew];
+			       scr_mat[k][jnew]=s->cmat[k][j];
 			   }
 		       }
 		       for (j=0; j < nn ; j++)
@@ -369,7 +383,6 @@ void scf_input(ip_value_t* ipvalue)
 		       free_matrix(scr_mat,nn);
 		   }
 	       }
-	       free(iorder);
 	   }
        }
    }

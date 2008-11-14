@@ -343,6 +343,80 @@ void cleanup()
   chkpt_wt_frzcpi(frzcpi);
   chkpt_wt_frzvpi(frzvpi);
 
+  /* reorder MO coefficients and eigenvectors */
+  if (reorder == std::string("AFTER")) {
+    if (uhf) {
+
+      fprintf(outfile,"\n  mo's will be reordered\n");
+      for(int m=0; m<2; ++m) {
+      int offset = 0;
+      for (i=0; i < num_ir; i++) {
+        s = &scf_info[i];
+        if (nn=s->num_so) {
+          num_mo = s->num_mo;
+          double* scr_arr = init_array(num_mo);
+          double** scr_mat = block_matrix(nn,num_mo);
+          double** cmat = spin_info[m].scf_spin[i].cmat;
+          double* evals = spin_info[m].scf_spin[i].fock_evals;
+          for (j=0; j < num_mo; j++) {
+            const int jnew = moorder[j+offset] - offset;
+            for (k=0; k < nn ; k++) {
+              scr_mat[k][jnew]=cmat[k][j];
+            }
+            scr_arr[jnew] = evals[j];
+          }
+          for (j=0; j < nn ; j++) {
+            for (k=0; k < num_mo ; k++)
+              cmat[j][k] = scr_mat[j][k];
+            evals[j] = scr_arr[j];
+          }
+          
+          fprintf(outfile,"\n reordered %s mo's for irrep %s\n",
+              (m == 0) ? "Alpha" : "Beta",
+              s->irrep_label);
+          eigout(cmat, evals, spin_info[m].scf_spin[i].occ_num, nn, num_mo, outfile);
+          offset += num_mo;
+          free_block(scr_mat);
+          free(scr_arr);
+        }
+      }
+      }
+
+    }
+    else {
+    
+      fprintf(outfile,"\n  mo's will be reordered\n");
+      int offset = 0;
+      for (i=0; i < num_ir; i++) {
+        s = &scf_info[i];
+        if (nn=s->num_so) {
+          num_mo = s->num_mo;
+          double* scr_arr = init_array(num_mo);
+          double** scr_mat = block_matrix(nn,num_mo);
+          for (j=0; j < num_mo; j++) {
+            const int jnew = moorder[j+offset] - offset;
+            for (k=0; k < nn ; k++) {
+              scr_mat[k][jnew]=s->cmat[k][j];
+            }
+            scr_arr[jnew] = s->fock_evals[j];
+          }
+          for (j=0; j < nn ; j++) {
+            for (k=0; k < num_mo ; k++)
+              s->cmat[j][k] = scr_mat[j][k];
+            s->fock_evals[j] = scr_arr[j];
+          }
+          
+          fprintf(outfile,"\n reordered mo's for irrep %s\n",
+              s->irrep_label);
+          eigout(s->cmat, s->fock_evals, s->occ_num, nn, num_mo, outfile);
+          offset += num_mo;
+          free_block(scr_mat);
+          free(scr_arr);
+        }
+      }
+    } // non-UHF
+  } // end of if REORDER
+  
   /* Write eigenvectors and eigenvalues to new PSIF_CHKPT */
   scr_arr = init_array(nmo);
 

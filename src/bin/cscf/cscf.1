@@ -276,17 +276,20 @@ or \fBDERTYPE = NONE\fP.
 If you wish to keep 
 integrals files then set \fBDELETE_INTS\fP = false.  The default is true.
 
-.IP "\fBREORDER =\fP \fIboolean\fP"
-The molecular orbitals will be reordered if this is true, in which
-case, the \fBMOORDER\fP parameter must be present.
-The default is false.
+.IP "\fBREORDER =\fP \fIstring\fP"
+The parameter controls reordering of molecular orbitals.
+If set to \fBBEFORE\fP then the guess orbitals from checkpoint file
+will be reordered. If set to \fBAFTER\fP, converged orbitals
+will be reordered before being written to the checkpoint file.
+In either case \fBMOORDER\fP parameter must be given to specify the
+reordering map. The default is not to reorder orbitals.
 
 .IP "\fBMOORDER =\fP \fIinteger_vector\fP"
 This specifies a molecular orbital reordering vector.  It will only
-be used if \fBREORDER = YES\fP.  This vector contains first the
-ordering for the orbitals in the first irreducible representation
-and then the second and so on.  The first orbital of each
-irreducible representation is numbered 1.
+be used if \fBREORDER\fP is set.  This vector maps every orbital
+to its new index, e.g. \fBMOORDER = (0 2 1)\fP specifies that
+after reordering orbitals 1 and 2 will be swapped. The rank of this
+vector is the same as the number of MOs. The indices are given base-0.
 There is no default.
 
 .if n .ds MM MM
