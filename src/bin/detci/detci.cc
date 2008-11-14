@@ -1345,6 +1345,20 @@ void mpn(struct stringwr **alplist, struct stringwr **betlist)
    mpn_generator(Hd, alplist, betlist);
 }
 
+BIGINT strings2det(int alp_code, int alp_idx, int bet_code, int bet_idx) {
+
+   int blknum;
+   BIGINT addr;
+
+   blknum = CIblks.decode[alp_code][bet_code];
+   addr = CIblks.offset[blknum];
+   addr += alp_idx * CIblks.Ib_size[blknum] + bet_idx;
+
+   return(addr);
+
+}
+
+
 }} // namespace psi::detci
 
 extern "C" { char *gprgid(void) { char *prgid = "DETCI"; return (prgid); } }

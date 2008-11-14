@@ -202,7 +202,7 @@ int H0block_calc(double E)
         }
      free(H0xc0);
      free(H0xs0);
-     return(1.0);
+     return(1);
      }
    else if (Parameters.precon == PRECON_H0BLOCK_INVERT || 
             Parameters.precon == PRECON_H0BLOCK_ITER_INVERT) {
