@@ -100,7 +100,7 @@ void scf_input(ip_value_t* ipvalue)
        exit(PSI_RETURN_FAILURE);
      }
      else {
-       if(size >= nbasis) {
+       if(size > nbasis) {
          fprintf(outfile,"\nkeyword array MOORDER is too long\n");
          exit(PSI_RETURN_FAILURE);
        }

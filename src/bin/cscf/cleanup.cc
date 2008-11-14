@@ -356,28 +356,33 @@ void cleanup()
           num_mo = s->num_mo;
           double* scr_arr = init_array(num_mo);
           double** scr_mat = block_matrix(nn,num_mo);
+          double* occ_copy = init_array(num_mo);
           double** cmat = spin_info[m].scf_spin[i].cmat;
           double* evals = spin_info[m].scf_spin[i].fock_evals;
+          double* occ = spin_info[m].scf_spin[i].occ_num;
           for (j=0; j < num_mo; j++) {
             const int jnew = moorder[j+offset] - offset;
             for (k=0; k < nn ; k++) {
               scr_mat[k][jnew]=cmat[k][j];
             }
             scr_arr[jnew] = evals[j];
+            occ_copy[jnew] = occ[j];
           }
           for (j=0; j < nn ; j++) {
             for (k=0; k < num_mo ; k++)
               cmat[j][k] = scr_mat[j][k];
             evals[j] = scr_arr[j];
+            occ[j] = occ_copy[j];
           }
           
           fprintf(outfile,"\n reordered %s mo's for irrep %s\n",
               (m == 0) ? "Alpha" : "Beta",
               s->irrep_label);
-          eigout(cmat, evals, spin_info[m].scf_spin[i].occ_num, nn, num_mo, outfile);
+          eigout(cmat, evals, occ, nn, num_mo, outfile);
           offset += num_mo;
           free_block(scr_mat);
           free(scr_arr);
+          free(occ);
         }
       }
       }
@@ -393,17 +398,20 @@ void cleanup()
           num_mo = s->num_mo;
           double* scr_arr = init_array(num_mo);
           double** scr_mat = block_matrix(nn,num_mo);
+          double* occ_copy = init_array(num_mo);
           for (j=0; j < num_mo; j++) {
             const int jnew = moorder[j+offset] - offset;
             for (k=0; k < nn ; k++) {
               scr_mat[k][jnew]=s->cmat[k][j];
             }
             scr_arr[jnew] = s->fock_evals[j];
+            occ_copy[jnew] = s->occ_num[j];
           }
           for (j=0; j < nn ; j++) {
             for (k=0; k < num_mo ; k++)
               s->cmat[j][k] = scr_mat[j][k];
             s->fock_evals[j] = scr_arr[j];
+            s->occ_num[j] = occ_copy[j];
           }
           
           fprintf(outfile,"\n reordered mo's for irrep %s\n",
@@ -412,6 +420,7 @@ void cleanup()
           offset += num_mo;
           free_block(scr_mat);
           free(scr_arr);
+          free(occ_copy);
         }
       }
     } // non-UHF
