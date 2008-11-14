@@ -59,7 +59,8 @@ double ***init_box(int a, int b, int c)
   for(i=0;i<a;i++)
     for(j=0;j<b;j++) {
       box[i][j] = (double *) malloc(sizeof(double)*c);
-      bzero((char *) box[i][j],sizeof(double)*c);
+      //bzero((char *) box[i][j],sizeof(double)*c);
+      memset(box[i][j], '\0', sizeof(double)*c);
     }
 
   return box;
