@@ -5,7 +5,11 @@
 ** point-charge electrostatics
 **
 ** C. David Sherrill
-** January 2008
+** Edward G. Hohenstein
+**
+** January 2008: Initial version
+** November 2008: Hessian of -D term
+** 
 */
 
 
@@ -28,6 +32,7 @@
 #include <physconst.h>
 #include <psifiles.h>
 #include <masses.h>
+#include <string>
 
 #include "globals.h"
 #include "nonbonded.h"
@@ -42,10 +47,15 @@ void compute_R(int natom, double **geom, double *R);
 void compute_dXdYdZ(int natom, double **geom, double **dX, double **dY,
   double **dZ);
 double compute_ddisp(int natom, double *R, double *AN, double s6, double d,
-  int damp_flag);
+  char *damp_type);
 void compute_ddisp_gradient(int natom, double *AN, double **geom,
-  double s6, double d, int damp_flag, double *gradient);
+  double s6, double d, char *damp_type, double *gradient);
+void compute_disp_hess(int natom, double *AN, double **geom,
+  double s6, double **hessian);
+void compute_ddisp_hess(int natom, double *AN, double **geom,
+  double s6, double d, double **hessian);
 int label2an(char *label);
+double compute_estatic(int natom, double *R, double *AC);
 
 }}; // close namespace decl
 
@@ -68,14 +78,19 @@ int main(int argc, char *argv[]) {
   double energy_dd_hartree;       /* in hartree                         */
   double e_scf;                   /* Hartree-Fock energy (hartree)      */
   double etot;                    /* prev tot energy+energy_dd_hartree  */
-  int damp_flag;                  /* damp the dispersion? 1=yes,0=no    */
+  int do_dispersion;              /* compute Grimme dispersion terms?   */
+  int do_estatic;                 /* compute electrostatic terms?       */
+  char *damp_type;                /* which damping equation to be used? */
+  char *disp_method;              /* which C6 function to be used       */
   int num_array;                  /* count elements in parsed array     */
   int errcod;                     /* input parsing error code           */
   double tval;                    /* temp var                           */
   char tmpstr[100];               /* temp string for parsing input      */
+  char *tmpstr2;                  /* another temporary string           */
   char *dertype;                  /* derivative type from input         */
   double *gradient;               /* gradient vector                    */
-  int do_deriv;                   /* do a derivative calculation? 1=yes */
+  double **hessian;               /* hessian matrix                     */
+  int derlvl;                     /* do energy(0), deriv(1), or Hess(2)?*/
   int i,j;
 
   start_io(argc,argv);
@@ -83,15 +98,48 @@ int main(int argc, char *argv[]) {
   geom = chkpt_rd_geom();
   natom = chkpt_rd_natom();
   AN = chkpt_rd_zvals();
+
+  do_estatic = 0;
   if (ip_exist("PARTIAL_CHARGES",0)) {
     AC = init_array(natom);
     errcod = ip_double_array("PARTIAL_CHARGES",AC,natom);
     have_partial_charges = 1;
+    do_estatic = 1;
   }
+
   errcod = ip_data("S6","%lf",&s6,0);
   errcod = ip_data("D_DMP","%lf",&d,0);
-  damp_flag = 1;
-  errcod = ip_boolean("DAMP",&(damp_flag),0);
+
+  do_dispersion = 1;
+  damp_type = (char *) malloc(80);
+  if (ip_exist("DISPERSION",0)) {
+    errcod = ip_string("DISPERSION",&disp_method,0);   
+    if (strcmp(disp_method, "GRIMME")==0) {
+      strcpy(damp_type, "GRIMME");
+    }
+    else if (strcmp(disp_method, "NONE")==0 ||
+             strcmp(disp_method, "FALSE")==0) {
+      do_dispersion = 0;
+      strcpy(damp_type, "NONE");
+    }
+    else {
+      fprintf(outfile, "Error: unrecognized dispersion type %s\n", disp_method);
+      do_dispersion = 0;
+    }
+  }
+  else { // no DISPERSION keyword in input, so set default
+    disp_method = (char *) malloc(80);
+    strcpy(disp_method, "GRIMME");
+    strcpy(damp_type, "GRIMME");
+  }
+
+  if (ip_exist("DAMP", 0)) {
+    errcod = ip_string("DAMP",&tmpstr2,0);
+    strcpy(damp_type, tmpstr2);
+    free(tmpstr2);
+  }
+
+  errcod = ip_boolean("ELECTROSTATICS",&(do_estatic),0);
 
   /* parse overridden vdW radii */
   if (ip_exist("VDW_RADII",0)) {
@@ -134,39 +182,50 @@ int main(int argc, char *argv[]) {
   } /* end parsing overridden C6 coefficients */
  
   fprintf(outfile, "\n");
-  fprintf(outfile, "   Universal scaling coefficient s6 = %6.4lf\n", s6);
-  fprintf(outfile, "   Universal damping exponent d     = %6.4lf\n", d);
-  fprintf(outfile, "   Damp dispersion                  = %6s\n", 
-    (damp_flag==1) ? "yes" : "no");
-
-  R = init_array((natom*(natom+1))/2);
-  compute_R(natom, geom, R);
-  energy_dd = compute_ddisp(natom, R, AN, s6, d, damp_flag);
-  energy_dd_hartree = energy_dd / (_na * _hartree2J);
-
-  fprintf(outfile, "\n");
-  fprintf(outfile, "   Damped dispersion energy  = %14.9lf hartree ", 
-    energy_dd_hartree);
-  fprintf(outfile, "(%10.4lf kcal/mol)\n", (energy_dd / 4184));
-  fflush(outfile);
-
-  /* get the SCF energy so we can print HF+D */
-  if (chkpt_exist_add_prefix("SCF energy")) { 
-    e_scf = chkpt_rd_escf();
-    fprintf(outfile, "   SCF energy                = %14.9lf hartree\n", e_scf);
-    fprintf(outfile, " * Total SCF+D energy        = %14.9lf hartree\n", 
-      e_scf + energy_dd_hartree);
+  if (do_dispersion) {
+    fprintf(outfile, "   Universal scaling coefficient s6 = %6.4lf\n", s6);
+    fprintf(outfile, "   Universal damping exponent d     = %6.4lf\n", d);
+    fprintf(outfile, "   Dispersion method                = %s\n", 
+      disp_method);
+    fprintf(outfile, "   Damping function                 = %s\n", 
+      damp_type);
   }
 
-  fprintf(outfile, "\n");
-
-  /* write the total energy to checkpoint so OPTKING can grab it */
+  /* get checkpoint energy and print it */
   if (chkpt_exist_add_prefix("Total energy")) {
     etot = chkpt_rd_etot();
+    fprintf(outfile, "\n");
+    fprintf(outfile, "   Previous energy           = %14.9lf hartree\n", etot);
   }
   else etot = 0.0;
 
-  etot += energy_dd_hartree;
+  R = init_array((natom*(natom+1))/2);
+  compute_R(natom, geom, R);
+
+  if (do_dispersion) {
+
+    energy_dd = compute_ddisp(natom, R, AN, s6, d, damp_type);
+    energy_dd_hartree = energy_dd / (_na * _hartree2J);
+
+    fprintf(outfile, "\n");
+    fprintf(outfile, "   Damped dispersion energy  = %14.9lf hartree ", 
+      energy_dd_hartree);
+    fprintf(outfile, "(%10.4lf kcal/mol)\n", (energy_dd / 4184.0));
+    fflush(outfile);
+    etot += energy_dd_hartree;
+  }
+
+  if (do_estatic) {
+    double estatic = compute_estatic(natom, R, AC);
+    double estatic_hartree = estatic / (_na * _hartree2J);
+    fprintf(outfile, "   Electrostatic energy      = %14.9lf hartree ", 
+      estatic_hartree);
+    fprintf(outfile, "(%10.4lf kcal/mol)\n", (estatic / 4184.0));
+    etot += estatic_hartree;
+  }
+
+  fprintf(outfile, " * Total energy + empirical  = %14.9lf hartree\n", etot);
+  fprintf(outfile, "\n");
   chkpt_wt_etot(etot);
 
   /* calculate the gradient if requested */
@@ -175,10 +234,12 @@ int main(int argc, char *argv[]) {
      dertype = (char *) malloc(sizeof(char)*5);
      strcpy(dertype, "NONE");
    }
-  if (strcmp(dertype, "NONE")==0) do_deriv = 0;
-  else do_deriv = 1; 
+  if (strcmp(dertype, "NONE")==0) derlvl = 0;
+  else if (strcmp(dertype, "FIRST")==0) derlvl = 1;
+  else if (strcmp(dertype, "SECOND")==0) derlvl = 2;
+  else derlvl = 0; 
 
-  if (do_deriv) {
+  if (derlvl==1) { // do a gradient
 
     /* this should never happen if called before $deriv
     if (chkpt_exist_add_prefix("Energy Gradient")) {
@@ -196,7 +257,7 @@ int main(int argc, char *argv[]) {
     */
 
     gradient = init_array(3*natom);
-    compute_ddisp_gradient(natom, AN, geom, s6, d, damp_flag, gradient);
+    compute_ddisp_gradient(natom, AN, geom, s6, d, damp_type, gradient);
 
     fprintf(outfile, "  Gradient of empirical contribution (hartree/bohr)\n");
     for (i=0; i<natom; i++) {
@@ -207,16 +268,43 @@ int main(int argc, char *argv[]) {
     chkpt_wt_grad(gradient);
   }
 
+  if (derlvl==2) { // Hessian
+
+    hessian = block_matrix(3*natom,3*natom);
+
+    psio_open(PSIF_DERINFO, PSIO_OPEN_OLD);
+    psio_read_entry(PSIF_DERINFO, "Skeleton Hessian",
+               (char *) hessian[0], natom*3*natom*3*sizeof(double));
+    psio_close(PSIF_DERINFO, 1);
+
+    if (strcmp(damp_type, "GRIMME")==0) {
+      compute_ddisp_hess(natom, AN, geom, s6, d, hessian);
+    }
+    else if (strcmp(damp_type, "NONE")==0) {
+      compute_disp_hess(natom, AN, geom, s6, hessian);
+    }
+    else {
+      fprintf(outfile, "Error: unrecognized damp type for Hessian!\n");
+    }
+
+  }
+
+  if (do_estatic && derlvl > 0) {
+    fprintf(outfile, "   Warning: Electrostatic interactions not ");
+    fprintf(outfile, "included in derivatives!!\n");
+  }
+
   /* clean up */
   free(AN);
   free(R);
   if (have_partial_charges) free(AC);
-  if (do_deriv) free(gradient);
-  /* free geom --- how exactly is it allocated now? */
+  if (derlvl==1) free(gradient);
+  if (derlvl==2) free_block(hessian);
+  free_block(geom);
   stop_io();
 }
 
-extern "C" { char *gprgid(void) { char *prgid = "TRANSQT"; return (prgid); } }
+extern "C" { char *gprgid(void) { char *prgid = "NONBONDED"; return (prgid); } }
 
 namespace psi { namespace nonbonded {
 
@@ -348,15 +436,14 @@ void compute_dXdYdZ(int natom, double **geom, double **dX, double **dY,
 ** \param AN         = atomic number for each atom
 ** \param s6         = s6 universal dispersion scaling parameter
 ** \param d          = d universal dispersion damping exponent
-** \param damp_flag  = 1 to damp dispersion, 0 otherwise (should be 1
-**                     except for testing)
+** \param damp_type  = string giving damping function to use
 **
-** Returns: the dispersion energy, damped if damp_flag=1
+** Returns: the dispersion energy (J/mol), damped if requested
 **
 ** \ingroup NONBONDED
 */
 double compute_ddisp(int natom, double *R, double *AN, double s6, double d,
-  int damp_flag)
+  char *damp_type)
 {
   int i, j, ij, Zi, Zj;
   double energy=0.0, tval, r, r_i, r_j, r_vdw;
@@ -376,7 +463,7 @@ double compute_ddisp(int natom, double *R, double *AN, double s6, double d,
       tval = sqrt(C6i * C6j) * 1000000.0; /* nm^6 -> Ang^6 */
       tval = tval/pow(r, 6.0);
       // printf("Undamped Dispersion term: %14.9lf\n", tval / 4184);
-      if (damp_flag) {
+      if (strcmp(damp_type, "GRIMME") == 0) {
         fdmp = 1.0 / (1.0 + exp(-d * (r / r_vdw - 1.0))); 
         // printf("Damping factor          : %14.9lf\n", fdmp);
         tval *= fdmp;
@@ -399,8 +486,7 @@ double compute_ddisp(int natom, double *R, double *AN, double s6, double d,
 ** \param geom       = geometry matrix (in bohr)
 ** \param s6         = s6 universal dispersion scaling parameter
 ** \param d          = d universal dispersion damping exponent
-** \param damp_flag  = 1 to damp dispersion, 0 otherwise (should be 1
-**                     except for testing)
+** \param damp_type  = string giving damping type
 ** \param gradient   = gradient vector to add the results to (x1, y1, z1, ..)
 **
 ** Returns: None
@@ -410,7 +496,7 @@ double compute_ddisp(int natom, double *R, double *AN, double s6, double d,
 ** \ingroup NONBONDED
 */
 void compute_ddisp_gradient(int natom, double *AN, double **geom,
-  double s6, double d, int damp_flag, double *gradient)
+  double s6, double d, char *damp_type, double *gradient)
 {
   int i, j, ij, Zi, Zj;
   double energy=0.0, tval, r, r_i, r_j, r_vdw;
@@ -436,13 +522,13 @@ void compute_ddisp_gradient(int natom, double *AN, double **geom,
       r_vdw = r_i + r_j;
       prefact = s6 * sqrt(C6i * C6j) * 1000000.0; /* nm^6 -> Ang^6 */
       tval = 6.0/pow(r, 8.0);
-      if (damp_flag) {
+
+      if (strcmp(damp_type, "GRIMME") == 0) {
         qdmp = exp(-d * (r / r_vdw - 1.0));
         fdmp = 1.0 / (1.0 + qdmp);
         tval *= fdmp;
 
         tval -= (d / (r_vdw * pow(r, 7.0))) * (qdmp * fdmp * fdmp);
-        
       }
 
       tval *= prefact;
@@ -463,6 +549,286 @@ void compute_ddisp_gradient(int natom, double *AN, double **geom,
     } /* end loop over j */
   } /* end loop over i */
 
+}
+
+
+/*!
+** compute_disp_hess(): Compute the Hessian of the undamped dispersion
+** terms from S. Grimme, J. Comput. Chem. 27, 1787, 2006
+**
+** \param natom      = number of atoms
+** \param AN         = atomic number for each atom
+** \param geom       = geometry matrix (in bohr)
+** \param s6         = s6 universal dispersion scaling parameter
+** \param hessian    = Hessian to add the results to 
+**
+** Returns: none
+**
+** \ingroup NONBONDED
+*/
+void compute_disp_hess(int natom, double *AN, double **geom,
+  double s6, double **hessian)
+{
+  int i,j,k;
+  int Zi,Zj,Zk;
+  double r;
+  double C6i,C6j,C6k;
+  double dx, dy, dz;
+  double tval_10, tval_8;
+  double prefact;
+  double unitconv = _bohr2angstroms * _bohr2angstroms / (_na * _hartree2J);
+
+  for(i=0; i < natom; i++) {
+    for(j=0; j <= i; j++) { /*Loop over all unique atom pairs (including i=j)*/
+
+      Zi = (int) AN[i];
+      Zj = (int) AN[j];
+
+      C6i = vdw_C6_grimme[Zi];
+      C6j = vdw_C6_grimme[Zj];
+
+      if (i==j) { /* Handle cases where i=j first */
+
+        for(k=0; k < natom; ++k){
+          if (i == k) continue;
+
+          Zk = (int) AN[k];
+          C6k = vdw_C6_grimme[Zk];
+
+          prefact = s6 * sqrt(C6i * C6k) * 1000000.0 * unitconv;
+
+          dx = (geom[i][0] - geom[k][0]) * _bohr2angstroms;
+          dy = (geom[i][1] - geom[k][1]) * _bohr2angstroms;
+          dz = (geom[i][2] - geom[k][2]) * _bohr2angstroms;
+          r =  sqrt(dx * dx + dy * dy + dz * dz); /* in ang */
+
+          tval_8  = 6.0/pow(r, 8.0);
+          tval_10 = -48.0/pow(r, 10.0);
+
+          hessian[3*i][3*i] += prefact * ( tval_10 * dx * dx + tval_8);
+          hessian[3*i+1][3*i+1] += prefact * ( tval_10 * dy * dy + tval_8);
+          hessian[3*i+2][3*i+2] += prefact * ( tval_10 * dz * dz + tval_8);
+          hessian[3*i+1][3*i] += prefact * tval_10 * dx * dy;
+          hessian[3*i+2][3*i] += prefact * tval_10 * dx * dz;
+          hessian[3*i+2][3*i+1] += prefact * tval_10 * dy * dz;
+
+        }
+      }
+      else { /* Now i != j */
+
+        prefact = s6 * sqrt(C6i * C6j) * 1000000.0 * unitconv;
+
+        dx = (geom[i][0] - geom[j][0]) * _bohr2angstroms;
+        dy = (geom[i][1] - geom[j][1]) * _bohr2angstroms;
+        dz = (geom[i][2] - geom[j][2]) * _bohr2angstroms;
+        r =  sqrt(dx * dx + dy * dy + dz * dz); /* in ang */
+
+        tval_8  = -6.0/pow(r, 8.0);
+        tval_10 = 48.0/pow(r, 10.0); /* Sign change from xij = - xji */
+
+        hessian[3*i][3*j] += prefact * ( tval_10 * dx * dx + tval_8);
+        hessian[3*i+1][3*j+1] += prefact * ( tval_10 * dy * dy + tval_8);
+        hessian[3*i+2][3*j+2] += prefact * ( tval_10 * dz * dz + tval_8);
+        hessian[3*i+1][3*j] += prefact * tval_10 * dx * dy;
+        hessian[3*i+2][3*j] += prefact * tval_10 * dx * dz;
+        hessian[3*i+2][3*j+1] += prefact * tval_10 * dy * dz;
+        hessian[3*i][3*j+1] += prefact * tval_10 * dx * dy;
+        hessian[3*i][3*j+2] += prefact * tval_10 * dx * dz;
+        hessian[3*i+1][3*j+2] += prefact * tval_10 * dy * dz;
+
+      } // end i!=j
+    } // end loop over atoms j
+  } // end loop over atoms i
+
+  for(i=0; i < 3*natom; i++) { // symmetrize Hessian
+    for(j=0; j < i; j++){
+      hessian[j][i] = hessian[i][j];
+    }
+  }
+
+  fprintf(outfile,
+    "   Hessian contribution from undamped empirical correction\n");
+  print_mat(hessian,3*natom,3*natom,outfile);
+
+  psio_open(PSIF_DERINFO, PSIO_OPEN_NEW);
+  psio_write_entry(PSIF_DERINFO, "Skeleton Hessian", (char *) hessian[0], 
+    natom*3*natom*3*sizeof(double));
+  psio_close(PSIF_DERINFO, 1);
+}
+
+
+/*!
+** compute_ddisp_hess(): Compute the Hessian of the damped dispersion 
+** terms from S. Grimme, J. Comput. Chem. 27, 1787, 2006
+**
+** \param natom      = number of atoms
+** \param AN         = atomic number for each atom
+** \param geom       = geometry matrix (in bohr)
+** \param s6         = s6 universal dispersion scaling parameter
+** \param d          = d universal dispersion damping exponent
+** \param hessian    = Hessian to add the results to
+**
+** Returns: none
+**
+** \ingroup NONBONDED
+*/
+void compute_ddisp_hess(int natom, double *AN, double **geom,
+  double s6, double d, double **hessian)
+{
+  int i,j,k;
+  int Zi,Zj,Zk;
+  double r;
+  double C6i,C6j,C6k;
+  double dx, dy, dz;
+  double dmp;
+  double r_i, r_j, r_k, rvdw;
+  double term1, term2, term3, term4, term5, term6;
+  double clump1, clump2;
+  double prefact;
+  double unitconv = _bohr2angstroms * _bohr2angstroms / (_na * _hartree2J);
+
+  for(i=0; i < natom; i++){
+    for(j=0; j <= i; j++){ /*Loop over all unique atom pairs (including i=j)*/
+
+      Zi = (int) AN[i];
+      Zj = (int) AN[j];
+
+      C6i = vdw_C6_grimme[Zi];
+      C6j = vdw_C6_grimme[Zj];
+
+      r_i = vdw_radii_grimme[Zi];
+      r_j = vdw_radii_grimme[Zj];
+
+      if (i==j) { /* Handle cases where i=j first */
+
+        for(k=0; k < natom; ++k){
+          if (i == k) continue;
+
+          Zk = (int) AN[k];
+          C6k = vdw_C6_grimme[Zk];
+          r_k = vdw_radii_grimme[Zk];
+
+          prefact = s6 * sqrt(C6i * C6k) * 1000000.0 * unitconv;
+          rvdw = r_i + r_k;
+
+          dx = (geom[i][0] - geom[k][0]) * _bohr2angstroms;
+          dy = (geom[i][1] - geom[k][1]) * _bohr2angstroms;
+          dz = (geom[i][2] - geom[k][2]) * _bohr2angstroms;
+          r =  sqrt(dx * dx + dy * dy + dz * dz); /* in ang */
+
+          dmp = exp(-d * (r / rvdw - 1.0));
+
+          term1 = -48.0 / (pow(r, 10.0) * ( 1 + dmp ));
+          term2 = 13.0 * d * dmp / (pow(r, 9.0) * pow(1 + dmp, 2.0) * rvdw);
+          term3 = 6.0 / (pow(r, 8.0) * ( 1 + dmp ));
+          term4 = -2.0*d*d*dmp*dmp / (pow(r, 8.0) * pow(1 + dmp, 3.0) * rvdw * rvdw );
+          term5 = -d*dmp/(pow(r, 7.0) * pow(1 + dmp, 2.0) * rvdw );
+          term6 = d*d*dmp/(pow(r, 8.0) * pow(1 + dmp, 2.0) * rvdw * rvdw );
+
+          clump1 = term1 + term2 + term4 + term6;
+          clump2 = term3 + term5;
+
+          hessian[3*i][3*i] += prefact * ( dx * dx * clump1 + clump2 );
+          hessian[3*i+1][3*i+1] += prefact * ( dy * dy * clump1 + clump2 );
+          hessian[3*i+2][3*i+2] += prefact * ( dz * dz * clump1 + clump2 );
+          hessian[3*i+1][3*i] += prefact * clump1 * dx * dy;
+          hessian[3*i+2][3*i] += prefact * clump1 * dx * dz;
+          hessian[3*i+2][3*i+1] += prefact * clump1 * dy * dz;
+
+        }
+      } // end i==j
+
+      else { // i!=j
+
+        prefact = s6 * sqrt(C6i * C6j) * 1000000.0 * unitconv;
+        rvdw = r_i + r_j;
+
+        dx = (geom[i][0] - geom[j][0]) * _bohr2angstroms;
+        dy = (geom[i][1] - geom[j][1]) * _bohr2angstroms;
+        dz = (geom[i][2] - geom[j][2]) * _bohr2angstroms;
+        r =  sqrt(dx * dx + dy * dy + dz * dz); /* in ang */
+
+        dmp = exp(-d * (r / rvdw - 1.0));
+
+        term1 = 48.0 / (pow(r, 10.0) * ( 1 + dmp ));
+        term2 = -13.0 * d * dmp / (pow(r, 9.0) * pow(1 + dmp, 2.0) * rvdw);
+        term3 = -6.0 / (pow(r, 8.0) * ( 1 + dmp ));
+        term4 = 2.0*d*d*dmp*dmp / (pow(r, 8.0) * pow(1 + dmp, 3.0) * 
+          rvdw * rvdw );
+        term5 = d*dmp/(pow(r, 7.0) * pow(1 + dmp, 2.0) * rvdw );
+        term6 = -d*d*dmp/(pow(r, 8.0) * pow(1 + dmp, 2.0) * rvdw * rvdw );
+
+        clump1 = term1 + term2 + term4 + term6;
+        clump2 = term3 + term5;
+
+        hessian[3*i][3*j] += prefact * ( dx * dx * clump1 + clump2 );
+        hessian[3*i+1][3*j+1] += prefact * ( dy * dy * clump1 + clump2 );
+        hessian[3*i+2][3*j+2] += prefact * ( dz * dz * clump1 + clump2 );
+        hessian[3*i+1][3*j] += prefact * clump1 * dx * dy;
+        hessian[3*i+2][3*j] += prefact * clump1 * dx * dz;
+        hessian[3*i+2][3*j+1] += prefact * clump1 * dy * dz;
+        hessian[3*i][3*j+1] += prefact * clump1 * dx * dy;
+        hessian[3*i][3*j+2] += prefact * clump1 * dx * dz;
+        hessian[3*i+1][3*j+2] += prefact * clump1 * dy * dz;
+      }
+
+    } // end loop over j
+  } // end loop over i
+
+  for(i=0; i < 3*natom; ++i){
+    for(j=0; j < i; ++j){
+      hessian[j][i] = hessian[i][j];
+    }
+  }
+
+  fprintf(outfile,"   Hessian contribution from damped empirical correction\n");
+  print_mat(hessian,3*natom,3*natom,outfile);
+  fflush(outfile);
+
+  psio_open(PSIF_DERINFO, PSIO_OPEN_NEW);
+  psio_write_entry(PSIF_DERINFO, "Skeleton Hessian", (char *) hessian[0], 
+    natom*3*natom*3*sizeof(double));
+  psio_close(PSIF_DERINFO, 1);
+}
+
+
+/*!
+** compute_estatic(): This function computes the electrostatic contribution
+** to the energy, assuming each atom has a partial charge centered on
+** the atomic center.
+** 
+** \param natom = number of atoms
+** \param R     = lower triangle array of distances
+** \param AC    = array of atomic charges
+**
+** Returns: electrostatic energy (J/mol)
+** Based on code by Michael Marshall, 2008
+**
+** \ingroup NONBONDED
+*/
+double compute_estatic(int natom, double *R, double *AC) 
+{
+
+  int i, j, ij;
+  double q1, q2;
+  double estatic = 0.0;
+  double au_to_coulomb = 1.60219E-19;
+  double convfact;
+
+  convfact = au_to_coulomb * au_to_coulomb * _na / (4.0 * _pi * _e0);
+  convfact *= 1.0E10; /* Angstroms to meters in denominator */
+
+  for(i=0,ij=0; i<natom; i++){
+    q1=AC[i];
+    for(j=0; j<i; j++,ij++){
+       q2=AC[j];
+       estatic += q1*q2/R[ij];
+    }
+  }
+  // fprintf(outfile, "estatic before conversion = %lf\n", estatic);
+  estatic *= convfact;
+  // fprintf(outfile, "estatic after conversion  = %lf\n", estatic);
+  return estatic;
 }
 
 
