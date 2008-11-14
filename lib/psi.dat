@@ -222,11 +222,11 @@ psi: (
   SCF+DTwoConFirst = ($SCF+DFirst $done)
 
   % *** SCF+D second derivatives ***
-  SCF+DSecond = ERROR
-  SCF+DRHFSecond = ERROR
-  SCF+DROHFSecond = ERROR
-  SCF+DUHFSecond = ERROR
-  SCF+DTwoConSecond = ERROR
+  SCF+DSecond = ($ints $scf $transqt $deriv2 $nonbonded $propint $cphf)
+  SCF+DRHFSecond = ($SCF+DSecond $done)
+  SCF+DROHFSecond = ($SCF+DSecond $done)
+  SCF+DUHFSecond = ($SCF+DSecond $done)
+  SCF+DTwoConSecond = ($SCF+DSecond $done)
 
   % Optimizing geometries with SCF+D gradients
   SCF+DFirstOpt = (repeat $nopt $SCF+DFirst $geomupdate end $done)
@@ -245,8 +245,8 @@ psi: (
   SCF+DTwoConEnergyOpt = $SCF+DEnergyOpt
 
   % *** SCF+D Frequencies by Second Derivatives ***
-  SCF+DSecondFreq = ERROR
-  SCF+DRHFSecondFreq = ERROR
+  SCF+DSecondFreq = ($ints $scf $transqt $deriv2 $nonbonded $propint $cphf)
+  SCF+DRHFSecondFreq = ($SCF+DSecondFreq $done)
   SCF+DROHFSecondFreq = ERROR
   SCF+DUHFSecondFreq = ERROR
   SCF+DTwoConSecondFreq = ERROR
