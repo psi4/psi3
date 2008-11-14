@@ -16,7 +16,8 @@ computes various empirical terms for non-bonded interactions
 (electrostatic and damped dispersion, presently).  It was initially
 developed to test various Hartree-Fock + empirical dispersion models.
 This is an experimental module and not meant for production use at
-this time.
+this time.  Gradients and second derivatives are available for empirical
+dispersion terms only.
 
 .SH REFERENCES
 .LP
@@ -67,13 +68,15 @@ Additional input for this program is read from the file
 .pN INPUT .
 The following keywords are valid:
 
-.IP "\fIATOMIC_CHARGES\fP = \fIdouble_array\fP"
+.IP "\fIPARTIAL_CHARGES\fP = \fIdouble_array\fP"
 Partial charges on each atom, used for computation of empirical
-electrostatics.  Not yet implemented.
+electrostatics.  These contributions are included in the energy
+but not yet in gradients.
 
 .IP "\fIS6\fP = \fIdouble\fP"
-Global scaling parameter for all C6 coefficients in the damped
-dispersion terms.
+Global scaling parameter for the damped dispersion terms.  The values
+recommended by Grimme are 0.75 PBE, 1.2 BLYP, 1.05 B-P86, 1.0 TPSS,
+1.05 B3LYP. Default is 1.0.
 
 .IP "\fIDAMP\fP = \fIboolean\fP"
 This boolean controls whether the dispersion terms are damped or not.
