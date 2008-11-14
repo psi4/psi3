@@ -8,6 +8,7 @@
 #include <strings.h>
 #include <libciomr/libciomr.h>
 #include <cmath>
+#include <cstring> // for memset
 #include "input.h"
 #include "global.h"
 #include "defines.h"
@@ -146,7 +147,8 @@ namespace psi {
             class_so_coeff[i][l] = init_matrix(ao_max*unique_class_degen[uc],
                                                ao_max);
             for (irr=0; irr<nirreps; irr++)
-              bzero((char *)coeff_irr[irr], sizeof(int)*ao_max);
+              //bzero((char *)coeff_irr[irr], sizeof(int)*ao_max);
+              memset(coeff_irr[irr], '\0', sizeof(int)*ao_max);
             for (symop=0; symop<nirreps; symop++)
               if (class_orbit[class_first][symop] == i)
                 for (irr=0; irr<nirreps; irr++)
@@ -162,7 +164,8 @@ namespace psi {
                     class_so_coeff[i][l][so_cnt++][ao] = sign(coeff_irr[irr][ao]) * norm_pfac;
           }
           for (irr=0; irr<nirreps; irr++)
-            bzero((char *)coeff_irr[irr], sizeof(int)*ao_max);
+            //bzero((char *)coeff_irr[irr], sizeof(int)*ao_max);
+            memset(coeff_irr[irr], '\0', sizeof(int)*ao_max);
         }
       }
       
