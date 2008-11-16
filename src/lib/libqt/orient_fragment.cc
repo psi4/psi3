@@ -57,10 +57,11 @@ void orient_fragment(int natom_A, int natom_B, int P_A, int P_B, double **geom_A
       for (i=0; i<natom_B;++i)
         ref_B[pts][xyz] += ref_coeff_B[pts][i] * geom_B[i][xyz];
 
-fprintf(outfile,"Coordinates for reference points on fragment A\n");
+fprintf(outfile,"\tCoordinates for reference points on fragment A\n");
 print_mat(ref_A,P_A,3,outfile);
-fprintf(outfile,"Coordinates for reference points on fragment B (original) \n");
+fprintf(outfile,"\tCoordinates for reference points on fragment B (initial) \n");
 print_mat(ref_B,P_B,3,outfile);
+fprintf(outfile,"\tInterfragment coordinates:\n");
 fprintf(outfile,"\t(1/)R_AB:%10.5f, theta_A:%10.5f, theta_B:%10.5f\n", R_AB, theta_A, theta_B);
 fprintf(outfile,"\t     tau:%10.5f,   phi_A:%10.5f,   phi_B:%10.5f\n", tau, phi_A, phi_B);
 
@@ -89,8 +90,8 @@ fprintf(outfile,"\t     tau:%10.5f,   phi_A:%10.5f,   phi_B:%10.5f\n", tau, phi_
   if (P_B>2)
     zmat_point(ref_A[0], ref_B_final[0], ref_B_final[1], R_B2B3, B_angle, phi_B, ref_B_final[2]);
 
-fprintf(outfile,"Target reference points for fragment B\n");
-print_mat(ref_B_final,P_B,3,outfile);
+  fprintf(outfile,"Coordinates for references points for fragment B in coordinate system of A\n");
+  print_mat(ref_B_final,P_B,3,outfile);
 
   /* translate geom_B to place B1 in correct location */
   for (xyz=0; xyz<3; ++xyz) {
@@ -105,9 +106,8 @@ print_mat(ref_B_final,P_B,3,outfile);
       for (i=0; i<natom_B;++i)
         ref_B[pts][xyz] += ref_coeff_B[pts][i] * geom_B[i][xyz];
     }
-
-//fprintf(outfile,"Reference points after translation (to fix point B1):\n");
-//print_mat(ref_B,P_B,3,outfile);
+  //fprintf(outfile,"Reference points after translation (to fix point B1):\n");
+  //print_mat(ref_B,P_B,3,outfile);
 
   if (P_B>1) { /* move fragment B to place reference point B2 in correct location */
     /* Determine rotational angle and axis */
@@ -131,14 +131,12 @@ print_mat(ref_B_final,P_B,3,outfile);
         for (i=0; i<natom_B;++i)
           geom_B[i][xyz] += ref_B[0][xyz];
 
-      /* Check location of reference points now */
       for (pts=0; pts<P_B; ++pts)
         for (xyz=0; xyz<3; ++xyz) {
           ref_B[pts][xyz] = 0.0;
           for (i=0; i<natom_B;++i)
             ref_B[pts][xyz] += ref_coeff_B[pts][i] * geom_B[i][xyz];
         }
-
       //fprintf(outfile,"Reference points after rotation (to fix point B2) \n");
       //print_mat(ref_B,P_B,3,outfile);
     }
