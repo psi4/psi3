@@ -24,7 +24,7 @@
 namespace psi { namespace optking {
 
 int *read_constraints(internals &simples) {
-  int num_type, i,j,a,b,c,d,cnt,*sign,id, intco_type, sub_index;
+  int num_type, i,j,a,b,c,d,cnt,*sign,id, intco_type, sub_index, sub_index2;
   int iconstraints, *constraints;
 
   optinfo.constraints_present = 0;
@@ -228,7 +228,7 @@ int *read_constraints(internals &simples) {
       if (optinfo.fix_intrafragment) { /* fix everything EXCEPT interfragment coordinates */
         for (i=0; i<simples.get_num(); ++i) {
           id = simples.index_to_id(i);
-          simples.locate_id(id, &intco_type, &sub_index);
+          simples.locate_id(id, &intco_type, &sub_index, &sub_index2);
           if (intco_type != FRAG_TYPE) {
             if (!cnt) {
               constraints[iconstraints++] = simples.id_to_index(id);

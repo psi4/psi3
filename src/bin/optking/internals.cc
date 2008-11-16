@@ -27,7 +27,7 @@ int is_unique(int a, int b, int c, int d, int *aa, int *bb, int *cc, int *dd);
  * Converts the absolute optking index into the user-assigned id number ***/
 
 int internals :: index_to_id(int index) {
-  int i, count = -1, id = -1;
+  int i, I, count = -1, id = -1;
   for (i=0;i<stre.get_num();++i)
     if (++count == index) {id = stre.get_id(i); break;}
   for (i=0;i<bend.get_num();++i)
@@ -38,8 +38,10 @@ int internals :: index_to_id(int index) {
     if (++count == index) {id = out.get_id(i); break;}
   for (i=0;i<lin_bend.get_num();++i)
     if (++count == index) {id = lin_bend.get_id(i); break;}
+  /* we assume an id number of the fragment set plus the index 0-5 of the coordinate in the set */
   for (i=0;i<frag.get_num();++i)
-    if (++count == index) {id = frag.get_id(i); break;}
+    for (I=0;I<frag.get_dim(i);++I)
+      if (++count == index) {id = frag.get_id(i)+I; i=frag.get_num(); break;}
   //   fprintf(outfile,"index_to_id(%d): returning id = %d\n",index, id);
   return id;
 }
@@ -50,7 +52,7 @@ int internals :: index_to_id(int index) {
  * Converts the user-assigned id number into an absolute optking index ***/ 
 
 int internals :: id_to_index(int id) {
-  int i, count = 0, index = -1, found = 0;
+  int i, I, count = 0, index = -1, found = 0;
   for (i=0;i<stre.get_num();++i,++count)
     if (id == stre.get_id(i)) {index = count; ++found;}
   for (i=0;i<bend.get_num();++i,++count)
@@ -61,8 +63,11 @@ int internals :: id_to_index(int id) {
     if (id == out.get_id(i)) {index = count; ++found;}
   for (i=0;i<lin_bend.get_num();++i,++count)
     if (id == lin_bend.get_id(i)) {index = count; ++found;}
-  for (i=0;i<frag.get_num();++i,++count)
-    if (id == frag.get_id(i)) {index = count; ++found;}
+  /* we assume an id number of the fragment set plus the index 0-5 of the coordinate in the set */
+  for (i=0;i<frag.get_num();++i)
+    for (I=0;I<frag.get_dim(i);++I,++count)
+      if (id == (frag.get_id(i)+I)) {index = count; ++found;}
+
   if (found == 0) {
     fprintf(outfile,"Error: Simple internal id not found.\n");
     exit(2);
@@ -81,8 +86,8 @@ int internals :: id_to_index(int id) {
  * Given the user-assigned id number, returns the type of internal
  and the subindex within that type ***/
 
-void internals :: locate_id(int id, int *intco_type, int *sub_index) {
-  int i, found = 0;
+void internals :: locate_id(int id, int *intco_type, int *sub_index, int *sub_index2) {
+  int I, i, j, found = 0;
   // fprintf(outfile,"locating id %d\n",id);
   for (i=0;i<stre.get_num();++i)
     if (stre.get_id(i) == id) {
@@ -104,10 +109,17 @@ void internals :: locate_id(int id, int *intco_type, int *sub_index) {
     if (lin_bend.get_id(i) == id) {
       ++found; *intco_type = LIN_BEND_TYPE; *sub_index = i;
     }
-  for (i=0;i<frag.get_num();++i)
-    if (frag.get_id(i) == id) {
-      ++found; *intco_type = FRAG_TYPE; *sub_index = i;
+
+  j=-1;
+  for (i=0;i<frag.get_num();++i) {
+    for (I=0;I<frag.get_dim(i);++I) {
+      ++j;
+      if ((frag.get_id(i)+I) == id) {
+        ++found; *intco_type = FRAG_TYPE; *sub_index = i; *sub_index2 = I;
+      }
     }
+  }
+
   if (found == 0) {
     fprintf(outfile,"Error: Simple internal id not found.\n");
     exit(2);
@@ -133,7 +145,7 @@ internals :: internals(int *size_arr) : stre(size_arr[0]), bend(size_arr[1]),
 internals :: internals(cartesians& carts, int user_intcos)
            : stre(), bend(), tors(), out(), lin_bend(), frag() {
 
-    int i,j,k,a,b,c,d,e,cnt,lin, type_count=0;
+    int i,I,j,k,a,b,c,d,e,cnt,lin, type_count=0;
     int cnt_stre, cnt_bend, cnt_tors, cnt_out, cnt_lin_bend, cnt_frag;
     int cnt_lin1_bend, cnt_lin2_bend, na, nb;
     double *v, dot;
@@ -329,70 +341,80 @@ internals :: internals(cartesians& carts, int user_intcos)
         }
         if (!cnt) { // allocate memory for fragments
           for(i=0; i<cnt_frag; ++i) {
+            // read ID number
             ip_data("FRAG","%d",&a,2,i,0);
             frag.set_id(i,a);
-            ip_data("FRAG","%d",&a,2,i,1);
-            frag.set_J(i,a-1);
+
+            // read A_natom and B_natom
             ip_count("FRAG",&na,2,i,2);
-            ip_count("FRAG",&nb,2,i,3);
             frag.set_A_natom(i,na);
+            ip_count("FRAG",&nb,2,i,3);
             frag.set_B_natom(i,nb);
-            frag.allocate_one(i);
-          } 
-          for(i=0; i<cnt_frag; ++i) { // read atoms for fragments
-            na = frag.get_A_natom(i);
-            for (j=0;j<na;++j) {
-              ip_data("FRAG","%d",&a,3,i,2,j);
-              frag.set_A_atom(i,j,a-1);  
-            }
-            nb = frag.get_B_natom(i);
-            for (j=0;j<nb;++j) {
-              ip_data("FRAG","%d",&b,3,i,3,j);
-              frag.set_B_atom(i,j,b-1); 
-            }
-            ip_count("FRAG",&a,2,i,4);  // read weights for points
+
+            // check to make sure 3 reference points are specified for each fragment (for now)
+            ip_count("FRAG",&a,2,i,4);
             ip_count("FRAG",&b,2,i,5);
             if ( (a != 3) || (b != 3)) {
               fprintf(outfile,"Fragment %d has weights of wrong dimension\n", i+1);
               exit(2);
             }
-            v = new double[3*na];
+            frag.set_A_P(i,3);
+            frag.set_B_P(i,3);
+
+            // allocate all extra memory for fragment
+            frag.allocate_one(i);
+
+            // read what coordinates are on
+            ip_count("FRAG",&a,2,i,1);
+            if (a != 6) throw("Coordinate-on (second) part of Fragment %d must have dimension 6.\n",i+1);
+            for (I=0; I<6;++I) {
+              ip_boolean("FRAG",&a,3,i,1,I);
+              frag.set_coord_on(i,I,a);
+            }
+
+            // read what atoms are in each fragment
+            for (j=0;j<na;++j) {
+              ip_data("FRAG","%d",&a,3,i,2,j);
+              frag.set_A_atom(i,j,a-1);  
+            }
+            for (j=0;j<nb;++j) {
+              ip_data("FRAG","%d",&b,3,i,3,j);
+              frag.set_B_atom(i,j,b-1); 
+            }
+
+            // read in weights for fragment A - make the absolute sum of the coefficients 1
+            v = new double[na];
             for (j=0;j<3;++j) {
               ip_count("FRAG",&a,3,i,4,j);
-              if (a != na) {
-                fprintf(outfile,"Fragment %d has weights of wrong dimension\n", i+1);
-                exit(2);
-              }
+              if (a != na) throw("Fragment A has weights of wrong dimension\n");
               for (a=0;a<na;++a)
-                ip_data("FRAG","%lf",&(v[j*na+a]),4,i,4,j,a);
-            }
-            for (j=0;j<3;++j) {
+                ip_data("FRAG","%lf",&(v[a]),4,i,4,j,a);
               dot = 0.0;
               for (a=0;a<na;++a)
-                dot += fabs( v[j*na+a] );
+                dot += fabs(v[a]);
               for (a=0;a<na;++a)
-                v[j*na+a] /= dot;
+                v[a] /= dot;
+              for (a=0;a<na;++a)
+                frag.set_A_weight(i,j,a,v[a]);
             }
-            frag.set_A_weight(i,v);
+            delete [] v;
 
-            v = new double[3*nb];
+            // read in weights for fragment B - make the absolute sum of the coefficients 1
+            v = new double[nb];
             for (j=0;j<3;++j) {
               ip_count("FRAG",&b,3,i,5,j);
-              if (b != nb) {
-                fprintf(outfile,"Fragment %d has weights of wrong dimension\n", i+1);
-                exit(2);
-              }
-              for (b=0;b<nb;++b) 
-                ip_data("FRAG","%lf",&(v[j*nb+b]),4,i,5,j,b);
-            }
-            for (j=0;j<3;++j) {
+              if (b != nb) throw("Fragment A has weights of wrong dimension\n");
+              for (b=0;b<nb;++b)
+                ip_data("FRAG","%lf",&(v[b]),4,i,5,j,b);
               dot = 0.0;
               for (b=0;b<nb;++b)
-                dot += fabs( v[j*nb+b] );
+                dot += fabs(v[b]);
               for (b=0;b<nb;++b)
-                v[j*nb+b] /= dot;
+                v[b] /= dot;
+              for (b=0;b<nb;++b)
+                frag.set_B_weight(i,j,b,v[b]);
             }
-            frag.set_B_weight(i,v);
+            delete [] v;
           }
         }
       }
@@ -740,9 +762,9 @@ internals :: internals(cartesians& carts, int user_intcos)
     } // end generate internals loop
     } // end count, creation loop
 
-    num = stre.get_num() + bend.get_num() + tors.get_num() +
+    int tnum = stre.get_num() + bend.get_num() + tors.get_num() +
       out.get_num() + lin_bend.get_num() + frag.get_num();
-    if (num == 0) {
+    if (tnum == 0) {
       fprintf(outfile,"Error: No simple internals were generated and read.  You may ");
       fprintf(outfile,"have to increase the value of the scale_connectivity keyword.");
       exit(2);
@@ -770,7 +792,7 @@ void internals :: print(FILE *fp_out, int print_flag) {
       tors.print(fp_out, print_flag);
       out.print(fp_out, print_flag);
       lin_bend.print(fp_out, print_flag);
-      frag.print(fp_out, print_flag, 0); /* last specifies whether to print weights */
+      frag.print(fp_out, print_flag, 1); /* last specifies whether to print weights */
       if (print_flag == 0) fprintf(fp_out, ")\n");
   return;
 }

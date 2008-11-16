@@ -158,21 +158,28 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
       val = 0.10;
       f[++count] = val * _hartree2J*1.0E18;
    }
-   for (i=0;i<simples.frag.get_num();++i) {
-      J = simples.frag.get_J(i);
-      if (J==0) {
-        if (optinfo.frag_dist_rho == 1)
-          val = 30.0;
-        else
-          val = 0.50;
-      }
-      else if ( (J==1) || (J==2) )
-        val = 0.05;
-      else
-        val = 0.01;
+
+  for (i=0;i<simples.frag.get_num();++i) {
+    if (simples.frag.get_coord_on(i,0)) {
+      if (optinfo.frag_dist_rho == 1) val = 30.0;
+      else val = 0.50;
       f[++count] = val;
+    }
+    if (simples.frag.get_coord_on(i,1))
+      f[++count] = 0.05;
+    if (simples.frag.get_coord_on(i,2))
+      f[++count] = 0.05;
+    if (simples.frag.get_coord_on(i,3))
+      f[++count] = 0.01;
+    if (simples.frag.get_coord_on(i,4))
+      f[++count] = 0.01;
+    if (simples.frag.get_coord_on(i,5))
+      f[++count] = 0.01;
    }
    free(coord);
+
+   //fprintf(outfile,"Diagonal force constants for simple internals\n");
+   //print_mat(&f,1,simples.get_num(),outfile);
 
   // Now transform into salc coordinates U^t H U
    double **intcos;
@@ -188,6 +195,9 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
        intcos[i][index] = symm.get_coeff(i,j);
      }
    }
+
+   // fprintf(outfile,"Simples to Salc matrix\n");
+   // print_mat(intcos,symm.get_num(),simples.get_num(),outfile);
 
    f_new = block_matrix(symm.get_num(),symm.get_num());
    for (i=0;i<symm.get_num();++i)

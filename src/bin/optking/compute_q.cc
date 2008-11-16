@@ -22,7 +22,7 @@
 namespace psi { namespace optking {
 
 double *compute_q(internals &simples,salc_set &symm) {
-  int i, j, simple, intco_type, sub_index;
+  int i, j, simple, intco_type, sub_index, sub_index2;
   double *q, coeff, prefactor, tval;
 
   q = init_array(symm.get_num());
@@ -33,7 +33,7 @@ double *compute_q(internals &simples,salc_set &symm) {
     for (j=0;j<symm.get_length(i);++j) {
       simple = symm.get_simple(i,j);
       coeff = symm.get_coeff(i,j);
-      simples.locate_id(simple,&intco_type,&sub_index);
+      simples.locate_id(simple,&intco_type,&sub_index,&sub_index2);
       if (intco_type == STRE_TYPE) {
         q[i] += prefactor * coeff * simples.stre.get_val(sub_index);
       }
@@ -51,7 +51,7 @@ double *compute_q(internals &simples,salc_set &symm) {
         q[i] += prefactor * coeff * tval*_pi/180.0;
       }
       else if (intco_type == FRAG_TYPE) {
-        q[i] += prefactor * coeff * simples.frag.get_val_A_or_rad(sub_index);
+        q[i] += prefactor * coeff * simples.frag.get_val_A_or_rad(sub_index,sub_index2);
       }
     }
   }

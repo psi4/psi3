@@ -29,7 +29,7 @@ extern int *get_ops_in_class(char *ptgrp, int nirreps);
 
 void get_syminfo(internals &simples) {
   int a, b, c, d, aa, bb, cc, dd, i, j, sign, natom;
-  int id, intco_type, sub_index, ops,linval;
+  int id, intco_type, sub_index, sub_index2, ops,linval;
   int nallatom;
 
   nallatom = optinfo.nallatom;
@@ -107,7 +107,7 @@ void get_syminfo(internals &simples) {
   // include dymmy atoms, only is symmetry sets of dummy atoms were generated
   for (i=0;i<simples.get_num();++i) {
     id = simples.index_to_id(i);
-    simples.locate_id(id,&intco_type,&sub_index);
+    simples.locate_id(id,&intco_type,&sub_index,&sub_index2);
     if (intco_type == STRE_TYPE) {
       a = simples.stre.get_A(sub_index);
       b = simples.stre.get_B(sub_index);

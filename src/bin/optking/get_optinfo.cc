@@ -71,7 +71,7 @@ void get_optinfo() {
   if (optinfo.delocalize)
     optinfo.redundant = 0;
 
-  /* default for fragments is to is use 1/R */
+  /* default for fragments is to use R */
   optinfo.frag_dist_rho = 0;
   ip_boolean("FRAGMENT_DISTANCE_INVERSE", &(optinfo.frag_dist_rho),0);
   optinfo.fix_intrafragment = 0;
@@ -80,6 +80,10 @@ void get_optinfo() {
   ip_boolean("FIX_INTERFRAGMENT", &(optinfo.fix_interfragment),0);
   optinfo.freeze_intrafragment = 0;
   ip_boolean("FREEZE_INTRAFRAGMENT", &(optinfo.freeze_intrafragment),0);
+  if (optinfo.freeze_intrafragment) {
+    fprintf(outfile,"Freeze_intrafragment option not yet working - try Fix_intrafragment or Fix_interfragment instead.");
+    optinfo.freeze_intrafragment = 0;
+  }
 
   /* print options */
   optinfo.print_simples = 0;
@@ -178,12 +182,12 @@ void get_optinfo() {
   ip_data("EDISP","%lf",&(optinfo.disp_size),0);
 
   /* back-transformation parameters */
-  optinfo.bt_max_iter = 60;
+  optinfo.bt_max_iter = 25;
   ip_data("BT_MAX_ITER","%d",&(optinfo.bt_max_iter),0);
-  a = 2; /* some minimal level of this seems necessary for butane */
+  a = 4; /* some minimal level of this seems necessary for butane */
   ip_data("BT_DQ_CONV","%d",&a,0);
   optinfo.bt_dq_conv  = power(10.0, -1*a);
-  a = 7;
+  a = 8;
   ip_data("BT_DX_CONV","%d",&a,0);
   optinfo.bt_dx_conv  = power(10.0, -1*a);
 

@@ -354,8 +354,10 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
   printf("Energy: %15.10lf MAX force: %6.2e RMS force: %6.2e\n",carts.get_energy(),tval2,tval);
 
-  if (optinfo.freeze_intrafragment) { /* compute new geometry analytically */
-    int simple, intco_type, sub_index, J, simple_b;
+// compute new geometry analytically
+  if (optinfo.freeze_intrafragment) {
+/*
+    int simple, intco_type, sub_index, sub_index2, J, simple_b;
     int A_natom, B_natom, *A_atom, *B_atom;
     int *frag_atom, *frag_allatom;
 
@@ -365,7 +367,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
         exit(PSI_RETURN_FAILURE);
       }
       simple = symm.get_simple(i,0);
-      simples.locate_id(simple,&intco_type,&sub_index);
+      simples.locate_id(simple,&intco_type,&sub_index,&sub_index2);
       if (intco_type != FRAG_TYPE) {
         printf("Only inter-fragment coordinates can be used with freeze_intrafragment\n");
         exit(PSI_RETURN_FAILURE);
@@ -443,12 +445,12 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
        free_block(geom_A);
        free_block(geom_B);
     }
-
     symmetrize_geom(geom[0]);
     carts.set_coord(geom[0]);
     carts.print(PSIF_CHKPT,outfile,0,disp_label,0);
     fprintf(outfile,"\nNew Cartesian Geometry in a.u.\n");
     carts.print(1, outfile,0, disp_label, 0);
+*/
   } /* if freeze_intrafragment */
   else { /* use iterative backtransformation */
 
@@ -463,24 +465,25 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     strcpy(disp_label,"New Cartesian Geometry in a.u.");
     success = new_geom(carts,simples,symm,dq_to_new_geom,32,0,disp_label,0,0,djunk);
   
-    if (!success) {
-      int retry = 1;
-      for (retry=1; retry<10; ++retry) {
-        fprintf(outfile,"Scaling back displacements by half...\n");
-        for (i=0;i<symm.get_num();++i) {
-          dq[i] = dq[i] / 2.0;
-          dq_to_new_geom[i] = dq[i];
-        }
-        success = new_geom(carts,simples,symm,dq_to_new_geom,32,0,disp_label,0,0,djunk);
-        if (success) break;
+    int retry = 1;
+    while (!success) {
+      fprintf(outfile,"\tWarning: halving displacement size and reducing back-transformation \
+ convergence criteria.\n");
+      optinfo.bt_dx_conv *= 5.0;
+      optinfo.bt_dq_conv *= 5.0;
+      for (i=0;i<symm.get_num();++i) {
+        dq[i] = dq[i] / 2.0;
+        dq_to_new_geom[i] = dq[i];
       }
-      if (retry == 10) {
+      success = new_geom(carts,simples,symm,dq_to_new_geom,32,0,disp_label,0,0,djunk);
+      ++retry;
+      if (retry == 15) {
         fprintf(outfile,"Giving up - unable to back-transform to new cartesian coordinates.\n");
         fclose(outfile);
         exit(PSI_RETURN_FAILURE);
       }
     }
-  }
+  } // use iterative back-transformation
 
   free(q); free(dq);
   optinfo.iteration += 1;

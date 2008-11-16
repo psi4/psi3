@@ -21,8 +21,8 @@
 namespace psi { namespace optking {
 
 double **compute_B(internals &simples,salc_set &symm) {
-  int i,j,k,a,b,c,d, simple, intco_type, sub_index;
-  int J,K,atom,xyz,cnt_frag=-1,nrefA,nrefB;
+  int i,j,k,a,b,c,d, simple, intco_type, sub_index, sub_index2;
+  int J,K,atom,xyz,cnt_frag=-1;
   double **B, coeff, prefactor, weight;
 
   B = block_matrix(symm.get_num(),3*optinfo.natom);
@@ -32,7 +32,7 @@ double **compute_B(internals &simples,salc_set &symm) {
     for (j=0;j<symm.get_length(i);++j) {
       simple = symm.get_simple(i,j);
       coeff = symm.get_coeff(i,j);
-      simples.locate_id(simple,&intco_type,&sub_index);
+      simples.locate_id(simple,&intco_type,&sub_index,&sub_index2);
       if (intco_type == STRE_TYPE) {
         a = simples.stre.get_A(sub_index);
         b = simples.stre.get_B(sub_index);
@@ -86,31 +86,20 @@ double **compute_B(internals &simples,salc_set &symm) {
         }
       }
       else if (intco_type == FRAG_TYPE) {
-// for fragments with atoms < 3, fragments are assumed to appear in order and the
-// interfragment distance coordinate must be included so that
-// nref can guess the fragment number - a clean solution can await PSI4 :)
-        if (simples.frag.get_J(sub_index) == 0) ++cnt_frag;
-        if (optinfo.nref_per_fragment != NULL) {
-          nrefA = optinfo.nref_per_fragment[cnt_frag];
-          nrefB = optinfo.nref_per_fragment[cnt_frag+1];
-        }
-        else {
-          nrefA = nrefB = 3; // which might be wrong - this data needs put into fragment class
-        }
-        for (a=0; a<simples.frag.get_A_natom(sub_index); ++a) { /* loop over ref atoms in A */
+        for (a=0; a<simples.frag.get_A_natom(sub_index); ++a) { /* loop over atoms in A */
           atom   = simples.frag.get_A_atom(sub_index,a);        /* atom number of a'th atom in A */
-          for (K=0;K<nrefA;++K) {  /* loop over reference atoms of A */
-            weight = simples.frag.get_A_weight(sub_index,K,a);      /* weight of a'th atom in A for this K */
+          for (K=0;K<simples.frag.get_A_P(sub_index);++K) {     /* loop over reference atoms of A */
+            weight = simples.frag.get_A_weight(sub_index,K,a);  /* weight of a'th atom in A for this K */
             for (xyz=0;xyz<3;++xyz)
-              B[i][3*atom+xyz] += prefactor * coeff * weight * simples.frag.get_A_s(sub_index,3*K+xyz);
+              B[i][3*atom+xyz] += prefactor * coeff * weight * simples.frag.get_A_s(sub_index,sub_index2,3*K+xyz);
           }
         }
-        for (b=0; b<simples.frag.get_B_natom(sub_index); ++b) { /* loop over ref atoms in B */
+        for (b=0; b<simples.frag.get_B_natom(sub_index); ++b) { /* loop over atoms in B */
           atom   = simples.frag.get_B_atom(sub_index,b);        /* atom number of b'th atom in B */
-          for (K=0;K<nrefB;++K) { /* loop over reference atoms of B*/
+          for (K=0;K<simples.frag.get_B_P(sub_index);++K) { /* loop over reference atoms of B*/
             weight = simples.frag.get_B_weight(sub_index,K,b);  /* weight of b'th atom in B for this K */
-              for (xyz=0;xyz<3;++xyz)
-                B[i][3*atom+xyz] += prefactor * coeff * weight * simples.frag.get_B_s(sub_index,3*K+xyz);
+            for (xyz=0;xyz<3;++xyz)
+              B[i][3*atom+xyz] += prefactor * coeff * weight * simples.frag.get_B_s(sub_index,sub_index2,3*K+xyz);
           }
         }
       }

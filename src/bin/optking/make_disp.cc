@@ -129,7 +129,7 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
   /*** generate and store Micro_iteration cartesian geometries ***/
   micro_geoms = block_matrix(ndisps, dim_carts);
   if (optinfo.freeze_intrafragment) { // compute new geometry analytically
-    int simple, intco_type, sub_index, J, simple_b, nf, disp, xyz, frag;
+    int simple, intco_type, sub_index, sub_index2, J, simple_b, nf, disp, xyz, frag;
     int A_natom, B_natom, *A_atom, *B_atom, *frag_atom, *frag_allatom;
     double **geom_A, **geom_B, **geom_2D;
     double R_AB, theta_A, theta_B, tau, phi_A, phi_B;
@@ -141,7 +141,7 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
         exit(PSI_RETURN_FAILURE);
       }
       simple = all_salcs.get_simple(i,0);
-      simples.locate_id(simple,&intco_type,&sub_index);
+      simples.locate_id(simple,&intco_type,&sub_index,&sub_index2);
       if (intco_type != FRAG_TYPE) {
         printf("Only inter-fragment coordinates can be used with freeze_intrafragment\n");
         exit(PSI_RETURN_FAILURE);
