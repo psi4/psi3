@@ -3,7 +3,7 @@ psi: (
 
   % Default iteration counts
   ndisp = 1
-  nopt = 20
+  nopt = 40
   ncasiter = 20
   nbrueckner = 20
 
