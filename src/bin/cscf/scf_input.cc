@@ -154,6 +154,9 @@ void scf_input(ip_value_t* ipvalue)
    errcod = ip_string("DERTYPE",&dertype,0);
    if(errcod == IPE_KEY_NOT_FOUND) { // no dertype given
      errcod = ip_string("JOBTYPE",&jobtype,0);
+     if(errcod == IPE_KEY_NOT_FOUND) { // no jobtype given
+       jobtype = strdup("SP");
+     }
      if (!strcmp(jobtype,"FREQ")) {
        dertype = (char *) malloc(sizeof(char)*7);
        strcpy(dertype,"SECOND");
