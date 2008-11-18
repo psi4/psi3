@@ -53,7 +53,7 @@ namespace psi { namespace cphf {
 
 void vibration(double **hessian, double **lx)
 {
-  int i, j;
+  int i, j, k;
   double **M, *irint;
   double **TMP;
   double *km, k_convert, cm_convert;
@@ -184,6 +184,24 @@ void vibration(double **hessian, double **lx)
               cm_convert * sqrt(k_convert * km[i]), irint[i]*ir_prefactor);
   }
   fprintf(outfile,   "\t-----------------------------------------------\n");
+
+  fprintf(outfile, "\nNormal Modes (mass-weighted)\n");
+
+  for(i=0; i < 3*natom; i++) {
+    if (fabs(cm_convert * sqrt(k_convert * fabs(km[i]))) < 5.0) continue;
+    if(km[i] < 0.0)
+      fprintf(outfile, "\n  Frequency:     %6.2fi\n", cm_convert * sqrt(-k_convert * km[i]));
+    else
+      fprintf(outfile, "\n  Frequency:     %6.2f\n", cm_convert * sqrt(k_convert * km[i]));
+    fprintf(outfile, "\t     X       Y       Z \t\n");
+    for(j=0; j < natom; j++) {
+      fprintf(outfile, "  %s \t", asymbol[3*j]);
+      for(k=0; k < 3; k++)  { 
+        fprintf(outfile, "%8.3f", lx[3*j+k][i]);
+      }
+      fprintf(outfile, "\n");
+    }  
+  }
 
   free(work);
   free(irint);
