@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <strings.h>
+#include <cstring>
 
 extern "C" {
 
@@ -42,7 +43,8 @@ double ** init_matrix(unsigned long int n, unsigned long int m)
       fprintf(stderr,"i = %ld m = %ld\n",i,m);
       exit(PSI_RETURN_FAILURE);
     }
-    bzero(array[i],m*(unsigned long int)sizeof(double));
+    //bzero(array[i],m*(unsigned long int)sizeof(double));
+    memset(array[i],'\0',m*(unsigned long int)sizeof(double));
   }
   return(array);
 }

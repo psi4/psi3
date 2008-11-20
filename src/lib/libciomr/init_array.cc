@@ -7,6 +7,7 @@
 #include <psifiles.h>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <strings.h>
 
 extern "C" {
@@ -31,7 +32,8 @@ double * init_array(unsigned long int size)
     fprintf(stderr,"size = %ld\n",size);
     exit(PSI_RETURN_FAILURE);
   }
-  bzero(array,size*(unsigned long int)sizeof(double));
+  memset(array,'\0',size*(unsigned long int)sizeof(double));
+  //bzero(array,size*(unsigned long int)sizeof(double));
   return(array);
 }
 

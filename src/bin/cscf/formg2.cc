@@ -70,8 +70,10 @@ void formg_two(int iju, int* optest)
       ptmpo2 = (double *) init_array(tmpsiz);
       }
    else {
-      bzero(gtmp2,sizeof(double)*tmpsiz);
-      bzero(gtmpo2,sizeof(double)*tmpsiz);
+      //bzero(gtmp2,sizeof(double)*tmpsiz);
+      memset(gtmp2,'\0',sizeof(double)*tmpsiz);
+      //bzero(gtmpo2,sizeof(double)*tmpsiz);
+      memset(gtmpo2,'\0',sizeof(double)*tmpsiz);
       }
  
    for(k=joff=0; k < num_ir ; k++) {

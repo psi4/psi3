@@ -56,7 +56,7 @@ double ** block_matrix(unsigned long int n, unsigned long int m)
          exit(PSI_RETURN_FAILURE);
          }
 
-    bzero(B, m*n*(unsigned long int)sizeof(double));
+    memset(B, '\0', m*n*(unsigned long int)sizeof(double));
 
     for (i = 0; i < n; i++) {
          A[i] = &(B[i*m]);

@@ -72,8 +72,10 @@ void findit(int ii, int jj, int kk, int ll, int ism, int ksm, double value, int 
    lkl = ioff[kk]+ll;
 
    if(!cscf_nint) {
-      bzero(inext,sizeof(int)*old_nint);
-      bzero(&inext[intmx],sizeof(int)*keep);
+      //bzero(inext,sizeof(int)*old_nint);
+      memset(inext,'\0',sizeof(int)*old_nint);
+      //bzero(&inext[intmx],sizeof(int)*keep);
+      memset(&inext[intmx],'\0',sizeof(int)*keep);
       }
 
    start = 2*lij + lkl;

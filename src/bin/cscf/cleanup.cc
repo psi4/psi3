@@ -534,7 +534,9 @@ void cleanup()
 	s = &scf_info[i];
 	if(nn=s->num_so) {
 	  num_mo = s->num_mo;
-	  bzero(spin_info[m].scf_spin[i].fock_pac,sizeof(double)*ioff[nn]);
+	  //bzero(spin_info[m].scf_spin[i].fock_pac,sizeof(double)*ioff[nn]);
+          memset(spin_info[m].scf_spin[i].fock_pac, '\0',
+            sizeof(double)*ioff[nn]);
 	  for (j=0; j < num_mo ; j++)
 	    if (spin_info[m].scf_spin[i].occ_num[j] == 1.0)
 	      spin_info[m].scf_spin[i].fock_pac[ioff[j]+j] 
@@ -582,7 +584,8 @@ void cleanup()
 	  mmult(scr1,0,s->cmat,0,scr2,0,num_mo,nn,num_mo,0);
 	  sq_to_tri(scr2,s->gmato,num_mo);
 		   
-	  bzero(s->fock_pac,sizeof(double)*ioff[nn]);
+	  //bzero(s->fock_pac,sizeof(double)*ioff[nn]);
+          memset(s->fock_pac,'\0',sizeof(double)*ioff[nn]);
 	  for (j=ij=0; j < num_mo ; j++) {
 	    for (k=0; k <= j ; k++,ij++) {
 	      occj = s->occ_num[j];
@@ -619,7 +622,8 @@ void cleanup()
 	s = &scf_info[i];
 	if(nn=s->num_so) {
 	  num_mo = s->num_mo;
-	  bzero(s->fock_pac,sizeof(double)*ioff[nn]);
+	  //bzero(s->fock_pac,sizeof(double)*ioff[nn]);
+	  memset(s->fock_pac,'\0',sizeof(double)*ioff[nn]);
 	  for (j=0; j < num_mo ; j++)
 	    if (s->occ_num[j] == 2.0)
 	      s->fock_pac[ioff[j]+j] = 2.0*s->fock_evals[j];

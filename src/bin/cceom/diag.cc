@@ -968,7 +968,7 @@ timer_off("INIT GUESS");
 		  /* save the state energy */
 		  eom_params.state_energies[num_converged_index] = totalE;
 					
-          fprintf(outfile,"EOM State %d %10.3lf %10.1lf %14.10lf  %15.10lf\n",
+          fprintf(outfile,"EOM State %d %10.3lf %10.1lf %14.10lf  %17.12lf\n",
               ++num_converged_index,
 		  lambda_old[i]* _hartree2ev, lambda_old[i]* _hartree2wavenumbers,
 		  lambda_old[i], totalE);

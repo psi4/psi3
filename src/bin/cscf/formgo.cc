@@ -96,10 +96,10 @@ void formg_open()
        }
    }
    else {
-       bzero(gtmp,sizeof(double)*tmpsiz);
-       bzero(gtmpo,sizeof(double)*tmpsiz);
+       memset(gtmp,'\0',sizeof(double)*tmpsiz);
+       memset(gtmpo,'\0',sizeof(double)*tmpsiz);
        if(uhf)
-	   bzero(gtmpo2,sizeof(double)*tmpsiz); 
+	   memset(gtmpo2,'\0',sizeof(double)*tmpsiz); 
    }
    
    for(k=joff=0; k < num_ir ; k++) {

@@ -60,7 +60,7 @@ void formg_closed()
       gtmp = (double *) init_array(tmpsiz);
       ptmp = (double *) init_array(tmpsiz);
       }
-   else bzero(gtmp,sizeof(double)*tmpsiz);
+   else memset(gtmp,'\0',sizeof(double)*tmpsiz);
 
    for(k=joff=0; k < num_ir ; k++) {
       if(nn=scf_info[k].num_so) {

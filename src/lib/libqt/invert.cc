@@ -57,7 +57,7 @@ double invert_matrix(double **a, double **y, int N, FILE *outfile)
       }
 
    for (j=0; j<N; j++) {
-       bzero(col,sizeof(double)*N);
+       memset(col,'\0',sizeof(double)*N);
        col[j] = 1.0 ;
        lubksb(a,N,indx,col) ;
        colptr = col;

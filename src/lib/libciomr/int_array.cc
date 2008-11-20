@@ -11,6 +11,7 @@
 #include <psifiles.h>
 #include <cstdio>
 #include <cstdlib>
+#include <cstring>
 #include <strings.h>
 
 extern "C" {
@@ -40,7 +41,7 @@ int * init_int_array(int size)
     fprintf(stderr,"size = %d\n",size);
     exit(PSI_RETURN_FAILURE);
   }
-  bzero(array,sizeof(int)*size);
+  memset(array,'\0',sizeof(int)*size);
   return(array);
 }
 
@@ -58,7 +59,7 @@ int * init_int_array(int size)
 */
 void zero_int_array(int *a, int size)
 {
-   bzero(a,sizeof(int)*size);
+   memset(a,'\0',sizeof(int)*size);
 }
 
 
@@ -94,7 +95,7 @@ int **init_int_matrix(int rows, int cols)
    for (i=1; i<rows; i++) {
      array[i] = array[i-1] + cols;
    }
-   bzero(array[0], sizeof(int)*cols*rows);
+   memset(array[0], '\0', sizeof(int)*cols*rows);
 
    return array;
 }
