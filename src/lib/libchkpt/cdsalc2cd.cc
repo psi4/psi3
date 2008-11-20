@@ -21,7 +21,7 @@ double **Chkpt::rd_cdsalc2cd(void)
   psio_address ptr = PSIO_ZERO;
   char *keyword = build_keyword("cartdisp->SALC matrix");
 
-  psio_read(PSIF_CHKPT, keyword, (char *) cdsalc2cd[0], 
+  psio->read(PSIF_CHKPT, keyword, (char *) cdsalc2cd[0], 
     num_cd*num_cd*sizeof(double), ptr, &ptr);
 
   free(keyword);
@@ -34,7 +34,7 @@ void Chkpt::wt_cdsalc2cd(const double **cdsalc2cd)
   psio_address ptr = PSIO_ZERO;
   char *keyword = build_keyword("cartdisp->SALC matrix");
 
-  psio_write(PSIF_CHKPT, keyword, (char *) cdsalc2cd[0], 
+  psio->write(PSIF_CHKPT, keyword, (char *) cdsalc2cd[0], 
     num_cd*num_cd*sizeof(double), ptr, &ptr);
 
   free(keyword);
