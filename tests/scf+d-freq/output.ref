@@ -1,0 +1,601 @@
+******************************************************************************
+PSI3 started on julius.chemistry.gatech.edu at Thu Nov 13 18:05:35 2008
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF SCF+D analytic frequency computation.
+
+The following programs will be executed:
+
+ input
+ cints
+ cscf
+ transqt2
+ cints --deriv2
+ nonbonded
+ cints --oeprop
+ cphf
+ psiclean
+
+******************************************************************************
+INPUT tstart called on julius.chemistry.gatech.edu
+Thu Nov 13 18:05:35 2008
+
+                                --------------
+                                    INPUT
+                                --------------
+
+  LABEL       =	Ar2 HF+D/aug-cc-pVDZ frequencies
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /theoryfs2/ds/sherrill/psi3-bin/share/psi/pbasis.dat
+
+  -Geometry before Center-of-Mass shift (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    AR        0.000000000000     0.000000000000     0.000000000000
+    AR        0.000000000000     0.000000000000     7.527345530306
+
+
+  -Rotational constants (cm-1) :
+    A = **********  B =    0.05317  C =    0.05317
+    It is a linear molecule.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    AR        0.000000000000     0.000000000000    -3.763672765153
+    AR        0.000000000000     0.000000000000     3.763672765153
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is D2h 
+    Number of irr. rep.      = 8
+    Number of atoms          = 2
+    Number of unique atoms   = 1
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (145700.00000000     0.00023670)
+           ( 21840.00000000     0.00183523)
+           (  4972.00000000     0.00952860)
+           (  1408.00000000     0.03862830)
+           (   459.70000000     0.12408100)
+           (   165.90000000     0.29647100)
+           (    64.69000000     0.42206800)
+           (    26.44000000     0.24171100)
+           (     7.62800000     0.02005090)
+           (     2.99600000    -0.00361000)
+           (     0.65040000     0.00097561) )
+        (S (145700.00000000    -0.00006749)
+           ( 21840.00000000    -0.00051852)
+           (  4972.00000000    -0.00274825)
+           (  1408.00000000    -0.01110070)
+           (   459.70000000    -0.03848200)
+           (   165.90000000    -0.09975990)
+           (    64.69000000    -0.20308800)
+           (    26.44000000    -0.13560800)
+           (     7.62800000     0.50719500)
+           (     2.99600000     0.61289800)
+           (     0.65040000     0.04429680) )
+        (S (145700.00000000     0.00002105)
+           ( 21840.00000000     0.00016257)
+           (  4972.00000000     0.00085546)
+           (  1408.00000000     0.00349745)
+           (   459.70000000     0.01201560)
+           (   165.90000000     0.03213680)
+           (    64.69000000     0.06552790)
+           (    26.44000000     0.04993700)
+           (     7.62800000    -0.22976900)
+           (     2.99600000    -0.42100600)
+           (     0.65040000     0.64233100) )
+        (S (     0.23370000     1.00000000) )
+        (P (   453.70000000     0.00570555)
+           (   106.80000000     0.04304600)
+           (    33.73000000     0.17659100)
+           (    12.13000000     0.40686300)
+           (     4.59400000     0.45254900)
+           (     1.67800000     0.12280100)
+           (     0.59090000    -0.00445996) )
+        (P (   453.70000000    -0.00160655)
+           (   106.80000000    -0.01217140)
+           (    33.73000000    -0.05207890)
+           (    12.13000000    -0.12373700)
+           (     4.59400000    -0.15161900)
+           (     1.67800000     0.14242500)
+           (     0.59090000     0.58450100) )
+        (P (     0.18520000     1.00000000) )
+        (D (     0.73800000     1.00000000) )
+        (S (     0.07090000     1.00000000) )
+        (P (     0.05330000     1.00000000) )
+        (D (     0.24000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 22
+    Number of primitives   = 53
+    Number of AO           = 58
+    Number of SO           = 54
+
+    Irrep    Number of SO
+    -----    ------------
+      1           13
+      2            2
+      3            6
+      4            6
+      5            2
+      6           13
+      7            6
+      8            6
+
+  -Contraction Scheme:
+    Atom     All Primitives // Unique Primitives // Shells
+    ----     ---------------------------------------------
+       1      35s 16p 2d //  13s 9p 2d //  5s 4p 2d
+       2      35s 16p 2d //  13s 9p 2d //  5s 4p 2d
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    AR        0.000000000000     0.000000000000     3.763672765153
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    AR        0.000000000000     0.000000000000    -3.763672765153
+    AR        0.000000000000     0.000000000000     3.763672765153
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    AR        0.000000000000     0.000000000000    -1.991650000000
+    AR        0.000000000000     0.000000000000     1.991650000000
+
+
+  -Geometry in the reference coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    AR        0.000000000000     0.000000000000    -3.763672765153
+    AR        0.000000000000     0.000000000000     3.763672765153
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =      43.043061952652
+
+  -The Interatomic Distances in angstroms:
+
+           1           2
+
+    1   0.0000000
+    2   3.9833000   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+INPUT tstop called on julius.chemistry.gatech.edu
+Thu Nov 13 18:05:35 2008
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+cints tstart called on julius.chemistry.gatech.edu
+Thu Nov 13 18:05:35 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Ar2 HF+D/aug-cc-pVDZ frequencies
+    Number of atoms             = 2
+    Number of atomic orbitals   = 58
+    Number of symmetry orbitals = 54
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = D2h
+    Number of irreps                 = 8
+
+    Wrote 134055 two-electron integrals to IWL file 33
+
+******************************************************************************
+cints tstop called on julius.chemistry.gatech.edu
+Thu Nov 13 18:05:37 2008
+
+user time   =       2.21 seconds =       0.04 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+SCF tstart called on julius.chemistry.gatech.edu
+Thu Nov 13 18:05:37 2008
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = Ar2 HF+D/aug-cc-pVDZ frequencies
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = SECOND
+  convergence  = 12
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy       43.0430619526523
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 594128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 3.455625e-02
+
+  Using core guess to determine occupations
+
+
+  Symmetry block:   Ag    B1g   B2g   B3g   Au    B1u   B2u   B3u  
+  DOCC:              5     0     2     2     0     5     2     2   
+  SOCC:              0     0     0     0     0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 30792 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1     -1045.7555724042    1.088799e+03    0.000000e+00    0.000000e+00
+    2     -1051.7869105823    6.031338e+00    5.657636e-02    7.838193e-01
+    3     -1053.5473205411    1.760410e+00    1.086240e-02    3.783723e-01
+    4     -1053.5992820014    5.196146e-02    2.323276e-03    1.009629e-01
+    5     -1053.6017942693    2.512268e-03    6.813746e-04    1.951767e-02
+    6     -1053.6018176326    2.336326e-05    7.009739e-05    1.076254e-03
+    7     -1053.6018181775    5.449708e-07    7.386588e-06    1.670564e-04
+    8     -1053.6018181987    2.115280e-08    2.114113e-06    3.928701e-05
+    9     -1053.6018181992    5.493348e-10    3.496105e-07    6.804676e-06
+   10     -1053.6018181992    2.728484e-12    2.505278e-08    4.976695e-07
+   11     -1053.6018181992    0.000000e+00    3.728385e-09    1.142207e-07
+   12     -1053.6018181992    0.000000e+00    3.101055e-10    1.074421e-08
+   13     -1053.6018181992   -6.821210e-13    1.398455e-10    4.259659e-09
+   14     -1053.6018181993    1.364242e-12    1.970445e-11    3.921627e-10
+   15     -1053.6018181993   -4.547474e-13    2.628824e-12    8.768784e-11
+   16     -1053.6018181993    6.821210e-13    6.449411e-13    1.625571e-11
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1B1u  -118.610432     1Ag   -118.610431     2B1u   -12.322607  
+   2Ag    -12.322599     1B2g    -9.571186     1B3g    -9.571186  
+   1B3u    -9.571186     1B2u    -9.571186     3B1u    -9.571182  
+   3Ag     -9.571182     4Ag     -1.279179     4B1u    -1.278335  
+   5Ag     -0.597221     2B2u    -0.592771     2B3u    -0.592771  
+   2B3g    -0.591452     2B2g    -0.591452     5B1u    -0.587129  
+
+  Unoccupied orbitals
+   6B1u     0.135862     3B3u     0.136266     3B2u     0.136266  
+   6Ag      0.143462     3B2g     0.172886     3B3g     0.172886  
+   7Ag      0.175372     7B1u     0.268881     8Ag      0.506864  
+   4B3u     0.530092     4B2u     0.530092     9Ag      0.540180  
+   1B1g     0.540180     1Au      0.542767     8B1u     0.542767  
+   4B2g     0.558895     4B3g     0.558895     9B1u     0.621565  
+   5B2u     0.967667     5B3u     0.967667     5B3g     0.979379  
+   5B2g     0.979379    10Ag      0.981714    10B1u     0.987142  
+  11Ag      1.332825    11B1u     1.389042    12Ag      1.573219  
+   6B2u     1.594219     6B3u     1.594219     2B1g     1.608593  
+  13Ag      1.608593     2Au      1.612133    12B1u     1.612133  
+   6B2g     1.634210     6B3g     1.634210    13B1u     1.736126  
+
+
+      * SCF total energy   =   -1053.601818199251
+        kinetic energy     =    1053.608284115614
+        nuc. attr. energy  =   -2596.091075123654
+        elec. rep. energy  =     488.880972808789
+        potential energy   =   -2107.210102314865
+        virial theorem     =       2.000006136964
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+SCF tstop called on julius.chemistry.gatech.edu
+Thu Nov 13 18:05:37 2008
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+TRANSQT tstart called on julius.chemistry.gatech.edu
+Thu Nov 13 18:05:37 2008
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	SCF
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	Second
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 8
+	Number of SOs        = 54
+	Number of MOs        = 54
+	Number of active MOs = 54
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 Ag 	   13	    0	    5	    0	    8	    0
+	 B1g	   2	    0	    0	    0	    2	    0
+	 B2g	   6	    0	    2	    0	    4	    0
+	 B3g	   6	    0	    2	    0	    4	    0
+	 Au 	   2	    0	    0	    0	    2	    0
+	 B1u	   13	    0	    5	    0	    8	    0
+	 B2u	   6	    0	    2	    0	    4	    0
+	 B3u	   6	    0	    2	    0	    4	    0
+
+	Nuclear Rep. energy (chkpt) =     43.04306195265232
+	SCF energy          (chkpt) =  -1053.60181819925083
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on julius.chemistry.gatech.edu
+Thu Nov 13 18:05:38 2008
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+cints tstart called on julius.chemistry.gatech.edu
+Thu Nov 13 18:05:38 2008
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Ar2 HF+D/aug-cc-pVDZ frequencies
+    Number of atoms             = 2
+    Number of atomic orbitals   = 58
+    Number of symmetry orbitals = 54
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = D2h
+    Number of irreps                 = 8
+******************************************************************************
+cints tstop called on julius.chemistry.gatech.edu
+Thu Nov 13 18:07:09 2008
+
+user time   =      90.84 seconds =       1.51 minutes
+system time =       0.22 seconds =       0.00 minutes
+total time  =         91 seconds =       1.52 minutes
+******************************************************************************
+NONBONDED tstart called on julius.chemistry.gatech.edu
+Thu Nov 13 18:07:09 2008
+
+             ---------------------------------------
+                            NONBONDED                  
+               Evaluate empirical non-bonded terms     
+                        C. David Sherrill              
+             ---------------------------------------
+
+
+   Universal scaling coefficient s6 = 1.0000
+   Universal damping exponent d     = 20.0000
+   Dispersion method                = GRIMME
+   Damping function                 = GRIMME
+
+   Previous energy           = -1053.601818199 hartree
+
+   Damped dispersion energy  =   -0.000436553 hartree (   -0.2739 kcal/mol)
+ * Total energy + empirical  = -1053.602254753 hartree
+
+   Hessian contribution from damped empirical correction
+
+           1           2           3           4           5           6
+
+    1  -0.0000318   0.0000000   0.0000000   0.0000318   0.0000000   0.0000000
+    2   0.0000000  -0.0000318   0.0000000   0.0000000   0.0000318   0.0000000
+    3   0.0000000   0.0000000  -0.0005602   0.0000000   0.0000000   0.0005602
+    4   0.0000318   0.0000000   0.0000000  -0.0000318   0.0000000   0.0000000
+    5   0.0000000   0.0000318   0.0000000   0.0000000  -0.0000318   0.0000000
+    6   0.0000000   0.0000000   0.0005602   0.0000000   0.0000000  -0.0005602
+******************************************************************************
+NONBONDED tstop called on julius.chemistry.gatech.edu
+Thu Nov 13 18:07:09 2008
+
+user time   =       0.00 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CPHF tstart called on julius.chemistry.gatech.edu
+Thu Nov 13 18:07:09 2008
+
+			**************************
+			*                        *
+			*          CPHF          *
+			*                        *
+			**************************
+
+	Hartree-Fock Electric Dipole Moments:
+	------------------------------------
+	mu[0] =   0.000000 (e a0) =   0.000000 (debye)
+	mu[1] =   0.000000 (e a0) =   0.000000 (debye)
+	mu[2] =   0.000000 (e a0) =   0.000000 (debye)
+
+	Total dipole moment (debye) =         0.0000000000
+
+	Hartree-Fock Electric Polarizability Tensor [(e^2 a0^2)/E_h]:
+	---------------------------------------------------------------
+
+           1           2           3
+
+    1  18.8076173   0.0000000   0.0000000
+    2   0.0000000  18.8076173   0.0000000
+    3   0.0000000   0.0000000  20.3048830
+
+	Atomic Polar Tensor:
+
+	Units: au
+
+	Terms: Electronic
+
+	     Ex		     Ey		     Ez
+ ARx	-18.000000	  0.000000	  0.000000
+ ARy	  0.000000	-18.000000	  0.000000
+ ARz	  0.000000	  0.000000	-18.000000
+
+ ARx	-18.000000	  0.000000	  0.000000
+ ARy	  0.000000	-18.000000	  0.000000
+ ARz	  0.000000	  0.000000	-18.000000
+
+
+	Atomic Polar Tensor:
+
+	Units: au
+
+	Terms: Electronic + Nuclear
+
+	     Ex		     Ey		     Ez
+ ARx	 -0.000000	  0.000000	  0.000000
+ ARy	  0.000000	 -0.000000	  0.000000
+ ARz	  0.000000	  0.000000	  0.000000
+
+ ARx	 -0.000000	  0.000000	  0.000000
+ ARy	  0.000000	 -0.000000	  0.000000
+ ARz	  0.000000	  0.000000	  0.000000
+
+
+	        Harmonic Frequency   Infrared Intensity
+	              (cm-1)               (km/mol)    
+	-----------------------------------------------
+	    1              24.009            0.0000
+	    2               0.004i           0.0000
+	    3               0.005i           0.0000
+	    4               0.005i           0.0000
+	    5               0.387i           0.0000
+	    6               0.387i           0.0000
+	-----------------------------------------------
+
+	Electronic Contributions to AAT (au):
+
+	     Bx		     By		     Bz
+ ARx	  0.000000	  7.820282	  0.000000
+ ARy	 -7.535217	  0.000000	  0.000000
+ ARz	  0.000000	  0.000000	  0.000000
+
+ ARx	  0.000000	 -7.820282	  0.000000
+ ARy	  7.535217	  0.000000	  0.000000
+ ARz	  0.000000	  0.000000	  0.000000
+
+
+	Atomic Axial Tensor:
+
+	Units: au
+
+	Terms: Electronic + Nuclear
+
+	     Bx		     By		     Bz
+ ARx	  0.000000	 -9.116246	  0.000000
+ ARy	  9.401310	  0.000000	  0.000000
+ ARz	  0.000000	  0.000000	  0.000000
+
+ ARx	  0.000000	  9.116246	  0.000000
+ ARy	 -9.401310	  0.000000	  0.000000
+ ARz	  0.000000	  0.000000	  0.000000
+
+
+	Atomic Axial Tensor:
+
+	Units: au
+
+	Terms: Electronic + Nuclear
+
+	     Bx		     By		     Bz
+  Q1	 -2.103186	 -0.000000	  0.000000
+
+	Rotational Strength (au):
+
+  Q1	   0.000000000000000
+
+	Rotational Strength (10^-44 esu^2 cm^2):
+
+  Q1	  -0.000000000000000
+******************************************************************************
+CPHF tstop called on julius.chemistry.gatech.edu
+Thu Nov 13 18:07:10 2008
+
+user time   =       0.89 seconds =       0.01 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on julius.chemistry.gatech.edu at Thu Nov 13 18:07:10 2008
+
+Total PSI3 wall time         95 seconds =       1.58 minutes
+******************************************************************************
