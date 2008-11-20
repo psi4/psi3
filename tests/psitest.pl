@@ -1445,7 +1445,7 @@ sub seek_scf_d
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   seek(OUT,0,0);
   while(<OUT>) {
-    if (/\* Total SCF+D energy/) {
+    if (/\* Total energy + empirical/) {
       @data = split(/ =\s+/, $_);
       ($scf,$junk) = split(/ /, $data[1]);
       return $scf;
