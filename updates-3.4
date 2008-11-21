@@ -1,3 +1,10 @@
+11/21/08 Added libmints which includes matrix classes, one- and two-electron
+(overlap, kinetic, potential, dipole, eri) integrals and their derivatives 
+(no symmetry) for all types, also includes a molecule class used by mints.
+Integral codes inspired by MPQC. Also includes a reference counting class that
+is used throughout mints. Added a src/samples directory which includes an 
+example of using mints. Mints depends on libderiv and libint. -JMT
+
 11/19/08 Replacing deprecated bzero() calls with memset(). -CDS
 
 11/19/08 Adding -D second derivatives and test case -CDS

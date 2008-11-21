@@ -834,6 +834,7 @@ AC_CONFIG_FILES([include/Makefile
           src/lib/libutil/Makefile
           src/lib/liboptions/Makefile
           src/lib/libmoinfo/Makefile
+          src/lib/libmints/Makefile
           src/util/tocprint/Makefile
           src/util/psi2molden/Makefile
 
@@ -1022,6 +1023,11 @@ AC_CONFIG_FILES([include/Makefile
           tests/scf+d-freq/Makefile
           src/bin/giao/Makefile
           tests/casscf-sp-reorder/Makefile
+
+          src/samples/Makefile
+          src/samples/MakeVars
+          src/samples/MakeRules
+          src/samples/mints/Makefile
 ])
 
 AC_OUTPUT

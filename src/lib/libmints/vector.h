@@ -1,0 +1,193 @@
+#ifndef _psi_src_lib_libmints_vector_h
+#define _psi_src_lib_libmints_vector_h
+
+#include <cstdlib>
+#include <cstdio>
+
+#include <libmints/ref.h>
+
+namespace psi {
+    
+class Vector {
+protected:
+    /// Vector data
+    double **vector_;
+    /// Number of irreps
+    int nirreps_;
+    /// Dimensions per irrep
+    int *dimpi_;
+    
+    /// Allocates vector_
+    void alloc();
+    /// Releases vector_
+    void release();
+    
+    /// Copies data to vector_
+    void copy_from(double **);
+    
+public:
+    /// Default constructor, zeros everything out
+    Vector();
+    /// Copy constructor
+    Vector(const Vector& copy);
+    /// Constructor, allocates memory
+    Vector(int nirreps, int *dimpi);
+    
+    /// Destructor, frees memory
+    ~Vector();
+    
+    /// Sets the vector_ to the data in vec
+    void set(double *vec);
+    /// Returns a single element value
+    double get(int h, int m) {
+        return vector_[h][m];
+    }
+    /// Sets a single element value
+    void set(int h, int m, double val) {
+        vector_[h][m] = val;
+    }
+    /// Returns a copy of the vector_
+    double *to_block_vector();
+    
+    /// Returns the dimension array
+    int *dimpi() const {
+        return dimpi_;
+    }
+    /// Returns the number of irreps
+    int nirreps() const {
+        return nirreps_;
+    }
+    
+    /// Prints the vector
+    void print(FILE *);
+    /// Copies rhs to this
+    void copy(const Vector* rhs);
+    
+    friend class Matrix;
+};
+
+class RefVector : public Ref< Vector >{
+public:
+    RefVector();
+    RefVector(Vector* o);
+    RefVector(const RefVector& o);
+    
+    void set(double *vec);
+    double get(int h, int m) {
+        return pointer()->get(h, m);
+    }
+    void set(int h, int m, double val) {
+        pointer()->set(h, m, val);
+    }
+    double* to_block_vector() {
+        return pointer()->to_block_vector();
+    }
+    int *dimpi() {
+        return pointer()->dimpi();
+    }
+    int nirreps() {
+        return pointer()->nirreps();
+    }
+    
+    void print(FILE *out) {
+        pointer()->print(out);
+    }
+    void copy(const RefVector& rhs) {
+        pointer()->copy(rhs.pointer());
+    }
+};
+
+class SimpleVector
+{
+protected:
+    /// Vector data
+    double *vector_;
+    /// Dimension of the vector
+    int dim_;
+
+    /// Allocate memory
+    void alloc();
+    /// Free memory
+    void release();
+
+    /// Copy data to this
+    void copy_from(double *);
+
+public:
+    /// Default constructor, zeroes everything out
+    SimpleVector();
+    /// Copy constructor
+    SimpleVector(const SimpleVector& copy);
+    /// Constructor, creates the vector
+    SimpleVector(int dim);
+
+    /// Destructor, frees memory
+    ~SimpleVector();
+
+    /// Set vector_ to vec
+    void set(double *vec);
+    /// Returns an element value
+    double get(int m) {
+        return vector_[m];
+    }
+    /// Sets an element value
+    void set(int m, double val) {
+        vector_[m] = val;
+    }
+    /// Returns a copy of vector_
+    double *to_block_vector();
+
+    /// Returns the dimension of the vector
+    int dim() const {
+        return dim_;
+    }
+
+    double& operator[](int i) { return vector_[i]; }
+
+    void operator=(const SimpleVector& x) {
+        for (int i=0; i<dim_; ++i)
+            vector_[i] = x.vector_[i];
+    }
+    
+    /// Prints the vector
+    void print(FILE *);
+    /// Copy rhs to this
+    void copy(const SimpleVector* rhs);
+
+    friend class SimpleMatrix;
+};
+
+class RefSimpleVector : public Ref< SimpleVector >
+{
+public:
+    RefSimpleVector();
+    RefSimpleVector(SimpleVector* o);
+    RefSimpleVector(const RefSimpleVector& o);
+    
+    void set(double *vec);
+    double get(int m) {
+        return pointer()->get(m);
+    }
+    void set(int m, double val) {
+        pointer()->set(m, val);
+    }
+    double* to_block_vector() {
+        return pointer()->to_block_vector();
+    }
+    int dim() {
+        return pointer()->dim();
+    }
+    
+    void print(FILE *out) {
+        pointer()->print(out);
+    }
+    void copy(const RefSimpleVector& rhs) {
+        pointer()->copy(rhs.pointer());
+    }
+    
+    double& operator[](int i) { return (*pointer())[i]; }
+};
+
+}
+
+#endif
