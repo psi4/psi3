@@ -3,6 +3,7 @@
 
 #include <cstdio>
 #include <string>
+#include <cstring>
 
 #include <libmints/vector.h>
 #include <libmints/ref.h>
