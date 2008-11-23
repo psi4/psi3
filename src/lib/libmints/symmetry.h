@@ -1,6 +1,11 @@
 #ifndef _psi_src_lib_libmints_symmetry_h_
 #define _psi_src_lib_libmints_symmetry_h_
 
+/*!
+    \file libmints/symmetry.h
+    \ingroup MINTS
+*/
+
 #include <cstdio>
 #include <libchkpt/chkpt.hpp>
 

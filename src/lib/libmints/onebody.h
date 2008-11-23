@@ -1,6 +1,11 @@
 #ifndef _psi_src_lib_libmints_onebody_h_
 #define _psi_src_lib_libmints_onebody_h_
 
+/*!
+    \file libmints/onebody.h
+    \ingroup MINTS
+*/
+
 #include <libmints/ref.h>
 #include <libmints/matrix.h>
 
@@ -46,6 +51,7 @@ public:
     
     /// Computes all integrals and stores them in result by default this method throws
     virtual void compute(RefMatrixArray& result);
+    /// Computes all integrals and stores them in result by default this method throws
     virtual void compute(RefSimpleMatrixArray& result);
     
     /// Does the method provide first derivatives?
@@ -53,6 +59,7 @@ public:
     
     /// Computes the first derivatives and stores them in result
     virtual void compute_deriv1(RefMatrixArray& result);
+    /// Computes the first derivatives and stores them in result
     virtual void compute_deriv1(RefSimpleMatrixArray& result);
     
     /// Computes the integrals between basis function in the given shell pair

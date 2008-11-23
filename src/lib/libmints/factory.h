@@ -1,6 +1,11 @@
 #ifndef _psi_src_lib_libmints_factory_h_
 #define _psi_src_lib_libmints_factory_h_
 
+/*!
+    \file libmints/factory.h
+    \ingroup MINTS
+*/
+
 #include <libmints/vector.h>
 #include <libmints/matrix.h>
 
@@ -8,7 +13,10 @@
 #include <libpsio/psio.hpp>
 
 namespace psi {
-    
+
+/// A class for creating Matrix, SimpleMatrix, Vector, and SimpleVector objects.
+/// The objects this factory creates can automatically be sized based on information
+/// from checkpoint.    
 class MatrixFactory {
     /// Number of irreps
     int nirreps_;
@@ -20,7 +28,9 @@ class MatrixFactory {
     int *colspi_;
     
 public:
+    /// Default constructor, does nothing.
     MatrixFactory();
+    /// Copy constructor.
     MatrixFactory(const MatrixFactory& copy);
     ~MatrixFactory();
     

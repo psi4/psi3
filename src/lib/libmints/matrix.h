@@ -1,6 +1,11 @@
 #ifndef _psi_src_lib_libmints_matrix_h_
 #define _psi_src_lib_libmints_matrix_h_
 
+/*!
+    \file libmints/matrix.h
+    \ingroup MINTS
+*/
+
 #include <cstdio>
 #include <string>
 #include <cstring>
@@ -18,6 +23,8 @@ class MatrixFactory;
 class SimpleMatrix;
 class RefSimpleMatrix;
 
+//! Makes using matrices just a little earlier.
+//! Using a matrix factory makes creating these a breeze.
 class Matrix {
 protected:
     /// Matrix data
@@ -171,6 +178,7 @@ public:
     void diagonalize(Matrix* eigvectors, Vector* eigvalues);
 };
 
+//! Matrix reference wrapped class.
 class RefMatrix : public Ref< Matrix > {
 public:
     RefMatrix();
@@ -242,6 +250,7 @@ public:
     RefMatrix operator-(const RefMatrix&) const;
 };
 
+//! Simple matrix class. Not symmetry blocked.
 class SimpleMatrix
 {
 protected:
@@ -373,9 +382,11 @@ public:
     void save(Ref<psi::PSIO>& psio, unsigned int fileno);
     /// Saves the matrix in ASCII format to filename
     void save(const char *filename, bool append=true, bool saveLowerTriangle = true);
+    /// Saves the matrix in ASCII format to filename
     void save(std::string filename, bool append=true, bool saveLowerTriangle = true);
 };
 
+//! Simple matrix reference wrapped class.
 class RefSimpleMatrix : public Ref< SimpleMatrix > {
 public:
     RefSimpleMatrix();

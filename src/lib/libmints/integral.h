@@ -1,12 +1,29 @@
 #ifndef _psi_src_lib_libmints_integral_h_
 #define _psi_src_lib_libmints_integral_h_
 
+/*!
+    \file libmints/integral.h
+    \ingroup MINTS
+*/
+
 #include <libmints/ref.h>
 #include <vector>
 
+/*! \def INT_NCART(am)
+    Gives the number of cartesian functions for an angular momentum.
+*/
 #define INT_NCART(am) ((am>=0)?((((am)+2)*((am)+1))>>1):0)
+/*! \def INT_PURE(am)
+    Gives the number of spherical functions for an angular momentum.
+*/
 #define INT_NPURE(am) (2*(am)+1)
+/*! \def INT_NFUNC(pu,am)
+    Gives the number of functions for an angular momentum based on pu.
+*/
 #define INT_NFUNC(pu,am) ((pu)?INT_NPURE(am):INT_NCART(am))
+/*! \def INT_CARTINDEX(am,i,j)
+    Computes offset index for cartesian function.
+*/
 #define INT_CARTINDEX(am,i,j) (((i) == (am))? 0 : (((((am) - (i) + 1)*((am) - (i)))>>1) + (am) - (i) - (j)))
 
 namespace psi {

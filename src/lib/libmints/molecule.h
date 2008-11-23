@@ -1,6 +1,11 @@
 #ifndef _psi_src_lib_libmints_molecule_h_
 #define _psi_src_lib_libmints_molecule_h_
 
+/*!
+    \file libmints/molecule.h
+    \ingroup MINTS
+*/
+
 #include <vector>
 #include <string>
 #include <cstdio>
@@ -15,7 +20,8 @@
 extern FILE *outfile;
 
 namespace psi {
-    
+
+//! Molecule information class.
 class Molecule
 {
 public:

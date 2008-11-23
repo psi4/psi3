@@ -1,6 +1,11 @@
 #ifndef _psi_src_lib_libmints_osrecur_h
 #define _psi_src_lib_libmints_osrecur_h
 
+/*!
+    \file libmints/osrecur.h
+    \ingroup MINTS
+*/
+
 namespace psi {
     
 /// Generic Obara and Saika recursion object.
@@ -94,6 +99,7 @@ public:
     virtual void compute(double PA[3], double PB[3], double PC[3], double zeta, int am1, int am2);
 };
 
+//! Obara and Saika recursion object for computing potential derivatives.
 class ObaraSaikaTwoCenterVIDerivRecursion : public ObaraSaikaTwoCenterVIRecursion
 {
 protected:

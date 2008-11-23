@@ -1,6 +1,12 @@
 #ifndef _psi_src_lib_libmints_basisset_h_
 #define _psi_src_lib_libmints_basisset_h_
 
+/*!
+    \defgroup MINTS libmints: Integral library
+    \file libmints/basisset.h
+    \ingroup MINTS
+*/
+
 #include <cstdio>
 #include <libchkpt/chkpt.hpp>
 
@@ -13,32 +19,56 @@
 extern FILE *outfile;
 
 namespace psi {
+    
+//! Basis set container class
+/*!
+    Reads the basis set from a checkpoint file object. Also reads the molecule
+    from the checkpoint file storing the information in an internal Molecule class
+    which can be accessed using molecule().
+*/
 class BasisSet
 {
+    //! Number of primitives.
     int nprimitives_;
+    //! Number of shells.
     int nshells_;
+    //! Number of atomic orbitals.
     int nao_;
+    //! Number of basis functions (either cartesian or spherical)
     int nbf_;
+    //! Maximum angular momentum
     int max_am_;
+    //! Maximum number of primitives.
     int max_nprimitives_;
+    //! Shell number to first basis function index.
     int *shell_first_basis_function_;
+    //! Shell number to first atomic function index.
     int *shell_first_ao_;
+    //! Shell number to atomic center.
     int *shell_center_;
+    //! Not used, yet.
     int max_stability_index_;
+    //! Unique symmetry orbitals to atomic orbitals.
     double **uso2ao_;
     
+    //! Does the loaded basis set contain pure angular momentum functions?
     bool puream_;
     
+    //! Array of gaussian shells
     Ref<Ref<GaussianShell>, SimpleReferenceCount, StandardArrayPolicy> shells_;
+    //! Molecule object.
     Ref<Molecule> molecule_;
+    //! Symmetry orbital transformation (used in one-electron integrals)
     Ref<SOTransform> sotransform_;
+    //! Spherical transfromation (used in two-electron integrals)
     std::vector<SphericalTransform> sphericaltransforms_;
     
-    // No default constructor
+    //! No default constructor
     BasisSet();
-    // No assignment
+    //! No assignment
     BasisSet& operator=(const BasisSet&);
     
+    //! Initialize shells bases on information found in checkpoint
     void initialize_shells(Ref<psi::Chkpt> &chkpt);
     
 public:

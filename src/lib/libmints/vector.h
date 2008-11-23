@@ -1,6 +1,11 @@
 #ifndef _psi_src_lib_libmints_vector_h
 #define _psi_src_lib_libmints_vector_h
 
+/*!
+    \file libmints/vector.h
+    \ingroup MINTS
+*/
+
 #include <cstdlib>
 #include <cstdio>
 

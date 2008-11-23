@@ -1,6 +1,11 @@
 #ifndef _psi_src_lib_libmints_potential_h_
 #define _psi_src_lib_libmints_potential_h_
 
+/*!
+    \file libmints/potential.h
+    \ingroup MINTS
+*/
+
 #include <libmints/ref.h>
 
 #include <libmints/basisset.h>
@@ -17,10 +22,12 @@ class PotentialInt : public OneBodyInt
 {
     /// Recursion object that does the heavy lifting.
     ObaraSaikaTwoCenterVIRecursion potential_recur_;
+    /// Recursion object that does the heavy lifting.
     ObaraSaikaTwoCenterVIDerivRecursion potential_deriv_recur_;
     
     /// Computes integrals between two shell objects.
     void compute_pair(Ref<GaussianShell> &, Ref<GaussianShell> &);
+    /// Computes integrals between two shell objects.
     void compute_pair_deriv1(Ref<GaussianShell> &, Ref<GaussianShell> &);
     
 public:
@@ -30,6 +37,7 @@ public:
     
     /// Computes integrals between two shells.
     void compute_shell(int, int);
+    /// Computes integrals between two shells.
     void compute_shell_deriv1(int, int);
     
     /// Does the method provide first derivatives?

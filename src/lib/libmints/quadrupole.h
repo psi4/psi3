@@ -1,6 +1,11 @@
 #ifndef _psi_src_lib_libmints_quadrupole_h_
 #define _psi_src_lib_libmints_quadrupole_h_
 
+/*!
+    \file libmints/quadrupole.h
+    \ingroup MINTS
+*/
+
 #include <libmints/ref.h>
 
 #include <libmints/basisset.h>

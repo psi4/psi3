@@ -1,6 +1,11 @@
 #ifndef _psi_src_lib_libmints_eri_h
 #define _psi_src_lib_libmints_eri_h
 
+/*!
+    \file libmints/eri.h
+    \ingroup MINTS
+*/
+
 #include <libmints/ref.h>
 
 #include <libmints/basisset.h>
@@ -17,18 +22,21 @@ namespace psi {
     
 class ERI : public TwoBodyInt
 {
+    //! Libint object.
     Libint_t libint_;
     
+    //! Computes the ERIs between four shells.
     void compute_quartet(int, int, int, int);
 
 public:
+    //! Constructor. Use an IntegralFactory to create this object.
     ERI(IntegralFactory*, Ref<BasisSet> &, Ref<BasisSet> &, Ref<BasisSet> &, Ref<BasisSet> &);
     ~ERI();
     
-    /// Compute ERI between 4 shells. Result is stored in buffer
+    /// Compute ERI between 4 shells. Result is stored in buffer.
     void compute_shell(int, int, int, int);
 
-    // not used:
+    /// Not used
     void determine_combinations();
 };
 
@@ -50,10 +58,11 @@ class ERIDeriv : public TwoBodyInt
     int itable_infinity_;
     
 public:
+    //! Constructor. Use an IntegralFactory to create this object.
     ERIDeriv(IntegralFactory*, Ref<BasisSet> &, Ref<BasisSet> &, Ref<BasisSet> &, Ref<BasisSet> &);
     ~ERIDeriv();
     
-    /// Compute ERI between 4 shells. Result is stored in buffer
+    /// Compute ERI derivative between 4 shells. Result is stored in buffer
     void compute_shell(int, int, int, int);
 };
 

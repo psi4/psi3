@@ -1,6 +1,11 @@
 #ifndef _psi_src_lib_libmints_ref_h_
 #define _psi_src_lib_libmints_ref_h_
 
+/*!
+    \file libmints/ref.h
+    \ingroup MINTS
+*/
+
 #include <cstddef>
 #include <cstdio>
 #include <cstdlib>

@@ -1,6 +1,11 @@
 #ifndef _psi_src_lib_libmints_wavefunction_h
 #define _psi_src_lib_libmints_wavefunction_h
 
+/*!
+    \file libmints/wavefunction.h
+    \ingroup MINTS
+*/
+
 #include <libmints/factory.h>
 #include <libmints/ref.h>
 #include <libmints/molecule.h>
@@ -24,6 +29,7 @@ extern double fac[MAX_FAC];
 
 namespace psi {
 
+//! Simple wavefunction base class.
 class Wavefunction {
 protected:
     

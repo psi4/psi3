@@ -1,6 +1,11 @@
 #ifndef _psi_src_lib_libmints_gshell_h_
 #define _psi_src_lib_libmints_gshell_h_
 
+/*!
+    \file libmints/gshell.h
+    \ingroup MINTS
+*/
+
 #include <cstdio>
 #include <libmints/vector3.h>
 
@@ -110,6 +115,7 @@ public:
     /// Get the symmetry transformation vector element
     int sym_transfrom(int i) const { return sym_transfrom_[i]; }
     
+    /// Basis function index where this shell starts.
     int function_index() const { return start_; }
 };
 

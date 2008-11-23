@@ -1,6 +1,11 @@
 #ifndef _psi_src_lib_libmints_sobasis_h_
 #define _psi_src_lib_libmints_sobasis_h_
 
+/*!
+    \file libmints/sobasis.h
+    \ingroup MINTS
+*/
+
 #include <vector>
 
 namespace psi {
