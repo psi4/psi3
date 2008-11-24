@@ -152,8 +152,8 @@ StringBlockedMatrix::write(int brablk, int ketblk)
   const std::string bkey = key(brablk,ketblk);
   const char* bkey_cstr = bkey.c_str();
   int errcod = psio_write(psio_unit_,
-			  const_cast<char*>(bkey_cstr),
-			  (char*)buffer_[0],
+			  bkey_cstr,
+			  reinterpret_cast<char*>(buffer_[0]),
 			  blksize_,
 			  PSIO_ZERO,
 			  &junk);
@@ -181,8 +181,8 @@ StringBlockedMatrix::read(int brablk, int ketblk)
     psio_address junk;
     const char* bkey = key(brablk,ketblk).c_str();
     int errcod = psio_read(psio_unit_,
-			   const_cast<char*>(bkey),
-			   (char*)buffer_[0],
+			   bkey,
+			   reinterpret_cast<char*>(buffer_[0]),
 			   blksize_,
 			   PSIO_ZERO,
 			   &junk);
