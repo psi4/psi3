@@ -906,7 +906,7 @@ Cell[BoxData[{
          "1"}], ",", "\"\<)\>\""}], "]"}], ";", "\[IndentingNewLine]", 
       RowBox[{"Print", "[", 
        RowBox[{
-       "\"\<static char *atomic_labels[] =\>\"", ",", 
+       "\"\<static const char *atomic_labels[] =\>\"", ",", 
         "mostcommonisotopemasslistLabels"}], "]"}], ";", 
       "\[IndentingNewLine]", 
       RowBox[{"Print", "[", 
@@ -954,7 +954,7 @@ Cell[BoxData[{
         "\"\<)\>\""}], "]"}], ";", "\[IndentingNewLine]", 
       RowBox[{"Print", "[", 
        RowBox[{
-       "\"\<static char *mass_labels[] =\>\"", ",", "isotopemasslistLabels"}],
+       "\"\<static const char *mass_labels[] =\>\"", ",", "isotopemasslistLabels"}],
         "]"}], ";", "\[IndentingNewLine]", 
       RowBox[{"Print", "[", 
        RowBox[{
@@ -1172,7 +1172,7 @@ Cell[BoxData[
 
 Cell[BoxData[
  InterpretationBox[
-  RowBox[{"\<\"static char *atomic_labels[] =\"\>", "\[InvisibleSpace]", 
+  RowBox[{"\<\"static const char *atomic_labels[] =\"\>", "\[InvisibleSpace]", 
    RowBox[{"{", 
     RowBox[{"\<\"\\\"X\\\"\"\>", ",", "\<\"\\\"H\\\"\"\>", 
      ",", "\<\"\\\"HE\\\"\"\>", ",", "\<\"\\\"LI\\\"\"\>", 
@@ -1235,7 +1235,7 @@ Cell[BoxData[
      ",", "\<\"\\\"UUH\\\"\"\>", ",", "\<\"\\\"UUS\\\"\"\>", 
      ",", "\<\"\\\"UUO\\\"\"\>"}], "}"}]}],
   SequenceForm[
-  "static char *atomic_labels[] =", {
+  "static const char *atomic_labels[] =", {
    "\"X\"", "\"H\"", "\"HE\"", "\"LI\"", "\"BE\"", "\"B\"", "\"C\"", "\"N\"", 
     "\"O\"", "\"F\"", "\"NE\"", "\"NA\"", "\"MG\"", "\"AL\"", "\"SI\"", 
     "\"P\"", "\"S\"", "\"CL\"", "\"AR\"", "\"K\"", "\"CA\"", "\"SC\"", 
@@ -1423,7 +1423,7 @@ Cell[BoxData[
 
 Cell[BoxData[
  InterpretationBox[
-  RowBox[{"\<\"static char *mass_labels[] =\"\>", "\[InvisibleSpace]", 
+  RowBox[{"\<\"static const char *mass_labels[] =\"\>", "\[InvisibleSpace]", 
    RowBox[{"{", 
     RowBox[{"\<\"\\\"H\\\"\"\>", ",", "\<\"\\\"H1\\\"\"\>", 
      ",", "\<\"\\\"H2\\\"\"\>", ",", "\<\"\\\"D\\\"\"\>", 
@@ -3075,7 +3075,7 @@ Cell[BoxData[
      ",", "\<\"\\\"UUS291\\\"\"\>", ",", "\<\"\\\"UUS292\\\"\"\>", 
      ",", "\<\"\\\"UUO\\\"\"\>", ",", "\<\"\\\"UUO293\\\"\"\>"}], "}"}]}],
   SequenceForm[
-  "static char *mass_labels[] =", {
+  "static const char *mass_labels[] =", {
    "\"H\"", "\"H1\"", "\"H2\"", "\"D\"", "\"H3\"", "\"T\"", "\"H4\"", 
     "\"H5\"", "\"H6\"", "\"H7\"", "\"HE\"", "\"HE3\"", "\"HE4\"", "\"HE5\"", 
     "\"HE6\"", "\"HE7\"", "\"HE8\"", "\"HE9\"", "\"HE10\"", "\"LI\"", 
