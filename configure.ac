@@ -503,7 +503,7 @@ CXXDEF="$CXXDEF -DHAVE_CSTDDEF=$HAVE_CSTDDEF"
 ####################
 RUBYLIB=""
 CHECKRUBY="yes"
-AC_ARG_WITH(ruby-lib,[  --with-ruby-lib         which Ruby library to use],[
+AC_ARG_WITH(ruby-lib,[  --with-ruby-lib         which Ruby library to use (-Ldir1 -lruby_red)],[
 case $withval in
   yes)
 	CHECKRUBY="yes"
@@ -526,7 +526,7 @@ fi
 
 RUBYINC=""
 CHECKRUBY="yes"
-AC_ARG_WITH(ruby-include,[  --with-ruby-include     which Ruby header directory],[
+AC_ARG_WITH(ruby-include,[  --with-ruby-include     where to look for Ruby headers (-Idir1 -Idir2 etc.)],[
 case $withval in
   yes)
 	CHECKRUBY="yes"
