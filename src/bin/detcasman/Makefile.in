@@ -3,7 +3,7 @@ VPATH = @srcdir@
 
 include ../MakeVars
 
-PSILIBS = libPSI_qt.a libPSI_ciomr.a libPSI_ipv1.a
+PSILIBS = -lPSI_qt -lPSI_ciomr -lPSI_ipv1 -lPSI_chkpt -lPSI_psio
 
 CSRC = 
 

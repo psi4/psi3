@@ -33,6 +33,7 @@
 #include <cstring>
 #include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
+#include <libchkpt/chkpt.h>
 #include "setup_io.h"
 
 extern "C" {
@@ -47,6 +48,7 @@ namespace psi { namespace detcasman {
 void title(void);
 void quote(void);
 double calc_ci_conv(double scale, double *energy);
+void print_mos_aobasis(void);
 
 }} // end namespace psi::detcasman
 
@@ -194,6 +196,41 @@ double calc_ci_conv(double scale_conv, double *energy_last)
   tval *= scale_conv;
 
   return(tval);
+}
+
+void print_mos_aobasis(void) {
+  fprintf(outfile,"In print_mos_aobasis.\n");
+  chkpt_init(PSIO_OPEN_OLD);
+  double** usotbf = chkpt_rd_usotbf();
+  const int num_bf = chkpt_rd_nso();
+  const int* mopi = chkpt_rd_orbspi();
+  const int* sopi = chkpt_rd_sopi();
+  char** irrep_labels = chkpt_rd_irr_labs();
+  int so_offset = 0;
+  int nirreps = chkpt_rd_nirreps();
+  for (int h=0; h<nirreps; h++) {
+    const int num_mo = mopi[h];
+    const int num_so = sopi[h];
+    if (num_mo) {
+      double** mo_coeffs_blk = chkpt_rd_scf_irrep(h);
+      double** usotbf_blk = block_matrix(num_so,num_bf);
+      bcopy(static_cast<const void*>(usotbf[so_offset]),static_cast<void*>(usotbf_blk[0]),
+            num_so*num_bf*sizeof(double));
+      double** mo_coeffs_bf = block_matrix(num_bf,num_mo);
+      mmult(usotbf_blk,1,mo_coeffs_blk,0,mo_coeffs_bf,0,num_bf,num_so,num_mo,0);
+      
+      fprintf(outfile, "\n\tCASSCF MO vectors for irrep %s\n", 
+                      irrep_labels[h]);
+      print_mat(mo_coeffs_bf, num_bf, num_mo, outfile);
+      free_block(mo_coeffs_blk);
+      free_block(usotbf_blk);
+      free_block(mo_coeffs_bf);
+    }
+    
+    so_offset += num_so;
+  }
+  chkpt_close();
+  free_block(usotbf);
 }
 
 }} // end namespace psi::detcasman 
