@@ -12,7 +12,7 @@
 using namespace psi;
 
 extern "C" {
-  extern char *gprgid();
+  extern const char *gprgid();
 }
 
 void PSIO::get_volpath(unsigned int unit, unsigned int volume, char **path) {

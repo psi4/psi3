@@ -37,7 +37,7 @@ zmat :: zmat() : internals()
   num_entries = chkpt_rd_nallatom();
   z_geom = chkpt_rd_zmat();
   char **temp_felement;
-  felement = chkpt_rd_felement();
+  felement = (char **) chkpt_rd_felement();
 
   dummy=0;
   for(i=0;i<num_entries;++i) 

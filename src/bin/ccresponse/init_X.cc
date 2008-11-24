@@ -19,7 +19,7 @@ void denom2(dpdbuf4 *X2, double omega);
 void local_filter_T1(dpdfile2 *T1);
 void local_filter_T2(dpdbuf4 *T2);
 
-void init_X(char *pert, char *cart, int irrep, double omega)
+void init_X(const char *pert, const char *cart, int irrep, double omega)
 {
   char lbl[32];
   dpdfile2 mu1, X1, FAE, FMI;

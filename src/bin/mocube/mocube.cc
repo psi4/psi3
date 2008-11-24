@@ -175,8 +175,8 @@ int main(int argc, char *argv[]) {
   return 0 ;
 }
 
-extern "C" char *gprgid() {
-  char *prgid = "MOCUBE";
+extern "C" const char *gprgid() {
+  const char *prgid = "MOCUBE";
   return (prgid);
 }
 

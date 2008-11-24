@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
-extern "C"{ char *gprgid() { char *prgid = "TOCPRINT"; return(prgid); } }
+extern "C"{ const char *gprgid() { const char *prgid = "TOCPRINT"; return(prgid); } }
 
 namespace psi {
   namespace tocprint {

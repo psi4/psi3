@@ -41,7 +41,7 @@
 FILE  *infile, *outfile;
 char  *psi_file_prefix;
 extern "C" {
-  char* gprgid();
+  const char* gprgid();
 }
 
 using namespace std;
@@ -217,7 +217,7 @@ void close_psi()
 /**
  * @return program ID
  */
-char* gprgid()
+const char* gprgid()
 {
   return(const_cast<char*>("PSIMRCC"));
 }

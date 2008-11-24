@@ -72,7 +72,7 @@ void close_io(void)
 ** Returns: none
 ** \ingroup detcasman
 */
-void check(int a, char *errmsg)
+void check(int a, const char *errmsg)
 {
   if (!a) {
     fprintf(outfile, "%s\n", errmsg);
@@ -87,9 +87,9 @@ void check(int a, char *errmsg)
 ** The gprgid() function required by the PSI I/O libraries
 */
 extern "C" {
-  char *gprgid()
+  const char *gprgid()
   {
-    char *prgid = "DETCASMAN";
+    const char *prgid = "DETCASMAN";
     return(prgid);
   }
 }

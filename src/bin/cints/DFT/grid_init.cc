@@ -35,7 +35,7 @@ namespace psi { namespace CINTS {
     int u_atom_num;
     int Z_nuc;
     
-    char *gridstring;
+    const char *gridstring;
     
     /* Contcrete Object */
     grid_t *grid;    
@@ -60,7 +60,7 @@ namespace psi { namespace CINTS {
     /* If depth is 0 then it is a special gridtype */
     if(depth==0){
 	gridstring = "SG1";
-	errcod = ip_string("GRID",&gridstring,0);
+	errcod = ip_string("GRID",(char **) &gridstring,0);
 	
 	/* This is the initialization fo the SG1 grid */
 

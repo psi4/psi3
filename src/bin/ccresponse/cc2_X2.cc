@@ -16,7 +16,7 @@ namespace psi { namespace ccresponse {
 void denom2(dpdbuf4 *X2, double omega);
 void local_filter_T2(dpdbuf4 *T2);
 
-void cc2_X2_build(char *pert, char *cart, int irrep, double omega)
+void cc2_X2_build(const char *pert, const char *cart, int irrep, double omega)
 {
   dpdfile2 X1, z, F, t1;
   dpdbuf4 X2, X2new, Z, Z1, Z2, W, I;

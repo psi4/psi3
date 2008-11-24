@@ -77,7 +77,7 @@ void close_io(void)
 ** check() acts as an abort function if the condition 'a' is not true;
 **   it shuts down i/o and returns an error
 */
-void check(int a, char *errmsg)
+void check(int a, const char *errmsg)
 {
   if (!a) {
     fprintf(outfile, "%s\n", errmsg);
@@ -93,9 +93,9 @@ void check(int a, char *errmsg)
 ** The gprgid() function required by the PSI I/O libraries
 */
 extern "C" {
-  char *gprgid()
+  const char *gprgid()
   {
-    char *prgid = "DETCAS";
+    const char *prgid = "DETCAS";
     return(prgid);
   }
 }

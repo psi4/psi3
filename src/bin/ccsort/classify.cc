@@ -197,7 +197,7 @@ void classify(int p, int q, int r, int s, double value,
 }
 
 
-void classify_uhf(int p, int q, int r, int s, double value, char *spin,
+void classify_uhf(int p, int q, int r, int s, double value, const char *spin,
 	          struct iwlbuf *ABuf1, struct iwlbuf *BBuf1,
 		  struct iwlbuf *CBuf1, struct iwlbuf *CBuf2, 
 		  struct iwlbuf *DBuf1, struct iwlbuf *EBuf1,

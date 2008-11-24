@@ -25,7 +25,7 @@
 #include <libpsio/psio.h>
 #include <psifiles.h>
 
-extern "C" char *gprgid(void);
+extern "C" const char *gprgid(void);
 
 namespace psi { namespace intder {
 // Global variables
@@ -177,9 +177,9 @@ int main(int argc, char** argv)
   return 0;
 }
 
-extern "C" char *gprgid(void)
+extern "C" const char *gprgid(void)
 {
-  char *prgid = "INTDER";
+  const char *prgid = "INTDER";
   return (prgid);
 }
 

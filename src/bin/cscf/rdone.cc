@@ -51,8 +51,6 @@
 /* -Ed
  * */
 
-static char *rcsid = "$Id: rdone.c 3444 2007-08-03 20:49:20Z arnstein $";
-
 #define EXTERN
 #include "includes.h"
 #include "common.h"

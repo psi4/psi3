@@ -339,7 +339,7 @@ EXTERN struct symm {
 /* STB - 10/11/99 - structure added to handle spin */
 EXTERN struct spin {
     struct symm *scf_spin;
-    char *spinlabel;
+    const char *spinlabel;
 } *spin_info;
 
 /* TDC(6/19/96) - Added flag for success or failure of phase checking
@@ -383,7 +383,7 @@ void cleanup();
 void sortev();
 void rotate_vector();
 void sdot(double** a, double** b, int n, double* value);
-void errchk(int errcod, char* token);
+void errchk(int errcod, const char* token);
 int ecalc(double incr);
 void occ_calc();
 void diis(double** scr1, double** scr2, double** scr3, double* c1, double* c2, double cim, int newci);

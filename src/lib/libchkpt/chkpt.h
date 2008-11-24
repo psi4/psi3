@@ -14,13 +14,13 @@ int chkpt_init(int status);
 int chkpt_close(void);
 
 char *chkpt_rd_prefix(void);
-void chkpt_wt_prefix(char *prefix);
-void chkpt_set_prefix(char *prefix);
+void chkpt_wt_prefix(const char *prefix);
+void chkpt_set_prefix(const char *prefix);
 void chkpt_commit_prefix(void);
 void chkpt_reset_prefix(void);
 char *chkpt_get_prefix(void);
 
-char *chkpt_build_keyword(char *);
+char *chkpt_build_keyword(const char *);
 
 int chkpt_rd_ncalcs(void);
 
@@ -121,8 +121,8 @@ void chkpt_wt_cartrep(double **);
 int chkpt_rd_nallatom(void);
 void chkpt_wt_nallatom(int);
 
-char **chkpt_rd_felement(void);
-void chkpt_wt_felement(char **);
+const char **chkpt_rd_felement(void);
+void chkpt_wt_felement(const char **);
 
 double **chkpt_rd_usotao(void);
 void chkpt_wt_usotao(double **);
@@ -249,8 +249,8 @@ void chkpt_wt_eref(double);
 double chkpt_rd_efzc(void);
 void chkpt_wt_efzc(double);
 
-double chkpt_rd_e_labeled(char *);
-void chkpt_wt_e_labeled(char *, double);
+double chkpt_rd_e_labeled(const char *);
+void chkpt_wt_e_labeled(const char *, double);
 
 int chkpt_rd_disp(void);
 void chkpt_wt_disp(int);
@@ -273,8 +273,8 @@ void chkpt_wt_cdsalc2cd(const double**);
 double *chkpt_rd_exps();
 void chkpt_wt_exps(double*);
 
-int chkpt_exist(char *);
-int chkpt_exist_add_prefix(char *);
+int chkpt_exist(const char *);
+int chkpt_exist_add_prefix(const char *);
 
 int chkpt_rd_override_occ(void);
 void chkpt_wt_override_occ(int);

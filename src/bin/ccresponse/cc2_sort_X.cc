@@ -13,7 +13,7 @@
 
 namespace psi { namespace ccresponse {
 
-void cc2_sort_X(char *pert, char *cart, int irrep, double omega)
+void cc2_sort_X(const char *pert, const char *cart, int irrep, double omega)
 {
   dpdbuf4 X;
   char lbl[32];

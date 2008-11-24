@@ -48,13 +48,13 @@ namespace psi { namespace ccsort {
 ** -TDC, 11/05
 */
 
-void transpert(char *pert)
+void transpert(const char *pert)
 {
   int nao, nso, nmo, noei_ao;
   int alpha;
   int i, j, ij;
   double *scratch, **TMP, **X, **target;
-  char *name;
+  const char *name;
   double prefactor, anti, sign;
 
   nao = moinfo.nao;

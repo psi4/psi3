@@ -55,7 +55,7 @@ void c_clean(dpdfile2 *LIA, dpdfile2 *Lia, dpdbuf4 *LIJAB, dpdbuf4 *Lijab, dpdbu
 void L_clean(struct L_Params pL_params);
 void zeta_norm(struct L_Params pL_params);
 void spinad_amps(void);
-void status(char *, FILE *);
+void status(const char *, FILE *);
 void hbar_extra(void);
 void ortho_Rs(struct L_Params *pL_params, int current_L);
 
@@ -263,7 +263,7 @@ int main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
-extern "C" {char *gprgid() { char *prgid = "CCLAMBDA"; return(prgid); }}
+extern "C" {const char *gprgid() { const char *prgid = "CCLAMBDA"; return(prgid); }}
 
 namespace psi { namespace cclambda {
 

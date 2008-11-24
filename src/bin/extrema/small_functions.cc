@@ -19,7 +19,7 @@ extern FILE *infile, *outfile;
 }
 
 void stop_io();
-void punt(char *mess);
+void punt(const char *mess);
 double **symm_matrix_invert(double **_A, int dim, int print_det, 
 			    int redundant); 
 
@@ -28,8 +28,8 @@ double **symm_matrix_invert(double **_A, int dim, int print_det,
   \brief The obligatory gprgid function. */
 /*---------------------------------------------------------------------------*/
 extern "C" {
-    char *gprgid() {
-	char *prgid = "EXTREMA";
+    const char *gprgid() {
+	const char *prgid = "EXTREMA";
 	return(prgid);
     }    
 }
@@ -37,11 +37,11 @@ extern "C" {
 
 
 /*--------------------------------------------------------------------------*/
-/*! \fn punt(char *mess)
+/*! \fn punt(const char *mess)
   \brief Handles unexpected termination. */
 /*--------------------------------------------------------------------------*/
 
-void punt(char *mess)
+void punt(const char *mess)
 {
   fprintf(outfile, "  error: %s\n", mess);
   fprintf(stderr, "  EXTREMA error: %s\n", mess);

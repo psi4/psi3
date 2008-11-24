@@ -178,7 +178,7 @@ void write_to_chkpt(double repulsion)
 
     strncpy(tmp_atom_label[atom],full_element[atom],strlen(full_element[atom])+1);
   }
-  chkpt_wt_felement(tmp_atom_label);
+  chkpt_wt_felement((const char **) tmp_atom_label);
   for(atom=0; atom<num_allatoms; atom++) {
     free(tmp_atom_label[atom]);
   }

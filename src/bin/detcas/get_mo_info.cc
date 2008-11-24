@@ -19,7 +19,7 @@ void pitzer_arrays(int nirreps, int *frdocc, int *fruocc, int *orbspi,
 double *** construct_evects(int nirreps, int *active, int *orbspi,
                             int *first, int *last, int *fstact, int *lstact,
                             int printflag);
-extern void check(int a, char *errmsg);
+extern void check(int a, const char *errmsg);
 
 /*
 ** GET_MO_INFO

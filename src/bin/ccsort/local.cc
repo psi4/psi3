@@ -39,14 +39,14 @@ namespace psi { namespace ccsort {
 */
 
 void domain_print(int, int, int *, int **, double *);
-void transpert(char *);
-void sort_pert(char *, double **, double **, double **, int, int, int);
+void transpert(const char *);
+void sort_pert(const char *, double **, double **, double **, int, int, int);
 void build_F_RHF(double);
 void build_B_RHF(double);
-void cphf_F(char *);
-void cphf_B(char *);
-void local_polar(char*, int **, int *, int, int *, int *);
-void local_magnetic(char*, int **, int *, int, int *, int *);
+void cphf_F(const char *);
+void cphf_B(const char *);
+void local_polar(const char*, int **, int *, int, int *, int *);
+void local_magnetic(const char*, int **, int *, int, int *, int *);
 
 void local_init(void)
 {

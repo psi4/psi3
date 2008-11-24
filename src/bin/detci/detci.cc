@@ -1361,5 +1361,5 @@ BIGINT strings2det(int alp_code, int alp_idx, int bet_code, int bet_idx) {
 
 }} // namespace psi::detci
 
-extern "C" { char *gprgid(void) { char *prgid = "DETCI"; return (prgid); } }
+extern "C" { const char *gprgid(void) { const char *prgid = "DETCI"; return (prgid); } }
 

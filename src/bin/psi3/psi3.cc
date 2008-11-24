@@ -55,11 +55,11 @@ int get_ndisp(void);
 */
 
 char tmpstr_input[200], tmpstr_output[200], tmpstr_prefix[200];
-char *ofname = NULL;
+const char *ofname = NULL;
 
 void psi3_abort(void);
 int execut(char **module_names, int num_modules, int depth);
-extern char **parse_var(int *nvars, int mxvars, char *name);
+extern char **parse_var(int *nvars, int mxvars, const char *name);
 extern void runcmd(int *errcod, char *cmd);
 int parse_cmdline(int argc, char *argv[]);
 void print_welcome(FILE *outfile);
@@ -679,7 +679,8 @@ int parse_cmdline(int argc, char *argv[])
   int found_if_p = 0;           /* found input file name with -i */
   int found_of_p = 0;           /* found output file name with -o */
   int found_fp_p = 0;           /* found file prefix name with -p */
-  char *ifname=NULL, *fprefix=NULL, *arg;
+  const char *ifname=NULL, *fprefix=NULL; 
+  char *arg;
 
   /* defaults */
   auto_input = 1;

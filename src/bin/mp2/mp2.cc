@@ -153,7 +153,7 @@ void init_io(int argc, char *argv[])
   int i=0;
   int num_extra_args=0;
   char **extra_args;
-  extern char *gprgid();
+  extern const char *gprgid();
   char *progid;
 
   extra_args = (char **)malloc(argc*sizeof(char *));
@@ -262,9 +262,9 @@ void exit_io(void)
 }
 
 extern "C"{
-  char *gprgid()
+  const char *gprgid()
   {
-    char *prgid = "MP2";
+    const char *prgid = "MP2";
     return(prgid);
   }
 }

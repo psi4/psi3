@@ -30,10 +30,10 @@ namespace psi { namespace ccresponse {
 ** TDC, 9/10/05
 */
 
-void build_XY(char *, char *, int, double, char *, char *, int, double);
+void build_XY(const char *, const char *, int, double, const char *, const char *, int, double);
 
-double LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x, 
-	      char *pert_y, char *cart_y, int irrep_y, double omega_y)
+double LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double omega_x, 
+	      const char *pert_y, const char *cart_y, int irrep_y, double omega_y)
 {
 
   dpdfile2 F, X1, Y1, Zmi, Zae_1, Zae_2, Zfb, Znj, ZIA, L1, t1, z;
@@ -74,8 +74,8 @@ double LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
 ** TDC, 9/10/05
 **/
 
-void build_XY(char *pert_x, char *cart_x, int irrep_x, double omega_x, 
-		 char *pert_y, char *cart_y, int irrep_y, double omega_y)
+void build_XY(const char *pert_x, const char *cart_x, int irrep_x, double omega_x, 
+		 const char *pert_y, const char *cart_y, int irrep_y, double omega_y)
 {
   int h, row, col, i, j, m, e, f, a, I, J, M, E, F, A, ij, ef;
   int Isym, Jsym, Msym, Esym, Fsym, Asym;

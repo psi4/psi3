@@ -386,7 +386,7 @@ void IndepPairs::print_selected(int num, int *parr, int *qarr,
 }
 
 
-void IndepPairs::print_vec(double *arr, char *label, FILE *outfile) 
+void IndepPairs::print_vec(double *arr, const char *label, FILE *outfile) 
 {
   int pair;
 

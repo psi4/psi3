@@ -196,7 +196,7 @@ int main(int argc, char *argv[])
 namespace psi { namespace cphf {
 
 extern "C" {
-extern char *gprgid(void);
+extern const char *gprgid(void);
 };
 
 void init_io(int argc, char *argv[])
@@ -240,9 +240,9 @@ void exit_io(void)
   psi_stop(infile,outfile,psi_file_prefix);
 }
 
-extern "C" char *gprgid(void)
+extern "C" const char *gprgid(void)
 {
-   char *prgid = "CPHF";
+   const char *prgid = "CPHF";
 
    return(prgid);
 }

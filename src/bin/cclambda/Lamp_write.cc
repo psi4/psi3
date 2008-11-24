@@ -29,8 +29,8 @@ void onestack_insert(struct onestack *stack, double value, int i, int a,
     int level, int stacklen);
 void twostack_insert(struct twostack *stack, double value, int i, int j, 
     int a, int b, int level, int stacklen);
-void amp_write_L1(dpdfile2 *L1, int length, char *label, FILE *outfile);
-void amp_write_L2(dpdbuf4 *L2, int length, char *label, FILE *outfile);
+void amp_write_L1(dpdfile2 *L1, int length, const char *label, FILE *outfile);
+void amp_write_L2(dpdbuf4 *L2, int length, const char *label, FILE *outfile);
 
 /* print largest elements in CC_LAMBDA */
 void Lamp_write(struct L_Params L_params) {
@@ -87,7 +87,7 @@ void Lamp_write(struct L_Params L_params) {
   }
 }
 
-void amp_write_L1(dpdfile2 *L1, int length, char *label, FILE *outfile)
+void amp_write_L1(dpdfile2 *L1, int length, const char *label, FILE *outfile)
 {
   int m, h, nirreps, Gia;
   int i, I, a, A, numt1;
@@ -166,7 +166,7 @@ void onestack_insert(struct onestack *stack, double value, int i, int a, int lev
   }
 }
 
-void amp_write_L2(dpdbuf4 *L2, int length, char *label, FILE *outfile)
+void amp_write_L2(dpdbuf4 *L2, int length, const char *label, FILE *outfile)
 {
   int m, h, nirreps, Gijab, numt2;
   int ij, ab, i, j, a, b;

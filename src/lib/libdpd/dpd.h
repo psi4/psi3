@@ -202,7 +202,7 @@ int dpd_init(int dpd_num, int nirreps, long int memory, int cachetype,
 int dpd_close(int dpd_num);
 int dpd_set_default(int dpd_num);
 
-void dpd_error(char *caller, FILE *outfile);
+void dpd_error(const char *caller, FILE *outfile);
 
 double **dpd_block_matrix(int n, int m);
 void dpd_free_block(double **array, int n, int m);
@@ -235,7 +235,7 @@ int dpd_dot14(dpdfile2 *T, dpdbuf4 *I, dpdfile2 *Z,
 int dpd_trace42_13(dpdbuf4 *A, dpdfile2 *B, int transb, double alpha, double beta);
 
 int dpd_file2_init(dpdfile2 *File, int filenum, int irrep, int pnum,
-		   int qnum, char *label);
+		   int qnum, const char *label);
 int dpd_file2_close(dpdfile2 *File);
 int dpd_file2_mat_init(dpdfile2 *File);
 int dpd_file2_mat_close(dpdfile2 *File);
@@ -243,7 +243,7 @@ int dpd_file2_mat_rd(dpdfile2 *File);
 int dpd_file2_mat_wrt(dpdfile2 *File);
 int dpd_file2_print(dpdfile2 *File, FILE *outfile);
 int dpd_file2_mat_print(dpdfile2 *File, FILE *outfile);
-int dpd_file2_copy(dpdfile2 *InFile, int outfilenum, char *label);
+int dpd_file2_copy(dpdfile2 *InFile, int outfilenum, const char *label);
 int dpd_file2_dirprd(dpdfile2 *FileA, dpdfile2 *FileB);
 double dpd_file2_dot(dpdfile2 *FileA, dpdfile2 *FileB);
 int dpd_file2_scm(dpdfile2 *InFile, double alpha);
@@ -256,9 +256,9 @@ int dpd_file2_axpbycz(dpdfile2 *FileA, dpdfile2 *FileB, dpdfile2 *FileC,
 
 
 int dpd_file4_init(dpdfile4 *File, int filenum, int irrep, int pqnum,
-		   int rsnum,  char *label);
+		   int rsnum,  const char *label);
 int dpd_file4_init_nocache(dpdfile4 *File, int filenum, int irrep, int pqnum,
-		   int rsnum,  char *label);
+		   int rsnum,  const char *label);
 int dpd_file4_close(dpdfile4 *File);
 int dpd_file4_mat_irrep_init(dpdfile4 *File, int irrep);
 int dpd_file4_mat_irrep_close(dpdfile4 *File, int irrep);
@@ -276,20 +276,20 @@ int dpd_file4_mat_irrep_wrt_block(dpdfile4 *File, int irrep, int start_pq,
 				 int num_pq);
 
 int dpd_buf4_init(dpdbuf4 *Buf, int inputfile, int irrep, int pqnum, int rsnum,
-		 int file_pqnum, int file_rsnum, int anti, char *label);
+		 int file_pqnum, int file_rsnum, int anti, const char *label);
 int dpd_buf4_close(dpdbuf4 *Buf);
 int dpd_buf4_mat_irrep_init(dpdbuf4 *Buf, int irrep);
 int dpd_buf4_mat_irrep_close(dpdbuf4 *Buf, int irrep);
 int dpd_buf4_mat_irrep_rd(dpdbuf4 *Buf, int irrep);
 int dpd_buf4_mat_irrep_wrt(dpdbuf4 *Buf, int irrep);
 int dpd_buf4_print(dpdbuf4 *Buf, FILE *outfile, int print_data);
-int dpd_buf4_copy(dpdbuf4 *InBuf, int outfilenum, char *label);
+int dpd_buf4_copy(dpdbuf4 *InBuf, int outfilenum, const char *label);
 int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
-		  int pqnum, int rsnum, char *label);
+		  int pqnum, int rsnum, const char *label);
 int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
-		      int pqnum, int rsnum, char *label);
+		      int pqnum, int rsnum, const char *label);
 int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
-		       int pqnum, int rsnum, char *label, double alpha);
+		       int pqnum, int rsnum, const char *label, double alpha);
 int dpd_buf4_axpy(dpdbuf4 *BufX, dpdbuf4 *BufY, double alpha);
 int dpd_buf4_axpbycz(dpdbuf4 *FileA, dpdbuf4 *FileB, dpdbuf4 *FileC,
   double a, double b, double c);
@@ -297,7 +297,7 @@ int dpd_buf4_dirprd(dpdbuf4 *BufA, dpdbuf4 *BufB);
 double dpd_buf4_dot(dpdbuf4 *BufA, dpdbuf4 *BufB);
 double dpd_buf4_dot_self(dpdbuf4 *BufX);
 int dpd_buf4_scm(dpdbuf4 *InBuf, double alpha);
-int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, char *label, 
+int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, const char *label, 
                      double alpha);
 int dpd_buf4_symm(dpdbuf4 *Buf);
 int dpd_buf4_symm2(dpdbuf4 *Buf1, dpdbuf4 *Buf2);
@@ -334,7 +334,7 @@ void dpd_file2_cache_init(void);
 void dpd_file2_cache_close(void);
 void dpd_file2_cache_print(FILE *outfile);
 struct dpd_file2_cache_entry
- *dpd_file2_cache_scan(int filenum, int irrep, int pnum, int qnum, char *label, int dpdnum);
+ *dpd_file2_cache_scan(int filenum, int irrep, int pnum, int qnum, const char *label, int dpdnum);
 struct dpd_file2_cache_entry *dpd_file2_cache_last(void);
 int dpd_file2_cache_add(dpdfile2 *File);
 int dpd_file2_cache_del(dpdfile2 *File);
@@ -348,7 +348,7 @@ void dpd_file4_cache_print_screen(void);
 int dpd_file4_cache_get_priority(dpdfile4 *File);
 
 struct dpd_file4_cache_entry
- *dpd_file4_cache_scan(int filenum, int irrep, int pqnum, int rsnum, char *label, int dpdnum);
+ *dpd_file4_cache_scan(int filenum, int irrep, int pqnum, int rsnum, const char *label, int dpdnum);
 struct dpd_file4_cache_entry *dpd_file4_cache_last(void);
 int dpd_file4_cache_add(dpdfile4 *File, unsigned int priority);
 int dpd_file4_cache_del(dpdfile4 *File);

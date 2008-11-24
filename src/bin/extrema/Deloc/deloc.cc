@@ -29,7 +29,7 @@ deloc :: deloc() : internals() {
 
   deloc::parse_input();  
 
-  felement = chkpt_rd_felement();
+  felement = (char **) chkpt_rd_felement();
   point_group = chkpt_rd_sym_label();
 
   FILE *opt_ptr;

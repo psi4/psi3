@@ -20,8 +20,8 @@
 /*
  strange, but necessary, gprgid function
  */
-extern "C" char *gprgid() {
-  char *prgid = "INPUT";
+extern "C" const char *gprgid() {
+  const char *prgid = "INPUT";
   return (prgid);
 }
 

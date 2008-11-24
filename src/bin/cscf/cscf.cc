@@ -167,8 +167,6 @@
  -------------------------------------------------------------------------*/
 
 
-static char *rcsid = "$Id$";
-
 #include "includes.h"
 #include "common.h"
 #include <libipv1/ip_lib.h>
@@ -185,8 +183,8 @@ int main(int argc,char* argv[])
 {
   using namespace psi::cscf;
   int i,nn;
-  char *prog_name="CSCF3.0: An SCF program written in C";
-  char *output="APPEND  ";
+  const char *prog_name="CSCF3.0: An SCF program written in C";
+  const char *output="APPEND  ";
   struct symm *s;
   ip_value_t *ipvalue=NULL;
   int errcod, orthog_only, mo_print;

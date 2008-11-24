@@ -13,8 +13,8 @@
 
 namespace psi { namespace ccresponse {
 
-double LHX2Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x, 
-	      char *pert_y, char *cart_y, int irrep_y, double omega_y)
+double LHX2Y2(const char *pert_x, const char *cart_x, int irrep_x, double omega_x, 
+	      const char *pert_y, const char *cart_y, int irrep_y, double omega_y)
 {
   dpdbuf4 X2, Y2, I, W, Z, Z1, Z2, W1, W2, L2;
   dpdfile2 z;

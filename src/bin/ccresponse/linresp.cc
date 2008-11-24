@@ -15,24 +15,24 @@
 
 namespace psi { namespace ccresponse {
 
-double LCX(char *pert_c, char *cart_c, int irrep_c, 
-	   char *pert_x, char *cart_x, int irrep_x, double omega);
-double HXY(char *pert_x, char *cart_x, int irrep_x, double omega_x, 
-	   char *pert_y, char *cart_y, int irrep_y, double omega_y);
-double LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x, 
-	      char *pert_y, char *cart_y, int irrep_y, double omega_y);
-double LHX2Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x, 
-	      char *pert_y, char *cart_y, int irrep_y, double omega_y);
-double LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x, 
-	      char *pert_y, char *cart_y, int irrep_y, double omega_y);
-double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x, 
-		  char *pert_y, char *cart_y, int irrep_y, double omega_y);
-double cc2_LHX1Y2(char *pert_x, char *cart_x, int irrep_x, double omega_x, 
-		  char *pert_y, char *cart_y, int irrep_y, double omega_y);
+double LCX(const char *pert_c, const char *cart_c, int irrep_c, 
+	   const char *pert_x, const char *cart_x, int irrep_x, double omega);
+double HXY(const char *pert_x, const char *cart_x, int irrep_x, double omega_x, 
+	   const char *pert_y, const char *cart_y, int irrep_y, double omega_y);
+double LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double omega_x, 
+	      const char *pert_y, const char *cart_y, int irrep_y, double omega_y);
+double LHX2Y2(const char *pert_x, const char *cart_x, int irrep_x, double omega_x, 
+	      const char *pert_y, const char *cart_y, int irrep_y, double omega_y);
+double LHX1Y2(const char *pert_x, const char *cart_x, int irrep_x, double omega_x, 
+	      const char *pert_y, const char *cart_y, int irrep_y, double omega_y);
+double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double omega_x, 
+		  const char *pert_y, const char *cart_y, int irrep_y, double omega_y);
+double cc2_LHX1Y2(const char *pert_x, const char *cart_x, int irrep_x, double omega_x, 
+		  const char *pert_y, const char *cart_y, int irrep_y, double omega_y);
 
 void linresp(double **tensor, double A, double B,
-	     char *pert_x, int *x_irreps, double omega_x,
-	     char *pert_y, int *y_irreps, double omega_y)
+	     const char *pert_x, int *x_irreps, double omega_x,
+	     const char *pert_y, int *y_irreps, double omega_y)
 {
   int alpha, beta, j;
   double polar, polar_LCX, polar_HXY, polar_LHX1Y1, polar_LHX1Y2, polar_LHX2Y2;

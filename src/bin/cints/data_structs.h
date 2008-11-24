@@ -465,7 +465,7 @@ namespace psi {
     typedef struct{
       int n_rad_points;
       int pruned_flag;
-      char *label;
+      const char *label;
       struct atomic_grid_s *atomic_grid;
       prim_atomic_grid_t prim_atomic_grid;
       prim_atomic_grid_t *prim_pruned_atomic_grids;

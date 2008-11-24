@@ -109,7 +109,7 @@ int main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
-extern "C" {char *gprgid() { char *prgid = "CCRESPONSE"; return(prgid); }}
+extern "C" {const char *gprgid() { const char *prgid = "CCRESPONSE"; return(prgid); }}
 
 namespace psi { namespace ccresponse {
 

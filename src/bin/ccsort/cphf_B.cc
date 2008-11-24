@@ -15,7 +15,7 @@
 
 namespace psi { namespace ccsort {
 
-void cphf_B(char *cart)
+void cphf_B(const char *cart)
 {
   int irrep, row, a, i, asym, isym, num_ai, info, *ipiv;
   double *vector, *vector2, polar;

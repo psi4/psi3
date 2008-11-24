@@ -69,8 +69,6 @@
  * Initial revision
  * */
 
-static char *rcsid = "$Id$";
-
 #define EXTERN
 #include <libpsio/psio.h>
 #include "includes.h"

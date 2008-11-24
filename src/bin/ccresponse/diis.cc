@@ -34,7 +34,7 @@ namespace psi { namespace ccresponse {
 ** Modified for CCRESPONSE, TDC, 5/03
 */
 
-void diis(int iter, char *pert, char *cart, int irrep, double omega)
+void diis(int iter, const char *pert, const char *cart, int irrep, double omega)
 {
   int nvector=8;  /* Number of error vectors to keep */
   int h, nirreps;

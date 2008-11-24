@@ -25,12 +25,12 @@ char *Chkpt::rd_prefix()
 	return prefix;
 }
 
-void Chkpt::wt_prefix(char *prefix)
+void Chkpt::wt_prefix(const char *prefix)
 {  
-	psio->write_entry(PSIF_CHKPT, "Default prefix", prefix, CHKPT_PREFIX_LEN*sizeof(char));
+	psio->write_entry(PSIF_CHKPT, "Default prefix", (char *) prefix, CHKPT_PREFIX_LEN*sizeof(char));
 }
 
-void Chkpt::set_prefix(char *prefix)
+void Chkpt::set_prefix(const char *prefix)
 {
   	::strncpy(chkpt_prefix, prefix, CHKPT_PREFIX_LEN);
   	chkpt_prefix[CHKPT_PREFIX_LEN-1] = '\0';
@@ -82,7 +82,7 @@ extern "C" {
 	**  returns: none
 	** \ingroup CHKPT
 */
-	void chkpt_wt_prefix(char *prefix)
+	void chkpt_wt_prefix(const char *prefix)
 	{ 
 		_default_chkpt_lib_->wt_prefix(prefix);
 	}
@@ -99,7 +99,7 @@ extern "C" {
 	**  returns: none
 	** \ingroup CHKPT
 */
-	void chkpt_set_prefix(char *prefix)
+	void chkpt_set_prefix(const char *prefix)
 	{
 		_default_chkpt_lib_->set_prefix(prefix);
 	}

@@ -23,7 +23,7 @@ extern "C" {
 ** TDC, September 1999
 */
 
-int dpd_buf4_copy(dpdbuf4 *InBuf, int outfilenum, char *label)
+int dpd_buf4_copy(dpdbuf4 *InBuf, int outfilenum, const char *label)
 {
   int h, row, col, my_irrep;
   long int rowtot, coltot;

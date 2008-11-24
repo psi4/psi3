@@ -67,7 +67,7 @@ void cachedone_uhf(int **cachelist);
 void memchk(void);
 struct dpd_file4_cache_entry *priority_list(void);
 void spinad_amps(void);
-void status(char *, FILE *);
+void status(const char *, FILE *);
 void lmp2(void);
 void amp_write(void);
 void amp_write(void);
@@ -454,7 +454,7 @@ int main(int argc, char *argv[])
   else exit(PSI_RETURN_SUCCESS);
 }
 
-extern "C" { char *gprgid() { char *prgid = "CCENERGY"; return(prgid); } }
+extern "C" { const char *gprgid() { const char *prgid = "CCENERGY"; return(prgid); } }
 
 namespace psi { namespace ccenergy {
 

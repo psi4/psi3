@@ -107,7 +107,7 @@ void correlate(char *ptgrp, int irrep, int& nirreps_old, int& nirreps_new,int*& 
 
 
 
-void read_mo_space(int nirreps_ref,int& n, int* mo, char* label)
+void read_mo_space(int nirreps_ref,int& n, int* mo, const char* label)
 {
   int size;
   int stat=ip_count(label,&size,0);

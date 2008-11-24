@@ -71,8 +71,6 @@
 /* -Ed
  * */
 
-static char *rcsid = "$Id$";
-
 #define EXTERN
 #include "includes.h"
 #include "common.h"

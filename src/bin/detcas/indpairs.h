@@ -56,7 +56,7 @@ class IndepPairs {
     int get_num_pairs(void) { return npairs; }
     int * get_p_ptr(void) { return p; }
     int * get_q_ptr(void) { return q; }
-    void print_vec(double *arr, char *label, FILE *outfile);
+    void print_vec(double *arr, const char *label, FILE *outfile);
     int get_ir_num_pairs(int h) { return ir_npairs[h]; }
     int * get_ir_p_ptr(int h) { return ir_p[h]; }
     int * get_ir_q_ptr(int h) { return ir_q[h]; }

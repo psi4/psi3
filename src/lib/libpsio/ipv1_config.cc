@@ -9,7 +9,7 @@ using namespace psi;
 
 extern "C" {
   extern char* psi_file_prefix;
-  extern char* gprgid();
+  extern const char* gprgid();
 }
 
 extern "C" {

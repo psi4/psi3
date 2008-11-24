@@ -32,10 +32,10 @@ void onestack_insert(struct onestack *stack, double value, int i, int a,
     int level, int stacklen);
 void twostack_insert(struct twostack *stack, double value, int i, int j, 
     int a, int b, int level, int stacklen);
-void amp_write_T1(dpdfile2 *T1, int length, char *label, FILE *outfile);
-void amp_write_T2(dpdbuf4 *T2, int length, char *label, FILE *outfile);
+void amp_write_T1(dpdfile2 *T1, int length, const char *label, FILE *outfile);
+void amp_write_T2(dpdbuf4 *T2, int length, const char *label, FILE *outfile);
 
-void amp_write(char *pert, char *cart, int irrep, double omega)
+void amp_write(const char *pert, const char *cart, int irrep, double omega)
 {
   dpdfile2 T1;
   dpdbuf4 T2;
@@ -54,7 +54,7 @@ void amp_write(char *pert, char *cart, int irrep, double omega)
   }
 }
 
-void amp_write_T1(dpdfile2 *T1, int length, char *label, FILE *outfile)
+void amp_write_T1(dpdfile2 *T1, int length, const char *label, FILE *outfile)
 {
   int m, h, nirreps, Gia;
   int i, I, a, A, numt1;
@@ -133,7 +133,7 @@ void onestack_insert(struct onestack *stack, double value, int i, int a, int lev
   }
 }
 
-void amp_write_T2(dpdbuf4 *T2, int length, char *label, FILE *outfile)
+void amp_write_T2(dpdbuf4 *T2, int length, const char *label, FILE *outfile)
 {
   int m, h, nirreps, Gijab, numt2;
   int ij, ab, i, j, a, b;

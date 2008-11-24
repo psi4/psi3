@@ -174,7 +174,7 @@ void read_zmat()
   /* see chkpt.h for info about z_entry structure */
   z_geom = (struct z_entry *) malloc(sizeof(struct z_entry)*num_allatoms); 
   element = (char **) malloc(sizeof(char *)*num_atoms);
-  full_element = (char **) malloc(sizeof(char *)*num_allatoms);
+  full_element = (const char **) malloc(sizeof(const char *)*num_allatoms);
   elemsymb_charges = init_array(num_atoms);
 
   atomcount = 0;

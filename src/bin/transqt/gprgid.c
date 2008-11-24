@@ -1,6 +1,6 @@
-char *gprgid()
+const char *gprgid()
 {
-   char *prgid = "TRANSQT";
+   const char *prgid = "TRANSQT";
 
    return(prgid);
 }

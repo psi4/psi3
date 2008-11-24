@@ -6,9 +6,9 @@
 /*! \defgroup PSI3 psi3: The Psi3 Driver */
 
 
-extern "C" char *gprgid()
+extern "C" const char *gprgid()
 {
-   char *prgid = "PSI3";
+   const char *prgid = "PSI3";
 
    return(prgid);
 }

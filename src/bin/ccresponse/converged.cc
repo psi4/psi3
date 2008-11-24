@@ -14,7 +14,7 @@
 
 namespace psi { namespace ccresponse {
 
-double converged(char *pert, char *cart, int irrep, double omega)
+double converged(const char *pert, const char *cart, int irrep, double omega)
 {
   dpdfile2 X1, X1new;
   dpdbuf4 X2, X2new;

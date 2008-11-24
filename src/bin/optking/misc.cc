@@ -103,7 +103,7 @@ void scalar_div(double a, double *vect) {
 }
 
 
-void punt(char *message) {
+void punt(const char *message) {
   fprintf(outfile,"\nerror: %s\n", message);
   fprintf(outfile,"         *** stopping execution ***\n");
   fprintf(stderr,"\n OPTKING error: %s\n", message);

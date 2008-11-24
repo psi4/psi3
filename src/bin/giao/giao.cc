@@ -11,6 +11,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
+#include <cstring>
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 #include <libiwl/iwl.h>
@@ -290,7 +291,7 @@ int main(int argc, char* argv[])
 
 extern "C" const char* gprgid()
 {
-  static char* prgid = "GIAO";
+  const char* prgid = "GIAO";
   return prgid;
 }
 

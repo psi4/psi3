@@ -8,7 +8,7 @@
 
 extern "C" {
 
-int dpd_file2_copy(dpdfile2 *InFile, int outfilenum, char *label)
+int dpd_file2_copy(dpdfile2 *InFile, int outfilenum, const char *label)
 {
   int h, row, col, my_irrep, rowtot, coltot;
   double ***matrix;

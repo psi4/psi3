@@ -319,7 +319,7 @@ main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
-extern "C" { char *gprgid(void) { char *prgid = "TRANSQT"; return (prgid); } }
+extern "C" { const char *gprgid(void) { const char *prgid = "TRANSQT"; return (prgid); } }
 
 namespace psi {
   namespace transqt2 {

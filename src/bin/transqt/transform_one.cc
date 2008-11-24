@@ -27,8 +27,8 @@ void trans_one_backwards(void);
 void tran_one(int nirreps, double ***C, int src_orbs, int *src_first, 
   int *src_last, int *src_orbspi, int dst_orbs, int *dst_first, int *dst_last,
   int *dst_orbspi, double *src_ints, double *dst_ints, int *order,
-  char *label, int backtran, int nfzc, int printflg,FILE *outfile);
-double *** construct_evects(char *spin, int nirreps, int *active, int *sopi, 
+  const char *label, int backtran, int nfzc, int printflg,FILE *outfile);
+double *** construct_evects(const char *spin, int nirreps, int *active, int *sopi, 
   int *orbspi, int *first_so, int *last_so, int *first, int *last,
   int *fstact, int *lstact, int printflag);
 void destruct_evects(int nirreps, double ***evects);
@@ -633,7 +633,7 @@ void trans_one_backwards(void)
 void tran_one(int nirreps, double ***C, int src_orbs, int *src_first, int *src_last,
               int *src_orbspi, int dst_orbs, int *dst_first, int *dst_last,
               int *dst_orbspi, double *src_ints, double *dst_ints, int *order,
-              char *label, int backtran, int nfzc, int printflg, FILE *outfile)
+              const char *label, int backtran, int nfzc, int printflg, FILE *outfile)
 {
 
   int psym, p, q, P, Q, pfirst, plast, pq;

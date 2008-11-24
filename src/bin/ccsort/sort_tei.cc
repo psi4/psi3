@@ -17,7 +17,7 @@ namespace psi { namespace ccsort {
 #define FIRST_TMP 200
 
 void distribute_rhf(int filenum, int first_tmp, double tolerance, int keep_input);
-void distribute_uhf(char *spin, int filenum, int first_tmp, double tolerance, int keep_input);
+void distribute_uhf(const char *spin, int filenum, int first_tmp, double tolerance, int keep_input);
 
 int file_build(dpdfile4 *File, int inputfile, double tolerance,
 	       int perm_pr, int perm_qs, int perm_prqs, int keep);

@@ -157,7 +157,7 @@ void compute_zmat(cartesians &carts, int *unique_zvars) {
 void print_zmat(FILE *outfile, int *unique_zvars) {
   int i, a, b, c, d, cnt = 0;
   int nallatom, natom, *to_nodummy, *atom_dummy;
-  char **felement;
+  const char **felement;
   char buf[2], sym[3];
   double *zvals;
   struct z_entry *zmat;

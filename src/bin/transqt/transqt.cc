@@ -172,7 +172,7 @@ void get_moinfo(void);
 void get_one_electron_integrals(void);
 void exit_io(void);
 void get_reorder_array(void);
-double *** construct_evects(char *spin, int nirreps, int *active, int *sopi, 
+double *** construct_evects(const char *spin, int nirreps, int *active, int *sopi, 
   int *orbspi, int *first_so, int *last_so, int *first, int *last, 
   int *fstact, int *lstact, int printflag);
 void destruct_evects(int nirreps, double ***evects);
@@ -1455,7 +1455,7 @@ void get_one_electron_integrals()
 ** may be deleted if desired.
 **
 */
-double *** construct_evects(char *spin, int nirreps, int *active, int *sopi, 
+double *** construct_evects(const char *spin, int nirreps, int *active, int *sopi, 
                             int *orbspi, int *first_so, int *last_so, 
                             int *first, int *last, int *fstact, int *lstact, 
                             int printflag)

@@ -20,7 +20,7 @@
 
 namespace psi { namespace ccsort {
 
-void local_polar(char *cart, int **domain, int *domain_len,
+void local_polar(const char *cart, int **domain, int *domain_len,
 		 int natom, int *aostart, int *aostop)
 {
   int i, j, ij, a, k, max, complete, *boolean, *rank;

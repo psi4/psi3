@@ -12,7 +12,7 @@
 
 namespace psi { namespace ccresponse {
 
-void save_X(char *pert, char *cart, int irrep, double omega)
+void save_X(const char *pert, const char *cart, int irrep, double omega)
 {
   dpdfile2 X1;
   dpdbuf4 X2;

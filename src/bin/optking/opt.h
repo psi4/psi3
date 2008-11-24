@@ -81,7 +81,7 @@ EXTERN int nirreps, *irr;
 EXTERN int num_nonzero;  /* # of non-redundant di coordinates (evects of G with nonzero eigenvalues) */
 EXTERN char ptgrp[4];    /*molecular point group*/
 
-EXTERN void punt(char *message);
+EXTERN void punt(const char *message);
 EXTERN void open_PSIF(void);
 EXTERN void close_PSIF(void);
 EXTERN void exit_io(void);

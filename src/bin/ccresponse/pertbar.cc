@@ -25,7 +25,7 @@ namespace psi { namespace ccresponse {
 ** TDC, 10/05
 */
 
-void pertbar(char *pert, int irrep_x, int irrep_y, int irrep_z, int anti)
+void pertbar(const char *pert, int irrep_x, int irrep_y, int irrep_z, int anti)
 {
   int irrep, i;
   dpdfile2 fbar1, f, t1, z;

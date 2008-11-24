@@ -21,7 +21,7 @@
 
 namespace psi { namespace ccsort {
 
-void local_magnetic(char *cart, int **domain, int *domain_len,
+void local_magnetic(const char *cart, int **domain, int *domain_len,
 		    int natom, int *aostart, int *aostop)
 {
   int i, j, ij, a, k, max, complete, *boolean, *rank;

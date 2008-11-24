@@ -29,7 +29,7 @@ void GmiL2(int L_irr);
 void dijabL2(int L_irr);
 
 void BL2_AO(int L_irr);
-void status(char *, FILE *);
+void status(const char *, FILE *);
 
 void L2_build(struct L_Params L_params) {
   dpdbuf4 L2;

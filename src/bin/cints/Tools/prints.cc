@@ -160,7 +160,7 @@ void print_opdm()
   May be used to print out gradients and other vector
   quantities associated with atoms
  ----------------------------------------------------*/
-void print_atomvec(char *quantity, double **vecs)
+void print_atomvec(const char *quantity, double **vecs)
 {
   int i;
 
@@ -184,7 +184,7 @@ void print_atomvec(char *quantity, double **vecs)
 
   N.B. for now uses print_mat()
  ---------------------------------------------------------*/
-void print_atommat(char *quantity, double **mat)
+void print_atommat(const char *quantity, double **mat)
 {
   int i;
   

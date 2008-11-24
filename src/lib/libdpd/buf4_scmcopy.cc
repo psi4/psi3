@@ -24,7 +24,7 @@ extern "C" {
 **
 */
 
-int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, char *label, double alpha)
+int dpd_buf4_scmcopy(dpdbuf4 *InBuf, int outfilenum, const char *label, double alpha)
 {
   int h, row, col, rowtot, coltot, all_buf_irrep;
   int nbuckets, incore, n, size;

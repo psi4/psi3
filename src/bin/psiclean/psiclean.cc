@@ -85,9 +85,9 @@ int main(int argc, char *argv[])
 }
 
 
-extern "C" char *gprgid()
+extern "C" const char *gprgid()
 {
-   char *prgid = "PSICLEAN";
+   const char *prgid = "PSICLEAN";
 
    return(prgid);
 }

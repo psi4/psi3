@@ -10,7 +10,7 @@
 namespace psi {
   namespace transqt2 {
 
-void idx_error(char *message, int p, int q, int r, int s, int pq, int rs,
+void idx_error(const char *message, int p, int q, int r, int s, int pq, int rs,
 	       int pq_sym, int rs_sym, FILE *outfile);
 void idx_permute_presort(dpdfile4 *File, int this_bucket, int **bucket_map, 
 			 int **bucket_offset, int p, int q, int r, int s, 

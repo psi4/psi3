@@ -13,7 +13,7 @@
 
 namespace psi { namespace ccresponse {
 
-void update_X(char *pert, char *cart, int irrep, double omega)
+void update_X(const char *pert, const char *cart, int irrep, double omega)
 {
   dpdfile2 X1new, X1;
   dpdbuf4 X2new, X2;

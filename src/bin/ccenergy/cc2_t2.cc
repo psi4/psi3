@@ -17,7 +17,7 @@ void cc2_fmiT2(void);
 void cc2_WmbijT2(void);
 void cc2_WabeiT2(void);
 void DT2(void);
-void status(char *s, FILE *out);
+void status(const char *s, FILE *out);
 
 void cc2_t2_build(void)
 {

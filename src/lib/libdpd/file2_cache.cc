@@ -46,7 +46,7 @@ void dpd_file2_cache_close(void)
 }
 
 struct dpd_file2_cache_entry 
-*dpd_file2_cache_scan(int filenum, int irrep, int pnum, int qnum, char *label, int dpdnum)
+*dpd_file2_cache_scan(int filenum, int irrep, int pnum, int qnum, const char *label, int dpdnum)
 {
   struct dpd_file2_cache_entry *this_entry;
 

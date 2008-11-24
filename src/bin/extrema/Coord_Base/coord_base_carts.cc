@@ -31,7 +31,7 @@ coord_base_carts :: coord_base_carts() {
     masses = init_array(num_atoms);
     e_names = (char**) malloc(num_atoms * sizeof(char*) );
 
-    temp_names = chkpt_rd_felement();
+    temp_names = (char **) chkpt_rd_felement();
     num = chkpt_rd_nallatom();
     p=-1;
     for(i=0;i<num;++i) {

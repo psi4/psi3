@@ -11,7 +11,7 @@
 using namespace psi;
 
 extern "C" {
-  extern char *gprgid();
+  extern const char *gprgid();
 }
 
 unsigned int PSIO::get_numvols(unsigned int unit) {

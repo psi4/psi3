@@ -34,7 +34,7 @@ void stop_io()
 }
 
 
-void punt(char *errmsg)
+void punt(const char *errmsg)
 {
   fprintf(stderr, "Error: %s\n", errmsg);
   stop_io();

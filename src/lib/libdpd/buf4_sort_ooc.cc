@@ -22,7 +22,7 @@ extern "C" {
 */
 
 int dpd_buf4_sort_ooc(dpdbuf4 *InBuf, int outfilenum, enum indices index,
-    		      int pqnum, int rsnum, char *label)
+    		      int pqnum, int rsnum, const char *label)
 {
   int h,nirreps, row, col, all_buf_irrep, r_irrep;
   int p, q, r, s, P, Q, R, S, pq, rs, sr, pr, qs, qp, rq, qr, ps, sp, rp, sq;

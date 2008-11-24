@@ -11,7 +11,7 @@ namespace psi {
   namespace CINTS {
     namespace mkpt2 {
       void correlate(char *ptgrp, int irrep, int& nirreps_old, int& nirreps_new,int*& correlation);
-      void read_mo_space(int nirreps_ref,int& n, int* mo, char* label);
+      void read_mo_space(int nirreps_ref,int& n, int* mo, const char* label);
       void mkpt2_ints(void);
       typedef struct {
         int num_i_per_ibatch;

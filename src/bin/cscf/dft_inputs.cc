@@ -60,19 +60,19 @@ char *determine_functional(void){
     return functional;
 }
 
-char *determine_grid(void){
+const char *determine_grid(void){
     int errcod;
     int depth;
     int i;
-    char *grid_str;
+    const char *grid_str;
     char *r,*ang;
-    char *Euler = "Euler-Mclaren / Lebedev";
+    const char *Euler = "Euler-Mclaren / Lebedev";
 
     depth = 0;
     errcod = ip_count("GRID",&depth,0);
     if(depth == 0){
 	grid_str = "SG-1";
-	errcod = ip_string("GRID",&grid_str,0);
+	errcod = ip_string("GRID",(char **) &grid_str,0);
     }
     else if(depth == 2){
 	errcod = ip_string("GRID",&r,1,0);
@@ -81,7 +81,7 @@ char *determine_grid(void){
 	i = strlen(Euler)+strlen(r)+strlen(ang);
 	
 	grid_str = (char *)malloc(sizeof(char)*(i+1));
-	sprintf(grid_str,"%s %s %s",Euler,r,ang);
+	sprintf((char *) grid_str,"%s %s %s",Euler,r,ang);
 	
 	free(r);free(ang);
     }

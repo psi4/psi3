@@ -64,8 +64,6 @@
 /* -Ed
  * */
 
-static char *rcsid = "$Id$";
-
 /* construct S-1/2 matrix 'sahalf' using CANONICAL orthogonalization  */
 
 #define EXTERN

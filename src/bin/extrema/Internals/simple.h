@@ -22,7 +22,7 @@ namespace psi { namespace extrema {
 /*						Joseph P. Kenny 11/29/01
   ###########################################################################*/
 
-extern void punt(char*);
+extern void punt(const char*);
 extern void stop_io();
 
 class simple {

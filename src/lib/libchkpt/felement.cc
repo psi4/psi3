@@ -13,9 +13,9 @@ extern "C" {
 
 using namespace psi;
 
-char **Chkpt::rd_felement(void)
+const char **Chkpt::rd_felement(void)
 {
-	char **label;
+	const char **label;
 	int nallatom, i;
 	psio_address ptr;
 	char *keyword;
@@ -23,9 +23,9 @@ char **Chkpt::rd_felement(void)
 
 	nallatom = rd_nallatom();
 
-	label = (char **)malloc(nallatom*sizeof(char*));
+	label = (const char **)malloc(nallatom*sizeof(const char*));
 	for(i=0; i < nallatom; i++) 
-		label[i] = (char *) malloc(MAX_ELEMNAME*sizeof(char));
+		label[i] = (const char *) malloc(MAX_ELEMNAME*sizeof(char));
 
 	ptr = PSIO_ZERO;
 	for(i=0; i < nallatom; i++)
@@ -36,7 +36,7 @@ char **Chkpt::rd_felement(void)
 	return label;  
 }
 
-void Chkpt::wt_felement(char **label)
+void Chkpt::wt_felement(const char **label)
 {
 	int nallatom, i;
 	psio_address ptr;
@@ -62,7 +62,7 @@ extern "C" {
 **   returns: char **label element label matrix
 ** \ingroup CHKPT
 */
-	char **chkpt_rd_felement(void)
+	const char **chkpt_rd_felement(void)
 	{
 		return _default_chkpt_lib_->rd_felement();
 	}
@@ -76,7 +76,7 @@ extern "C" {
 ** returns: none
 ** \ingroup CHKPT
 */
-	void chkpt_wt_felement(char **label)
+	void chkpt_wt_felement(const char **label)
 	{
 		_default_chkpt_lib_->wt_felement(label);
 	}

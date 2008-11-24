@@ -93,7 +93,7 @@ int main(int argc, char *argv[])
   exit(0);
 }
 
-extern "C" {char *gprgid() { char *prgid = "CCEOM"; return(prgid); }}
+extern "C" {const char *gprgid() { const char *prgid = "CCEOM"; return(prgid); }}
 
 namespace psi { namespace cceom {
 

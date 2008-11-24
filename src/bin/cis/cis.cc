@@ -250,7 +250,7 @@ int main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
-extern "C" {char *gprgid() { char *prgid = "CIS"; return(prgid); }}
+extern "C" {const char *gprgid() { const char *prgid = "CIS"; return(prgid); }}
 
 namespace psi { namespace cis {
 

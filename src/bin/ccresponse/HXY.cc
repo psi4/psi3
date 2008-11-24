@@ -16,8 +16,8 @@
 
 namespace psi { namespace ccresponse {
 
-double HXY(char *pert_x, char *cart_x, int irrep_x, double omega_x, 
-	   char *pert_y, char *cart_y, int irrep_y, double omega_y)
+double HXY(const char *pert_x, const char *cart_x, int irrep_x, double omega_x, 
+	   const char *pert_y, const char *cart_y, int irrep_y, double omega_y)
 {
   double polar;
   dpdfile2 X1, Y1, z;

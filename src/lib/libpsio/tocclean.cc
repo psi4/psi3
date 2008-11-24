@@ -10,7 +10,7 @@
 
 using namespace psi;
 
-void PSIO::tocclean(unsigned int unit, char *key) {
+void PSIO::tocclean(unsigned int unit, const char *key) {
   psio_tocentry *this_entry, *last_entry, *prev_entry;
   psio_ud *this_unit;
   
@@ -51,7 +51,7 @@ extern "C" {
    ** \ingroup PSIO
    */
 
-  int psio_tocclean(unsigned int unit, char *key) {
+  int psio_tocclean(unsigned int unit, const char *key) {
     _default_psio_lib_->tocclean(unit, key);
     return 0;
   }

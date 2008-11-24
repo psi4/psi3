@@ -371,7 +371,7 @@ int main(int argc, char *argv[])
 namespace psi { namespace localize {
 
 extern "C" {
-extern char *gprgid();
+extern const char *gprgid();
 };
 
 void init_io(int argc, char * argv[])
@@ -409,9 +409,9 @@ void exit_io(void)
 
 }} // namespace psi::localize
 
-extern "C" char *gprgid()
+extern "C" const char *gprgid()
 {
-   char *prgid = "LOCAL";
+   const char *prgid = "LOCAL";
 
    return(prgid);
 }

@@ -11,7 +11,7 @@
 
 using namespace psi;
   
-void IWL::read_one(PSIO *psio, int itap, char *label, double *ints, 
+void IWL::read_one(PSIO *psio, int itap, const char *label, double *ints, 
     int ntri, int erase, int printflg, FILE *outfile)  
 {
     int nmo;
@@ -51,7 +51,7 @@ extern "C" {
 **   \param outfile    = file pointer for output of ints or error messages
 ** \ingroup IWL
 */
-int iwl_rdone(int itap, char *label, double *ints, int ntri, int erase, 
+int iwl_rdone(int itap, const char *label, double *ints, int ntri, int erase, 
               int printflg, FILE *outfile)
 {
 

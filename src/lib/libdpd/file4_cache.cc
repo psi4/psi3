@@ -53,7 +53,7 @@ void dpd_file4_cache_close(void)
 }
 
 struct dpd_file4_cache_entry 
-*dpd_file4_cache_scan(int filenum, int irrep, int pqnum, int rsnum, char *label, int dpdnum)
+*dpd_file4_cache_scan(int filenum, int irrep, int pqnum, int rsnum, const char *label, int dpdnum)
 {
   struct dpd_file4_cache_entry *this_entry;
 

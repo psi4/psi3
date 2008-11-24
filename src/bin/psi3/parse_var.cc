@@ -25,7 +25,7 @@ extern int call_done;
  * returned to nvars, and mxvars gives the maximum number of vars.
  * This function needs to work in a recursive mode.
  */
-char **parse_var(int *nvars, int mxvars, char *name)
+char **parse_var(int *nvars, int mxvars, const char *name)
 {
   char **vars, **sub_vars;
   int num_vars=0, sub_num_vars, count, i, idx;

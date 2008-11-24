@@ -18,8 +18,8 @@
 
 namespace psi { namespace geom {
 
-extern void malloc_ck(void *array, char *mesg);
-extern void prf_abort(FILE *file, char *mesg);
+extern void malloc_ck(void *array, const char *mesg);
+extern void prf_abort(FILE *file, const char *mesg);
 
 /* global variables */
 static char line1[MAX_LINE] ;

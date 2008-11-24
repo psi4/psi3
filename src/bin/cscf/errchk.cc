@@ -23,14 +23,12 @@
 /* -Ed
  * */
 
-static char *rcsid = "$Id$";
-
 #include <cstdio>
 #include <libipv1/ip_lib.h>
 
 namespace psi { namespace cscf {
 
-void errchk(int errcod, char* token)
+void errchk(int errcod, const char* token)
 {
   if (errcod) {
     fprintf(stderr,"ERROR: %s\n",ip_error_message(errcod));

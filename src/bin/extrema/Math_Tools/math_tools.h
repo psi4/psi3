@@ -62,8 +62,8 @@ class char_table {
     char *ptgrp;
     void get_char_table();
     int get_num_irreps();
-    char **get_sym_ops();
-    char **get_irrep_labels();
+    const char **get_sym_ops();
+    const char **get_irrep_labels();
     int *get_ops_coeffs();
     int get_num_ops();
     int get_num_classes();
@@ -73,8 +73,8 @@ class char_table {
     ~char_table();
     int **ctable;
     int num_irreps;
-    char **sym_ops;
-    char **irrep_labels;
+    const char **sym_ops;
+    const char **irrep_labels;
     int *ops_coeffs;
     int num_ops;
     int num_classes;

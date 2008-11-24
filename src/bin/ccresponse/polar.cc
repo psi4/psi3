@@ -17,14 +17,14 @@
 
 namespace psi { namespace ccresponse {
 
-void transpert(char *pert);
-void sort_pert(char *pert, double **pertX, double **pertY, double **pertZ,
+void transpert(const char *pert);
+void sort_pert(const char *pert, double **pertX, double **pertY, double **pertZ,
 	       int irrep_x, int irrep_y, int irrep_z);
-void pertbar(char *pert, int irrep_x, int irrep_y, int irrep_z, int anti);
-void compute_X(char *pert, char *cart, int irrep, double omega);
+void pertbar(const char *pert, int irrep_x, int irrep_y, int irrep_z, int anti);
+void compute_X(const char *pert, const char *cart, int irrep, double omega);
 void linresp(double **tensor, double A, double B,
-	     char *pert_x, int *x_irreps, double omega_x,
-	     char *pert_y, int *y_irreps, double omega_y);
+	     const char *pert_x, int *x_irreps, double omega_x,
+	     const char *pert_y, int *y_irreps, double omega_y);
 
 void polar(void)
 {

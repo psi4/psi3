@@ -12,8 +12,8 @@
 
 namespace psi { namespace ccresponse {
 
-double LCX(char *pert_c, char *cart_c, int irrep_c, 
-	   char *pert_x, char *cart_x, int irrep_x, double omega)
+double LCX(const char *pert_c, const char *cart_c, int irrep_c, 
+	   const char *pert_x, const char *cart_x, int irrep_x, double omega)
 {
   double polar=0.0;
   dpdfile2 X1, mu1, z1, l1, mu, lt, xc;

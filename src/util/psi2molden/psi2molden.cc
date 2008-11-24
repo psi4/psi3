@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
   natom = chkpt_rd_natom();
   geom = chkpt_rd_geom();
   zvals = chkpt_rd_zvals();
-  atom_labs = chkpt_rd_felement();
+  atom_labs = (char **) chkpt_rd_felement();
 
   for(i=0; i < natom; i++)
     fprintf(molfile, "%s %3d %3d %20.10f %20.10f %20.10f\n", atom_labs[i], i+1, (int) zvals[i],
@@ -165,7 +165,7 @@ int main(int argc, char *argv[])
   exit(PSI_RETURN_SUCCESS);
 }
 
-extern "C" { char *gprgid(void) { char *prgid = "PSI2MOLDEN"; return(prgid); } }
+extern "C" { const char *gprgid(void) { const char *prgid = "PSI2MOLDEN"; return(prgid); } }
 
 namespace psi{
   namespace psi2molden{

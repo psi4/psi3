@@ -395,9 +395,9 @@ void trace_tpdm(double *tpdm, int nbf)
 /* gpgrid: program id                                                      */
 /***************************************************************************/
 extern "C" {
-  char *gprgid()
+  const char *gprgid()
   {
-   char *prgid = "CLAG";
+   const char *prgid = "CLAG";
    return(prgid);
   }
 }

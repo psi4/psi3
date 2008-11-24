@@ -20,11 +20,10 @@
 /* -Ed
  * */
 
-static char *rcsid = "$Id$";
 
-extern "C" char *gprgid()
+extern "C" const char *gprgid()
 {
-   char *prgid = "SCF";
+   const char *prgid = "SCF";
 
    return(prgid);
    }

@@ -71,7 +71,7 @@ EXTERN char *frozen_core;           /*Frozen core option*/
 EXTERN char *frozen_virt;           /*Frozen virtuals option*/
 
 /*Labels*/
-EXTERN char *label;                 /*Label*/
+EXTERN const char *label;                 /*Label*/
 
 
 /*Symmetry-related stuff*/
@@ -150,7 +150,7 @@ EXTERN int *atom_dummy;             /*Array that tells whether an atom is a dumm
 EXTERN double *nuclear_charges;	    /*Nuclear charges*/
 EXTERN double *elemsymb_charges;    /*Nuclear charges derived from element names*/
 EXTERN char **element;       	    /*Atom names*/
-EXTERN char **full_element;         /*Atom names including dummy atoms*/
+EXTERN const char **full_element;         /*Atom names including dummy atoms*/
 EXTERN char **atom_basis;           /*Array of basis set names*/
 EXTERN int **atom_orbit;            /*Atom orbits*/
 EXTERN int **class_orbit;           /*Class orbits*/

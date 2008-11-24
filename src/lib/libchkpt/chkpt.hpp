@@ -34,16 +34,16 @@ namespace psi {
 		void rehash();
 
 		char *rd_prefix();
-		void wt_prefix(char *prefix);
-		void set_prefix(char *prefix);
+		void wt_prefix(const char *prefix);
+		void set_prefix(const char *prefix);
 		void commit_prefix();
 		void reset_prefix();
 		char *get_prefix();
 
-		char *build_keyword(char *key);
+		char *build_keyword(const char *key);
 
-		int exist(char *keyword);
-		int exist_add_prefix(char *keyword);
+		int exist(const char *keyword);
+		int exist_add_prefix(const char *keyword);
 
 		char *rd_label();
 		void wt_label(char *label);
@@ -106,8 +106,8 @@ namespace psi {
 		int rd_disp_irrep(void);
 		void wt_disp_irrep(int);
 
-		double rd_e_labeled(char *);
-		void wt_e_labeled(char *, double);
+		double rd_e_labeled(const char *);
+		void wt_e_labeled(const char *, double);
 
 		double *rd_evals(void);
 		double *rd_alpha_evals(void);
@@ -119,8 +119,8 @@ namespace psi {
 		double *rd_exps(void);
 		void wt_exps(double *);
 
-		char **rd_felement(void);
-		void wt_felement(char **);
+		const char **rd_felement(void);
+		void wt_felement(const char **);
 
 		double **rd_fgeom(void);
 		void wt_fgeom(double **);

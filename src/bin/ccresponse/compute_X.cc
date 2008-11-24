@@ -16,24 +16,24 @@
 
 namespace psi { namespace ccresponse {
 
-void init_X(char *pert, char *cart, int irrep, double omega);
-void sort_X(char *pert, char *cart, int irrep, double omega);
-void cc2_sort_X(char *pert, char *cart, int irrep, double omega);
-void X1_build(char *pert, char *cart, int irrep, double omega);
-void X2_build(char *pert, char *cart, int irrep, double omega);
-void cc2_X1_build(char *pert, char *cart, int irrep, double omega);
-void cc2_X2_build(char *pert, char *cart, int irrep, double omega);
-double converged(char *pert, char *cart, int irrep, double omega);
-void save_X(char *pert, char *cart, int irrep, double omega);
-void print_X(char *pert, char *cart, int irrep, double omega);
-void update_X(char *pert, char *cart, int irrep, double omega);
-void diis(int iter, char *pert, char *cart, int irrep, double omega);
-double pseudopolar(char *pert, char *cart, int irrep, double omega);
+void init_X(const char *pert, const char *cart, int irrep, double omega);
+void sort_X(const char *pert, const char *cart, int irrep, double omega);
+void cc2_sort_X(const char *pert, const char *cart, int irrep, double omega);
+void X1_build(const char *pert, const char *cart, int irrep, double omega);
+void X2_build(const char *pert, const char *cart, int irrep, double omega);
+void cc2_X1_build(const char *pert, const char *cart, int irrep, double omega);
+void cc2_X2_build(const char *pert, const char *cart, int irrep, double omega);
+double converged(const char *pert, const char *cart, int irrep, double omega);
+void save_X(const char *pert, const char *cart, int irrep, double omega);
+void print_X(const char *pert, const char *cart, int irrep, double omega);
+void update_X(const char *pert, const char *cart, int irrep, double omega);
+void diis(int iter, const char *pert, const char *cart, int irrep, double omega);
+double pseudopolar(const char *pert, const char *cart, int irrep, double omega);
 void cleanup(void);
 void exit_io(void);
-void amp_write(char *pert, char *cart, int irrep, double omega);
+void amp_write(const char *pert, const char *cart, int irrep, double omega);
 
-void compute_X(char *pert, char *cart, int irrep, double omega)
+void compute_X(const char *pert, const char *cart, int irrep, double omega)
 {
   int i, iter=0, done=0;
   double rms, polar, X2_norm;

@@ -992,7 +992,7 @@ void yosh_rdtwo_backtr(struct yoshimine *YBuff, int tei_file, int *ioff,
 **   printflag    = 1 for printing (for debugging only!) else 0
 **   outfile      = file to print integrals to (if printflag is set)
 */
-void yosh_rdtwo_backtr_uhf(char *spin, struct yoshimine *YBuff, int tei_file, int *ioff, 
+void yosh_rdtwo_backtr_uhf(const char *spin, struct yoshimine *YBuff, int tei_file, int *ioff, 
 			   int swap_bk, int symm_pq, int del_tei_file,
 			   int printflag, FILE *outfile)
 { 

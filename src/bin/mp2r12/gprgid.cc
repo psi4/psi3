@@ -4,9 +4,9 @@
 */
 
 extern "C" {
-  char *gprgid()
+  const char *gprgid()
   {
-     char *prgid = "MP2R12";
+     const char *prgid = "MP2R12";
      return(prgid);
   }
 }

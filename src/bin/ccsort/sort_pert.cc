@@ -23,7 +23,7 @@ namespace psi { namespace ccsort {
 ** TDC, 10/05
 */
 
-void sort_pert(char *pert, double **pertX, double **pertY, double **pertZ,
+void sort_pert(const char *pert, double **pertX, double **pertY, double **pertZ,
 	       int irrep_x, int irrep_y, int irrep_z)
 {
   int p, q, Gp, Gq, P, Q, i;

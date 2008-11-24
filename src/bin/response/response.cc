@@ -84,7 +84,7 @@ int main(int argc, char *argv[])
   exit(0);
 }
 
-extern "C" {char *gprgid() { char *prgid = "STABLE"; return(prgid); }}
+extern "C" {const char *gprgid() { const char *prgid = "STABLE"; return(prgid); }}
 
 namespace psi { namespace response {
 

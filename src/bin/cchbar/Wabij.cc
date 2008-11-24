@@ -20,7 +20,7 @@ T amplitudes were determined by ccenergy with the same H */
 void DT2(void), FaetT2(void), FmitT2(void), WmnijT2(void), WmbejT2(void);
 void BT2(void), ZT2(void), FT2(void), ET2(void), CT2(void), dijabT2(void);
 void BT2_AO(void); void Z_build(void);
-void status(char *, FILE *);
+void status(const char *, FILE *);
 void FT2_CC2(void);
 void Wmnij_for_Wabij(void); 
 void Wmbej_for_Wabij(void); 

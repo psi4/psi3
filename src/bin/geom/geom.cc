@@ -74,8 +74,8 @@ char *psi_file_prefix;
 }
 
 /* declare functions in this file */
-void malloc_ck(void *array, char *mesg);
-void prf_abort(FILE *file, char *mesg);
+void malloc_ck(void *array, const char *mesg);
+void prf_abort(FILE *file, const char *mesg);
 int read_file11(char* label, int* natom, double* energy, double** X, double** Y, double** Z, double** AN, FILE* fpo);
 void print_file11(char* label, int natom, double energy, double* X, double* Y, double* Z, double* AN, FILE* fpo) ;
 int read_geom(int maxlines, int* natom, double** X, double** Y, double** Z, char* fname);
@@ -658,7 +658,7 @@ void calc_bond_angles(int natom, double E[MAXATOM][MAXATOM][3],
 **       array    =  pointer to memory supposedly allocated (casted to void)
 **       mesg     =  character string containing error message 
 */
-void malloc_ck(void *array, char *mesg)
+void malloc_ck(void *array, const char *mesg)
 {
   if (array == NULL) {
     fprintf(stderr, "%s", mesg) ;
@@ -675,7 +675,7 @@ void malloc_ck(void *array, char *mesg)
 **       file    =  file pointer to write error to 
 **       mesg    =  character string containing error message 
 */
-void prf_abort(FILE *file, char *mesg)
+void prf_abort(FILE *file, const char *mesg)
 {
   printf("%s", mesg);
   fprintf(file, "%s", mesg);

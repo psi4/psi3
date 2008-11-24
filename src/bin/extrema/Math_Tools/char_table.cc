@@ -287,31 +287,31 @@ if (strcmp(ptgrp,"C1 ") == 0)
   \brief Returns labels for symmetry operations. */
 /*---------------------------------------------------------------------------*/
 
-char **char_table::get_sym_ops() {
+const char **char_table::get_sym_ops() {
 
-   static char *C1[] =  {"E"};
-   static char *CS[] =  {"E","SGH"};
-   static char *CI[] =  {"E","I"};
-   static char *C2[] =  {"E","C2"};
-   static char *D2[] =  {"E","C2Z","C2Y","C2X"};
-   static char *C2V[] = {"E","C2","SGV","SGV"};
-   static char *C2H[] = {"E","C2","I","SGH"};
-   static char *D3[] =  {"E","C3","C2"};
-   static char *C3V[] = {"E","C3","SGV"};
-   static char *D4[] =  {"E","C4","C2","C2'","C2\""};
-   static char *D2D[] = {"E","S4","C2","C2'","SGD"};
-   static char *C4V[] = {"E","C4","C2","SGV","SGD"};
-   static char *TD[] =  {"E","C3","C2","S4","SGD"};
-   static char *O[] =   {"E","C3","C2","C4","C2"};
-   static char *D6[] =  {"E","C6","C3","C2","C2'","C2\""};
-   static char *C6V[] = {"E","C6","C3","C2","SGV","SGD"};
-   static char *D3D[] = {"E","C3","C2","I","S6","SGD"};
-   static char *D3H[] = {"E","C3","C2","SGH","S3","SGV"};
-   static char *D2H[] = {"E","C2Z","C2Y","C2X","I","SGXY","SGXZ","SGYZ"}; 
-   static char *D4H[] = {"E","C4","C2","C2'","C2\"","I",
+   static const char *C1[] =  {"E"};
+   static const char *CS[] =  {"E","SGH"};
+   static const char *CI[] =  {"E","I"};
+   static const char *C2[] =  {"E","C2"};
+   static const char *D2[] =  {"E","C2Z","C2Y","C2X"};
+   static const char *C2V[] = {"E","C2","SGV","SGV"};
+   static const char *C2H[] = {"E","C2","I","SGH"};
+   static const char *D3[] =  {"E","C3","C2"};
+   static const char *C3V[] = {"E","C3","SGV"};
+   static const char *D4[] =  {"E","C4","C2","C2'","C2\""};
+   static const char *D2D[] = {"E","S4","C2","C2'","SGD"};
+   static const char *C4V[] = {"E","C4","C2","SGV","SGD"};
+   static const char *TD[] =  {"E","C3","C2","S4","SGD"};
+   static const char *O[] =   {"E","C3","C2","C4","C2"};
+   static const char *D6[] =  {"E","C6","C3","C2","C2'","C2\""};
+   static const char *C6V[] = {"E","C6","C3","C2","SGV","SGD"};
+   static const char *D3D[] = {"E","C3","C2","I","S6","SGD"};
+   static const char *D3H[] = {"E","C3","C2","SGH","S3","SGV"};
+   static const char *D2H[] = {"E","C2Z","C2Y","C2X","I","SGXY","SGXZ","SGYZ"}; 
+   static const char *D4H[] = {"E","C4","C2","C2'","C2\"","I",
 			 "S4","SGH","SGV","SGD"}; 
-   static char *OH[] =  {"E","C3","C2","C4","C2","I","S4","S6","SGH","SGD"};
-   static char *D6H[] = {"E","C6","C3","C2","C2'","C2\"","I",
+   static const char *OH[] =  {"E","C3","C2","C4","C2","I","S4","S6","SGH","SGD"};
+   static const char *D6H[] = {"E","C6","C3","C2","C2'","C2\"","I",
 			 "S3","S6","SGH","SGD","SGV"};
 
 if (strcmp(ptgrp,"C1 ") == 0)
@@ -368,32 +368,32 @@ else
 /*! \fn get_irrep_labels()
   \brief Returns irrep labels.
 /*---------------------------------------------------------------------------*/
-char **char_table::get_irrep_labels() {
+const char **char_table::get_irrep_labels() {
 
-   static char *C1[] = {"A"};
-   static char *CS[] = {"Ap","App"};
-   static char *CI[] = {"Ag","Au"};
-   static char *C2[] = {"A","B"};
-   static char *D2[] = {"A","B1","B2","B3"};
-   static char *C2V[] = {"A1","A2","B1","B2"};
-   static char *C2H[] = {"Ag","Bg","Au","Bu"};
-   static char *D3[] = {"A1","A2","E"};
-   static char *C3V[] = {"A1","A2","E"};
-   static char *D4[] = {"A1","A2","B1","B2","E"};
-   static char *D2D[] = {"A1","A2","B1","B2","E"};
-   static char *C4V[] = {"A1","A2","B1","B2","E"};
-   static char *TD[] = {"A1","A2","E","T1","T2"};
-   static char *O[] = {"A1","A2","E","T1","T2"};
-   static char *D6[] = {"A1","A2","B1","B2","E1","E2"};
-   static char *C6V[] = {"A1","A2","B1","B2","E1","E2"};
-   static char *D3D[] = {"A1g","A2g","Eg","A1u","A2u","Eu"};
-   static char *D3H[] = {"A1p","A2p","Ep","A1pp","A2pp","Epp"};
-   static char *D2H[] = {"Ag","B1g","B2g","B3g","Au","B1u","B2u","B3u"};
-   static char *D4H[] = {"A1g","A2g","B1g","B2g","Eg",
+   static const char *C1[] = {"A"};
+   static const char *CS[] = {"Ap","App"};
+   static const char *CI[] = {"Ag","Au"};
+   static const char *C2[] = {"A","B"};
+   static const char *D2[] = {"A","B1","B2","B3"};
+   static const char *C2V[] = {"A1","A2","B1","B2"};
+   static const char *C2H[] = {"Ag","Bg","Au","Bu"};
+   static const char *D3[] = {"A1","A2","E"};
+   static const char *C3V[] = {"A1","A2","E"};
+   static const char *D4[] = {"A1","A2","B1","B2","E"};
+   static const char *D2D[] = {"A1","A2","B1","B2","E"};
+   static const char *C4V[] = {"A1","A2","B1","B2","E"};
+   static const char *TD[] = {"A1","A2","E","T1","T2"};
+   static const char *O[] = {"A1","A2","E","T1","T2"};
+   static const char *D6[] = {"A1","A2","B1","B2","E1","E2"};
+   static const char *C6V[] = {"A1","A2","B1","B2","E1","E2"};
+   static const char *D3D[] = {"A1g","A2g","Eg","A1u","A2u","Eu"};
+   static const char *D3H[] = {"A1p","A2p","Ep","A1pp","A2pp","Epp"};
+   static const char *D2H[] = {"Ag","B1g","B2g","B3g","Au","B1u","B2u","B3u"};
+   static const char *D4H[] = {"A1g","A2g","B1g","B2g","Eg",
 			 "A1u","A2u","B1u","B2u","Eu"};
-   static char *OH[] = {"A1g","A2g","Eg","T1g","T2g",
+   static const char *OH[] = {"A1g","A2g","Eg","T1g","T2g",
 			"A1u","A2u","Eu","T1u","T2u"};
-   static char *D6H[] = {"A1g","A2g","B1g","B2g","E1g","E2g",
+   static const char *D6H[] = {"A1g","A2g","B1g","B2g","E1g","E2g",
 			 "A1u","A2u","B1u","B2u","E1u","E2u"};
 
    if (strcmp(ptgrp,"C1 ") == 0)

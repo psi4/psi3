@@ -34,7 +34,7 @@ extern "C" {
 FILE *infile, *outfile;
 char *psi_file_prefix;
 }
-extern "C" char *gprgid();
+extern "C" const char *gprgid();
 
 namespace psi { namespace dboc {
 
@@ -617,7 +617,7 @@ void done(const char *message)
 
 }} // namespace psi::dboc
 
-extern "C" char *gprgid()
+extern "C" const char *gprgid()
 {
    const char *prgid = "DBOC";
 

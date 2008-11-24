@@ -2,7 +2,6 @@
     \ingroup CSCF
     \brief Enter brief description of file here 
 */
-static char *rcsid = "$Id$";
 
 #define EXTERN
 #include <libpsio/psio.h>

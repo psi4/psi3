@@ -3,9 +3,9 @@
   \brief program id
 */
 extern "C" {
-  char *gprgid()
+  const char *gprgid()
   {
-    char *prgid = "cints";
+    const char *prgid = "cints";
     
     return(prgid);
   }

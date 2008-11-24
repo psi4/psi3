@@ -10,7 +10,7 @@
 
 namespace psi { namespace intder {
 
-typedef enum IntCoType { STRE, BEND, LIN1, OUT, TORS, SPF, LINX, LINY, RCOM, SYMM };
+enum IntCoType { STRE, BEND, LIN1, OUT, TORS, SPF, LINX, LINY, RCOM, SYMM };
 
 class InternalCoordinate 
 {

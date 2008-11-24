@@ -2,9 +2,9 @@
     \ingroup GEOM
     \brief Enter brief description of file here 
 */
-extern "C" char *gprgid()
+extern "C" const char *gprgid()
 {
-   char *prgid = "GEOM";
+   const char *prgid = "GEOM";
 
    return(prgid);
    }

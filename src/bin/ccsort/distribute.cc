@@ -99,7 +99,7 @@ void distribute_rhf(int filenum, int first_tmp, double tolerance, int keep_input
   fflush(outfile);
 }
 
-void classify_uhf(int p, int q, int r, int s, double value, char *spin,
+void classify_uhf(int p, int q, int r, int s, double value, const char *spin,
 		  struct iwlbuf *ABuf1, struct iwlbuf *BBuf1,
 		  struct iwlbuf *CBuf1, struct iwlbuf *CBuf2, 
 		  struct iwlbuf *DBuf1, struct iwlbuf *EBuf1, 
@@ -107,7 +107,7 @@ void classify_uhf(int p, int q, int r, int s, double value, char *spin,
 		  struct iwlbuf *FBuf2, struct iwlbuf *FBuf3,
 		  struct iwlbuf *FBuf4);
 
-void distribute_uhf(char *spin, int filenum, int first_tmp, double tolerance, int keep_input)
+void distribute_uhf(const char *spin, int filenum, int first_tmp, double tolerance, int keep_input)
 {
   struct iwlbuf InBuf;
   struct iwlbuf ABuf1, BBuf1, CBuf1, CBuf2, DBuf1;

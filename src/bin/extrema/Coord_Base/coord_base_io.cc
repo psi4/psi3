@@ -30,7 +30,7 @@ void coord_base :: parse_input() {
     fprintf(outfile,"\n  GRAD_MAX:      %d",grad_max);
 
     update = "BFGS";
-    errcod = ip_string("UPDATE",&update,0);
+    errcod = ip_string("UPDATE",(char **) &update,0);
     fprintf(outfile,"\n  UPDATE:        %s", update);
 
     angle_abort = 1;

@@ -16,8 +16,8 @@
 
 namespace psi { namespace ccresponse {
 
-double cc2_LHX1Y1(char *pert_x, char *cart_x, int irrep_x, double omega_x,
-		  char *pert_y, char *cart_y, int irrep_y, double omega_y)
+double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double omega_x,
+		  const char *pert_y, const char *cart_y, int irrep_y, double omega_y)
 {
 	
   int am, a, A, m, M, fe, ef, f, e, E;

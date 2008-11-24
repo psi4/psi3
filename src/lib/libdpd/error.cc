@@ -11,7 +11,7 @@
 extern "C" {
 
 
-void dpd_error(char *caller, FILE *outfile)
+void dpd_error(const char *caller, FILE *outfile)
 {
   fprintf(outfile, "Error in: %s\n", caller);
   dpd_close(dpd_default);

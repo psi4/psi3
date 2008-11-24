@@ -96,7 +96,7 @@ class salc_set {
    salc_class *salc_array;
    char *name;
   public:
-    salc_set(char *keyword);
+    salc_set(const char *keyword);
     salc_set();
     ~salc_set() {
       // fprintf(stdout,"destructing salc_set\n");

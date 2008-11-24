@@ -113,7 +113,7 @@ salc_set :: salc_set() {
   return;
 }
 
-salc_set :: salc_set(char *keyword)
+salc_set :: salc_set(const char *keyword)
 {
   int i,j,a,b;
   int coeff_length, simple_length;

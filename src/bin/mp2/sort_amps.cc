@@ -21,7 +21,7 @@ void sort_amps(void)
     dpd_buf4_copy(&T, CC_TAMPS, "tIJAB");
     dpd_buf4_copy(&T, CC_TAMPS, "tijab");
     dpd_buf4_close(&T);
-  
+
     /* T(iJ,aB) */
     dpd_buf4_init(&T, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
     dpd_buf4_sort(&T, CC_TAMPS, qpsr, 0, 5, "tiJaB");

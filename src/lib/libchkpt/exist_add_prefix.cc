@@ -14,7 +14,7 @@ extern "C" {
 
 using namespace psi;
 
-int Chkpt::exist_add_prefix(char *keyword)
+int Chkpt::exist_add_prefix(const char *keyword)
 {
 	int exists=0;
         char *keyword2;
@@ -37,7 +37,7 @@ extern "C" {
 **        
 ** \ingroup CHKPT
 */
-	int chkpt_exist_add_prefix(char *keyword)
+	int chkpt_exist_add_prefix(const char *keyword)
 	{
 		return(_default_chkpt_lib_->exist_add_prefix(keyword));
 	}

@@ -205,8 +205,6 @@
 /* Added a version of CSCF that can work with CINTS.
 /* -Ed */
 
-static char *rcsid = "$Id$";
-
 #define EXTERN
 #include "includes.h"
 #include "common.h"
@@ -234,8 +232,8 @@ void cleanup()
   int n_there[20],nc[10],no[10];
   int mo_print;
   int errcod;
-  char *ci_type="SCF";
-  char *der_type="FIRST";
+  const char *ci_type="SCF";
+  const char *der_type="FIRST";
   double occj,occk;
   double ekin,epot,enpot,ovlp,virial,num_elec,s2;
   double *scr_arr, *lagrangian, **lagr, **ccvecs;
@@ -257,8 +255,8 @@ void cleanup()
   */
 
   ci_calc=irot=0;
-  errcod = ip_string("WFN",&ci_type,0);
-  errcod = ip_string("DERTYPE",&der_type,0);
+  errcod = ip_string("WFN",(char **) &ci_type,0);
+  errcod = ip_string("DERTYPE",(char **) &der_type,0);
 
   if(strcmp(ci_type,"SCF")) ci_calc=1;
   if(ci_calc && iopen) irot=1;

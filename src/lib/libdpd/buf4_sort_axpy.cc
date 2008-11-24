@@ -62,7 +62,7 @@ extern "C" {
 */
 
 int dpd_buf4_sort_axpy(dpdbuf4 *InBuf, int outfilenum, enum indices index,
-		       int pqnum, int rsnum, char *label, double alpha)
+		       int pqnum, int rsnum, const char *label, double alpha)
 {
   int h,nirreps, row, col, my_irrep, r_irrep;
   int p, q, r, s, P, Q, R, S, pq, rs, sr, pr, qs, qp, rq, qr, ps, sp, rp, sq;

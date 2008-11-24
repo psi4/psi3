@@ -304,7 +304,7 @@ int main(int argc, char *argv[]) {
   stop_io();
 }
 
-extern "C" { char *gprgid(void) { char *prgid = "NONBONDED"; return (prgid); } }
+extern "C" { const char *gprgid(void) { const char *prgid = "NONBONDED"; return (prgid); } }
 
 namespace psi { namespace nonbonded {
 

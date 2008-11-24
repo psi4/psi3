@@ -13,7 +13,7 @@
 
 namespace psi { namespace ccresponse {
 
-double pseudopolar(char *pert, char *cart, int irrep, double omega)
+double pseudopolar(const char *pert, const char *cart, int irrep, double omega)
 {
   dpdfile2 X1, mubar1;
   dpdbuf4 X2, mubar2;

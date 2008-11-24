@@ -9,7 +9,7 @@
 
 using namespace psi;
 
-psio_tocentry*PSIO::tocscan(unsigned int unit, char *key) {
+psio_tocentry*PSIO::tocscan(unsigned int unit, const char *key) {
   psio_tocentry *this_entry;
   
   if (key == NULL)
@@ -37,7 +37,7 @@ extern "C" {
    ** \ingroup PSIO
    */
 
-  psio_tocentry *psio_tocscan(unsigned int unit, char *key) {
+  psio_tocentry *psio_tocscan(unsigned int unit, const char *key) {
     return _default_psio_lib_->tocscan(unit, key);
   }
 }

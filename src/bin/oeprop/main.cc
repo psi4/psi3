@@ -228,9 +228,9 @@ for (irho=0;irho<nrho;irho++) {
 }
 
 
-extern "C" char *gprgid()
+extern "C" const char *gprgid()
 {
- char *prgid = "OEPROP";
+ const char *prgid = "OEPROP";
    
  return(prgid);
 }

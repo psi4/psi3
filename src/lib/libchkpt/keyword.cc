@@ -15,7 +15,7 @@ extern "C" {
 
 using namespace psi;
 
-char *Chkpt::build_keyword(char *key)
+char *Chkpt::build_keyword(const char *key)
 {
 	char *keyword;
 	int keylen;
@@ -35,7 +35,7 @@ char *Chkpt::build_keyword(char *key)
 }
 
 extern "C" {
-	char *chkpt_build_keyword(char *key)
+	char *chkpt_build_keyword(const char *key)
 	{
 		char *keyword;
 		keyword = _default_chkpt_lib_->build_keyword(key);

@@ -104,8 +104,8 @@ class coord_base : protected coord_base_carts,  protected math_tools {
        class determine the actual coordinate type and are responsible for 
        proper handling of these variables */ 
 
-    char *update, /*!< the hessian inverse update method */
-	**felement; /*!< the full list of element names 
+    const char *update; /*!< the hessian inverse update method */
+    char **felement; /*!< the full list of element names 
 		      (including dummy atoms) */
 
     coord_base();

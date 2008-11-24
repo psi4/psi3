@@ -29,7 +29,7 @@ extern "C" {
 */
 
 int dpd_file2_init(dpdfile2 *File, int filenum, int irrep, int pnum,
-		   int qnum, char *label)
+		   int qnum, const char *label)
 {
   int i, q, rs, nirreps;
   struct dpd_file2_cache_entry *this_entry;
