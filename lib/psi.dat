@@ -200,7 +200,7 @@ psi: (
 
   % Procedure for an SCF property computation
   SCFEnergyOEPROP = ($SCFEnergy $oeprop $done)
-  SCFRHFEnergyOEPROP = ($SCFRHFEnergy $oeprop $done)
+  SCFRHFEnergyOEPROP = ($SCFEnergy $oeprop $done)
   SCFUHFEnergyOEPROP = ERROR
   SCFROHFEnergyOEPROP = ($SCFROHFEnergy $oeprop $done)
   SCFTwoConEnergyOEPROP = ERROR
