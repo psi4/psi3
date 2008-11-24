@@ -704,7 +704,7 @@ void load_ref(cartesians &carts) {
 void chkpt_restart(char *new_prefix) {
   int nallatom, natom, *atom_dummy;
   double **fgeom, *zvals;
-  const char **felement;
+  char **felement;
 
   fprintf(outfile,"\nSetting chkpt prefix to irrep %s.\n",new_prefix);
 

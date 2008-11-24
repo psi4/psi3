@@ -102,7 +102,7 @@ void read_cart()
   geometry = (double **) malloc(num_atoms*sizeof(double *));
   atom_dummy = (int *) malloc(sizeof(int)*num_allatoms);
   element = (char **) malloc(sizeof(char *)*num_atoms);
-  full_element = (const char **) malloc(sizeof(const char *)*num_allatoms);
+  full_element = (char **) malloc(sizeof(char *)*num_allatoms);
   elemsymb_charges = init_array(num_atoms);
 
   atomcount = 0;
@@ -129,7 +129,8 @@ void read_cart()
          ++atomcount;
        }
        else {
-         full_element[all_atomcount] = "X";
+         static const char* dummy_elem_name = "X";
+         full_element[all_atomcount] = const_cast<char*>(dummy_elem_name);
          free(atom_label);
          atom_dummy[all_atomcount] = 1;
        }

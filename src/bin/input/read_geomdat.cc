@@ -43,7 +43,7 @@ void read_geomdat()
   geometry = (double **) malloc(num_atoms*sizeof(double *));
   atom_dummy = (int *) malloc(sizeof(int)*num_allatoms);
   element = (char **) malloc(sizeof(char *)*num_atoms);
-  full_element = (const char **) malloc(sizeof(const char *)*num_allatoms);
+  full_element = (char **) malloc(sizeof(char *)*num_allatoms);
   elemsymb_charges = init_array(num_atoms);
 
   for(i=0;i<num_atoms;i++){

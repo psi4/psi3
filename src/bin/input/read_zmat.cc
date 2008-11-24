@@ -174,7 +174,7 @@ void read_zmat()
   /* see chkpt.h for info about z_entry structure */
   z_geom = (struct z_entry *) malloc(sizeof(struct z_entry)*num_allatoms); 
   element = (char **) malloc(sizeof(char *)*num_atoms);
-  full_element = (const char **) malloc(sizeof(const char *)*num_allatoms);
+  full_element = (char **) malloc(sizeof(char *)*num_allatoms);
   elemsymb_charges = init_array(num_atoms);
 
   atomcount = 0;
@@ -437,7 +437,8 @@ z_geom[all_atomcount].bond_label[0]= z_geom[all_atomcount].angle_label[0]= z_geo
         ++atomcount;
       }
       else {
-        full_element[all_atomcount] = "X";
+        static const char* dummy_elem_name = "X";
+        full_element[all_atomcount] = const_cast<char*>(dummy_elem_name);
         free(buffer);
         atom_dummy[all_atomcount] = 1;
       }

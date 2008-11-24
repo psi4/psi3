@@ -121,8 +121,8 @@ void chkpt_wt_cartrep(double **);
 int chkpt_rd_nallatom(void);
 void chkpt_wt_nallatom(int);
 
-const char **chkpt_rd_felement(void);
-void chkpt_wt_felement(const char **);
+char **chkpt_rd_felement(void);
+void chkpt_wt_felement(char ** const);
 
 double **chkpt_rd_usotao(void);
 void chkpt_wt_usotao(double **);

@@ -158,7 +158,7 @@ void parse_command_line(int argc, char *argv[])
 */
 void redirect_output(char *szFilename, bool append)
 {
-	char *szAppend;
+	const char *szAppend;
 	
 	if (append == false)
 		szAppend = "w+";

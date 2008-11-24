@@ -119,8 +119,8 @@ namespace psi {
 		double *rd_exps(void);
 		void wt_exps(double *);
 
-		const char **rd_felement(void);
-		void wt_felement(const char **);
+		char **rd_felement(void);
+		void wt_felement(char ** const);
 
 		double **rd_fgeom(void);
 		void wt_fgeom(double **);
