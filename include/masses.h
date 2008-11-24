@@ -35,7 +35,7 @@
 
 #define LAST_ATOMIC_INDEX (118)
 
-static char *atomic_labels[]= 
+static const char *atomic_labels[]= 
 {"X","H","HE","LI","BE","B","C","N","O","F","NE","NA","MG","AL","SI",
 "P","S","CL","AR","K","CA","SC","TI","V","CR","MN","FE","CO","NI",
 "CU","ZN","GA","GE","AS","SE","BR","KR","RB","SR","Y","ZR","NB","MO",
@@ -73,7 +73,7 @@ static double an2masses[]=
 
 #define LAST_MASS_INDEX (3297)
 
-static char *mass_labels[]=
+static const char *mass_labels[]=
 {"H","H1","H2","D","H3","T","H4","H5","H6","H7","HE","HE3","HE4",
 "HE5","HE6","HE7","HE8","HE9","HE10","LI","LI3","LI4","LI5","LI6",
 "LI7","LI8","LI9","LI10","LI11","LI12","BE","BE5","BE6","BE7","BE8",

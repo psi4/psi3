@@ -249,7 +249,7 @@ int read_aces_geom(char *fname, int *natom, double **X, double **Y,
 **      fpo     = file pointer for output
 */
 void print_aces_geom(int natom, double *X, double *Y, double *Z, double *AN, 
-		     char **labels, FILE *fpo) 
+		     const char **labels, FILE *fpo) 
 {
   int i;
   

@@ -59,7 +59,7 @@ Params_t Params;
 
 BasisSet* BasisSets[MAX_NUM_DISP];  // Array of pointers to basis set objects with current coordinate displaced by +delta, -delta, +2delta, and -2delta, respectively
 HFWavefunction* HFVectors[MAX_NUM_DISP];  // Array of pointers to HF wavefunctions for displacements by +delta, -delta, +2delta, and -2delta, respectively
-char* CI_Vector_Labels[MAX_NUM_DISP] = {
+const char* CI_Vector_Labels[MAX_NUM_DISP] = {
   "R0-delta CI Vector",
   "R0+delta CI Vector",
   "R0-2delta CI Vector",
@@ -298,7 +298,7 @@ double* get_atomic_masses()
 
 // Remove PSI3 prefixed file
 void
-remove_psi3_file(char* name)
+remove_psi3_file(const char* name)
 {
   char* execstr = (char*) malloc( sizeof(char) * (strlen("/bin/rm -f ") +
                                                   strlen(psi_file_prefix) +
@@ -619,7 +619,7 @@ void done(const char *message)
 
 extern "C" char *gprgid()
 {
-   char *prgid = "DBOC";
+   const char *prgid = "DBOC";
 
-   return(prgid);
+   return(const_cast<char*>(prgid));
 }

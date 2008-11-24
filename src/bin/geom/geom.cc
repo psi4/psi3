@@ -83,7 +83,7 @@ void print_geom(int natom, double *X, double *Y, double *Z, FILE *fpo);
 int read_aces_geom(char *fname, int *natom, double **X, double **Y,
                    double **Z, double **AN, FILE *fpo);
 void print_aces_geom(int natom, double *X, double *Y, double *Z, double *AN,
-                     char **labels, FILE *fpo);
+                     const char **labels, FILE *fpo);
 int read_qchem_geom(char *fname, int *natom, double **X, double **Y,
                     double **Z, double **AN, FILE *fpo);
 int read_xyz_geom(char *fname, int *natom, double **X, double **Y,
