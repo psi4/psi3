@@ -149,14 +149,14 @@ StringBlockedMatrix::write(int brablk, int ketblk)
     return;
 
   psio_address junk;
-  const char* bkey = key(brablk,ketblk).c_str();
+  const std::string bkey = key(brablk,ketblk);
+  const char* bkey_cstr = bkey.c_str();
   int errcod = psio_write(psio_unit_,
-			  const_cast<char*>(bkey),
+			  const_cast<char*>(bkey_cstr),
 			  (char*)buffer_[0],
 			  blksize_,
 			  PSIO_ZERO,
 			  &junk);
-  //delete[] bkey;
 }
 
 void
