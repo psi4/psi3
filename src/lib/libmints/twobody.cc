@@ -16,12 +16,14 @@ TwoBodyInt::TwoBodyInt(IntegralFactory *integral,
                        const Ref<BasisSet>& bs1,
                        const Ref<BasisSet>& bs2,
                        const Ref<BasisSet>& bs3,
-                       const Ref<BasisSet>& bs4)
-    : integral_(integral), bs1_(bs1), bs2_(bs2), bs3_(bs3), bs4_(bs4)
+                       const Ref<BasisSet>& bs4,
+                       int deriv)
+    : integral_(integral), bs1_(bs1), bs2_(bs2), bs3_(bs3), bs4_(bs4), deriv_(deriv)
 {
     target_ = 0;
     tformbuf_ = 0;
     source_ = 0;
+    natom_ = bs1_->molecule()->natom();
     
     // compute the maximum number of unique quartets needed for a given i, by 
     // using the max_stability_index_ of j, k, and l.

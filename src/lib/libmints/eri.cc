@@ -56,27 +56,38 @@ void calc_f(double *F, int n, double t)
     }
 }
 
-ERI::ERI(IntegralFactory* integral, Ref<BasisSet> &bs1, Ref<BasisSet> &bs2, Ref<BasisSet> &bs3, Ref<BasisSet> &bs4) 
-    : TwoBodyInt(integral, bs1, bs2, bs3, bs4)
+ERI::ERI(IntegralFactory* integral, Ref<BasisSet> &bs1, Ref<BasisSet> &bs2, Ref<BasisSet> &bs3, Ref<BasisSet> &bs4, int deriv) 
+    : TwoBodyInt(integral, bs1, bs2, bs3, bs4, deriv)
 {
     // Initialize libint static data
     init_libint_base();
+    if (deriv_)
+        init_libderiv_base();
     
-    // Figure out some information to initialize libint with
+    // Figure out some information to initialize libint/libderiv with
     // 1. Maximum angular momentum
     int max_am = MAX(MAX(bs1_->max_am(), bs2_->max_am()), MAX(bs3_->max_am(), bs4_->max_am()));
     // 2. Maximum number of primitive combinations
     int max_nprim = bs1_->max_nprimitive() * bs2_->max_nprimitive() * bs3_->max_nprimitive() * bs4_->max_nprimitive();
+    // 3. Maximum Cartesian class size
+    max_cart_ = ioff[bs1_->max_am()] * ioff[bs2_->max_am()] * ioff[bs3_->max_am()] * ioff[bs4_->max_am()] +1;
     
     // Make sure libint is compiled to handle our max AM
     if (max_am >= LIBINT_MAX_AM) {
         fprintf(stderr, "ERROR: ERI - libint cannot handle angular momentum this high.\n       Recompile libint for higher angular momentum, then recompile this program.\n");
         abort();
     }
+    if (deriv_ == 1 && max_am >= LIBDERIV_MAX_AM1) {
+        fprintf(stderr, "ERROR: ERI - libderiv cannot handle angular momentum this high.\n     Recompile libderiv for higher angular momentum, then recompile this program.\n");
+        abort();
+    }
     
     // Initialize libint
     init_libint(&libint_, max_am, max_nprim);   
-    
+    // and libderiv, if needed
+    if (deriv_)
+        init_libderiv1(&libderiv_, max_am, max_nprim, max_cart_-1);
+        
     size_t size = INT_NCART(bs1_->max_am()) * INT_NCART(bs2_->max_am()) *
                   INT_NCART(bs3_->max_am()) * INT_NCART(bs4_->max_am());
                   
@@ -84,13 +95,16 @@ ERI::ERI(IntegralFactory* integral, Ref<BasisSet> &bs1, Ref<BasisSet> &bs2, Ref<
     tformbuf_ = new double[size];
     memset(tformbuf_, 0, sizeof(double)*size);
     
+    if (deriv_ == 1)
+        size *= 3*natom_;
+
     target_ = new double[size];
     memset(target_, 0, sizeof(double)*size);
     
     source_ = new double[size];
     memset(source_, 0, sizeof(double)*size);
-    
-    determine_combinations();
+
+    init_fjt(4*max_am + DERIV_LVL);
 }
 
 ERI::~ERI()
@@ -98,7 +112,169 @@ ERI::~ERI()
     delete[] tformbuf_;
     delete[] target_;
     delete[] source_;
+    delete[] denom_;
+    free_block(d_);
     free_libint(&libint_);
+    if (deriv_)
+        free_libderiv(&libderiv_);
+}
+
+// Taken from CINTS
+void ERI::init_fjt(int max)
+{
+    int i,j;
+    double denom,d2jmax1,r2jmax1,wval,d2wval,sum,term,rexpw;
+
+    int n1 = max+7;
+    int n2 = TABLESIZE;
+    d_ = block_matrix(n1, n2);
+
+    /* Tabulate the gamma function for t(=wval)=0.0. */
+    denom = 1.0;
+    for (i=0; i<n1; i++) {
+        d_[i][0] = 1.0/denom;
+        denom += 2.0;
+    }
+
+    /* Tabulate the gamma function from t(=wval)=0.1, to 12.0. */
+    d2jmax1 = 2.0*(n1-1) + 1.0;
+    r2jmax1 = 1.0/d2jmax1;
+    for (i=1; i<TABLESIZE; i++) {
+        wval = 0.1 * i;
+        d2wval = 2.0 * wval;
+        term = r2jmax1;
+        sum = term;
+        denom = d2jmax1;
+        for (j=2; j<=200; j++) {
+            denom = denom + 2.0;
+            term = term * d2wval / denom;
+            sum = sum + term;
+            if (term <= 1.0e-15) break;
+        }
+        rexpw = exp(-wval);
+
+      /* Fill in the values for the highest j gtable entries (top row). */
+        d_[n1-1][i] = rexpw * sum;
+
+      /* Work down the table filling in the rest of the column. */
+        denom = d2jmax1;
+        for (j=n1 - 2; j>=0; j--) {
+            denom = denom - 2.0;
+            d_[j][i] = (d_[j+1][i]*d2wval + rexpw)/denom;
+        }
+    }
+
+    /* Form some denominators, so divisions can be eliminated below. */
+    denom_ = new double[max+1];
+    denom_[0] = 0.0;
+    for (i=1; i<=max; i++) {
+        denom_[i] = 1.0/(2*i - 1);
+    }
+
+    wval_infinity_ = 2*max + 37.0;
+    itable_infinity_ = (int) (10 * wval_infinity_);
+}
+
+void ERI::int_fjt(double *F, int J, double wval)
+{
+    const double sqrpih =  0.886226925452758;
+    const double coef2 =  0.5000000000000000;
+    const double coef3 = -0.1666666666666667;
+    const double coef4 =  0.0416666666666667;
+    const double coef5 = -0.0083333333333333;
+    const double coef6 =  0.0013888888888889;
+    const double gfac30 =  0.4999489092;
+    const double gfac31 = -0.2473631686;
+    const double gfac32 =  0.321180909;
+    const double gfac33 = -0.3811559346;
+    const double gfac20 =  0.4998436875;
+    const double gfac21 = -0.24249438;
+    const double gfac22 =  0.24642845;
+    const double gfac10 =  0.499093162;
+    const double gfac11 = -0.2152832;
+    const double gfac00 = -0.490;
+
+    double wdif, d2wal, rexpw, /* denom, */ gval, factor, rwval, term;
+    int i, itable, irange;
+
+    /* Compute an index into the table. */
+    /* The test is needed to avoid floating point exceptions for
+    * large values of wval. */
+    if (wval > wval_infinity_) {
+        itable = itable_infinity_;
+    }
+    else {
+        itable = (int) (10.0 * wval);
+    }
+
+    /* If itable is small enough use the table to compute int_fjttable. */
+    if (itable < TABLESIZE) {
+
+        wdif = wval - 0.1 * itable;
+
+      /* Compute fjt for J. */
+        F[J] = (((((coef6 * d_[J+6][itable]*wdif
+            + coef5 * d_[J+5][itable])*wdif
+            + coef4 * d_[J+4][itable])*wdif
+            + coef3 * d_[J+3][itable])*wdif
+            + coef2 * d_[J+2][itable])*wdif
+            -  d_[J+1][itable])*wdif
+            +  d_[J][itable];
+
+      /* Compute the rest of the fjt. */
+        d2wal = 2.0 * wval;
+        rexpw = exp(-wval);
+      /* denom = 2*J + 1; */
+        for (i=J; i>0; i--) {
+        /* denom = denom - 2.0; */
+            F[i-1] = (d2wal*F[i] + rexpw)*denom_[i];
+        }
+    }
+    /* If wval <= 2*J + 36.0, use the following formula. */
+    else if (itable <= 20*J + 360) {
+        rwval = 1.0/wval;
+        rexpw = exp(-wval);
+
+      /* Subdivide wval into 6 ranges. */
+        irange = itable/30 - 3;
+        if (irange == 1) {
+            gval = gfac30 + rwval*(gfac31 + rwval*(gfac32 + rwval*gfac33));
+            F[0] = sqrpih*sqrt(rwval) - rexpw*gval*rwval;
+        }
+        else if (irange == 2) {
+            gval = gfac20 + rwval*(gfac21 + rwval*gfac22);
+            F[0] = sqrpih*sqrt(rwval) - rexpw*gval*rwval;
+        }
+        else if (irange == 3 || irange == 4) {
+            gval = gfac10 + rwval*gfac11;
+            F[0] = sqrpih*sqrt(rwval) - rexpw*gval*rwval;
+        }
+        else if (irange == 5 || irange == 6) {
+            gval = gfac00;
+            F[0] = sqrpih*sqrt(rwval) - rexpw*gval*rwval;
+        }
+        else {
+            F[0] = sqrpih*sqrt(rwval);
+        }
+
+      /* Compute the rest of the int_fjttable from table->d[0]. */
+        factor = 0.5 * rwval;
+        term = factor * rexpw;
+        for (i=1; i<=J; i++) {
+            F[i] = factor * F[i-1] - term;
+            factor = rwval + factor;
+        }
+    }
+    /* For large values of wval use this algorithm: */
+    else {
+        rwval = 1.0/wval;
+        F[0] = sqrpih*sqrt(rwval);
+        factor = 0.5 * rwval;
+        for (i=1; i<=J; i++) {
+            F[i] = factor * F[i-1];
+            factor = rwval + factor;
+        }
+    }
 }
 
 void ERI::compute_shell(int sh1, int sh2, int sh3, int sh4)
@@ -340,262 +516,12 @@ void ERI::compute_quartet(int sh1, int sh2, int sh3, int sh4)
     // Results are in source_
 }
 
-void ERI::determine_combinations()
+void ERI::compute_shell_deriv1(int sh1, int sh2, int sh3, int sh4)
 {
-#if 0
-    int usi, usj, usk, usl;
-    int usi_arr[3], usj_arr[3], usk_arr[3], usl_arr[3];
-    int num_unique_pk = 0;
-    
-    // fprintf(outfile, "ERI::determine_combinations: number of unique shells = %d\n", symmetry_->nunique_shells());
-    for (usi=0; usi<symmetry_->nunique_shells(); ++usi) {
-        for (usj=0; usj<=usi; ++usj) {
-            for (usk=0; usk<=usj; ++usk) {
-                for (usl=0; usl<=usk; ++usl) {
-                    
-                    // Decide what shell quartets out of (ij|kl), (ik|jl), and (il|k) are unique.
-                    usi_arr[0] = usi; usj_arr[0] = usj; usk_arr[0] = usk; usl_arr[0] = usl;
-                    if (usi == usj && usi == usk || usj == usk && usj == usl)
-                        num_unique_pk = 1;
-                    else if (usi == usk || usj == usl) {
-                        num_unique_pk = 2;
-                        usi_arr[1] = usi; usj_arr[1] = usk; usk_arr[1] = usj; usl_arr[1] = usl;
-                    }
-                    else if (usj == usk) {
-                        num_unique_pk = 2;
-                        usi_arr[1] = usi; usj_arr[1] = usl; usk_arr[1] = usj; usl_arr[1] = usk;
-                    }
-                    else if (usi == usj || usk == usl) {
-                        num_unique_pk = 2;
-                        usi_arr[1] = usi; usj_arr[1] = usk; usk_arr[1] = usj; usl_arr[1] = usl;
-                    }
-                    else {
-                        num_unique_pk = 2;
-                        usi_arr[1] = usi; usj_arr[1] = usk; usk_arr[1] = usj; usl_arr[1] = usl;
-                        usi_arr[2] = usi; usj_arr[2] = usl; usk_arr[2] = usj; usl_arr[2] = usk;
-                    }
-                    
-                    // fprintf(outfile, "For (%d%d|%d%d) unique shell quartets are:\n", usi, usj, usk, usl);
-                    for (int i=0; i<num_unique_pk; ++i) {
-                        // fprintf(outfile, "    (%d%d|%d%d)\n", usi_arr[i], usj_arr[i], usk_arr[i], usl_arr[i]);
-                    }
-                }
-            }
-        }
-    }
-#endif
-}
-
-ERIDeriv::ERIDeriv(IntegralFactory* integral, Ref<BasisSet> &bs1, Ref<BasisSet> &bs2, Ref<BasisSet> &bs3, Ref<BasisSet> &bs4) 
-    : TwoBodyInt(integral, bs1, bs2, bs3, bs4)
-{
-    // Initialize libint static data
-    init_libderiv_base();
-    
-    // Figure out some information to initialize libderiv with
-    // 1. Maximum angular momentum
-    int max_am = MAX(MAX(bs1_->max_am(), bs2_->max_am()), MAX(bs3_->max_am(), bs4_->max_am()));
-    // 2. Maximum number of primitive combinations
-    int max_nprim = bs1_->max_nprimitive() * bs2_->max_nprimitive() * bs3_->max_nprimitive() * bs4_->max_nprimitive();
-    // 3. Maximum Cartesian class size
-    max_cart_ = ioff[bs1_->max_am()] * ioff[bs2_->max_am()] * ioff[bs3_->max_am()] * ioff[bs4_->max_am()] +1;
-    
-    // Make sure libint is compiled to handle our max AM
-    if (max_am >= LIBDERIV_MAX_AM1) {
-        fprintf(stderr, "ERROR: ERI - libderiv cannot handle angular momentum this high.\n       Recompile libderiv for higher angular momentum, then recompile this program.\n");
+    if (deriv_ >= 1) {
+        fprintf(stderr, "ERROR - ERI: ERI object not initialized to handle derivatives.\n");
         abort();
     }
-    
-    // Initialize libint
-    init_libderiv1(&libderiv_, max_am, max_nprim, max_cart_-1);
-    
-    size_t size = INT_NCART(bs1_->max_am()) * INT_NCART(bs2_->max_am()) *
-                  INT_NCART(bs3_->max_am()) * INT_NCART(bs4_->max_am());
-
-    natom_ = bs1->molecule()->natom();
-    
-    // Used in pure_transform
-    tformbuf_ = new double[size];
-    memset(tformbuf_, 0, sizeof(double)*size);
-    
-    target_ = new double[3 * natom_ * size];
-    memset(target_, 0, sizeof(double)*size*9);
-    
-    source_ = new double[3 * natom_ * size];
-    memset(source_, 0, sizeof(double)*size*9); 
-    
-    init_fjt(4*max_am + DERIV_LVL);    
-}
-
-ERIDeriv::~ERIDeriv()
-{
-    delete[] tformbuf_;
-    delete[] target_;
-    delete[] source_;
-    delete[] denom_;
-    free_block(d_);
-    free_libderiv(&libderiv_);
-}
-
-void ERIDeriv::init_fjt(int max)
-{
-    int i,j;
-    double denom,d2jmax1,r2jmax1,wval,d2wval,sum,term,rexpw;
-
-    int n1 = max+7;
-    int n2 = TABLESIZE;
-    d_ = block_matrix(n1, n2);
-
-    /* Tabulate the gamma function for t(=wval)=0.0. */
-    denom = 1.0;
-    for (i=0; i<n1; i++) {
-        d_[i][0] = 1.0/denom;
-        denom += 2.0;
-    }
-
-    /* Tabulate the gamma function from t(=wval)=0.1, to 12.0. */
-    d2jmax1 = 2.0*(n1-1) + 1.0;
-    r2jmax1 = 1.0/d2jmax1;
-    for (i=1; i<TABLESIZE; i++) {
-        wval = 0.1 * i;
-        d2wval = 2.0 * wval;
-        term = r2jmax1;
-        sum = term;
-        denom = d2jmax1;
-        for (j=2; j<=200; j++) {
-            denom = denom + 2.0;
-            term = term * d2wval / denom;
-            sum = sum + term;
-            if (term <= 1.0e-15) break;
-        }
-        rexpw = exp(-wval);
-
-      /* Fill in the values for the highest j gtable entries (top row). */
-        d_[n1-1][i] = rexpw * sum;
-
-      /* Work down the table filling in the rest of the column. */
-        denom = d2jmax1;
-        for (j=n1 - 2; j>=0; j--) {
-            denom = denom - 2.0;
-            d_[j][i] = (d_[j+1][i]*d2wval + rexpw)/denom;
-        }
-    }
-
-    /* Form some denominators, so divisions can be eliminated below. */
-    denom_ = new double[max+1];
-    denom_[0] = 0.0;
-    for (i=1; i<=max; i++) {
-        denom_[i] = 1.0/(2*i - 1);
-    }
-
-    wval_infinity_ = 2*max + 37.0;
-    itable_infinity_ = (int) (10 * wval_infinity_);
-}
-
-void ERIDeriv::int_fjt(double *F, int J, double wval)
-{
-    const double sqrpih =  0.886226925452758;
-    const double coef2 =  0.5000000000000000;
-    const double coef3 = -0.1666666666666667;
-    const double coef4 =  0.0416666666666667;
-    const double coef5 = -0.0083333333333333;
-    const double coef6 =  0.0013888888888889;
-    const double gfac30 =  0.4999489092;
-    const double gfac31 = -0.2473631686;
-    const double gfac32 =  0.321180909;
-    const double gfac33 = -0.3811559346;
-    const double gfac20 =  0.4998436875;
-    const double gfac21 = -0.24249438;
-    const double gfac22 =  0.24642845;
-    const double gfac10 =  0.499093162;
-    const double gfac11 = -0.2152832;
-    const double gfac00 = -0.490;
-
-    double wdif, d2wal, rexpw, /* denom, */ gval, factor, rwval, term;
-    int i, itable, irange;
-
-    /* Compute an index into the table. */
-    /* The test is needed to avoid floating point exceptions for
-    * large values of wval. */
-    if (wval > wval_infinity_) {
-        itable = itable_infinity_;
-    }
-    else {
-        itable = (int) (10.0 * wval);
-    }
-
-    /* If itable is small enough use the table to compute int_fjttable. */
-    if (itable < TABLESIZE) {
-
-        wdif = wval - 0.1 * itable;
-
-      /* Compute fjt for J. */
-        F[J] = (((((coef6 * d_[J+6][itable]*wdif
-            + coef5 * d_[J+5][itable])*wdif
-            + coef4 * d_[J+4][itable])*wdif
-            + coef3 * d_[J+3][itable])*wdif
-            + coef2 * d_[J+2][itable])*wdif
-            -  d_[J+1][itable])*wdif
-            +  d_[J][itable];
-
-      /* Compute the rest of the fjt. */
-        d2wal = 2.0 * wval;
-        rexpw = exp(-wval);
-      /* denom = 2*J + 1; */
-        for (i=J; i>0; i--) {
-        /* denom = denom - 2.0; */
-            F[i-1] = (d2wal*F[i] + rexpw)*denom_[i];
-        }
-    }
-    /* If wval <= 2*J + 36.0, use the following formula. */
-    else if (itable <= 20*J + 360) {
-        rwval = 1.0/wval;
-        rexpw = exp(-wval);
-
-      /* Subdivide wval into 6 ranges. */
-        irange = itable/30 - 3;
-        if (irange == 1) {
-            gval = gfac30 + rwval*(gfac31 + rwval*(gfac32 + rwval*gfac33));
-            F[0] = sqrpih*sqrt(rwval) - rexpw*gval*rwval;
-        }
-        else if (irange == 2) {
-            gval = gfac20 + rwval*(gfac21 + rwval*gfac22);
-            F[0] = sqrpih*sqrt(rwval) - rexpw*gval*rwval;
-        }
-        else if (irange == 3 || irange == 4) {
-            gval = gfac10 + rwval*gfac11;
-            F[0] = sqrpih*sqrt(rwval) - rexpw*gval*rwval;
-        }
-        else if (irange == 5 || irange == 6) {
-            gval = gfac00;
-            F[0] = sqrpih*sqrt(rwval) - rexpw*gval*rwval;
-        }
-        else {
-            F[0] = sqrpih*sqrt(rwval);
-        }
-
-      /* Compute the rest of the int_fjttable from table->d[0]. */
-        factor = 0.5 * rwval;
-        term = factor * rexpw;
-        for (i=1; i<=J; i++) {
-            F[i] = factor * F[i-1] - term;
-            factor = rwval + factor;
-        }
-    }
-    /* For large values of wval use this algorithm: */
-    else {
-        rwval = 1.0/wval;
-        F[0] = sqrpih*sqrt(rwval);
-        factor = 0.5 * rwval;
-        for (i=1; i<=J; i++) {
-            F[i] = factor * F[i-1];
-            factor = rwval + factor;
-        }
-    }
-}
-
-void ERIDeriv::compute_shell(int sh1, int sh2, int sh3, int sh4)
-{
     // Need to ensure the ordering asked by the user is valid for libint
     // compute_quartet does NOT check this. SEGFAULTS should occur if order
     // is not guaranteed.
@@ -661,7 +587,7 @@ void ERIDeriv::compute_shell(int sh1, int sh2, int sh3, int sh4)
     }
 }
 
-void ERIDeriv::compute_quartet(int sh1, int sh2, int sh3, int sh4)
+void ERI::compute_quartet_deriv1(int sh1, int sh2, int sh3, int sh4)
 {
     Ref<GaussianShell> s1, s2, s3, s4;
     
@@ -860,3 +786,4 @@ void ERIDeriv::compute_quartet(int sh1, int sh2, int sh3, int sh4)
 
     // Results are in source_
 }
+

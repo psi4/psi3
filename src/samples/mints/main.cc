@@ -127,7 +127,7 @@ int main (int argc, char * argv[])
     #endif
     
     // This code block is for testing the basis set and one electron integral codes.
-    //#if 0
+    #if 0
     {
         // Create a basis set object and have it initialize itself using the checkpoint file
         Ref<BasisSet> basis(new BasisSet(chkpt));
@@ -165,7 +165,7 @@ int main (int argc, char * argv[])
         for (int i=0; i<3*3*natom; ++i)
             o1[i]->print();        
     }
-    //#endif
+    #endif
     
     // This code block is for running MP2
     #if 0
@@ -331,7 +331,7 @@ int main (int argc, char * argv[])
     #endif
     
     // This block of code is testing ERI derivatives
-    #if 0
+    //#if 0
     {
         // Create a basis set object and have it initialize itself using the checkpoint file
         Ref<BasisSet> basis(new BasisSet(chkpt));
@@ -356,14 +356,14 @@ int main (int argc, char * argv[])
 
         // Initialize an integral object
         Ref<IntegralFactory> integral(new IntegralFactory(basis, basis, basis, basis));
-        Ref<TwoBodyInt> eri = integral->eri_deriv();
+        Ref<TwoBodyInt> eri = integral->eri(1);
 
         const double *buffer = eri->buffer();
 
         fprintf(outfile, "  Computing integral derivatives..."); fflush(outfile);
 
         int nshell = basis->nshell();
-        FILE *ints_out = fopen("matrix.integral_derivatives", "w");
+        FILE *ints_out = fopen("mints.integral_derivatives", "w");
 
         for (int P = 0; P < nshell; P++) {
             int nump = basis->shell(P)->nfunction();
@@ -408,7 +408,7 @@ int main (int argc, char * argv[])
         fclose(ints_out);
         fprintf(outfile, "done.\n"); fflush(outfile);
     }
-    #endif
+    //#endif
     
     // Shut down psi. 
     timer_done();

@@ -33,6 +33,10 @@ protected:
     double *source_;
     /// Maximum number of unique quartets needed to compute a set of SO's
     int max_unique_quartets_;
+    /// Number of atoms.
+    int natom_;
+    /// Derivative level.
+    int deriv_;
     
     void permute_target(double *s, double *t, int sh1, int sh2, int sh3, int sh4, bool p12, bool p34, bool p13p24);
     void permute_1234_to_1243(double *s, double *t, int nbf1, int nbf2, int nbf3, int nbf4);
@@ -47,7 +51,8 @@ protected:
                const Ref<BasisSet>& bs1,
                const Ref<BasisSet>& bs2,
                const Ref<BasisSet>& bs3,
-               const Ref<BasisSet>& bs4);
+               const Ref<BasisSet>& bs4,
+               int deriv = 0);
                
 public:
     virtual ~TwoBodyInt();

@@ -156,11 +156,8 @@ public:
     virtual Ref<OneBodyInt> quadrupole();
     
     /// Returns an ERI integral object
-    virtual Ref<TwoBodyInt> eri();
+    virtual Ref<TwoBodyInt> eri(int deriv=0);
 
-    /// Returns an ERI integral derivative object
-    virtual Ref<TwoBodyInt> eri_deriv();
-    
     /// Initializes spherical harmonic transformations
     virtual void init_spherical_harmonics(int max_am);
     

@@ -65,14 +65,9 @@ Ref<OneBodyInt> IntegralFactory::quadrupole()
     return new QuadrupoleInt((IntegralFactory*)this, bs1_, bs2_);
 }
 
-Ref<TwoBodyInt> IntegralFactory::eri()
+Ref<TwoBodyInt> IntegralFactory::eri(int deriv)
 {
-    return new ERI((IntegralFactory*)this, bs1_, bs2_, bs3_, bs4_);
-}
-
-Ref<TwoBodyInt> IntegralFactory::eri_deriv()
-{
-    return new ERIDeriv((IntegralFactory*)this, bs1_, bs2_, bs3_, bs4_);
+    return new ERI((IntegralFactory*)this, bs1_, bs2_, bs3_, bs4_, deriv);
 }
 
 void IntegralFactory::init_spherical_harmonics(int max_am)
