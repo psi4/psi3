@@ -94,11 +94,30 @@ double Molecule::nuclear_repulsion_energy()
     
     for (int i=1; i<natom(); ++i) {
         for (int j=0; j<i; ++j) {
-            e += charge(i) * charge(j) / (xyz(i).distance(xyz(j)));
+            e += Z(i) * Z(j) / (xyz(i).distance(xyz(j)));
         }
     }
     
     return e;
+}
+
+double* Molecule::nuclear_repulsion_energy_deriv1()
+{
+    double *de = new double[3*natom()];
+    
+    memset(de, 0, sizeof(double)*3*natom());
+    for (int i=1; i<natom(); ++i) {
+        for (int j=0; j<natom(); ++j) {
+            if (i != j) {
+                double temp = pow((xyz(i).distance(xyz(j))), 3.0);
+                de[3*i+0] -= (x(i) - x(j)) * Z(i) * Z(j) / temp;
+                de[3*i+1] -= (y(i) - y(j)) * Z(i) * Z(j) / temp;
+                de[3*i+2] -= (z(i) - z(j)) * Z(i) * Z(j) / temp;
+            }
+        }
+    }
+    
+    return de;
 }
 
 void Molecule::translate(const Vector3& r)

@@ -61,6 +61,12 @@ public:
     int natom() const { return natoms_; }
     /// Nuclear charge of atom
     int Z(int atom) const { return atoms_[atom].Z; }
+    // x position of atom
+    double x(int atom) const { return atoms_[atom].x; }
+    // y position of atom
+    double y(int atom) const { return atoms_[atom].y; }
+    // z position of atom
+    double z(int atom) const { return atoms_[atom].z; }
     /// Return reference to atom_info struct for atom
     const atom_info &r(int atom) const { return atoms_[atom]; }
     /// Return copy of atom_info for atom
@@ -81,6 +87,9 @@ public:
     Vector3 center_of_mass() const;
     /// Computes nuclear repulsion energy
     double nuclear_repulsion_energy();
+    /// Computes number repulsion energy derivatives. Free with delete[]
+    double* nuclear_repulsion_energy_deriv1();
+    
     /// Returns the nuclear contribution to the dipole moment
     SimpleVector nuclear_dipole_contribution();
     /// Returns the nuclear contribution to the quadrupole moment
