@@ -54,51 +54,26 @@ public:
     void compute_shell_deriv1(int, int, int, int);
 };
 
-class ERIDeriv : public TwoBodyInt
-{
-    Libderiv_t libderiv_;
-    
-    void compute_quartet(int, int, int, int);
-    
-    void init_fjt(int);
-    void int_fjt(double *, int, double);
-    
-    int natom_;
-    
-    double **d_;
-    double *denom_;
-    double wval_infinity_;
-    int itable_infinity_;
-    
+class ERI3C {
+   Ref<ERI> eri_;
 public:
-    //! Constructor. Use an IntegralFactory to create this object.
-    ERIDeriv(IntegralFactory*, Ref<BasisSet> &, Ref<BasisSet> &, Ref<BasisSet> &, Ref<BasisSet> &);
-    ~ERIDeriv();
-    
-    /// Compute ERI derivative between 4 shells. Result is stored in buffer
-    void compute_shell(int, int, int, int);
+   ERI3C(IntegralFactory*, Ref<BasisSet> &, Ref<BasisSet> &, Ref<BasisSet> &);
+   
+   /// Compute 3-center ERI between 3 shells. Result is store in buffer.
+   void compute_shell(int, int, int);
+   
+   /// Basis set on center one
+   Ref<BasisSet> basis() { return eri_->basis(); }
+   /// Basis set on center one
+   Ref<BasisSet> basis1()  { return eri_->basis1(); }
+   /// Basis set on center two
+   Ref<BasisSet> basis2()  { return eri_->basis2(); }
+   /// Basis set on center three (it is a modified form of what was actually sent in)
+   Ref<BasisSet> basis3()  { return eri_->basis3(); }
+   
+   /// Buffer where the integrals are placed
+   const double *buffer() const { return eri_->buffer(); };
 };
-
-//class ERI3C {
-//    Ref<ERI> eri_;
-//public:
-//    ERI3C(IntegralFactory*, Ref<BasisSet> &, Ref<BasisSet> &, Ref<BasisSet> &);
-//    
-//    /// Compute 3-center ERI between 3 shells. Result is store in buffer.
-//    void compute_shell(int, int, int);
-//    
-//    /// Basis set on center one
-//    Ref<BasisSet> basis() { return eri_->basis(); }
-//    /// Basis set on center one
-//    Ref<BasisSet> basis1()  { return eri_->basis1(); }
-//    /// Basis set on center two
-//    Ref<BasisSet> basis2()  { return eri_->basis2(); }
-//    /// Basis set on center three (it is a modified form of what was actually sent in)
-//    Ref<BasisSet> basis3()  { return eri_->basis3(); }
-//    
-//    /// Buffer where the integrals are placed
-//    const double *buffer() const { return eri_->buffer(); };
-//};
 
 }
 
