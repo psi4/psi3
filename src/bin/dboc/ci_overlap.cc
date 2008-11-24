@@ -78,6 +78,7 @@ CIOverlap::compute()
 	  for(int t=1;t<nthreads_;++t)
 	    pthread_join(threads[t], NULL);
 	  delete[] threads;
+	  delete[] objids;
 
 	}
       }
