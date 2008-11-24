@@ -45,14 +45,14 @@ double ** block_matrix(unsigned long int n, unsigned long int m)
     if(!m || !n) return((double **) NULL);
 
     if ((A = (double **) malloc(n * (unsigned long int)sizeof(double *)))==NULL) {
-         fprintf(stderr,"block_matrix: trouble allocating memory \n");
-         fprintf(stderr,"n = %ld\n",n);
+         fprintf(stderr,"block_matrix: trouble allocating memory for row pointers\n");
+         fprintf(stderr,"nrow = %ld\n",n);
          exit(PSI_RETURN_FAILURE);
          }
 
     if ((B = (double *) malloc(m*n * (unsigned long int)sizeof(double)))==NULL) {
-         fprintf(stderr,"block_matrix: trouble allocating memory \n");
-         fprintf(stderr,"m = %ld\n",m);
+         fprintf(stderr,"block_matrix: trouble allocating memory\n");
+         fprintf(stderr,"nrow = %ld ncol = %ld\n",n,m);
          exit(PSI_RETURN_FAILURE);
          }
 
