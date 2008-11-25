@@ -179,13 +179,13 @@ StringBlockedMatrix::read(int brablk, int ketblk)
     current_ketblk_ = ketblk;
     
     psio_address junk;
-    const char* bkey = key(brablk,ketblk).c_str();
+    const std::string bkey = key(brablk,ketblk);
+    const char* bkey_cstr = bkey.c_str();
     int errcod = psio_read(psio_unit_,
-			   bkey,
+			   bkey_cstr,
 			   reinterpret_cast<char*>(buffer_[0]),
 			   blksize_,
 			   PSIO_ZERO,
 			   &junk);
-    //delete[] bkey;
   }
 }
