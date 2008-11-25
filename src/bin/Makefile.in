@@ -1,9 +1,6 @@
  
 .PHONY:	default all install depend clean dclean targetclean
 
-# Needed in order for $(RUBYLINK) to work below
-include MakeVars
-
 subdirs = \
 psi3 input cints cscf transqt transqt2 optking \
 ccsort ccenergy cctriples cchbar cclambda ccdensity cceom ccresponse \
@@ -11,7 +8,8 @@ clag cphf detcas detcasman detci geom mp2 mp2r12 oeprop psiclean \
 mocube localize stable response cis dboc extrema intder mcscf psimrcc nonbonded \
 
 # Only compile/link psirb if Ruby was found
-ifeq ($(RUBYLINK),yes)
+HAVE_RUBY=@HAVE_RUBY@
+ifeq ($(HAVE_RUBY),yes)
 subdirs += psirb
 endif
 

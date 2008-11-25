@@ -73,7 +73,7 @@ CXXDEPEND = $(CXX)
 # Flags for Ruby location
 RUBYLIB = @RUBYLIB@
 RUBYINC = @RUBYINC@
-RUBYLINK = @RUBYLINK@
+HAVE_RUBY = @HAVE_RUBY@
 RUBYLDFLAGS = @RUBYLDFLAGS@
 
 # flags to be passed to compilers

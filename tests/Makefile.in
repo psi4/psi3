@@ -43,8 +43,8 @@ scf+d-freq \
 psi_start \
 
 # Only test if psirb was compiled
-RUBYLINK = @RUBYLINK@
-ifeq ($(RUBYLINK),yes)
+HAVE_RUBY = @HAVE_RUBY@
+ifeq ($(HAVE_RUBY),yes)
 subdirs += $(rb_subdirs)
 endif
 

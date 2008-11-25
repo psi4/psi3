@@ -23,7 +23,9 @@ AC_CONFIG_AUX_DIR(bin)
 AC_CANONICAL_TARGET
 AC_PREFIX_DEFAULT(/usr/local/psi)
 
-AC_PROG_MAKE_SET([])
+AC_PROG_MAKE_SET()
+# Psi now is primarily C++
+AC_LANG([C++])
 
 srcdir=`(cd $srcdir; pwd)`
 
@@ -501,50 +503,64 @@ CXXDEF="$CXXDEF -DHAVE_CSTDDEF=$HAVE_CSTDDEF"
 ####################
 #  Check for Ruby  #
 ####################
-RUBYLIB=""
-CHECKRUBY="yes"
-AC_ARG_WITH(ruby-lib,[  --with-ruby-lib         which Ruby library to use (-Ldir1 -lruby_red)],[
-case $withval in
-  yes)
-	CHECKRUBY="yes"
-    ;;
-  no)
-    RUBYLIB=''
-	RUBYLINK="no"
-	CHECKRUBY="no"
-    ;;
-  *)
-    RUBYLIB="$withval"
-	RUBYLINK="yes"
-	CHECKRUBY="no"
-    ;;
-esac
-])
-if test $CHECKRUBY = yes; then
-	AC_CHECK_LIB(ruby-static,ruby_init,[RUBYLIB="-lruby-static" RUBYLINK="yes"],[RUBYLIB="" RUBYLINK="no"])
-fi
-
+HAVE_RUBY="no"
 RUBYINC=""
 CHECKRUBY="yes"
 AC_ARG_WITH(ruby-include,[  --with-ruby-include     where to look for Ruby headers (-Idir1 -Idir2 etc.)],[
 case $withval in
   yes)
-	CHECKRUBY="yes"
     ;;
   no)
-    RUBYINC=""
-	RUBYLINK="no"
-	CHECKRUBY="no"
+        CHECKRUBY="no"
     ;;
   *)
-    RUBYINC="$withval"
-	RUBYLINK="yes"
-	CHECKRUBY="no"
+        RUBYINC="$withval"
     ;;
 esac
 ])
-if test $CHECKRUBY = yes; then
-	AC_CHECK_HEADER(ruby.h,[RUBYINC="" RUBYLINK="yes"],[RUBYINC="" RUBYLINK="no"])
+if test X$CHECKRUBY = Xyes; then
+        REF_CPPFLAGS=$CPPFLAGS CPPFLAGS="$REF_CPPFLAGS $RUBYINC"
+        AC_CHECK_HEADER(ruby.h,[HAVE_RUBY="yes"],[HAVE_RUBY="no"])
+        CPPFLAGS=$REF_CPPFLAGS
+fi
+
+if test X$HAVE_RUBY = Xyes; then
+  HAVE_RUBY="no"
+  RUBYLIB="-lruby-static"
+  CHECKRUBY="yes"
+  AC_ARG_WITH(ruby-lib,[  --with-ruby-lib         which Ruby library to use (-Ldir1 -lruby_red)],[
+  case $withval in
+  yes)
+    ;;
+  no)
+	CHECKRUBY="no"
+    ;;
+  *)
+        RUBYLIB="$withval"
+    ;;
+  esac
+  ])
+  if test $CHECKRUBY = yes; then
+  AC_MSG_CHECKING([for ruby_init])
+  REF_LIBS=$LIBS  LIBS="$RUBYLIB $LIBS"
+  REF_CPPFLAGS=$CPPFLAGS CPPFLAGS="$REF_CPPFLAGS $RUBYINC"
+  AC_LINK_IFELSE(
+    AC_LANG_PROGRAM(
+      [[#include <ruby.h>
+      ]],
+      [[
+        void (*funcptr)() = ruby_init;
+        funcptr();
+      ]]
+      ),
+    HAVE_RUBY=yes
+    AC_MSG_RESULT(yes),
+    HAVE_RUBY=no
+    AC_MSG_RESULT(no)
+  )
+  LIBS=$REF_LIBS
+  CPPFLAGS=$REF_CPPFLAGS
+  fi
 fi
 
 #########################################################################
@@ -562,7 +578,7 @@ case $target_vendor in
 esac
 AC_SUBST(RUBYLIB)
 AC_SUBST(RUBYINC)
-AC_SUBST(RUBYLINK)
+AC_SUBST(HAVE_RUBY)
 AC_SUBST(RUBYLDFLAGS)
 
 ########
@@ -1032,7 +1048,7 @@ AC_CONFIG_FILES([include/Makefile
 
 AC_OUTPUT
 
-if test $RUBYLINK = no; then
+if test $HAVE_RUBY = no; then
 	if test -z $RUBYLIB; then
 		AC_MSG_NOTICE([Unable to locate libruby-static.a will not link the psirb module.])
 	fi
