@@ -85,7 +85,7 @@ void grad_energy(cartesians &carts, internals &simples, salc_set &symm) {
   for (i=0;i<symm.get_num();++i) {
     fprintf(outfile,"Coordinate %d: ",i);
     for (j=0;j<optinfo.points-1;++j)
-      fprintf(outfile,"%15.10lf",energies[++cnt]);
+      fprintf(outfile,"%15.10lf ",energies[++cnt]);
     fprintf(outfile,"\n");
   }
   fflush(outfile);
