@@ -259,14 +259,13 @@ BLAS and LAPACK recommendations when building PSI3:
   require -lg2c to resolve the Fortran I/O calls.  Use of the same gcc
   package for PSI3 should normally resolve this problem.
 
-  (4) The PSI3 configure script can conveniently identify and use
-  several different BLAS and LAPACK libraries, but its ability to do this
+  (4) The PSI3 configure script can conveniently identify and use several
+  different BLAS and LAPACK libraries, but its ability to do this
   automatically depends on a number of factors, including correspondence
   between the compiler used for PSI3 and the compiler used to build
-  BLAS/LAPACK, and placement of the libraries in commonly searched
-  directories, among others.  PSI3's configure script will find your BLAS
-  and LAPACK if any of the the following are installed in standard
-  locations (e.g. /usr/local/lib):
+  BLAS/LAPACK, placement of the libraries in commonly searched directories,
+  etc. PSI3's configure script will find your BLAS and LAPACK if any of the
+  the following are installed in standard locations (e.g. /usr/local/lib):
 
     (a) ATLAS: libf77blas.a and libatlas.a, plus netlib's liblapack.a
     (b) MKL: libmkl.so and libmkl_lapack64.a (with the Intel compilers)
@@ -316,7 +315,7 @@ V. Miscellaneous architecture-specific notes
  * Mac OS 10.X:
 
    (1) The compilation requires a developer's toolkit (Xcode) from apple.com.
-   Note that a fortran compiler is not needed for PSI 3.3 on Mac OS X systems.
+   Note that a fortran compiler is not needed for PSI 3.4 on Mac OS X systems.
 
    (2) The libcompat.a library is no longer needed as of 1/24/2008.
 
@@ -332,6 +331,12 @@ V. Miscellaneous architecture-specific notes
    compilation.  Increase your shell's stacksize limit before running "make".
    For csh, for example, this is done using "unlimit stacksize".  [NB: This
    limit appears to have been lifted in Mac OS 10.3.X (Panther).]
+
+   (5) Mac 10.5 users can take advantage of the ruby driver in PSI 3.4 by
+   including the following options on the configure command line:
+
+   --with-ruby-include="-I/System/Library/Frameworks/Ruby.framework/Headers"
+   --with-ruby-lib="-framework Ruby"
 
  * AIX 4.3/5.x in 64-bit environment:
 

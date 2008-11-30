@@ -64,30 +64,18 @@ work you plan for the codes:
   branch, so you should read the SVN manual before attempting this.
 \end{enumerate}
 
-\noindent Fig.~\ref{Fig:svn} provides a schematic of the SVN
-revision-control structure and branch labeling.  Two release branches
-are shown, the current stable branch, named {\tt psi-3-3}, and a
-planned future release, to be named {\tt psi-3-4}.  The tags on the
-branches indicate release points, where bugs have been fixed and the
-code has been or will be exported for public distribution.  As soon as
-a release branch is created, we generate a tag so that we may make
-updates to that version of the code without affecting other branches
-or the main trunk.  The dotted lines in the figure indicate merge
-points: before each public release, changes made to the code on the
-stable release branch will be merged into the main trunk.
-
-% We have adopted the convention that the first tag on a new release
-% branch will be given the suffix, {\tt -rc-1}, for ``release candidate
-% 1'' (i.e., a numbered beta release).  Subsequent tags for new released
-% on the same branch will be updated with {\tt -rc-2}, {\tt -rc-3}, etc.
-% Once the code is appropriately stable to be beyond beta status,
-% release tags will be given the suffix, {\tt -0}, {\tt -1}, etc.,
-% indicating patch levels.  
-
+\noindent Fig.~\ref{Fig:svn} provides a schematic of the SVN revision-control
+structure and branch labeling.  Two release branches are shown, the current
+stable branch, named {\tt psi-3-4}, and a planned future release, to be named
+{\tt psi-3-5}.  The tags on the branches indicate release shapshots, where
+bugs have been fixed and the code has been or will be exported for public
+distribution.  The dotted lines in the figure indicate merge points: just
+prior to each public release, changes made to the code on the stable release
+branch will be merged into the main trunk.
 
 \begin{figure}[h]
 \begin{center}
-\epsfig{file=svn.eps,height=3.5cm}
+\epsfig{file=svn.eps,height=6.5cm}
 \end{center}
 \caption{\PSIthree\ SVN branch structure with examples of branch- and
 release-tag labelling.}
@@ -128,9 +116,9 @@ $\bullet$ To checkout a working copy of the head of the main trunk:
 
 \noindent
 $\bullet$ To check out a working copy of the head of a specific release branch,
-e.g., the branch labelled {\tt psi-3-3}:
+e.g., the branch labelled {\tt psi-3-4}:
 
-{\tt svn co https://sirius.chem.vt.edu/svn/psi3/branches/psi-3-3 psi3}
+{\tt svn co https://sirius.chem.vt.edu/svn/psi3/branches/psi-3-4 psi3}
 
 \noindent Note that subsequent {\tt svn update} commands in this
 working copy will provide updates only on the chosen branch.  Note
@@ -157,7 +145,7 @@ Notes: (a) This will update only the revisions on your current branch;
 \noindent
 $\bullet$ To convert your working copy to the head of a specific branch:
 
-{\tt svn switch https://sirius.chem.vt.edu/svn/psi3/branches/psi-3-3}
+{\tt svn switch https://sirius.chem.vt.edu/svn/psi3/branches/psi-3-4}
 
 \noindent
 $\bullet$ To convert your working copy to the head of the main trunk:
@@ -175,7 +163,7 @@ This will return the SVN directory from which your working copy was
 taken, e.g.,
 
 \noindent
-{\tt URL: https://sirius.chem.vt.edu/svn/psi3/branches/psi-3-3}
+{\tt URL: https://sirius.chem.vt.edu/svn/psi3/branches/psi-3-4}
 
 \noindent
 Some words of advice:
@@ -189,7 +177,7 @@ Some words of advice:
 \item Read the SVN manual.  Seriously.
 \begin{center}
 \htmladdnormallink{{\tt
-http://svnbook.red-bean.com/en/1.2/svn-book.html}}{http://svnbook.red-bean.com/en/1.2/svn-book.html}
+http://svnbook.red-bean.com/}}{http://svnbook.red-bean.com/}
 \end{center}
 \item If you're about to start some significant development or bug-fixes,
 first update your working copy to the latest version on your branch.

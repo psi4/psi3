@@ -241,13 +241,13 @@ modules.
 \subsection{Step 3: Testing}
 
 To execute automatically the ever-growing number of test cases after
-compilation, simply execute "make tests" in the {\tt \$objdir}
+compilation, simply execute ``make tests'' in the {\tt \$objdir}
 directory.  This will run each (relatively small) test case and report
 the results.  Failure of any of the test cases should be reported to
 the developers at \PSIemail. By default, any such failure will stop
 the testing process.  If you desire to run the entire testing suit
-without interruption, execute "make tests TESTFLAGS='-u -q'". Note
-that you must do a "make testsclean" in {\tt \$objdir} to run the test
+without interruption, execute ``make tests TESTFLAGS='-u -q' ''. Note
+that you must do a ``make testsclean'' in {\tt \$objdir} to run the test
 suite again.
 
 \subsection{Step 4: Installation}
@@ -308,17 +308,17 @@ building PSI3:
   need to do similarly for lapack.
 
 \item Perhaps the best choices for BLAS are Kazushige Goto's
-  hand-optimized BLAS ({\tt
-    http://www.tacc.utexas.edu/resources/software/}) and ATLAS ({\tt
-    http://math-atlas.sourceforge.net/}).  These work well on nearly
+  hand-optimized BLAS \\
+({\tt http://www.tacc.utexas.edu/resources/software/}) and ATLAS \\
+({\tt http://math-atlas.sourceforge.net/}).  These work well on nearly
   every achitecture to which the PSI3 developers have access.  On Mac
   OS X systems, however, the {\tt vecLib} package that comes with
   Xcode works well.
 
 \item PSI3 does not require a Fortran compiler, unless the resident
   BLAS and LAPACK libraries require Fortran-based system libraries.
-  If you see compiler complaints about missing symbols like "{\tt
-    do\_fio}" or "{\tt e\_wsfe}", then your libraries were most likely
+  If you see compiler complaints about missing symbols like ``{\tt
+    do\_fio}'' or ``{\tt e\_wsfe}'' then your libraries were most likely
   compiled with g77 or gfortran, which require {\tt -lg2c} to resolve
   the Fortran I/O calls.  Use of the same gcc package for PSI3 should
   normally resolve this problem.
@@ -389,21 +389,11 @@ building PSI3:
   \begin{itemize}
   \item The compilation requires a developer's toolkit (Xcode) from
     {\tt apple.com}.  Note that a fortran compiler is not needed for
-    PSI 3.3 on Mac OS X systems.
+    PSI 3.4 on Mac OS X systems.
 
-  \item The {\tt libcompat.a} library is also needed, but it is not
-    provided in the Xcode toolkit. If you see compiler complaints
-    about missing symbols like {\tt re\_comp} or{\tt re\_exec} then your
-    {\tt -lcompat} is missing or PSI3 is not aware of it.  As of 6
-    April 2007, it can be obtained from Apple's website at:
+  \item The {\tt libcompat.a} library is no longer needed as of 1/24/2008.
 
-{\tt http://www.opensource.apple.com/darwinsource/tarballs/apsl/Libcompat-14.1.tar.gz}
-
-You must sign up for a free developer's account to access the above
-library.  You can identify the library to configure by adding {\tt
-  -}{\tt -with-libs=-lcompat} to the command line.
-
-\item For apple systems, the latest configure script assumes that the
+  \item For apple systems, the latest configure script assumes that the
   {\tt vecLib} will be used for the optimized BLAS and LAPACK
   libraries, unless the user indicates otherwise using the {\tt -}{\tt
     -with-blas} and {\tt -}{\tt -with-lapack} flags to configure.  If
@@ -413,11 +403,16 @@ library.  You can identify the library to configure by adding {\tt
       {\tt -}{\tt -with-blas='-altivec -framework vecLib'} {\tt -}{\tt
         -with-lapack=' '}
 
-    \item Pre Mac OS 10.4: Certain PSI3 codes require significant
+  \item Pre Mac OS 10.4: Certain PSI3 codes require significant
       stackspace for compilation.  Increase your shell's stacksize
       limit before running {\tt make}.  For csh, for example, this is
-      done using "unlimit stacksize".  [NB: This limit appears to have
+      done using ``unlimit stacksize.''  [NB: This limit appears to have
       been lifted starting with Mac OS 10.3.X (Panther).]
+
+  \item Mac 10.5 users can take advantage of the ruby driver in PSI 3.4 by
+   including the following options on the configure command line:
+
+   {\tt -}{\tt -with-ruby-include='-I/System/Library/Frameworks/Ruby.framework/Headers'} {\tt -}{\tt -with-ruby-lib='-framework Ruby'}
 
   \end{itemize}
 
