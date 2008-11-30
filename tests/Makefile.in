@@ -20,7 +20,7 @@ psimrcc_subdirs = psimrcc-sp1
 scf_subdirs   = mcscf-rhf1 mcscf-rohf1 mcscf-twocon1
 
 subdirs = \
-scf-opt scf-opt-fragments scf-opt-fragments2 scf-opt2 scf-opt3 scf-opt4 scf-opt5 scf-opt6 scf-opt7 \
+scf-opt scf-opt-fragments mp2-opt-fragments scf-opt2 scf-opt3 scf-opt4 scf-opt5 scf-opt6 scf-opt7 \
 scf-opt9 scf-opt10 scf-opt11 scf-opt12 \
 scf-opt-numer scf-opt2-numer mp2-opt-numer \
 scf-freq-first-3 scf-freq-first-3a scf-freq-first-5 scf-freq-first-5a \

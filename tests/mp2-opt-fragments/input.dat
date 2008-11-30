@@ -1,0 +1,91 @@
+psi: (
+  label = "D2d conformation of C2H4 dimer"
+  memory = (1000.0 MB)
+  jobtype = opt
+  reference = rhf
+  basis = dz
+  wfn = mp2
+  dertype = first
+  docc = (8 0 4 4)
+  H_update = bofill
+
+% specify the geometry as two fragments
+  nfragments = 2
+
+% the monomer geometries can be z-matrix or cartesian
+  geometry = (
+  (  H   -1.2565985220   -0.9318187367    0.0000000000 )
+  (  C   -0.6835197751    0.0000000000    0.0000000000 )
+  (  C    0.6835197751    0.0000000000    0.0000000000 )
+  (  H    1.2565985220   -0.9318187367    0.0000000000 )
+  (  H    1.2565985220    0.9318187367    0.0000000000 )
+  (  H   -1.2565985220    0.9318187367    0.0000000000 )
+  )
+  geometry2 = (
+  (  H   -1.2565985220   -0.9318187367    0.0000000000 )
+  (  C   -0.6835197751    0.0000000000    0.0000000000 )
+  (  C    0.6835197751    0.0000000000    0.0000000000 )
+  (  H    1.2565985220   -0.9318187367    0.0000000000 )
+  (  H    1.2565985220    0.9318187367    0.0000000000 )
+  (  H   -1.2565985220    0.9318187367    0.0000000000 )
+  )
+
+% Interfragment coordinates are defined in terms of reference points on each fragment.
+% Reference points are specified as linear combinations of atom positions
+% In this case, they are the COM, between 2 trans H's, and 1 of these H's,
+% and they are the same for both fragments.
+  geometry_ref_points =  ((0 1 1 0 0 0) (0 0 0 1 1 0) (0 0 0 0 1 0))
+  geometry2_ref_points = ((0 1 1 0 0 0) (0 0 0 1 1 0) (0 0 0 0 1 0))
+
+% If the reference points are labelled A1, A2, A3, B1, B2, B3, then the
+% interfragment coordinates are given in order and defined as:
+% R       (distance A1-B1)  (or 1/R if fragment_distance_inverse = true) 
+% theta_A (angle A2-A1-B1)
+% theta_B (angle B2-B1-A1)
+% tau     (angle A2-A1-B1-B2)
+% chi_A   (angle A3-A2-A1-B1)
+% chi_B   (angle B3-B2-B1-A1)
+  fragments12 = ( 3.84 90.0 90.0 90.0 0.0 180.0 )
+)
+
+intco: (
+  stre = (
+    (1 1 2)
+    (2 2 6)
+    (3 2 3)
+    (4 3 4)
+    (5 3 5)
+    (6 7 8)
+    (7 8 12)
+    (8 8 9)
+    (9 9 10)
+    (10 9 11)
+  )
+  bend = (
+    (11  3  2  1)
+    (12  3  2  6)
+    (13  2  3  4)
+    (14  2  3  5)
+    (15  9  8  7)
+    (16  9  8 12)
+    (17  8  9 10)
+    (18  8  9 11)
+  )
+  frag = (
+% (id (coordinates on) (fragment A atoms) (fragment B atoms)
+% (fragment A weights) (fragment B weights) )
+% in this case only the R(AB) 1st coordinate is needed for optimization
+    (19 (1 0 0 0 0 0) (1 2 3 4 5 6) (7 8 9 10 11 12)
+         ((0 1 1 0 0 0) (0 0 0 1 1 0) (0 0 0 0 1 0))
+         ((0 1 1 0 0 0) (0 0 0 1 1 0) (0 0 0 0 1 0)) )
+  )
+% you don't have to form symmetric combinations - but it may help
+  symm = (
+    ("A1 " (1 4 7 10))
+    ("A1 " (2 5 6 9))
+    ("A1 " (3 8))
+    ("A1 " (11 13 16 18))
+    ("A1 " (12 14 15 17))
+    ("A1 " (19))
+  )
+)
