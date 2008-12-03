@@ -572,7 +572,7 @@ void ERI::compute_shell_deriv1(int sh1, int sh2, int sh3, int sh4)
     }
     
     // s1, s2, s3, s4 contain the shells to do in libderive order
-    compute_quartet(s1, s2, s3, s4);    // compute 9 sets of integral derivatives
+    compute_quartet_deriv1(s1, s2, s3, s4);    // compute 9 sets of integral derivatives
         
     size_t size = n1 * n2 * n3 * n4;
     // Permute integrals back, if needed
