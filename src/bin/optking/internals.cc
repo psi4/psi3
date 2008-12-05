@@ -425,7 +425,7 @@ internals :: internals(cartesians& carts, int user_intcos)
       int count, Z1, Z2, natom;
       double **atom_dist, **coord_2d, tval;
       int **bonds, id_count=0;
-      int num_bonds, num_nobonds;
+      int num_bonds, num_nobonds, n_connected, n_connected_old;
 
       natom = carts.get_natom();
       coord_2d = carts.get_coord_2d();
@@ -497,10 +497,48 @@ internals :: internals(cartesians& carts, int user_intcos)
         bonds[b][a] = 0;
       }
 
-      /* make sure diatomics are always bonded */
-      if ( (natom == 2) && (!bonds[0][1]) ) {
-        bonds[0][1] = bonds[1][0] = 1;
-      }
+      // if we are taking a geometry step or displacing along internal coordinates, then
+      // check to make sure that all atoms are bonded
+      if (optinfo.mode == MODE_OPT_STEP || optinfo.mode == MODE_DISP_IRREP ||
+          optinfo.mode == MODE_DISP_LOAD) {
+        if (cnt) {
+        int *atoms_connected_to_first = new int[natom];
+        for (i=0;i<natom;++i)
+          atoms_connected_to_first[i] = 0;
+        n_connected = 1;
+        atoms_connected_to_first[0] = 1;
+      
+        do {
+          n_connected_old = n_connected;
+          for (i=0;i<natom;++i) {
+            if (atoms_connected_to_first[i]) {
+              for (j=0;j<natom;++j) {
+                if (!atoms_connected_to_first[j] && bonds[i][j]) { // a new connection
+                  ++n_connected;
+                  atoms_connected_to_first[j] = 1;
+                }
+              }
+            }
+          }
+        }
+        while (n_connected > n_connected_old);
+  
+        n_connected = 0;
+        for (i=0;i<natom;++i)
+          if (atoms_connected_to_first[i]) ++n_connected;
+        
+        if (n_connected != natom) {
+          fprintf(outfile,"\n\t** ERROR - Not all atoms are connected by bonds.\n");
+          fprintf(outfile,"\tYou will need to specify internal coordinates manually.\n");
+          fprintf(outfile,"\n\tAtoms connected to the 1st atom:");
+          for (i=1;i<natom;++i)
+            if (atoms_connected_to_first[i]) fprintf(outfile," %d",i+1);
+          fprintf(outfile,"\n");
+          abort();
+        }
+        delete [] atoms_connected_to_first;
+        }
+      } // end - check to make sure that all atoms are bonded
 
       /* determine stretch internal coordinates */
       id_count = 0; // index the id numbers of internals
