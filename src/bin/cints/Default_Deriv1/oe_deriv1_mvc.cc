@@ -74,9 +74,9 @@ void oe_deriv1_mvc(void) {
     }
   }
 
-  MIX = init_box(max_am+3,max_am+3,0);
-  MIY = init_box(max_am+3,max_am+3,0);
-  MIZ = init_box(max_am+3,max_am+3,0);
+  MIX = init_box(max_am+3,max_am+3,1);
+  MIY = init_box(max_am+3,max_am+3,1);
+  MIZ = init_box(max_am+3,max_am+3,1);
   MIX[0][0][0] = MIY[0][0][0] = MIZ[0][0][0] = 1.0;
 
   /* compute mass-velocity integrals */
