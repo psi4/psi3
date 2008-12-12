@@ -422,18 +422,7 @@ namespace psi {
     void cleanup(void)
     {
       int h;
-      free(moinfo.sopi);
-      free(moinfo.sosym);
-      free(moinfo.mopi);
-      free(moinfo.mosym);
-      free(moinfo.actpi);
-      free(moinfo.actsym);
-      free(moinfo.clsdpi);
-      free(moinfo.openpi);
-      free(moinfo.uoccpi);
-      free(moinfo.frdocc);
-      free(moinfo.fruocc);
-      free(moinfo.core);
+
       for(h=0; h < moinfo.nirreps; h++)
 	free(moinfo.labels[h]);
       free(moinfo.labels);
@@ -453,7 +442,7 @@ namespace psi {
 	  free(moinfo.pitz2corr_one);
 	  free(moinfo.pitz2corr_two);
 	  for(h=0; h < moinfo.nirreps; h++)
-	    free_block(moinfo.C[h]);
+	    if(moinfo.sopi[h] && moinfo.mopi[h]) free_block(moinfo.C[h]);
 	  free(moinfo.C);
 	}
 	else if(params.ref == 2) {
@@ -462,12 +451,27 @@ namespace psi {
 	  free(moinfo.pitz2corr_two_A);
 	  free(moinfo.pitz2corr_two_B);
 	  for(h=0; h < moinfo.nirreps; h++) {
-	    free_block(moinfo.C_a[h]);
-	    free_block(moinfo.C_b[h]);
+            if(moinfo.sopi[h] && moinfo.mopi[h]) {
+	      free_block(moinfo.C_a[h]);
+	      free_block(moinfo.C_b[h]);
+            }
 	  }
 	  free(moinfo.C_a); free(moinfo.C_b);
 	}
       }
+
+      free(moinfo.sopi);
+      free(moinfo.sosym);
+      free(moinfo.mopi);
+      free(moinfo.mosym);
+      free(moinfo.actpi);
+      free(moinfo.actsym);
+      free(moinfo.clsdpi);
+      free(moinfo.openpi);
+      free(moinfo.uoccpi);
+      free(moinfo.frdocc);
+      free(moinfo.fruocc);
+      free(moinfo.core);
     }
 
   } // namespace transqt2
