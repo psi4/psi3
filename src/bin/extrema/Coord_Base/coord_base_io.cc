@@ -25,7 +25,7 @@ void coord_base :: parse_input() {
     errcod = ip_data("EXTREMA_PRINT","%d",&print_lvl,0);
     fprintf(outfile,"\n  PRINT:         %d",print_lvl);
    
-    grad_max = 5;
+    grad_max = 6;
     errcod = ip_data("GRAD_MAX","%d",&grad_max,0);
     fprintf(outfile,"\n  GRAD_MAX:      %d",grad_max);
 

@@ -1,34 +1,21 @@
-% H2O
-%
 psi: (
- check = false
-exec = (
- "input"
- repeat 20
- "cints"
- "cscf"
- "cints --deriv1"
- "extrema"
- end
- "psiclean"
- )
-
-  label = "STO-3G SCF NO2 opt using extrema/zmatrix"
+  label = "STO-3G SCF H2O opt using extrema/zmatrix"
   wfn = scf
+  jobtype = opt
   reference = rhf
+  geomupdate = "extrema"
   dertype = first
-  charge = -1
 
   basis = STO-3G
   zmat = (
     X
-    N 1 1.0
-    O 2 r1$ 1 a1$
-    O 2 r1$ 1 a1$ 3 180.0
+    O 1 1.0
+    H 2 r1$ 1 a1$
+    H 2 r1$ 1 a1$ 3 180.0
   )
   zvars = (
     r1  1.33
-    a1  75.0
+    a1  110.0
   )
 )
 
