@@ -18,6 +18,7 @@
 
 namespace psi { namespace cctriples {
 
+    
     void init_io(int argc, char *argv[]);
     void title(void);
     void get_moinfo(void);
@@ -45,6 +46,25 @@ namespace psi { namespace cctriples {
     void T3_grad_UHF_AAB(void);
     void T3_grad_UHF_BBA(void);
 
+    
+    void T3_UHF_AAA_abc(double ***W, double ***V, int disc, int nirreps, int A, int Ga, int B, int Gb, int C, int Gc, 
+		    dpdbuf4 *C2, dpdbuf4 *F, dpdbuf4 *E, dpdfile2 *C1, dpdbuf4 *D, dpdfile2 *fIA, dpdfile2 *fIJ, dpdfile2 *fAB,
+		    int *occpi, int *occ_off, int *virtpi, int *vir_off, double omega);
+
+    void T3_UHF_AAB_abc(double ***W, double ***V, int disc, int nirreps, 
+		    int I, int Gi, int J, int Gj, int K, int Gk,
+		    dpdbuf4 *T2AA, dpdbuf4 *T2AB, dpdbuf4 *T2BA, dpdbuf4 *FAA, dpdbuf4 *FAB, dpdbuf4 *FBA,
+		    dpdbuf4 *EAA, dpdbuf4 *EAB, dpdbuf4 *EBA, dpdfile2 *T1A, dpdfile2 *T1B, 
+		    dpdbuf4 *DAA, dpdbuf4 *DAB, dpdfile2 *fIA, dpdfile2 *fia, 
+		    dpdfile2 *fIJ, dpdfile2 *fij,dpdfile2 *fAB, dpdfile2 *fab, 
+		    int *aoccpi, int *aocc_off, int *boccpi, int *bocc_off,
+		    int *avirtpi, int *avir_off, int *bvirtpi, int *bvir_off, double omega);
+    void transpose_integrals();
+    void test_abc_loops_AAA();
+    void test_abc_loops_AAB();
+    void test_abc_loops_BBA();
+    void test_abc_loops_BBB();
+
   }} // namespace psi::cctriples
 
 using namespace psi::cctriples;
@@ -71,6 +91,7 @@ int main(int argc, char *argv[])
 
   cachefiles = init_int_array(PSIO_MAXUNIT);
 
+  
   if(params.ref == 0) { /*** RHF ***/
     cachelist = cacheprep_rhf(2, cachefiles);
 
@@ -96,9 +117,11 @@ int main(int argc, char *argv[])
 	    ET + moinfo.ecc + moinfo.eref);
 
     /* Compute triples contributions to the gradient */
-    if(params.dertype == 1) T3_grad_RHF();
+    if(params.dertype == 1){
+	  T3_grad_RHF();
+    }
   }
-  else if(params.ref == 1) { /** ROHF --- don't use this right now! **/
+  else if(params.ref == 1 ) { /** ROHF --- don't use this right now! **/
 
     fprintf(outfile, "\nROHF-CCSD(T) is not yet available...\n");
     exit(PSI_RETURN_FAILURE); 
@@ -117,7 +140,6 @@ int main(int argc, char *argv[])
 	    ET + moinfo.ecc + moinfo.eref);
   }
   else if(params.ref == 2) { /** UHF **/
-
     ETAAA = ET_UHF_AAA();
     fprintf(outfile, "\tAAA (T) energy                = %20.15f\n", ETAAA);
     fflush(outfile);
@@ -140,13 +162,20 @@ int main(int argc, char *argv[])
 	    ET + moinfo.ecc + moinfo.eref);
 
     if(params.dertype==1) {
+
+      transpose_integrals();
+      test_abc_loops_AAA();
+      test_abc_loops_BBB();
+      test_abc_loops_AAB();
+      test_abc_loops_BBA();
+
       fprintf(outfile, "\n\tComputing (T) contributions to CC density...\n");
       fflush(outfile);
       T3_grad_UHF_AAA();
       fprintf(outfile, "\tAAA contributions complete.\n");
       fflush(outfile);
       T3_grad_UHF_BBB();
-      fprintf(outfile, "\tBBB contributions complete.\n");
+      fprintf(outfile, "\tBBB contributions complete.\n");      
       fflush(outfile);
       T3_grad_UHF_AAB();
       fprintf(outfile, "\tAAB contributions complete.\n");
@@ -248,5 +277,6 @@ void exit_io(void)
   tstop(outfile);
   psi_stop(infile,outfile,psi_file_prefix);
 }
+
 
 }} // namespace psi::cctriples
