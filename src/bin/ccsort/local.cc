@@ -28,7 +28,7 @@ namespace psi { namespace ccsort {
 ** local_init(): Set up parameters of local excitation domains.
 **
 ** The orbital domains constructed here are based on those described
-** in Broughton and Pulay, J. Comp. Chem. 14, 736-740 (1993).  The
+** in Boughton and Pulay, J. Comp. Chem. 14, 736-740 (1993).  The
 ** localization of the occupied orbitals is done elsewhere (see the
 ** program "local").  Pair domains are defined as the union of pairs
 ** of single occupied orbital domains.  "Weak pairs", which are
@@ -748,7 +748,7 @@ void local_init(void)
       norm += Rt_full[j][i] * Rt_full[j][i];
     }
     norm = sqrt(norm);
-    if(norm < 0.2 && strcmp(local.freeze_core,"FALSE")) {
+    if(norm < local.core_cutoff && strcmp(local.freeze_core,"FALSE")) {
       fprintf(outfile, "\tNorm of orbital %4d = %20.12f...deleteing\n", i, norm);
       for(j=0; j < nso; j++) Rt_full[j][i] = 0.0; 
     }

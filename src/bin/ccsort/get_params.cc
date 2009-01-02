@@ -99,7 +99,13 @@ void get_params()
   errcod = ip_boolean("LOCAL", &(params.local),0);
   local.cutoff = 0.02;
   errcod = ip_data("LOCAL_CUTOFF", "%lf", &(local.cutoff), 0);
-                                                                                                              
+
+  local.cphf_cutoff = 0.10;
+  ip_data("LOCAL_CPHF_CUTOFF", "%lf", &(local.cphf_cutoff), 0);
+
+  local.core_cutoff = 0.05;
+  ip_data("LOCAL_CORE_CUTOFF", "%lf", &(local.core_cutoff), 0);
+
   if(ip_exist("LOCAL_METHOD",0)) {
     errcod = ip_string("LOCAL_METHOD", &(local.method), 0);
     if(strcmp(local.method,"AOBASIS") && strcmp(local.method,"WERNER")) {
@@ -111,7 +117,7 @@ void get_params()
     local.method = (char *) malloc(7 * sizeof(char));
     sprintf(local.method, "%s", "WERNER");
   }
-                                                                                                                                                                                                                          
+
   if(ip_exist("LOCAL_WEAKP",0)) {
     errcod = ip_string("LOCAL_WEAKP", &(local.weakp), 0);
     if(strcmp(local.weakp,"MP2") && strcmp(local.weakp,"NEGLECT") && strcmp(local.weakp,"NONE")) {
@@ -124,13 +130,10 @@ void get_params()
     sprintf(local.weakp, "%s", "NONE");
   }
 
-  local.cphf_cutoff = 0.10;
-  ip_data("LOCAL_CPHF_CUTOFF", "%lf", &(local.cphf_cutoff), 0);
-                                                                                                              
   local.freeze_core = NULL;
   ip_string("FREEZE_CORE", &local.freeze_core, 0);
   if(local.freeze_core == NULL) local.freeze_core = strdup("FALSE");
-                                                                                                              
+
   if(ip_exist("LOCAL_PAIRDEF",0)){
     errcod = ip_string("LOCAL_PAIRDEF", &(local.pairdef), 0);
     if(strcmp(local.pairdef,"BP") && strcmp(local.pairdef,"RESPONSE")) {
@@ -317,6 +320,7 @@ void get_params()
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
   if(params.local) {
     fprintf(outfile, "\tLocal Cutoff       = %3.1e\n", local.cutoff);
+    fprintf(outfile, "\tLocal Core Cutoff  = %3.1e\n", local.core_cutoff);
     fprintf(outfile, "\tLocal Method      =    %s\n", local.method);
     fprintf(outfile, "\tWeak pairs        =    %s\n", local.weakp);
     fprintf(outfile, "\tFilter singles    =    %s\n", local.filter_singles ? "Yes" : "No");

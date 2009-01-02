@@ -33,6 +33,7 @@ struct Local {
   int filter_singles;
   double weak_pair_energy;
   double cphf_cutoff;
+  double core_cutoff;
   char *freeze_core;
   char *pairdef;
 };
