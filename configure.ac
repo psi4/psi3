@@ -1013,7 +1013,6 @@ AC_CONFIG_FILES([include/Makefile
           tests/dboc-rcisd1/Makefile
           tests/dboc-rocisd1/Makefile
           tests/extrema-zmat/Makefile
-          tests/extrema-zmat/extrema-zmat.pl
           tests/extrema-deloc/Makefile
           tests/extrema-deloc/extrema-deloc.pl
           tests/mcscf-rhf1/Makefile

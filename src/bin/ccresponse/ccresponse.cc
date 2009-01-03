@@ -15,6 +15,7 @@
 #include <libciomr/libciomr.h>
 #include <libdpd/dpd.h>
 #include <libchkpt/chkpt.h>
+#include <libqt/qt.h>
 #include <physconst.h>
 #include <psifiles.h>
 #include "Params.h"
@@ -64,6 +65,9 @@ int main(int argc, char *argv[])
   get_moinfo();
   get_params();
 
+  timer_init();
+  timer_on("CCRESPONSE");
+
   cachefiles = init_int_array(PSIO_MAXUNIT);
 
   if(params.ref == 2) { /*** UHF references ***/
@@ -104,6 +108,9 @@ int main(int argc, char *argv[])
   free(cachefiles);
 
   cleanup();
+
+  timer_off("CCRESPONSE");
+  timer_done();
 
   exit_io();
   exit(PSI_RETURN_SUCCESS);

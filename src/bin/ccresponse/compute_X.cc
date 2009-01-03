@@ -7,6 +7,7 @@
 #include <cstring>
 #include <cmath>
 #include <libdpd/dpd.h>
+#include <libqt/qt.h>
 #include <psifiles.h>
 #include "MOInfo.h"
 #include "Params.h"
@@ -39,6 +40,8 @@ void compute_X(const char *pert, const char *cart, int irrep, double omega)
   double rms, polar, X2_norm;
   char lbl[32];
   dpdbuf4 X2;
+
+  timer_on("compute_X");
 
   fprintf(outfile, "\n\tComputing %s-%1s-Perturbed Wave Function (%5.3f E_h).\n", pert, cart, omega);
   init_X(pert, cart, irrep, omega);
@@ -123,6 +126,8 @@ void compute_X(const char *pert, const char *cart, int irrep, double omega)
   }
 
   /*  print_X(pert, cart, irrep, omega); */
+
+  timer_off("compute_X");
 }
 
 }} // namespace psi::ccresponse

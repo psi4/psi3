@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
+#include <libqt/qt.h>
 #include "MOInfo.h"
 #include "Params.h"
 #include "Local.h"
@@ -60,13 +61,16 @@ void linresp(double **tensor, double A, double B,
       if(!(x_irreps[alpha]^y_irreps[beta])) {
 
 	if(omega_y != 0.0) {  /* we assume omega_x = -omega_y */
+	  timer_on("linear terms");
 	  polar_LCX = LCX(pert_x, cartcomp[alpha], x_irreps[alpha], 
 			  pert_y, cartcomp[beta], y_irreps[beta], omega_y);
 	  polar_LCX += LCX(pert_y, cartcomp[beta], y_irreps[beta], 
 			   pert_x, cartcomp[alpha], x_irreps[alpha], omega_x);
+	  timer_off("linear terms");
 
 	  if(!params.sekino) {
 	    if (!strcmp(params.wfn,"CC2")) {
+	      timer_on("quad terms");
 	      polar_HXY = HXY(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
 			      pert_y, cartcomp[beta], y_irreps[beta], omega_y);
 	      polar_LHX1Y1 = cc2_LHX1Y1(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
@@ -75,8 +79,10 @@ void linresp(double **tensor, double A, double B,
 					pert_y, cartcomp[beta], y_irreps[beta], omega_y);
 	      polar_LHX1Y2 += cc2_LHX1Y2(pert_y, cartcomp[beta], y_irreps[beta], omega_y,
 					 pert_x, cartcomp[alpha], x_irreps[alpha], omega_x);
+	      timer_off("quad terms");
 	    }
 	    else {
+	      timer_on("quad terms");
 	      polar_LHX1Y1 = LHX1Y1(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
 				    pert_y, cartcomp[beta], y_irreps[beta], omega_y);
 	      polar_LHX2Y2 = LHX2Y2(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
@@ -85,16 +91,20 @@ void linresp(double **tensor, double A, double B,
 				    pert_y, cartcomp[beta], y_irreps[beta], omega_y);
 	      polar_LHX1Y2 += LHX1Y2(pert_y, cartcomp[beta], y_irreps[beta], omega_y,
 				     pert_x, cartcomp[alpha], x_irreps[alpha], omega_x);
+	      timer_off("quad terms");
 	    }
 	  }
 	}
 	else {
+	  timer_on("linear terms");
 	  polar_LCX = LCX(pert_x, cartcomp[alpha], x_irreps[alpha], pert_y, cartcomp[beta],
 			  y_irreps[beta], 0.0);
 	  polar_LCX += LCX(pert_y, cartcomp[beta], y_irreps[beta], pert_x, cartcomp[alpha],
 			   x_irreps[alpha], 0.0);
+	  timer_off("linear terms");
 	  if(!params.sekino) {
 	    if (!strcmp(params.wfn,"CC2")) {
+	      timer_on("quad terms");
 	      polar_HXY = HXY(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
 			      pert_y, cartcomp[beta], y_irreps[beta], 0.0);
 	      polar_LHX1Y1 = cc2_LHX1Y1(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
@@ -103,8 +113,10 @@ void linresp(double **tensor, double A, double B,
 					pert_y, cartcomp[beta], y_irreps[beta], 0.0);
 	      polar_LHX1Y2 += cc2_LHX1Y2(pert_y, cartcomp[beta], y_irreps[beta], 0.0,
 					 pert_x, cartcomp[alpha], x_irreps[alpha], 0.0);
+	      timer_off("quad terms");
 	    }
 	    else {
+	      timer_on("quad terms");
 	      polar_LHX1Y1 = LHX1Y1(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
 				    pert_y, cartcomp[beta], y_irreps[beta], 0.0);
 	      polar_LHX2Y2 = LHX2Y2(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
@@ -113,6 +125,7 @@ void linresp(double **tensor, double A, double B,
 				    pert_y, cartcomp[beta], y_irreps[beta], 0.0);
 	      polar_LHX1Y2 += LHX1Y2(pert_y, cartcomp[beta], y_irreps[beta], 0.0,
 				     pert_x, cartcomp[alpha], x_irreps[alpha], 0.0);
+	      timer_off("quad terms");
 	    }
 	  }
 	}
