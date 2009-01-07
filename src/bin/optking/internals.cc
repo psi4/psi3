@@ -145,7 +145,7 @@ internals :: internals(int *size_arr) : stre(size_arr[0]), bend(size_arr[1]),
 internals :: internals(cartesians& carts, int user_intcos)
            : stre(), bend(), tors(), out(), lin_bend(), frag() {
 
-    int i,I,j,k,a,b,c,d,e,cnt,lin, type_count=0;
+    int i,I,j,k,a,b,c,d,e,cnt,lin, type_count=0,dim,A_P,B_P;
     int cnt_stre, cnt_bend, cnt_tors, cnt_out, cnt_lin_bend, cnt_frag;
     int cnt_lin1_bend, cnt_lin2_bend, na, nb;
     double *v, dot;
@@ -358,8 +358,9 @@ internals :: internals(cartesians& carts, int user_intcos)
               fprintf(outfile,"Fragment %d has weights of wrong dimension\n", i+1);
               exit(2);
             }
-            frag.set_A_P(i,3);
-            frag.set_B_P(i,3);
+            A_P = B_P = 3;
+            frag.set_A_P(i,A_P);
+            frag.set_B_P(i,B_P);
 
             // allocate all extra memory for fragment
             frag.allocate_one(i);
@@ -367,9 +368,17 @@ internals :: internals(cartesians& carts, int user_intcos)
             // read what coordinates are on
             ip_count("FRAG",&a,2,i,1);
             if (a != 6) throw("Coordinate-on (second) part of Fragment %d must have dimension 6.\n",i+1);
-            for (I=0; I<6;++I) {
+            for (dim=0, I=0; I<6;++I) {
               ip_boolean("FRAG",&a,3,i,1,I);
               frag.set_coord_on(i,I,a);
+              if (a) ++dim;
+            }
+            // if only interfragment stretch, then use only 1 reference atom
+            ip_boolean("FRAG",&a,3,i,1,0);
+            if (a && (dim == 1)) {
+              A_P = B_P = 1;
+              frag.set_A_P(i,A_P);
+              frag.set_B_P(i,B_P);
             }
 
             // read what atoms are in each fragment
@@ -384,7 +393,7 @@ internals :: internals(cartesians& carts, int user_intcos)
 
             // read in weights for fragment A - make the absolute sum of the coefficients 1
             v = new double[na];
-            for (j=0;j<3;++j) {
+            for (j=0;j<A_P;++j) {
               ip_count("FRAG",&a,3,i,4,j);
               if (a != na) throw("Fragment A has weights of wrong dimension\n");
               for (a=0;a<na;++a)
@@ -401,7 +410,7 @@ internals :: internals(cartesians& carts, int user_intcos)
 
             // read in weights for fragment B - make the absolute sum of the coefficients 1
             v = new double[nb];
-            for (j=0;j<3;++j) {
+            for (j=0;j<B_P;++j) {
               ip_count("FRAG",&b,3,i,5,j);
               if (b != nb) throw("Fragment A has weights of wrong dimension\n");
               for (b=0;b<nb;++b)

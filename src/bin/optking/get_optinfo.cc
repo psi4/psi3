@@ -84,6 +84,8 @@ void get_optinfo() {
     fprintf(outfile,"Freeze_intrafragment option not yet working - try Fix_intrafragment or Fix_interfragment instead.");
     optinfo.freeze_intrafragment = 0;
   }
+  optinfo.analytic_interfragment = 1;
+  ip_boolean("ANALYTIC_INTERFRAGMENT", &(optinfo.analytic_interfragment),0);
 
   /* print options */
   optinfo.print_simples = 0;
@@ -284,6 +286,7 @@ void get_optinfo() {
     fprintf(outfile,"bt_max_dq_conv:    %.1e\n",optinfo.bt_dq_conv);
     fprintf(outfile,"bt_max_dx_conv:    %.1e\n",optinfo.bt_dx_conv);
     fprintf(outfile,"freeze_intrafragment:    %d\n",optinfo.freeze_intrafragment);
+    fprintf(outfile,"analytic_interfragment:   %d\n",optinfo.analytic_interfragment);
     fprintf(outfile,"cos_tors_near_1_tol:     %10.6e\n",
         optinfo.cos_tors_near_1_tol);
     fprintf(outfile,"cos_tors_near_neg1_tol: %10.6e\n",

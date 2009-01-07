@@ -62,7 +62,7 @@ print_mat(ref_A,P_A,3,outfile);
 fprintf(outfile,"\tCoordinates for reference points on fragment B (initial) \n");
 print_mat(ref_B,P_B,3,outfile);
 fprintf(outfile,"\tInterfragment coordinates:\n");
-fprintf(outfile,"\t(1/)R_AB:%10.5f, theta_A:%10.5f, theta_B:%10.5f\n", R_AB, theta_A, theta_B);
+fprintf(outfile,"\t    R_AB:%10.5f, theta_A:%10.5f, theta_B:%10.5f\n", R_AB, theta_A, theta_B);
 fprintf(outfile,"\t     tau:%10.5f,   phi_A:%10.5f,   phi_B:%10.5f\n", tau, phi_A, phi_B);
 
   /* compute B1-B2 distance, B2-B3 distance, and B1-B2-B3 angle */

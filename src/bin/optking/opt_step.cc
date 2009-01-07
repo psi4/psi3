@@ -41,14 +41,17 @@ extern double **compute_H(internals &simples, salc_set &symm, double **P, cartes
 
 int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
-  int xyz, i,j,k,ii,a,b, dim, dim_carts, success,nbfgs, nsimples, constraint, nf;
-  int *frag_atom, *frag_allatom, frag, cnt;
+  int xyz, i,j,k,ii,a,b, dim, dim_carts, success,nbfgs, nsimples, constraint,cnt;
   double **B, **G, **G2, **G_inv, **H_inv, **temp_mat, **u, **P;
   double **C, **T, **T2, **T3, R_AB, theta_A, theta_B, tau, phi_A, phi_B;
   double *temp_arr2, *temp_arr, *masses, **geom, *forces;
   double *f, *f_q, *dq, *dq_to_new_geom, *q, tval, tval2, scale, temp, *djunk;
-  double **geom_A, **geom_B;
   char *disp_label, *wfn, value_string[30], force_string[30];
+
+  // for analytic interfragment coordinates
+  int isalc, I, simple_id, intco_type, sub_index, sub_index2, atom;
+  double **geom_A, **geom_B, **weight_A, **weight_B;
+  double inter_q[6];
 
   dim_carts = carts.get_natom()*3;
   djunk = new double[dim_carts];
@@ -354,108 +357,111 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
   printf("Energy: %15.10lf MAX force: %6.2e RMS force: %6.2e\n",carts.get_energy(),tval2,tval);
 
-// compute new geometry analytically
-  if (optinfo.freeze_intrafragment) {
+  if (optinfo.analytic_interfragment) { // do interfragment steps analytically
+
+    for (isalc=0; isalc<symm.get_num(); ++isalc) {
+     
+      // find any interfragment coordinate sets
+      simple_id = symm.get_simple(isalc,0);
+      simples.locate_id(simple_id,&intco_type,&sub_index,&sub_index2);
+      // only execute for single (non-salc) interfragment coordinates
+      if ( (symm.get_length(isalc) != 1) || (intco_type != FRAG_TYPE) ) continue;
+      // only execute this code once for each fragment pair
+      // assume this one time is for the distance coordinate entry
+      if (sub_index2 != 0) continue;
+      // don't do analytic steps unless all reference points (and all coordinates) are present
+      // because we may have to fix their values in orient_fragment even if we are not optmizing
+      // with them
+      if ( (simples.frag.get_A_P(sub_index) != 3) || (simples.frag.get_B_P(sub_index) != 3) )
+        continue;
+
+      for (cnt=0, I=0; I<6; ++I) {
+        inter_q[I] = 0;
+        if ( simples.frag.get_coord_on(sub_index,I) ) {
+          inter_q[I] = dq[isalc + cnt];
+          dq[isalc + cnt] = 0; // so that back-transformation code if used, doesn't change q again
+          ++cnt;
+        }
+      }
+
+      // limit step sizes some more ?
 /*
-    int simple, intco_type, sub_index, sub_index2, J, simple_b;
-    int A_natom, B_natom, *A_atom, *B_atom;
-    int *frag_atom, *frag_allatom;
-
-    for (i=0;i<symm.get_num();++i) { // check coordinates
-      if (symm.get_length(i) != 1) {
-        printf("Only simple coordinates can be used with freeze_intrafragment\n");
-        exit(PSI_RETURN_FAILURE);
+      if (!optinfo.frag_dist_rho && (fabs(inter_q[0] > 0.2))) {
+        fprintf(outfile,"Limiting change in coordinate %d to 0.2 angstroms.\n",simple_id);
+        inter_q[0] = 0.2 * inter_q[0] / fabs(inter_q[0]);
       }
-      simple = symm.get_simple(i,0);
-      simples.locate_id(simple,&intco_type,&sub_index,&sub_index2);
-      if (intco_type != FRAG_TYPE) {
-        printf("Only inter-fragment coordinates can be used with freeze_intrafragment\n");
-        exit(PSI_RETURN_FAILURE);
-      }
-      J = simples.frag.get_J(sub_index);
-      if (J==0) { // max step is 0.2 angstroms in RAB
-        tval = fabs(dq[i]);
-        if (!optinfo.frag_dist_rho && (tval > 0.2)) {
-          fprintf(outfile,"Limiting change in coordinate %d to 0.2 angstroms.\n",simple);
-          dq[i] = dq[i] * (0.2/tval);
-        }
-      } else { // max step is 10 degrees - this seems to really help!
-        tval = fabs(dq[i]*180.0/_pi);
-        if ( tval > 10.0 ) {
-          fprintf(outfile,"Limiting change in coordinate %d to 10 degrees.\n",simple);
-          dq[i] = dq[i] * (10.0/tval);
+      for (I=1;I<6;++I) {
+        if ( fabs(inter_q[I])*180.0/_pi > 10.0) {
+          fprintf(outfile,"Limiting change in coordinate %d to 10 degrees.\n",simple_id);
+          inter_q[I] = 10.0/180.0*_pi * inter_q[I] / fabs(inter_q[I]);
         }
       }
-    }
-
-    geom = carts.get_coord_2d();
-    nf = optinfo.nfragment;
-
-    frag_atom = (int *) malloc(nf*sizeof(int));
-    frag_allatom = (int *) malloc(nf*sizeof(int));
-    frag_atom[0] = frag_allatom[0] = 0;
-    for (i=1; i<nf; ++i) {
-      frag_atom[i] = frag_atom[i-1] + optinfo.natom_per_fragment[i-1];
-      frag_allatom[i] = frag_allatom[i-1] + optinfo.natom_per_fragment[i-1];
-    }
-
-    cnt = symm.get_num();
-    for (frag=1; frag<optinfo.nfragment; ++frag) {
-
-      a = optinfo.natom_per_fragment[frag-1];
-      b = optinfo.natom_per_fragment[frag];
-      geom_A = block_matrix(a,3);
-      geom_B = block_matrix(b,3);
-      for (i=0;i<a;++i)
-        for (xyz=0;xyz<3;++xyz)
-          geom_A[i][xyz] = geom[frag_atom[frag-1]+i][xyz];
-      for (i=0;i<b;++i)
-        for (xyz=0;xyz<3;++xyz)
-          geom_B[i][xyz] = geom[frag_atom[frag]+i][xyz];
-
-      R_AB = theta_A = theta_B = tau = phi_A = phi_B = 0.0;
-      if (cnt > 0) R_AB    = q[6*(frag-1)+0] + dq[6*(frag-1)+0];
-      --cnt;
-      if (cnt > 0) theta_A = q[6*(frag-1)+1] + dq[6*(frag-1)+1];
-      --cnt;
-      if (cnt > 0) theta_B = q[6*(frag-1)+2] + dq[6*(frag-1)+2];
-      --cnt;
-      if (cnt > 0) tau     = q[6*(frag-1)+3] + dq[6*(frag-1)+3];
-      --cnt;
-      if (cnt > 0) phi_A   = q[6*(frag-1)+4] + dq[6*(frag-1)+4];
-      --cnt;
-      if (cnt > 0) phi_B   = q[6*(frag-1)+5] + dq[6*(frag-1)+5];
-      --cnt;
-
-      R_AB /= _bohr2angstroms;
-      theta_A *= 180.0/_pi; 
-      theta_B *= 180.0/_pi; 
-      tau *= 180.0/_pi; 
-      phi_A *= 180.0/_pi; 
-      phi_B *= 180.0/_pi; 
-
-      orient_fragment(a, b, optinfo.nref_per_fragment[frag-1], optinfo.nref_per_fragment[frag],
-        geom_A, geom_B, optinfo.fragment_coeff[frag-1], optinfo.fragment_coeff[frag],
-        R_AB, theta_A, theta_B, tau, phi_A, phi_B, outfile);
-
-      for (i=0; i<b; ++i)
-        for (xyz=0; xyz<3; ++xyz)
-          geom[frag_atom[frag]+i][xyz] = geom_B[i][xyz];
-
-       free_block(geom_A);
-       free_block(geom_B);
-    }
-    symmetrize_geom(geom[0]);
-    carts.set_coord(geom[0]);
-    carts.print(PSIF_CHKPT,outfile,0,disp_label,0);
-    fprintf(outfile,"\nNew Cartesian Geometry in a.u.\n");
-    carts.print(1, outfile,0, disp_label, 0);
 */
-  } /* if freeze_intrafragment */
-  else { /* use iterative backtransformation */
+
+      // calculate new coordinates
+      for (cnt=0, I=0; I<6; ++I) {
+        if ( simples.frag.get_coord_on(sub_index,I) )
+          inter_q[I] += q[isalc + cnt++];
+      }
+      if (optinfo.frag_dist_rho)
+        inter_q[0]  = 1.0 / inter_q[0];
+      inter_q[0]  /= _bohr2angstroms;
+      for (I=1; I<6; ++I) inter_q[I] *= 180.0/_pi; 
+
+      // get geometries of fragments
+      geom = carts.get_coord_2d();
+
+      a = simples.frag.get_A_natom(sub_index);
+      geom_A = block_matrix(a,3);
+      for (atom=0;atom<a;++atom)
+        for (xyz=0;xyz<3;++xyz)
+          geom_A[atom][xyz] = geom[simples.frag.get_A_atom(sub_index,atom)][xyz];
+
+      b = simples.frag.get_B_natom(sub_index);
+      geom_B = block_matrix(b,3);
+      for (atom=0;atom<b;++atom)
+        for (xyz=0;xyz<3;++xyz)
+          geom_B[atom][xyz] = geom[simples.frag.get_B_atom(sub_index,atom)][xyz];
+
+      // get reference point information for fragments
+      weight_A = block_matrix(3,a);
+      for (cnt=0; cnt<simples.frag.get_A_P(sub_index); ++cnt)
+        for (atom=0;atom<a;++atom)
+          weight_A[cnt][atom] = simples.frag.get_A_weight(sub_index,cnt,atom);
+
+      weight_B = block_matrix(3,b);
+      for (cnt=0; cnt<simples.frag.get_B_P(sub_index); ++cnt)
+        for (atom=0;atom<b;++atom)
+          weight_B[cnt][atom] = simples.frag.get_B_weight(sub_index,cnt,atom);
+
+      fprintf(outfile,"\nAnalytically doing interfragment displacements\n");
+      // move fragment B and put result back into main geometry matrix
+      orient_fragment(a, b, simples.frag.get_A_P(sub_index), simples.frag.get_B_P(sub_index),
+        geom_A, geom_B, weight_A, weight_B, inter_q[0], inter_q[1], inter_q[2], inter_q[3],
+        inter_q[4], inter_q[5], outfile);
+
+      for (atom=0; atom<b; ++atom)
+        for (xyz=0; xyz<3; ++xyz)
+          geom[simples.frag.get_B_atom(sub_index,atom)][xyz] = geom_B[atom][xyz];
+
+      symmetrize_geom(geom[0]);
+      carts.set_coord_2d(geom);
+      free_block(geom);
+      free_block(geom_A); free_block(geom_B);
+      free_block(weight_A); free_block(weight_B);
+    }
+    //fprintf(outfile,"\nNew Cartesian Geometry in a.u. after analytic interfragment steps\n");
+    //carts.print(1, outfile,0, disp_label, 0);
+  } // if analytic_interfragment
+
+  // Do displacements with iterative backtransformation
+  if (!optinfo.freeze_intrafragment) {
 
     for (i=0;i<symm.get_num();++i)
       q[i] += dq[i];
+
+/* fprintf(outfile,"dq values for iterative back-trans\n");
+for (i=0;i<symm.get_num();++i) fprintf(outfile,"%15.10lf\n",dq[i]); */
 
     /* new_geom will overwrite dq so send a copy */
     dq_to_new_geom = init_array(symm.get_num());

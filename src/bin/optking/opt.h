@@ -163,6 +163,7 @@ struct OPTInfo {
   int fix_interfragment;
   int fix_intrafragment;
   int freeze_intrafragment;
+  int analytic_interfragment;
 
 /* Back-transformation parameters */
   int bt_max_iter;

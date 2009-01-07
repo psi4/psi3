@@ -150,12 +150,12 @@ void fragment_class::compute(double *geom) {
   d32B = sqrt( SQR(e32B[0]) +SQR(e32B[1]) +SQR(e32B[2]) );
   R    = sqrt( SQR( eRA[0]) +SQR( eRA[1]) +SQR( eRA[2]) );
 
-  scalar_mult(1/d12A, e12A, 3);
-  scalar_mult(1/d12B, e12B, 3);
-  scalar_mult(1/d32A, e32A, 3);
-  scalar_mult(1/d32B, e32B, 3);
-  scalar_mult(1/R, eRA, 3);
-  scalar_mult(1/R, eRB, 3);
+  if (d12A > 1E-10) scalar_mult(1/d12A, e12A, 3);
+  if (d12B > 1E-10) scalar_mult(1/d12B, e12B, 3);
+  if (d32A > 1E-10) scalar_mult(1/d32A, e32A, 3);
+  if (d32B > 1E-10) scalar_mult(1/d32B, e32B, 3);
+  if (R    > 1E-10) scalar_mult(1/R, eRA, 3);
+  if (R    > 1E-10) scalar_mult(1/R, eRB, 3);
 
   /* compute polar and alpha angles */
   dot_arr(e12A, eRA, 3, &dot);
@@ -322,12 +322,13 @@ void fragment_class::compute_s(int natom, double *geom) {
   d32A = sqrt( SQR(e32A[0]) +SQR(e32A[1]) +SQR(e32A[2]));
   d32B = sqrt( SQR(e32B[0]) +SQR(e32B[1]) +SQR(e32B[2]));
   R    = sqrt( SQR( eRA[0]) +SQR( eRA[1]) +SQR( eRA[2]));
-  scalar_mult(1/d12A, e12A, 3);
-  scalar_mult(1/d12B, e12B, 3);
-  scalar_mult(1/d32A, e32A, 3);
-  scalar_mult(1/d32B, e32B, 3);
-  scalar_mult(1/R , eRA, 3);
-  scalar_mult(1/R , eRB, 3);
+
+  if (d12A > 1e-10) scalar_mult(1/d12A, e12A, 3);
+  if (d12B > 1e-10) scalar_mult(1/d12B, e12B, 3);
+  if (d32A > 1e-10) scalar_mult(1/d32A, e32A, 3);
+  if (d32B > 1e-10) scalar_mult(1/d32B, e32B, 3);
+  if (   R > 1e-10) scalar_mult(1/R , eRA, 3);
+  if (   R > 1e-10) scalar_mult(1/R , eRB, 3);
 
   /* compute polar and alpha angles */
   dot_arr(e12A, eRA, 3, &dot);

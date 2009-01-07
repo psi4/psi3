@@ -47,6 +47,17 @@ class cartesians {
       return;
     }
 
+    void set_coord_2d(double **geom_2d) {
+      int i, xyz, cnt=0;
+      double *tmp_geom;
+      tmp_geom = init_array(3*natom);
+      for (i=0; i<natom; ++i)
+        for (xyz=0; xyz<3; ++xyz)
+          tmp_geom[cnt++] = geom_2d[i][xyz];
+      set_coord(tmp_geom); 
+      free(tmp_geom);
+    }
+
     void set_fcoord(double *geom) {
       int i, cnt, xyz;
       for (i=0; i<nallatom; ++i) {
