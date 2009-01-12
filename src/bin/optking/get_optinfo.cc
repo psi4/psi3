@@ -23,6 +23,7 @@ double power(double x, int y);
 
 void get_optinfo() {
   int a, i, cnt, cnt2, natom, nallatom, errcod;
+  double tval;
   char *junk;
 
   optinfo.iteration = 0;
@@ -152,6 +153,11 @@ void get_optinfo() {
   }
   */
 
+  optinfo.step_limit_cart = STEP_LIMIT_CART;
+  errcod = ip_data("STEP_LIMIT_CART","%lf",&tval,0);
+  if (errcod == IPE_OK)
+    optinfo.step_limit_cart = tval;
+
   /* takes values of 1,2,3 for x,y,z for location of first dummy of linear bend*/
   optinfo.dummy_axis_1 = 2;
   ip_data("DUMMY_AXIS_1","%d",&(optinfo.dummy_axis_1),0);
@@ -273,6 +279,7 @@ void get_optinfo() {
       fprintf(outfile,"H_update:     Bofill\n");
 
     fprintf(outfile,"H_update_use_last: %d\n",optinfo.H_update_use_last);
+    fprintf(outfile,"step_limit_cart: %f\n",optinfo.step_limit_cart);
     fprintf(outfile,"mix_types:     %d\n",optinfo.mix_types);
     fprintf(outfile,"delocalize:    %d\n",optinfo.delocalize);
     fprintf(outfile,"conv:          %.1e\n",optinfo.conv);

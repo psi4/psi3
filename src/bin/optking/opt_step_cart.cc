@@ -129,8 +129,8 @@ int opt_step_cart(cartesians &carts, internals &simples, salc_set &symm) {
   /* scale stepsize */
   scale = 1.0;
   for (i=0;i<dim_carts;++i) {
-    if (fabs(dx[i]) > STEP_LIMIT_CART)
-      scale = STEP_LIMIT_CART / fabs(dx[i]);
+    if (fabs(dx[i]) > optinfo.step_limit_cart)
+      scale = optinfo.step_limit_cart / fabs(dx[i]);
   }
   fprintf(outfile,"\nScaling displacements by %lf\n",scale);
   scalar_mult(scale, dx, dim_carts);

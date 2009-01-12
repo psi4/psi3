@@ -41,7 +41,7 @@ namespace psi { namespace optking {
 #define LABEL_LENGTH (4) // for point group and irrep labels
 /* step size limits */
 #define STEP_LIMIT (0.1)     /* max step size if coord has small value */
-#define STEP_LIMIT_CART (0.3) /* max change in value of one cartesian coordinate if cartesian=true */
+#define STEP_LIMIT_CART (0.3) /* default max change in value of one cartesian coordinate if cartesian=true */
 #define STEP_PERCENT (0.3)   /* if coord large valued, max percentage allowed for step */
 #define NONLINEAR_DIST (1.0E-4) /* designed to exclude angle for CO2 if angle exceeds 179 */
 #define MIN_DQ_STEP (1.0E-12)
@@ -145,6 +145,7 @@ struct OPTInfo {
   double ev_tol;
   double scale_connectivity;
   double disp_size;
+  double step_limit_cart;
   int mix_types;
   int natom;
   int nallatom;
