@@ -315,6 +315,8 @@ void get_params()
   fprintf(outfile, "\tAO Basis        =\t%s\n", params.aobasis);
   fprintf(outfile, "\tMake (ab|cd)    =\t%s\n", 
 	  (params.make_abcd == 1) ? "True" : "False");
+  fprintf(outfile, "\tMake unpacked (ab|cd) =\t%s\n", 
+	  (params.make_unpacked_abcd == 1) ? "True" : "False");
   fprintf(outfile, "\tCache Level     =\t%d\n", params.cachelev);
   fprintf(outfile, "\tCache Type      =\t%s\n", "LRU");
   fprintf(outfile, "\tLocal CC        =     %s\n", params.local ? "Yes" : "No");
