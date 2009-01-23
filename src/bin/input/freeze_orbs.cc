@@ -37,7 +37,7 @@ void freeze_core()
 	/* H - He */
 	if (nuclear_charges[atom] < 2.1)
 	  continue;
-	/* Be - Ne */
+	/* Li - Ne */
 	else if (nuclear_charges[atom] > 2.9 && nuclear_charges[atom] < 10.1)
 	  nfzc++;
 	/* Na - Ar */
