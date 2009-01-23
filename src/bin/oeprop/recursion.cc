@@ -96,9 +96,8 @@ void AI_OSrecurs(double pax, double pay, double paz,
   double u = gamma*(pcx*pcx + pcy*pcy + pcz*pcz);
   double *F;
   
-  F = init_array(mmax+1);
-  calc_f(F,mmax,u);
-
+  F = init_array((int) (mmax+1));
+  calc_f(F,(int) mmax,u);
 
 	/* Computing starting integrals for recursion */
 

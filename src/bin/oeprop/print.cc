@@ -9,6 +9,8 @@
 
 namespace psi { namespace oeprop {
 
+double F_Zalpha(double Z_alpha);
+
 void print_intro()
 { 
   fprintf(outfile,"    **********************************************\n");
@@ -404,7 +406,7 @@ void print_esp()
 void print_misc()
 {
   int i,j,k;
-  double energy;
+  double tval, energy;
 
   fprintf(outfile," --------------------------------------------------------------\n");
   fprintf(outfile,"                *** Miscellaneous properties ***\n");
@@ -416,13 +418,28 @@ void print_misc()
   fprintf(outfile,"    Total one-electron MVD terms :   %12.15lf\n",massveloc+darw);
   fprintf(outfile,"\n");
 
-  if (print_lvl >= PRINTDARWINCOMPLEVEL ) {
+  if ((print_lvl >= PRINTDARWINCOMPLEVEL) || (QED_darwin)) {
     fprintf(outfile," -One-electron Darwin term per atom : \n\n");
     for (i=0; i<natom; ++i)
       fprintf(outfile,"    Atom %d: %12.15lf\n", i+1, darw_per_atom[i]);
-    free(darw_per_atom);
     fprintf(outfile,"\n");
   }
+
+  if (QED_darwin) {
+    fprintf(outfile," -QED correction relative to one-electron Darwin term per atom : \n\n");
+    for(i=0;i<natom;i++) {
+      tval = 2 * (fine_structure_alpha/_c_au) / _pi * \
+        (F_Zalpha(zvals[i]*fine_structure_alpha) - 4.0/15.0);
+      fprintf(outfile,"    Atom %d: %12.15lf\n", i+1, tval);
+      darw_per_atom[i] += darw_per_atom[i] * tval;
+    }
+    fprintf(outfile,"\n");
+    darw = 0.0;
+    for(i=0;i<natom;i++) /* recompute darwin term to add in QED */
+      darw += darw_per_atom[i];
+    fprintf(outfile," -Updating darwin energy (%15.10lf) to include QED correction\n",darw);
+  }
+  free(darw_per_atom);
 
   if (update_energy_with_MVD) {
     chkpt_init(PSIO_OPEN_OLD);
@@ -430,7 +447,8 @@ void print_misc()
     energy = energy + massveloc + darw;
     chkpt_wt_etot(energy);
     chkpt_close();
-    fprintf(outfile," -Updating total energy (%15.10lf) in chkpt file with MVD correction\n\n", energy);
+    fprintf(outfile," -Updating total energy (%15.10lf) in chkpt file with MVD correction\n", energy);
+    if (QED_darwin) fprintf(outfile," -(yes, including QED term)\n");
   }
 
   if (mpmax > 1) {

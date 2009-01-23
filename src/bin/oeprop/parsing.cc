@@ -147,6 +147,9 @@ void parsing()
 
   fine_structure_alpha = 1.0;
   errcod = ip_data("FINE_STRUCTURE_ALPHA","%lf",&fine_structure_alpha,0);
+
+  QED_darwin = 0;
+  errcod = ip_boolean("QED_DARWIN",&QED_darwin,0);
 }
 
 }} // namespace psi::oeprop

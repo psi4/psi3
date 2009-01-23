@@ -82,7 +82,7 @@ int main(int argc, char* argv[]) {
  
  /* Computing total charge of the system */
 
- charge = 0;
+ double charge = 0;
  for(i=0;i<nirreps;i++)
    charge -= 2*clsdpi[i] + openpi[i];
  for(i=0;i<natom;i++)

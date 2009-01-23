@@ -225,6 +225,7 @@ EXTERN char *wfn;             /* wavefunction type */
 EXTERN char *ref;             /* reference type */
 EXTERN int update_energy_with_MVD; /* update energy in file 1? for SCF_MVD optimizations */
 EXTERN double fine_structure_alpha; /* multiply relativisitic terms by this */
+EXTERN int QED_darwin; /* scale atomic contributions to get QED correction */
 
 }} // namespace psi::oeprop
 
