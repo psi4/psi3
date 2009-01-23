@@ -1,6 +1,6 @@
 /*! \file
     \ingroup INPUT
-    \brief Enter brief description of file here 
+    \brief Enter brief description of file here
 */
 #define EXTERN
 #include <cstdio>
@@ -34,11 +34,11 @@ void freeze_core()
 
       nfzc = 0;
       for(atom=0; atom<num_atoms; atom++) {
-	/* H - Be */
-	if (nuclear_charges[atom] < 4.1)
+	/* H - He */
+	if (nuclear_charges[atom] < 2.1)
 	  continue;
-	/* B - Ne */
-	else if (nuclear_charges[atom] > 4.9 && nuclear_charges[atom] < 10.1)
+	/* Be - Ne */
+	else if (nuclear_charges[atom] > 2.9 && nuclear_charges[atom] < 10.1)
 	  nfzc++;
 	/* Na - Ar */
 	else if (nuclear_charges[atom] > 10.9 && nuclear_charges[atom] < 18.1)
