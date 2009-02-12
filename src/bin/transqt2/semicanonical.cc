@@ -37,7 +37,7 @@ void semicanonical_fock(void)
 {
   int h, p, q, i, j, a, b, I, J, A, B;
   int stat, cnt;
-  int *offset, *aoccpi, *boccpi, *avirtpi, *bvirtpi;
+  int *mo_offset, *so_offset, *aoccpi, *boccpi, *avirtpi, *bvirtpi;
   double **D_a, **D_b, **fock_a, **fock_b;
   double **X;
   double ***Foo, ***Fvv;
@@ -61,8 +61,10 @@ void semicanonical_fock(void)
     bvirtpi[h] = moinfo.uoccpi[h] + moinfo.openpi[h];
   }
   
-  offset = init_int_array(nirreps);
-  for(h=1; h < nirreps; h++) offset[h] = offset[h-1] + moinfo.sopi[h-1];
+  so_offset = init_int_array(nirreps);
+  mo_offset = init_int_array(nirreps);
+  for(h=1; h < nirreps; h++) mo_offset[h] = mo_offset[h-1] + moinfo.mopi[h-1];
+  for(h=1; h < nirreps; h++) so_offset[h] = so_offset[h-1] + moinfo.sopi[h-1];
 
   /* build the SO-basis alpha and beta densities from the ROHF eigenvector */
   chkpt_init(PSIO_OPEN_OLD);
@@ -72,13 +74,13 @@ void semicanonical_fock(void)
   D_a = block_matrix(nso, nso);
   D_b = block_matrix(nso, nso);
   for(h=0; h < nirreps; h++) {
-    for(p=offset[h]; p < offset[h]+moinfo.sopi[h]; p++) {
-      for(q=offset[h]; q < offset[h]+moinfo.sopi[h]; q++) {
+    for(p=so_offset[h]; p < so_offset[h]+moinfo.sopi[h]; p++) {
+      for(q=so_offset[h]; q < so_offset[h]+moinfo.sopi[h]; q++) {
 
-	for(i=offset[h]; i < offset[h]+aoccpi[h]; i++)
+	for(i=mo_offset[h]; i < mo_offset[h]+aoccpi[h]; i++)
           D_a[p][q] += C[p][i] * C[q][i];
 
-	for(i=offset[h]; i < offset[h]+boccpi[h]; i++)
+	for(i=mo_offset[h]; i < mo_offset[h]+boccpi[h]; i++)
 	  D_b[p][q] += C[p][i] * C[q][i];
       }
     }
@@ -111,7 +113,7 @@ void semicanonical_fock(void)
   Foo = (double ***) malloc(nirreps * sizeof(double **));
   Fvv = (double ***) malloc(nirreps * sizeof(double **));
   X = block_matrix(nmo, nmo);
-  C_a = block_matrix(nmo, nmo);
+  C_a = block_matrix(nso, nmo);
   alpha_evals = init_array(nmo);
   cnt = 0;
   for(h=0; h < nirreps; h++) {
@@ -119,12 +121,12 @@ void semicanonical_fock(void)
     Foo[h] = block_matrix(aoccpi[h], aoccpi[h]);
     Fvv[h] = block_matrix(avirtpi[h], avirtpi[h]);
 
-    for(i=offset[h],I=0; i < offset[h]+aoccpi[h]; i++,I++)
-      for(j=offset[h],J=0; j < offset[h]+aoccpi[h]; j++,J++)
+    for(i=mo_offset[h],I=0; i < mo_offset[h]+aoccpi[h]; i++,I++)
+      for(j=mo_offset[h],J=0; j < mo_offset[h]+aoccpi[h]; j++,J++)
 	Foo[h][I][J] = fock_a[i][j];
 
-    for(a=offset[h]+aoccpi[h],A=0; a < offset[h]+moinfo.sopi[h]; a++,A++)
-      for(b=offset[h]+aoccpi[h],B=0; b < offset[h]+moinfo.sopi[h]; b++,B++)
+    for(a=mo_offset[h]+aoccpi[h],A=0; a < mo_offset[h]+moinfo.mopi[h]; a++,A++)
+      for(b=mo_offset[h]+aoccpi[h],B=0; b < mo_offset[h]+moinfo.mopi[h]; b++,B++)
         Fvv[h][A][B] = fock_a[a][b];
 
     if(aoccpi[h]) {
@@ -138,8 +140,8 @@ void semicanonical_fock(void)
       free(evals);
       free(work);
 
-      for(i=offset[h],I=0; i < offset[h]+aoccpi[h]; i++,I++)
-	for(j=offset[h],J=0; j < offset[h]+aoccpi[h]; j++,J++)
+      for(i=mo_offset[h],I=0; i < mo_offset[h]+aoccpi[h]; i++,I++)
+	for(j=mo_offset[h],J=0; j < mo_offset[h]+aoccpi[h]; j++,J++)
 	  X[i][j] = Foo[h][J][I];
     }
 
@@ -154,8 +156,8 @@ void semicanonical_fock(void)
       free(evals);
       free(work);
 
-      for(a=offset[h]+aoccpi[h],A=0; a < offset[h]+moinfo.sopi[h]; a++,A++)
-	for(b=offset[h]+aoccpi[h],B=0; b < offset[h]+moinfo.sopi[h]; b++,B++)
+      for(a=mo_offset[h]+aoccpi[h],A=0; a < mo_offset[h]+moinfo.mopi[h]; a++,A++)
+	for(b=mo_offset[h]+aoccpi[h],B=0; b < mo_offset[h]+moinfo.mopi[h]; b++,B++)
 	  X[a][b] = Fvv[h][B][A];
     }
 
@@ -175,22 +177,22 @@ void semicanonical_fock(void)
   Foo = (double ***) malloc(nirreps * sizeof(double **));
   Fvv = (double ***) malloc(nirreps * sizeof(double **));
   X = block_matrix(nmo, nmo);
-  C_b = block_matrix(nmo, nmo);
+  C_b = block_matrix(nso, nmo);
   beta_evals = init_array(nmo);
   cnt = 0;
   for(h=0; h < nirreps; h++) {
     /* leave the frozen core orbitals alone */
-    for(i=offset[h]; i < offset[h]+moinfo.frdocc[h]; i++) X[i][i] = 1.0;
+    for(i=mo_offset[h]; i < mo_offset[h]+moinfo.frdocc[h]; i++) X[i][i] = 1.0;
 
     Foo[h] = block_matrix(boccpi[h], boccpi[h]);
     Fvv[h] = block_matrix(bvirtpi[h], bvirtpi[h]);
 
-    for(i=offset[h],I=0; i < offset[h]+boccpi[h]; i++,I++)
-      for(j=offset[h],J=0; j < offset[h]+boccpi[h]; j++,J++)
+    for(i=mo_offset[h],I=0; i < mo_offset[h]+boccpi[h]; i++,I++)
+      for(j=mo_offset[h],J=0; j < mo_offset[h]+boccpi[h]; j++,J++)
 	Foo[h][I][J] = fock_b[i][j];
 
-    for(a=offset[h]+boccpi[h],A=0; a < offset[h]+moinfo.sopi[h]; a++,A++)
-      for(b=offset[h]+boccpi[h],B=0; b < offset[h]+moinfo.sopi[h]; b++,B++)
+    for(a=mo_offset[h]+boccpi[h],A=0; a < mo_offset[h]+moinfo.mopi[h]; a++,A++)
+      for(b=mo_offset[h]+boccpi[h],B=0; b < mo_offset[h]+moinfo.mopi[h]; b++,B++)
 	Fvv[h][A][B] = fock_b[a][b];
 
     if(boccpi[h]) {
@@ -204,8 +206,8 @@ void semicanonical_fock(void)
       free(evals);
       free(work);
 
-      for(i=offset[h],I=0; i < offset[h]+boccpi[h]; i++,I++)
-	for(j=offset[h],J=0; j < offset[h]+boccpi[h]; j++,J++)
+      for(i=mo_offset[h],I=0; i < mo_offset[h]+boccpi[h]; i++,I++)
+	for(j=mo_offset[h],J=0; j < mo_offset[h]+boccpi[h]; j++,J++)
 	  X[i][j] = Foo[h][J][I];
     }
 
@@ -220,8 +222,8 @@ void semicanonical_fock(void)
       free(evals);
       free(work);
 
-      for(a=offset[h]+boccpi[h],A=0; a < offset[h]+moinfo.sopi[h]; a++,A++)
-	for(b=offset[h]+boccpi[h],B=0; b < offset[h]+moinfo.sopi[h]; b++,B++)
+      for(a=mo_offset[h]+boccpi[h],A=0; a < mo_offset[h]+moinfo.mopi[h]; a++,A++)
+	for(b=mo_offset[h]+boccpi[h],B=0; b < mo_offset[h]+moinfo.mopi[h]; b++,B++)
 	  X[a][b] = Fvv[h][B][A];
     }
 
@@ -255,9 +257,9 @@ void semicanonical_fock(void)
     fflush(outfile);
     
     fprintf(outfile, "\nAlpha Eigenvectors\n");
-    print_mat(C_a, nmo, nmo, outfile);
+    print_mat(C_a, nso, nmo, outfile);
     fprintf(outfile, "\nBeta Eigenvectors\n");
-    print_mat(C_b, nmo, nmo, outfile);
+    print_mat(C_b, nso, nmo, outfile);
   }
   
   free_block(C_a);
@@ -265,7 +267,8 @@ void semicanonical_fock(void)
   free_block(C);
   free(alpha_evals);
   free(beta_evals);
-  free(offset);
+  free(mo_offset);
+  free(so_offset);
 }
  
 
