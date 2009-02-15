@@ -61,8 +61,8 @@ namespace psi { namespace CINTS {
     chunk_rad_in = chunk->spheres[0].r*bragg;
     chunk_rad_out = chunk->spheres[chunk->size-1].r*bragg;
     
-    bzero(DFT_options.close_shell_info.close_shells_per_am
-	  ,sizeof(int)*max_am);
+    //bzero(DFT_options.close_shell_info.close_shells_per_am ,sizeof(int)*max_am);
+    memset((void *)DFT_options.close_shell_info.close_shells_per_am, '\0', sizeof(int)*max_am);
     
     DFT_options.close_shell_info.num_close_aos = 0;
     

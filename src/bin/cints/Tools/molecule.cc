@@ -5,6 +5,10 @@
 #include<cstdio>
 #include<cmath>
 #include<cstdlib>
+/* isnan and isinf are defined here in IBM C/C++ compilers */
+#ifdef __IBMCPP__
+#include<math.h> 
+#endif
 #include<libciomr/libciomr.h>
 #include<libchkpt/chkpt.h>
 #include<libint/libint.h>
@@ -86,10 +90,14 @@ void compute_enuc()
 	     (Molecule.centers[i].z-Molecule.centers[j].z);
 	oor = 1.0/sqrt(r2);
         Z1Z2 = Molecule.centers[i].Z_nuc*Molecule.centers[j].Z_nuc;
+#ifdef __IBMCPP__
+        if (isnan(oor) || isinf(oor)) {
+#else
 #ifdef HAVE_FUNC_ISINF
         if (std::isnan(oor) || std::isinf(oor)) {
 #elif HAVE_FUNC_FINITE
         if (std::isnan(oor) || !std::finite(oor)) {
+#endif
 #endif
           if (fabs(Z1Z2) != 0.0)
             throw std::domain_error("compute_enuc -- charges too close to each other");
