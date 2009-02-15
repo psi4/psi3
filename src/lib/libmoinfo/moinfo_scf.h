@@ -10,6 +10,8 @@
 
 #include "moinfo_base.h"
 
+namespace psi {
+
 class MOInfoSCF : public MOInfoBase {
 public:
   MOInfoSCF();
@@ -20,5 +22,7 @@ private:
 };
   
 extern MOInfoSCF  *moinfo_scf;
+
+}
 
 #endif // _psi_src_lib_libmoinfo_moinfo_scf_h_

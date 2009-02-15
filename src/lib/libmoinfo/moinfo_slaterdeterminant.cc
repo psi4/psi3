@@ -5,6 +5,8 @@ extern FILE *infile, *outfile;
 
 using namespace std;
 
+namespace psi {
+
 MOInfo::SlaterDeterminant::SlaterDeterminant()
 {
 }
@@ -186,4 +188,6 @@ char MOInfo::SlaterDeterminant::get_occupation_symbol(int i)
   if((occupation==1) && bits.test(i))   return('+');
   if((occupation==1) && bits.test(i+moinfo->get_nmo())) return('-');
   return(' ');
+}
+
 }

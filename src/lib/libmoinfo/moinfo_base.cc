@@ -15,6 +15,8 @@ extern FILE *outfile;
 
 using namespace std;
 
+namespace psi {
+
 MOInfoBase::MOInfoBase()
 {
   startup();
@@ -236,4 +238,6 @@ void MOInfoBase::correlate(char *ptgrp, int irrep, int& nirreps_old, int& nirrep
     fprintf(outfile,"Point group unknown for correlation table.\n");
   }
   return;
+}
+
 }

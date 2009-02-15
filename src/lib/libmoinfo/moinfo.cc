@@ -20,6 +20,8 @@ extern FILE *outfile;
 
 using namespace std;
 
+namespace psi {
+
 MOInfo::MOInfo() : MOInfoBase()
 {
   /***************
@@ -422,4 +424,6 @@ void MOInfo::free_memory_mo_spaces()
 
   delete[] is_act_in_occ;
   delete[] is_act_in_vir;
+}
+
 }

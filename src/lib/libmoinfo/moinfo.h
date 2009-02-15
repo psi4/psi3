@@ -14,6 +14,8 @@
 #define MRCC_ON_DISK 100
 #define MRCC_SO_INTS 101
 
+namespace psi {
+
 enum spin                 {alpha, beta};
 enum scftype              {rhf,uhf,rohf,tcscf};
 
@@ -313,5 +315,7 @@ private:
 };
 
 extern MOInfo  *moinfo;
+
+}
 
 #endif // _psi_src_lib_libmoinfo_moinfo_h_

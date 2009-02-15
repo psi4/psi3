@@ -12,6 +12,8 @@ extern FILE *outfile;
 
 using namespace std;
 
+namespace psi {
+
 void MOInfo::print_model_space()
 {
   fprintf(outfile,"\n");
@@ -318,4 +320,6 @@ vector<string> MOInfo::get_matrix_names(std::string str)
   }else 
     names.push_back(str);
   return(names);
+}
+
 }

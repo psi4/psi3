@@ -16,6 +16,8 @@
 
 #include <libutil/libutil.h>
 
+namespace psi {
+
 class MOInfoBase{
 public:
   MOInfoBase();
@@ -79,58 +81,6 @@ protected:
   char**      irr_labs;
 };
 
+}
+
 #endif // _psi_src_lib_libmoinfo_moinfo_base_h_
-
-/*
-
-    MOInfoBase();
-  MOInfoBase(std::string moinfo_prefix);
-  ~MOInfoBase();
-  MOInfoBase();
-  MOInfoBase(std::string moinfo_prefix);
-  ~MOInfoBase();
-  
-  void        print();
-
-  // Basic PSI variables
-  int         get_nirreps()                      const {return(nirreps);}
-  int         get_nso()                          const {return(nso);}
-  int         get_nael()                         const {return(nael);}
-  int         get_nbel()                         const {return(nbel);}
-  
-  int*        get_sopi()                         const {return(sopi);}
-  int         get_sopi(int h)                    const {return(sopi[h]);}
-
-  int         get_ndocc()                        const {return(ndocc);}
-  int         get_nactv()                        const {return(nactv);}
-
-  int         get_docc(int h)                    const {return(docc[h]);}
-  int         get_actv(int h)                    const {return(actv[h]);}
-
-protected:
-  std::string moinfo_prefix_;
-  
-
-  int         nirreps;
-  int         nso;
-  int         nmo;
-  int         nael;
-  int         nbel;
-  int         nactive_ael;
-  int         nactive_bel;
-  int         ndocc;
-  int         nactv;
-  int         wfn_sym;
-  
-  int*        sopi;
-  int*        docc;
-  int*        actv;
-  
-  char**      irr_labs;
-
-  void        startup();
-  void        cleanup();
-  void        read_chkpt_data();
-  void        compute_number_of_electrons();
-  void        read_mo_space(int nirreps_ref,int& n, int* mo, char* label);
-  void        correlate(char *ptgrp, int irrep, int& nirreps_old, int& nirreps_new,int*& arr);*/

@@ -4,6 +4,8 @@ extern FILE *outfile;
 
 using namespace std;
 
+namespace psi {
+
 /*!
  * \fn MOInfo::compute_mo_mappings()
  */
@@ -236,4 +238,6 @@ void MOInfo::compute_mo_mappings()
     is_act_in_occ[act_to_occ[i]]=true;
     is_act_in_vir[act_to_vir[i]]=true;
   }
+}
+
 }

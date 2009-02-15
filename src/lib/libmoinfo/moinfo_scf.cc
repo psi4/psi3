@@ -14,6 +14,8 @@ extern FILE *outfile;
 
 using namespace std;
 
+namespace psi {
+
 MOInfoSCF::MOInfoSCF() : MOInfoBase()
 {
   read_chkpt_data();
@@ -109,4 +111,6 @@ void MOInfoSCF::print_mo()
   print_mo_space(nactv,actv,"Active/Singly Occupied        ");
   fprintf(outfile,"\n  ----------------------------------------------------------------------------");
   fflush(outfile);
+}
+
 }
