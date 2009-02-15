@@ -8,6 +8,8 @@ Table \ref{table:ccsummary} summarizes these capabilities.  This section
 describes how to carry out coupled cluster calculations within \PSIthree.
 \begin{table}[h]
 \begin{center}
+\caption{Current coupled cluster capabilities of \PSIthree.}
+\label{table:ccsummary}
 \begin{tabular}{cccccc}
 \hline
 \hline
@@ -21,15 +23,16 @@ RHF       & CCSD(T) & Y & N & --& -- \\
 ROHF      & CCSD    & Y & Y & Y & N  \\
 ROHF      & CCSD(T) & N & N & --& -- \\
 UHF       & CCSD    & Y & Y & Y & N  \\
-UHF       & CCSD(T) & Y & N & --& -- \\
+UHF       & CCSD(T) & Y & Y$^*$ & --& -- \\
 Brueckner & CCD     & Y & N & N & N  \\
 Brueckner & CCD(T)  & Y & N & --& -- \\
 \hline
 \hline
 \end{tabular}
 \end{center}
-\caption{Current coupled cluster capabilities of \PSIthree.}
-\label{table:ccsummary}
+{\footnotesize $^*$CCSD(T) gradients implemented via an experimental code.
+A more efficient and robust implementation will appear in the next
+release.}
 \end{table}
 
 \subsubsection{Basic Keywords}
@@ -70,8 +73,10 @@ if {\tt AO\_BASIS=DISK}, the AO-basis integrals, stored on disk, will be
 used; if {\tt AO\_BASIS=DIRECT}, the AO-basis integrals will be computed on
 the fly as necessary.  NB: The {\tt AO\_BASIS=DIRECT} option is not fully
 implemented and should only be used by experts.  Default is {\tt NONE}.
-New algorithms are in progress for significantly speeding up this portion
-of the computation.
+Note: The developers recommend use of this keyword only as a last resort
+because it significantly slows the calculation. The current algorithms for
+handling the MO-basis four-virtual-index integrals have been significantly
+improved and are preferable to the AO-based approach.
 \item[FREEZE\_CORE = boolean]\mbox{}\\
 Specifies whether core orbitals (which are determined automatically) are to
 be excluded from the correlated calculations.  Default is {\tt FALSE}.
@@ -131,8 +136,6 @@ which, for very large calculations, can lead to heap fragmentation and
 memory faults, even when sufficient physical memory exists.
 \item Set the {\tt PRINT} keyword to 2.  This will help narrow where
 memory bottlenecks or other errors exist in the event of a crash.
-\item Set the {\tt AO\_BASIS} keyword to {\tt DISK}.  This will save
-significantly on disk space.
 \end{enumerate}
 
 \subsubsection{Excited State Coupled Cluster Calculations}
@@ -170,11 +173,12 @@ and all but the rotational strengths for an ROHF or UHF reference.
 \subsubsection{Linear Response (CCLR) Calculations}
 The most important keywords associated with CC-LR calculations are:
 \begin{description}
+\item[JOBTYPE = string]\mbox{}\\
+A value of {\tt RESPONSE} will invoke the linear-response programs.
 \item[PROPERTY = string]\mbox{}\\
-For linear-response calculations, this specifies the type or response
+This leyword specifies the type or response
 property desired.  Acceptable values are {\tt POLARIZABILITY} (default) for
-dipole-polarizabilities and {\tt ROTATION} for specific rotations.  For 
-{\tt PROPERTY=ROTATION}, both types of property are actually computed.
+dipole-polarizabilities and {\tt ROTATION} for specific rotations.
 \item[OMEGA = real or (real UNITS)]\mbox{}
 Specifies the desired frequency of the incident radiation field in CCLR
 calculations.  Acceptable units are {\tt HZ}, {\tt NM}, and {\tt EV}.  If

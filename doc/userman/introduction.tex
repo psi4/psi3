@@ -55,8 +55,8 @@ been ported is shown in Table \ref{table:ports}.
 Architecture              &  Notes \\ \hline
 Compaq Alpha Tru64 UNIX   & 64-bit mode \\
 IBM AIX 4.3.3, 5.x on PowerPC & 64-bit mode \\
-Linux on Intel/AMD x86, AMD x86-64  & 32 and 64-bit\\
-Apple OS X (Darwin) on PowerPC & \\
+Linux on Intel/AMD x86 and x86-64  & 32 and 64-bit\\
+Apple OS X (Darwin) on PowerPC and Intel & \\
 SGI IRIX64 ($>$6.5.15)    & 64-bit \\ \hline\hline
 \end{tabular}
 \end{center}
@@ -95,11 +95,14 @@ RHF MP2               & Y & Y & N \\
 UHF/ROHF MP2          & Y & N & N \\
 RHF MP2-R12           & Y & N & N \\
 RHF/UHF/ROHF CCSD     & Y & Y & N \\
-RHF/UHF/ROHF CCSD(T)  & Y & N & N \\
+RHF/UHF/ROHF CCSD(T)  & Y & Y$^*$ & N \\
 RHF/UHF/ROHF EOM-CCSD & Y & Y & N \\
 \hline\hline
 \end{tabular}
 \end{center}
+\footnotesize{$^*$ CCSD(T) gradients implemented only via an experimental
+code.  A more efficient and robust implementation will appear in the next
+release.}
 \end{table}
 Geometry optimization (currently restricted to true minima on the potential
 energy surface) can be performed using either analytic gradients
