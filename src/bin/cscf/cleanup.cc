@@ -761,8 +761,10 @@ void print_mos_aobasis(const char* spincase, const struct symm* scfinfo)
     const int num_so = s->num_so;
     if (num_so) {
       double** usotbf_blk = block_matrix(num_so,num_bf);
-      bcopy(static_cast<const void*>(usotbf[so_offset]),static_cast<void*>(usotbf_blk[0]),
-            num_so*num_bf*sizeof(double));
+      /* Jeff Hammond: bcopy(s,d,n) ->  memcpy(d,s,n)
+        bcopy(static_cast<const void*>(usotbf[so_offset]),static_cast<void*>(usotbf_blk[0]),num_so*num_bf*sizeof(double));
+      */
+      memcpy(static_cast<void*>(usotbf_blk[0]),static_cast<const void*>(usotbf[so_offset]),num_so*num_bf*sizeof(double));
       const int num_mo = s->num_mo;
       double** cmat_bf = block_matrix(num_bf,num_mo);
       mmult(usotbf_blk,1,s->cmat,0,cmat_bf,0,num_bf,num_so,num_mo,0);
@@ -791,8 +793,10 @@ void print_mos_cartaobasis(const char* spincase, const struct symm* scfinfo)
     const int num_so = s->num_so;
     if (num_so) {
       double** usotao_blk = block_matrix(num_so,num_ao);
-      bcopy(static_cast<const void*>(usotao[so_offset]),static_cast<void*>(usotao_blk[0]),
-            num_so*num_ao*sizeof(double));
+      /* Jeff Hammond: bcopy(s,d,n) ->  memcpy(d,s,n)
+        bcopy(static_cast<const void*>(usotao[so_offset]),static_cast<void*>(usotao_blk[0]),num_so*num_ao*sizeof(double));
+      */
+      memcpy(static_cast<void*>(usotao_blk[0]),static_cast<const void*>(usotao[so_offset]),num_so*num_ao*sizeof(double));
       const int num_mo = s->num_mo;
       double** cmat_ao = block_matrix(num_ao,num_mo);
       mmult(usotao_blk,1,s->cmat,0,cmat_ao,0,num_ao,num_so,num_mo,0);

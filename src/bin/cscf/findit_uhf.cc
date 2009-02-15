@@ -120,30 +120,45 @@ L1:
 
         /* nxtmp = (int *) init_array((int) (keep+intmx)/d2i); */
         nxtmp = (int *) init_int_array(keep+intmx);
-        bcopy(inext,nxtmp,(int)sizeof(int)*(intmx/2));
+        /* Jeff Hammond: bcopy(s,d,n) ->  memcpy(d,s,n)
+          bcopy(inext,nxtmp,(int)sizeof(int)*(intmx/2));
+        */
+        memcpy(nxtmp,inext,(int)sizeof(int)*(intmx/2));
         for(j=0; j < keep ; j++) nxtmp[j+intmx]=inext[j+intmx/2];
         free(inext);
         inext=nxtmp;
 
         /* ijtmp = (unsigned int *) init_array(intmx/d2i); */
         ijtmp = (unsigned int *) init_int_array(intmx);
-        bcopy(lbij,ijtmp,sizeof(int)*(intmx/2));
+        /* Jeff Hammond: bcopy(s,d,n) ->  memcpy(d,s,n)
+          bcopy(lbij,ijtmp,sizeof(int)*(intmx/2));
+        */
+        memcpy(ijtmp,lbij,sizeof(int)*(intmx/2));
         free(lbij);
         lbij = ijtmp;
 
         /* kltmp = (unsigned int *) init_array(intmx/d2i); */
         kltmp = (unsigned int *) init_int_array(intmx);
-        bcopy(lbkl,kltmp,sizeof(int)*(intmx/2));
+        /* Jeff Hammond: bcopy(s,d,n) ->  memcpy(d,s,n)
+          bcopy(lbkl,kltmp,sizeof(int)*(intmx/2));
+        */
+        memcpy(kltmp,lbkl,sizeof(int)*(intmx/2));
         free(lbkl);
         lbkl = kltmp;
 
         patmp = (double *) init_array(intmx);
-        bcopy(pa,patmp,sizeof(double)*(intmx/2));
+        /* Jeff Hammond: bcopy(s,d,n) ->  memcpy(d,s,n)
+          bcopy(pa,patmp,sizeof(double)*(intmx/2));
+        */
+        memcpy(patmp,pa,sizeof(double)*(intmx/2));
         free(pa);
         pa = patmp;
 
         pbtmp = (double *) init_array(intmx);
-        bcopy(pb,pbtmp,sizeof(double)*(intmx/2));
+        /* Jeff Hammond: bcopy(s,d,n) ->  memcpy(d,s,n)
+          bcopy(pb,pbtmp,sizeof(double)*(intmx/2));
+        */
+        memcpy(pbtmp,pb,sizeof(double)*(intmx/2));
         free(pb);
         pb = pbtmp;
 
