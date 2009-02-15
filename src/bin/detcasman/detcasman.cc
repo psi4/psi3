@@ -214,8 +214,10 @@ void print_mos_aobasis(void) {
     if (num_mo) {
       double** mo_coeffs_blk = chkpt_rd_scf_irrep(h);
       double** usotbf_blk = block_matrix(num_so,num_bf);
-      bcopy(static_cast<const void*>(usotbf[so_offset]),static_cast<void*>(usotbf_blk[0]),
-            num_so*num_bf*sizeof(double));
+      /* Jeff Hammond: bcopy(s,d,n) ->  memcpy(d,s,n)
+         bcopy(static_cast<const void*>(usotbf[so_offset]),static_cast<void*>(usotbf_blk[0]),num_so*num_bf*sizeof(double));
+      */
+      memcpy(static_cast<void*>(usotbf_blk[0]),static_cast<const void*>(usotbf[so_offset]),num_so*num_bf*sizeof(double));
       double** mo_coeffs_bf = block_matrix(num_bf,num_mo);
       mmult(usotbf_blk,1,mo_coeffs_blk,0,mo_coeffs_bf,0,num_bf,num_so,num_mo,0);
       
