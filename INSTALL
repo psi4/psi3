@@ -249,8 +249,12 @@ BLAS and LAPACK recommendations when building PSI3:
   (2) Perhaps the best choices for BLAS are Kazushige Goto's hand-optimized
   BLAS (http://www.tacc.utexas.edu/resources/software/) and ATLAS
   (http://math-atlas.sourceforge.net/).  These work well on nearly every
-  achitecture to which the PSI3 developers have access.  On Mac OS X systems,
-  however, the vecLib package that comes with Xcode works well.
+  achitecture to which the PSI3 developers have access, though we have
+  identified at least one case in which the Goto libraries yielded faulty
+  DGEMM calls.  On Mac OS X systems, however, the vecLib package that comes
+  with Xcode works well.  Note also that we have encountered problems with the
+  version 10 of Intel's MKL, particularly for very large coupled cluster
+  calculations.
 
   (3) PSI3 does not require a Fortran compiler, unless the resident BLAS
   and LAPACK libraries require Fortran-based system libraries.  If you see
@@ -259,7 +263,7 @@ BLAS and LAPACK recommendations when building PSI3:
   require -lg2c to resolve the Fortran I/O calls.  Use of the same gcc
   package for PSI3 should normally resolve this problem.
 
-  (4) The PSI3 configure script can conveniently identify and use several
+  (4) The PSI3 configure script can often identify and use several
   different BLAS and LAPACK libraries, but its ability to do this
   automatically depends on a number of factors, including correspondence
   between the compiler used for PSI3 and the compiler used to build
@@ -268,10 +272,11 @@ BLAS and LAPACK recommendations when building PSI3:
   the following are installed in standard locations (e.g. /usr/local/lib):
 
     (a) ATLAS: libf77blas.a and libatlas.a, plus netlib's liblapack.a
-    (b) MKL: libmkl.so and libmkl_lapack64.a (with the Intel compilers)
+    (b) MKL 8: libmkl.so and libmkl_lapack64.a (with the corresponding
+        Intel compilers)
     (c) Goto: libgoto.a and netlib's liblapack.a
     (d) Cray SCSL (e.g. on SGI Altix): libscs.so (NB: No Fortran compiler
-      is necessary in this case, so --with-fc=no should work.)
+        is necessary in this case, so --with-fc=no should work.)
     (e) ESSL (e.g. on AIX systems): libessl.a
 
   (5) If configure cannot identify your BLAS and LAPACK libraries
@@ -287,30 +292,38 @@ BLAS and LAPACK recommendations when building PSI3:
 
     --with-blas='-altivec -framework vecLib' --with-lapack=' '
 
-    (c) Linux with MKL and icc/icpc/ifort:
+    (c) Linux with MKL 8.1 and icc/icpc/ifort 9.1:
 
     --with-libdirs=-L/usr/local/opt/intel/mkl/8.0.2/lib/32 --with-blas=-lmkl --with-lapack=-lmkl_lapack32
 
+    (d) Linux on ia32 with MKL 10.1 and icc/icpc 11.0:
+
+    --with-blas='-Wl,--start-group -L/usr/local/opt/intel/mkl/10.1.0.015/lib/32 -l mkl -Wl,--end-group -lguide -lpthread'
 
 V. Miscellaneous architecture-specific notes
 
   * Linux on x86 and x86_64:
+
    (1) gcc compiler: versions 3.2, 3.3, 3.4, 4.0, and 4.1 have been tested.
-   (2) Intel compilers: version 9.0 has been tested. We do not recommend
-   using version 8.1.
+
+   (2) Intel compilers: versions 9.0 and 11.0 have been tested. We do not 
+   recommend using version 8.1.
+
    (3) Portland Group compilers: version 6.0-5 has been tested.
+
    (4) Some versions of RedHat/Fedora Core RPM packages for the 
    BLAS and LAPACK libraries fail to make all the required symlinks.  
    For example, you may have /usr/lib/libblas.so.3.1.0 but not
    /usr/lib/libblas.so.  If this happens, create the link as, e.g.,
    ln -s /usr/lib/libblas.so.3.1.0 /usr/lib/libblas.so.  You
-   may need to do similarly for LAPACK.
+   may need to do something similar for LAPACK.
 
   * Linux on Itanium2 (IA64):
-   (1) Intel compilers version 9.0 have been tested and work. Version 8.1
-   does not work.
+
+   (1) Intel compiler versions 9.0 and 10.0 have been tested and work. 
+   Version 8.1 does not work.
+
    (2) gcc compilers work.
-  \end{itemize}
 
  * Mac OS 10.X:
 
@@ -338,17 +351,11 @@ V. Miscellaneous architecture-specific notes
    --with-ruby-include="-I/System/Library/Frameworks/Ruby.framework/Headers"
    --with-ruby-lib="-framework Ruby"
 
- * AIX 4.3/5.x in 64-bit environment:
+ * AIX in a 64-bit environment:
 
-    If IBM VisualAge C++ and IBM XL Fortran are used, one has to manually
-    specify the -q64 compiler flag that enables production of 64-bit
-    executables.  The following configure options should be used:
-
-     --with-cc='cc_r -q64' --with-cxx='xlC_r -q64' --with-fc='xlf_r -q64'
-
-    Note that the reentrant versions of the compilers are used. Also, we
-    haven't had much luck using xlc_r because of its handling of functions
-    with variable argument lists, use cc_r instead.
+   We do not presently support the use of XL compilers on AIX systems.  We
+   have tested gcc-4.1.1 under AIX 5.3, and we recommend use of the
+   configure flag: --with-aix64.
 
  * SGI IRIX 6.x:
 
