@@ -5,6 +5,9 @@
 
 #include "libutil.h"
 
+namespace psi {
+
+
 /*********************
  String manipulation
  ********************/
@@ -260,4 +263,6 @@ void print_developing(const char* message, const char* file, int line, int error
   fprintf(outfile,"\n\n%s: feature not yet implemented in file %s, line %d\n",message,file,line);
   fflush(outfile);
   exit(error);
+}
+
 }

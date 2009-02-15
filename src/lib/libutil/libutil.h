@@ -10,6 +10,8 @@ extern FILE *outfile;
 
 using namespace std;
 
+namespace psi {
+
 typedef std::vector<std::string>            strvec;
 
 bool space(char c);
@@ -64,5 +66,7 @@ void print_developing(const char* message, const char* file, int line);
 void print_developing(const char* message, const char* file, int line,int error);
 
 void generate_combinations(int n, int k, std::vector<std::vector<int> >& combinations);
+
+}
 
 #endif // _psi_src_lib_libutil_libutil_h_

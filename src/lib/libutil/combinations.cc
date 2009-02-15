@@ -3,6 +3,8 @@
 
 #include "libutil.h"
 
+namespace psi {
+
 /**
  * Generate combinations of 0,1,...,(n-1) taken k at a time
  * @param n
@@ -30,3 +32,4 @@ void generate_combinations(int n, int k, std::vector<std::vector<int> >& combina
   }
 }
 
+}
