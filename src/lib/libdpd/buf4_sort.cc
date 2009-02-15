@@ -1622,69 +1622,40 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 	in_nbuckets = (int) ceil((double) InBuf->params->rowtot[Grs]/(double) in_rows_per_bucket);
 	in_rows_left = InBuf->params->rowtot[Grs] % in_rows_per_bucket;
 
+	fprintf(stdout, "Gpq = %d\n", Gpq);
+	fprintf(stdout, "OutBuf.rowtot[Gpq]  = %d\n", OutBuf.params->rowtot[Gpq]);
+	fprintf(stdout, "OutBuf.coltot[Grs]  = %d\n", OutBuf.params->coltot[Grs]);
+	fprintf(stdout, "out_nbuckets        = %d\n", out_nbuckets);
+	fprintf(stdout, "out_rows_per_bucket = %d\n", out_rows_per_bucket);
+	fprintf(stdout, "out_rows_left       = %d\n", out_rows_left);
+	fprintf(stdout, "InBuf.rowtot[Grs]   = %d\n", InBuf->params->rowtot[Grs]);
+	fprintf(stdout, "InBuf.coltot[Gpq]   = %d\n", InBuf->params->coltot[Gpq]);
+	fprintf(stdout, "in_nbuckets         = %d\n", in_nbuckets);
+	fprintf(stdout, "in_rows_per_bucket  = %d\n", in_rows_per_bucket);
+	fprintf(stdout, "in_rows_left        = %d\n", in_rows_left);
+	fflush(stdout);
+
         dpd_buf4_mat_irrep_init_block(&OutBuf, Gpq, out_rows_per_bucket);
         dpd_buf4_mat_irrep_init_block(InBuf, Grs, in_rows_per_bucket);
 
-        for(n=0; n < (out_rows_left ? out_nbuckets-1 : out_nbuckets); n++) {
+        for(n=0; n < out_nbuckets; n++) {
 	  out_row_start = n*out_rows_per_bucket;
 
-	  for(m=0; m < (in_rows_left ? in_nbuckets-1 : in_nbuckets); m++) {
+	  for(m=0; m < in_nbuckets; m++) {
 	    in_row_start = m * in_rows_per_bucket;
-	    dpd_buf4_mat_irrep_rd_block(InBuf, Grs, in_row_start, in_rows_per_bucket);
+	    dpd_buf4_mat_irrep_rd_block(InBuf, Grs, in_row_start, (m == in_nbuckets-1 ? in_rows_left : in_rows_per_bucket));
 
-	    for(pq=0; pq < out_rows_per_bucket; pq++) {
+	    for(pq=0; pq < (n == out_nbuckets-1 ? out_rows_left : out_rows_per_bucket); pq++) {
 	      PQ = pq + n*out_rows_per_bucket;
-	      for(RS=0; RS < in_rows_per_bucket; RS++) {
-		rs = RS + m*in_rows_per_bucket;
-		OutBuf.matrix[Gpq][pq][rs] = InBuf->matrix[Grs][RS][PQ];
-	      }
-	    }
-	  }
-	  if(in_rows_left) {
-	    in_row_start = m * in_rows_per_bucket;
-	    dpd_buf4_mat_irrep_rd_block(InBuf, Grs, in_row_start, in_rows_left);
-
-	    for(pq=0; pq < out_rows_per_bucket; pq++) {
-	      PQ = pq + n*out_rows_per_bucket;
-	      for(RS=0; RS < in_rows_left; RS++) {
+	      for(RS=0; RS < (m == in_nbuckets-1 ? in_rows_left : in_rows_per_bucket); RS++) {
 		rs = RS + m*in_rows_per_bucket;
 		OutBuf.matrix[Gpq][pq][rs] = InBuf->matrix[Grs][RS][PQ];
 	      }
 	    }
 	  }
 
-	  dpd_buf4_mat_irrep_wrt_block(&OutBuf, Gpq, out_row_start, out_rows_per_bucket);
+	  dpd_buf4_mat_irrep_wrt_block(&OutBuf, Gpq, out_row_start, (n == out_nbuckets-1 ? out_rows_left : out_rows_per_bucket));
 
-	}
-	if(out_rows_left) {
-	  out_row_start = n*out_rows_per_bucket;
-
-	  for(m=0; m < (in_rows_left ? in_nbuckets-1 : in_nbuckets); m++) {
-	    in_row_start = m * in_rows_per_bucket;
-	    dpd_buf4_mat_irrep_rd_block(InBuf, Grs, in_row_start, in_rows_per_bucket);
-
-	    for(pq=0; pq < out_rows_left; pq++) {
-	      PQ = pq + n*out_rows_per_bucket;
-	      for(RS=0; RS < in_rows_per_bucket; RS++) {
-		rs = RS + m*in_rows_per_bucket;
-		OutBuf.matrix[Gpq][pq][rs] = InBuf->matrix[Grs][RS][PQ];
-	      }
-	    }
-	  }
-	  if(in_rows_left) {
-	    in_row_start = m * in_rows_per_bucket;
-	    dpd_buf4_mat_irrep_rd_block(InBuf, Grs, in_row_start, in_rows_left);
-
-	    for(pq=0; pq < out_rows_left; pq++) {
-	      PQ = pq + n*out_rows_per_bucket;
-	      for(RS=0; RS < in_rows_left; RS++) {
-		rs = RS + m*in_rows_per_bucket;
-		OutBuf.matrix[Gpq][pq][rs] = InBuf->matrix[Grs][RS][PQ];
-	      }
-	    }
-	  }
-
-	  dpd_buf4_mat_irrep_wrt_block(&OutBuf, Gpq, out_row_start, out_rows_left);
 	}
 
 	dpd_buf4_mat_irrep_close_block(&OutBuf, Gpq, out_rows_per_bucket);
@@ -1958,6 +1929,8 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
 #ifdef DPD_TIMER
   timer_off("buf4_sort");
 #endif
+
+  return 0;
 }
 
 } /* extern "C" */
