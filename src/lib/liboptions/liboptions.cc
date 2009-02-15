@@ -17,6 +17,8 @@
 
 extern FILE* outfile;
 
+namespace psi {
+
 Options* _default_psi_options_;
 
 /*!
@@ -406,3 +408,4 @@ void Options::print()
   fprintf(outfile,"\n  ----------------------------------------------------------------------------");
 }
 
+}

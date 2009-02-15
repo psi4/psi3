@@ -12,6 +12,9 @@
 #include <map>
 #include <string>
 
+namespace psi {
+
+
 void options_init();
 void options_close();
 void options_read();
@@ -91,5 +94,7 @@ private:
 };
 
 extern Options *_default_psi_options_;
+
+}
 
 #endif // _psi_src_lib_liboptions_liboptions_h
