@@ -55,24 +55,6 @@ AC_SUBST([pkgdatadir])
 INSTALL_INCLUDE='$(top_srcdir)/bin/installinc.sh' AC_SUBST(INSTALL_INCLUDE)
 MKDIRS='$(top_srcdir)/bin/mkdirs.sh' AC_SUBST(MKDIRS)
 
-#default compiler flags
-FDBG='-g' AC_SUBST(FDBG)
-FOPT='-O' AC_SUBST(FOPT)
-FDEF='' AC_SUBST(FDEF)
-FOTH='' AC_SUBST(FOTH)
-FSTATIC='' AC_SUBST(FSTATIC)
-FINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(FINC)
-CDBG='-g' AC_SUBST(CDBG)
-COPT='-O2' AC_SUBST(COPT)
-CDEF='' AC_SUBST(CDEF)
-COTH='' AC_SUBST(COTH)
-CINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(CINC)
-CXXDBG='-g' AC_SUBST(CXXDBG)
-CXXOPT='-O2' AC_SUBST(CXXOPT)
-CXXDEF='' AC_SUBST(CXXDEF)
-CXXOTH='' AC_SUBST(CXXOTH)
-CXXINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(CXXINC)
-
 ########
 ## PSI-specific options
 ########
@@ -132,14 +114,9 @@ AC_DEFINE_UNQUOTED(PSI_INTEGRALS_STANDARD,$PSI_INTEGRALS_STANDARD)
 
 case $target_os in
   aix*)
-    CC_LIST="cc_r gcc cc"
-    CXX_LIST="xlC_r g++ c++"
-    F77_LIST="xlf_r gfortran g77 ifort f77"
-    ;;
-  irix*)
-    CC_LIST="cc gcc"
-    CXX_LIST="CC g++ c++"
-    F77_LIST="f77 gfortran g77 ifort"
+    CC_LIST="gcc cc_r cc"
+    CXX_LIST="g++ xlC_r c++"
+    F77_LIST="ifort gfortran g77 xlf_r f77"
     ;;
   *)
     CC_LIST="gcc icc cc"
@@ -148,6 +125,15 @@ case $target_os in
     ;;
 esac
 
+AC_ARG_WITH(aix64,
+[  --with-aix64            Compiling on a 64-bit AIX machine.],
+CXXFLAGS="$CXXFLAGS -maix64"
+F77FLAGS="$F77FLAGS -maix64"
+CFLAGS="$CFLAGS -maix64"
+LDFLAGS="$LDFLAGS -maix64"
+AIX64=yes
+AC_MSG_RESULT([Compiling on 64-bit AIX])
+)
 
 AC_ARG_WITH(cc,[  --with-cc               which C compiler to use],[
 CC=$withval
@@ -175,9 +161,25 @@ if test -z "$F77"; then
 elif test "$F77" = "no"; then
   F77=""
 fi
-AC_SUBST(FC,[$F77])
 
-## Fortran-C linking convention tests
+dnl ----------- See if Fortran works --------------
+
+if test -n "$F77" -a "$F77" != no ; then
+  AC_MSG_CHECKING([if fortran compiler works])
+  /bin/rm -f ffunc.f
+  echo "      program main" > ffunc.f
+  echo "      end" >> ffunc.f
+  if $F77 -o ffunc ffunc.f 1>&5 2>&5; then
+    AC_MSG_RESULT([yes])
+    F77_WORKS=yes
+  else
+    AC_MSG_RESULT([no])
+    F77_WORKS=no
+  fi
+  /bin/rm -f ffunc ffunc.f
+fi
+
+dnl ----------- Fortran symbol names --------------
 
 AC_ARG_WITH(f77symbol,[  --with-f77symbol        FORTRAN77 symbol convention
                           Allowed values are:
@@ -206,35 +208,35 @@ esac
 ])
 
 if test -z "$FC_SYMBOL"; then
-  AC_MSG_CHECKING(Fortran symbols)
-if test -n "$F77" ; then
-  /bin/rm -f ffunc.f flink.c
+ AC_MSG_CHECKING([fortran symbols])
+ if test -n "$F77" -a "$F77" != no -a X$F77_WORKS != Xno; then
+  /bin/rm -f ffunc.f flink.cc
   echo "      subroutine ffunc()" > ffunc.f
   echo "      return" >> ffunc.f
-  echo "      end" >> ffunc.f 
+  echo "      end" >> ffunc.f
   $F77 -c ffunc.f 1>/dev/null 2>/dev/null
-  echo "main(){ FF(); return 0; }" > flink.c   
-  if $CC -o flink -DFF=ffunc flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
-    AC_MSG_RESULT(same as C)
-    FC_SYMBOL=1  
-  elif $CC -o flink -DFF=ffunc_ flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
-    AC_MSG_RESULT(lowercase with underscore)
-    FC_SYMBOL=2  
-  elif $CC -o flink -DFF=FFUNC flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
-    AC_MSG_RESULT(uppercase)
-    FC_SYMBOL=3  
-  elif $CC -o flink -DFF=FFUNC_ flink.c ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
-    AC_MSG_RESULT(uppercase with underscore)
+  echo "extern \"C\" void FF(); int main(int argc, char** argv){ FF(); return 0; }" > flink.cc
+  if $CXX -o flink -DFF=ffunc flink.cc ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+    AC_MSG_RESULT([lowercase])
+    FC_SYMBOL=1
+  elif $CXX -o flink -DFF=ffunc_ flink.cc ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+    AC_MSG_RESULT([lowercase with underscore])
+    FC_SYMBOL=2
+  elif $CXX -o flink -DFF=FFUNC flink.cc ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+    AC_MSG_RESULT([uppercase])
+    FC_SYMBOL=3
+  elif $CXX -o flink -DFF=FFUNC_ flink.cc ffunc.o $LDFLAGS $LIBS 1>/dev/null 2>/dev/null; then
+    AC_MSG_RESULT([uppercase with underscore])
     FC_SYMBOL=4
   else
-    AC_MSG_RESULT(giving up)
-    AC_MSG_ERROR(could not determine fortran symbol names)
+    AC_MSG_RESULT([giving up])
+    AC_MSG_ERROR([could not determine F77 symbol names])
   fi
-  /bin/rm -f ffunc.f ffunc.o flink flink.c flink.o ffunc
-else
+  /bin/rm -f ffunc.f ffunc.o flink flink.cc flink.o ffunc
+ else
   FC_SYMBOL=2
-  AC_MSG_RESULT(No Fortran compiler provided; guessing lowercase with underscore)
-fi
+  AC_MSG_RESULT([will assume lowercase with underscore])
+ fi
 fi
 AC_SUBST(FC_SYMBOL)
 
@@ -330,12 +332,13 @@ AC_SUBST(HAVE_DOT)
 
 if test ! -z "$F77"; then
   AC_F77_LIBRARY_LDFLAGS
+  dnl --- This just implicitly checks that FLIBS can co-exist with the C++ linker
+  AC_CHECK_LIB(c,exit,[],[
+      FLIBS=
+      AC_MSG_WARN([F77 libraries don't seem to link with C++ programs])
+      ],
+      $FLIBS)
 fi
-# This just implicitly checks that FLIBS can co-exist with the C linker
-AC_CHECK_LIB(c,exit,[],[
-FLIBS=
-AC_MSG_WARN([F77 libraries don't seem to link with C programs])
-],$FLIBS)
 
 AC_ARG_WITH(blas,[  --with-blas             which blas library to use],[
 case $withval in
@@ -390,15 +393,15 @@ LIBS="$LIBS $CLIBS $FLIBS"
 
 ### If the user didn't give us a BLAS lib, see if we can find one
 
-# If were using the Intel compilers, we prefer MKL as well
+# If we're using the Intel compilers, we prefer MKL as well
 if test -z "$BLAS"; then
-  if test $CC = icc; then
+  if test $CC = icc -o $CXX = icpc; then
     AC_CHECK_LIB(mkl, $DGEMM_SYMBOL, BLAS="-lmkl")
   fi
 fi
 # Otherwise, run through a list of possibilities
 if test -z "$BLAS"; then
-  AC_CHECK_LIB(essl, $DGEMM_SYMBOL, BLAS="-lessl")
+  AC_CHECK_LIB(essl, $DGEMM_SYMBOL, BLAS="-lessl -lpthread")
 fi
 if test -z "$BLAS"; then
   AC_CHECK_LIB(scs, $DGEMM_SYMBOL, BLAS="-lscs")
@@ -417,7 +420,6 @@ if test -z "$BLAS"; then
   LIBS=$SAVE_LIBS2
 fi  
 if test -z "$BLAS"; then
-  echo "$LD_LIBRARY_PATH"
   AC_CHECK_LIB(mkl, $DGEMM_SYMBOL, BLAS="-lmkl")
 fi
 if test -z "$BLAS"; then
@@ -454,7 +456,7 @@ if test -z "$LAPACK"; then
 fi 
 if test -z "$LAPACK_IN_BLAS"; then
   if test -z "$LAPACK"; then
-    if test $CC = icc; then
+    if test $CC = icc -o $CXX = icpc; then
       # Intel's libmkl_lapack64 contains the double-precision routines
       AC_CHECK_LIB(mkl_lapack64,$DGEEV_SYMBOL,LAPACK="-lmkl_lapack64")
     fi
@@ -497,8 +499,6 @@ AC_CXX_PROCESS_CHECK([cstring],[#include <cstring>],,[HAVE_CSTRING=1],[HAVE_CSTR
 CXXDEF="$CXXDEF -DHAVE_CSTRING=$HAVE_CSTRING"
 AC_CXX_PROCESS_CHECK([cstddef],[#include <cstddef>],,[HAVE_CSTDDEF=1],[HAVE_CSTDDEF=0]) 
 CXXDEF="$CXXDEF -DHAVE_CSTDDEF=$HAVE_CSTDDEF"
-
-/bin/rm -f a.out
 
 ####################
 #  Check for Ruby  #
@@ -582,26 +582,9 @@ AC_SUBST(HAVE_RUBY)
 AC_SUBST(RUBYLDFLAGS)
 
 ########
-## Check for types
-########
-
-#check to see if void* is allowed
-AC_MSG_CHECKING(for void pointers)
-psi_ac_voidptr=yes
-AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[]], [[
-;}
-void *func(void*ptr) { return ptr;
-]])],[],[psi_ac_voidptr=no])
-AC_MSG_RESULT($psi_ac_voidptr)
-if test $psi_ac_voidptr = "no"; then
-  CDEF="$CDEF -DNO_VOID_PTR"
-fi
-
-########
 ## Check for compiler characteristics
 ########
 
-test -z "$F77SUF" && F77SUF=f AC_SUBST(F77SUF)
 test -z "$LIBSUF" && LIBSUF=a AC_SUBST(LIBSUF)
 test -z "$OBJSUF" && OBJSUF=o AC_SUBST(OBJSUF)
 
@@ -633,19 +616,6 @@ AC_SUBST(CXXDEPENDSUF)
 AC_SUBST(CCDEPENDFLAGS)
 AC_SUBST(CXXDEPENDFLAGS)
 
-AC_CHECK_LIB(m,exit,CLIBS="$CLIBS -lm")
-AC_CHECK_LIB(bsd,exit,CLIBS="$CLIBS -lbsd")
-AC_MSG_RESULT(c libs: $CLIBS)
-AC_SUBST(CLIBS)
-
-AC_CHECK_LIB(m,exit,CXXLIBS="$CXXLIBS -lm")
-AC_MSG_RESULT(c++ libs: $CXXLIBS)
-AC_SUBST(CXXLIBS)
-
-PSICPPFLAGS='-I. -I$(objincdir) -I$(top_srcdir)/include -I$(top_srcdir)/src/lib -I$(top_objdir)/src/lib' AC_SUBST(PSICPPFLAGS)
-
-AC_C_CONST
-
 AC_CHECK_DECLS([putenv],[extradef="-DHAVE_DECL_PUTENV=1"])
 CDEF="$CDEF $extradef"
 CXXDEF="$CXXDEF $extradef"
@@ -671,40 +641,71 @@ else
   CXXDEF="$CXXDEF $extradef"
 fi
 
-# set up cpu specific flags
-AC_MSG_CHECKING([for architecture/compiler specific optimization flags])
-case $target_cpu in
+
+dnl ------------------- Determine Compiler Flags --------------------
+
+# User's input overrides all defaults
+# Defaults depend on the compiler and the architecture
+AC_MSG_RESULT([-------------------------------------------------------------------------------])
+
+# default is to optimize with -O2, no debugging symbols will be generated
+PSICPPFLAGS='-I. -I$(objincdir) -I$(top_srcdir)/include -I$(top_srcdir)/src/lib -I$(top_objdir)/src/lib' AC_SUBST(PSICPPFLAGS)
+CDBG='' AC_SUBST(CDBG)
+COPT='-O2' AC_SUBST(COPT)
+AC_SUBST(CDEF)
+COTH='' AC_SUBST(COTH)
+CINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(CINC)
+CXXDBG='' AC_SUBST(CXXDBG)
+CXXOPT='-O2' AC_SUBST(CXXOPT)
+AC_SUBST(CXXDEF)
+CXXOTH='' AC_SUBST(CXXOTH)
+CXXINC='$(CPPFLAGS) $(PSICPPFLAGS)' AC_SUBST(CXXINC)
+
+# Check user's input
+# The default is to optimize.  --with-opt=no or --without-opt will turn
+# off optimization.
+OPTFLAGS_GIVEN=no
+AC_ARG_WITH(opt,[  --with-opt              Specifies the C++/C optimization compiler flags.
+                          --with-opt=no means no optimization],[
+case $withval in
+  no)
+    COPT=''
+    CXXOPT=''
+    OPTFLAGS_GIVEN=yes
+    ;;
+  *)
+    COPT="$withval"
+    CXXOPT="$withval"
+    OPTFLAGS_GIVEN=yes
+    ;;
+esac
+])
+if test X$OPTFLAGS_GIVEN = Xyes; then
+  AC_MSG_RESULT([C++ optimization flags           : $CXXOPT])
+fi
+
+# if not given by the user, use architecture-dependent defaults
+if test X$OPTFLAGS_GIVEN = Xno; then
+ case $target_cpu in
   rs6000)
-    if test "$FC" = xlf_r ; then
-      FOPT="-O2 -qarch=com -qxflag=xalias -qdpc -qfloat=fold -qfloat=maf -qmaxmem=-1"
-    fi
     if test "$CC" = xlc_r -o "$CC" = cc_r ; then
-      COPT="-O2 -qarch=com -qfloat=maf -qfloat=fold -qmaxmem=-1"
+      COPT="-O3 -qhot -qstrict -qarch=auto -qtune=auto -qmaxmem=-1"
     fi
     if test "$CXX" = xlC_r ; then
-      CXXOPT="-O2 -qarch=com -qfloat=maf -qfloat=fold -qmaxmem=-1"
+      CXXOPT="-O3 -qhot -qstrict -qarch=auto -qtune=auto -qmaxmem=-1"
     fi
     ;;
   powerpc)
-    if test "$FC" = xlf_r ; then
-      FOPT="-O2 -qarch=ppc -qxflag=xalias -qdpc -qfloat=fold -qmaxmem=-1 -qfloat=maf"
-    fi
     if test "$CC" = xlc_r -o "$CC" = cc_r ; then
-      COPT="-O2 -qarch=ppc -qfloat=maf -qfloat=fold -qmaxmem=-1"
+      COPT="-O3 -qhot -qstrict -qarch=auto -qtune=auto -qmaxmem=-1"
     fi
     if test "$CXX" = xlC_r ; then
-      CXXOPT="-O2 -qarch=ppc -qfloat=maf -qfloat=fold -qmaxmem=-1"
+      CXXOPT="-O3 -qhot -qstrict -qarch=auto -qtune=auto -qmaxmem=-1"
+      LDLIBS="$LDLIBS $FLIBS"
     fi
-    ;;
-  i686)
-    if test "$FC" = g77 ; then
-      FOPT="-O2 -march=pentiumpro"
-    fi
-    if test "$CC" = gcc -o "$CC" = cc ; then
-      COPT="-O2 -march=pentiumpro"    
-    fi
-    if test "$CXX" = g++ -o "$CXX" = c++ -o "$CXX" = gcc ; then
-      CXXOPT="-O2 -march=pentiumpro"
+    if test "$CXX" = g++ ; then
+      CXXOPT="-O3"
+      LDLIBS="$LDLIBS $FLIBS"
     fi
     ;;
   x86_64)
@@ -715,73 +716,45 @@ case $target_cpu in
       CXXOPT="-O3 -m64"
     fi
     ;;
-esac
-AC_MSG_RESULT([C optimization flags: $COPT])
-AC_MSG_RESULT([C++ optimization flags: $CXXOPT])
+ esac
+ AC_MSG_RESULT([C++ optimization flags           : $CXXOPT])
+fi
 
-AC_MSG_CHECKING([for OS specific flags])
 case $target_os in
   aix*)
 # _ALL_SOURCE is required because some include files on AIX don't seem to work with pure POSIX
-    EXTRADEFS="-DAIX -D_LARGE_FILES -D_ALL_SOURCE"
-    FDEF="$FDEF $EXTRADEFS"
+# Removed -D_LARGE_FILE 
+    EXTRADEFS="-D_ALL_SOURCE"
     CDEF="$CDEF $EXTRADEFS"
     CXXDEF="$CXXDEF $EXTRADEFS"
     ;;
   linux*)
     EXTRADEFS="-DLinux -D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE"
-    FDEF="$FDEF $EXTRADEFS"
     CDEF="$CDEF $EXTRADEFS"
     CXXDEF="$CXXDEF $EXTRADEFS"
     ;;
 esac
-AC_MSG_RESULT([C preprocessor directives: $CDEF])
-AC_MSG_RESULT([C++ preprocessor directives: $CXXDEF])
+AC_MSG_RESULT([extra preprocessor defines       : $CXXDEF])
 
-# Set up CFLAGS and FFLAGS.
-
-CFLAGS='$(CDBG) $(COPT) $(CDEF) $(COTH) $(CINC)' AC_SUBST(CFLAGS)
-CXXFLAGS='$(CXXDBG) $(CXXOPT) $(CXXDEF) $(CXXOTH) $(CXXINC)' AC_SUBST(CXXFLAGS)
-FFLAGS='$(FDBG) $(FOPT) $(FOTH) $(FSTATIC)' AC_SUBST(FFLAGS)
-
-# Adjust the debug flags.
+# Obtain the debug flags.
 # The default is to not debug.  --with-debug will turn on debugging.
 AC_ARG_WITH(debug,[  --with-debug            will turn on debugging],[
 case $withval in
   yes)
+    CDBG='-g'
+    CXXDBG='-g'
     ;;
   no)
     CDBG=''
     CXXDBG=''
-    FDBG=''
     ;;
   *)
     CDBG="$withval"
     CXXDBG="$withval"
-    FDBG="$withval"
-    ;;
-esac
-],CDBG='' CXXDBG='' FDBG='')
-
-# Adjust the optimize flags.
-# The default is to optimize.  --with-opt=no or --without-opt will turn
-# off optimization.
-AC_ARG_WITH(opt,[  --with-opt              --with-opt=no to turn off optimization],[
-case $withval in
-  yes)
-    ;;
-  no)
-    COPT=''
-    CXXOPT=''
-    FOPT=''
-    ;;
-  *)
-    COPT="$withval"
-    CXXOPT="$withval"
-    FOPT="$withval"
     ;;
 esac
 ])
+AC_MSG_RESULT([debugging C++ compiler flags     : $CXXDBG])
 
 # Adjust the flags dealing with strictness of the compilers.
 # The default is to disable strict language checks.  --with-opt=no or 
@@ -790,9 +763,6 @@ AC_ARG_WITH(strict,[  --with-strict           --with-strict=yes to turn on stric
 case $withval in
   yes)
     # "Strict" flags only known for GNU compilers
-    if test "$G77" = yes ; then      
-      FOTH="$FOTH -Wall"
-    fi
     if test "$GCC" = yes ; then
       COTH="$COTH -Wall -ansi"
     fi
@@ -804,12 +774,22 @@ case $withval in
     ;;
 esac
 ])
-AC_MSG_RESULT([C extra flags: $COTH])
-AC_MSG_RESULT([C++ extra flags: $CXXOTH])
+AC_MSG_RESULT([misc C++ compiler flags          : $CXXOTH])
 
-########
-## Check for library functions
-########
+CFLAGS='$(CDBG) $(COPT) $(CDEF) $(COTH) $(CINC)' AC_SUBST(CFLAGS)
+CXXFLAGS='$(CXXDBG) $(CXXOPT) $(CXXDEF) $(CXXOTH) $(CXXINC)' AC_SUBST(CXXFLAGS)
+
+if test X$AIX64 = Xyes; then
+  if test X$CXX = Xg++; then
+    COTH="$COTH -maix64" 
+    CXXOTH="$CXXOTH -maix64" 
+    F77FLAGS="$F77FLAGS -maix64" 
+    LDFLAGS="$LDFLAGS -maix64" 
+    LDLIBS="$LAPACK $BLAS $LDLIBS"
+  fi
+fi
+
+AC_MSG_RESULT([-------------------------------------------------------------------------------])
 
 
 ########
@@ -1014,7 +994,6 @@ AC_CONFIG_FILES([include/Makefile
           tests/dboc-rocisd1/Makefile
           tests/extrema-zmat/Makefile
           tests/extrema-deloc/Makefile
-          tests/extrema-deloc/extrema-deloc.pl
           tests/mcscf-rhf1/Makefile
           tests/mcscf-rohf1/Makefile
           tests/mcscf-twocon1/Makefile
