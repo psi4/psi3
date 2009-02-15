@@ -4,6 +4,8 @@
 
 extern FILE* outfile;
 
+namespace psi{ namespace mcscf{
+
 BlockMatrix::BlockMatrix()
  : nirreps_(0) ,ref_(0), matrix_base_(0), rows_size_(0), cols_size_(0), rows_offset_(0), cols_offset_(0)
 {
@@ -180,6 +182,9 @@ BlockMatrix& BlockMatrix::operator+=(const BlockMatrix& rhs)
     *matrix_base_[h] += *rhs.matrix_base_[h];
   return(*this);
 }
+
+}}
+
 
 // double operator^(const BlockMatrix& rhs,const BlockMatrix& lhs)
 // {

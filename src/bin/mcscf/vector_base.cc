@@ -8,6 +8,8 @@
 
 extern FILE* outfile;
 
+namespace psi{ namespace mcscf{
+
 VectorBase::VectorBase(int elements) : elements_(elements),vector_(NULL)
 {
   allocate1(double,vector_,elements_);
@@ -25,3 +27,5 @@ void VectorBase::print()
     fprintf(outfile,"%10.6f",vector_[i]);
   }
 }
+
+}}

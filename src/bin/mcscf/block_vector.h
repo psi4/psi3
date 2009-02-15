@@ -5,6 +5,8 @@
 
 #include "vector_base.h"
 
+namespace psi{ namespace mcscf{
+
 class BlockVector
 {
 public:
@@ -42,5 +44,7 @@ private:
   void startup(std::string label, int nirreps, int*& rows_size);
   void cleanup();
 };
+
+}}
 
 #endif // _psi_src_lib_libmemtrix_block_vector_h_

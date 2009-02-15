@@ -3,6 +3,8 @@
 
 #include <cstring> // for size_t
 
+namespace psi{ namespace mcscf{
+
 class VectorBase
 {
 public:
@@ -25,5 +27,7 @@ private:
   // Vector data
   double* vector_;
 };
+
+}}
 
 #endif // _psi_src_lib_libmemtrix_vector_base_h_

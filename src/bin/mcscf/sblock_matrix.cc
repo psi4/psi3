@@ -2,6 +2,8 @@
 #include <psifiles.h>
 #include "sblock_matrix.h"
 
+namespace psi{ namespace mcscf{
+
 SBlockMatrix::SBlockMatrix()
  : block_matrix_(0)
 {
@@ -100,3 +102,5 @@ void SBlockMatrix::check(const char* cstr)
     exit(PSI_RETURN_FAILURE);
   }
 }
+
+}}

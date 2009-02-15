@@ -9,6 +9,8 @@
 
 extern FILE* outfile;
 
+namespace psi{ namespace mcscf{
+
 MatrixBase::MatrixBase(int rows, int cols) : rows_(rows),cols_(cols),elements_(rows*cols),matrix_(NULL)
 {
   allocate2(double,matrix_,rows_,cols_);
@@ -125,6 +127,8 @@ MatrixBase& MatrixBase::operator+=(const MatrixBase& rhs)
   }
   return(*this);
 }
+
+}}
 
 // void BlockMatrix::diagonalize(BlockMatrix* eigenvectors, double* eigenvalues)
 // {

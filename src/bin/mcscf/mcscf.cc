@@ -7,11 +7,11 @@
  *  @brief Contains main() and global variables
 */
 
-// Standard libraries 
+// Standard libraries
 #include <iostream>
 #include <cstdlib>
 
-// PSI libraries 
+// PSI libraries
 #include <psifiles.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
@@ -34,20 +34,16 @@ extern "C" {
   const char* gprgid();
 }
 
-using namespace std;
-
+namespace psi{
 MOInfoSCF              *moinfo_scf;
+MOInfo                 *moinfo;
+namespace mcscf{
 MemoryManager          *mem;
-
-namespace psi{ namespace mcscf{
-
-// Global variables
-// Timer               *global_timer;
-// Debugging           *debugging;
-
 
 void add_calculation_options();
 }} /* End Namespaces */
+
+using namespace std;
 
 /**
  * The main function
@@ -57,10 +53,12 @@ void add_calculation_options();
  */
 int main(int argc, char *argv[])
 {
+  using namespace psi;
   using namespace psi::mcscf;
+
   init_psi(argc,argv);
 
-  mem    = new MemoryManager();
+  psi::mcscf::mem    = new MemoryManager();
   moinfo_scf = new MOInfoSCF();
 
   if(options_get_str("REFERENCE") == "RHF"  ||
@@ -76,7 +74,7 @@ int main(int argc, char *argv[])
   }
 
   if(options_get_int("DEBUG") > 0)
-    mem->MemCheck(outfile);
+    psi::mcscf::mem->MemCheck(outfile);
   delete moinfo_scf;
   delete mem;
   close_psi();
@@ -145,13 +143,13 @@ void init_psi(int argc, char *argv[])
   ip_cwk_add(const_cast<char*>(":PSI"));
   ip_cwk_add(const_cast<char*>(":SCF"));
   ip_cwk_add(const_cast<char*>(":MCSCF"));
-  
+
   tstart(outfile);
-  
+
   fprintf(outfile,"\n  MCSCF Version 0.1.0, April, 2008");
   fprintf(outfile,"\n  Francesco Evangelista");
   fprintf(outfile,"\n  Compiled on %s at %s",__DATE__,__TIME__);
-  fprintf(outfile,"\n  id =%s",GIT_ID); 
+  fprintf(outfile,"\n  id =%s",GIT_ID);
 
 
 

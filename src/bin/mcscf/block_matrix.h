@@ -7,6 +7,8 @@
 
 extern FILE* outfile;
 
+namespace psi{ namespace mcscf{
+
 class BlockMatrix
 {
 public:
@@ -63,6 +65,8 @@ private:
   void startup(std::string label, int nirreps, int*& rows_size, int*& cols_size);
   void cleanup();
 };
+
+}}
 
 #endif // _psi_src_lib_libmemtrix_block_matrix_h_
 

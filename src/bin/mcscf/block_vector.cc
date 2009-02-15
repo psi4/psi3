@@ -4,6 +4,8 @@
 
 extern FILE* outfile;
 
+namespace psi{ namespace mcscf{
+
 BlockVector::BlockVector()
  : nirreps_(0) ,ref_(0), vector_base_(0), rows_size_(0), rows_offset_(0)
 {
@@ -84,6 +86,8 @@ void BlockVector::print()
   }
   fflush(outfile);
 }
+
+}}
 
 // void BlockVector::zero()
 // {

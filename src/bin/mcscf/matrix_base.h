@@ -5,6 +5,8 @@
 
 #include "vector_base.h"
 
+namespace psi{ namespace mcscf{
+
 class MatrixBase
 {
 public:
@@ -39,6 +41,8 @@ private:
   // Matrix data
   double** matrix_;
 };
+
+}}
 
 #endif // _psi_src_lib_libmemtrix_matrix_base_h_
 

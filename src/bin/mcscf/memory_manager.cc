@@ -10,6 +10,8 @@ extern FILE *infile, *outfile;
 
 using namespace std;
 
+namespace psi{ namespace mcscf{
+
 MemoryManager::MemoryManager(){
   CurrentAllocated = 0;
   MaximumAllocated = 0;
@@ -85,3 +87,4 @@ void MemoryManager::MemCheck(FILE *output)
   fprintf(output, "\n  ==============================================================================\n");
 }
 
+}}

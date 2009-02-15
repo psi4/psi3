@@ -5,6 +5,8 @@
 
 extern FILE* outfile;
 
+namespace psi{ namespace mcscf{
+
 SBlockVector::SBlockVector()
  : block_vector_(0)
 {
@@ -55,3 +57,5 @@ void SBlockVector::check(const char* cstr)
     exit(PSI_RETURN_FAILURE);
   }
 }
+
+}}

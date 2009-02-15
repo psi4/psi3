@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 
+namespace psi{ namespace mcscf{
+
 typedef struct {
 	void *variable;
 	std::string type;
@@ -203,5 +205,7 @@ void MemoryManager::release_three(T***& matrix, const char *fileName, size_t lin
 	mem->allocate(#type, variable, size1, size2, size3, #variable, __FILE__, __LINE__);
 #define release3(variable) \
 	mem->release_three(variable, __FILE__, __LINE__);
+
+}}
 
 #endif // _psi_src_bin_psimrcc_memory_manager_h

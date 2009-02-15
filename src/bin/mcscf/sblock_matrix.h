@@ -6,6 +6,8 @@
 #include "block_matrix.h"
 #include "sblock_vector.h"
 
+namespace psi{ namespace mcscf{
+
 // Smart version of BlockMatrix
 class SBlockMatrix
 {
@@ -50,6 +52,8 @@ private:
 
   BlockMatrix* block_matrix_;
 };
+
+}}
 
 #endif // _psi_src_lib_libmemtrix_sblock_matrix_h_
 

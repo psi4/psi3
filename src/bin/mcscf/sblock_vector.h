@@ -5,6 +5,8 @@
 
 #include "block_vector.h"
 
+namespace psi{ namespace mcscf{
+
 // Smart version of BlockVector
 class SBlockVector
 {
@@ -35,5 +37,7 @@ private:
 
   BlockVector* block_vector_;
 };
+
+}}
 
 #endif // _psi_src_lib_libmemtrix_sblock_vector_h_
