@@ -36,33 +36,29 @@ void rhf_opdm(void)
   double trace_AB=0.0;
   double alpha;
   dpdfile2 DIJ, DAB, D;
-  dpdbuf4 T2A, T2B;
+  dpdbuf4 T2, T2A, T2B;
 
   if(params.gradient) alpha = 1.0;
   else alpha = 2.0;
-  
-  dpd_buf4_init(&T2A, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
-  dpd_buf4_scmcopy(&T2A, CC_TAMPS, "2 tIjAb - tIjBa", 2);
-  dpd_buf4_sort_axpy(&T2A, CC_TAMPS, pqsr, 0, 5, "2 tIjAb - tIjBa", -1);
-  dpd_buf4_close(&T2A);
-  
+
   dpd_file2_init(&DIJ, CC_OEI, 0, 0, 0, "DIJ");
   dpd_buf4_init(&T2A, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
   dpd_buf4_init(&T2B, CC_TAMPS, 0, 0, 5, 0, 5, 0, "2 tIjAb - tIjBa");
   dpd_contract442(&T2A, &T2B, &DIJ, 0, 0, -alpha, 0);
   dpd_buf4_close(&T2B);
   dpd_buf4_close(&T2A);
-  trace_IJ += dpd_file2_trace(&DIJ);
+  trace_IJ = dpd_file2_trace(&DIJ);
   if(params.gradient) dpd_file2_copy(&DIJ, CC_OEI, "Dij");
   dpd_file2_close(&DIJ);
- 
+
   dpd_file2_init(&DAB, CC_OEI, 0, 1, 1, "DAB");
+  dpd_file2_scm(&DAB,0.0);
   dpd_buf4_init(&T2A, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
   dpd_buf4_init(&T2B, CC_TAMPS, 0, 0, 5, 0, 5, 0, "2 tIjAb - tIjBa");
   dpd_contract442(&T2A, &T2B, &DAB, 3, 3, alpha, 0);
   dpd_buf4_close(&T2B);
   dpd_buf4_close(&T2A);
-  trace_AB += dpd_file2_trace(&DAB);
+  trace_AB = dpd_file2_trace(&DAB);
   if(params.gradient) dpd_file2_copy(&DAB, CC_OEI, "Dab");
   dpd_file2_close(&DAB);
 
@@ -86,6 +82,7 @@ void rhf_opdm(void)
   fprintf(outfile, "\n\tTrace of OPDM(2)_AB     = %20.15f\n", trace_AB);
 */
   fprintf(outfile, "\tTrace of OPDM(2)        = %20.15f\n", trace_IJ+trace_AB);
+  fflush(outfile);
 
   return;
 }
@@ -274,7 +271,6 @@ void rhf_sf_opdm(void)
   dpd_buf4_close(&TA);
   dpd_buf4_close(&TB);
   trace_IJ += dpd_file2_trace(&D);
-  dpd_file2_print(&D, outfile);
   dpd_file2_close(&D);
 
   dpd_file2_init(&D, CC_OEI, 0, 0, 0, "Dij");
@@ -291,7 +287,6 @@ void rhf_sf_opdm(void)
   dpd_buf4_close(&TB);
   dpd_buf4_close(&TA);
   trace_ij += dpd_file2_trace(&D);
-//  dpd_file2_print(&D, outfile);
   dpd_file2_close(&D);
 
   dpd_file2_init(&D, CC_OEI, 0, 1, 1, "DAB");
@@ -308,7 +303,6 @@ void rhf_sf_opdm(void)
   dpd_buf4_close(&TA);
   dpd_buf4_close(&TB);
   trace_AB += dpd_file2_trace(&D);
-  dpd_file2_print(&D, outfile);
   dpd_file2_close(&D);
 
   dpd_file2_init(&D, CC_OEI, 0, 1, 1, "Dab");
@@ -325,7 +319,6 @@ void rhf_sf_opdm(void)
   dpd_buf4_close(&TB);
   dpd_buf4_close(&TA);
   trace_ab += dpd_file2_trace(&D);
-//  dpd_file2_print(&D, outfile);
   dpd_file2_close(&D);
 
   /* zero out Dia DIA Dai DAI */

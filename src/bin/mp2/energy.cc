@@ -29,9 +29,10 @@ double rhf_energy(void)
   dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
   dpd_buf4_init(&D, CC_DINTS, 0, 0, 5, 0, 5, 0, "D 2<ij|ab> - <ij|ba>");
   E = dpd_buf4_dot(&D, &tIjAb);
-
+  dpd_buf4_close(&D);
   dpd_buf4_init(&S, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
   os_energy = dpd_buf4_dot(&S, &tIjAb);
+  dpd_buf4_close(&tIjAb);
   dpd_buf4_close(&S);
   ss_energy = (E - os_energy);
   
@@ -42,7 +43,6 @@ double rhf_energy(void)
     os_energy = params.scs_scale_os * os_energy;
     ss_energy = params.scs_scale_ss * ss_energy;
   }
-
   else {
     os_energy = (6.0/5.6) * os_energy;
     ss_energy = (1.0/3.0) * ss_energy;
@@ -50,9 +50,6 @@ double rhf_energy(void)
 
   mo.escsmp2_os = os_energy;
   mo.escsmp2_ss = ss_energy;
-
-  dpd_buf4_close(&tIjAb);
-  dpd_buf4_close(&D);
 
   return(E);
 }

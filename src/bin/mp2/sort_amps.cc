@@ -14,8 +14,14 @@ namespace psi{ namespace mp2{
 void sort_amps(void)
 {
   dpdbuf4 T;
+  dpdbuf4 T2AB1, T2AB2;
 
   if(params.ref == 0) { /** RHF **/
+
+    dpd_buf4_init(&T, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
+    dpd_buf4_scmcopy(&T, CC_TAMPS, "2 tIjAb - tIjBa", 2);
+    dpd_buf4_sort_axpy(&T, CC_TAMPS, pqsr, 0, 5, "2 tIjAb - tIjBa", -1);
+    dpd_buf4_close(&T);
 
     dpd_buf4_init(&T, CC_TAMPS, 0, 2, 7, 0, 5, 1, "tIjAb");
     dpd_buf4_copy(&T, CC_TAMPS, "tIJAB");

@@ -41,7 +41,6 @@ void rhf_Zvector(void)
   nirreps = mo.nirreps;
 
   dpd_file2_init(&L, CC_OEI, 0, 1, 0, "LAI");
-  dpd_file2_print(&L,outfile);
   dpd_file2_mat_init(&L);
   dpd_file2_mat_rd(&L);
   num_ai = 0;

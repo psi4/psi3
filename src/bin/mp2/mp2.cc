@@ -30,7 +30,6 @@ void init_ioff(void);
 int **cacheprep_rhf(int level, int *cachefiles);
 int **cacheprep_uhf(int level, int *cachefiles);
 void cachedone_rhf(int **cachelist);
-struct dpd_file4_cache_entry *priority_list(void);
 double energy(void);
 void amps(void);
 void sort_amps(void);
@@ -60,10 +59,7 @@ int main(int argc, char *argv[])
 
   int *cachefiles;
   int **cachelist;
-  char *keyw;
  
-  struct dpd_file4_cache_entry *priority;
-  
   init_io(argc,argv);
   title();
 
@@ -81,9 +77,8 @@ int main(int argc, char *argv[])
   }
   else { /** RHF or ROHF **/
     cachelist = cacheprep_rhf(params.cachelev,cachefiles);
-    priority = priority_list();
-    dpd_init(0,mo.nirreps,params.memory,params.cachetype,cachefiles,
-             cachelist,priority,2,mo.occpi,mo.occ_sym,mo.virpi,mo.vir_sym);
+    dpd_init(0,mo.nirreps,params.memory,params.cachetype,cachefiles,cachelist,
+	     NULL,2,mo.occpi,mo.occ_sym,mo.virpi,mo.vir_sym);
   }
   
   amps();
@@ -109,6 +104,7 @@ int main(int argc, char *argv[])
   chkpt_close();
   
   if(params.opdm) {
+    sort_amps();
     opdm();
     if(params.relax_opdm) {
       lag();
@@ -145,6 +141,7 @@ int main(int argc, char *argv[])
   exit(0);
 }
 
+extern "C"{ const char *gprgid() { const char *prgid = "MP2"; return(prgid); } }
 
 namespace psi{ namespace mp2{
 
@@ -153,14 +150,11 @@ void init_io(int argc, char *argv[])
   int i=0;
   int num_extra_args=0;
   char **extra_args;
-  extern const char *gprgid();
   char *progid;
 
-  extra_args = (char **)malloc(argc*sizeof(char *));
-  //progid = (char *)malloc(strlen(gprgid())+2);
-  //sprintf(progid, ":%s",gprgid());
-  progid = (char *)malloc(5);
-  sprintf(progid, ":%s","MP2");
+  extra_args = (char **) malloc(argc*sizeof(char *));
+  progid = (char *) malloc(strlen(gprgid())+2);
+  sprintf(progid, ":%s", gprgid());
   params.opdm = 0;
 
   for(i=1; i<argc; i++) {
@@ -259,14 +253,6 @@ void exit_io(void)
   psio_done();
   tstop(outfile);
   psi_stop(infile,outfile,psi_file_prefix);
-}
-
-extern "C"{
-  const char *gprgid()
-  {
-    const char *prgid = "MP2";
-    return(prgid);
-  }
 }
 
 }} /* End namespaces */

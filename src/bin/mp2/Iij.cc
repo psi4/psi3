@@ -25,6 +25,7 @@ void rhf_sf_Iij(void)
 
   /* I'IJ <-- sum_K fIK (DJK + DKJ) */
   dpd_file2_init(&I, CC_OEI, 0, 0, 0, "I'IJ");
+  dpd_file2_scm(&I, 0.0);
 
   dpd_file2_init(&F, CC_OEI, 0, 0, 0, "fIJ");
   dpd_file2_init(&D, CC_OEI, 0, 0, 0, "DIJ");

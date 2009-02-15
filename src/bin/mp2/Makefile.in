@@ -7,7 +7,7 @@ LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_dpd -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1
 
-CXXSRC = cache.cc priority.cc get_moinfo.cc get_params.cc amps.cc \
+CXXSRC = cache.cc get_moinfo.cc get_params.cc amps.cc \
 energy.cc opdm.cc dipole.cc lag.cc build_A.cc Zvector.cc sort_opdm.cc \
 sort_amps.cc Iij.cc Iab.cc Iai.cc Iia.cc twopdm.cc \
 build_X.cc relax_I.cc relax_opdm.cc sort_I.cc check_energy.cc \
