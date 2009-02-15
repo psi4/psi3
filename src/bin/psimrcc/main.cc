@@ -45,10 +45,13 @@ extern "C" {
 }
 
 using namespace std;
+using namespace psi;
 
+
+
+namespace psi{
 MOInfo              *moinfo;
-
-namespace psi{ namespace psimrcc{
+namespace psimrcc{
 
 // Global variables
 Timer               *global_timer;
