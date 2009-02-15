@@ -51,7 +51,8 @@ protected:
         double** mat = (double**) malloc(sizeof(double*)*nrow);
         const size_t size = sizeof(double)*nrow*ncol;
         mat[0] = (double*) malloc(size);
-        bzero((void*)mat[0],size);
+        //bzero((void*)mat[0],size);
+        memset((void *)mat[0], '\0', size);
         for(int r=1; r<nrow; ++r) mat[r] = mat[r-1] + ncol;
         return mat;
     }
@@ -274,7 +275,8 @@ protected:
         double** mat = (double**) malloc(sizeof(double*)*nrow);
         const size_t size = sizeof(double)*nrow*ncol;
         mat[0] = (double*) malloc(size);
-        bzero((void*)mat[0],size);
+        //bzero((void*)mat[0],size);
+        memset((void *)mat[0], '\0', size);
         for(int r=1; r<nrow; ++r) mat[r] = mat[r-1] + ncol;
         return mat;
     }
