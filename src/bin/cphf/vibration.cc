@@ -10,6 +10,7 @@
 #include <libpsio/psio.h>
 #include <libiwl/iwl.h>
 #include <libqt/qt.h>
+#include <libchkpt/chkpt.h>
 #include <psifiles.h>
 #include <physconst.h>
 #include <masses.h>
@@ -62,6 +63,13 @@ void vibration(double **hessian, double **lx)
   double dipder_conv, ir_prefactor;
   double ds;
   double freq;
+  double *vib_temp, *vib_energy, T, *q_vib, *s_vib;
+  double ZPVE, evib;
+  double etrans, erot, ethermal;
+  double molecmass, qnuc;
+  double P, qtrans;
+  double qelec, qvib, qtotal;
+  double Selec, Snuc, Strans, Srot, Svib, Stotal;
 
   /* Print out the force constants for subsequent optimizations */
   TMP = block_matrix(natom*3,natom*3);
@@ -202,6 +210,88 @@ void vibration(double **hessian, double **lx)
       fprintf(outfile, "\n");
     }  
   }
+
+  double *vibs = init_array(3*natom);
+  for(i=0; i<3*natom; ++i) {
+    if (km[3*natom-1-i] < 0.0)
+      vibs[i] = -1.0 * cm_convert * sqrt(-k_convert * km[3*natom-1-i]);
+    else
+      vibs[i] = cm_convert * sqrt(k_convert * km[3*natom-1-i]);
+  }
+ 
+  // chkpt_wt_vib_freqs will only write the first 3n-5/6 frequencies
+  chkpt_init(PSIO_OPEN_OLD);
+  chkpt_wt_vib_freqs(vibs);
+  chkpt_close();
+  free(vibs);
+
+
+/*
+  // compute G, H, and S 
+  fprintf(outfile, "\n Thermochemistry \n");
+  // compute Vib Temp (K)
+  vib_temp = init_array(natom*3);
+  T = 298.15;
+  P = 101325;
+  vib_energy = init_array(natom*3);
+  q_vib = init_array(natom*3);
+  s_vib = init_array(natom*3);
+  ZPVE = 0.0;
+  evib = 0.0;
+  for(i=0; i < 3*natom; i++)  {
+    vib_temp[i] = _c * 100 * _h * cm_convert * sqrt(k_convert * km[i]) / _kb;
+    //fprintf(outfile, "%16.8f\n", vib_temp[i]);
+    vib_energy[i] = vib_temp[i] / T * (0.5 + (1 / ((exp(vib_temp[i] / T) - 1))));
+    //fprintf(outfile, "%17.6f\n", vib_energy[i]);
+    q_vib[i] = (exp(-vib_temp[i] / (2*T))) / (1 - exp(-vib_temp[i] / T));
+    //fprintf(outfile, "%7.6f\n", q_vib[i]);
+    s_vib[i] = vib_temp[i] / (T * (exp(vib_temp[i] / T) - 1)) - log(1 - exp(-vib_temp[i] / T));
+    //fprintf(outfile, "%7.6f\n", s_vib[i]);
+    ZPVE += (cm_convert * sqrt(k_convert * km[i]) / 2);
+    //fprintf(outfile, "%17.6f\n", ZPVE);
+    evib += vib_energy[i];
+    //fprintf(outfile, "%17.6f\n", evib);
+  }
+
+  etrans = 1.5;
+  if(rottype == 3) 
+    erot = 1;
+  else
+    erot = 1.5; 
+  ethermal = evib + etrans + erot;
+  //fprintf(outfile, "%17.6f\n", ethermal);
+
+  // calculating the partition functions
+  qelec = 1 ;//degen; 
+  for(i=0; i < natom; i++)
+    molecmass += an2masses[(int) zvals[i]]; 
+  //fprintf(outfile, "%17.6f\n", molecmass);
+  fprintf(outfile, "%17.6f\n", qelec);
+  qnuc = 1;
+  qtrans = pow((_twopi * molecmass * _amu2kg * _kb * T / (_h * _h)), 1.5) * (_na * _kb * T / (P * _na));
+  //fprintf(outfile, "%17.6f\n", qtrans);
+//  qrot = pow(_pi, 0.5) / 1 * pow((_kb * T / _h), 1.5) * pow((A * B * C), -0.5);
+//  fprintf(outfile, "%17.6f\n", qrot);
+  qvib = 1;
+  for(i=0; i < natom*3; i++)
+    qvib = qvib * q_vib[i];
+  //fprintf(outfile, "%17.6f\n", qvib);
+  qtotal = qelec * qnuc * qtrans * qvib; // qrot
+  //fprintf(outfile, "%17.6f\n", qtotal);
+  
+  // calculating the contributions to entropy
+  Selec = _psi3_R * log(qelec) / _cal2J;
+  //fprintf(outfile, "%17.6f\n", Selec);
+  Snuc = 0;
+  Strans = _psi3_R * (log(qtrans) + 2.5) / _cal2J;
+  //Srot = _psi3_R * (log(qrot) + 1.5) / _cal2J;
+  for(i=0; i < natom*3; i++)
+    Svib += s_vib[i];
+  Svib = Svib * _psi3_R / _cal2J;
+  //fprintf(outfile, "%17.6f\n", Svib);
+  Stotal = Selec + Snuc + Strans + Svib; // + Srot
+  //fprintf(outfile, "%17.6f\n", Stotal);
+*/
 
   free(work);
   free(irint);

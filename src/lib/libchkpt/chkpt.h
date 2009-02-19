@@ -297,6 +297,14 @@ void chkpt_wt_nref_per_fragment(int *);
 double ***chkpt_rd_fragment_coeff(void);
 void chkpt_wt_fragment_coeff(double ***);
 
+double *chkpt_rd_rotconst(void);
+void chkpt_wt_rotconst(double *);
+
+int chkpt_rd_rot_symm_num(void);
+void chkpt_wt_rot_symm_num(int);
+
+double *chkpt_rd_vib_freqs(void);
+void chkpt_wt_vib_freqs(double *);
 
 #ifdef __cplusplus
 }

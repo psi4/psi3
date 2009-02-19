@@ -294,6 +294,9 @@ void find_symmetry()
     }
   }
 
+  rot_symm_num = 1;
+  for (i=0; i<naxes; ++i)
+    rot_symm_num *= 2;
   
   /*-------------------------
     Allocate character table

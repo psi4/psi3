@@ -308,6 +308,15 @@ namespace psi {
 
         double ***rd_fragment_coeff(void);
         void wt_fragment_coeff(double ***);
+
+        double *rd_rotconst(void);
+        void wt_rotconst(double *);
+
+        int rd_rot_symm_num(void);
+        void wt_rot_symm_num(int);
+
+        double *rd_vib_freqs(void);
+        void wt_vib_freqs(double *);
 		
 		/// allocate a block matrix -- analogous to libciomr's block_matrix
 		template <typename T> static T** matrix(int nrow, int ncol) {

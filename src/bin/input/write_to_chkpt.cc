@@ -74,6 +74,8 @@ void write_to_chkpt(double repulsion)
   chkpt_wt_nfzc(nfzc);
   chkpt_wt_nfzv(nfzv);
   chkpt_wt_nfragment(nfragments);
+  chkpt_wt_rotconst(rotconst);
+  chkpt_wt_rot_symm_num(rot_symm_num);
   if (nfragments > 1) {
     chkpt_wt_natom_per_fragment(frag_num_atoms);
     chkpt_wt_nallatom_per_fragment(frag_num_allatoms);

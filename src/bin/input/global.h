@@ -123,6 +123,8 @@ EXTERN int num_ao;                  /*Total number of AOs*/
 EXTERN int num_so;                  /*Total number of SOs*/
 EXTERN int num_prims;               /*Number of unique primitives*/
 EXTERN int max_angmom;              /*Maximum angular momentum type in the basis (not +1) */
+EXTERN int rot_symm_num;            /*Rotational symmetry number*/
+EXTERN double *rotconst;            /*Rotational constants*/
 EXTERN int num_classes;             /*Number of atom classes*/
 EXTERN int num_unique_classes;      /*Number of symmetry unique atom classes*/
 EXTERN int ap_flag;         /*Bitfield of flags indicating presence of atoms in certain positions

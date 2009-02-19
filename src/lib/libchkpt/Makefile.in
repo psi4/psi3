@@ -94,7 +94,10 @@ nfragment.cc \
 natom_per_fragment.cc \
 nallatom_per_fragment.cc  \
 nref_per_fragment.cc \
-fragment_coeff.cc
+fragment_coeff.cc \
+rotconst.cc \
+vib_freqs.cc \
+rot_symm_num.cc
 
 DEPENDINCLUDE = chkpt.h chkpt.hpp config.h
 

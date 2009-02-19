@@ -100,6 +100,14 @@ void reorient()
       else /* molecule */
 	fprintf(outfile,"B = %10.5lf  C = %10.5lf\n",im2rotconst/IM[1],im2rotconst/IM[2]);
 
+      /* Calculating rotational constants to write to chkpt */
+      rotconst = init_array(3);
+      for(i=0;i<3;++i) {
+        if (IM[i] < ZERO_MOMENT_INERTIA)
+          rotconst[i] = 0.0;
+        else
+          rotconst[i] = im2rotconst/IM[i];
+      }
     
       /*Computing degeneracy*/
       degen = 0;

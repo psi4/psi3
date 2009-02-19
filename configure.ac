@@ -873,6 +873,7 @@ AC_CONFIG_FILES([include/Makefile
           src/bin/psirb/Makefile
           src/bin/psimrcc/Makefile
           src/bin/nonbonded/Makefile
+          src/bin/thermo/Makefile
 
           tests/Makefile
           tests/MakeVars
