@@ -1,5 +1,7 @@
 #include <cstdlib>
+
 #include <psifiles.h>
+
 #include "sblock_matrix.h"
 
 namespace psi{ namespace mcscf{
@@ -23,6 +25,13 @@ SBlockMatrix::SBlockMatrix(std::string label, int nirreps, int*& rows_size, int*
   block_matrix_->add_reference();
 }
 
+SBlockMatrix::SBlockMatrix(std::string label, int nirreps, vecint& rows_size, vecint& cols_size)
+ : block_matrix_(0)
+{
+  block_matrix_ = new BlockMatrix(label,nirreps,rows_size,cols_size);
+  block_matrix_->add_reference();
+}
+
 SBlockMatrix::SBlockMatrix(BlockMatrix* block_matrix)
  : block_matrix_(block_matrix)
 {
@@ -35,13 +44,19 @@ SBlockMatrix::SBlockMatrix(SBlockMatrix& src)
   block_matrix_->add_reference();
 }
 
-void SBlockMatrix::allocate(std::string label, int nirreps, size_t*& rows_size, size_t*& cols_size) 
+void SBlockMatrix::allocate(std::string label, int nirreps, size_t*& rows_size, size_t*& cols_size)
 {
   block_matrix_ = new BlockMatrix(label,nirreps,rows_size,cols_size);
   block_matrix_->add_reference();
 }
 
-void SBlockMatrix::allocate(std::string label, int nirreps, int*& rows_size, int*& cols_size) 
+void SBlockMatrix::allocate(std::string label, int nirreps, int*& rows_size, int*& cols_size)
+{
+  block_matrix_ = new BlockMatrix(label,nirreps,rows_size,cols_size);
+  block_matrix_->add_reference();
+}
+
+void SBlockMatrix::allocate(std::string label, int nirreps, vecint& rows_size, vecint& cols_size)
 {
   block_matrix_ = new BlockMatrix(label,nirreps,rows_size,cols_size);
   block_matrix_->add_reference();

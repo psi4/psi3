@@ -31,7 +31,7 @@ void CCOperation::sort(CCIndex* T_left,CCIndex* T_right,double*** T_matrix,doubl
   // Setup reindexing_array
   // This assumes that the reindexing starts from 1 !!! This can cost you an headache
   if(reindexing.size()>6)
-    print_developing("CCOperation::sort() doesn't support more that six indices",__FILE__,__LINE__);
+    print_developing(outfile,"CCOperation::sort() doesn't support more that six indices",__FILE__,__LINE__);
   short* reindexing_array = new short[6];
   for(int i = 0; i< reindexing.size(); i++)
     reindexing_array[i]=string_to_integer(reindexing.substr(i,1))-1;
@@ -57,7 +57,7 @@ void CCOperation::sort(CCIndex* T_left,CCIndex* T_right,double*** T_matrix,doubl
   short**       T_right_tuples  = T_right->get_tuples();
 
   // Zero the target matrix (A) if the assignment operator requires it
-  
+
   if(assignment=="=" || assignment==">="){
     for(int h=0;h<moinfo->get_nirreps();++h){
       size_t block_size = A_Matrix->get_block_sizepi(h);
@@ -68,7 +68,7 @@ void CCOperation::sort(CCIndex* T_left,CCIndex* T_right,double*** T_matrix,doubl
       }
     }
   }
-    
+
 
   // This routine performs the reindexing of CCMatrix objects
   // for matrices that have the same number of elements or
@@ -202,7 +202,7 @@ void CCOperation::sort(CCIndex* T_left,CCIndex* T_right,double*** T_matrix,doubl
           }
         }
       }
-    
+
       // A[xxx][x] <- B[x][xxx]
       if((A_left_nelements == 3) && (T_left_nelements == 1)){
         int*      T_left_one_index_to_irrep    = T_left->get_one_index_to_irrep();
@@ -227,7 +227,7 @@ void CCOperation::sort(CCIndex* T_left,CCIndex* T_right,double*** T_matrix,doubl
           }
         }
       }
-    
+
       // A[x][xxx] <- B[xx][xx]
       if((A_left_nelements == 1) && (T_left_nelements == 2)){
         int**    T_left_two_index_to_irrep    = T_left->get_two_index_to_irrep();
@@ -250,7 +250,7 @@ void CCOperation::sort(CCIndex* T_left,CCIndex* T_right,double*** T_matrix,doubl
           }
         }
       }
-    
+
       // A[xx][xx] <- B[xx][xx]
       if((A_left_nelements == 2) && (T_left_nelements == 2)){
         int** T_left_two_index_to_irrep    = T_left->get_two_index_to_irrep();
@@ -296,7 +296,7 @@ void CCOperation::sort(CCIndex* T_left,CCIndex* T_right,double*** T_matrix,doubl
           }
         }
       }
-    
+
       // A[x][xxx] <- B[xxx][x]
       if((A_left_nelements == 1) && (T_left_nelements == 3)){
         size_t*** T_left_three_index_to_tuple  = T_left->get_three_index_to_tuple();
@@ -321,7 +321,7 @@ void CCOperation::sort(CCIndex* T_left,CCIndex* T_right,double*** T_matrix,doubl
           }
         }
       }
-    
+
       // A[xx][xx] <- B[xxx][x]
       if((A_left_nelements == 2) && (T_left_nelements == 3)){
         size_t*** T_left_three_index_to_tuple  = T_left->get_three_index_to_tuple();
@@ -346,7 +346,7 @@ void CCOperation::sort(CCIndex* T_left,CCIndex* T_right,double*** T_matrix,doubl
           }
         }
       }
-    
+
       // A[xxx][x] <- B[xxx][x]
       if((A_left_nelements == 3) && (T_left_nelements == 3)){
         size_t*** T_left_three_index_to_tuple  = T_left->get_three_index_to_tuple();
@@ -427,24 +427,24 @@ void CCOperation::sort(CCIndex* T_left,CCIndex* T_right,double*** T_matrix,doubl
       short* pqrs = new short[4];
       // A[x][xxx] <- B[x][xxx]
       if((A_left_nelements == 1) && (T_left_nelements == 1)){
-        print_developing("A[x][xxx] <- B[x][xxx] with expansion",__FILE__,__LINE__);
+        print_developing(outfile,"A[x][xxx] <- B[x][xxx] with expansion",__FILE__,__LINE__);
       }
-  
+
       // A[xx][xx] <- B[x][xxx]
       if((A_left_nelements == 2) && (T_left_nelements == 1)){
-        print_developing("A[xx][xx] <- B[x][xxx] with expansion",__FILE__,__LINE__);
+        print_developing(outfile,"A[xx][xx] <- B[x][xxx] with expansion",__FILE__,__LINE__);
       }
-  
+
       // A[xxx][x] <- B[x][xxx]
       if((A_left_nelements == 3) && (T_left_nelements == 1)){
-        print_developing("A[xxx][x] <- B[x][xxx] with expansion",__FILE__,__LINE__);
+        print_developing(outfile,"A[xxx][x] <- B[x][xxx] with expansion",__FILE__,__LINE__);
       }
-  
+
       // A[x][xxx] <- B[xx][xx]
       if((A_left_nelements == 1) && (T_left_nelements == 2)){
-        print_developing("A[x][xxx] <- B[xx][xx] with expansion",__FILE__,__LINE__);
+        print_developing(outfile,"A[x][xxx] <- B[xx][xx] with expansion",__FILE__,__LINE__);
       }
-  
+
       // A[xx][xx] <- B[xx][xx]
       if((A_left_nelements == 2) && (T_left_nelements == 2)){
         int** A_left_two_index_to_irrep    = A_left->get_two_index_to_irrep();
@@ -474,27 +474,27 @@ void CCOperation::sort(CCIndex* T_left,CCIndex* T_right,double*** T_matrix,doubl
           }
         }
       }
-  
+
       // A[xxx][x] <- B[xx][xx]
       if((A_left_nelements == 3) && (T_left_nelements == 2)){
-        print_developing("A[xxx][x] <- B[xx][xx] with expansion",__FILE__,__LINE__);
+        print_developing(outfile,"A[xxx][x] <- B[xx][xx] with expansion",__FILE__,__LINE__);
       }
-  
+
       // A[x][xxx] <- B[xxx][x]
       if((A_left_nelements == 1) && (T_left_nelements == 3)){
-        print_developing("A[x][xxx] <- B[xxx][x] with expansion",__FILE__,__LINE__);
+        print_developing(outfile,"A[x][xxx] <- B[xxx][x] with expansion",__FILE__,__LINE__);
       }
-  
+
       // A[xx][xx] <- B[xxx][x]
       if((A_left_nelements == 2) && (T_left_nelements == 3)){
-        print_developing("A[xx][xx] <- B[xxx][x] with expansion",__FILE__,__LINE__);
+        print_developing(outfile,"A[xx][xx] <- B[xxx][x] with expansion",__FILE__,__LINE__);
       }
-  
+
       // A[xxx][x] <- B[xxx][x]
       if((A_left_nelements == 3) && (T_left_nelements == 3)){
-        print_developing("A[xxx][x] <- B[xxx][x] with expansion",__FILE__,__LINE__);
+        print_developing(outfile,"A[xxx][x] <- B[xxx][x] with expansion",__FILE__,__LINE__);
       }
-  
+
       delete[] pqrs;
     }
   }

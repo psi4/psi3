@@ -142,7 +142,7 @@ int string_to_integer(const std::string inString)
 {
   int i = 0;
   char* end;
-  i = static_cast<int>(std::strtod( inString.c_str(), &end )); 
+  i = static_cast<int>(std::strtod( inString.c_str(), &end ));
   return i;
 }
 
@@ -163,7 +163,7 @@ void append_reference(std::string& str, int reference)
 /**
  * Convert the size of a doubles array in Mb using the definition 1Mb = 1048576 bytes
  * @param n size of the array
- * @return 
+ * @return
  */
 double to_MB(size_t n)
 {
@@ -231,37 +231,34 @@ unsigned long int free_smatrix(short*** matrix, int size1, int size2, int size3)
   return(size*sizeof(short));
 }
 
-
-
-
-void print_error(string message, const char* file, int line)
+void print_error(FILE* output, string message, const char* file, int line)
 {
-  fprintf(outfile,"\n\n%s in file %s, line %d\n",message.c_str(),file,line);
-  fflush(outfile);
+  fprintf(output,"\n\n%s in file %s, line %d\n",message.c_str(),file,line);
+  fflush(output);
   exit(1);
 }
 
-void print_error(const char* message, const char* file, int line)
+void print_error(FILE* output, const char* message, const char* file, int line)
 {
-  print_error(message,file,line,1);
+  print_error(output,message,file,line,1);
 }
 
-void print_error(const char* message, const char* file, int line, int error)
+void print_error(FILE* output, const char* message, const char* file, int line, int error)
 {
-  fprintf(outfile,"\n\n%s in file %s, line %d\n",message,file,line);
-  fflush(outfile);
+  fprintf(output,"\n\n%s in file %s, line %d\n",message,file,line);
+  fflush(output);
   exit(error);
 }
 
-void print_developing(const char* message, const char* file, int line)
+void print_developing(FILE* output, const char* message, const char* file, int line)
 {
-  print_developing(message,file,line,1);
+  print_developing(output,message,file,line,1);
 }
 
-void print_developing(const char* message, const char* file, int line, int error)
+void print_developing(FILE* output, const char* message, const char* file, int line, int error)
 {
-  fprintf(outfile,"\n\n%s: feature not yet implemented in file %s, line %d\n",message,file,line);
-  fflush(outfile);
+  fprintf(output,"\n\n%s: feature not yet implemented in file %s, line %d\n",message,file,line);
+  fflush(output);
   exit(error);
 }
 

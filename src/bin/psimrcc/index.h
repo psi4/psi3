@@ -1,17 +1,10 @@
 #ifndef _psi_src_bin_psimrcc_ccindex_h
 #define _psi_src_bin_psimrcc_ccindex_h
 
-/*! \file 
+/*! \file
     \ingroup (PSIMRCC)
     \brief   This class is used to store n-tuples of MOs indices (p,q,r,..)
 */
-
-/***************************************************************************
- *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
-
 /*********************************************************
   CCIndex Class
   1) Purpose
@@ -36,6 +29,8 @@
 extern FILE *infile, *outfile;
 
 namespace psi{ namespace psimrcc{
+
+typedef std::vector<std::vector<int> > vecvecint;
 
 /**
 	@author Francesco Evangelista <frank@ccc.uga.edu>
@@ -85,7 +80,7 @@ public:
   int         get_tuple_irrep(short p, short q)           {return(two_index_to_irrep[p][q]);}
   int         get_tuple_irrep(short p, short q, short r)  {return(three_index_to_irrep[p][q][r]);}
 
-  pIntVec&    get_indices_to_pitzer()                     {return(indices_to_pitzer);}
+  vecvecint&   get_indices_to_pitzer()                     {return(indices_to_pitzer);}
 
   size_t*     get_one_index_to_tuple()                    {return(one_index_to_tuple);};
   size_t**    get_two_index_to_tuple()                    {return(two_index_to_tuple);};
@@ -111,9 +106,9 @@ private:
   std::string                       label;                  // The label of this object
   int                               nelements;              // Number of elements
   Size_tVec                         dimension;              // Size of the elements space
-  pIntVec                           mospi;                  // Size of each irrep of the elements space
-  std::vector<std::vector<int> >    first_mos;              // Last mo of each irrep of the elements space
-  pIntVec                           indices_to_pitzer;      // Mapping from the mos of this space to Pitzer
+  vecvecint                         mospi;                  // Size of each irrep of the elements space
+  vecvecint                         first_mos;              // Last mo of each irrep of the elements space
+  vecvecint                         indices_to_pitzer;      // Mapping from the mos of this space to Pitzer
   bool                              greater_than_or_equal;  // >= tuples
   bool                              greater_than;           // >  tuples
   double                            memory;                 // Memory required to store all the data

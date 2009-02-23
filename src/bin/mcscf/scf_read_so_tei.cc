@@ -5,9 +5,9 @@
 #include <libiwl/iwl.h>
 #include <libciomr/libciomr.h>
 #include <libmoinfo/libmoinfo.h>
+#include <libutil/libutil.h>
 
 #include "scf.h"
-#include "memory_manager.h"
 
 #define MAX(i,j) ((i>j) ? i : j)
 #define MIN(i,j) ((i>j) ? j : i)
@@ -23,8 +23,8 @@ void SCF::read_so_tei()
 
   total_symmetric_block_size = INDEX(pairpi[0]-1,pairpi[0]-1)+1;
 
-  size_t free_memory = mem->get_FreeMemory();
-  
+  size_t free_memory = _memory_manager_->get_FreeMemory();
+
   // Determine the number of matrix elements of the PK (and K) matrix to hold in core
   if(reference == rhf){
     nin_core        = min(free_memory / sizeof(double),total_symmetric_block_size);
@@ -74,14 +74,14 @@ void SCF::read_so_tei()
                      batch_index_min[batch],batch_index_max[batch]);
   }
   fflush(outfile);
-  
+
   // Allocate the PK matrix
   allocate1(double,PK,nin_core);
   for(size_t i=0; i < nin_core; i++)
     PK[i]    =0.0;
   fprintf(outfile,"\n\n  Allocated the PK matrix (%d elements) ",nin_core);
-  fflush(outfile);	
-  
+  fflush(outfile);
+
   if(reference != rhf){
     // Allocate the K matrix
     allocate1(double,K,nin_core);
@@ -90,7 +90,7 @@ void SCF::read_so_tei()
     fprintf(outfile,"\n  Allocated the  K matrix (%d elements) ",nin_core);
     fflush(outfile);
   }
-  
+
   if(reference == rhf)
     read_so_tei_form_PK();
   else
@@ -129,7 +129,7 @@ void SCF::read_so_tei_form_PK()
         r = ERIIN.labels[fi+2];
         s = ERIIN.labels[fi+3];
         value = ERIIN.values[index];
-  
+
         if(pair_sym[p][q] == 0)
         {
           four_index = INDEX(pair[p][q],pair[r][s]);
@@ -214,7 +214,7 @@ void SCF::read_so_tei_form_PK_and_K()
         r = ERIIN.labels[fi+2];
         s = ERIIN.labels[fi+3];
         value = ERIIN.values[index];
-  
+
         if(pair_sym[p][q] == 0)
         {
           four_index = INDEX(pair[p][q],pair[r][s]);
@@ -265,7 +265,7 @@ void SCF::read_so_tei_form_PK_and_K()
     // Write the PK matrix to disk
     write_Raffanetti("PK",PK,batch);
     write_Raffanetti("K",K,batch);
-    
+
     fprintf(outfile,"done.");
     fflush(outfile);
   }

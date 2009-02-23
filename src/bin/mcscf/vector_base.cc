@@ -2,9 +2,9 @@
 #include <iostream>
 
 #include <libqt/qt.h>
+#include <libutil/libutil.h>
 
 #include "vector_base.h"
-#include "memory_manager.h"
 
 extern FILE* outfile;
 

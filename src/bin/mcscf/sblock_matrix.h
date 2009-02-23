@@ -2,6 +2,7 @@
 #define _psi_src_lib_libmemtrix_sblock_matrix_h_
 
 #include <string>
+#include <vector>
 
 #include "block_matrix.h"
 #include "sblock_vector.h"
@@ -15,11 +16,13 @@ public:
   SBlockMatrix();
   SBlockMatrix(std::string label, int nirreps, size_t*& rows_size, size_t*& cols_size);
   SBlockMatrix(std::string label, int nirreps, int*& rows_size, int*& cols_size);
+  SBlockMatrix(std::string label, int nirreps, vecint& rows_size, vecint& cols_size);
   ~SBlockMatrix() { if(block_matrix_) block_matrix_->subtract_reference();} // subtract only if allocated
 
   // Manual allocation
   void allocate(std::string label, int nirreps, size_t*& rows_size, size_t*& cols_size);
   void allocate(std::string label, int nirreps, int*& rows_size, int*& cols_size);
+  void allocate(std::string label, int nirreps, vecint& rows_size, vecint& cols_size);
 
   // Copy constructor and assignment operator
   SBlockMatrix             (SBlockMatrix& src);

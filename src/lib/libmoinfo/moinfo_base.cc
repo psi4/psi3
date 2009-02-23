@@ -2,11 +2,13 @@
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
+
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libchkpt/chkpt.h>
+#include <libchkpt/chkpt.hpp>
 #include <libipv1/ip_lib.h>
-#include <liboptions/liboptions.h> 
+#include <liboptions/liboptions.h>
 #include <libutil/libutil.h>
 
 #include "moinfo_base.h"
@@ -31,11 +33,8 @@ MOInfoBase::~MOInfoBase()
 
 void MOInfoBase::startup()
 {
-  PSI_NULL(sopi);
-  PSI_NULL(docc);
-  PSI_NULL(actv);
   PSI_NULL(ioff);
-  
+
   nael = 0;
   nbel = 0;
   compute_ioff();
@@ -44,12 +43,9 @@ void MOInfoBase::startup()
 void MOInfoBase::cleanup()
 {
   for(int h = 0;h < nirreps;h++)
-     free(irr_labs[h]);
+    psi::Chkpt::free(irr_labs[h]);
   free(irr_labs);
-  
-  PSI_FREE(sopi);
-  PSI_DELETE_ARRAY(docc);
-  PSI_DELETE_ARRAY(actv);
+
   PSI_DELETE_ARRAY(ioff);
 }
 
@@ -58,10 +54,11 @@ void MOInfoBase::read_chkpt_data()
   nirreps  = chkpt_rd_nirreps();
   nso      = chkpt_rd_nso();
 
-  sopi     = chkpt_rd_sopi();
+  // Read sopi from the chkpt and save as a STL vector
+  sopi = read_chkpt_intvec(nirreps,chkpt_rd_sopi());
 
   irr_labs = chkpt_rd_irr_labs();
-  
+
   nuclear_energy = chkpt_rd_enuc();
 }
 
@@ -78,11 +75,11 @@ void MOInfoBase::compute_number_of_electrons()
 
   // Check if the multiplicity makes sense
   if( ((nel+1-multiplicity) % 2) != 0)
-    print_error("\n\n  MOInfoBase: Wrong multiplicity.\n\n",__FILE__,__LINE__);
-  
+    print_error(outfile,"\n\n  MOInfoBase: Wrong multiplicity.\n\n",__FILE__,__LINE__);
+
   nael = (nel + multiplicity -1)/2;
   nbel =  nel - nael;
-  
+
   PSI_FREE(zvals);
 }
 
@@ -94,15 +91,14 @@ void MOInfoBase::compute_ioff()
     ioff[i] = ioff[i-1] + i;
 }
 
-void MOInfoBase::read_mo_space(int nirreps_ref,int& n, int* mo, string labels)
+void MOInfoBase::read_mo_space(int nirreps_ref, int& n, intvec& mo, string labels)
 {
   // Defaults is to set all to zero
-  for(int i=0;i<nirreps_ref;i++)
-    mo[i]=0;
+  mo.assign(nirreps_ref,0);
   n = 0;
-  
+
   bool read = false;
-  
+
   vector<string> label_vec = split(labels);
   for(int k = 0; k < label_vec.size(); ++k){
     int size;
@@ -129,7 +125,7 @@ void MOInfoBase::read_mo_space(int nirreps_ref,int& n, int* mo, string labels)
   }
 }
 
-void MOInfoBase::print_mo_space(int& n, int* mo, std::string labels)
+void MOInfoBase::print_mo_space(int& n, intvec& mo, std::string labels)
 {
   fprintf(outfile,"\n  %s",labels.c_str());
 
@@ -238,6 +234,14 @@ void MOInfoBase::correlate(char *ptgrp, int irrep, int& nirreps_old, int& nirrep
     fprintf(outfile,"Point group unknown for correlation table.\n");
   }
   return;
+}
+
+intvec MOInfoBase::read_chkpt_intvec(int n, int* array)
+{
+  // Read array from the chkpt and save as a STL vector
+  intvec stl_vector(&array[0],&array[n]);
+  psi::Chkpt::free(array);
+  return(stl_vector);
 }
 
 }

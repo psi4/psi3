@@ -24,7 +24,7 @@ MOInfoSCF::MOInfoSCF() : MOInfoBase()
   print_mo();
 }
 
-MOInfoSCF::~MOInfoSCF() 
+MOInfoSCF::~MOInfoSCF()
 {
 }
 
@@ -35,15 +35,11 @@ void MOInfoSCF::read_mo_spaces()
      calculations, by looking to see what OptKing has
      written to the checkpoint file.  Reassign the
      occupation vectors as appropriate.  N.B. the
-     SOCC and DOCC are handled by Input (ACS) 
+     SOCC and DOCC are handled by Input (ACS)
   *****************************************************/
 
-  docc = new int[nirreps];
-  actv = new int[nirreps];
-
-  for(int i=0;i<nirreps;i++){
-     docc[i] = actv[i] = 0;
-  }
+  docc.resize(nirreps,0);
+  actv.resize(nirreps,0);
 
   // For single-point geometry optimizations and frequencies
   char *current_displacement_label = chkpt_build_keyword(const_cast<char*>("Current Displacement Irrep"));
@@ -63,26 +59,24 @@ void MOInfoSCF::read_mo_spaces()
     int* correlation;
     correlate(ptgrp_ref, disp_irrep, nirreps_ref, nirreps,correlation);
 
-    int *docc_ref    = new int[nirreps_ref];
-    int *actv_ref    = new int[nirreps_ref];
+    intvec docc_ref;
+    intvec actv_ref;
 
     // build orbital information for current point group
     read_mo_space(nirreps_ref,ndocc,docc_ref,"DOCC");
     read_mo_space(nirreps_ref,nactv,actv_ref,"ACTV ACTIVE SOCC");
-    
+
     for (int h=0; h < nirreps_ref; h++) {
       docc[ correlation[h] ] += docc_ref[h];
       actv[ correlation[h] ] += actv_ref[h];
     }
-    
+
     wfn_sym = correlation[wfn_sym];
     chkpt_set_prefix(save_prefix);
     chkpt_commit_prefix();
     free(save_prefix);
     free(ptgrp_ref);
     delete [] correlation;
-    delete [] docc_ref;
-    delete [] actv_ref;
   }else{
     // For a single-point only
     read_mo_space(nirreps,ndocc,docc,"DOCC");
@@ -91,7 +85,7 @@ void MOInfoSCF::read_mo_spaces()
 
   nactive_ael = nael  - ndocc;
   nactive_bel = nbel  - ndocc;
-  
+
   free(current_displacement_label);
 }
 
@@ -100,7 +94,7 @@ void MOInfoSCF::print_mo()
   fprintf(outfile,"\n");
   fprintf(outfile,"\n  MOs per irrep:                ");
 
-  for(int i=nirreps;i<8;i++)  
+  for(int i=nirreps;i<8;i++)
     fprintf(outfile,"     ");
   for(int i=0;i<nirreps;i++)
     fprintf(outfile,"  %s",irr_labs[i]);

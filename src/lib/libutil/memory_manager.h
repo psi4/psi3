@@ -1,41 +1,36 @@
-#ifndef _psi_src_bin_psimrcc_memory_manager_h
-#define _psi_src_bin_psimrcc_memory_manager_h
-/***************************************************************************
- *  PSIMRCC
- *  Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
+#ifndef _psi_src_bin_psimrcc_memory_manager_h_
+#define _psi_src_bin_psimrcc_memory_manager_h_
 
 #include <map>
 #include <vector>
 #include <string>
 
-namespace psi{ namespace psimrcc{
+namespace psi{
 
 typedef struct {
-	void *variable;
-	std::string type;
-	std::string variableName;
-	std::string fileName;
-	size_t lineNumber;
+	void*               variable;
+	std::string         type;
+	std::string         variableName;
+	std::string         fileName;
+	size_t              lineNumber;
 	std::vector<size_t> argumentList;
 } AllocationEntry;
 
 class MemoryManager
 {
 public:
-  MemoryManager();
+  MemoryManager(int max_memory_mb);
   ~MemoryManager();
 
   void MemCheck(FILE *output);
 
-  double get_total_memory() const {return(total_memory);}
+  double get_total_memory()                      const {return(total_memory);}
   // Memory handling routines
   void        add_allocated_memory(double value)       {allocated_memory+=value;}
   double      get_free_memory()                  const {return(total_memory-allocated_memory);}
   double      get_allocated_memory()             const {return(allocated_memory);}
   double      get_integral_strip_size()          const {return(integral_strip_size);}
+  size_t      get_FreeMemory()                   const {return(MaximumAllowed - CurrentAllocated);}
 
   template <typename T>
   void allocate(const char *type, T*& matrix, size_t size, const char *variableName, const char *fileName, size_t lineNumber);
@@ -65,13 +60,11 @@ private:
   double integral_strip_size;
 };
 
-extern MemoryManager *mem;
-
 template <typename T>
 void MemoryManager::allocate(const char *type, T*& matrix, size_t size, const char *variableName, const char *fileName, size_t lineNumber)
 {
   AllocationEntry newEntry;
-	
+
   if(size<=0){
     matrix = NULL;
   }else{
@@ -79,7 +72,7 @@ void MemoryManager::allocate(const char *type, T*& matrix, size_t size, const ch
     for(size_t i=0;i<size;i++)
       matrix[i]=static_cast<T>(0);   // Zero all the elements
   }
-  
+
   newEntry.variable = matrix;
   newEntry.type = type;
   newEntry.variableName = variableName;
@@ -96,9 +89,9 @@ void MemoryManager::release_one(T*& matrix, const char *fileName, size_t lineNum
     return;
 
   size_t size = AllocationTable[(void*)matrix].argumentList[0];
-  
+
   UnregisterMemory((void*)matrix, size*sizeof(T),fileName,lineNumber);
-	
+
   delete[] matrix;
   matrix = NULL;
 }
@@ -120,7 +113,7 @@ void MemoryManager::allocate(const char *type, T**& matrix, size_t size1, size_t
     for(size_t i=0;i<size1;i++)
       matrix[i]=&(vector[i*size2]);  // Assign the rows pointers
   }
-  
+
   newEntry.variable = matrix;
   newEntry.type = type;
   newEntry.variableName = variableName;
@@ -196,21 +189,23 @@ void MemoryManager::release_three(T***& matrix, const char *fileName, size_t lin
   matrix = NULL;
 }
 
+extern MemoryManager* _memory_manager_;
+
 #define allocate1(type, variable, size) \
-	mem->allocate(#type, variable, size, #variable, __FILE__, __LINE__);
+  _memory_manager_->allocate(#type, variable, size, #variable, __FILE__, __LINE__);
 #define release1(variable) \
-	mem->release_one(variable, __FILE__, __LINE__);
-	
+  _memory_manager_->release_one(variable, __FILE__, __LINE__);
+
 #define allocate2(type, variable, size1, size2) \
-	mem->allocate(#type, variable, size1, size2, #variable, __FILE__, __LINE__);
+  _memory_manager_->allocate(#type, variable, size1, size2, #variable, __FILE__, __LINE__);
 #define release2(variable) \
-	mem->release_two(variable, __FILE__, __LINE__);
+  _memory_manager_->release_two(variable, __FILE__, __LINE__);
 
 #define allocate3(type, variable, size1, size2, size3) \
-	mem->allocate(#type, variable, size1, size2, size3, #variable, __FILE__, __LINE__);
+  _memory_manager_->allocate(#type, variable, size1, size2, size3, #variable, __FILE__, __LINE__);
 #define release3(variable) \
-	mem->release_three(variable, __FILE__, __LINE__);
+  _memory_manager_->release_three(variable, __FILE__, __LINE__);
 
-#endif // _psi_src_bin_psimrcc_memory_manager_h
+#endif // _psi_src_bin_psimrcc_memory_manager_h_
 
-}} /* End Namespaces */
+} /* End Namespaces */

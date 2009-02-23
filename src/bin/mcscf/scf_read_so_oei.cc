@@ -8,9 +8,9 @@
 #include <libmoinfo/libmoinfo.h>
 #include <liboptions/liboptions.h>
 #include <libiwl/iwl.h>
+#include <libutil/libutil.h>
 
 #include "scf.h"
-#include "memory_manager.h"
 
 extern FILE* outfile;
 
@@ -20,7 +20,7 @@ void SCF::read_so_oei()
 {
   // Read all the SO one electron integrals in Pitzer order
   double* buffer = new double[nso*(nso+1)/2];
-  
+
   // Read the kinetic energy integrals
   for(int k=0; k<nso*(nso+1)/2;++k) buffer[k] = 0.0;
   iwl_rdone(PSIF_OEI,const_cast<char*>(PSIF_SO_T),buffer,nso*(nso+1)/2,0,0,outfile);

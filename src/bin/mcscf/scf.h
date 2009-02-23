@@ -3,6 +3,7 @@
 
 #include "sblock_vector.h"
 #include "sblock_matrix.h"
+#include <libmoinfo/libmoinfo.h>
 
 #define STORE_TEI 0
 
@@ -21,13 +22,13 @@ private:
   static const int maxci   = 8;
   static const int maxdiis = 10;
   static const int maxbatches = 50;
-  
+
   int  nirreps;
   int  nso;
   size_t* ioff;
-  int* sopi;
-  int* docc;
-  int* actv;
+  intvec sopi;
+  intvec docc;
+  intvec actv;
   int  turn_on_actv;
   int  root;
   int  ndiis;

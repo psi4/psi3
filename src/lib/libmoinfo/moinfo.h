@@ -8,11 +8,7 @@
 
 #include "moinfo_base.h"
 
-
 #define size_det 2048
-
-#define MRCC_ON_DISK 100
-#define MRCC_SO_INTS 101
 
 namespace psi {
 
@@ -22,7 +18,7 @@ enum scftype              {rhf,uhf,rohf,tcscf};
 class MOInfo : public MOInfoBase
 {
   typedef std::vector<std::string>            strvec;
-  typedef std::vector<int>                    intvec;
+
   typedef std::vector<std::pair<int,int> >    intpairvec;
 public:
   /*********************************************************
@@ -77,8 +73,6 @@ public:
     std::string type;
   };
 
-
-
 public:
   friend class SlaterDeterminant;
   MOInfo();
@@ -89,95 +83,63 @@ public:
   void        add_dgemm_timing(double value)           {dgemm_timing+=value;}
   double      get_dgemm_timing()                 const {return(dgemm_timing);}
 
-  // Convergency Options
+  // Convergence Options
   double      get_no_damp_convergence()          const {return(no_damp_convergence);}
 
-
-
-
-  int         get_mo_sym(int i)                  const {return(mo_irr[i]);}
+  int         get_mo_sym(int i)                  const {return(all_sym[i]);}
 
   int         get_root()                         const {return(root);}
-  
 
   int         get_nmo()                          const {return(nmo);}
-  int         get_norbs()                        const {return(norbs);}
   int         get_nactive_ael()                  const {return(nactive_ael);}
   int         get_nactive_bel()                  const {return(nactive_bel);}
   int         get_nael()                         const {return(nael);}
   int         get_nbel()                         const {return(nbel);}
 
+  int         get_nall()                         const {return(nall);}
   int         get_nfocc()                        const {return(nfocc);}
-  int         get_navir()                        const {return(navir);}
+  int         get_nextr()                        const {return(nextr);}
   int         get_nfvir()                        const {return(nfvir);}
   int         get_nocc()                         const {return(nocc);}
   int         get_nvir()                         const {return(nvir);}
 
+  intvec      get_sopi()                         const {return(sopi);}
+  intvec      get_mopi()                         const {return(mopi);}
+  intvec      get_docc()                         const {return(docc);}
+  intvec      get_actv()                         const {return(actv);}
+  intvec      get_focc()                         const {return(focc);}
+  intvec      get_extr()                         const {return(extr);}
+  intvec      get_fvir()                         const {return(fvir);}
+  intvec      get_occ()                          const {return(occ);}
+  intvec      get_vir()                          const {return(vir);}
 
-  int*        get_orbspi()                       const {return(orbspi);}
-  int*        get_focc()                         const {return(focc);}
 
-  int*        get_sopi()                         const {return(sopi);}
-  int*        get_docc()                         const {return(docc);}
-  int*        get_actv()                         const {return(actv);}
-  
-  int*        get_avir()                         const {return(avir);}
-  int*        get_fvir()                         const {return(fvir);}
-  int*        get_occ()                          const {return(occ);}
-  int*        get_vir()                          const {return(vir);}
 
   int         get_sopi(int i)                    const {return(sopi[i]);}
-  int         get_orbspi(int i)                  const {return(orbspi[i]);}
+  int         get_mopi(int i)                    const {return(mopi[i]);}
   int         get_focc(int i)                    const {return(focc[i]);}
   int         get_docc(int i)                    const {return(docc[i]);}
   int         get_actv(int i)                    const {return(actv[i]);}
-  int         get_avir(int i)                    const {return(avir[i]);}
+  int         get_extr(int h)                    const {return(extr[h]);}
   int         get_fvir(int i)                    const {return(fvir[i]);}
 
-  int*        get_clsdpi()                       const {return(clsdpi);}
-  int*        get_openpi()                       const {return(openpi);}
-
   // Mapping functions
-  int         get_nonfrozen_to_all(int i)        const {return(nonfrozen_to_all[i]);}
-  int         get_all_to_nonfrozen(int i)        const {return(all_to_nonfrozen[i]);}
-  int*        get_first_so_pitzer()              const {return(first_so_pitzer);}
-  int*        get_last_so_pitzer()               const {return(last_so_pitzer);}
-  int*        get_first_orbs_pitzer()            const {return(first_orbs_pitzer);}
-  int*        get_last_orbs_pitzer()             const {return(last_orbs_pitzer);}
-  int         get_first_orbs_pitzer(int i)       const {return(first_orbs_pitzer[i]);}
-  int         get_last_orbs_pitzer(int i)        const {return(last_orbs_pitzer[i]);}
-  int*        get_first_occupied_pitzer(int i)   const {return(first_occupied_pitzer[i]);}
-  int*        get_first_active_pitzer(int i)     const {return(first_active_pitzer[i]);}
-  int*        get_first_virtual_pitzer(int i)    const {return(first_virtual_pitzer[i]);}
-  int*        get_last_occupied_pitzer(int i)    const {return(last_occupied_pitzer[i]);}
-  int*        get_last_active_pitzer(int i)      const {return(last_active_pitzer[i]);}
-  int*        get_last_virtual_pitzer(int i)     const {return(last_virtual_pitzer[i]);}
-
-
-  int*        get_so_to_pitzer()                 const {return(so_to_pitzer);}
-  int*        get_orbs_to_pitzer()               const {return(orbs_to_pitzer);}
-  int*        get_docc_to_pitzer()               const {return(docc_to_pitzer);}
-  int*        get_act_to_pitzer()                const {return(act_to_pitzer);}
-  int*        get_ext_to_pitzer()                const {return(ext_to_pitzer);}
-  int*        get_occ_to_pitzer()                const {return(occ_to_pitzer);}
-  int*        get_vir_to_pitzer()                const {return(vir_to_pitzer);}
-  int*        get_all_to_pitzer()                const {return(all_to_pitzer);}
-  int*        get_qt_to_pitzer()                 const {return(all_to_pitzer);}
-  int*        get_actv_to_occ()                  const {return(act_to_occ);}
-  int*        get_actv_to_vir()                  const {return(act_to_vir);}
-  int*        get_occ_to_actv()                  const {return(occ_to_act);}
-  int*        get_vir_to_actv()                  const {return(vir_to_act);}
-  bool*       get_is_act_in_occ()                const {return(is_act_in_occ);}
-  bool*       get_is_act_in_vir()                const {return(is_act_in_vir);}
-//   vector<int> get_mapping(char* ,"pitzer")        const {return(all_to_pitzer);}
-
-
+  intvec      get_docc_to_mo()                   const {return(docc_to_mo);}
+  intvec      get_actv_to_mo()                   const {return(actv_to_mo);}
+  intvec      get_extr_to_mo()                   const {return(extr_to_mo);}
+  intvec      get_occ_to_mo()                    const {return(occ_to_mo);}
+  intvec      get_vir_to_mo()                    const {return(vir_to_mo);}
+  intvec      get_all_to_mo()                    const {return(all_to_mo);}
+  intvec      get_actv_to_occ()                  const {return(actv_to_occ);}
+  intvec      get_actv_to_vir()                  const {return(actv_to_vir);}
+  intvec      get_occ_to_actv()                  const {return(occ_to_actv);}
+  intvec      get_vir_to_actv()                  const {return(vir_to_actv);}
+  boolvec     get_is_actv_in_occ()               const {return(is_actv_in_occ);}
+  boolvec     get_is_actv_in_vir()               const {return(is_actv_in_vir);}
 
   int         get_all_to_occ(int i)              const {return(all_to_occ[i]);}
   int         get_all_to_vir(int i)              const {return(all_to_vir[i]);}
-  int         get_all_to_pitzer(int i)           const {return(all_to_pitzer[i]);}
-
-  double*     get_evals(spin s)                  const {return(evals[s]);}
+  int         get_all_to_mo(int i)               const {return(all_to_mo[i]);}
 
   double      get_scf_energy()                   const {return(scf_energy);}
   double      get_fzcore_energy()                const {return(fzcore_energy);}
@@ -194,12 +156,12 @@ public:
   intvec      get_bocc(std::string str,int i);
   intvec      get_avir(std::string str,int i);
   intvec      get_bvir(std::string str,int i);
-  
+
   intvec      get_aocc(int i);
   intvec      get_bocc(int i);
   intvec      get_auoc(int i);
   intvec      get_buoc(int i);
-  
+
   intpairvec  get_alpha_internal_excitation(int i,int j);
   intpairvec  get_beta_internal_excitation(int i,int j);
   double      get_sign_internal_excitation(int i,int j);
@@ -211,8 +173,7 @@ private:
   void        compute_mo_mappings();
   void        print_info();
   void        print_mo();
-  void        free_memory_info();
-  void        free_memory_mo_spaces();
+  void        free_memory();
 
   // Model space functions
   void        print_model_space();
@@ -228,80 +189,55 @@ private:
   double      fzcore_energy;
 
   /////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
   double      dgemm_timing;
-
   // In-core/Out-of-core
-//   double      block_size;
   double      no_damp_convergence;
 
   int         nel;
-
   int         reference;
+
   // Total number of orbitals in each space
-
-  int         norbs;      // Psi nmo
-
-  int         nfocc;
-
-  int         navir;
-  int         nfvir;
+  int         nfocc;                                // Frozen doubly-occupied MOs
+  int         nfvir;                                // Frozen external MOs
   int         nactv_docc;
   int         nocc;                                  // Generalized occupied (docc + actv)
-  int         nvir;                                  // Generalized virtual (actv + ext)
-  // Orbitals arrays, should probably turn this into vector<int> soon.
-  int*        focc;
+  int         nvir;                                  // Generalized virtual (actv + extr)
+  int         nall;                                  // Non-frozen MOs (docc + actv + extr)
+  int         nextr;                                  // Non-frozen external orbitals (extr)
 
+  // Orbitals arrays
+  intvec      focc;
+  intvec      fvir;
+  intvec      occ;
+  intvec      vir;
+  intvec      all;
+  intvec      extr;
+  intvec      actv_docc;
+  intvec      mopi;
 
-  int*        avir;
-  int*        fvir;
-  int*        occ;
-  int*        vir;
-  int*        actv_docc;
-  double*     evals[2];                              // Fock matrix diagonal elements
-  int*        clsdpi;
-  int*        openpi;
+  // Mapping arrays
+  intvec      all_to_mo;
+  intvec      mo_to_all;
+  intvec      orbs_to_mo;
+  intvec      docc_to_mo;
+  intvec      actv_to_mo;
+  intvec      extr_to_mo;
+  intvec      occ_to_mo;
+  intvec      vir_to_mo;
+  intvec      mo_to_occ_act;
+  intvec      mo_to_act_vir;
+  intvec      occ_to_vir;
+  intvec      all_to_occ;
+  intvec      all_to_vir;
+  intvec      actv_to_occ;
+  intvec      actv_to_vir;
+  intvec      occ_to_actv;
+  intvec      vir_to_actv;
+  boolvec     is_actv_in_occ;
+  boolvec     is_actv_in_vir;
 
-  int*        orbspi;
-
-  // Mapping arrays 
-
-  int*        nonfrozen_to_all;
-  int*        all_to_nonfrozen;
-  int*        so_to_pitzer;
-  int*        orbs_to_pitzer;
-  int*        docc_to_pitzer;
-  int*        act_to_pitzer;
-  int*        ext_to_pitzer;
-  int*        occ_to_pitzer;
-  int*        vir_to_pitzer;
-  int*        all_to_pitzer;
-  int*        pitzer_to_occ_act;
-  int*        pitzer_to_act_vir;
-  int*        occ_to_vir;
-  int*        all_to_occ;
-  int*        all_to_vir;
-  int*        act_to_occ;
-  int*        act_to_vir;
-  int*        occ_to_act;
-  int*        vir_to_act;
-  bool*       is_act_in_occ;
-  bool*       is_act_in_vir;
-  // First-last arrays
-  int*        first_orbs_pitzer;
-  int*        last_orbs_pitzer;
-  int*        first_so_pitzer;
-  int*        last_so_pitzer;
-  int*        first_occupied_pitzer[2];
-  int*        first_virtual_pitzer[2];
-  int*        first_active_pitzer[2];
-  int*        last_occupied_pitzer[2];
-  int*        last_active_pitzer[2];
-  int*        last_virtual_pitzer[2];
   // Symmetry
-  int*        mo_irr;
+  intvec      all_sym;
 
   // Model space
   std::vector<SlaterDeterminant> references;

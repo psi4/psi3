@@ -1,11 +1,11 @@
 #include <cmath>
 #include <algorithm>
 
-#include "memory_manager.h"
 #include <libmoinfo/libmoinfo.h>
+#include <libutil/libutil.h>
+
 #include "transform.h"
 #include "matrix.h"
-#include <libutil/libutil.h>
 #include "algebra_interface.h"
 #include "blas.h"
 
@@ -88,7 +88,7 @@ int CCTransform::allocate_tei_mo_block(int first_irrep)
     fflush(outfile);
     exit(EXIT_FAILURE);
   }
-  
+
   int last_irrep = first_irrep;
 
   if(tei_mo==NULL){
@@ -99,7 +99,7 @@ int CCTransform::allocate_tei_mo_block(int first_irrep)
   }
 
   // Find how many irreps we can store in 95% of the free memory
-  double cctransform_memory = mem->get_free_memory()*0.95;
+  double cctransform_memory = _memory_manager_->get_free_memory()*0.95;
   size_t matrix_size = 0;
   for(int h=first_irrep;h<moinfo->get_nirreps();h++){
     if(tei_mo_indexing->get_pairpi(h)>0){
@@ -109,7 +109,7 @@ int CCTransform::allocate_tei_mo_block(int first_irrep)
         tei_mo[h]     = new double[block_size];
         zero_arr(tei_mo[h],block_size);
         cctransform_memory-=to_MB(block_size);
-        mem->add_allocated_memory(to_MB(block_size));
+        _memory_manager_->add_allocated_memory(to_MB(block_size));
         last_irrep++;
       }
     }else{
@@ -136,7 +136,7 @@ void CCTransform::free_tei_mo_integrals_block(int first_irrep, int last_irrep)
     if(tei_mo[h] != NULL){
       size_t block_size = INDEX(tei_mo_indexing->get_pairpi(h)-1,tei_mo_indexing->get_pairpi(h)-1)+1;
       delete[] tei_mo[h];
-      mem->add_allocated_memory(-to_MB(block_size));
+      _memory_manager_->add_allocated_memory(-to_MB(block_size));
     }
   }
   if(last_irrep>=moinfo->get_nirreps()){

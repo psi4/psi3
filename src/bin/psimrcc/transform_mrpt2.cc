@@ -1,7 +1,6 @@
 #include <cmath>
 #include <algorithm>
 
-#include "memory_manager.h"
 #include <libmoinfo/libmoinfo.h>
 #include "transform.h"
 #include "matrix.h"
@@ -70,7 +69,7 @@ void CCTransform::read_tei_mo_integrals_mrpt2()
         value = ERIIN.values[index];
 
 //         fprintf(outfile,"\n  (%2d %2d|%2d %2d) = %20.12f",p,q,r,s,value);
-    
+
         integral_map[four(p,q,r,s)]=value;
 //         irrep = mo_indexing->get_tuple_irrep(p,q);
 //         pq    = mo_indexing->get_tuple_index(p,q);

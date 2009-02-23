@@ -3,12 +3,11 @@
 #include <libmoinfo/libmoinfo.h>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
+#include <libutil/libutil.h>
+
 
 #include "blas.h"
 #include "debugging.h"
-#include "memory_manager.h"
-#include <libutil/libutil.h>
-
 
 
 extern FILE *infile, *outfile;
@@ -68,7 +67,7 @@ CCIndex* CCBLAS::get_index(const char* cstr)
     return(indices[str]);
   }
   string err("\nCCBLAS::get_index() couldn't find index " + str);
-  print_error(err,__FILE__,__LINE__);
+  print_error(outfile,err,__FILE__,__LINE__);
   return(NULL);
 }
 
@@ -81,7 +80,7 @@ CCIndex* CCBLAS::get_index(string& str)
     return(indices[str]);
   }
   string err("\nCCBLAS::get_index() couldn't find index " + str);
-  print_error(err,__FILE__,__LINE__);
+  print_error(outfile,err,__FILE__,__LINE__);
   return(NULL);
 }
 
@@ -89,26 +88,26 @@ CCMatTmp CCBLAS::get_MatTmp(std::string str, int reference, DiskOpt disk_option)
 {
   append_reference(str,reference);
   load(get_Matrix(str));
-  return(CCMatTmp(get_Matrix(str),disk_option)); 
+  return(CCMatTmp(get_Matrix(str),disk_option));
 }
 
 CCMatTmp CCBLAS::get_MatTmp(std::string str, DiskOpt disk_option)
 {
   load(get_Matrix(str));
-  return(CCMatTmp(get_Matrix(str),disk_option)); 
+  return(CCMatTmp(get_Matrix(str),disk_option));
 }
 
 CCMatTmp CCBLAS::get_MatTmp(CCMatrix* Matrix, DiskOpt disk_option)
 {
   load(Matrix);
-  return(CCMatTmp(Matrix,disk_option)); 
+  return(CCMatTmp(Matrix,disk_option));
 }
 
 CCMatIrTmp CCBLAS::get_MatIrTmp(std::string str, int reference, int irrep,  DiskOpt disk_option)
 {
   append_reference(str,reference);
   load_irrep(get_Matrix(str),irrep);
-  return(CCMatIrTmp(get_Matrix(str),irrep,disk_option)); 
+  return(CCMatIrTmp(get_Matrix(str),irrep,disk_option));
 }
 
 CCMatIrTmp CCBLAS::get_MatIrTmp(std::string str, int irrep, DiskOpt disk_option)
@@ -143,7 +142,7 @@ CCMatrix* CCBLAS::get_Matrix(string& str)
   if(iter!=matrices.end())
     return(matrices[str]);
   string err("\nCCBLAS::get_matrix() couldn't find matrix " + str);
-  print_error(err,__FILE__,__LINE__);
+  print_error(outfile,err,__FILE__,__LINE__);
   return(NULL);
 }
 
@@ -176,7 +175,7 @@ void CCBLAS::set_scalar(string& str,int reference,double value)
     return;
   }
   string err("\nCCBLAS::set_scalar() couldn't find matrix " + matrix_str);
-  print_error(err.c_str(),__FILE__,__LINE__);
+  print_error(outfile,err.c_str(),__FILE__,__LINE__);
 }
 
 double CCBLAS::get_scalar(const char* cstr,int reference)
@@ -196,7 +195,7 @@ double CCBLAS::get_scalar(string& str,int reference)
     return(iter->second->get_scalar());
   }
   string err("\nCCBLAS::get_scalar() couldn't find matrix " + matrix_str);
-  print_error(err.c_str(),__FILE__,__LINE__);
+  print_error(outfile,err.c_str(),__FILE__,__LINE__);
   return (0.0);
 }
 
@@ -209,7 +208,7 @@ double CCBLAS::get_scalar(string str)
     return(iter->second->get_scalar());
   }
   string err("\nCCBLAS::get_scalar() couldn't find matrix " + str);
-  print_error(err.c_str(),__FILE__,__LINE__);
+  print_error(outfile,err.c_str(),__FILE__,__LINE__);
   return (0.0);
 }
 
@@ -255,13 +254,11 @@ void CCBLAS::load_irrep(CCMatrix* Matrix,int h)
 
 void CCBLAS::make_space(double memory_required)
 {
-  if(memory_required < mem->get_free_memory())
+  if(memory_required < _memory_manager_->get_free_memory())
     return;
   else{
     fprintf(outfile,"\nCCBLAS::make_space() not implemented yet!!!");
     // Attempt #1
-    
-
   }
 }
 

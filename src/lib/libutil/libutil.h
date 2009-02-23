@@ -5,14 +5,13 @@
 #include <iostream>
 #include <sstream>
 #include <sys/time.h>
-
-extern FILE *outfile;
+#include "memory_manager.h"
 
 using namespace std;
 
 namespace psi {
 
-typedef std::vector<std::string>            strvec;
+typedef std::vector<std::string> strvec;
 
 bool space(char c);
 bool not_space(char c);
@@ -53,17 +52,17 @@ private:
 
 double to_MB(size_t n);
 
-unsigned long int init_smatrix(short**& matrix,int size1, int size2);
-unsigned long int free_smatrix(short**& matrix, int size1, int size2);
-unsigned long int init_smatrix(short***& matrix,int size1, int size2, int size3);
-unsigned long int free_smatrix(short*** matrix, int size1, int size2, int size3);
+//unsigned long int init_smatrix(short**& matrix,int size1, int size2);
+//unsigned long int free_smatrix(short**& matrix, int size1, int size2);
+//unsigned long int init_smatrix(short***& matrix,int size1, int size2, int size3);
+//unsigned long int free_smatrix(short*** matrix, int size1, int size2, int size3);
 
 
-void print_error(std::string message, const char* file, int line);
-void print_error(const char* message, const char* file, int line);
-void print_error(const char* message, const char* file, int line,int error);
-void print_developing(const char* message, const char* file, int line);
-void print_developing(const char* message, const char* file, int line,int error);
+void print_error(FILE* output, std::string message, const char* file, int line);
+void print_error(FILE* output, const char* message, const char* file, int line);
+void print_error(FILE* output, const char* message, const char* file, int line,int error);
+void print_developing(FILE* output, const char* message, const char* file, int line);
+void print_developing(FILE* output, const char* message, const char* file, int line,int error);
 
 void generate_combinations(int n, int k, std::vector<std::vector<int> >& combinations);
 

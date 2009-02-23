@@ -2,7 +2,6 @@
 #include <libutil/libutil.h>
 
 #include "blas.h"
-#include "memory_manager.h"
 #include "debugging.h"
 
 extern FILE *outfile;
@@ -75,7 +74,7 @@ void CCBLAS::reduce_spaces(const char* out,const char* in)
   vector<string>  in_names = moinfo->get_matrix_names(in_str);
   vector<string> out_names = moinfo->get_matrix_names(out_str);
   if(in_names.size()!=out_names.size())
-    print_error("CCBLAS::map_spaces, number of references mismatch",__FILE__,__LINE__);
+    print_error(outfile,"CCBLAS::map_spaces, number of references mismatch",__FILE__,__LINE__);
   for(int n=0;n<in_names.size();n++){
     CCMatrix*  in_Matrix = get_Matrix(in_names[n]);
     CCMatrix* out_Matrix = get_Matrix(out_names[n]);
@@ -86,8 +85,8 @@ void CCBLAS::reduce_spaces(const char* out,const char* in)
 void CCBLAS::process_reduce_spaces(CCMatrix* out_Matrix,CCMatrix* in_Matrix)
 {
   double*** out_matrix = out_Matrix->get_matrix();
-  int*      act_to_occ = moinfo->get_actv_to_occ();
-  int*      act_to_vir = moinfo->get_actv_to_vir();
+  const intvec&  act_to_occ = moinfo->get_actv_to_occ();
+  const intvec&  act_to_vir = moinfo->get_actv_to_vir();
 
   string& out_index_label = out_Matrix->get_index_label();
   string&  in_index_label =  in_Matrix->get_index_label();
@@ -149,7 +148,7 @@ void CCBLAS::expand_spaces(const char* out,const char* in)
   vector<string>  in_names = moinfo->get_matrix_names(in_str);
   vector<string> out_names = moinfo->get_matrix_names(out_str);
   if(in_names.size()!=out_names.size())
-    print_error("CCBLAS::map_spaces, number of references mismatch",__FILE__,__LINE__);
+    print_error(outfile,"CCBLAS::map_spaces, number of references mismatch",__FILE__,__LINE__);
   for(int n=0;n<in_names.size();n++){
     CCMatrix*  in_Matrix = get_Matrix(in_names[n]);
     CCMatrix* out_Matrix = get_Matrix(out_names[n]);
@@ -160,8 +159,8 @@ void CCBLAS::expand_spaces(const char* out,const char* in)
 void CCBLAS::process_expand_spaces(CCMatrix* out_Matrix,CCMatrix* in_Matrix)
 {
   double*** out_matrix = out_Matrix->get_matrix();
-  int*      act_to_occ = moinfo->get_actv_to_occ();
-  int*      act_to_vir = moinfo->get_actv_to_vir();
+  const intvec&    act_to_occ = moinfo->get_actv_to_occ();
+  const intvec&    act_to_vir = moinfo->get_actv_to_vir();
 
   string& out_index_label = out_Matrix->get_index_label();
   string&  in_index_label =  in_Matrix->get_index_label();

@@ -48,34 +48,34 @@ void MOInfo::build_model_space()
       determinants in the model space
     ********************************************************/
     index = 0;
-    for(int h=0;h<nirreps;h++){
-      for(int i=0;i<docc[h];i++){
+    for(int h = 0; h < nirreps; ++h){
+      for(int i = 0; i < docc[h]; ++i){
         docc_det.set(index);
-        docc_det.set(index+nmo);
+        docc_det.set(index + nall);
         index++;
       }
-      index+=actv[h];
-      index+=avir[h];
+      index += actv[h];
+      index += extr[h];
     }
-    
+
     /********************************************************
       Set up the a vectors containing the active orbitals and
       their symmetry
     ********************************************************/
     std::vector<int> alpha_active,alpha_active_sym,beta_active,beta_active_sym;
     index = 0;
-    for(int h=0;h<nirreps;h++){
-      index+=docc[h];
-      for(int i=0;i<actv[h];i++){
+    for(int h = 0; h < nirreps; ++h){
+      index += docc[h];
+      for(int i = 0; i < actv[h]; ++i){
         alpha_active.push_back(index);
         alpha_active_sym.push_back(h);
-        beta_active.push_back(index + nmo);
+        beta_active.push_back(index + nall);
         beta_active_sym.push_back(h);
         index++;
       }
-      index+=avir[h];
+      index += extr[h];
     }
-    
+
     std::vector<std::vector<int> > alpha_combinations,beta_combinations;
     generate_combinations(nactv,nactive_ael,alpha_combinations);
     generate_combinations(nactv,nactive_bel,beta_combinations);
@@ -139,12 +139,12 @@ void MOInfo::build_model_space()
     for(int h=0;h<nirreps;h++){
       for(int i=0;i<docc[h] + actv_docc[h];i++){
         docc_det.set(index);
-        docc_det.set(index+nmo);
+        docc_det.set(index + nall);
         index++;
       }
-      index+=actv[h] - actv_docc[h];
-      index+=avir[h];
-    }   
+      index += actv[h] - actv_docc[h];
+      index += extr[h];
+    }
     closed_shell_refs.push_back(references.size());
     unique_refs.push_back(references.size());
     all_refs.push_back(references.size());
@@ -281,7 +281,7 @@ int MOInfo::get_ref_number(string str, int n)
     return(closed_shell_refs[n]);
   if(str=="o")
     return(unique_open_shell_refs[n]);
-  print_error("MOInfo::get_ref_number(string str, int n) undefined space", __FILE__,__LINE__);
+  print_error(outfile,"MOInfo::get_ref_number(string str, int n) undefined space", __FILE__,__LINE__);
   return(NULL);
 }
 
@@ -298,7 +298,7 @@ int MOInfo::get_ref_size(string str)
     return(closed_shell_refs.size());
   if(str=="o")
     return(unique_open_shell_refs.size());
-  print_error("MOInfo::get_ref_size(string str) undefined space", __FILE__,__LINE__);
+  print_error(outfile,"MOInfo::get_ref_size(string str) undefined space", __FILE__,__LINE__);
   return(NULL);
 }
 
@@ -317,7 +317,7 @@ vector<string> MOInfo::get_matrix_names(std::string str)
   }else if(str.find("{o}")!=string::npos){
     for(int n=0;n<unique_open_shell_refs.size();n++)
       names.push_back(find_and_replace(str,"{o}","{" + to_string(unique_open_shell_refs[n]) +"}"));
-  }else 
+  }else
     names.push_back(str);
   return(names);
 }

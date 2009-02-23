@@ -10,7 +10,6 @@
 #include "debugging.h"
 #include <libutil/libutil.h>
 #include "algebra_interface.h"
-#include "memory_manager.h"
 
 extern FILE* outfile;
 
@@ -372,7 +371,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram1()
     allocate1(double**,H_iabj,moinfo->get_nirreps());
 
     for(int h =0; h < moinfo->get_nirreps();h++){
-      // Allocate a block of T_iabjkc   
+      // Allocate a block of T_iabjkc
       allocate2(double,T_iabjkc[h],iab_indexing->get_pairpi(h),jkc_indexing->get_pairpi(h));
       allocate2(double,H_iabj[h],iab_indexing->get_pairpi(h),j_indexing->get_pairpi(h));
 
@@ -385,7 +384,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram1()
       for(int iab = 0;iab<iab_indexing->get_pairpi(h);iab++){
         int i = iab_tuples[iab_offset + iab][0];
         int a = iab_tuples[iab_offset + iab][1];
-        int b = iab_tuples[iab_offset + iab][2];        
+        int b = iab_tuples[iab_offset + iab][2];
         for(int jkc = 0;jkc<jkc_indexing->get_pairpi(h);jkc++){
           int j = jkc_tuples[jkc_offset + jkc][0];
           int k = jkc_tuples[jkc_offset + jkc][1];
@@ -399,7 +398,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram1()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_iabjkc[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_iabjkc[h][0][0]), k,
                    &(Wkija_matrix[h][0][0]), k, beta, &(H_iabj[h][0][0]),n);
       }
 
@@ -422,7 +421,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram1()
       for(int iab = 0;iab<iab_indexing->get_pairpi(h);iab++){
         int i = iab_tuples[iab_offset + iab][0];
         int a = iab_tuples[iab_offset + iab][1];
-        int b = iab_tuples[iab_offset + iab][2];        
+        int b = iab_tuples[iab_offset + iab][2];
         for(int jkc = 0;jkc<jkc_indexing->get_pairpi(h);jkc++){
           int j = jkc_tuples[jkc_offset + jkc][0];
           int k = jkc_tuples[jkc_offset + jkc][1];
@@ -436,7 +435,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram1()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_iabjkc[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_iabjkc[h][0][0]), k,
                    &(WkiJA_matrix[h][0][0]), k, beta, &(H_iabj[h][0][0]),n);
       }
 
@@ -532,7 +531,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram1()
     allocate1(double**,H_iabj,moinfo->get_nirreps());
 
     for(int h =0; h < moinfo->get_nirreps();h++){
-      // Allocate a block of T_iabjkc   
+      // Allocate a block of T_iabjkc
       allocate2(double,T_iackjb[h],iac_indexing->get_pairpi(h),kjb_indexing->get_pairpi(h));
       allocate2(double,H_iabj[h],iab_indexing->get_pairpi(h),j_indexing->get_pairpi(h));
 
@@ -546,7 +545,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram1()
       for(int iac = 0;iac<iac_indexing->get_pairpi(h);iac++){
         int i = iac_tuples[iac_offset + iac][0];
         int a = iac_tuples[iac_offset + iac][1];
-        int c = iac_tuples[iac_offset + iac][2];        
+        int c = iac_tuples[iac_offset + iac][2];
         for(int kjb = 0;kjb<kjb_indexing->get_pairpi(h);kjb++){
           int k = kjb_tuples[kjb_offset + kjb][0];
           int j = kjb_tuples[kjb_offset + kjb][1];
@@ -560,7 +559,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram1()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_iackjb[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_iackjb[h][0][0]), k,
                    &(WKIja_matrix[h][0][0]), k, beta, &(H_iabj[h][0][0]),n);
       }
 
@@ -586,7 +585,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram1()
       for(int kab = 0;kab<kab_indexing->get_pairpi(h);kab++){
         int k = kab_tuples[kab_offset + kab][0];
         int a = kab_tuples[kab_offset + kab][1];
-        int b = kab_tuples[kab_offset + kab][2];        
+        int b = kab_tuples[kab_offset + kab][2];
         for(int ijc = 0;ijc<ijc_indexing->get_pairpi(h);ijc++){
           int i = ijc_tuples[ijc_offset + ijc][0];
           int j = ijc_tuples[ijc_offset + ijc][1];
@@ -601,7 +600,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram1()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_iackjb[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_iackjb[h][0][0]), k,
                    &(WkiJA_matrix[h][0][0]), k, beta, &(H_iabj[h][0][0]),n);
       }
 
@@ -627,7 +626,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram1()
       for(int kac = 0;kac<kac_indexing->get_pairpi(h);kac++){
         int k = kac_tuples[kac_offset + kac][0];
         int a = kac_tuples[kac_offset + kac][1];
-        int c = kac_tuples[kac_offset + kac][2];        
+        int c = kac_tuples[kac_offset + kac][2];
         for(int ijb = 0;ijb<ijb_indexing->get_pairpi(h);ijb++){
           int i = ijb_tuples[ijb_offset + ijb][0];
           int j = ijb_tuples[ijb_offset + ijb][1];
@@ -642,7 +641,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram1()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_iackjb[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_iackjb[h][0][0]), k,
                    &(Wkija_matrix[h][0][0]), k, beta, &(H_iabj[h][0][0]),n);
       }
 
@@ -664,7 +663,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram1()
       for(int iab = 0;iab<iab_indexing->get_pairpi(h);iab++){
         int i = iab_tuples[iab_offset + iab][0];
         int a = iab_tuples[iab_offset + iab][1];
-        int b = iab_tuples[iab_offset + iab][2];        
+        int b = iab_tuples[iab_offset + iab][2];
         for(int kjc = 0;kjc<kjc_indexing->get_pairpi(h);kjc++){
           int k = kjc_tuples[kjc_offset + kjc][0];
           int j = kjc_tuples[kjc_offset + kjc][1];
@@ -679,7 +678,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram1()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_iackjb[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_iackjb[h][0][0]), k,
                    &(WKIJA_matrix[h][0][0]), k, beta, &(H_iabj[h][0][0]),n);
       }
 
@@ -752,7 +751,7 @@ void CCMRCC::build_t2_IJAB_amplitudes_triples_diagram1()
     allocate1(double**,H_iabj,moinfo->get_nirreps());
 
     for(int h =0; h < moinfo->get_nirreps();h++){
-      // Allocate a block of T_iabjkc   
+      // Allocate a block of T_iabjkc
       allocate2(double,T_iabjkc[h],kbc_indexing->get_pairpi(h),jia_indexing->get_pairpi(h));
       allocate2(double,H_iabj[h],kbc_indexing->get_pairpi(h),j_indexing->get_pairpi(h));
 
@@ -768,7 +767,7 @@ void CCMRCC::build_t2_IJAB_amplitudes_triples_diagram1()
       for(int kbc = 0;kbc<kbc_indexing->get_pairpi(h);kbc++){
         int k = kbc_tuples[kbc_offset + kbc][0];
         int b = kbc_tuples[kbc_offset + kbc][1];
-        int c = kbc_tuples[kbc_offset + kbc][2];        
+        int c = kbc_tuples[kbc_offset + kbc][2];
         for(int jia = 0;jia<jia_indexing->get_pairpi(h);jia++){
           int j = jia_tuples[jia_offset + jia][0];
           int i = jia_tuples[jia_offset + jia][1];
@@ -782,7 +781,7 @@ void CCMRCC::build_t2_IJAB_amplitudes_triples_diagram1()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_iabjkc[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_iabjkc[h][0][0]), k,
                    &(WKIja_matrix[h][0][0]), k, beta, &(H_iabj[h][0][0]),n);
       }
 
@@ -805,7 +804,7 @@ void CCMRCC::build_t2_IJAB_amplitudes_triples_diagram1()
       for(int iab = 0;iab<iab_indexing->get_pairpi(h);iab++){
         int i = iab_tuples[iab_offset + iab][0];
         int a = iab_tuples[iab_offset + iab][1];
-        int b = iab_tuples[iab_offset + iab][2];        
+        int b = iab_tuples[iab_offset + iab][2];
         for(int jkc = 0;jkc<jkc_indexing->get_pairpi(h);jkc++){
           int j = jkc_tuples[jkc_offset + jkc][0];
           int k = jkc_tuples[jkc_offset + jkc][1];
@@ -819,7 +818,7 @@ void CCMRCC::build_t2_IJAB_amplitudes_triples_diagram1()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_iabjkc[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_iabjkc[h][0][0]), k,
                    &(WKIJA_matrix[h][0][0]), k, beta, &(H_iabj[h][0][0]),n);
       }
 
@@ -891,7 +890,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram2()
     allocate1(double**,H_ijab,moinfo->get_nirreps());
 
     for(int h =0; h < moinfo->get_nirreps();h++){
-      // Allocate a block of T_iabjkc   
+      // Allocate a block of T_iabjkc
       allocate2(double,T_oovovv[h],oov_indexing->get_pairpi(h),ovv_indexing->get_pairpi(h));
       allocate2(double,H_ijab[h],oov_indexing->get_pairpi(h),v_indexing->get_pairpi(h));
 
@@ -904,11 +903,11 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram2()
       for(int kbc = 0;kbc<ovv_indexing->get_pairpi(h);kbc++){
         int k = ovv_tuples[ovv_offset + kbc][0];
         int b = ovv_tuples[ovv_offset + kbc][1];
-        int c = ovv_tuples[ovv_offset + kbc][2];        
+        int c = ovv_tuples[ovv_offset + kbc][2];
         for(int ija = 0;ija<oov_indexing->get_pairpi(h);ija++){
           int i = oov_tuples[oov_offset + ija][0];
           int j = oov_tuples[oov_offset + ija][1];
-          int a = oov_tuples[oov_offset + ija][2];        
+          int a = oov_tuples[oov_offset + ija][2];
           T_oovovv[h][ija][kbc] = TijkabcMatTmp->get_six_address_element(i,j,k,a,b,c);
         }
       }
@@ -918,7 +917,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram2()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_oovovv[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_oovovv[h][0][0]), k,
                    &(Waibc_matrix[h][0][0]), k, beta, &(H_ijab[h][0][0]),n);
       }
 
@@ -939,11 +938,11 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram2()
       for(int kbc = 0;kbc<ovv_indexing->get_pairpi(h);kbc++){
         int k = ovv_tuples[ovv_offset + kbc][0];
         int b = ovv_tuples[ovv_offset + kbc][1];
-        int c = ovv_tuples[ovv_offset + kbc][2];        
+        int c = ovv_tuples[ovv_offset + kbc][2];
         for(int ija = 0;ija<oov_indexing->get_pairpi(h);ija++){
           int i = oov_tuples[oov_offset + ija][0];
           int j = oov_tuples[oov_offset + ija][1];
-          int a = oov_tuples[oov_offset + ija][2];        
+          int a = oov_tuples[oov_offset + ija][2];
           T_oovovv[h][ija][kbc] = TijKabCMatTmp->get_six_address_element(i,j,k,a,b,c);
         }
       }
@@ -954,7 +953,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram2()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_oovovv[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_oovovv[h][0][0]), k,
                    &(WaIbC_matrix[h][0][0]), k, beta, &(H_ijab[h][0][0]),n);
       }
 
@@ -1030,7 +1029,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram2()
     allocate1(double**,H_ijab,moinfo->get_nirreps());
 
     for(int h =0; h < moinfo->get_nirreps();h++){
-      // Allocate a block of T_iabjkc   
+      // Allocate a block of T_iabjkc
       allocate2(double,T_oovovv[h],oov_indexing->get_pairpi(h),ovv_indexing->get_pairpi(h));
       allocate2(double,H_ijab[h],oov_indexing->get_pairpi(h),v_indexing->get_pairpi(h));
 
@@ -1043,11 +1042,11 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram2()
       for(int jab = 0;jab<ovv_indexing->get_pairpi(h);jab++){
         int j = ovv_tuples[ovv_offset + jab][0];
         int a = ovv_tuples[ovv_offset + jab][1];
-        int b = ovv_tuples[ovv_offset + jab][2];        
+        int b = ovv_tuples[ovv_offset + jab][2];
         for(int ikc = 0;ikc<oov_indexing->get_pairpi(h);ikc++){
           int i = oov_tuples[oov_offset + ikc][0];
           int k = oov_tuples[oov_offset + ikc][1];
-          int c = oov_tuples[oov_offset + ikc][2];        
+          int c = oov_tuples[oov_offset + ikc][2];
           T_oovovv[h][ikc][jab] = TijKabCMatTmp->get_six_address_element(i,j,k,a,b,c);
         }
       }
@@ -1057,7 +1056,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram2()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_oovovv[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_oovovv[h][0][0]), k,
                    &(Waibc_matrix[h][0][0]), k, beta, &(H_ijab[h][0][0]),n);
       }
 
@@ -1077,11 +1076,11 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram2()
       for(int kac = 0;kac<ovv_indexing->get_pairpi(h);kac++){
         int k = ovv_tuples[ovv_offset + kac][0];
         int a = ovv_tuples[ovv_offset + kac][1];
-        int c = ovv_tuples[ovv_offset + kac][2];        
+        int c = ovv_tuples[ovv_offset + kac][2];
         for(int ijb = 0;ijb<oov_indexing->get_pairpi(h);ijb++){
           int i = oov_tuples[oov_offset + ijb][0];
           int j = oov_tuples[oov_offset + ijb][1];
-          int b = oov_tuples[oov_offset + ijb][2];        
+          int b = oov_tuples[oov_offset + ijb][2];
           T_oovovv[h][ijb][kac] = TiJKaBCMatTmp->get_six_address_element(i,j,k,a,b,c);
         }
       }
@@ -1091,7 +1090,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram2()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_oovovv[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_oovovv[h][0][0]), k,
                    &(WaIbC_matrix[h][0][0]), k, beta, &(H_ijab[h][0][0]),n);
       }
 
@@ -1111,11 +1110,11 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram2()
       for(int jcb = 0;jcb<ovv_indexing->get_pairpi(h);jcb++){
         int j = ovv_tuples[ovv_offset + jcb][0];
         int c = ovv_tuples[ovv_offset + jcb][1];
-        int b = ovv_tuples[ovv_offset + jcb][2];        
+        int b = ovv_tuples[ovv_offset + jcb][2];
         for(int ika = 0;ika<oov_indexing->get_pairpi(h);ika++){
           int i = oov_tuples[oov_offset + ika][0];
           int k = oov_tuples[oov_offset + ika][1];
-          int a = oov_tuples[oov_offset + ika][2];        
+          int a = oov_tuples[oov_offset + ika][2];
           T_oovovv[h][ika][jcb] = TijKabCMatTmp->get_six_address_element(i,j,k,a,b,c);
         }
       }
@@ -1125,7 +1124,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram2()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_oovovv[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_oovovv[h][0][0]), k,
                    &(WAiBc_matrix[h][0][0]), k, beta, &(H_ijab[h][0][0]),n);
       }
 
@@ -1145,11 +1144,11 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram2()
       for(int kbc = 0;kbc<ovv_indexing->get_pairpi(h);kbc++){
         int k = ovv_tuples[ovv_offset + kbc][0];
         int b = ovv_tuples[ovv_offset + kbc][1];
-        int c = ovv_tuples[ovv_offset + kbc][2];        
+        int c = ovv_tuples[ovv_offset + kbc][2];
         for(int ija = 0;ija<oov_indexing->get_pairpi(h);ija++){
           int i = oov_tuples[oov_offset + ija][0];
           int j = oov_tuples[oov_offset + ija][1];
-          int a = oov_tuples[oov_offset + ija][2];        
+          int a = oov_tuples[oov_offset + ija][2];
           T_oovovv[h][ija][kbc] = TiJKaBCMatTmp->get_six_address_element(i,j,k,a,b,c);
         }
       }
@@ -1159,7 +1158,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram2()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_oovovv[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_oovovv[h][0][0]), k,
                    &(WAIBC_matrix[h][0][0]), k, beta, &(H_ijab[h][0][0]),n);
       }
 
@@ -1229,7 +1228,7 @@ void CCMRCC::build_t2_IJAB_amplitudes_triples_diagram2()
     allocate1(double**,H_ijab,moinfo->get_nirreps());
 
     for(int h =0; h < moinfo->get_nirreps();h++){
-      // Allocate a block of T_iabjkc   
+      // Allocate a block of T_iabjkc
       allocate2(double,T_oovovv[h],oov_indexing->get_pairpi(h),ovv_indexing->get_pairpi(h));
       allocate2(double,H_ijab[h],oov_indexing->get_pairpi(h),v_indexing->get_pairpi(h));
 
@@ -1242,11 +1241,11 @@ void CCMRCC::build_t2_IJAB_amplitudes_triples_diagram2()
       for(int kbc = 0;kbc<ovv_indexing->get_pairpi(h);kbc++){
         int k = ovv_tuples[ovv_offset + kbc][0];
         int b = ovv_tuples[ovv_offset + kbc][1];
-        int c = ovv_tuples[ovv_offset + kbc][2];        
+        int c = ovv_tuples[ovv_offset + kbc][2];
         for(int ija = 0;ija<oov_indexing->get_pairpi(h);ija++){
           int i = oov_tuples[oov_offset + ija][0];
           int j = oov_tuples[oov_offset + ija][1];
-          int a = oov_tuples[oov_offset + ija][2];        
+          int a = oov_tuples[oov_offset + ija][2];
           T_oovovv[h][ija][kbc] = TIJKABCMatTmp->get_six_address_element(i,j,k,a,b,c);
         }
       }
@@ -1256,7 +1255,7 @@ void CCMRCC::build_t2_IJAB_amplitudes_triples_diagram2()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_oovovv[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_oovovv[h][0][0]), k,
                    &(WAIBC_matrix[h][0][0]), k, beta, &(H_ijab[h][0][0]),n);
       }
 
@@ -1277,11 +1276,11 @@ void CCMRCC::build_t2_IJAB_amplitudes_triples_diagram2()
       for(int ica = 0;ica<ovv_indexing->get_pairpi(h);ica++){
         int i = ovv_tuples[ovv_offset + ica][0];
         int c = ovv_tuples[ovv_offset + ica][1];
-        int a = ovv_tuples[ovv_offset + ica][2];        
+        int a = ovv_tuples[ovv_offset + ica][2];
         for(int jkb = 0;jkb<oov_indexing->get_pairpi(h);jkb++){
           int j = oov_tuples[oov_offset + jkb][0];
           int k = oov_tuples[oov_offset + jkb][1];
-          int b = oov_tuples[oov_offset + jkb][2];        
+          int b = oov_tuples[oov_offset + jkb][2];
           T_oovovv[h][jkb][ica] = TiJKaBCMatTmp->get_six_address_element(i,j,k,a,b,c);
         }
       }
@@ -1292,7 +1291,7 @@ void CCMRCC::build_t2_IJAB_amplitudes_triples_diagram2()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_oovovv[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_oovovv[h][0][0]), k,
                    &(WAiBc_matrix[h][0][0]), k, beta, &(H_ijab[h][0][0]),n);
       }
 
@@ -1567,7 +1566,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram1()
     init_matrix<double**>(H_iabj,moinfo->get_nirreps());
 
     for(int h =0; h < moinfo->get_nirreps();h++){
-      // Allocate a block of T_iabjkc   
+      // Allocate a block of T_iabjkc
       init_matrix<double>(T_iabjkc[h],iab_indexing->get_pairpi(h),jkc_indexing->get_pairpi(h));
       init_matrix<double>(H_iabj[h],iab_indexing->get_pairpi(h),j_indexing->get_pairpi(h));
 
@@ -1580,7 +1579,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram1()
       for(int iab = 0;iab<iab_indexing->get_pairpi(h);iab++){
         int i = iab_tuples[iab_offset + iab][0];
         int a = iab_tuples[iab_offset + iab][1];
-        int b = iab_tuples[iab_offset + iab][2];        
+        int b = iab_tuples[iab_offset + iab][2];
         for(int jkc = 0;jkc<jkc_indexing->get_pairpi(h);jkc++){
           int j = jkc_tuples[jkc_offset + jkc][0];
           int k = jkc_tuples[jkc_offset + jkc][1];
@@ -1594,7 +1593,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram1()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_iabjkc[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_iabjkc[h][0][0]), k,
                    &(Wkija_matrix[h][0][0]), k, beta, &(H_iabj[h][0][0]),n);
       }
 
@@ -1617,7 +1616,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram1()
       for(int iab = 0;iab<iab_indexing->get_pairpi(h);iab++){
         int i = iab_tuples[iab_offset + iab][0];
         int a = iab_tuples[iab_offset + iab][1];
-        int b = iab_tuples[iab_offset + iab][2];        
+        int b = iab_tuples[iab_offset + iab][2];
         for(int jkc = 0;jkc<jkc_indexing->get_pairpi(h);jkc++){
           int j = jkc_tuples[jkc_offset + jkc][0];
           int k = jkc_tuples[jkc_offset + jkc][1];
@@ -1631,7 +1630,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram1()
       if(m*n*k){
         double alpha = 1.0;
         double beta  = 0.0;
-        C_DGEMM_22(m, n, k, alpha,&(T_iabjkc[h][0][0]), k, 
+        C_DGEMM_22(m, n, k, alpha,&(T_iabjkc[h][0][0]), k,
                    &(WkiJA_matrix[h][0][0]), k, beta, &(H_iabj[h][0][0]),n);
       }
 
@@ -1652,7 +1651,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram1()
       free_matrix<double>(H_iabj[h],iab_indexing->get_pairpi(h),j_indexing->get_pairpi(h));
       free_matrix<double>(T_iabjkc[h],iab_indexing->get_pairpi(h),jkc_indexing->get_pairpi(h));
     }
-    free_matrix<double**>(H_iabj,moinfo->get_nirreps());      
+    free_matrix<double**>(H_iabj,moinfo->get_nirreps());
     free_matrix<double**>(T_iabjkc,moinfo->get_nirreps());
   }
 //   blas->print("t2_test[oo][vv]{u}");

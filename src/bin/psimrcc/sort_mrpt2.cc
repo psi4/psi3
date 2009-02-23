@@ -73,7 +73,7 @@ void CCSort::form_fock_mrpt2(MatrixMap::iterator& iter)
     string label     = Matrix->get_label();
     double*** matrix = Matrix->get_matrix();
     short* pq = new short[2];
-    int* oa2p = moinfo->get_occ_to_pitzer();
+    const intvec& oa2p = moinfo->get_occ_to_mo();
 
     bool alpha = true;
     if((label.find("O")!=string::npos) || (label.find("V")!=string::npos) || (label.find("A")!=string::npos)) // NB This was missing the last bit, this might be a problem
@@ -115,21 +115,21 @@ void CCSort::form_fock_mrpt2(MatrixMap::iterator& iter)
     }
     delete[] pq;
   }
-//   CCMatrix* Matrix = iter->second; 
+//   CCMatrix* Matrix = iter->second;
 //   if(Matrix->is_fock()){
 //     string label     = Matrix->get_label();
 //     double*** matrix = Matrix->get_matrix();
 //     short* pq = new short[2];
 //     int* oa2p = moinfo->get_occ_to_pitzer();
-// 
+//
 //     bool alpha = true;
 //     if((label.find("O")!=string::npos) || (label.find("V")!=string::npos))
 //       alpha = false;
-// 
+//
 //     // N.B. Never introduce Matrices/Vectors with O or V in the name before you compute the Fock matrix elements
 //     vector<int> aocc = moinfo->get_aocc("a",Matrix->get_reference());
 //     vector<int> bocc = moinfo->get_bocc("a",Matrix->get_reference());
-//     
+//
 //     for(int n=0;n<moinfo->get_nirreps();n++)
 //       for(int i = 0;i<Matrix->get_left_pairpi(n);i++)
 //         for(int j = 0;j<Matrix->get_right_pairpi(n);j++){
@@ -205,7 +205,7 @@ void CCSort::form_two_electron_integrals_mrpt2(MatrixMap::iterator& iter)
             // Add the -<pq|sr> = -(ps|qr) contribution
             if(antisymmetric)
               matrix[n][i][j] -= trans->tei_mrpt2(pqrs[0],pqrs[3],pqrs[1],pqrs[2]);
-          }    
+          }
     }
     delete[] pqrs;
   }

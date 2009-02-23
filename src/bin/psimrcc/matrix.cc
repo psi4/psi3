@@ -7,14 +7,14 @@
 #include <iostream>
 #include <cmath>
 #include <algorithm>
-#include "memory_manager.h"
-#include <libmoinfo/libmoinfo.h>
-#include "matrix.h"
-#include <libutil/libutil.h>
 
 #include <libciomr/libciomr.h>
+#include <libmoinfo/libmoinfo.h>
+#include <libutil/libutil.h>
 
-extern FILE *infile, *outfile;
+#include "matrix.h"
+
+extern FILE *outfile;
 
 namespace psi{ namespace psimrcc{
 
@@ -44,7 +44,7 @@ fock(false),integral(false),chemist_notation(false),antisymmetric(false),out_of_
 //   left_pairpi  = new size_t[nirreps];
 //   right_pairpi = new size_t[nirreps];
 //   block_sizepi = new size_t[nirreps];
-  
+
   allocate1(double***,matrix,nirreps);
   allocate1(size_t,left_pairpi,nirreps);
   allocate1(size_t,right_pairpi,nirreps);
@@ -143,7 +143,7 @@ void CCMatrix::zero_two_diagonal()
 
 void CCMatrix::zero_non_doubly_occupied()
 {
-  bool* is_act_in_occ = moinfo->get_is_act_in_occ();
+  const boolvec& is_act_in_occ = moinfo->get_is_actv_in_occ();
   short* pq = new short[2];
   for(int h=0;h<nirreps;h++)
     for(int i = 0;i<left->get_pairpi(h);i++)
@@ -159,7 +159,7 @@ void CCMatrix::zero_non_doubly_occupied()
 
 void CCMatrix::zero_non_external()
 {
-  bool* is_act_in_vir = moinfo->get_is_act_in_vir();
+  const boolvec& is_act_in_vir = moinfo->get_is_actv_in_vir();
   short* pq = new short[2];
   for(int h=0;h<nirreps;h++)
     for(int i = 0;i<left->get_pairpi(h);i++)

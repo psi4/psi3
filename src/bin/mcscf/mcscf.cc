@@ -21,9 +21,7 @@
 #include <liboptions/liboptions.h>
 #include <libutil/libutil.h>
 
-
 #include "mcscf.h"
-#include "memory_manager.h"
 #include "git.h"
 #include "scf.h"
 
@@ -37,9 +35,8 @@ extern "C" {
 namespace psi{
 MOInfoSCF              *moinfo_scf;
 MOInfo                 *moinfo;
+MemoryManager          *_memory_manager_;
 namespace mcscf{
-MemoryManager          *mem;
-
 void add_calculation_options();
 }} /* End Namespaces */
 
@@ -58,7 +55,7 @@ int main(int argc, char *argv[])
 
   init_psi(argc,argv);
 
-  psi::mcscf::mem    = new MemoryManager();
+  psi::_memory_manager_   = new MemoryManager(options_get_int("MEMORY") );
   moinfo_scf = new MOInfoSCF();
 
   if(options_get_str("REFERENCE") == "RHF"  ||
@@ -74,9 +71,9 @@ int main(int argc, char *argv[])
   }
 
   if(options_get_int("DEBUG") > 0)
-    psi::mcscf::mem->MemCheck(outfile);
+    psi::_memory_manager_->MemCheck(outfile);
   delete moinfo_scf;
-  delete mem;
+  delete _memory_manager_;
   close_psi();
   return PSI_RETURN_SUCCESS;
 }
@@ -96,10 +93,10 @@ void add_calculation_options()
   options_add_int("NDIIS",7);
   options_add_int("ROOT",1);
   options_add_int("START_FAVG",5);
-  options_add_int("TURN_ON_ACTV",5);
+  options_add_int("TURN_ON_ACTV",0);
 
 
-  options_add_bool("CI_DIIS",true);
+  options_add_bool("CI_DIIS",false);
   options_add_bool("USE_DIIS",true);
   options_add_bool("READ_MOS",true);
   options_add_bool("USE_FAVG",false);
@@ -146,19 +143,17 @@ void init_psi(int argc, char *argv[])
 
   tstart(outfile);
 
-  fprintf(outfile,"\n  MCSCF Version 0.1.0, April, 2008");
-  fprintf(outfile,"\n  Francesco Evangelista");
-  fprintf(outfile,"\n  Compiled on %s at %s",__DATE__,__TIME__);
-  fprintf(outfile,"\n  id =%s",GIT_ID);
+  fprintf(outfile,"\n         ------------------------------------------");
+  fprintf(outfile,"\n           MCSCF: a self-consistent field program");
+  fprintf(outfile,"\n            written by Francesco A. Evangelista");
+  fprintf(outfile,"\n         ------------------------------------------");
 
-
+  fprintf(outfile,"\n\n\n  Compiled on %s at %s",__DATE__,__TIME__);
 
   options_init();
   add_calculation_options();
   options_read();
   options_print();
-
-
 
   psio_open(PSIF_MCSCF,PSIO_OPEN_NEW);
 }

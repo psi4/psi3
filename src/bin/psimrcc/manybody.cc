@@ -14,10 +14,10 @@
 #include <cmath>
 #include <algorithm>
 
-#include "memory_manager.h"
 #include <liboptions/liboptions.h>
 #include <libutil/libutil.h>
 #include <libmoinfo/libmoinfo.h>
+
 #include "matrix.h"
 #include "manybody.h"
 #include "blas.h"
@@ -96,7 +96,7 @@ void CCManyBody::generate_integrals()
 void CCManyBody::generate_denominators()
 {
   START_TIMER(1,"Generating Denominators");
-//   for_each(blas->get_MatrixMap_begin(),blas->get_MatrixMap_end(),generate_denominator_element);  
+//   for_each(blas->get_MatrixMap_begin(),blas->get_MatrixMap_end(),generate_denominator_element);
 
   bool keep_denominators_in_core = false;
   if(options_get_str("CORR_WFN")=="PT2")
@@ -109,7 +109,7 @@ void CCManyBody::generate_denominators()
     if(str.find("d1")!=string::npos){
 
       CCMatTmp MatTmp = blas->get_MatTmp(str,( keep_denominators_in_core ? none : dump));
-     
+
       bool alpha = true;
       if((str.find("O")!=string::npos) || (str.find("V")!=string::npos))
         alpha = false;
@@ -304,7 +304,7 @@ void CCManyBody::generate_triples_denominators()
   generate_d3_ijk(d3_ooo,true,true,true);
   generate_d3_ijk(d3_ooO,true,true,false);
   generate_d3_ijk(d3_oOO,true,false,false);
-  generate_d3_ijk(d3_OOO,false,false,false); 
+  generate_d3_ijk(d3_OOO,false,false,false);
   generate_d3_abc(d3_vvv,true,true,true);
   generate_d3_abc(d3_vvV,true,true,false);
   generate_d3_abc(d3_vVV,true,false,false);
@@ -321,7 +321,7 @@ void CCManyBody::generate_d3_ijk(double***& d3,bool alpha_i,bool alpha_j,bool al
     // N.B. Never introduce Matrices/Vectors with O or V in the name before you compute the Fock matrix elements
     std::vector<int> aocc     = moinfo->get_aocc("a",reference);
     std::vector<int> bocc     = moinfo->get_bocc("a",reference);
-  
+
     // Build the is_ arrays for reference ref
     bool* is_aocc = new bool[moinfo->get_nocc()];
     bool* is_bocc = new bool[moinfo->get_nocc()];
@@ -344,12 +344,12 @@ void CCManyBody::generate_d3_ijk(double***& d3,bool alpha_i,bool alpha_j,bool al
       f_ii_Matrix = f_oo_Matrix.get_CCMatrix();
     else
       f_ii_Matrix = f_OO_Matrix.get_CCMatrix();
-    
+
     if(alpha_j)
       f_jj_Matrix = f_oo_Matrix.get_CCMatrix();
     else
       f_jj_Matrix = f_OO_Matrix.get_CCMatrix();
-    
+
     if(alpha_k)
       f_kk_Matrix = f_oo_Matrix.get_CCMatrix();
     else
@@ -385,7 +385,7 @@ void CCManyBody::generate_d3_ijk(double***& d3,bool alpha_i,bool alpha_j,bool al
     delete[] is_aocc;
     delete[] is_bocc;
   }
-} 
+}
 
 void CCManyBody::generate_d3_abc(double***& d3,bool alpha_a,bool alpha_b,bool alpha_c)
 {
@@ -397,7 +397,7 @@ void CCManyBody::generate_d3_abc(double***& d3,bool alpha_a,bool alpha_b,bool al
     // N.B. Never introduce Matrices/Vectors with O or V in the name before you compute the Fock matrix elements
     std::vector<int> avir     = moinfo->get_avir("a",reference);
     std::vector<int> bvir     = moinfo->get_bvir("a",reference);
-  
+
     // Build the is_ arrays for reference ref
     bool* is_avir = new bool[moinfo->get_nvir()];
     bool* is_bvir = new bool[moinfo->get_nvir()];
@@ -421,12 +421,12 @@ void CCManyBody::generate_d3_abc(double***& d3,bool alpha_a,bool alpha_b,bool al
       f_aa_Matrix = f_vv_Matrix.get_CCMatrix();
     else
       f_aa_Matrix = f_VV_Matrix.get_CCMatrix();
-    
+
     if(alpha_b)
       f_bb_Matrix = f_vv_Matrix.get_CCMatrix();
     else
       f_bb_Matrix = f_VV_Matrix.get_CCMatrix();
-    
+
     if(alpha_c)
       f_cc_Matrix = f_vv_Matrix.get_CCMatrix();
     else
@@ -450,7 +450,7 @@ void CCManyBody::generate_d3_abc(double***& d3,bool alpha_a,bool alpha_b,bool al
           external = false;
         if((alpha_c && !is_avir[c]) || (!alpha_c && !is_bvir[c]))
           external = false;
-        
+
         if(external)
           d3[ref][h][abc]=f_aa_Matrix->get_two_address_element(a,a)
                      +f_bb_Matrix->get_two_address_element(b,b)
@@ -462,7 +462,7 @@ void CCManyBody::generate_d3_abc(double***& d3,bool alpha_a,bool alpha_b,bool al
     delete[] is_avir;
     delete[] is_bvir;
   }
-} 
+}
 
 void CCManyBody::deallocate_triples_denominators()
 {
@@ -704,8 +704,8 @@ void CCManyBody::sort_eigensystem(int ndets,double*& real,double*& imaginary,dou
 
   double*  tempv;
   double** tempm;
-  allocate1(double,tempv,ndets); 
-  allocate2(double,tempm,ndets,ndets); 
+  allocate1(double,tempv,ndets);
+  allocate2(double,tempm,ndets,ndets);
 
   for(int i=0;i<ndets;i++) tempv[i] = real[pairs[i].second];
   for(int i=0;i<ndets;i++) real[i]  = tempv[i];
@@ -727,7 +727,7 @@ void CCManyBody::sort_eigensystem(int ndets,double*& real,double*& imaginary,dou
     for(int j=0;j<ndets;j++)
       right[i][j] = tempm[i][j];
 
-  release1(tempv); 
+  release1(tempv);
   release2(tempm);
 }
 
@@ -741,7 +741,7 @@ void CCManyBody::zero_internal_amps()
       for(int j=0;j<moinfo->get_ref_size("a");j++){
         vector<pair<int,int> >  alpha_internal_excitation = moinfo->get_alpha_internal_excitation(unique_i,j);
         vector<pair<int,int> >   beta_internal_excitation = moinfo->get_beta_internal_excitation(unique_i,j);
-  
+
         // Zero alpha-alpha single excitations
         if((alpha_internal_excitation.size()==1)&&(beta_internal_excitation.size()==0)){
           blas->get_MatTmp("t1[o][v]",unique_i,none)->set_two_address_element(
@@ -749,14 +749,14 @@ void CCManyBody::zero_internal_amps()
                                             alpha_internal_excitation[0].second,
                                             0.0);
         }
-  
+
         // Zero beta-beta single excitations
         if((alpha_internal_excitation.size()==0)&&(beta_internal_excitation.size()==1))
           blas->get_MatTmp("t1[O][V]",unique_i,none)->set_two_address_element(
                                             beta_internal_excitation[0].first,
                                             beta_internal_excitation[0].second,
                                             0.0);
-  
+
         // Zero (alpha,alpha)->(alpha,alpha) double excitations (all permutations)
         if((alpha_internal_excitation.size()==2)&&(beta_internal_excitation.size()==0)){
           blas->get_MatTmp("t2[oo][vv]",unique_i,none)->set_four_address_element(
@@ -784,7 +784,7 @@ void CCManyBody::zero_internal_amps()
                                             alpha_internal_excitation[0].second,
                                             0.0);
         }
-  
+
         // Zero (alpha,beta)->(alpha,beta) double excitations
         if((alpha_internal_excitation.size()==1)&&(beta_internal_excitation.size()==1)){
           blas->get_MatTmp("t2[oO][vV]",unique_i,none)->set_four_address_element(
@@ -794,7 +794,7 @@ void CCManyBody::zero_internal_amps()
                                             beta_internal_excitation[0].second,
                                             0.0);
         }
-  
+
         // Zero (beta,beta)->(beta,beta) double excitations (all permutations)
         if((alpha_internal_excitation.size()==0)&&(beta_internal_excitation.size()==2)){
           blas->get_MatTmp("t2[OO][VV]",unique_i,none)->set_four_address_element(
@@ -824,7 +824,7 @@ void CCManyBody::zero_internal_amps()
         }
       }
     }
-  
+
     // Print the t-amplitudes
     DEBUGGING(3,
       blas->print("t1[o][v]{u}");
@@ -849,14 +849,14 @@ void CCManyBody::zero_t1_internal_amps()
       for(int j=0;j<moinfo->get_ref_size("a");j++){
         vector<pair<int,int> >  alpha_internal_excitation = moinfo->get_alpha_internal_excitation(unique_i,j);
         vector<pair<int,int> >   beta_internal_excitation = moinfo->get_beta_internal_excitation(unique_i,j);
-  
+
         // Zero alpha-alpha single excitations
         if((alpha_internal_excitation.size()==1)&&(beta_internal_excitation.size()==0))
           blas->get_MatTmp("t1[o][v]",unique_i,none)->set_two_address_element(
                                             alpha_internal_excitation[0].first,
                                             alpha_internal_excitation[0].second,
                                             0.0);
-  
+
         // Zero beta-beta single excitations
         if((alpha_internal_excitation.size()==0)&&(beta_internal_excitation.size()==1))
           blas->get_MatTmp("t1[O][V]",unique_i,none)->set_two_address_element(
@@ -865,7 +865,7 @@ void CCManyBody::zero_t1_internal_amps()
                                             0.0);
       }
     }
-  
+
     // Print the t-amplitudes
     DEBUGGING(3,
       blas->print("t1[o][v]{u}");
@@ -886,21 +886,21 @@ void CCManyBody::zero_internal_delta_amps()
       for(int j=0;j<moinfo->get_ref_size("a");j++){
         vector<pair<int,int> >  alpha_internal_excitation = moinfo->get_alpha_internal_excitation(unique_i,j);
         vector<pair<int,int> >   beta_internal_excitation = moinfo->get_beta_internal_excitation(unique_i,j);
-  
+
         // Zero alpha-alpha single excitations
         if((alpha_internal_excitation.size()==1)&&(beta_internal_excitation.size()==0))
           blas->get_MatTmp("t1_delta[o][v]",unique_i,none)->set_two_address_element(
                                             alpha_internal_excitation[0].first,
                                             alpha_internal_excitation[0].second,
                                             0.0);
-  
+
         // Zero beta-beta single excitations
         if((alpha_internal_excitation.size()==0)&&(beta_internal_excitation.size()==1))
           blas->get_MatTmp("t1_delta[O][V]",unique_i,none)->set_two_address_element(
                                             beta_internal_excitation[0].first,
                                             beta_internal_excitation[0].second,
                                             0.0);
-  
+
         // Zero (alpha,alpha)->(alpha,alpha) double excitations (all permutations)
         if((alpha_internal_excitation.size()==2)&&(beta_internal_excitation.size()==0)){
           blas->get_MatTmp("t2_delta[oo][vv]",unique_i,none)->set_four_address_element(
@@ -928,7 +928,7 @@ void CCManyBody::zero_internal_delta_amps()
                                             alpha_internal_excitation[0].second,
                                             0.0);
         }
-  
+
         // Zero (alpha,beta)->(alpha,beta) double excitations
         if((alpha_internal_excitation.size()==1)&&(beta_internal_excitation.size()==1)){
           blas->get_MatTmp("t2_delta[oO][vV]",unique_i,none)->set_four_address_element(
@@ -938,7 +938,7 @@ void CCManyBody::zero_internal_delta_amps()
                                             beta_internal_excitation[0].second,
                                             0.0);
         }
-  
+
         // Zero (beta,beta)->(beta,beta) double excitations (all permutations)
         if((alpha_internal_excitation.size()==0)&&(beta_internal_excitation.size()==2)){
           blas->get_MatTmp("t2_delta[OO][VV]",unique_i,none)->set_four_address_element(
@@ -968,7 +968,7 @@ void CCManyBody::zero_internal_delta_amps()
         }
       }
     }
-  
+
     // Print the t-amplitudes
     DEBUGGING(3,
       blas->print("t1_delta[o][v]{u}");

@@ -2,8 +2,11 @@
 #define _psi_src_lib_libmemtrix_block_vector_h_
 
 #include <string>
+#include <vector>
 
 #include "vector_base.h"
+
+typedef std::vector<int> vecint;
 
 namespace psi{ namespace mcscf{
 
@@ -13,6 +16,7 @@ public:
   BlockVector();
   BlockVector(std::string label, int nirreps, size_t*& rows_size);
   BlockVector(std::string label, int nirreps, int*& rows_size);
+  BlockVector(std::string label, int nirreps, vecint& rows_size);
   ~BlockVector();
 
   void print();
@@ -42,6 +46,7 @@ private:
 
   void startup(std::string label, int nirreps, size_t*& rows_size);
   void startup(std::string label, int nirreps, int*& rows_size);
+  void startup(std::string label, int nirreps, vecint& rows_size);
   void cleanup();
 };
 

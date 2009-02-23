@@ -11,12 +11,12 @@
  *  @brief Contains main() and global variables
 */
 
-// Standard libraries 
+// Standard libraries
 #include <iostream>
 #include <complex>
 #include <cstdlib>
 
-// PSI libraries 
+// PSI libraries
 #include <psifiles.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
@@ -33,7 +33,6 @@
 #include "main.h"
 #include "sort.h"
 #include "mrcc.h"
-#include "memory_manager.h"
 #include "psimrcc.h"
 #include "transform.h"
 
@@ -47,16 +46,15 @@ extern "C" {
 using namespace std;
 using namespace psi;
 
-
-
 namespace psi{
 MOInfo              *moinfo;
+MemoryManager       *_memory_manager_;
+
 namespace psimrcc{
 
 // Global variables
 Timer               *global_timer;
 Debugging           *debugging;
-MemoryManager       *mem;
 CCBLAS              *blas;
 CCSort              *sorter;
 CCTransform         *trans = NULL;
@@ -75,18 +73,21 @@ int main(int argc, char *argv[])
   using namespace psi::psimrcc;
   init_psi(argc,argv);
 
+
   global_timer = new Timer;
   read_calculation_options();
 
   ip_cwk_clear();
   ip_cwk_add(const_cast<char*>(":MRCC"));
   ip_cwk_add(const_cast<char*>(":PSIMRCC"));
-  
+
   debugging = new Debugging;
 
-  mem    = new MemoryManager();
+  _memory_manager_    = new MemoryManager(options_get_int("MEMORY"));
+
   moinfo = new MOInfo();
-  moinfo->setup_model_space();
+
+  moinfo->setup_model_space();  // The is a bug here DELETEME
 
   run_psimrcc();
 
@@ -95,10 +96,10 @@ int main(int argc, char *argv[])
   fprintf(outfile,"\n\tGEMM Time = %20.6f s",moinfo->get_dgemm_timing());
   fflush(outfile);
 
-  mem->MemCheck(outfile);
+  _memory_manager_->MemCheck(outfile);
 
   delete moinfo;
-  delete mem;
+  delete _memory_manager_;
   delete global_timer;
   close_psi();
   return PSI_RETURN_SUCCESS;
@@ -179,14 +180,14 @@ void init_psi(int argc, char *argv[])
   ip_cwk_add(const_cast<char*>(":MRCC"));
   ip_cwk_add(const_cast<char*>(":PSI"));
   ip_cwk_add(const_cast<char*>(":INPUT"));
-  
+
   options_init();
 
   tstart(outfile);
-  
+
   psio_open(PSIF_PSIMRCC_INTEGRALS,PSIO_OPEN_NEW);
 
-  
+
 
   fprintf(outfile,"\n  MRCC          MRCC");
   fprintf(outfile,"\n   MRCC  MRCC  MRCC");
@@ -195,7 +196,7 @@ void init_psi(int argc, char *argv[])
   fprintf(outfile,"\n     MRCCMRCCMRCC        Francesco A. Evangelista and Andrew C. Simmonett");
   fprintf(outfile,"\n         MRCC            Compiled on %s at %s",__DATE__,__TIME__);
   fprintf(outfile,"\n         MRCC            id =%s",GIT_ID);
-  fprintf(outfile,"\n       MRCCMRCC");          
+  fprintf(outfile,"\n       MRCCMRCC");
 }
 
 /**

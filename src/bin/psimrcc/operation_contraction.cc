@@ -88,9 +88,9 @@ void CCOperation::setup_contractions()
       }
     }
     if(B_on_disk && C_on_disk)
-      print_developing("Both on disk matrix multiply",__FILE__,__LINE__);
+      print_developing(outfile,"Both on disk matrix multiply",__FILE__,__LINE__);
 
-    ////////////////////////////////////////////////////////// 
+    //////////////////////////////////////////////////////////
     // Case I. A,B,C are in core. Perform direct a BLAS call
     // in one pass.
     //////////////////////////////////////////////////////////
@@ -114,7 +114,7 @@ void CCOperation::setup_contractions()
       moinfo->add_dgemm_timing(timer.get());
     }
 
-    ////////////////////////////////////////////////////////// 
+    //////////////////////////////////////////////////////////
     // Case II. A,C are in core. B is on disk. Perform several
     // BLAS calls.
     //////////////////////////////////////////////////////////
@@ -129,7 +129,7 @@ void CCOperation::setup_contractions()
       size_t offset = 0;
       bool done = false;
       while(!done){
-        size_t strip_length = B_Matrix->read_strip_from_disk(h,strip,out_of_core_buffer); 
+        size_t strip_length = B_Matrix->read_strip_from_disk(h,strip,out_of_core_buffer);
         if(strip_length == 0){
           done = true;
         }else{
@@ -154,7 +154,7 @@ void CCOperation::setup_contractions()
       }
       delete[] B_matrix;
     }
-    ////////////////////////////////////////////////////////// 
+    //////////////////////////////////////////////////////////
     // Case III. A,B are in core. C is on disk. Perform several
     // BLAS calls.
     //////////////////////////////////////////////////////////
@@ -169,7 +169,7 @@ void CCOperation::setup_contractions()
       size_t offset = 0;
       bool done = false;
       while(!done){
-        size_t strip_length = C_Matrix->read_strip_from_disk(h,strip,out_of_core_buffer); 
+        size_t strip_length = C_Matrix->read_strip_from_disk(h,strip,out_of_core_buffer);
         if(strip_length == 0){
           done = true;
         }else{
@@ -250,7 +250,7 @@ void CCOperation::contract_in_core(double** A_matrix,double** B_matrix,double** 
   // CASE B
   //
   //            ------------------------
-  //           |         ---------------|---- 
+  //           |         ---------------|----
   //           |        |               |    |
   //   A[A_l][A_r] = B[B_i][B_c] 1@2 C[C_c][C_i]
   //      |                  |
@@ -275,7 +275,7 @@ void CCOperation::contract_in_core(double** A_matrix,double** B_matrix,double** 
           for(int l=0;l<k;l++)
             A_matrix[i][(C_on_disk ? offset+j : j)]+=factor*B_matrix[l][i]*C_matrix[j][(B_on_disk ? offset+l : l)];
     );
-    
+
   }
   // CASE C,
   //
@@ -301,7 +301,7 @@ void CCOperation::contract_in_core(double** A_matrix,double** B_matrix,double** 
           for(int l=0;l<k;l++)
             A_matrix[(B_on_disk ? offset+i : i)][j]+=factor*B_matrix[i][(C_on_disk ? l+offset : l)]*C_matrix[l][j];
     );
-    
+
   }
   // CASE D, best case scenario
   //
@@ -328,7 +328,7 @@ void CCOperation::contract_in_core(double** A_matrix,double** B_matrix,double** 
           for(int l=0;l<k;l++)
             A_matrix[(B_on_disk ? offset+i : i)][(C_on_disk ? offset+j : j)]+=factor*B_matrix[i][l]*C_matrix[j][l];
     );
-    
+
   }
 }
 
@@ -411,7 +411,7 @@ void CCOperation::setup_contractions()
     int  last_block = 0;
     int  rows_B,rows_C,offset;
     while(!done){
-      ////////////////////////////////////////////////////////// 
+      //////////////////////////////////////////////////////////
       // Case I. A,B,C are in core. Perform direct a BLAS call
       // in one pass.
       //////////////////////////////////////////////////////////
@@ -424,14 +424,14 @@ void CCOperation::setup_contractions()
         rows_C = C_Matrix->get_left_pairpi(h);
         offset = 0;
       }
-      ////////////////////////////////////////////////////////// 
+      //////////////////////////////////////////////////////////
       // Case II. A,C are in core. B is on disk. Perform several
       // BLAS calls.
       //////////////////////////////////////////////////////////
       if(B_on_disk && !C_on_disk){
         int total_blocks = B_Matrix->get_blocks_per_irrep(h);
         // Determine how many blocks can be held in core
-        double free_memory = mem->get_free_memory();
+        double free_memory = _memory_manager_->get_free_memory();
         first_block = last_block;
         last_block  = first_block;
         for(int i=first_block;i<total_blocks;i++){
@@ -466,14 +466,14 @@ void CCOperation::setup_contractions()
         rows_C = C_Matrix->get_left_pairpi(h);
         offset = B_Matrix->get_first_row_per_block(irrep,first_block);
       }
-      ////////////////////////////////////////////////////////// 
+      //////////////////////////////////////////////////////////
       // Case III. A,B are in core. C is on disk. Perform several
       // BLAS calls.
       //////////////////////////////////////////////////////////
       if(!B_on_disk && C_on_disk){
         int total_blocks = C_Matrix->get_blocks_per_irrep(h);
         // Determine how many blocks can be held in core
-        double free_memory = mem->get_free_memory();
+        double free_memory = _memory_manager_->get_free_memory();
         first_block = last_block;
         last_block  = first_block;
         for(int i=first_block;i<total_blocks;i++){
@@ -589,7 +589,7 @@ void CCOperation::contract_in_core(double** A_matrix,double** B_matrix,double** 
   // CASE B
   //
   //            ------------------------
-  //           |         ---------------|---- 
+  //           |         ---------------|----
   //           |        |               |    |
   //   A[A_l][A_r] = B[B_i][B_c] 1@2 C[C_c][C_i]
   //      |                  |
@@ -727,7 +727,7 @@ void CCOperation::setup_contractions()
 //   bool      A_is_allocated = A_Matrix->is_allocated();
 //   bool      B_is_allocated = B_Matrix->is_allocated();
 //   bool      C_is_allocated = C_Matrix->is_allocated();
-  
+
   char      label[80];
   ///////////////////////////////////
   // Multiply one irrep at time
@@ -747,7 +747,7 @@ void CCOperation::setup_contractions()
     //////////////////////////
     // Now call BLAS
     //////////////////////////
-  
+
     // Start a timer
     Timer timer;
     // Do the job
@@ -803,7 +803,7 @@ void CCOperation::contract_in_core(double** A_matrix,double** B_matrix,double** 
   // CASE B
   //
   //            ------------------------
-  //           |         ---------------|---- 
+  //           |         ---------------|----
   //           |        |               |    |
   //   A[A_l][A_r] = B[B_i][B_c] 1@2 C[C_c][C_i]
   //      |                  |

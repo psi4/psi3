@@ -1,6 +1,5 @@
 #include <liboptions/liboptions.h>
 #include "blas.h"
-#include "memory_manager.h"
 #include "debugging.h"
 #include <libmoinfo/libmoinfo.h>
 #include <libutil/libutil.h>
@@ -69,7 +68,7 @@ void CCBLAS::allocate_work()
 //     work[n]=new double[work_size]; MEM_
     zero_arr(work[n],work_size);
   }
-  mem->add_allocated_memory(to_MB(work_size));
+  _memory_manager_->add_allocated_memory(to_MB(work_size));
 }
 
 void CCBLAS::allocate_buffer()
@@ -83,13 +82,13 @@ void CCBLAS::allocate_buffer()
   for(int n=0;n<options_get_int("NUM_THREADS");n++)
     buffer.push_back(NULL);
   // Compute the temporary buffer space size, 101% of the actual strip size
-  buffer_size = 1.01*mem->get_integral_strip_size() / to_MB(1);
+  buffer_size = 1.01*_memory_manager_->get_integral_strip_size() / to_MB(1);
   // Allocate the temporary buffer space
   for(int n=0;n<options_get_int("NUM_THREADS");n++){
     buffer[n]=new double[buffer_size];
     zero_arr(buffer[n],buffer_size);
   }
-  mem->add_allocated_memory(to_MB(buffer_size));
+  _memory_manager_->add_allocated_memory(to_MB(buffer_size));
 }
 
 void CCBLAS::free_sortmap()
@@ -131,7 +130,7 @@ void CCBLAS::free_matrices()
 
 void CCBLAS::free_indices()
 {
-  for(IndexMap::iterator iter=indices.begin();iter!=indices.end();++iter){ 
+  for(IndexMap::iterator iter=indices.begin();iter!=indices.end();++iter){
     delete iter->second;
   }
 }
@@ -256,7 +255,7 @@ int CCBLAS::compute_storage_strategy()
   fprintf(outfile,"\n#CC    Computing Storage Strategy");
   fprintf(outfile,"\n#CC ----------------------------------");
 
-  double available_memory     = mem->get_free_memory();
+  double available_memory     = _memory_manager_->get_free_memory();
   double fraction_for_in_core = 0.97; // Fraction of the total available memory that may be used
   double storage_memory       = available_memory * fraction_for_in_core;
   double fully_in_core_memory = 0.0;
@@ -264,7 +263,7 @@ int CCBLAS::compute_storage_strategy()
   double fock_memory          = 0.0;
   double others_memory        = 0.0;
 
-  fprintf(outfile,"\n#CC Input memory                                = %10.2f Mb",mem->get_total_memory());
+  fprintf(outfile,"\n#CC Input memory                                = %10.2f Mb",_memory_manager_->get_total_memory());
   fprintf(outfile,"\n#CC Free memory                                 = %10.2f Mb",available_memory);
   fprintf(outfile,"\n#CC Free memory available for matrices          = %10.2f Mb (%3.0f%s of free_memory)",storage_memory,fraction_for_in_core*100.0,"%");
 
@@ -354,7 +353,7 @@ int CCBLAS::compute_storage_strategy()
         fprintf(outfile,"%s",fock[i].second.first->is_block_allocated(fock[i].second.second) ? "in-core" : "out-of-core");
       }
     }
-    fprintf(outfile,"\n#CC -------------------- Other matrices ------------------------");    
+    fprintf(outfile,"\n#CC -------------------- Other matrices ------------------------");
     for(int i=0;i<others.size();i++){
       if(others[i].first > 1.0e-5){
         fprintf(outfile,"\n#CC %-32s irrep %d   %6.2f Mb --> ",others[i].second.first->get_label().c_str(),
@@ -398,7 +397,7 @@ void CCBLAS::show_storage()
         fprintf(outfile,"\n#CC %-32s irrep %d   %6.2f Mb",it->second->get_label().c_str(),h,block_memory);
         fprintf(outfile," is %s",it->second->is_block_allocated(h) ? "allocated" : "not allocated");
         fprintf(outfile,"%s",it->second->is_out_of_core(h) ? "(out-of-core)" : "");
-  
+
       }
     }
   )

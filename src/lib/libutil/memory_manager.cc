@@ -1,31 +1,23 @@
-/***************************************************************************
- *  PSIMRCC
- *  Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
-
-
 #include <map>
 #include <vector>
 #include <string>
 #include <cstdio>
 #include <cstdlib>
+
 #include <liboptions/liboptions.h>
+
 #include "memory_manager.h"
 
-extern FILE *infile, *outfile;
-
-namespace psi{ namespace psimrcc{
+namespace psi{
 
 using namespace std;
 
-MemoryManager::MemoryManager(){
-  CurrentAllocated = 0;
-  MaximumAllocated = 0;
-  MaximumAllowed   = 1024*1024*options_get_int("MEMORY");
+MemoryManager::MemoryManager(int max_memory_mb){
+  CurrentAllocated    = 0;
+  MaximumAllocated    = 0;
+  MaximumAllowed      = 1024 * 1024 * static_cast<size_t>(max_memory_mb);
   allocated_memory    = 0.0;
-  total_memory        = double(options_get_int("MEMORY"));
+  total_memory        = static_cast<double>(max_memory_mb);
   integral_strip_size = total_memory * 0.05;
 }
 
@@ -33,64 +25,61 @@ MemoryManager::~MemoryManager()
 {
 }
 
-
 void MemoryManager::RegisterMemory(void *mem, AllocationEntry& entry, size_t size)
 {
   AllocationTable[mem] = entry;
   CurrentAllocated += size;
   if (CurrentAllocated > MaximumAllocated)
     MaximumAllocated = CurrentAllocated;
-  if(options_get_int("DEBUG") > 1){
-    fprintf(outfile, "\n  ==============================================================================");
-    fprintf(outfile, "\n  MemoryManager Allocated   %12ld bytes (%8.1f Mb)",size,double(size)/1048576.0);
-    fprintf(outfile, "\n  %-15s allocated   at %s:%d", entry.variableName.c_str(), entry.fileName.c_str(), entry.lineNumber);
-    fprintf(outfile, "\n  Currently used            %12ld bytes (%8.1f Mb)",CurrentAllocated,
-                 double(CurrentAllocated)/1048576.0);
-    fprintf(outfile, "\n  ==============================================================================");
-    fflush(outfile);
-  }
+//  if(options_get_int("DEBUG") > 1){
+//    fprintf(outfile, "\n  ==============================================================================");
+//    fprintf(outfile, "\n  MemoryManager Allocated   %12ld bytes (%8.1f Mb)",size,double(size)/1048576.0);
+//    fprintf(outfile, "\n  %-15s allocated   at %s:%d", entry.variableName.c_str(), entry.fileName.c_str(), entry.lineNumber);
+//    fprintf(outfile, "\n  Currently used            %12ld bytes (%8.1f Mb)",CurrentAllocated,
+//                 double(CurrentAllocated)/1048576.0);
+//    fprintf(outfile, "\n  ==============================================================================");
+//    fflush(outfile);
+//  }
 }
 
 void MemoryManager::UnregisterMemory(void *mem, size_t size, const char *fileName, size_t lineNumber)
 {
   CurrentAllocated -= size;
   AllocationEntry& entry = AllocationTable[mem];
-  if(options_get_int("DEBUG") > 1){
-    fprintf(outfile, "\n  ==============================================================================");
-    fprintf(outfile, "\n  MemoryManager Deallocated %12ld bytes (%8.1f Mb)",size,double(size)/1048576.0);
-    fprintf(outfile, "\n  %-15s allocated   at %s:%d", entry.variableName.c_str(), entry.fileName.c_str(), entry.lineNumber);
-    fprintf(outfile, "\n  %-15s deallocated at %s:%d", entry.variableName.c_str(), fileName, lineNumber);
-    fprintf(outfile, "\n  Currently used            %12ld bytes (%8.1f Mb)",CurrentAllocated,
-                 double(CurrentAllocated)/1048576.0);
-    fprintf(outfile, "\n  ==============================================================================");
-    fflush(outfile);
-  }
+//  if(options_get_int("DEBUG") > 1){
+//    fprintf(outfile, "\n  ==============================================================================");
+//    fprintf(outfile, "\n  MemoryManager Deallocated %12ld bytes (%8.1f Mb)",size,double(size)/1048576.0);
+//    fprintf(outfile, "\n  %-15s allocated   at %s:%d", entry.variableName.c_str(), entry.fileName.c_str(), entry.lineNumber);
+//    fprintf(outfile, "\n  %-15s deallocated at %s:%d", entry.variableName.c_str(), fileName, lineNumber);
+//    fprintf(outfile, "\n  Currently used            %12ld bytes (%8.1f Mb)",CurrentAllocated,
+//                 double(CurrentAllocated)/1048576.0);
+//    fprintf(outfile, "\n  ==============================================================================");
+//    fflush(outfile);
+//  }
   AllocationTable.erase(mem);
-
 }
 
 void MemoryManager::MemCheck(FILE *output)
 {
   static bool alreadyChecked = false;
-  
+
   fprintf(output, "\n\n");
   fprintf(output, "  ==============================================================================\n");
   fprintf(output, "  Memory Usage Report\n\n");
   fprintf(output, "  Maximum memory used: %8.1f Mb \n",double(MaximumAllocated)/1048576.0);
   fprintf(output, "  Number of objects still in memory: %-6d  Current bytes used: %-12lu",CurrentAllocated,AllocationTable.size());
 
-  
   if (AllocationTable.size() > 0) {
     if (alreadyChecked == false)
       fprintf(output, "\n\n  Attempting to free the following objects:\n");
     else
       fprintf(output, "\n\n  Unable to delete the following objects:\n");
-                  
+
     std::map<void*, AllocationEntry>::iterator it;
 
     for (it=AllocationTable.begin(); it != AllocationTable.end(); it++)
       fprintf(output, "  %15s allocated at %s:%d\n", (*it).second.variableName.c_str(), (*it).second.fileName.c_str(), (*it).second.lineNumber);
-          
+
     it = AllocationTable.begin();
     while (it != AllocationTable.end()) {
       if ((*it).second.type == "double") {
@@ -179,7 +168,7 @@ void MemoryManager::MemCheck(FILE *output)
       }
       it = AllocationTable.begin();
     }
-    
+
     if (alreadyChecked == false && AllocationTable.size() > 0) {
             alreadyChecked = true;
             fprintf(output, "\nRechecking memory.\n");
@@ -189,4 +178,4 @@ void MemoryManager::MemCheck(FILE *output)
   fprintf(output, "\n  ==============================================================================\n");
 }
 
-}} /* End Namespaces */
+} /* End Namespace */

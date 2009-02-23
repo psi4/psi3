@@ -15,7 +15,6 @@
 
 #include "debugging.h"
 #include "matrix.h"
-#include "memory_manager.h"
 
 extern FILE *infile, *outfile;
 
@@ -72,9 +71,9 @@ void CCMatrix::allocate_block(int h)
   if(block_sizepi[h]>0){
     if(!is_block_allocated(h)){
       double memory_required = to_MB(block_sizepi[h]);
-      if(memory_required < mem->get_free_memory()){
+      if(memory_required < _memory_manager_->get_free_memory()){
         allocate2(double,matrix[h],left_pairpi[h],right_pairpi[h]);
-        mem->add_allocated_memory(memory_required);
+        _memory_manager_->add_allocated_memory(memory_required);
         DEBUGGING(2,
           fprintf(outfile,"\n  %s[%s] <- allocated",label.c_str(),moinfo->get_irr_labs(h));
           fflush(outfile);
@@ -108,7 +107,7 @@ void CCMatrix::free_block(int h)
     if(is_block_allocated(h)){
       double memory_required = to_MB(block_sizepi[h]);
       release2(matrix[h]);
-      mem->add_allocated_memory(-memory_required);
+      _memory_manager_->add_allocated_memory(-memory_required);
       DEBUGGING(2,
         fprintf(outfile,"\n  %s[%s] <- deallocated",label.c_str(),moinfo->get_irr_labs(h));
         fflush(outfile);
@@ -165,7 +164,7 @@ void CCMatrix::write_block_to_disk(int h)
 //       fprintf(outfile,"\n    CCMatrix::write_block_to_disk(): writing %s irrep %d to disk",label.c_str(),h);
 //       fprintf(outfile,"\n    This is a %d x %d block",left_pairpi[h],right_pairpi[h]);
       // for two electron integrals store strips of the symmetry block on disk
-      double max_strip_size = mem->get_integral_strip_size();
+      double max_strip_size = _memory_manager_->get_integral_strip_size();
       int    strip          = 0;
       size_t last_row       = 0;
       // Determine the size of the strip and write the strip to disk
@@ -174,7 +173,7 @@ void CCMatrix::write_block_to_disk(int h)
         size_t first_row      = last_row;
         double strip_size     = 0.0; // Mb
         size_t strip_length   = 0;
-        while((strip_size<max_strip_size) && (last_row < left_pairpi[h]) ){        
+        while((strip_size<max_strip_size) && (last_row < left_pairpi[h]) ){
           last_row++;
           strip_length = last_row - first_row;
           strip_size = to_MB(strip_length*right_pairpi[h]);
@@ -287,7 +286,7 @@ void CCMatrix::read_block_from_disk(int h)
     }
   }
 }
-  
+
 /**
  * Read an irrep strip from disk and return a boolean that is true if there is strip
  * @param h irrep to write to disk

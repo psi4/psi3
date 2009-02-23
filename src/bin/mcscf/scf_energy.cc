@@ -3,9 +3,9 @@
 
 #include <libmoinfo/libmoinfo.h>
 #include <libciomr/libciomr.h>
+#include <libutil/libutil.h>
 
 #include "scf.h"
-#include "memory_manager.h"
 #include "sblock_matrix.h"
 
 extern FILE* outfile;
@@ -31,7 +31,7 @@ double SCF::energy(int cycle,double old_energy)
 
   if(reference == tcscf){
 //     SBlockMatrix Dtc_sum("Dtc sum",nirreps,sopi,sopi);
-// 
+//
 //     // Compute diagonal elements of H
 //     for(int I = 0 ; I < nci; ++I){
 //       Dtc_sum  = Dc;
@@ -42,7 +42,7 @@ double SCF::energy(int cycle,double old_energy)
 //       T += G;
 //       H_tcscf[I][I] = dot(Dtc_sum,T) + moinfo_scf->get_nuclear_energy();
 //     }
-// 
+//
 //     // Compute off-diagonal elements of H
 //     for(int I = 0 ; I < nci; ++I){
 //       for(int J = I + 1; J < nci; ++J){
@@ -57,7 +57,7 @@ double SCF::energy(int cycle,double old_energy)
 //       for(int J = 0 ; J < nci; ++J)
 //         fprintf(outfile," %11.8f ",H_tcscf[I][J]);
 //     }
-    
+
 
     // Compute the CI gradient
     norm_ci_grad = 0.0;
@@ -69,18 +69,18 @@ double SCF::energy(int cycle,double old_energy)
       ci_grad[I] -= old_energy * ci[I];
       norm_ci_grad += fabs(ci_grad[I]);
     }
-    
+
     double*  eigenvalues;
     double** eigenvectors;
     allocate1(double,eigenvalues,nci);
     allocate2(double,eigenvectors,nci,nci);
 
     sq_rsp(nci,nci,H_tcscf,eigenvalues,1,eigenvectors,1.0e-14);
-  
+
     total_energy = eigenvalues[root];
 
     for(int I = 0 ; I < nci; ++I)
-      ci[I] = eigenvectors[I][root]; 
+      ci[I] = eigenvectors[I][root];
 
     release1(eigenvalues);
     release2(eigenvectors);
@@ -102,7 +102,7 @@ double SCF::energy(int cycle,double old_energy)
 
   fflush(outfile);
 
-  return(total_energy); 
+  return(total_energy);
 }
 
 }} /* End Namespaces */

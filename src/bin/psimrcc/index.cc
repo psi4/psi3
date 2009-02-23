@@ -7,9 +7,9 @@
 #include <algorithm>
 
 #include <libmoinfo/libmoinfo.h>
+#include <libutil/libutil.h>
 
 #include "index.h"
-#include "memory_manager.h"
 
 extern FILE *infile, *outfile;
 
@@ -46,19 +46,17 @@ void CCIndex::init()
   {
     if(label[i]=='o'){
       mospi.push_back(moinfo->get_occ());
-      indices_to_pitzer.push_back(moinfo->get_occ_to_pitzer());
+      indices_to_pitzer.push_back(moinfo->get_occ_to_mo());
     }else if(label[i]=='v'){
       mospi.push_back(moinfo->get_vir());
-      indices_to_pitzer.push_back(moinfo->get_vir_to_pitzer());
+      indices_to_pitzer.push_back(moinfo->get_vir_to_mo());
     }else if(label[i]=='a'){
       mospi.push_back(moinfo->get_actv());
-      indices_to_pitzer.push_back(moinfo->get_act_to_pitzer());
+      indices_to_pitzer.push_back(moinfo->get_actv_to_mo());
     }else if(label[i]=='s'){
       mospi.push_back(moinfo->get_sopi());
-      indices_to_pitzer.push_back(moinfo->get_so_to_pitzer());
     }else if(label[i]=='n'){
-      mospi.push_back(moinfo->get_orbspi());
-      indices_to_pitzer.push_back(moinfo->get_orbs_to_pitzer());
+      mospi.push_back(moinfo->get_mopi());
     }
   }
   for(int i=0;i<nelements;i++){
@@ -91,13 +89,14 @@ void CCIndex::init()
       exit(1);
     }
   }
-  mem->add_allocated_memory(memory);
+  _memory_manager_->add_allocated_memory(memory);
 }
 
 void CCIndex::cleanup()
 {
   if(tuples!=0)
-    free_smatrix(tuples,ntuples,dimension.size());
+    release2(tuples);
+//    free_smatrix(tuples,ntuples,dimension.size());
   if(one_index_to_tuple!=0)
     delete[] one_index_to_tuple;
   if(one_index_to_irrep!=0)
@@ -127,7 +126,8 @@ void CCIndex::make_zero_index()
     pairpi.push_back(last[h]-first[h]);
   }
   // Allocate the memory for the tuples and store them
-  memory+=(double)init_smatrix(tuples,1,1)/1048576.0;
+  allocate2(short,tuples,1,1);
+//  memory+=(double)init_smatrix(tuples,1,1)/1048576.0;
   tuples[0][0] = 0;
 }
 
@@ -161,7 +161,8 @@ void CCIndex::make_one_index()
   }
 
   // Allocate the memory for the tuples and store them
-  memory+=(double)init_smatrix(tuples,ntuples,1)/1048576.0;
+//  memory+=(double)init_smatrix(tuples,ntuples,1)/1048576.0;
+  allocate2(short,tuples,ntuples,1);
   for(int n=0;n<pairs.size();n++)
     tuples[n][0] = pairs[n][0];
 }
@@ -173,7 +174,7 @@ void CCIndex::make_two_index()
   // Allocate the 2->tuple mapping array and set them to -1
   allocate2(size_t,two_index_to_tuple,dimension[0],dimension[1]);
   allocate2(int,two_index_to_irrep,dimension[0],dimension[1]);
-  
+
   for(int i=0;i<dimension[0];i++){
     for(int j=0;j<dimension[1];j++){
       two_index_to_tuple[i][j] = 0;
@@ -266,7 +267,8 @@ void CCIndex::make_two_index()
   }
 
   // Allocate the memory for the tuples and store them
-  memory+=(double)init_smatrix(tuples,ntuples,2)/1048576.0;
+//  memory+=(double)init_smatrix(tuples,ntuples,2)/1048576.0;
+  allocate2(short,tuples,ntuples,2);
   for(int n=0;n<pairs.size();n++){
     tuples[n][0] = pairs[n][0];
     tuples[n][1] = pairs[n][1];
@@ -330,7 +332,8 @@ void CCIndex::make_three_index()
   }
 
   // Allocate the memory for the tuples and store them
-  memory+=(double)init_smatrix(tuples,ntuples,3)/1048576.0;
+//  memory+=(double)init_smatrix(tuples,ntuples,3)/1048576.0;
+  allocate2(short,tuples,ntuples,3);
   for(int n=0;n<pairs.size();n++){
     tuples[n][0] = pairs[n][0];
     tuples[n][1] = pairs[n][1];

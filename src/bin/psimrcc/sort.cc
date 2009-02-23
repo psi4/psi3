@@ -29,7 +29,7 @@ efzc(0.0),frozen_core(0)
 {
   init();
   // Two algorithms for forming the integrals
-  
+
   // 1. Full in-core algorithm: the transformed integrals and CCMatrix object fit in core
   //   build_integrals_in_core();
 
@@ -60,15 +60,15 @@ void CCSort::init()
 {
   // Find the frozen core orbitals in Pitzer ordering
   nfzc        = moinfo->get_nfocc();
-  int* focc   = moinfo->get_focc();
-  int* orbspi = moinfo->get_orbspi();
+  intvec focc = moinfo->get_focc();
+  intvec mopi = moinfo->get_mopi();
   frozen_core = new int[nfzc];
   int count1  = 0;
   int count2  = 0;
   for(int h=0;h<moinfo->get_nirreps();h++){
     for(int i=0;i<focc[h];i++)
       frozen_core[count1++]=count2+i;
-    count2+=orbspi[h];
+    count2+=mopi[h];
   }
 }
 

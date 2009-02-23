@@ -2,7 +2,6 @@
 #include <libmoinfo/libmoinfo.h>
 
 #include "scf.h"
-#include "memory_manager.h"
 
 namespace psi{ namespace mcscf{
 
@@ -22,7 +21,7 @@ void SCF::save_info()
   int tmp_iopen = ioff[moinfo_scf->get_nactv()];
   if(reference == tcscf) tmp_iopen = -tmp_iopen;
   chkpt_wt_iopen(tmp_iopen);
-  
+
   // Write open-shell coupling coefficients
   if(moinfo_scf->get_nactv() > 0){
     double** ccvecs;
@@ -41,11 +40,11 @@ void SCF::save_info()
   chkpt_wt_eref(total_energy);
 
 
-  chkpt_wt_orbspi(sopi);
-  chkpt_wt_clsdpi(docc);
-  chkpt_wt_openpi(actv);
-  
-  
+  chkpt_wt_orbspi(&sopi[0]);
+  chkpt_wt_clsdpi(&docc[0]);
+  chkpt_wt_openpi(&actv[0]);
+
+
 
   int* frz = new int[nirreps];
   for(int h = 0; h < nirreps; ++h) frz[h] = 0;
@@ -55,7 +54,7 @@ void SCF::save_info()
 
   double** C_save;
   allocate2(double,C_save,nso,nso);
-  
+
   for(int h = 0; h < nirreps; ++h)
     for(int i = 0; i < sopi[h]; ++i)
       for(int j = 0; j < sopi[h]; ++j)

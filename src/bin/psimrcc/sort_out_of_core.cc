@@ -3,7 +3,6 @@
  *  @ingroup (PSIMRCC)
 */
 
-#include "memory_manager.h"
 #include "transform.h"
 #include "sort.h"
 #include "matrix.h"
@@ -51,7 +50,7 @@ void CCSort::build_integrals_out_of_core()
 
 void CCSort::setup_out_of_core_list(MatMapIt& mat_it,int& mat_irrep,MatMapIt& mat_end,MatrixBlks& to_be_processed)
 {
-  double ccintegrals_memory = mem->get_free_memory()*0.5;
+  double ccintegrals_memory = _memory_manager_->get_free_memory()*0.5;
   bool out_of_memory = false;
   while((mat_it != mat_end) && !out_of_memory){
     if(mat_it->second->is_integral() || mat_it->second->is_fock()){
@@ -127,7 +126,7 @@ void CCSort::form_fock_out_of_core(CCMatrix* Matrix, int h)
     string label     = Matrix->get_label();
     double*** matrix = Matrix->get_matrix();
     short* pq = new short[2];
-    int* oa2p = moinfo->get_occ_to_pitzer();
+    const intvec& oa2p = moinfo->get_occ_to_mo();
 
     bool alpha = true;
     if((label.find("O")!=string::npos) || (label.find("V")!=string::npos) || (label.find("A")!=string::npos)) // NB This was missing the last bit, this might be a problem

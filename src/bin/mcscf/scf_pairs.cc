@@ -1,9 +1,9 @@
 #include <iostream>
 
 #include <libmoinfo/libmoinfo.h>
+#include <libutil/libutil.h>
 
 #include "scf.h"
-#include "memory_manager.h"
 
 extern FILE* outfile;
 

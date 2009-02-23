@@ -3,9 +3,9 @@
 
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
+#include <libutil/libutil.h>
 
 #include "matrix_base.h"
-#include "memory_manager.h"
 
 extern FILE* outfile;
 
@@ -133,7 +133,7 @@ MatrixBase& MatrixBase::operator+=(const MatrixBase& rhs)
 // void BlockMatrix::diagonalize(BlockMatrix* eigenvectors, double* eigenvalues)
 // {
 //   for(int h=0; h < nirreps; ++h){
-//     if(block_size[h]>0){    
+//     if(block_size[h]>0){
 
 //   }
 // }
@@ -143,7 +143,7 @@ void BlockMatrix::minus(BlockMatrix* B)
   for(int h=0; h < nirreps; ++h){
     double** A_matrix_block = matrix[h];
     double** B_matrix_block = B->get_block(h);
-    if(block_size[h]>0){    
+    if(block_size[h]>0){
       for(int i = 0; i < block_size[h]; ++i)
         for(int j = 0; j < block_size[h]; ++j)
           A_matrix_block[i][j] -= B_matrix_block[i][j];
@@ -162,7 +162,7 @@ BlockMatrix& BlockMatrix::operator=(const BlockMatrix& rhs)
   for(int h=0; h < nirreps; ++h){
     double** lhs_matrix_block = matrix[h];
     const double** rhs_matrix_block = rhs.get_block(h);
-    if(block_size[h]>0){    
+    if(block_size[h]>0){
       for(int i = 0; i < block_size[h]; ++i)
         for(int j = 0; j < block_size[h]; ++j)
           lhs_matrix_block[i][j] = rhs_matrix_block[i][j];
@@ -179,7 +179,7 @@ double operator^(const BlockMatrix& rhs,const BlockMatrix& lhs)
     const double** rhs_matrix_block = rhs.get_block(h);
     const double** lhs_matrix_block = lhs.get_block(h);
     int block_size = rhs.get_block_size(h);
-    if(block_size>0){    
+    if(block_size>0){
       for(int i = 0; i < block_size; ++i)
         for(int j = 0; j < block_size; ++j)
           value += lhs_matrix_block[i][j] * rhs_matrix_block[i][j];

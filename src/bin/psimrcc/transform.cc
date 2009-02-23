@@ -1,11 +1,11 @@
 #include <cmath>
 #include <algorithm>
 
-#include "memory_manager.h"
 #include <libmoinfo/libmoinfo.h>
+#include <libutil/libutil.h>
+
 #include "transform.h"
 #include "matrix.h"
-#include <libutil/libutil.h>
 #include "algebra_interface.h"
 #include "blas.h"
 
@@ -125,7 +125,7 @@ void CCTransform::read_tei_so_integrals()
 //     sprintf(label,"tei_so_%d",h);
 //     psio_write_entry(MRCC_SO_INTS,label,(char*)&tei_so[h][0],INDEX(indexing->get_pairpi(h)-1,indexing->get_pairpi(h)-1)+1*sizeof(double));
 //   }
-// 
+//
 //   for(int h=0;h<moinfo->get_nirreps();h++){
 //     if(indexing->get_pairpi(h)>0){
 //       delete[] tei_so[h];
@@ -163,10 +163,10 @@ void CCTransform::transform_tei_so_integrals()
 
       int rows_A = elemindx->get_pairpi(h_q);
       int cols_A = elemindx->get_pairpi(h_p);
-      int rows_B = moinfo->get_orbspi(h_p);
+      int rows_B = moinfo->get_mopi(h_p);
       int cols_B = elemindx->get_pairpi(h_q);
-      int rows_D = moinfo->get_orbspi(h_q);
-      int cols_D = moinfo->get_orbspi(h_p);
+      int rows_D = moinfo->get_mopi(h_q);
+      int cols_D = moinfo->get_mopi(h_p);
 
       if(rows_A*cols_A*rows_B*cols_B*rows_D*cols_D>0){
         allocate2(double,A,rows_A,cols_A);
@@ -214,8 +214,8 @@ void CCTransform::transform_tei_so_integrals()
                 D[j][i]+=C[q][j]*B[i][q];
 #endif
           // Store the half-transformed integrals
-          for(int i=0;i<moinfo->get_orbspi(h_p);i++){
-            for(int j=0;j<moinfo->get_orbspi(h_q);j++){
+          for(int i=0;i<moinfo->get_mopi(h_p);i++){
+            for(int j=0;j<moinfo->get_mopi(h_q);j++){
               i_abs = i + elemindx->get_first(h_p);
               j_abs = j + elemindx->get_first(h_q);
               if(i_abs >= j_abs){
@@ -242,10 +242,10 @@ void CCTransform::transform_tei_so_integrals()
 
       int rows_A = elemindx->get_pairpi(h_s);
       int cols_A = elemindx->get_pairpi(h_r);
-      int rows_B = moinfo->get_orbspi(h_r);
+      int rows_B = moinfo->get_mopi(h_r);
       int cols_B = elemindx->get_pairpi(h_s);
-      int rows_D = moinfo->get_orbspi(h_s);
-      int cols_D = moinfo->get_orbspi(h_r);
+      int rows_D = moinfo->get_mopi(h_s);
+      int cols_D = moinfo->get_mopi(h_r);
 
       if(rows_A*cols_A*rows_B*cols_B*rows_D*cols_D>0){
         allocate2(double,A,rows_A,cols_A);
@@ -292,8 +292,8 @@ void CCTransform::transform_tei_so_integrals()
 #endif
 
           // Store the half-transformed integrals
-          for(int k=0;k<moinfo->get_orbspi(h_r);k++){
-            for(int l=0;l<moinfo->get_orbspi(h_s);l++){
+          for(int k=0;k<moinfo->get_mopi(h_r);k++){
+            for(int l=0;l<moinfo->get_mopi(h_s);l++){
               k_abs = k + elemindx->get_first(h_r);
               l_abs = l + elemindx->get_first(h_s);
               if(k_abs >= l_abs){
@@ -376,16 +376,16 @@ void CCTransform::read_oei_mo_integrals()
   // Read all the (frozen + non-frozen) OEI in Pitzer order
   allocate_oei_mo();
 
-  int norbs = moinfo->get_norbs();
-  
-  double* H = new double[norbs*(norbs+1)/2];
+  int nmo = moinfo->get_nmo();
+
+  double* H = new double[nmo*(nmo+1)/2];
 //   if (moinfo->get_debug()<7)
-    iwl_rdone(PSIF_OEI,const_cast<char*>(PSIF_MO_FZC),H,norbs*(norbs+1)/2,0,0,outfile);
+    iwl_rdone(PSIF_OEI,const_cast<char*>(PSIF_MO_FZC),H,nmo*(nmo+1)/2,0,0,outfile);
 //   else
 //     iwl_rdone(PSIF_OEI,PSIF_MO_FZC,H,norbs*(norbs+1)/2,0,1,outfile); //TODO fix it!
 
-  for(int i=0; i < norbs; i++)
-    for(int j=0; j < norbs; j++)
+  for(int i=0; i < nmo; i++)
+    for(int j=0; j < nmo; j++)
       oei_mo[i][j] = H[INDEX(i,j)];
   delete[] H;
 }
@@ -409,8 +409,8 @@ void CCTransform::free_memory()
 void CCTransform::allocate_oei_mo()
 {
   if(oei_mo==NULL){
-    int norbs = moinfo->get_norbs();
-    allocate2(double,oei_mo,norbs,norbs);
+    int nmo = moinfo->get_nmo();
+    allocate2(double,oei_mo,nmo,nmo);
   }
 }
 
@@ -420,7 +420,7 @@ void CCTransform::allocate_oei_mo()
 void CCTransform::free_oei_mo()
 {
   if(oei_mo!=NULL){
-    int norbs = moinfo->get_norbs();
+    int nmo = moinfo->get_nmo();
     release2(oei_mo);
     oei_mo = NULL;
   }
@@ -463,10 +463,10 @@ void CCTransform::allocate_tei_mo()
 {
   if(tei_mo==NULL){
     CCIndex* indexing = blas->get_index("[n>=n]");
- 
+
     // Allocate the tei_mo matrix blocks
     tei_mo = new double*[moinfo->get_nirreps()];
-    
+
     bool failed = false;
     size_t required_size = 0;
     size_t matrix_size = 0;
@@ -474,17 +474,17 @@ void CCTransform::allocate_tei_mo()
       if(indexing->get_pairpi(h)>0){
         size_t block_size = INDEX(indexing->get_pairpi(h)-1,indexing->get_pairpi(h)-1)+1;
         matrix_size += block_size;
-        if(to_MB(block_size)<mem->get_free_memory()){
+        if(to_MB(block_size)<_memory_manager_->get_free_memory()){
           tei_mo[h] = new double[block_size];
-          mem->add_allocated_memory(to_MB(block_size));
+          _memory_manager_->add_allocated_memory(to_MB(block_size));
           for(size_t i=0;i<block_size;i++)
             tei_mo[h][i]=0.0;
         }else{
           failed = true;
           required_size+=block_size;
           tei_mo[h] = NULL;
-        }  
-        fprintf(outfile,"\n\tCCTransform: allocated the %s block of size %d (free memory = %.2f Mb)",moinfo->get_irr_labs(h),block_size,mem->get_free_memory());
+        }
+        fprintf(outfile,"\n\tCCTransform: allocated the %s block of size %d (free memory = %.2f Mb)",moinfo->get_irr_labs(h),block_size,_memory_manager_->get_free_memory());
       }
     }
     if(failed){
@@ -499,10 +499,10 @@ void CCTransform::allocate_tei_so()
 {
   if(tei_so==NULL){
     CCIndex* indexing = blas->get_index("[s>=s]");
-  
+
     // Allocate the tei_so matrix blocks
     tei_so = new double*[moinfo->get_nirreps()];
-    
+
     bool failed = false;
     size_t required_size = 0;
     size_t matrix_size = 0;
@@ -510,17 +510,17 @@ void CCTransform::allocate_tei_so()
       if(indexing->get_pairpi(h)>0){
         int block_size = INDEX(indexing->get_pairpi(h)-1,indexing->get_pairpi(h)-1)+1;
         matrix_size += block_size;
-        if(to_MB(block_size)<mem->get_free_memory()){
+        if(to_MB(block_size)<_memory_manager_->get_free_memory()){
           tei_so[h] = new double[block_size];
-          mem->add_allocated_memory(to_MB(block_size));
+          _memory_manager_->add_allocated_memory(to_MB(block_size));
           for(int i=0;i<block_size;i++)
             tei_so[h][i]=0.0;
         }else{
           failed = true;
           required_size+=block_size;
           tei_so[h] = NULL;
-        }  
-        fprintf(outfile,"\n\tCCTransform: allocated the %s block of size %d (free memory = %.2f Mb)",moinfo->get_irr_labs(h),block_size,mem->get_free_memory());
+        }
+        fprintf(outfile,"\n\tCCTransform: allocated the %s block of size %d (free memory = %.2f Mb)",moinfo->get_irr_labs(h),block_size,_memory_manager_->get_free_memory());
       }
     }
     if(failed){
@@ -570,7 +570,7 @@ void CCTransform::free_tei_mo()
       }
     }
     delete[] tei_mo;
-    mem->add_allocated_memory(-to_MB(matrix_size));
+    _memory_manager_->add_allocated_memory(-to_MB(matrix_size));
     tei_mo=NULL;
   }
 }
@@ -590,7 +590,7 @@ void CCTransform::free_tei_so()
       }
     }
     delete[] tei_so;
-    mem->add_allocated_memory(-to_MB(matrix_size));
+    _memory_manager_->add_allocated_memory(-to_MB(matrix_size));
     tei_so = NULL;
   }
 }
@@ -609,7 +609,7 @@ void CCTransform::free_tei_half_transformed()
       }
     }
     delete[] tei_half_transformed;
-    mem->add_allocated_memory(-to_MB(matrix_size));
+    _memory_manager_->add_allocated_memory(-to_MB(matrix_size));
     tei_half_transformed = NULL;
   }
 }
@@ -638,26 +638,26 @@ void CCTransform::transform_oei_so_integrals()
   allocate_oei_mo();
 
   int nso   = moinfo->get_nso();
-  int norbs = moinfo->get_norbs();
+  int nmo = moinfo->get_nmo();
 
   double** A;
-  allocate2(double,A,nso,norbs);  
+  allocate2(double,A,nso,nmo);
   double** C = moinfo->get_scf_mos();
 
-  // A(q,i) = H(q,p) * C(p,i) 
+  // A(q,i) = H(q,p) * C(p,i)
 /*#ifdef CCTRANSFORM_USE_BLAS
   C_DGEMM_12(
 #else*/
   for(int q=0;q<nso;q++)
-    for(int j=0;j<norbs;j++){
+    for(int j=0;j<nmo;j++){
       A[q][j] = 0.0;
-      for(int p=0;p<nso;p++) 
+      for(int p=0;p<nso;p++)
         A[q][j] += oei_so[q][p] * C[p][j];
     }
-  for(int i=0;i<norbs;i++)
-    for(int j=0;j<norbs;j++){
+  for(int i=0;i<nmo;i++)
+    for(int j=0;j<nmo;j++){
       oei_mo[i][j] = 0.0;
-      for(int q=0;q<nso;q++) 
+      for(int q=0;q<nso;q++)
         oei_mo[i][j] += C[q][i] * A[q][j];
     }
 // #endif

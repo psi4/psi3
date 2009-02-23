@@ -11,7 +11,6 @@
 
 #include "algebra_interface.h"
 #include "blas.h"
-#include "memory_manager.h"
 
 extern FILE *infile, *outfile;
 
@@ -68,18 +67,18 @@ void CCBLAS::diis(int cycle, double delta, DiisType diis_type)
   }
   fprintf(outfile,"   S");
 
-  
+
   // Decide if we are doing a DIIS extrapolation in this cycle
   bool do_diis_extrapolation = false;
-  if(diis_type == DiisEachCycle){  
+  if(diis_type == DiisEachCycle){
     if(cycle >= options_get_int("MAXDIIS") + options_get_int("START_DIIS"))
       do_diis_extrapolation = true;
   }else if(diis_type == DiisCC){
     if(diis_step == options_get_int("MAXDIIS")-1)
       do_diis_extrapolation = true;
-  }  
+  }
 
-  // Do a DIIS step 
+  // Do a DIIS step
   if(do_diis_extrapolation){
     double** diis_B;
     double*  diis_A;
@@ -126,7 +125,7 @@ void CCBLAS::diis(int cycle, double delta, DiisType diis_type)
                 diis_B[i][j] += F_DDOT(&lenght,i_matrix,&dx,j_matrix,&dx);
                 diis_B[j][i] = diis_B[i][j];
               }else{
-                print_error("The numeric limits for int was reached for F_DDOT",__FILE__,__LINE__);
+                print_error(outfile,"The numeric limits for int was reached for F_DDOT",__FILE__,__LINE__);
               }
             }
           }
@@ -136,11 +135,11 @@ void CCBLAS::diis(int cycle, double delta, DiisType diis_type)
       }
 
       // Solve B x = A
-      int  matrix_size = options_get_int("MAXDIIS") + 1;          
+      int  matrix_size = options_get_int("MAXDIIS") + 1;
       int* IPIV = new int[matrix_size];
       int nrhs = 1;
       int info = 0;
-      F_DGESV(&matrix_size, &nrhs, &(diis_B[0][0]),&matrix_size, &(IPIV[0]), &(diis_A[0]),&matrix_size, &info);         
+      F_DGESV(&matrix_size, &nrhs, &(diis_B[0][0]),&matrix_size, &(IPIV[0]), &(diis_A[0]),&matrix_size, &info);
       delete[] IPIV;
 
       // Update T = sum t(i) * A(i);

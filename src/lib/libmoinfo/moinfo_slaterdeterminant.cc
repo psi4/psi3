@@ -22,8 +22,8 @@ MOInfo::SlaterDeterminant::~SlaterDeterminant()
  */
 bool MOInfo::SlaterDeterminant::is_closed_shell()
 {
-  for(int i=0;i<moinfo->get_nmo();i++)
-    if(bits[i]!=bits[i+moinfo->get_nmo()])
+  for(int i=0;i<moinfo->get_nall();i++)
+    if(bits[i]!=bits[i+moinfo->get_nall()])
       return(false);
   return(true);
 }
@@ -34,10 +34,10 @@ bool MOInfo::SlaterDeterminant::is_closed_shell()
  */
 bool MOInfo::SlaterDeterminant::is_spin_flipped(SlaterDeterminant& det)
 {
-  for(int i=0;i<moinfo->get_nmo();i++){
-    if(bits[i]!=det.test(i+moinfo->get_nmo()))
+  for(int i=0;i<moinfo->get_nall();i++){
+    if(bits[i]!=det.test(i+moinfo->get_nall()))
       return(false);
-    if(bits[i+moinfo->get_nmo()]!=det.test(i))
+    if(bits[i+moinfo->get_nall()]!=det.test(i))
       return(false);
   }
   return(true);
@@ -50,7 +50,7 @@ bool MOInfo::SlaterDeterminant::is_spin_flipped(SlaterDeterminant& det)
 void MOInfo::SlaterDeterminant::print()
 {
   fprintf(outfile,"|");
-  for(int i=0;i<moinfo->get_nmo();i++){
+  for(int i=0;i<moinfo->get_nall();i++){
     fprintf(outfile,"%s",get_occupation_symbol(i));
   }
   fprintf(outfile,">");
@@ -73,7 +73,7 @@ void MOInfo::SlaterDeterminant::print_occ()
       fprintf(outfile,"%c",get_occupation_symbol(counter));
       counter++;
     }
-    counter+=moinfo->get_avir(h);
+    counter += moinfo->get_extr(h);
     fprintf(outfile,"]");
   }
   fprintf(outfile,">");
@@ -87,33 +87,33 @@ void MOInfo::SlaterDeterminant::get_internal_excitations(SlaterDeterminant& det,
                                                  vector<pair<int,int> >& beta_operators)
 {
   int ann, cre;
-  int nmo = moinfo->get_nmo();
+  int nall = moinfo->get_nall();
   bitdet bits_exc = det.get_bits();
   bitdet bits_tmp = bits;
   sign = 1.0;
   // Find one set of excitations at a time
   ann = -1; cre = -1;
-  while(cre<nmo){
-    while(++ann<nmo)
+  while(cre<nall){
+    while(++ann<nall)
       if(bits[ann] && !bits_exc[ann]) break;
-    while(++cre<nmo)
+    while(++cre<nall)
       if(!bits[cre] && bits_exc[cre]) break;
-    if(cre<nmo){
+    if(cre<nall){
       alpha_operators.push_back(make_pair(moinfo->get_all_to_occ(ann),moinfo->get_all_to_vir(cre)));
       sign *= annihilate(bits_tmp,ann);
       sign *=     create(bits_tmp,cre);
     }
   }
   ann = -1; cre = -1;
-  while(cre<nmo){
-    while(++ann<nmo)
-      if(bits[ann+nmo] && !bits_exc[ann+nmo]) break;
-    while(++cre<nmo)
-      if(!bits[cre+nmo] && bits_exc[cre+nmo]) break;
-    if(cre<nmo){
+  while(cre<nall){
+    while(++ann<nall)
+      if(bits[ann+nall] && !bits_exc[ann+nall]) break;
+    while(++cre<nall)
+      if(!bits[cre+nall] && bits_exc[cre+nall]) break;
+    if(cre<nall){
       beta_operators.push_back(make_pair(moinfo->get_all_to_occ(ann),moinfo->get_all_to_vir(cre)));
-      sign *= annihilate(bits_tmp,ann+nmo);
-      sign *=     create(bits_tmp,cre+nmo);
+      sign *= annihilate(bits_tmp,ann+nall);
+      sign *=     create(bits_tmp,cre+nall);
     }
   }
 }
@@ -147,7 +147,7 @@ double MOInfo::SlaterDeterminant::create(bitdet& bits_det,int so)
 vector<int> MOInfo::SlaterDeterminant::get_aocc()
 {
   vector<int> aocc;
-  for(int i=0;i<moinfo->get_nmo();i++)
+  for(int i=0;i<moinfo->get_nall();i++)
     if(bits[i])
       aocc.push_back(moinfo->get_all_to_occ(i));
   return(aocc);
@@ -156,8 +156,8 @@ vector<int> MOInfo::SlaterDeterminant::get_aocc()
 vector<int> MOInfo::SlaterDeterminant::get_bocc()
 {
   vector<int> bocc;
-  for(int i=0;i<moinfo->get_nmo();i++)
-    if(bits[i+moinfo->get_nmo()])
+  for(int i=0;i<moinfo->get_nall();i++)
+    if(bits[i+moinfo->get_nall()])
       bocc.push_back(moinfo->get_all_to_occ(i));
   return(bocc);
 }
@@ -165,7 +165,7 @@ vector<int> MOInfo::SlaterDeterminant::get_bocc()
 vector<int> MOInfo::SlaterDeterminant::get_avir()
 {
   vector<int> avir;
-  for(int i=0;i<moinfo->get_nmo();i++)
+  for(int i=0;i<moinfo->get_nall();i++)
     if(!bits[i])
       avir.push_back(moinfo->get_all_to_vir(i));
   return(avir);
@@ -174,19 +174,19 @@ vector<int> MOInfo::SlaterDeterminant::get_avir()
 vector<int> MOInfo::SlaterDeterminant::get_bvir()
 {
   vector<int> bvir;
-  for(int i=0;i<moinfo->get_nmo();i++)
-    if(!bits[i+moinfo->get_nmo()])
+  for(int i=0;i<moinfo->get_nall();i++)
+    if(!bits[i+moinfo->get_nall()])
       bvir.push_back(moinfo->get_all_to_vir(i));
   return(bvir);
 }
 
 char MOInfo::SlaterDeterminant::get_occupation_symbol(int i)
 {
-  int occupation=bits[i]+bits[i+moinfo->get_nmo()];
+  int occupation=bits[i]+bits[i+moinfo->get_nall()];
   if(occupation==0)                     return('0');
   if(occupation==2)                     return('2');
   if((occupation==1) && bits.test(i))   return('+');
-  if((occupation==1) && bits.test(i+moinfo->get_nmo())) return('-');
+  if((occupation==1) && bits.test(i+moinfo->get_nall())) return('-');
   return(' ');
 }
 

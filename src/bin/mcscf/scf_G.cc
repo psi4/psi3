@@ -2,9 +2,9 @@
 
 #include <psifiles.h>
 #include <libpsio/psio.h>
+#include <libutil/libutil.h>
 
 #include "scf.h"
-#include "memory_manager.h"
 
 extern FILE* outfile;
 

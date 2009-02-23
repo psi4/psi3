@@ -1,6 +1,7 @@
+#include <libutil/libutil.h>
+
 #include "block_matrix.h"
 #include "matrix_base.h"
-#include "memory_manager.h"
 
 extern FILE* outfile;
 
@@ -24,6 +25,11 @@ BlockMatrix::BlockMatrix(std::string label, int nirreps, int*& rows_size, int*& 
   startup(label,nirreps,rows_size,cols_size);
 }
 
+BlockMatrix::BlockMatrix(std::string label, int nirreps, vecint& rows_size, vecint& cols_size)
+ : ref_(0), matrix_base_(0), rows_size_(0), cols_size_(0), rows_offset_(0), cols_offset_(0)
+{
+  startup(label,nirreps,rows_size,cols_size);
+}
 
 BlockMatrix::~BlockMatrix()
 {
@@ -31,6 +37,36 @@ BlockMatrix::~BlockMatrix()
 }
 
 void BlockMatrix::startup(std::string label, int nirreps, size_t*& rows_size, size_t*& cols_size)
+{
+  label_   = label;
+  nirreps_ = nirreps;
+
+  // Allocate and compute the offsets
+  allocate1(size_t,rows_size_,nirreps);
+  allocate1(size_t,cols_size_,nirreps);
+  for(int h = 0; h < nirreps; ++h){
+    rows_size_[h] = rows_size[h];
+    cols_size_[h] = cols_size[h];
+  }
+
+  // Allocate and compute the offsets
+  allocate1(size_t,rows_offset_,nirreps);
+  allocate1(size_t,cols_offset_,nirreps);
+  rows_offset_[0] = 0;
+  cols_offset_[0] = 0;
+  for(int h = 1; h < nirreps; ++h){
+    rows_offset_[h] = rows_offset_[h-1] + rows_size[h-1];
+    cols_offset_[h] = cols_offset_[h-1] + cols_size[h-1];
+  }
+
+  // Allocate the blocks
+  matrix_base_ = new MatrixBase*[nirreps_];
+  for(int h = 0; h < nirreps_; ++h){
+    matrix_base_[h] = new MatrixBase(rows_size_[h],cols_size_[h]);
+  }
+}
+
+void BlockMatrix::startup(std::string label, int nirreps, vecint& rows_size, vecint& cols_size)
 {
   label_   = label;
   nirreps_ = nirreps;
@@ -167,7 +203,7 @@ BlockMatrix& BlockMatrix::operator=(BlockMatrix& rhs)
   }
 
   for(int h=0; h < nirreps_; ++h){
-    if(rows_size_[h] * cols_size_[h]>0){    
+    if(rows_size_[h] * cols_size_[h]>0){
       for(int i = 0; i < rows_size_[h]; ++i)
         for(int j = 0; j < cols_size_[h]; ++j)
           matrix_base_[h]->set(i,j, rhs.matrix_base_[h]->get(i,j) );
@@ -235,7 +271,7 @@ void BlockMatrix::minus(BlockMatrix* B)
   for(int h=0; h < nirreps; ++h){
     double** A_matrix_block = matrix[h];
     double** B_matrix_block = B->get_block(h);
-    if(block_size[h]>0){    
+    if(block_size[h]>0){
       for(int i = 0; i < block_size[h]; ++i)
         for(int j = 0; j < block_size[h]; ++j)
           A_matrix_block[i][j] -= B_matrix_block[i][j];
@@ -256,7 +292,7 @@ double operator^(const BlockMatrix& rhs,const BlockMatrix& lhs)
     const double** rhs_matrix_block = rhs.get_block(h);
     const double** lhs_matrix_block = lhs.get_block(h);
     int block_size = rhs.get_block_size(h);
-    if(block_size>0){    
+    if(block_size>0){
       for(int i = 0; i < block_size; ++i)
         for(int j = 0; j < block_size; ++j)
           value += lhs_matrix_block[i][j] * rhs_matrix_block[i][j];

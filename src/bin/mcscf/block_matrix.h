@@ -5,6 +5,8 @@
 #include "matrix_base.h"
 #include <string>
 
+typedef std::vector<int> vecint;
+
 extern FILE* outfile;
 
 namespace psi{ namespace mcscf{
@@ -15,6 +17,7 @@ public:
   BlockMatrix();
   BlockMatrix(std::string label, int nirreps, size_t*& rows_size, size_t*& cols_size);
   BlockMatrix(std::string label, int nirreps, int*& rows_size, int*& cols_size);
+  BlockMatrix(std::string label, int nirreps, vecint& rows_size, vecint& cols_size);
   ~BlockMatrix();
 
   // Inlines
@@ -63,6 +66,7 @@ private:
 
   void startup(std::string label, int nirreps, size_t*& rows_size, size_t*& cols_size );
   void startup(std::string label, int nirreps, int*& rows_size, int*& cols_size);
+  void startup(std::string label, int nirreps, vecint& rows_size, vecint& cols_size);
   void cleanup();
 };
 

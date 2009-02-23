@@ -12,7 +12,6 @@
 
 #include "blas.h"
 #include "debugging.h"
-#include "memory_manager.h"
 #include "mrcc.h"
 #include "matrix.h"
 
@@ -154,99 +153,99 @@ void CCMRCC::update_t1_t2_amps_mkccsd()
           // P(ij)t_i^a(mu)t_j^b(mu)
           blas->solve("Mk2[oo][vv]{" + i_str + "} += #1324#   t1[o][v]{" + i_str + "} X t1[o][v]{" + i_str + "}");
           blas->solve("Mk2[oo][vv]{" + i_str + "} += #2314# - t1[o][v]{" + i_str + "} X t1[o][v]{" + i_str + "}");
-  
+
           blas->solve("t2_eqns[oo][vv]{" + i_str + "} += factor_mk{" + j_str + "} Mk2[oo][vv]{" + i_str + "}");
-  
+
           // abab case
           // + t_ij^ab(nu/mu)
           blas->solve("Mk2[oO][vV]{" + i_str + "}  = t2[oO][vV]{" + j_str + "}");
-  
+
           // P(ij)t_i^a(nu/mu)t_J^B(nu/mu)
           blas->solve("Mk2[oO][vV]{" + i_str + "} += #1324#   t1[o][v]{" + j_str + "} X t1[O][V]{" + j_str + "}");
-  
+
           // -P(iJ)P(aB)t_i^a(mu)t_J^B(nu/mu)
           blas->solve("Mk2[oO][vV]{" + i_str + "} += #1324# - t1[o][v]{" + i_str + "} X t1[O][V]{" + j_str + "}");
           blas->solve("Mk2[oO][vV]{" + i_str + "} += #1324# - t1[o][v]{" + j_str + "} X t1[O][V]{" + i_str + "}");
-  
+
           // P(iJ)t_i^a(mu)t_J^B(mu)
           blas->solve("Mk2[oO][vV]{" + i_str + "} += #1324#   t1[o][v]{" + i_str + "} X t1[O][V]{" + i_str + "}");
-  
+
           blas->solve("t2_eqns[oO][vV]{" + i_str + "} += factor_mk{" + j_str + "} Mk2[oO][vV]{" + i_str + "}");
-  
+
           // bbbb case
           // + t_ij^ab(nu/mu)
           blas->solve("Mk2[OO][VV]{" + i_str + "}  = t2[OO][VV]{" + j_str + "}");
-  
+
           // P(ij)t_i^a(nu/mu)t_j^b(nu/mu)
           blas->solve("Mk2[OO][VV]{" + i_str + "} += #1324#   t1[O][V]{" + j_str + "} X t1[O][V]{" + j_str + "}");
           blas->solve("Mk2[OO][VV]{" + i_str + "} += #2314# - t1[O][V]{" + j_str + "} X t1[O][V]{" + j_str + "}");
-  
+
           // -P(ij)P(ab)t_i^a(mu)t_j^b(nu/mu)
           blas->solve("Mk2[OO][VV]{" + i_str + "} += #1324# - t1[O][V]{" + i_str + "} X t1[O][V]{" + j_str + "}");
           blas->solve("Mk2[OO][VV]{" + i_str + "} += #2314#   t1[O][V]{" + i_str + "} X t1[O][V]{" + j_str + "}");
           blas->solve("Mk2[OO][VV]{" + i_str + "} += #1423#   t1[O][V]{" + i_str + "} X t1[O][V]{" + j_str + "}");
           blas->solve("Mk2[OO][VV]{" + i_str + "} += #2413# - t1[O][V]{" + i_str + "} X t1[O][V]{" + j_str + "}");
-  
+
           // P(ij)t_i^a(mu)t_j^b(mu)
           blas->solve("Mk2[OO][VV]{" + i_str + "} += #1324#   t1[O][V]{" + i_str + "} X t1[O][V]{" + i_str + "}");
           blas->solve("Mk2[OO][VV]{" + i_str + "} += #2314# - t1[O][V]{" + i_str + "} X t1[O][V]{" + i_str + "}");
-  
+
           blas->solve("t2_eqns[OO][VV]{" + i_str + "} += factor_mk{" + j_str + "} Mk2[OO][VV]{" + i_str + "}");
         }else{
           // aaaa case
           // + t_ij^ab(nu/mu)
           blas->solve("Mk2[oo][vv]{" + i_str + "}  = t2[OO][VV]{" + j_str + "}");
-  
+
           // P(ij)t_i^a(nu/mu)t_j^b(nu/mu)
           blas->solve("Mk2[oo][vv]{" + i_str + "} += #1324#   t1[O][V]{" + j_str + "} X t1[O][V]{" + j_str + "}");
           blas->solve("Mk2[oo][vv]{" + i_str + "} += #2314# - t1[O][V]{" + j_str + "} X t1[O][V]{" + j_str + "}");
-  
+
           // -P(ij)P(ab)t_i^a(mu)t_j^b(nu/mu)
           blas->solve("Mk2[oo][vv]{" + i_str + "} += #1324# - t1[o][v]{" + i_str + "} X t1[O][V]{" + j_str + "}");
           blas->solve("Mk2[oo][vv]{" + i_str + "} += #2314#   t1[o][v]{" + i_str + "} X t1[O][V]{" + j_str + "}");
           blas->solve("Mk2[oo][vv]{" + i_str + "} += #1423#   t1[o][v]{" + i_str + "} X t1[O][V]{" + j_str + "}");
           blas->solve("Mk2[oo][vv]{" + i_str + "} += #2413# - t1[o][v]{" + i_str + "} X t1[O][V]{" + j_str + "}");
-  
+
           // P(ij)t_i^a(mu)t_j^b(mu)
           blas->solve("Mk2[oo][vv]{" + i_str + "} += #1324#   t1[o][v]{" + i_str + "} X t1[o][v]{" + i_str + "}");
           blas->solve("Mk2[oo][vv]{" + i_str + "} += #2314# - t1[o][v]{" + i_str + "} X t1[o][v]{" + i_str + "}");
-  
+
           blas->solve("t2_eqns[oo][vv]{" + i_str + "} += factor_mk{" + j_str + "} Mk2[oo][vv]{" + i_str + "}");
-  
+
           // abab case
           // + t_ij^ab(nu/mu)
           blas->solve("Mk2[oO][vV]{" + i_str + "}  = #2143# t2[oO][vV]{" + j_str + "}");
-  
+
           // P(ij)t_i^a(nu/mu)t_J^B(nu/mu)
           blas->solve("Mk2[oO][vV]{" + i_str + "} += #1324#   t1[O][V]{" + j_str + "} X t1[o][v]{" + j_str + "}");
-  
+
           // -P(iJ)P(aB)t_i^a(mu)t_J^B(nu/mu)
           blas->solve("Mk2[oO][vV]{" + i_str + "} += #1324# - t1[o][v]{" + i_str + "} X t1[o][v]{" + j_str + "}");
           blas->solve("Mk2[oO][vV]{" + i_str + "} += #1324# - t1[O][V]{" + j_str + "} X t1[O][V]{" + i_str + "}");
-  
+
           // P(iJ)t_i^a(mu)t_J^B(mu)
           blas->solve("Mk2[oO][vV]{" + i_str + "} += #1324#   t1[o][v]{" + i_str + "} X t1[O][V]{" + i_str + "}");
-  
+
           blas->solve("t2_eqns[oO][vV]{" + i_str + "} += factor_mk{" + j_str + "} Mk2[oO][vV]{" + i_str + "}");
-  
+
           // bbbb case
           // + t_ij^ab(nu/mu)
           blas->solve("Mk2[OO][VV]{" + i_str + "}  = t2[oo][vv]{" + j_str + "}");
-  
+
           // P(ij)t_i^a(nu/mu)t_j^b(nu/mu)
           blas->solve("Mk2[OO][VV]{" + i_str + "} += #1324#   t1[o][v]{" + j_str + "} X t1[o][v]{" + j_str + "}");
           blas->solve("Mk2[OO][VV]{" + i_str + "} += #2314# - t1[o][v]{" + j_str + "} X t1[o][v]{" + j_str + "}");
-  
+
           // -P(ij)P(ab)t_i^a(mu)t_j^b(nu/mu)
           blas->solve("Mk2[OO][VV]{" + i_str + "} += #1324# - t1[O][V]{" + i_str + "} X t1[o][v]{" + j_str + "}");
           blas->solve("Mk2[OO][VV]{" + i_str + "} += #2314#   t1[O][V]{" + i_str + "} X t1[o][v]{" + j_str + "}");
           blas->solve("Mk2[OO][VV]{" + i_str + "} += #1423#   t1[O][V]{" + i_str + "} X t1[o][v]{" + j_str + "}");
           blas->solve("Mk2[OO][VV]{" + i_str + "} += #2413# - t1[O][V]{" + i_str + "} X t1[o][v]{" + j_str + "}");
-  
+
           // P(ij)t_i^a(mu)t_j^b(mu)
           blas->solve("Mk2[OO][VV]{" + i_str + "} += #1324#   t1[O][V]{" + i_str + "} X t1[O][V]{" + i_str + "}");
           blas->solve("Mk2[OO][VV]{" + i_str + "} += #2314# - t1[O][V]{" + i_str + "} X t1[O][V]{" + i_str + "}");
-  
+
           blas->solve("t2_eqns[OO][VV]{" + i_str + "} += factor_mk{" + j_str + "} Mk2[OO][VV]{" + i_str + "}");
         }
 
@@ -278,10 +277,10 @@ void CCMRCC::update_t1_t2_amps_mkccsd()
 
 //   blas->solve("t1_norm{u}  = t1[o][v]{u} . t1[o][v]{u}");
 //   blas->solve("t1_norm{u} += t1[O][V]{u} . t1[O][V]{u}");
-// 
+//
 //   blas->solve("t2[oo][vv]{c} = t2[oO][vV]{c}");
 //   blas->solve("t2[oo][vv]{c} += #2134# - t2[oO][vV]{c}");
-// 
+//
 //   blas->solve("t2[OO][VV]{c} = t2[oO][vV]{c}");
 //   blas->solve("t2[OO][VV]{c} += #2134# - t2[oO][vV]{c}");
 //   zero_internal_amps();
@@ -343,7 +342,7 @@ void CCMRCC::update_t1_amps_mkccsd()
     }
     blas->solve("t1_delta[o][v]{" + i_str + "}  =   t1_eqns[o][v]{" + i_str + "} / d'1[o][v]{" + i_str + "} - t1[o][v]{" + i_str + "}");
     blas->solve("t1_delta[O][V]{" + i_str + "}  =   t1_eqns[O][V]{" + i_str + "} / d'1[O][V]{" + i_str + "} - t1[O][V]{" + i_str + "}");
-  
+
     blas->solve("t1[o][v]{" + i_str + "} = t1_eqns[o][v]{" + i_str + "} / d'1[o][v]{" + i_str + "}");
     blas->solve("t1[O][V]{" + i_str + "} = t1_eqns[O][V]{" + i_str + "} / d'1[O][V]{" + i_str + "}");
     zero_internal_amps();
@@ -351,7 +350,7 @@ void CCMRCC::update_t1_amps_mkccsd()
 
 //   blas->solve("t1_delta[o][v]{u}  =   t1_eqns[o][v]{u} / d'1[o][v]{u} - t1[o][v]{u}");
 //   blas->solve("t1_delta[O][V]{u}  =   t1_eqns[O][V]{u} / d'1[O][V]{u} - t1[O][V]{u}");
-// 
+//
 //   blas->solve("t1[o][v]{u} = t1_eqns[o][v]{u} / d'1[o][v]{u}");
 //   blas->solve("t1[O][V]{u} = t1_eqns[O][V]{u} / d'1[O][V]{u}");
 
@@ -373,7 +372,7 @@ void CCMRCC::update_t2_amps_mkccsd()
 
   for(int n=0;n<moinfo->get_nunique();n++){
     int m = moinfo->get_ref_number("u",n);
-    string shift = to_string(current_energy-Heff[m][m]); 
+    string shift = to_string(current_energy-Heff[m][m]);
     string n_str = to_string(m);
     blas->solve("d'2[oo][vv]{" + n_str + "} += " + shift);
     blas->solve("d'2[oO][vV]{" + n_str + "} += " + shift);
@@ -453,7 +452,7 @@ void CCMRCC::update_t2_amps_mkccsd()
     blas->solve("t2_delta[oo][vv]{" + i_str + "} = t2_eqns[oo][vv]{" + i_str + "} / d'2[oo][vv]{" + i_str + "} - t2[oo][vv]{" + i_str + "}");
     blas->solve("t2_delta[oO][vV]{" + i_str + "} = t2_eqns[oO][vV]{" + i_str + "} / d'2[oO][vV]{" + i_str + "} - t2[oO][vV]{" + i_str + "}");
     blas->solve("t2_delta[OO][VV]{" + i_str + "} = t2_eqns[OO][VV]{" + i_str + "} / d'2[OO][VV]{" + i_str + "} - t2[OO][VV]{" + i_str + "}");
-  
+
     blas->solve("t2[oo][vv]{" + i_str + "} = t2_eqns[oo][vv]{" + i_str + "} / d'2[oo][vv]{" + i_str + "}");
     blas->solve("t2[oO][vV]{" + i_str + "} = t2_eqns[oO][vV]{" + i_str + "} / d'2[oO][vV]{" + i_str + "}");
     blas->solve("t2[OO][VV]{" + i_str + "} = t2_eqns[OO][VV]{" + i_str + "} / d'2[OO][VV]{" + i_str + "}");
@@ -463,7 +462,7 @@ void CCMRCC::update_t2_amps_mkccsd()
 //   blas->solve("t2_delta[oo][vv]{u} = t2_eqns[oo][vv]{u} / d'2[oo][vv]{u} - t2[oo][vv]{u}");
 //   blas->solve("t2_delta[oO][vV]{u} = t2_eqns[oO][vV]{u} / d'2[oO][vV]{u} - t2[oO][vV]{u}");
 //   blas->solve("t2_delta[OO][VV]{u} = t2_eqns[OO][VV]{u} / d'2[OO][VV]{u} - t2[OO][VV]{u}");
-// 
+//
 //   blas->solve("t2[oo][vv]{u} = t2_eqns[oo][vv]{u} / d'2[oo][vv]{u}");
 //   blas->solve("t2[oO][vV]{u} = t2_eqns[oO][vV]{u} / d'2[oO][vV]{u}");
 //   blas->solve("t2[OO][VV]{u} = t2_eqns[OO][VV]{u} / d'2[OO][VV]{u}");
@@ -504,7 +503,7 @@ void CCMRCC::update_t3_ijkabc_amps_mkccsd()
       if(unique_mu!=nu){
         int unique_nu = moinfo->get_ref_number("a",nu);
         double factor = Heff[unique_mu][nu]*eigenvector[nu]/eigenvector[unique_mu];
-  
+
         if(fabs(eigenvector[nu]/eigenvector[unique_mu])>1.0e5) {
           factor = 0.0;
           fprintf(outfile,"\n  Warning: setting Heff[unique_mu][nu]*eigenvector[j]/eigenvector[unique_i] = 0.0 in T3 couplings");
@@ -531,7 +530,7 @@ void CCMRCC::update_t3_ijkabc_amps_mkccsd()
         if(triples_coupling_type>=quadratic){
           // Form DELTA_t1 and DELTA_t2
           if(nu==unique_nu){
-            // No spin-flip 
+            // No spin-flip
             blas->solve("DELTA_t1[o][v] = t1[o][v]{" + to_string(unique_nu) + "} - t1[o][v]{" + to_string(unique_mu) + "}");
             blas->solve("DELTA_t2[oo][vv] = t2[oo][vv]{" + to_string(unique_nu) + "} - t2[oo][vv]{" + to_string(unique_mu) + "}");
           }else{
@@ -546,7 +545,7 @@ void CCMRCC::update_t3_ijkabc_amps_mkccsd()
 
           for(int h =0; h < moinfo->get_nirreps();h++){
             size_t i_offset  = DELTA_t1->get_left()->get_first(h);
-            size_t a_offset  = DELTA_t1->get_right()->get_first(h);     
+            size_t a_offset  = DELTA_t1->get_right()->get_first(h);
             for(int a = 0;a <DELTA_t1->get_right_pairpi(h);a++){
               int a_abs = a + a_offset;
               for(int i = 0;i<DELTA_t1->get_left_pairpi(h);i++){
@@ -573,7 +572,7 @@ void CCMRCC::update_t3_ijkabc_amps_mkccsd()
         if(triples_coupling_type>=cubic){
           // Form DELTA_t1
           if(nu==unique_nu){
-            // No spin-flip 
+            // No spin-flip
             blas->solve("DELTA_t1[o][v] = t1[o][v]{" + to_string(unique_nu) + "} - t1[o][v]{" + to_string(unique_mu) + "}");
           }else{
             blas->solve("DELTA_t1[o][v] = t1[O][V]{" + to_string(unique_nu) + "} - t1[o][v]{" + to_string(unique_mu) + "}");
@@ -582,21 +581,21 @@ void CCMRCC::update_t3_ijkabc_amps_mkccsd()
 
           for(int h_ia =0; h_ia < moinfo->get_nirreps();h_ia++){
             size_t i_offset  = DELTA_t1->get_left()->get_first(h_ia);
-            size_t a_offset  = DELTA_t1->get_right()->get_first(h_ia);     
+            size_t a_offset  = DELTA_t1->get_right()->get_first(h_ia);
             for(int a = 0;a <DELTA_t1->get_right_pairpi(h_ia);a++){
               int a_abs = a + a_offset;
               for(int i = 0;i<DELTA_t1->get_left_pairpi(h_ia);i++){
                 int i_abs = i + i_offset;
                 for(int h_jb =0; h_jb < moinfo->get_nirreps();h_jb++){
                   size_t j_offset  = DELTA_t1->get_left()->get_first(h_jb);
-                  size_t b_offset  = DELTA_t1->get_right()->get_first(h_jb);     
+                  size_t b_offset  = DELTA_t1->get_right()->get_first(h_jb);
                   for(int b = 0;b <DELTA_t1->get_right_pairpi(h_jb);b++){
                     int b_abs = b + b_offset;
                     for(int j = 0;j<DELTA_t1->get_left_pairpi(h_jb);j++){
                       int j_abs = j + j_offset;
                       for(int h_kc =0; h_kc < moinfo->get_nirreps();h_kc++){
                         size_t k_offset  = DELTA_t1->get_left()->get_first(h_kc);
-                        size_t c_offset  = DELTA_t1->get_right()->get_first(h_kc);     
+                        size_t c_offset  = DELTA_t1->get_right()->get_first(h_kc);
                         for(int c = 0;c <DELTA_t1->get_right_pairpi(h_kc);c++){
                           int c_abs = c + c_offset;
                           for(int k = 0;k<DELTA_t1->get_left_pairpi(h_kc);k++){
@@ -724,7 +723,7 @@ void CCMRCC::update_t3_ijKabC_amps_mkccsd()
         if(triples_coupling_type>=quadratic){
           // Form DELTA_t1 and DELTA_t2
           if(nu==unique_nu){
-            // No spin-flip 
+            // No spin-flip
             blas->solve("DELTA_t1[o][v] = t1[o][v]{" + to_string(unique_nu) + "} - t1[o][v]{" + to_string(unique_mu) + "}");
             blas->solve("DELTA_t1[O][V] = t1[O][V]{" + to_string(unique_nu) + "} - t1[O][V]{" + to_string(unique_mu) + "}");
             blas->solve("DELTA_t2[oo][vv] = t2[oo][vv]{" + to_string(unique_nu) + "} - t2[oo][vv]{" + to_string(unique_mu) + "}");
@@ -745,7 +744,7 @@ void CCMRCC::update_t3_ijKabC_amps_mkccsd()
 
           for(int h =0; h < moinfo->get_nirreps();h++){
             size_t i_offset  = DELTA_t1_ov->get_left()->get_first(h);
-            size_t a_offset  = DELTA_t1_ov->get_right()->get_first(h);     
+            size_t a_offset  = DELTA_t1_ov->get_right()->get_first(h);
             for(int a = 0;a <DELTA_t1_ov->get_right_pairpi(h);a++){
               int a_abs = a + a_offset;
               for(int i = 0;i<DELTA_t1_ov->get_left_pairpi(h);i++){
@@ -779,7 +778,7 @@ void CCMRCC::update_t3_ijKabC_amps_mkccsd()
 
           // Form DELTA_t1
            if(nu==unique_nu){
-            // No spin-flip 
+            // No spin-flip
             blas->solve("DELTA_t1[o][v] = t1[o][v]{" + to_string(unique_nu) + "} - t1[o][v]{" + to_string(unique_mu) + "}");
             blas->solve("DELTA_t1[O][V] = t1[O][V]{" + to_string(unique_nu) + "} - t1[O][V]{" + to_string(unique_mu) + "}");
           }else{
@@ -792,21 +791,21 @@ void CCMRCC::update_t3_ijKabC_amps_mkccsd()
 
           for(int h_ia =0; h_ia < moinfo->get_nirreps();h_ia++){
             size_t i_offset  = DELTA_t1_ov->get_left()->get_first(h_ia);
-            size_t a_offset  = DELTA_t1_ov->get_right()->get_first(h_ia);     
+            size_t a_offset  = DELTA_t1_ov->get_right()->get_first(h_ia);
             for(int a = 0;a <DELTA_t1_ov->get_right_pairpi(h_ia);a++){
               int a_abs = a + a_offset;
               for(int i = 0;i<DELTA_t1_ov->get_left_pairpi(h_ia);i++){
                 int i_abs = i + i_offset;
                 for(int h_jb =0; h_jb < moinfo->get_nirreps();h_jb++){
                   size_t j_offset  = DELTA_t1_ov->get_left()->get_first(h_jb);
-                  size_t b_offset  = DELTA_t1_ov->get_right()->get_first(h_jb);     
+                  size_t b_offset  = DELTA_t1_ov->get_right()->get_first(h_jb);
                   for(int b = 0;b <DELTA_t1_ov->get_right_pairpi(h_jb);b++){
                     int b_abs = b + b_offset;
                     for(int j = 0;j<DELTA_t1_ov->get_left_pairpi(h_jb);j++){
                       int j_abs = j + j_offset;
                       for(int h_kc =0; h_kc < moinfo->get_nirreps();h_kc++){
                         size_t k_offset  = DELTA_t1_ov->get_left()->get_first(h_kc);
-                        size_t c_offset  = DELTA_t1_ov->get_right()->get_first(h_kc);     
+                        size_t c_offset  = DELTA_t1_ov->get_right()->get_first(h_kc);
                         for(int c = 0;c <DELTA_t1_ov->get_right_pairpi(h_kc);c++){
                           int c_abs = c + c_offset;
                           for(int k = 0;k<DELTA_t1_ov->get_left_pairpi(h_kc);k++){
@@ -938,7 +937,7 @@ void CCMRCC::update_t3_iJKaBC_amps_mkccsd()
         if(triples_coupling_type>=quadratic){
           // Form DELTA_t1 and DELTA_t2
           if(nu==unique_nu){
-            // No spin-flip 
+            // No spin-flip
             blas->solve("DELTA_t1[o][v] = t1[o][v]{" + to_string(unique_nu) + "} - t1[o][v]{" + to_string(unique_mu) + "}");
             blas->solve("DELTA_t1[O][V] = t1[O][V]{" + to_string(unique_nu) + "} - t1[O][V]{" + to_string(unique_mu) + "}");
             blas->solve("DELTA_t2[oO][vV] = t2[oO][vV]{" + to_string(unique_nu) + "} - t2[oO][vV]{" + to_string(unique_mu) + "}");
@@ -959,7 +958,7 @@ void CCMRCC::update_t3_iJKaBC_amps_mkccsd()
 
           for(int h =0; h < moinfo->get_nirreps();h++){
             size_t i_offset  = DELTA_t1_ov->get_left()->get_first(h);
-            size_t a_offset  = DELTA_t1_ov->get_right()->get_first(h);     
+            size_t a_offset  = DELTA_t1_ov->get_right()->get_first(h);
             for(int a = 0;a <DELTA_t1_ov->get_right_pairpi(h);a++){
               int a_abs = a + a_offset;
               for(int i = 0;i<DELTA_t1_ov->get_left_pairpi(h);i++){
@@ -994,7 +993,7 @@ void CCMRCC::update_t3_iJKaBC_amps_mkccsd()
 
           // Form DELTA_t1
            if(nu==unique_nu){
-            // No spin-flip 
+            // No spin-flip
             blas->solve("DELTA_t1[o][v] = t1[o][v]{" + to_string(unique_nu) + "} - t1[o][v]{" + to_string(unique_mu) + "}");
             blas->solve("DELTA_t1[O][V] = t1[O][V]{" + to_string(unique_nu) + "} - t1[O][V]{" + to_string(unique_mu) + "}");
           }else{
@@ -1007,21 +1006,21 @@ void CCMRCC::update_t3_iJKaBC_amps_mkccsd()
 
           for(int h_ia =0; h_ia < moinfo->get_nirreps();h_ia++){
             size_t i_offset  = DELTA_t1_ov->get_left()->get_first(h_ia);
-            size_t a_offset  = DELTA_t1_ov->get_right()->get_first(h_ia);     
+            size_t a_offset  = DELTA_t1_ov->get_right()->get_first(h_ia);
             for(int a = 0;a <DELTA_t1_ov->get_right_pairpi(h_ia);a++){
               int a_abs = a + a_offset;
               for(int i = 0;i<DELTA_t1_ov->get_left_pairpi(h_ia);i++){
                 int i_abs = i + i_offset;
                 for(int h_jb =0; h_jb < moinfo->get_nirreps();h_jb++){
                   size_t j_offset  = DELTA_t1_ov->get_left()->get_first(h_jb);
-                  size_t b_offset  = DELTA_t1_ov->get_right()->get_first(h_jb);     
+                  size_t b_offset  = DELTA_t1_ov->get_right()->get_first(h_jb);
                   for(int b = 0;b <DELTA_t1_ov->get_right_pairpi(h_jb);b++){
                     int b_abs = b + b_offset;
                     for(int j = 0;j<DELTA_t1_ov->get_left_pairpi(h_jb);j++){
                       int j_abs = j + j_offset;
                       for(int h_kc =0; h_kc < moinfo->get_nirreps();h_kc++){
                         size_t k_offset  = DELTA_t1_ov->get_left()->get_first(h_kc);
-                        size_t c_offset  = DELTA_t1_ov->get_right()->get_first(h_kc);     
+                        size_t c_offset  = DELTA_t1_ov->get_right()->get_first(h_kc);
                         for(int c = 0;c <DELTA_t1_ov->get_right_pairpi(h_kc);c++){
                           int c_abs = c + c_offset;
                           for(int k = 0;k<DELTA_t1_ov->get_left_pairpi(h_kc);k++){
@@ -1135,7 +1134,7 @@ void CCMRCC::update_t3_IJKABC_amps_mkccsd()
         if(triples_coupling_type>=quadratic){
           // Form DELTA_t1 and DELTA_t2
           if(nu==unique_nu){
-            // No spin-flip 
+            // No spin-flip
             blas->solve("DELTA_t1[O][V] = t1[O][V]{" + to_string(unique_nu) + "} - t1[O][V]{" + to_string(unique_mu) + "}");
             blas->solve("DELTA_t2[OO][VV] = t2[OO][VV]{" + to_string(unique_nu) + "} - t2[OO][VV]{" + to_string(unique_mu) + "}");
           }else{
@@ -1149,7 +1148,7 @@ void CCMRCC::update_t3_IJKABC_amps_mkccsd()
 
           for(int h =0; h < moinfo->get_nirreps();h++){
             size_t i_offset  = DELTA_t1->get_left()->get_first(h);
-            size_t a_offset  = DELTA_t1->get_right()->get_first(h);     
+            size_t a_offset  = DELTA_t1->get_right()->get_first(h);
             for(int a = 0;a <DELTA_t1->get_right_pairpi(h);a++){
               int a_abs = a + a_offset;
               for(int i = 0;i<DELTA_t1->get_left_pairpi(h);i++){
@@ -1176,7 +1175,7 @@ void CCMRCC::update_t3_IJKABC_amps_mkccsd()
         if(triples_coupling_type>=cubic){
           // Form DELTA_t1
           if(nu==unique_nu){
-            // No spin-flip 
+            // No spin-flip
             blas->solve("DELTA_t1[O][V] = t1[O][V]{" + to_string(unique_nu) + "} - t1[O][V]{" + to_string(unique_mu) + "}");
           }else{
             blas->solve("DELTA_t1[O][V] = t1[o][v]{" + to_string(unique_nu) + "} - t1[O][V]{" + to_string(unique_mu) + "}");
@@ -1185,21 +1184,21 @@ void CCMRCC::update_t3_IJKABC_amps_mkccsd()
 
           for(int h_ia =0; h_ia < moinfo->get_nirreps();h_ia++){
             size_t i_offset  = DELTA_t1->get_left()->get_first(h_ia);
-            size_t a_offset  = DELTA_t1->get_right()->get_first(h_ia);     
+            size_t a_offset  = DELTA_t1->get_right()->get_first(h_ia);
             for(int a = 0;a <DELTA_t1->get_right_pairpi(h_ia);a++){
               int a_abs = a + a_offset;
               for(int i = 0;i<DELTA_t1->get_left_pairpi(h_ia);i++){
                 int i_abs = i + i_offset;
                 for(int h_jb =0; h_jb < moinfo->get_nirreps();h_jb++){
                   size_t j_offset  = DELTA_t1->get_left()->get_first(h_jb);
-                  size_t b_offset  = DELTA_t1->get_right()->get_first(h_jb);     
+                  size_t b_offset  = DELTA_t1->get_right()->get_first(h_jb);
                   for(int b = 0;b <DELTA_t1->get_right_pairpi(h_jb);b++){
                     int b_abs = b + b_offset;
                     for(int j = 0;j<DELTA_t1->get_left_pairpi(h_jb);j++){
                       int j_abs = j + j_offset;
                       for(int h_kc =0; h_kc < moinfo->get_nirreps();h_kc++){
                         size_t k_offset  = DELTA_t1->get_left()->get_first(h_kc);
-                        size_t c_offset  = DELTA_t1->get_right()->get_first(h_kc);     
+                        size_t c_offset  = DELTA_t1->get_right()->get_first(h_kc);
                         for(int c = 0;c <DELTA_t1->get_right_pairpi(h_kc);c++){
                           int c_abs = c + c_offset;
                           for(int k = 0;k<DELTA_t1->get_left_pairpi(h_kc);k++){

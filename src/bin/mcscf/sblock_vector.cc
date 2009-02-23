@@ -19,6 +19,13 @@ SBlockVector::SBlockVector(std::string label, int nirreps, int*& rows_size)
   block_vector_->add_reference();
 }
 
+SBlockVector::SBlockVector(std::string label, int nirreps, vecint& rows_size)
+ : block_vector_(0)
+{
+  block_vector_ = new BlockVector(label,nirreps,rows_size);
+  block_vector_->add_reference();
+}
+
 SBlockVector::SBlockVector(BlockVector* block_vector)
  : block_vector_(block_vector)
 {
@@ -31,7 +38,13 @@ SBlockVector::SBlockVector(const SBlockVector& src)
   block_vector_->add_reference();
 }
 
-void SBlockVector::allocate(std::string label, int nirreps, int*& rows_size) 
+void SBlockVector::allocate(std::string label, int nirreps, int*& rows_size)
+{
+  block_vector_ = new BlockVector(label,nirreps,rows_size);
+  block_vector_->add_reference();
+}
+
+void SBlockVector::allocate(std::string label, int nirreps, vecint& rows_size)
 {
   block_vector_ = new BlockVector(label,nirreps,rows_size);
   block_vector_->add_reference();

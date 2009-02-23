@@ -1,11 +1,10 @@
 #include <iostream>
 
 #include <liboptions/liboptions.h>
+#include <libutil/libutil.h>
 
 #include "scf.h"
-
 #include "algebra_interface.h"
-#include "memory_manager.h"
 
 extern FILE* outfile;
 
@@ -19,7 +18,7 @@ void SCF::diis(int cycle)
   transform(Feff_t,CFeffC,C_T);
   transform(CFeffC,Feff_oAO,S_sqrt);
 
-  diis_F[current_diis] = Feff_oAO;  
+  diis_F[current_diis] = Feff_oAO;
 
   // Build and transform the error vector from MO to orthogonal AO
   SBlockMatrix CeC("CeC",nirreps,sopi,sopi);
@@ -71,7 +70,7 @@ void SCF::diis(int cycle)
     int* IPIV = new int[matrix_size];
     int nrhs = 1;
     int info = 0;
-    F_DGESV(&matrix_size, &nrhs, &(diis_B[0][0]),&matrix_size, &(IPIV[0]), &(diis_A[0]),&matrix_size, &info);         
+    F_DGESV(&matrix_size, &nrhs, &(diis_B[0][0]),&matrix_size, &(IPIV[0]), &(diis_A[0]),&matrix_size, &info);
     delete[] IPIV;
 
     // Update F = sum diis_F(i) * A(i);

@@ -1,13 +1,13 @@
 #include <cmath>
 #include <algorithm>
 
-#include "memory_manager.h"
 #include <libmoinfo/libmoinfo.h>
-#include "transform.h"
-#include "matrix.h"
 #include <libutil/libutil.h>
+
 #include "algebra_interface.h"
 #include "blas.h"
+#include "transform.h"
+#include "matrix.h"
 
 #define CCTRANSFORM_USE_BLAS
 
@@ -39,9 +39,9 @@ void CCTransform::read_oei_so_integrals()
   allocate_oei_so();
 
   int nso = moinfo->get_nso();
-  
+
   double* H = new double[nso*(nso+1)/2];
-  
+
   // Read the kinetic energy integrals
   for(int k=0; k<nso*(nso+1)/2;++k) H[k] = 0.0;
   iwl_rdone(PSIF_OEI,const_cast<char*>(PSIF_SO_T),H,nso*(nso+1)/2,0,0,outfile);
