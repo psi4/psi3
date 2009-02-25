@@ -10,7 +10,7 @@ TRUECSRC =
 
 TRUECXXSRC = stl_string.cc combinations.cc memory_manager.cc
 
-INC = libutil.h
+INC = libutil.h memory_manager.h
 
 LIBOBJ = $(TRUECSRC:%.c=%.o) $(TRUECXXSRC:%.cc=%.o)
 

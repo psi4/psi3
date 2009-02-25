@@ -1,6 +1,6 @@
 /*! \file
     \ingroup INPUT
-    \brief Enter brief description of file here 
+    \brief Enter brief description of file here
 */
 #define EXTERN
 #include <cstdio>
@@ -42,18 +42,18 @@ void write_to_chkpt(double repulsion)
   int max_atom_degen;
   int max_angmom_unique;
   psio_address chkptr;
-  
+
   /* Check the max_angmom. If it's >= MAXANGMOM from chkpt_params.h - die */
   if (max_angmom >= MAXANGMOM)
     punt("Angular momentum is too high to be handled by your version of Psi (chkpt file)");
 
-  
+
   /*----------------------------------
     Write out the label then 80 zeros
     ----------------------------------*/
   calc_label = init_char_array(80);
   strncpy(calc_label,label,80);
-  
+
   /*----------------------------------
     Write out basic info to chkpt
    ----------------------------------*/
@@ -74,7 +74,9 @@ void write_to_chkpt(double repulsion)
   chkpt_wt_nfzc(nfzc);
   chkpt_wt_nfzv(nfzv);
   chkpt_wt_nfragment(nfragments);
-  chkpt_wt_rotconst(rotconst);
+  if (num_atoms > 1) {
+    chkpt_wt_rotconst(rotconst);
+  }
   chkpt_wt_rot_symm_num(rot_symm_num);
   if (nfragments > 1) {
     chkpt_wt_natom_per_fragment(frag_num_atoms);
@@ -252,13 +254,13 @@ void write_to_chkpt(double repulsion)
 
   /* nuclear repulsion energy */
   chkpt_wt_enuc(repulsion);
-  
+
   /* Cartesian displacement SALCs */
   chkpt_wt_cdsalc2cd(const_cast<const double**>(cdsalc2cd));
-  
+
   /* cartdisp SALCs per irrep */
   chkpt_wt_cdsalcpi(cdsalc_pi);
-  
+
   chkpt_close();
   return;
 }
