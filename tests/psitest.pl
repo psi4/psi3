@@ -64,7 +64,7 @@ $PSITEST_OPTROTTOL = 10**-3;      # Default test criterion for optical rotation
 $PSITEST_STABTOL = 10**-4;        # Default test criterion for Hessian eigenvalues
 $PSITEST_MPOPTOL = 10**-5;        # Default test criterion for Mulliken populations
 $PSITEST_CIDIPTOL = 10**-4;       # Default test criterion for CI dipoles
-$PSITEST_STRICT_ETOL = 10**-12;      # Strict  test criterion for energies
+$PSITEST_STRICT_ETOL = 10**-12;   # Strict  test criterion for energies
 $PSIMRCCTEST_ETOL = 10**-10;      # Default test criterion for PSIMRCC energies
 ##################################################
 #
@@ -1300,13 +1300,14 @@ sub compare_psimrcc_energy
   my $TEST_FILE = "output.dat";
 
   if(abs(seek_psimrcc($REF_FILE) - seek_psimrcc($TEST_FILE)) > $PSIMRCCTEST_ETOL) {
-    fail_test("PSIMRCC energy"); $fail = 1;
+    fail_test(sprintf("PSIMRCC energy (%.12f vs. %.12f)",seek_psimrcc($TEST_FILE),seek_psimrcc($REF_FILE))); $fail = 1;
   }
   else {
-    pass_test("PSIMRCC energy");
+    pass_test(sprintf("PSIMRCC energy (%.12f vs. %.12f)",seek_psimrcc($TEST_FILE),seek_psimrcc($REF_FILE)));
   }
 
-#  printf("\nseek = %lf",seek_psimrcc($TEST_FILE));  
+#  printf("\nseek = %20.12f",seek_psimrcc($REF_FILE));  
+#  printf("\nseek = %20.12f",seek_psimrcc($TEST_FILE));  
 
   return $fail;
 }
@@ -2684,6 +2685,11 @@ sub seek_psimrcc
     if (/\* MK-MRPT2 total energy/) {
       @data = split(/ +/, $_);
       $psimrcc = $data[5];
+      return $psimrcc;
+    }
+    if (/\* MP2-CCSD  =/) {
+      @data = split(/ +/, $_);
+      $psimrcc = $data[4];
       return $psimrcc;
     }
   }

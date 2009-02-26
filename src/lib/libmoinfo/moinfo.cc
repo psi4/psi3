@@ -30,6 +30,15 @@ MOInfo::MOInfo() : MOInfoBase()
   no_damp_convergence = 1.0e-9;
   dgemm_timing        = 0.0;
   scf                 = NULL;
+
+  nfocc = 0;
+  nfvir = 0;
+  nactv_docc = 0;
+  nocc  = 0;
+  nvir  = 0;
+  nall  = 0;
+  nextr = 0;
+
   read_info();
   read_mo_spaces();
   compute_mo_mappings();
@@ -95,7 +104,7 @@ void MOInfo::read_info()
   scf            = chkpt_rd_scf();
   scf_irrep      = new double**[nirreps];
   for(int i=0;i<nirreps;i++)
-    scf_irrep[i]  = chkpt_rd_scf_irrep(i);
+    scf_irrep[i] = chkpt_rd_scf_irrep(i);
 }
 
 
@@ -134,19 +143,15 @@ void MOInfo::read_mo_spaces()
      SOCC and DOCC are handled by Input (ACS)
   *****************************************************/
 
-  focc.resize(nirreps);
-  docc.resize(nirreps);
-  actv.resize(nirreps);
-  fvir.resize(nirreps);
-  extr.resize(nirreps);
-  occ.resize(nirreps);
-  vir.resize(nirreps);
-  all.resize(nirreps);
-  actv_docc.resize(nirreps);
-
-  for(int i=0;i<nirreps;i++){
-     focc[i]=docc[i]=actv[i]=fvir[i]=0;
-  }
+  focc.assign(nirreps,0);
+  docc.assign(nirreps,0);
+  actv.assign(nirreps,0);
+  fvir.assign(nirreps,0);
+  extr.assign(nirreps,0);
+  occ.assign(nirreps,0);
+  vir.assign(nirreps,0);
+  all.assign(nirreps,0);
+  actv_docc.assign(nirreps,0);
 
   // For single-point geometry optimizations and frequencies
   if(chkpt_exist(chkpt_build_keyword(const_cast<char *>("Current Displacement Irrep")))){
@@ -169,19 +174,21 @@ void MOInfo::read_mo_spaces()
     intvec docc_ref;
     intvec actv_ref;
     intvec fvir_ref;
+    intvec actv_docc_ref;
 
     // build orbital information for current point group
     read_mo_space(nirreps_ref,nfocc,focc_ref,"CORR_FOCC FROZEN_DOCC");
     read_mo_space(nirreps_ref,ndocc,docc_ref,"CORR_DOCC RESTRICTED_DOCC");
     read_mo_space(nirreps_ref,nactv,actv_ref,"CORR_ACTV ACTIVE ACTV");
     read_mo_space(nirreps_ref,nfvir,fvir_ref,"CORR_FVIR FROZEN_UOCC");
-
+    read_mo_space(nirreps_ref,nactv_docc,actv_docc_ref,"ACTIVE_DOCC");
 
     for (int h=0; h < nirreps_ref; h++) {
-      focc[ correlation[h] ] += focc_ref[h];
-      docc[ correlation[h] ] += docc_ref[h];
-      actv[ correlation[h] ] += actv_ref[h];
-      fvir[ correlation[h] ] += fvir_ref[h];
+      focc[ correlation[h] ]      += focc_ref[h];
+      docc[ correlation[h] ]      += docc_ref[h];
+      actv[ correlation[h] ]      += actv_ref[h];
+      fvir[ correlation[h] ]      += fvir_ref[h];
+      actv_docc[ correlation[h] ] += actv_docc_ref[h];
     }
     wfn_sym = correlation[wfn_sym];
     chkpt_set_prefix(save_prefix);
@@ -189,16 +196,13 @@ void MOInfo::read_mo_spaces()
     free(save_prefix);
     free(ptgrp_ref);
     delete [] correlation;
-
   }else{
     // For a single-point only
     read_mo_space(nirreps,nfocc,focc,"CORR_FOCC FROZEN_DOCC");
     read_mo_space(nirreps,ndocc,docc,"CORR_DOCC RESTRICTED_DOCC");
     read_mo_space(nirreps,nactv,actv,"CORR_ACTV ACTIVE ACTV");
     read_mo_space(nirreps,nfvir,fvir,"CORR_FVIR FROZEN_UOCC");
-    if(options_get_str("CORR_WFN") == "MP2-CCSD"){
-      read_mo_space(nirreps,nactv_docc,actv_docc,"ACTIVE_DOCC");
-    }
+    read_mo_space(nirreps,nactv_docc,actv_docc,"ACTIVE_DOCC");
   }
 
   // Compute the number of active virtuals
@@ -253,8 +257,8 @@ void MOInfo::read_mo_spaces()
     mo_to_all[all_to_mo[i]]=i;
 }
 
-/*!
-    \fn MOInfo::print_mo_spaces()
+/**
+    MOInfo::print_mo_spaces()
  */
 void MOInfo::print_mo()
 {
@@ -272,11 +276,9 @@ void MOInfo::print_mo()
   print_mo_space(nfocc,focc,"Frozen Occupied                 ");
   print_mo_space(ndocc,docc,"Doubly Occupied                 ");
   print_mo_space(nactv,actv,"Active                          ");
-
-  if(options_get_str("CORR_WFN") == "MP2-CCSD"){
+  if(nactv_docc > 0){
     print_mo_space(nactv_docc,actv_docc,"Active Doubly Occupied          ");
   }
-
   print_mo_space(nextr,extr,"External                        ");
   print_mo_space(nfvir,fvir,"Frozen Virtual                  ");
   fflush(outfile);

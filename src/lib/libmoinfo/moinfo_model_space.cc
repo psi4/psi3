@@ -42,7 +42,7 @@ void MOInfo::build_model_space()
   /***********************************************
     Generate all combinations of active orbitals
   ***********************************************/
-  if(options_get_str("CORR_WFN") != "MP2-CCSD"){
+  if(nactv_docc == 0){
     /********************************************************
       Set up the doubly occupied part of all the
       determinants in the model space

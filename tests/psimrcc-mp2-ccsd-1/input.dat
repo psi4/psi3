@@ -1,0 +1,28 @@
+% This reproduces data from Table III of JCP 125, 054109 (2006)
+% HF 6-31G* r(H-F) = 0.9355 Ang
+% E = -100.1845
+
+psi: (
+  wfn             = psimrcc
+  reference       = rhf
+  label           = "HF 6-31G*"
+  jobtype         = sp
+  dertype         = none
+  basis           = "6-31G*"
+  zmat= (
+   H
+   F 1 0.9355
+  )
+  convergence     =  12
+  docc            =  (3 0 1 1)
+)
+
+mrcc:(
+  corr_wfn         = mp2-ccsd
+  restricted_docc  = (2 0 1 1)
+  active           = (2 0 0 0)
+  active_docc      = (1 0 0 0)
+  mp2_ccsd_method  = I
+  maxdiis          = 6
+)
+

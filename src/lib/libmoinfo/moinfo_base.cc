@@ -33,10 +33,9 @@ MOInfoBase::~MOInfoBase()
 
 void MOInfoBase::startup()
 {
-  PSI_NULL(ioff);
-
   nael = 0;
   nbel = 0;
+  PSI_NULL(ioff);
   compute_ioff();
 }
 
