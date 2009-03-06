@@ -68,7 +68,7 @@ void linresp(double **tensor, double A, double B,
 			   pert_x, cartcomp[alpha], x_irreps[alpha], omega_x);
 	  timer_off("linear terms");
 
-	  if(!params.sekino) {
+	  if(!params.sekino && !params.linear) {
 	    if (!strcmp(params.wfn,"CC2")) {
 	      timer_on("quad terms");
 	      polar_HXY = HXY(pert_x, cartcomp[alpha], x_irreps[alpha], omega_x,
@@ -102,7 +102,7 @@ void linresp(double **tensor, double A, double B,
 	  polar_LCX += LCX(pert_y, cartcomp[beta], y_irreps[beta], pert_x, cartcomp[alpha],
 			   x_irreps[alpha], 0.0);
 	  timer_off("linear terms");
-	  if(!params.sekino) {
+	  if(!params.sekino && !params.linear) {
 	    if (!strcmp(params.wfn,"CC2")) {
 	      timer_on("quad terms");
 	      polar_HXY = HXY(pert_x, cartcomp[alpha], x_irreps[alpha], 0.0,
@@ -130,7 +130,7 @@ void linresp(double **tensor, double A, double B,
 	  }
 	}
 
-	if(params.sekino) /* only linear term needed in Sekino-Bartlett model III */
+	if(params.sekino || params.linear) /* only linear term needed in Sekino-Bartlett model III */
 	  polar = polar_LCX;
 	else 
 	  polar = polar_LCX + polar_HXY + polar_LHX1Y1 + polar_LHX2Y2 + polar_LHX1Y2;

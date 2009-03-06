@@ -250,6 +250,12 @@ void get_params()
     if(errcod != IPE_OK) params.sekino = 0;
   }
 
+  params.linear = 0;
+  if(ip_exist("LINEAR",0)) {
+    errcod = ip_boolean("LINEAR", &params.linear, 0);
+    if(errcod != IPE_OK) params.linear = 0;
+  }
+
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   if(!strcmp(params.prop,"ALL"))
@@ -266,6 +272,7 @@ void get_params()
   fprintf(outfile, "\tRestart          =     %s\n", params.restart ? "Allowed" : "Not Allowed");
   fprintf(outfile, "\tDIIS             =     %s\n", params.diis ? "Yes" : "No");
   fprintf(outfile, "\tModel III        =     %s\n", params.sekino ? "Yes" : "No");
+  fprintf(outfile, "\tLinear Model     =     %s\n", params.linear ? "Yes" : "No");
   fprintf(outfile, "\tABCD             =     %s\n", params.abcd);
   fprintf(outfile, "\tIrrep X          =    %3s\n", moinfo.labels[moinfo.irrep_x]);
   fprintf(outfile, "\tIrrep Y          =    %3s\n", moinfo.labels[moinfo.irrep_y]);

@@ -24,7 +24,8 @@ struct Params {
   char *wfn;
   char *abcd;
   int num_amps;
-  int sekino;  /* Sekino-Bartlett size-extensive models */
+  int sekino;  /* Sekino-Bartlett size-extensive model-III */
+  int linear;  /* Bartlett size-extensive (?) linear model */
 };
 
 }} // namespace psi::ccresponse
