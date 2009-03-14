@@ -86,7 +86,7 @@ int main(int argc, char *argv[])
 
     // Update number of vibrations
     if (rottype == 6) nvib_freqs = 0; //atom
-    else if (rottype = 3) nvib_freqs = 3*natom-5; //linear
+    else if (rottype == 3) nvib_freqs = 3*natom-5; //linear
     else nvib_freqs = 3*natom-6;
 
     // Read rotational symmetry number
