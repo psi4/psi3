@@ -1,6 +1,6 @@
 /*! \defgroup TRANSQT transqt: Integral Transformation Program */
 
-/*! 
+/*!
 ** \file
 ** \ingroup TRANSQT
 ** \brief The SO-to-MO integral transformation program
@@ -13,7 +13,7 @@
 ** restrictions made the code so complicated that we couldn't figure
 ** out how to formulate the innermost loops as fast vector algorithms
 ** without a lot of trouble.
-** 
+**
 ** This transformation is a straight "four single-index transformations"
 ** algorithm, modified to use matrix multiplications for each step.  Each half
 ** of the transformation is done with two consecutive matrix multiplications
@@ -52,7 +52,7 @@
 **
 ** Code updated with more even more of the options available in the
 ** Saunders-van Lenthe version of TRANSQT.  Output files are no longer
-** hardwired, the one-electron integrals are output with the 
+** hardwired, the one-electron integrals are output with the
 ** iwl_wrtone() function, implicit frozen core is treated properly
 ** (i.e. "FZC" orbitals), and restricted core transformations (i.e. "COR"
 ** orbitals) are also possible.
@@ -151,13 +151,13 @@ struct Params params;
 /* averaged==1 for three-subspace canonicalized via averaged Fock
    for OPT1, OPT2 or ZAPT,
    averaged==0 for regular semicanonicalization for RMP, etc. */
-void semicanonical_fock(int averaged); 
+void semicanonical_fock(int averaged);
 void transform_one(void);
 void transform_two(void);
 void cleanup(void);
 void fzc_density(int nirreps, int *frdocc, double *Pc, double **C,
   int *first, int *first_so, int *last_so, int *ioff);
-void ivo_density(int nirreps, int *frdocc, int *docc, int *socc, double *P, 
+void ivo_density(int nirreps, int *frdocc, int *docc, int *socc, double *P,
   double **C, int *first, int *first_so, int *last_so, int *ioff);
 void transform_two_mp2(void);
 void transform_two_mp2r12a_t(void);
@@ -172,8 +172,8 @@ void get_moinfo(void);
 void get_one_electron_integrals(void);
 void exit_io(void);
 void get_reorder_array(void);
-double *** construct_evects(const char *spin, int nirreps, int *active, int *sopi, 
-  int *orbspi, int *first_so, int *last_so, int *first, int *last, 
+double *** construct_evects(const char *spin, int nirreps, int *active, int *sopi,
+  int *orbspi, int *first_so, int *last_so, int *first, int *last,
   int *fstact, int *lstact, int printflag);
 void destruct_evects(int nirreps, double ***evects);
 int check_C(int nso, int nmo, double **Cmat, double *S);
@@ -231,10 +231,10 @@ void init_io(int argc, char *argv[])
    extra_args = (char **) malloc(argc*sizeof(char *));
 
    params.runmode = MODE_NORMAL;
-   params.psimrcc = 0; 
+   params.psimrcc = 0;
 
    for (i=1; i<argc; i++) {
-       
+
        /*--- "Quiet" option ---*/
        if (strcmp(argv[i], "--quiet") == 0) {
            params.print_lvl = 0;
@@ -258,11 +258,11 @@ void init_io(int argc, char *argv[])
 	 case 0: /*--- transform ERIs ---*/
 	   params.runmode = MODE_MP2R12AERI;
 	   break;
-	   
+
 	 case 1: /*--- transform ints of r12 ---*/
 	   params.runmode = MODE_MP2R12AR12;
 	   break;
-	   
+
 	 case 2: /*--- transform ints of [r12,T1] ---*/
 	   params.runmode = MODE_MP2R12AR12T1;
 	   break;
@@ -344,7 +344,7 @@ void get_parameters(void)
   /* The defaults below depend on what run mode we are in */
   if (params.runmode == MODE_NORMAL) {
     /*The restricted transform does not currently work for the new
-      MP2 module MLA June 27, 2003*/ 
+      MP2 module MLA June 27, 2003*/
     /*if (strcmp(params.wfn, "MP2") == 0 && strcmp(params.dertype, "NONE") == 0)
       params.tei_trans_type = MAKE_OVOV;
     else*/
@@ -379,7 +379,7 @@ void get_parameters(void)
     fprintf(outfile, "transqt: Unrecognized runmode %d\n", params.runmode);
     abort();
   }
-  
+
 
   /* Adding for UHF capabilities -- TDC, 06/14/01 */
   errcod = ip_string("REFERENCE", &(params.ref), 0);
@@ -387,19 +387,19 @@ void get_parameters(void)
     params.ref = (char *) malloc(sizeof(char)*4);
     strcpy(params.ref, "RHF");
   }
-  
+
   params.semicanonical = 0;
   /* Semicanonical orbitals for perturbation theory */
-  if(!strcmp(params.ref, "ROHF") && (!strcmp(params.wfn, "CCSD_T") || !strcmp(params.wfn, "MP2") || 
+  if(!strcmp(params.ref, "ROHF") && (!strcmp(params.wfn, "CCSD_T") || !strcmp(params.wfn, "MP2") ||
 				     !strcmp(params.wfn, "CC3") || !strcmp(params.wfn,"EOM_CC3") ||
 				     !strcmp(params.wfn, "CC2") || !strcmp(params.wfn,"EOM_CC2"))) {
     strcpy(params.ref, "UHF");
     params.semicanonical = 1;
-  }  
+  }
 
   /* Averaged semicanonical orbitals for ZAPTn */
   if(!strcmp(params.ref, "ROHF") && !strcmp(params.wfn, "ZAPTN"))
-    params.semicanonical = 2; 
+    params.semicanonical = 2;
 
 
   /* the default to this was already set by command line parsing */
@@ -481,7 +481,7 @@ void get_parameters(void)
        strcmp(params.wfn,"CASSCF")==0|| strcmp(params.wfn,"RASSCF")==0) &&
       !params.backtr)
     params.delete_src_tei = 0;
-  else 
+  else
     params.delete_src_tei = 1;
 
   /* If AO-basis chosen, keep the SO_TEI file */
@@ -511,28 +511,28 @@ void get_parameters(void)
   params.print_mos = 0;
   errcod = ip_boolean("PRINT_MOS", &(params.print_mos),0);
   errcod = ip_data("PRINT", "%d", &(params.print_lvl),0);
-     
+
   if (strcmp(params.wfn, "CI")==0 || strcmp(params.wfn, "DETCAS")==0 ||
       strcmp(params.wfn, "CASSCF")==0 || strcmp(params.wfn, "RASSCF")==0 ||
       strcmp(params.wfn, "DETCI")==0 ||
-      strcmp(params.wfn, "ZAPTN")==0) { 
+      strcmp(params.wfn, "ZAPTN")==0) {
     params.lagran_double = 1;
     params.lagran_halve = 0;
     params.ras_type = 1;
     }
-  else { 
+  else {
     params.lagran_double = 0;
     params.lagran_halve = 0;
     params.ras_type = 0;
     }
   errcod = ip_boolean("LAGRAN_DOUBLE", &(params.lagran_double),0);
   errcod = ip_boolean("LAGRAN_HALVE", &(params.lagran_halve),0);
- 
+
 
 
   if ((strcmp(params.wfn, "OOCCD")==0 || strcmp(params.dertype, "FIRST")==0 ||
        strcmp(params.wfn, "DETCAS")==0 || strcmp(params.wfn, "CASSCF")==0 ||
-       strcmp(params.wfn, "RASSCF")==0) && !params.backtr) 
+       strcmp(params.wfn, "RASSCF")==0) && !params.backtr)
     params.do_all_tei = 1;
   else params.do_all_tei = 0;
   if (params.runmode == MODE_MP2R12AERI || params.runmode == MODE_MP2R12AR12 ||
@@ -543,7 +543,7 @@ void get_parameters(void)
   params.do_h_bare = 1;  params.do_h_fzc = 1;
 
   if (params.backtr) {
-    params.do_h_bare = 0; 
+    params.do_h_bare = 0;
     params.do_h_fzc = 0;
   }
   else {
@@ -552,18 +552,18 @@ void get_parameters(void)
       params.do_h_fzc = 0;
     }
     else if ((strcmp(params.wfn,"CI")==0 || strcmp(params.wfn,"DETCI")==0 ||
-             strcmp(params.wfn,"ZAPTN")==0) &&   
+             strcmp(params.wfn,"ZAPTN")==0) &&
              strcmp(params.dertype, "NONE")==0) {
       params.do_h_bare = 0;
       params.do_h_fzc = 1;
     }
   }
- 
+
   params.tpdm_add_ref = 0;
   errcod = ip_boolean("TPDM_ADD_REF", &(params.tpdm_add_ref), 0);
 
   if (strcmp(params.wfn,"DETCAS")==0 || strcmp(params.wfn,"CASSCF")==0 ||
-      strcmp(params.wfn,"RASSCF")==0)  
+      strcmp(params.wfn,"RASSCF")==0)
     params.treat_cor_as_fzc = 1;
   else
     params.treat_cor_as_fzc = 0;
@@ -627,21 +627,21 @@ void print_parameters(void)
       fprintf(outfile,"\tInput Parameters:\n");
       fprintf(outfile,"\t-----------------\n");
       fprintf(outfile,"\tWavefunction           =  %s\n", params.wfn);
-      if(params.semicanonical==1) { 
+      if(params.semicanonical==1) {
       fprintf(outfile,"\tReference orbitals     =  ROHF changed to UHF for Semicanonical Orbitals\n");
       }
       else {
       fprintf(outfile,"\tReference orbitals     =  %s\n", params.ref);
-      }	      
-      fprintf(outfile,"\tBacktrans              =  %s\n", 
+      }
+      fprintf(outfile,"\tBacktrans              =  %s\n",
 	                           params.backtr ? "Yes" : "No");
-      fprintf(outfile,"\tPrint MOs              =  %s\n", 
+      fprintf(outfile,"\tPrint MOs              =  %s\n",
                                   (params.print_mos ? "Yes": "No"));
-      fprintf(outfile,"\tFreeze Core            =  %s\n", 
+      fprintf(outfile,"\tFreeze Core            =  %s\n",
                                   (params.fzc ? "Yes" : "No"));
-      fprintf(outfile,"\tDelete Restricted Docc =  %s\n", 
+      fprintf(outfile,"\tDelete Restricted Docc =  %s\n",
 		                  (params.del_restr_docc ? "Yes" : "No"));
-      fprintf(outfile,"\tDo All TEI             =  %s\n", 
+      fprintf(outfile,"\tDo All TEI             =  %s\n",
                                   (params.do_all_tei ? "Yes" : "No"));
       fprintf(outfile,"\tMemory (Mbytes)        =  %5.1f\n",params.maxcor/1e6);
       fprintf(outfile,"\tMax Buckets            =  %d\n",params.max_buckets);
@@ -652,54 +652,54 @@ void print_parameters(void)
       fprintf(outfile,"\tOpdm In File           =  %d\n",params.opdm_in_file);
       fprintf(outfile,"\tOpdm Out File          =  %d\n",params.opdm_out_file);
       fprintf(outfile,"\tLag In File            =  %d\n", params.lag_in_file);
-      fprintf(outfile,"\tKeep Presort           =  %s\n", 
+      fprintf(outfile,"\tKeep Presort           =  %s\n",
                                   (params.keep_presort ? "Yes" : "No"));
       fprintf(outfile,"\tJ File                 =  %d\n", params.jfile);
-      fprintf(outfile,"\tKeep J                 =  %s\n", 
+      fprintf(outfile,"\tKeep J                 =  %s\n",
                                   (params.keep_half_tf ? "Yes" : "No"));
       fprintf(outfile,"\tM File                 =  %d\n", params.mfile);
-      fprintf(outfile,"\tBare OEI file          =  %d\n", 
+      fprintf(outfile,"\tBare OEI file          =  %d\n",
                                   params.h_bare_file);
-      fprintf(outfile,"\tFrozen Core OEI file   =  %d\n", 
+      fprintf(outfile,"\tFrozen Core OEI file   =  %d\n",
                                   params.h_fzc_file);
-      fprintf(outfile,"\tSorted TEI file        =  %d\n", 
+      fprintf(outfile,"\tSorted TEI file        =  %d\n",
                                   params.sorted_tei_file);
       fprintf(outfile,"\tDelete TEI source file =  %s\n",
                                   (params.delete_src_tei ? "Yes" : "No"));
-      fprintf(outfile,"\tAdd TPDM Ref Part      =  %s\n", 
+      fprintf(outfile,"\tAdd TPDM Ref Part      =  %s\n",
                                   (params.tpdm_add_ref ? "Yes" : "No"));
-      fprintf(outfile,"\tDo Bare OEI tranform   =  %s\n", 
+      fprintf(outfile,"\tDo Bare OEI tranform   =  %s\n",
                                   (params.do_h_bare ? "Yes" : "No"));
-      fprintf(outfile,"\tDo FZC  OEI tranform   =  %s\n", 
+      fprintf(outfile,"\tDo FZC  OEI tranform   =  %s\n",
                                   (params.do_h_fzc ? "Yes" : "No"));
       fprintf(outfile,"\tTolerance              =  %3.1e\n", params.tolerance);
       fprintf(outfile,"\tPrint Level            =  %d\n", params.print_lvl);
-      fprintf(outfile,"\tPrint TE Ints          =  %s\n", 
+      fprintf(outfile,"\tPrint TE Ints          =  %s\n",
                                   (params.print_te_ints ? "Yes": "No"));
-      fprintf(outfile,"\tPrint OE Ints          =  %s\n", 
+      fprintf(outfile,"\tPrint OE Ints          =  %s\n",
                                   (params.print_oe_ints ? "Yes" : "No"));
-      fprintf(outfile,"\tPrint Sorted TE Ints   =  %s\n", 
+      fprintf(outfile,"\tPrint Sorted TE Ints   =  %s\n",
                                   (params.print_sorted_te_ints ? "Yes": "No"));
-      fprintf(outfile,"\tPrint Sorted OE Ints   =  %s\n", 
+      fprintf(outfile,"\tPrint Sorted OE Ints   =  %s\n",
                                   (params.print_sorted_oe_ints ? "Yes": "No"));
-      fprintf(outfile,"\tReorder MOs            =  %s\n", 
+      fprintf(outfile,"\tReorder MOs            =  %s\n",
                                   (params.reorder ? "Yes" : "No"));
-      fprintf(outfile,"\tCheck C Orthonormality =  %s\n", 
+      fprintf(outfile,"\tCheck C Orthonormality =  %s\n",
                                   (params.check_C_orthonorm ? "Yes" : "No"));
-      fprintf(outfile,"\tQRHF orbitals          =  %s\n", 
+      fprintf(outfile,"\tQRHF orbitals          =  %s\n",
                                   (params.qrhf ? "Yes" : "No"));
-      fprintf(outfile,"\tIVO orbitals           =  %s\n", 
+      fprintf(outfile,"\tIVO orbitals           =  %s\n",
                                   (params.ivo ? "Yes" : "No"));
-      if(params.semicanonical) { 
+      if(params.semicanonical) {
         if(params.semicanonical==1)
           fprintf(outfile,"\tSemicanonical orbitals =  Yes\n");
         else /* semicanonical == 2, hopefully */
           fprintf(outfile,"\tSemicanonical orbitals =  Z-Averaged\n");
       }
-      fprintf(outfile,"\tPitzer                 =  %s\n", 
+      fprintf(outfile,"\tPitzer                 =  %s\n",
                                   (params.pitzer ? "Yes" : "No"));
     }
-  
+
   return;
 }
 
@@ -729,7 +729,7 @@ void get_moinfo(void)
   moinfo.stype = chkpt_rd_stype();
   moinfo.rstrdocc = init_int_array(moinfo.nirreps);
   moinfo.rstruocc = init_int_array(moinfo.nirreps);
-  
+
   /* Needed for MO  reordering */
   if(!strcmp(params.ref, "UHF") && params.semicanonical == 0) {
     moinfo.scf_vector_alpha = chkpt_rd_alpha_scf();
@@ -760,7 +760,7 @@ void get_moinfo(void)
     else {
       /* print the MOORDER array */
       fprintf(outfile, "\nMOORDER array: \n");
-      for (i=0; i<moinfo.nmo; i++) 
+      for (i=0; i<moinfo.nmo; i++)
 	fprintf(outfile, "%3d", params.moorder[i]);
       fprintf(outfile, "\n");
 
@@ -771,19 +771,19 @@ void get_moinfo(void)
 	}
 	h += j;
       }
- 
+
       /* swap the rows of the SCF coefficient matrix */
       tmpmat = init_matrix(moinfo.nso,moinfo.nmo);
       for (i=0; i<moinfo.nso; i++)
 	for (j=0; j<moinfo.nmo; j++)
 	  tmpmat[i][j] = moinfo.scf_vector[i][j];
-      for (i=0; i<moinfo.nso; i++) 
-	for (j=0; j<moinfo.nmo; j++) 
+      for (i=0; i<moinfo.nso; i++)
+	for (j=0; j<moinfo.nmo; j++)
 	  moinfo.scf_vector[i][j] = tmpmat[i][params.moorder[j]];
 
-      free_matrix(tmpmat, moinfo.nso);        
+      free_matrix(tmpmat, moinfo.nso);
     }
-  } 
+  }
 
   moinfo.sosym = init_int_array(moinfo.nso);
   for (i=0,k=0; i<moinfo.nirreps; i++) {
@@ -791,7 +791,7 @@ void get_moinfo(void)
       moinfo.sosym[k] = i;
     }
   }
-  
+
   moinfo.orbsym = init_int_array(moinfo.nmo);
   for (i=0,k=0; i<moinfo.nirreps; i++) {
     for (j=0; j<moinfo.orbspi[i]; j++,k++) {
@@ -894,7 +894,7 @@ void get_moinfo(void)
     free(tmpi);
   }
 
-  /* Dump the new occupations to chkpt file if QRHF reference requested 
+  /* Dump the new occupations to chkpt file if QRHF reference requested
      TDC,3/20/00 */
   if(params.qrhf) {
     chkpt_wt_clsdpi(moinfo.clsdpi);
@@ -907,7 +907,7 @@ void get_moinfo(void)
   for(i=0; i < moinfo.nirreps; i++) {
     moinfo.virtpi[i] = moinfo.orbspi[i]-moinfo.clsdpi[i]-moinfo.openpi[i];
   }
-  
+
   if (params.print_lvl) {
     fprintf(outfile,"\n\tChkpt File Parameters:\n");
     fprintf(outfile,"\t------------------\n");
@@ -944,13 +944,13 @@ void get_moinfo(void)
         moinfo.scf_vector = chkpt_rd_scf();
     }
   }
-  
+
   /*
     Construct first and last index arrays for SOs: this defines the first
     absolute orbital index and last absolute orbital
     index for each irrep.  When there are no orbitals for an irrep, the
     value is -1 for first[] and -2 for last[].  Note that there must be
-    basis functions in the first irrep (i.e. totally symmetric) for this to 
+    basis functions in the first irrep (i.e. totally symmetric) for this to
     work.
   */
   moinfo.first_so = init_int_array(moinfo.nirreps);
@@ -960,7 +960,7 @@ void get_moinfo(void)
     moinfo.last_so[h] = -2;
   }
   first_offset = 0;
-  last_offset = moinfo.sopi[0] - 1; 
+  last_offset = moinfo.sopi[0] - 1;
   moinfo.first_so[0] = first_offset;
   moinfo.last_so[0] = last_offset;
   for(h=1; h < moinfo.nirreps; h++) {
@@ -971,7 +971,7 @@ void get_moinfo(void)
       moinfo.last_so[h] = last_offset;
     }
   }
-  
+
   /*
     Construct first and last index arrays: this defines the first
     absolute orbital index (Pitzer ordering) and last absolute orbital
@@ -986,7 +986,7 @@ void get_moinfo(void)
     moinfo.last[h] = -2;
   }
   first_offset = 0;
-  last_offset = moinfo.orbspi[0] - 1; 
+  last_offset = moinfo.orbspi[0] - 1;
   moinfo.first[0] = first_offset;
   moinfo.last[0] = last_offset;
   for(h=1; h < moinfo.nirreps; h++) {
@@ -1003,7 +1003,7 @@ void get_moinfo(void)
     index for each irrep, excluding frozen orbitals.  When there are no
     orbitals for an irrep, the value is -1 for first[] and -2 for last[].
     Note that there must be orbitals in the first irrep (i.e. totally
-    symmetric) for this to work.  
+    symmetric) for this to work.
   */
   moinfo.fstact = init_int_array(moinfo.nirreps);
   moinfo.lstact = init_int_array(moinfo.nirreps);
@@ -1012,7 +1012,7 @@ void get_moinfo(void)
     moinfo.lstact[h] = -2;
   }
   first_offset = moinfo.frdocc[0];
-  last_offset = moinfo.orbspi[0] - moinfo.fruocc[0] - 1; 
+  last_offset = moinfo.orbspi[0] - moinfo.fruocc[0] - 1;
   moinfo.fstact[0] = first_offset;
   moinfo.lstact[0] = last_offset;
   for(h=1; h < moinfo.nirreps; h++) {
@@ -1049,20 +1049,20 @@ void get_moinfo(void)
 	moinfo.evects_alpha = construct_evects("alpha", moinfo.nirreps, moinfo.orbspi,
 					       moinfo.sopi, moinfo.orbspi,
 					       moinfo.first_so, moinfo.last_so,
-					       moinfo.first, moinfo.last, 
+					       moinfo.first, moinfo.last,
 					       moinfo.first, moinfo.last, params.print_mos);
 
 	moinfo.evects_beta = construct_evects("beta", moinfo.nirreps, moinfo.orbspi,
 					      moinfo.sopi, moinfo.orbspi,
 					      moinfo.first_so, moinfo.last_so,
-					      moinfo.first, moinfo.last, 
+					      moinfo.first, moinfo.last,
 					      moinfo.first, moinfo.last, params.print_mos);
       }
       else {
 	moinfo.evects = construct_evects("RHF", moinfo.nirreps, moinfo.orbspi,
 					 moinfo.sopi, moinfo.orbspi,
 					 moinfo.first_so, moinfo.last_so,
-					 moinfo.first, moinfo.last, 
+					 moinfo.first, moinfo.last,
 					 moinfo.first, moinfo.last, params.print_mos);
 
       }
@@ -1072,19 +1072,19 @@ void get_moinfo(void)
 	moinfo.evects_alpha = construct_evects("alpha", moinfo.nirreps, moinfo.active,
 					       moinfo.sopi, moinfo.orbspi,
 					       moinfo.first_so, moinfo.last_so,
-					       moinfo.first, moinfo.last, 
+					       moinfo.first, moinfo.last,
 					       moinfo.fstact, moinfo.lstact, params.print_mos);
 	moinfo.evects_beta = construct_evects("beta", moinfo.nirreps, moinfo.active,
 					      moinfo.sopi, moinfo.orbspi,
 					      moinfo.first_so, moinfo.last_so,
-					      moinfo.first, moinfo.last, 
+					      moinfo.first, moinfo.last,
 					      moinfo.fstact, moinfo.lstact, params.print_mos);
       }
       else {
 	moinfo.evects = construct_evects("RHF", moinfo.nirreps, moinfo.active,
 					 moinfo.sopi, moinfo.orbspi,
 					 moinfo.first_so, moinfo.last_so,
-					 moinfo.first, moinfo.last, 
+					 moinfo.first, moinfo.last,
 					 moinfo.fstact, moinfo.lstact, params.print_mos);
 
       }
@@ -1113,7 +1113,7 @@ void get_moinfo(void)
 
       /*** alpha SCF matrix ***/
 
-      /* fill up a temporary SCF matrix with frozen virt columns deleted */ 
+      /* fill up a temporary SCF matrix with frozen virt columns deleted */
       for (h=0,offset=0; h < moinfo.nirreps; h++) {
 	if (h > 0) offset += moinfo.fruocc[h-1];
 	if (moinfo.first[h] < 0 || moinfo.lstact[h] < 0) continue;
@@ -1123,7 +1123,7 @@ void get_moinfo(void)
 	  }
 	}
       }
-    
+
       /* now that we have C, multiply it by the SO->AO transform matrix */
       mmult(so2ao,1,tmpmat,0,moinfo.evects_alpha[0],0,moinfo.nao,moinfo.nso,
 	    moinfo.nmo - moinfo.nfzv,0);
@@ -1136,7 +1136,7 @@ void get_moinfo(void)
 
       zero_mat(tmpmat, moinfo.nso, moinfo.nmo - moinfo.nfzv);
 
-      /* fill up a temporary SCF matrix with frozen virt columns deleted */ 
+      /* fill up a temporary SCF matrix with frozen virt columns deleted */
       for (h=0,offset=0; h < moinfo.nirreps; h++) {
 	if (h > 0) offset += moinfo.fruocc[h-1];
 	if (moinfo.first[h] < 0 || moinfo.lstact[h] < 0) continue;
@@ -1160,7 +1160,7 @@ void get_moinfo(void)
       moinfo.evects = (double ***) malloc (1 * sizeof(double **));
       moinfo.evects[0] = block_matrix(moinfo.nao, moinfo.nmo - moinfo.nfzv);
 
-      /* fill up a temporary SCF matrix with frozen virt columns deleted */ 
+      /* fill up a temporary SCF matrix with frozen virt columns deleted */
       for (h=0,offset=0; h < moinfo.nirreps; h++) {
 	if (h > 0) offset += moinfo.fruocc[h-1];
 	if (moinfo.first[h] < 0 || moinfo.lstact[h] < 0) continue;
@@ -1170,7 +1170,7 @@ void get_moinfo(void)
 	  }
 	}
       }
-    
+
       /* now that we have C, multiply it by the SO->AO transform matrix */
       mmult(so2ao,1,tmpmat,0,moinfo.evects[0],0,moinfo.nao,moinfo.nso,
 	    moinfo.nmo - moinfo.nfzv,0);
@@ -1185,7 +1185,7 @@ void get_moinfo(void)
 
   }
 
-  chkpt_close();  
+  chkpt_close();
 
   /* define some first/last arrays for backtransforms */
   moinfo.backtr_nirreps = 1;
@@ -1229,29 +1229,29 @@ void get_reorder_array(void)
 
   /* for backtransforms, no reorder array...map Pitzer to Pitzer */
   if (strcmp(params.wfn, "CI") == 0 || strcmp(params.wfn, "DETCI") == 0
-      || strcmp(params.wfn, "GVVPT2") == 0 
-      || strcmp(params.wfn, "MCSCF") == 0 
-      || strcmp(params.wfn, "OOCCD") == 0 
-      || strcmp(params.wfn, "ZAPTN") == 0  
-      || strcmp(params.wfn, "CASSCF") == 0 
-      || strcmp(params.wfn, "RASSCF") == 0 
+      || strcmp(params.wfn, "GVVPT2") == 0
+      || strcmp(params.wfn, "MCSCF") == 0
+      || strcmp(params.wfn, "OOCCD") == 0
+      || strcmp(params.wfn, "ZAPTN") == 0
+      || strcmp(params.wfn, "CASSCF") == 0
+      || strcmp(params.wfn, "RASSCF") == 0
       || strcmp(params.wfn, "DETCAS") == 0) {
-    
-    ras_opi = init_int_matrix(MAX_RAS_SPACES,moinfo.nirreps); 
-    
+
+    ras_opi = init_int_matrix(MAX_RAS_SPACES,moinfo.nirreps);
+
     if (strcmp(params.wfn, "GVVPT2")==0 || strcmp(params.wfn, "MCSCF")==0)
       i=1;
     else i=0;
 
-    if (!ras_set2(moinfo.nirreps, moinfo.nmo, params.fzc, 
+    if (!ras_set2(moinfo.nirreps, moinfo.nmo, params.fzc,
                  params.del_restr_docc, moinfo.orbspi,
-                 moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
+                 moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
 		 moinfo.rstrdocc, moinfo.rstruocc, ras_opi, moinfo.order,
                  params.ras_type, i)) {
       fprintf(outfile, "Error in ras_set().  Aborting.\n");
       abort();
     }
-    
+
     /* we just did this, but re-do it because ras_set() overwrites */
     if (params.treat_cor_as_fzc) {
       for (i=0; i<moinfo.nirreps; i++) {
@@ -1266,22 +1266,25 @@ void get_reorder_array(void)
 
     free_int_matrix(ras_opi);
 
-  } 
-  
+  }
+
   else { /* default (CC, MP2, other) */
     reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
 	       moinfo.order, moinfo.orbspi, moinfo.nirreps);
     reorder_qt_uhf(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
-		   moinfo.order_alpha, moinfo.order_beta, moinfo.orbspi, 
+		   moinfo.order_alpha, moinfo.order_beta, moinfo.orbspi,
                    moinfo.nirreps);
   }
-  
+
   /* Until I clean up all this, allow a PITZER flag */
   if(params.pitzer) {
-    for(i=0; i < moinfo.nmo; i++)
+    for(i=0; i < moinfo.nmo; i++){
       moinfo.order[i] = i;
+      moinfo.order_alpha[i] = i;
+      moinfo.order_beta[i] = i;
+    }
   }
-    
+
 
   if (params.print_reorder) {
     fprintf(outfile, "\nReordering array:\n");
@@ -1309,10 +1312,10 @@ void get_reorder_array(void)
 
   if (params.backtr) {
     /* construct an array to map from correlated order to Pitzer order
-     * less the frozen orbitals 
+     * less the frozen orbitals
      */
     fzv_offset = 0;
-    
+
     moinfo.corr2pitz_nofzv = init_int_array(moinfo.nmo - moinfo.nfzv);
     moinfo.corr2pitz_nofzv_a = init_int_array(moinfo.nmo - moinfo.nfzv);
     moinfo.corr2pitz_nofzv_b = init_int_array(moinfo.nmo - moinfo.nfzv);
@@ -1367,8 +1370,8 @@ void get_one_electron_integrals()
     printf("(transqt): Error mallocing one-electron ints\n");
     abort();
   }
-  
-  if (params.print_lvl) 
+
+  if (params.print_lvl)
     fprintf(outfile, "\n\tReading one-electron integrals...");
     stat = iwl_rdone(params.src_S_file,PSIF_SO_S,moinfo.S,moinfo.noeints,0,0,
                      outfile);
@@ -1389,10 +1392,10 @@ void get_one_electron_integrals()
 
   if (params.print_lvl) fprintf(outfile, "done.\n");
 
-  for (i=0; i < moinfo.noeints; i++) { 
+  for (i=0; i < moinfo.noeints; i++) {
     moinfo.oe_ints[i] = T[i] + V[i];
 
-    if(!strcmp(params.ref,"UHF")) 
+    if(!strcmp(params.ref,"UHF"))
       moinfo.fzc_operator_alpha[i] = moinfo.fzc_operator_beta[i] = T[i] + V[i];
     else moinfo.fzc_operator[i] = T[i] + V[i];
 
@@ -1400,7 +1403,7 @@ void get_one_electron_integrals()
 
   free(T);
   free(V);
-  
+
   /* if we're really doing frozen core, then we'll need the frozen core
    * density matrix when we're forming the two-electron contributions
    * to the frozen core operator, so go ahead and compute that now
@@ -1428,13 +1431,13 @@ void get_one_electron_integrals()
       moinfo.fzc_density = init_array(moinfo.noeints);
       if (params.ivo)
         ivo_density(moinfo.nirreps, moinfo.frdocc, moinfo.clsdpi,
-                    moinfo.openpi, moinfo.fzc_density, moinfo.scf_vector, 
+                    moinfo.openpi, moinfo.fzc_density, moinfo.scf_vector,
                     moinfo.first, moinfo.first_so, moinfo.last_so, ioff);
-      else 
+      else
         fzc_density(moinfo.nirreps, moinfo.frdocc, moinfo.fzc_density,
-                    moinfo.scf_vector, moinfo.first, moinfo.first_so, 
+                    moinfo.scf_vector, moinfo.first, moinfo.first_so,
                     moinfo.last_so, ioff);
-      
+
       if (params.print_lvl > 2) {
 	fprintf(outfile, "\nFrozen core density matrix:\n");
 	print_array(moinfo.fzc_density, moinfo.nso, outfile);
@@ -1455,9 +1458,9 @@ void get_one_electron_integrals()
 ** may be deleted if desired.
 **
 */
-double *** construct_evects(const char *spin, int nirreps, int *active, int *sopi, 
-                            int *orbspi, int *first_so, int *last_so, 
-                            int *first, int *last, int *fstact, int *lstact, 
+double *** construct_evects(const char *spin, int nirreps, int *active, int *sopi,
+                            int *orbspi, int *first_so, int *last_so,
+                            int *first, int *last, int *fstact, int *lstact,
                             int printflag)
 {
 
@@ -1491,7 +1494,7 @@ double *** construct_evects(const char *spin, int nirreps, int *active, int *sop
       }
     }
 
-    else 
+    else
       evects[h] = NULL;
 
   } /* end loop over irreps */
@@ -1500,7 +1503,7 @@ double *** construct_evects(const char *spin, int nirreps, int *active, int *sop
 
 }
 
-void destruct_evects(int nirreps, double ***evects) 
+void destruct_evects(int nirreps, double ***evects)
 {
   int h;
 
@@ -1513,7 +1516,7 @@ void destruct_evects(int nirreps, double ***evects)
 
 /*
 ** check_C
-** 
+**
 ** This function checks the orthonormality of the C (SCF coefficient) matrix.
 ** We could do this one irrep at a time but it doesn't really matter.
 */
@@ -1527,7 +1530,7 @@ int check_C(int nso, int nmo, double **Cmat, double *S)
   Tmat1 = block_matrix(nso, nso);
   Tmat2 = block_matrix(nso, nso);
 
-  for (p=0,pq=0; p<nso; p++) 
+  for (p=0,pq=0; p<nso; p++)
     for (q=0; q<=p; q++,pq++)
       Smat[p][q] = Smat[q][p] = S[pq];
 
@@ -1562,15 +1565,15 @@ int check_C(int nso, int nmo, double **Cmat, double *S)
   for (p=0; p<nmo; p++) {
     if (fabs(Tmat2[p][p] - 1.00) > overlap_tol) {
       fprintf(outfile, "(Check_C): C^+SC (%d,%d) = %lf\n", p, p, Tmat2[p][p]);
-      failflag = 1; 
+      failflag = 1;
     }
   }
- 
+
   free_block(Smat);
   free_block(Tmat1);
   free_block(Tmat2);
 
-  return(failflag); 
+  return(failflag);
 }
 
 }} // end of namespace psi::transqt
