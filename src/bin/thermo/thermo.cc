@@ -55,6 +55,7 @@ int main(int argc, char *argv[])
   int natom = chkpt_rd_natom();
   double *zvals = chkpt_rd_zvals(); // for default masses
   chkpt_close();
+  double *masses;
 
   // Set default T, P
   double T = 298.15; // T in K
@@ -177,6 +178,11 @@ int main(int argc, char *argv[])
     exit(PSI_RETURN_FAILURE);
   }
 
+  // later, read this from checkpoint file
+  masses = new double[natom];
+  for (i=0; i<natom; ++i)
+    masses[i] = an2masses[(int) zvals[i]]; 
+
   // set rotor string for output
   char srotor[80];   //string to store rotor type
   if     (rottype == 0) strcpy(srotor,"ASYMMETRIC_TOP");
@@ -188,17 +194,22 @@ int main(int argc, char *argv[])
   fprintf(outfile,"\tData used to determine thermochemical information:\n");
   fprintf(outfile,"\t\tRotor type: %s\n", srotor);
   fprintf(outfile,"\t\tRotational symmetry number: %d\n",rot_symm_num);
+  fprintf(outfile,"\t\tRotational constants:\n");
+  fprintf(outfile,"\t\t\t   wavenumbers,  GHz\n");
   if (rottype < 4) {
-    fprintf(outfile,"\t\tRotational constant A: %15.9lf\n",rotconst[0]);
-    fprintf(outfile,"\t\tRotational constant B: %15.9lf\n",rotconst[1]);
-    fprintf(outfile,"\t\tRotational constant C: %15.9lf\n",rotconst[2]);
+    fprintf(outfile,"\t\t\tA: %10.6lf , %10.5lf\n",rotconst[0],_c*rotconst[0]/1e7);
+    fprintf(outfile,"\t\t\tB: %10.6lf , %10.5lf\n",rotconst[1],_c*rotconst[1]/1e7);
+    fprintf(outfile,"\t\t\tC: %10.6lf , %10.5lf\n",rotconst[2],_c*rotconst[2]/1e7);
   }
   if (nvib_freqs) fprintf(outfile,"\t\tVibrational frequencies:\n");
   for (i=0; i<nvib_freqs; ++i)
     fprintf(outfile,"\t\t\t%10.3f\n", vib_freqs[i]);
   fprintf(outfile,"\t\tTemperature (K): %10.2lf\n",T);
-  fprintf(outfile,"\t\tPressure (Pa): %10.2lf\n",P);
-  fprintf(outfile,"\t\tMultiplicity: %d\n",multiplicity);
+  fprintf(outfile,"\t\tPressure (Pa)  : %10.2lf\n",P);
+  fprintf(outfile,"\t\tMultiplicity   : %10d\n",multiplicity);
+  fprintf(outfile,"\t\tNuclear masses:\n");
+  for (i=0; i<natom; ++i)
+    fprintf(outfile,"\t\t\t%10.6f\n", masses[i]);
 
   for (i=0; i<nvib_freqs; ++i) {
     if (vib_freqs[i] < 0.0) {
@@ -221,7 +232,7 @@ int main(int argc, char *argv[])
   double molecmass = 0.0;
 
   for(i=0; i < natom; i++)
-    molecmass += an2masses[(int) zvals[i]]; 
+    molecmass += masses[i];
 
   double kT = _kb * T;
   double rT;
@@ -256,7 +267,7 @@ int main(int argc, char *argv[])
   if(rottype == 6) { // atom 
     Erot = Cvrot = Srot = 0;
   }
-  if(rottype == 3) { // linear molecule
+  else if(rottype == 3) { // linear molecule
     Erot = T;
     Cvrot = 1.0;
     qrot = kT / (rot_symm_num * 100 * _c * _h * rotconst[1]); // B goes from cm^-1 to 1/s
@@ -272,13 +283,35 @@ int main(int argc, char *argv[])
     Srot = 1.5 + log(qrot);
   }
 
-  Etotal  = _psi3_R * (Etrans  + Eelec  + Evib  + Erot);
-  Stotal  = _psi3_R * (Strans  + Selec  + Svib  + Srot);
-  Cvtotal = _psi3_R * (Cvtrans + Cvelec + Cvvib + Cvrot);
+  // convert quantities in units of R into units of kcal/mol
+  double R_to_kcal = _psi3_R / _cal2J / 1000;
 
-  fprintf(outfile,"\t Energy             : %15.10lf\n", Etotal);
-  fprintf(outfile,"\t Entropy            : %15.10lf\n", Stotal);
-  fprintf(outfile,"\t Heat capacity, C_v : %15.10lf\n", Cvtotal);
+  Eelec *= R_to_kcal;
+  Etrans *= R_to_kcal;
+  Erot *= R_to_kcal;
+  Evib *= R_to_kcal;
+  Etotal = Eelec + Etrans + Erot + Evib;
+
+  Selec *= R_to_kcal;
+  Strans *= R_to_kcal;
+  Srot *= R_to_kcal;
+  Svib *= R_to_kcal;
+  Stotal = Selec + Strans + Srot + Svib;
+
+  Cvelec *= R_to_kcal;
+  Cvtrans *= R_to_kcal;
+  Cvrot *= R_to_kcal;
+  Cvvib *= R_to_kcal;
+  Cvtotal = Cvelec + Cvtrans + Cvrot + Cvvib;
+
+  fprintf(outfile,"\n");
+  fprintf(outfile,"\tThermodynamic data in kcal/mol\n");
+  fprintf(outfile,"\t\t                Thermal Energy \n");
+  fprintf(outfile,"\t\tElectronic    : %15.3lf\n", Eelec);
+  fprintf(outfile,"\t\tTranslational : %15.3lf\n", Etrans);
+  fprintf(outfile,"\t\tRotational    : %15.3lf\n", Erot);
+  fprintf(outfile,"\t\tVibrational   : %15.3lf\n", Evib);
+  fprintf(outfile,"\t\tTotal         : %15.3lf\n", Etotal);
 
   free(vib_freqs);
   free(vib_temp);
