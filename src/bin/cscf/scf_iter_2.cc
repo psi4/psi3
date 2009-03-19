@@ -68,13 +68,13 @@ void scf_iter_2()
    diiser = 0.0;
    /* optest = (int *) init_array(ioff[nbasis]/2); */
    optest = (int *) init_int_array(ioff[nbasis]);
-   scr = (double **) init_matrix(nsfmax,nsfmax);
-   fock_c = (double **) init_matrix(nsfmax,nsfmax);
-   fock_ct = (double **) init_matrix(nsfmax,nsfmax);
-   ctrans = (double **) init_matrix(nsfmax,nsfmax);
+   scr = (double **) block_matrix(nsfmax,nsfmax);
+   fock_c = (double **) block_matrix(nsfmax,nsfmax);
+   fock_ct = (double **) block_matrix(nsfmax,nsfmax);
+   ctrans = (double **) block_matrix(nsfmax,nsfmax);
    c1 = (double *) init_array(num_ir);
    c2 = (double *) init_array(num_ir);
-   fock_o = (double **) init_matrix(nsfmax,nsfmax);
+   fock_o = (double **) block_matrix(nsfmax,nsfmax);
 
    for (i=0; i < num_ir ; i++) {
 		 s = &scf_info[i];
@@ -297,15 +297,19 @@ L2:
             tri_to_sq(s->fock_pac,fock_ct,nn);
 /*            mxmb(s->cmat,nn,1,fock_ct,1,nn,scr,1,nn,nn,nn,nn);
             mxmb(scr,1,nn,s->cmat,1,nn,fock_c,1,nn,nn,nn,nn);*/
-	    mmult(s->cmat,1,fock_ct,0,scr,0,num_mo,nn,nn,0);
-	    mmult(scr,0,s->cmat,0,fock_c,0,num_mo,nn,num_mo,0);
+	    //mmult(s->cmat,1,fock_ct,0,scr,0,num_mo,nn,nn,0);
+        C_DGEMM('t', 'n', num_mo, nn, nn, 1, s->cmat[0], nn, fock_ct[0], nsfmax, 0, scr[0], nsfmax);
+	    //mmult(scr,0,s->cmat,0,fock_c,0,num_mo,nn,num_mo,0);
+        C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, scr[0], nsfmax, s->cmat[0], nn, 0, fock_c[0], nsfmax);
 
          /* transform fock_open to mo basis */
             tri_to_sq(s->fock_open,fock_ct,nn);
 /*            mxmb(s->cmat,nn,1,fock_ct,1,nn,scr,1,nn,nn,nn,nn);
             mxmb(scr,1,nn,s->cmat,1,nn,fock_o,1,nn,nn,nn,nn);*/
-	    mmult(s->cmat,1,fock_ct,0,scr,0,num_mo,nn,nn,0);
-	    mmult(scr,0,s->cmat,0,fock_o,0,num_mo,nn,num_mo,0);
+	    //mmult(s->cmat,1,fock_ct,0,scr,0,num_mo,nn,nn,0);
+        C_DGEMM('t', 'n', num_mo, nn, nn, 1, s->cmat[0], nn, fock_ct[0], nsfmax, 0, scr[0], nsfmax);
+	    // mmult(scr,0,s->cmat,0,fock_o,0,num_mo,nn,num_mo,0);
+        C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, scr[0], nsfmax, s->cmat[0], nn, 0, fock_o[0], nsfmax);
 
          /* form effective fock matrix in mo basis */
 
@@ -414,7 +418,8 @@ L2:
             rsp(num_mo,num_mo,ioff[num_mo],s->fock_eff,s->fock_evals,1,ctrans,tol);
 
 /*            mxmb(s->cmat,1,nn,ctrans,1,nn,scr,1,nn,nn,nn,nn);*/
-	    mmult(s->cmat,0,ctrans,0,scr,0,nn,num_mo,num_mo,0);
+	    // mmult(s->cmat,0,ctrans,0,scr,0,nn,num_mo,num_mo,0);
+        C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, s->cmat[0], nn, ctrans[0], nsfmax, 0, scr[0], nsfmax);
 
             for (i=0; i < num_mo; i++) {
                occi = s->occ_num[i];
@@ -429,11 +434,11 @@ L2:
          }
 
       if(converged) {
-         free_matrix(scr,nsfmax);
-         free_matrix(fock_c,nsfmax);
-         free_matrix(fock_ct,nsfmax);
-         free_matrix(ctrans,nsfmax);
-         free_matrix(fock_o,nsfmax);
+         free_block(scr);
+         free_block(fock_c);
+         free_block(fock_ct);
+         free_block(ctrans);
+         free_block(fock_o);
          free(c1);
          free(c2);
          free(optest);

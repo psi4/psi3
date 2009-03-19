@@ -47,9 +47,9 @@ void check_rot(int nn, int num_mo, double **cold, double **cnew,
   static int printed=0;
   int count=0;
 
-  smat = init_matrix(nn,nn);
-  tmp1 = init_matrix(nn,nn);
-  tmp2 = init_matrix(nn,nn);
+  smat = block_matrix(nn,nn);
+  tmp1 = block_matrix(nn,nn);
+  tmp2 = block_matrix(nn,nn);
 
   tri_to_sq(smat_pac,smat,nn);
 
@@ -57,8 +57,10 @@ void check_rot(int nn, int num_mo, double **cold, double **cnew,
       swapped = 0;
 /*      mxmb(cnew,nn,1,smat,1,nn,tmp1,1,nn,nn,nn,nn);
       mxmb(tmp1,1,nn,cold,1,nn,tmp2,1,nn,nn,nn,nn);*/
-      mmult(cnew,1,smat,0,tmp1,0,num_mo,nn,nn,0);
-      mmult(tmp1,0,cold,0,tmp2,0,num_mo,nn,num_mo,0);
+//      mmult(cnew,1,smat,0,tmp1,0,num_mo,nn,nn,0);
+//      mmult(tmp1,0,cold,0,tmp2,0,num_mo,nn,num_mo,0);
+C_DGEMM('t', 'n', num_mo, nn, nn, 1, &(cnew[0][0]), nsfmax, &(smat[0][0]), nn, 0, &(tmp1[0][0]), nn);
+C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, &(tmp1[0][0]), nn, &(cold[0][0]), num_mo, 0, &(tmp2[0][0]), nn);
 
 /*       fprintf(outfile, "C_New Matrix:\n");
          print_mat(cnew,nn,nn,outfile);
@@ -105,9 +107,9 @@ void check_rot(int nn, int num_mo, double **cold, double **cnew,
      fprintf(outfile, "   You may want to set check_rot = false\n");
      }
 
-  free_matrix(smat,nn);
-  free_matrix(tmp1,nn);
-  free_matrix(tmp2,nn);
+  free_block(smat);
+  free_block(tmp1);
+  free_block(tmp2);
   
   /*  
   fprintf(outfile, "C_New Matrix(after phase change):\n");

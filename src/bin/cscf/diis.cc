@@ -141,11 +141,16 @@ void diis(double** scr1, double** scr2, double** scr3, double* c1, double* c2, d
       if(iopen) tri_to_sq(s->fock_open,d->fock_o[m],nn);
 
       /* form error matrix in mo basis */
-      mmult(s->cmat,1,d->fock_c[m],0,scr1,0,num_mo,nn,nn,0);
-      mmult(scr1,0,s->cmat,0,scr2,0,num_mo,nn,num_mo,0);
+      //mmult(s->cmat,1,d->fock_c[m],0,scr1,0,num_mo,nn,nn,0);
+      C_DGEMM('t', 'n', num_mo, nn, nn, 1, s->cmat[0], num_mo, d->fock_c[m][0], nn, 0, scr1[0], nsfmax);
+      //mmult(scr1,0,s->cmat,0,scr2,0,num_mo,nn,num_mo,0);
+      C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, scr1[0], nsfmax, s->cmat[0], num_mo, 0, scr2[0], nsfmax);
+
       if(iopen) {
-	mmult(s->cmat,1,d->fock_o[m],0,scr1,0,num_mo,nn,nn,0);
-	mmult(scr1,0,s->cmat,0,scr3,0,num_mo,nn,num_mo,0);
+        // mmult(s->cmat,1,d->fock_o[m],0,scr1,0,num_mo,nn,nn,0);
+        C_DGEMM('t', 'n', num_mo, nn, nn, 1, s->cmat[0], num_mo, d->fock_o[m][0], nn, 0, scr1[0], nsfmax);
+        // mmult(scr1,0,s->cmat,0,scr3,0,num_mo,nn,num_mo,0);
+        C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, scr1[0], nsfmax, s->cmat[0], num_mo, 0, scr3[0], nsfmax);
       }
 
       for (i=0; i < num_mo; i++) {

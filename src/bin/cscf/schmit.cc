@@ -45,7 +45,7 @@ void schmit(int all)
    struct symm *s;
 
    v = (double *) init_array(nsfmax);
-   ctmp = (double **) init_matrix(nsfmax,nsfmax);
+   ctmp = (double **) block_matrix(nsfmax,nsfmax);
 
    for(n=0; n < num_ir ; n++) {
       s= &scf_info[n];
@@ -97,7 +97,7 @@ void schmit(int all)
          }
       }
    free(v);
-   free_matrix(ctmp,nsfmax);
+   free_block(ctmp);
    }
 
 }} // namespace psi::cscf

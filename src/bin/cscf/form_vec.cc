@@ -76,10 +76,10 @@ void form_vec()
   struct symm *s;
    
 
-  ctrans = (double **) init_matrix(nsfmax,nsfmax); 
-  temp = (double **) init_matrix(nsfmax,nsfmax);
-  sqhmat = (double **) init_matrix(nsfmax,nsfmax);
-  sqhmat2 = (double **) init_matrix(nsfmax,nsfmax);
+  ctrans = (double **) block_matrix(nsfmax,nsfmax); 
+  temp = (double **) block_matrix(nsfmax,nsfmax);
+  sqhmat = (double **) block_matrix(nsfmax,nsfmax);
+  sqhmat2 = (double **) block_matrix(nsfmax,nsfmax);
   double* hevals = init_array(nsfmax);
    
   for (i=0; i < num_ir ; i++) {
@@ -87,8 +87,11 @@ void form_vec()
     if (nn=s->num_so) {
       num_mo = s->num_mo;
       tri_to_sq(s->hmat,sqhmat,nn);
-      mmult(s->sahalf,1,sqhmat,0,temp,0,num_mo,nn,nn,0);
-      mmult(temp,0,s->sahalf,0,sqhmat2,0,num_mo,nn,num_mo,0);
+      //mmult(s->sahalf,1,sqhmat,0,temp,0,num_mo,nn,nn,0);
+      C_DGEMM('t', 'n', num_mo, nn, nn, 1, s->sahalf[0], nn, sqhmat[0], nsfmax, 0, temp[0], nsfmax);
+      //mmult(temp,0,s->sahalf,0,sqhmat2,0,num_mo,nn,num_mo,0);
+      C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, temp[0], nsfmax, s->sahalf[0], nn, 0, sqhmat2[0], nsfmax);
+
       // This hack is borrowed from MPQC. Important enough to implement!
       if (hcore_guess == 1 && num_mo == nn) {
         // MPQC uses eigenvalues of the core hamiltonian in a nonorthogonal basis
@@ -115,10 +118,10 @@ void form_vec()
   }
   
   free(hevals);
-  free_matrix(ctrans,nsfmax);
-  free_matrix(temp,nsfmax);
-  free_matrix(sqhmat,nsfmax);
-  free_matrix(sqhmat2,nsfmax);
+  free_block(ctrans);
+  free_block(temp);
+  free_block(sqhmat);
+  free_block(sqhmat2);
 }
 
 }} // namespace psi::cscf

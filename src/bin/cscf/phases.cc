@@ -65,8 +65,10 @@ int phase(void)
 
 	  tri_to_sq(s->smat, smat, nn);
 
-	  mmult(cnew[k],1,smat,0,tmp,0,num_mo,nn,nn,0);
-	  mmult(tmp,0,spin_info[m].scf_spin[k].cmat_orig,0,identity,0,num_mo,nn,num_mo,0);
+	  // mmult(cnew[k],1,smat,0,tmp,0,num_mo,nn,nn,0);
+      C_DGEMM('t', 'n', num_mo, nn, nn, 1, cnew[k][0], num_mo, smat[0], nn, 0, tmp[0], nn);
+	  // mmult(tmp,0,spin_info[m].scf_spin[k].cmat_orig,0,identity,0,num_mo,nn,num_mo,0);
+      C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, tmp[0], nn, spin_info[m].scf_spin[k].cmat_orig[0], nn, 0, identity[0], num_mo);
 
 	  for(j=0; j < num_mo; j++) {
 	    maxvalue = 0.0;
@@ -116,7 +118,7 @@ int phase(void)
       s = &scf_info[k];
       if(nn=s->num_so) {
 	num_mo = s->num_mo;
-	cnew[k] = init_matrix(nn,num_mo);
+	cnew[k] = block_matrix(nn,num_mo);
 	for(j=0; j < nn; j++)
 	  for(i=0; i < num_mo; i++)
 	    cnew[k][j][i] = s->cmat[j][i];
@@ -130,9 +132,9 @@ int phase(void)
       if(nn=s->num_so) {
 	num_mo = s->num_mo;
 
-	smat = init_matrix(nn,nn);
-	tmp = init_matrix(num_mo,nn);
-	identity = init_matrix(num_mo,num_mo);
+	smat = block_matrix(nn,nn);
+	tmp = block_matrix(num_mo,nn);
+	identity = block_matrix(num_mo,num_mo);
 
 	/* Unpack the overlap matrix */
 	tri_to_sq(s->smat,smat,nn);
@@ -140,8 +142,10 @@ int phase(void)
 	/* Form ~I = C^t(new) * S * C(old) */
 	/*	  mxmb(cnew[k],nn,1,smat,1,nn,tmp,1,nn,nn,nn,nn);
 		  mxmb(tmp,1,nn,s->cmat_orig,1,nn,identity,1,nn,nn,nn,nn);*/
-	mmult(cnew[k],1,smat,0,tmp,0,num_mo,nn,nn,0);
-	mmult(tmp,0,s->cmat_orig,0,identity,0,num_mo,nn,num_mo,0);
+	//mmult(cnew[k],1,smat,0,tmp,0,num_mo,nn,nn,0);
+    C_DGEMM('t', 'n', num_mo, nn, nn, 1, cnew[k][0], num_mo, smat[0], nn, 0, tmp[0], nn);
+	//mmult(tmp,0,s->cmat_orig,0,identity,0,num_mo,nn,num_mo,0);
+    C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, tmp[0], nn, s->cmat_orig[0], nn, 0, identity[0], num_mo);
 
 	/*	  fprintf(outfile, "Approximate Identity Matrix for Irrep %d\n", k);
 		  print_mat(identity, num_mo, num_mo, outfile); */
@@ -168,9 +172,9 @@ int phase(void)
 	  /*	      fprintf(outfile, "Corrected MOs for irrep %d\n", k);
 		      print_mat(cnew[k], nn, num_mo, outfile); */
 	}
-	free_matrix(smat,nn);
-	free_matrix(tmp,num_mo);
-	free_matrix(identity,num_mo);
+	free_block(smat);
+	free_block(tmp);
+	free_block(identity);
       }
     }
 
@@ -185,7 +189,7 @@ int phase(void)
 	  for(j=0; j < nn; j++)
 	    for(i=0; i < num_mo; i++)
 	      s->cmat[j][i] = cnew[k][j][i];
-	  free_matrix(cnew[k],nn);
+	  free_block(cnew[k]);
 	}
       }
     }

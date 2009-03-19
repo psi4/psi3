@@ -56,7 +56,7 @@ void schmit_uhf(int all)
     struct spin *sp;
     
     v = (double *) init_array(nsfmax);
-    ctmp = (double **) init_matrix(nsfmax,nsfmax);
+    ctmp = (double **) block_matrix(nsfmax,nsfmax);
     
     for(t=0;t < 2; t++){
 	sp = &spin_info[t];
@@ -112,7 +112,7 @@ void schmit_uhf(int all)
     }
 
     free(v);
-    free_matrix(ctmp,nsfmax);
+    free_block(ctmp);
 }
 
 }} // namespace psi::cscf

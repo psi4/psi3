@@ -488,8 +488,12 @@ void cleanup()
           s_sq = block_matrix(s->num_so,s->num_so);
           tri_to_sq(s->smat,s_sq,s->num_so);
           tmp = block_matrix(s->num_so,s->num_so);
-          mmult(s_sq,0,s->cmat,0,tmp,0,s->num_so,s->num_so,s->num_so,0);
-          mmult(s->cmat,1,tmp,0,s_sq,0,s->num_mo,s->num_so,s->num_mo,0);
+
+          // mmult(s_sq,0,s->cmat,0,tmp,0,s->num_so,s->num_so,s->num_so,0);
+          C_DGEMM('n', 'n', s->num_so, s->num_so, s->num_so, 1, s_sq[0], s->num_so, s->cmat[0],s->num_so, 0, tmp[0], s->num_so);
+          //mmult(s->cmat,1,tmp,0,s_sq,0,s->num_mo,s->num_so,s->num_mo,0);
+          C_DGEMM('t', 'n', s->num_so, s->num_so, s->num_so, 1, s->cmat[0], s->num_so, tmp[0],s->num_so, 0, s_sq[0], s->num_so);
+
           fprintf(outfile,"    -Ct.S.C:\n");
           print_mat(s_sq,s->num_mo,s->num_mo,outfile);
           free_block(s_sq);
@@ -560,8 +564,8 @@ void cleanup()
   }
   else{
     if (iopen) {
-      scr1 = (double **) init_matrix(nsfmax,nsfmax);
-      scr2 = (double **) init_matrix(nsfmax,nsfmax);
+      scr1 = (double **) block_matrix(nsfmax,nsfmax);
+      scr2 = (double **) block_matrix(nsfmax,nsfmax);
 	   
       for (i=0; i < num_ir ; i++) {
 	s = &scf_info[i];
@@ -571,15 +575,19 @@ void cleanup()
 	  tri_to_sq(s->fock_pac,scr2,nn);
 	  /*            mxmb(s->cmat,nn,1,scr2,1,nn,scr1,1,nn,nn,nn,nn);
 			mxmb(scr1,1,nn,s->cmat,1,nn,scr2,1,nn,nn,nn,nn);*/
-	  mmult(s->cmat,1,scr2,0,scr1,0,num_mo,nn,nn,0);
-	  mmult(scr1,0,s->cmat,0,scr2,0,num_mo,nn,num_mo,0);
+	  //mmult(s->cmat,1,scr2,0,scr1,0,num_mo,nn,nn,0);
+      C_DGEMM('t', 'n', num_mo, nn, nn, 1, s->cmat[0], nn, scr2[0], nsfmax, 0, scr1[0], nsfmax);
+	  //mmult(scr1,0,s->cmat,0,scr2,0,num_mo,nn,num_mo,0);
+      C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, scr1[0], nsfmax, s->cmat[0], nn, 0, scr2[0], nsfmax);
 	  sq_to_tri(scr2,s->gmat,num_mo);
 		   
 	  tri_to_sq(s->fock_open,scr2,nn);
 	  /*            mxmb(s->cmat,nn,1,scr2,1,nn,scr1,1,nn,nn,nn,nn);
 			mxmb(scr1,1,nn,s->cmat,1,nn,scr2,1,nn,nn,nn,nn);*/
-	  mmult(s->cmat,1,scr2,0,scr1,0,num_mo,nn,nn,0);
-	  mmult(scr1,0,s->cmat,0,scr2,0,num_mo,nn,num_mo,0);
+	  // mmult(s->cmat,1,scr2,0,scr1,0,num_mo,nn,nn,0);
+      C_DGEMM('t', 'n', num_mo, nn, nn, 1, s->cmat[0], nn, scr2[0], nsfmax, 0, scr1[0], nsfmax);
+	  //mmult(scr1,0,s->cmat,0,scr2,0,num_mo,nn,num_mo,0);
+      C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, scr1[0], nsfmax, s->cmat[0], nn, 0, scr2[0], nsfmax);
 	  sq_to_tri(scr2,s->gmato,num_mo);
 		   
 	  //bzero(s->fock_pac,sizeof(double)*ioff[nn]);
@@ -611,8 +619,8 @@ void cleanup()
 	  }
 	}
       }
-      free_matrix(scr1,nsfmax);
-      free_matrix(scr2,nsfmax);
+      free_block(scr1);
+      free_block(scr2);
     }
        
     else {
@@ -767,7 +775,8 @@ void print_mos_aobasis(const char* spincase, const struct symm* scfinfo)
       memcpy(static_cast<void*>(usotbf_blk[0]),static_cast<const void*>(usotbf[so_offset]),num_so*num_bf*sizeof(double));
       const int num_mo = s->num_mo;
       double** cmat_bf = block_matrix(num_bf,num_mo);
-      mmult(usotbf_blk,1,s->cmat,0,cmat_bf,0,num_bf,num_so,num_mo,0);
+      // mmult(usotbf_blk,1,s->cmat,0,cmat_bf,0,num_bf,num_so,num_mo,0);
+      C_DGEMM('t', 'n', num_bf, num_mo, num_so, 1, usotbf_blk[0], num_bf, s->cmat[0], num_so, 0, cmat_bf[0], num_mo);
       fprintf(outfile, "\n %s molecular orbitals (in AO basis) for irrep %s\n", spincase,
               s->irrep_label);
       eigout(cmat_bf, s->fock_evals, s->occ_num, num_bf, num_mo, outfile);
@@ -799,7 +808,8 @@ void print_mos_cartaobasis(const char* spincase, const struct symm* scfinfo)
       memcpy(static_cast<void*>(usotao_blk[0]),static_cast<const void*>(usotao[so_offset]),num_so*num_ao*sizeof(double));
       const int num_mo = s->num_mo;
       double** cmat_ao = block_matrix(num_ao,num_mo);
-      mmult(usotao_blk,1,s->cmat,0,cmat_ao,0,num_ao,num_so,num_mo,0);
+      //mmult(usotao_blk,1,s->cmat,0,cmat_ao,0,num_ao,num_so,num_mo,0);
+      C_DGEMM('t', 'n', num_ao, num_mo, num_so, 1, usotao_blk[0], num_ao, s->cmat[0], num_so, 0, cmat_ao[0], num_mo);
       fprintf(outfile, "\n %s molecular orbitals (in AO basis) for irrep %s\n", spincase,
               s->irrep_label);
       eigout(cmat_ao, s->fock_evals, s->occ_num, num_ao, num_mo, outfile);
@@ -861,8 +871,8 @@ double ssquare(void){
   double **scr1,**scr2,**S;
   struct symm *s;
     
-  scr1 = (double **)init_matrix(nsfmax,nsfmax);
-  scr2 = (double **)init_matrix(nsfmax,nsfmax);
+  scr1 = (double **)block_matrix(nsfmax,nsfmax);
+  scr2 = (double **)block_matrix(nsfmax,nsfmax);
     
   /* Calculate the overlap matrix elements */
     
@@ -878,8 +888,10 @@ double ssquare(void){
 	    
       /* Transform the Overlap matrix to the MO basis */
 	    
-      mmult(spin_info[0].scf_spin[i].cmat,1,scr1,0,scr2,0,num_mo,nn,nn,0);
-      mmult(scr2,0,spin_info[1].scf_spin[i].cmat,0,scr1,0,num_mo,nn,num_mo,0);
+      //mmult(spin_info[0].scf_spin[i].cmat,1,scr1,0,scr2,0,num_mo,nn,nn,0);
+      C_DGEMM('t', 'n', num_mo, nn, nn, 1, spin_info[0].scf_spin[i].cmat[0], nn, scr1[0], nsfmax, 0, scr2[0], nsfmax);
+      //mmult(scr2,0,spin_info[1].scf_spin[i].cmat,0,scr1,0,num_mo,nn,num_mo,0);
+      C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, scr2[0], nsfmax, spin_info[1].scf_spin[i].cmat[0], nn, 0, scr1[0], nsfmax);
 	    
       for(j = 0; j < spin_info[0].scf_spin[i].noccup; j++){
 	for(k = 0;k < spin_info[1].scf_spin[i].noccup; k++){
@@ -897,8 +909,8 @@ double ssquare(void){
         
   ss += (nm*(nm+1))+nb;
     
-  free_matrix(scr1,nsfmax);
-  free_matrix(scr2,nsfmax);
+  free_block(scr1);
+  free_block(scr2);
     
   return fabs(ss);
 }
@@ -974,7 +986,7 @@ void print_mo_eigvals(void)
     sorted_counter = init_int_array(3);
     sorted_index = init_int_matrix(3,num_mo);
     sorted_irreps = init_int_matrix(3,num_mo);
-    sorted_evals = init_matrix(3,num_mo);
+    sorted_evals = block_matrix(3,num_mo);
 
     /* Ok, just go through and pick out the lowest one each time */
     done = 0;
@@ -1041,7 +1053,7 @@ void print_mo_eigvals(void)
     free(sorted_counter);
     free_int_matrix(sorted_index);
     free_int_matrix(sorted_irreps);
-    free_matrix(sorted_evals,3);
+    free_block(sorted_evals);
   }
 
   /* UHF case */
@@ -1059,7 +1071,7 @@ void print_mo_eigvals(void)
     sorted_counter = init_int_array(2);
     sorted_index = init_int_matrix(2,num_mo);
     sorted_irreps = init_int_matrix(2,num_mo);
-    sorted_evals = init_matrix(2,num_mo);
+    sorted_evals = block_matrix(2,num_mo);
 
     /* do alpha */
 
@@ -1179,7 +1191,7 @@ void print_mo_eigvals(void)
     free(sorted_counter);
     free_int_matrix(sorted_index);
     free_int_matrix(sorted_irreps);
-    free_matrix(sorted_evals,2);
+    free_block(sorted_evals);
   }
 
   fprintf(outfile, "\n");

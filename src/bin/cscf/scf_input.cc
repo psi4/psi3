@@ -304,7 +304,7 @@ void scf_input(ip_value_t* ipvalue)
 		       s = &scf_info[i];
 		       if (nn=s->num_so) {
 			   num_mo = s->num_mo;
-			   scr_mat = (double **) init_matrix(nn,num_mo);
+			   scr_mat = (double **) block_matrix(nn,num_mo);
 			   for (j=0; j < num_mo; j++) {
 			       jnew = moorder[j+loff] - loff;
 			       for (k=0; k < nn ; k++) {
@@ -320,7 +320,7 @@ void scf_input(ip_value_t* ipvalue)
 				   spin_info[m].spinlabel,s->irrep_label);
 			   print_mat(spin_info[m].scf_spin[i].cmat,nn,num_mo,outfile);
 			   loff += num_mo;
-			   free_matrix(scr_mat,nn);
+			   free_block(scr_mat);
 		       }
 		   }
 	       }
@@ -369,7 +369,7 @@ void scf_input(ip_value_t* ipvalue)
 		   s = &scf_info[i];
 		   if (nn=s->num_so) {
 		       num_mo = s->num_mo;
-		       scr_mat = (double **) init_matrix(nn,num_mo);
+		       scr_mat = (double **) block_matrix(nn,num_mo);
 		       for (j=0; j < num_mo; j++) {
 			   jnew = moorder[j+loff] - loff;
 			   for (k=0; k < nn ; k++) {
@@ -383,7 +383,7 @@ void scf_input(ip_value_t* ipvalue)
 			       s->irrep_label);
 		       print_mat(s->cmat,nn,num_mo,outfile);
 		       loff += num_mo;
-		       free_matrix(scr_mat,nn);
+		       free_block(scr_mat);
 		   }
 	       }
 	   }

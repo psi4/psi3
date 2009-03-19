@@ -206,8 +206,10 @@ void uhf_iter()
 			   mxmb(scr,1,nn,sp->scf_spin[m].cmat,1
 			   ,nn,fock_c,1,nn,nn,nn,nn);*/
 
-	  mmult(sp->scf_spin[m].cmat,1,fock_ct,0,scr,0,num_mo,nn,nn,0);
-	  mmult(scr,0,sp->scf_spin[m].cmat,0,fock_c,0,num_mo,nn,num_mo,0);
+	  // mmult(sp->scf_spin[m].cmat,1,fock_ct,0,scr,0,num_mo,nn,nn,0);
+      C_DGEMM('t', 'n', num_mo, nn, nn, 1, sp->scf_spin[m].cmat[0], nn, fock_ct[0], nsfmax, 0, scr[0], nsfmax);
+	  //mmult(scr,0,sp->scf_spin[m].cmat,0,fock_c,0,num_mo,nn,num_mo,0);
+      C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, scr[0], nsfmax, sp->scf_spin[m].cmat[0], nn, 0, fock_c[0], nsfmax);
 
 	  /*
 	  if(!m && !t) {
@@ -228,8 +230,9 @@ void uhf_iter()
 		   
 	  /*		   mxmb(sp->scf_spin[m].cmat,1,nn,
 			   ctrans,1,nn,scr,1,nn,nn,nn,nn);*/
-	  mmult(sp->scf_spin[m].cmat,0,ctrans,0,scr,0,nn,num_mo,num_mo,0);
-				   
+	  //mmult(sp->scf_spin[m].cmat,0,ctrans,0,scr,0,nn,num_mo,num_mo,0);
+      C_DGEMM('n', 'n', nn, num_mo, num_mo, 1, sp->scf_spin[m].cmat[0], nn, ctrans[0], nsfmax, 0, scr[0], nsfmax);
+
 	  if(print & 4) {
 	    fprintf(outfile,"\n %s eigenvector after irrep %s\n",
 		    sp->spinlabel,s->irrep_label);

@@ -237,15 +237,19 @@ void scf_iter()
 	  tri_to_sq(s->fock_pac,fock_ct,nn);
 	  /*               mxmb(s->cmat,nn,1,fock_ct,1,nn,scr,1,nn,nn,nn,nn);
 			   mxmb(scr,1,nn,s->cmat,1,nn,fock_c,1,nn,nn,nn,nn);*/
-	  mmult(s->cmat,1,fock_ct,0,scr,0,num_mo,nn,nn,0);
-	  mmult(scr,0,s->cmat,0,fock_c,0,num_mo,nn,num_mo,0);
+	  // mmult(s->cmat,1,fock_ct,0,scr,0,num_mo,nn,nn,0);
+      C_DGEMM('t', 'n', num_mo, nn, nn, 1, s->cmat[0], nn, fock_ct[0], nsfmax, 0, scr[0], nsfmax);
+	  // mmult(scr,0,s->cmat,0,fock_c,0,num_mo,nn,num_mo,0);
+      C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, scr[0], nsfmax, s->cmat[0], nn, 0, fock_c[0], nsfmax);
 
 	  /* transform fock_open to mo basis */
 	  tri_to_sq(s->fock_open,fock_ct,nn);
 	  /*               mxmb(s->cmat,nn,1,fock_ct,1,nn,scr,1,nn,nn,nn,nn);
 			   mxmb(scr,1,nn,s->cmat,1,nn,fock_o,1,nn,nn,nn,nn);*/
-	  mmult(s->cmat,1,fock_ct,0,scr,0,num_mo,nn,nn,0);
-	  mmult(scr,0,s->cmat,0,fock_o,0,num_mo,nn,num_mo,0);
+	  //mmult(s->cmat,1,fock_ct,0,scr,0,num_mo,nn,nn,0);
+      C_DGEMM('t', 'n', num_mo, nn, nn, 1, s->cmat[0], nn, fock_ct[0], nsfmax, 0, scr[0], nsfmax);
+	  //mmult(scr,0,s->cmat,0,fock_o,0,num_mo,nn,num_mo,0);
+      C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, scr[0], nsfmax, s->cmat[0], nn, 0, fock_o[0], nsfmax);
 
 	  /* form effective fock matrix in mo basis */
 
@@ -362,7 +366,8 @@ void scf_iter()
 	  rsp(num_mo,num_mo,ioff[num_mo],s->fock_eff,s->fock_evals,1,ctrans,tol);
 	       
 	  /*	       mxmb(s->cmat,1,nn,ctrans,1,nn,scr,1,nn,nn,nn,nn);*/
-	  mmult(s->cmat,0,ctrans,0,scr,0,nn,num_mo,num_mo,0);
+	  // mmult(s->cmat,0,ctrans,0,scr,0,nn,num_mo,num_mo,0);
+      C_DGEMM('n', 'n', nn, num_mo, num_mo, 1, s->cmat[0], nn, ctrans[0], nsfmax, 0, scr[0], nsfmax);
 	       
 	  for (i=0; i < num_mo; i++) {
 	    occi = s->occ_num[i];
@@ -379,7 +384,8 @@ void scf_iter()
 	    for (j=0; j < num_mo; j++)
 	      s->cmat[i][j] = scr[i][j];
 
-	  mmult(s->ucmat,0,ctrans,0,scr,0,num_mo,num_mo,num_mo,0);
+	  // mmult(s->ucmat,0,ctrans,0,scr,0,num_mo,num_mo,num_mo,0);
+      C_DGEMM('n', 'n', num_mo, num_mo, num_mo, 1, s->ucmat[0], num_mo, ctrans[0], nsfmax, 0, scr[0], nsfmax);
 	  for(i=0; i < num_mo; i++)
 	    for (j=0; j < num_mo; j++)
 	      s->ucmat[i][j] = scr[i][j];
@@ -391,8 +397,10 @@ void scf_iter()
 	  tri_to_sq(s->fock_pac,fock_ct,nn);
 	  /*               mxmb(s->cmat,nn,1,fock_ct,1,nn,scr,1,nn,nn,nn,nn);
 			   mxmb(scr,1,nn,s->cmat,1,nn,fock_c,1,nn,nn,nn,nn);*/
-	  mmult(s->cmat,1,fock_ct,0,scr,0,num_mo,nn,nn,0);
-	  mmult(scr,0,s->cmat,0,fock_c,0,num_mo,nn,num_mo,0);
+	  // mmult(s->cmat,1,fock_ct,0,scr,0,num_mo,nn,nn,0);
+      C_DGEMM('t', 'n', num_mo, nn, nn, 1, s->cmat[0], nn, fock_ct[0], nsfmax, 0, scr[0], nsfmax);
+	  //mmult(scr,0,s->cmat,0,fock_c,0,num_mo,nn,num_mo,0);
+      C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, scr[0], nsfmax, s->cmat[0], nn, 0, fock_c[0], nsfmax);
 
 	  /*  diagonalize fock_c to get ctrans */
 	  sq_rsp(num_mo,num_mo,fock_c,s->fock_evals,1,ctrans,tol);
@@ -404,7 +412,8 @@ void scf_iter()
 	  }
 
 	  /*               mxmb(s->cmat,1,nn,ctrans,1,nn,scr,1,nn,nn,nn,nn);*/
-	  mmult(s->cmat,0,ctrans,0,scr,0,nn,num_mo,num_mo,0);
+	  // mmult(s->cmat,0,ctrans,0,scr,0,nn,num_mo,num_mo,0);
+      C_DGEMM('n', 'n', nn, num_mo, num_mo, 1, s->cmat[0], nn, ctrans[0], nsfmax, 0, scr[0], nsfmax);
 
 	  if(print & 4) {
 	    fprintf(outfile,"\n eigenvector after irrep %s\n",
@@ -416,7 +425,8 @@ void scf_iter()
 	    for (j=0; j < num_mo; j++)
 	      s->cmat[i][j] = scr[i][j];
 
-	  mmult(s->ucmat,0,ctrans,0,scr,0,num_mo,num_mo,num_mo,0);
+	  // mmult(s->ucmat,0,ctrans,0,scr,0,num_mo,num_mo,num_mo,0);
+      C_DGEMM('n', 'n', num_mo, num_mo, num_mo, 1, s->ucmat[0], num_mo, ctrans[0], nsfmax, 0, scr[0], nsfmax);
 	  for(i=0; i < num_mo; i++)
 	    for (j=0; j < num_mo; j++)
 	      s->ucmat[i][j] = scr[i][j];

@@ -85,7 +85,7 @@ void shalf(void)
   double *work, **P, **T, **X;
      
   eig_vals = (double *) init_array(nsfmax);
-  eig_vecs = (double **) init_matrix(nsfmax,nsfmax);
+  eig_vecs = (double **) block_matrix(nsfmax,nsfmax);
   shalf = block_matrix(nsfmax,nsfmax);
 
 #if !USE_LIBCHKPT
@@ -155,7 +155,7 @@ void shalf(void)
   }
 
   free(eig_vals);
-  free_matrix(eig_vecs,nsfmax);
+  free_block(eig_vecs);
 
   fprintf(outfile,"\n  The lowest eigenvalue of the overlap matrix was %e\n\n",
 	  min_eval);

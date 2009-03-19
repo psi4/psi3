@@ -41,9 +41,9 @@ void rotate_vector()
    double tol=1.0e-15;
    struct symm *s;
 
-   scr1 = (double **) init_matrix(nsfmax,nsfmax);
-   scr2 = (double **) init_matrix(nsfmax,nsfmax);
-   scr3 = (double **) init_matrix(nsfmax,nsfmax);
+   scr1 = (double **) block_matrix(nsfmax,nsfmax);
+   scr2 = (double **) block_matrix(nsfmax,nsfmax);
+   scr3 = (double **) block_matrix(nsfmax,nsfmax);
 
    dmat();
 
@@ -86,8 +86,10 @@ void rotate_vector()
          add_arr(s->hmat,s->gmat,s->fock_pac,ioff[nn]);
 
          tri_to_sq(s->fock_pac,scr1,nn);
-         mmult(s->cmat,1,scr1,0,scr2,0,num_mo,nn,nn,0);
-         mmult(scr2,0,s->cmat,0,scr1,0,num_mo,nn,num_mo,0);
+         //mmult(s->cmat,1,scr1,0,scr2,0,num_mo,nn,nn,0);
+         C_DGEMM('t', 'n', num_mo, nn, nn, 1, s->cmat[0], nn, scr1[0], nsfmax, 0, scr2[0], nsfmax);
+         //mmult(scr2,0,s->cmat,0,scr1,0,num_mo,nn,num_mo,0);
+         C_DGEMM('n', 'n', num_mo, num_mo, nn, 1, scr2[0], nsfmax, s->cmat[0], nn, 0, scr1[0], nsfmax);
 
          zero_mat(scr2,nn,nn);
          for(j=0; j < nc ; j++)
@@ -102,7 +104,8 @@ void rotate_vector()
 
          sq_rsp(num_mo,num_mo,scr2,s->fock_evals,1,scr3,tol);
 
-         mmult(s->cmat,0,scr3,0,scr2,0,nn,num_mo,num_mo,0);
+         //mmult(s->cmat,0,scr3,0,scr2,0,nn,num_mo,num_mo,0);
+         C_DGEMM('n', 'n', nn, num_mo, num_mo, 1, s->cmat[0], nn, scr3[0], nsfmax, 0, scr2[0], nsfmax);
 
          if (icheck_rot)
 	   check_rot(nn, num_mo, s->cmat, scr2, s->smat, s->fock_evals, i);
@@ -113,9 +116,9 @@ void rotate_vector()
 
          }
       }
-   free_matrix(scr1,nsfmax);
-   free_matrix(scr2,nsfmax);
-   free_matrix(scr3,nsfmax);
+   free_block(scr1);
+   free_block(scr2);
+   free_block(scr3);
    }
 
 }} // namespace psi::cscf
