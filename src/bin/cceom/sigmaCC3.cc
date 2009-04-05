@@ -66,11 +66,12 @@ void sigmaCC3(int i, int C_irr, double omega) {
     if (params.t3_Ws_incore)
       cc3_sigma_RHF_ic(&CMnEf, &WAbEi, &WMbIj, 1,  &Dints, &SIA, 
         1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
-        moinfo.virtpi, moinfo.vir_off, omega, outfile, params.nthreads);
+        moinfo.virtpi, moinfo.vir_off, omega, outfile, params.nthreads,
+        params.newtrips);
     else
       cc3_sigma_RHF(&CMnEf, &WAbEi, &WMbIj, 1,  &Dints, &SIA, 
         1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
-        moinfo.virtpi, moinfo.vir_off, omega, outfile);
+        moinfo.virtpi, moinfo.vir_off, omega, outfile, params.newtrips);
   
     dpd_buf4_close(&CMnEf);
     dpd_buf4_close(&WAbEi);
@@ -106,11 +107,12 @@ void sigmaCC3(int i, int C_irr, double omega) {
     if (params.t3_Ws_incore)
       cc3_sigma_RHF_ic(&tIjAb, &WAbEi, &WMbIj, 1,  &Dints, &SIA, 
         1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
-        moinfo.virtpi, moinfo.vir_off, omega, outfile, params.nthreads);
+        moinfo.virtpi, moinfo.vir_off, omega, outfile, params.nthreads,
+        params.newtrips);
     else
       cc3_sigma_RHF(&tIjAb, &WAbEi, &WMbIj, 1,  &Dints, &SIA,
          1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
-         moinfo.virtpi, moinfo.vir_off, omega, outfile);
+         moinfo.virtpi, moinfo.vir_off, omega, outfile, params.newtrips);
   
     dpd_buf4_close(&tIjAb);
     dpd_buf4_close(&WAbEi);
@@ -144,11 +146,12 @@ void sigmaCC3(int i, int C_irr, double omega) {
     if (params.t3_Ws_incore)
       cc3_sigma_RHF_ic(&tIjAb, &WAbEi, &WMbIj, 0, NULL, NULL, 
         1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
-        moinfo.virtpi, moinfo.vir_off, 0.0, outfile, params.nthreads);
+        moinfo.virtpi, moinfo.vir_off, 0.0, outfile, params.nthreads,
+        params.newtrips);
     else
     cc3_sigma_RHF(&tIjAb, &WAbEi, &WMbIj, 0, NULL, NULL,
        1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
-       moinfo.virtpi, moinfo.vir_off, 0.0, outfile);
+       moinfo.virtpi, moinfo.vir_off, 0.0, outfile, params.newtrips);
   
     dpd_buf4_close(&tIjAb); 
     dpd_buf4_close(&WAbEi);

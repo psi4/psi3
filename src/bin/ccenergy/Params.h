@@ -44,7 +44,7 @@ struct Params {
   double scsmp2_scale_ss;
   double scscc_scale_os;
   double scscc_scale_ss;
-
+  int newtrips;
 };
 
 }} // namespace psi::ccenergy

@@ -276,18 +276,6 @@ void cleanup(void)
 {
   int i;
 
-  free(moinfo.sopi);
-  free(moinfo.orbspi);
-  free(moinfo.clsdpi);
-  free(moinfo.openpi);
-  free(moinfo.uoccpi);
-  free(moinfo.fruocc);
-  free(moinfo.frdocc);
-  free(moinfo.actpi);
-  for(i=0; i < moinfo.nirreps; i++)
-    free(moinfo.labels[i]);
-  free(moinfo.labels);
-
   if(params.ref == 2) { /* UHF */
     free(moinfo.aoccpi);
     free(moinfo.boccpi);
@@ -309,6 +297,10 @@ void cleanup(void)
     free_block(moinfo.scf_beta);
   }
   else {
+    free_block(moinfo.scf);
+    for(i=0; i < moinfo.nirreps; i++)
+      if(moinfo.sopi[i] && moinfo.virtpi[i]) free_block(moinfo.C[i]);
+    free(moinfo.C);
     free(moinfo.occpi);
     free(moinfo.virtpi);
     free(moinfo.occ_sym);
@@ -317,11 +309,20 @@ void cleanup(void)
     free(moinfo.vir_off);
     free(moinfo.qt_occ);
     free(moinfo.qt_vir);
-    free_block(moinfo.scf);
-    for(i=0; i < moinfo.nirreps; i++)
-      if(moinfo.sopi[i] && moinfo.virtpi[i]) free_block(moinfo.C[i]);
-    free(moinfo.C);
   }
+
+  free(moinfo.sopi);
+  free(moinfo.orbspi);
+  free(moinfo.clsdpi);
+  free(moinfo.openpi);
+  free(moinfo.uoccpi);
+  free(moinfo.fruocc);
+  free(moinfo.frdocc);
+  free(moinfo.actpi);
+
+  for(i=0; i < moinfo.nirreps; i++)
+    free(moinfo.labels[i]);
+  free(moinfo.labels);
 
   free_block(moinfo.usotao);
   free_block(moinfo.MUX);

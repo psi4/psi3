@@ -20,6 +20,7 @@ struct Params {
   char *abcd;
   int t3_Ws_incore;
   int nthreads;
+  int newtrips;
 };
 
 struct Eom_params {

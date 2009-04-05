@@ -191,6 +191,9 @@ void get_params(void)
   local.filter_singles = 1;
   ip_boolean("LOCAL_FILTER_SINGLES", &(local.filter_singles), 0);
 
+  params.newtrips = 1;
+  ip_boolean("NEWTRIPS", &params.newtrips, 0);
+
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
   if(params.semicanonical)

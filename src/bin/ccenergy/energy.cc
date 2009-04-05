@@ -170,8 +170,10 @@ double uhf_energy(void)
   fprintf(outfile, "Two AB Energy = %20.14f\n", E2AB);
   */
   
+  /*
   fprintf(outfile,"\n\tOpposite-spin energy  = %20.15f\n",E2AB);
   fprintf(outfile,"\tSame-spin energy  = %20.15f\n",E2AA+E2BB);
+  */
 
   return(T1A + T1B + E2AA + E2BB + E2AB);
 }

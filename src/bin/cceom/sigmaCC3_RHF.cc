@@ -72,7 +72,7 @@ void sigmaCC3_RHF_obsolete(int i, int C_irr, double omega)
 
   cc3_sigma_RHF(&CMnEf, &WAbEi, &WMbIj, 1,  &Dints, &SIA, 
     1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
-    moinfo.virtpi, moinfo.vir_off, omega, outfile);
+    moinfo.virtpi, moinfo.vir_off, omega, outfile, params.newtrips);
 
   dpd_buf4_close(&CMnEf);
   dpd_buf4_close(&WAbEi);
@@ -107,7 +107,7 @@ void sigmaCC3_RHF_obsolete(int i, int C_irr, double omega)
 
   cc3_sigma_RHF(&tIjAb, &WAbEi, &WMbIj, 1,  &Dints, &SIA,
      1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
-     moinfo.virtpi, moinfo.vir_off, omega, outfile);
+     moinfo.virtpi, moinfo.vir_off, omega, outfile, params.newtrips);
 
   dpd_buf4_close(&tIjAb);
   dpd_buf4_close(&WAbEi);
@@ -140,7 +140,7 @@ void sigmaCC3_RHF_obsolete(int i, int C_irr, double omega)
 
   cc3_sigma_RHF(&tIjAb, &WAbEi, &WMbIj, 0, NULL, NULL,
      1, &FME, &WmAEf, &WMnIe, &SIjAb, moinfo.occpi, moinfo.occ_off,
-     moinfo.virtpi, moinfo.vir_off, 0.0, outfile);
+     moinfo.virtpi, moinfo.vir_off, 0.0, outfile, params.newtrips);
 
   dpd_buf4_close(&tIjAb); 
   dpd_buf4_close(&WAbEi);
