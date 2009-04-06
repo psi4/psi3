@@ -46,7 +46,7 @@ ObaraSaikaTwoCenterMIRecursion::ObaraSaikaTwoCenterMIRecursion(int max_am1, int 
         throw std::runtime_error("ERROR: ObaraSaikaTwoCenterMIRecursion -- max_am2 must be nonnegative");
     if (max_m > 3)
         throw std::runtime_error("ERROR: ObaraSaikaTwoCenterMIRecursion -- max_m must be nonnegative and less than 4");
-    
+
     x_ = init_box(max_am1+3, max_am2+3, max_m+1);
     y_ = init_box(max_am1+3, max_am2+3, max_m+1);
     z_ = init_box(max_am1+3, max_am2+3, max_m+1);
@@ -65,27 +65,27 @@ void ObaraSaikaTwoCenterMIRecursion::compute(double PA[3], double PB[3], double 
         throw std::runtime_error("ERROR: ObaraSaikaTwoCenterMIRecursion::compute -- am1 out of bounds");
     if (am2 < 0 || am2 > max_am2_)
         throw std::runtime_error("ERROR: ObaraSaikaTwoCenterMIRecursion::compute -- am2 out of bounds");
-    
+
     int i, j, k;
     double oog = 1.0 / (2.0 * gamma);
-    
+
     if (max_m_) {
         x_[0][0][2] = y_[0][0][2] = z_[0][0][2] = oog;
     }
-    
+
     // Upward recursion in j for i=0
     for (j=0; j<am1; ++j) {
         for (k=0; k<=max_m_; ++k) {
             x_[0][j+1][k] = PB[0] * x_[0][j][k];
             y_[0][j+1][k] = PB[1] * y_[0][j][k];
             z_[0][j+1][k] = PB[2] * z_[0][j][k];
-            
+
             if (j > 0) {
                 x_[0][j+1][k] += j * oog * x_[0][j-1][k];
                 y_[0][j+1][k] += j * oog * y_[0][j-1][k];
-                z_[0][j+1][k] += j * oog * z_[0][j-1][k];                
+                z_[0][j+1][k] += j * oog * z_[0][j-1][k];
             }
-            
+
             if (k > 0) {
                 x_[0][j+1][k] += k * oog * x_[0][j][k-1];
                 y_[0][j+1][k] += k * oog * y_[0][j][k-1];
@@ -93,26 +93,26 @@ void ObaraSaikaTwoCenterMIRecursion::compute(double PA[3], double PB[3], double 
             }
         }
     }
-    
+
     // Upward recursion in i for all j's
     for (i=0; i<am1; ++i) {
         for (j=0; j<=am2; ++j) {
             x_[i+1][j][k] = PA[0] * x_[i][j][k];
             y_[i+1][j][k] = PA[1] * y_[i][j][k];
             z_[i+1][j][k] = PA[2] * z_[i][j][k];
-            
+
             if (i > 0) {
                 x_[i+1][j][k] += i * oog * x_[i-1][j][k];
                 y_[i+1][j][k] += i * oog * y_[i-1][j][k];
                 z_[i+1][j][k] += i * oog * z_[i-1][j][k];
             }
-            
+
             if (j > 0) {
                 x_[i+1][j][k] += j * oog * x_[i][j-1][k];
                 y_[i+1][j][k] += j * oog * y_[i][j-1][k];
                 z_[i+1][j][k] += j * oog * z_[i][j-1][k];
             }
-            
+
             if (k > 0) {
                 x_[i+1][j][k] += k * oog * x_[i][j][k-1];
                 y_[i+1][j][k] += k * oog * y_[i][j][k-1];
@@ -129,7 +129,7 @@ ObaraSaikaTwoCenterRecursion::ObaraSaikaTwoCenterRecursion(int max_am1, int max_
         throw std::runtime_error("ERROR: ObaraSaikaTwoCenterRecursion -- max_am1 must be nonnegative");
     if (max_am2 < 0)
         throw std::runtime_error("ERROR: ObaraSaikaTwoCenterRecursion -- max_am2 must be nonnegative");
-    
+
     x_ = block_matrix(max_am1_+1, max_am2_+1);
     y_ = block_matrix(max_am1_+1, max_am2_+1);
     z_ = block_matrix(max_am1_+1, max_am2_+1);
@@ -158,7 +158,7 @@ void ObaraSaikaTwoCenterRecursion::compute(double PA[3], double PB[3], double ga
     memset(x_[0], 0, sizeof(double) * (max_am1_+1) * (max_am2_+1));
     memset(y_[0], 0, sizeof(double) * (max_am1_+1) * (max_am2_+1));
     memset(z_[0], 0, sizeof(double) * (max_am1_+1) * (max_am2_+1));
-    
+
     x_[0][0] = y_[0][0] = z_[0][0] = 1.0;
 
     /* Upward recursion in j for i=0 */
@@ -218,7 +218,7 @@ ObaraSaikaTwoCenterVIRecursion::ObaraSaikaTwoCenterVIRecursion(int max_am1, int 
         throw std::runtime_error("ERROR: ObaraSaikaTwoCenterVIRecursion -- max_am1 must be nonnegative");
     if (max_am2 < 0)
         throw std::runtime_error("ERROR: ObaraSaikaTwoCenterVIRecursion -- max_am2 must be nonnegative");
-    
+
     size_ = max_am1 > max_am2 ? max_am1 : max_am2;
     size_ += 1;
     size_ = (size_-1)*size_*(size_+1)+1;
@@ -234,40 +234,85 @@ ObaraSaikaTwoCenterVIRecursion::~ObaraSaikaTwoCenterVIRecursion()
 
 void ObaraSaikaTwoCenterVIRecursion::calculate_f(double *F, int n, double t)
 {
-    int i, m;
-    int m2;
-    double t2, num, sum, term1;
-    static double K = 1.0/M_2_SQRTPI;
-    double et;
-    
-    if (t>20.0) {
-        t2 = 2*t;
-        et = exp(-t);
-        t = sqrt(t);
-        F[0] = K*erf(t)/t;
-        for (m=0; m<n; ++m) {
-            F[m+1] = ((2*m+1)*F[m] - et)/t2;
-        }
+  int i, m, k;
+  int m2;
+  double t2;
+  double num;
+  double sum;
+  double term1, term2;
+  static double K = 1.0/M_2_SQRTPI;
+  double et;
+
+
+  if (t>20.0){
+    t2 = 2*t;
+    et = exp(-t);
+    t = sqrt(t);
+    F[0] = K*erf(t)/t;
+    for(m=0; m<=n-1; m++){
+      F[m+1] = ((2*m + 1)*F[m] - et)/(t2);
+      }
     }
-    else {
-        et = exp(-t);
-        t2 = 2*t;
-        m2 = 2*n;
-        num = df[m2];
-        i = 0;
-        sum = 1.0/(m2+1);
-        do {
-            ++i;
-            num = num*t2;
-            term1 = num/df[m2+2*i+2];
-            sum += term1;
-        } while (fabs(term1) > EPS && i < MAX_FAC);
-        F[n] = sum*et;
-        for (m=n-1; m>=0; --m) {
-            F[m] = (t2*F[m+1] + et)/(2*m+1);
-        }
+  else {
+    et = exp(-t);
+    t2 = 2*t;
+    m2 = 2*n;
+    num = df[m2];
+    i=0;
+    sum = 1.0/(m2+1);
+    do{
+      i++;
+      num = num*t2;
+      term1 = num/df[m2+2*i+2];
+      sum += term1;
+      } while (fabs(term1) > EPS && i < MAX_FAC);
+    F[n] = sum*et;
+    for(m=n-1;m>=0;m--){
+      F[m] = (t2*F[m+1] + et)/(2*m+1);
+      }
     }
 }
+
+//void ObaraSaikaTwoCenterVIRecursion::calculate_f(double *F, int n, double t)
+//{
+//    int i, m;
+//    int m2;
+//    double t2, num, sum, term1;
+//    static double K = 1.0/M_2_SQRTPI;
+//    double et;
+//
+//    if (t>20.0) {
+//        t2 = 2.0*t;
+//        et = exp(-t);
+//        t = sqrt(t);
+//        F[0] = K*erf(t)/t;
+//        for (m=0; m<n; ++m) {
+//            F[m+1] = ((2.0*m+1)*F[m] - et)/t2;
+//        }
+//    }
+//    else {
+//        et = exp(-t);
+//        t2 = 2.0*t;
+//        m2 = 2.0*n;
+//        num = df[m2];
+//        i = 0;
+//        sum = 1.0/(m2+1);
+//        do {
+//            ++i;
+//            num = num*t2;
+//            term1 = num/df[m2+2*i+2];
+//            sum += term1;
+//        } while (fabs(term1) > EPS && i < MAX_FAC);
+//        F[n] = sum*et;
+//        for (m=n-1; m>=0; --m) {
+//            F[m] = (t2*F[m+1] + et)/(2.0*m+1.0);
+//        }
+//    }
+//
+//    fprintf(outfile, "calc_f(n = %d, t = %20.14f\n", n, t);
+//    for(m=0; m<n; ++m)
+//    	fprintf(outfile, "\tF[%d] = %20.14f\n", m, F[m]);
+//}
 
 void ObaraSaikaTwoCenterVIRecursion::compute(double PA[3], double PB[3], double PC[3], double zeta, int am1, int am2)
 {
@@ -282,31 +327,31 @@ void ObaraSaikaTwoCenterVIRecursion::compute(double PA[3], double PB[3], double 
     int aind, bind;
     double ooz = 1.0/(2.0 * zeta);
     int mmax = am1 + am2;
-    
+
     // Prefactor from A20
     double tmp = sqrt(zeta) * M_2_SQRTPI;
     // U from A21
     double u = zeta * (PC[0] * PC[0] + PC[1] * PC[1] + PC[2] * PC[2]);
     double *F = new double[mmax+1];
-    
+
     // Form Fm(U) from A20
     calculate_f(F, mmax, u);
-    
+
     // Perform recursion in m for (a|A(0)|s) using A20
     for (m=0; m<=mmax; ++m) {
         vi_[0][0][m] = tmp * F[m];
     }
-    
+
     // Perform recursion in b with a=0
     //  subset of A19
     for (b=1; b<=am2; ++b) {
         for (bx=0; bx<=b; ++bx) {
             for (by=0; by<=b-bx; ++by) {
                 bz = b-bx-by;
-                
+
                 // Compute the index into VI for bx,by,bz
                 bind = bx*bxm + by*bym + bz*bzm;
-                
+
                 // Compute each x, y, z contribution
                 if (bz > 0) {
                     for (m=0; m<=mmax-b; ++m) {
@@ -341,7 +386,7 @@ void ObaraSaikaTwoCenterVIRecursion::compute(double PA[3], double PB[3], double 
             }
         }
     }
-    
+
     // Perform upward recursion in a with all b's
     for (b=0; b<=am2; b++) {
         for (bx=0; bx<=b; bx++) {
@@ -442,16 +487,19 @@ void ObaraSaikaTwoCenterVIDerivRecursion::compute(double PA[3], double PB[3], do
     int aind, bind;
     double ooz = 1.0/(2.0 * zeta);
     int mmax = am1 + am2;
-    
+
     // Prefactor from A20
     double tmp = sqrt(zeta) * M_2_SQRTPI;
     // U from A21
     double u = zeta * (PC[0] * PC[0] + PC[1] * PC[1] + PC[2] * PC[2]);
     double *F = new double[mmax+1];
-    
+
+    // Zero out F
+    memset(F, 0, sizeof(double) * (mmax+1));
+
     // Form Fm(U) from A20
     calculate_f(F, mmax, u);
-    
+
     // Perform recursion in m for (a|A(0)|s) using A20
     for (m=0; m<=mmax; ++m) {
         vi_[0][0][m] = tmp * F[m];
@@ -461,17 +509,17 @@ void ObaraSaikaTwoCenterVIDerivRecursion::compute(double PA[3], double PB[3], do
         vy_[0][0][m] = 2.0*zeta*PC[1]*vi_[0][0][m+1];
         vz_[0][0][m] = 2.0*zeta*PC[2]*vi_[0][0][m+1];
     }
-    
+
     // Perform recursion in b with a=0
     //  subset of A19
     for (b=1; b<=am2; ++b) {
         for (bx=0; bx<=b; ++bx) {
             for (by=0; by<=b-bx; ++by) {
                 bz = b-bx-by;
-                
+
                 // Compute the index into VI for bx,by,bz
                 bind = bx*bxm + by*bym + bz*bzm;
-                
+
                 // Compute each x, y, z contribution
                 if (bz > 0) {
                     for (m=0; m<=mmax-b; ++m) {
@@ -489,7 +537,7 @@ void ObaraSaikaTwoCenterVIDerivRecursion::compute(double PA[3], double PB[3], do
                         for (m=0; m<=mmax-b-1; ++m) {
                             vx_[0][bind][m] += ooz * (bz-1) * (vx_[0][bind-2*bzm][m] - vx_[0][bind-2*bzm][m+1]);
                             vy_[0][bind][m] += ooz * (bz-1) * (vy_[0][bind-2*bzm][m] - vy_[0][bind-2*bzm][m+1]);
-                            vz_[0][bind][m] += ooz * (bz-1) * (vz_[0][bind-2*bzm][m] - vz_[0][bind-2*bzm][m+1]);                            
+                            vz_[0][bind][m] += ooz * (bz-1) * (vz_[0][bind-2*bzm][m] - vz_[0][bind-2*bzm][m+1]);
                         }
                     }
                 }
@@ -500,7 +548,7 @@ void ObaraSaikaTwoCenterVIDerivRecursion::compute(double PA[3], double PB[3], do
                     for (m=0; m<=mmax-b-1; ++m) {
                         vx_[0][bind][m] = PB[1] * vx_[0][bind-bym][m] - PC[1] * vx_[0][bind-bym][m+1];
                         vy_[0][bind][m] = PB[1] * vy_[0][bind-bym][m] - PC[1] * vy_[0][bind-bym][m+1] + vi_[0][bind-bym][m+1];
-                        vz_[0][bind][m] = PB[1] * vz_[0][bind-bym][m] - PC[1] * vz_[0][bind-bym][m+1];                        
+                        vz_[0][bind][m] = PB[1] * vz_[0][bind-bym][m] - PC[1] * vz_[0][bind-bym][m+1];
                     }
                     if (by > 1) {
                         for (m=0; m<=mmax-b; ++m) {
@@ -509,7 +557,7 @@ void ObaraSaikaTwoCenterVIDerivRecursion::compute(double PA[3], double PB[3], do
                         for (m=0; m<=mmax-b-1; ++m) {
                             vx_[0][bind][m] += ooz * (by-1) * (vx_[0][bind-2*bym][m] - vx_[0][bind-2*bym][m+1]);
                             vy_[0][bind][m] += ooz * (by-1) * (vy_[0][bind-2*bym][m] - vy_[0][bind-2*bym][m+1]);
-                            vz_[0][bind][m] += ooz * (by-1) * (vz_[0][bind-2*bym][m] - vz_[0][bind-2*bym][m+1]);                            
+                            vz_[0][bind][m] += ooz * (by-1) * (vz_[0][bind-2*bym][m] - vz_[0][bind-2*bym][m+1]);
                         }
                     }
                 }
@@ -520,7 +568,7 @@ void ObaraSaikaTwoCenterVIDerivRecursion::compute(double PA[3], double PB[3], do
                     for (m=0; m<=mmax-b-1; ++m) {
                         vx_[0][bind][m] = PB[0] * vx_[0][bind-bxm][m] - PC[0] * vx_[0][bind-bxm][m+1] + vi_[0][bind-bxm][m+1];
                         vy_[0][bind][m] = PB[0] * vy_[0][bind-bxm][m] - PC[0] * vy_[0][bind-bxm][m+1];
-                        vz_[0][bind][m] = PB[0] * vz_[0][bind-bxm][m] - PC[0] * vz_[0][bind-bxm][m+1];                        
+                        vz_[0][bind][m] = PB[0] * vz_[0][bind-bxm][m] - PC[0] * vz_[0][bind-bxm][m+1];
                     }
                     if (bx > 1) {
                         for (m=0; m<=mmax-b; ++m) {
@@ -529,14 +577,14 @@ void ObaraSaikaTwoCenterVIDerivRecursion::compute(double PA[3], double PB[3], do
                         for (m=0; m<=mmax-b-1; ++m) {
                             vx_[0][bind][m] += ooz * (bx-1) * (vx_[0][bind-2*bxm][m] - vx_[0][bind-2*bxm][m+1]);
                             vy_[0][bind][m] += ooz * (bx-1) * (vy_[0][bind-2*bxm][m] - vy_[0][bind-2*bxm][m+1]);
-                            vz_[0][bind][m] += ooz * (bx-1) * (vz_[0][bind-2*bxm][m] - vz_[0][bind-2*bxm][m+1]);                            
+                            vz_[0][bind][m] += ooz * (bx-1) * (vz_[0][bind-2*bxm][m] - vz_[0][bind-2*bxm][m+1]);
                         }
                     }
                 }
             }
         }
     }
-    
+
     // Perform upward recursion in a with all b's
     for (b=0; b<=am2; b++) {
         for (bx=0; bx<=b; bx++) {
@@ -570,7 +618,7 @@ void ObaraSaikaTwoCenterVIDerivRecursion::compute(double PA[3], double PB[3], do
                                     for (m=0; m<=mmax-a-b-1; ++m) {
                                         vx_[aind][bind][m] += ooz * (az-1) * (vx_[aind-2*azm][bind][m] - vx_[aind-2*azm][bind][m+1]);
                                         vy_[aind][bind][m] += ooz * (az-1) * (vy_[aind-2*azm][bind][m] - vy_[aind-2*azm][bind][m+1]);
-                                        vz_[aind][bind][m] += ooz * (az-1) * (vz_[aind-2*azm][bind][m] - vz_[aind-2*azm][bind][m+1]);                                        
+                                        vz_[aind][bind][m] += ooz * (az-1) * (vz_[aind-2*azm][bind][m] - vz_[aind-2*azm][bind][m+1]);
                                     }
                                 }
                                 if (bz > 0) {

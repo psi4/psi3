@@ -32,7 +32,7 @@ public:
         double mass;
         std::string label;
     };
-    
+
 protected:
     /// Number of atoms.
     int natoms_;
@@ -42,16 +42,16 @@ protected:
     int nirreps_;
     /// Zero it out
     void clear();
-    
+
 public:
     Molecule();
     virtual ~Molecule();
-    
+
     /// Pull information from a chkpt object created from psio
     void init_with_chkpt(Ref<psi::PSIO> &psio);
     /// Pull information from the chkpt object passed
     void init_with_chkpt(Ref<psi::Chkpt> &chkpt);
-    
+
     /// Add an atom to the molecule
     void add_atom(int Z, double x, double y, double z,
                   const char * = 0, double mass = 0.0,
@@ -79,32 +79,34 @@ public:
     const std::string label(int atom) const;
     /// Returns charge of atom
     double charge(int atom) const { return atoms_[atom].charge; }
-    
+
     /// Tests to see of an atom is at the passed position with a given tolerance
     int atom_at_position(double *, double tol = 0.05) const;
-    
+
     /// Computes center of mass of molecule (does not translate molecule)
     Vector3 center_of_mass() const;
     /// Computes nuclear repulsion energy
     double nuclear_repulsion_energy();
-    /// Computes number repulsion energy derivatives. Free with delete[]
+    /// Computes nuclear repulsion energy derivatives. Free with delete[]
     double* nuclear_repulsion_energy_deriv1();
-    
+    /// Computes nuclear repulsion energy second derivatives. Free with free_block
+    SimpleMatrix* nuclear_repulsion_energy_deriv2();
+
     /// Returns the nuclear contribution to the dipole moment
     SimpleVector nuclear_dipole_contribution();
     /// Returns the nuclear contribution to the quadrupole moment
     SimpleVector nuclear_quadrupole_contribution();
-    
+
     /// Translates molecule by r
     void translate(const Vector3& r);
     /// Moves molecule to center of mass
     void move_to_com();
-    
+
     /// Returns the number of irreps
     int nirrep() const { return nirreps_; }
     /// Sets the number of irreps
     void nirrep(int nirreps) { nirreps_ = nirreps; }
-    
+
     /// Print the molecule
     void print(FILE *out = outfile);
 };

@@ -28,7 +28,7 @@ std::string to_string(const int val)
     return strm.str();
 }
 
-Matrix::Matrix() 
+Matrix::Matrix()
 {
     matrix_ = NULL;
     rowspi_ = NULL;
@@ -126,7 +126,7 @@ void Matrix::copy(Matrix* cp)
             if (colspi_[h] != cp->colspi_[h] || rowspi_[h] != cp->colspi_[h])
                 same = false;
     }
-    
+
     if (same == false) {
         release();
         if (rowspi_)
@@ -142,7 +142,7 @@ void Matrix::copy(Matrix* cp)
         }
         alloc();
     }
-    
+
     // When here we are the same size
     for (int h=0; h<nirreps_; ++h) {
         if (rowspi_[h] != 0 && colspi_[h] != 0)
@@ -164,7 +164,7 @@ void Matrix::alloc()
     }
 }
 
-void Matrix::release() 
+void Matrix::release()
 {
     if (!matrix_)
         return;
@@ -179,7 +179,7 @@ void Matrix::release()
 
 void Matrix::copy_from(double ***c) {
     int size;
-    
+
     for (int h=0; h<nirreps_; ++h) {
         size = rowspi_[h] * colspi_[h] * sizeof(double);
         if (size)
@@ -192,7 +192,7 @@ void Matrix::set(double val)
 {
     for (int h=0; h < nirreps_; ++h) {
         size_t size = rowspi_[h] * colspi_[h];
-        
+
         for (size_t i=0; i<size; ++i) {
             matrix_[h][0][i] = val;
         }
@@ -203,7 +203,7 @@ void Matrix::set(const double *tri)
 {
     int h, i, j, ii, jj;
     int offset;
-    
+
     offset = 0;
     for (h=0; h<nirreps_; ++h) {
         for (i=0; i<rowspi_[h]; ++i) {
@@ -221,7 +221,7 @@ void Matrix::set(const double **sq)
 {
     int h, i, j, ii, jj;
     int offset;
-    
+
     if (sq == NULL) {
         zero();
         // TODO: Need to throw an exception here.
@@ -261,7 +261,7 @@ double **Matrix::to_block_matrix() const
         sizer += rowspi_[h];
         sizec += colspi_[h];
     }
-        
+
     double **temp = Matrix::matrix(sizer, sizec);
     int offsetr = 0, offsetc=0;
     for (int h=0; h <nirreps_; ++h) {
@@ -273,7 +273,7 @@ double **Matrix::to_block_matrix() const
         offsetr += rowspi_[h];
         offsetc += colspi_[h];
     }
-    
+
     return temp;
 }
 
@@ -282,17 +282,47 @@ SimpleMatrix *Matrix::to_simple_matrix()
     return new SimpleMatrix(this);
 }
 
+void Matrix::print_mat(double **a, int m, int n, FILE *out)
+{
+    int ii,jj,kk,nn,ll;
+    int i,j,k;
+
+    ii=0;jj=0;
+L200:
+    ii++;
+    jj++;
+    kk=10*jj;
+    nn=n;
+    if (nn > kk) nn=kk;
+    ll = 2*(nn-ii+1)+1;
+    fprintf (out,"\n");
+    for (i=ii; i <= nn; i++) fprintf(out,"       %5d",i);
+    fprintf (out,"\n");
+    for (i=0; i < m; i++) {
+       fprintf (out,"\n%5d",i+1);
+       for (j=ii-1; j < nn; j++) {
+          fprintf (out,"%20.15f",a[i][j]);
+          }
+       }
+    fprintf (out,"\n");
+    if (n <= kk) {
+       fflush(out);
+       return;
+       }
+    ii=kk; goto L200;
+}
+
 void Matrix::print(FILE *out, char *extra)
 {
     int h;
-    
+
     if (name_.length()) {
         if (extra == NULL)
             fprintf(out, "  ## %s ##\n", name_.c_str());
-        else 
+        else
             fprintf(out, "  ## %s %s ##\n", name_.c_str(), extra);
     }
-    
+
     for (h=0; h<nirreps_; ++h) {
         fprintf(out, "  Irrep: %d\n", h+1);
         print_mat(matrix_[h], rowspi_[h], colspi_[h], out);
@@ -304,11 +334,11 @@ void Matrix::print(FILE *out, char *extra)
 void Matrix::eivprint(Vector *values, FILE *out)
 {
     int h;
-    
+
     if (name_.length()) {
         fprintf(out, "  ## %s with eigenvalues ##\n", name_.c_str());
     }
-    
+
     for (h=0; h<nirreps_; ++h) {
         fprintf(out, " Irrep: %d\n", h+1);
         eivout(matrix_[h], values->vector_[h], rowspi_[h], colspi_[h], out);
@@ -321,10 +351,10 @@ void Matrix::set_to_identity()
 {
     int h;
     size_t size;
-    
+
     for (h=0; h<nirreps_; ++h) {
         size = rowspi_[h] * colspi_[h] * sizeof(double);
-        
+
         if (size) {
             memset(&(matrix_[h][0][0]), 0, size);
             for (int i=0; i<MIN(rowspi_[h], colspi_[h]); ++i)
@@ -337,10 +367,10 @@ void Matrix::zero()
 {
     size_t size;
     int h;
-    
+
     for (h=0; h<nirreps_; ++h) {
         size = rowspi_[h] * colspi_[h] * sizeof(double);
-        
+
         if (size) {
             memset(&(matrix_[h][0][0]), 0, size);
         }
@@ -350,7 +380,7 @@ void Matrix::zero()
 void Matrix::zero_diagonal()
 {
     int h, i;
-    
+
     for (h=0; h<nirreps_; ++h) {
         for (i=0; i<MIN(rowspi_[h], colspi_[h]); ++i) {
             matrix_[h][i][i] = 0.0;
@@ -362,20 +392,20 @@ double Matrix::trace()
 {
     int i, h;
     double val = (double)0.0;
-    
+
     for (h=0; h<nirreps_; ++h) {
         for (i=0; i<MIN(rowspi_[h], colspi_[h]); ++i) {
             val += matrix_[h][i][i];
         }
     }
-    
+
     return val;
 }
 
 Matrix* Matrix::transpose()
 {
     Matrix *temp = new Matrix(this);
-    
+
     int h, i, j;
     for (h=0; h<nirreps_; ++h) {
         for (i=0; i<rowspi_[h]; ++i) {
@@ -455,14 +485,14 @@ double Matrix::sum_of_squares()
             }
         }
     }
-    
+
     return sum;
 }
 
 void Matrix::transform(Matrix* a, Matrix* transformer)
 {
     Matrix temp(a);
-    
+
     temp.gemm(false, false, 1.0, a, transformer, 0.0);
     gemm(true, false, 1.0, transformer, &temp, 0.0);
 }
@@ -470,7 +500,7 @@ void Matrix::transform(Matrix* a, Matrix* transformer)
 void Matrix::transform(Matrix* transformer)
 {
     Matrix temp(this);
-    
+
     temp.gemm(false, false, 1.0, this, transformer, 0.0);
     gemm(true, false, 1.0, transformer, &temp, 0.0);
 }
@@ -478,7 +508,7 @@ void Matrix::transform(Matrix* transformer)
 void Matrix::back_transform(Matrix* a, Matrix* transformer)
 {
     Matrix temp(a);
-    
+
     temp.gemm(false, true, 1.0, a, transformer, 0.0);
     gemm(false, false, 1.0, transformer, &temp, 0.0);
 }
@@ -486,7 +516,7 @@ void Matrix::back_transform(Matrix* a, Matrix* transformer)
 void Matrix::back_transform(Matrix* transformer)
 {
     Matrix temp(this);
-    
+
     temp.gemm(false, true, 1.0, this, transformer, 0.0);
     gemm(false, false, 1.0, transformer, &temp, 0.0);
 }
@@ -496,7 +526,7 @@ void Matrix::gemm(bool transa, bool transb, double alpha, const Matrix* a, const
     char ta = transa ? 't' : 'n';
     char tb = transb ? 't' : 'n';
     int h, m, n, k, nca, ncb, ncc;
-    
+
     for (h=0; h<nirreps_; ++h) {
         m = rowspi_[h];
         n = colspi_[h];
@@ -504,7 +534,7 @@ void Matrix::gemm(bool transa, bool transb, double alpha, const Matrix* a, const
         nca = transa ? m : k;
         ncb = transb ? k : n;
         ncc = n;
-        
+
         if (m && n && k) {
             C_DGEMM(ta, tb, m, n, k, alpha, &(a->matrix_[h][0][0]),
                     nca, &(b->matrix_[h][0][0]), ncb, beta, &(matrix_[h][0][0]),
@@ -518,13 +548,13 @@ double Matrix::vector_dot(Matrix* rhs)
     double sum = 0.0;
     int h;
     size_t size;
-    
+
     for (h=0; h<nirreps_; ++h) {
         size = rowspi_[h] * colspi_[h];
         if (size)
             sum += C_DDOT(size, (&matrix_[h][0][0]), 1, &(rhs->matrix_[h][0][0]), 1);
     }
-    
+
     return sum;
 }
 
@@ -542,17 +572,17 @@ void Matrix::save(const char *filename, bool append, bool saveLowerTriangle, boo
 {
     static const char *str_block_format = "%3d %3d %3d %20.15f\n";
     static const char *str_full_format  = "%3d %3d %20.15f\n";
-    
+
     FILE *out = NULL;
     if (append == true) {
         out = fopen(filename, "a");
     } else {
         out = fopen(filename, "w");
     }
-    
+
     fprintf(out, name_.c_str());
     fprintf(out, "\n");
-    
+
     if (saveSubBlocks == false) {
         // Convert the matrix to a full matrix
         double **fullblock = to_block_matrix();
@@ -649,24 +679,24 @@ void Matrix::save(const char *filename, bool append, bool saveLowerTriangle, boo
             }
         }
     }
-    
+
     fclose(out);
 }
 
 bool Matrix::load(Ref<psi::PSIO>& psio, unsigned int fileno, char *tocentry, int nso)
 {
     double *integrals = init_array(ioff[nso]);
-    
+
     // If psi fails to read in the data this will abort out.
     if (tocentry != NULL)
         psi::IWL::read_one(psio.pointer(), fileno, tocentry, integrals, ioff[nso], 0, 0, outfile);
     else
         psi::IWL::read_one(psio.pointer(), fileno, const_cast<char*>(name_.c_str()), integrals, ioff[nso], 0, 0, outfile);
-    
+
     set(integrals);
-    
+
     ::free(integrals);
-    
+
     return true;
 }
 
@@ -679,12 +709,12 @@ void Matrix::save(Ref<psi::PSIO>& psio, unsigned int fileno, bool saveSubBlocks)
     } else {
         psio->open(fileno, PSIO_OPEN_OLD);
     }
-    
+
     if (saveSubBlocks) {
         for (int h=0; h<nirreps_; ++h) {
             std::string str(name_);
             str += " Irrep " + to_string(h);
-            
+
             // Write the sub-blocks
             if (colspi_[h] > 0 && rowspi_[h] > 0)
                 psio->write_entry(fileno, const_cast<char*>(str.c_str()), (char*)matrix_[h][0], sizeof(double) * colspi_[h] * rowspi_[h]);
@@ -697,13 +727,13 @@ void Matrix::save(Ref<psi::PSIO>& psio, unsigned int fileno, bool saveSubBlocks)
             sizer += rowspi_[h];
             sizec += colspi_[h];
         }
-        
+
         // Write the full block
         if (sizer > 0 && sizec > 0)
             psio->write_entry(fileno, const_cast<char*>(name_.c_str()), (char*)fullblock[0], sizeof(double) * sizer * sizec);
         Matrix::free(fullblock);
     }
-    
+
     if (!already_open)
         psio->close(fileno, 1);     // Close and keep
 }
@@ -713,13 +743,13 @@ void Matrix::save(Ref<psi::PSIO>& psio, unsigned int fileno, bool saveSubBlocks)
 //
 SimpleMatrix::SimpleMatrix() : matrix_(0), rows_(0), cols_(0)
 {
-    
+
 }
 
-SimpleMatrix::SimpleMatrix(std::string name) : 
+SimpleMatrix::SimpleMatrix(std::string name) :
         matrix_(0), rows_(0), cols_(0), name_(name)
 {
-    
+
 }
 
 SimpleMatrix::SimpleMatrix(const SimpleMatrix& c) : matrix_(0)
@@ -790,14 +820,14 @@ void SimpleMatrix::copy(SimpleMatrix* cp)
     bool same = true;
     if (rows_ != cp->rows_ || cols_ != cp->cols_)
         same = false;
-        
+
     if (same == false) {
         release();
         rows_ = cp->rows_;
         cols_ = cp->cols_;
         alloc();
     }
-    
+
     memcpy(&(matrix_[0][0]), &(cp->matrix_[0][0]), rows_ * cols_ * sizeof(double));
 }
 
@@ -805,7 +835,7 @@ void SimpleMatrix::alloc()
 {
     if (matrix_)
         release();
-        
+
     matrix_ = SimpleMatrix::matrix(rows_, cols_);
 }
 
@@ -813,7 +843,7 @@ void SimpleMatrix::release()
 {
     if (!matrix_)
         return;
-        
+
     SimpleMatrix::free(matrix_);
     matrix_ = NULL;
 }
@@ -828,7 +858,7 @@ void SimpleMatrix::copy_from(double **c)
 void SimpleMatrix::set(double val)
 {
     size_t size = rows_ * cols_;
-    
+
     for (size_t i=0; i<size; ++i) {
         matrix_[0][i] = val;
     }
@@ -868,7 +898,7 @@ void SimpleMatrix::print(FILE *out)
     if (name_.length()) {
         fprintf(out, "  ## %s ##\n", name_.c_str());
     }
-    
+
     print_mat(matrix_, rows_, cols_, out);
     fprintf(out, "\n");
 }
@@ -878,7 +908,7 @@ void SimpleMatrix::eivprint(SimpleVector *values, FILE *out)
     if (name_.length()) {
         fprintf(out, "  ## %s with eigenvalues ##\n", name_.c_str());
     }
-    
+
     eivout(matrix_, values->vector_, rows_, cols_, out);
     fprintf(out, "\n");
 }
@@ -913,13 +943,13 @@ double SimpleMatrix::trace() const
 SimpleMatrix* SimpleMatrix::transpose()
 {
     SimpleMatrix* temp = new SimpleMatrix(this);
-    
+
     for (int i=0; i<rows_; ++i) {
         for (int j=0; j<cols_; ++j) {
             temp->matrix_[i][j] = matrix_[j][i];
         }
     }
-    
+
     return temp;
 }
 
@@ -982,14 +1012,14 @@ double SimpleMatrix::sum_of_squares()
             sum += matrix_[i][j] * matrix_[i][j];
         }
     }
-    
+
     return sum;
 }
 
 void SimpleMatrix::transform(SimpleMatrix* a, SimpleMatrix* transformer)
 {
     SimpleMatrix temp(a);
-    
+
     temp.gemm(false, false, 1.0, a, transformer, 0.0);
     gemm(true, false, 1.0, transformer, &temp, 0.0);
 }
@@ -997,7 +1027,7 @@ void SimpleMatrix::transform(SimpleMatrix* a, SimpleMatrix* transformer)
 void SimpleMatrix::transform(SimpleMatrix* transformer)
 {
     SimpleMatrix temp(this);
-    
+
     temp.gemm(false, false, 1.0, this, transformer, 0.0);
     gemm(true, false, 1.0, transformer, &temp, 0.0);
 }
@@ -1005,7 +1035,7 @@ void SimpleMatrix::transform(SimpleMatrix* transformer)
 void SimpleMatrix::back_transform(SimpleMatrix* a, SimpleMatrix* transformer)
 {
     SimpleMatrix temp(a);
-    
+
     temp.gemm(false, true, 1.0, a, transformer, 0.0);
     gemm(false, false, 1.0, transformer, &temp, 0.0);
 }
@@ -1013,7 +1043,7 @@ void SimpleMatrix::back_transform(SimpleMatrix* a, SimpleMatrix* transformer)
 void SimpleMatrix::back_transform(SimpleMatrix* transformer)
 {
     SimpleMatrix temp(this);
-    
+
     temp.gemm(false, true, 1.0, this, transformer, 0.0);
     gemm(false, false, 1.0, transformer, &temp, 0.0);
 }
@@ -1023,14 +1053,14 @@ void SimpleMatrix::gemm(bool transa, bool transb, double alpha, const SimpleMatr
     char ta = transa ? 't' : 'n';
     char tb = transb ? 't' : 'n';
     int m, n, k, nca, ncb, ncc;
-    
+
     m = rows_;
     n = cols_;
     k = a->cols_;
     nca = transa ? m : k;
     ncb = transb ? k : n;
     ncc = n;
-        
+
     if (m && n && k) {
         C_DGEMM(ta, tb, m, n, k, alpha, &(a->matrix_[0][0]),
                 nca, &(b->matrix_[0][0]), ncb, beta, &(matrix_[0][0]),
@@ -1042,11 +1072,11 @@ double SimpleMatrix::vector_dot(SimpleMatrix* rhs)
 {
     double sum = 0.0;
     size_t size;
-    
+
     size = rows_ * cols_;
     if (size)
         sum += C_DDOT(size, (&matrix_[0][0]), 1, &(rhs->matrix_[0][0]), 1);
-    
+
     return sum;
 }
 
@@ -1068,7 +1098,7 @@ void SimpleMatrix::save(Ref<psi::PSIO>& psio, unsigned int fileno)
     }
 
     psio->write_entry(fileno, const_cast<char*>(name_.c_str()), (char*)matrix_[0], sizeof(double) * rows_ * cols_);
-    
+
     if (!already_open)
         psio->close(fileno, 1);     // Close and keep
 }
@@ -1076,14 +1106,14 @@ void SimpleMatrix::save(Ref<psi::PSIO>& psio, unsigned int fileno)
 void SimpleMatrix::save(const char *filename, bool append, bool saveLowerTriangle)
 {
     static const char *str_full_format  = "%3d %3d %20.15f\n";
-    
+
     FILE *out = NULL;
     if (append == true) {
         out = fopen(filename, "a");
     } else {
         out = fopen(filename, "w");
     }
-    
+
     fprintf(out, name_.c_str());
     fprintf(out, "\n");
 
@@ -1124,6 +1154,6 @@ void SimpleMatrix::save(const char *filename, bool append, bool saveLowerTriangl
             }
         }
     }
-    
+
     fclose(out);
 }

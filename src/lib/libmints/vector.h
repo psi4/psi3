@@ -12,7 +12,7 @@
 #include <libmints/ref.h>
 
 namespace psi {
-    
+
 class Vector {
 protected:
     /// Vector data
@@ -21,15 +21,15 @@ protected:
     int nirreps_;
     /// Dimensions per irrep
     int *dimpi_;
-    
+
     /// Allocates vector_
     void alloc();
     /// Releases vector_
     void release();
-    
+
     /// Copies data to vector_
     void copy_from(double **);
-    
+
 public:
     /// Default constructor, zeros everything out
     Vector();
@@ -37,10 +37,10 @@ public:
     Vector(const Vector& copy);
     /// Constructor, allocates memory
     Vector(int nirreps, int *dimpi);
-    
+
     /// Destructor, frees memory
     ~Vector();
-    
+
     /// Sets the vector_ to the data in vec
     void set(double *vec);
     /// Returns a single element value
@@ -53,7 +53,7 @@ public:
     }
     /// Returns a copy of the vector_
     double *to_block_vector();
-    
+
     /// Returns the dimension array
     int *dimpi() const {
         return dimpi_;
@@ -62,12 +62,12 @@ public:
     int nirreps() const {
         return nirreps_;
     }
-    
+
     /// Prints the vector
     void print(FILE *);
     /// Copies rhs to this
     void copy(const Vector* rhs);
-    
+
     friend class Matrix;
 };
 
@@ -76,7 +76,7 @@ public:
     RefVector();
     RefVector(Vector* o);
     RefVector(const RefVector& o);
-    
+
     void set(double *vec);
     double get(int h, int m) {
         return pointer()->get(h, m);
@@ -93,7 +93,7 @@ public:
     int nirreps() {
         return pointer()->nirreps();
     }
-    
+
     void print(FILE *out) {
         pointer()->print(out);
     }
@@ -153,7 +153,7 @@ public:
         for (int i=0; i<dim_; ++i)
             vector_[i] = x.vector_[i];
     }
-    
+
     /// Prints the vector
     void print(FILE *);
     /// Copy rhs to this
@@ -168,8 +168,10 @@ public:
     RefSimpleVector();
     RefSimpleVector(SimpleVector* o);
     RefSimpleVector(const RefSimpleVector& o);
-    
-    void set(double *vec);
+
+    void set(double *vec) {
+    	pointer()->set(vec);
+    }
     double get(int m) {
         return pointer()->get(m);
     }
@@ -182,14 +184,14 @@ public:
     int dim() {
         return pointer()->dim();
     }
-    
+
     void print(FILE *out) {
         pointer()->print(out);
     }
     void copy(const RefSimpleVector& rhs) {
         pointer()->copy(rhs.pointer());
     }
-    
+
     double& operator[](int i) { return (*pointer())[i]; }
 };
 
