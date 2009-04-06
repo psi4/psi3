@@ -13,6 +13,7 @@
 #include <libmints/ref.h>
 #include <libmints/vector3.h>
 #include <libmints/vector.h>
+#include <libmints/matrix.h>
 
 #include <libpsio/psio.hpp>
 #include <libchkpt/chkpt.hpp>
