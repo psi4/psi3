@@ -987,6 +987,7 @@ AC_CONFIG_FILES([include/Makefile
           tests/cc48/Makefile
           tests/cc49/Makefile
           tests/cc50/Makefile
+          tests/cc51/Makefile
           tests/psimrcc-sp1/Makefile
           tests/psimrcc-mp2-ccsd-1/Makefile
           tests/psimrcc-mp2-ccsd-2/Makefile

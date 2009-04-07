@@ -1,0 +1,17 @@
+psi: (
+  label = "CC3 1B1 Excited-State H2O Test"
+  wfn = eom_cc3
+  reference = rhf
+  multp = 1
+  basis = "cc-pVTZ"
+  states_per_irrep = (0 0 1 0)
+
+  units = bohr
+  % H2O Re geom from Olsen et al., JCP 104, 8007 (1996)
+  geometry = (
+    O 0.0  0.00000000 -0.00900000
+    H 0.0 -1.51526300 -1.05889800
+    H 0.0  1.51526300 -1.05889800
+  )
+)
+

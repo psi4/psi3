@@ -1,0 +1,768 @@
+******************************************************************************
+PSI3 started on elrond.chem at Mon Apr  6 10:42:04 2009
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF EOM_CC3 energy computation.
+
+The following programs will be executed:
+
+ input
+ cints
+ cscf
+ transqt2
+ ccsort
+ ccenergy
+ cchbar
+ cceom
+ psiclean
+
+******************************************************************************
+INPUT tstart called on elrond.chem
+Mon Apr  6 10:42:04 2009
+
+                                --------------
+                                    INPUT
+                                --------------
+
+  LABEL       =	CC3 1B1 Excited-State H2O Test
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /usr/local/psi/share/psi/pbasis.dat
+
+  -Geometry before Center-of-Mass shift (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.009000000000
+    H         0.000000000000    -1.515263000000    -1.058898000000
+    H         0.000000000000     1.515263000000    -1.058898000000
+
+
+  -Rotational constants (cm-1) :
+    A =   30.50916  B =   13.00778  C =    9.11958
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.117499201619     0.000000000000
+    H        -1.515263000000    -0.932398798381     0.000000000000
+    H         1.515263000000    -0.932398798381     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S ( 15330.00000000     0.00050800)
+           (  2299.00000000     0.00392900)
+           (   522.40000000     0.02024300)
+           (   147.30000000     0.07918100)
+           (    47.55000000     0.23068700)
+           (    16.76000000     0.43311800)
+           (     6.20700000     0.35026000)
+           (     1.75200000     0.04272800)
+           (     0.68820000    -0.00815400)
+           (     0.23840000     0.00238100) )
+        (S ( 15330.00000000    -0.00011500)
+           (  2299.00000000    -0.00089500)
+           (   522.40000000    -0.00463600)
+           (   147.30000000    -0.01872400)
+           (    47.55000000    -0.05846300)
+           (    16.76000000    -0.13646300)
+           (     6.20700000    -0.17574000)
+           (     1.75200000     0.16093400)
+           (     0.68820000     0.60341800)
+           (     0.23840000     0.37876500) )
+        (S (     1.75200000     1.00000000) )
+        (S (     0.23840000     1.00000000) )
+        (P (    34.46000000     0.01592800)
+           (     7.74900000     0.09974000)
+           (     2.28000000     0.31049200)
+           (     0.71560000     0.49102600)
+           (     0.21400000     0.33633700) )
+        (P (     0.71560000     1.00000000) )
+        (P (     0.21400000     1.00000000) )
+        (D (     2.31400000     1.00000000) )
+        (D (     0.64500000     1.00000000) )
+        (F (     1.42800000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    33.87000000     0.00606800)
+           (     5.09500000     0.04530800)
+           (     1.15900000     0.20282200)
+           (     0.32580000     0.50390300)
+           (     0.10270000     0.38342100) )
+        (S (     0.32580000     1.00000000) )
+        (S (     0.10270000     1.00000000) )
+        (P (     1.40700000     1.00000000) )
+        (P (     0.38800000     1.00000000) )
+        (D (     1.05700000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 22
+    Number of primitives   = 42
+    Number of AO           = 65
+    Number of SO           = 58
+
+    Irrep    Number of SO
+    -----    ------------
+      1           23
+      2            7
+      3           11
+      4           17
+
+  -Contraction Scheme:
+    Atom     All Primitives // Unique Primitives // Shells
+    ----     ---------------------------------------------
+       1      22s 7p 2d 1f //  10s 5p 2d 1f //  4s 3p 2d 1f
+       2      7s 2p 1d //  5s 2p 1d //  3s 2p 1d
+       3      7s 2p 1d //  5s 2p 1d //  3s 2p 1d
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000     0.117499201619
+    H         0.000000000000     1.515263000000    -0.932398798381
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000     0.117499201619
+    H         0.000000000000    -1.515263000000    -0.932398798381
+    H         0.000000000000     1.515263000000    -0.932398798381
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000     0.062177904272
+    H         0.000000000000    -0.801842705851    -0.493404231098
+    H         0.000000000000     0.801842705851    -0.493404231098
+
+
+  -Geometry in the reference coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000     0.117499201619
+    H         0.000000000000    -1.515263000000    -0.932398798381
+    H         0.000000000000     1.515263000000    -0.932398798381
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.009354229663
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9755118   0.0000000
+    3   0.9755118   1.6036854   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+INPUT tstop called on elrond.chem
+Mon Apr  6 10:42:04 2009
+
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+cints tstart called on elrond.chem
+Mon Apr  6 10:42:04 2009
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = CC3 1B1 Excited-State H2O Test
+    Number of atoms             = 3
+    Number of atomic orbitals   = 65
+    Number of symmetry orbitals = 58
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 350015 two-electron integrals to IWL file 33
+
+******************************************************************************
+cints tstop called on elrond.chem
+Mon Apr  6 10:42:05 2009
+
+user time   =       0.42 seconds =       0.01 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+SCF tstart called on elrond.chem
+Mon Apr  6 10:42:05 2009
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+  label        = CC3 1B1 Excited-State H2O Test
+  wfn          = EOM_CC3
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = NONE
+  convergence  = 10
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.0093542296627
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 2192496 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 2.613335e-03
+
+  Using core guess to determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 125798 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -61.3770040316    7.038636e+01    0.000000e+00    0.000000e+00
+    2       -67.4810688866    6.104065e+00    7.942014e-02    1.878578e+00
+    3       -73.2523665918    5.771298e+00    5.045960e-02    9.380417e-01
+    4       -75.1914732644    1.939107e+00    8.269713e-03    8.271526e-01
+    5       -76.0429139455    8.514407e-01    6.832605e-03    3.976952e-01
+    6       -76.0524345285    9.520583e-03    4.900865e-04    5.808285e-02
+    7       -76.0543743063    1.939778e-03    2.575090e-04    2.712041e-02
+    8       -76.0544301712    5.586485e-05    4.965881e-05    2.928610e-03
+    9       -76.0544371834    7.012209e-06    2.040492e-05    8.255112e-04
+   10       -76.0544373049    1.215312e-07    2.632648e-06    1.513114e-04
+   11       -76.0544373133    8.331071e-09    8.227451e-07    2.918389e-05
+   12       -76.0544373135    2.042384e-10    1.283205e-07    4.155873e-06
+   13       -76.0544373135    3.296918e-12    2.212569e-08    6.080031e-07
+   14       -76.0544373135    4.263256e-14    2.434822e-09    9.123697e-08
+   15       -76.0544373135    0.000000e+00    3.921895e-10    1.053363e-08
+   16       -76.0544373135   -1.421085e-14    6.385784e-11    2.484331e-09
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.554691     2A1     -1.332053     1B2     -0.710515  
+   3A1     -0.562421     1B1     -0.500873  
+
+
+  Unoccupied orbitals
+   4A1      0.141065     2B2      0.201193     3B2      0.547919  
+   5A1      0.569034     6A1      0.677906     2B1      0.788425  
+   4B2      0.800995     7A1      0.832376     1A2      0.844910  
+   3B1      0.978659     8A1      1.138830     5B2      1.169232  
+   9A1      1.525849     6B2      1.526356     4B1      1.999830  
+   2A2      2.072522     7B2      2.084160    10A1      2.139946  
+  11A1      2.246522    12A1      2.635187     8B2      2.927357  
+   5B1      3.406029    13A1      3.508375     3A2      3.522755  
+   9B2      3.590268     6B1      3.792529    10B2      3.867332  
+  14A1      3.876533     4A2      3.932747     7B1      4.034153  
+  11B2      4.089875    15A1      4.157930     5A2      4.323317  
+  16A1      4.424550    12B2      4.441704     8B1      4.671023  
+  13B2      4.829504    17A1      5.050498    18A1      5.249272  
+  14B2      5.548362     9B1      5.978481    19A1      6.396945  
+  10B1      6.894361     6A2      6.915304    20A1      6.961890  
+  11B1      6.988849    21A1      7.111576    15B2      7.132524  
+   7A2      7.181763    22A1      7.490992    16B2      7.707261  
+  17B2      8.168792    23A1     12.614541  
+
+
+      * SCF total energy   =     -76.054437313463
+        kinetic energy     =      75.925184303633
+        nuc. attr. energy  =    -198.731662393579
+        elec. rep. energy  =      46.752040776484
+        potential energy   =    -151.979621617095
+        virial theorem     =       1.998300519807
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+SCF tstop called on elrond.chem
+Mon Apr  6 10:42:05 2009
+
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+TRANSQT tstart called on elrond.chem
+Mon Apr  6 10:42:05 2009
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	EOM_CC3
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 58
+	Number of MOs        = 58
+	Number of active MOs = 58
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   23	    0	    3	    0	    20	    0
+	 A2 	   7	    0	    0	    0	    7	    0
+	 B1 	   11	    0	    1	    0	    10	    0
+	 B2 	   17	    0	    1	    0	    16	    0
+
+	Nuclear Rep. energy (chkpt) =      9.00935422966266
+	SCF energy          (chkpt) =    -76.05443731346253
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on elrond.chem
+Mon Apr  6 10:42:06 2009
+
+user time   =       0.52 seconds =       0.01 minutes
+system time =       0.39 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCSORT tstart called on elrond.chem
+Mon Apr  6 10:42:06 2009
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	EOM_CC3
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Make unpacked (ab|cd) =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 58
+	Number of active MOs = 58
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   23	    0	    3	    0	    20	    0
+	 A2 	   7	    0	    0	    0	    7	    0
+	 B1 	   11	    0	    1	    0	    10	    0
+	 B2 	   17	    0	    1	    0	    16	    0
+
+	Nuclear Rep. energy (chkpt) =      9.00935422966266
+	SCF energy          (chkpt) =    -76.05443731346253
+
+	Size of irrep 0 of <ab|cd> integrals:      0.648 (MW) /      5.184 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.360 (MW) /      2.880 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.389 (MW) /      3.115 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.608 (MW) /      4.867 (MB)
+	Total:                                     2.006 (MW) /     16.046 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.069 (MW) /      0.554 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.028 (MW) /      0.226 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.036 (MW) /      0.285 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.059 (MW) /      0.468 (MB)
+	Total:                                     0.191 (MW) /      1.532 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.009 (MW) /      0.071 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.001 (MW) /      0.010 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.004 (MW) /      0.030 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.005 (MW) /      0.037 (MB)
+	Total:                                     0.018 (MW) /      0.148 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
+	One-electron energy          =   -122.80647808994678
+	Two-electron (AA) energy     =     14.40171094955421
+	Two-electron (BB) energy     =     14.40171094955421
+	Two-electron (AB) energy     =     23.34097559726734
+	Two-electron energy          =     37.74268654682155
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.05443731346257
+******************************************************************************
+CCSORT tstop called on elrond.chem
+Mon Apr  6 10:42:07 2009
+
+user time   =       0.37 seconds =       0.01 minutes
+system time =       0.41 seconds =       0.01 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCENERGY tstart called on elrond.chem
+Mon Apr  6 10:42:07 2009
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.009354229662664
+	SCF energy          (chkpt)   =  -76.054437313462529
+	Reference energy    (file100) =  -76.054437313462572
+
+	Input parameters:
+	-----------------
+	Wave function   =   EOM_CC3
+	Reference wfn   =     RHF
+	Memory (Mbytes) =     256.0
+	Maxiter         =     50
+	Convergence     =     1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	AO Basis        =     NONE
+	ABCD            =     NEW
+	Cache Level     =     2
+	Cache Type      =     LOW
+	Print Level     =     0
+	Num. of threads =     1
+	# Amps to Print =     10
+	Print MP2 Amps? =     No
+	Analyze T2 Amps =     No
+	Print Pair Ener =     No
+	Local CC        =     No
+	T3 Ws incore    =     No
+	SCS             =     False
+	MP2_SCALE_OS    =     1.200000
+	MP2_SCALE_SS    =     0.333333
+	CC_SCALE_OS     =     1.270000
+	CC_SCALE_SS     =     1.130000
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.275835053041014    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.284194341888453    2.916e-02    0.004406    0.008041    0.008041
+     2        -0.289394065195168    1.031e-02    0.005096    0.009416    0.009416
+     3        -0.289651484187622    2.694e-03    0.005531    0.010486    0.010486
+     4        -0.289681268370537    7.302e-04    0.005595    0.010758    0.010758
+     5        -0.289694265738120    2.079e-04    0.005617    0.010893    0.010893
+     6        -0.289692049531550    7.001e-05    0.005624    0.010944    0.010944
+     7        -0.289692055005594    2.234e-05    0.005628    0.010968    0.010968
+     8        -0.289691638081271    4.124e-06    0.005629    0.010970    0.010970
+     9        -0.289691585437130    1.121e-06    0.005629    0.010971    0.010971
+    10        -0.289691607840388    2.606e-07    0.005629    0.010971    0.010971
+    11        -0.289691606419503    6.247e-08    0.005629    0.010971    0.010971
+
+	Iterations converged.
+
+
+	Largest TIA Amplitudes:
+	          3  27        -0.0068849784
+	          2   0        -0.0063232727
+	          4  41         0.0053297306
+	          3  28         0.0043934606
+	          2   3         0.0041740276
+	          2   5         0.0040037989
+	          1   2        -0.0038552446
+	          2   2         0.0037971325
+	          4  46         0.0036633867
+	          2  11         0.0035898241
+
+	Largest TIjAb Amplitudes:
+	  3   3  27  27        -0.0499894542
+	  2   2   2   2        -0.0326014544
+	  4   4   1   1        -0.0291682386
+	  2   3   2  27         0.0283326672
+	  3   2  27   2         0.0283326672
+	  4   4  38  38        -0.0281223945
+	  2   2  38  38        -0.0235715577
+	  3   4  27  39        -0.0232682916
+	  4   3  39  27        -0.0232682916
+	  4   4  39  39        -0.0232373445
+
+	SCF energy       (chkpt)              =  -76.054437313462529
+	Reference energy (file100)            =  -76.054437313462572
+
+	Scaled_OS MP2 correlation energy      =   -0.224068882200888
+	Scaled_SS MP2 correlation energy      =   -0.022234698773395
+	SCS-MP2 correlation energy            =   -0.246303580974283
+      * SCS-MP2 total energy                  =  -76.300740894436842
+
+	Opposite-spin MP2 correlation energy  =   -0.209130956720828
+	Same-spin MP2 correlation energy      =   -0.066704096320186
+	MP2 correlation energy                =   -0.275835053041014
+      * MP2 total energy                      =  -76.330272366503593
+	CC3 correlation energy     =   -0.289691606419503
+      * CC3 total energy           =  -76.344128919882081
+
+******************************************************************************
+CCENERGY tstop called on elrond.chem
+Mon Apr  6 10:42:24 2009
+
+user time   =      14.44 seconds =       0.24 minutes
+system time =       3.35 seconds =       0.06 minutes
+total time  =         17 seconds =       0.28 minutes
+******************************************************************************
+CCHBAR tstart called on elrond.chem
+Mon Apr  6 10:42:24 2009
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+Dots of (HeT1)c in names "CC3 Wxxx" in CC3_HET1 
+<WAmEf (Am,Ef) | WAmEf (Am,Ef)> =   11.4550009906
+<WMnIe (Mn,Ie) | WMnIe (Mn,Ie)> =    3.5330094166
+<WMnIj (Mn,Ij) | WMnIj (Mn,Ij)> =   38.6161220578
+<WMbIj (Ij,Mb) | WMbIj (Ij,Mb)> =    3.5598235807
+<WMbIj (Mb,Ij) | WMbIj (Mb,Ij)> =    3.5598235807
+<WMbEj (ME,jb) | WMbEj (ME,jb)> =    1.7094466774
+<WMbeJ (Me,Jb) | WMbeJ (Me,Jb)> =  113.7063702574
+<WAbEi (Ie,bA) | WAbEi (Ie,bA)> =   11.5303140642
+******************************************************************************
+CCHBAR tstop called on elrond.chem
+Mon Apr  6 10:42:25 2009
+
+user time   =       0.15 seconds =       0.00 minutes
+system time =       0.16 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCEOM tstart called on elrond.chem
+Mon Apr  6 10:42:25 2009
+
+
+	**********************************************************
+	*  CCEOM: An Equation of Motion Coupled Cluster Program  *
+	**********************************************************
+
+	Nuclear Rep. energy (chkpt)   =    9.009354229662664
+	SCF energy          (chkpt)   =  -76.054437313462529
+	Reference energy    (file100) =  -76.054437313462572
+	CC3 energy          (file100) =   -0.289691606419503
+
+	Input parameters:
+	-----------------
+	Reference wfn   =     RHF
+	Reference EOM wfn=     RHF
+	Memory (Mbytes) =  256.0
+	AO Basis        =     No
+	ABCD            =     NEW
+	Cache Level     =    2
+	Cache Type      =     LRU
+	T3 Ws incore  =      No
+	Num. of threads =     1
+	Local CC        =     No
+
+
+	CCEOM parameters:
+	-----------------
+	States sought per irrep     = A1  0, A2  0, B1  1, B2  0,
+	Max. number of iterations   =   320
+	Vectors stored per root     =    12
+	Print HbarSS iterations?    =     0
+	Excitation range for HBarSS =     2
+	Eigenvalue tolerance        = 1.0e-08
+	Eigenvalue toleranceSS      = 1.0e-06
+	Residual vector tolerance   = 1.0e-06
+	Residual vector toleranceSS = 1.0e-06
+	Complex tolerance           = 1.0e-12
+	Root for properties         =     1
+	Sym of state for properties =    B1 
+	Guess vectors taken from    = SINGLES
+	Restart EOM CC3             = NO
+	Collapse with last vector   = YES
+
+
+Symmetry of ground state: A1 
+Symmetry of excited state: B1 
+Symmetry of right eigenvector: B1 
+Seeking states with multiplicity of 1
+Obtaining initial guess from singles-singles block of Hbar...Done.
+
+Iter=1    L=1     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.4167468879   4.17e-01    5.57e-01      N
+Iter=2    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2982708336  -1.18e-01    8.87e-02      N
+Iter=3    L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2959659226  -2.30e-03    2.40e-02      N
+Iter=4    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2958576191  -1.08e-04    7.63e-03      N
+Iter=5    L=5     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2958528094  -4.81e-06    1.85e-03      N
+Iter=6    L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2958533332   5.24e-07    6.71e-04      N
+Iter=7    L=7     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2958537967   4.64e-07    2.57e-04      N
+Iter=8    L=8     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2958543177   5.21e-07    6.99e-05      N
+Iter=9    L=9     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2958540278  -2.90e-07    1.98e-05      N
+Iter=10   L=10    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2958541041   7.63e-08    5.71e-06      N
+Iter=11   L=11    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2958541090   4.97e-09    1.36e-06      N
+Iter=12   L=12    Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2958541116   2.52e-09    3.56e-07      Y
+Iter=13   L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2958541116  -7.54e-13    3.56e-07      Y
+Completed EOM_CCSD
+Collapsing to only 1 vector(s).
+Copying root 1 to CC3_MISC file.
+Setting initial CC3 eigenvalue to    0.2958541116
+Iter=1    L=1     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2934867016  -2.37e-03    4.89e-02      N
+Iter=2    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2921146189  -1.37e-03    1.39e-02      N
+Iter=3    L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2921684921   5.39e-05    3.64e-03      N
+Iter=4    L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2921508024  -1.77e-05    1.14e-03      N
+Iter=5    L=5     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2921471470  -3.66e-06    3.19e-04      N
+Iter=6    L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2921485171   1.37e-06    8.65e-05      N
+Iter=7    L=7     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2921486778   1.61e-07    2.92e-05      N
+Collapsing to 2 vector(s).
+Change in CC3 energy from last iterated value   -0.0037054338
+Iter=8    L=2     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2921458144  -2.86e-06    6.47e-05      N
+Iter=9    L=3     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2921454356  -3.79e-07    1.91e-05      N
+Iter=10   L=4     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2921452428  -1.93e-07    5.26e-06      N
+Iter=11   L=5     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2921452763   3.34e-08    1.57e-06      N
+Iter=12   L=6     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2921452788   2.54e-09    5.51e-07      Y
+Forcing restart to make sure new sigma vectors give same eigenvalue.
+Collapsing to only 1 vector(s).
+Change in CC3 energy from last iterated value   -0.0000033990
+Setting old CC3 eigenvalue to    0.2921452788
+Iter=13   L=1     Root    EOM Energy     Delta E   Res. Norm    Conv?
+                     1   0.2921452757  -3.08e-09    5.58e-07      Y
+Collapsing to only 1 vector(s).
+Change in CC3 energy from last iterated value   -0.0000000031
+
+Procedure converged for 1 root(s).
+Energy written to chkpt:Etot  -76.0519836442
+EOM CC3 R0 for root 0 =   0.00000000000
+
+Final Energetic Summary for Converged Roots of Irrep B1 
+                     Excitation Energy              Total Energy
+                (eV)     (cm^-1)     (au)             (au)
+EOM State 1      7.950    64118.5   0.2921452757   -76.051983644169
+
+Largest components of excited wave function #1:
+	          3   0        -0.6714703974
+	          3   1        -0.0981470299
+	          3   2         0.0587842667
+	          3   3         0.0247616839
+	          3   4        -0.0246211016
+	  3   3   0  27        -0.0759932519
+	  3   3  27   0        -0.0759932519
+	  3   4   0  37         0.0548457657
+	  4   3  37   0         0.0548457657
+	  2   3   2   0         0.0513307255
+
+
+	Total # of sigma evaluations: 26
+******************************************************************************
+CCEOM tstop called on elrond.chem
+Mon Apr  6 10:43:30 2009
+
+user time   =      54.17 seconds =       0.90 minutes
+system time =      11.31 seconds =       0.19 minutes
+total time  =         65 seconds =       1.08 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on elrond.chem at Mon Apr  6 10:43:30 2009
+
+Total PSI3 wall time         86 seconds =       1.43 minutes
+******************************************************************************
