@@ -1,6 +1,6 @@
 /*! \file
     \ingroup CINTS
-    \brief Enter brief description of file here 
+    \brief Enter brief description of file here
 */
 #include<cmath>
 #include<cstdio>
@@ -221,9 +221,9 @@ void angmom_ints(void)
 		  muzx1 = Szx1 + (A.z - C.z) * S0x1;
 		  /* (a|(z-Cz)|b+1y) */
 		  muzy1 = Szy1 + (A.z - C.z) * S0y1;
-		  /* (a|(z-Cz)|b+1x) */
+		  /* (a|(z-Cz)|b-1x) */
 		  muzx2 = Szx2 + (A.z - C.z) * S0x2;
-		  /* (a|(z-Cz)|b+1y) */
+		  /* (a|(z-Cz)|b-1y) */
 		  muzy2 = Szy2 + (A.z - C.z) * S0y2;
 
 		  /********** Lx integrals ***********/
@@ -232,14 +232,14 @@ void angmom_ints(void)
 		     - 2 a2 * (a|(z-Cz)|b+1y) + B.y * (a|(z-Cz)|b-1y) */
 
 		  Lx[I][J] += 2.0*a2*muyz1 - n2*muyz2 - 2.0*a2*muzy1 + m2*muzy2;
-                  
+
 		  /********** Ly integrals ***********/
 
 		  /* (a|Ly|b) = 2 a2 * (a|(z-Cz)|b+1x) - B.x * (a|(z-Cz)|b-1x)
 		     - 2 a2 * (a|(x-Cx)|b+1z) + B.z * (a|(x-Cx)|b-1z) */
 
 		  Ly[I][J] += 2.0*a2*muzx1 - l2*muzx2 - 2.0*a2*muxz1 + n2*muxz2;
-                  
+
 		  /********** Lz integrals ***********/
 
 		  /* (a|Lz|b) = 2 a2 * (a|(x-Cx)|b+1y) - B.y * (a|(x-Cx)|b-1y)
@@ -324,10 +324,10 @@ double overlap_int(double a1, int l1, int m1, int n1, double norm1,
   double tval, tval1, tval2 ;
   double norm_fact ;
 
-  
+
   AB2 = AB.x*AB.x+AB.y*AB.y+AB.z*AB.z;
   gam = a1+a2;
-  norm_fact = norm1*norm2; 
+  norm_fact = norm1*norm2;
 
   tval1 = 2*gam;
   imax = (l1+l2)/2;
@@ -351,7 +351,7 @@ double overlap_int(double a1, int l1, int m1, int n1, double norm1,
     tval2 = int_pow(tval1, k);
     Iz += tval*num_ser[k]/(tval2);
     }
- 
+
   I=exp(-1*a1*a2*AB2/gam)*Ix*Iy*Iz*sqrt(M_PI/gam)*(M_PI/gam);
 
   return I*norm_fact;
@@ -384,7 +384,7 @@ double int_pow(double a, int p)
 {
   register int i;
   double b = 1.0;
-  
+
   for(i=0; i<p; i++) b = b*a;
   return b;
 }
