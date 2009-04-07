@@ -33,7 +33,7 @@ int cc_wfn(char *wfn)
        !strcmp(wfn, "CC2")      || !strcmp(wfn, "CC3")    ||
        !strcmp(wfn, "EOM_CCSD") || !strcmp(wfn, "LEOM_CCSD") ||
        !strcmp(wfn, "EOM_CC2")  || !strcmp(wfn, "EOM_CC3") ||
-       !strcmp(wfn, "CIS") ) {
+       !strcmp(wfn, "CIS")      || !strcmp(wfn, "CCSD_MVD")) {
     return 1;
   }
   else {
