@@ -40,7 +40,7 @@ int main(int argc, char *argv[])
 {
   using namespace psi::thermo;
   double tval;
-  int errcod, a, i;
+  int errcod, a, i, cnt;
   char *junk;
 
   init_io(argc,argv);
@@ -54,6 +54,7 @@ int main(int argc, char *argv[])
   double *vib_freqs = chkpt_rd_vib_freqs();
   int natom = chkpt_rd_natom();
   double *zvals = chkpt_rd_zvals(); // for default masses
+  double chkpt_energy = chkpt_rd_etot();
   chkpt_close();
   double *masses;
 
@@ -194,6 +195,9 @@ int main(int argc, char *argv[])
   fprintf(outfile,"\tData used to determine thermochemical information:\n");
   fprintf(outfile,"\t\tRotor type: %s\n", srotor);
   fprintf(outfile,"\t\tRotational symmetry number: %d\n",rot_symm_num);
+fprintf(outfile,"\t ** Check rotational symmetry number - not yet debugged!\n");
+fprintf(outfile,"\t\t set rot_symm_num = 1 heteronuclear diatomics\n");
+fprintf(outfile,"\t\t set rot_symm_num = 2 homonuclear diatomics\n");
   fprintf(outfile,"\t\tRotational constants:\n");
   fprintf(outfile,"\t\t\t   wavenumbers,  GHz\n");
   if (rottype < 4) {
@@ -250,19 +254,6 @@ int main(int argc, char *argv[])
   qelec = multiplicity;
   Selec = log(qelec);
 
-  // vibrational part
-  for(i=0; i < nvib_freqs; i++)
-    vib_temp[i] = 100 * _h * _c * vib_freqs[i] / _kb;
-
-  for(i=0; i < nvib_freqs; i++) {
-    rT = vib_temp[i] / T; // reduced T
-    Evib += vib_temp[i] * (0.5 + 1.0 / (exp(rT) - 1));
-    Svib += rT / (exp(rT) - 1) - log(1 - exp(-rT));
-    Cvvib += exp(rT) * (rT/pow(exp(rT)-1, 2));
-    // q_vib[i] = (exp(-vib_temp[i] / (2*T))) / (1 - exp(-vib_temp[i] / T));
-    // ZPVE += vib_freqs[i] / 2.0; in wavenumbers
-  }
-
   // rotational part
   if(rottype == 6) { // atom 
     Erot = Cvrot = Srot = 0;
@@ -277,41 +268,77 @@ int main(int argc, char *argv[])
     Erot = 1.5 * T; 
     Cvrot = 1.5;
     phi_A = rotconst[0] * 100 * _h * _c / _kb;
-    phi_B = rotconst[0] * 100 * _h * _c / _kb;
-    phi_C = rotconst[0] * 100 * _h * _c / _kb;
+    phi_B = rotconst[1] * 100 * _h * _c / _kb;
+    phi_C = rotconst[2] * 100 * _h * _c / _kb;
     qrot = sqrt(_pi) * pow(T,1.5) / (rot_symm_num * sqrt(phi_A*phi_B*phi_C));
     Srot = 1.5 + log(qrot);
   }
 
-  // convert quantities in units of R into units of kcal/mol
-  double R_to_kcal = _psi3_R / _cal2J / 1000;
+  // vibrational part
+  for(i=0; i < nvib_freqs; i++)
+    vib_temp[i] = 100 * _h * _c * vib_freqs[i] / _kb;
 
-  Eelec *= R_to_kcal;
-  Etrans *= R_to_kcal;
-  Erot *= R_to_kcal;
-  Evib *= R_to_kcal;
+  fprintf(outfile,"\tVibrational temperatures (K):\n\t");
+  for(i=0, cnt=0; i < nvib_freqs; i++,cnt++) {
+    fprintf(outfile,"%12.3lf",vib_temp[i]);
+    if (cnt == 6) { cnt=-1; fprintf(outfile,"\n\t"); }
+  }
+  fprintf(outfile,"\n");
+
+  for(i=0; i < nvib_freqs; i++) {
+    rT = vib_temp[i] / T; // reduced T
+    if (vib_temp[i] < 900)
+      fprintf(outfile,"\tWarning: used thermodynamic relations are not appropriate for low frequency modes.");
+    Evib += vib_temp[i] * (0.5 + 1.0 / (exp(rT) - 1));
+    Svib += rT/(exp(rT) - 1) - log(1 - exp(-rT));
+    Cvvib += exp(rT) * pow(rT/(exp(rT)-1), 2);
+    // q_vib[i] = (exp(-vib_temp[i] / (2*T))) / (1 - exp(-vib_temp[i] / T));
+    ZPVE += vib_freqs[i] / 2.0; //in cm^-2
+  }
+
+  // convert quantities in units of R into units of cal/mol
+  double R_to_cal = _psi3_R / _cal2J;
+
+  Eelec *= R_to_cal/1000; // go to kcal/mol
+  Etrans *= R_to_cal/1000;
+  Erot *= R_to_cal/1000;
+  Evib *= R_to_cal/1000;
   Etotal = Eelec + Etrans + Erot + Evib;
 
-  Selec *= R_to_kcal;
-  Strans *= R_to_kcal;
-  Srot *= R_to_kcal;
-  Svib *= R_to_kcal;
+  Selec *= R_to_cal;
+  Strans *= R_to_cal;
+  Srot *= R_to_cal;
+  Svib *= R_to_cal;
   Stotal = Selec + Strans + Srot + Svib;
 
-  Cvelec *= R_to_kcal;
-  Cvtrans *= R_to_kcal;
-  Cvrot *= R_to_kcal;
-  Cvvib *= R_to_kcal;
+  Cvelec *= R_to_cal;
+  Cvtrans *= R_to_cal;
+  Cvrot *= R_to_cal;
+  Cvvib *= R_to_cal;
   Cvtotal = Cvelec + Cvtrans + Cvrot + Cvvib;
 
   fprintf(outfile,"\n");
-  fprintf(outfile,"\tThermodynamic data in kcal/mol\n");
-  fprintf(outfile,"\t\t                Thermal Energy \n");
-  fprintf(outfile,"\t\tElectronic    : %15.3lf\n", Eelec);
-  fprintf(outfile,"\t\tTranslational : %15.3lf\n", Etrans);
-  fprintf(outfile,"\t\tRotational    : %15.3lf\n", Erot);
-  fprintf(outfile,"\t\tVibrational   : %15.3lf\n", Evib);
-  fprintf(outfile,"\t\tTotal         : %15.3lf\n", Etotal);
+  fprintf(outfile,"\tThermodynamic data\n");
+  fprintf(outfile,"\t\t                Thermal Energy            Cv              S \n");
+  fprintf(outfile,"\t\t                   kcal/mol           cal/(mol K)    cal/(mol K) \n");
+  fprintf(outfile,"\t\tElectronic    : %15.3lf%15.3lf%15.3lf\n", Eelec,  Cvelec,  Selec);
+  fprintf(outfile,"\t\tTranslational : %15.3lf%15.3lf%15.3lf\n", Etrans, Cvtrans, Strans);
+  fprintf(outfile,"\t\tRotational    : %15.3lf%15.3lf%15.3lf\n", Erot,   Cvrot,   Srot);
+  fprintf(outfile,"\t\tVibrational   : %15.3lf%15.3lf%15.3lf\n", Evib,   Cvvib,   Svib);
+  fprintf(outfile,"\t\tTotal         : %15.3lf%15.3lf%15.3lf\n", Etotal, Cvtotal, Stotal);
+
+  ZPVE *= 100 * _h * _c / _hartree2J ; // cm^-1 -> au/particle
+
+  double U, H, G;
+  U = chkpt_energy + Etotal * 1000.0 * _cal2J / _na / _hartree2J ;
+  H = U + _kb * T / _hartree2J ;
+  G = H - T * Stotal * _cal2J / _na / _hartree2J ;
+
+  fprintf(outfile,"\n\tTotal energies in Hartree/particle\n");
+  fprintf(outfile,"\t\tTotal energy (0 K) = %15.7lf\n", chkpt_energy + ZPVE);
+  fprintf(outfile,"\t\tTotal energy       = %15.7lf\n", U);
+  fprintf(outfile,"\t\tEnthalpy           = %15.7lf\n", H);
+  fprintf(outfile,"\t\tFree Energy        = %15.7lf\n", G);
 
   free(vib_freqs);
   free(vib_temp);
