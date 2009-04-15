@@ -137,6 +137,15 @@ int main(int argc, char *argv[]) {
     errcod = ip_string("DAMP",&tmpstr2,0);
     strcpy(damp_type, tmpstr2);
     free(tmpstr2);
+    if (strcmp(damp_type, "TRUE")==0)
+      strcpy(damp_type, "GRIMME");
+    else if (strcmp(damp_type, "FALSE")==0)
+      strcpy(damp_type, "NONE");
+
+    if (strcmp(damp_type, "GRIMME")!=0 &&
+        strcmp(damp_type, "NONE")!=0)
+      fprintf(outfile, "Error: unrecognized option for DAMP\n");
+      exit(PSI_RETURN_FAILURE);
   }
 
   errcod = ip_boolean("ELECTROSTATICS",&(do_estatic),0);
@@ -302,6 +311,7 @@ int main(int argc, char *argv[]) {
   if (derlvl==2) free_block(hessian);
   free_block(geom);
   stop_io();
+  return(PSI_RETURN_SUCCESS);
 }
 
 extern "C" { const char *gprgid(void) { const char *prgid = "NONBONDED"; return (prgid); } }
