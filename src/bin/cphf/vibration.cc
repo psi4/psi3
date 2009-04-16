@@ -197,10 +197,12 @@ void vibration(double **hessian, double **lx)
 
   for(i=0; i < 3*natom; i++) {
     if (fabs(cm_convert * sqrt(k_convert * fabs(km[i]))) < 5.0) continue;
+    fprintf(outfile,"\n");
     if(km[i] < 0.0)
-      fprintf(outfile, "\n  Frequency:     %6.2fi\n", cm_convert * sqrt(-k_convert * km[i]));
+      fprintf(outfile, "   Frequency:    %8.2fi\n", cm_convert * sqrt(-k_convert * km[i]));
     else
-      fprintf(outfile, "\n  Frequency:     %6.2f\n", cm_convert * sqrt(k_convert * km[i]));
+      fprintf(outfile, "   Frequency:    %8.2f\n", cm_convert * sqrt(k_convert * km[i]));
+    fprintf(outfile,   "   IR Intensity: %8.2f\n", irint[i]*ir_prefactor);
     fprintf(outfile, "\t     X       Y       Z \t\n");
     for(j=0; j < natom; j++) {
       fprintf(outfile, "  %s \t", asymbol[3*j]);

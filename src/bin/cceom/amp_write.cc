@@ -7,10 +7,15 @@
 #include <cmath>
 #include <libdpd/dpd.h>
 
+#include "MOInfo.h"
+#define EXTERN
+#include "globals.h"
+
 namespace psi { namespace cceom {
 
 struct onestack {
     double value;
+    int irrep_i;
     int i;
     int a;
 };
@@ -21,7 +26,7 @@ struct twostack {
     int a; int b;
 };
 
-void onestack_insert(struct onestack *stack, double value, int i, int a, int level, int stacklen);
+void onestack_insert(struct onestack *stack, double value, int irrep_i, int i, int a, int level, int stacklen);
 void twostack_insert(struct twostack *stack, double value, int i, int j, int a, int b, 
 		     int level, int stacklen);
 
@@ -53,7 +58,7 @@ void amp_write_T1(dpdfile2 *T1, int length, FILE *outfile)
 	value = T1->matrix[h][i][a];
 	for(m=0; m < length; m++) {
 	  if((fabs(value) - fabs(t1stack[m].value)) > 1e-12) {
-	    onestack_insert(t1stack, value, I, A, m, length);
+	    onestack_insert(t1stack, value, h, I, A, m, length);
 	    break;
 	  }
 	}
@@ -65,12 +70,14 @@ void amp_write_T1(dpdfile2 *T1, int length, FILE *outfile)
 
   for(m=0; m < ((numt1 < length) ? numt1 : length); m++)
     if(fabs(t1stack[m].value) > 1e-6)
-      fprintf(outfile, "\t        %3d %3d %20.10f\n", t1stack[m].i, t1stack[m].a, t1stack[m].value);
+      fprintf(outfile, "\t%3d (%s) > %3d (%s) : %15.10f\n",
+        t1stack[m].i, moinfo.irr_labs_lowercase[t1stack[m].irrep_i],
+        t1stack[m].a, moinfo.irr_labs_lowercase[t1stack[m].irrep_i^Gia], t1stack[m].value);
 
   free(t1stack);
 }
 
-void onestack_insert(struct onestack *stack, double value, int i, int a, int level, int stacklen)
+void onestack_insert(struct onestack *stack, double value, int irrep_i, int i, int a, int level, int stacklen)
 {
   int l;
   struct onestack temp;
@@ -78,10 +85,12 @@ void onestack_insert(struct onestack *stack, double value, int i, int a, int lev
   temp = stack[level];
 
   stack[level].value = value;
+  stack[level].irrep_i = irrep_i;
   stack[level].i = i;
   stack[level].a = a;
 
   value = temp.value;
+  irrep_i = temp.irrep_i;
   i = temp.i;
   a = temp.a;
 
@@ -89,10 +98,12 @@ void onestack_insert(struct onestack *stack, double value, int i, int a, int lev
     temp = stack[l+1];
 
     stack[l+1].value = value;
+    stack[l+1].irrep_i = irrep_i;
     stack[l+1].i = i;
     stack[l+1].a = a;
 
     value = temp.value;
+    irrep_i = temp.irrep_i;
     i = temp.i;
     a = temp.a;
   }
@@ -145,7 +156,7 @@ void amp_write_T2(dpdbuf4 *T2, int length, FILE *outfile)
 
   for(m=0; m < ((numt2 < length) ? numt2 : length); m++)
     if(fabs(t2stack[m].value) > 1e-6)
-      fprintf(outfile, "\t%3d %3d %3d %3d %20.10f\n", t2stack[m].i, t2stack[m].j, 
+      fprintf(outfile, "\t%3d %3d   > %3d %3d   : %15.10f\n", t2stack[m].i, t2stack[m].j, 
 	      t2stack[m].a, t2stack[m].b, t2stack[m].value);
 
   free(t2stack);

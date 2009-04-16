@@ -80,11 +80,11 @@ void read_guess_init(void)
 
   fprintf(outfile,"EOM_GUESS implies states_per_irrep: \n\t");
   for (i=0;i<moinfo.nirreps;++i)
-    fprintf(outfile,"%s %d, ",moinfo.labels[i], eom_params.states_per_irrep[i]);
+    fprintf(outfile,"%s %d, ",moinfo.irr_labs[i], eom_params.states_per_irrep[i]);
   fprintf(outfile,"\n");
   fprintf(outfile,"and Rs_per_irrep: \n\t");
   for (i=0;i<moinfo.nirreps;++i)
-    fprintf(outfile,"%s %d, ",moinfo.labels[i], eom_params.cs_per_irrep[i]);
+    fprintf(outfile,"%s %d, ",moinfo.irr_labs[i], eom_params.cs_per_irrep[i]);
   fprintf(outfile,"These numbers should match those given by the states_per_irrep keyword\n");
   fprintf(outfile,"\n\n");
   return;

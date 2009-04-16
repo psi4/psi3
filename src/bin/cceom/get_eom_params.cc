@@ -150,7 +150,7 @@ void get_eom_params()
   fprintf(outfile, "\t-----------------\n");
   fprintf(outfile, "\tStates sought per irrep     =");
   if(strcmp(eom_params.guess,"INPUT")) {
-    for (i=0;i<moinfo.nirreps;++i) fprintf(outfile, " %s %d,", moinfo.labels[i],
+    for (i=0;i<moinfo.nirreps;++i) fprintf(outfile, " %s %d,", moinfo.irr_labs[i],
 					   eom_params.states_per_irrep[i]);
   }
   else fprintf(outfile, " USER INPUT");
@@ -166,7 +166,7 @@ void get_eom_params()
   fprintf(outfile, "\tResidual vector toleranceSS = %5.1e\n", eom_params.residual_tol_SS);
   fprintf(outfile, "\tComplex tolerance           = %5.1e\n", eom_params.complex_tol);
   fprintf(outfile, "\tRoot for properties         = %5d\n", eom_params.prop_root + 1);
-  fprintf(outfile, "\tSym of state for properties = %6s\n", moinfo.labels[eom_params.prop_sym]);
+  fprintf(outfile, "\tSym of state for properties = %6s\n", moinfo.irr_labs[eom_params.prop_sym]);
   fprintf(outfile, "\tGuess vectors taken from    = %s\n", eom_params.guess);
   fprintf(outfile, "\tRestart EOM CC3             = %s\n", eom_params.restart_eom_cc3?"YES":"NO");
   fprintf(outfile, "\tCollapse with last vector   = %s\n", eom_params.collapse_with_last ? "YES":"NO");

@@ -134,7 +134,7 @@ timer_off("HBAR_EXTRA");
   if (!strcmp(params.wfn,"EOM_CC3"))
     cc3_stage = 0; /* do EOM_CCSD first */
 
-  fprintf(outfile,"Symmetry of ground state: %s\n", moinfo.labels[moinfo.sym]);
+  fprintf(outfile,"Symmetry of ground state: %s\n", moinfo.irr_labs[moinfo.sym]);
   /* loop over symmetry of C's */
   for (C_irr=0; C_irr<moinfo.nirreps; ++C_irr) {
 
@@ -147,8 +147,8 @@ timer_off("HBAR_EXTRA");
 #ifdef TIME_CCEOM
 timer_on("INIT GUESS");
 #endif
-    fprintf(outfile,"Symmetry of excited state: %s\n", moinfo.labels[moinfo.sym ^ C_irr]);
-    fprintf(outfile,"Symmetry of right eigenvector: %s\n",moinfo.labels[C_irr]);
+    fprintf(outfile,"Symmetry of excited state: %s\n", moinfo.irr_labs[moinfo.sym ^ C_irr]);
+    fprintf(outfile,"Symmetry of right eigenvector: %s\n",moinfo.irr_labs[C_irr]);
     if (params.eom_ref == 0)
       fprintf(outfile,"Seeking states with multiplicity of %d\n", eom_params.mult);
 
@@ -957,7 +957,7 @@ timer_off("INIT GUESS");
 
     if (num_converged > 0) {
       fprintf(outfile,"\nFinal Energetic Summary for Converged Roots of Irrep %s\n",
-	      moinfo.labels[moinfo.sym^C_irr]);
+	      moinfo.irr_labs[moinfo.sym^C_irr]);
       fprintf(outfile,"                     Excitation Energy              Total Energy\n");
       fprintf(outfile,"                (eV)     (cm^-1)     (au)             (au)\n");
       for (i=0;i<eom_params.cs_per_irrep[C_irr];++i) {

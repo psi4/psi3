@@ -92,6 +92,7 @@ void chkpt_wt_label(char *);
 
 char **chkpt_rd_irr_labs(void);
 void chkpt_wt_irr_labs(char **);
+char **chkpt_rd_irr_labs_lowercase(void);
 
 double *chkpt_rd_contr(void);
 void chkpt_wt_contr(double *);

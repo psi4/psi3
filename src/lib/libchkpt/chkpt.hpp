@@ -144,6 +144,7 @@ namespace psi {
 		void wt_iopen(int);
 
 		char **rd_irr_labs(void);
+		char **rd_irr_labs_lowercase(void);
 		void wt_irr_labs(char **);
 
 		double **rd_lagr(void);

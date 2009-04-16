@@ -35,7 +35,8 @@ void get_moinfo(void)
   moinfo.nmo = chkpt_rd_nmo();
   moinfo.nso = chkpt_rd_nso();
   moinfo.iopen = chkpt_rd_iopen();
-  moinfo.labels = chkpt_rd_irr_labs();
+  moinfo.irr_labs = chkpt_rd_irr_labs();
+  moinfo.irr_labs_lowercase = chkpt_rd_irr_labs_lowercase();
   moinfo.enuc = chkpt_rd_enuc();
   moinfo.escf = chkpt_rd_escf();
   moinfo.sopi = chkpt_rd_sopi();
@@ -234,8 +235,11 @@ void cleanup(void)
   free(moinfo.fruocc);
   free(moinfo.frdocc);
   for(i=0; i < moinfo.nirreps; i++)
-    free(moinfo.labels[i]);
-  free(moinfo.labels);
+    free(moinfo.irr_labs[i]);
+  free(moinfo.irr_labs);
+  for(i=0; i < moinfo.nirreps; i++)
+    free(moinfo.irr_labs_lowercase[i]);
+  free(moinfo.irr_labs_lowercase);
   if(params.ref == 2) {
     free(moinfo.aoccpi);
     free(moinfo.boccpi);
