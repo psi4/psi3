@@ -294,9 +294,9 @@ void ERI::compute_shell(int sh1, int sh2, int sh3, int sh4)
     am4 = bs4_->shell(sh4)->am(0);
 
     int n1 = bs1_->shell(sh1)->nfunction(0);
-    int n2 = bs1_->shell(sh2)->nfunction(0);
-    int n3 = bs1_->shell(sh3)->nfunction(0);
-    int n4 = bs1_->shell(sh4)->nfunction(0);
+    int n2 = bs2_->shell(sh2)->nfunction(0);
+    int n3 = bs3_->shell(sh3)->nfunction(0);
+    int n4 = bs4_->shell(sh4)->nfunction(0);
 
     // l(a) >= l(b), l(c) >= l(d), and l(c) + l(d) >= l(a) + l(b).
     if (am1 >= am2) {
@@ -537,9 +537,9 @@ void ERI::compute_shell_deriv1(int sh1, int sh2, int sh3, int sh4)
     am4 = bs4_->shell(sh4)->am(0);
 
     int n1 = bs1_->shell(sh1)->nfunction(0);
-    int n2 = bs1_->shell(sh2)->nfunction(0);
-    int n3 = bs1_->shell(sh3)->nfunction(0);
-    int n4 = bs1_->shell(sh4)->nfunction(0);
+    int n2 = bs2_->shell(sh2)->nfunction(0);
+    int n3 = bs3_->shell(sh3)->nfunction(0);
+    int n4 = bs4_->shell(sh4)->nfunction(0);
 
     // l(a) >= l(b), l(c) >= l(d), and l(c) + l(d) >= l(a) + l(b).
     if (am1 >= am2) {
@@ -781,9 +781,7 @@ void ERI::compute_quartet_deriv1(int sh1, int sh2, int sh3, int sh4)
     normalize_am(s1, s2, s3, s4, 3*natom_);
 
     // Transform the integrals to the spherical basis
-    // pure_transform can only do 1 at a time. We need to do 3n.
-    for (int i=0; i<3*natom_; ++i)
-        pure_transform(sh1, sh2, sh3, sh4, i);
+    pure_transform(sh1, sh2, sh3, sh4, 3*natom_);
 
     // Results are in source_
 }

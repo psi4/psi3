@@ -293,7 +293,7 @@ void TwoBodyInt::permute_1234_to_4321(double *s, double *t, int nbf1, int nbf2, 
     }    
 }
 
-void TwoBodyInt::pure_transform(int sh1, int sh2, int sh3, int sh4, int ichunk)
+void TwoBodyInt::pure_transform(int sh1, int sh2, int sh3, int sh4, int nchunk)
 {
     Ref<GaussianShell> s1 = bs1_->shell(sh1);
     Ref<GaussianShell> s2 = bs2_->shell(sh2);
@@ -322,160 +322,162 @@ void TwoBodyInt::pure_transform(int sh1, int sh2, int sh3, int sh4, int ichunk)
     int nbf2 = s2->nfunction(0);
     int nbf3 = s3->nfunction(0);
     int nbf4 = s4->nfunction(0);
-        
-    // Compute the offset in source_, and target
-    size_t sourcechunkoffset = ichunk * (nao1 * nao2 * nao3 * nao4);
-    size_t targetchunkoffset = ichunk * (nbf1 * nbf2 * nbf3 * nbf4);
-    double *source1, *target1;
-    double *source2, *target2;
-    double *source3, *target3;
-    double *source4, *target4;
-    double *source = source_+sourcechunkoffset;
-    double *target = target_+targetchunkoffset;
-    double *tmpbuf = tformbuf_;
-       
+    
     // Get if each shell has pure functions
     bool is_pure1 = s1->is_pure(0);
     bool is_pure2 = s2->is_pure(0);
     bool is_pure3 = s3->is_pure(0);
     bool is_pure4 = s4->is_pure(0);
 
-    int transform_index = 8*is_pure1 + 4*is_pure2 + 2*is_pure3 + is_pure4;
-    switch (transform_index) {
-	    case 0:
-            break;
+    for (int ichunk=0; ichunk < nchunk; ++ichunk) {
+        // Compute the offset in source_, and target
+        size_t sourcechunkoffset = ichunk * (nao1 * nao2 * nao3 * nao4);
+        size_t targetchunkoffset = ichunk * (nbf1 * nbf2 * nbf3 * nbf4);
+        double *source1, *target1;
+        double *source2, *target2;
+        double *source3, *target3;
+        double *source4, *target4;
+        double *source = source_+sourcechunkoffset;
+        double *target = target_+targetchunkoffset;
+        double *tmpbuf = tformbuf_;
+
+        int transform_index = 8*is_pure1 + 4*is_pure2 + 2*is_pure3 + is_pure4;
+        switch (transform_index) {
+    	    case 0:
+                break;
             
-	    case 1:
-            source4 = source;
-            target4 = target;
-            break;
+    	    case 1:
+                source4 = source;
+                target4 = target;
+                break;
             
-	    case 2:
-            source3 = source;
-            target3 = target;
-            break;
+    	    case 2:
+                source3 = source;
+                target3 = target;
+                break;
             
-	    case 3:
-            source4 = source;
-            target4 = tmpbuf;
-            source3 = tmpbuf;
-            target3 = target;
-            break;
+    	    case 3:
+                source4 = source;
+                target4 = tmpbuf;
+                source3 = tmpbuf;
+                target3 = target;
+                break;
             
-	    case 4:
-            source2 = source;
-            target2 = target;
-            break;
+    	    case 4:
+                source2 = source;
+                target2 = target;
+                break;
             
-	    case 5:
-            source4 = source;
-            target4 = tmpbuf;
-            source2 = tmpbuf;
-            target2 = target;
-            break;
+    	    case 5:
+                source4 = source;
+                target4 = tmpbuf;
+                source2 = tmpbuf;
+                target2 = target;
+                break;
             
-	    case 6:
-            source3 = source;
-            target3 = tmpbuf;
-            source2 = tmpbuf;
-            target2 = target;
-            break;
+    	    case 6:
+                source3 = source;
+                target3 = tmpbuf;
+                source2 = tmpbuf;
+                target2 = target;
+                break;
             
-	    case 7:
-            source4 = source;
-            target4 = tmpbuf;
-            source3 = tmpbuf;
-            target3 = source;
-            source2 = source;
-            target2 = target;
-            break;
+    	    case 7:
+                source4 = source;
+                target4 = tmpbuf;
+                source3 = tmpbuf;
+                target3 = source;
+                source2 = source;
+                target2 = target;
+                break;
             
-	    case 8:
-            source1 = source;
-            target1 = target;
-            break;
+    	    case 8:
+                source1 = source;
+                target1 = target;
+                break;
             
-	    case 9:
-            source4 = source;
-            target4 = tmpbuf;
-            source1 = tmpbuf;
-            target1 = target;
-            break;
+    	    case 9:
+                source4 = source;
+                target4 = tmpbuf;
+                source1 = tmpbuf;
+                target1 = target;
+                break;
             
-	    case 10:
-            source3 = source;
-            target3 = tmpbuf;
-            source1 = tmpbuf;
-            target1 = target;
-            break;
+    	    case 10:
+                source3 = source;
+                target3 = tmpbuf;
+                source1 = tmpbuf;
+                target1 = target;
+                break;
             
-	    case 11:
-            source4 = source;
-            target4 = tmpbuf;
-            source3 = tmpbuf;
-            target3 = source;
-            source1 = source;
-            target1 = target;
-            break;
+    	    case 11:
+                source4 = source;
+                target4 = tmpbuf;
+                source3 = tmpbuf;
+                target3 = source;
+                source1 = source;
+                target1 = target;
+                break;
             
-	    case 12:
-            source2 = source;
-            target2 = tmpbuf;
-            source1 = tmpbuf;
-            target1 = target;
-            break;
+    	    case 12:
+                source2 = source;
+                target2 = tmpbuf;
+                source1 = tmpbuf;
+                target1 = target;
+                break;
             
-	    case 13:
-            source4 = source;
-            target4 = tmpbuf;
-            source2 = tmpbuf;
-            target2 = source;
-            source1 = source;
-            target1 = target;
-            break;
+    	    case 13:
+                source4 = source;
+                target4 = tmpbuf;
+                source2 = tmpbuf;
+                target2 = source;
+                source1 = source;
+                target1 = target;
+                break;
             
-	    case 14:
-            source3 = source;
-            target3 = tmpbuf;
-            source2 = tmpbuf;
-            target2 = source;
-            source1 = source;
-            target1 = target;
-            break;
+    	    case 14:
+                source3 = source;
+                target3 = tmpbuf;
+                source2 = tmpbuf;
+                target2 = source;
+                source1 = source;
+                target1 = target;
+                break;
             
-	    case 15:
-            source4 = source;
-            target4 = tmpbuf;
-            source3 = tmpbuf;
-            target3 = source;
-            source2 = source;
-            target2 = tmpbuf;
-            source1 = tmpbuf;
-            target1 = target;
-            break;
-    }
+    	    case 15:
+                source4 = source;
+                target4 = tmpbuf;
+                source3 = tmpbuf;
+                target3 = source;
+                source2 = source;
+                target2 = tmpbuf;
+                source1 = tmpbuf;
+                target1 = target;
+                break;
+        }
     
-    size_t size = 1;
-    if (is_pure4) {
-        transform2e_4(am4, trans4, source4, target4, nao1*nao2*nao3,nao4);
-        size *= nbf4;
-    }
-    if (is_pure3) {
-        transform2e_3(am3, trans3, source3, target3, nao1*nao2,nao3,nbf4);
-        size *= nbf3;
-    }
-    if (is_pure2) {
-        transform2e_2(am2, trans2, source2, target2, nao1,nao2,nbf3*nbf4);
-        size *= nbf2;
-    }
-    if (is_pure1) {
-        transform2e_1(am1, trans1, source1, target1, nbf2*nbf3*nbf4);
-        size *= nbf1;
-    }
+        size_t size = 1;
+        if (is_pure4) {
+            transform2e_4(am4, trans4, source4, target4, nao1*nao2*nao3,nao4);
+            size *= nbf4;
+        }
+        if (is_pure3) {
+            transform2e_3(am3, trans3, source3, target3, nao1*nao2,nao3,nbf4);
+            size *= nbf3;
+        }
+        if (is_pure2) {
+            transform2e_2(am2, trans2, source2, target2, nao1,nao2,nbf3*nbf4);
+            size *= nbf2;
+        }
+        if (is_pure1) {
+            transform2e_1(am1, trans1, source1, target1, nbf2*nbf3*nbf4);
+            size *= nbf1;
+        }
     
-    // The permute indices routines depend on the integrals being in source_
-    if (is_pure1 || is_pure2 || is_pure3 || is_pure4)
-        memcpy(source, target, size * sizeof(double));
+        // The permute indices routines depend on the integrals being in source_
+        if (is_pure1 || is_pure2 || is_pure3 || is_pure4)
+            memcpy(source, target, size * sizeof(double));
+    }
 }
 
 static void transform2e_1(int am, SphericalTransformIter& sti, double *s, double *t, int njkl)
