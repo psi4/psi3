@@ -79,6 +79,26 @@ timer_on("RESTART");
 
   /* Orthonormalize alpha[1] through alpha[num] */
   if ((ortho) || (use_alpha_old)) {
+     /* Since the state of interest is usually the highest energy one, lets leave
+     the highest energy R alone and orthonormalize the lower ones against it.
+     It is hoped that this change will help excited-state CC3 computations where
+     there are multiple states with high overlap of R's and the overlap between
+     the EOM CCSD root and the EOM CC3 root is used to follow the right root.
+     Previously, the first had been let alone.  -RAK 4-09 */
+    for ( I=num-2; I>-1; --I) {
+      for (i=num-1; i>I; --i) {
+        dotval = 0.0;
+        for (j=0;j<L;++j) {
+          dotval += alpha_tot[j][i] * alpha_tot[j][I];
+        }
+        for (j=0; j<L; j++) alpha_tot[j][I] -= dotval * alpha_tot[j][i];
+      }
+      dotval = 0.0;
+      for (j=0;j<L;++j) dotval += alpha_tot[j][I] * alpha_tot[j][I];
+      norm = sqrt(dotval);
+      for (j=0;j<L;++j) alpha_tot[j][I] = alpha_tot[j][I]/norm;
+    }
+/*
     for (I=1;I<num;++I) {
       for (i=0; i<I; i++) {
         dotval = 0.0;
@@ -92,6 +112,7 @@ timer_on("RESTART");
       norm = sqrt(dotval);
       for (j=0;j<L;++j) alpha_tot[j][I] = alpha_tot[j][I]/norm;
     }
+*/
   }
 
   /* Form restart vectors Ci = Sum_j(alpha[j][i]*Cj) */
