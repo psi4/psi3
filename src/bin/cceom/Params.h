@@ -51,6 +51,7 @@ struct Eom_params {
   int skip_diagSS;
   int vectors_cc3;
   int restart_eom_cc3;
+  int amps_to_print;
 
   /* compute overlap of normalized R with L (must run cclambda first) */
   int dot_with_L;

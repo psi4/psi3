@@ -123,6 +123,10 @@ void get_eom_params()
   errcod = ip_data("EVAL_TOL_SS","%d",&(iconv),0);
   if(errcod == IPE_OK) eom_params.eval_tol_SS = 1.0*pow(10.0,(double) -iconv);
 
+  eom_params.amps_to_print = 5;
+  errcod = ip_data("AMPS_TO_PRINT","%d",&i,0);
+  if(errcod == IPE_OK) eom_params.amps_to_print = i;
+
   eom_params.schmidt_add_residual_tol = 1E-3;
   errcod = ip_data("SCHMIDT_ADD_RESIDUAL_TOL","%d",&(iconv),0);
   if(errcod == IPE_OK) eom_params.schmidt_add_residual_tol = 1.0*pow(10.0,(double) -iconv);
