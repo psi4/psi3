@@ -71,8 +71,16 @@ void get_eom_params()
   }
   --eom_params.prop_root;
 
+  // by default for CC3 use follow_root to root-following based on CCSD soln
   if ( (!strcmp(params.wfn,"EOM_CC3")) && (eom_params.prop_root != 0) ) {
-    eom_params.follow_root = 1;
+    eom_params.follow_root = true;
+  }
+  // allow user to explicitly turn off following which may help in bizarre cases
+  // in this case prop_root is used to determine which residuals are used
+  if (ip_exist("CC3_FOLLOW_ROOT",0)) {
+    i = 0;
+    errcod = ip_boolean("CC3_FOLLOW_ROOT",&(i),0);
+    if (errcod == IPE_OK) eom_params.follow_root = i;
   }
 
   /* so far, all R's are always kept so this is not used */

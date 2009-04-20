@@ -589,8 +589,11 @@ timer_off("INIT GUESS");
         }
 
         /* only one cc3 root can be sought */
-        if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) && (eom_params.follow_root) ) {
-          k = follow_root(L, alpha, C_irr);
+        if ( (!strcmp(params.wfn,"EOM_CC3")) && (cc3_stage>0) )  {
+          if (eom_params.follow_root)
+            k = follow_root(L, alpha, C_irr);
+          else
+            k = eom_params.prop_root;
         }
 
         converged[k] = 0;

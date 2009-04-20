@@ -46,7 +46,7 @@ struct Eom_params {
   char *guess;
   int rhf_triplets;
   int mult;
-  int follow_root;
+  bool follow_root;
   int collapse_with_last;
   int skip_diagSS;
   int vectors_cc3;
