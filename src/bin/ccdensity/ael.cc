@@ -3,11 +3,14 @@
     \brief Enter brief description of file here 
 */
 #include <cstdio>
+#include <cstdlib>
+#include <cmath>
 #include <libqt/qt.h>
 #include <psifiles.h>
+#include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
-#include <cmath>
 
 /** AEL() computes the approximate excitation level according to
  ** Stanton and Bartlett, JCP, 98, 1993, 7034.
