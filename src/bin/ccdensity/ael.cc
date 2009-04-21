@@ -18,6 +18,8 @@
  ** the current ACES2 so I'm not going to use this right now.
  ** --RAK */ 
 
+namespace psi { namespace ccdensity {
+
 void ael(struct RHO_Params *rho_params)
 {
   int dim,i,j,k;
@@ -68,3 +70,4 @@ void ael(struct RHO_Params *rho_params)
   return;
 }
 
+}} // namespace psi::ccdensity
