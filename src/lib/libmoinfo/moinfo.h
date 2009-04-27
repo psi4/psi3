@@ -12,8 +12,7 @@
 
 namespace psi {
 
-enum spin                 {alpha, beta};
-enum scftype              {rhf,uhf,rohf,tcscf};
+class Chkpt;
 
 class MOInfo : public MOInfoBase
 {
@@ -87,14 +86,13 @@ public:
   double      get_no_damp_convergence()          const {return(no_damp_convergence);}
 
   int         get_mo_sym(int i)                  const {return(all_sym[i]);}
-
+  int         get_wfn_sym()                      const {return(wfn_sym);}
   int         get_root()                         const {return(root);}
 
   int         get_nmo()                          const {return(nmo);}
   int         get_nactive_ael()                  const {return(nactive_ael);}
   int         get_nactive_bel()                  const {return(nactive_bel);}
-  int         get_nael()                         const {return(nael);}
-  int         get_nbel()                         const {return(nbel);}
+
 
   int         get_nall()                         const {return(nall);}
   int         get_nfocc()                        const {return(nfocc);}
@@ -112,8 +110,7 @@ public:
   intvec      get_fvir()                         const {return(fvir);}
   intvec      get_occ()                          const {return(occ);}
   intvec      get_vir()                          const {return(vir);}
-
-
+  intvec      get_all()                          const {return(all);}
 
   int         get_sopi(int i)                    const {return(sopi[i]);}
   int         get_mopi(int i)                    const {return(mopi[i]);}
@@ -124,9 +121,11 @@ public:
   int         get_fvir(int i)                    const {return(fvir[i]);}
 
   // Mapping functions
+  intvec      get_focc_to_mo()                   const {return(focc_to_mo);}
   intvec      get_docc_to_mo()                   const {return(docc_to_mo);}
   intvec      get_actv_to_mo()                   const {return(actv_to_mo);}
   intvec      get_extr_to_mo()                   const {return(extr_to_mo);}
+  intvec      get_fvir_to_mo()                   const {return(fvir_to_mo);}
   intvec      get_occ_to_mo()                    const {return(occ_to_mo);}
   intvec      get_vir_to_mo()                    const {return(vir_to_mo);}
   intvec      get_all_to_mo()                    const {return(all_to_mo);}
@@ -161,6 +160,7 @@ public:
   intvec      get_bocc(int i);
   intvec      get_auoc(int i);
   intvec      get_buoc(int i);
+  intvec      get_determinant(int i);  // Array with occupation of reference i (in all ordering)
 
   intpairvec  get_alpha_internal_excitation(int i,int j);
   intpairvec  get_beta_internal_excitation(int i,int j);
@@ -219,9 +219,11 @@ private:
   intvec      all_to_mo;
   intvec      mo_to_all;
   intvec      orbs_to_mo;
+  intvec      focc_to_mo;
   intvec      docc_to_mo;
   intvec      actv_to_mo;
   intvec      extr_to_mo;
+  intvec      fvir_to_mo;
   intvec      occ_to_mo;
   intvec      vir_to_mo;
   intvec      mo_to_occ_act;

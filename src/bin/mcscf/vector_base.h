@@ -20,6 +20,7 @@ public:
   double* get_vector()  {return(vector_);}
 
   void print();
+  void copy(VectorBase& source);
 private:
   // Vector size
   size_t  elements_;

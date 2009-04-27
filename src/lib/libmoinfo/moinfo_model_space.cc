@@ -23,7 +23,7 @@ void MOInfo::print_model_space()
     fprintf(outfile,"\n  %2d) ",i);
     references[i].print_occ();
   }
-  fprintf(outfile,"\n  ==============================================================================");
+  fprintf(outfile,"\n  ==============================================================================\n");
 }
 
 void MOInfo::build_model_space()
@@ -251,7 +251,14 @@ vector<int> MOInfo::get_buoc(int i)
   return(references[i].get_bvir());
 }
 
-
+vector<int> MOInfo::get_determinant(int i)
+{
+  vector<int> occupation(nall * 2,0);
+  for(int p = 0; p < 2 * nall; ++p)
+    if(references[i].test(p))
+      occupation[p] = 1;
+  return occupation;
+}
 
 vector<pair<int,int> > MOInfo::get_alpha_internal_excitation(int i,int j)
 {

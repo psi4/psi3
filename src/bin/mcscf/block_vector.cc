@@ -111,6 +111,14 @@ void BlockVector::print()
   fflush(outfile);
 }
 
+
+void BlockVector::copy(BlockVector& source)
+{
+  for(int h = 0; h < nirreps_; ++h){
+    vector_base_[h]->copy(*source.vector_base_[h]);
+  }
+}
+
 }}
 
 // void BlockVector::zero()

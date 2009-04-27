@@ -5,13 +5,10 @@
 
 namespace psi{ namespace psimrcc{
 
-/**
-@author Francesco Evangelista
-*/
 class CCMRCC : public CCManyBody
 {
 public:
-  // Constructor and distructor
+  // Constructor and destructor
   CCMRCC();
   virtual ~CCMRCC();
   // public member functions
@@ -20,6 +17,8 @@ public:
   void compute_bwccsd_energy();
   void compute_apbwccsd_energy();
   void compute_ccsd_energy();
+  void perturbative_cbs();
+  void perturbative_cbs2();
 private:
   bool ap_correction;
 
@@ -53,7 +52,7 @@ private:
   void build_F_prime_mi_intermediates();
   void build_F_prime_MI_intermediates();
 
-  // Intermediates required by triples 
+  // Intermediates required by triples
   void build_F2_me_intermediates();
   void build_F2_ME_intermediates();
 
@@ -83,7 +82,7 @@ private:
   void build_W_kija_intermediates();
   void build_W_kiJA_intermediates();
   void build_W_KIja_intermediates();
-  void build_W_KIJA_intermediates(); 
+  void build_W_KIJA_intermediates();
 
   void build_W_aibc_intermediates();
   void build_W_aIbC_intermediates();

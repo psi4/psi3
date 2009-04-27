@@ -3,9 +3,6 @@
 #include <cstdlib>
 #include <cstring>
 
-#include <libciomr/libciomr.h>
-#include <libpsio/psio.h>
-#include <libchkpt/chkpt.h>
 #include <libchkpt/chkpt.hpp>
 #include <libipv1/ip_lib.h>
 #include <liboptions/liboptions.h>
@@ -35,6 +32,7 @@ void MOInfoBase::startup()
 {
   nael = 0;
   nbel = 0;
+  guess_occupation = true;
   PSI_NULL(ioff);
   compute_ioff();
 }
@@ -50,22 +48,22 @@ void MOInfoBase::cleanup()
 
 void MOInfoBase::read_chkpt_data()
 {
-  nirreps  = chkpt_rd_nirreps();
-  nso      = chkpt_rd_nso();
+  nirreps  = _default_chkpt_lib_->rd_nirreps();
+  nso      = _default_chkpt_lib_->rd_nso();
 
   // Read sopi from the chkpt and save as a STL vector
-  sopi = read_chkpt_intvec(nirreps,chkpt_rd_sopi());
+  sopi = read_chkpt_intvec(nirreps,_default_chkpt_lib_->rd_sopi());
 
-  irr_labs = chkpt_rd_irr_labs();
+  irr_labs = _default_chkpt_lib_->rd_irr_labs();
 
-  nuclear_energy = chkpt_rd_enuc();
+  nuclear_energy = _default_chkpt_lib_->rd_enuc();
 }
 
 void MOInfoBase::compute_number_of_electrons()
 {
   int     nel   = 0;
-  int     natom = chkpt_rd_natom();
-  double* zvals = chkpt_rd_zvals();
+  int     natom = _default_chkpt_lib_->rd_natom();
+  double* zvals = _default_chkpt_lib_->rd_zvals();
 
   for(int i=0; i < natom;i++){
     nel += static_cast<int>(zvals[i]);
@@ -90,11 +88,13 @@ void MOInfoBase::compute_ioff()
     ioff[i] = ioff[i-1] + i;
 }
 
-void MOInfoBase::read_mo_space(int nirreps_ref, int& n, intvec& mo, string labels)
+void MOInfoBase::read_mo_space(int nirreps_ref, int& n, intvec& mo, string labels, bool zero)
 {
-  // Defaults is to set all to zero
-  mo.assign(nirreps_ref,0);
-  n = 0;
+  if(zero){
+    // Defaults is to set all to zero
+    mo.assign(nirreps_ref,0);
+    n = 0;
+  }
 
   bool read = false;
 
@@ -137,7 +137,7 @@ void MOInfoBase::print_mo_space(int& n, intvec& mo, std::string labels)
 
 void MOInfoBase::write_chkpt_mos()
 {
-  chkpt_wt_scf(scf);
+  _default_chkpt_lib_->wt_scf(scf);
 }
 
 void MOInfoBase::correlate(char *ptgrp, int irrep, int& nirreps_old, int& nirreps_new,int*& arr)
@@ -237,7 +237,7 @@ void MOInfoBase::correlate(char *ptgrp, int irrep, int& nirreps_old, int& nirrep
 
 intvec MOInfoBase::read_chkpt_intvec(int n, int* array)
 {
-  // Read array from the chkpt and save as a STL vector
+  // Read an array from chkpt and save as a STL vector
   intvec stl_vector(&array[0],&array[n]);
   psi::Chkpt::free(array);
   return(stl_vector);

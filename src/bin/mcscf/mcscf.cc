@@ -13,13 +13,15 @@
 
 // PSI libraries
 #include <psifiles.h>
-#include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
-#include <libchkpt/chkpt.h>
 #include <libmoinfo/libmoinfo.h>
 #include <liboptions/liboptions.h>
 #include <libutil/libutil.h>
+
+// PSI C++ libraries
+#include <libpsio/psio.hpp>
+#include <libchkpt/chkpt.hpp>
 
 #include "mcscf.h"
 #include "git.h"
@@ -33,12 +35,13 @@ extern "C" {
 }
 
 namespace psi{
-MOInfoSCF              *moinfo_scf;
-MOInfo                 *moinfo;
-MemoryManager          *_memory_manager_;
-namespace mcscf{
-void add_calculation_options();
-}} /* End Namespaces */
+  MOInfoSCF              *moinfo_scf;
+  MOInfo                 *moinfo;
+  MemoryManager          *_memory_manager_;
+  namespace mcscf{
+    void add_calculation_options();
+  }
+} /* End Namespaces */
 
 using namespace std;
 
@@ -55,8 +58,7 @@ int main(int argc, char *argv[])
 
   init_psi(argc,argv);
 
-  psi::_memory_manager_   = new MemoryManager(options_get_int("MEMORY") );
-  moinfo_scf = new MOInfoSCF();
+
 
   if(options_get_str("REFERENCE") == "RHF"  ||
      options_get_str("REFERENCE") == "ROHF" ||
@@ -70,10 +72,6 @@ int main(int argc, char *argv[])
     return PSI_RETURN_FAILURE;
   }
 
-  if(options_get_int("DEBUG") > 0)
-    psi::_memory_manager_->MemCheck(outfile);
-  delete moinfo_scf;
-  delete _memory_manager_;
   close_psi();
   return PSI_RETURN_SUCCESS;
 }
@@ -133,9 +131,10 @@ void init_psi(int argc, char *argv[])
   psi_start(&infile,&outfile,&psi_file_prefix,num_extra_args,extra_args,0);
   delete[] extra_args;
 
-  psio_init();
-  psio_ipv1_config();
-  chkpt_init(PSIO_OPEN_OLD);
+  _default_psio_lib_ = new PSIO();
+  psiopp_ipv1_config(_default_psio_lib_);
+  _default_chkpt_lib_ = new Chkpt(_default_psio_lib_, PSIO_OPEN_OLD);
+
   ip_cwk_clear();
   ip_cwk_add(const_cast<char*>(":PSI"));
   ip_cwk_add(const_cast<char*>(":SCF"));
@@ -155,7 +154,10 @@ void init_psi(int argc, char *argv[])
   options_read();
   options_print();
 
-  psio_open(PSIF_MCSCF,PSIO_OPEN_NEW);
+  _default_psio_lib_->open(PSIF_MCSCF,PSIO_OPEN_NEW);
+
+  psi::_memory_manager_   = new MemoryManager(options_get_int("MEMORY") );
+  moinfo_scf = new MOInfoSCF();
 }
 
 /**
@@ -163,19 +165,22 @@ void init_psi(int argc, char *argv[])
  */
 void close_psi()
 {
+  if(options_get_int("DEBUG") > 0)
+    psi::_memory_manager_->MemCheck(outfile);
+  delete moinfo_scf;
+  delete _memory_manager_;
+
   fprintf(outfile,"\n\n  MCSCF Execution Completed.\n\n");
   fflush(outfile);
 
   options_close();
 
-  chkpt_close();
+  _default_psio_lib_->close(PSIF_MCSCF,1);
 
-  psio_close(PSIF_MCSCF,1);
-
-  psio_done();
+  delete _default_chkpt_lib_;
+  delete _default_psio_lib_;
 
   tstop(outfile);
-
   psi_stop(infile,outfile,psi_file_prefix);
 }
 

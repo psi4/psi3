@@ -34,6 +34,8 @@ public:
   // Checking functions
   bool is_allocated() {return (block_vector_);}
   void check(const char* cstr);
+
+  void copy(SBlockVector& source);
 private:
   SBlockVector(BlockVector* block_vector);
 

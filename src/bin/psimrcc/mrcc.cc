@@ -1,17 +1,12 @@
-/***************************************************************************
- *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
-
 #include <liboptions/liboptions.h>
 #include <libmoinfo/libmoinfo.h>
+#include <libutil/libutil.h>
+
+#include "algebra_interface.h"
 #include "mrcc.h"
 #include "matrix.h"
 #include "blas.h"
 #include "debugging.h"
-#include <libutil/libutil.h>
-#include "algebra_interface.h"
 
 namespace psi{ namespace psimrcc{
 
@@ -26,7 +21,6 @@ CCMRCC::CCMRCC()
   old_energy      = 10.0;
 
   // Parse the CORR_WFN parameter
-
   vector<string> theory_levels = split("PT2 CCSD CCSD_T CCSDT-1A CCSDT-1B CCSDT-2 CCSDT-3 CCSDT");
   for(int i=0;i<theory_levels.size();++i){
     if(options_get_str("CORR_WFN")==theory_levels[i])
@@ -34,7 +28,6 @@ CCMRCC::CCMRCC()
   }
 
   // Parse the COUPLING parameter
-
   vector<string> coupling_levels = split("NONE LINEAR QUADRATIC CUBIC");
   for(int i=0;i<coupling_levels.size();++i){
     if(options_get_str("COUPLING")==coupling_levels[i]){
@@ -42,12 +35,16 @@ CCMRCC::CCMRCC()
     }
   }
 
+  // Parse the PERT_CBS parameter
+  pert_cbs = options_get_bool("PERT_CBS");
+
   // Add the matrices that will store the intermediates
   add_matrices();
 
   // Generate the Fock matrices, Integrals and Denominators
   generate_integrals();
   generate_denominators();
+
   if(triples_type>ccsd)
     generate_triples_denominators();
 

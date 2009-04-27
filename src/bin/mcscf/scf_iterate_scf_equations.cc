@@ -25,6 +25,9 @@ void SCF::iterate_scf_equations()
     C_T = C;
     C_T.transpose();
 
+    // Guess the occupation
+    guess_occupation();
+
     // Compute the density matrix
     density_matrix();
 
@@ -87,9 +90,20 @@ void SCF::iterate_scf_equations()
   }
 
   fprintf(outfile,"\n  ===========================================================================");
-  
+
   fprintf(outfile,"\n\n%6c* SCF total energy   = %20.12f\n",' ',new_energy);
-  
+
+  if(moinfo_scf->get_guess_occupation()){
+    fprintf(outfile,"\n  Final occupation");
+    fprintf(outfile,"\n  docc = (");
+    for(int h = 0; h < nirreps; ++h)  fprintf(outfile," %d",docc[h]);
+    fprintf(outfile," )");
+    fprintf(outfile,"\n  actv = (");
+    for(int h = 0; h < nirreps; ++h)  fprintf(outfile," %d",actv[h]);
+    fprintf(outfile," )");
+  }
+
+
   fprintf(outfile,"\n\n  End of SCF");
   fflush(outfile);
 }

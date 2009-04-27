@@ -21,6 +21,8 @@ typedef std::vector<bool>                   boolvec;
 
 namespace psi {
 
+class Chkpt;
+
 class MOInfoBase{
 public:
   MOInfoBase();
@@ -38,9 +40,12 @@ public:
   intvec      get_sopi()                         const {return(sopi);}
   intvec      get_docc()                         const {return(docc);}
   intvec      get_actv()                         const {return(actv);}
-
+  bool        get_guess_occupation()             const {return(guess_occupation);}
   int         get_ndocc()                        const {return(ndocc);}
   int         get_nactv()                        const {return(nactv);}
+
+  int         get_nael()                         const {return(nael);}                // # of alpha electrons including frozen
+  int         get_nbel()                         const {return(nbel);}                // # of  beta electrons including frozen
 
   double**    get_scf_mos()                      const {return(scf);}
   double**    get_scf_mos(int i)                 const {return(scf_irrep[i]);}
@@ -50,7 +55,7 @@ protected:
   void        read_chkpt_data();
   void        compute_number_of_electrons();
   void        correlate(char *ptgrp, int irrep, int& nirreps_old, int& nirreps_new,int*& correlation);
-  void        read_mo_space(int nirreps_ref, int& n, intvec& mo, std::string labels);
+  void        read_mo_space(int nirreps_ref, int& n, intvec& mo, std::string labels, bool zero = true);
   void        print_mo_space(int& nmo, intvec& mo, std::string labels);
   intvec      read_chkpt_intvec(int n, int* array);
 
@@ -76,6 +81,7 @@ protected:
   intvec      sopi;
   intvec      docc;
   intvec      actv;
+  bool        guess_occupation;
 
   double      nuclear_energy;
 

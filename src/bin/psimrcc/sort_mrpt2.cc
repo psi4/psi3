@@ -76,7 +76,7 @@ void CCSort::form_fock_mrpt2(MatrixMap::iterator& iter)
     const intvec& oa2p = moinfo->get_occ_to_mo();
 
     bool alpha = true;
-    if((label.find("O")!=string::npos) || (label.find("V")!=string::npos) || (label.find("A")!=string::npos)) // NB This was missing the last bit, this might be a problem
+    if((label.find("O")!=string::npos) || (label.find("V")!=string::npos) || (label.find("A")!=string::npos) || (label.find("F")!=string::npos)) // NB This was missing the last bit, this might be a problem
       alpha = false;
 
     // N.B. Never introduce Matrices/Vectors with O or V in the name before you compute the Fock matrix elements

@@ -3,7 +3,7 @@
 #include <libmoinfo/libmoinfo.h>
 #include <libutil/libutil.h>
 #include <liboptions/liboptions.h>
-#include <libchkpt/chkpt.h>
+#include <libchkpt/chkpt.hpp>
 
 #include "blas.h"
 #include "mp2_ccsd.h"
@@ -135,7 +135,7 @@ void MP2_CCSD::compute_mp2_ccsd_energy()
   }
   fprintf(outfile,"\n  ------------------------------------------------------------------------------");
 
-  fprintf(outfile,"\n\n   * MP2-CCSD  = %25.15f\n",current_energy);
+  fprintf(outfile,"\n\n   * MP2-CCSD total energy = %25.15f\n",current_energy);
 
   compute_mp2_ccsd_components();
 

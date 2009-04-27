@@ -11,16 +11,16 @@ class MatrixBase
 {
 public:
   MatrixBase();
-  MatrixBase(int rows, int cols);
+  MatrixBase(size_t rows, size_t cols);
   ~MatrixBase();
 
   //Inlines
-  int     get_rows()                  {return(rows_);}
-  int     get_cols()                  {return(cols_);}
-  int     get_elements()              {return(elements_);}
-  void    set(int i, int j, double value) {matrix_[i][j]  = value;}
-  void    add(int i, int j, double value) {matrix_[i][j] += value;}
-  double  get(int i, int j)               {return(matrix_[i][j]);}
+  size_t  get_rows()                  {return(rows_);}
+  size_t  get_cols()                  {return(cols_);}
+  size_t  get_elements()              {return(elements_);}
+  void    set(size_t i, size_t j, double value) {matrix_[i][j]  = value;}
+  void    add(size_t i, size_t j, double value) {matrix_[i][j] += value;}
+  double  get(size_t i, size_t j)               {return(matrix_[i][j]);}
   double** get_matrix()                   {return(matrix_);}
 
   void    multiply(bool transpose_A, bool transpose_B, MatrixBase* A, MatrixBase* B);

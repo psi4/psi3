@@ -23,9 +23,15 @@ VectorBase::~VectorBase()
 void VectorBase::print()
 {
   fprintf(outfile,"\n  ");
-  for(int i=0 ; i < elements_; i++){
+  for(size_t i = 0 ; i < elements_; ++i){
     fprintf(outfile,"%10.6f",vector_[i]);
   }
+}
+
+void VectorBase::copy(VectorBase& source)
+{
+  for(size_t i = 0 ; i < elements_; ++i)
+    vector_[i] = source.vector_[i];
 }
 
 }}

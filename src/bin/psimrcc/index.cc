@@ -38,7 +38,7 @@ void CCIndex::init()
 {
   // New orbital spaces must be added here
   for(int i =0;i<label.size();i++)
-    if( label[i]=='o' || label[i]=='a' || label[i]=='v' || label[i]=='s' || label[i]=='n')
+    if( label[i]=='o' || label[i]=='a' || label[i]=='v' || label[i]=='s' || label[i]=='n' || label[i]=='f')
       nelements++;
 
   // Get the orbital spaces data pointers
@@ -53,6 +53,9 @@ void CCIndex::init()
     }else if(label[i]=='a'){
       mospi.push_back(moinfo->get_actv());
       indices_to_pitzer.push_back(moinfo->get_actv_to_mo());
+    }else if(label[i]=='f'){
+      mospi.push_back(moinfo->get_fvir());
+      indices_to_pitzer.push_back(moinfo->get_fvir_to_mo());
     }else if(label[i]=='s'){
       mospi.push_back(moinfo->get_sopi());
     }else if(label[i]=='n'){

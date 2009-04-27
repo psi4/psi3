@@ -1,6 +1,6 @@
 /*!
 ** \file
-** \brief Header file for the options library 
+** \brief Header file for the options library
 ** \ingroup LIBOPTIONS
 **
 ** Francesco Evangelista 2008
@@ -13,7 +13,6 @@
 #include <string>
 
 namespace psi {
-
 
 void options_init();
 void options_close();
@@ -31,22 +30,22 @@ int         options_get_int(const char* cstr_option);
 double      options_get_double(const char* cstr_option);
 std::string options_get_str(const char* cstr_option);
 
-typedef struct 
+typedef struct
 {
   bool option;
 } BoolOption;
 
-typedef struct 
+typedef struct
 {
   int option;
 } IntOption;
 
-typedef struct 
+typedef struct
 {
   double option;
 } DoubleOption;
 
-typedef struct 
+typedef struct
 {
   std::string option;
   std::string choices;

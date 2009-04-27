@@ -1,3 +1,4 @@
+#include <cstdlib>
 #include <iostream>
 #include <cmath>
 
@@ -26,6 +27,7 @@ void SCF::startup()
   nirreps = moinfo_scf->get_nirreps();
   nso     = moinfo_scf->get_nso();
   sopi    = moinfo_scf->get_sopi();
+
   docc    = moinfo_scf->get_docc();
   actv    = moinfo_scf->get_actv();
 
@@ -56,6 +58,12 @@ void SCF::startup()
   }
   else if(options_get_str("REFERENCE")=="TWOCON"){
     reference = tcscf;
+    if(moinfo_scf->get_guess_occupation()){
+      printf("\n  ERROR:  MCSCF cannot guess the active orbital occupation\n");
+      fprintf(outfile,"\n\n  MCSCF cannot guess the active orbital occupation\n");
+      fflush(outfile);
+      exit(1);
+    }
   }
 
   root = options_get_int("ROOT") - 1;

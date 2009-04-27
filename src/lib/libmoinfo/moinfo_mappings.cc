@@ -34,6 +34,7 @@ void MOInfo::compute_mo_mappings()
     docc_to_mo = (4 5 6 7 18 19 20)
     actv_to_mo = (8 9 21 22)
     extr_to_mo = (10 11 12 13 23 24 25 26)
+    fvir_to_mo = (14 15 27 28)
     occ_to_mo  = (4 5 6 7 8 9 18 19 20 21 22)
     vir_to_mo  = (8 9 10 11 12 13 21 22 23 24 25 26)
     all_to_mo  = (4 5 6 7 8 9 10 11 12 13 18 19 20
@@ -45,25 +46,33 @@ void MOInfo::compute_mo_mappings()
   ********************************************************/
 
   // Orbital subspaces to MOs
+  focc_to_mo.resize(nfocc);
   docc_to_mo.resize(ndocc);
   actv_to_mo.resize(nactv);
   extr_to_mo.resize(nextr);
+  fvir_to_mo.resize(nfvir);
+
   occ_to_mo.resize(nocc);
   vir_to_mo.resize(nvir);
   all_to_mo.resize(nall);
 
   int  index      = 0;
   int  mo_index   = 0;
+  int  focc_index = 0;
   int  docc_index = 0;
   int  actv_index = 0;
   int  extr_index = 0;
+  int  fvir_index = 0;
   int  occ_index  = 0;
   int  vir_index  = 0;
   int  all_index  = 0;
 
   for(int h = 0; h < nirreps; ++h){   // Loop over irreps
-    index += focc[h];                   // Offset by the focc
-
+    for(int i = 0; i < focc[h]; ++i){   //Loop over frozen doubly-occupied MOs
+      focc_to_mo[focc_index] = index;
+      focc_index++;
+      index++;
+    }
     for(int i = 0; i < docc[h]; ++i){   //Loop over doubly-occupied MOs
       docc_to_mo[docc_index] = index;
       occ_to_mo[occ_index]   = index;
@@ -93,9 +102,12 @@ void MOInfo::compute_mo_mappings()
       all_index++;
       index++;
     }
-    index += fvir[h];                   // Offset by the frozen virtual MOs
+    for(int i = 0; i < fvir[h]; ++i){   //Loop over frozen virtual MOs
+      fvir_to_mo[fvir_index] = index;
+      fvir_index++;
+      index++;
+    }
   }
-
 
 
   // Orbital subspaces within themselves

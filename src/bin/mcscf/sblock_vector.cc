@@ -71,4 +71,9 @@ void SBlockVector::check(const char* cstr)
   }
 }
 
+void SBlockVector::copy(SBlockVector& source)
+{
+  block_vector_->copy(*source.block_vector_);
+}
+
 }}

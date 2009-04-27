@@ -7,7 +7,7 @@
 #include <psifiles.h>
 #include <libmoinfo/libmoinfo.h>
 #include <liboptions/liboptions.h>
-#include <libpsio/psio.h>
+#include <libpsio/psio.hpp>
 #include <libutil/libutil.h>
 
 #include "blas.h"
@@ -652,7 +652,7 @@ void CCMRCC::update_t3_ijkabc_amps_mkccsd()
           }
           char data_label[80];
           sprintf(data_label,"%s%d%s_%s_%d_%d","t3_delta[ooo][vvv]{",unique_mu,"}","DIIS",h,diis_step);
-          psio_write_entry(PSIF_PSIMRCC_INTEGRALS,data_label,(char*)(diis_error),TijkabcMatTmp->get_block_sizepi(h)*sizeof(double));
+          _default_psio_lib_->write_entry(PSIF_PSIMRCC_INTEGRALS,data_label,(char*)(diis_error),TijkabcMatTmp->get_block_sizepi(h)*sizeof(double));
           release1(diis_error);
         }
       }
@@ -863,7 +863,7 @@ void CCMRCC::update_t3_ijKabC_amps_mkccsd()
           }
           char data_label[80];
           sprintf(data_label,"%s%d%s_%s_%d_%d","t3_delta[ooO][vvV]{",unique_mu,"}","DIIS",h,diis_step);
-          psio_write_entry(PSIF_PSIMRCC_INTEGRALS,data_label,(char*)(diis_error),TijkabcMatTmp->get_block_sizepi(h)*sizeof(double));
+          _default_psio_lib_->write_entry(PSIF_PSIMRCC_INTEGRALS,data_label,(char*)(diis_error),TijkabcMatTmp->get_block_sizepi(h)*sizeof(double));
           release1(diis_error);
         }
       }
@@ -1077,7 +1077,7 @@ void CCMRCC::update_t3_iJKaBC_amps_mkccsd()
           }
           char data_label[80];
           sprintf(data_label,"%s%d%s_%s_%d_%d","t3_delta[oOO][vVV]{",unique_mu,"}","DIIS",h,diis_step);
-          psio_write_entry(PSIF_PSIMRCC_INTEGRALS,data_label,(char*)(diis_error),TijkabcMatTmp->get_block_sizepi(h)*sizeof(double));
+          _default_psio_lib_->write_entry(PSIF_PSIMRCC_INTEGRALS,data_label,(char*)(diis_error),TijkabcMatTmp->get_block_sizepi(h)*sizeof(double));
           release1(diis_error);
         }
       }
@@ -1254,7 +1254,7 @@ void CCMRCC::update_t3_IJKABC_amps_mkccsd()
           }
           char data_label[80];
           sprintf(data_label,"%s%d%s_%s_%d_%d","t3_delta[OOO][VVV]{",unique_mu,"}","DIIS",h,diis_step);
-          psio_write_entry(PSIF_PSIMRCC_INTEGRALS,data_label,(char*)(diis_error),TijkabcMatTmp->get_block_sizepi(h)*sizeof(double));
+          _default_psio_lib_->write_entry(PSIF_PSIMRCC_INTEGRALS,data_label,(char*)(diis_error),TijkabcMatTmp->get_block_sizepi(h)*sizeof(double));
           release1(diis_error);
         }
       }

@@ -1,5 +1,5 @@
 ******************************************************************************
-PSI3 started on wigwam.ccqc.uga.edu at Wed Feb 25 19:22:03 2009
+PSI3 started on wigwam.ccqc.uga.edu at Fri Feb 27 14:37:09 2009
 
     -----------------------------------------------------------------------    
             PSI3: An Open-Source Ab Initio Electronic Structure Package 
@@ -23,7 +23,7 @@ The following programs will be executed:
 
 ******************************************************************************
 INPUT tstart called on wigwam.ccqc.uga.edu
-Wed Feb 25 19:22:03 2009
+Fri Feb 27 14:37:09 2009
 
                                 --------------
                                     INPUT
@@ -160,14 +160,14 @@ Coordinates after reading z-matrices
 
 ******************************************************************************
 INPUT tstop called on wigwam.ccqc.uga.edu
-Wed Feb 25 19:22:03 2009
+Fri Feb 27 14:37:09 2009
 
 user time   =       0.05 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on wigwam.ccqc.uga.edu
-Wed Feb 25 19:22:03 2009
+Fri Feb 27 14:37:09 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -197,14 +197,14 @@ Wed Feb 25 19:22:03 2009
 
 ******************************************************************************
 cints tstop called on wigwam.ccqc.uga.edu
-Wed Feb 25 19:22:03 2009
+Fri Feb 27 14:37:09 2009
 
 user time   =       0.02 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 MCSCF tstart called on wigwam.ccqc.uga.edu
-Wed Feb 25 19:22:03 2009
+Fri Feb 27 14:37:09 2009
 
 
          ------------------------------------------
@@ -213,7 +213,7 @@ Wed Feb 25 19:22:03 2009
          ------------------------------------------
 
 
-  Compiled on Feb 22 2009 at 16:02:37
+  Compiled on Feb 27 2009 at 14:12:27
 
   Options:
   ----------------------------------------------------------------------------
@@ -304,14 +304,14 @@ Wed Feb 25 19:22:03 2009
 
 ******************************************************************************
 MCSCF tstop called on wigwam.ccqc.uga.edu
-Wed Feb 25 19:22:03 2009
+Fri Feb 27 14:37:09 2009
 
 user time   =       0.05 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 TRANSQT tstart called on wigwam.ccqc.uga.edu
-Wed Feb 25 19:22:03 2009
+Fri Feb 27 14:37:09 2009
 
 
 	**************************************************
@@ -398,14 +398,14 @@ Wed Feb 25 19:22:03 2009
 	Frozen-core operator written to file 35.
 ******************************************************************************
 TRANSQT tstop called on wigwam.ccqc.uga.edu
-Wed Feb 25 19:22:03 2009
+Fri Feb 27 14:37:09 2009
 
 user time   =       0.02 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 PSIMRCC tstart called on wigwam.ccqc.uga.edu
-Wed Feb 25 19:22:03 2009
+Fri Feb 27 14:37:09 2009
 
 
   MRCC          MRCC
@@ -413,7 +413,7 @@ Wed Feb 25 19:22:03 2009
    MRCC  MRCC  MRCC      PSIMRCC Version 0.8.0, August, 2008
    MRCC  MRCC  MRCC      Multireference Coupled Cluster, written by
      MRCCMRCCMRCC        Francesco A. Evangelista and Andrew C. Simmonett
-         MRCC            Compiled on Feb 22 2009 at 16:02:59
+         MRCC            Compiled on Feb 27 2009 at 14:20:10
          MRCC            id = 6a707c99fd2213714c6c78cfcd145480721f0359 
        MRCCMRCC
 
@@ -542,7 +542,7 @@ Wed Feb 25 19:22:03 2009
     @MP2-CCSD    15   -100.184387254067403  -9.7344e-12   S/E (singularities found)
   ------------------------------------------------------------------------------
 
-   * MP2-CCSD  =      -100.184387254067417
+   * MP2-CCSD total energy =      -100.184387254067417
 
    * MP2-CCSD  Singles                    =    0.000000000010665
    * MP2-CCSD  Singlet correlation energy =   -0.132992429490254
@@ -555,8 +555,8 @@ Wed Feb 25 19:22:03 2009
    * CCSD Term Triplet correlation energy =    0.000032778520551
 
 	PSIMRCC Execution Ended.
-	Wall Time =             1.124952 s
-	GEMM Time =             0.063037 s
+	Wall Time =             1.135432 s
+	GEMM Time =             0.059344 s
 
   ==============================================================================
   Memory Usage Report
@@ -566,9 +566,9 @@ Wed Feb 25 19:22:03 2009
   ==============================================================================
 ******************************************************************************
 PSIMRCC tstop called on wigwam.ccqc.uga.edu
-Wed Feb 25 19:22:04 2009
+Fri Feb 27 14:37:10 2009
 
-user time   =       0.94 seconds =       0.02 minutes
+user time   =       0.87 seconds =       0.01 minutes
 system time =       0.19 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
@@ -576,7 +576,7 @@ total time  =          1 seconds =       0.02 minutes
                           PSI3 Computation Completed
                           --------------------------
 
-PSI3 stopped on wigwam.ccqc.uga.edu at Wed Feb 25 19:22:04 2009
+PSI3 stopped on wigwam.ccqc.uga.edu at Fri Feb 27 14:37:10 2009
 
 Total PSI3 wall time          1 seconds =       0.02 minutes
 ******************************************************************************

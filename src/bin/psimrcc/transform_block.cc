@@ -17,8 +17,8 @@
 #define four(i,j,k,l) INDEX(INDEX(i,j),INDEX(k,l))
 
 #include <libciomr/libciomr.h>
-#include <libpsio/psio.h>
-#include <libchkpt/chkpt.h>
+#include <libpsio/psio.hpp>
+#include <libchkpt/chkpt.hpp>
 #include <libipv1/ip_lib.h>
 #include <libiwl/iwl.h>
 #include <libqt/qt.h>

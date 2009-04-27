@@ -51,8 +51,8 @@ public:
   void subtract_reference () { if (--ref_ == 0) delete this;}
   // Reference count
   unsigned int ref_;
-private:
 
+private:
   // Matrix label and pointer
   std::string label_;
   MatrixBase** matrix_base_;

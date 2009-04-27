@@ -79,9 +79,10 @@ protected:
 
   int         diis_step;
 
+  bool        pert_cbs;
   TriplesType         triples_type;
   TriplesCouplingType triples_coupling_type;
-  
+
   void generate_triples_denominators();
   void generate_d3_ijk(double***& d3,bool alpha_i,bool alpha_j,bool alpha_k);
   void generate_d3_abc(double***& d3,bool alpha_a,bool alpha_b,bool alpha_c);

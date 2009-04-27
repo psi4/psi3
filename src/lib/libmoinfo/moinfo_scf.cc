@@ -4,8 +4,7 @@
 #include <cstring>
 
 #include <libciomr/libciomr.h>
-#include <libpsio/psio.h>
-#include <libchkpt/chkpt.h>
+#include <libchkpt/chkpt.hpp>
 #include <libipv1/ip_lib.h>
 
 #include "moinfo_scf.h"
@@ -42,18 +41,18 @@ void MOInfoSCF::read_mo_spaces()
   actv.resize(nirreps,0);
 
   // For single-point geometry optimizations and frequencies
-  char *current_displacement_label = chkpt_build_keyword(const_cast<char*>("Current Displacement Irrep"));
-  if(chkpt_exist(current_displacement_label)){
-    int   disp_irrep  = chkpt_rd_disp_irrep();
-    char *save_prefix = chkpt_rd_prefix();
+  char *current_displacement_label = _default_chkpt_lib_->build_keyword(const_cast<char*>("Current Displacement Irrep"));
+  if(_default_chkpt_lib_->exist(current_displacement_label)){
+    int   disp_irrep  = _default_chkpt_lib_->rd_disp_irrep();
+    char *save_prefix = _default_chkpt_lib_->rd_prefix();
     int nirreps_ref;
 
     // read symmetry info and MOs for undisplaced geometry from
     // root section of checkpoint file
-    chkpt_reset_prefix();
-    chkpt_commit_prefix();
+    _default_chkpt_lib_->reset_prefix();
+    _default_chkpt_lib_->commit_prefix();
 
-    char *ptgrp_ref = chkpt_rd_sym_label();
+    char *ptgrp_ref = _default_chkpt_lib_->rd_sym_label();
 
     // Lookup irrep correlation table
     int* correlation;
@@ -72,8 +71,8 @@ void MOInfoSCF::read_mo_spaces()
     }
 
     wfn_sym = correlation[wfn_sym];
-    chkpt_set_prefix(save_prefix);
-    chkpt_commit_prefix();
+    _default_chkpt_lib_->set_prefix(save_prefix);
+    _default_chkpt_lib_->commit_prefix();
     free(save_prefix);
     free(ptgrp_ref);
     delete [] correlation;
@@ -85,6 +84,9 @@ void MOInfoSCF::read_mo_spaces()
 
   nactive_ael = nael  - ndocc;
   nactive_bel = nbel  - ndocc;
+
+  if((ndocc > 0) || (nactv > 0))
+    guess_occupation = false;
 
   free(current_displacement_label);
 }
@@ -101,9 +103,13 @@ void MOInfoSCF::print_mo()
   fprintf(outfile," Total");
   fprintf(outfile,"\n  ----------------------------------------------------------------------------");
   print_mo_space(nso,sopi,"Total                         ");
-  print_mo_space(ndocc,docc,"Doubly Occupied               ");
-  print_mo_space(nactv,actv,"Active/Singly Occupied        ");
+  if(!guess_occupation){
+    print_mo_space(ndocc,docc,"Doubly Occupied               ");
+    print_mo_space(nactv,actv,"Active/Singly Occupied        ");
+  }
   fprintf(outfile,"\n  ----------------------------------------------------------------------------");
+  if(guess_occupation)
+    fprintf(outfile,"\n\n  Guessing orbital occupation");
   fflush(outfile);
 }
 

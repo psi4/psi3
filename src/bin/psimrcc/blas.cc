@@ -1,14 +1,15 @@
-#include <liboptions/liboptions.h>
-#include "blas.h"
-#include "debugging.h"
-#include <libmoinfo/libmoinfo.h>
-#include <libutil/libutil.h>
 #include <algorithm>
 
+#include <liboptions/liboptions.h>
+#include <libmoinfo/libmoinfo.h>
+#include <libutil/libutil.h>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 
-extern FILE *infile, *outfile;
+#include "blas.h"
+#include "debugging.h"
+
+extern FILE *outfile;
 
 namespace psi{ namespace psimrcc{
 
@@ -55,12 +56,21 @@ void CCBLAS::allocate_work()
   // Compute the temporary work space size
   CCIndex* oo_pair = get_index("[oo]");
   CCIndex* vv_pair = get_index("[vv]");
+  CCIndex* ff_pair = get_index("[ff]");
+
   work_size = 0;
   for(int h=0;h<moinfo->get_nirreps();h++){
-    if(oo_pair->get_pairpi(h)<=vv_pair->get_pairpi(h))
-      work_size += oo_pair->get_pairpi(h)*vv_pair->get_pairpi(h);
-    else
-      work_size += oo_pair->get_pairpi(h)*oo_pair->get_pairpi(h);
+    vector<size_t> dimension;
+    dimension.push_back(oo_pair->get_pairpi(h));
+    dimension.push_back(vv_pair->get_pairpi(h));
+    dimension.push_back(ff_pair->get_pairpi(h));
+    sort(dimension.begin(),dimension.end());
+    work_size += dimension[2] * dimension[1];
+//
+//    if(oo_pair->get_pairpi(h)<=vv_pair->get_pairpi(h))
+//      work_size += oo_pair->get_pairpi(h)*vv_pair->get_pairpi(h);
+//    else
+//      work_size += oo_pair->get_pairpi(h)*oo_pair->get_pairpi(h);
   }
   // Allocate the temporary work space
   for(int n=0;n<options_get_int("NUM_THREADS");n++){
@@ -69,6 +79,8 @@ void CCBLAS::allocate_work()
     zero_arr(work[n],work_size);
   }
   _memory_manager_->add_allocated_memory(to_MB(work_size));
+
+  fprintf(outfile,"\n  Allocated work array of size %ld (%.2f MB)",work_size,to_MB(work_size));
 }
 
 void CCBLAS::allocate_buffer()
@@ -149,6 +161,7 @@ void CCBLAS::add_indices()
   add_index("[vo]");
   add_index("[vv]");
   add_index("[aa]");
+
   add_index("[aaa]");
   add_index("[ooo]");
   add_index("[oov]");
@@ -156,6 +169,13 @@ void CCBLAS::add_indices()
   add_index("[ovv]");
   add_index("[vvo]");
   add_index("[ovo]");
+
+  // MP3 PCBS
+  add_index("[fo]");
+  add_index("[of]");
+  add_index("[ff]");
+  add_index("[vf]");
+  add_index("[fv]");
 
   // MP2-CCSD
   if(options_get_str("CORR_WFN")=="MP2-CCSD"){

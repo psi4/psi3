@@ -20,6 +20,7 @@ public:
   ~BlockVector();
 
   void print();
+  void copy(BlockVector& source);
 
   // Inlines
   void        set(int h, int i, double value) {vector_base_[h]->set(i,value);}

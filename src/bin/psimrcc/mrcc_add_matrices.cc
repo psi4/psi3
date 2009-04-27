@@ -17,7 +17,7 @@ void CCMRCC::add_matrices()
   blas->add_Matrix("<[oo]:[oo]>");
   blas->add_Matrix("<[oo]|[oo]>");
 
-  // O^3V  
+  // O^3V
   blas->add_Matrix("([oo]:[ov])");
   blas->add_Matrix("([oo]|[ov])");
   blas->add_Matrix("<[ooo]:[v]>");
@@ -251,7 +251,7 @@ void CCMRCC::add_matrices()
 
 //   blas->add_Matrix("F_ae[v][v]{u}");
 //   blas->add_Matrix("F_AE[V][V]{o}");
-// 
+//
 //   blas->add_Matrix("F_mi[o][o]{u}");
 //   blas->add_Matrix("F_MI[O][O]{o}");
 
@@ -289,7 +289,7 @@ void CCMRCC::add_matrices()
   blas->add_Matrix("tau[OO][V>V]{u}");
   blas->add_Matrix("tau[oO][v>=V]{u}");
   blas->add_Matrix("tau[oO][V>=v]{u}");
-  
+
   // Amplitudes
   blas->add_Matrix("ECCSD{u}");
   blas->add_Matrix("t1_norm{u}");
@@ -324,7 +324,7 @@ void CCMRCC::add_matrices()
     blas->add_Matrix("ERROR{u}");
     blas->add_Matrix("<[oo]:[ov]>");
     blas->add_Matrix("<[oo]|[ov]>");
-   
+
 
 /*
     blas->add_Matrix("t2_test[oo][vv]{u}");
@@ -354,7 +354,7 @@ void CCMRCC::add_matrices()
     blas->add_Matrix("W_AiBc[V][oVv]{u}");
     blas->add_Matrix("W_AIBC[V][OVV]{u}");
 
-    // 
+    //
     blas->add_Matrix("DELTA_t1[o][v]");
     blas->add_Matrix("DELTA_t1[O][V]");
     blas->add_Matrix("DELTA_t2[oo][vv]");
@@ -368,7 +368,7 @@ void CCMRCC::add_matrices()
     blas->add_Matrix("t2[OVV][O]{u}");
 
     // Required by T2*W_bcek
-    blas->add_Matrix("t2[oov][v]{u}");         
+    blas->add_Matrix("t2[oov][v]{u}");
     blas->add_Matrix("t2[oOv][V]{u}");
     blas->add_Matrix("t2[OoV][v]{u}");
     blas->add_Matrix("t2[OOV][V]{u}");
@@ -389,6 +389,145 @@ void CCMRCC::add_matrices()
     blas->add_Matrix("t3_eqns[OOO][VVV]{u}");
   }
 
+  blas->add_Matrix("fock[ff]{u}");
+  blas->add_Matrix("fock[FF]{u}");
+
+  if(pert_cbs){
+    // TEMPORARY
+    blas->add_Matrix("<[vv]:[vv]>");
+    blas->add_Matrix("<[vv]|[vv]>");
+
+    blas->add_Matrix("([vo]:[ov])");
+    blas->add_Matrix("([vo]|[ov])");
+
+    blas->add_Matrix("d2[oo][vf]{u}");
+    blas->add_Matrix("d2[oO][vF]{u}");
+    blas->add_Matrix("d2[OO][VF]{u}");
+    blas->add_Matrix("d2[oo][fv]{u}");
+    blas->add_Matrix("d2[oO][fV]{u}");
+    blas->add_Matrix("d2[OO][FV]{u}");
+    blas->add_Matrix("d2[oo][ff]{u}");
+    blas->add_Matrix("d2[oO][fF]{u}");
+    blas->add_Matrix("d2[OO][FF]{u}");
+
+    blas->add_Matrix("<[oo]:[fv]>");
+    blas->add_Matrix("<[oo]|[fv]>");
+    blas->add_Matrix("<[oo]:[vf]>");
+    blas->add_Matrix("<[oo]|[vf]>");
+    blas->add_Matrix("<[oo]:[ff]>");
+    blas->add_Matrix("<[oo]|[ff]>");
+
+    // Third order
+    blas->add_Matrix("<[vf]:[vv]>");
+    blas->add_Matrix("<[vf]|[vv]>");
+    blas->add_Matrix("<[vf]:[vf]>");
+    blas->add_Matrix("<[vf]|[vf]>");
+    blas->add_Matrix("<[vf]:[fv]>");
+    blas->add_Matrix("<[vf]|[fv]>");
+    blas->add_Matrix("<[vf]:[ff]>");
+    blas->add_Matrix("<[vf]|[ff]>");
+    blas->add_Matrix("([fo]:[ov])");
+    blas->add_Matrix("([fo]|[ov])");
+    blas->add_Matrix("([fo]:[of])");
+    blas->add_Matrix("([fo]|[of])");
+    blas->add_Matrix("([vo]:[of])");
+    blas->add_Matrix("([vo]|[of])");
+
+    blas->add_Matrix("<[of]|[ov]>");
+    blas->add_Matrix("<[of]|[of]>");
+    blas->add_Matrix("<[ff]:[vv]>");
+    blas->add_Matrix("<[ff]|[vv]>");
+    blas->add_Matrix("<[ff]:[vf]>");
+    blas->add_Matrix("<[ff]:[fv]>");
+    blas->add_Matrix("<[ff]:[ff]>");
+
+    blas->add_Matrix("<[ff]|[vf]>");
+    blas->add_Matrix("<[ff]|[fv]>");
+    blas->add_Matrix("<[ff]|[ff]>");
+
+    blas->add_Matrix("<[fv]:[vv]>");
+    blas->add_Matrix("<[fv]:[vf]>");
+    blas->add_Matrix("<[fv]:[fv]>");
+    blas->add_Matrix("<[fv]:[ff]>");
+    blas->add_Matrix("<[vv]:[vf]>");
+    blas->add_Matrix("<[vv]:[fv]>");
+    blas->add_Matrix("<[vv]:[ff]>");
+
+    blas->add_Matrix("<[fv]|[vv]>");
+    blas->add_Matrix("<[fv]|[vf]>");
+    blas->add_Matrix("<[fv]|[fv]>");
+    blas->add_Matrix("<[fv]|[ff]>");
+    blas->add_Matrix("<[vv]|[vf]>");
+    blas->add_Matrix("<[vv]|[fv]>");
+    blas->add_Matrix("<[vv]|[ff]>");
+
+    blas->add_Matrix("<[ov]|[of]>");
+
+
+    blas->add_Matrix("t2_1[oo][vv]{u}");
+    blas->add_Matrix("t2_1[oO][vV]{u}");
+    blas->add_Matrix("t2_1[OO][VV]{u}");
+    blas->add_Matrix("t2_1[oo][vf]{u}");
+    blas->add_Matrix("t2_1[oO][vF]{u}");
+    blas->add_Matrix("t2_1[OO][VF]{u}");
+    blas->add_Matrix("t2_1[oo][fv]{u}");
+    blas->add_Matrix("t2_1[oO][fV]{u}");
+    blas->add_Matrix("t2_1[OO][FV]{u}");
+    blas->add_Matrix("t2_1[oo][ff]{u}");
+    blas->add_Matrix("t2_1[oO][fF]{u}");
+    blas->add_Matrix("t2_1[OO][FF]{u}");
+
+    blas->add_Matrix("t2_2[oo][vv]{u}");
+    blas->add_Matrix("t2_2[oO][vV]{u}");
+    blas->add_Matrix("t2_2[OO][VV]{u}");
+    blas->add_Matrix("t2_2[oo][vf]{u}");
+    blas->add_Matrix("t2_2[oO][vF]{u}");
+    blas->add_Matrix("t2_2[OO][VF]{u}");
+    blas->add_Matrix("t2_2[oo][fv]{u}");
+    blas->add_Matrix("t2_2[oO][fV]{u}");
+    blas->add_Matrix("t2_2[OO][FV]{u}");
+    blas->add_Matrix("t2_2[oo][ff]{u}");
+    blas->add_Matrix("t2_2[oO][fF]{u}");
+    blas->add_Matrix("t2_2[OO][FF]{u}");
+
+    blas->add_Matrix("t2_eqns[oo][vf]{u}");
+    blas->add_Matrix("t2_eqns[oO][vF]{u}");
+    blas->add_Matrix("t2_eqns[OO][VF]{u}");
+
+    blas->add_Matrix("t2_eqns[oo][fv]{u}");
+    blas->add_Matrix("t2_eqns[oO][fV]{u}");
+    blas->add_Matrix("t2_eqns[OO][FV]{u}");
+
+    blas->add_Matrix("t2_eqns[oo][ff]{u}");
+    blas->add_Matrix("t2_eqns[oO][fF]{u}");
+    blas->add_Matrix("t2_eqns[OO][FF]{u}");
+
+
+    // Split amplitudes
+    blas->add_Matrix("t2_1[ov][ov]{u}");
+    blas->add_Matrix("t2_1[ov][OV]{u}");
+    blas->add_Matrix("t2_1[oV][Ov]{u}");
+    blas->add_Matrix("t2_1[OV][ov]{u}");
+    blas->add_Matrix("t2_1[OV][OV]{u}");
+
+    blas->add_Matrix("t2_1[ov][of]{u}");
+
+    blas->add_Matrix("t2_1[of][ov]{u}");
+    blas->add_Matrix("t2_1[of][OV]{u}");
+    blas->add_Matrix("t2_1[ov][OF]{u}");
+    blas->add_Matrix("t2_1[OF][OV]{u}");
+    blas->add_Matrix("t2_1[OF][ov]{u}");
+    blas->add_Matrix("t2_1[OV][OF]{u}");
+    blas->add_Matrix("t2_1[OV][of]{u}");
+    blas->add_Matrix("t2_1[oF][Ov]{u}");
+    blas->add_Matrix("t2_1[oV][Of]{u}");
+    blas->add_Matrix("t2_1[oF][Of]{u}");
+
+    blas->add_Matrix("t2_1[of][of]{u}");
+    blas->add_Matrix("t2_1[of][OF]{u}");
+    blas->add_Matrix("t2_1[OF][OF]{u}");
+    blas->add_Matrix("t2_1[OF][of]{u}");
+  }
 }
 
 }} /* End Namespaces */

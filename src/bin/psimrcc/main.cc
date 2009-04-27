@@ -18,14 +18,17 @@
 
 // PSI libraries
 #include <psifiles.h>
-#include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
-#include <libchkpt/chkpt.h>
+#include <libchkpt/chkpt.hpp>
 #include <libmoinfo/libmoinfo.h>
 #include <liboptions/liboptions.h>
 #include <libutil/libutil.h>
 #include <libqt/qt.h>
+
+// PSI C++
+#include <libpsio/psio.hpp>
+#include <libchkpt/chkpt.hpp>
 
 #include "blas.h"
 #include "debugging.h"
@@ -74,20 +77,7 @@ int main(int argc, char *argv[])
   init_psi(argc,argv);
 
 
-  global_timer = new Timer;
-  read_calculation_options();
 
-  ip_cwk_clear();
-  ip_cwk_add(const_cast<char*>(":MRCC"));
-  ip_cwk_add(const_cast<char*>(":PSIMRCC"));
-
-  debugging = new Debugging;
-
-  _memory_manager_    = new MemoryManager(options_get_int("MEMORY"));
-
-  moinfo = new MOInfo();
-
-  moinfo->setup_model_space();  // The is a bug here DELETEME
 
   run_psimrcc();
 
@@ -132,6 +122,7 @@ void read_calculation_options()
   options_add_bool("ZERO_INTERNAL_AMPS",true);
   options_add_bool("COUPLING_TERMS",true);
   options_add_bool("PRINT_HEFF",false);
+  options_add_bool("PERT_CBS",false);
 
   options_add_str_with_choices("PT_ENERGY","SECOND_ORDER","SECOND_ORDER SCS_SECOND_ORDER PSEUDO_SECOND_ORDER SCS_PSEUDO_SECOND_ORDER");
   options_add_str_with_choices("CORR_WFN","CCSD","CCSD MP2-CCSD");
@@ -172,9 +163,10 @@ void init_psi(int argc, char *argv[])
   psi_start(&infile,&outfile,&psi_file_prefix,num_extra_args,extra_args,0);
   delete[] extra_args;
 
-  psio_init();
-  psio_ipv1_config();
-  chkpt_init(PSIO_OPEN_OLD);
+  _default_psio_lib_ = new PSIO();
+  psiopp_ipv1_config(_default_psio_lib_);
+  _default_chkpt_lib_ = new Chkpt(_default_psio_lib_, PSIO_OPEN_OLD);
+
   ip_cwk_clear();
   ip_cwk_add(const_cast<char*>(":PSIMRCC"));
   ip_cwk_add(const_cast<char*>(":MRCC"));
@@ -185,9 +177,7 @@ void init_psi(int argc, char *argv[])
 
   tstart(outfile);
 
-  psio_open(PSIF_PSIMRCC_INTEGRALS,PSIO_OPEN_NEW);
-
-
+  _default_psio_lib_->open(PSIF_PSIMRCC_INTEGRALS,PSIO_OPEN_NEW);
 
   fprintf(outfile,"\n  MRCC          MRCC");
   fprintf(outfile,"\n   MRCC  MRCC  MRCC");
@@ -197,6 +187,21 @@ void init_psi(int argc, char *argv[])
   fprintf(outfile,"\n         MRCC            Compiled on %s at %s",__DATE__,__TIME__);
   fprintf(outfile,"\n         MRCC            id =%s",GIT_ID);
   fprintf(outfile,"\n       MRCCMRCC");
+
+  global_timer = new Timer;
+  read_calculation_options();
+
+  ip_cwk_clear();
+  ip_cwk_add(const_cast<char*>(":MRCC"));
+  ip_cwk_add(const_cast<char*>(":PSIMRCC"));
+
+  debugging = new Debugging;
+
+  _memory_manager_    = new MemoryManager(options_get_int("MEMORY"));
+
+  moinfo = new MOInfo();
+
+  moinfo->setup_model_space();  // The is a bug here DELETEME
 }
 
 /**
@@ -209,9 +214,12 @@ void close_psi()
   ***********************/
   fflush(outfile);
   options_close();
-  chkpt_close();
-  psio_close(PSIF_PSIMRCC_INTEGRALS,1);
-  psio_done();
+
+  _default_psio_lib_->close(PSIF_PSIMRCC_INTEGRALS,1);
+
+  delete _default_chkpt_lib_;
+  delete _default_psio_lib_;
+
   tstop(outfile);
   psi_stop(infile,outfile,psi_file_prefix);
 }

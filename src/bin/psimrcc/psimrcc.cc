@@ -12,10 +12,6 @@
  *  @brief Contains main() and global variables
 */
 
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
-
 #include <liboptions/liboptions.h>
 #include "blas.h"
 #include "sort.h"
@@ -35,7 +31,6 @@ void run_psimrcc()
 {
   blas   = new CCBLAS();
   trans  = new CCTransform();
-
   if(options_get_str("CORR_WFN")=="MP2-CCSD"){
     mp2_ccsd();
   }else{
@@ -61,9 +56,14 @@ void mrccsd()
   if(options_get_str("CORR_ANSATZ")=="MK")
     mrcc.compute_mkccsd_energy();
   if(options_get_str("CORR_ANSATZ")=="BW")
-      mrcc.compute_bwccsd_energy();
+    mrcc.compute_bwccsd_energy();
   if(options_get_str("CORR_ANSATZ")=="APBW")
-      mrcc.compute_apbwccsd_energy();
+    mrcc.compute_apbwccsd_energy();
+
+  if(options_get_bool("PERT_CBS")){
+//    mrcc.perturbative_cbs();
+    mrcc.perturbative_cbs2();
+  }
 }
 
 /*!

@@ -115,6 +115,7 @@ private:
 
   void construct_S_inverse_sqrt();
   void iterate_scf_equations();
+  void guess_occupation();
   void canonicalize_MO();
   void save_info();
   void check_orthonormality();

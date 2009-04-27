@@ -13,7 +13,7 @@ block_matrix.cc       sblock_vector.cc             scf_diis.cc            scf_it
 block_vector.cc       scf_canonicalize_MO.cc       scf_energy.cc          scf_pairs.cc                      vector_base.cc \
 matrix_base.cc        scf.cc                       scf_F.cc               scf_print_eigenvectors_and_MO.cc \
 mcscf.cc              scf_check_orthonormality.cc  scf_Feff.cc            scf_read_so_oei.cc \
-scf_compute_energy.cc scf_G.cc                     scf_read_so_tei.cc
+scf_compute_energy.cc scf_G.cc                     scf_read_so_tei.cc     scf_guess_occupation.cc
 
 LD = ${CXX}
 BINOBJ = $(CXXSRC:%.cc=%.o)

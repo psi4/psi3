@@ -2679,17 +2679,17 @@ sub seek_psimrcc
   while(<OUT>) {
     if (/\* MK-MRCCSD total energy/) {
       @data = split(/ +/, $_);
-      $psimrcc = $data[5];
+      $psimrcc = $data[6];
       return $psimrcc;
     }
     if (/\* MK-MRPT2 total energy/) {
       @data = split(/ +/, $_);
-      $psimrcc = $data[5];
+      $psimrcc = $data[6];
       return $psimrcc;
     }
-    if (/\* MP2-CCSD  =/) {
+    if (/\* MP2-CCSD total energy/) {
       @data = split(/ +/, $_);
-      $psimrcc = $data[4];
+      $psimrcc = $data[6];
       return $psimrcc;
     }
   }

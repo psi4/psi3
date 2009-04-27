@@ -6,7 +6,7 @@
 #include "debugging.h"
 #include <libutil/libutil.h>
 
-#include <libchkpt/chkpt.h>
+#include <libchkpt/chkpt.hpp>
 
 extern FILE* outfile;
 
@@ -55,7 +55,7 @@ bool CCMRCC::build_diagonalize_Heff(int cycle, double time)
   print_mrccsd_energy(cycle);
   if(converged){
     print_eigensystem(moinfo->get_nrefs(),Heff,eigenvector);
-    chkpt_wt_etot(current_energy);
+    _default_chkpt_lib_->wt_etot(current_energy);
   }
   return(converged);
 }
