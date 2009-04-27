@@ -1,13 +1,21 @@
 psi: (
-  label = "6-31G** SCF H2O Optimization"
+  label = "6-31G** UHF CH2 3B1 optimization"
   jobtype = opt
-  wfn = scf
-  reference = rhf
+  wfn = scf  
+  reference = uhf
   dertype = first
   basis = "6-31G**"
+  charge = 0
+  multp = 3
+  docc = (2 0 0 1)
+  socc = (1 0 1 0)
   zmat = (
-    o
-    h 1 1.00
-    h 1 1.00 2 103.1
+    c
+    h 1 b1
+    h 1 b1 2 a1
+  )
+  zvars = (
+    b1  1.0
+    a1  125.0
   )
 )
