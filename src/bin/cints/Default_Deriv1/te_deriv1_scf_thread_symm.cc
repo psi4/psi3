@@ -341,7 +341,7 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
 	    sj_fao = BasisSet.shells[sj].fao-1;
 	    sk_fao = BasisSet.shells[sk].fao-1;
 	    sl_fao = BasisSet.shells[sl].fao-1;
-	    if (UserOptions.reftype == rhf || UserOptions.reftype == uhf) {           /*--- RHF or UHF ---*/
+	    if (UserOptions.reftype == rhf) {           /*--- RHF ---*/
 	      count = 0;
 	      for (ao_i = si_fao; ao_i < si_fao+ni; ao_i++)
 		for (ao_j = sj_fao; ao_j < sj_fao+nj; ao_j++)
@@ -357,6 +357,25 @@ void *te_deriv1_scf_thread_symm(void *tnum_ptr)
 		      count++;
 		    }
 	    }
+            else if (UserOptions.reftype == uhf) {           /*--- UHF ---*/
+              count = 0;               
+              for (ao_i = si_fao; ao_i < si_fao+ni; ao_i++)
+                for (ao_j = sj_fao; ao_j < sj_fao+nj; ao_j++)
+                  for (ao_k = sk_fao; ao_k < sk_fao+nk; ao_k++)
+                    for (ao_l = sl_fao; ao_l < sl_fao+nl; ao_l++) {
+                        FourInd[count] = (4 * (Dens_a[ao_i][ao_j] + Dens_b[ao_i][ao_j]) *
+                                              (Dens_a[ao_k][ao_l] + Dens_b[ao_k][ao_l]) -
+                                          2 * Dens_a[ao_i][ao_k] * Dens_a[ao_j][ao_l] -
+                                          2 * Dens_b[ao_i][ao_k] * Dens_b[ao_j][ao_l] -
+                                          2 * Dens_a[ao_i][ao_l] * Dens_a[ao_k][ao_j] -
+                                          2 * Dens_b[ao_i][ao_l] * Dens_b[ao_k][ao_j]) *
+                                         GTOs.bf_norm[orig_am[0]][ao_i-si_fao]*
+                                         GTOs.bf_norm[orig_am[1]][ao_j-sj_fao]*
+                                         GTOs.bf_norm[orig_am[2]][ao_k-sk_fao]*
+                                         GTOs.bf_norm[orig_am[3]][ao_l-sl_fao];
+                    count++;
+                    }
+            }
 	    else {                     /*--- ROHF or TCSCF ---*/
 	      if (am)
 		memset((char *) FourInd, 0, sizeof(double)*quartet_size);

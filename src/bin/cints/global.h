@@ -63,6 +63,8 @@ EXTERN DFT_options_t DFT_options;
 
 /*--- Calculation-specific 2-index quantities ---*/
 EXTERN double **Dens;
+EXTERN double **Dens_a;   /* Alpha Density Matrix for UHF */
+EXTERN double **Dens_b;   /* Beta Density Matrix for UHF */
 EXTERN double **Denso;
 EXTERN double **Cocc;     /* Occupied Eigenvector Matrix in AO */
 EXTERN double **Cocco;

@@ -30,7 +30,7 @@ void compute_scf_opdm()
   double *occ;                                  /* occupation vector - num_so long */
   double *shell_occ;                            /* occupation numbers for MO shells */
   double **mo_lagr;                                /* MO lagrangian */
-  double tmp, max_elem;
+  double tmp, max_elem, tmp_a, tmp_b;
   struct shell_pair* sp;
   
   /*--- Compute offsets of symmetry blocks ---*/
@@ -121,28 +121,33 @@ void compute_scf_opdm()
       }
   }
   else {
+    Dens_a = block_matrix(BasisSet.num_ao,BasisSet.num_ao);
+    Dens_b = block_matrix(BasisSet.num_ao,BasisSet.num_ao);
     /* UHF case : Alpha and Beta eigenvectors */
     for(i=0;i<BasisSet.num_ao;i++)
       for(j=0;j<=i;j++) {
-	tmp = 0.0;
-	for(k=0;k<Symmetry.nirreps;k++) {
-	  mo = symblk_offset[k];
-	  /*--- Doubly-occupied MOs : Alpha and Beta ---*/
-	  for(l=0; l < MOInfo.clsdpi[k]; l++) {
-	    tmp += MOInfo.scf_evec[0][mo][i]*
-		   MOInfo.scf_evec[0][mo][j]
-		+  MOInfo.scf_evec[1][mo][i]*
-		   MOInfo.scf_evec[1][mo][j];
-	    mo++;
-	  }
-	  /*--- Singly-occupied MOs : Alpha only ---*/
-	  for(l=0; l < MOInfo.openpi[k]; l++) {
-	    tmp += MOInfo.scf_evec[0][mo][i]*
-		   MOInfo.scf_evec[0][mo][j];
-	    mo++;
-	  }
-	}
-	Dens[j][i] = Dens[i][j] = tmp;
+        tmp_a = 0.0;
+        tmp_b = 0.0;
+        for(k=0;k<Symmetry.nirreps;k++) {
+          mo = symblk_offset[k];
+          /*--- Doubly-occupied MOs : Alpha and Beta ---*/
+          for(l=0; l < MOInfo.clsdpi[k]; l++) {
+            tmp_a += MOInfo.scf_evec[0][mo][i]*
+                     MOInfo.scf_evec[0][mo][j];
+            tmp_b += MOInfo.scf_evec[1][mo][i]*
+                     MOInfo.scf_evec[1][mo][j];
+            mo++;
+          }
+          /*--- Singly-occupied MOs : Alpha only ---*/
+          for(l=0; l < MOInfo.openpi[k]; l++) {
+            tmp_a += MOInfo.scf_evec[0][mo][i]*
+                     MOInfo.scf_evec[0][mo][j];
+            mo++;
+          }
+        }
+        Dens_a[j][i] = Dens_a[i][j] = tmp_a;
+        Dens_b[j][i] = Dens_b[i][j] = tmp_b;
+        Dens[j][i] = Dens[i][j] = Dens_a[i][j] + Dens_b[i][j];
       }
   }
 

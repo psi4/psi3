@@ -74,7 +74,7 @@ void init_moinfo()
   if(strcmp(UserOptions.wfn,"IDMKPT2")){//This check shouldn't be performed for integral direct mkpt2 
 	  switch (UserOptions.reftype) {
 	  case rhf:     if (iopen != 0) throw std::domain_error("Content of checkpoint file inconsistent with REFERENCE\n"); break;
-	  case uhf:     if (iopen != 0) throw std::domain_error("Content of checkpoint file inconsistent with REFERENCE\n"); break;
+	  case uhf:     if (iopen < 0) throw std::domain_error("Content of checkpoint file inconsistent with REFERENCE\n"); break;
 	  case rohf:    if (iopen <= 0) throw std::domain_error("Content of checkpoint file inconsistent with REFERENCE\n"); break;
 	  case twocon:  if (iopen >= 0) throw std::domain_error("Content of checkpoint file inconsistent with REFERENCE\n"); break;
 	  }
@@ -99,13 +99,15 @@ void init_moinfo()
 
   
   /*--- Read in open-shell coupling coeffcients ---*/
-  ccvecs = chkpt_rd_ccvecs();
-  if (iopen != 0) {    /*--- NOTE! These are Pitzer's coupling constants (a and b).
-			 To get Yamaguchi's constants (alpha and beta) use this:
+  if (UserOptions.reftype == rohf || UserOptions.reftype == twocon) {
+    ccvecs = chkpt_rd_ccvecs();
+    if (iopen != 0) {    /*--- NOTE! These are Pitzer's coupling constants (a and b).
+  			 To get Yamaguchi's constants (alpha and beta) use this:
 			 alpha = (1-a)/2  beta = (b-1)/4
 			---*/
-    alpha = ccvecs[0];
-    beta = ccvecs[1];
+      alpha = ccvecs[0];
+      beta = ccvecs[1];
+    }
   }
 
   if (UserOptions.reftype == twocon) {
@@ -163,7 +165,9 @@ void init_moinfo()
     print_ccoefs();
   }
 
-  free_block(ccvecs);
+  if (UserOptions.reftype == rohf || UserOptions.reftype == twocon) {
+    free_block(ccvecs);
+  }
 
   return;
 }
