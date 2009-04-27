@@ -55,7 +55,7 @@ protected:
   void        read_chkpt_data();
   void        compute_number_of_electrons();
   void        correlate(char *ptgrp, int irrep, int& nirreps_old, int& nirreps_new,int*& correlation);
-  void        read_mo_space(int nirreps_ref, int& n, intvec& mo, std::string labels, bool zero = true);
+  void        read_mo_space(int nirreps_ref, int& n, intvec& mo, std::string labels);
   void        print_mo_space(int& nmo, intvec& mo, std::string labels);
   intvec      read_chkpt_intvec(int n, int* array);
 

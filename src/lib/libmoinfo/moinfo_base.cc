@@ -88,14 +88,8 @@ void MOInfoBase::compute_ioff()
     ioff[i] = ioff[i-1] + i;
 }
 
-void MOInfoBase::read_mo_space(int nirreps_ref, int& n, intvec& mo, string labels, bool zero)
+void MOInfoBase::read_mo_space(int nirreps_ref, int& n, intvec& mo, string labels)
 {
-  if(zero){
-    // Defaults is to set all to zero
-    mo.assign(nirreps_ref,0);
-    n = 0;
-  }
-
   bool read = false;
 
   vector<string> label_vec = split(labels);
@@ -103,6 +97,9 @@ void MOInfoBase::read_mo_space(int nirreps_ref, int& n, intvec& mo, string label
     int size;
     int stat = ip_count(const_cast<char *>(label_vec[k].c_str()),&size,0); // Cast to avoid warnings
     if(stat == IPE_OK){
+      // Defaults is to set all to zero
+      mo.assign(nirreps_ref,0);
+      n = 0;
       if(read){
         fprintf(outfile,"\n\n  libmoinfo has found a redundancy in the input keywords %s , please fix it!",labels.c_str());
         fflush(outfile);
