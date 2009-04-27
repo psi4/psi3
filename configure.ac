@@ -892,6 +892,7 @@ AC_CONFIG_FILES([include/Makefile
           tests/scf-opt10/Makefile
           tests/scf-opt11/Makefile
           tests/scf-opt12/Makefile
+          tests/scf-opt13/Makefile
           tests/scf-opt-numer/Makefile
           tests/scf-opt2-numer/Makefile
           tests/scf-freq/Makefile
