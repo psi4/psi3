@@ -1,17 +1,13 @@
 psi: (
-  label = "6-31G** RHF H2O optimization"
+  label = "6-31G** SCF H2O Optimization"
   jobtype = opt
-  wfn = scf  
+  wfn = scf
   reference = rhf
   dertype = first
   basis = "6-31G**"
   zmat = (
     o
-    h 1 b1
-    h 1 b1 2 a1
-  )
-  zvars = (
-    b1  1.0
-    a1  103.0
+    h 1 1.00
+    h 1 1.00 2 103.1
   )
 )
