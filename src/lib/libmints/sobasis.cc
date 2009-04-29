@@ -53,7 +53,7 @@ void SOTransform::add_transform(int aoshell, int irrep, int sofuncirrep, double 
         if (aoshell_[i].aoshell() == aoshell)
             break;
     }
-    
+
     aoshell_[i].add_function(irrep, coef, aofunc, sofunc, sofuncirrep);
     aoshell_[i].aoshell(aoshell);
 }

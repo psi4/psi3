@@ -10,22 +10,6 @@ using namespace psi;
 
 extern FILE *outfile;
 
-double norm(int x1, int x2,double c,double ss)
-{
-    if (x1 < x2) 
-        return norm(x2,x1,c,ss);
-    if (x1 == 1) {
-        if (x2 == 1)
-            return c * ss;
-        else
-            return 0.0;
-    }
-    if (x1 == 0)
-        return ss;
-    return c * ( (x1-1) * norm(x1-2,x2,c,ss) + (x2 * norm(x1-1,x2-1,c,ss)));
-}
-
-
 GaussianShell::GaussianShell(int ncn, int nprm, double* e, int* am, GaussianType pure,
     double** c, int nc, Vector3& center, int start, PrimitiveType pt):
     nprimitives_(nprm), ncontractions_(ncn), nc_(nc), center_(center), start_(start), sym_transfrom_(0)
@@ -38,11 +22,7 @@ GaussianShell::GaussianShell(int ncn, int nprm, double* e, int* am, GaussianType
     copy_data(am, e, c);
     // Compute the number of basis functions in this shell
     init_data();
-    
-    // Convert the coefficients to coefficients for unnormalized primitives, if needed
-    // if (pt == Normalized)
-    //     convert_coefficients();
-        
+
     // Compute the normalization constants
     if (pt == Unnormalized)
         normalize_shell();
@@ -84,38 +64,39 @@ void GaussianShell::copy_data(int *l, double *exp, double **coef)
     }
 }
 
-void GaussianShell::convert_coefficients()
+double GaussianShell::primitive_normalization(int p)
 {
-    int i,gc;
-    double c,ss;
-
-    // Convert the contraction coefficients from coefficients over
-    // normalized primitives to coefficients over unnormalized primitives
-    for (gc=0; gc<ncontractions_; gc++) {
-        for (i=0; i<nprimitives_; i++) {
-            c = 0.25/exp_[i];
-            ss = pow(M_PI/(exp_[i]+exp_[i]),1.5);
-            coef_[gc][i] *= 1.0/sqrt(::norm(l_[gc],l_[gc],c,ss));
-        }
-    }
+    int am = l_[0];
+    double tmp1 = am + 1.5;
+    double g = 2.0 * exp_[p];
+    double z = pow(g, tmp1);
+    double normg = sqrt( (pow(2.0, am) * z) / (M_PI * sqrt(M_PI) * df[2*am]));
+    return normg;
 }
 
-double GaussianShell::shell_normalization(int gs)
+void GaussianShell::contraction_normalization(int gs)
 {
-    int i,j;
-    double result,c,ss;
-
-    result = 0.0;
-    for (i=0; i<nprimitives_; i++) {
-        for (j=0; j<nprimitives_; j++) {
-            c = 0.50/(exp_[i] + exp_[j]);
-            ss = pow(M_PI/(exp_[i]+exp_[j]),1.5);
-            result += coef_[gs][i] * coef_[gs][j] *
-                ::norm(l_[gs],l_[gs],c,ss);
+    int i, j;
+    double e_sum = 0.0, g, z;
+    
+    for (i=0; i<nprimitives_; ++i) {
+        for (j=0; j<nprimitives_; ++j) {
+            g = exp_[i] + exp_[j];
+            z = pow(g, l_[0]+1.5);
+            e_sum += coef_[gs][i] * coef_[gs][j] / z;
         }
     }
-
-    return 1.0/sqrt(result);
+    
+    double tmp = ((2.0*M_PI/M_2_SQRTPI) * df[2*l_[0]])/pow(2.0, l_[0]);
+    double norm = sqrt(1.0 / (tmp*e_sum));
+    
+    // Set the normalization
+    for (i=0; i<nprimitives_; ++i)
+        coef_[gs][i] *= norm;
+        
+    if (std::isnan(norm))
+        for (i=0; i<nprimitives_; ++i)
+            coef_[gs][i] = 1.0;
 }
 
 void GaussianShell::normalize_shell()
@@ -123,13 +104,11 @@ void GaussianShell::normalize_shell()
     int i, gs;
     
     for (gs = 0; gs < ncontractions_; ++gs) {
-        double normalization = shell_normalization(gs);
         for (i = 0; i < nprimitives_; ++i) {
+            double normalization = primitive_normalization(i);
             coef_[gs][i] *= normalization;
-            #ifdef DEBUG
-            fprintf(outfile, "New c = %20.16f for %20.16f\n", coef_[gs][i], exp_[i]);
-            #endif
         }
+        contraction_normalization(gs);
     }
 }
 
@@ -180,6 +159,10 @@ void GaussianShell::print(FILE *out) const
         fprintf(out, "      Max angular momentum: %d\n", max_am());
         fprintf(out, "      Min angular momentum: %d\n", min_am());
     }
+    fprintf(out, "      Center: %d\n", nc_);
+    fprintf(out, "      Start index: %d\n", start_);
+    fprintf(out, "      # Cartesians: %d\n", ncartesians_);
+    fprintf(out, "      # functions: %d\n", nfunctions_);
     fprintf(out, "      Exponent       ");
     for(int c=0; c<ncontraction(); c++)
         fprintf(out, " Contr. %3d  ",c);

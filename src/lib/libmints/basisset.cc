@@ -13,37 +13,61 @@
 
 using namespace psi;
 
-BasisSet::BasisSet(Ref<Chkpt> &chkpt)
+BasisSet::BasisSet()
+{}
+
+BasisSet::BasisSet(Ref<Chkpt> &chkpt, std::string genbas_filename, std::string genbas_basis) :
+    shell_first_basis_function_(NULL), shell_first_ao_(NULL), shell_center_(NULL), uso2ao_(NULL),
+    max_nprimitives_(0), max_stability_index_(0)
 {
-    max_nprimitives_ = 0;
-    nshells_      = chkpt->rd_nshell();
-    nprimitives_  = chkpt->rd_nprim();
-    nao_          = chkpt->rd_nao();
-    max_stability_index_ = 0;
-    
-    // Psi3 only allows either all Cartesian or all Spherical harmonic
-    nbf_          = chkpt->rd_nso();
-    puream_       = chkpt->rd_puream() ? true : false;
-    max_am_       = chkpt->rd_max_am();
-    uso2ao_       = chkpt->rd_usotao();
-    
-    // Allocate memory for the shells
-    shells_       = new Ref<GaussianShell>[nshells_];
-    
-    // Initialize the shells
-    initialize_shells(chkpt);
+    // This requirement holds no matter what.
+    puream_ = chkpt->rd_puream() ? true : false;
+
+    // Initialize molecule, retrieves number of center and geometry
+    molecule_ = new Molecule;
+    molecule_->init_with_chkpt(chkpt);
+
+    // Determine if we read from chkpt or genbas
+    if (genbas_filename.empty()) {
+        // Initialize the shells
+        initialize_shells(chkpt);
+    } else if (!genbas_filename.empty() && !genbas_basis.empty()) {
+        fprintf(outfile, "  Initializing BasisSet object with data in: %s (basis: %s)\n", 
+            genbas_filename.c_str(), genbas_basis.c_str());
+        initialize_shells_via_genbas(genbas_filename, genbas_basis);
+    } else {
+        fprintf(outfile, "  BasisSet: When using GENBAS you must provide basis set name.\n");
+        exit(EXIT_FAILURE);
+    }
 }
 
 BasisSet::~BasisSet()
 {
-    Chkpt::free(shell_first_basis_function_);
-    Chkpt::free(shell_first_ao_);
-    Chkpt::free(shell_center_);
-    Chkpt::free(uso2ao_);
+    if (shell_first_basis_function_)
+        Chkpt::free(shell_first_basis_function_);
+    if (shell_first_ao_)
+        Chkpt::free(shell_first_ao_);
+    if (shell_center_)
+        Chkpt::free(shell_center_);
+    if (uso2ao_)
+        Chkpt::free(uso2ao_);
 }
 
 void BasisSet::initialize_shells(Ref<Chkpt> &chkpt)
 {
+    // Initialize some data from checkpoint.
+    nshells_      = chkpt->rd_nshell();
+    nprimitives_  = chkpt->rd_nprim();
+    nao_          = chkpt->rd_nao();
+
+    // Psi3 only allows either all Cartesian or all Spherical harmonic
+    nbf_          = chkpt->rd_nso();
+    max_am_       = chkpt->rd_max_am();
+    uso2ao_       = chkpt->rd_usotao();
+
+    // Allocate memory for the shells
+    shells_       = new Ref<GaussianShell>[nshells_];
+    
     // Retrieve angular momentum of each shell (1=s, 2=p, ...)
     int *shell_am = chkpt->rd_stype();
     
@@ -67,11 +91,7 @@ void BasisSet::initialize_shells(Ref<Chkpt> &chkpt)
     
     // Retrieve location of shells (which atom it's centered on)
     shell_center_ = chkpt->rd_snuc();
-    
-    // Initialize molecule, retrieves number of center and geometry
-    molecule_ = new Molecule;
-    molecule_->init_with_chkpt(chkpt);
-    
+        
     // Initialize SphericalTransform
     for (int i=0; i<=max_am_; ++i) {
         sphericaltransforms_.push_back(SphericalTransform(i));
@@ -164,17 +184,216 @@ void BasisSet::initialize_shells(Ref<Chkpt> &chkpt)
         // Shift the ao starting index over to the next shell
         ao_start += INT_NCART(am[0]);
         puream_start += INT_NFUNC(puream_, am[0]);
+        delete[] am;
     }
-    
+        
     delete[] sym_transform;
     delete[] so2symblk;
     delete[] so2index;
-    free(sopi);
-    free_block(ccoeffs);
-    free(exponents);
-    free(shell_am);
-    free(shell_num_prims);
-    free(shell_fprim);
+    Chkpt::free(sopi);
+    Chkpt::free(ccoeffs);
+    Chkpt::free(exponents);
+    Chkpt::free(shell_am);
+    Chkpt::free(shell_num_prims);
+    Chkpt::free(shell_fprim);
+}
+
+void BasisSet::initialize_shells_via_genbas(std::string& genbas_filename, std::string& genbas_basis)
+{
+    char search_string[80];
+    char line[120];
+    int len, j, tval, k, l;
+    int totalAM;
+    int *num_primitives, *num_contracted_to;
+    Vector3 center;
+    int puream_start = 0;
+    int ao_start = 0;
+    
+    // Initial maximum angular momentum
+    max_am_ = 0;
+    // Initial maximum number of primitives
+    max_nprimitives_ = 0;
+    
+    // Temporary storage for shells, will be moved into shells_ once we know the total number.
+    std::vector<Ref<GaussianShell> > shells;
+    
+    // Attempt to open user specific genbas file
+    FILE *genbas = fopen(genbas_filename.c_str(), "r");
+    if (genbas == NULL) {
+        fprintf(outfile, " Unable to open %s.\n", genbas_filename.c_str());
+        exit(EXIT_FAILURE);
+    }
+    
+    // Loop through each atom and load in basis set from genbas
+    for (int i=0; i < molecule_->natom(); ++i) {
+        rewind(genbas);
+        
+        // Retrieve center
+        center = molecule_->xyz(i);
+        
+        // Construct search string
+        sprintf(search_string, "%s:%s", molecule_->label(i).c_str(), genbas_basis.c_str());
+        
+        // Check for empty file.
+        if (fgets(line, 120, genbas) == NULL)
+        {
+            fprintf(stderr, "%s is empty!\n", genbas_filename.c_str());
+            exit(1);
+        }
+        len = strlen(search_string);
+
+        // Search the file for "search_string"
+        while (strncasecmp(line, search_string, len) != 0)
+        {
+            if (fgets(line, 120, genbas) == NULL)
+            {
+                fprintf(stderr, "End of file encountered! (%s)\n", search_string);
+                exit(1);
+            }
+        }
+        
+        // If we make it here we must have found it.
+        // get the comment line
+        fgets(line, 120, genbas);
+
+        // Get some useful information
+        fscanf(genbas, "%d", &totalAM);
+
+        // Save maximum angular momentum, needed to create sphericaltransforms_
+        if (totalAM - 1 > max_am_)
+            max_am_ = totalAM - 1;
+            
+        // Create the arrays num_primitives, num_contractedto
+        int *num_primitives = new int[totalAM];
+        int *num_contractedto = new int[totalAM];
+
+        // Now just loop on the numbers that define the angular momentum, I'm just assuming it
+        // goes in order
+        for (j = 0; j < totalAM; j++)
+            fscanf(genbas, "%d", &tval);
+        
+        // Now start reading in the number of actual functions for each angular momentum
+        for (j = 0; j < totalAM; j++)
+            fscanf(genbas, "%d", &(num_contractedto[j]));
+
+        // Now start reading in the number of primitives for each angular momentum
+        for (j = 0; j < totalAM; j++)
+            fscanf(genbas, "%d", &(num_primitives[j]));
+
+        // Read in the primitives and contractions for each AM
+        for (j = 0; j < totalAM; j++) {
+            double *exponents = new double[num_primitives[j]];
+            double **contractions = init_matrix(num_primitives[j], num_contractedto[j]);
+
+            // Read in the exponents
+            for (k = 0; k < num_primitives[j]; k++) 
+                fscanf(genbas, "%lf", &(exponents[k]));
+
+            // Read in the coefficients
+            for (k = 0; k < num_primitives[j]; k++) {
+                for (l = 0; l < num_contractedto[j]; l++) {
+                    fscanf(genbas, "%lf", &(contractions[k][l]));
+                }
+            }
+
+            // Go through and create the needed Gaussian and Contracted Gaussians
+            for (l = 0; l < num_contractedto[j]; l++) {
+                k = 0;
+                while (contractions[k][l] == 0.0) k++; // Find the first non-zero contraction
+
+                // Count how many coefficients there are in this contraction.
+                int kount = 0;
+                for (int m=k; m<num_primitives[j]; ++m)
+                    if (fabs(contractions[m][l]) > 0.0) 
+                        kount++;
+                
+                // Okay, we know how many there are allocate memory to hold information for GaussianShell creation.
+                int ncontr = 1;
+                int *am = new int[ncontr];
+                am[0] = j;
+                double **cc = new double*[kount];
+                double *e = new double[kount];
+                for (int p=0; p<kount; ++p) {
+                    cc[p] = new double[ncontr];
+                    cc[p][0] = contractions[k+p][l];
+                    e[p] = exponents[k+p];
+                }
+                
+                Ref<GaussianShell> shell(new GaussianShell(ncontr, kount, e, am, puream_ ? GaussianShell::Pure : GaussianShell::Cartesian,
+                                         cc, i, center, puream_start, GaussianShell::Unnormalized));
+                shells.push_back(shell);
+                
+                if (kount > max_nprimitives_)
+                    max_nprimitives_ = kount;
+
+                for (int p=0; p<kount; ++p) {
+                    delete[] cc[p];
+                }
+                delete[] cc;
+                delete[] e;
+                ao_start += INT_NCART(am[0]);
+                puream_start += INT_NFUNC(puream_, am[0]);
+                delete[] am;
+            }
+
+            delete[] exponents;
+            free_matrix(contractions, num_primitives[j]);
+        }
+
+        // Clean up from this atom
+        delete[] num_primitives;
+        delete[] num_contractedto;
+    }
+    
+    // Close the file
+    fclose(genbas);
+
+    // Counters
+    nao_ = ao_start;
+    nbf_ = puream_start;
+    
+    // Okay, we now know how many shells we have, allocate permanent home for it.
+    nshells_ = shells.size();
+    shells_ = new Ref<GaussianShell>[nshells_];
+    
+    // Reading basis sets from GENBAS means that symmetry must be ignored. But we
+    // must have an sotransform_ object created. Create an identity matrix that will
+    // server as our transform.
+    uso2ao_ = Chkpt::matrix<double>(nbf_, nao_);
+    for (int i=0; i<nbf_; ++i) {
+        uso2ao_[i][i] = 1.0;
+    }
+    
+    // Certain information could not be created unless we knew the number of shells.
+    // Now that we do know create all the necessary information for integral computations.
+    // Retrieve location of shells (which atom it's centered on)
+    shell_center_ = new int[nshells_];
+
+    // Initialize SOTransform
+    sotransform_ = new SOTransform;
+    sotransform_->init(nshells_);
+    
+    // Reset ao_start
+    ao_start = 0;
+    for (int i=0; i<nshells_; ++i) {
+        shells_[i] = shells[i];
+        
+        // Save which center each shell is on.
+        shell_center_[i] = shells[i]->ncenter();
+        
+        // OK, for a given number of AO functions in a shell INT_NCART(am)
+        // beginning at column ao_start go through all rows finding where this
+        // AO function contributes to an SO.
+        for (int ao = 0; ao < INT_NCART(shells[i]->am(0)); ++ao) {
+            int aooffset = ao_start + ao;
+            for (int so = 0; so < nbf_; ++so) {
+                if (fabs(uso2ao_[so][aooffset]) >= 1.0e-14)
+                    // 0 = always A1, so always equals index
+                    sotransform_->add_transform(i, 0, aooffset, uso2ao_[so][aooffset], ao, so);
+            }
+        }
+        ao_start += INT_NCART(shells[i]->am(0));
+    }
 }
 
 void BasisSet::print(FILE *out) const
@@ -198,3 +417,66 @@ Ref<GaussianShell>& BasisSet::shell(int si) const
     #endif
     return shells_[si];
 }
+
+BasisSet* BasisSet::zero_basis_set()
+{
+    BasisSet *new_basis = new BasisSet();
+
+    // Setup all the parameters needed for a zero basis set
+    new_basis->shell_first_basis_function_ = NULL;
+    new_basis->shell_first_ao_ = NULL;
+    new_basis->shell_center_ = new int[1];
+    new_basis->shell_center_[0] = 0;
+    new_basis->uso2ao_ = NULL;
+    new_basis->max_nprimitives_ = 1;
+    new_basis->max_stability_index_ = 0;
+    new_basis->max_am_ = 0;
+
+    new_basis->puream_ = false;
+
+    // Add "ghost" atom to the molecule for this basis
+    new_basis->molecule_ = new Molecule;
+    new_basis->molecule_->add_atom(0, 0.0, 0.0, 0.0);
+    Vector3 center = new_basis->molecule_->xyz(0);
+
+    new_basis->nshells_ = 1;
+    new_basis->nprimitives_ = 1;
+    new_basis->nao_ = 1;
+    new_basis->nbf_ = 1;
+    new_basis->uso2ao_ = Chkpt::matrix<double>(1, 1);
+    new_basis->uso2ao_[0][0] = 1.0;
+    
+    // Create shell array
+    new_basis->shells_ = new Ref<GaussianShell>[1];
+
+    // Spherical and SO-transforms are expected even if not used.
+    new_basis->sphericaltransforms_.push_back(SphericalTransform(0));
+    new_basis->sotransform_ = new SOTransform;
+    new_basis->sotransform_->init(1);
+    
+    // Create out basis set arrays
+    int *am = new int[1];
+    double *e = new double[1];
+    double **c = new double*[1];
+    c[0] = new double[1];
+
+    // null basis set
+    am[0] = 0;
+    e[0] = 0.0;
+    c[0][0] = 1.0;
+
+    // Add the null-s-function
+    new_basis->shells_[0] = new GaussianShell(1, 1, e, am, GaussianShell::Cartesian, c, 0, center, 0, GaussianShell::Normalized);
+
+    // Delete the basis set arrays, GaussianShell makes internal copies of everything
+    delete[] am;
+    delete[] e;
+    delete[] c[0];
+    delete[] c;
+
+    // Add s-function SO transform.
+    new_basis->sotransform_->add_transform(0, 0, 0, 1.0, 0, 0);
+
+    return new_basis;
+}
+

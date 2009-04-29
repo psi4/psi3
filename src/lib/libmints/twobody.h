@@ -87,7 +87,7 @@ public:
     virtual Ref<TwoBodyInt> clone();
     
     /// Results go back to buffer_
-    void pure_transform(int, int, int, int, int nchunk=1);
+    void pure_transform(int, int, int, int, int nchunk, bool p12, bool p34, bool p13p24);
 };
 
 }

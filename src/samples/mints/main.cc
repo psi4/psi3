@@ -125,6 +125,203 @@ int main (int argc, char * argv[])
         // Going out of scope releases all memory.
     }
     #endif
+
+    // This code block tests reading basis set from GENBAS and computing 3 center integrals
+    //#if 0
+    {
+        // Create a basis set object and have it initialize itself using the checkpoint file
+        Ref<BasisSet> basis(new BasisSet(chkpt));
+        
+        // Create a basis set object and have it initialize itself using checkpoint and GENBAS file
+        Ref<BasisSet> genbas(new BasisSet(chkpt, "GENBAS", "6-31G"));
+
+        // Create a basis set object to be used with 3 center integrals
+        Ref<BasisSet> zero(BasisSet::zero_basis_set());
+        
+        // Since we're using a mixed basis we need a special matrix factory.
+        int *row = new int[1], *col = new int[1];
+        row[0] = genbas->nbf(); col[0] = genbas->nbf();
+        
+        // Create matrix factory to be used with genbas
+        Ref<MatrixFactory> genbas_factory(new MatrixFactory);
+        genbas_factory->init_with(1, row, col);
+        
+        char *label = chkpt->rd_label();
+        fprintf(outfile, "\nLabel: %s\n\n", label);
+        free(label);
+    
+        // Print the molecule
+        basis->molecule()->print();
+        
+        // Print out the basis sets
+        fprintf(outfile, "From chkpt file:\n");
+        basis->print();
+        fprintf(outfile, "From GENBAS file:\n");
+        genbas->print();
+        fprintf(outfile, "From null_basis_set:\n");
+        zero->print();
+        
+        // Create three integral factories for testing integrals.
+        //  1st: Creates integral objects that use basis set read in from chkpt
+        //  2nd: Creates integral objects that use GENBAS file. (Make sure GENBAS is in your run folder).
+        //  3rd: Creates mixed integral objects that use both chkpt and genbas basis sets.
+        Ref<IntegralFactory> psi_integral(new IntegralFactory(basis, basis, basis, basis));
+        Ref<IntegralFactory> genbas_integral(new IntegralFactory(genbas, genbas, genbas, genbas));
+        Ref<IntegralFactory> mixed_integral(new IntegralFactory(basis, genbas, basis, basis));
+        
+        // Create two overlap integral objects
+        Ref<OneBodyInt> psi_s = psi_integral->overlap();
+        Ref<OneBodyInt> genbas_s = genbas_integral->overlap();
+        
+        // Allocate matrix memory
+        RefMatrix psi_s_mat = factory->create_matrix("PSI Overlap");
+        RefMatrix genbas_s_mat = genbas_factory->create_matrix("GENBAS Overlap");
+        
+        // Compute
+        psi_s->compute(psi_s_mat);
+        genbas_s->compute(genbas_s_mat);
+        
+        // Print
+        psi_s_mat.print();
+        genbas_s_mat.print();
+            
+        // Get mixed integral objects
+        Ref<OneBodyInt> mixed_s = mixed_integral->overlap();
+        Ref<OneBodyInt> mixed_t = mixed_integral->kinetic();
+
+        // Create matrix objects by hand
+        row[0] = basis->nbf(); col[0] = genbas->nbf();
+        RefMatrix mixed_s_mat(new Matrix("PSI x GENBAS Overlap", 1, row, col));
+        RefMatrix mixed_t_mat(new Matrix("PSI x GENBAS Kinetic", 1, row, col));        
+        
+        // Compute overlap between a mixed basis
+        mixed_s->compute(mixed_s_mat);
+        mixed_t->compute(mixed_t_mat);
+        
+        // Print results
+        mixed_s_mat.print();
+        mixed_t_mat.print();
+        fflush(outfile);
+        
+        // Compute normal ERIs using data from chkpt.
+        {
+            // Initialize an integral object
+            Ref<IntegralFactory> mint(new IntegralFactory(basis, basis, basis, basis));
+            Ref<TwoBodyInt> eri = mint->eri();
+            
+            const double *buffer = eri->buffer();
+            
+            fprintf(outfile, "  Computing ERIs with (psi, psi, psi, psi)..."); fflush(outfile);
+            
+            int nshell_basis = basis->nshell();
+            FILE *ints_out = fopen("mints.integrals", "w");
+            
+            for (int P = 0; P < nshell_basis; P++) {
+                int nump = basis->shell(P)->nfunction();
+            
+                for (int Q = 0; Q < nshell_basis; ++Q) {
+                    int numq = basis->shell(Q)->nfunction();
+            
+                    for (int R = 0; R < nshell_basis; ++R) {
+                        int numr = basis->shell(R)->nfunction();
+            
+                        for (int S = 0; S < nshell_basis; ++S) {
+                            int nums = basis->shell(S)->nfunction();
+            
+                            eri->compute_shell(P, Q, R, S);
+            
+                            size_t size = nump * numq * numr * nums;
+                            
+                            int index = 0;
+                            for(int p=0; p < nump; p++) {
+                                int op = basis->shell(P)->function_index()+p;
+                        
+                                for(int q = 0; q < numq; q++) {
+                                    int oq = basis->shell(Q)->function_index()+q;
+                        
+                                    for(int r = 0; r < numr; r++) {
+                                        int oor = basis->shell(R)->function_index()+r;
+                        
+                                        for(int s = 0; s < nums; s++,index++) {
+                                            int os = basis->shell(S)->function_index()+s;
+                        
+                                            if (fabs(buffer[index]) > 1.0e-14)
+                                                fprintf(ints_out, "%3d %3d %3d %3d %20.14f\n", op, oq, oor, os, buffer[index]);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            fclose(ints_out);
+            fprintf(outfile, "done.\n"); fflush(outfile);
+        }
+
+        // Compute 3 center integrals using basis set from chkpt file.
+        // Note any center can be genbas (if you change it make sure you modifiy the for loops!!!!)
+        {
+            // Initialize an integral object
+            Ref<IntegralFactory> mint(new IntegralFactory(basis, basis, basis, zero));
+            Ref<TwoBodyInt> eri = mint->eri();
+            
+            const double *buffer = eri->buffer();
+            
+            fprintf(outfile, "  Computing ERIs with (psi, psi, psi, zero)..."); fflush(outfile);
+            
+            int nshell_basis = basis->nshell();
+            int nshell_genbas = genbas->nshell();
+            int nshell_zero = zero->nshell();
+            FILE *ints_out = fopen("mints.ri.integrals", "w");
+            
+            for (int P = 0; P < nshell_basis; P++) {
+                int nump = basis->shell(P)->nfunction();
+            
+                for (int Q = 0; Q < nshell_basis; ++Q) {
+                    int numq = basis->shell(Q)->nfunction();
+            
+                    for (int R = 0; R < nshell_basis; ++R) {
+                        int numr = basis->shell(R)->nfunction();
+            
+                        // for loop not really needed if it is a zero basis (only one shell exists in a zero basis)
+                        for (int S = 0; S < nshell_zero; ++S) {
+                            int nums = zero->shell(S)->nfunction();
+            
+                            eri->compute_shell(P, Q, R, S);
+            
+                            size_t size = nump * numq * numr * nums;
+                            
+                            int index = 0;
+                            for(int p=0; p < nump; p++) {
+                                int op = basis->shell(P)->function_index()+p;
+                        
+                                for(int q = 0; q < numq; q++) {
+                                    int oq = basis->shell(Q)->function_index()+q;
+                        
+                                    for(int r = 0; r < numr; r++) {
+                                        int oor = basis->shell(R)->function_index()+r;
+                        
+                                        // for loop not really needed if it is a zero basis (there will only be one function)
+                                        for(int s = 0; s < nums; s++,index++) {
+                                            int os = zero->shell(S)->function_index()+s;
+                        
+                                                fprintf(ints_out, "%3d %3d %3d %20.14f\n", op, oq, oor, buffer[index]);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            fclose(ints_out);
+            fprintf(outfile, "done.\n"); fflush(outfile);
+        }
+
+        delete[] row; delete[] col;
+    }
+    //#endif
     
     // This code block is for testing the basis set and one electron integral codes.
     #if 0
@@ -330,8 +527,87 @@ int main (int argc, char * argv[])
     }
     #endif
     
+    // This block of code is testing ERI integrals
+    #if 0
+    {
+        // Create a basis set object and have it initialize itself using the checkpoint file
+        Ref<BasisSet> basis(new BasisSet(chkpt));
+
+        char *label = chkpt->rd_label();
+        fprintf(outfile, "Label from file32: %s\n\n", label);
+        free(label);
+
+        // Needed in the example.
+        int nao = chkpt->rd_nso();
+
+        int nirrep = chkpt->rd_nirreps();
+        if (nirrep != 1) {
+            fprintf(stderr, "Please run in C1 symmetry.\n");
+            return EXIT_FAILURE;
+        }
+
+        // Print the molecule
+        basis->molecule()->print();
+        int natom = basis->molecule()->natom();
+        //basis->print();
+
+        // Initialize an integral object
+        Ref<IntegralFactory> integral(new IntegralFactory(basis, basis, basis, basis));
+        Ref<TwoBodyInt> eri = integral->eri(1);
+
+        const double *buffer = eri->buffer();
+
+        fprintf(outfile, "  Computing integrals..."); fflush(outfile);
+
+        int nshell = basis->nshell();
+        FILE *ints_out = fopen("mints.integrals", "w");
+
+        for (int P = 0; P < nshell; P++) {
+            int nump = basis->shell(P)->nfunction();
+
+            for (int Q = 0; Q < nshell; ++Q) {
+                int numq = basis->shell(Q)->nfunction();
+
+                for (int R = 0; R < nshell; ++R) {
+                    int numr = basis->shell(R)->nfunction();
+
+                    for (int S = 0; S < nshell; ++S) {
+                        int nums = basis->shell(S)->nfunction();
+
+                        eri->compute_shell(P, Q, R, S);
+
+                        size_t size = nump * numq * numr * nums;
+                        
+                        int index = 0;
+                        for(int p=0; p < nump; p++) {
+                            int op = basis->shell(P)->function_index()+p;
+                    
+                            for(int q = 0; q < numq; q++) {
+                                int oq = basis->shell(Q)->function_index()+q;
+                    
+                                for(int r = 0; r < numr; r++) {
+                                    int oor = basis->shell(R)->function_index()+r;
+                    
+                                    for(int s = 0; s < nums; s++,index++) {
+                                        int os = basis->shell(S)->function_index()+s;
+                    
+                                        if (fabs(buffer[index]) > 1.0e-14)
+                                            fprintf(ints_out, "%3d %3d %3d %3d %20.14f\n", op, oq, oor, os, buffer[index]);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        fclose(ints_out);
+        fprintf(outfile, "done.\n"); fflush(outfile);
+    }
+    #endif
+    
     // This block of code is testing ERI derivatives
-    //#if 0
+    #if 0
     {
         // Create a basis set object and have it initialize itself using the checkpoint file
         Ref<BasisSet> basis(new BasisSet(chkpt));
@@ -381,22 +657,23 @@ int main (int argc, char * argv[])
 
                         size_t size = nump * numq * numr * nums;
                         
-                        int index = 0;
-                        for(int p=0; p < nump; p++) {
-                            int op = basis->shell(P)->function_index()+p;
+                        for (int i=0; i < 3*natom; ++i) {
+                            int index = 0;
+                            for(int p=0; p < nump; p++) {
+                                int op = basis->shell(P)->function_index()+p;
                         
-                            for(int q = 0; q < numq; q++) {
-                                int oq = basis->shell(Q)->function_index()+q;
+                                for(int q = 0; q < numq; q++) {
+                                    int oq = basis->shell(Q)->function_index()+q;
                         
-                                for(int r = 0; r < numr; r++) {
-                                    int oor = basis->shell(R)->function_index()+r;
+                                    for(int r = 0; r < numr; r++) {
+                                        int oor = basis->shell(R)->function_index()+r;
                         
-                                    for(int s = 0; s < nums; s++,index++) {
-                                        int os = basis->shell(S)->function_index()+s;
+                                        for(int s = 0; s < nums; s++,index++) {
+                                            int os = basis->shell(S)->function_index()+s;
                         
-                                        for (int i = 0; i < 3*natom; ++i)
                                             if (fabs(buffer[i*size+index]) > 1.0e-14)
                                                 fprintf(ints_out, " A%d  %3d %3d %3d %3d %20.14f\n", i, op, oq, oor, os, buffer[i*size+index]);
+                                        }
                                     }
                                 }
                             }
@@ -408,7 +685,7 @@ int main (int argc, char * argv[])
         fclose(ints_out);
         fprintf(outfile, "done.\n"); fflush(outfile);
     }
-    //#endif
+    #endif
     
     // Shut down psi. 
     timer_done();

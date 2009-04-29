@@ -54,9 +54,9 @@ private:
     void init_data();
     void copy_data(int *l, double *exp, double **coef);
 
-    double shell_normalization(int);
+    double primitive_normalization(int);
+    void contraction_normalization(int);
     void normalize_shell();
-    void convert_coefficients();
     
     static const char *amtypes;
     static const char *AMTYPES;

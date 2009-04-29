@@ -38,17 +38,14 @@ Symmetry::Symmetry(Ref<Chkpt> &chkpt)
 // Symmetry(const Symmetry&);
 Symmetry::~Symmetry() 
 {
-    delete[] sopi_;
-    delete[] atom_position_;
-    delete[] unique_atom_2_atom_;
-    delete[] unique_shell_2_shell_;
-    delete[] sym_operation_;
+    Chkpt::free(sopi_);
+    Chkpt::free(atom_position_);
+    Chkpt::free(unique_atom_2_atom_);
+    Chkpt::free(unique_shell_2_shell_);
+    Chkpt::free(sym_operation_);
     delete[] so2symblk_;
-    free(symlabel_);
+    Chkpt::free(symlabel_);
     Chkpt::free<int>(ict_);
     Chkpt::free<int>(trans_vec_);
-    
-    for (int i=0; i < nirreps_; ++i)
-        free(irr_labels_[i]);
-    free(irr_labels_);
+    Chkpt::free(irr_labels_);    
 }

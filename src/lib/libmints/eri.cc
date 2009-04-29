@@ -18,43 +18,42 @@ using namespace psi;
 
 void calc_f(double *F, int n, double t)
 {
-	  int i, m, k;
-	  int m2;
-	  double t2;
-	  double num;
-	  double sum;
-	  double term1, term2;
-	  static double K = 1.0/M_2_SQRTPI;
-	  double et;
+    int i, m, k;
+    int m2;
+    double t2;
+    double num;
+    double sum;
+    double term1, term2;
+    static double K = 1.0/M_2_SQRTPI;
+    double et;
 
-
-	  if (t>20.0){
-	    t2 = 2*t;
-	    et = exp(-t);
-	    t = sqrt(t);
-	    F[0] = K*erf(t)/t;
-	    for(m=0; m<=n-1; m++){
-	      F[m+1] = ((2*m + 1)*F[m] - et)/(t2);
-	      }
-	    }
-	  else {
-	    et = exp(-t);
-	    t2 = 2*t;
-	    m2 = 2*n;
-	    num = df[m2];
-	    i=0;
-	    sum = 1.0/(m2+1);
-	    do{
-	      i++;
-	      num = num*t2;
-	      term1 = num/df[m2+2*i+2];
-	      sum += term1;
-	      } while (fabs(term1) > EPS && i < MAX_FAC);
-	    F[n] = sum*et;
-	    for(m=n-1;m>=0;m--){
-	      F[m] = (t2*F[m+1] + et)/(2*m+1);
-	      }
-	    }
+    if (t>20.0){
+        t2 = 2*t;
+        et = exp(-t);
+        t = sqrt(t);
+        F[0] = K*erf(t)/t;
+        for(m=0; m<=n-1; m++){
+            F[m+1] = ((2*m + 1)*F[m] - et)/(t2);
+        }
+    }
+    else {
+        et = exp(-t);
+        t2 = 2*t;
+        m2 = 2*n;
+        num = df[m2];
+        i=0;
+        sum = 1.0/(m2+1);
+        do{
+            i++;
+            num = num*t2;
+            term1 = num/df[m2+2*i+2];
+            sum += term1;
+        } while (fabs(term1) > EPS && i < MAX_FAC);
+        F[n] = sum*et;
+        for(m=n-1;m>=0;m--){
+            F[m] = (t2*F[m+1] + et)/(2*m+1);
+        }
+    }
 }
 
 ERI::ERI(IntegralFactory* integral, Ref<BasisSet> &bs1, Ref<BasisSet> &bs2, Ref<BasisSet> &bs3, Ref<BasisSet> &bs4, int deriv)
@@ -330,7 +329,7 @@ void ERI::compute_shell(int sh1, int sh2, int sh3, int sh4)
     }
 
     // s1, s2, s3, s4 contain the shells to do in libint order
-    compute_quartet(s1, s2, s3, s4);
+    compute_quartet(s1, s2, s3, s4, p12, p34, p13p24);
 
     // Permute integrals back, if needed
     if (p12 || p34 || p13p24)
@@ -341,14 +340,64 @@ void ERI::compute_shell(int sh1, int sh2, int sh3, int sh4)
     }
 }
 
-void ERI::compute_quartet(int sh1, int sh2, int sh3, int sh4)
+void ERI::compute_quartet(int sh1, int sh2, int sh3, int sh4, bool p12, bool p34, bool p13p24)
 {
     Ref<GaussianShell> s1, s2, s3, s4;
 
-    s1 = bs1_->shell(sh1);
-    s2 = bs2_->shell(sh2);
-    s3 = bs3_->shell(sh3);
-    s4 = bs4_->shell(sh4);
+    // Are we permuting? if so, do it.
+    if (!p13p24) {
+        if (p12) {
+            if (p34) {
+                s1 = bs2_->shell(sh1);
+                s2 = bs1_->shell(sh2);
+                s3 = bs4_->shell(sh3);
+                s4 = bs3_->shell(sh4);
+            } else {
+                s1 = bs2_->shell(sh1);
+                s2 = bs1_->shell(sh2);
+                s3 = bs3_->shell(sh3);
+                s4 = bs4_->shell(sh4);
+            }
+        } else {
+            if (p34) {
+                s1 = bs1_->shell(sh1);
+                s2 = bs2_->shell(sh2);
+                s3 = bs4_->shell(sh3);
+                s4 = bs3_->shell(sh4);
+            } else {
+                s1 = bs1_->shell(sh1);
+                s2 = bs2_->shell(sh2);
+                s3 = bs3_->shell(sh3);
+                s4 = bs4_->shell(sh4);
+            }
+        }
+    } else {
+        if (p12) {
+            if (p34) {
+                s1 = bs4_->shell(sh1);
+                s2 = bs3_->shell(sh2);
+                s3 = bs2_->shell(sh3);
+                s4 = bs1_->shell(sh4);
+            } else {
+                s1 = bs3_->shell(sh1);
+                s2 = bs4_->shell(sh2);
+                s3 = bs2_->shell(sh3);
+                s4 = bs1_->shell(sh4);
+            }
+        } else {
+            if (p34) {
+                s1 = bs4_->shell(sh1);
+                s2 = bs3_->shell(sh2);
+                s3 = bs1_->shell(sh3);
+                s4 = bs2_->shell(sh4);
+            } else {
+                s1 = bs3_->shell(sh1);
+                s2 = bs4_->shell(sh2);
+                s3 = bs1_->shell(sh3);
+                s4 = bs2_->shell(sh4);
+            }
+        }
+    }
 
     int am1 = s1->am(0);
     int am2 = s2->am(0);
@@ -512,7 +561,7 @@ void ERI::compute_quartet(int sh1, int sh2, int sh3, int sh4)
     normalize_am(s1, s2, s3, s4);
 
     // Transform the integrals to the spherical basis
-    pure_transform(sh1, sh2, sh3, sh4);
+    pure_transform(sh1, sh2, sh3, sh4, 1, p12, p34, p13p24);
 
     // Results are in source_
 }
@@ -573,7 +622,7 @@ void ERI::compute_shell_deriv1(int sh1, int sh2, int sh3, int sh4)
     }
 
     // s1, s2, s3, s4 contain the shells to do in libderive order
-    compute_quartet_deriv1(s1, s2, s3, s4);    // compute 9 sets of integral derivatives
+    compute_quartet_deriv1(s1, s2, s3, s4, p12, p34, p13p24);    // compute 9 sets of integral derivatives
 
     size_t size = n1 * n2 * n3 * n4;
     // Permute integrals back, if needed
@@ -588,14 +637,64 @@ void ERI::compute_shell_deriv1(int sh1, int sh2, int sh3, int sh4)
     }
 }
 
-void ERI::compute_quartet_deriv1(int sh1, int sh2, int sh3, int sh4)
+void ERI::compute_quartet_deriv1(int sh1, int sh2, int sh3, int sh4, bool p12, bool p34, bool p13p24)
 {
     Ref<GaussianShell> s1, s2, s3, s4;
 
-    s1 = bs1_->shell(sh1);
-    s2 = bs2_->shell(sh2);
-    s3 = bs3_->shell(sh3);
-    s4 = bs4_->shell(sh4);
+    // Are we permuting? if so, do it.
+    if (!p13p24) {
+        if (p12) {
+            if (p34) {
+                s1 = bs2_->shell(sh1);
+                s2 = bs1_->shell(sh2);
+                s3 = bs4_->shell(sh3);
+                s4 = bs3_->shell(sh4);
+            } else {
+                s1 = bs2_->shell(sh1);
+                s2 = bs1_->shell(sh2);
+                s3 = bs3_->shell(sh3);
+                s4 = bs4_->shell(sh4);
+            }
+        } else {
+            if (p34) {
+                s1 = bs1_->shell(sh1);
+                s2 = bs2_->shell(sh2);
+                s3 = bs4_->shell(sh3);
+                s4 = bs3_->shell(sh4);
+            } else {
+                s1 = bs1_->shell(sh1);
+                s2 = bs2_->shell(sh2);
+                s3 = bs3_->shell(sh3);
+                s4 = bs4_->shell(sh4);
+            }
+        }
+    } else {
+        if (p12) {
+            if (p34) {
+                s1 = bs4_->shell(sh1);
+                s2 = bs3_->shell(sh2);
+                s3 = bs2_->shell(sh3);
+                s4 = bs1_->shell(sh4);
+            } else {
+                s1 = bs3_->shell(sh1);
+                s2 = bs4_->shell(sh2);
+                s3 = bs2_->shell(sh3);
+                s4 = bs1_->shell(sh4);
+            }
+        } else {
+            if (p34) {
+                s1 = bs4_->shell(sh1);
+                s2 = bs3_->shell(sh2);
+                s3 = bs1_->shell(sh3);
+                s4 = bs2_->shell(sh4);
+            } else {
+                s1 = bs3_->shell(sh1);
+                s2 = bs4_->shell(sh2);
+                s3 = bs1_->shell(sh3);
+                s4 = bs2_->shell(sh4);
+            }
+        }
+    }
 
     int am1 = s1->am(0);
     int am2 = s2->am(0);
@@ -756,6 +855,7 @@ void ERI::compute_quartet_deriv1(int sh1, int sh2, int sh3, int sh4)
     int center_k = s3->ncenter()*3*size;
     int center_l = s4->ncenter()*3*size;
 
+    // Zero out memory
     memset(source_, 0, sizeof(double) * size * 3 * natom_);
 
     for (size_t i=0; i < size; ++i) {
@@ -781,7 +881,7 @@ void ERI::compute_quartet_deriv1(int sh1, int sh2, int sh3, int sh4)
     normalize_am(s1, s2, s3, s4, 3*natom_);
 
     // Transform the integrals to the spherical basis
-    pure_transform(sh1, sh2, sh3, sh4, 3*natom_);
+    pure_transform(sh1, sh2, sh3, sh4, 3*natom_, p12, p34, p13p24);
 
     // Results are in source_
 }

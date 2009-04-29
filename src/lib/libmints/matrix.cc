@@ -284,6 +284,7 @@ SimpleMatrix *Matrix::to_simple_matrix()
 
 void Matrix::print_mat(double **a, int m, int n, FILE *out)
 {
+    #if 0
     int ii,jj,kk,nn,ll;
     int i,j,k;
 
@@ -310,6 +311,8 @@ L200:
        return;
        }
     ii=kk; goto L200;
+    #endif
+    ::print_mat(a, m, n, out);
 }
 
 void Matrix::print(FILE *out, char *extra)

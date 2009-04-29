@@ -363,3 +363,4 @@ void OneBodyInt::compute_shell_deriv1(int, int)
 {
     throw std::runtime_error("OneBodyInt::compute_shell_deriv1(Array) not implemented");   
 }
+

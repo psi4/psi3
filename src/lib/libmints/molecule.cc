@@ -39,7 +39,10 @@ void Molecule::add_atom(int Z, double x, double y, double z,
     info.z = z;
     info.Z = Z;
     info.charge = charge;
-    info.label = label;
+    if (label != NULL)
+        info.label = label;
+    else
+        info.label = "Gh";
     info.mass = mass;
 
     natoms_++;

@@ -1,3 +1,10 @@
+04/29/09 libmints can now compute integrals with a different basis set
+on each center. Additional basis sets can be read in from different 
+chkpt files or from a GENBAS file. If using GENBAS, the BasisSet
+object will not use symmetry. Added static function to BasisSet to 
+create a basis object [zero_basis_set()], that can be used with the
+ERI object to compute 3-center integrals. -JMT
+
 02/25/09 Added MP2-CCSD tests and minor changes to moinfo. -FAE
 
 01/23/09 IF FREEZE_CORE is set, freeze 1s orbitals in Li and Be.  -EFV
