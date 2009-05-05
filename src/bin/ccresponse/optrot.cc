@@ -1,6 +1,48 @@
 /*! \file
-    \ingroup CCRESPONSE
-    \brief Enter brief description of file here 
+  \ingroup CCRESPONSE
+  \brief Compute optical rotations using the CC linear response formalism.
+
+  Optical rotation is determined from negative of the the mixed electric-
+  dipole/magnetic-dipole polarizability, - << mu ; m >>, where mu is the
+  electric-dipole vector operator and m is the magnetic-dipole vector
+  operator.  We may choose between two representations of mu: length where mu
+  = -r, and velocity, where mu = -p.  The velocity representation tensors are
+  origin independent, but length representation tensors are not.  The
+  "modified" velocity gauge involves subtraction of the zero-frequency <<
+  mu(p); m>> tensor from the non-zer-frequency tensor.  Furthermore, if one
+  chooses both representations (gauge = both), then the code also computes the
+  origin-depenedence vector of the length-representation optical rotation,
+  which requires the - << mu(r) ; m >> tensor.
+
+  NB: The optical rotation expression requires the negative of all these
+  tensors (much like dipole polarizabilities).
+
+  The CC linear response tensors are computed as:
+
+  << A ; B >>_w = 1/2 C(+/-w) P[A(-w), B(w)] *
+      [<0|(1+L) [ABAR,X(B,w)]|0> + 1/2 <0|(1+L) [[HBAR,X(A,-w)],X(B,w)]|0>]
+
+ = 1/2 [<0|(1+L) [ABAR,X(B,w)]|0> + 1/2 <0|(1+L) [[HBAR,X(A,-w)],X(B,w)]|0>]
+ + 1/2 [<0|(1+L) [B*BAR,X(A*,w)]|0> + 1/2 <0|(1+L) [[HBAR,X(B*,-w)],X(A*,w)]|0>]
+
+  If w=0, this becomes:
+
+  << A ; B >>_0 = 1/2 C *
+      [<0|(1+L) [ABAR,X(B,0)]|0> + 1/2 <0|(1+L) [[HBAR,X(A,0)],X(B,0)]|0>]
+
+ = 1/2[<0|(1+L) [ABAR,X(B,0)]|0> + 1/2 <0|(1+L) [[HBAR,X(A,0)],X(B,0)]|0>]
+ + 1/2[<0|(1+L) [B*BAR,X(A*,0)]|0> + 1/2 <0|(1+L) [[HBAR,X(B*,0)],X(A*,0)]|0>]
+
+  Special notes: mu(p) and m are pure-imaginary operators, which means that a
+  factor of i is included implicitly in the corresponding integrals. In the
+  computation of the << mu(p); m >> tensor, where both operators carry i, an
+  extra factor of -1 must appear in the computation of the tensors.  (This
+  happens in both tersm of << A ; B >>_w above because complex conjugation of
+  both opertors simultaneously doesn't change the overall sign of the tensor.
+  Since we require the negative of the response tensor, the linresp() calls
+  below for <<P;L>> have +1/2 prefactors rather than the usual -1/2.
+
+  -TDC, 4/09
 */
 #include <cstdio>
 #include <cstring>
@@ -100,7 +142,7 @@ void optrot(void)
       }
 
       fprintf(outfile, "\n\tComputing %s tensor.\n", lbl1); fflush(outfile);
-      linresp(tensor0, -1.0, 0.0, "P", moinfo.mu_irreps, 0.0, "L", moinfo.l_irreps, 0.0);
+      linresp(tensor0, +1.0, 0.0, "P", moinfo.mu_irreps, 0.0, "L", moinfo.l_irreps, 0.0);
       psio_write_entry(CC_INFO, lbl1, (char *) tensor0[0], 9*sizeof(double));
 
       /* Clean up disk space */
@@ -179,7 +221,7 @@ void optrot(void)
       }
       if(compute_pl) {
         fprintf(outfile, "\tComputing %s tensor.\n", lbl2); fflush(outfile);
-	linresp(tensor_pl0, -0.5, 0.0, "P", moinfo.mu_irreps, -params.omega[i],
+	linresp(tensor_pl0, +0.5, 0.0, "P", moinfo.mu_irreps, -params.omega[i],
 		"L", moinfo.l_irreps, params.omega[i]);
 	psio_write_entry(CC_INFO, lbl2, (char *) tensor_pl0[0], 9*sizeof(double));
       }
@@ -252,16 +294,16 @@ void optrot(void)
       }
       if(compute_pl) {
 	fprintf(outfile, "\tComputing %s tensor.\n", lbl2); fflush(outfile);
-	linresp(tensor_pl1, -0.5, 0.0, "P*", moinfo.mu_irreps, params.omega[i],
+	linresp(tensor_pl1, +0.5, 0.0, "P*", moinfo.mu_irreps, params.omega[i],
 		"L*", moinfo.l_irreps, -params.omega[i]);
 	psio_write_entry(CC_INFO, lbl2, (char *) tensor_pl1[0], 9*sizeof(double));
       }
 
       if(!strcmp(params.gauge,"BOTH")) {
 	fprintf(outfile, "\tComputing %s tensor.\n", lbl3); fflush(outfile);
-	linresp(tensor_rp[i], 0.5, 0.0, "P", moinfo.mu_irreps, -params.omega[i],
+	linresp(tensor_rp[i],-0.5, 0.0, "P", moinfo.mu_irreps, -params.omega[i],
 		"Mu", moinfo.l_irreps, params.omega[i]);
-	linresp(tensor_rp[i], 0.5, 1.0, "P*", moinfo.mu_irreps, params.omega[i],
+	linresp(tensor_rp[i],-0.5, 1.0, "P*", moinfo.mu_irreps, params.omega[i],
 		"Mu", moinfo.l_irreps, -params.omega[i]);
 	psio_write_entry(CC_INFO, lbl3, (char *) tensor_rp[i][0], 9*sizeof(double));
       }

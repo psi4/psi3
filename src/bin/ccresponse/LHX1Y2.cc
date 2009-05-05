@@ -85,7 +85,7 @@ double LHX1Y2(const char *pert_x, const char *cart_x, int irrep_x, double omega_
   dpd_file2_close(&l1);
   dpd_file2_close(&z);
 
-  /*  fprintf(outfile, "L(1)HX1Y2 = %20.12f\n", polar); */
+//  fprintf(outfile, "L(1)HX1Y2 = %20.12f\n", polar);
 
 
   dpd_buf4_init(&Z, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) Final");
@@ -114,7 +114,6 @@ double LHX1Y2(const char *pert_x, const char *cart_x, int irrep_x, double omega_
   dpd_buf4_close(&Z1);
 
   dpd_buf4_close(&Z);
-
 
   dpd_buf4_init(&Z, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab) Final");
 
@@ -278,7 +277,6 @@ double LHX1Y2(const char *pert_x, const char *cart_x, int irrep_x, double omega_
   dpd_buf4_close(&Z1);
   dpd_buf4_close(&Z);
 
-
   sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert_x, cart_x, omega_x);
   dpd_file2_init(&X1, CC_OEI, irrep_x, 0, 1, lbl);
   sprintf(lbl, "X_%s_%1s_IjAb (%5.3f)", pert_y, cart_y, omega_y);
@@ -298,7 +296,12 @@ double LHX1Y2(const char *pert_x, const char *cart_x, int irrep_x, double omega_
   dpd_buf4_close(&Z1);
   dpd_file2_close(&z);
 
-
+/*** marker ***/
+/*** I suspect a bug in this term.  H2O2/STO-3G or DZ yields different results
+ * with symmetry on and off here.  The discrepancy disappears for larger
+ * basis sets, however. Note also that a similar bug may exist in the X1 or
+ * X2 code, based on comparisons with a spin-adapted toy code.  
+ * -TDC 5 May 2009 */
   sprintf(lbl, "Z_%s_%1s_AE", pert_x, cart_x);
   dpd_file2_init(&z, CC_TMP0, irrep_x, 1, 1, lbl);
 
@@ -356,7 +359,7 @@ double LHX1Y2(const char *pert_x, const char *cart_x, int irrep_x, double omega_
 
   dpd_file2_close(&X1);
   dpd_buf4_close(&Y2);
-
+/*** Marker ***/
 
   sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert_x, cart_x, omega_x);
   dpd_file2_init(&X1, CC_OEI, irrep_x, 0, 1, lbl);

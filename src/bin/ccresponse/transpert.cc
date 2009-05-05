@@ -32,22 +32,29 @@ namespace psi { namespace ccresponse {
 ** already include the electronic charge, and they are symmetric wrt
 ** index permutation.
 
-** (2) L: Magnetic dipole integrals = -1/2 (r x p).  OK, actually, the
-** input integrals are really just angular momentum integrals (r x p),
-** but we multiply these by -0.5 to account for both the sign of the
-** electronic charge and the definition of the magnetic dipole.  These
-** integrals are antisymmetric wrt index permutation.  Use "L*" to use
-** the complex conjugate of the operator (i.e., this multiplies by
-** -1).
+** (2) L: Magnetic dipole integrals = -i/2 (r x p).  The
+** input integrals are angular momentum integrals (r x p) = - i (r x Del), 
+** but we multiply these by -0.5 to account for both the sign of the 
+** electronic charge and the definition of the magnetic dipole.  These 
+** integrals are antisymmetric wrt index permutation.  Use "L*" to select 
+** the complex conjugate of the operator (i.e., multiply by -1).
 **
-** (3) P: Velocity-gauge electric dipole moment integrals = -p.  OK,
-** cints actually produces -del integrals, which already include the
-** electronic charge, so we must multiply by -1 for the definition of
-** the linear momentum operator.  They are antisymmetric wrt to index
-** permutation. Use "P*" to use the complex conjugate of the operator
-** (i.e., this multiplies by -1).
+** (3) P: Velocity-gauge electric dipole moment integrals = -p.  The input
+** integrals are +del integrals, but the definition of
+** the linear momentum operator involves a -1 and the electron charge is
+**  -1, so no special multiplcation is necessary (i.e., p = -i del, so 
+** e*p = i del).  These integrals are antisymmetric wrt to index permutation. 
+** Use "P*" to select the complex conjugate of the operator (i.e., multiply 
+** by -1).
+**
+** NB: The magnetic-dipole and velocity-gauge electric-dipole operators are
+** both pure-imaginary, which means that one must take care to account for
+** the factor of i included implicity in their definition.  This matters,
+** for example, in the computation of optical rotations.  See the notes in
+** optrot.cc for specifics.
 **
 ** -TDC, 11/05
+** Updated by TDC 4/09
 */
 
 void transpert(const char *pert)
@@ -71,8 +78,8 @@ void transpert(const char *pert)
   if(!strcmp(pert,"Mu")) { prefactor = 1.0; anti = 1.0; sign = 1.0; }
   else if(!strcmp(pert, "L")) { prefactor = -0.5; anti = -1.0; sign = 1.0; }
   else if(!strcmp(pert, "L*")) { prefactor = -0.5; anti = -1.0; sign = -1.0; }
-  else if(!strcmp(pert, "P")) { prefactor = -1.0; anti = -1.0; sign = 1.0; }
-  else if(!strcmp(pert, "P*")) { prefactor = -1.0; anti = -1.0; sign = -1.0; }
+  else if(!strcmp(pert, "P")) { prefactor = 1.0; anti = -1.0; sign = 1.0; }
+  else if(!strcmp(pert, "P*")) { prefactor = 1.0; anti = -1.0; sign = -1.0; }
 
   for(alpha=0; alpha < 3; alpha++) {
 
