@@ -303,8 +303,10 @@ int main(int argc, char *argv[])
     }
   }
 
-  /* if ( params.ael && (params.nstates > 1) ) 
-    ael(rho_params); */
+/*
+  if ( params.ael && (params.nstates > 1) ) 
+    ael(rho_params);
+*/
 
   if(params.transition) {
 
