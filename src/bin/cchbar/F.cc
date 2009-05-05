@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <cmath>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 #include "MOInfo.h"
@@ -61,6 +62,7 @@ void F_build(void) {
     dpd_dot13(&tIA, &D, &FME, 0, 0, 1.0, 1.0);
     dpd_file2_close(&tIA);
     dpd_buf4_close(&D);
+
     dpd_file2_close(&FME);
 
     /** FAE **/

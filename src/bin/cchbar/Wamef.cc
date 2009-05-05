@@ -3,6 +3,7 @@
     \brief Enter brief description of file here 
 */
 #include <cstdio>
+#include <math.h>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 #include "MOInfo.h"

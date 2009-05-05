@@ -3,6 +3,7 @@
     \brief Enter brief description of file here 
 */
 #include <cstdio>
+#include <math.h>
 #include <libdpd/dpd.h>
 #include "MOInfo.h"
 #include "Params.h"
@@ -845,6 +846,7 @@ void Wmbij_build(void)
     dpd_buf4_sort_axpy(&Z1, CC_HBAR, psqr, 10, 0, "WMbIj", 1);
     dpd_buf4_close(&Z1);
 
+
     /* Z(Me,Ib) = { - <Mb|Ie> + t_In^Fb <Mn|Fe> } */
     dpd_buf4_init(&Z, CC_TMP0, 0, 10, 10, 10, 10, 0, "Z(Me,Ib)");
     dpd_buf4_init(&T2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIbjA");
@@ -868,7 +870,6 @@ void Wmbij_build(void)
 
     dpd_buf4_sort_axpy(&Z1, CC_HBAR, psrq, 10, 0, "WMbIj", -1);
     dpd_buf4_close(&Z1);
-
   }
   else if(params.ref == 1) { /** ROHF **/
 
