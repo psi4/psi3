@@ -354,8 +354,6 @@ void ERI::compute_shell(int sh1, int sh2, int sh3, int sh4)
         p13p24 = true;
     }
     
-    printf("p12 = %d, p34 = %d, p13p24 = %d\n", p12, p34, p13p24);
-
     // s1, s2, s3, s4 contain the shells to do in libint order
     compute_quartet(s1, s2, s3, s4);
 

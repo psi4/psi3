@@ -79,8 +79,6 @@ void TwoBodyInt::normalize_am(Ref<GaussianShell> &s1, Ref<GaussianShell> &s2, Re
     int am4 = s4->am(0);
     int length = INT_NCART(am1) * INT_NCART(am2) * INT_NCART(am3) * INT_NCART(am4);
     
-    printf("TwoBodyInt::normalize_am: am1=%d,am2=%d,am3=%d,am4=%d\n", am1, am2, am3, am4);
-    
     // Need to go through and grab all the integrals for this given shell and add them
     // to the running totals.
     int nprim = 0;
