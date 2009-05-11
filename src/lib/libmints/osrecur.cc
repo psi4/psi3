@@ -16,7 +16,6 @@ double ***init_box(int a, int b, int c)
     for(i=0;i<a;i++)
         for(j=0;j<b;j++) {
             box[i][j] = (double *) malloc(sizeof(double)*c);
-            //bzero((char *) box[i][j],sizeof(double)*c);
             memset((void *)box[i][j], '\0', sizeof(double)*c);
         }
 
@@ -272,47 +271,6 @@ void ObaraSaikaTwoCenterVIRecursion::calculate_f(double *F, int n, double t)
       }
     }
 }
-
-//void ObaraSaikaTwoCenterVIRecursion::calculate_f(double *F, int n, double t)
-//{
-//    int i, m;
-//    int m2;
-//    double t2, num, sum, term1;
-//    static double K = 1.0/M_2_SQRTPI;
-//    double et;
-//
-//    if (t>20.0) {
-//        t2 = 2.0*t;
-//        et = exp(-t);
-//        t = sqrt(t);
-//        F[0] = K*erf(t)/t;
-//        for (m=0; m<n; ++m) {
-//            F[m+1] = ((2.0*m+1)*F[m] - et)/t2;
-//        }
-//    }
-//    else {
-//        et = exp(-t);
-//        t2 = 2.0*t;
-//        m2 = 2.0*n;
-//        num = df[m2];
-//        i = 0;
-//        sum = 1.0/(m2+1);
-//        do {
-//            ++i;
-//            num = num*t2;
-//            term1 = num/df[m2+2*i+2];
-//            sum += term1;
-//        } while (fabs(term1) > EPS && i < MAX_FAC);
-//        F[n] = sum*et;
-//        for (m=n-1; m>=0; --m) {
-//            F[m] = (t2*F[m+1] + et)/(2.0*m+1.0);
-//        }
-//    }
-//
-//    fprintf(outfile, "calc_f(n = %d, t = %20.14f\n", n, t);
-//    for(m=0; m<n; ++m)
-//    	fprintf(outfile, "\tF[%d] = %20.14f\n", m, F[m]);
-//}
 
 void ObaraSaikaTwoCenterVIRecursion::compute(double PA[3], double PB[3], double PC[3], double zeta, int am1, int am2)
 {

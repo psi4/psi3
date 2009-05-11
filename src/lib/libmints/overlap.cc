@@ -16,14 +16,17 @@ OverlapInt::OverlapInt(IntegralFactory* integral, Ref<BasisSet>& bs1, Ref<BasisS
     int maxam1 = bs1_->max_am();
     int maxam2 = bs2_->max_am();
     
-    if (deriv > 1) {
-        throw std::runtime_error("OverlapInt: does not support 2nd order derivatives and higher.");
+    if (deriv > 2) {
+        throw std::runtime_error("OverlapInt: does not support 3rd order derivatives and higher.");
     }
     int maxnao1 = (maxam1+1)*(maxam1+2)/2;
     int maxnao2 = (maxam2+1)*(maxam2+2)/2;
     if (deriv == 1) {
         maxnao1 *= 3 * natom_;
         maxnao2 *= 3 * natom_;
+    } else {
+        maxnao1 *= 9 * natom_;
+        maxnao2 *= 9 * natom_;
     }
     buffer_ = new double[maxnao1*maxnao2];
 }

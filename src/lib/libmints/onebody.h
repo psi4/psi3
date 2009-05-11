@@ -57,13 +57,20 @@ public:
     /// Does the method provide first derivatives?
     virtual bool has_deriv1() { return false; }
     
+    /// Does the method provide second derivatives?
+    virtual bool has_deriv2() { return false; }
+
     /// Computes the first derivatives and stores them in result
     virtual void compute_deriv1(RefMatrixArray& result);
     /// Computes the first derivatives and stores them in result
     virtual void compute_deriv1(RefSimpleMatrixArray& result);
+    /// Computes the second derivatives and stores them in result
+    virtual void compute_deriv2(RefSimpleMatrixArray& result);
     
     /// Computes the integrals between basis function in the given shell pair
     virtual void compute_shell_deriv1(int, int);
+    /// Computes the integrals between basis function in the given shell pair
+    virtual void compute_shell_deriv2(int, int);
     
     /// Integral object that created me.
     IntegralFactory *integral() const { return integral_; }

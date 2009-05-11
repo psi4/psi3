@@ -35,9 +35,7 @@ void do_sparse_transform11(double *source, double *target, int chunk,
         int cart = trans.cartindex();
         int offtarget = ((offsetpure1 + pure)*s2 + offset2)*chunk;
         int offsource = ((offsetcart1 + cart)*s2 + offset2)*chunk;
-        // fprintf(outfile, "pure=%d,cart=%d,coef=%10.7f\n",pure,cart,coef);
         for (i2=0; i2<n2*chunk; i2++) {
-            // fprintf(outfile,"  offtarget=%d,offsource=%d,source[]=%10.7f\n",offtarget,offsource,source[offsource]);
             target[offtarget++] += coef * source[offsource++];
         }
     }
@@ -128,9 +126,7 @@ void OneBodyInt::normalize_am(Ref<GaussianShell> & s1, Ref<GaussianShell> & s2, 
                     int n2 = ll;
                     
                     for (int chunk=0; chunk<nchunk; ++chunk) {
-                        // fprintf(outfile, "ao12[%d]+(chunk[%d]*length[%d])=%d   ", ao12, chunk, length, ao12+(chunk*length));
                         buffer_[ao12+(chunk*length)] *= s1->normalize(l1, m1, n1) * s2->normalize(l2, m2, n2);
-                        // fprintf(outfile, "buffer_(chunk=%d) = %f\n", chunk, buffer_[ao12+(chunk*length)]);
                     }
                     ao12++;
                 }
@@ -174,9 +170,6 @@ void OneBodyInt::do_transform(Ref<GaussianShell> & s1, Ref<GaussianShell> & s2, 
                 nfuncj = s2->nfunction(j);
 
                 if (s1->is_pure(i)) {
-                    //fprintf(outfile, "about to cal do_sparse_transform11 with\n");
-                    //fprintf(outfile, "  chunk=%d,ogc1=%d,ogc1pure=%d,ncart=%d,ncart2=%d,ogc2=%d\n",
-                    //    chunk, ogc1, ogc1pure, INT_NCART(am2), ncart2, ogc2);
                     SphericalTransformIter trans(integral_->spherical_transform(s1->am(i)));
                     do_sparse_transform11(source, buffer_, chunk,
                         trans,
@@ -185,7 +178,6 @@ void OneBodyInt::do_transform(Ref<GaussianShell> & s1, Ref<GaussianShell> & s2, 
                         INT_NCART(am2), ncart2, ogc2);
                 }
                 else {
-                    // fprintf(outfile, "copying...\n");
                     do_copy1(source, buffer_, chunk,
                         nfunci, nfunc1, ogc1pure,
                         INT_NCART(am2), ncart2, ogc2);
@@ -222,7 +214,6 @@ void OneBodyInt::do_transform(Ref<GaussianShell> & s1, Ref<GaussianShell> & s2, 
                         s2->nfunction(), ogc2pure);
                 }
                 else {
-                    // fprintf(outfile, "copying...\n");
                     do_copy1(source, buffer_, chunk,
                         nfunci, nfunc1, ogc1,
                         nfuncj, nfunc2, ogc2pure);
@@ -238,7 +229,6 @@ void OneBodyInt::do_transform(Ref<GaussianShell> & s1, Ref<GaussianShell> & s2, 
 
 void OneBodyInt::spherical_transform(Ref<GaussianShell> & s1, Ref<GaussianShell> & s2)
 {
-    // fprintf(outfile, "in spherical_transform_1e\n");
     do_transform(s1, s2, 1);
 }
 
@@ -362,5 +352,27 @@ void OneBodyInt::compute_deriv1(RefSimpleMatrixArray& result)
 void OneBodyInt::compute_shell_deriv1(int, int)
 {
     throw std::runtime_error("OneBodyInt::compute_shell_deriv1(Array) not implemented");   
+}
+
+void OneBodyInt::compute_deriv2(RefSimpleMatrixArray& result)
+{
+    // Do not worry about zeroing out result
+    int ns1 = bs1_->nshell();
+    int ns2 = bs2_->nshell();
+
+    for (int i=0; i<ns1; ++i) {
+        for (int j=0; j<ns2; ++i) {
+            // Compute the shell
+            compute_shell_deriv1(i, j);
+            // Transform the shell to SO basis
+            for (int k=0; k<9*natom_; ++k) 
+                so_transform(result[k], i, j, k);
+        }
+    }
+}
+
+void OneBodyInt::compute_shell_deriv2(int, int)
+{
+    throw std::runtime_error("OneBodyInt::compute_shell_deriv2(Array) not implemented");
 }
 

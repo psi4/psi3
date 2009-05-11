@@ -26,6 +26,7 @@ class OverlapInt : public OneBodyInt
     /// Computes the overlap between a given shell pair.
     void compute_pair(Ref<GaussianShell> & , Ref<GaussianShell> &);
     void compute_pair_deriv1(Ref<GaussianShell> &, Ref<GaussianShell> &);
+    void compute_pair_deriv2(Ref<GaussianShell> &, Ref<GaussianShell> &);
     
 public:
     /// Constructor, it assumes you are not computing derivatives by default
@@ -35,9 +36,12 @@ public:
     /// Compute overlap between 2 shells. Result is stored in buffer.
     void compute_shell(int, int);
     void compute_shell_deriv1(int, int);
+    // void compute_shell_deriv2(int, int);
     
     /// Does the method provide first derivatives?
     bool has_deriv1() { return true; }
+    /// Does the method provide second derivatives?
+    bool has_deriv2() { return true; }
 };
 
 }

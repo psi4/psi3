@@ -18,16 +18,17 @@ TwoBodyInt::TwoBodyInt(IntegralFactory *integral,
                        const Ref<BasisSet>& bs3,
                        const Ref<BasisSet>& bs4,
                        int deriv)
-    : integral_(integral), bs1_(bs1), bs2_(bs2), bs3_(bs3), bs4_(bs4), deriv_(deriv)
+    : integral_(integral), original_bs1_(bs1), original_bs2_(bs2), original_bs3_(bs3),
+      original_bs4_(bs4), deriv_(deriv)
 {
     target_ = 0;
     tformbuf_ = 0;
     source_ = 0;
-    natom_ = bs1_->molecule()->natom();  // This assumes the 4 bases come from the same molecule.
+    natom_ = original_bs1_->molecule()->natom();  // This assumes the 4 bases come from the same molecule.
     
     // compute the maximum number of unique quartets needed for a given i, by 
     // using the max_stability_index_ of j, k, and l.
-    max_unique_quartets_ = bs2_->max_stability_index() * bs3_->max_stability_index() * bs4_->max_stability_index();
+    max_unique_quartets_ = original_bs2_->max_stability_index() * original_bs3_->max_stability_index() * original_bs4_->max_stability_index();
 }
 
 TwoBodyInt::~TwoBodyInt()
@@ -37,27 +38,27 @@ TwoBodyInt::~TwoBodyInt()
 
 Ref<BasisSet> TwoBodyInt::basis()
 {
-    return bs1_;
+    return original_bs1_;
 }
 
 Ref<BasisSet> TwoBodyInt::basis1()
 {
-    return bs1_;
+    return original_bs1_;
 }
 
 Ref<BasisSet> TwoBodyInt::basis2()
 {
-    return bs2_;
+    return original_bs2_;
 }
 
 Ref<BasisSet> TwoBodyInt::basis3()
 {
-    return bs3_;
+    return original_bs3_;
 }
 
 Ref<BasisSet> TwoBodyInt::basis4()
 {
-    return bs4_;
+    return original_bs4_;
 }
 
 bool TwoBodyInt::cloneable()
@@ -78,7 +79,7 @@ void TwoBodyInt::normalize_am(Ref<GaussianShell> &s1, Ref<GaussianShell> &s2, Re
     int am4 = s4->am(0);
     int length = INT_NCART(am1) * INT_NCART(am2) * INT_NCART(am3) * INT_NCART(am4);
     
-    // fprintf(outfile, "TwoBodyInt::normalize_am: am1=%d,am2=%d,am3=%d,am4=%d\n", am1, am2, am3, am4);
+    printf("TwoBodyInt::normalize_am: am1=%d,am2=%d,am3=%d,am4=%d\n", am1, am2, am3, am4);
     
     // Need to go through and grab all the integrals for this given shell and add them
     // to the running totals.
@@ -129,98 +130,38 @@ void TwoBodyInt::normalize_am(Ref<GaussianShell> &s1, Ref<GaussianShell> &s2, Re
 void TwoBodyInt::permute_target(double *s, double *t, int sh1, int sh2, int sh3, int sh4, bool p12, bool p34, bool p13p24)
 {
     Ref<GaussianShell> s1, s2, s3, s4;
+
+    s1 = bs1_->shell(sh1);
+    s2 = bs2_->shell(sh2);
+    s3 = bs3_->shell(sh3);
+    s4 = bs4_->shell(sh4);
+      
+    int nbf1 = s1->nfunction(0);
+    int nbf2 = s2->nfunction(0);
+    int nbf3 = s3->nfunction(0);
+    int nbf4 = s4->nfunction(0);
     
     if (!p13p24) {
         if (p12) {
             if (p34) {
-                s1 = bs2_->shell(sh1);
-                s2 = bs1_->shell(sh2);
-                s3 = bs4_->shell(sh3);
-                s4 = bs3_->shell(sh4);
-
-                int nbf1 = s1->nfunction(0);
-                int nbf2 = s2->nfunction(0);
-                int nbf3 = s3->nfunction(0);
-                int nbf4 = s4->nfunction(0);
-                
                 permute_1234_to_2143(s, t, nbf1, nbf2, nbf3, nbf4);
             } else {
-                s1 = bs2_->shell(sh1);
-                s2 = bs1_->shell(sh2);
-                s3 = bs3_->shell(sh3);
-                s4 = bs4_->shell(sh4);
-
-                int nbf1 = s1->nfunction(0);
-                int nbf2 = s2->nfunction(0);
-                int nbf3 = s3->nfunction(0);
-                int nbf4 = s4->nfunction(0);
-                
                 permute_1234_to_2134(s, t, nbf1, nbf2, nbf3, nbf4);
             }
         } else {
-            s1 = bs1_->shell(sh1);
-            s2 = bs2_->shell(sh2);
-            s3 = bs4_->shell(sh3);
-            s4 = bs3_->shell(sh4);
-
-            int nbf1 = s1->nfunction(0);
-            int nbf2 = s2->nfunction(0);
-            int nbf3 = s3->nfunction(0);
-            int nbf4 = s4->nfunction(0);
-            
             permute_1234_to_1243(s, t, nbf1, nbf2, nbf3, nbf4);
         }
     } else {
         if (p12) {
             if (p34) {
-                s1 = bs4_->shell(sh1);
-                s2 = bs3_->shell(sh2);
-                s3 = bs2_->shell(sh3);
-                s4 = bs1_->shell(sh4);
-
-                int nbf1 = s1->nfunction(0);
-                int nbf2 = s2->nfunction(0);
-                int nbf3 = s3->nfunction(0);
-                int nbf4 = s4->nfunction(0);
-                
                 permute_1234_to_4321(s, t, nbf1, nbf2, nbf3, nbf4);
             } else {
-                s1 = bs3_->shell(sh1);
-                s2 = bs4_->shell(sh2);
-                s3 = bs2_->shell(sh3);
-                s4 = bs1_->shell(sh4);
-
-                int nbf1 = s1->nfunction(0);
-                int nbf2 = s2->nfunction(0);
-                int nbf3 = s3->nfunction(0);
-                int nbf4 = s4->nfunction(0);
-                
-                permute_1234_to_3421(s, t, nbf1, nbf2, nbf3, nbf4);
+                permute_1234_to_4312(s, t, nbf1, nbf2, nbf3, nbf4);
             }
         } else {
             if (p34) {
-                s1 = bs4_->shell(sh1);
-                s2 = bs3_->shell(sh2);
-                s3 = bs1_->shell(sh3);
-                s4 = bs2_->shell(sh4);
-
-                int nbf1 = s1->nfunction(0);
-                int nbf2 = s2->nfunction(0);
-                int nbf3 = s3->nfunction(0);
-                int nbf4 = s4->nfunction(0);
-                
-                permute_1234_to_4312(s, t, nbf1, nbf2, nbf3, nbf4);
+                permute_1234_to_3421(s, t, nbf1, nbf2, nbf3, nbf4);
             } else {
-                s1 = bs3_->shell(sh1);
-                s2 = bs4_->shell(sh2);
-                s3 = bs1_->shell(sh3);
-                s4 = bs2_->shell(sh4);
-
-                int nbf1 = s1->nfunction(0);
-                int nbf2 = s2->nfunction(0);
-                int nbf3 = s3->nfunction(0);
-                int nbf4 = s4->nfunction(0);
-                
                 permute_1234_to_3412(s, t, nbf1, nbf2, nbf3, nbf4);
             }
         }
@@ -304,7 +245,7 @@ void TwoBodyInt::permute_1234_to_4312(double *s, double *t, int nbf1, int nbf2, 
     int f1=nbf4;
     int f2=nbf3;
     int f3=nbf1;
-    int f4=nbf2;    
+    int f4=nbf2;
     for (int bf3=0; bf3<f3; bf3++) {
         for (int bf4=0; bf4<f4; bf4++) {
             for (int bf2=0; bf2<f2; bf2++) {
@@ -353,111 +294,20 @@ void TwoBodyInt::permute_1234_to_4321(double *s, double *t, int nbf1, int nbf2, 
     }    
 }
 
-void TwoBodyInt::pure_transform(int sh1, int sh2, int sh3, int sh4, int nchunk, bool p12, bool p34, bool p13p24)
+void TwoBodyInt::pure_transform(int sh1, int sh2, int sh3, int sh4, int nchunk)
 {
     Ref<GaussianShell> s1, s2, s3, s4;
-    Ref<BasisSet> b1, b2, b3, b4;
     
-    // Are we permuting? if so, do it.
-    if (!p13p24) {
-        if (p12) {
-            if (p34) {
-                b1 = bs2_;
-                b2 = bs1_;
-                b3 = bs4_;
-                b4 = bs3_;
-                
-                s1 = bs2_->shell(sh1);
-                s2 = bs1_->shell(sh2);
-                s3 = bs4_->shell(sh3);
-                s4 = bs3_->shell(sh4);
-            } else {
-                b1 = bs2_;
-                b2 = bs1_;
-                b3 = bs3_;
-                b4 = bs4_;
-                
-                s1 = bs2_->shell(sh1);
-                s2 = bs1_->shell(sh2);
-                s3 = bs3_->shell(sh3);
-                s4 = bs4_->shell(sh4);
-            }
-        } else {
-            if (p34) {
-                b1 = bs1_;
-                b2 = bs2_;
-                b3 = bs4_;
-                b4 = bs3_;
-                
-                s1 = bs1_->shell(sh1);
-                s2 = bs2_->shell(sh2);
-                s3 = bs4_->shell(sh3);
-                s4 = bs3_->shell(sh4);
-            } else {
-                b1 = bs1_;
-                b2 = bs2_;
-                b3 = bs3_;
-                b4 = bs4_;
-                
-                s1 = bs1_->shell(sh1);
-                s2 = bs2_->shell(sh2);
-                s3 = bs3_->shell(sh3);
-                s4 = bs4_->shell(sh4);
-            }
-        }
-    } else {
-        if (p12) {
-            if (p34) {
-                b1 = bs4_;
-                b2 = bs3_;
-                b3 = bs2_;
-                b4 = bs1_;
-                
-                s1 = bs4_->shell(sh1);
-                s2 = bs3_->shell(sh2);
-                s3 = bs2_->shell(sh3);
-                s4 = bs1_->shell(sh4);
-            } else {
-                b1 = bs3_;
-                b2 = bs4_;
-                b3 = bs2_;
-                b4 = bs1_;
-                
-                s1 = bs3_->shell(sh1);
-                s2 = bs4_->shell(sh2);
-                s3 = bs2_->shell(sh3);
-                s4 = bs1_->shell(sh4);
-            }
-        } else {
-            if (p34) {
-                b1 = bs4_;
-                b2 = bs3_;
-                b3 = bs1_;
-                b4 = bs2_;
-                
-                s1 = bs4_->shell(sh1);
-                s2 = bs3_->shell(sh2);
-                s3 = bs1_->shell(sh3);
-                s4 = bs2_->shell(sh4);
-            } else {
-                b1 = bs3_;
-                b2 = bs4_;
-                b3 = bs1_;
-                b4 = bs2_;
-                
-                s1 = bs3_->shell(sh1);
-                s2 = bs4_->shell(sh2);
-                s3 = bs1_->shell(sh3);
-                s4 = bs2_->shell(sh4);
-            }
-        }
-    }
+    s1 = bs1_->shell(sh1);
+    s2 = bs2_->shell(sh2);
+    s3 = bs3_->shell(sh3);
+    s4 = bs4_->shell(sh4);
     
     // Get the transforms from the basis set
-    SphericalTransformIter trans1(b1->spherical_transform(s1->am(0)));
-    SphericalTransformIter trans2(b2->spherical_transform(s2->am(0)));
-    SphericalTransformIter trans3(b3->spherical_transform(s3->am(0)));
-    SphericalTransformIter trans4(b4->spherical_transform(s4->am(0)));
+    SphericalTransformIter trans1(bs1_->spherical_transform(s1->am(0)));
+    SphericalTransformIter trans2(bs2_->spherical_transform(s2->am(0)));
+    SphericalTransformIter trans3(bs3_->spherical_transform(s3->am(0)));
+    SphericalTransformIter trans4(bs4_->spherical_transform(s4->am(0)));
     
     // Get the angular momentum for each shell
     int am1 = s1->am(0);
@@ -717,24 +567,3 @@ static void transform2e_4(int am, SphericalTransformIter& sti, double *s, double
         }
     }
 }
-
-// Previous version
-// void transform2e_4(int am, SphericalTransformIter& sti, double *s, double *t, int nijk, int nl)
-// {
-//     printf("transform2e_4: am=%d, nijk = %d, nl = %d\n", am, nijk, nl);
-//     
-//     const int sl = nl;
-//     const int tl = INT_NPURE(am);
-// 
-//     memset(t,0,nijk*tl*sizeof(double));
-// 
-//     for (sti.first(); sti.is_done(); sti.next()) {
-//         double *sptr = s + sti.cartindex();
-//         double *tptr = t + sti.pureindex();
-//         double coef = sti.coef();
-//         printf("transform2e_4: in loop1: coef=%f, cartindex = %d, pureindex = %d\n", coef, sti.cartindex(), sti.pureindex());
-//         for(int ijk=0; ijk<nijk; ijk++,sptr+=sl,tptr+=tl) {
-//             *(tptr) += coef * *(sptr);
-//         }
-//     }
-// }

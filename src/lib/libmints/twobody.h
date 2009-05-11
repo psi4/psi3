@@ -25,6 +25,11 @@ protected:
     Ref<BasisSet> bs3_;
     Ref<BasisSet> bs4_;
     
+    Ref<BasisSet> original_bs1_;
+    Ref<BasisSet> original_bs2_;
+    Ref<BasisSet> original_bs3_;
+    Ref<BasisSet> original_bs4_;
+    
     /// Buffer to hold the final integrals.
     double *target_;
     /// Buffer to hold the transformation intermediates.
@@ -87,7 +92,7 @@ public:
     virtual Ref<TwoBodyInt> clone();
     
     /// Results go back to buffer_
-    void pure_transform(int, int, int, int, int nchunk, bool p12, bool p34, bool p13p24);
+    void pure_transform(int, int, int, int, int nchunk);
 };
 
 }

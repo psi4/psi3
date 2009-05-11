@@ -116,26 +116,21 @@ void KineticInt::compute_pair(Ref<GaussianShell>& s1, Ref<GaussianShell>& s2)
                             I2 = x[l1+1][l2+1] * y[m1][m2] * z[n1][n2] * over_pf;
                             I3 = (l2 == 0) ? 0.0 : x[l1+1][l2-1] * y[m1][m2] * z[n1][n2] * over_pf;
                             I4 = (l1 == 0) ? 0.0 : x[l1-1][l2+1] * y[m1][m2] * z[n1][n2] * over_pf;
-                            // fprintf(outfile, "I1=%f, I2=%f, I3=%f, I4=%f\n", I1, I2, I3, I4);
                             double Ix = 0.5 * l1 * l2 * I1 + 2.0 * a1 * a2 * I2 - a1 * l2 * I3 - l1 * a2 * I4;
 
                             I1 = (m1 == 0 || m2 == 0) ? 0.0 : x[l1][l2] * y[m1-1][m2-1] * z[n1][n2] * over_pf;
                             I2 = x[l1][l2] * y[m1+1][m2+1] * z[n1][n2] * over_pf;
                             I3 = (m2 == 0) ? 0.0 : x[l1][l2] * y[m1+1][m2-1] * z[n1][n2] * over_pf;
                             I4 = (m1 == 0) ? 0.0 : x[l1][l2] * y[m1-1][m2+1] * z[n1][n2] * over_pf;
-                            // fprintf(outfile, "I1=%f, I2=%f, I3=%f, I4=%f\n", I1, I2, I3, I4);
                             double Iy = 0.5 * m1 * m2 * I1 + 2.0 * a1 * a2 * I2 - a1 * m2 * I3 - m1 * a2 * I4;
                             
                             I1 = (n1 == 0 || n2 == 0) ? 0.0 : x[l1][l2] * y[m1][m2] * z[n1-1][n2-1] * over_pf;
                             I2 = x[l1][l2] * y[m1][m2] * z[n1+1][n2+1] * over_pf;
                             I3 = (n2 == 0) ? 0.0 : x[l1][l2] * y[m1][m2] * z[n1+1][n2-1] * over_pf;
                             I4 = (n1 == 0) ? 0.0 : x[l1][l2] * y[m1][m2] * z[n1-1][n2+1] * over_pf;
-                            // fprintf(outfile, "I1=%f, I2=%f, I3=%f, I4=%f\n", I1, I2, I3, I4);
                             double Iz = 0.5 * n1 * n2 * I1 + 2.0 * a1 * a2 * I2 - a1 * n2 * I3 - n1 * a2 * I4;
                             
-                            // buffer_[ao12++] += over_pf * (Ix + Iy + Iz);
                             buffer_[ao12++] += (Ix + Iy + Iz);
-                            // fprintf(outfile, "Ix=%f, Iy=%f Iz=%f\n", Ix, Iy, Iz);
                         }
                     }
                 }
@@ -145,13 +140,6 @@ void KineticInt::compute_pair(Ref<GaussianShell>& s1, Ref<GaussianShell>& s2)
     
     // Integrals are done. Normalize for angular momentum
     normalize_am(s1, s2);
-    
-    // for (int i=0; i<s1->ncartesian() * s2->ncartesian(); ++i) {
-    //     fprintf(outfile, "integral (am=%d|am=%d) = %f\n", am1, am2, buffer_[i]);
-    // }
-    // Spherical harmonic transformation
-    // Wrapped up in the AO to SO transformation (I think)
-    // spherical_transform_1e(s1, s2);
 }
 
 static double ke_int(double **x, double **y, double **z, double a1, int l1, int m1, int n1, 
