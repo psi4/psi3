@@ -154,19 +154,11 @@ public:
 class ShellCombinationsIterator
 {
 private:
-    struct Integral {
-        int i;
-        int j;
-        int k;
-        int l;
-        unsigned int index;
-    };
     struct ShellQuartet {
         int P;
         int Q;
         int R;
         int S;
-        std::vector<Integral> unique_integrals_;
     };
         
     std::vector<ShellQuartet> unique_quartets_;
