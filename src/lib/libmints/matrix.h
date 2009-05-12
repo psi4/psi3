@@ -433,6 +433,7 @@ public:
     void transform(RefSimpleMatrix& transformer);
     void back_transform(RefSimpleMatrix& a, RefSimpleMatrix& transformer);
     void back_transform(RefSimpleMatrix& transformer);
+    void back_transform(const RefSimpleMatrix& transformer);
 
     double vector_dot(RefSimpleMatrix& rhs);
 

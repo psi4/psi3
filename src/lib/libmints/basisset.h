@@ -50,6 +50,7 @@ class BasisSet
     int max_stability_index_;
     //! Unique symmetry orbitals to atomic orbitals.
     double **uso2ao_;
+    RefSimpleMatrix simple_mat_uso2ao_;
     
     //! Does the loaded basis set contain pure angular momentum functions?
     bool puream_;
@@ -115,6 +116,9 @@ public:
     
     /// Print the basis set
     void print(FILE *out = outfile) const;
+    
+    /// Returns the uso2ao_ matrix.
+    const RefSimpleMatrix& uso_to_ao() const { return simple_mat_uso2ao_; }
     
     /// Returns an empty basis set object
     static BasisSet* zero_basis_set();

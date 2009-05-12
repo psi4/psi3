@@ -7,6 +7,7 @@
 */
 
 #include <libmints/ref.h>
+#include <libmints/basisset.h>
 #include <vector>
 
 /*! \def INT_NCART(am)
@@ -114,6 +115,91 @@ public:
     int c()         const { return trans_->c(i_); }
 };
 
+class IntegralsIterator
+{
+private:
+    struct Integral {
+        int i;
+        int j;
+        int k;
+        int l;
+        unsigned int index;
+    };
+    
+    std::vector<Integral> unique_integrals_;
+    int i_;
+    
+    void generate_combinations(const Ref<GaussianShell> &s1, const Ref<GaussianShell> &s2,
+        const Ref<GaussianShell> &s3, const Ref<GaussianShell> &s4);
+        
+public:
+    IntegralsIterator(const Ref<GaussianShell> &s1, const Ref<GaussianShell> &s2,
+                     const Ref<GaussianShell> &s3, const Ref<GaussianShell> &s4) {
+        i_ = 0;
+        generate_combinations(s1, s2, s3, s4);
+    }
+    
+    void first() { i_ = 0; }
+    void next() { i_++; }
+    int size() { return unique_integrals_.size(); }
+    bool is_done() { return i_ < unique_integrals_.size() ? false : true; }
+    
+    int i() const { return unique_integrals_[i_].i; }
+    int j() const { return unique_integrals_[i_].j; }
+    int k() const { return unique_integrals_[i_].k; }
+    int l() const { return unique_integrals_[i_].l; }
+    int index() const { return unique_integrals_[i_].index;}
+};
+
+class ShellCombinationsIterator
+{
+private:
+    struct Integral {
+        int i;
+        int j;
+        int k;
+        int l;
+        unsigned int index;
+    };
+    struct ShellQuartet {
+        int P;
+        int Q;
+        int R;
+        int S;
+        std::vector<Integral> unique_integrals_;
+    };
+        
+    std::vector<ShellQuartet> unique_quartets_;
+    int i_, j_;
+    
+    Ref<BasisSet> bs1_;
+    Ref<BasisSet> bs2_;
+    Ref<BasisSet> bs3_;
+    Ref<BasisSet> bs4_;
+    
+    void generate_combinations(const Ref<BasisSet> &bs1, const Ref<BasisSet> &bs2,
+        const Ref<BasisSet> &bs3, const Ref<BasisSet> &bs4);
+        
+public:
+    ShellCombinationsIterator(const Ref<BasisSet> &bs1, const Ref<BasisSet> &bs2,
+                              const Ref<BasisSet> &bs3, const Ref<BasisSet> &bs4) : bs1_(bs1), bs2_(bs2), bs3_(bs3), bs4_(bs4) {
+        i_ = 0; j_ = 0;
+        generate_combinations(bs1, bs2, bs3, bs4);
+    }
+                 
+    void first() { i_ = 0; }
+    void next() { i_++; }
+    int size() { return unique_quartets_.size(); }
+    bool is_done() { return i_ < unique_quartets_.size() ? false : true; }
+    
+    int p() const { return unique_quartets_[i_].P; }
+    int q() const { return unique_quartets_[i_].Q; }
+    int r() const { return unique_quartets_[i_].R; }
+    int s() const { return unique_quartets_[i_].S; }
+    
+    IntegralsIterator integrals_iterator();
+};
+
 class IntegralFactory
 {
 protected:
@@ -158,6 +244,9 @@ public:
     /// Returns an ERI integral object
     virtual Ref<TwoBodyInt> eri(int deriv=0);
 
+    /// Returns an ERI iterator object, only coded for standard ERIs
+    ShellCombinationsIterator shells_iterator();
+    
     /// Initializes spherical harmonic transformations
     virtual void init_spherical_harmonics(int max_am);
     

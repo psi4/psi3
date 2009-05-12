@@ -427,6 +427,11 @@ inline void RefSimpleMatrix::back_transform(RefSimpleMatrix& transformer)
     pointer()->back_transform(transformer.pointer());
 }
 
+inline void RefSimpleMatrix::back_transform(const RefSimpleMatrix& transformer)
+{
+    pointer()->back_transform(transformer.pointer());
+}
+
 inline double RefSimpleMatrix::vector_dot(RefSimpleMatrix& rhs)
 {
     return pointer()->vector_dot(rhs.pointer());

@@ -10,6 +10,7 @@
 #include "basisset.h"
 #include "integral.h"
 #include "symmetry.h"
+#include "factory.h"
 
 using namespace psi;
 
@@ -65,6 +66,11 @@ void BasisSet::initialize_shells(Ref<Chkpt> &chkpt)
     max_am_       = chkpt->rd_max_am();
     uso2ao_       = chkpt->rd_usotao();
 
+    MatrixFactory factory;
+    factory.init_with_chkpt(chkpt);
+    simple_mat_uso2ao_ = factory.create_simple_matrix("Unique SO to AO transformation matrix");
+    simple_mat_uso2ao_.set(uso2ao_);
+    
     // Allocate memory for the shells
     shells_       = new Ref<GaussianShell>[nshells_];
     
