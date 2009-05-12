@@ -94,8 +94,9 @@ extern int follow_root(int L, double **alpha, int C_irr);
 
 void cc2_hbar_extra(void);
 void cc2_sigma(int index, int irrep);
-void amp_write_T1(dpdfile2 *T1, int length, FILE *outfile);
-void amp_write_T2(dpdbuf4 *T2, int length, FILE *outfile);
+void amp_write_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, int length);
+void amp_write_UHF(dpdfile2 *, dpdfile2 *, dpdbuf4 *, dpdbuf4 *, dpdbuf4 *, int length);
+void amp_write_ROHF(dpdfile2 *, dpdfile2 *, dpdbuf4 *, dpdbuf4 *, dpdbuf4 *, int length);
 
 void diag(void) {
   dpdfile2 CME, CME2, Cme, SIA, Sia, RIA, Ria, DIA, Dia, tIA, tia, LIA, Lia;
@@ -977,84 +978,63 @@ timer_off("INIT GUESS");
 		  lambda_old[i], totalE);
 
           /* print out largest components of wavefunction */
-	      if(params.eom_ref == 0) {
 	        fprintf(outfile, "\nLargest components of excited wave function #%d:\n",
                 num_converged_index);
-            fprintf(outfile,"\tRIA\n");
+	      if(params.eom_ref == 0) {
 	        sprintf(lbl, "%s %d %d", "RIA", C_irr, i);
 	        dpd_file2_init(&CME, CC_RAMPS, C_irr, 0, 1, lbl);
-	        amp_write_T1(&CME, eom_params.amps_to_print, outfile);
-	        dpd_file2_close(&CME);
-            fprintf(outfile,"\tRIjAb\n");
 	        sprintf(lbl, "%s %d %d", "RIjAb", C_irr, i);
 	        dpd_buf4_init(&CMnEf, CC_RAMPS, C_irr, 0, 5, 0, 5, 0, lbl);
-	        amp_write_T2(&CMnEf, eom_params.amps_to_print, outfile);
+
+	        amp_write_RHF(&CME, &CMnEf, eom_params.amps_to_print);
+
+	        dpd_file2_close(&CME);
 	        dpd_buf4_close(&CMnEf);
-	        fprintf(outfile, "\n");
 	      }
           else if (params.eom_ref == 1) {
-	        fprintf(outfile, "\nLargest components of excited wave function #%d:\n",
-                num_converged_index);
-            fprintf(outfile,"\tRIA alpha\n");
 	        sprintf(lbl, "%s %d %d", "RIA", C_irr, i);
 	        dpd_file2_init(&CME, CC_RAMPS, C_irr, 0, 1, lbl);
-	        amp_write_T1(&CME, eom_params.amps_to_print, outfile);
-	        dpd_file2_close(&CME);
-            fprintf(outfile,"\tRia beta\n");
 	        sprintf(lbl, "%s %d %d", "Ria", C_irr, i);
 	        dpd_file2_init(&Cme, CC_RAMPS, C_irr, 0, 1, lbl);
-	        amp_write_T1(&Cme, eom_params.amps_to_print, outfile);
-	        dpd_file2_close(&Cme);
-            fprintf(outfile,"\tRIJAB alpha\n");
 	        sprintf(lbl, "%s %d %d", "RIJAB", C_irr, i);
 	        dpd_buf4_init(&CMNEF, CC_RAMPS, C_irr, 0, 5, 2, 7, 0, lbl);
-	        amp_write_T2(&CMNEF, eom_params.amps_to_print, outfile);
-	        dpd_buf4_close(&CMNEF);
-            fprintf(outfile,"\tRijab beta\n");
 	        sprintf(lbl, "%s %d %d", "Rijab", C_irr, i);
 	        dpd_buf4_init(&Cmnef, CC_RAMPS, C_irr, 2, 7, 2, 7, 0, lbl);
-	        amp_write_T2(&Cmnef, eom_params.amps_to_print, outfile);
-	        dpd_buf4_close(&Cmnef);
-            fprintf(outfile,"\tRIjAb alpha,beta\n");
 	        sprintf(lbl, "%s %d %d", "RIjAb", C_irr, i);
 	        dpd_buf4_init(&CMnEf, CC_RAMPS, C_irr, 0, 5, 0, 5, 0, lbl);
-	        amp_write_T2(&CMnEf, eom_params.amps_to_print, outfile);
+
+            amp_write_ROHF(&CME, &Cme, &CMNEF, &Cmnef, &CMnEf,
+              eom_params.amps_to_print);
+
+	        dpd_file2_close(&CME);
+	        dpd_file2_close(&Cme);
+	        dpd_buf4_close(&CMNEF);
+	        dpd_buf4_close(&Cmnef);
 	        dpd_buf4_close(&CMnEf);
           }
           else if (params.eom_ref == 2) {
-	        fprintf(outfile, "\nLargest components of excited wave function #%d:\n",
-                num_converged_index);
-            fprintf(outfile,"\tRIA alpha\n");
 	        sprintf(lbl, "%s %d %d", "RIA", C_irr, i);
 	        dpd_file2_init(&CME, CC_RAMPS, C_irr, 0, 1, lbl);
-	        amp_write_T1(&CME, eom_params.amps_to_print, outfile);
-	        dpd_file2_close(&CME);
-            fprintf(outfile,"\tRia beta\n");
 	        sprintf(lbl, "%s %d %d", "Ria", C_irr, i);
 	        dpd_file2_init(&Cme, CC_RAMPS, C_irr, 2, 3, lbl);
-	        amp_write_T1(&Cme, eom_params.amps_to_print, outfile);
-	        dpd_file2_close(&Cme);
-            fprintf(outfile,"\tRIJAB alpha\n");
 	        sprintf(lbl, "%s %d %d", "RIJAB", C_irr, i);
 	        dpd_buf4_init(&CMNEF, CC_RAMPS, C_irr, 2, 7, 2, 7, 0, lbl);
-	        amp_write_T2(&CMNEF, eom_params.amps_to_print, outfile);
-	        dpd_buf4_close(&CMNEF);
-            fprintf(outfile,"\tRijab beta\n");
 	        sprintf(lbl, "%s %d %d", "Rijab", C_irr, i);
 	        dpd_buf4_init(&Cmnef, CC_RAMPS, C_irr, 12, 17, 12, 17, 0, lbl);
-	        amp_write_T2(&Cmnef, eom_params.amps_to_print, outfile);
-	        dpd_buf4_close(&Cmnef);
-            fprintf(outfile,"\tRIjAb alpha,beta\n");
 	        sprintf(lbl, "%s %d %d", "RIjAb", C_irr, i);
 	        dpd_buf4_init(&CMnEf, CC_RAMPS, C_irr, 22, 28, 22, 28, 0, lbl);
-	        amp_write_T2(&CMnEf, eom_params.amps_to_print, outfile);
+
+            amp_write_UHF(&CME, &Cme, &CMNEF, &Cmnef, &CMnEf,
+              eom_params.amps_to_print);
+
+	        dpd_file2_close(&CME);
+	        dpd_file2_close(&Cme);
+	        dpd_buf4_close(&CMNEF);
+	        dpd_buf4_close(&Cmnef);
 	        dpd_buf4_close(&CMnEf);
-	  }
         }
+      }
 
-
-
-        
         /* for CC3 debugging  */
         /*
          sort_C(0, C_irr);
@@ -1098,17 +1078,14 @@ timer_off("INIT GUESS");
          dpd_buf4_close(&Sijab);
          dpd_buf4_close(&SIjAb);
          */
-
       }
-      /*
-      psio_write_entry(CC_INFO, "CCEOM Energy",
+      /* psio_write_entry(CC_INFO, "CCEOM Energy",
 		       (char *) &(lambda_old[eom_params.prop_root-1]), sizeof(double));
       i = moinfo.sym ^ C_irr;
       psio_write_entry(CC_INFO, "CCEOM State Irrep", (char *) &i, sizeof(int));
 
       fprintf(outfile,"\nCCEOM energy %.10lf and state irrep %d written to CC_INFO.\n",
-      lambda_old[eom_params.prop_root-1], i);
-       */
+      lambda_old[eom_params.prop_root-1], i); */
     }
     fprintf(outfile,"\n");
 
@@ -1116,12 +1093,10 @@ timer_off("INIT GUESS");
     free_block(alpha_old);
     free(converged);
     /* I don't want to do this for local CC calculations -TDC */
-    /*
-    if(!params.local) {
+    /* if(!params.local) {
       for(i=CC_TMP; i<CC_RAMPS; i++) psio_close(i,0);
       for(i=CC_TMP; i<CC_RAMPS; i++) psio_open(i,0);
-    }
-      */
+    } */
   }
 
   /* Save the energy vector to checkpoint */

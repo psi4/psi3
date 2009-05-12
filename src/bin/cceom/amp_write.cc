@@ -1,203 +1,480 @@
 /*! \file
     \ingroup CCEOM
-    \brief Enter brief description of file here 
+    \brief print out converged right-hand eigenvectors
+        amp_write_RHF()
+        amp_write_UHF()
+        amp_write_ROHF()
+      int namps = number of amplitudes to be printed
 */
 #include <cstdio>
 #include <cstdlib>
 #include <cmath>
 #include <libdpd/dpd.h>
+#include <vector>
 
 #include "MOInfo.h"
+#include "Params.h"
 #define EXTERN
 #include "globals.h"
 
+// minimum magnitude of amplitude to include in output
+#define MIN_TO_SHOW (1e-5)
+
 namespace psi { namespace cceom {
 
-struct onestack {
-    double value;
-    int irrep_i;
-    int i;
-    int a;
-};
+using std::vector;
 
-struct twostack {
-    double value;
-    int i; int j;
-    int a; int b;
-};
-
-void onestack_insert(struct onestack *stack, double value, int irrep_i, int i, int a, int level, int stacklen);
-void twostack_insert(struct twostack *stack, double value, int i, int j, int a, int b, 
-		     int level, int stacklen);
-
-void amp_write_T1(dpdfile2 *T1, int length, FILE *outfile)
-{
-  int m, h, nirreps, Gia;
-  int i, I, a, A, numt1;
+class R1_amp {
   double value;
-  struct onestack *t1stack;
+  int i, a, Gi, Ga;
+  public:
+    R1_amp() {
+      i = a = Gi = Ga = 0;
+      value = 0.0;
+    }
+    void zero(void) {
+      i = a = Gi = Ga = 0;
+      value = 0.0;
+    }
+  friend void amp_write_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, int namps);
+  friend void amp_write_UHF(dpdfile2 *RIA, dpdfile2 *Ria, dpdbuf4 *RIJAB,
+    dpdbuf4 *Rijab, dpdbuf4 *RIjAb, int namps);
+  friend void amp_write_ROHF(dpdfile2 *RIA, dpdfile2 *Ria, dpdbuf4 *RIJAB,
+    dpdbuf4 *Rijab, dpdbuf4 *RIjAb, int namps);
+  friend void get_largest_R1_amps(dpdfile2 *R1, int namps, vector<R1_amp> & R1_stack);
+};
 
-  nirreps = T1->params->nirreps;
-  Gia = T1->my_irrep;
+class R2_amp {
+  double value;
+  int i, j, a, b, Gi, Gj, Ga, Gb;
+  public:
+    R2_amp() {
+      i = j = a = b = Gi = Gj = Ga = Gb = 0;
+      value = 0.0;
+    }
+    void zero(void) {
+      i = j = a = b = Gi = Gj = Ga = Gb = 0;
+      value = 0.0;
+    }
 
-  t1stack = (struct onestack *) malloc(length * sizeof(struct onestack));
-  for(m=0; m < length; m++) { t1stack[m].value = 0; t1stack[m].i = 0; t1stack[m].a = 0; }
+  friend void amp_write_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, int namps);
+  friend void amp_write_UHF(dpdfile2 *RIA, dpdfile2 *Ria, dpdbuf4 *RIJAB,
+    dpdbuf4 *Rijab, dpdbuf4 *RIjAb, int namps);
+  friend void amp_write_ROHF(dpdfile2 *RIA, dpdfile2 *Ria, dpdbuf4 *RIJAB,
+    dpdbuf4 *Rijab, dpdbuf4 *RIjAb, int namps);
+  friend void get_largest_R2_amps(dpdbuf4 *R2, int namps, vector<R2_amp> & R2_stack);
+};
 
-  dpd_file2_mat_init(T1);
-  dpd_file2_mat_rd(T1);
+void get_largest_R1_amps(dpdfile2 *R1, int namps, vector<R1_amp> & R1s);
+void get_largest_R2_amps(dpdbuf4 *R2, int namps, vector<R2_amp> & R2_stack);
 
-  numt1 = 0;
-  for(h=0; h < nirreps; h++) {
+void amp_write_RHF(dpdfile2 *RIA, dpdbuf4 *RIjAb, int namps) {
+  int m, i, j, a, b, Gi, Gj, Ga, Gb, *frdocc, *clsdpi;
+  char lbli[10], lblj[10], lbla[10], lblb[10];
+  frdocc = moinfo.frdocc;
+  clsdpi = moinfo.clsdpi;
 
-    numt1 += T1->params->rowtot[h] * T1->params->coltot[h^Gia];
+  // Do RIA
+  vector<R1_amp> R1_stack;
+  get_largest_R1_amps(RIA, namps, R1_stack);
 
-    for(i=0; i < T1->params->rowtot[h]; i++) {
-      I = T1->params->roworb[h][i];
-      for(a=0; a < T1->params->coltot[h^Gia]; a++) {
-	A = T1->params->colorb[h^Gia][a];
-	value = T1->matrix[h][i][a];
-	for(m=0; m < length; m++) {
-	  if((fabs(value) - fabs(t1stack[m].value)) > 1e-12) {
-	    onestack_insert(t1stack, value, h, I, A, m, length);
-	    break;
-	  }
-	}
-      }
+  fprintf(outfile," RIA (libdpd indices) : (cscf notation)\n");
+  for(m=0; m < R1_stack.size(); m++) {
+    if(fabs(R1_stack[m].value) > MIN_TO_SHOW) {
+      Gi = R1_stack[m].Gi;
+      Ga = R1_stack[m].Ga;
+      i = frdocc[Gi] + R1_stack[m].i + 1;
+      a = frdocc[Ga] + clsdpi[Ga] + R1_stack[m].a + 1;
+      sprintf(lbli,"%d%s", i, moinfo.irr_labs_lowercase[Gi]);
+      sprintf(lbla,"%d%s", a, moinfo.irr_labs_lowercase[Ga]);
+      fprintf(outfile, "       %3d > %3d      :    %6s > %6s : %15.10f\n",
+        R1_stack[m].i, R1_stack[m].a, lbli, lbla, R1_stack[m].value);
+    }
+  }
+  R1_stack.clear();
+
+  // Do RIjAb
+  vector<R2_amp> R2_stack;
+  get_largest_R2_amps(RIjAb, namps, R2_stack);
+
+  fprintf(outfile," RIjAb (libdpd indices)     : (cscf notation)\n");
+  for(m=0; m < R2_stack.size(); m++) {
+    if(fabs(R2_stack[m].value) > MIN_TO_SHOW) {
+      Gi = R2_stack[m].Gi;
+      Gj = R2_stack[m].Gj;
+      Ga = R2_stack[m].Ga;
+      Gb = R2_stack[m].Gb;
+      
+      i = frdocc[Gi] + R2_stack[m].i + 1;
+      j = frdocc[Gj] + R2_stack[m].j + 1;
+      a = frdocc[Ga] + clsdpi[Ga] + R2_stack[m].a + 1;
+      b = frdocc[Gb] + clsdpi[Gb] + R2_stack[m].b + 1;
+
+      sprintf(lbli,"%d%s", i, moinfo.irr_labs_lowercase[Gi]);
+      sprintf(lblj,"%d%s", j, moinfo.irr_labs_lowercase[Gj]);
+      sprintf(lbla,"%d%s", a, moinfo.irr_labs_lowercase[Ga]);
+      sprintf(lblb,"%d%s", b, moinfo.irr_labs_lowercase[Gb]);
+      fprintf(outfile, "      %3d %3d > %3d %3d     : %6s %6s > %6s %6s : %15.10f\n",
+        R2_stack[m].i, R2_stack[m].j, R2_stack[m].a, R2_stack[m].b,
+          lbli, lblj, lbla, lblb, R2_stack[m].value);
+    }
+  }
+  R2_stack.clear();
+}
+
+// ** amp_write_UHF() 
+void amp_write_UHF(dpdfile2 *RIA, dpdfile2 *Ria, dpdbuf4 *RIJAB,
+    dpdbuf4 *Rijab, dpdbuf4 *RIjAb, int namps) {
+  int m, i, j, a, b, Gi, Gj, Ga, Gb, *frdocc, *clsdpi, *openpi;
+  char lbli[10], lblj[10], lbla[10], lblb[10];
+
+  frdocc = moinfo.frdocc;
+  clsdpi = moinfo.clsdpi;
+  openpi = moinfo.openpi;
+
+  // Do RIA
+  vector<R1_amp> R1_stack;
+  get_largest_R1_amps(RIA, namps, R1_stack);
+
+  fprintf(outfile," RIA (libdpd indices) : (cscf notation)\n");
+  for(m=0; m < R1_stack.size(); m++) {
+    if(fabs(R1_stack[m].value) > MIN_TO_SHOW) {
+      Gi = R1_stack[m].Gi;
+      Ga = R1_stack[m].Ga;
+      i = frdocc[Gi] + R1_stack[m].i + 1;
+      a = frdocc[Ga] + clsdpi[Ga] + openpi[Ga] + R1_stack[m].a + 1;
+      sprintf(lbli,"%d%s", i, moinfo.irr_labs_lowercase[Gi]);
+      sprintf(lbla,"%d%s", a, moinfo.irr_labs_lowercase[Ga]);
+      fprintf(outfile, "       %3d > %3d      :    %6s > %6s : %15.10f\n",
+        R1_stack[m].i, R1_stack[m].a, lbli, lbla, R1_stack[m].value);
+    }
+  }
+  R1_stack.clear();
+
+  // Do Ria 
+  get_largest_R1_amps(Ria, namps, R1_stack);
+
+  fprintf(outfile," Ria (libdpd indices) : (cscf notation)\n");
+  for(m=0; m < R1_stack.size(); m++) {
+    if(fabs(R1_stack[m].value) > MIN_TO_SHOW) {
+      Gi = R1_stack[m].Gi;
+      Ga = R1_stack[m].Ga;
+      i = frdocc[Gi] + R1_stack[m].i + 1;
+      a = frdocc[Ga] + clsdpi[Ga] + R1_stack[m].a + 1;
+      sprintf(lbli,"%d%s", i, moinfo.irr_labs_lowercase[Gi]);
+      sprintf(lbla,"%d%s", a, moinfo.irr_labs_lowercase[Ga]);
+      fprintf(outfile, "       %3d > %3d      :    %6s > %6s : %15.10f\n",
+        R1_stack[m].i, R1_stack[m].a, lbli, lbla, R1_stack[m].value);
+    }
+  }
+  R1_stack.clear();
+
+  // Do RIjAb
+  vector<R2_amp> R2_stack;
+  get_largest_R2_amps(RIjAb, namps, R2_stack);
+
+  fprintf(outfile," RIjAb (libdpd indices)     : (cscf notation)\n");
+  for(m=0; m < R2_stack.size(); m++) {
+    if(fabs(R2_stack[m].value) > MIN_TO_SHOW) {
+      Gi = R2_stack[m].Gi;
+      Gj = R2_stack[m].Gj;
+      Ga = R2_stack[m].Ga;
+      Gb = R2_stack[m].Gb;
+
+      i = frdocc[Gi] + R2_stack[m].i + 1;
+      j = frdocc[Gj] + R2_stack[m].j + 1;
+      a = frdocc[Ga] + clsdpi[Ga] + openpi[Ga] + R2_stack[m].a + 1;
+      b = frdocc[Gb] + clsdpi[Gb] + R2_stack[m].b + 1;
+
+      sprintf(lbli,"%d%s", i, moinfo.irr_labs_lowercase[Gi]);
+      sprintf(lblj,"%d%s", j, moinfo.irr_labs_lowercase[Gj]);
+      sprintf(lbla,"%d%s", a, moinfo.irr_labs_lowercase[Ga]);
+      sprintf(lblb,"%d%s", b, moinfo.irr_labs_lowercase[Gb]);
+      fprintf(outfile, "      %3d %3d > %3d %3d     : %6s %6s > %6s %6s : %15.10f\n",
+        R2_stack[m].i, R2_stack[m].j, R2_stack[m].a, R2_stack[m].b,
+          lbli, lblj, lbla, lblb, R2_stack[m].value);
     }
   }
 
-  dpd_file2_mat_close(T1);
+  // Do RIJAB
+  get_largest_R2_amps(RIJAB, namps, R2_stack);
 
-  for(m=0; m < ((numt1 < length) ? numt1 : length); m++)
-    if(fabs(t1stack[m].value) > 1e-6)
-      fprintf(outfile, "\t%3d (%s) > %3d (%s) : %15.10f\n",
-        t1stack[m].i, moinfo.irr_labs_lowercase[t1stack[m].irrep_i],
-        t1stack[m].a, moinfo.irr_labs_lowercase[t1stack[m].irrep_i^Gia], t1stack[m].value);
+  fprintf(outfile," RIJAB (libdpd indices)     : (cscf notation)\n");
+  for(m=0; m < R2_stack.size(); m++) {
+    if(fabs(R2_stack[m].value) > MIN_TO_SHOW) {
+      Gi = R2_stack[m].Gi;
+      Gj = R2_stack[m].Gj;
+      Ga = R2_stack[m].Ga;
+      Gb = R2_stack[m].Gb;
 
-  free(t1stack);
+      i = frdocc[Gi] + R2_stack[m].i + 1;
+      j = frdocc[Gj] + R2_stack[m].j + 1;
+      a = frdocc[Ga] + clsdpi[Ga] + openpi[Ga] + R2_stack[m].a + 1;
+      b = frdocc[Gb] + clsdpi[Gb] + openpi[Gb] + R2_stack[m].b + 1;
+
+      sprintf(lbli,"%d%s", i, moinfo.irr_labs_lowercase[Gi]);
+      sprintf(lblj,"%d%s", j, moinfo.irr_labs_lowercase[Gj]);
+      sprintf(lbla,"%d%s", a, moinfo.irr_labs_lowercase[Ga]);
+      sprintf(lblb,"%d%s", b, moinfo.irr_labs_lowercase[Gb]);
+      fprintf(outfile, "      %3d %3d > %3d %3d     : %6s %6s > %6s %6s : %15.10f\n",
+        R2_stack[m].i, R2_stack[m].j, R2_stack[m].a, R2_stack[m].b,
+          lbli, lblj, lbla, lblb, R2_stack[m].value);
+    }
+  }
+  R2_stack.clear();
+
+  // Do Rijab
+  get_largest_R2_amps(Rijab, namps, R2_stack);
+
+  fprintf(outfile," Rijab (libdpd indices)     : (cscf notation)\n");
+  for(m=0; m < R2_stack.size(); m++) {
+    if(fabs(R2_stack[m].value) > MIN_TO_SHOW) {
+      Gi = R2_stack[m].Gi;
+      Gj = R2_stack[m].Gj;
+      Ga = R2_stack[m].Ga;
+      Gb = R2_stack[m].Gb;
+
+      i = frdocc[Gi] + R2_stack[m].i + 1;
+      j = frdocc[Gj] + R2_stack[m].j + 1;
+      a = frdocc[Ga] + clsdpi[Ga] + R2_stack[m].a + 1;
+      b = frdocc[Gb] + clsdpi[Gb] + R2_stack[m].b + 1;
+
+      sprintf(lbli,"%d%s", i, moinfo.irr_labs_lowercase[Gi]);
+      sprintf(lblj,"%d%s", j, moinfo.irr_labs_lowercase[Gj]);
+      sprintf(lbla,"%d%s", a, moinfo.irr_labs_lowercase[Ga]);
+      sprintf(lblb,"%d%s", b, moinfo.irr_labs_lowercase[Gb]);
+      fprintf(outfile, "      %3d %3d > %3d %3d     : %6s %6s > %6s %6s : %15.10f\n",
+        R2_stack[m].i, R2_stack[m].j, R2_stack[m].a, R2_stack[m].b,
+          lbli, lblj, lbla, lblb, R2_stack[m].value);
+    }
+  }
+  R2_stack.clear();
 }
 
-void onestack_insert(struct onestack *stack, double value, int irrep_i, int i, int a, int level, int stacklen)
-{
-  int l;
-  struct onestack temp;
+// ** amp_write_ROHF() 
+void amp_write_ROHF(dpdfile2 *RIA, dpdfile2 *Ria, dpdbuf4 *RIJAB,
+    dpdbuf4 *Rijab, dpdbuf4 *RIjAb, int namps) {
+  int m, i, j, a, b, Gi, Gj, Ga, Gb, *virtpi, *clsdpi, *openpi, *frdocc;
+  char lbli[10], lblj[10], lbla[10], lblb[10];
 
-  temp = stack[level];
+  virtpi = moinfo.virtpi;
+  clsdpi = moinfo.clsdpi;
+  openpi = moinfo.openpi;
+  frdocc = moinfo.frdocc;
 
-  stack[level].value = value;
-  stack[level].irrep_i = irrep_i;
-  stack[level].i = i;
-  stack[level].a = a;
+  // Do RIA
+  vector<R1_amp> R1_stack;
+  get_largest_R1_amps(RIA, namps, R1_stack);
 
-  value = temp.value;
-  irrep_i = temp.irrep_i;
-  i = temp.i;
-  a = temp.a;
-
-  for(l=level; l < stacklen-1; l++) {
-    temp = stack[l+1];
-
-    stack[l+1].value = value;
-    stack[l+1].irrep_i = irrep_i;
-    stack[l+1].i = i;
-    stack[l+1].a = a;
-
-    value = temp.value;
-    irrep_i = temp.irrep_i;
-    i = temp.i;
-    a = temp.a;
+  fprintf(outfile," RIA (libdpd indices) : (cscf notation)\n");
+  for(m=0; m < R1_stack.size(); m++) {
+    if(fabs(R1_stack[m].value) > MIN_TO_SHOW) {
+      Gi = R1_stack[m].Gi;
+      Ga = R1_stack[m].Ga;
+      i = frdocc[Gi] + R1_stack[m].i + 1;
+      a = frdocc[Ga] + clsdpi[Ga] + openpi[Ga] + R1_stack[m].a + 1;
+      sprintf(lbli,"%d%s", i, moinfo.irr_labs_lowercase[Gi]);
+      sprintf(lbla,"%d%s", a, moinfo.irr_labs_lowercase[Ga]);
+      fprintf(outfile, "       %3d > %3d      :    %6s > %6s : %15.10f\n",
+        R1_stack[m].i, R1_stack[m].a, lbli, lbla, R1_stack[m].value);
+    }
   }
+  R1_stack.clear();
+
+  // Do Ria 
+  get_largest_R1_amps(Ria, namps, R1_stack);
+
+  fprintf(outfile," Ria (libdpd indices) : (cscf notation)\n");
+  for(m=0; m < R1_stack.size(); m++) {
+    if(fabs(R1_stack[m].value) > MIN_TO_SHOW) {
+      Gi = R1_stack[m].Gi;
+      Ga = R1_stack[m].Ga;
+
+      i = frdocc[Gi] + R1_stack[m].i + 1;
+      if (R1_stack[m].a < (virtpi[Ga]-openpi[Ga]) )
+        a = frdocc[Ga] + clsdpi[Ga] + openpi[Ga] + R1_stack[m].a + 1;
+      else
+        a = frdocc[Ga] + clsdpi[Ga] + (R1_stack[m].a - (virtpi[Ga]-openpi[Ga])) + 1;
+
+      sprintf(lbli,"%d%s", i, moinfo.irr_labs_lowercase[Gi]);
+      sprintf(lbla,"%d%s", a, moinfo.irr_labs_lowercase[Ga]);
+      fprintf(outfile, "       %3d > %3d      :    %6s > %6s : %15.10f\n",
+        R1_stack[m].i, R1_stack[m].a, lbli, lbla, R1_stack[m].value);
+    }
+  }
+  R1_stack.clear();
+
+  // Do RIjAb
+  vector<R2_amp> R2_stack;
+  get_largest_R2_amps(RIjAb, namps, R2_stack);
+
+  fprintf(outfile," RIjAb (libdpd indices)     : (cscf notation)\n");
+  for(m=0; m < R2_stack.size(); m++) {
+    if(fabs(R2_stack[m].value) > MIN_TO_SHOW) {
+      Gi = R2_stack[m].Gi;
+      Gj = R2_stack[m].Gj;
+      Ga = R2_stack[m].Ga;
+      Gb = R2_stack[m].Gb;
+
+      i = frdocc[Gi] + R2_stack[m].i + 1;
+      j = frdocc[Gj] + R2_stack[m].j + 1;
+      a = frdocc[Ga] + clsdpi[Ga] + openpi[Ga] + R2_stack[m].a + 1;
+      if (R2_stack[m].b < (virtpi[Gb]-openpi[Gb]) )
+        b = frdocc[Gb] + clsdpi[Gb] + openpi[Gb] + R2_stack[m].b + 1;
+      else
+        b = frdocc[Gb] + clsdpi[Gb] + (R2_stack[m].b - (virtpi[Gb]-openpi[Gb])) + 1;
+
+      sprintf(lbli,"%d%s", i, moinfo.irr_labs_lowercase[Gi]);
+      sprintf(lblj,"%d%s", j, moinfo.irr_labs_lowercase[Gj]);
+      sprintf(lbla,"%d%s", a, moinfo.irr_labs_lowercase[Ga]);
+      sprintf(lblb,"%d%s", b, moinfo.irr_labs_lowercase[Gb]);
+      fprintf(outfile, "      %3d %3d > %3d %3d     : %6s %6s > %6s %6s : %15.10f\n",
+        R2_stack[m].i, R2_stack[m].j, R2_stack[m].a, R2_stack[m].b,
+          lbli, lblj, lbla, lblb, R2_stack[m].value);
+    }
+  }
+  R2_stack.clear();
+
+  // Do RIJAB
+  get_largest_R2_amps(RIJAB, namps, R2_stack);
+
+  fprintf(outfile," RIJAB (libdpd indices)     : (cscf notation)\n");
+  for(m=0; m < R2_stack.size(); m++) {
+    if(fabs(R2_stack[m].value) > MIN_TO_SHOW) {
+      Gi = R2_stack[m].Gi;
+      Gj = R2_stack[m].Gj;
+      Ga = R2_stack[m].Ga;
+      Gb = R2_stack[m].Gb;
+
+      i = frdocc[Gi] + R2_stack[m].i + 1;
+      j = frdocc[Gj] + R2_stack[m].j + 1;
+      a = frdocc[Ga] + clsdpi[Ga] + openpi[Ga] + R2_stack[m].a + 1;
+      b = frdocc[Gb] + clsdpi[Gb] + openpi[Gb] + R2_stack[m].b + 1;
+
+      sprintf(lbli,"%d%s", i, moinfo.irr_labs_lowercase[Gi]);
+      sprintf(lblj,"%d%s", j, moinfo.irr_labs_lowercase[Gj]);
+      sprintf(lbla,"%d%s", a, moinfo.irr_labs_lowercase[Ga]);
+      sprintf(lblb,"%d%s", b, moinfo.irr_labs_lowercase[Gb]);
+      fprintf(outfile, "      %3d %3d > %3d %3d     : %6s %6s > %6s %6s : %15.10f\n",
+        R2_stack[m].i, R2_stack[m].j, R2_stack[m].a, R2_stack[m].b,
+          lbli, lblj, lbla, lblb, R2_stack[m].value);
+    }
+  }
+  R2_stack.clear();
+
+  // Do Rijab
+  get_largest_R2_amps(Rijab, namps, R2_stack);
+
+  fprintf(outfile," Rijab (libdpd indices)     : (cscf notation)\n");
+  for(m=0; m < R2_stack.size(); m++) {
+    if(fabs(R2_stack[m].value) > MIN_TO_SHOW) {
+      Gi = R2_stack[m].Gi;
+      Gj = R2_stack[m].Gj;
+      Ga = R2_stack[m].Ga;
+      Gb = R2_stack[m].Gb;
+
+      i = frdocc[Gi] + R2_stack[m].i + 1;
+      j = frdocc[Gj] + R2_stack[m].j + 1;
+
+      if (R2_stack[m].a < (virtpi[Ga]-openpi[Ga]) )
+        a = frdocc[Ga] + clsdpi[Ga] + openpi[Ga] + R2_stack[m].a + 1;
+      else
+        a = frdocc[Ga] + clsdpi[Ga] + (R2_stack[m].a - (virtpi[Ga]-openpi[Ga])) + 1;
+
+      if (R2_stack[m].b < (virtpi[Gb]-openpi[Gb]) )
+        b = frdocc[Gb] + clsdpi[Gb] + openpi[Gb] + R2_stack[m].b + 1;
+      else
+        b = frdocc[Gb] + clsdpi[Gb] + (R2_stack[m].b - (virtpi[Gb]-openpi[Gb])) + 1;
+
+      sprintf(lbli,"%d%s", i, moinfo.irr_labs_lowercase[Gi]);
+      sprintf(lblj,"%d%s", j, moinfo.irr_labs_lowercase[Gj]);
+      sprintf(lbla,"%d%s", a, moinfo.irr_labs_lowercase[Ga]);
+      sprintf(lblb,"%d%s", b, moinfo.irr_labs_lowercase[Gb]);
+      fprintf(outfile, "      %3d %3d > %3d %3d     : %6s %6s > %6s %6s : %15.10f\n",
+        R2_stack[m].i, R2_stack[m].j, R2_stack[m].a, R2_stack[m].b,
+          lbli, lblj, lbla, lblb, R2_stack[m].value);
+    }
+  }
+  R2_stack.clear();
 }
 
-void amp_write_T2(dpdbuf4 *T2, int length, FILE *outfile)
-{
-  int m, h, nirreps, Gijab, numt2;
-  int ij, ab, i, j, a, b;
-  double value;
-  struct twostack *t2stack;
 
-  nirreps = T2->params->nirreps;
-  Gijab = T2->file.my_irrep;
+/* builds std::vector of R1_amps of largest magnitude for dpd_file2 structures */
+void get_largest_R1_amps(dpdfile2 *R1, int namps, vector<R1_amp> & R1_stack) {
+  int h, m, i, a, Gia, nirreps;
+  R1_amp one_R1;
 
-  t2stack = (struct twostack *) malloc(length * sizeof(struct twostack));
-  for(m=0; m < length; m++) { 
-    t2stack[m].value = 0; 
-    t2stack[m].i = 0; t2stack[m].j = 0;
-    t2stack[m].a = 0; t2stack[m].b = 0;
-  }
+  nirreps = R1->params->nirreps;
+  Gia = R1->my_irrep;
+  dpd_file2_mat_init(R1);
+  dpd_file2_mat_rd(R1);
+  R1_stack.push_back(one_R1); // create stack with 1 zero entry
 
-  numt2 = 0;
   for(h=0; h < nirreps; h++) {
-    dpd_buf4_mat_irrep_init(T2, h);
-    dpd_buf4_mat_irrep_rd(T2, h);
-
-    numt2 += T2->params->rowtot[h] * T2->params->coltot[h^Gijab];
-
-    for(ij=0; ij < T2->params->rowtot[h]; ij++) {
-      i = T2->params->roworb[h][ij][0];
-      j = T2->params->roworb[h][ij][1];
-      for(ab=0; ab < T2->params->coltot[h^Gijab]; ab++) {
-	a = T2->params->colorb[h^Gijab][ab][0];
-	b = T2->params->colorb[h^Gijab][ab][1];
-
-	value = T2->matrix[h][ij][ab];
-
-	for(m=0; m < length; m++) {
-	  if((fabs(value) - fabs(t2stack[m].value)) > 1e-12) {
-	    twostack_insert(t2stack, value, i, j, a, b, m, length);
-	    break;
-	  }
-	}
+    one_R1.Gi = h;
+    one_R1.Ga = h^Gia;
+    for(i=0; i < R1->params->rowtot[h]; i++) {
+      one_R1.i = i;
+      for(a=0; a < R1->params->coltot[h^Gia]; a++) {
+        one_R1.a = a;
+        one_R1.value = R1->matrix[h][i][a];
+        for(m=0; m < R1_stack.size() ; m++) {
+          if((fabs(one_R1.value) - fabs(R1_stack[m].value)) > 1e-12) {
+            R1_stack.insert(R1_stack.begin()+m, one_R1);
+            if (R1_stack.size() > namps)
+              R1_stack.erase(R1_stack.end()-1);
+            break;
+          }
+        }
       }
     }
-
-    dpd_buf4_mat_irrep_close(T2, h);
   }
-
-  for(m=0; m < ((numt2 < length) ? numt2 : length); m++)
-    if(fabs(t2stack[m].value) > 1e-6)
-      fprintf(outfile, "\t%3d %3d   > %3d %3d   : %15.10f\n", t2stack[m].i, t2stack[m].j, 
-	      t2stack[m].a, t2stack[m].b, t2stack[m].value);
-
-  free(t2stack);
+  dpd_file2_mat_close(R1);
+  return;
 }
 
-void twostack_insert(struct twostack *stack, double value, int i, int j, int a, int b, 
-		     int level, int stacklen)
-{
-  int l;
-  struct twostack temp;
+/* builds std::vector of R2_amps of largest magnitude for dpd_file2 structures */
+void get_largest_R2_amps(dpdbuf4 *R2, int namps, vector<R2_amp> & R2_stack) {
+  int a, b, i, j, h, ij, ab, m, nirreps, Gijab;
+  R2_amp one_R2;
+   
+  nirreps = R2->params->nirreps;
+  Gijab = R2->file.my_irrep;
+  R2_stack.push_back(one_R2); // create stack with 1 zero entry
 
-  temp = stack[level];
+  for(h=0; h < nirreps; h++) {
+    dpd_buf4_mat_irrep_init(R2, h);
+    dpd_buf4_mat_irrep_rd(R2, h);
 
-  stack[level].value = value;
-  stack[level].i = i;
-  stack[level].j = j;
-  stack[level].a = a;
-  stack[level].b = b;
+    for(ij=0; ij < R2->params->rowtot[h]; ij++) {
+      i = R2->params->roworb[h][ij][0];
+      j = R2->params->roworb[h][ij][1];
+      one_R2.Gi = R2->params->psym[i];
+      one_R2.Gj = R2->params->qsym[j];
+      one_R2.i = i - R2->params->poff[one_R2.Gi];
+      one_R2.j = j - R2->params->qoff[one_R2.Gj];
 
-  value = temp.value;
-  i = temp.i;
-  j = temp.j;
-  a = temp.a;
-  b = temp.b;
+      for(ab=0; ab < R2->params->coltot[h^Gijab]; ab++) {
+        a = R2->params->colorb[h^Gijab][ab][0];
+        b = R2->params->colorb[h^Gijab][ab][1];
+        one_R2.Ga = R2->params->rsym[a];
+        one_R2.Gb = R2->params->ssym[b];
+        one_R2.a = a - R2->params->roff[one_R2.Ga];
+        one_R2.b = b - R2->params->soff[one_R2.Gb];
 
-  for(l=level; l < stacklen-1; l++) {
-    temp = stack[l+1];
-
-    stack[l+1].value = value;
-    stack[l+1].i = i;
-    stack[l+1].j = j;
-    stack[l+1].a = a;
-    stack[l+1].b = b;
-
-    value = temp.value;
-    i = temp.i;
-    j = temp.j;
-    a = temp.a;
-    b = temp.b;
+        one_R2.value = R2->matrix[h][ij][ab];
+        for(m=0; m < R2_stack.size() ; m++) {
+          if((fabs(one_R2.value) - fabs(R2_stack[m].value)) > 1e-12) {
+            R2_stack.insert(R2_stack.begin()+m, one_R2);
+            if (R2_stack.size() > namps)
+              R2_stack.erase(R2_stack.end()-1);
+            break;
+          }
+        }
+      }
+    }
+    dpd_buf4_mat_irrep_close(R2, h);
   }
 }
-
 
 }} // namespace psi::cceom
