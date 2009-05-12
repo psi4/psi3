@@ -127,7 +127,7 @@ int main (int argc, char * argv[])
     #endif
 
     // This code block tests reading basis set from GENBAS and computing 3 center integrals
-    //#if 0
+    #if 0
     {
         // Create a basis set object and have it initialize itself using the checkpoint file
         Ref<BasisSet> basis(new BasisSet(chkpt));
@@ -321,7 +321,7 @@ int main (int argc, char * argv[])
 
         delete[] row; delete[] col;
     }
-    //#endif
+    #endif
     
     // This code block is for testing the basis set and one electron integral codes.
     #if 0
@@ -528,7 +528,7 @@ int main (int argc, char * argv[])
     #endif
     
     // This block of code is testing ERI integrals
-    #if 0
+    // #if 0
     {
         // Create a basis set object and have it initialize itself using the checkpoint file
         Ref<BasisSet> basis(new BasisSet(chkpt));
@@ -553,58 +553,51 @@ int main (int argc, char * argv[])
 
         // Initialize an integral object
         Ref<IntegralFactory> integral(new IntegralFactory(basis, basis, basis, basis));
-        Ref<TwoBodyInt> eri = integral->eri(1);
+        Ref<TwoBodyInt> eri = integral->eri();
 
         const double *buffer = eri->buffer();
 
+        ShellCombinationsIterator iter = integral->shells_iterator();
+        
         fprintf(outfile, "  Computing integrals..."); fflush(outfile);
 
         int nshell = basis->nshell();
         FILE *ints_out = fopen("mints.integrals", "w");
-
-        for (int P = 0; P < nshell; P++) {
-            int nump = basis->shell(P)->nfunction();
-
-            for (int Q = 0; Q < nshell; ++Q) {
-                int numq = basis->shell(Q)->nfunction();
-
-                for (int R = 0; R < nshell; ++R) {
-                    int numr = basis->shell(R)->nfunction();
-
-                    for (int S = 0; S < nshell; ++S) {
-                        int nums = basis->shell(S)->nfunction();
-
-                        eri->compute_shell(P, Q, R, S);
-
-                        size_t size = nump * numq * numr * nums;
-                        
-                        int index = 0;
-                        for(int p=0; p < nump; p++) {
-                            int op = basis->shell(P)->function_index()+p;
-                    
-                            for(int q = 0; q < numq; q++) {
-                                int oq = basis->shell(Q)->function_index()+q;
-                    
-                                for(int r = 0; r < numr; r++) {
-                                    int oor = basis->shell(R)->function_index()+r;
-                    
-                                    for(int s = 0; s < nums; s++,index++) {
-                                        int os = basis->shell(S)->function_index()+s;
-                    
-                                        if (fabs(buffer[index]) > 1.0e-14)
-                                            fprintf(ints_out, "%3d %3d %3d %3d %20.14f\n", op, oq, oor, os, buffer[index]);
-                                    }
-                                }
-                            }
-                        }
-                    }
+        int P, Q, R, S;
+        int op, oq, oor, os;
+        int index;
+        
+        int count=0;
+        for (iter.first(); iter.is_done() == false; iter.next()) {
+            P = iter.p();
+            Q = iter.q();
+            R = iter.r();
+            S = iter.s();
+            
+            // Compute quartet
+            eri->compute_shell(P, Q, R, S);
+            
+            // From the quartet get all the integrals
+            IntegralsIterator int_iter = iter.integrals_iterator();
+            for (int_iter.first(); int_iter.is_done() == false; int_iter.next()) {
+                op  = int_iter.i();
+                oq  = int_iter.j();
+                oor = int_iter.k();
+                os  = int_iter.l();
+                index = int_iter.index();
+                
+                // We only care about those greater that 1.0e-14
+                if (fabs(buffer[index]) > 1.0e-14) {
+                    fprintf(ints_out, "%3d %3d %3d %3d %3d %3d %3d %3d %20.14f\n", P, Q, R, S, op, oq, oor, os, buffer[index]);
+                    count++;
                 }
             }
         }
         fclose(ints_out);
         fprintf(outfile, "done.\n"); fflush(outfile);
+        fprintf(outfile, "  Computed %d two-electron integrals.\n", count); fflush(outfile);
     }
-    #endif
+    // #endif
     
     // This block of code is testing ERI derivatives
     #if 0
