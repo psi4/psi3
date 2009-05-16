@@ -50,12 +50,7 @@ private:
   double delta_time_days;
 };
 
-double to_MB(size_t n);
 
-//unsigned long int init_smatrix(short**& matrix,int size1, int size2);
-//unsigned long int free_smatrix(short**& matrix, int size1, int size2);
-//unsigned long int init_smatrix(short***& matrix,int size1, int size2, int size3);
-//unsigned long int free_smatrix(short*** matrix, int size1, int size2, int size3);
 
 
 void print_error(FILE* output, std::string message, const char* file, int line);

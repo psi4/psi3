@@ -1,7 +1,7 @@
 #ifndef _psi_src_bin_psimrcc_ccblas_h
 #define _psi_src_bin_psimrcc_ccblas_h
 
-/*! \file 
+/*! \file
     \ingroup (PSIMRCC)
     \brief   A class to perform contractions
 */
@@ -32,7 +32,7 @@ enum DiisType {DiisEachCycle,DiisCC};
 	@author Francesco A. Evangelista and Andrew C. Simmonett <frank@ccc.uga.edu>
 */
 class CCBLAS{
-public: 
+public:
   typedef std::vector<std::string>            strvec;
   typedef std::vector<int>                    intvec;
   typedef std::vector<std::pair<int,int> >    intpairvec;
@@ -127,7 +127,7 @@ private:
   bool       get_factor(const std::string& str,double& factor);
   // General routines
 
-  void       make_space(double memory_required);
+  void       make_space(size_t memory_required);
   // Low level memory routines
   void       init();
   void       cleanup();

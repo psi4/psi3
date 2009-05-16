@@ -72,7 +72,7 @@ int CCTransform::read_tei_mo_integrals_block(int first_irrep)
       if(!ilsti)
         iwl_buf_fetch(&ERIIN);
     } while(!ilsti);
-  fprintf(outfile,"\n    CCTransform: read %d non-zero integrals", elements);
+  fprintf(outfile,"\n    Read %d non-zero integrals", elements);
   fflush(outfile);
   iwl_buf_close(&ERIIN,1);
   return(last_irrep);
@@ -91,32 +91,31 @@ int CCTransform::allocate_tei_mo_block(int first_irrep)
 
   int last_irrep = first_irrep;
 
-  if(tei_mo==NULL){
+  if(tei_mo == NULL){
     // Allocate the tei_mo matrix blocks
-    tei_mo = new double*[moinfo->get_nirreps()];
+    allocate1(double*,tei_mo,moinfo->get_nirreps());
     for(int h=0;h<moinfo->get_nirreps();h++)
       tei_mo[h] = NULL;
   }
 
   // Find how many irreps we can store in 95% of the free memory
-  double cctransform_memory = _memory_manager_->get_free_memory()*0.95;
+  size_t cctransform_memory = _memory_manager_->get_FreeMemory() * 0.95;
   size_t matrix_size = 0;
   for(int h=first_irrep;h<moinfo->get_nirreps();h++){
     if(tei_mo_indexing->get_pairpi(h)>0){
       size_t block_size = INDEX(tei_mo_indexing->get_pairpi(h)-1,tei_mo_indexing->get_pairpi(h)-1)+1;
-      if(to_MB(block_size)<cctransform_memory){
-        matrix_size  += block_size;
-        tei_mo[h]     = new double[block_size];
+      if(sizeof(double) * block_size < cctransform_memory){
+        matrix_size += block_size * sizeof(double);
+        allocate1(double,tei_mo[h],block_size)
         zero_arr(tei_mo[h],block_size);
-        cctransform_memory-=to_MB(block_size);
-        _memory_manager_->add_allocated_memory(to_MB(block_size));
+        cctransform_memory -= block_size * sizeof(double);
         last_irrep++;
       }
     }else{
       last_irrep++;
     }
   }
-  fprintf(outfile,"\n    CCTransform: irrep %d->%d will be read in core",first_irrep,last_irrep);
+  fprintf(outfile,"\n    Irrep %d->%d will be read in core",first_irrep,last_irrep);
   if(first_irrep==last_irrep){
     fprintf(outfile,"\n    CCTransform: allocate_tei_mo_block() has not enough memory!");
     fflush(outfile);
@@ -134,13 +133,11 @@ void CCTransform::free_tei_mo_integrals_block(int first_irrep, int last_irrep)
 {
   for(int h=first_irrep;h<last_irrep;h++){
     if(tei_mo[h] != NULL){
-      size_t block_size = INDEX(tei_mo_indexing->get_pairpi(h)-1,tei_mo_indexing->get_pairpi(h)-1)+1;
-      delete[] tei_mo[h];
-      _memory_manager_->add_allocated_memory(-to_MB(block_size));
+      release1(tei_mo[h]);
     }
   }
   if(last_irrep>=moinfo->get_nirreps()){
-    delete[] tei_mo;
+    release1(tei_mo);
     tei_mo = NULL;
   }
 }

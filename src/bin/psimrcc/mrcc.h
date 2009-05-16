@@ -1,5 +1,5 @@
-#ifndef _psi_src_bin_psimrcc_ccmrcc_h_
-#define _psi_src_bin_psimrcc_ccmrcc_h_
+#ifndef _psi_src_bin_psimrcc_mrcc_h_
+#define _psi_src_bin_psimrcc_mrcc_h_
 
 #include "manybody.h"
 
@@ -17,8 +17,9 @@ public:
   void compute_bwccsd_energy();
   void compute_apbwccsd_energy();
   void compute_ccsd_energy();
+  // Perturbative correction for CBS
+  void compute_first_order_amps();
   void perturbative_cbs();
-  void perturbative_cbs2();
 private:
   bool ap_correction;
 
@@ -164,8 +165,10 @@ private:
   void update_t1_t2_amps_mkccsd_residual();
 
   void print_mrccsd_energy(int cycle);
+
+
 };
 
 }} /* End Namespaces */
 
-#endif // _psi_src_bin_psimrcc_ccmrcc_h_
+#endif // _psi_src_bin_psimrcc_mrcc_h_

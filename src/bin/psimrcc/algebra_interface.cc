@@ -1,7 +1,4 @@
 #include "algebra_interface.h"
-#include <libmoinfo/libmoinfo.h>
-
-extern FILE *infile, *outfile;
 
 namespace psi{ namespace psimrcc{
 

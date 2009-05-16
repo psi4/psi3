@@ -53,7 +53,6 @@ public:
   // Print routines
   void        print();
   // Get the numeber of tuples and the numeber of indices per tuple
-  double      get_memory()                                {return(memory);}
   int         get_ntuples()                               {return(ntuples);}
   int         get_nelements()                             {return(nelements);}
   std::string get_label()                                 {return(label);}
@@ -111,7 +110,6 @@ private:
   vecvecint                         indices_to_pitzer;      // Mapping from the mos of this space to Pitzer
   bool                              greater_than_or_equal;  // >= tuples
   bool                              greater_than;           // >  tuples
-  double                            memory;                 // Memory required to store all the data
   size_t                            ntuples;                // Number of tuples
   short**                           tuples;                 // The tuples ordered as matrix : tuples[number][element]
   Size_tVec                         first;                  // First pair of irrep

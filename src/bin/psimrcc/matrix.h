@@ -52,6 +52,7 @@ namespace psi{ namespace psimrcc{
 class CCMatrix{
   typedef std::vector<std::pair<int,int> > intpairvec;
   typedef std::vector<double>              DoubleVec;
+  typedef std::vector<size_t>              Size_tVec;
   typedef std::vector<bool>                BoolVec;
 public:
   ///////////////////////////////////////////////////////////////////////////////
@@ -74,8 +75,8 @@ public:
   // Functions to get the properties of a matrix
   string&      get_label()                             {return(label);}
   string&      get_index_label()                       {return(index_label);}
-  double       get_memory()                      const {return(memory);}
-  double       get_memorypi(int h)               const {return(memorypi[h]);}
+  size_t       get_memory2()                      const {return(memory2);}
+  size_t       get_memorypi2(int h)               const {return(memorypi2[h]);}
   int          get_reference()                   const {return(reference);}
   bool         is_integral()                     const {return(integral);}
   bool         is_antisymmetric()                const {return(antisymmetric);}
@@ -88,7 +89,7 @@ public:
   CCIndex*     get_right()                       const {return(right);}
   size_t       get_left_pairpi(int h)            const {return(left_pairpi[h]);}
   size_t       get_right_pairpi(int h)           const {return(right_pairpi[h]);}
-  size_t       get_block_sizepi(int h)           const {return(block_sizepi[h]);} 
+  size_t       get_block_sizepi(int h)           const {return(block_sizepi[h]);}
   double**     operator[](int h)                 const {return(matrix[h]);}
   double***    get_matrix()                            {naccess++;return(matrix);}
 
@@ -147,7 +148,7 @@ public:
 
 
 
-  // Printing 
+  // Printing
   void         print();
   void         print_dpdmatrix(int n, FILE *out);
 
@@ -194,12 +195,14 @@ private:
   bool         chemist_notation;   // Is this a two electron integral in chemist notation?
   bool         antisymmetric;      // Is this an antisymmetric two electron integral?
   bool         fock;               // Is this a fock matrix?
-  double       memory;             // Memory required for storage in Mb
-  DoubleVec    memorypi;           // Memory required for storage in Mb
+  size_t       memory2;             // Memory required for storage in bytes
+  Size_tVec    memorypi2;           // Memory required for storage in bytes
   BoolVec      out_of_core;        // Is this irrep stored on disk?
   int          naccess;            // How many times you have called get_matrix();
 protected:
   static int   nirreps;
+public:
+  static double fraction_of_memory_for_buffer;
 };
 
 }} /* End Namespaces */

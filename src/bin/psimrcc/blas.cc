@@ -49,7 +49,7 @@ void CCBLAS::allocate_work()
   if(!work.empty())
     for(int n=0;n<work.size();n++)
       if(work[n]!=NULL)
-        delete[] work[n];
+        release1(work[n]);
 
   for(int n=0;n<options_get_int("NUM_THREADS");n++)
     work.push_back(NULL);
@@ -66,21 +66,13 @@ void CCBLAS::allocate_work()
     dimension.push_back(ff_pair->get_pairpi(h));
     sort(dimension.begin(),dimension.end());
     work_size += dimension[2] * dimension[1];
-//
-//    if(oo_pair->get_pairpi(h)<=vv_pair->get_pairpi(h))
-//      work_size += oo_pair->get_pairpi(h)*vv_pair->get_pairpi(h);
-//    else
-//      work_size += oo_pair->get_pairpi(h)*oo_pair->get_pairpi(h);
   }
   // Allocate the temporary work space
   for(int n=0;n<options_get_int("NUM_THREADS");n++){
     allocate1(double,work[n],work_size);
-//     work[n]=new double[work_size]; MEM_
     zero_arr(work[n],work_size);
   }
-  _memory_manager_->add_allocated_memory(to_MB(work_size));
-
-  fprintf(outfile,"\n  Allocated work array of size %ld (%.2f MB)",work_size,to_MB(work_size));
+  fprintf(outfile,"\n  Allocated work array of size %ld (%.2f MiB)",work_size * sizeof(double),type_to_MiB<double>(work_size));
 }
 
 void CCBLAS::allocate_buffer()
@@ -89,18 +81,22 @@ void CCBLAS::allocate_buffer()
   if(!buffer.empty())
     for(int n=0;n<buffer.size();n++)
       if(buffer[n]!=NULL)
-        delete[] buffer[n];
+        release1(buffer[n]);
 
   for(int n=0;n<options_get_int("NUM_THREADS");n++)
     buffer.push_back(NULL);
   // Compute the temporary buffer space size, 101% of the actual strip size
-  buffer_size = 1.01*_memory_manager_->get_integral_strip_size() / to_MB(1);
+  buffer_size = static_cast<size_t>(1.01 * CCMatrix::fraction_of_memory_for_buffer *
+                                    static_cast<double>(_memory_manager_->get_FreeMemory()) /
+                                    static_cast<double>(sizeof(double)));
+  // The value used here , 0.05 is also used in
+
   // Allocate the temporary buffer space
   for(int n=0;n<options_get_int("NUM_THREADS");n++){
-    buffer[n]=new double[buffer_size];
+    allocate1(double,buffer[n],buffer_size);
     zero_arr(buffer[n],buffer_size);
   }
-  _memory_manager_->add_allocated_memory(to_MB(buffer_size));
+  fprintf(outfile,"\n  Allocated buffer array of size %ld (%.2f MiB)",buffer_size * sizeof(double),type_to_MiB<double>(buffer_size));
 }
 
 void CCBLAS::free_sortmap()
@@ -118,7 +114,6 @@ void CCBLAS::free_work()
   for(int n=0;n<work.size();n++){
     if(work[n]!=NULL){
       release1(work[n]);
-//        delete[] work[n]; MEM_
     }
   }
 }
@@ -128,7 +123,7 @@ void CCBLAS::free_buffer()
   // Delete the temporary buffer space
   for(int n=0;n<buffer.size();n++){
     if(buffer[n]!=NULL){
-      delete[] buffer[n];
+      release1(buffer[n]);
     }
   }
 }
@@ -153,6 +148,7 @@ void CCBLAS::add_indices()
   add_index("[o]");
   add_index("[v]");
   add_index("[a]");
+  add_index("[f]");
   add_index("[o>o]");
   add_index("[v>v]");
   add_index("[v>=v]");
@@ -176,6 +172,11 @@ void CCBLAS::add_indices()
   add_index("[ff]");
   add_index("[vf]");
   add_index("[fv]");
+
+  add_index("[ovf]");
+  add_index("[ofv]");
+  add_index("[foo]");
+  add_index("[off]");
 
   // MP2-CCSD
   if(options_get_str("CORR_WFN")=="MP2-CCSD"){
@@ -232,38 +233,38 @@ void CCBLAS::print_ref(string& str)
 
 void CCBLAS::print_memory()
 {
-  double total_memory_required =0.0;
+  size_t total_memory_required = 0;
   fprintf(outfile,"\n\n\t-----------------------------------------------------------------------------");
-  fprintf(outfile,"\n\tMatrix ID    Memory(MB)   Cumulative Memory(MB)  Accessed    Label");
+  fprintf(outfile,"\n\tMatrix ID    Memory(bytes)   Cumulative Memory(bytes)  Accessed    Label");
   fprintf(outfile,"\n\t------------------------------------------------------------------------------");
 
   for(MatrixMap::iterator iter=matrices.begin();iter!=matrices.end();++iter){
-    total_memory_required += iter->second->get_memory();
-    fprintf(outfile,"\n\t%4d",distance(matrices.begin(),iter));
-    fprintf(outfile,"     %10.2f",iter->second->get_memory());
-    fprintf(outfile,"        %10.2f",total_memory_required);
+    total_memory_required += iter->second->get_memory2();
+    fprintf(outfile,"\n  %4d",distance(matrices.begin(),iter));
+    fprintf(outfile,"     %14d",iter->second->get_memory2());
+    fprintf(outfile,"        %14d",total_memory_required);
     fprintf(outfile,"             %4d",iter->second->get_naccess());
     fprintf(outfile,"         %s",iter->second->get_label().c_str());
   }
   fprintf(outfile,"\n\t------------------------------------------------------------------------------");
-  fprintf(outfile,"\n\n\tTotal memory required for matrices = %10.2f (Mb)\n",total_memory_required);
+  fprintf(outfile,"\n\n\tTotal memory required for matrices = %14d (bytes)\n",total_memory_required);
 
-  total_memory_required =0.0;
+  total_memory_required = 0;
 
   fprintf(outfile,"\n\n\t-------------------------------------------------------------");
   fprintf(outfile,"\n\tIndex ID    Memory(MB)   Cumulative Memory(MB)     Label");
   fprintf(outfile,"\n\t--------------------------------------------------------------");
 
-  for(IndexMap::iterator iter=indices.begin();iter!=indices.end();++iter){
-    total_memory_required += iter->second->get_memory();
-    fprintf(outfile,"\n\t%4d",distance(indices.begin(),iter));
-    fprintf(outfile,"     %10.2f",iter->second->get_memory());
-    fprintf(outfile,"        %10.2f",total_memory_required);
-    fprintf(outfile,"         %s",iter->second->get_label().c_str());
-  }
-  fprintf(outfile,"\n\t--------------------------------------------------------------");
-
-  fprintf(outfile,"\n\n\tTotal memory required for indexing = %10.2f (Mb)\n",total_memory_required);
+//  for(IndexMap::iterator iter=indices.begin();iter!=indices.end();++iter){
+//    total_memory_required += iter->second->get_memory();
+//    fprintf(outfile,"\n\t%4d",distance(indices.begin(),iter));
+//    fprintf(outfile,"     %10.2f",iter->second->get_memory());
+//    fprintf(outfile,"        %10.2f",total_memory_required);
+//    fprintf(outfile,"         %s",iter->second->get_label().c_str());
+//  }
+//  fprintf(outfile,"\n\t--------------------------------------------------------------");
+//
+//  fprintf(outfile,"\n\n\tTotal memory required for indexing = %10.2f (Mb)\n",total_memory_required);
 }
 
 /**
@@ -271,32 +272,31 @@ void CCBLAS::print_memory()
  */
 int CCBLAS::compute_storage_strategy()
 {
-  fprintf(outfile,"\n#CC ----------------------------------");
-  fprintf(outfile,"\n#CC    Computing Storage Strategy");
-  fprintf(outfile,"\n#CC ----------------------------------");
+  fprintf(outfile,"\n\n  Computing storage strategy:");
 
-  double available_memory     = _memory_manager_->get_free_memory();
+  // N.B. Here I am using bytes as the basic unit
+  size_t available_memory     = _memory_manager_->get_FreeMemory();
   double fraction_for_in_core = 0.97; // Fraction of the total available memory that may be used
-  double storage_memory       = available_memory * fraction_for_in_core;
-  double fully_in_core_memory = 0.0;
-  double integrals_memory     = 0.0;
-  double fock_memory          = 0.0;
-  double others_memory        = 0.0;
+  size_t storage_memory       = static_cast<size_t>(static_cast<double>(available_memory) * fraction_for_in_core);
+  size_t fully_in_core_memory = 0;
+  size_t integrals_memory     = 0;
+  size_t fock_memory          = 0;
+  size_t others_memory        = 0;
 
-  fprintf(outfile,"\n#CC Input memory                                = %10.2f Mb",_memory_manager_->get_total_memory());
-  fprintf(outfile,"\n#CC Free memory                                 = %10.2f Mb",available_memory);
-  fprintf(outfile,"\n#CC Free memory available for matrices          = %10.2f Mb (%3.0f%s of free_memory)",storage_memory,fraction_for_in_core*100.0,"%");
+  fprintf(outfile,"\n    Input memory                           = %14d bytes",_memory_manager_->get_MaximumAllowedMemory());
+  fprintf(outfile,"\n    Free memory                            = %14d bytes",available_memory);
+  fprintf(outfile,"\n    Free memory available for matrices     = %14d bytes (%3.0f%%)",storage_memory,fraction_for_in_core*100.0);
 
   // Gather the memory requirements for all the CCMAtrix object
   // and divide the integrals from all the other matrices.
   // At the same time compute the memory requirements for
   // a fully in-core algorithm.
-  vector<pair<double,pair<CCMatrix*,int> > > integrals;
-  vector<pair<double,pair<CCMatrix*,int> > > fock;
-  vector<pair<double,pair<CCMatrix*,int> > > others;
+  vector<pair<size_t,pair<CCMatrix*,int> > > integrals;
+  vector<pair<size_t,pair<CCMatrix*,int> > > fock;
+  vector<pair<size_t,pair<CCMatrix*,int> > > others;
   for(MatrixMap::iterator it=matrices.begin();it!=matrices.end();++it){
     for(int h=0;h<moinfo->get_nirreps();++h){
-      double block_memory = it->second->get_memorypi(h);
+      size_t block_memory = it->second->get_memorypi2(h);
       if(it->second->is_integral()){
         integrals.push_back(make_pair(block_memory,make_pair(it->second,h)));
         integrals_memory += block_memory;
@@ -310,28 +310,26 @@ int CCBLAS::compute_storage_strategy()
       fully_in_core_memory += block_memory;
     }
   }
-  fprintf(outfile,"\n#CC Memory required by fock matrices            = %10.2f Mb",fock_memory);
-  fprintf(outfile,"\n#CC Memory required by integrals                = %10.2f Mb",integrals_memory);
-  fprintf(outfile,"\n#CC Memory required by other matrices           = %10.2f Mb",others_memory);
-  fprintf(outfile,"\n#CC Memory required for full in-core algorithm  = %10.2f Mb",fully_in_core_memory);
+  fprintf(outfile,"\n    Memory required by fock matrices       = %14d bytes",fock_memory);
+  fprintf(outfile,"\n    Memory required by integrals           = %14d bytes",integrals_memory);
+  fprintf(outfile,"\n    Memory required by other matrices      = %14d bytes",others_memory);
+  fprintf(outfile,"\n    Memory required for in-core algorithm  = %14d bytes",fully_in_core_memory);
 
   // Check if you may use a fully in core algorithm
   full_in_core = false;
   int strategy = 0;
   if(fully_in_core_memory < storage_memory ){
     full_in_core = true;
-    fprintf(outfile,"\n#CC PSIMRCC will perform a full in-core computation");
+    fprintf(outfile,"\n    PSIMRCC will perform a full in-core computation");
     strategy = 0;
   }else{
     if(others_memory < storage_memory ){
-      fprintf(outfile,"\n#CC PSIMRCC will store some integrals out-of-core");
+      fprintf(outfile,"\n    PSIMRCC will store some integrals out-of-core");
       strategy = 1;
     }else{
-      fprintf(outfile,"\n#CC PSIMRCC will store all integrals and some other matrices out-of-core");
+      fprintf(outfile,"\n    PSIMRCC will store all integrals and some other matrices out-of-core");
       strategy = 2;
-      fprintf(outfile,"\n#CC CCBLAS::compute_storage_strategy(): Strategy #2 is not implemented yet");
-      fflush(outfile);
-      exit(1);
+      print_error(outfile,"CCBLAS::compute_storage_strategy(): Strategy #2 is not implemented yet",__FILE__,__LINE__);
     }
   }
   sort(integrals.begin(),integrals.end());
@@ -363,40 +361,40 @@ int CCBLAS::compute_storage_strategy()
     }
   }
 
-  DEBUGGING(1,
-    fprintf(outfile,"\n#CC -------------------- Fock matrices -------------------------");
-    for(int i=0;i<fock.size();i++){
-      if(fock[i].first > 1.0e-5){
-        fprintf(outfile,"\n#CC %-32s irrep %d   %6.2f Mb --> ",fock[i].second.first->get_label().c_str(),
-                                                      fock[i].second.second,
-                                                      fock[i].first);
-        fprintf(outfile,"%s",fock[i].second.first->is_block_allocated(fock[i].second.second) ? "in-core" : "out-of-core");
-      }
-    }
-    fprintf(outfile,"\n#CC -------------------- Other matrices ------------------------");
-    for(int i=0;i<others.size();i++){
-      if(others[i].first > 1.0e-5){
-        fprintf(outfile,"\n#CC %-32s irrep %d   %6.2f Mb --> ",others[i].second.first->get_label().c_str(),
-                                                      others[i].second.second,
-                                                      others[i].first);
-        fprintf(outfile,"%s",others[i].second.first->is_block_allocated(others[i].second.second) ? "in-core" : "out-of-core");
-      }
-    }
-    fprintf(outfile,"\n#CC -------------------- Integrals -----------------------------");
-    for(int i=0;i<integrals.size();i++){
-      if(integrals[i].first > 1.0e-5){
-        fprintf(outfile,"\n#CC %-32s irrep %d   %6.2f Mb --> ",integrals[i].second.first->get_label().c_str(),
-                                                      integrals[i].second.second,
-                                                      integrals[i].first);
-        fprintf(outfile,"%s",integrals[i].second.first->is_block_allocated(integrals[i].second.second) ? "in-core" : "out-of-core");
-      }
-    }
-    fprintf(outfile,"\n\n");
-  );
+//  DEBUGGING(1,
+//    fprintf(outfile,"\n    -------------------- Fock matrices -------------------------");
+//    for(int i=0;i<fock.size();i++){
+//      if(fock[i].first > 1.0e-5){
+//        fprintf(outfile,"\n    %-32s irrep %d   %6.2f Mb --> ",fock[i].second.first->get_label().c_str(),
+//                                                      fock[i].second.second,
+//                                                      fock[i].first);
+//        fprintf(outfile,"%s",fock[i].second.first->is_block_allocated(fock[i].second.second) ? "in-core" : "out-of-core");
+//      }
+//    }
+//    fprintf(outfile,"\n    -------------------- Other matrices ------------------------");
+//    for(int i=0;i<others.size();i++){
+//      if(others[i].first > 1.0e-5){
+//        fprintf(outfile,"\n    %-32s irrep %d   %6.2f Mb --> ",others[i].second.first->get_label().c_str(),
+//                                                      others[i].second.second,
+//                                                      others[i].first);
+//        fprintf(outfile,"%s",others[i].second.first->is_block_allocated(others[i].second.second) ? "in-core" : "out-of-core");
+//      }
+//    }
+//    fprintf(outfile,"\n    -------------------- Integrals -----------------------------");
+//    for(int i=0;i<integrals.size();i++){
+//      if(integrals[i].first > 1.0e-5){
+//        fprintf(outfile,"\n    %-32s irrep %d   %6.2f Mb --> ",integrals[i].second.first->get_label().c_str(),
+//                                                      integrals[i].second.second,
+//                                                      integrals[i].first);
+//        fprintf(outfile,"%s",integrals[i].second.first->is_block_allocated(integrals[i].second.second) ? "in-core" : "out-of-core");
+//      }
+//    }
+//    fprintf(outfile,"\n\n");
+//  );
 
   if(!full_in_core){
-    fprintf(outfile,"\n#CC Out-of-core algorithm will store %d other matrices on disk",number_of_others_on_disk);
-    fprintf(outfile,"\n#CC Out-of-core algorithm will store %d integrals on disk",number_of_integrals_on_disk);
+    fprintf(outfile,"\n    Out-of-core algorithm will store %d other matrices on disk",number_of_others_on_disk);
+    fprintf(outfile,"\n    Out-of-core algorithm will store %d integrals on disk",number_of_integrals_on_disk);
   }
   return(strategy);
 }
@@ -406,21 +404,21 @@ int CCBLAS::compute_storage_strategy()
  */
 void CCBLAS::show_storage()
 {
-  DEBUGGING(1,
-    fprintf(outfile,"\n#CC ----------------------------------");
-    fprintf(outfile,"\n#CC            Show Storage ");
-    fprintf(outfile,"\n#CC ----------------------------------");
-
-    for(MatrixMap::iterator it=matrices.begin();it!=matrices.end();++it){
-      for(int h=0;h<moinfo->get_nirreps();++h){
-        double block_memory = it->second->get_memorypi(h);
-        fprintf(outfile,"\n#CC %-32s irrep %d   %6.2f Mb",it->second->get_label().c_str(),h,block_memory);
-        fprintf(outfile," is %s",it->second->is_block_allocated(h) ? "allocated" : "not allocated");
-        fprintf(outfile,"%s",it->second->is_out_of_core(h) ? "(out-of-core)" : "");
-
-      }
-    }
-  )
+//  DEBUGGING(1,
+//    fprintf(outfile,"\n    ----------------------------------");
+//    fprintf(outfile,"\n               Show Storage ");
+//    fprintf(outfile,"\n    ----------------------------------");
+//
+//    for(MatrixMap::iterator it=matrices.begin();it!=matrices.end();++it){
+//      for(int h=0;h<moinfo->get_nirreps();++h){
+//        double block_memory = it->second->get_memorypi(h);
+//        fprintf(outfile,"\n    %-32s irrep %d   %6.2f Mb",it->second->get_label().c_str(),h,block_memory);
+//        fprintf(outfile," is %s",it->second->is_block_allocated(h) ? "allocated" : "not allocated");
+//        fprintf(outfile,"%s",it->second->is_out_of_core(h) ? "(out-of-core)" : "");
+//
+//      }
+//    }
+//  )
 }
 
 }} /* End Namespaces */

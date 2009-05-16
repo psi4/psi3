@@ -38,6 +38,7 @@ CCManyBody::CCManyBody()
   allocate2(double,Heff_mrpt2,moinfo->get_nrefs(),moinfo->get_nrefs());
 
   pert_cbs = false;
+  pert_cbs_coupling = false;
   huge  = 1.0e100;
   norm_amps = 0.0;
   delta_t1_amps = 0.0;
@@ -339,15 +340,15 @@ void CCManyBody::print_method(const char* text)
 
 void CCManyBody::print_eigensystem(int ndets, double** Heff,double*& eigenvector)
 {
-  fprintf(outfile,"\n\n\tHeff Matrix\n");
+  fprintf(outfile,"\n\n  Heff Matrix\n");
   for(int i=0;i<ndets;i++){
-    fprintf(outfile,"\n\t");
+    fprintf(outfile,"\n  ");
     for(int j=0;j<ndets;j++)
       fprintf(outfile," %22.15f",Heff[i][j]);
   }
-  fprintf(outfile,"\n\n\tEigenvector   Eigenvector^2\n");
+  fprintf(outfile,"\n\n  Eigenvector   Eigenvector^2\n");
   for(int i=0;i<ndets;i++)
-    fprintf(outfile,"\n\t%9.6f   %9.6f",eigenvector[i],eigenvector[i]*eigenvector[i]);
+    fprintf(outfile,"\n  %9.6f   %9.6f",eigenvector[i],eigenvector[i]*eigenvector[i]);
   fprintf(outfile,"\n");
 }
 
@@ -406,30 +407,30 @@ double CCManyBody::diagonalize_Heff(int root,int ndets, double** Heff,double*& e
     sort_eigensystem(ndets,real,imaginary,left,right);
 
     if(initial){
-    fprintf(outfile,"\n\n\tHeff Matrix\n");
+    fprintf(outfile,"\n\n  Heff Matrix\n");
     for(int i=0;i<ndets;i++){
-      fprintf(outfile,"\n\t");
+      fprintf(outfile,"\n  ");
       for(int j=0;j<ndets;j++)
         fprintf(outfile," %22.15f",Heff[i][j]);
     }
 
-    fprintf(outfile,"\n\n\tLeft Matrix\n");
+    fprintf(outfile,"\n\n  Left Matrix\n");
     for(int i=0;i<ndets;i++){
-      fprintf(outfile,"\n\t");
+      fprintf(outfile,"\n  ");
       for(int j=0;j<ndets;j++)
         fprintf(outfile," %22.15f",left[j][i]);
     }
 
-    fprintf(outfile,"\n\n\tRight Matrix\n");
+    fprintf(outfile,"\n\n  Right Matrix\n");
     for(int i=0;i<ndets;i++){
-      fprintf(outfile,"\n\t");
+      fprintf(outfile,"\n  ");
       for(int j=0;j<ndets;j++)
         fprintf(outfile," %22.15f",right[j][i]);
     }
 
-    fprintf(outfile,"\n\n\tReal                  Imaginary\n");
+    fprintf(outfile,"\n\n  Real                  Imaginary\n");
     for(int i=0;i<ndets;i++)
-      fprintf(outfile,"\n\t%22.15f   %22.15f",real[i],imaginary[i]);
+      fprintf(outfile,"\n  %22.15f   %22.15f",real[i],imaginary[i]);
     fprintf(outfile,"\n");
     }
 

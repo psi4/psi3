@@ -19,10 +19,132 @@ extern FILE* outfile;
 
 namespace psi {
 
+/*
+
+Polymorph::Polymorph(bool value) : type(eBool), b_value(value) {}
+Polymorph::Polymorph(int value) : type(eInt), i_value(value) {}
+Polymorph::Polymorph(double value) : type(eDouble), d_value(value) {}
+Polymorph::Polymorph(std::string value) : type(eString), s_value(value) {}
+Polymorph::Polymorph(std::vector<Polymorph> value) : type(eArray), a_value(value) {}
+
+Polymorph::Polymorph() : type(eVoid)
+{}
+
+Polymorph::~Polymorph()
+{
+}
+
+bool Polymorph::to_b()
+{
+  if(type == eBool){
+    return b_value;
+  } else {
+    std::string error_msg = "Polymorph is not a boolean";
+    print_error(outfile,error_msg,__FILE__,__LINE__);
+  }
+  return false;
+}
+
+int Polymorph::to_i()
+{
+  if(type == eInt){
+    return i_value;
+  } else {
+    std::string error_msg = "Polymorph is not an integer";
+    print_error(outfile,error_msg,__FILE__,__LINE__);
+  }
+  return 0;
+}
+
+double Polymorph::to_d()
+{
+  if(type == eDouble){
+    return d_value;
+  } else {
+    std::string error_msg = "Polymorph is not a double";
+    print_error(outfile,error_msg,__FILE__,__LINE__);
+  }
+  return 0.0;
+}
+
+std::string Polymorph::to_s()
+{
+  if(type == eString){
+    return s_value;
+  } else {
+    std::string error_msg = "Polymorph is not a string";
+    print_error(outfile,error_msg,__FILE__,__LINE__);
+  }
+  return "null";
+}
+
+PolymorphArray Polymorph::to_a()
+{
+  if(type == eArray){
+    return a_value;
+  } else {
+    std::string error_msg = "Polymorph is not an array";
+    print_error(outfile,error_msg,__FILE__,__LINE__);
+  }
+  PolymorphArray empty;
+  return empty;
+}
+
+void Polymorph::b(bool value)
+{
+  if(type == eBool){
+    b_value = value;
+  } else {
+    std::string error_msg = "Polymorph is not a boolean";
+    print_error(outfile,error_msg,__FILE__,__LINE__);
+  }
+}
+
+void Polymorph::i(int value)
+{
+  if(type == eInt){
+    i_value = value;
+  } else {
+    std::string error_msg = "Polymorph is not an integer";
+    print_error(outfile,error_msg,__FILE__,__LINE__);
+  }
+}
+
+void Polymorph::d(double value)
+{
+  if(type == eDouble){
+    d_value = value;
+  } else {
+    std::string error_msg = "Polymorph is not a double";
+    print_error(outfile,error_msg,__FILE__,__LINE__);
+  }
+}
+
+void Polymorph::s(std::string value)
+{
+  if(type == eString){
+    s_value = value;
+  } else {
+    std::string error_msg = "Polymorph is not a string";
+    print_error(outfile,error_msg,__FILE__,__LINE__);
+  }
+}
+
+
+void LibOptions::add(const char* cstr_labels,
+                     const char* cstr_choices,
+                     const char* cstr_description,
+                     PolymorphType,Polymorph def)
+{
+  Option option = Option(split(cstr_labels),split(cstr_choices),split(cstr_description));
+
+}
+*/
+
 Options* _default_psi_options_;
 
 /*!
- * Initialize the options interface. Must be called before using the C-style functions. 
+ * Initialize the options interface. Must be called before using the C-style functions.
  */
 void options_init()
 {
@@ -32,7 +154,7 @@ void options_init()
 }
 
 /*!
- * Close the options interface. Must be called before the end of the program when using the C-style interface. 
+ * Close the options interface. Must be called before the end of the program when using the C-style interface.
  */
 void options_close()
 {
@@ -40,7 +162,7 @@ void options_close()
 }
 
 /*!
- * Read the options from the input file. 
+ * Read the options from the input file.
  */
 void options_read()
 {
@@ -48,10 +170,10 @@ void options_read()
 }
 
 /*!
- * Print the options. 
+ * Print the options.
  */
 void options_print(){
-  return(_default_psi_options_->print());    
+  return(_default_psi_options_->print());
 }
 
 /*!
@@ -109,25 +231,25 @@ void options_add_str_with_choices(const char* cstr_option,const char* cstr_defau
  * Get the value of a boolean option
  */
 bool options_get_bool(const char* cstr_option){
-  return(_default_psi_options_->get_bool_option(cstr_option));    
+  return(_default_psi_options_->get_bool_option(cstr_option));
 }
 
 /*!
  * Get the value of an integer option
  */
 int options_get_int(const char* cstr_option){
-  return(_default_psi_options_->get_int_option(cstr_option));    
+  return(_default_psi_options_->get_int_option(cstr_option));
 }
 
 // double options_get_double(char* cstr_option){
-//   return(_default_psi_options_->get_double_option(cstr_option));    
+//   return(_default_psi_options_->get_double_option(cstr_option));
 // }
 
 /*!
  * Get the value of a string option
  */
 std::string options_get_str(const char* cstr_option){
-  return(_default_psi_options_->get_str_option(cstr_option));    
+  return(_default_psi_options_->get_str_option(cstr_option));
 }
 
 using namespace std;
@@ -370,15 +492,15 @@ void Options::print()
   for(BoolOptionsMap::iterator it = bool_options.begin();it != bool_options.end();++it)
     if(it->first.size() > max_option_width)
       max_option_width = it->first.size();
-  
+
   for(IntOptionsMap::iterator it = int_options.begin();it != int_options.end();++it)
     if(it->first.size() > max_option_width)
       max_option_width = it->first.size();
-  
+
   for(DoubleOptionsMap::iterator it = double_options.begin();it != double_options.end();++it)
     if(it->first.size() > max_option_width)
       max_option_width = it->first.size();
-  
+
   for(StringOptionsMap::iterator it = string_options.begin();it != string_options.end();++it)
     if(it->first.size() > max_option_width)
       max_option_width = it->first.size();
@@ -387,7 +509,7 @@ void Options::print()
   fprintf(outfile,"\n  ----------------------------------------------------------------------------");
   for(BoolOptionsMap::iterator it = bool_options.begin();it != bool_options.end();++it){
     fprintf(outfile,"\n  %s",it->first.c_str());
-    for(int n =0; n < max_option_width - it->first.size(); ++n) fprintf(outfile," "); 
+    for(int n =0; n < max_option_width - it->first.size(); ++n) fprintf(outfile," ");
     fprintf(outfile," = %s",it->second.option ? "TRUE" : "FALSE" );
   }
   for(IntOptionsMap::iterator it = int_options.begin();it != int_options.end();++it){

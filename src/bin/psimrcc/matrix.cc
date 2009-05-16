@@ -21,10 +21,11 @@ namespace psi{ namespace psimrcc{
 using namespace std;
 
 
-int CCMatrix::nirreps             = -1;
+int CCMatrix::nirreps                          = -1;
+double CCMatrix::fraction_of_memory_for_buffer = 0.05;
 
 CCMatrix::CCMatrix(std::string& str,CCIndex* left_index,CCIndex* right_index)
-:label(str),memory(0.0),naccess(0),reference(-1),symmetry(-1),
+:label(str),memory2(0),naccess(0),reference(-1),symmetry(-1),
 fock(false),integral(false),chemist_notation(false),antisymmetric(false),out_of_core(false),right(right_index),left(left_index)
 {
   if(nirreps<0)  nirreps = moinfo->get_nirreps();
@@ -40,10 +41,6 @@ fock(false),integral(false),chemist_notation(false),antisymmetric(false),out_of_
 
   // Copy the pairpi arrays from the CCIndex object
   // Compute the memory required to store the matrix in core
-//   matrix       = new double**[nirreps];
-//   left_pairpi  = new size_t[nirreps];
-//   right_pairpi = new size_t[nirreps];
-//   block_sizepi = new size_t[nirreps];
 
   allocate1(double***,matrix,nirreps);
   allocate1(size_t,left_pairpi,nirreps);
@@ -55,8 +52,8 @@ fock(false),integral(false),chemist_notation(false),antisymmetric(false),out_of_
     left_pairpi[h]=left->get_pairpi(h);
     right_pairpi[h]=right->get_pairpi(h);
     block_sizepi[h]=left_pairpi[h]*right_pairpi[h];
-    memorypi.push_back(to_MB(block_sizepi[h]));
-    memory += memorypi[h];
+    memorypi2.push_back(static_cast<size_t>(sizeof(double)) * block_sizepi[h]);
+    memory2 += memorypi2[h];
     out_of_core.push_back(false);
   }
 

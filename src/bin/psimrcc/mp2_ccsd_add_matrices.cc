@@ -62,6 +62,10 @@ void MP2_CCSD::add_matrices()
   blas->add_Matrix("fock[vo]{u}");
   blas->add_Matrix("fock[VO]{u}");
 
+  blas->add_Matrix("fock[ff]{u}");
+  blas->add_Matrix("fock[FF]{u}");
+
+
   // Denominators
   blas->add_Matrix("d1[o][v]{u}");
   blas->add_Matrix("d1[O][V]{u}");

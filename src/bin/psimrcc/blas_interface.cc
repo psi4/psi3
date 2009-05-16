@@ -153,9 +153,8 @@ CCMatrix* CCBLAS::get_Matrix(string& str, string& expression)
   if(iter!=matrices.end()){
     return(matrices[str]);
   }
-  fprintf(outfile,"\n\nCCBLAS::parse() couldn't find matrix %s in the CCMatrix list\n\nwhile parsing the string:\n\t%s\n\n",str.c_str(),expression.c_str());
-  fflush(outfile);
-  exit(1);
+  string err("\n\nCCBLAS::parse() couldn't find the matrix " + str + " in the CCMatrix list\n\nwhile parsing the string:\n\t " + expression + "\n\n");
+  print_error(outfile,err,__FILE__,__LINE__);
 }
 
 void CCBLAS::set_scalar(const char* cstr,int reference,double value)
@@ -223,7 +222,7 @@ void CCBLAS::load(CCMatrix* Matrix)
       fprintf(outfile,"\nCCBLAS::load(%s): matrix is not in core. Loading it :[",Matrix->get_label().c_str());
     );
     // Do we have enough memory to fit the entire matrix in core?
-    double memory_required = Matrix->get_memory();
+    size_t memory_required = Matrix->get_memory2();
     make_space(memory_required);
     Matrix->load();
     DEBUGGING(2,
@@ -243,7 +242,7 @@ void CCBLAS::load_irrep(CCMatrix* Matrix,int h)
       fprintf(outfile,"\nCCBLAS::load_irrep(%s,%d): matrix block is not in core. Loading it : [",Matrix->get_label().c_str(),h);
     )
     // Do we have enough memory to fit the entire matrix in core?
-    double memory_required = Matrix->get_memorypi(h);
+    size_t memory_required = Matrix->get_memorypi2(h);
     make_space(memory_required);
     Matrix->load_irrep(h);
     DEBUGGING(2,
@@ -252,37 +251,14 @@ void CCBLAS::load_irrep(CCMatrix* Matrix,int h)
   }
 }
 
-void CCBLAS::make_space(double memory_required)
+void CCBLAS::make_space(size_t memory_required)
 {
-  if(memory_required < _memory_manager_->get_free_memory())
+  if(memory_required < _memory_manager_->get_FreeMemory())
     return;
   else{
     fprintf(outfile,"\nCCBLAS::make_space() not implemented yet!!!");
     // Attempt #1
   }
 }
-
-// double*** CCBLAS::get_sortmap(CCIndex* T_left,CCIndex* T_right,int thread)
-// {
-//   string sortstr = T_left->get_label() + T_right->get_label() + to_string(thread);
-//   double*** T_matrix=NULL;
-//   SortMap::iterator iter = sortmap.find(sortstr);
-//   if(iter==sortmap.end()){
-//     int T_matrix_offset = 0;
-//     T_matrix = new double**[moinfo->get_nirreps()];
-//     for(int irrep=0;irrep<moinfo->get_nirreps();irrep++){
-//       T_matrix[irrep] = new double*[T_left->get_pairpi(irrep)];
-//       for(int i=0;i<T_left->get_pairpi(irrep);i++){
-//         T_matrix[irrep][i]=&(work[thread][T_matrix_offset+i*T_right->get_pairpi(irrep)]);
-//       }
-//       zero_arr(&(T_matrix[irrep][0][0]),T_left->get_pairpi(irrep)*T_right->get_pairpi(irrep));
-//       T_matrix_offset+=T_left->get_pairpi(irrep)*T_right->get_pairpi(irrep);
-//     }
-//     sortmap.insert(make_pair(sortstr,T_matrix));
-//   }else{
-//     T_matrix = sortmap[sortstr];
-//   }
-//   return(T_matrix);
-// }
 
 }} /* End Namespaces */

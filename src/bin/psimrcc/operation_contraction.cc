@@ -43,7 +43,6 @@ void CCOperation::setup_contractions()
     }  else {
       T_right=C_Matrix->get_left();
     }
-//      T_matrix = blas->get_sortmap(T_left,T_right,thread_id);
     size_t T_matrix_offset = 0;
     T_matrix = new double**[moinfo->get_nirreps()];
     for(int irrep=0;irrep<moinfo->get_nirreps();irrep++){

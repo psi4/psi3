@@ -81,16 +81,14 @@ int main(int argc, char *argv[])
 
   run_psimrcc();
 
-  fprintf(outfile,"\n\n\tPSIMRCC Execution Ended.");
-  fprintf(outfile,"\n\tWall Time = %20.6f s",global_timer->get());
-  fprintf(outfile,"\n\tGEMM Time = %20.6f s",moinfo->get_dgemm_timing());
+  fprintf(outfile,"\n\n  PSIMRCC job completed.");
+  fprintf(outfile,"\n  Wall Time = %20.6f s",global_timer->get());
+  fprintf(outfile,"\n  GEMM Time = %20.6f s",moinfo->get_dgemm_timing());
   fflush(outfile);
 
   _memory_manager_->MemCheck(outfile);
 
-  delete moinfo;
-  delete _memory_manager_;
-  delete global_timer;
+
   close_psi();
   return PSI_RETURN_SUCCESS;
 }
@@ -123,6 +121,7 @@ void read_calculation_options()
   options_add_bool("COUPLING_TERMS",true);
   options_add_bool("PRINT_HEFF",false);
   options_add_bool("PERT_CBS",false);
+  options_add_bool("PERT_CBS_COUPLING",true);
 
   options_add_str_with_choices("PT_ENERGY","SECOND_ORDER","SECOND_ORDER SCS_SECOND_ORDER PSEUDO_SECOND_ORDER SCS_PSEUDO_SECOND_ORDER");
   options_add_str_with_choices("CORR_WFN","CCSD","CCSD MP2-CCSD");
@@ -181,7 +180,7 @@ void init_psi(int argc, char *argv[])
 
   fprintf(outfile,"\n  MRCC          MRCC");
   fprintf(outfile,"\n   MRCC  MRCC  MRCC");
-  fprintf(outfile,"\n   MRCC  MRCC  MRCC      PSIMRCC Version 0.8.0, August, 2008");
+  fprintf(outfile,"\n   MRCC  MRCC  MRCC      PSIMRCC Version 0.9.0, May, 2009");
   fprintf(outfile,"\n   MRCC  MRCC  MRCC      Multireference Coupled Cluster, written by");
   fprintf(outfile,"\n     MRCCMRCCMRCC        Francesco A. Evangelista and Andrew C. Simmonett");
   fprintf(outfile,"\n         MRCC            Compiled on %s at %s",__DATE__,__TIME__);
@@ -212,6 +211,12 @@ void close_psi()
   /***********************
     Close the checkpoint
   ***********************/
+
+  delete moinfo;
+  delete debugging;
+  delete _memory_manager_;
+  delete global_timer;
+
   fflush(outfile);
   options_close();
 

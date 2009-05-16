@@ -1,6 +1,7 @@
+#include <libmoinfo/libmoinfo.h>
+
 #include "blas.h"
 #include "debugging.h"
-#include <libmoinfo/libmoinfo.h>
 
 namespace psi{ namespace psimrcc{
 
@@ -8,7 +9,7 @@ using namespace std;
 
 /**
  * Read and compute an expression
- * @param cstr 
+ * @param cstr
  */
 void CCBLAS::solve(const char* cstr)
 {
@@ -18,7 +19,7 @@ void CCBLAS::solve(const char* cstr)
 
 /**
  * Read and compute an expression
- * @param str 
+ * @param str
  */
 void CCBLAS::solve(string str)
 {
@@ -28,7 +29,7 @@ void CCBLAS::solve(string str)
 
 /**
  * Read and store expressions without computing them
- * @param cstr 
+ * @param cstr
  */
 void CCBLAS::append(const char* cstr)
 {
@@ -38,7 +39,7 @@ void CCBLAS::append(const char* cstr)
 
 /**
  * Read and store expressions without computing them
- * @param str 
+ * @param str
  */
 void CCBLAS::append(string str)
 {
@@ -76,7 +77,7 @@ void CCBLAS::compute()
 {
 
 //   fprintf(outfile,"\n\nsmart_compute::size of current deque = %d",operations.size());
-// 
+//
 //   fprintf(outfile,"\nsmart_compute::content of the deque:");
 //   for(OpDeque::iterator it = operations.begin();it!=operations.end();++it){
 //     fprintf(outfile,"\n");
@@ -97,7 +98,7 @@ void CCBLAS::compute()
 //     if(it->get_C_Matrix()!=NULL)
 //       source_count[it->get_C_Matrix()->get_label()]++;
 //   }
-// 
+//
 //   // Create a map with all the intermediates defined as matrices that appear a source and target
 //     map<string,int> intermediates_count;
 //   for(map<string,int>::iterator it=matrix_count.begin();it!=matrix_count.end();++it){
@@ -106,30 +107,30 @@ void CCBLAS::compute()
 //     if( (target_it!=target_count.end()) && (source_it!=source_count.end()))
 //       intermediates_count[source_it->first]=source_it->second;
 //   }
-// 
+//
 //   // Print the map for debugging purposes
 //   fprintf(outfile,"\n\nsmart_compute::printing the matrix_count map");
 //   for(map<string,int>::iterator it=matrix_count.begin();it!=matrix_count.end();++it){
 //     fprintf(outfile,"\n %s(%d)",it->first.c_str(),it->second);
 //   }
-// 
+//
 //   // Print the map for debugging purposes
 //   fprintf(outfile,"\n\nsmart_compute::printing the target_count map");
 //   for(map<string,int>::iterator it=target_count.begin();it!=target_count.end();++it){
 //     fprintf(outfile,"\n %s(%d)",it->first.c_str(),it->second);
 //   }
-// 
+//
 //   // Print the map for debugging purposes
 //   fprintf(outfile,"\n\nsmart_compute::printing the source_count map");
 //   for(map<string,int>::iterator it=source_count.begin();it!=source_count.end();++it){
 //     fprintf(outfile,"\n %s(%d)",it->first.c_str(),it->second);
 //   }
-// 
+//
 //   // Print the map for debugging purposes
 //   fprintf(outfile,"\n\nsmart_compute::printing the intermediates_count map");
 //   for(map<string,int>::iterator it=intermediates_count.begin();it!=intermediates_count.end();++it){
 //     fprintf(outfile,"\n %s(%d)",it->first.c_str(),it->second);
-//   }  
+//   }
 
 //   map<string,bool> matrix_on_disk;
 //   map<string,bool> matrix_in_core;
@@ -140,10 +141,10 @@ void CCBLAS::compute()
 //   }
 
 //   for(OpDeque::iterator it = operations.begin();it!=operations.end();++it){
-//     
+//
 //   }
 //   static int memory_for_solve = 0;
-// 
+//
 //   for(OpDeque::iterator it = operations.begin();it!=operations.end();++it){
 //     int nop = distance(it-operations.begin());
 //     fprintf(outfile,"\nI will process operation #%3d",nop);
@@ -195,7 +196,7 @@ void CCBLAS::compute()
 
 /**
  * store a zero_two_diagonal operation without executing it
- * @param cstr 
+ * @param cstr
  */
 void CCBLAS::append_zero_two_diagonal(const char* cstr)
 {
@@ -211,7 +212,7 @@ void CCBLAS::append_zero_two_diagonal(const char* cstr)
 
 /**
  * store a zero_two_diagonal operation and executing it
- * @param str 
+ * @param str
  */
 void CCBLAS::solve_zero_two_diagonal(const char* cstr)
 {

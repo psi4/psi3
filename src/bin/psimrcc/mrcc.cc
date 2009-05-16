@@ -37,6 +37,7 @@ CCMRCC::CCMRCC()
 
   // Parse the PERT_CBS parameter
   pert_cbs = options_get_bool("PERT_CBS");
+  pert_cbs_coupling = options_get_bool("PERT_CBS_COUPLING");
 
   // Add the matrices that will store the intermediates
   add_matrices();

@@ -62,6 +62,20 @@ void CCMRCC::build_t1_ia_amplitudes()
   blas->append("t1_eqns[o][v]{o} += -1/2 <[o]:[voo]> 2@2 t2[v][voo]{o}");
   blas->append("t1_eqns[o][v]{o} += - <[o]|[voo]> 2@2 t2[v][VoO]{o}");
 
+
+  if(pert_cbs && pert_cbs_coupling){
+    fprintf(outfile,"\n Computing frozen-virtual contribution to H(ia)");
+    blas->append("t1_eqns[o][v]{u} +=     t2_1[o][ovf]{u} 2@2 <[v]:[ovf]>");
+    blas->append("t1_eqns[o][v]{u} +=     t2_1[o][OvF]{u} 2@2 <[v]|[ovf]>");
+    blas->append("t1_eqns[o][v]{u} +=     t2_1[o][OfV]{u} 2@2 <[v]|[ofv]>");
+
+    blas->append("t1_eqns[o][v]{u} += 1/2 t2_1[o][off]{u} 2@2 <[v]:[off]>");
+    blas->append("t1_eqns[o][v]{u} +=     t2_1[o][OfF]{u} 2@2 <[v]|[off]>");
+
+    blas->append("t1_eqns[o][v]{u} += -1/2 <[o]:[foo]> 2@2 t2_1[v][foo]{u}");
+    blas->append("t1_eqns[o][v]{u} += -    <[o]|[foo]> 2@2 t2_1[v][FoO]{u}");
+  }
+
   DEBUGGING(3,blas->print("t1_eqns[o][v]{u}"););
 
 
@@ -151,7 +165,7 @@ void CCMRCC::build_t1_ia_amplitudes_triples()
 
     for(int h =0; h < moinfo->get_nirreps();h++){
       size_t i_offset  = HiaMatTmp->get_left()->get_first(h);
-      size_t a_offset = HiaMatTmp->get_right()->get_first(h);     
+      size_t a_offset = HiaMatTmp->get_right()->get_first(h);
       for(int a = 0;a <HiaMatTmp->get_right_pairpi(h);a++){
         int a_abs = a + a_offset;
         for(int i = 0;i<HiaMatTmp->get_left_pairpi(h);i++){
@@ -222,7 +236,7 @@ void CCMRCC::build_t1_IA_amplitudes_triples()
 
     for(int h =0; h < moinfo->get_nirreps();h++){
       size_t i_offset  = HIAMatTmp->get_left()->get_first(h);
-      size_t a_offset = HIAMatTmp->get_right()->get_first(h);     
+      size_t a_offset = HIAMatTmp->get_right()->get_first(h);
       for(int a = 0;a <HIAMatTmp->get_right_pairpi(h);a++){
         int a_abs = a + a_offset;
         for(int i = 0;i<HIAMatTmp->get_left_pairpi(h);i++){

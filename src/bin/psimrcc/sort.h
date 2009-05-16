@@ -22,7 +22,7 @@ typedef std::vector<std::pair<CCMatrix*,int> >::iterator MatBlksIt;
 
 enum SortAlgorithm {in_core_sort,out_of_core_sort,mrpt2_sort};
 
-/** 
+/**
  *  @class CCSort
  *  @brief Grabs the MO integrals from CCTransform and fills the CCMatrix objects in CCBLAS
 */
@@ -62,6 +62,7 @@ private:
   double add_fock_two_mrpt2(int p, int q, int k, bool exchange);
 
   // Data
+  double    fraction_of_memory_for_sorting;
   int       nfzc;
   double    efzc;
   int*      frozen_core;

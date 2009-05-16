@@ -25,8 +25,25 @@ void CCSort::build_integrals_out_of_core()
   MatMapIt mat_end    = matrix_map.end();
   int mat_irrep = 0;
   int cycle     = 0;
+
+  size_t ccintegrals_memory = static_cast<size_t>(static_cast<double>(_memory_manager_->get_FreeMemory())*fraction_of_memory_for_sorting);
+
+
+  fprintf(outfile,"\n\n  Sorting integrals:");
+  fprintf(outfile,"\n    Memory available                       = %14lu bytes",
+                  (unsigned long)_memory_manager_->get_FreeMemory());
+  fprintf(outfile,"\n    Memory available for sorting           = %14lu bytes (%.1f%%)",
+                  (unsigned long)ccintegrals_memory,fraction_of_memory_for_sorting*100.0);
+  fflush(outfile);
+
+  for(MatMapIt it = mat_it; it != mat_end; ++it){
+    for(int h = 0; h < moinfo->get_nirreps(); ++h){
+      size_t block_size = it->second->get_block_sizepi(mat_irrep);
+    }
+  }
+
   while(mat_it!=mat_end){
-    fprintf(outfile,"\n\n  CCSort::build_integrals_out_of_core(): cycle = %d",cycle);
+    fprintf(outfile,"\n\n    Pass %d:",cycle + 1);
     // Find how many matrices blocks we can store in 95% of the free memory and allocate them
     MatrixBlks to_be_processed;
     setup_out_of_core_list(mat_it,mat_irrep,mat_end,to_be_processed);
@@ -35,9 +52,8 @@ void CCSort::build_integrals_out_of_core()
 //       fprintf(outfile,"\n%s[%s]",block_it->first->get_label().c_str(),moinfo->get_irr_labs(block_it->second));
     int first_irrep = 0;
     int last_irrep  = 0;
-    while(last_irrep<moinfo->get_nirreps()){
+    while(last_irrep < moinfo->get_nirreps()){
       last_irrep = trans->read_tei_mo_integrals_block(first_irrep);
-      fprintf(outfile,"\n    CCSort: sorting block(s) %d->%d",first_irrep,last_irrep);
       if(cycle==0) frozen_core_energy_out_of_core();
       sort_integrals_out_of_core(first_irrep,last_irrep,to_be_processed);
       trans->free_tei_mo_integrals_block(first_irrep,last_irrep);
@@ -50,21 +66,31 @@ void CCSort::build_integrals_out_of_core()
 
 void CCSort::setup_out_of_core_list(MatMapIt& mat_it,int& mat_irrep,MatMapIt& mat_end,MatrixBlks& to_be_processed)
 {
-  double ccintegrals_memory = _memory_manager_->get_free_memory()*0.5;
+  fprintf(outfile,"\n    Setting up the matrix list:");
+  fflush(outfile);
+  size_t ccintegrals_memory = static_cast<size_t>(static_cast<double>(_memory_manager_->get_FreeMemory())*fraction_of_memory_for_sorting);
+
+  int blocks_added = 0;
   bool out_of_memory = false;
   while((mat_it != mat_end) && !out_of_memory){
     if(mat_it->second->is_integral() || mat_it->second->is_fock()){
       CCMatrix* Matrix = mat_it->second;
       while(mat_irrep < moinfo->get_nirreps() && !out_of_memory){
-        size_t block_size = Matrix->get_block_sizepi(mat_irrep);
-        if(to_MB(block_size) < ccintegrals_memory){
+        size_t block_memory = Matrix->get_memorypi2(mat_irrep);
+        if(block_memory < ccintegrals_memory){
           to_be_processed.push_back(make_pair(Matrix,mat_irrep));
           // Allocate the matrix, this will also take care of MOInfo::allocated_memory
           Matrix->allocate_block(mat_irrep);
-          ccintegrals_memory -= to_MB(block_size);
+          ccintegrals_memory -= block_memory;
           mat_irrep++;
+          blocks_added++;
         }else{
-            out_of_memory = true;
+          if(blocks_added == 0){
+            fprintf(outfile,"\n    Matrix: %s irrep %d does not fit into memory",Matrix->get_label().c_str(),mat_irrep);
+            fprintf(outfile,"\n            memory required = %14d bytes",block_memory);
+            fflush(outfile);
+          }
+          out_of_memory = true;
         }
       }
       if(!out_of_memory)
@@ -73,6 +99,8 @@ void CCSort::setup_out_of_core_list(MatMapIt& mat_it,int& mat_irrep,MatMapIt& ma
     if(!out_of_memory)
       ++mat_it;
   }
+  fprintf(outfile," added %d matrices blocks",blocks_added);
+  fflush(outfile);
 }
 
 void CCSort::sort_integrals_out_of_core(int first_irrep, int last_irrep, MatrixBlks& to_be_processed)

@@ -156,7 +156,9 @@ void MOInfo::read_mo_spaces()
   actv_docc.assign(nirreps,0);
 
   // For single-point geometry optimizations and frequencies
-  if(_default_chkpt_lib_->exist(_default_chkpt_lib_->build_keyword(const_cast<char *>("Current Displacement Irrep")))){
+  char* keyword = _default_chkpt_lib_->build_keyword(const_cast<char *>("Current Displacement Irrep"));
+
+  if(_default_chkpt_lib_->exist(keyword)){
     int   disp_irrep  = _default_chkpt_lib_->rd_disp_irrep();
     char *save_prefix = _default_chkpt_lib_->rd_prefix();
     int nirreps_ref;
@@ -232,6 +234,8 @@ void MOInfo::read_mo_spaces()
     read_mo_space(nirreps,nactv_docc,actv_docc,"ACTIVE_DOCC");
   }
 
+  free(keyword);
+
   // Compute the number of external orbitals
   nextr = 0;
   for(int h = 0; h < nirreps; ++h){
@@ -253,7 +257,7 @@ void MOInfo::read_mo_spaces()
   all_sym.resize(nall);
   int index_mo  = 0;
   for(int h = 0; h < nirreps; ++h){
-     for(int i  =0; i < all[i]; ++i){
+     for(int i  = 0; i < all[h]; ++i){
       all_sym[index_mo] = h;
       index_mo++;
     }

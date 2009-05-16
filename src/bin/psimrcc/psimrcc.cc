@@ -51,6 +51,10 @@ void mrccsd()
   // Initialize the mp2 module (integrals,fock matrix(ces),denominators)
   CCMRCC        mrcc;
 
+  if(options_get_bool("PERT_CBS") && options_get_bool("PERT_CBS_COUPLING")){
+    mrcc.compute_first_order_amps();
+  }
+
   if(options_get_str("CORR_ANSATZ")=="SR")
     mrcc.compute_ccsd_energy();
   if(options_get_str("CORR_ANSATZ")=="MK")
@@ -61,8 +65,7 @@ void mrccsd()
     mrcc.compute_apbwccsd_energy();
 
   if(options_get_bool("PERT_CBS")){
-//    mrcc.perturbative_cbs();
-    mrcc.perturbative_cbs2();
+    mrcc.perturbative_cbs();
   }
 }
 

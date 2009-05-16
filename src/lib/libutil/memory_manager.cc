@@ -12,13 +12,16 @@ namespace psi{
 
 using namespace std;
 
+double bytes_to_MiB(size_t n)
+{
+  // 1 byte =  1/ 1048576 MiB
+  return(static_cast<double>(n) / static_cast<double>(1048576));
+}
+
 MemoryManager::MemoryManager(int max_memory_mb){
   CurrentAllocated    = 0;
   MaximumAllocated    = 0;
   MaximumAllowed      = 1024 * 1024 * static_cast<size_t>(max_memory_mb);
-  allocated_memory    = 0.0;
-  total_memory        = static_cast<double>(max_memory_mb);
-  integral_strip_size = total_memory * 0.05;
 }
 
 MemoryManager::~MemoryManager()
@@ -69,105 +72,108 @@ void MemoryManager::MemCheck(FILE *output)
   fprintf(output, "  Maximum memory used: %8.1f Mb \n",double(MaximumAllocated)/1048576.0);
   fprintf(output, "  Number of objects still in memory: %-6d  Current bytes used: %-12lu",CurrentAllocated,AllocationTable.size());
 
+  fflush(output);
   if (AllocationTable.size() > 0) {
     if (alreadyChecked == false)
       fprintf(output, "\n\n  Attempting to free the following objects:\n");
     else
       fprintf(output, "\n\n  Unable to delete the following objects:\n");
+    fflush(output);
 
     std::map<void*, AllocationEntry>::iterator it;
 
     for (it=AllocationTable.begin(); it != AllocationTable.end(); it++)
       fprintf(output, "  %15s allocated at %s:%d\n", (*it).second.variableName.c_str(), (*it).second.fileName.c_str(), (*it).second.lineNumber);
-
-    it = AllocationTable.begin();
-    while (it != AllocationTable.end()) {
-      if ((*it).second.type == "double") {
-        if ((*it).second.argumentList.size() == 1) {
-          double *m = (double*)(*it).second.variable;
-          release_one(m,__FILE__,__LINE__);
-        }
-        else if ((*it).second.argumentList.size() == 2) {
-          double **m = (double**)(*it).second.variable;
-          release_two(m,__FILE__,__LINE__);
-        }
-        else if ((*it).second.argumentList.size() == 3) {
-          double ***m = (double***)(*it).second.variable;
-          release_three(m,__FILE__,__LINE__);
-        }
-      }
-      else if ((*it).second.type == "int") {
-        if ((*it).second.argumentList.size() == 1) {
-          int *m = (int*)(*it).second.variable;
-          release_one(m,__FILE__,__LINE__);
-        }
-        else if ((*it).second.argumentList.size() == 2) {
-          int **m = (int**)(*it).second.variable;
-          release_two(m,__FILE__,__LINE__);
-        }
-        else if ((*it).second.argumentList.size() == 3) {
-          int ***m = (int***)(*it).second.variable;
-          release_three(m,__FILE__,__LINE__);
-        }
-      }
-      else if ((*it).second.type == "char") {
-        if ((*it).second.argumentList.size() == 1) {
-          char *m = (char*)(*it).second.variable;
-          release_one(m,__FILE__,__LINE__);
-        }
-        else if ((*it).second.argumentList.size() == 2) {
-          char **m = (char**)(*it).second.variable;
-          release_two(m,__FILE__,__LINE__);
-        }
-        else if ((*it).second.argumentList.size() == 3) {
-          char ***m = (char***)(*it).second.variable;
-          release_three(m,__FILE__,__LINE__);
-        }
-      }
-      else if ((*it).second.type == "float") {
-        if ((*it).second.argumentList.size() == 1) {
-          float *m = (float*)(*it).second.variable;
-          release_one(m,__FILE__,__LINE__);
-        }
-        else if ((*it).second.argumentList.size() == 2) {
-          float **m = (float**)(*it).second.variable;
-          release_two(m,__FILE__,__LINE__);
-        }
-        else if ((*it).second.argumentList.size() == 3) {
-          float ***m = (float***)(*it).second.variable;
-          release_three(m,__FILE__,__LINE__);
-        }
-      }
-      else if ((*it).second.type == "unsigned int") {
-        if ((*it).second.argumentList.size() == 1) {
-          unsigned int *m = (unsigned int*)(*it).second.variable;
-          release_one(m,__FILE__,__LINE__);
-        }
-        else if ((*it).second.argumentList.size() == 2) {
-          unsigned int **m = (unsigned int**)(*it).second.variable;
-          release_two(m,__FILE__,__LINE__);
-        }
-        else if ((*it).second.argumentList.size() == 3) {
-          unsigned int ***m = (unsigned int***)(*it).second.variable;
-          release_three(m,__FILE__,__LINE__);
-        }
-      }
-      else if ((*it).second.type == "unsigned char") {
-        if ((*it).second.argumentList.size() == 1) {
-          unsigned char *m = (unsigned char*)(*it).second.variable;
-          release_one(m,__FILE__,__LINE__);
-        }
-        else if ((*it).second.argumentList.size() == 2) {
-          unsigned char **m = (unsigned char**)(*it).second.variable;
-          release_two(m,__FILE__,__LINE__);
-        }
-        else if ((*it).second.argumentList.size() == 3) {
-          unsigned char ***m = (unsigned char***)(*it).second.variable;
-          release_three(m,__FILE__,__LINE__);
-        }
-      }
-      it = AllocationTable.begin();
-    }
+      fflush(output);
+    //
+//    it = AllocationTable.begin();
+//    while (it != AllocationTable.end()) {
+//      if ((*it).second.type == "double") {
+//        if ((*it).second.argumentList.size() == 1) {
+//          double *m = (double*)(*it).second.variable;
+//          release_one(m,__FILE__,__LINE__);
+//        }
+//        else if ((*it).second.argumentList.size() == 2) {
+//          double **m = (double**)(*it).second.variable;
+//          release_two(m,__FILE__,__LINE__);
+//        }
+//        else if ((*it).second.argumentList.size() == 3) {
+//          double ***m = (double***)(*it).second.variable;
+//          release_three(m,__FILE__,__LINE__);
+//        }
+//      }
+//      else if ((*it).second.type == "int") {
+//        if ((*it).second.argumentList.size() == 1) {
+//          int *m = (int*)(*it).second.variable;
+//          release_one(m,__FILE__,__LINE__);
+//        }
+//        else if ((*it).second.argumentList.size() == 2) {
+//          int **m = (int**)(*it).second.variable;
+//          release_two(m,__FILE__,__LINE__);
+//        }
+//        else if ((*it).second.argumentList.size() == 3) {
+//          int ***m = (int***)(*it).second.variable;
+//          release_three(m,__FILE__,__LINE__);
+//        }
+//      }
+//      else if ((*it).second.type == "char") {
+//        if ((*it).second.argumentList.size() == 1) {
+//          char *m = (char*)(*it).second.variable;
+//          release_one(m,__FILE__,__LINE__);
+//        }
+//        else if ((*it).second.argumentList.size() == 2) {
+//          char **m = (char**)(*it).second.variable;
+//          release_two(m,__FILE__,__LINE__);
+//        }
+//        else if ((*it).second.argumentList.size() == 3) {
+//          char ***m = (char***)(*it).second.variable;
+//          release_three(m,__FILE__,__LINE__);
+//        }
+//      }
+//      else if ((*it).second.type == "float") {
+//        if ((*it).second.argumentList.size() == 1) {
+//          float *m = (float*)(*it).second.variable;
+//          release_one(m,__FILE__,__LINE__);
+//        }
+//        else if ((*it).second.argumentList.size() == 2) {
+//          float **m = (float**)(*it).second.variable;
+//          release_two(m,__FILE__,__LINE__);
+//        }
+//        else if ((*it).second.argumentList.size() == 3) {
+//          float ***m = (float***)(*it).second.variable;
+//          release_three(m,__FILE__,__LINE__);
+//        }
+//      }
+//      else if ((*it).second.type == "unsigned int") {
+//        if ((*it).second.argumentList.size() == 1) {
+//          unsigned int *m = (unsigned int*)(*it).second.variable;
+//          release_one(m,__FILE__,__LINE__);
+//        }
+//        else if ((*it).second.argumentList.size() == 2) {
+//          unsigned int **m = (unsigned int**)(*it).second.variable;
+//          release_two(m,__FILE__,__LINE__);
+//        }
+//        else if ((*it).second.argumentList.size() == 3) {
+//          unsigned int ***m = (unsigned int***)(*it).second.variable;
+//          release_three(m,__FILE__,__LINE__);
+//        }
+//      }
+//      else if ((*it).second.type == "unsigned char") {
+//        if ((*it).second.argumentList.size() == 1) {
+//          unsigned char *m = (unsigned char*)(*it).second.variable;
+//          release_one(m,__FILE__,__LINE__);
+//        }
+//        else if ((*it).second.argumentList.size() == 2) {
+//          unsigned char **m = (unsigned char**)(*it).second.variable;
+//          release_two(m,__FILE__,__LINE__);
+//        }
+//        else if ((*it).second.argumentList.size() == 3) {
+//          unsigned char ***m = (unsigned char***)(*it).second.variable;
+//          release_three(m,__FILE__,__LINE__);
+//        }
+//      }
+//      it = AllocationTable.begin();
+//    }
 
     if (alreadyChecked == false && AllocationTable.size() > 0) {
             alreadyChecked = true;

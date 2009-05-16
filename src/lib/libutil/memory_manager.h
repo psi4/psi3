@@ -5,7 +5,24 @@
 #include <vector>
 #include <string>
 
+
 namespace psi{
+
+/*
+ * Computes the size in mebibytes (MiB) of a given amount of type T
+ */
+template <typename T>
+double type_to_MiB(size_t n)
+{
+  // 1 MiB = 1048576 bytes
+  size_t bites = n * static_cast<size_t>(sizeof(T));
+  return(static_cast<double>(bites)/1048576.0);
+}
+
+/*
+ * Convert bytes to mebibytes (MiB)
+ */
+double bytes_to_MiB(size_t n);
 
 typedef struct {
 	void*               variable;
@@ -24,13 +41,9 @@ public:
 
   void MemCheck(FILE *output);
 
-  double get_total_memory()                      const {return(total_memory);}
-  // Memory handling routines
-  void        add_allocated_memory(double value)       {allocated_memory+=value;}
-  double      get_free_memory()                  const {return(total_memory-allocated_memory);}
-  double      get_allocated_memory()             const {return(allocated_memory);}
-  double      get_integral_strip_size()          const {return(integral_strip_size);}
   size_t      get_FreeMemory()                   const {return(MaximumAllowed - CurrentAllocated);}
+  size_t      get_CurrentAllocated()             const {return(CurrentAllocated);}
+  size_t      get_MaximumAllowedMemory()         const {return(MaximumAllowed);}
 
   template <typename T>
   void allocate(const char *type, T*& matrix, size_t size, const char *variableName, const char *fileName, size_t lineNumber);
@@ -54,10 +67,6 @@ private:
   size_t MaximumAllocated;
   size_t MaximumAllowed;
   std::map<void *, AllocationEntry> AllocationTable;
-
-  double total_memory;
-  double allocated_memory;
-  double integral_strip_size;
 };
 
 template <typename T>
@@ -206,6 +215,6 @@ extern MemoryManager* _memory_manager_;
 #define release3(variable) \
   _memory_manager_->release_three(variable, __FILE__, __LINE__);
 
-#endif // _psi_src_bin_psimrcc_memory_manager_h_
-
 } /* End Namespaces */
+
+#endif // _psi_src_bin_psimrcc_memory_manager_h_

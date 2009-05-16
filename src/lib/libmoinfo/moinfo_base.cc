@@ -30,8 +30,15 @@ MOInfoBase::~MOInfoBase()
 
 void MOInfoBase::startup()
 {
+  nso = 0;
+  nmo = 0;
+  ndocc = 0;
+  nactv = 0;
   nael = 0;
   nbel = 0;
+  nactive_ael = 0;
+  nactive_bel = 0;
+
   guess_occupation = true;
   PSI_NULL(ioff);
   compute_ioff();

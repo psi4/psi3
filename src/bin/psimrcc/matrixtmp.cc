@@ -1,10 +1,4 @@
-/***************************************************************************
- *   Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *   frank@ccc.uga.edu
- *   SR/MRCC Code
- ***************************************************************************/
 #include "matrixtmp.h"
-#include "blas.h"
 
 namespace psi{ namespace psimrcc{
 

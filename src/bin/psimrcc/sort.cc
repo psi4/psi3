@@ -4,12 +4,9 @@
 */
 #include <cmath>
 #include <algorithm>
-#include <libmoinfo/libmoinfo.h>
-#include "sort.h"
-#include "transform.h"
-#include <libutil/libutil.h>
-#include "blas.h"
 
+#include <libmoinfo/libmoinfo.h>
+#include <libutil/libutil.h>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.hpp>
 #include <libchkpt/chkpt.hpp>
@@ -18,6 +15,10 @@
 #include <libqt/qt.h>
 #include "psifiles.h"
 
+#include "blas.h"
+#include "sort.h"
+#include "transform.h"
+
 extern FILE* outfile;
 
 namespace psi{ namespace psimrcc{
@@ -25,7 +26,7 @@ namespace psi{ namespace psimrcc{
 using namespace std;
 
 CCSort::CCSort(SortAlgorithm algorithm):
-efzc(0.0),frozen_core(0)
+efzc(0.0),frozen_core(0),fraction_of_memory_for_sorting(0.5)
 {
   init();
   // Two algorithms for forming the integrals
@@ -45,7 +46,8 @@ efzc(0.0),frozen_core(0)
   }
 
   moinfo->set_fzcore_energy(efzc);
-  fprintf(outfile,"\n  Frozen Energy    = %20.15f",efzc);
+  fprintf(outfile,"\n\n    Frozen-core energy                     = %20.9f",efzc);
+  fflush(outfile);
 }
 
 CCSort::~CCSort()
@@ -62,11 +64,11 @@ void CCSort::init()
   nfzc        = moinfo->get_nfocc();
   intvec focc = moinfo->get_focc();
   intvec mopi = moinfo->get_mopi();
-  frozen_core = new int[nfzc];
+  allocate1(int,frozen_core,nfzc);
   int count1  = 0;
   int count2  = 0;
-  for(int h=0;h<moinfo->get_nirreps();h++){
-    for(int i=0;i<focc[h];i++)
+  for(int h = 0; h < moinfo->get_nirreps(); ++h){
+    for(int i = 0; i < focc[h]; ++i)
       frozen_core[count1++]=count2+i;
     count2+=mopi[h];
   }
@@ -78,7 +80,7 @@ void CCSort::init()
 void CCSort::cleanup()
 {
   if(frozen_core!=0)
-    delete[] frozen_core;
+    release1(frozen_core);
 }
 
 }} /* End Namespaces */

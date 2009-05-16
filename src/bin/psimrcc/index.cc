@@ -20,7 +20,7 @@ using namespace std;
 int                       CCIndex::nirreps=-1;
 
 CCIndex::CCIndex(std::string str):
-nelements(0),ntuples(0), greater_than_or_equal(false), greater_than(false), memory(0.0), label(str),tuples(0),
+nelements(0),ntuples(0), greater_than_or_equal(false), greater_than(false), label(str),tuples(0),
 one_index_to_tuple(0),one_index_to_irrep(0),
 two_index_to_tuple(0),two_index_to_irrep(0),
 three_index_to_tuple(0),three_index_to_irrep(0)
@@ -92,18 +92,16 @@ void CCIndex::init()
       exit(1);
     }
   }
-  _memory_manager_->add_allocated_memory(memory);
 }
 
 void CCIndex::cleanup()
 {
   if(tuples!=0)
     release2(tuples);
-//    free_smatrix(tuples,ntuples,dimension.size());
   if(one_index_to_tuple!=0)
-    delete[] one_index_to_tuple;
+    release1(one_index_to_tuple);
   if(one_index_to_irrep!=0)
-    delete[] one_index_to_irrep;
+    release1(one_index_to_irrep);
   if(two_index_to_tuple!=0)
     release2(two_index_to_tuple);
   if(two_index_to_irrep!=0)
@@ -130,7 +128,6 @@ void CCIndex::make_zero_index()
   }
   // Allocate the memory for the tuples and store them
   allocate2(short,tuples,1,1);
-//  memory+=(double)init_smatrix(tuples,1,1)/1048576.0;
   tuples[0][0] = 0;
 }
 
@@ -140,13 +137,13 @@ void CCIndex::make_one_index()
   std::vector<std::vector<short> >  pairs;
 
   // Allocate the 1->tuple mapping array and set them to -1
-  one_index_to_tuple = new size_t[dimension[0]];
-  one_index_to_irrep = new int[dimension[0]];
+  allocate1(size_t,one_index_to_tuple,dimension[0]);
+  allocate1(int,one_index_to_irrep,dimension[0]);
+
   for(int i=0;i<dimension[0];i++){
     one_index_to_tuple[i] =  0;
     one_index_to_irrep[i] = -1;
   }
-  memory+=(double)dimension[0]*2.0*sizeof(int)/1048576.0;
 
   ntuples = 0;
   for(int h=0;h<nirreps;h++){
@@ -163,8 +160,6 @@ void CCIndex::make_one_index()
     pairpi.push_back(last[h]-first[h]);
   }
 
-  // Allocate the memory for the tuples and store them
-//  memory+=(double)init_smatrix(tuples,ntuples,1)/1048576.0;
   allocate2(short,tuples,ntuples,1);
   for(int n=0;n<pairs.size();n++)
     tuples[n][0] = pairs[n][0];
@@ -270,7 +265,6 @@ void CCIndex::make_two_index()
   }
 
   // Allocate the memory for the tuples and store them
-//  memory+=(double)init_smatrix(tuples,ntuples,2)/1048576.0;
   allocate2(short,tuples,ntuples,2);
   for(int n=0;n<pairs.size();n++){
     tuples[n][0] = pairs[n][0];
@@ -335,7 +329,6 @@ void CCIndex::make_three_index()
   }
 
   // Allocate the memory for the tuples and store them
-//  memory+=(double)init_smatrix(tuples,ntuples,3)/1048576.0;
   allocate2(short,tuples,ntuples,3);
   for(int n=0;n<pairs.size();n++){
     tuples[n][0] = pairs[n][0];
