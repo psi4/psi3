@@ -159,6 +159,7 @@ private:
         int Q;
         int R;
         int S;
+        bool end_of_PK;
     };
         
     std::vector<ShellQuartet> unique_quartets_;
@@ -188,6 +189,7 @@ public:
     int q() const { return unique_quartets_[i_].Q; }
     int r() const { return unique_quartets_[i_].R; }
     int s() const { return unique_quartets_[i_].S; }
+    int end_of_PK() const { return unique_quartets_[i_].end_of_PK; }
     
     IntegralsIterator integrals_iterator();
 };

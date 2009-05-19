@@ -48,6 +48,11 @@ inline void RefMatrix::set(const RefVector& vec)
     pointer()->set(vec.pointer());
 }
 
+inline void RefMatrix::set(const RefSimpleMatrix& sq)
+{
+    pointer()->set(sq.pointer());
+}
+
 inline double RefMatrix::get(int h, int m, int n)
 {
     return pointer()->get(h, m, n);
@@ -413,6 +418,11 @@ inline void RefSimpleMatrix::transform(RefSimpleMatrix& a, RefSimpleMatrix& tran
 }
 
 inline void RefSimpleMatrix::transform(RefSimpleMatrix& transformer)
+{
+    pointer()->transform(transformer.pointer());
+}
+
+inline void RefSimpleMatrix::transform(const RefSimpleMatrix& transformer)
 {
     pointer()->transform(transformer.pointer());
 }

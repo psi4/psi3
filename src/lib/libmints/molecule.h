@@ -89,8 +89,8 @@ public:
     /// Computes nuclear repulsion energy
     double nuclear_repulsion_energy();
     /// Computes nuclear repulsion energy derivatives. Free with delete[]
-    double* nuclear_repulsion_energy_deriv1();
-    /// Computes nuclear repulsion energy second derivatives. Free with free_block
+    SimpleVector nuclear_repulsion_energy_deriv1();
+    /// Computes nuclear repulsion energy second derivatives.
     SimpleMatrix* nuclear_repulsion_energy_deriv2();
 
     /// Returns the nuclear contribution to the dipole moment
@@ -103,6 +103,9 @@ public:
     /// Moves molecule to center of mass
     void move_to_com();
 
+    /// Compute inertia tensor.
+    SimpleMatrix* inertia_tensor();
+    
     /// Returns the number of irreps
     int nirrep() const { return nirreps_; }
     /// Sets the number of irreps

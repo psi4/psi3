@@ -241,6 +241,11 @@ void Matrix::set(const double **sq)
     }
 }
 
+void Matrix::set(SimpleMatrix *sq)
+{
+    set(const_cast<const double**>(sq->matrix_));
+}
+
 void Matrix::set(Vector* vec)
 {
     int h, i, size;

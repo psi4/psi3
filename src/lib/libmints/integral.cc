@@ -91,7 +91,6 @@ IntegralsIterator ShellCombinationsIterator::integrals_iterator()
     return IntegralsIterator(bs1_->shell(p()), bs2_->shell(q()), bs3_->shell(r()), bs4_->shell(s()));
 }
 
-
 void ShellCombinationsIterator::generate_combinations(const Ref<BasisSet> &bs1, const Ref<BasisSet> &bs2, const Ref<BasisSet> &bs3, const Ref<BasisSet> &bs4)
 {
     // Assumes bs1 == bs2 == bs3 == bs4
@@ -130,7 +129,7 @@ void ShellCombinationsIterator::generate_combinations(const Ref<BasisSet> &bs1, 
                     for (int upk=0; upk < num_unique_pk; ++upk) {
                         usi = usi_arr[upk]; usj = usj_arr[upk]; usk = usk_arr[upk]; usl = usl_arr[upk];
                         
-                        // Sort shells based on AM, saves ERI work doing permutation resorting.
+                        // Sort shells based on AM, save ERI some work doing permutation resorting.
                         if (bs1->shell(usi)->am(0) < bs2->shell(usj)->am(0)) {
                             swap(usi, usj);
                         }
@@ -144,7 +143,12 @@ void ShellCombinationsIterator::generate_combinations(const Ref<BasisSet> &bs1, 
                         }
                         
                         ShellQuartet q;
-                        q.P = usi; q.Q = usj; q.R = usk; q.S = usl;
+                        q.P = usi; q.Q = usj; q.R = usk; q.S = usl; q.end_of_PK = false;
+                        
+                        if (upk == num_unique_pk - 1) {
+                            // If this is the last unique shell flag it as end of a pk block.
+                            q.end_of_PK = true;
+                        }
                         unique_quartets_.push_back(q);
                     }
                 }

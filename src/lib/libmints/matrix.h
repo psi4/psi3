@@ -102,6 +102,8 @@ public:
     void set(const double *tri);
     /// Copies sq to matrix_
     void set(const double **sq);
+    /// Copies sq to matrix_
+    void set(SimpleMatrix *sq);
     /// Set a single element of matrix_
     void set(int h, int m, int n, double val) { matrix_[h][m][n] = val; }
     /// Set the diagonal of matrix_ to vec
@@ -202,6 +204,7 @@ public:
     void set(const double **sq);
     void set(int h, int m, int n, double val);
     void set(const RefVector& vec);
+    void set(const RefSimpleMatrix& sq);
     double get(int h, int m, int n);
     double **to_block_matrix();
     RefSimpleMatrix to_simple_matrix();
@@ -388,6 +391,8 @@ public:
     void save(const char *filename, bool append=true, bool saveLowerTriangle = true);
     /// Saves the matrix in ASCII format to filename
     void save(std::string filename, bool append=true, bool saveLowerTriangle = true);
+    
+    friend class Matrix;
 };
 
 //! Simple matrix reference wrapped class.
@@ -431,6 +436,7 @@ public:
     void scale_column(int n, double a);
     void transform(RefSimpleMatrix& a, RefSimpleMatrix& transformer);
     void transform(RefSimpleMatrix& transformer);
+    void transform(const RefSimpleMatrix& transformer);
     void back_transform(RefSimpleMatrix& a, RefSimpleMatrix& transformer);
     void back_transform(RefSimpleMatrix& transformer);
     void back_transform(const RefSimpleMatrix& transformer);

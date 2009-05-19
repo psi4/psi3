@@ -19,7 +19,7 @@ BasisSet::BasisSet()
 
 BasisSet::BasisSet(Ref<Chkpt> &chkpt, std::string genbas_filename, std::string genbas_basis) :
     shell_first_basis_function_(NULL), shell_first_ao_(NULL), shell_center_(NULL), uso2ao_(NULL),
-    max_nprimitives_(0), max_stability_index_(0)
+    max_nprimitives_(0), max_stability_index_(0), uso2bf_(NULL)
 {
     // This requirement holds no matter what.
     puream_ = chkpt->rd_puream() ? true : false;
@@ -52,6 +52,8 @@ BasisSet::~BasisSet()
         Chkpt::free(shell_center_);
     if (uso2ao_)
         Chkpt::free(uso2ao_);
+    if (uso2bf_)
+        Chkpt::free(uso2bf_);
 }
 
 void BasisSet::initialize_shells(Ref<Chkpt> &chkpt)
@@ -65,11 +67,15 @@ void BasisSet::initialize_shells(Ref<Chkpt> &chkpt)
     nbf_          = chkpt->rd_nso();
     max_am_       = chkpt->rd_max_am();
     uso2ao_       = chkpt->rd_usotao();
+    uso2bf_       = chkpt->rd_usotbf();
 
-    MatrixFactory factory;
-    factory.init_with_chkpt(chkpt);
-    simple_mat_uso2ao_ = factory.create_simple_matrix("Unique SO to AO transformation matrix");
+    simple_mat_uso2ao_ = new SimpleMatrix("Unique SO to AO transformation matrix", nbf_, nao_);
     simple_mat_uso2ao_.set(uso2ao_);
+    // simple_mat_uso2ao_.print();
+    
+    simple_mat_uso2bf_ = new SimpleMatrix("Unique SO to BF transformation matrix", nbf_, nbf_);
+    simple_mat_uso2bf_.set(uso2bf_);
+    // simple_mat_uso2bf_.print();
     
     // Allocate memory for the shells
     shells_       = new Ref<GaussianShell>[nshells_];
@@ -131,9 +137,6 @@ void BasisSet::initialize_shells(Ref<Chkpt> &chkpt)
     int puream_start = 0;
     int *sym_transform = new int[nirreps];
     
-    // We need access to symmetry information found in the checkpoint file.
-    Symmetry symmetry(chkpt);
-    
     for (int i=0; i<nshells_; ++i) {
         int *am = new int[ncontr];
         am[0] = shell_am[i] - 1;
@@ -168,24 +171,7 @@ void BasisSet::initialize_shells(Ref<Chkpt> &chkpt)
                 if (fabs(uso2ao_[so][aooffset]) >= 1.0e-14)
                     sotransform_->add_transform(i, so2symblk[so], so2index[so], uso2ao_[so][aooffset], ao, so);
             }
-        }
-        
-        // Set the symmetry transform vector of the shell
-        for (int j=0; j<nirreps; ++j) {
-            sym_transform[j] = symmetry.trans_vec(i, j);
-        }
-        // The shell will copy the elements into a new vector.
-        shells_[i]->set_sym_transform(nirreps, sym_transform);
-    
-        // Compute index of the stabilizer for the shell
-        int count = 1;
-        for (int g=1; g<nirreps; ++g) {
-            if (i == symmetry.trans_vec(i, g)-1)
-                count++;
-        }
-        int stab_index = nirreps / count;
-        if (max_stability_index_ < stab_index)
-            max_stability_index_ = stab_index;
+        }        
         
         // Shift the ao starting index over to the next shell
         ao_start += INT_NCART(am[0]);

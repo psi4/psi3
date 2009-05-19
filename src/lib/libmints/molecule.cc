@@ -105,11 +105,10 @@ double Molecule::nuclear_repulsion_energy()
     return e;
 }
 
-double* Molecule::nuclear_repulsion_energy_deriv1()
+SimpleVector Molecule::nuclear_repulsion_energy_deriv1()
 {
-    double *de = new double[3*natom()];
+    SimpleVector de(3*natom());
 
-    memset(de, 0, sizeof(double)*3*natom());
     for (int i=1; i<natom(); ++i) {
         for (int j=0; j<natom(); ++j) {
             if (i != j) {
@@ -124,6 +123,9 @@ double* Molecule::nuclear_repulsion_energy_deriv1()
     return de;
 }
 
+/*
+    TODO Test nuclear_repulsion_energy_deriv2
+*/
 SimpleMatrix* Molecule::nuclear_repulsion_energy_deriv2()
 {
 	SimpleMatrix *hess = new SimpleMatrix("Nuclear Repulsion Energy 2nd Derivatives", 3*natom(), 3*natom());
@@ -264,4 +266,28 @@ SimpleVector Molecule::nuclear_quadrupole_contribution()
     }
 
     return ret;
+}
+
+SimpleMatrix* Molecule::inertia_tensor()
+{
+    int i;
+    SimpleMatrix* tensor = new SimpleMatrix("Inertia Tensor", 3, 3);
+
+    for (i = 0; i < natom(); i++) {
+        // I(alpha, alpha)
+        tensor->add(0, 0, mass(i) * (pow(y(i), 2) + pow(z(i), 2)));
+        tensor->add(1, 1, mass(i) * (pow(x(i), 2) + pow(z(i), 2)));
+        tensor->add(2, 2, mass(i) * (pow(x(i), 2) + pow(y(i), 2)));
+
+        // I(alpha, beta)
+        tensor->add(0, 1, -mass(i) * x(i) * y(i));
+        tensor->add(0, 2, -mass(i) * x(i) * z(i));
+        tensor->add(1, 2, -mass(i) * y(1) * z(i));
+        //    mirror
+        tensor->add(1, 0, -mass(i) * x(i) * y(i));
+        tensor->add(2, 0, -mass(i) * x(i) * z(i));
+        tensor->add(2, 1, -mass(i) * y(1) * z(i));
+    }
+    
+    return tensor;
 }
