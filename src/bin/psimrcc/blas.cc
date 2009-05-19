@@ -283,9 +283,12 @@ int CCBLAS::compute_storage_strategy()
   size_t fock_memory          = 0;
   size_t others_memory        = 0;
 
-  fprintf(outfile,"\n    Input memory                           = %14d bytes",_memory_manager_->get_MaximumAllowedMemory());
-  fprintf(outfile,"\n    Free memory                            = %14d bytes",available_memory);
-  fprintf(outfile,"\n    Free memory available for matrices     = %14d bytes (%3.0f%%)",storage_memory,fraction_for_in_core*100.0);
+  fprintf(outfile,"\n    Input memory                           = %14lu bytes",
+                  (unsigned long)_memory_manager_->get_MaximumAllowedMemory());
+  fprintf(outfile,"\n    Free memory                            = %14lu bytes",
+                  (unsigned long)available_memory);
+  fprintf(outfile,"\n    Free memory available for matrices     = %14lu bytes (%3.0f%%)",
+                  (unsigned long)storage_memory,fraction_for_in_core*100.0);
 
   // Gather the memory requirements for all the CCMAtrix object
   // and divide the integrals from all the other matrices.
@@ -310,10 +313,10 @@ int CCBLAS::compute_storage_strategy()
       fully_in_core_memory += block_memory;
     }
   }
-  fprintf(outfile,"\n    Memory required by fock matrices       = %14d bytes",fock_memory);
-  fprintf(outfile,"\n    Memory required by integrals           = %14d bytes",integrals_memory);
-  fprintf(outfile,"\n    Memory required by other matrices      = %14d bytes",others_memory);
-  fprintf(outfile,"\n    Memory required for in-core algorithm  = %14d bytes",fully_in_core_memory);
+  fprintf(outfile,"\n    Memory required by fock matrices       = %14lu bytes",(unsigned long)fock_memory);
+  fprintf(outfile,"\n    Memory required by integrals           = %14lu bytes",(unsigned long)integrals_memory);
+  fprintf(outfile,"\n    Memory required by other matrices      = %14lu bytes",(unsigned long)others_memory);
+  fprintf(outfile,"\n    Memory required for in-core algorithm  = %14lu bytes",(unsigned long)fully_in_core_memory);
 
   // Check if you may use a fully in core algorithm
   full_in_core = false;
@@ -393,8 +396,8 @@ int CCBLAS::compute_storage_strategy()
 //  );
 
   if(!full_in_core){
-    fprintf(outfile,"\n    Out-of-core algorithm will store %d other matrices on disk",number_of_others_on_disk);
-    fprintf(outfile,"\n    Out-of-core algorithm will store %d integrals on disk",number_of_integrals_on_disk);
+    fprintf(outfile,"\n    Out-of-core algorithm will store %lu other matrices on disk",number_of_others_on_disk);
+    fprintf(outfile,"\n    Out-of-core algorithm will store %lu integrals on disk",number_of_integrals_on_disk);
   }
   return(strategy);
 }
