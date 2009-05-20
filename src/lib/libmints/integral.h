@@ -212,7 +212,7 @@ protected:
 public:
     /** Initialize IntegralFactory object given a GaussianBasisSet for each center. */
     IntegralFactory(const Ref<BasisSet> &bs1, const Ref<BasisSet> &bs2,
-                    const Ref<BasisSet> &bs3, const Ref<BasisSet> &bs4);
+                    const Ref<BasisSet> &bs3 =0, const Ref<BasisSet> &bs4 =0);
     
     virtual ~IntegralFactory();
     
