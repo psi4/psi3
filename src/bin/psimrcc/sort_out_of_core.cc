@@ -56,6 +56,8 @@ void CCSort::build_integrals_out_of_core()
     setup_out_of_core_list(mat_it,mat_irrep,mat_end,to_be_processed);
     int first_irrep = 0;
     int last_irrep  = 0;
+    // The one-particle integrals are added at the beginning to avoid interfering with the
+    // way the transformation code handles the process
     form_fock_one_out_of_core(to_be_processed);
     while(last_irrep < moinfo->get_nirreps()){
       last_irrep = trans->read_tei_mo_integrals_block(first_irrep);
@@ -123,7 +125,6 @@ void CCSort::form_fock_one_out_of_core(MatrixBlks& to_be_processed)
     CCMatrix* Matrix = block_it->first;
     if(Matrix->is_fock()){
       int h = block_it->second;
-      string label     = Matrix->get_label();
       double*** matrix = Matrix->get_matrix();
       short* pq = new short[2];
 
@@ -132,7 +133,7 @@ void CCSort::form_fock_one_out_of_core(MatrixBlks& to_be_processed)
           // Find p and q from the pairs
           Matrix->get_two_indices_pitzer(pq,h,i,j);
           // Add the h(p,q) contribution
-          matrix[h][i][j]=trans->oei(pq[0],pq[1]);
+          matrix[h][i][j] = trans->oei(pq[0],pq[1]);
         }
       }
       delete[] pq;
@@ -160,8 +161,6 @@ void CCSort::form_fock_out_of_core(CCMatrix* Matrix, int h)
       for(int j = 0;j<Matrix->get_right_pairpi(h);j++){
         // Find p and q from the pairs
         Matrix->get_two_indices_pitzer(pq,h,i,j);
-        // Add the h(p,q) contribution
-        matrix[h][i][j]=trans->oei(pq[0],pq[1]);
         // Add the core contribution//
         for(int k=0;k<nfzc;k++){
           int kk=frozen_core[k];

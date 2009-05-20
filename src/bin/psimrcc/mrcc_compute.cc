@@ -71,7 +71,7 @@ void CCMRCC::compute_energy(void(*updater)())
   // Start CC cycle
   int cycle = 0;
   while(!converged){
-    diis_step = cycle % options_get_int("MAXDIIS");  
+    diis_step = cycle % options_get_int("MAXDIIS");
 
     zero_internal_amps();
 
