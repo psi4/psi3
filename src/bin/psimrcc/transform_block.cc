@@ -101,7 +101,7 @@ int CCTransform::allocate_tei_mo_block(int first_irrep)
   // Find how many irreps we can store in 95% of the free memory
   size_t cctransform_memory = _memory_manager_->get_FreeMemory() * 0.95;
   size_t matrix_size = 0;
-  for(int h=first_irrep;h<moinfo->get_nirreps();h++){
+  for(int h = first_irrep; h < moinfo->get_nirreps(); ++h){
     if(tei_mo_indexing->get_pairpi(h)>0){
       size_t block_size = INDEX(tei_mo_indexing->get_pairpi(h)-1,tei_mo_indexing->get_pairpi(h)-1)+1;
       if(sizeof(double) * block_size < cctransform_memory){
@@ -115,14 +115,14 @@ int CCTransform::allocate_tei_mo_block(int first_irrep)
       last_irrep++;
     }
   }
-  fprintf(outfile,"\n    Irrep %d->%d will be read in core",first_irrep,last_irrep);
+  fprintf(outfile,"\n    Irrep %d->%d will be read in core",first_irrep,last_irrep-1);
   if(first_irrep==last_irrep){
     fprintf(outfile,"\n    CCTransform: allocate_tei_mo_block() has not enough memory!");
     fflush(outfile);
     exit(EXIT_FAILURE);
   }
-  first_irrep_in_core=first_irrep;
-  last_irrep_in_core=last_irrep;
+  first_irrep_in_core = first_irrep;
+  last_irrep_in_core  = last_irrep;
   return(last_irrep);
 }
 

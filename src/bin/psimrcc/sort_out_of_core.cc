@@ -20,6 +20,13 @@ using namespace std;
 void CCSort::build_integrals_out_of_core()
 {
   trans->read_oei_from_transqt();
+  // One electron contribution to the frozen core energy from each irrep
+  efzc = 0.0;
+  for(int i = 0; i < nfzc; ++i){
+    int ii = frozen_core[i];
+    efzc += 2.0 * trans->oei(ii,ii);
+  }
+
   MatrixMap matrix_map= blas->get_MatrixMap();
   MatMapIt mat_it     = matrix_map.begin();
   MatMapIt mat_end    = matrix_map.end();
@@ -47,16 +54,15 @@ void CCSort::build_integrals_out_of_core()
     // Find how many matrices blocks we can store in 95% of the free memory and allocate them
     MatrixBlks to_be_processed;
     setup_out_of_core_list(mat_it,mat_irrep,mat_end,to_be_processed);
-//     fprintf(outfile,"\nCCSort::the following %d matrix blocks will be processed:",to_be_processed.size());
-//     for(MatBlksIt block_it=to_be_processed.begin();block_it!=to_be_processed.end();++block_it)
-//       fprintf(outfile,"\n%s[%s]",block_it->first->get_label().c_str(),moinfo->get_irr_labs(block_it->second));
     int first_irrep = 0;
     int last_irrep  = 0;
+    form_fock_one_out_of_core(to_be_processed);
     while(last_irrep < moinfo->get_nirreps()){
       last_irrep = trans->read_tei_mo_integrals_block(first_irrep);
       if(cycle==0) frozen_core_energy_out_of_core();
       sort_integrals_out_of_core(first_irrep,last_irrep,to_be_processed);
       trans->free_tei_mo_integrals_block(first_irrep,last_irrep);
+      first_irrep = last_irrep;
     }
     // Write to disk and free memory
     dump_integrals_to_disk(to_be_processed);
@@ -111,6 +117,76 @@ void CCSort::sort_integrals_out_of_core(int first_irrep, int last_irrep, MatrixB
   }
 }
 
+void CCSort::form_fock_one_out_of_core(MatrixBlks& to_be_processed)
+{
+  for(MatBlksIt block_it=to_be_processed.begin();block_it!=to_be_processed.end();++block_it){
+    CCMatrix* Matrix = block_it->first;
+    if(Matrix->is_fock()){
+      int h = block_it->second;
+      string label     = Matrix->get_label();
+      double*** matrix = Matrix->get_matrix();
+      short* pq = new short[2];
+
+      for(int i = 0;i<Matrix->get_left_pairpi(h);i++){
+        for(int j = 0;j<Matrix->get_right_pairpi(h);j++){
+          // Find p and q from the pairs
+          Matrix->get_two_indices_pitzer(pq,h,i,j);
+          // Add the h(p,q) contribution
+          matrix[h][i][j]=trans->oei(pq[0],pq[1]);
+        }
+      }
+      delete[] pq;
+    }
+  }
+}
+
+void CCSort::form_fock_out_of_core(CCMatrix* Matrix, int h)
+{
+  if(Matrix->is_fock()){
+    string label     = Matrix->get_label();
+    double*** matrix = Matrix->get_matrix();
+    short* pq = new short[2];
+    const intvec& oa2p = moinfo->get_occ_to_mo();
+
+    bool alpha = true;
+    if((label.find("O")!=string::npos) || (label.find("V")!=string::npos) || (label.find("A")!=string::npos) || (label.find("F")!=string::npos)) // NB This was missing the last bit, this might be a problem
+      alpha = false;
+
+    // N.B. Never introduce Matrices/Vectors with O or V in the name before you compute the Fock matrix elements
+    vector<int> aocc = moinfo->get_aocc("a",Matrix->get_reference());
+    vector<int> bocc = moinfo->get_bocc("a",Matrix->get_reference());
+
+    for(int i = 0;i<Matrix->get_left_pairpi(h);i++)
+      for(int j = 0;j<Matrix->get_right_pairpi(h);j++){
+        // Find p and q from the pairs
+        Matrix->get_two_indices_pitzer(pq,h,i,j);
+        // Add the h(p,q) contribution
+        matrix[h][i][j]=trans->oei(pq[0],pq[1]);
+        // Add the core contribution//
+        for(int k=0;k<nfzc;k++){
+          int kk=frozen_core[k];
+          matrix[h][i][j]+=add_fock_two_out_of_core(pq[0],pq[1],kk,true);
+          matrix[h][i][j]+=add_fock_two_out_of_core(pq[0],pq[1],kk,false);
+        }
+        for(int k=0;k<aocc.size();k++){
+          int kk=oa2p[aocc[k]];
+          if(alpha)
+            matrix[h][i][j]+=add_fock_two_out_of_core(pq[0],pq[1],kk,true);
+          else
+            matrix[h][i][j]+=add_fock_two_out_of_core(pq[0],pq[1],kk,false);
+        }
+        for(int k=0;k<bocc.size();k++){
+          int kk=oa2p[bocc[k]];
+          if(!alpha)
+            matrix[h][i][j]+=add_fock_two_out_of_core(pq[0],pq[1],kk,true);
+          else
+            matrix[h][i][j]+=add_fock_two_out_of_core(pq[0],pq[1],kk,false);
+        }
+      }
+    delete[] pq;
+  }
+}
+
 
 void CCSort::form_two_electron_integrals_out_of_core(CCMatrix* Matrix, int h)
 {
@@ -148,53 +224,6 @@ void CCSort::form_two_electron_integrals_out_of_core(CCMatrix* Matrix, int h)
   }
 }
 
-void CCSort::form_fock_out_of_core(CCMatrix* Matrix, int h)
-{
-  if(Matrix->is_fock()){
-    string label     = Matrix->get_label();
-    double*** matrix = Matrix->get_matrix();
-    short* pq = new short[2];
-    const intvec& oa2p = moinfo->get_occ_to_mo();
-
-    bool alpha = true;
-    if((label.find("O")!=string::npos) || (label.find("V")!=string::npos) || (label.find("A")!=string::npos) || (label.find("F")!=string::npos)) // NB This was missing the last bit, this might be a problem
-      alpha = false;
-
-    // N.B. Never introduce Matrices/Vectors with O or V in the name before you compute the Fock matrix elements
-    vector<int> aocc = moinfo->get_aocc("a",Matrix->get_reference());
-    vector<int> bocc = moinfo->get_bocc("a",Matrix->get_reference());
-
-    for(int i = 0;i<Matrix->get_left_pairpi(h);i++)
-      for(int j = 0;j<Matrix->get_right_pairpi(h);j++){
-        // Find p and q from the pairs
-        Matrix->get_two_indices_pitzer(pq,h,i,j);
-        // Add the h(p,q) contribution
-        matrix[h][i][j]=trans->oei(pq[0],pq[1]);
-        // Add the core contribution//
-        for(int k=0;k<nfzc;k++){
-          int kk=frozen_core[k];
-          matrix[h][i][j]+=add_fock_two_in_core(pq[0],pq[1],kk,true);
-          matrix[h][i][j]+=add_fock_two_in_core(pq[0],pq[1],kk,false);
-        }
-        for(int k=0;k<aocc.size();k++){
-          int kk=oa2p[aocc[k]];
-          if(alpha)
-            matrix[h][i][j]+=add_fock_two_in_core(pq[0],pq[1],kk,true);
-          else
-            matrix[h][i][j]+=add_fock_two_in_core(pq[0],pq[1],kk,false);
-        }
-        for(int k=0;k<bocc.size();k++){
-          int kk=oa2p[bocc[k]];
-          if(!alpha)
-            matrix[h][i][j]+=add_fock_two_in_core(pq[0],pq[1],kk,true);
-          else
-            matrix[h][i][j]+=add_fock_two_in_core(pq[0],pq[1],kk,false);
-        }
-      }
-    delete[] pq;
-  }
-}
-
 double CCSort::add_fock_two_out_of_core(int p, int q, int k, bool exchange)
 {
   // Add the (pq|kk) contribution
@@ -207,12 +236,6 @@ double CCSort::add_fock_two_out_of_core(int p, int q, int k, bool exchange)
 
 void CCSort::frozen_core_energy_out_of_core()
 {
-  // One electron contribution to the frozen core energy from each irrep
-  efzc=0.0;
-  for(int i=0;i<nfzc;i++){
-    int ii=frozen_core[i];
-    efzc+=2*trans->oei(ii,ii);
-  }
   // Two electron contribution to the frozen core energy
   for(int i=0;i<nfzc;i++){
     for(int j=0;j<nfzc;j++){

@@ -46,6 +46,7 @@ private:
   void   build_integrals_out_of_core();
   void   frozen_core_energy_out_of_core();
   void   sort_integrals_out_of_core(int first_irrep, int last_irrep, MatrixBlks& to_be_processed);
+  void   form_fock_one_out_of_core(MatrixBlks& to_be_processed);
   void   form_fock_out_of_core(CCMatrix* Matrix, int h);
   void   form_two_electron_integrals_out_of_core(CCMatrix* Matrix, int h);
   double add_fock_two_out_of_core(int p, int q, int k, bool exchange);
