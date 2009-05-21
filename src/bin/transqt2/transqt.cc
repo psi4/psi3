@@ -1,7 +1,7 @@
 /*! \defgroup TRANSQT2 transqt2: Integral Transformation Program */
 
 
-/*! 
+/*!
 ** \file
 ** \ingroup TRANSQT2
 ** \brief Integral Transformation Program
@@ -18,7 +18,7 @@
 **
 ** This version of the code can do RHF, ROHF, and UHF transformations
 ** that are compatible with all the coupled cluster codes, including
-** frozen orbitals.  
+** frozen orbitals.
 **
 ** Remaining tasks to achieve full replacement of transqt:
 **   (1) Add reordering arrays needed for DETCI and SCF DERTYPE=2. (DONE)
@@ -65,7 +65,7 @@ void transone(int,int,double *,double *,double **,int,int *);
 
 using namespace psi::transqt2;
 
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
   int nso, nmo, ntri_so, ntri_mo, nirreps;
   int **cachelist, *cachefiles;
@@ -165,11 +165,11 @@ main(int argc, char *argv[])
   }
   psio_open(PSIF_SO_PRESORT, 0);
   dpd_file4_init(&I, PSIF_SO_PRESORT, 0, 3, 3, "SO Ints (pq,rs)");
-  if(params.ref == 0 || params.ref == 1) 
-    file_build_presort(&I, PSIF_SO_TEI, params.tolerance, params.memory, 
+  if(params.ref == 0 || params.ref == 1)
+    file_build_presort(&I, PSIF_SO_TEI, params.tolerance, params.memory,
 	!params.delete_tei, moinfo.ncore, D, NULL, F, NULL, params.ref);
-  else 
-    file_build_presort(&I, PSIF_SO_TEI, params.tolerance, params.memory, 
+  else
+    file_build_presort(&I, PSIF_SO_TEI, params.tolerance, params.memory,
 	!params.delete_tei, moinfo.ncore, D_a, D_b, F_a, F_b, params.ref);
   dpd_file4_close(&I);
   psio_close(PSIF_SO_PRESORT, 1);

@@ -1,6 +1,6 @@
 /*! \file
     \ingroup TRANSQT2
-    \brief Enter brief description of file here 
+    \brief Enter brief description of file here
 */
 #include <cstdio>
 #include <cstdlib>
@@ -20,12 +20,12 @@ void get_params()
   int errcod, tol;
   char *junk;
   int *mu_irreps, tmp;
-  
+
   errcod = ip_string("WFN", &(params.wfn), 0);
   /*
-  if(strcmp(params.wfn, "MP2") && strcmp(params.wfn, "CCSD") && 
-     strcmp(params.wfn, "CCSD_T") && strcmp(params.wfn, "EOM_CCSD") && 
-     strcmp(params.wfn, "LEOM_CCSD") && strcmp(params.wfn, "BCCD") && 
+  if(strcmp(params.wfn, "MP2") && strcmp(params.wfn, "CCSD") &&
+     strcmp(params.wfn, "CCSD_T") && strcmp(params.wfn, "EOM_CCSD") &&
+     strcmp(params.wfn, "LEOM_CCSD") && strcmp(params.wfn, "BCCD") &&
      strcmp(params.wfn,"BCCD_T") && strcmp(params.wfn, "SCF") &&
      strcmp(params.wfn,"CIS") && strcmp(params.wfn,"RPA") &&
      strcmp(params.wfn,"CC2") && strcmp(params.wfn,"CC3") &&
@@ -36,16 +36,16 @@ void get_params()
   }
   */
 
-  /* NB: SCF wfns are allowed because, at present, ccsort is needed for 
+  /* NB: SCF wfns are allowed because, at present, ccsort is needed for
      RPA-type calculations */
-  
+
   params.semicanonical = 0;
   errcod = ip_string("REFERENCE", &(junk),0);
   if (errcod != IPE_OK)
     params.ref = 0; /* if no reference is given, assume rhf */
   else {
     if(!strcmp(junk, "RHF")) params.ref = 0;
-    else if(!strcmp(junk,"ROHF") && 
+    else if(!strcmp(junk,"ROHF") &&
 	    (!strcmp(params.wfn,"MP2") || !strcmp(params.wfn,"CCSD_T") ||
 	     !strcmp(params.wfn,"CC3") || !strcmp(params.wfn, "EOM_CC3") ||
 	     !strcmp(params.wfn,"CC2") || !strcmp(params.wfn, "EOM_CC2"))) {
@@ -54,9 +54,10 @@ void get_params()
     }
     else if(!strcmp(junk, "ROHF")) params.ref = 1;
     else if(!strcmp(junk, "UHF")) params.ref = 2;
-    else { 
+    else if(!strcmp(junk, "TWOCON")) params.ref = 1; /* Treat twocon as rhf */
+    else {
       printf("Invalid value of input keyword REFERENCE: %s\n", junk);
-      exit(PSI_RETURN_FAILURE); 
+      exit(PSI_RETURN_FAILURE);
     }
     free(junk);
   }
@@ -71,7 +72,7 @@ void get_params()
     else if(!strcmp(junk,"RESPONSE")) params.dertype = 3; /* linear response */
     else {
       printf("Invalid value of input keyword DERTYPE: %s\n", junk);
-      exit(PSI_RETURN_FAILURE); 
+      exit(PSI_RETURN_FAILURE);
     }
     free(junk);
   }
@@ -110,8 +111,8 @@ void get_params()
       params.delete_tei = 0;
     }
   }
-  // any MCSCF-type wavefunction needs multiple transforms so don't delete 
-  // the AO two-electron ints 
+  // any MCSCF-type wavefunction needs multiple transforms so don't delete
+  // the AO two-electron ints
   if ((strcmp(params.wfn,"OOCCD")==0 || strcmp(params.wfn,"DETCAS")==0 ||
        strcmp(params.wfn,"CASSCF")==0|| strcmp(params.wfn,"RASSCF")==0))
     params.delete_tei = 0;
@@ -126,12 +127,12 @@ void get_params()
     fprintf(outfile, "\tPrint Level     =\t%d\n", params.print_lvl);
     fprintf(outfile, "\tPrint TEIs      =\t%s\n", params.print_tei ? "Yes" : "No");
     if(params.semicanonical) {
-      fprintf(outfile, "\tReference wfn   =\tROHF (using UHF for semicanonical orbitals)\n"); 
+      fprintf(outfile, "\tReference wfn   =\tROHF (using UHF for semicanonical orbitals)\n");
     }
     else {
-      fprintf(outfile, "\tReference wfn   =\t%s\n", 
+      fprintf(outfile, "\tReference wfn   =\t%s\n",
 	      (params.ref == 0) ? "RHF" : ((params.ref == 1) ? "ROHF" : "UHF"));
-    }	  
+    }
     if(params.dertype == 0) fprintf(outfile, "\tDerivative      =\tNone\n");
     else if(params.dertype == 1) fprintf(outfile, "\tDerivative      =\tFirst\n");
     else if(params.dertype == 2) fprintf(outfile, "\tDerivative      =\tSecond\n");

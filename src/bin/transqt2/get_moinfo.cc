@@ -1,6 +1,6 @@
 /*! \file
     \ingroup TRANSQT2
-    \brief Enter brief description of file here 
+    \brief Enter brief description of file here
 */
 #include <cstdio>
 #include <cstdlib>
@@ -69,7 +69,7 @@ namespace psi {
       double **C_full, **C_full_a, **C_full_b;
       int *reorder, *reorder_A, *reorder_B;
       double **TMP;
-  
+
       chkpt_init(PSIO_OPEN_OLD);
       moinfo.nirreps = chkpt_rd_nirreps();
       moinfo.nmo = chkpt_rd_nmo();
@@ -154,7 +154,7 @@ namespace psi {
 	ras_opi = init_int_matrix(4,moinfo.nirreps);
 
 	// below, we need frdocc and fruocc as they appear in input, i.e., they
-	// should not be zeroed out even if the frozen orbitals are to be 
+	// should not be zeroed out even if the frozen orbitals are to be
 	// transformed
 	moinfo.pitz2corr_one = init_int_array(moinfo.nmo);
 	if (!ras_set2(moinfo.nirreps, moinfo.nmo, 1, 1,
@@ -201,10 +201,10 @@ namespace psi {
 	  moinfo.pitz2corr_two = init_int_array(moinfo.nactive);
 	  for (h=0,j=0,k=0; h<moinfo.nirreps; h++) {
 	    for (i=0; i<moinfo.mopi[h]; i++,j++) {
-	      // j is now an absolute Pitzer MO index  
+	      // j is now an absolute Pitzer MO index
 	      // k is an index for Pitzer orbitals NOT including frozen ones
-	      moinfo.pitz2corr_two[k++] = moinfo.pitz2corr_one[j]; 
-	    }  
+	      moinfo.pitz2corr_two[k++] = moinfo.pitz2corr_one[j];
+	    }
 	  }
 
 	  /* zero offsets for MCSCF wfns and derivs b/c all orbitals needed */
@@ -230,12 +230,12 @@ namespace psi {
 	  moinfo.pitz2corr_two = init_int_array(moinfo.nactive);
 	  for (h=0,j=0,k=0; h<moinfo.nirreps; h++) {
 	    for (i=0; i<moinfo.mopi[h]; i++,j++) {
-	      // j is now an absolute Pitzer MO index  
+	      // j is now an absolute Pitzer MO index
 	      // k is an index for Pitzer orbitals NOT including frozen ones
-	      if (i < moinfo.frdocc[h] || i >= (moinfo.mopi[h]-moinfo.fruocc[h])) 
-		continue;   
-	      moinfo.pitz2corr_two[k++] = moinfo.pitz2corr_one[j] - moinfo.nfzc; 
-	    }  
+	      if (i < moinfo.frdocc[h] || i >= (moinfo.mopi[h]-moinfo.fruocc[h]))
+		continue;
+	      moinfo.pitz2corr_two[k++] = moinfo.pitz2corr_one[j] - moinfo.nfzc;
+	    }
 	  }
 
 	  /* frozen-core offsets for truncated-CI energies */
@@ -280,13 +280,13 @@ namespace psi {
 
 	if(params.ref == 0 || params.ref == 1) {
 	  moinfo.pitz2corr_one = init_int_array(moinfo.nmo);
-	  reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
+	  reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
 		     moinfo.pitz2corr_one, moinfo.mopi, moinfo.nirreps);
 	}
 	else if(params.ref == 2) {
 	  moinfo.pitz2corr_one_A = init_int_array(moinfo.nmo);
 	  moinfo.pitz2corr_one_B = init_int_array(moinfo.nmo);
-	  reorder_qt_uhf(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc, 
+	  reorder_qt_uhf(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
 			 moinfo.pitz2corr_one_A, moinfo.pitz2corr_one_B, moinfo.mopi, moinfo.nirreps);
 	}
 
@@ -348,7 +348,8 @@ namespace psi {
 	free(offset);
 
       }
-      else if(!strcmp(params.wfn,"SCF") || !strcmp(params.wfn,"SCF_MVD")) {
+      else if(!strcmp(params.wfn,"SCF") || !strcmp(params.wfn,"SCF_MVD")
+           || !strcmp(params.wfn,"PSIMRCC")) {  /* psimrcc requires no freezing nor reordering */
 
 	/* Note that no frozen orbitals are allowed in this case */
 
