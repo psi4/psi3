@@ -85,7 +85,7 @@ void oe_ints()
 
 #ifdef USE_TAYLOR_FM
   init_Taylor_Fm_Eval(BasisSet.max_am*4-4,UserOptions.cutoff);
-#endif  
+#endif
 
   /*--- allocate room for the one-e matrices ---*/
   dimension = ioff[Symmetry.num_so];
@@ -121,7 +121,7 @@ void oe_ints()
   OIX = block_matrix(BasisSet.max_am+2,BasisSet.max_am+2);
   OIY = block_matrix(BasisSet.max_am+2,BasisSet.max_am+2);
   OIZ = block_matrix(BasisSet.max_am+2,BasisSet.max_am+2);
-  
+
   for (usi=0; usi<Symmetry.num_unique_shells; usi++){
     si = Symmetry.us2s[usi];
     am_i = BasisSet.shells[si].am-1;
@@ -130,7 +130,7 @@ void oe_ints()
     ixm = iym*iym;
     for (usj=0; usj<=usi; usj++){
       if (Symmetry.nirreps > 1) { /*--- Non-C1 symmetry case ---*/
-        usp = &(Symmetry.us_pairs[usi][usj]); 
+        usp = &(Symmetry.us_pairs[usi][usj]);
 	sjj = Symmetry.us2s[usj];
 	stab_i = Symmetry.atom_positions[BasisSet.shells[si].center-1];
 	stab_j = Symmetry.atom_positions[BasisSet.shells[sjj].center-1];
@@ -165,7 +165,7 @@ void oe_ints()
 	ioffset = BasisSet.shells[usi].fbf - 1;
 	joffset = BasisSet.shells[usj].fbf - 1;
       }
-	
+
       for(ud=0;ud<num_unique_doublets;ud++) {
 	sj = sj_arr[ud];
 
@@ -182,14 +182,14 @@ void oe_ints()
 	ab2 = AB.x * AB.x;
 	ab2 += AB.y * AB.y;
 	ab2 += AB.z * AB.z;
-	
+
 	/*--- zero the temporary storage for accumulating contractions ---*/
 	for(i=0;i<dimension;i++) {
 	  memset(stemp[i],0,sizeof(double)*dimension);
 	  memset(ttemp[i],0,sizeof(double)*dimension);
 	  memset(vtemp[i],0,sizeof(double)*dimension);
 	}
-      
+
 	/*--- contract by primitives here ---*/
 	for (i = 0; i < BasisSet.shells[si].n_prims; i++) {
 	  a1 = sp->a1[i];
@@ -239,7 +239,7 @@ void oe_ints()
 
 		    aj++;
 		  }
-		}  
+		}
 		ai++;
 	      }
 	    } /*--- end cartesian components for (si,sj) with primitives (i,j) ---*/
@@ -267,19 +267,19 @@ void oe_ints()
 
 		      jind = n2*jzm + m2*jym + l2*jxm;
 
-		      vtemp[ai][aj] += -AI0[iind][jind][0] * 
+		      vtemp[ai][aj] += -AI0[iind][jind][0] *
 		                       Molecule.centers[atom].Z_nuc * over_pf;
 
 		      aj++;
 		    }
-		  }  
+		  }
 		  ai++;
 		}
 	      } /*--- end cartesian components for (si,sj) with primitives (i,j) ---*/
 	    }
 	  }
 	} /*--- end primitive contraction ---*/
-    
+
       /*--- Normalize the contracted integrals ---*/
       ptr1 = GTOs.bf_norm[am_i];
       ptr2 = GTOs.bf_norm[am_j];
@@ -383,7 +383,7 @@ void oe_ints()
     free(Vtmp);
   }
   if (BasisSet.puream)
-    free_matrix(temp,dimension); 
+    free_matrix(temp,dimension);
   dimension=ioff[Symmetry.num_so];
   if (UserOptions.print_lvl >= PRINT_OEI) {
     fprintf(outfile,"  -Overlap integrals:\n\n");
@@ -440,28 +440,19 @@ void oe_ints()
         Chkpt::free(rref);
       }
       break;
-        
+
       case canonical:
         for(int i=0; i<3; ++i) E[i] = UserOptions.E[i];
         break;
-        
+
       default:
         throw std::runtime_error("This value for UserOptions.E_frame not supported. See documentation for keyword EFIELD_FRAME.");
     }
-    
-    fprintf(outfile,"\n    EFIELD(input file) = ( ");
-    for(int i=0; i<3; ++i) fprintf(outfile," %12.9lf ",UserOptions.E[i]);
-    fprintf(outfile," )\n");
-    if (UserOptions.E_frame != canonical) {
-      fprintf(outfile,"    EFIELD(%s frame) = ( ", (UserOptions.E_frame==canonical ? "canonical" : "reference"));
-      for(int i=0; i<3; ++i) fprintf(outfile," %12.9lf ",E[i]);
-      fprintf(outfile," )\n");
-    }
-    
+
     const int ntri_so = ioff[Symmetry.num_so];
-    C_DAXPY(ntri_so, E[0], MX, 1, V, 1);
-    C_DAXPY(ntri_so, E[1], MY, 1, V, 1);
-    C_DAXPY(ntri_so, E[2], MZ, 1, V, 1);
+    C_DAXPY(ntri_so, -E[0], MX, 1, V, 1);
+    C_DAXPY(ntri_so, -E[1], MY, 1, V, 1);
+    C_DAXPY(ntri_so, -E[2], MZ, 1, V, 1);
     fprintf(outfile,"    Electric field contribution added to the one-electron potential integrals\n");
     if (UserOptions.print_lvl >= PRINT_OEI) {
       fprintf(outfile,"\n  -Nuclear attraction energy integrals (+electric field):\n\n");
@@ -480,7 +471,7 @@ void oe_ints()
 #endif
 
   return;
-}   
+}
 };};
 
 namespace {
@@ -493,7 +484,7 @@ namespace {
       for(int j=0; j<=i; ++j, ++ij)
         M_ao_sq[i][j] = M_ao_sq[j][i] = M_ao_tri[ij];
     }
-    
+
     double** tmp = block_matrix(Symmetry.num_so,BasisSet.num_ao);
     mmult(real_usotao,0,M_ao_sq,0,tmp,0,Symmetry.num_so,BasisSet.num_ao,BasisSet.num_ao,0);
     free_block(M_ao_sq);
@@ -508,7 +499,7 @@ namespace {
         M_so_tri[ij] = M_so_sq[i][j];
     }
     free_block(M_so_sq);
-    
+
     return M_so_tri;
   }
 }

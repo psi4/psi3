@@ -1,0 +1,22 @@
+%
+% Test finite field calculation
+%
+% 6-31G** H2O RHF in presence of electric field
+%
+
+psi: (
+  label = "6-31G** SCF H2O"
+  jobtype = sp
+  wfn = scf
+  reference = rhf
+  basis = "6-31G**"
+  zmat = (
+    x
+    o 1 1.00
+    h 1 1.00 2 128.45
+    h 1 1.00 2 128.45 3 180.0
+  )
+  subgroup = c1
+  efield = (0.001 0.0 0.0)
+)
+

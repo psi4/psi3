@@ -40,6 +40,7 @@ extrema-deloc extrema-zmat mp2r12-sp1 \
 rhf-lindep1 rohf-lindep1 uhf-lindep1 \
 scf+d-opt1 \
 scf+d-freq \
+rhf-efield \
 psi_start \
 
 # Only test if psirb was compiled

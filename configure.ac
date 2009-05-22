@@ -1023,8 +1023,10 @@ AC_CONFIG_FILES([include/Makefile
           tests/scf-mvd-opt-numer-puream/Makefile
           tests/scf+d-opt1/Makefile
           tests/scf+d-freq/Makefile
-          src/bin/giao/Makefile
+          tests/rhf-efield/Makefile
           tests/casscf-sp-reorder/Makefile
+
+          src/bin/giao/Makefile
 
           src/samples/Makefile
           src/samples/MakeVars
