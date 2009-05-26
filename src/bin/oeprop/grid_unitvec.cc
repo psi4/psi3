@@ -1,6 +1,6 @@
 /*! \file
     \ingroup OEPROP
-    \brief Enter brief description of file here 
+    \brief Enter brief description of file here
 */
 #define EXTERN
 #include "includes.h"
@@ -23,20 +23,21 @@ void grid_parse()
   errcod = ip_data("GRID","%d",&grid,0);
   if (grid < 0)
     punt("GRID type must be positive");
-  
+
   if (grid == 5 || grid == 6)
     grid3d = 1;
-  
+
   /* which MOs to plot? */
   if (grid == 5) {
-    
-    read_opdm = 0;
-    
+
+    if (read_opdm)
+      punt("Correlated WFN but asked to plot orbitals. Use WFN=SCF.");
+
     if (ip_exist("MO_TO_PLOT",0)) {
       errcod = ip_count("MO_TO_PLOT",&num_mos_to_plot,0);
       if (errcod == IPE_NOT_AN_ARRAY)
 	punt("MO_TO_PLOT must be an array. See the manual.");
-      
+
       errcod = ip_string("MO_TO_PLOT",&tmpstring,1,0);
       /* If signed integers are used - Fock ordering is used, convert indices back to Pitzer ... */
       if (tmpstring[0] == '+' || tmpstring[0] == '-') {
@@ -73,13 +74,13 @@ void grid_parse()
       free(fock_mos);
     }
   }
-  
+
   /*--------------------------------------------------------------------
     If GRID_ORIGIN is present read in user's specification for the grid
     else create a default grid using molecular dimensions
    --------------------------------------------------------------------*/
   if (ip_exist("GRID_ORIGIN",0)) {
-    
+
     ip_count("GRID_ORIGIN",&i,0);
     if (i != 3)
       punt("GRID_ORIGIN must have 3 components");
@@ -88,7 +89,7 @@ void grid_parse()
       if (errcod != IPE_OK)
 	punt("Error in the definition of GRID_ORIGIN");
     }
-    
+
     if (ip_exist("GRID_UNIT_X",0)) {
       ip_count("GRID_UNIT_X",&i,0);
       if (i != 3)
@@ -101,7 +102,7 @@ void grid_parse()
     }
     else
       punt("GRID_UNIT_X must be defined when GRID_ORIGIN is given");
-    
+
     if (ip_exist("GRID_UNIT_Y",0)) {
       ip_count("GRID_UNIT_Y",&i,0);
       if (i != 3)
@@ -128,7 +129,7 @@ void grid_parse()
       }
       else
 	punt("GRID_XY0 is not defined");
-      
+
       if (ip_exist("GRID_XY1",0)) {
 	ip_count("GRID_XY1",&i,0);
 	if (i != 2)
@@ -157,7 +158,7 @@ void grid_parse()
       }
       else
 	punt("GRID_XYZ0 is not defined");
-      
+
       if (ip_exist("GRID_XYZ1",0)) {
 	ip_count("GRID_XYZ1",&i,0);
 	if (i != 3)
@@ -172,7 +173,7 @@ void grid_parse()
       }
       else
 	punt("GRID_XYZ1 is not defined");
-      
+
     }
   }
   /* GRID_ORIGIN not specified -- use molecular dimensions in 3D case */
@@ -180,7 +181,7 @@ void grid_parse()
 
     xmax = ymax = zmax = 0.0;
     xmin = ymin = zmin = 0.0;
-    
+
     for(atom=0; atom<natom; atom++) {
       if (geom[atom][0] > xmax)
 	xmax = geom[atom][0];
@@ -235,7 +236,7 @@ void grid_parse()
 
   /* orthonormalize grid unit vectors */
   grid_unitvec();
-  
+
   /* Which format to use for the 3D grid */
   grid_format = NULL;
   errcod = ip_string("GRID_FORMAT", &grid_format, 0);
@@ -249,13 +250,13 @@ void grid_parse()
 	   strcmp(grid_format,"PLOTMTV") &&
 	   strcmp(grid_format,"MEGAPOVPLUS"))
     punt("Invalid value for GRID_FORMAT");
-  
+
   /* Check if the grid output format is compatibe with the type of grid */
   if (!strcmp(grid_format,"PLOTMTV") && grid3d)
     punt("GRID_FORMAT=PLOTMTV can only be used for 2-d grids");
   if (strcmp(grid_format,"PLOTMTV") && !grid3d)
     punt("Only GRID_FORMAT=PLOTMTV can be used for 2-d grids");
-  
+
   if (grid3d == 0) {
     errcod = ip_data("GRID_ZMIN","%lf",&grid_zmin,0);
     errcod = ip_data("GRID_ZMAX","%lf",&grid_zmax,0);
@@ -312,7 +313,7 @@ int* fock_to_pitzer(int num_mo, int* fock_mos)
       virt_offset[irrep] = -1;
   }
 
-  
+
   /*---------------------------------------------------------------
     construct Fock->Pitzer mapping for virtual orbitals (f2p_virt)
    ---------------------------------------------------------------*/
@@ -363,18 +364,18 @@ int* fock_to_pitzer(int num_mo, int* fock_mos)
     if (fock_mos[mo] < 0) {
       o = -fock_mos[mo] - 1;
       if (o >= nocc)
-	punt("MOS_TO_PLOT contains occupied indices outside of allowed range"); 
+	punt("MOS_TO_PLOT contains occupied indices outside of allowed range");
       else
 	pitzer_mos[mo] = f2p_occ[o];
     }
     else {
       v = fock_mos[mo] - 1;
       if (v >= nvirt)
-	punt("MOS_TO_PLOT contains unoccupied indices outside of allowed range"); 
+	punt("MOS_TO_PLOT contains unoccupied indices outside of allowed range");
       else
 	pitzer_mos[mo] = f2p_virt[v];
     }
-  
+
   free(virt_offset);
   free(occ_offset);
   free(mo_offset);
