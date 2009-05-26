@@ -12,6 +12,7 @@
 
 %token <str> T_STRING
 %type <val> values value array scalar
+%destructor { free ($$); } T_STRING
 
 %start input
 %%
