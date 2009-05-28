@@ -86,7 +86,7 @@ void add_calculation_options()
   options_add_int("DAMPING_FACTOR",0);
   options_add_int("DEBUG",0);
   options_add_int("DENOMINATOR_SHIFT",0);
-  options_add_int("MAX_ITERATIONS",100);
+  options_add_int("MAXITER",100);
   options_add_int("MEMORY",1800);
   options_add_int("NDIIS",7);
   options_add_int("ROOT",1);
@@ -101,6 +101,7 @@ void add_calculation_options()
   options_add_bool("CANONICALIZE_ACTIVE_FAVG",false);
   options_add_bool("CANONICALIZE_INACTIVE_FAVG",false);
   options_add_bool("INTERNAL_ROTATIONS",true);
+  options_add_bool("FORCE_TWOCON",false);
 
   options_add_str_with_choices("REFERENCE","RHF","RHF ROHF UHF TWOCON MCSCF GENERAL");
   options_add_str_with_choices("WFN_SYM","1","A AG AU AP APP A1 A2 B BG BU B1 B2 B3 B1G B2G B3G B1U B2U B3U 0 1 2 3 4 5 6 7 8");

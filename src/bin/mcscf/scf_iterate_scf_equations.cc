@@ -79,9 +79,9 @@ void SCF::iterate_scf_equations()
       }
     }
 
-    if(cycle>options_get_int("MAX_ITERATIONS")){
-      fprintf(outfile,"\n\n  The calculation did not converge in %d cycles",options_get_int("MAX_ITERATIONS"));
-      fprintf(outfile,"\n  Quitting PSIMRCC\n");
+    if(cycle>options_get_int("MAXITER")){
+      fprintf(outfile,"\n\n  The calculation did not converge in %d cycles",options_get_int("MAXITER"));
+      fprintf(outfile,"\n  Quitting MCSCF.\n");
       fflush(outfile);
       exit(1);
     }

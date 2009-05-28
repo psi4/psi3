@@ -138,6 +138,10 @@ void SCF::startup()
       Ftc_t[I]  .allocate("Ftc_t[" + to_string(I) + "]",nirreps,sopi,sopi);
       ci[I] = 0.0;// (I == 0 ? 0.7071067811865475244 : -0.7071067811865475244) ;
     }
+    if(options_get_bool("FORCE_TWOCON")){
+      ci[0] =   0.7071067811865475244;
+      ci[1] = - 0.7071067811865475244;
+    }
   }
 }
 
