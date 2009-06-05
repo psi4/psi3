@@ -103,7 +103,7 @@ void get_eom_params()
   eom_params.vectors_per_root = 12;
   errcod = ip_data("VECTORS_PER_ROOT","%d",&(eom_params.vectors_per_root),0);
 
-  eom_params.vectors_cc3 = eom_params.prop_root + 7;
+  eom_params.vectors_cc3 = eom_params.prop_root + 9;
   errcod = ip_data("VECTORS_CC3","%d",&(eom_params.vectors_cc3),0);
   if (eom_params.vectors_cc3 > eom_params.vectors_per_root)
     eom_params.vectors_cc3 = eom_params.vectors_per_root;
