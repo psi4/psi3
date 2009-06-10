@@ -137,6 +137,7 @@ struct OPTInfo {
   int zmat_simples;
   enum { NONE, BFGS, MS, POWELL, BOFILL} H_update;
   int H_update_use_last;
+  bool rfo;
   int dertype;
   int numerical_dertype;
   int iteration;

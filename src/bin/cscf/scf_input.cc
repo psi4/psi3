@@ -151,30 +151,38 @@ void scf_input(ip_value_t* ipvalue)
    if(ipvalue) ip_print_value(stdout,ipvalue);
    errcod = ip_string("WFN",&wfn,0);
    if(ipvalue) ip_print_value(stdout,ipvalue);
+
    errcod = ip_string("DERTYPE",&dertype,0);
-   if(errcod == IPE_KEY_NOT_FOUND) { // no dertype given
+   if(errcod == IPE_KEY_NOT_FOUND) { // no dertype given, take cure from jobtype
+     dertype = (char *) malloc(sizeof(char)*7);
      errcod = ip_string("JOBTYPE",&jobtype,0);
-     if(errcod == IPE_KEY_NOT_FOUND) { // no jobtype given
-       jobtype = strdup("SP");
-     }
-     if (!strcmp(jobtype,"FREQ")) {
-       dertype = (char *) malloc(sizeof(char)*7);
-       strcpy(dertype,"SECOND");
+     if(errcod == IPE_KEY_NOT_FOUND) {
+       strcpy(dertype,"NONE");
      }
      else {
-       dertype = (char *) malloc(sizeof(char)*5);
-       strcpy(dertype,"NONE");
+       if(!strcmp(jobtype,"SP")) strcpy(dertype,"NONE");
+       else if (!strcmp(jobtype,"OPT")) strcpy(dertype,"FIRST");
+       else if (!strcmp(jobtype,"FREQ")) strcpy(dertype,"SECOND");
+       free(jobtype);
+     }
+   }
+
+   if (!strcmp(dertype,"NONE")) {
+     if (!strcmp(wfn,"SCF")) scf_conv = 7;
+     else scf_conv = 12; // tighter for correlated computations
+   }
+   else if (!strcmp(dertype,"FIRST") || !strcmp(dertype,"RESPONSE")) scf_conv = 12;
+   else if (!strcmp(dertype,"SECOND")) scf_conv = 12;
+
+   // tighter for finite-difference computations
+   errcod = ip_string("JOBTYPE",&jobtype,0);
+   if (errcod == IPE_OK) {
+     if ( (!strcmp(jobtype,"OPT")  && strcmp(dertype,"FIRST"))
+       || (!strcmp(jobtype,"FREQ") && strcmp(dertype,"SECOND")) ) {
+        scf_conv = 12;
      }
      free(jobtype);
    }
-   if(strcmp(wfn,"SCF")) scf_conv = 10;
-   if(!strcmp(dertype,"FIRST")) scf_conv = 10;
-   if(!strcmp(dertype,"SECOND")) scf_conv = 12;
-
-   /* for freq finite difference calculations */
-   errcod = ip_string("JOBTYPE",&jobtype,0);
-   if (errcod == IPE_OK) 
-     if (!strcmp(jobtype,"FREQ")) scf_conv = 12;
 
    errcod = ip_data("CONVERGENCE","%d",&scf_conv,0);
 

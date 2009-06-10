@@ -56,13 +56,24 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   dim_carts = carts.get_natom()*3;
   djunk = new double[dim_carts];
   disp_label = new char[MAX_LINELENGTH];
+  dim = symm.get_num();
 
   if (symm.get_num() == 0)
     punt("No symmetric internal coordinates to optimize.\n");
 
   ip_string("WFN", &(wfn),0);
-  fprintf(outfile,"\nCurrent %s energy before step %20.10lf\n", wfn, carts.get_energy());
+  fprintf(outfile,"\nCurrent %s energy before step   %20.12lf\n", wfn, carts.get_energy());
+
+  open_PSIF();
+  if (psio_tocscan(PSIF_OPTKING, "Previous Energy") != NULL) {
+    psio_read_entry(PSIF_OPTKING, "Previous Energy", (char *) &temp, sizeof(double));
+    fprintf(outfile,"Delta(%s energy) from last step %20.12lf\n", wfn, carts.get_energy()-temp);
+  }
   free(wfn);
+  temp = carts.get_energy();
+  psio_write_entry(PSIF_OPTKING, "Previous Energy", (char *) &temp, sizeof(double));
+  close_PSIF();
+
   fprintf(outfile,"\nTaking geometry step number %d\n",optinfo.iteration+1);
 
   //*** Build transformation matrices
@@ -128,7 +139,6 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   
   // Now apply constraints
   if (optinfo.constraints_present) {
-    dim = symm.get_num();
     // C has 1's on diagonal for constraints and 0's elsewhere
     C = block_matrix(dim,dim);
     if (optinfo.redundant) {
@@ -222,13 +232,64 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   // make sure some force constant are in PSIF
   fconst_init(carts, simples, symm);
 
-  // Read in Hessian and update it if necessary from opt.aux
-  H_inv = compute_H(simples,symm,P,carts);
-  free_block(P);
+  // ** Computing internal coordinate steps/displacements
+  if (optinfo.rfo) {
+    // Read in Hessian and update it
+    double *lambda, **H, **RFO, *work;
+    H = compute_H(simples,symm,P,carts); // for RFO step, returns Hessian (not inverse)
 
-  // Computing internal coordinate displacements H_inv f = dq, and new q
-  mmult(H_inv,0,&f_q,1,&dq,1,symm.get_num(),symm.get_num(),1,0);
-  free_block(H_inv);
+    // Build lower-triangle of RFO matrix
+    RFO = block_matrix(dim+1,dim+1);
+    for (i=0; i<dim; ++i)
+      for (j=0; j<=i; ++j)
+        RFO[i][j] = H[i][j];
+
+    for (i=0; i<dim; ++i)
+      RFO[dim][i] = - f_q[i]; // RFO matrix has gradients
+
+    mat_print(RFO,dim+1,dim+1,outfile);
+
+    // Find eigenvectors/values of RFO matrix
+    // return evects, lower triangle, dimension
+    lambda = init_array(dim+1);
+    work = init_array(3*(dim+1));
+    C_DSYEV('V', 'U', dim+1 , RFO[0], dim+1, lambda, work, 3*(dim+1));
+
+    for (i=0; i<dim+1; ++i) {
+      fprintf(outfile,"RFO eigenvalue  %d: %15.10lf\n",i, lambda[i]);
+      fprintf(outfile,"RFO eigenvector %d:\n", i);
+      for (j=0; j<dim+1; ++j)
+        fprintf(outfile,"%15.10lf\n", RFO[i][j]);
+    }
+    fflush(outfile);
+
+    // do intermediate normalization of RFO evects
+    for (i=0; i<dim+1; ++i) {
+      if (fabs(RFO[i][dim]) > 0.001) {  // evects are normalized already - don't want to blow them up?
+        for (j=0;j<dim+1;++j)
+          RFO[i][j] /= RFO[i][dim];
+      }
+    }
+
+    for (i=0; i<dim+1; ++i) {
+      fprintf(outfile,"RFO eigenvalue  %d: %15.10lf\n",i, lambda[i]);
+      fprintf(outfile,"RFO eigenvector %d:\n", i);
+      for (j=0; j<dim+1; ++j)
+        fprintf(outfile,"%15.10lf\n", RFO[i][j]);
+    }
+    fflush(outfile);
+
+    for (i=0; i<dim; ++i)
+      dq[i] = RFO[0][i];
+  }
+  else { /* standard Newton-Raphson step */
+    // Read in Hessian, update it, and invert it
+    H_inv = compute_H(simples,symm,P,carts);
+    free_block(P);
+    // H_inv f = dq
+    mmult(H_inv,0,&f_q,1,&dq,1,dim,dim,1,0);
+    free_block(H_inv);
+  }
 
   // Fix any interfragment torsions that pass through 180.0
 /*

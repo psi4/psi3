@@ -259,13 +259,13 @@ class torsion_set {
 
         // extend domain of torsions so delta(values) can be calculated
         if ((get_near_lin(i) == -1) && (angle > 160.0)) {
-// fprintf(outfile,"get_near_lin(%d)=%d angle %15.10lf angle %15.10lf\n",
-    // i, get_near_lin(i), angle, -180.0 - (180.0 - angle) );
+ //fprintf(outfile,"get_near_lin(%d)=%d angle %15.10lf angle %15.10lf\n",
+ //    i, get_near_lin(i), angle, -180.0 - (180.0 - angle) );
           angle = -180.0 - (180.0 - angle);
         }
         else if ((get_near_lin(i) == +1) && (angle < -160.0)) {
-// fprintf(outfile,"get_near_lin(%d)=%d angle %15.10lf angle %15.10lf\n",
-    // i, get_near_lin(i), angle, +180.0 + (180.0 + angle) );
+ //fprintf(outfile,"get_near_lin(%d)=%d angle %15.10lf angle %15.10lf\n",
+ //    i, get_near_lin(i), angle, +180.0 + (180.0 + angle) );
           angle = +180.0 + (180.0 + angle);
         }
 

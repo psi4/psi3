@@ -1,8 +1,9 @@
 /*! \file
     \ingroup OPTKING
     \brief This function reads in Force Constants H from
-    PSIF_OPTKING (in redundant internal coodinates) does a
-    BFGS update on H inverts H to form H_inv and returns H_inv.
+    PSIF_OPTKING (in possible redundant internal coodinates) does a
+    Hessian update on H, and inverts H to form H_inv and returns H_inv
+    unless an RFO step is being used in which case H is returned
 */
 
 #include <cmath>
@@ -79,15 +80,20 @@ double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &c
     free(temp_mat);
   }
 
-  H_inv = symm_matrix_invert(H,dim,0,0);
-
   /*** write new force constants H to PSIF_OPTKING ***/
   open_PSIF();
   psio_write_entry(PSIF_OPTKING, "Symmetric Force Constants",
       (char *) &(H[0][0]),dim*dim*sizeof(double));
   close_PSIF();
-  free_block(H);
-  return H_inv;
+
+  if (optinfo.rfo)  {
+    return H;
+  }
+  else {
+    H_inv = symm_matrix_invert(H,dim,0,0);
+    free_block(H);
+    return H_inv;
+  }
 }
 
 /* This functions performs update of Hessian */
@@ -173,6 +179,9 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
       dg[i] = (-1.0) * (f[i] - f_old[i]); // gradients -- not forces!
     }
 
+    // for (i=0;i<dim;++i) fprintf(outfile,"dq[%d]: %20.15lf\n",i,dq[i]);
+    // for (i=0;i<dim;++i) fprintf(outfile,"dg[%d]: %20.15lf\n",i,dg[i]);
+
     if (optinfo.H_update == OPTInfo::BFGS) {
       // Do BFGS update: Schlegel 1987 Ab Initio Methods in Quantum Chemistry 
       // Let a = DQT.DG and X = (I - DQ*DGT/a)
@@ -181,6 +190,9 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
       // you have to switch DQ and DG in the equation
   
       dot_arr(dq,dg,dim,&qg);
+
+    // fprintf(outfile,"dq dot dg = %20.15lf\n", qg);
+
       X = unit_mat(dim);
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)

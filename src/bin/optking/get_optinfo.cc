@@ -136,6 +136,11 @@ void get_optinfo() {
     free(junk);
   }
 
+  optinfo.rfo = false;
+  i=0;
+  ip_boolean("RFO", &i,0);
+  if (i) optinfo.rfo = true;
+
   // ACS (11/06) Are we getting our energies from outside of PSI3?
   optinfo.external_energies = 0;
   ip_boolean("EXTERNAL_ENERGIES",&(optinfo.external_energies),0);
