@@ -117,7 +117,7 @@ int cc_wfn(char *wfn);
 void free_3d_array(double ***A, int p, int q);
 double ***init_3d_array(int p, int q, int r);
 int ci_wfn(char *wfn);
-void orient_fragment(int natom_A, int natom_B, int P_A, int P_B, double **geom_A, double **geom_B,
+int orient_fragment(int natom_A, int natom_B, int P_A, int P_B, double **geom_A, double **geom_B,
   double **ref_coeff_A, double **ref_coeff_B, double R_AB, double theta_A, double theta_B,
   double tau, double phi_A, double phi_B, FILE *outfile);
 void zmat_point(double *A, double *B, double *C, double R_CD, double theta_BCD, double phi_ABCD, double *D);
