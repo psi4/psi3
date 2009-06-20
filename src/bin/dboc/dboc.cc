@@ -2,7 +2,7 @@
 
 /*! \file
     \ingroup DBOC
-    \brief Driver program for computing the Diagonal 
+    \brief Driver program for computing the Diagonal
       Born-Oppenheimer Correction
 */
 
@@ -102,7 +102,7 @@ namespace psi { namespace dboc {
 void parsing()
 {
   int errcod;
-  
+
   errcod = ip_string("LABEL",&Params.label,0);
   if (errcod != IPE_OK) {
     Params.label = new char[1];
@@ -286,7 +286,7 @@ double* get_atomic_masses()
     for(int atom=0; atom<Molecule.natom; atom++)
       atomic_mass[atom] = an2masses[(int)Molecule.zvals[atom]];
   }
-  
+
   //
   // Convert atomic masses to a.u.
   //
@@ -332,12 +332,12 @@ void run_psi_firstdisp(int disp)
     clean_detci_mess();
   }
   char *inputcmd = new char[80];
-  sprintf(inputcmd,"input --geomdat %d",disp);
+  sprintf(inputcmd,"input --keepoutput --geomdat %d",disp);
   int errcod = system(inputcmd);
   if (errcod) {
     done("input failed");
   }
-  errcod = system("psi3 --dboc --noinput --messy");
+  errcod = system("psi3 --keepoutput --dboc --noinput --messy");
   if (errcod) {
     done("psi3 failed");
   }
@@ -358,7 +358,7 @@ void run_psi_firstdisp(int disp)
   free_block(rref_m);
   for(int a=0; a<Molecule.natom; a++)
     BasisSets[MinusDelta]->set_center(a,geom_m_ref[a]);
-    
+
   // Read in the "-delta" displaced HF wavefunction
   HFVectors[MinusDelta] = new HFWavefunction();
 
@@ -385,12 +385,12 @@ void run_psi_otherdisp(int disp)
   // again -- just run input, get the rref, and save the wave function.
   if (!symm || (symm && disp_coord%2 == 0)) {
     char *inputcmd = new char[80];
-    sprintf(inputcmd,"input --geomdat %d",disp);
+    sprintf(inputcmd,"input --keepoutput --geomdat %d",disp);
     int errcod = system(inputcmd);
     if (errcod) {
       done("input failed");
     }
-    errcod = system("psi3 --dboc --noinput --messy");
+    errcod = system("psi3 --keepoutput --dboc --noinput --messy");
     if (errcod) {
       done("psi3 failed");
     }
@@ -406,7 +406,7 @@ void run_psi_otherdisp(int disp)
 
     // only need to update rref
     char *inputcmd = new char[80];
-    sprintf(inputcmd,"input --savemos --geomdat %d",disp);
+    sprintf(inputcmd,"input --keepoutput --savemos --geomdat %d",disp);
     int errcod = system(inputcmd);
     if (errcod) {
       done("input failed");
@@ -445,7 +445,7 @@ void init_basissets(Params_t::Coord_t* coord)
   AplusD[xyz] += 2.0*Params.delta;
   BasisSets[PlusDelta] = new BasisSet(*BasisSets[MinusDelta]);
   BasisSets[PlusDelta]->set_center(atom,AplusD);
-  
+
   if (Params.disp_per_coord == 4) {
     // BasisSetP2
     double Aplus2D[3];
@@ -494,7 +494,7 @@ void delete_hfwfns(Params_t::Coord_t* coord)
 double eval_dboc()
 {
 
-  double* atomic_mass = get_atomic_masses();  
+  double* atomic_mass = get_atomic_masses();
   const int ndisp = Params.disp_per_coord * Params.ncoord;
   double E_dboc = 0.0;
 
@@ -511,7 +511,7 @@ double eval_dboc()
       run_psi_otherdisp(disp);
       disp++;
     }
-    
+
     init_basissets(coord);
 
     // The - sign comes from the integration by parts
