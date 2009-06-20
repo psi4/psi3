@@ -92,7 +92,10 @@ void add_calculation_options()
   options_add_int("ROOT",1);
   options_add_int("START_FAVG",5);
   options_add_int("TURN_ON_ACTV",0);
-
+  options_add_int("ROTATE_MO_ANGLE",0);
+  options_add_int("ROTATE_MO_IRREP",0);
+  options_add_int("ROTATE_MO_P",1);  // P and Q are one-based
+  options_add_int("ROTATE_MO_Q",1);
 
   options_add_bool("CI_DIIS",false);
   options_add_bool("USE_DIIS",true);

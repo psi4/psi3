@@ -1,12 +1,17 @@
 #include <utility>
 #include <algorithm>
 
+#include <cmath>
+
 #include <libchkpt/chkpt.hpp>
 #include <libmoinfo/libmoinfo.h>
+#include <liboptions/liboptions.h>
 
 #include "scf.h"
 
 namespace psi{ namespace mcscf{
+
+using namespace std;
 
 void SCF::save_info()
 {
@@ -42,7 +47,7 @@ void SCF::save_info()
   _default_chkpt_lib_->wt_escf(total_energy);
   _default_chkpt_lib_->wt_eref(total_energy);
 
-
+  // Write the orbitals per irreps arrays
   _default_chkpt_lib_->wt_orbspi(&sopi[0]);
   _default_chkpt_lib_->wt_clsdpi(&docc[0]);
   _default_chkpt_lib_->wt_openpi(&actv[0]);
@@ -71,6 +76,24 @@ void SCF::save_info()
   _default_chkpt_lib_->wt_frzcpi(frz);
 
   delete[] frz;
+
+  // Save the eigenvectors after rotating them
+  if(options_get_int("ROTATE_MO_ANGLE") != 0){
+    int mo_rotate_angle = options_get_int("ROTATE_MO_ANGLE");
+    int p = options_get_int("ROTATE_MO_P") -1;  // P, Q and IRREPS are one-based
+    int q = options_get_int("ROTATE_MO_Q") -1;
+    int h = options_get_int("ROTATE_MO_IRREP") - 1;
+
+    fprintf(outfile,"\n\n  Rotating MOs %d and %d of irrep %d by %d degrees",
+                    p,q,h,mo_rotate_angle);
+    double angle = static_cast<double>(mo_rotate_angle) * acos(-1.0) / 180.0;
+    for(int i = 0; i < sopi[h]; ++i){
+      double Cp = cos(angle) * C->get(h,i,p) + sin(angle) * C->get(h,i,q);
+      double Cq = cos(angle) * C->get(h,i,q) - sin(angle) * C->get(h,i,p);
+      C->set(h,i,p,Cp);
+      C->set(h,i,q,Cq);
+    }
+  }
 
   double** C_save;
   allocate2(double,C_save,nso,nso);

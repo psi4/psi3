@@ -93,6 +93,14 @@ void SCF::iterate_scf_equations()
 
   fprintf(outfile,"\n\n%6c* SCF total energy   = %20.12f\n",' ',new_energy);
 
+
+  if(reference == tcscf){
+    fprintf(outfile,"\n\n      CI coefficients  = [");
+    for(int I = 0 ; I < nci; ++I)
+      fprintf(outfile,"%12.9f%s",ci[I], I != nci -1 ? "," : "");
+    fprintf(outfile,"]");
+  }
+
   if(moinfo_scf->get_guess_occupation()){
     fprintf(outfile,"\n  Final occupation");
     fprintf(outfile,"\n  docc = (");
@@ -101,8 +109,11 @@ void SCF::iterate_scf_equations()
     fprintf(outfile,"\n  actv = (");
     for(int h = 0; h < nirreps; ++h)  fprintf(outfile," %d",actv[h]);
     fprintf(outfile," )");
+    int sym = 0;
+    for(int h = 0; h < nirreps; ++h)
+      for(int n = 0; n < actv[h]; ++n) sym ^= h;
+    fprintf(outfile,"\n  sym  = %d",sym);
   }
-
 
   fprintf(outfile,"\n\n  End of SCF");
   fflush(outfile);
