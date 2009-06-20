@@ -1614,13 +1614,15 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
         if(out_rows_per_bucket > OutBuf.params->rowtot[Gpq])
           out_rows_per_bucket = OutBuf.params->rowtot[Gpq];
         out_nbuckets = (int) ceil((double) OutBuf.params->rowtot[Gpq]/(double) out_rows_per_bucket);
-        out_rows_left = OutBuf.params->rowtot[Gpq] % out_rows_per_bucket;
+        if(out_nbuckets == 1) out_rows_left = out_rows_per_bucket;
+        else out_rows_left = OutBuf.params->rowtot[Gpq] % out_rows_per_bucket;
 
 	in_rows_per_bucket = (dpd_memfree() - InBuf->params->coltot[Gpq])/(2 * InBuf->params->coltot[Gpq]);
 	if(in_rows_per_bucket > InBuf->params->rowtot[Grs])
 	  in_rows_per_bucket = InBuf->params->rowtot[Grs];
 	in_nbuckets = (int) ceil((double) InBuf->params->rowtot[Grs]/(double) in_rows_per_bucket);
-	in_rows_left = InBuf->params->rowtot[Grs] % in_rows_per_bucket;
+        if(in_nbuckets == 1) in_rows_left = in_rows_per_bucket;
+        else in_rows_left = InBuf->params->rowtot[Grs] % in_rows_per_bucket;
 
 	fprintf(stdout, "Gpq = %d\n", Gpq);
 	fprintf(stdout, "OutBuf.rowtot[Gpq]  = %d\n", OutBuf.params->rowtot[Gpq]);
