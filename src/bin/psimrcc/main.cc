@@ -110,6 +110,7 @@ void read_calculation_options()
   options_add_int("MAX_ITERATIONS",100);
   options_add_int("DENOMINATOR_SHIFT",0);
   options_add_int("START_DIIS",2);
+  options_add_int("TIKHONOW_OMEGA",0);  // Omega = TIKHONOW_OMEGA / 1000
 
   options_add_bool("DIIS_TRIPLES",false);
   options_add_bool("LOCK_SINGLET",false);
@@ -180,7 +181,7 @@ void init_psi(int argc, char *argv[])
 
   fprintf(outfile,"\n  MRCC          MRCC");
   fprintf(outfile,"\n   MRCC  MRCC  MRCC");
-  fprintf(outfile,"\n   MRCC  MRCC  MRCC      PSIMRCC Version 0.9.1, May, 2009");
+  fprintf(outfile,"\n   MRCC  MRCC  MRCC      PSIMRCC Version 0.9.2, May 2009");
   fprintf(outfile,"\n   MRCC  MRCC  MRCC      Multireference Coupled Cluster, written by");
   fprintf(outfile,"\n     MRCCMRCCMRCC        Francesco A. Evangelista and Andrew C. Simmonett");
   fprintf(outfile,"\n         MRCC            Compiled on %s at %s",__DATE__,__TIME__);

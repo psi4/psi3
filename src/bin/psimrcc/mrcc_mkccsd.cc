@@ -90,10 +90,13 @@ void CCMRCC::update_t1_t2_amps_mkccsd()
       for(int j=0;j<moinfo->get_nrefs();j++){
         int unique_j = moinfo->get_ref_number("a",j);
         string j_str = to_string(unique_j);
-        double term = eigenvector[j]/eigenvector[unique_i];
-        if(fabs(term)>1.0e5) {
-          term = 0.0;
-          fprintf(outfile,"\n  Warning: setting eigenvector[j]/eigenvector[unique_i] = 0.0 in T1 couplings");
+
+        double omega =  static_cast<double>(options_get_int("TIKHONOW_OMEGA")) / 1000.0;
+        double term = eigenvector[j] * eigenvector[unique_i] / (pow(eigenvector[unique_i],2.0) + pow(omega,2.0));
+
+        if(fabs(term) > 100.0) {
+          fprintf(outfile,"\n  Warning: c_nu/c_mu = %e ."
+                          "\n  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)",term);
         }
 
         blas->set_scalar("factor_mk",unique_j,Heff[unique_i][j]*term);
@@ -109,16 +112,12 @@ void CCMRCC::update_t1_t2_amps_mkccsd()
       }
     }
 
-    if(fabs(eigenvector[unique_i])>1.0e-6){
     // Update t1 for reference i
     blas->solve("t1_delta[o][v]{" + i_str + "}  =   t1_eqns[o][v]{" + i_str + "} / d'1[o][v]{" + i_str + "} - t1[o][v]{" + i_str + "}");
     blas->solve("t1_delta[O][V]{" + i_str + "}  =   t1_eqns[O][V]{" + i_str + "} / d'1[O][V]{" + i_str + "} - t1[O][V]{" + i_str + "}");
 
     blas->solve("t1[o][v]{" + i_str + "} = t1_eqns[o][v]{" + i_str + "} / d'1[o][v]{" + i_str + "}");
     blas->solve("t1[O][V]{" + i_str + "} = t1_eqns[O][V]{" + i_str + "} / d'1[O][V]{" + i_str + "}");
-    }else{
-      fprintf(outfile,"\n  Warning: I am not updating T1 for reference %d",unique_i);
-    }
 
     zero_internal_amps();
 
@@ -127,10 +126,13 @@ void CCMRCC::update_t1_t2_amps_mkccsd()
     for(int j=0;j<moinfo->get_nrefs();j++){
       int unique_j = moinfo->get_ref_number("a",j);
       string j_str = to_string(unique_j);
-      double term = eigenvector[j]/eigenvector[unique_i];
-      if(fabs(term)>1.0e5){
-        term = 0.0;
-        fprintf(outfile,"\n  Warning: setting eigenvector[j]/eigenvector[unique_i] = 0.0 in T2 couplings");
+
+      double omega =  static_cast<double>(options_get_int("TIKHONOW_OMEGA")) / 1000.0;
+      double term = eigenvector[j] * eigenvector[unique_i] / (pow(eigenvector[unique_i],2.0) + pow(omega,2.0));
+
+      if(fabs(term) > 100.0) {
+        fprintf(outfile,"\n  Warning: c_nu/c_mu = %e ."
+                        "\n  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)",term);
       }
 
       blas->set_scalar("factor_mk",unique_j,Heff[unique_i][j]*term);
@@ -256,22 +258,18 @@ void CCMRCC::update_t1_t2_amps_mkccsd()
     blas->solve("t2_delta[oO][vV]{" + i_str + "} = t2_eqns[oO][vV]{" + i_str + "} / d'2[oO][vV]{" + i_str + "} - t2[oO][vV]{" + i_str + "}");
     blas->solve("t2_delta[OO][VV]{" + i_str + "} = t2_eqns[OO][VV]{" + i_str + "} / d'2[OO][VV]{" + i_str + "} - t2[OO][VV]{" + i_str + "}");
 
-    if(fabs(eigenvector[unique_i])>1.0e-6){
-      string damp = to_string(double(options_get_int("DAMPING_FACTOR"))/1000.0);
-      string one_minus_damp = to_string(1.0-double(options_get_int("DAMPING_FACTOR"))/1000.0);
-      blas->solve("t2[oo][vv]{" + i_str + "} = " + one_minus_damp + " t2_eqns[oo][vv]{" + i_str + "} / d'2[oo][vv]{" + i_str + "}");
-      blas->solve("t2[oO][vV]{" + i_str + "} = " + one_minus_damp + " t2_eqns[oO][vV]{" + i_str + "} / d'2[oO][vV]{" + i_str + "}");
-      blas->solve("t2[OO][VV]{" + i_str + "} = " + one_minus_damp + " t2_eqns[OO][VV]{" + i_str + "} / d'2[OO][VV]{" + i_str + "}");
-      blas->solve("t2[oo][vv]{" + i_str + "} += " + damp + " t2_old[oo][vv]{" + i_str + "}");
-      blas->solve("t2[oO][vV]{" + i_str + "} += " + damp + " t2_old[oO][vV]{" + i_str + "}");
-      blas->solve("t2[OO][VV]{" + i_str + "} += " + damp + " t2_old[OO][VV]{" + i_str + "}");
-      zero_internal_amps();
-      blas->solve("t2_old[oo][vv]{" + i_str + "} = t2[oo][vv]{" + i_str + "}");
-      blas->solve("t2_old[oO][vV]{" + i_str + "} = t2[oO][vV]{" + i_str + "}");
-      blas->solve("t2_old[OO][VV]{" + i_str + "} = t2[OO][VV]{" + i_str + "}");
-    }else{
-      fprintf(outfile,"\n  Warning: I am not updating T2 for reference %d",unique_i);
-    }
+    string damp = to_string(double(options_get_int("DAMPING_FACTOR"))/1000.0);
+    string one_minus_damp = to_string(1.0-double(options_get_int("DAMPING_FACTOR"))/1000.0);
+    blas->solve("t2[oo][vv]{" + i_str + "} = " + one_minus_damp + " t2_eqns[oo][vv]{" + i_str + "} / d'2[oo][vv]{" + i_str + "}");
+    blas->solve("t2[oO][vV]{" + i_str + "} = " + one_minus_damp + " t2_eqns[oO][vV]{" + i_str + "} / d'2[oO][vV]{" + i_str + "}");
+    blas->solve("t2[OO][VV]{" + i_str + "} = " + one_minus_damp + " t2_eqns[OO][VV]{" + i_str + "} / d'2[OO][VV]{" + i_str + "}");
+    blas->solve("t2[oo][vv]{" + i_str + "} += " + damp + " t2_old[oo][vv]{" + i_str + "}");
+    blas->solve("t2[oO][vV]{" + i_str + "} += " + damp + " t2_old[oO][vV]{" + i_str + "}");
+    blas->solve("t2[OO][VV]{" + i_str + "} += " + damp + " t2_old[OO][VV]{" + i_str + "}");
+    zero_internal_amps();
+    blas->solve("t2_old[oo][vv]{" + i_str + "} = t2[oo][vv]{" + i_str + "}");
+    blas->solve("t2_old[oO][vV]{" + i_str + "} = t2[oO][vV]{" + i_str + "}");
+    blas->solve("t2_old[OO][VV]{" + i_str + "} = t2[OO][VV]{" + i_str + "}");
   }
 
 
