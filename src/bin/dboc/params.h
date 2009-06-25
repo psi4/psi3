@@ -1,6 +1,6 @@
 /*! \file
     \ingroup DBOC
-    \brief Enter brief description of file here 
+    \brief Enter brief description of file here
 */
 
 #ifndef _psi3_bin_dboc_params_h_
@@ -19,7 +19,7 @@ typedef struct {
 
   enum RefType { rhf=1, rohf=2, uhf=3};
 
-  // Cartesian coordinate structure
+  /// Cartesian coordinate structure
   typedef struct {
     int index;    // index of the coordinate
     int atom;     // which atom
@@ -37,10 +37,13 @@ typedef struct {
   Coord_t* coords;
   int nisotope;
   char** isotopes;
+  bool ref_frame_wfn; // compute wave functions in the reference frame
+                      // (i.e. avoid reorientation and COM shift associated with
+                      //  wfn computation that takes advantage of symmetry)
 
-  unsigned int num_threads;  // number of threads
-  size_t max_memory;         // maximum available memory, in bytes
-  size_t memory;             // currently available memory, in bytes
+  unsigned int num_threads;  /// number of threads
+  size_t max_memory;         /// maximum available memory, in bytes
+  size_t memory;             /// currently available memory, in bytes
   int print_lvl;
 
 } Params_t;

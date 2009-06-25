@@ -226,6 +226,11 @@ void parsing()
   errcod = ip_data(":DBOC:DISP_PER_COORD","%d",&Params.disp_per_coord,0);
   if (Params.disp_per_coord != 2 && Params.disp_per_coord != 4)
     throw std::runtime_error("dboc.cc:parsing() -- disp_per_coord must either be 2 or 4");
+
+  Params.ref_frame_wfn = false;
+  int tmp_int; errcod = ip_boolean(":DBOC:REF_FRAME_WFN",&tmp_int,0);
+  if (errcod == IPE_OK)
+    Params.ref_frame_wfn = tmp_int;
 }
 
 /*--- Open chkpt file and grab molecule info ---*/
@@ -332,7 +337,9 @@ void run_psi_firstdisp(int disp)
     clean_detci_mess();
   }
   char *inputcmd = new char[80];
-  sprintf(inputcmd,"input --keepoutput --geomdat %d",disp);
+  char* seek_full_symmetry = strdup(Params.ref_frame_wfn ? "--nocomshift --noreorient" : "" );
+  sprintf(inputcmd,"input --keepoutput --geomdat %d %s",disp,seek_full_symmetry);
+  free(seek_full_symmetry);
   int errcod = system(inputcmd);
   if (errcod) {
     done("input failed");
@@ -385,7 +392,9 @@ void run_psi_otherdisp(int disp)
   // again -- just run input, get the rref, and save the wave function.
   if (!symm || (symm && disp_coord%2 == 0)) {
     char *inputcmd = new char[80];
-    sprintf(inputcmd,"input --keepoutput --geomdat %d",disp);
+    char* seek_full_symmetry = strdup(Params.ref_frame_wfn ? "--nocomshift --noreorient" : "" );
+    sprintf(inputcmd,"input --keepoutput --geomdat %d %s",disp,seek_full_symmetry);
+    free(seek_full_symmetry);
     int errcod = system(inputcmd);
     if (errcod) {
       done("input failed");
