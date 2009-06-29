@@ -29,6 +29,11 @@ CCSort::CCSort(SortAlgorithm algorithm):
 efzc(0.0),frozen_core(0),fraction_of_memory_for_sorting(0.5)
 {
   init();
+
+  // Presort the integrals in the CCTransform class
+  trans->presort_integrals();
+
+
   // Two algorithms for forming the integrals
 
   // 1. Full in-core algorithm: the transformed integrals and CCMatrix object fit in core

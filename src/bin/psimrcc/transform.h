@@ -14,6 +14,8 @@ public:
   CCTransform();
   ~CCTransform();
   void print();
+  // Presorting
+  void presort_integrals();
   void read_oei_from_transqt() {read_oei_mo_integrals();}
   void read_integrals_from_transqt() {read_mo_integrals();}
   void read_integrals_mrpt2();
@@ -57,7 +59,7 @@ private:
   void allocate_tei_so();
   void allocate_tei_mo();
   void allocate_tei_half_transformed();
-  
+
   void free_tei_mo();
   void free_tei_so();
   void free_tei_half_transformed();
@@ -67,6 +69,10 @@ private:
   int  last_irrep_in_core;
   int  allocate_tei_mo_block(int first_irrep);
   std::map <size_t,double> integral_map;
+
+  void presort_blocks(int first_irrep, int last_irrep);
+
+  double    fraction_of_memory_for_presorting;
 };
 
 extern CCTransform* trans;

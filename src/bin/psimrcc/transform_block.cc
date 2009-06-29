@@ -35,46 +35,17 @@ using namespace std;
  */
 int CCTransform::read_tei_mo_integrals_block(int first_irrep)
 {
-  // Read all the (frozen + non-frozen) TEI in Pitzer order
-  // and store them in a in-core block-matrix
-  CCIndex* mo_indexing = blas->get_index("[n>=n]");
-
+  std::vector<size_t> pairpi = tei_mo_indexing->get_pairpi();
   int last_irrep = allocate_tei_mo_block(first_irrep);
 
-  double value;
-  size_t p,q,r,s,pq,rs,pqrs,irrep;
-  size_t ilsti,nbuf,fi,index,elements;
-  elements = 0;
-  struct iwlbuf ERIIN;
-  iwl_buf_init(&ERIIN,PSIF_MO_TEI,0.0,1,1);
-    do{
-      ilsti = ERIIN.lastbuf;
-      nbuf  = ERIIN.inbuf;
-      fi    = 0;
-      for(index = 0; index < nbuf; index++){
-        // Compute the [pq] index for this pqrs combination
-        p = abs(ERIIN.labels[fi]);
-        q = ERIIN.labels[fi+1];
-        r = ERIIN.labels[fi+2];
-        s = ERIIN.labels[fi+3];
-        value = ERIIN.values[index];
-        irrep = mo_indexing->get_tuple_irrep(p,q);
-        // Fill in only the blocks that fit
-        if((first_irrep<=irrep) && (irrep<last_irrep)){
-          pq    = mo_indexing->get_tuple_index(p,q);
-          rs    = mo_indexing->get_tuple_index(r,s);
-          pqrs  = INDEX(pq,rs);
-          tei_mo[irrep][pqrs]=value;
-        }
-        fi += 4;
-        elements++;
-      }
-      if(!ilsti)
-        iwl_buf_fetch(&ERIIN);
-    } while(!ilsti);
-  fprintf(outfile,"\n    Read %d non-zero integrals", elements);
-  fflush(outfile);
-  iwl_buf_close(&ERIIN,1);
+  // Write integrals to disk
+  for(int h = first_irrep; h < last_irrep; ++h){
+    char data_label[80];
+    sprintf(data_label,"PRESORTED_TEI_IRREP_%d",h);
+    _default_psio_lib_->read_entry(PSIF_PSIMRCC_INTEGRALS,data_label,(char*)&(tei_mo[h][0]),
+                     static_cast<size_t>(INDEX(pairpi[h]-1,pairpi[h]-1) + 1) *
+                     static_cast<size_t>(sizeof(double)));
+  }
   return(last_irrep);
 }
 
@@ -84,39 +55,41 @@ int CCTransform::read_tei_mo_integrals_block(int first_irrep)
 int CCTransform::allocate_tei_mo_block(int first_irrep)
 {
   if(first_irrep>moinfo->get_nirreps()){
-    fprintf(outfile,"\n    CCTransform: allocate_tei_mo_block() was called with first_irrep > nirreps !");
+    fprintf(outfile,"\n    Transform: allocate_tei_mo_block() was called with first_irrep > nirreps !");
     fflush(outfile);
     exit(EXIT_FAILURE);
   }
+
+  size_t available_transform_memory = static_cast<size_t>(static_cast<double>(_memory_manager_->get_FreeMemory())*fraction_of_memory_for_presorting);
+
 
   int last_irrep = first_irrep;
 
   if(tei_mo == NULL){
     // Allocate the tei_mo matrix blocks
     allocate1(double*,tei_mo,moinfo->get_nirreps());
-    for(int h=0;h<moinfo->get_nirreps();h++)
+    for(int h = 0; h < moinfo->get_nirreps(); ++h)
       tei_mo[h] = NULL;
   }
 
   // Find how many irreps we can store in 95% of the free memory
-  size_t cctransform_memory = _memory_manager_->get_FreeMemory() * 0.95;
+  std::vector<size_t> pairpi = tei_mo_indexing->get_pairpi();
   size_t matrix_size = 0;
   for(int h = first_irrep; h < moinfo->get_nirreps(); ++h){
-    if(tei_mo_indexing->get_pairpi(h)>0){
-      size_t block_size = INDEX(tei_mo_indexing->get_pairpi(h)-1,tei_mo_indexing->get_pairpi(h)-1)+1;
-      if(sizeof(double) * block_size < cctransform_memory){
-        matrix_size += block_size * sizeof(double);
-        allocate1(double,tei_mo[h],block_size)
-        zero_arr(tei_mo[h],block_size);
-        cctransform_memory -= block_size * sizeof(double);
+    size_t required_memory = (INDEX(pairpi[h]-1,pairpi[h]-1) + 1) * static_cast<size_t>(sizeof(double));
+    if(required_memory != 0){
+      if(required_memory < available_transform_memory){
+        available_transform_memory -= required_memory;
+        allocate1(double,tei_mo[h],INDEX(pairpi[h]-1,pairpi[h]-1) + 1)
+        zero_arr(tei_mo[h],INDEX(pairpi[h]-1,pairpi[h]-1) + 1);
         last_irrep++;
       }
     }else{
       last_irrep++;
     }
   }
-  fprintf(outfile,"\n    Irrep %d->%d will be read in core",first_irrep,last_irrep-1);
-  if(first_irrep==last_irrep){
+  fprintf(outfile,"\n    Integrals from irreps %d -> %d will be read in core",first_irrep,last_irrep-1);
+  if(first_irrep == last_irrep){
     fprintf(outfile,"\n    CCTransform: allocate_tei_mo_block() has not enough memory!");
     fflush(outfile);
     exit(EXIT_FAILURE);
@@ -131,12 +104,12 @@ int CCTransform::allocate_tei_mo_block(int first_irrep)
  */
 void CCTransform::free_tei_mo_integrals_block(int first_irrep, int last_irrep)
 {
-  for(int h=first_irrep;h<last_irrep;h++){
+  for(int h = first_irrep; h < last_irrep; ++h){
     if(tei_mo[h] != NULL){
       release1(tei_mo[h]);
     }
   }
-  if(last_irrep>=moinfo->get_nirreps()){
+  if(last_irrep >= moinfo->get_nirreps()){
     release1(tei_mo);
     tei_mo = NULL;
   }
@@ -153,3 +126,46 @@ double CCTransform::tei_block(int p, int q, int r, int s)
 }
 
 }} /* End Namespaces */
+
+
+//  Old algorthm for reading ints
+//  // Read all the (frozen + non-frozen) TEI in Pitzer order
+//  // and store them in a in-core block-matrix
+//  CCIndex* mo_indexing = blas->get_index("[n>=n]");
+//
+//  int last_irrep = allocate_tei_mo_block(first_irrep);
+//
+//  double value;
+//  size_t p,q,r,s,pq,rs,pqrs,irrep;
+//  size_t ilsti,nbuf,fi,index,elements;
+//  elements = 0;
+//  struct iwlbuf ERIIN;
+//  iwl_buf_init(&ERIIN,PSIF_MO_TEI,0.0,1,1);
+//    do{
+//      ilsti = ERIIN.lastbuf;
+//      nbuf  = ERIIN.inbuf;
+//      fi    = 0;
+//      for(index = 0; index < nbuf; index++){
+//        // Compute the [pq] index for this pqrs combination
+//        p = abs(ERIIN.labels[fi]);
+//        q = ERIIN.labels[fi+1];
+//        r = ERIIN.labels[fi+2];
+//        s = ERIIN.labels[fi+3];
+//        value = ERIIN.values[index];
+//        irrep = mo_indexing->get_tuple_irrep(p,q);
+//        // Fill in only the blocks that fit
+//        if((first_irrep<=irrep) && (irrep<last_irrep)){
+//          pq    = mo_indexing->get_tuple_index(p,q);
+//          rs    = mo_indexing->get_tuple_index(r,s);
+//          pqrs  = INDEX(pq,rs);
+//          tei_mo[irrep][pqrs]=value;
+//        }
+//        fi += 4;
+//        elements++;
+//      }
+//      if(!ilsti)
+//        iwl_buf_fetch(&ERIIN);
+//    } while(!ilsti);
+//  fprintf(outfile,"\n    Read %d non-zero integrals", elements);
+//  fflush(outfile);
+//  iwl_buf_close(&ERIIN,1);

@@ -6,6 +6,7 @@ namespace psi{ namespace psimrcc{
 void run_psimrcc();
 void transform_integrals();
 void mrccsd();
+void mrpt2();
 void mrccsd_check();
 void mp2_ccsd();
 

@@ -4,11 +4,10 @@
 #include <libmoinfo/libmoinfo.h>
 #include <libutil/libutil.h>
 
-#include "transform.h"
-#include "matrix.h"
 #include "algebra_interface.h"
 #include "blas.h"
-
+#include "matrix.h"
+#include "transform.h"
 
 #define CCTRANSFORM_USE_BLAS
 
@@ -31,7 +30,7 @@ namespace psi{ namespace psimrcc{
 
 using namespace std;
 
-CCTransform::CCTransform()
+CCTransform::CCTransform() : fraction_of_memory_for_presorting(0.75)
 {
   blas->add_index("[s>=s]");
   blas->add_index("[n>=n]");
@@ -49,7 +48,6 @@ CCTransform::CCTransform()
   tei_mo = NULL;
   tei_half_transformed = NULL;
 }
-
 
 CCTransform::~CCTransform()
 {
