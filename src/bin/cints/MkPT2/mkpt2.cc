@@ -1,10 +1,14 @@
 /*! \file
     \ingroup CINTS
-    \brief Enter brief description of file here 
+    \brief Enter brief description of file here
 */
 #include<cstdio>
 #include<cstring>
 #include<cstdlib>
+
+#include <vector>
+#include <numeric>
+
 #include<libint/libint.h>
 #include<libipv1/ip_lib.h>
 #include<libciomr/libciomr.h>
@@ -27,7 +31,6 @@ namespace psi { namespace CINTS {
 void run_mkpt2()
 {
   using namespace psi::CINTS::mkpt2;
-
   init_moinfo();
 
 
@@ -41,17 +44,15 @@ void run_mkpt2()
   ip_cwk_add(":MRCC");
 
 
-  int *focc = new int[Symmetry.nirreps];
-  int *docc = new int[Symmetry.nirreps];
-  int *actv = new int[Symmetry.nirreps];
-  int *fvir = new int[Symmetry.nirreps];
-
-  for(int i=0; i<Symmetry.nirreps; i++){
-    focc[i] = docc[i] = actv[i] = fvir[i] = 0;
-  }
+  std::vector<int> focc(Symmetry.nirreps,0);
+  std::vector<int> docc(Symmetry.nirreps,0);
+  std::vector<int> actv(Symmetry.nirreps,0);
+  std::vector<int> fvir(Symmetry.nirreps,0);
 
   // For single-point geometry optimizations and frequencies
-  if(chkpt_exist(chkpt_build_keyword("Current Displacement Irrep"))){
+  char* keyword = chkpt_build_keyword(const_cast<char *>("Current Displacement Irrep"));
+
+  if(chkpt_exist(keyword)){
     int   disp_irrep  = chkpt_rd_disp_irrep();
     char *save_prefix = chkpt_rd_prefix();
     int nirreps_ref;
@@ -67,40 +68,118 @@ void run_mkpt2()
     int* correlation;
     correlate(ptgrp_ref, disp_irrep, nirreps_ref, Symmetry.nirreps,correlation);
 
-    int *focc_ref    = new int[nirreps_ref];
-    int *docc_ref    = new int[nirreps_ref];
-    int *actv_ref    = new int[nirreps_ref];
-    int *fvir_ref    = new int[nirreps_ref];
+    std::vector<int> focc_ref;
+    std::vector<int> docc_ref;
+    std::vector<int> actv_ref;
+    std::vector<int> fvir_ref;
+    std::vector<int> actv_docc_ref;
 
     // build orbital information for current point group
-    read_mo_space(nirreps_ref,nfocc,focc_ref,"CORR_FOCC");
-    read_mo_space(nirreps_ref,ndocc,docc_ref,"CORR_DOCC");
-    read_mo_space(nirreps_ref,nactv,actv_ref,"CORR_ACTV");
-    read_mo_space(nirreps_ref,nfvir,fvir_ref,"CORR_FVIR");
-    for (int h=0; h < nirreps_ref; h++) {
-      focc[ correlation[h] ] += focc_ref[h];
-      docc[ correlation[h] ] += docc_ref[h];
-      actv[ correlation[h] ] += actv_ref[h];
-      fvir[ correlation[h] ] += fvir_ref[h];
+    // Read the values stored in the chkpt
+    // override if the user defines values
+    focc_ref = read_chkpt_intvec(Symmetry.nirreps,chkpt_rd_frzcpi());
+    docc_ref = read_chkpt_intvec(Symmetry.nirreps,chkpt_rd_clsdpi());
+    actv_ref = read_chkpt_intvec(Symmetry.nirreps,chkpt_rd_openpi());
+
+    for (int h = 0; h < nirreps_ref; h++)
+      docc_ref[h] -= focc_ref[h];
+
+    nfocc = std::accumulate( focc_ref.begin(), focc_ref.end(), 0 );
+    ndocc = std::accumulate( docc_ref.begin(), docc_ref.end(), 0 );
+    nactv = std::accumulate( actv_ref.begin(), actv_ref.end(), 0 );
+
+    read_mo_space(nirreps_ref,nfocc,focc_ref,"CORR_FOCC FROZEN_DOCC");
+    read_mo_space(nirreps_ref,ndocc,docc_ref,"CORR_DOCC RESTRICTED_DOCC");
+    read_mo_space(nirreps_ref,nactv,actv_ref,"CORR_ACTV ACTIVE ACTV");
+
+    read_mo_space(nirreps_ref,nfvir,fvir_ref,"CORR_FVIR FROZEN_UOCC");
+//    read_mo_space(nirreps_ref,nactv_docc,actv_docc_ref,"ACTIVE_DOCC");
+
+    for (int h = 0; h < nirreps_ref; h++) {
+      focc[ correlation[h] ]      += focc_ref[h];
+      docc[ correlation[h] ]      += docc_ref[h];
+      actv[ correlation[h] ]      += actv_ref[h];
+      fvir[ correlation[h] ]      += fvir_ref[h];
+//      actv_docc[ correlation[h] ] += actv_docc_ref[h];
     }
     chkpt_set_prefix(save_prefix);
     chkpt_commit_prefix();
     free(save_prefix);
     free(ptgrp_ref);
     delete [] correlation;
-    delete [] focc_ref;
-    delete [] docc_ref;
-    delete [] actv_ref;
-    delete [] fvir_ref;
   }else{
     // For a single-point only
-    read_mo_space(Symmetry.nirreps,nfocc,focc,"CORR_FOCC");
-    read_mo_space(Symmetry.nirreps,ndocc,docc,"CORR_DOCC");
-    read_mo_space(Symmetry.nirreps,nactv,actv,"CORR_ACTV");
-    read_mo_space(Symmetry.nirreps,nfvir,fvir,"CORR_FVIR");
+    focc = read_chkpt_intvec(Symmetry.nirreps,chkpt_rd_frzcpi());
+    docc = read_chkpt_intvec(Symmetry.nirreps,chkpt_rd_clsdpi());
+    actv = read_chkpt_intvec(Symmetry.nirreps,chkpt_rd_openpi());
+
+    for (int h = 0; h < Symmetry.nirreps; h++)
+      docc[h] -= focc[h];
+
+    nfocc = std::accumulate( focc.begin(), focc.end(), 0 );
+    ndocc = std::accumulate( docc.begin(), docc.end(), 0 );
+    nactv = std::accumulate( actv.begin(), actv.end(), 0 );
+
+    read_mo_space(Symmetry.nirreps,nfocc,focc,"CORR_FOCC FROZEN_DOCC");
+    read_mo_space(Symmetry.nirreps,ndocc,docc,"CORR_DOCC RESTRICTED_DOCC");
+    read_mo_space(Symmetry.nirreps,nactv,actv,"CORR_ACTV ACTIVE ACTV");
+    read_mo_space(Symmetry.nirreps,nfvir,fvir,"CORR_FVIR FROZEN_UOCC");
+//    read_mo_space(Symmetry.nirreps,nactv_docc,actv_docc,"ACTIVE_DOCC");
   }
 
-  
+  free(keyword);
+
+//  // For single-point geometry optimizations and frequencies
+//  if(chkpt_exist(chkpt_build_keyword("Current Displacement Irrep"))){
+//    int   disp_irrep  = chkpt_rd_disp_irrep();
+//    char *save_prefix = chkpt_rd_prefix();
+//    int nirreps_ref;
+//
+//    // read symmetry info and MOs for undisplaced geometry from
+//    // root section of checkpoint file
+//    chkpt_reset_prefix();
+//    chkpt_commit_prefix();
+//
+//    char *ptgrp_ref = chkpt_rd_sym_label();
+//
+//    // Lookup irrep correlation table
+//    int* correlation;
+//    correlate(ptgrp_ref, disp_irrep, nirreps_ref, Symmetry.nirreps,correlation);
+//
+//    int *focc_ref    = new int[nirreps_ref];
+//    int *docc_ref    = new int[nirreps_ref];
+//    int *actv_ref    = new int[nirreps_ref];
+//    int *fvir_ref    = new int[nirreps_ref];
+//
+//    // build orbital information for current point group
+//    read_mo_space(nirreps_ref,nfocc,focc_ref,"CORR_FOCC");
+//    read_mo_space(nirreps_ref,ndocc,docc_ref,"CORR_DOCC");
+//    read_mo_space(nirreps_ref,nactv,actv_ref,"CORR_ACTV");
+//    read_mo_space(nirreps_ref,nfvir,fvir_ref,"CORR_FVIR");
+//    for (int h=0; h < nirreps_ref; h++) {
+//      focc[ correlation[h] ] += focc_ref[h];
+//      docc[ correlation[h] ] += docc_ref[h];
+//      actv[ correlation[h] ] += actv_ref[h];
+//      fvir[ correlation[h] ] += fvir_ref[h];
+//    }
+//    chkpt_set_prefix(save_prefix);
+//    chkpt_commit_prefix();
+//    free(save_prefix);
+//    free(ptgrp_ref);
+//    delete [] correlation;
+//    delete [] focc_ref;
+//    delete [] docc_ref;
+//    delete [] actv_ref;
+//    delete [] fvir_ref;
+//  }else{
+//    // For a single-point only
+//    read_mo_space(Symmetry.nirreps,nfocc,focc,"CORR_FOCC");
+//    read_mo_space(Symmetry.nirreps,ndocc,docc,"CORR_DOCC");
+//    read_mo_space(Symmetry.nirreps,nactv,actv,"CORR_ACTV");
+//    read_mo_space(Symmetry.nirreps,nfvir,fvir,"CORR_FVIR");
+//  }
+
+
 
   int i, j;
   int irrep, size;

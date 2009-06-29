@@ -5,9 +5,15 @@
 #include<libciomr/libciomr.h>
 #include<libchkpt/chkpt.h>
 
+#include <vector>
+#include <string>
+
+#include <mkpt2_ints.h>
+
 extern FILE* outfile;
 
 namespace psi{ namespace CINTS{ namespace mkpt2{
+
 
 void correlate(char *ptgrp, int irrep, int& nirreps_old, int& nirreps_new,int*& arr)
 { /* This is a hack from input!!! (ACS) */
@@ -105,29 +111,92 @@ void correlate(char *ptgrp, int irrep, int& nirreps_old, int& nirreps_new,int*& 
   return;
 }
 
-
-
-void read_mo_space(int nirreps_ref,int& n, int* mo, const char* label)
+void read_mo_space(int nirreps_ref, int& n, std::vector<int>& mo, std::string labels)
 {
-  int size;
-  int stat=ip_count(label,&size,0);
-  n=0;
-  if(stat == IPE_OK){
-    if(size==nirreps_ref){
-      for(int i=0;i<size;i++){
-        stat=ip_data(label,"%d",(&(mo)[i]),1,i);
-        n+=mo[i];
+  bool read = false;
+
+  std::vector<std::string> label_vec = split(labels);
+  for(int k = 0; k < label_vec.size(); ++k){
+    int size;
+    int stat = ip_count(const_cast<char *>(label_vec[k].c_str()),&size,0); // Cast to avoid warnings
+    if(stat == IPE_OK){
+      // Defaults is to set all to zero
+      mo.assign(nirreps_ref,0);
+      n = 0;
+      if(read){
+        fprintf(outfile,"\n\n  libmoinfo has found a redundancy in the input keywords %s , please fix it!",labels.c_str());
+        fflush(outfile);
+        exit(1);
+      }else{
+        read = true;
       }
-    }else{
-      fprintf(outfile,"\n\nThe size of the %s array (%d) does not match the number of irreps (%d), please fix the input file",label,size,nirreps_ref);
-      fflush(outfile);
-      exit(1);
+      if(size==nirreps_ref){
+        for(int i=0;i<size;i++){
+          stat=ip_data(const_cast<char *>(label_vec[k].c_str()),const_cast<char *>("%d"),(&(mo)[i]),1,i); // Cast to avoid warnings
+          n += mo[i];
+        }
+      }else{
+        fprintf(outfile,"\n\n  The size of the %s array (%d) does not match the number of irreps (%d), please fix the input file",label_vec[k].c_str(),size,nirreps_ref);
+        fflush(outfile);
+        exit(1);
+      }
     }
   }
 }
 
+std::vector<int> read_chkpt_intvec(int n, int* array)
+{
+  // Read an array from chkpt and save as a STL vector
+  std::vector<int> stl_vector(&array[0],&array[n]);
+  free(array);
+  return(stl_vector);
+}
 
+std::vector<std::string> split(const std::string& str)
+{
+  // Split a string
+  typedef std::string::const_iterator iter;
+  std::vector<std::string> splitted_string;
+  iter i = str.begin();
+  while(i != str.end()){
+    // Ignore leading blanks
+    i = find_if(i,str.end(), not_space);
+    // Find the end of next word
+    iter j = find_if(i,str.end(),space);
+    // Copy the characters in [i,j)
+    if(i!=str.end())
+      splitted_string.push_back(std::string(i,j));
+    i = j;
+  }
+  return(splitted_string);
+}
 
+bool space(char c)
+{
+  return isspace(c);
+}
 
+bool not_space(char c)
+{
+  return !isspace(c);
+}
+//void read_mo_space(int nirreps_ref,int& n, int* mo, const char* label)
+//{
+//  int size;
+//  int stat=ip_count(label,&size,0);
+//  n=0;
+//  if(stat == IPE_OK){
+//    if(size==nirreps_ref){
+//      for(int i=0;i<size;i++){
+//        stat=ip_data(label,"%d",(&(mo)[i]),1,i);
+//        n+=mo[i];
+//      }
+//    }else{
+//      fprintf(outfile,"\n\nThe size of the %s array (%d) does not match the number of irreps (%d), please fix the input file",label,size,nirreps_ref);
+//      fflush(outfile);
+//      exit(1);
+//    }
+//  }
+//}
 
 }}} /* End namespaces */
