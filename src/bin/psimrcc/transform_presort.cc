@@ -4,6 +4,7 @@
 */
 
 #include <cmath>
+#include <cstdlib>
 
 #include <libpsio/psio.hpp>
 #include <libiwl/iwl.h>
@@ -11,9 +12,10 @@
 #include <libutil/libutil.h>
 #include "psifiles.h"
 
+#include "algebra_interface.h"
 #include "blas.h"
-#include "transform.h"
 #include "matrix.h"
+#include "transform.h"
 
 #define MAX(i,j) ((i>j) ? i : j)
 #define MIN(i,j) ((i>j) ? j : i)
@@ -112,7 +114,7 @@ void CCTransform::presort_blocks(int first_irrep, int last_irrep)
       fi      = 0;
       for(size_t index = 0; index < inbuf; index++){
         // Compute the [pq] index for this pqrs combination
-        size_t p = abs(ERIIN.labels[fi]);
+        size_t p = std::abs(ERIIN.labels[fi]);
         size_t q = ERIIN.labels[fi+1];
         size_t r = ERIIN.labels[fi+2];
         size_t s = ERIIN.labels[fi+3];

@@ -5,6 +5,7 @@
 #include<libciomr/libciomr.h>
 #include<libchkpt/chkpt.h>
 
+#include <algorithm>
 #include <vector>
 #include <string>
 
@@ -160,9 +161,9 @@ std::vector<std::string> split(const std::string& str)
   iter i = str.begin();
   while(i != str.end()){
     // Ignore leading blanks
-    i = find_if(i,str.end(), not_space);
+    i = std::find_if(i,str.end(), not_space);
     // Find the end of next word
-    iter j = find_if(i,str.end(),space);
+    iter j = std::find_if(i,str.end(),space);
     // Copy the characters in [i,j)
     if(i!=str.end())
       splitted_string.push_back(std::string(i,j));
