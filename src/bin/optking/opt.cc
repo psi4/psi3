@@ -22,6 +22,8 @@ command-line      internal specifier   what it does
 --points           optinfo.points       save the energy in chkpt to PSIF list
 --disp_num         optinfo.disp_num     displacement index (by default read from PSIF)
 --irrep            optinfo.irrep       the irrep (1,2,...) being displaced or computed
+--opt_report       MODE_OPT_REPORT      print out information in PSIF_OPTKING to stdout
+--fconst_init      MODE_FCONST_INIT     read or generate force constants in PSIF_OPTKING
 
 --disp_freq_grad_cart   MODE_DISP_FREQ_GRAD_CART   displaces along SA cart. coordinates
 --freq_grad_cart        MODE_FREQ_GRAD_CART        use grads in chkpt to compute freqs
@@ -60,17 +62,17 @@ extern void zmat_to_intco(void);
 extern void get_optinfo();
 extern void get_syminfo(internals &simples);
 extern void delocalize(internals &simples, cartesians &carts);
-extern void disp_user(cartesians &carts, internals &simples, 
-                      salc_set &all_salcs);
-extern int make_disp_irrep(cartesians &carts, internals &simples, 
-                    salc_set &all_salcs);
-extern int make_disp_nosymm(cartesians &carts, internals &simples, 
-                    salc_set &all_salcs);
 extern void load_ref(cartesians &carts);
-extern void freq_grad_irrep(cartesians &carts, internals &simples, 
-    salc_set &all_salcs);
-extern void freq_grad_nosymm(cartesians &carts, internals &simples, 
-    salc_set &all_salcs);
+
+extern void disp_user(cartesians &carts, internals &simples, salc_set &all_salcs);
+extern int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs);
+extern int make_disp_nosymm(cartesians &carts, internals &simples, salc_set &all_salcs);
+extern int disp_fc_grad_selected(cartesians &carts, internals &simples, salc_set &symm);
+extern void fc_grad_selected(cartesians &carts, internals &simples, salc_set &symm);
+
+extern void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs);
+extern void freq_grad_nosymm(cartesians &carts, internals &simples, salc_set &all_salcs);
+
 extern void grad_energy(cartesians &carts, internals &simples, 
                         salc_set &all_salcs);
 extern void grad_save(cartesians &carts);
@@ -78,6 +80,8 @@ extern void energy_save(cartesians &carts);
 extern int opt_step(cartesians &carts, internals &simples, salc_set &symm_salcs);
 extern int opt_step_cart(cartesians &carts, internals &simples, salc_set &symm_salcs);
 extern int *read_constraints(internals &simples);
+extern void opt_report(FILE *of);
+extern void fconst_init(cartesians &carts, internals &simples, salc_set &symm);
 
 extern int disp_freq_grad_cart(cartesians &carts);
 extern void freq_grad_cart(cartesians &carts);
@@ -138,6 +142,14 @@ int main(int argc, char **argv) {
       }
       else if (!strcmp(argv[i],"--opt_step")) {
         optinfo.mode = MODE_OPT_STEP;
+        parsed++;
+      }
+      else if (!strcmp(argv[i],"--opt_report")) {
+        optinfo.mode = MODE_OPT_REPORT;
+        parsed++;
+      }
+      else if (!strcmp(argv[i],"--fconst_init")) {
+        optinfo.mode = MODE_FCONST_INIT;
         parsed++;
       }
       else if (!strcmp(argv[i],"--freq_energy")) {
@@ -241,6 +253,14 @@ int main(int argc, char **argv) {
 
     psio_init(); psio_ipv1_config();
     get_optinfo();
+
+    // only print out information in PSIF_OPTKING
+    if (optinfo.mode == MODE_OPT_REPORT) {
+      printf("\n\tOptimization data from file 1, PSIF_OPTKING\n");
+      opt_report(stdout);
+      exit_io();
+      return 0;
+    }
 
     // generate simples from zmat
     if ( optinfo.zmat_simples && !(optinfo.simples_present)) {
@@ -348,6 +368,27 @@ int main(int argc, char **argv) {
     }
     fflush(outfile);
 
+    // read force constants from input or generate empirical ones
+    if (optinfo.mode == MODE_FCONST_INIT) {
+      salc_set symm("SYMM");
+      fprintf(outfile,"\n\tInitializing force constants.\n");
+      fconst_init(carts, simples, symm);
+      if (optinfo.print_hessian) {
+        int dim = symm.get_num();
+        double **H = block_matrix(dim,dim);
+        open_PSIF();
+        psio_read_entry(PSIF_OPTKING, "Symmetric Force Constants",
+            (char *) &(H[0][0]),dim*dim*sizeof(double));
+        close_PSIF();
+        fprintf(outfile,"\nThe Hessian (Second Derivative) Matrix\n");
+        print_mat5(H,dim,dim,outfile);
+        fprintf(outfile,"\n");
+        free_block(H);
+      } 
+      exit_io();
+      return 0;
+    }
+
     // do optimization step by gradients
     if (optinfo.mode == MODE_OPT_STEP) {
       fprintf(outfile," \n ** Taking normal optimization step. **\n");
@@ -397,21 +438,64 @@ int main(int argc, char **argv) {
       return i;
     }
 
-
-    if ((optinfo.mode == MODE_DISP_NOSYMM) || (optinfo.mode == MODE_DISP_IRREP)) {
-      // generate unique displacements
-      salc_set all_salcs;
-      all_salcs.print();
-      if (optinfo.mode == MODE_DISP_IRREP) {
-        num_disps = make_disp_irrep(carts, simples, all_salcs);
+    // displace along all or selected coordinates in an irrep
+    if (optinfo.mode == MODE_DISP_IRREP) {
+      if (optinfo.selected_fc) {
+        if (optinfo.irrep != 0) {
+          fprintf(outfile, "Irrep must be totally symmetry for selected force constant evaluation.\n");
+          exit_io(); return 0;
+        }
+        salc_set symm_salcs("SYMM");
+        symm_salcs.print();
+        num_disps = disp_fc_grad_selected(carts, simples, symm_salcs);
       }
-      else {
-        num_disps = make_disp_nosymm(carts, simples, all_salcs);
+      else { // do whole irrep
+        salc_set all_salcs;
+        all_salcs.print();
+        num_disps = make_disp_irrep(carts, simples, all_salcs);
       }
       free_info(simples.get_num());
       exit_io();
       return(num_disps);
     }
+
+    if (optinfo.mode==MODE_FREQ_GRAD_IRREP) {
+      if (optinfo.selected_fc) {
+        salc_set symm_salcs("SYMM");
+        fprintf(outfile,"\n ** Calculating selected force constants from gradients. **\n");
+        fc_grad_selected(carts, simples, symm_salcs);
+      }
+      else { // do whole irrep
+        salc_set all_salcs;
+        all_salcs.print();
+        fprintf(outfile,"\n ** Calculating frequencies from gradients. **\n");
+          freq_grad_irrep(carts, simples, all_salcs);
+      }
+      free_info(simples.get_num());
+      exit_io();
+      return(0);
+    }
+
+    // Calculate frequencies from gradients ignoring symmetry
+    if (optinfo.mode == MODE_DISP_NOSYMM) {
+      salc_set all_salcs;
+      all_salcs.print();
+      num_disps = make_disp_nosymm(carts, simples, all_salcs);
+      free_info(simples.get_num());
+      exit_io();
+      return(num_disps);
+    }
+
+    if (optinfo.mode==MODE_FREQ_GRAD_NOSYMM) {
+      fprintf(outfile,"\n ** Calculating frequencies from gradients ignorming symmetry. **\n");
+      salc_set all_salcs;
+      all_salcs.print();
+      freq_grad_nosymm(carts, simples, all_salcs);
+      free_info(simples.get_num());
+      exit_io();
+      return(0);
+    }
+
 
     if (optinfo.mode == MODE_LOAD_REF) {
       fprintf(outfile,"Loading undisplaced reference geometry to chkpt.\n");
@@ -505,18 +589,6 @@ int main(int argc, char **argv) {
       return(0);
     }
 
-    if ((optinfo.mode==MODE_FREQ_GRAD_IRREP) || (optinfo.mode==MODE_FREQ_GRAD_NOSYMM)) {
-      fprintf(outfile,"\n ** Calculating frequencies from gradients. **\n");
-      salc_set all_salcs;
-      all_salcs.print();
-      if (optinfo.mode == MODE_FREQ_GRAD_IRREP)
-        freq_grad_irrep(carts, simples, all_salcs);
-      else
-        freq_grad_nosymm(carts, simples, all_salcs);
-      free_info(simples.get_num());
-      exit_io();
-      return(0);
-    }
 
     if (optinfo.mode==MODE_FREQ_GRAD_CART) {
       fprintf(outfile,"\n ** Calculating frequencies from gradients. **\n");

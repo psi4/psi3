@@ -123,11 +123,14 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
   fprintf(outfile,"using %d-point formula for modes of irrep %d.\n",
       optinfo.points, irrep+1);
 
-  fprintf(outfile,"\nDisplacement Matrix\n");
-  print_mat5(displacements, ndisps, all_salcs.get_num(), outfile);
+  if (optinfo.print_hessian) {
+    fprintf(outfile,"\nDisplacement Matrix\n");
+    print_mat5(displacements, ndisps, all_salcs.get_num(), outfile);
+  }
 
   /*** generate and store Micro_iteration cartesian geometries ***/
   micro_geoms = block_matrix(ndisps, dim_carts);
+/*
   if (optinfo.freeze_intrafragment) { // compute new geometry analytically
     int simple, intco_type, sub_index, sub_index2, J, simple_b, nf, disp, xyz, frag;
     int A_natom, B_natom, *A_atom, *B_atom, *frag_atom, *frag_allatom;
@@ -218,7 +221,8 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
     free(frag_atom);
     free(frag_allatom);
   }
-  else {  /* do iterative back-transformation */
+  else {  // do iterative back-transformation
+*/
     for (i=0;i<ndisps;++i)  {
       sprintf(disp_label,"Displaced geometry %d in a.u.\n",i+1);
       success = new_geom(carts,simples,all_salcs,displacements[i],0,
@@ -229,7 +233,7 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
         exit(PSI_RETURN_FAILURE);
       }
     }
-  }
+//  }
   free_block(displacements);
 
   open_PSIF();

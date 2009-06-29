@@ -161,20 +161,20 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
 
   for (i=0;i<simples.frag.get_num();++i) {
     if (simples.frag.get_coord_on(i,0)) {
-      if (optinfo.frag_dist_rho == 1) val = 30.0;
-      else val = 0.50;
+      if (optinfo.frag_dist_rho == 1) val = 100.0;
+      else val = 0.01;
       f[++count] = val;
     }
     if (simples.frag.get_coord_on(i,1))
-      f[++count] = 0.05;
+      f[++count] = 0.001;
     if (simples.frag.get_coord_on(i,2))
-      f[++count] = 0.05;
+      f[++count] = 0.001;
     if (simples.frag.get_coord_on(i,3))
-      f[++count] = 0.01;
+      f[++count] = 0.001;
     if (simples.frag.get_coord_on(i,4))
-      f[++count] = 0.01;
+      f[++count] = 0.001;
     if (simples.frag.get_coord_on(i,5))
-      f[++count] = 0.01;
+      f[++count] = 0.001;
    }
    free(coord);
 

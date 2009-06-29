@@ -40,9 +40,9 @@ namespace psi { namespace optking {
 #define SPANNED_IRREP_TOL (0.05)         /* if character greater than this, irrep projected and kept */
 #define LABEL_LENGTH (4) // for point group and irrep labels
 /* step size limits */
-#define STEP_LIMIT (0.1)     /* max step size if coord has small value */
+
 #define STEP_LIMIT_CART (0.3) /* default max change in value of one cartesian coordinate if cartesian=true */
-#define STEP_PERCENT (0.3)   /* if coord large valued, max percentage allowed for step */
+#define STEP_PERCENT (0.2)   /* if coord large valued, max percentage allowed for step */
 #define NONLINEAR_DIST (1.0E-4) /* designed to exclude angle for CO2 if angle exceeds 179 */
 #define MIN_DQ_STEP (1.0E-12)
 #define MIN_CART_OUT (1.0E-12)
@@ -65,10 +65,14 @@ namespace psi { namespace optking {
 #define MODE_FREQ_ENERGY_CART  (23)
 #define MODE_GRAD_SAVE        (24)
 #define MODE_ENERGY_SAVE      (25)
-#define MODE_RESET_PREFIX      (26)
-#define MODE_DISP_NUM_PLUS      (27)
-#define MODE_DELETE_BINARIES    (28)
-#define MODE_TEST_BMAT    (29)
+#define MODE_RESET_PREFIX     (26)
+#define MODE_DISP_NUM_PLUS    (27)
+#define MODE_DELETE_BINARIES  (28)
+#define MODE_TEST_BMAT        (29)
+#define MODE_OPT_REPORT       (30)
+#define MODE_DISP_INTERFRAGMENT      (31)
+#define MODE_FREQ_GRAD_INTERFRAGMENT (32)
+#define MODE_FCONST_INIT (33)
 
 extern "C" {
   EXTERN FILE *infile, *outfile;
@@ -128,6 +132,8 @@ struct OPTInfo {
   int print_fconst;
 
 /* optimization parameters */
+  bool ts;  // search for a transition state? 
+  bool selected_fc; // choose coordinates for which to get force constants
   int cartesian;
   int optimize;
   int redundant;
@@ -137,7 +143,11 @@ struct OPTInfo {
   int zmat_simples;
   enum { NONE, BFGS, MS, POWELL, BOFILL} H_update;
   int H_update_use_last;
-  bool rfo;
+  bool rfo; // whether to use rfo step
+  bool rfo_follow_root; // whether to follow an initial root
+  int rfo_root; // which root to follow
+  double step_energy_limit; // fraction error in energy prediction to tolerate
+  double step_energy_limit_back; // fraction error to tolerate in guess step backward
   int dertype;
   int numerical_dertype;
   int iteration;
@@ -164,7 +174,6 @@ struct OPTInfo {
   int frag_dist_rho;
   int fix_interfragment;
   int fix_intrafragment;
-  int freeze_intrafragment;
   int analytic_interfragment;
 
 /* Back-transformation parameters */
@@ -176,6 +185,8 @@ struct OPTInfo {
   double cos_tors_near_1_tol;
   double cos_tors_near_neg1_tol;
   double sin_phi_denominator_tol;
+  double step_limit; // opt_step makes this the max step size of an internal coordinate, for
+                     // internals smaller than it is
 
   int nfragment;
   int *natom_per_fragment;

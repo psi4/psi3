@@ -30,11 +30,9 @@ void get_optinfo() {
   optinfo.micro_iteration = 0;
   open_PSIF();
   if (psio_tocscan(PSIF_OPTKING, "Iteration") != NULL)
-    psio_read_entry(PSIF_OPTKING, "Iteration",
-        (char *) &(optinfo.iteration),sizeof(int));
+    psio_read_entry(PSIF_OPTKING, "Iteration", (char *) &(optinfo.iteration),sizeof(int));
   if (psio_tocscan(PSIF_OPTKING, "Micro_iteration") != NULL)
-    psio_read_entry(PSIF_OPTKING, "Micro_iteration",
-        (char *) &(optinfo.micro_iteration),sizeof(int));
+    psio_read_entry(PSIF_OPTKING, "Micro_iteration", (char *) &(optinfo.micro_iteration),sizeof(int));
   close_PSIF();
 
   optinfo.dertype = 0;
@@ -79,12 +77,6 @@ void get_optinfo() {
   ip_boolean("FIX_INTRAFRAGMENT", &(optinfo.fix_intrafragment),0);
   optinfo.fix_interfragment = 0;
   ip_boolean("FIX_INTERFRAGMENT", &(optinfo.fix_interfragment),0);
-  optinfo.freeze_intrafragment = 0;
-  ip_boolean("FREEZE_INTRAFRAGMENT", &(optinfo.freeze_intrafragment),0);
-  if (optinfo.freeze_intrafragment) {
-    fprintf(outfile,"Freeze_intrafragment option not yet working - try Fix_intrafragment or Fix_interfragment instead.");
-    optinfo.freeze_intrafragment = 0;
-  }
   optinfo.analytic_interfragment = 1;
   ip_boolean("ANALYTIC_INTERFRAGMENT", &(optinfo.analytic_interfragment),0);
 
@@ -112,6 +104,10 @@ void get_optinfo() {
     optinfo.optimize = 0;
   }
 
+  // only use listed force constants for finite differences
+  if (ip_exist("SELECTED_FC",0))
+    optinfo.selected_fc = true;
+
   optinfo.freq_irrep = -1;
   if (ip_exist("FREQ_IRREP",0)) {
     ip_data("FREQ_IRREP","%d",&(optinfo.freq_irrep),0);
@@ -136,16 +132,32 @@ void get_optinfo() {
     free(junk);
   }
 
-  optinfo.rfo = false;
   i=0;
   ip_boolean("RFO", &i,0);
-  if (i) optinfo.rfo = true;
+  optinfo.rfo = (i ? true : false);
+
+  i=0;
+  ip_boolean("RFO_FOLLOW_ROOT", &i,0);
+  optinfo.rfo_follow_root = (i ? true : false);
+
+  i=1;
+  ip_data("RFO_ROOT", "%d", &i,0);
+  optinfo.rfo_root = i-1;
+
+  optinfo.step_energy_limit = 0.4; // fraction error in energy prediction to tolerate
+  errcod = ip_data("STEP_ENERGY_LIMIT", "%lf", &tval,0);
+  if (errcod == IPE_OK) optinfo.step_energy_limit = tval;
+
+  //fraction error to accept in guess step backward
+  optinfo.step_energy_limit_back = optinfo.step_energy_limit * 0.50;
+  errcod = ip_data("STEP_ENERGY_LIMIT_BACK", "%lf", &tval,0);
+  if (errcod == IPE_OK) optinfo.step_energy_limit_back = tval;
 
   // ACS (11/06) Are we getting our energies from outside of PSI3?
   optinfo.external_energies = 0;
   ip_boolean("EXTERNAL_ENERGIES",&(optinfo.external_energies),0);
 
-  optinfo.H_update_use_last = 6;
+  optinfo.H_update_use_last = 3;
   ip_data("H_UPDATE_USE_LAST","%d",&(optinfo.H_update_use_last),0);
   optinfo.mix_types = 1;
   ip_boolean("MIX_TYPES",&(optinfo.mix_types),0);
@@ -162,6 +174,14 @@ void get_optinfo() {
   errcod = ip_data("STEP_LIMIT_CART","%lf",&tval,0);
   if (errcod == IPE_OK)
     optinfo.step_limit_cart = tval;
+
+  // max change in value of internal - much less important now that backward
+  // corrective steps are implemented;
+  // old default 6-09 was 0.1
+  optinfo.step_limit = 1.0;
+  errcod = ip_data("STEP_LIMIT","%lf",&tval,0);
+  if (errcod == IPE_OK)
+    optinfo.step_limit = tval;
 
   /* takes values of 1,2,3 for x,y,z for location of first dummy of linear bend*/
   optinfo.dummy_axis_1 = 2;
@@ -271,6 +291,7 @@ void get_optinfo() {
     fprintf(outfile,"zmat_simples:  %d\n",optinfo.zmat_simples);
     fprintf(outfile,"redundant:     %d\n",optinfo.redundant);
     fprintf(outfile,"cartesian:     %d\n",optinfo.cartesian);
+    fprintf(outfile,"searching for: %d\n", optinfo.ts ? "transition state" : "minimum");
 
     if (optinfo.H_update == OPTInfo::NONE)
       fprintf(outfile,"H_update:     None\n");
@@ -285,6 +306,8 @@ void get_optinfo() {
 
     fprintf(outfile,"H_update_use_last: %d\n",optinfo.H_update_use_last);
     fprintf(outfile,"step_limit_cart: %f\n",optinfo.step_limit_cart);
+    fprintf(outfile,"step_energy_limit : %f\n",optinfo.step_energy_limit);
+    fprintf(outfile,"step_energy_limit_back: %f\n",optinfo.step_energy_limit_back);
     fprintf(outfile,"mix_types:     %d\n",optinfo.mix_types);
     fprintf(outfile,"delocalize:    %d\n",optinfo.delocalize);
     fprintf(outfile,"conv:          %.1e\n",optinfo.conv);
@@ -297,7 +320,8 @@ void get_optinfo() {
     fprintf(outfile,"bt_max_iter:   %d\n",optinfo.bt_max_iter);
     fprintf(outfile,"bt_max_dq_conv:    %.1e\n",optinfo.bt_dq_conv);
     fprintf(outfile,"bt_max_dx_conv:    %.1e\n",optinfo.bt_dx_conv);
-    fprintf(outfile,"freeze_intrafragment:    %d\n",optinfo.freeze_intrafragment);
+    fprintf(outfile,"fix_interfragment:   %d\n",optinfo.fix_interfragment);
+    fprintf(outfile,"fix_intrafragment::  %d\n",optinfo.fix_intrafragment);
     fprintf(outfile,"analytic_interfragment:   %d\n",optinfo.analytic_interfragment);
     fprintf(outfile,"cos_tors_near_1_tol:     %10.6e\n",
         optinfo.cos_tors_near_1_tol);

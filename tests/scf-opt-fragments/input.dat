@@ -5,7 +5,6 @@ psi: (
   multiplicity = 1
   wfn = scf
   jobtype = opt
-  H_update = bofill
   basis = dz
   puream = true
   units = au

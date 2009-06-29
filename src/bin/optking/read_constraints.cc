@@ -41,7 +41,10 @@ int *read_constraints(internals &simples) {
     /* second time through allocate memory and add internals */
     for (cnt=1; cnt>=0; --cnt) {
 
-      if (!cnt) constraints = new int[optinfo.nconstraints];
+      if (!cnt) {
+        constraints = new int[optinfo.nconstraints];
+        fprintf(outfile,"Coordinates to be constrained:\n");
+      }
 
       if (ip_exist("STRE",0)) {
         num_type=0;
@@ -58,7 +61,6 @@ int *read_constraints(internals &simples) {
             swap(&a,&b);
             id = simples.stre.get_id_from_atoms(a-1,b-1);
             constraints[iconstraints++] = simples.id_to_index(id);
-            if (iconstraints == 1) fprintf(outfile,"Coordinates to be constrained:\n");
             fprintf(outfile,"Stretch %d: %d %d\n", id, a, b);
           }
           else {
@@ -83,7 +85,6 @@ int *read_constraints(internals &simples) {
             swap(&a,&c);
             id = simples.bend.get_id_from_atoms(a-1,b-1,c-1);
             constraints[iconstraints++] = simples.id_to_index(id);
-            if (iconstraints == 1) fprintf(outfile,"Coordinates to be constrained:\n");
             fprintf(outfile,"Angle %d: %d %d %d\n", id, a, b, c);
           }
           else {
@@ -109,7 +110,6 @@ int *read_constraints(internals &simples) {
             swap(&a,&c);
             id = simples.lin_bend.get_id_from_atoms(a-1,b-1,c-1,1);
             constraints[iconstraints++] = simples.id_to_index(id);
-            if (iconstraints == 1) fprintf(outfile,"Coordinates to be constrained:\n");
             fprintf(outfile,"Lin1 %d: %d %d %d\n", id, a, b, c);
           }
           else {
@@ -117,6 +117,7 @@ int *read_constraints(internals &simples) {
           }
         }
       }
+
       if (ip_exist("LIN2",0)) {
         num_type = 0;
         ip_count("LIN2",&num_type,0);
@@ -134,7 +135,6 @@ int *read_constraints(internals &simples) {
             swap(&a,&c);
             id = simples.lin_bend.get_id_from_atoms(a-1,b-1,c-1,2);
             constraints[iconstraints++] = simples.id_to_index(id);
-            if (iconstraints == 1) fprintf(outfile,"Coordinates to be constrained:\n");
             fprintf(outfile,"Lin2 %d: %d %d %d\n", id, a, b, c);
           }
           else {
@@ -161,7 +161,6 @@ int *read_constraints(internals &simples) {
             swap_tors(&a,&b,&c,&d);
             id = simples.tors.get_id_from_atoms(a-1,b-1,c-1,d-1);
             constraints[iconstraints++] = simples.id_to_index(id);
-            if (iconstraints == 1) fprintf(outfile,"Coordinates to be constrained:\n");
             fprintf(outfile,"Torsion %d: %d %d %d %d\n", id, a, b, c, d);
           }
           else {
@@ -187,7 +186,6 @@ int *read_constraints(internals &simples) {
           if (!cnt) {
             id = simples.out.get_id_from_atoms(a-1,b-1,c-1,d-1,sign);
             constraints[iconstraints++] = simples.id_to_index(id);
-            if (iconstraints == 1) fprintf(outfile,"Coordinates to be constrained:\n");
             fprintf(outfile,"Out-of-plane %d: %d %d %d %d\n", id, a, b, c, d);
           }
           else {
@@ -196,32 +194,36 @@ int *read_constraints(internals &simples) {
         }
       }
 
-      if (optinfo.fix_interfragment) { /* freeze all interfragment coordinates */
-        for (i=0; i<simples.frag.get_num(); ++i) {
-          id = simples.frag.get_id(i);
-          if (!cnt) {
-            constraints[iconstraints++] = simples.id_to_index(id);
-            if (iconstraints == 1) fprintf(outfile,"Coordinates to be constrained:\n");
-            fprintf(outfile,"Fragment coordinate %d\n", id);
-          } 
-          else {
-            optinfo.nconstraints++;
-          } 
-        }
-      }
-      else if (ip_exist("FRAG",0)) { /* freeze user-specified interfragment coordinates */
+      // freeze user-specified interfragment coordinates
+      if (ip_exist("FRAG",0)) {
         num_type = 0;
         ip_count("FRAG",&num_type,0);
         for(i=0; i<num_type; ++i) {
           ip_data("FRAG","%d",&(id),2,i,0);
           if (!cnt) {
             constraints[iconstraints++] = simples.id_to_index(id);
-            if (iconstraints == 1) fprintf(outfile,"Coordinates to be constrained:\n");
             fprintf(outfile,"Fragment coordinate %d\n", id);
-          } 
+          }
           else {
             optinfo.nconstraints++;
           } 
+        }
+      }
+
+      if (optinfo.fix_interfragment) {
+        for (i=0; i<simples.frag.get_num(); ++i) {
+          id = simples.frag.get_id(i); // executes once for each interfragment set
+          for (int I=0; I<6; ++I) {
+            if (simples.frag.get_coord_on(i,I)) {
+              if (!cnt) {
+                constraints[iconstraints++] = simples.id_to_index(id) + I;
+                fprintf(outfile,"Fragment coordinate %d \n", id+I);
+              }
+              else {
+                optinfo.nconstraints++;
+              }
+            }
+          }
         }
       }
 
@@ -232,7 +234,6 @@ int *read_constraints(internals &simples) {
           if (intco_type != FRAG_TYPE) {
             if (!cnt) {
               constraints[iconstraints++] = simples.id_to_index(id);
-              if (iconstraints == 1) fprintf(outfile,"Coordinates to be constrained:\n");
               if (iconstraints == 1) fprintf(outfile,"Simple coordinates:\n");
               fprintf(outfile," %d", id);
             }

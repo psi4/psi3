@@ -7,7 +7,7 @@ psi: (
   wfn = mp2
   dertype = first
   docc = (8 0 4 4)
-  H_update = bofill
+%  H_update = bofill
 
 % specify the geometry as two fragments
   nfragments = 2

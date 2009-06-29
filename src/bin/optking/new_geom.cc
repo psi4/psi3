@@ -28,7 +28,7 @@ double *compute_q(internals &simples, salc_set &all_salcs);
 double **compute_B(internals &simples, salc_set &all_salcs);
 double **compute_G(double **B, int num_intcos, cartesians &carts);
 
-int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
+bool new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
     double *dq, int print_flag, int restart_geom_file,
     char *disp_label, int disp_num, int last_disp, double *return_geom) {
 
@@ -81,12 +81,14 @@ int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
   // fprintf(outfile,"Target internal coordinates\n");
   // for (i=0;i<nsalcs;++i) fprintf(outfile,"%15.10lf\n",q[i]);
 
-  fprintf(outfile,"\nBack-transformation to cartesian coordinates...\n");
-  fprintf(outfile," Iter   RMS Delta(dx)   RMS Delta(dq)\n");
+  fprintf(outfile,"\n\tBack-transformation to cartesian coordinates...\n");
+  fprintf(outfile,"\t------------------------------------\n");
+  fprintf(outfile,"\t Iter  RMS Delta(dx)  RMS Delta(dq)\n");
+  fprintf(outfile,"\t------------------------------------\n");
 
   // Start back transformation iterations
   bmat_iter_done = 0;
-  count = 1;
+  count = 0;
   do {
     free_block(G);
     free_block(G_inv);
@@ -110,21 +112,6 @@ int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
     fprintf(outfile,"dx increments\n");
     for (i=0;i<dim_carts;++i)
       fprintf(outfile,"%15.10lf\n",dx[i]);
-    */
-
-    /*
-    if (count == 1) {
-      // dx_sum = RMS change in cartesian coordinates 
-      dx_sum = dq_sum = 0.0;
-      for (i=0;i<dim_carts;++i)
-        dx_sum += dx[i]*dx[i];
-      dx_sum = sqrt(dx_sum / dim_carts);
-      // dq_sum = RMS change in internal coordinates
-      for (i=0;i< nsalcs;++i)
-        dq_sum += dq[i]*dq[i];
-      dq_sum = sqrt(dq_sum / ((double) nsalcs));
-      fprintf (outfile,"%5d %15.12lf %15.12lf\n", count, dx_sum, dq_sum);
-    }
     */
 
     // Compute new cart coordinates in au, then B matrix
@@ -174,7 +161,7 @@ int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
 
     if ((dx_sum < optinfo.bt_dx_conv) && (dq_sum < optinfo.bt_dq_conv))
       bmat_iter_done = 1;
-    fprintf (outfile,"%5d %15.12lf %15.12lf\n", count+1, dx_sum, dq_sum);
+    fprintf (outfile,"\t%5d %12.1e %12.1e\n", count+1, dx_sum, dq_sum);
 
     // store new x in angstroms 
     for (i=0;i<dim_carts;++i)
@@ -185,16 +172,18 @@ int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
 
   free_block(B);
 
+  fprintf(outfile,"\t------------------------------------\n");
+
   if (count >= optinfo.bt_max_iter) {
     fprintf(outfile,"Could not converge new geometry in %d iterations.\n",count);
     if (optinfo.mode == MODE_OPT_STEP)
-      return 0; /* let opt_step try smaller steps */
+      return false; /* let opt_step try smaller steps */
     else 
       exit(2);
   }
-  else
-    fprintf(outfile,
-        "Convergence to displaced geometry took %d iterations.\n",count);
+  else {
+    fprintf(outfile, "\nSuccessfully converged to displaced geometry.\n");
+  }
 
   // take x back to bohr
   scalar_mult(1.0/_bohr2angstroms, x, dim_carts);
@@ -265,7 +254,7 @@ int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
   free_block(G_inv);
   free_block(u);
   free_block(temp_mat);
-  return 1;
+  return true;
 }
 
 }} /* namespace psi::optking */

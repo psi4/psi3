@@ -138,6 +138,11 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
   }
   free_block(all_f_q);
 
+/*
+fprintf(outfile,"full_all_f_q in freq_grad_irrep\n");
+print_mat2(&(full_all_f_q[24]), 12, all_salcs.get_num(), outfile);
+*/
+
   // apply three point formula - to generate force constants in this irrep block
   fprintf(outfile,"Applying %d-point formula\n",optinfo.points_freq_grad_ints);
   force_constants = block_matrix(nsalcs,nsalcs);
@@ -149,7 +154,6 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
         (full_all_f_q[2*ii][jj]-full_all_f_q[2*ii+1][jj]) / (2.0 * optinfo.disp_size);
     }
 
-  //print_mat2(full_all_f_q, num_disps, salcs.get_num(), outfile);
   free_block(full_all_f_q);
 
   fprintf(outfile,"\n\t** Force Constants\n");

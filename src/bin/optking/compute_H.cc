@@ -38,7 +38,7 @@ double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &c
   dim = symm.get_num();
   H = block_matrix(dim,dim);
 
-  /*** Read in force constants from PSIF_OPTKING ***/
+  // Read in force constants from PSIF_OPTKING
   open_PSIF();
   psio_read_entry(PSIF_OPTKING, "Symmetric Force Constants",
       (char *) &(H[0][0]),dim*dim*sizeof(double));
@@ -47,11 +47,7 @@ double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &c
 
   // Do BFGS update on H if desired and possible
   // Current point has already been put in PSIF_OPTKING by opt_step()
-  n_previous = 0;
-  open_PSIF();
-  if ( psio_tocscan(PSIF_OPTKING, "Num. of Previous Entries") != NULL)
-    psio_read_entry(PSIF_OPTKING, "Num. of Previous Entries", (char *) &n_previous, sizeof(int));
-  close_PSIF();
+  n_previous = optinfo.iteration+1;
 
   if (optinfo.H_update == OPTInfo::NONE || n_previous < 2 )
     fprintf(outfile,"\nNo Hessian update performed.\n");
@@ -61,12 +57,13 @@ double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &c
   if (optinfo.print_hessian) {
     fprintf(outfile,"The Hessian (Second Derivative) Matrix\n");
     print_mat5(H,dim,dim,outfile);
+    fprintf(outfile,"\n");
   }
 
   // Project redundancies out of H according to Peng JCC 1996
   // and produce invertible Hessian
   // Form H <= PHP + 1000 (1-P)
-  if (optinfo.redundant) {
+  if ((optinfo.redundant) || (optinfo.constraints_present)) {
     temp_mat = block_matrix(dim,dim);
     mmult(P,0,H,0,temp_mat,0,dim,dim,dim,0);
     mmult(temp_mat,0,P,0,H,0,dim,dim,dim,0);
@@ -86,14 +83,7 @@ double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &c
       (char *) &(H[0][0]),dim*dim*sizeof(double));
   close_PSIF();
 
-  if (optinfo.rfo)  {
-    return H;
-  }
-  else {
-    H_inv = symm_matrix_invert(H,dim,0,0);
-    free_block(H);
-    return H_inv;
-  }
+  return H;
 }
 
 /* This functions performs update of Hessian */
@@ -123,12 +113,10 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
   x_old = init_array(3*natom);
 
   /*** read/compute current internals and forces from PSIF_OPTKING ***/
-  open_PSIF();
-  psio_read_entry(PSIF_OPTKING, "Num. of Previous Entries", (char *) &n_previous, sizeof(int));
-  close_PSIF();
+  n_previous = optinfo.iteration+1;
 
-  sprintf(force_string,"Previous Internal Forces %d", n_previous-1);
-  sprintf(x_string,"Previous Cartesian Values %d", n_previous-1);
+  sprintf(force_string,"Internal Forces %d", n_previous-1);
+  sprintf(x_string,"Cartesian Values %d", n_previous-1);
   open_PSIF();
   psio_read_entry(PSIF_OPTKING, force_string, (char *) &(f[0]), dim * sizeof(double));
   psio_read_entry(PSIF_OPTKING, x_string, (char *) &(x[0]), 3*natom*sizeof(double));
@@ -151,8 +139,8 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
 
   for (i_step=step_start; i_step<(n_previous-1); ++i_step) {
     /* read/compute old internals and forces from PSIF_OPTKING ***/
-    sprintf(force_string,"Previous Internal Forces %d", i_step);
-    sprintf(x_string,"Previous Cartesian Values %d", i_step);
+    sprintf(force_string,"Internal Forces %d", i_step);
+    sprintf(x_string,"Cartesian Values %d", i_step);
     open_PSIF();
     psio_read_entry(PSIF_OPTKING, force_string, (char *) &(f_old[0]), dim * sizeof(double));
     psio_read_entry(PSIF_OPTKING, x_string, (char *) &(x_old[0]), 3*natom*sizeof(double));
@@ -168,7 +156,7 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
         skip = 1;
     }
     if (skip) {
-      fprintf(outfile,"Warning a coordinate has passed through 0. Skipping a BFGS update.\n");
+      fprintf(outfile,"Warning a coordinate has passed through 0. Skipping Hessian update.\n");
       skip = 0;
       continue;
     }
@@ -297,6 +285,7 @@ void fconst_init(cartesians &carts, internals &simples, salc_set &symm) {
   open_PSIF();
   if (psio_tocscan(PSIF_OPTKING, "Symmetric Force Constants") != NULL) {
     close_PSIF();
+    fprintf(outfile,"\tSymmetric Force Constants found in PSIF_OPTKING\n");
     return;
   }
   close_PSIF();

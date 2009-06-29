@@ -66,7 +66,7 @@ void print_mat5(double **matrix, int rows, int cols, FILE *of) {
         fprintf(outfile,"\n");
         col = 0;
       }
-      fprintf(of,"%9.5lf",matrix[i][j]);
+      fprintf(of," %9.5lf",matrix[i][j]);
       ++col;
     }
     fprintf(outfile,"\n");
@@ -321,6 +321,32 @@ L200:
          }
       ii=kk; goto L200;
 }
+
+void opt_report(FILE *of) {
+  int i;
+  double tval, tval2, tval3, tval4;
+  char keyword[30];
+  fprintf(of,"\n\t            ****  Optimization Summary  ****\n");
+  fprintf(of,"\t----------------------------------------------------------------------\n");
+  fprintf(of,"\t Step         Energy             Delta(E)      RMS force    MAX force \n");
+  fprintf(of,"\t----------------------------------------------------------------------\n");
+  open_PSIF();
+  tval2 = 0;
+  for (i=0; i<optinfo.iteration; ++i) {
+    sprintf(keyword,"Energy %d", i);
+    psio_read_entry(PSIF_OPTKING, keyword, (char *) &tval, sizeof(double));
+    sprintf(keyword,"RMS force %d", i);
+    psio_read_entry(PSIF_OPTKING, keyword, (char *) &tval3, sizeof(double));
+    sprintf(keyword,"MAX force %d", i);
+    psio_read_entry(PSIF_OPTKING, keyword, (char *) &tval4, sizeof(double));
+    fprintf(of,"\t %3d  %18.12lf  %18.12lf  %10.2e   %10.2e\n", i+1, tval, tval - tval2, tval3 ,tval4);
+    tval2 = tval;
+  }
+  fprintf(of,"\t----------------------------------------------------------------------\n");
+  fprintf(of,"\n");
+  close_PSIF();
+}
+
 
 }} /* namespace psi::optking */
 
