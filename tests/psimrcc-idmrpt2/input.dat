@@ -1,0 +1,21 @@
+psi: (
+  wfn             = idmkpt2
+  reference       = twocon
+  label           = "F2 Mk-MRPT2 cc-pVDZ"
+  jobtype         = sp
+  dertype         = none
+  basis           = cc-pVDZ
+  multp           = 1
+  docc            = (2 0 1 1 0 2 1 1)
+  actv            = (1 0 0 0 0 1 0 0)
+  zmat = (
+    F
+    F 1 1.41193
+  )
+  convergence     =   12
+  freeze_core     = true
+)
+
+mrcc:(
+  corr_wfn        = pt2
+)

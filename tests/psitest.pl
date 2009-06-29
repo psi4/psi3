@@ -2682,7 +2682,7 @@ sub seek_psimrcc
       $psimrcc = $data[6];
       return $psimrcc;
     }
-    if (/\* MK-MRPT2 total energy/) {
+    if (/\* Mk-MRPT2 total energy/) {
       @data = split(/ +/, $_);
       $psimrcc = $data[6];
       return $psimrcc;
