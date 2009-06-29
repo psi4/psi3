@@ -101,8 +101,8 @@ void IDMRPT2::compute_mrpt2_energy()
     fprintf(outfile,"\n    @PT %5d   %20.15f  %11.4e",cycle,current_energy,delta_energy);
     old_energy=current_energy;
 
-    if(cycle>options_get_int("MAX_ITERATIONS")){
-      fprintf(outfile,"\n\n\tThe calculation did not converge in %d cycles\n\tQuitting PSIMRCC\n",options_get_int("MAX_ITERATIONS"));
+    if(cycle>options_get_int("MAXITER")){
+      fprintf(outfile,"\n\n\tThe calculation did not converge in %d cycles\n\tQuitting PSIMRCC\n",options_get_int("MAXITER"));
       fflush(outfile);
       exit(1);
     }

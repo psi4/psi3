@@ -96,7 +96,7 @@ psi: (
   mcscf             = "mcscf"
 
   % PSIMRCC
-  transqt_psimrcc   = "transqt --psimrcc"
+  transqt_psimrcc   = "transqt2"
   psimrcc           = "psimrcc"
 
   % NONBONDED

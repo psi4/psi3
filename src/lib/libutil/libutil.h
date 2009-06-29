@@ -5,6 +5,8 @@
 #include <iostream>
 #include <sstream>
 #include <sys/time.h>
+
+#include "class_macros.h"
 #include "memory_manager.h"
 
 using namespace std;

@@ -95,8 +95,8 @@ void CCMRCC::compute_energy(void(*updater)())
       blas->diis(cycle,delta_energy,DiisCC);
     }
 
-    if(cycle>options_get_int("MAX_ITERATIONS")){
-      fprintf(outfile,"\n\n\tThe calculation did not converge in %d cycles\n\tQuitting PSIMRCC\n",options_get_int("MAX_ITERATIONS"));
+    if(cycle>options_get_int("MAXITER")){
+      fprintf(outfile,"\n\n\tThe calculation did not converge in %d cycles\n\tQuitting PSIMRCC\n",options_get_int("MAXITER"));
       fflush(outfile);
       exit(1);
     }

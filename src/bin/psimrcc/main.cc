@@ -107,7 +107,7 @@ void read_calculation_options()
   options_add_int("NEL",0);
   options_add_int("ROOT",1);
   options_add_int("CONVERGENCE",9);
-  options_add_int("MAX_ITERATIONS",100);
+  options_add_int("MAXITER",100);
   options_add_int("DENOMINATOR_SHIFT",0);
   options_add_int("START_DIIS",2);
   options_add_int("TIKHONOW_OMEGA",0);  // Omega = TIKHONOW_OMEGA / 1000

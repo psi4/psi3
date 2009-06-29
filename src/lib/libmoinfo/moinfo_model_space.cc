@@ -14,14 +14,23 @@ using namespace std;
 
 namespace psi {
 
+std::string MOInfo::get_determinant_label(int i)
+{
+  return references[i].get_label();
+}
+
 void MOInfo::print_model_space()
 {
   fprintf(outfile,"\n");
   fprintf(outfile,"\n  Model space");
   fprintf(outfile,"\n  ------------------------------------------------------------------------------");
-  for(int i=0;i<references.size();i++){
-    fprintf(outfile,"\n  %2d) ",i);
-    references[i].print_occ();
+  if(references.size() < 21){
+    for(int i = 0; i < references.size(); ++i){
+      fprintf(outfile,"\n  %3d) ",i);
+      references[i].print_occ();
+    }
+  }else{
+    fprintf(outfile,"\n  There are %d determinants in the model space",static_cast<int>(references.size()));
   }
   fprintf(outfile,"\n  ==============================================================================\n");
 }

@@ -80,6 +80,29 @@ void MOInfo::SlaterDeterminant::print_occ()
 }
 
 /**
+ * @fn MOInfo::SlaterDeterminant::print(int n)
+ */
+std::string MOInfo::SlaterDeterminant::get_label()
+{
+  std::string label;
+  label = "|";
+  int counter = 0;
+  for(int h=0;h<moinfo->get_nirreps();h++){
+    label += "[";
+    for(int i=0;i<moinfo->get_docc(h);i++){
+      label += get_occupation_symbol(counter);
+    }
+    for(int i=0;i<moinfo->get_actv(h);i++){
+      label += get_occupation_symbol(counter);
+    }
+    counter += moinfo->get_extr(h);
+    label += "]";
+  }
+  label += ">";
+  return label;
+}
+
+/**
  * @fn MOInfo::SlaterDeterminant::get_internal_excitations(...)
  */
 void MOInfo::SlaterDeterminant::get_internal_excitations(SlaterDeterminant& det,double& sign,

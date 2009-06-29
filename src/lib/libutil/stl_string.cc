@@ -14,8 +14,8 @@ namespace psi {
 
 std::vector<std::string> split(const std::string& str){
   // Split a string
-  typedef string::const_iterator iter;
-  strvec splitted_string;
+  typedef std::string::const_iterator iter;
+  std::vector<std::string> splitted_string;
   iter i = str.begin();
   while(i != str.end()){
     // Ignore leading blanks
@@ -24,7 +24,7 @@ std::vector<std::string> split(const std::string& str){
     iter j = find_if(i,str.end(),space);
     // Copy the characters in [i,j)
     if(i!=str.end())
-      splitted_string.push_back(string(i,j));
+      splitted_string.push_back(std::string(i,j));
     i = j;
   }
   return(splitted_string);
@@ -45,7 +45,7 @@ std::vector<std::string> split_indices(const std::string& str){
     iter j = find_if(i,str.end(),closing_square_bracket);
     // Copy the characters in [i,j]
     if(i!=str.end())
-      splitted_string.push_back(string(i,j+1));
+      splitted_string.push_back(std::string(i,j+1));
     i = j;
   }
   return(splitted_string);

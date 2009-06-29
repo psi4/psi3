@@ -59,6 +59,7 @@ public:
                                                   std::vector<std::pair<int,int> >& alpha_operators,
                                                   std::vector<std::pair<int,int> >& beta_operators);
     char        get_occupation_symbol(int i);
+    std::string get_label();
     intvec      get_aocc();
     intvec      get_bocc();
     intvec      get_avir();
@@ -74,7 +75,7 @@ public:
 
 public:
   friend class SlaterDeterminant;
-  MOInfo();
+  MOInfo(bool silent_ = false, bool use_liboptions_ = true);
   ~MOInfo();
 
   // DGEMM timing
@@ -150,6 +151,8 @@ public:
   int         get_nunique()                            {return(unique_refs.size());};
   int         get_ref_number(std::string str,int n);
   int         get_ref_size(std::string str);
+  std::string get_determinant_label(int i);
+
   strvec      get_matrix_names(std::string str);
   intvec      get_aocc(std::string str,int i);
   intvec      get_bocc(std::string str,int i);
@@ -162,6 +165,8 @@ public:
   intvec      get_buoc(int i);
   intvec      get_determinant(int i);  // Array with occupation of reference i (in all ordering)
 
+
+
   intpairvec  get_alpha_internal_excitation(int i,int j);
   intpairvec  get_beta_internal_excitation(int i,int j);
   double      get_sign_internal_excitation(int i,int j);
@@ -170,6 +175,7 @@ private:
   void        tuning();
   void        read_info();
   void        read_mo_spaces();
+  void        read_mo_spaces2();
   void        compute_mo_mappings();
   void        print_info();
   void        print_mo();

@@ -24,11 +24,33 @@ using namespace std;
 
 namespace psi {
 
-MOInfo::MOInfo() : MOInfoBase()
+MOInfo::MOInfo(bool silent_, bool use_liboptions_) : MOInfoBase(silent_,use_liboptions_)
 {
   /***************
     Set defaults
   ***************/
+//  OrbitalSpace focc_os("focc","f");
+//  OrbitalSpace docc_os("docc","d");
+//  OrbitalSpace actv_os("actv","a");
+//  OrbitalSpace extr_os("extr","e");
+//  OrbitalSpace fvir_os("fvir","x");
+//
+//  OrbitalSpace occ_os("occ","o");
+//  occ_os.add_subspace(docc);
+//  occ_os.add_subspace(actv);
+//
+//  OrbitalSpace vir_os("vir","v");
+//  vir_os.add_subspace(actv);
+//  vir_os.add_subspace(extr);
+//
+//  mo_spaces.add_subspace(focc);
+//  mo_spaces.add_subspace(occ);
+//  mo_spaces.add_subspace(vir);
+//  mo_spaces.add_subspace(fvir);
+//
+//  mo_spaces.print();
+
+
   no_damp_convergence = 1.0e-9;
   dgemm_timing        = 0.0;
   scf                 = NULL;
@@ -41,39 +63,60 @@ MOInfo::MOInfo() : MOInfoBase()
   nall  = 0;
   nextr = 0;
 
+//  read_mo_spaces2();
+
   read_info();
   read_mo_spaces();
   compute_mo_mappings();
-  print_info();
-  print_mo();
 
+  if(!silent){
+    print_info();
+    print_mo();
+  }
   // Determine the wave function irrep
 
-  // The first irrep in the input is 1
-  wfn_sym = 1;
-  string wavefunction_sym_str = options_get_str("WFN_SYM");
-  to_lower(wavefunction_sym_str);
+  if(use_liboptions){
+    // The first irrep in the input is 1
+    wfn_sym = 1;
+    string wavefunction_sym_str = options_get_str("WFN_SYM");
+    to_lower(wavefunction_sym_str);
 
-  for(int h=0; h < nirreps; ++h){
-    string irr_label_str = irr_labs[h];
-    trim_spaces(irr_label_str);
-    to_lower(irr_label_str);
-    if(wavefunction_sym_str==irr_label_str){
-      wfn_sym = h;
+    for(int h=0; h < nirreps; ++h){
+      string irr_label_str = irr_labs[h];
+      trim_spaces(irr_label_str);
+      to_lower(irr_label_str);
+      if(wavefunction_sym_str==irr_label_str){
+        wfn_sym = h;
+      }
+      if(to_string(h+1) == wavefunction_sym_str){
+        wfn_sym = h;
+      }
     }
-    if(to_string(h+1) == wavefunction_sym_str){
-      wfn_sym = h;
-    }
+
+    // The lowest root in the input is 1, here we subtract one
+    root = options_get_int("ROOT") - 1;
   }
-
-  // The lowest root in the input is 1, here we subtract one
-  root = options_get_int("ROOT") - 1;
 }
 
 MOInfo::~MOInfo()
 {
   free_memory();
 }
+
+
+
+///*!
+//    \fn MOInfo::read_mo_spaces()
+// */
+//void MOInfo::read_mo_spaces2()
+//{
+//  read_recursively(mo_spaces);
+//}
+//
+//void read_recursively()
+//{
+//
+//}
 
 void MOInfo::setup_model_space()
 {

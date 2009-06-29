@@ -3,10 +3,13 @@
  *  @ingroup (PSIMRCC)
  *  @brief The base class for all the many-body methods
 */
-
 #include <iostream>
-#include <cmath>
+
 #include <algorithm>
+#include <cmath>
+#include <functional>
+#include <utility>
+#include <vector>
 
 #include <liboptions/liboptions.h>
 #include <libutil/libutil.h>
@@ -340,16 +343,28 @@ void CCManyBody::print_method(const char* text)
 
 void CCManyBody::print_eigensystem(int ndets, double** Heff,double*& eigenvector)
 {
-  fprintf(outfile,"\n\n  Heff Matrix\n");
-  for(int i=0;i<ndets;i++){
-    fprintf(outfile,"\n  ");
-    for(int j=0;j<ndets;j++)
-      fprintf(outfile," %22.15f",Heff[i][j]);
+  if(ndets < 8){
+    fprintf(outfile,"\n\n  Heff Matrix\n");
+    for(int i=0;i<ndets;i++){
+      fprintf(outfile,"\n  ");
+      for(int j=0;j<ndets;j++)
+        fprintf(outfile," %22.15f",Heff[i][j]);
+    }
   }
-  fprintf(outfile,"\n\n  Eigenvector   Eigenvector^2\n");
-  for(int i=0;i<ndets;i++)
-    fprintf(outfile,"\n  %9.6f   %9.6f",eigenvector[i],eigenvector[i]*eigenvector[i]);
-  fprintf(outfile,"\n");
+
+  std::vector<std::pair<double,int> > eigenvector_index_pair;
+  for(int i = 0; i < ndets; ++i)
+    eigenvector_index_pair.push_back(make_pair(eigenvector[i]*eigenvector[i],i));
+  sort(eigenvector_index_pair.begin(),eigenvector_index_pair.end(),greater<pair<double,int> >());
+  int max_size_list = std::min(10,static_cast<int>(eigenvector_index_pair.size()));
+  fprintf(outfile,"\n\n  Most important determinants in the wave function");
+  fprintf(outfile,"\n\n  determinant  eigenvector   eigenvector^2\n");
+  for(int i = 0; i < max_size_list; ++i){
+    fprintf(outfile,"\n  %11d   %9.6f    %9.6f  %s",eigenvector_index_pair[i].second
+                                             ,eigenvector[eigenvector_index_pair[i].second]
+                                             ,eigenvector_index_pair[i].first
+                                             ,moinfo->get_determinant_label(eigenvector_index_pair[i].second).c_str());
+  }
 }
 
 /**
@@ -407,31 +422,36 @@ double CCManyBody::diagonalize_Heff(int root,int ndets, double** Heff,double*& e
     sort_eigensystem(ndets,real,imaginary,left,right);
 
     if(initial){
-    fprintf(outfile,"\n\n  Heff Matrix\n");
-    for(int i=0;i<ndets;i++){
-      fprintf(outfile,"\n  ");
-      for(int j=0;j<ndets;j++)
-        fprintf(outfile," %22.15f",Heff[i][j]);
-    }
+      if(ndets < 8){
+        fprintf(outfile,"\n\n  Heff Matrix\n");
+        for(int i=0;i<ndets;i++){
+          fprintf(outfile,"\n  ");
+          for(int j=0;j<ndets;j++)
+            fprintf(outfile," %22.12f",Heff[i][j]);
+        }
 
-    fprintf(outfile,"\n\n  Left Matrix\n");
-    for(int i=0;i<ndets;i++){
-      fprintf(outfile,"\n  ");
-      for(int j=0;j<ndets;j++)
-        fprintf(outfile," %22.15f",left[j][i]);
-    }
+        fprintf(outfile,"\n\n  Left Matrix\n");
+        for(int i=0;i<ndets;i++){
+          fprintf(outfile,"\n  ");
+          for(int j=0;j<ndets;j++)
+            fprintf(outfile," %22.12f",left[j][i]);
+        }
 
-    fprintf(outfile,"\n\n  Right Matrix\n");
-    for(int i=0;i<ndets;i++){
-      fprintf(outfile,"\n  ");
-      for(int j=0;j<ndets;j++)
-        fprintf(outfile," %22.15f",right[j][i]);
-    }
+        fprintf(outfile,"\n\n  Right Matrix\n");
+        for(int i=0;i<ndets;i++){
+          fprintf(outfile,"\n  ");
+          for(int j=0;j<ndets;j++)
+            fprintf(outfile," %22.12f",right[j][i]);
+        }
 
-    fprintf(outfile,"\n\n  Real                  Imaginary\n");
-    for(int i=0;i<ndets;i++)
-      fprintf(outfile,"\n  %22.15f   %22.15f",real[i],imaginary[i]);
-    fprintf(outfile,"\n");
+        fprintf(outfile,"\n\n  Real                  Imaginary\n");
+        for(int i=0;i<ndets;i++)
+          fprintf(outfile,"\n  %22.12f   %22.12f",real[i],imaginary[i]);
+        fprintf(outfile,"\n");
+      }else{
+        fprintf(outfile,"\n\n  There are too many determinants to print the eigensystem");
+      }
+      fprintf(outfile,"\n\n  The eigenvalue for root %d is %.12f (%.12f)",root,real[root],imaginary[root]);
     }
 
     // Select the eigenvector to follow

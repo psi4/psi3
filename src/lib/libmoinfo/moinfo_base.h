@@ -15,9 +15,10 @@
 #include <string>
 #include <libutil/libutil.h>
 
+#include "orbital_space.h"
+
 typedef std::vector<int>                    intvec;
 typedef std::vector<bool>                   boolvec;
-
 
 namespace psi {
 
@@ -25,7 +26,7 @@ class Chkpt;
 
 class MOInfoBase{
 public:
-  MOInfoBase();
+  MOInfoBase(bool silent_ = false, bool use_liboptions_ = true);
   ~MOInfoBase();
 
   double      get_nuclear_energy()               const {return(nuclear_energy);}
@@ -77,11 +78,16 @@ protected:
   int         nactive_ael;
   int         nactive_bel;
 
+  OrbitalSpace mo_spaces;
+
+
   size_t*     ioff;
   intvec      sopi;
   intvec      docc;
   intvec      actv;
   bool        guess_occupation;
+  bool        silent;
+  bool        use_liboptions;
 
   double      nuclear_energy;
 

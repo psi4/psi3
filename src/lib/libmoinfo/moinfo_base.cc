@@ -16,11 +16,13 @@ using namespace std;
 
 namespace psi {
 
-MOInfoBase::MOInfoBase()
+MOInfoBase::MOInfoBase(bool silent_,bool use_liboptions_) : silent(silent_), use_liboptions(use_liboptions_)
 {
   startup();
-  charge       = options_get_int("CHARGE");
-  multiplicity = options_get_int("MULTP");
+  if(use_liboptions){
+    charge       = options_get_int("CHARGE");
+    multiplicity = options_get_int("MULTP");
+  }
 }
 
 MOInfoBase::~MOInfoBase()
