@@ -141,7 +141,10 @@ struct OPTInfo {
   int do_only_displacements;
   int zmat;
   int zmat_simples;
+
   enum { NONE, BFGS, MS, POWELL, BOFILL} H_update;
+  enum { FISCHER, SCHLEGEL} empirical_H;
+
   int H_update_use_last;
   bool rfo; // whether to use rfo step
   bool rfo_follow_root; // whether to follow an initial root

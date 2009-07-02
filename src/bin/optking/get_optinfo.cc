@@ -113,7 +113,6 @@ void get_optinfo() {
     ip_data("FREQ_IRREP","%d",&(optinfo.freq_irrep),0);
   }
 
-
   optinfo.H_update = OPTInfo::BFGS;
   if (ip_exist("H_UPDATE",0)) {
     errcod = ip_string("H_UPDATE",&(junk),0);
@@ -129,6 +128,18 @@ void get_optinfo() {
       optinfo.H_update = OPTInfo::BOFILL;
     else
       fprintf(outfile,"Unable to understand H_UPDATE keyword entry.\n");
+    free(junk);
+  }
+
+  optinfo.empirical_H = OPTInfo::SCHLEGEL;
+  if (ip_exist("EMPIRICAL_H",0)) {
+    errcod = ip_string("EMPIRICAL_H",&(junk),0);
+    if (!strcmp(junk,"FISCHER"))
+      optinfo.empirical_H = OPTInfo::FISCHER;
+    else if (!strcmp(junk,"SCHLEGEL"))
+      optinfo.empirical_H = OPTInfo::SCHLEGEL;
+    else
+      fprintf(outfile,"Unable to understand EMPIRICAL_H keyword entry.\n");
     free(junk);
   }
 

@@ -143,6 +143,13 @@ class cartesians {
     double get_atomic_num(int i) { return atomic_num[i]; }
     double get_fatomic_num(int i) { return fatomic_num[i]; }
     cartesians();
+    double R(int i, int j) {
+      int xyz;
+      double tval = 0.0;
+      for (xyz=0; xyz<3; ++xyz)
+        tval += (coord[3*i+xyz] - coord[3*j+xyz]) * (coord[3*i+xyz] - coord[3*j+xyz]);
+      return sqrt(tval);
+    }
 };
 
 }} /* namespace psi::optking */
