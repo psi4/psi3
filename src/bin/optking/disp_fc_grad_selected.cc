@@ -54,6 +54,7 @@ int disp_fc_grad_selected(cartesians &carts, internals &simples, salc_set &symm)
     errcod = ip_data("SELECTED_FC", "%d", &j, 1, i);
     coord2salc[i] = j-1;
     if (errcod != IPE_OK) throw("could not read selected_fc\n");
+    if (j > nsymm) throw("SELECTED_FC coordinate value is too large - there aren't that many symm salcs.");
   }
 
   // assume all coordinates are totally symmetric and using 3-point formula

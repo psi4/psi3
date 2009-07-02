@@ -315,6 +315,12 @@ void get_optinfo() {
     else if (optinfo.H_update == OPTInfo::BOFILL)
       fprintf(outfile,"H_update:     Bofill\n");
 
+    if (optinfo.empirical_H == OPTInfo::SCHLEGEL)
+      fprintf(outfile,"empirical_H:  Schlegel\n");
+    else if (optinfo.empirical_H == OPTInfo::FISCHER)
+      fprintf(outfile,"empirical_H:  Fischer\n");
+
+
     fprintf(outfile,"H_update_use_last: %d\n",optinfo.H_update_use_last);
     fprintf(outfile,"step_limit_cart: %f\n",optinfo.step_limit_cart);
     fprintf(outfile,"step_energy_limit : %f\n",optinfo.step_energy_limit);

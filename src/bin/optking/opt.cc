@@ -440,19 +440,28 @@ int main(int argc, char **argv) {
 
     // displace along all or selected coordinates in an irrep
     if (optinfo.mode == MODE_DISP_IRREP) {
-      if (optinfo.selected_fc) {
-        if (optinfo.irrep != 0) {
-          fprintf(outfile, "Irrep must be totally symmetry for selected force constant evaluation.\n");
-          exit_io(); return 0;
+      try {
+        if (optinfo.selected_fc) {
+          if (optinfo.irrep != 0)
+            throw("Irrep must be totally symmetry for selected force constant evaluation.\n");
+          salc_set symm_salcs("SYMM");
+          symm_salcs.print();
+          num_disps = disp_fc_grad_selected(carts, simples, symm_salcs);
         }
-        salc_set symm_salcs("SYMM");
-        symm_salcs.print();
-        num_disps = disp_fc_grad_selected(carts, simples, symm_salcs);
+        else { // do whole irrep
+          salc_set all_salcs;
+          all_salcs.print();
+          num_disps = make_disp_irrep(carts, simples, all_salcs);
+        }
       }
-      else { // do whole irrep
-        salc_set all_salcs;
-        all_salcs.print();
-        num_disps = make_disp_irrep(carts, simples, all_salcs);
+      catch (const char * s) {
+        fprintf(outfile,"%s\n",s);
+        fprintf(outfile,"MODE_DISP_IRREP failed.\n");
+        printf("%s\n",s);
+        printf("MODE_DISP_IRREP failed.\n");
+        free_info(simples.get_num());
+        exit_io();
+        abort();
       }
       free_info(simples.get_num());
       exit_io();

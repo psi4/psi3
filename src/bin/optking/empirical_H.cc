@@ -49,9 +49,12 @@ inline int period(double ZA) {
   else                     return 5;
 }
 
+// compute force constants between fragments
+double fragment_distance_fc(fragment_class &frag, cartesians &carts);
 
 void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
   int i, j, k, atomA, atomB, atomC, atomD, simple, count = -1, perA, perB, L;
+  int a, b;
   double rAB, rBC, rABcov, rBCcov, rBDcov, prefactor_i;
   double A, B, C, D, E, r1[3], r2[3], r3[3], tval;
   double *f, val, *coord, norm_r1, norm_r2, norm_r3;
@@ -141,9 +144,30 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
     }
     for (i=0;i<simples.frag.get_num();++i) {
       if (simples.frag.get_coord_on(i,0)) {
-        if (optinfo.frag_dist_rho == 1) val = 100.0;
-        else val = 0.01;
-        f[++count] = val;
+        // if (optinfo.frag_dist_rho == 1) val = 100.0;
+        // else val = 0.01;
+        int min_a,min_b;
+        rAB = 1e6;
+        // find minimum distance between two atoms, one in each fragment
+        for (a=0; a<simples.frag.get_A_natom(i); ++a) {
+          atomA = simples.frag.get_A_atom(i,a);
+          for (b=0; b<simples.frag.get_B_natom(i); ++b) {
+            atomB = simples.frag.get_B_atom(i,b);
+            tval = carts.R(atomA,atomB);
+            if (tval < rAB) {
+              rAB = tval;
+              min_a = atomA;
+              min_b = atomB;
+            }
+          }
+        }
+        rABcov = Rcov(carts.get_atomic_num(min_a), carts.get_atomic_num(min_b));
+        A = 0.3601; B = 1.944;
+        tval = A * exp(-B*(rAB - rABcov));
+        if (optinfo.frag_dist_rho == 1)
+          tval *= pow(rAB,4);
+        tval *= _hartree2J*1.0E18 / SQR(_bohr2angstroms);
+        f[++count] = tval;
       }
       if (simples.frag.get_coord_on(i,1))
         f[++count] = 0.001;
@@ -179,10 +203,6 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
       rBCcov = Rcov(carts.get_atomic_num(atomB), carts.get_atomic_num(atomC));
       rAB = carts.R(atomA, atomB);
       rBC = carts.R(atomB, atomC);
-printf("rABcov %15.10lf\n",rABcov);
-printf("rBCcov %15.10lf\n",rBCcov);
-printf("rAB %15.10lf\n",rAB);
-printf("rBC %15.10lf\n",rBC);
 
       A = 0.089; B = 0.11; C = 0.44; D = -0.42;
 
@@ -226,9 +246,28 @@ printf("rBC %15.10lf\n",rBC);
     }
     for (i=0;i<simples.frag.get_num();++i) {
       if (simples.frag.get_coord_on(i,0)) {
-        if (optinfo.frag_dist_rho == 1) val = 100.0;
-        else val = 0.01;
-        f[++count] = val;
+        int min_a,min_b;
+        rAB = 1e6;
+        // find minimum distance between two atoms, one in each fragment
+        for (a=0; a<simples.frag.get_A_natom(i); ++a) {
+          atomA = simples.frag.get_A_atom(i,a);
+          for (b=0; b<simples.frag.get_B_natom(i); ++b) {
+            atomB = simples.frag.get_B_atom(i,b);
+            tval = carts.R(atomA,atomB);
+            if (tval < rAB) {
+              rAB = tval;
+              min_a = atomA;
+              min_b = atomB;
+            }
+          }
+        }
+        rABcov = Rcov(carts.get_atomic_num(min_a), carts.get_atomic_num(min_b));
+        A = 0.3601; B = 1.944;
+        tval = A * exp(-B*(rAB - rABcov));
+        if (optinfo.frag_dist_rho == 1)
+          tval *= pow(rAB,4);
+        tval *= _hartree2J*1.0E18 / SQR(_bohr2angstroms);
+        f[++count] = tval;
       }
       if (simples.frag.get_coord_on(i,1))
         f[++count] = 0.001;
@@ -285,4 +324,3 @@ printf("rBC %15.10lf\n",rBC);
 }
 
 }}
-
