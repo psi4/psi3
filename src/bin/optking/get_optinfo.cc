@@ -58,14 +58,26 @@ void get_optinfo() {
       optinfo.numerical_dertype = 1;
   }
 
+  // only use listed force constants for finite differences
+  if (ip_exist("SELECTED_FC",0))
+    optinfo.selected_fc = true;
+
   /* optimize in cartesian coordinates and ignore redundant/delocalize keywords */
   optinfo.cartesian = 0;
   ip_boolean("CARTESIAN", &(optinfo.cartesian),0);
+
   optinfo.redundant = 1; optinfo.delocalize = 0;
-  if ((optinfo.mode == MODE_DISP_IRREP) || (optinfo.mode == MODE_DISP_NOSYMM) ) 
-    { optinfo.redundant = 0; optinfo.delocalize =1; }
+
   if ( optinfo.numerical_dertype == 1 )
     { optinfo.redundant = 0; optinfo.delocalize =1; }
+
+  /// if user selects fc, assume the ones present are redundant or OK anyway
+  if ((optinfo.mode == MODE_DISP_IRREP) || (optinfo.mode == MODE_DISP_NOSYMM) ) {
+    if (!optinfo.selected_fc) {
+      optinfo.redundant = 0; optinfo.delocalize =1;
+    }
+  }
+
   ip_boolean("DELOCALIZE", &(optinfo.delocalize),0);
   if (optinfo.delocalize)
     optinfo.redundant = 0;
@@ -103,10 +115,6 @@ void get_optinfo() {
     optinfo.mode = MODE_DISP_USER;
     optinfo.optimize = 0;
   }
-
-  // only use listed force constants for finite differences
-  if (ip_exist("SELECTED_FC",0))
-    optinfo.selected_fc = true;
 
   optinfo.freq_irrep = -1;
   if (ip_exist("FREQ_IRREP",0)) {
