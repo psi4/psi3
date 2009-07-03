@@ -1,4 +1,4 @@
-/*! \file
+/*
     \ingroup OPTKING
     \brief This function reads in Force Constants H from
     PSIF_OPTKING (in possible redundant internal coodinates) does a
@@ -179,12 +179,15 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
   
       dot_arr(dq,dg,dim,&qg);
 
-    // fprintf(outfile,"dq dot dg = %20.15lf\n", qg);
+     // fprintf(outfile,"dq dot dg = %20.15lf\n", qg);
 
       X = unit_mat(dim);
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)
           X[i][j] -= (dg[i] * dq[j]) / qg ; 
+
+      // fprintf(outfile,"Xmat\n");
+      // print_mat5(X,dim,dim,outfile);
   
       temp_mat = block_matrix(dim,dim);
       mmult(X,0,H,0,temp_mat,0,dim,dim,dim,0);

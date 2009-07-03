@@ -194,10 +194,8 @@ void get_optinfo() {
   if (errcod == IPE_OK)
     optinfo.step_limit_cart = tval;
 
-  // max change in value of internal - much less important now that backward
-  // corrective steps are implemented;
-  // old default 6-09 was 0.1
-  optinfo.step_limit = 1.0;
+  // max change in a simple internal coordinate in bohr or radian
+  optinfo.step_limit = 0.2;
   errcod = ip_data("STEP_LIMIT","%lf",&tval,0);
   if (errcod == IPE_OK)
     optinfo.step_limit = tval;
@@ -333,6 +331,7 @@ void get_optinfo() {
     fprintf(outfile,"step_limit_cart: %f\n",optinfo.step_limit_cart);
     fprintf(outfile,"step_energy_limit : %f\n",optinfo.step_energy_limit);
     fprintf(outfile,"step_energy_limit_back: %f\n",optinfo.step_energy_limit_back);
+    fprintf(outfile,"step_limit: %f\n",optinfo.step_limit);
     fprintf(outfile,"mix_types:     %d\n",optinfo.mix_types);
     fprintf(outfile,"delocalize:    %d\n",optinfo.delocalize);
     fprintf(outfile,"conv:          %.1e\n",optinfo.conv);

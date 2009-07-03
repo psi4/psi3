@@ -42,7 +42,6 @@ namespace psi { namespace optking {
 /* step size limits */
 
 #define STEP_LIMIT_CART (0.3) /* default max change in value of one cartesian coordinate if cartesian=true */
-#define STEP_PERCENT (0.2)   /* if coord large valued, max percentage allowed for step */
 #define NONLINEAR_DIST (1.0E-4) /* designed to exclude angle for CO2 if angle exceeds 179 */
 #define MIN_DQ_STEP (1.0E-12)
 #define MIN_CART_OUT (1.0E-12)
@@ -151,6 +150,7 @@ struct OPTInfo {
   int rfo_root; // which root to follow
   double step_energy_limit; // fraction error in energy prediction to tolerate
   double step_energy_limit_back; // fraction error to tolerate in guess step backward
+  double step_limit; // max change in au or radians
   int dertype;
   int numerical_dertype;
   int iteration;
@@ -188,8 +188,6 @@ struct OPTInfo {
   double cos_tors_near_1_tol;
   double cos_tors_near_neg1_tol;
   double sin_phi_denominator_tol;
-  double step_limit; // opt_step makes this the max step size of an internal coordinate, for
-                     // internals smaller than it is
 
   int nfragment;
   int *natom_per_fragment;

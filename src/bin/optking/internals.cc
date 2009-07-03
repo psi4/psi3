@@ -29,23 +29,24 @@ int is_unique(int a, int b, int c, int d, int *aa, int *bb, int *cc, int *dd);
 int internals :: index_to_id(int index) {
   int i, I, count = -1, id = -1;
   for (i=0;i<stre.get_num();++i)
-    if (++count == index) {id = stre.get_id(i); break;}
+    if (++count == index) id = stre.get_id(i);
   for (i=0;i<bend.get_num();++i)
-    if (++count == index) {id = bend.get_id(i); break;}
+    if (++count == index) id = bend.get_id(i);
   for (i=0;i<tors.get_num();++i)
-    if (++count == index) {id = tors.get_id(i); break;}
+    if (++count == index) id = tors.get_id(i);
   for (i=0;i<out.get_num();++i)
-    if (++count == index) {id = out.get_id(i); break;}
+    if (++count == index) id = out.get_id(i);
   for (i=0;i<lin_bend.get_num();++i)
-    if (++count == index) {id = lin_bend.get_id(i); break;}
+    if (++count == index) id = lin_bend.get_id(i);
   /* we assume an id number of the fragment set plus the index 0-5 of the coordinate in the set */
   for (i=0;i<frag.get_num();++i)
-    for (I=0;I<frag.get_dim(i);++I)
-      if (++count == index) {id = frag.get_id(i)+I; i=frag.get_num(); break;}
-  //   fprintf(outfile,"index_to_id(%d): returning id = %d\n",index, id);
+    for (I=0;I<6;++I)
+      if (frag.get_coord_on(i,I))
+        if (++count == index) id = (frag.get_id(i) + I);
+
+  // fprintf(outfile,"index_to_id(%d): returning id = %d\n",index, id);
   return id;
 }
-
 
 
 /*** INTERNALS::ID_TO_INDEX
@@ -64,19 +65,24 @@ int internals :: id_to_index(int id) {
   for (i=0;i<lin_bend.get_num();++i,++count)
     if (id == lin_bend.get_id(i)) {index = count; ++found;}
   /* we assume an id number of the fragment set plus the index 0-5 of the coordinate in the set */
-  for (i=0;i<frag.get_num();++i)
-    for (I=0;I<frag.get_dim(i);++I,++count)
-      if (id == (frag.get_id(i)+I)) {index = count; ++found;}
+  for (i=0;i<frag.get_num();++i) {
+    for (I=0; I<6; ++I) {
+      if (frag.get_coord_on(i,I)) {
+        if (id == (frag.get_id(i) + I)) {index = count; ++found;}
+        ++count;
+      }
+    }
+  }
 
   if (found == 0) {
-    fprintf(outfile,"Error: Simple internal id not found.\n");
+    fprintf(outfile,"Error: Simple internal id %d not found.\n", id);
     exit(2);
   }
   else if (found > 1) {
-    fprintf(outfile,"Error: Simple internal id appears more than once.\n");
+    fprintf(outfile,"Error: Simple internal id %d appears more than once.\n", id);
     exit(2);
   }
-  // fprintf(outfile,"id_to_index(%d): returning index = %d\n",id, index);
+  //  fprintf(outfile,"id_to_index(%d): returning index = %d\n",id, index);
   return index;
 }
 
@@ -87,7 +93,7 @@ int internals :: id_to_index(int id) {
  and the subindex within that type ***/
 
 void internals :: locate_id(int id, int *intco_type, int *sub_index, int *sub_index2) {
-  int I, i, j, found = 0;
+  int I, i, found = 0;
   // fprintf(outfile,"locating id %d\n",id);
   for (i=0;i<stre.get_num();++i)
     if (stre.get_id(i) == id) {
@@ -110,22 +116,22 @@ void internals :: locate_id(int id, int *intco_type, int *sub_index, int *sub_in
       ++found; *intco_type = LIN_BEND_TYPE; *sub_index = i;
     }
 
-  j=-1;
   for (i=0;i<frag.get_num();++i) {
-    for (I=0;I<frag.get_dim(i);++I) {
-      ++j;
-      if ((frag.get_id(i)+I) == id) {
-        ++found; *intco_type = FRAG_TYPE; *sub_index = i; *sub_index2 = I;
+    for (I=0; I<6; ++I) {
+      if (frag.get_coord_on(i,I)) {
+        if(id == frag.get_id(i) + I) {
+          ++found; *intco_type = FRAG_TYPE; *sub_index = i; *sub_index2 = I;
+        }
       }
     }
   }
 
   if (found == 0) {
-    fprintf(outfile,"Error: Simple internal id not found.\n");
+    fprintf(outfile,"Error: Simple internal id %d not found.\n", id);
     exit(2);
   }
   else if (found > 1) {
-    fprintf(outfile,"Error: Simple internal id appears more than once.\n");
+    fprintf(outfile,"Error: Simple internal id %d appears more than once.\n", id);
     exit(2);
   }
   // fprintf(outfile,"returning intco_type: %d sub_index %d\n",*intco_type, *sub_index);

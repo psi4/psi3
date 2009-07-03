@@ -48,6 +48,7 @@ inline double nr_energy(double rfo_t, double rfo_g, double rfo_h) {
 }
 
 bool line_search(cartesians &carts, int num_ints, double *dq);
+void step_limit(internals &simples, salc_set &symm, double *dq);
 
 int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
@@ -315,34 +316,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     mmult(H_inv,0,&f_q,1,&dq,1,dim,dim,1,0);
     free_block(H_inv);
 
-    /* determine scale factor needed to keep step less than 10% of q if q big or less than 0.1
-     if q not so big, hopefully better solution later */
-    scale = 1.0;
-    for (i=0;i<dim;++i) {
-      if (fabs(q[i]) > optinfo.step_limit) { // intco is not very small
-        if (fabs(dq[i]) > STEP_PERCENT*fabs(q[i])) { // step is too large
-          temp = STEP_PERCENT*fabs(q[i])/fabs(dq[i]);
-        }
-        else
-          temp = 1;
-      }
-      else { // intco is very small
-        if (fabs(dq[i]) < optinfo.step_limit)
-          temp = 1.0; // step is small enough
-        else
-          temp = optinfo.step_limit / fabs(dq[i]);
-      }
-      if (temp < scale){
-        scale = temp;
-      }
-    } 
-    fprintf(outfile,"\nScaling displacements by %lf\n",scale);
-    for (i=0;i<dim;++i)
-      dq[i] = dq[i] * scale;   
-
-    // avoid piddly symmetry breaking
-    for (i=0;i<dim;++i)
-      if (fabs(dq[i]) < MIN_DQ_STEP) dq[i] = 0.0;
+    step_limit(simples, symm, dq);
 
     // get norm |x| and unit vector in the step direction
     nr_u = init_array(dim);
@@ -487,6 +461,14 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     free_block(H_inv_test);
 */
 
+    dq = init_array(dim);
+    for (j=0; j<dim; ++j)
+      dq[j] = rfo_mat[rfo_root][j];
+    rfo_eval = lambda[rfo_root];
+    free(lambda);
+
+    step_limit(simples, symm, dq);
+
     // get norm |x| and unit vector in the step direction
     rfo_u = init_array(dim);
     for (j=0; j<dim; ++j)
@@ -494,6 +476,8 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     dot_arr(rfo_u, rfo_u, dim, &tval);
     rfo_xnorm = sqrt(tval);
     normalize(&rfo_u, 1, dim);
+
+    free_block(rfo_mat);
 
     // get gradient and hessian in step direction
     dot_arr(f_q, rfo_u, dim, &rfo_g);
@@ -503,13 +487,6 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
       dot_arr(H[i], rfo_u, dim, &tval);
       rfo_h += rfo_u[i] * tval;
     }
-
-    dq = init_array(dim);
-    for (j=0; j<dim; ++j)
-      dq[j] = rfo_mat[rfo_root][j];
-    rfo_eval = lambda[rfo_root];
-    free(lambda);
-    free_block(rfo_mat);
 
     // for debugging
     DE_new = rfo_energy(rfo_xnorm, rfo_g, rfo_h);
@@ -627,8 +604,8 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
       free_block(geom_A); free_block(geom_B);
       free_block(weight_A); free_block(weight_B);
     }
-    //fprintf(outfile,"\nNew Cartesian Geometry in a.u. after analytic interfragment steps\n");
-    //carts.print(1, outfile,0, disp_label, 0);
+    // fprintf(outfile,"\nNew Cartesian Geometry in a.u. after analytic interfragment steps\n");
+    // carts.print(1, outfile,0, disp_label, 0);
   } // if analytic_interfragment
 
   // Do displacements with iterative backtransformation
