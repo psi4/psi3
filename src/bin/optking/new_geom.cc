@@ -188,6 +188,8 @@ bool new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
   // take x back to bohr
   scalar_mult(1.0/_bohr2angstroms, x, dim_carts);
 
+//print_mat(&x,1,dim_carts,outfile);
+
   // avoid sending slightly non-symmetric geometries into chkpt file
   /*
   j=0;

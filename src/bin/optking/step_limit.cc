@@ -27,25 +27,57 @@ namespace psi { namespace optking {
 void step_limit(internals &simples, salc_set &symm, double *dq) {
 
   int i, j, dim, max_i, simple, intco_type, sub_index, sub_index2;
-  double scale = 1.0, coeff, prefactor, tval, max_dq = 0.0;
+  double min_scale = 1.0, scale, coeff, prefactor, tval, dq_simple;
+  double inv_limit, tval2, R, dR, inv_R_min, inv_R_max, step_limit;
   
   dim = symm.get_num();
+  step_limit = optinfo.step_limit;
 
-  for (i=0; i<dim; ++i) { // loop over symm vectors
+  for (i=0; i<dim; ++i) { // loop over symm SALCS vectors
     prefactor = symm.get_prefactor(i);
-    for (j=0;j<symm.get_length(i);++j) { // loop through individual salc
+    for (j=0;j<symm.get_length(i);++j) { // loop over simples in each salc
       coeff = symm.get_coeff(i,j);
-      tval = prefactor * coeff * dq[i];
+      dq_simple = prefactor * coeff * dq[i]; // change in value of primitive
+      scale = 1.0;
 
-      // determine if it is a strech, and we have to do bohr -> Angstrom conversion
+      // dq is in Angstroms or radians
+      // If coordinate is a strech, and we need to convert Angstroms -> bohr
       simple = symm.get_simple(i,j);
       simples.locate_id(simple,&intco_type,&sub_index,&sub_index2);
 
-      if ( (intco_type == STRE_TYPE) || ((intco_type == FRAG_TYPE) && (sub_index2 == 5)) )
-        tval /= _bohr2angstroms;
+      if (intco_type != FRAG_TYPE) { // regular, intrafragment coordinates
+        if (intco_type == STRE_TYPE) dq_simple /= _bohr2angstroms;
 
-      if (fabs(tval) > max_dq) {
-        max_dq = fabs(tval);
+        if (fabs(dq_simple) > step_limit)
+          scale = step_limit / fabs(dq_simple);
+      }
+      else if (sub_index2 > 0) { // interfragment angles
+        if (fabs(dq_simple) > step_limit)
+          scale = step_limit / fabs(dq_simple);
+      }
+      else if (!optinfo.frag_dist_rho) { // interfragment R(A-B)
+        dq_simple /= _bohr2angstroms;
+        if (fabs(dq_simple) > step_limit)
+          scale = step_limit / fabs(dq_simple);
+      }
+      else {  // interfragment 1/R(A-B)
+        dq_simple *= _bohr2angstroms;
+        // fprintf(outfile, "dq_simple (1/au) %15.10lf\n", dq_simple);
+        R = 1.0 / simples.frag.get_val(sub_index,0) / _bohr2angstroms;
+        // fprintf(outfile, "R in au %15.10lf\n", R);
+        inv_R_min = - step_limit / (R * (R + step_limit));
+        // fprintf(outfile, "1/R min in au %15.10lf\n", inv_R_min);
+        inv_R_max = step_limit / (R * (R - step_limit));
+        // fprintf(outfile, "1/R max in au %15.10lf\n", inv_R_max);
+
+        if (dq_simple < inv_R_min) 
+          scale = inv_R_min / dq_simple;
+        else if (dq_simple > inv_R_max)
+          scale = inv_R_max / dq_simple;
+      }
+
+      if (scale < min_scale) {
+        min_scale = scale;
         max_i = i;
       }
     }
@@ -55,12 +87,11 @@ void step_limit(internals &simples, salc_set &symm, double *dq) {
   for (i=0;i<dim;++i)
     if (fabs(dq[i]) < MIN_DQ_STEP) dq[i] = 0.0;
 
-  if (max_dq > optinfo.step_limit) {
+  if (min_scale < 1) {
     fprintf(outfile,"\nMaximum change in SALC %d exceeds STEP_LIMIT\n", max_i+1);
-    scale = optinfo.step_limit / max_dq;
-    fprintf(outfile,"Scaling displacements by %lf\n",scale);
+    fprintf(outfile,"Scaling displacements by %lf\n",min_scale);
     for (i=0;i<dim;++i)
-      dq[i] *= scale;   
+      dq[i] *= min_scale;   
   }
 
   return;

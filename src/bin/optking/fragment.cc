@@ -64,7 +64,8 @@ void fragment_class::print(FILE *fp_out, int print_values, int print_weights) {
   if (print_values) {
     if (coord_on[0]) {
       if (optinfo.frag_dist_rho)
-        fprintf(fp_out, "\t\t 1/R(AB)  = %12.6lf\n", get_value(0));
+        fprintf(fp_out, "\t\t 1/R(AB)  = %12.6lf    [R(AB) = %.6lf]\n",
+          get_value(0), 1/get_value(0));
       else
         fprintf(fp_out, "\t\t R(AB)    = %12.6lf\n", get_value(0));
     }

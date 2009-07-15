@@ -132,7 +132,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     q = compute_q(simples,symm); 
   }
   else {
-  fprintf(outfile,"\nTaking geometry step number %d\n", optinfo.iteration+1);
+  fprintf(outfile,"\n ** Taking geometry step number %d **\n", optinfo.iteration+1);
 
   // compute forces in internal coordinates, f_q = G_inv B u f
   q = compute_q(simples,symm);
@@ -625,7 +625,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     dq_to_new_geom = init_array(dim);
     for (i=0;i<dim;++i)
       dq_to_new_geom[i] = dq[i];
-  
+
     strcpy(disp_label,"New Cartesian Geometry in a.u.");
     success = new_geom(carts,simples,symm,dq_to_new_geom,32,0,disp_label,0,0,djunk);
   }

@@ -258,13 +258,21 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
     }
   } //end over old steps
 
+  free(x);
+
+  // put current values of internal coordinates back in place(!)
+  x = carts.get_coord();
+  simples.compute_internals(natom, x);
+  simples.fix_near_lin();
+  simples.compute_s(natom, x);
+  free(x);
+
   free(q);
   free(f);
   free(q_old);
   free(f_old);
   free(dq);
   free(dg);
-  free(x);
   free(x_old);
   return;
 }

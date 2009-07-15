@@ -49,9 +49,6 @@ inline int period(double ZA) {
   else                     return 5;
 }
 
-// compute force constants between fragments
-double fragment_distance_fc(fragment_class &frag, cartesians &carts);
-
 void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
   int i, j, k, atomA, atomB, atomC, atomD, simple, count = -1, perA, perB, L;
   int a, b;
@@ -164,9 +161,10 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
         rABcov = Rcov(carts.get_atomic_num(min_a), carts.get_atomic_num(min_b));
         A = 0.3601; B = 1.944;
         tval = A * exp(-B*(rAB - rABcov));
-        if (optinfo.frag_dist_rho == 1)
-          tval *= pow(rAB,4);
-        tval *= _hartree2J*1.0E18 / SQR(_bohr2angstroms);
+        if (optinfo.frag_dist_rho)
+          tval *= pow(rAB,4) * _hartree2J*1.0E18 * SQR(_bohr2angstroms);
+        else
+          tval *= _hartree2J*1.0E18 / SQR(_bohr2angstroms);
         f[++count] = tval;
       }
       if (simples.frag.get_coord_on(i,1))
