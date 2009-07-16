@@ -265,6 +265,17 @@ void fragment_class::compute(double *geom) {
     }
   }
 
+  // fix jumps through 180 degrees
+  for (I=3; I<6; ++I) {
+    if (coord_on[I]) {
+      if ((near_180[I] == -1) && (value[I] > 160.0))
+        value[I] = -180.0 - (180.0 - value[I]);
+      else if ((near_180[I] == +1) && (value[I] < -160.0)) {
+        value[I] = +180.0 + (180.0 + value[I]);
+      }
+    }
+  }
+
   free(e12A); free(e12B);
   free(e32A); free(e32B);
   free(eRA); free(eRB);
@@ -484,5 +495,19 @@ void fragment_class::print_s(void) {
     }
   }
 }
+
+void fragment_class::fix_near_180(void) {
+  int I, lin;
+  for (I=3; I<6; ++I) {
+    if (coord_on[I]) {
+      if (value[I] > 160.0) lin = +1;
+      else if (value[I] < -160.0) lin = -1;
+      else lin = 0;
+      set_near_180(I,lin);
+    }
+  }
+  return;
+}
+
 
 }} /* namespace psi::optking */

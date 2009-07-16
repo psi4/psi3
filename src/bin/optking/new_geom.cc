@@ -57,10 +57,12 @@ bool new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
   // Compute B matrix -- Isn't this slick?
   coord = carts.get_coord();
   simples.compute_internals(natom,coord);
-  // fix configuration for torsions!
-  simples.fix_near_lin();
+  // fix configuration for torsions, sets flag for torsions > 160 or < -160 
+  simples.fix_near_180(); // subsequent computes will modify torsional values
   simples.compute_s(natom,coord);
   free(coord);
+
+simples.print_s();
 
   B = compute_B(simples, all_salcs);
   q = compute_q(simples, all_salcs);

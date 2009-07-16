@@ -142,6 +142,14 @@ class cartesians {
     double get_energy() {return energy;} 
     double get_Z(int i) { return atomic_num[i]; }
     double get_fatomic_num(int i) { return fatomic_num[i]; }
+
+    double *get_fatomic_num(void) {
+      double *Zs = new double[natom];
+      for (int i=0; i<natom; ++i)
+        Zs[i] = get_fatomic_num(i);
+      return Zs;
+    }
+
     cartesians();
     double R(int i, int j) {
       int xyz;

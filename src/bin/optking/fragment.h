@@ -18,7 +18,6 @@ RAB, theta_A, theta_B, tau, phi_A, phi_B.
 */
 
 class fragment_class {
-    //int dim;       /* the number of interfragment coordinates - between 1 and 6 */
     bool *coord_on; /* indicates on/off for which coordinates [1-6] are present */
     int id;        /* unique id number for the set */
     int A_natom;   /* number of atoms in fragment A */
@@ -33,6 +32,7 @@ class fragment_class {
     double *value;  /* D = value of coordinate [6] */
     double **A_s; /* S vectors fragment A [6][A_P*3] */
     double **B_s; /* S vectors fragment B [6][B_P*3] */
+    int *near_180; /* [6] ; +1 => val>160, -1 => value<160, 0 otherwise */
 
   public:
 
@@ -47,6 +47,7 @@ class fragment_class {
       B_weight = block_matrix(3,B_natom);
       A_s = block_matrix(6,A_P*3);
       B_s = block_matrix(6,B_P*3);
+      near_180 = new int[6];
     }
 
     ~fragment_class() {
@@ -58,6 +59,7 @@ class fragment_class {
       free_block(B_weight);
       free_block(A_s);
       free_block(B_s);
+      delete [] near_180;
     }
 
     /* functions in fragment.cc */
@@ -66,12 +68,12 @@ class fragment_class {
     void compute_s(int natom, double *geom);
     double get_val_A_or_rad(int I);
     void print_s(void);
+    void fix_near_180(void); // in fragment.cc
 
     /*** set/get shared variables ***/
     void set_id(int i){ id = i;}
     int  get_id(void) { return id;}
 
-    /* void set_dim(int i){ dim = i;} */
     int  get_dim(void) {
       int I, dim=0;
       for (I=0; I<6; ++I) 
@@ -130,6 +132,17 @@ class fragment_class {
         throw("fragment.get_B_weight() frag_index is greater than B_natom\n");
       return B_weight[ref_atom][frag_index];
     }
+
+    void set_near_180(int I, int new_val) {
+      if (I<0 || I>5) throw("fragment.set_near_180() expects an id between 0 and 5");
+      if ((new_val != -1) && (new_val != 1) && (new_val != 0))
+        throw("fragment.set_near_180() does not understand new value");
+      near_180[I] = new_val;
+   }
+   int get_near_180(int I) {
+      if (I<0 || I>5) throw("fragment.get_near_180() expects an id between 0 and 5");
+      return near_180[I];
+   }
 
     /* set/get coordinate specific variables */
     void set_coord_on(int I, bool on_or_off) {
@@ -221,6 +234,13 @@ class fragment_set {
       return;
     }
 
+    void fix_near_180(void) {
+      int i;
+      for (i=0; i<num; ++i)
+        fragment_array[i].fix_near_180();
+      return;
+    }
+
     void print_s() {
       int i;
       for (i=0;i<num;++i)
@@ -278,6 +298,13 @@ class fragment_set {
       return fragment_array[index].get_coord_on(I);
     }
 
+    void set_near_180(int index, int I, int new_val) {
+      fragment_array[index].set_near_180(I, new_val);
+    }
+    int get_near_180(int index, int I) {
+      return fragment_array[index].get_near_180(I);
+    }
+
     void   set_val(int index, int I, double new_val) {
       fragment_array[index].set_value(I, new_val);
     }
@@ -319,6 +346,7 @@ class fragment_set {
        }
        return get_id(i-1);
     }
+
 };
 
 }} /* namespace psi::optking */

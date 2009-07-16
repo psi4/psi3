@@ -695,11 +695,11 @@ bool line_search(cartesians &carts, int dim, double *dq) {
   sprintf(value_string,"Energy %d", optinfo.iteration-1);
   psio_read_entry(PSIF_OPTKING, value_string, (char *) &E_old, sizeof(double));
   DE = E - E_old;
-  fprintf(outfile,"\t\tActual DE   : %20.10lf\n", DE);
+  fprintf(outfile,"\t\tActual DE    : %20.10lf\n", DE);
 
   sprintf(value_string,"DE prediction %d", optinfo.iteration-1);
   psio_read_entry(PSIF_OPTKING, value_string, (char *) &DE_old, sizeof(double));
-  fprintf(outfile,"\t\tPredicted DE: %20.10lf\n", DE_old);
+  fprintf(outfile,"\t\tPredicted DE : %20.10lf\n", DE_old);
 
   u = init_array(dim);
   sprintf(value_string,"Unit step U %d", optinfo.iteration-1);
@@ -721,9 +721,9 @@ bool line_search(cartesians &carts, int dim, double *dq) {
   fprintf(outfile,"\t\tScalar hessian %d : %15.10lf\n", optinfo.iteration-1, h);
 
   if (optinfo.rfo)
-    fprintf(outfile,"\t\tCheck energy: %20.15lf\n", rfo_energy(xnorm, g, h));
+    fprintf(outfile,"\t\tCheck energy      : %20.15lf\n", rfo_energy(xnorm, g, h));
   else
-    fprintf(outfile,"\t\tCheck energy: %20.15lf\n", nr_energy(xnorm, g, h));
+    fprintf(outfile,"\t\tCheck energy      : %20.15lf\n", nr_energy(xnorm, g, h));
       
   // sign of third derivative is + if energy obtained was too HIGH, and - if energy
   // if energy was too low, which we will only worry about for TS searches

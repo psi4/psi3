@@ -46,11 +46,12 @@ inline int period(double ZA) {
 }
 
 void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
-  int i, j, k, atomA, atomB, atomC, atomD, simple, count = -1, perA, perB, L;
+  int i, j, k, atomA, atomB, atomC, atomD, simple, count = -1, perA, perB;
+  int I, K, L;
   int a, b, natom;
   double rAB, rBC, rABcov, rBCcov, rBDcov, prefactor_i;
   double A, B, C, D, E, r1[3], r2[3], r3[3], tval;
-  double *f, val, *coord, norm_r1, norm_r2, norm_r3;
+  double *f, *Z, val, *coord, norm_r1, norm_r2, norm_r3;
 
   if (optinfo.empirical_H == OPTInfo::SCHLEGEL)
     fprintf(outfile,"\nGenerating empirical Hessian (Schlegel)\n");
@@ -60,6 +61,7 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
   f = init_array(simples.get_num());      
   coord = carts.get_coord();
   natom = carts.get_natom();
+  Z = carts.get_fatomic_num();
 
   // Form diagonal Hessian in simple internals first
   if (optinfo.empirical_H == OPTInfo::SCHLEGEL) {
@@ -234,24 +236,68 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
       }
       rABcov = Rcov(carts.get_Z(min_a), carts.get_Z(min_b));
       A = 0.3601; B = 1.944;
-
       tval = A * exp(-B*(rAB - rABcov));
-
       if (optinfo.frag_dist_rho == 1)
         tval *= pow(rAB,4);
-
       f[++count] = tval * _hartree2aJ / SQR(_bohr2angstroms);
     }
+/* tried to guess fc from nuclear repulsion energy - but couldn't find a reasonable method
+    for (I=0; I<6; ++I) {
+      if (simples.frag.get_coord_on(i,I)) {
+        int xyz, ivect;
+        double weight, energy, *disp_coord_plus, *disp_coord_minus, delta = 0.01, first, second;
+        energy = nuclear_repulsion(Z,coord);
+        disp_coord_plus = new double [3*natom];
+        disp_coord_minus = new double [3*natom];
+        for (j=0; j<3*natom; ++j)
+          disp_coord_plus[j] = disp_coord_minus[j] = coord[j];
+        for (a=0; a<simples.frag.get_A_natom(i); ++a) { 
+          atomA = simples.frag.get_A_atom(i,a);        
+          for (K=0;K<simples.frag.get_A_P(i);++K) {    
+            weight = simples.frag.get_A_weight(i,K,a); 
+            for (xyz=0;xyz<3;++xyz) {
+              tval = weight * simples.frag.get_A_s(i,I,3*K+xyz);
+              disp_coord_plus[3*atomA+xyz]  += delta * tval;
+              disp_coord_minus[3*atomA+xyz] -= delta * tval;
+            }
+          }
+        }
+        for (b=0; b<simples.frag.get_B_natom(i); ++b) {
+          atomB = simples.frag.get_B_atom(i,b);       
+          for (K=0;K<simples.frag.get_B_P(i);++K) {  
+            weight = simples.frag.get_B_weight(i,K,b
+            for (xyz=0;xyz<3;++xyz) {
+              tval = weight * simples.frag.get_B_s(i,I,3*K+xyz);
+              disp_coord_plus[3*atomB+xyz]  += delta * tval;
+              disp_coord_minus[3*atomB+xyz] -= delta * tval;
+            }
+          }
+        }
+        first = (nuclear_repulsion(Z,disp_coord_plus) - nuclear_repulsion(Z,disp_coord_minus)) / (2*delta);
+        first *= _hartree2aJ;
+        if (I == 0) first = first / _bohr2angstroms;
+        fprintf(outfile,"Nuclear first derivative (aJ/A,rad): %15.10lf\n", first);
+        second = nuclear_repulsion(Z,disp_coord_plus) + nuclear_repulsion(Z,disp_coord_minus) - 2*energy;
+        second = second / (delta*delta) * _hartree2aJ;
+        if (I == 0) second = second / SQR(_bohr2angstroms);
+        fprintf(outfile,"Nuclear second derivative (aJ/A^2,rad^2): %15.10lf\n", second);
+        tval = delta * first + 0.5 * SQR(delta) * second;
+        fprintf(outfile,"Energy change %15.10lf\n", tval);
+        delete [] disp_coord_plus;
+        delete [] disp_coord_minus;
+      f[++count] = 0.001;
+      }
+    } */
     if (simples.frag.get_coord_on(i,1))
       f[++count] = 0.001;
     if (simples.frag.get_coord_on(i,2))
       f[++count] = 0.001;
     if (simples.frag.get_coord_on(i,3))
-      f[++count] = 0.001;
+      f[++count] = 0.0005;
     if (simples.frag.get_coord_on(i,4))
-      f[++count] = 0.001;
+      f[++count] = 0.0005;
     if (simples.frag.get_coord_on(i,5))
-      f[++count] = 0.001;
+      f[++count] = 0.0005;
   }
   free(coord);
 

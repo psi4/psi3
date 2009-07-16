@@ -30,7 +30,6 @@ extern double *compute_q(internals &simples, salc_set &symm);
 extern int new_geom(cartesians &carts, internals &simples, salc_set &symm, 
     double *dq, int print_to_geom_file, int restart_geom_file,
     char *disp_label, int disp_num, int last_disp, double *return_geom);
-extern int make_disp_irrep(cartesians &carts, internals &simples, salc_set &symm);
 
 // only the symmetric salcs are passed in
 // make displacements for selected coordinates

@@ -123,7 +123,7 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
   close_PSIF();
 
   simples.compute_internals(natom,x);
-  simples.fix_near_lin(); // fix configuration for torsions
+  simples.fix_near_180(); // fix configuration for torsions
   q = compute_q(simples, symm);
 
   if (optinfo.H_update_use_last == 0) { /* include all available gradients */
@@ -263,7 +263,7 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
   // put current values of internal coordinates back in place(!)
   x = carts.get_coord();
   simples.compute_internals(natom, x);
-  simples.fix_near_lin();
+  simples.fix_near_180();
   simples.compute_s(natom, x);
   free(x);
 

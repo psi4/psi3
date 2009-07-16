@@ -54,8 +54,9 @@ class internals {
     void locate_id(int id, int *intco_type, int *sub_index, int *sub_index2);
     int index_to_id(int index);
     int id_to_index(int id);
-    void fix_near_lin(void) {
-      tors.fix_near_lin();
+    void fix_near_180(void) {
+      tors.fix_near_180();
+      frag.fix_near_180();
     }
     double **bond_connectivity_matrix(int natoms) const {
       stre.bond_connectivity_matrix(natoms);

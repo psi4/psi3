@@ -317,10 +317,7 @@ void rm_rotations(internals &simples, cartesians &carts, int &num_nonzero,
   double *disp_coord, scale=0.001, *fatomic_num, energy, disp_energy;
   double *coord, rot_tol = 1.0E-10;
 
-  fatomic_num = new double[optinfo.natom];
-  for (i=0;i<optinfo.natom;++i)
-    fatomic_num[i] = carts.get_fatomic_num(i);
-
+  fatomic_num = carts.get_fatomic_num();
   coord = carts.get_coord();
 
   energy = nuclear_repulsion(fatomic_num,coord);
@@ -392,6 +389,7 @@ void rm_rotations(internals &simples, cartesians &carts, int &num_nonzero,
   }
   free(coord);
   delete [] disp_coord;
+  delete [] fatomic_num;
   return;
 }
 

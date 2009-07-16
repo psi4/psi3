@@ -19,7 +19,7 @@ class torsion_class {
     double *s_B;
     double *s_C;
     double *s_D;
-    int near_lin;
+    int near_180;
     // +1 if approaching 180
     //  0 if OK
     // -1 if approaching -180
@@ -29,7 +29,7 @@ class torsion_class {
       s_B = new double [3];
       s_C = new double [3];
       s_D = new double [3];
-      near_lin = 0;
+      near_180 = 0;
     }
     ~torsion_class(){
       // fprintf(stdout,"destructing torsion class\n");
@@ -55,9 +55,9 @@ class torsion_class {
     void set_D(int i) { D = i;}
     int  get_D(void)  { return D;}
     void set_value(double new_val) { value = new_val;}
-    void set_near_lin(int new_near_lin) { near_lin = new_near_lin;}
+    void set_near_180(int new_near_180) { near_180 = new_near_180;}
     double get_value(void)  { return value;}
-    int get_near_lin(void)  { return near_lin;}
+    int get_near_180(void)  { return near_180;}
     void set_s_A(double s_A0, double s_A1, double s_A2) {
          s_A[0] = s_A0;
          s_A[1] = s_A1;
@@ -156,10 +156,10 @@ class torsion_set {
     int  get_D(int index) { return tors_array[index].get_D();}
     void set_val(int index, double new_val) { tors_array[index].set_value(new_val);}
     double  get_val(int index) { return tors_array[index].get_value();}
-    void set_near_lin(int index, int new_near_lin)
-        { tors_array[index].set_near_lin(new_near_lin);}
-    int get_near_lin(int index)
-        { return tors_array[index].get_near_lin();}
+    void set_near_180(int index, int new_near_180)
+        { tors_array[index].set_near_180(new_near_180);}
+    int get_near_180(int index)
+        { return tors_array[index].get_near_180();}
     void set_s_A(int index, double s_A0, double s_A1, double s_A2) {
                  tors_array[index].set_s_A(s_A0,s_A1,s_A2); }
     double get_s_A(int index, int i) { return tors_array[index].get_s_A(i); }
@@ -258,14 +258,14 @@ class torsion_set {
         }
 
         // extend domain of torsions so delta(values) can be calculated
-        if ((get_near_lin(i) == -1) && (angle > 160.0)) {
- //fprintf(outfile,"get_near_lin(%d)=%d angle %15.10lf angle %15.10lf\n",
- //    i, get_near_lin(i), angle, -180.0 - (180.0 - angle) );
+        if ((get_near_180(i) == -1) && (angle > 160.0)) {
+ //fprintf(outfile,"get_near_180(%d)=%d angle %15.10lf angle %15.10lf\n",
+ //    i, get_near_180(i), angle, -180.0 - (180.0 - angle) );
           angle = -180.0 - (180.0 - angle);
         }
-        else if ((get_near_lin(i) == +1) && (angle < -160.0)) {
- //fprintf(outfile,"get_near_lin(%d)=%d angle %15.10lf angle %15.10lf\n",
- //    i, get_near_lin(i), angle, +180.0 + (180.0 + angle) );
+        else if ((get_near_180(i) == +1) && (angle < -160.0)) {
+ //fprintf(outfile,"get_near_180(%d)=%d angle %15.10lf angle %15.10lf\n",
+ //    i, get_near_180(i), angle, +180.0 + (180.0 + angle) );
           angle = +180.0 + (180.0 + angle);
         }
 
@@ -274,7 +274,7 @@ class torsion_set {
       delete [] geom_ang;
       return;
     }
-    void fix_near_lin(void) {
+    void fix_near_180(void) {
       int i, lin;
       for (i=0;i<num;++i) {
         if ( get_val(i) > 160.0) {
@@ -285,7 +285,7 @@ class torsion_set {
         }
         else
           lin = 0;
-        set_near_lin(i,lin);
+        set_near_180(i,lin);
       }
       return;
     }
