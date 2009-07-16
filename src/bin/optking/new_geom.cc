@@ -62,8 +62,6 @@ bool new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
   simples.compute_s(natom,coord);
   free(coord);
 
-simples.print_s();
-
   B = compute_B(simples, all_salcs);
   q = compute_q(simples, all_salcs);
 
