@@ -139,7 +139,6 @@ void fc_grad_selected(cartesians &carts, internals &simples, salc_set &symm) {
   if (psio_tocscan(PSIF_OPTKING, "Symmetric Force Constants") == NULL) i = 1;
   close_PSIF();
   if (i) {
-    fprintf(outfile,"\tGenerating empirical Hessian.\n");
     empirical_H(simples, symm, carts);
   }
 

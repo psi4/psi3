@@ -459,7 +459,7 @@ internals :: internals(cartesians& carts, int user_intcos)
       /* Determine bond connectivity matrix using distance criteria */
       bonds = init_int_matrix(natom, natom);
       for (i=0; i<natom; ++i) {
-        Z1 = (int) carts.get_atomic_num(i);
+        Z1 = (int) carts.get_Z(i);
         //if (Z1 == 0) Z1 = 10; // let dummy atom be like C
         if (Z1 == 0) continue;
         if ( radii[Z1] == 0) {
@@ -469,7 +469,7 @@ internals :: internals(cartesians& carts, int user_intcos)
           continue;
         }
         for (j=0; j<i; ++j) {
-          Z2 = (int) carts.get_atomic_num(j);
+          Z2 = (int) carts.get_Z(j);
           //if (Z2 == 0) Z2 = 10; // let dummy atom be like C
           if (Z2 == 0) continue;
           if (radii[Z2] != 0.0) {

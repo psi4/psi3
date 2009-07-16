@@ -164,7 +164,7 @@ cartesians::cartesians() {
   }
   if ((isotopes_given == 0) && (masses_given == 0)) {
     for(i=0;i<natom;++i) {
-      a = (int) get_atomic_num(i); // casting to an int for index
+      a = (int) get_Z(i); // casting to an int for index
       mass[++count] = an2masses[a];
       mass[++count] = an2masses[a];
       mass[++count] = an2masses[a];

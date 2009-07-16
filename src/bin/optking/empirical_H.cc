@@ -28,9 +28,9 @@ namespace psi { namespace optking {
 // returns covalent bond length in bohr from atomic numbers
 inline double Rcov(int ZA, int ZB) {
   return (cov_radii[ZA] + cov_radii[ZB]) / _bohr2angstroms;
-} 
+}
 inline double Rcov(double ZA, double ZB) {
-  return (cov_radii[(int) ZA] + cov_radii[(int) ZB]) / _bohr2angstroms;
+  return Rcov((int) ZA, (int) ZB);
 }
 
 // returns period from atomic number
@@ -42,30 +42,32 @@ inline int period(int ZA) {
   else               return 5;
 }
 inline int period(double ZA) {
-  if      ((int) ZA ==  1) return 1;
-  else if ((int) ZA <= 10) return 2;
-  else if ((int) ZA <= 18) return 3;
-  else if ((int) ZA <= 36) return 4;
-  else                     return 5;
+  return period((int) ZA);
 }
 
 void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
   int i, j, k, atomA, atomB, atomC, atomD, simple, count = -1, perA, perB, L;
-  int a, b;
+  int a, b, natom;
   double rAB, rBC, rABcov, rBCcov, rBDcov, prefactor_i;
   double A, B, C, D, E, r1[3], r2[3], r3[3], tval;
   double *f, val, *coord, norm_r1, norm_r2, norm_r3;
 
+  if (optinfo.empirical_H == OPTInfo::SCHLEGEL)
+    fprintf(outfile,"\nGenerating empirical Hessian (Schlegel)\n");
+  else if (optinfo.empirical_H == OPTInfo::FISCHER)
+    fprintf(outfile,"\nGenerating empirical Hessian (Fischer & Almlof)\n");
+
   f = init_array(simples.get_num());      
   coord = carts.get_coord();
+  natom = carts.get_natom();
 
   // Form diagonal Hessian in simple internals first
   if (optinfo.empirical_H == OPTInfo::SCHLEGEL) {
     for (i=0;i<simples.stre.get_num();++i) {
       atomA = simples.stre.get_A(i);
       atomB = simples.stre.get_B(i);
-      perA = period(carts.get_atomic_num(atomA));
-      perB = period(carts.get_atomic_num(atomB));
+      perA = period(carts.get_Z(atomA));
+      perB = period(carts.get_Z(atomB));
       A = 1.734;
 
       if ((perA==1) && (perB==1))
@@ -85,28 +87,28 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
       // fc in au / bohr^2
       tval = A/((rAB-B)*(rAB-B)*(rAB-B));
       // fc in aJ/Ang^2
-      f[++count] = tval * _hartree2J*1.0E18/SQR(_bohr2angstroms);
+      f[++count] = tval * _hartree2aJ / SQR(_bohr2angstroms);
     }
     for (i=0;i<simples.bend.get_num();++i) {
       atomA = simples.bend.get_A(i);
       atomB = simples.bend.get_B(i);
       atomC = simples.bend.get_C(i);
-      if ( ((int) (carts.get_atomic_num(atomA)) == 1) ||
-           ((int) (carts.get_atomic_num(atomC) == 1)) )
+      if ( ((int) (carts.get_Z(atomA) == 1)) ||
+           ((int) (carts.get_Z(atomC) == 1)) )
         val = 0.160;
       else
         val = 0.250;
-      f[++count] = val * _hartree2J*1.0E18;
+      f[++count] = val * _hartree2aJ;
     }
     for (i=0;i<simples.tors.get_num();++i) {
       atomB = simples.tors.get_B(i);
       atomC = simples.tors.get_C(i);
       A = 0.0023;
       B = 0.07;
-      rBCcov = Rcov(carts.get_atomic_num(atomB), carts.get_atomic_num(atomC));
+      rBCcov = Rcov(carts.get_Z(atomB), carts.get_Z(atomC));
       rBC = carts.R(atomB,atomC);
       if (rBC > (rBCcov + A/B)) B = 0.0; // keep > 0
-      f[++count] = (A - (B*(rBC - rBCcov))) * _hartree2J*1.0E18;
+      f[++count] = (A - (B*(rBC - rBCcov))) * _hartree2aJ;
     }
     for (i=0;i<simples.out.get_num();++i) {
       atomA = simples.out.get_A(i);
@@ -119,64 +121,19 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
          r2[j] = coord[3*atomC+j] - coord[3*atomB+j];
          r3[j] = coord[3*atomD+j] - coord[3*atomB+j];
       }
-      norm_r1 = norm_r2 = norm_r3 = 0.0;
-      for (j=0;j<3;++j) {
-         norm_r1 += SQR(coord[3*atomA+j] - coord[3*atomB+j]);
-         norm_r2 += SQR(coord[3*atomC+j] - coord[3*atomB+j]);
-         norm_r3 += SQR(coord[3*atomD+j] - coord[3*atomB+j]);
-      }
-      norm_r1 = sqrt(norm_r1);
-      norm_r2 = sqrt(norm_r2);
-      norm_r3 = sqrt(norm_r3);
-      val =  ( 1 - ((  r1[0]*r2[1]*r3[2]
-                      +r1[2]*r2[0]*r3[1]
-                      +r1[1]*r2[2]*r3[0]
-                      -r1[2]*r2[1]*r3[0]
-                      -r1[0]*r2[2]*r3[1]
-                      -r1[1]*r2[0]*r3[2] ) / (norm_r1*norm_r2*norm_r3)));
-      f[++count] = _hartree2J*1.0E18 * (A * val * val * val * val);
+      norm_r1 = sqrt( SQR(r1[0]) + SQR(r1[1]) + SQR(r1[2]) );
+      norm_r2 = sqrt( SQR(r2[0]) + SQR(r2[1]) + SQR(r2[2]) );
+      norm_r3 = sqrt( SQR(r3[0]) + SQR(r3[1]) + SQR(r3[2]) );
+
+      tval =  ( r1[0] * (r2[1]*r3[2] - r2[2]*r3[1])
+               -r1[1] * (r2[0]*r3[2] - r2[2]*r3[0])
+               +r1[2] * (r2[0]*r3[1] - r2[1]*r3[0]) ) / (norm_r1 * norm_r2 * norm_r3);
+      // I only want magnitude of this angle for force constant evaluation so make sure not negative
+      tval = 1 - fabs(tval);
+      f[++count] = A * pow(tval,4) * _hartree2aJ;
     }
     for (i=0;i<simples.lin_bend.get_num();++i) {
-      f[++count] = 0.10 * _hartree2J*1.0E18;
-    }
-    for (i=0;i<simples.frag.get_num();++i) {
-      if (simples.frag.get_coord_on(i,0)) {
-        // if (optinfo.frag_dist_rho == 1) val = 100.0;
-        // else val = 0.01;
-        int min_a,min_b;
-        rAB = 1e6;
-        // find minimum distance between two atoms, one in each fragment
-        for (a=0; a<simples.frag.get_A_natom(i); ++a) {
-          atomA = simples.frag.get_A_atom(i,a);
-          for (b=0; b<simples.frag.get_B_natom(i); ++b) {
-            atomB = simples.frag.get_B_atom(i,b);
-            tval = carts.R(atomA,atomB);
-            if (tval < rAB) {
-              rAB = tval;
-              min_a = atomA;
-              min_b = atomB;
-            }
-          }
-        }
-        rABcov = Rcov(carts.get_atomic_num(min_a), carts.get_atomic_num(min_b));
-        A = 0.3601; B = 1.944;
-        tval = A * exp(-B*(rAB - rABcov));
-        if (optinfo.frag_dist_rho)
-          tval *= pow(rAB,4) * _hartree2J*1.0E18 * SQR(_bohr2angstroms);
-        else
-          tval *= _hartree2J*1.0E18 / SQR(_bohr2angstroms);
-        f[++count] = tval;
-      }
-      if (simples.frag.get_coord_on(i,1))
-        f[++count] = 0.001;
-      if (simples.frag.get_coord_on(i,2))
-        f[++count] = 0.001;
-      if (simples.frag.get_coord_on(i,3))
-        f[++count] = 0.001;
-      if (simples.frag.get_coord_on(i,4))
-        f[++count] = 0.001;
-      if (simples.frag.get_coord_on(i,5))
-        f[++count] = 0.001;
+      f[++count] = 0.10 * _hartree2aJ;
     }
   }
   else if (optinfo.empirical_H == OPTInfo::FISCHER) {
@@ -185,41 +142,53 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
       atomB = simples.stre.get_B(i);
 
       rAB   = carts.R(atomA,atomB);
-      rABcov = Rcov(carts.get_atomic_num(atomA), carts.get_atomic_num(atomB));
+      rABcov = Rcov(carts.get_Z(atomA), carts.get_Z(atomB));
 
       A = 0.3601; B = 1.944;
 
       tval = A * exp(-B*(rAB - rABcov));
-      f[++count] = tval * _hartree2J*1.0E18 / SQR(_bohr2angstroms);
+      f[++count] = tval * _hartree2aJ / SQR(_bohr2angstroms);
     }
     for (i=0;i<simples.bend.get_num();++i) {
       atomA = simples.bend.get_A(i);
       atomB = simples.bend.get_B(i);
       atomC = simples.bend.get_C(i);
 
-      rABcov = Rcov(carts.get_atomic_num(atomA), carts.get_atomic_num(atomB));
-      rBCcov = Rcov(carts.get_atomic_num(atomB), carts.get_atomic_num(atomC));
+      rABcov = Rcov(carts.get_Z(atomA), carts.get_Z(atomB));
+      rBCcov = Rcov(carts.get_Z(atomB), carts.get_Z(atomC));
       rAB = carts.R(atomA, atomB);
       rBC = carts.R(atomB, atomC);
 
       A = 0.089; B = 0.11; C = 0.44; D = -0.42;
 
-      tval = A + B/pow(rABcov*rBCcov, D) * exp(-C*( rAB + rBC - rABcov - rBCcov));
-      f[++count] = tval * _hartree2J*1.0E18;
+      tval = A + B/(pow(rABcov*rBCcov, D)) * exp(-C*( rAB + rBC - rABcov - rBCcov));
+      f[++count] = tval * _hartree2aJ;
     }
     for (i=0;i<simples.tors.get_num();++i) {
       atomB = simples.tors.get_B(i);
       atomC = simples.tors.get_C(i);
 
-      rBCcov = Rcov(carts.get_atomic_num(atomB), carts.get_atomic_num(atomC));
+      rBCcov = Rcov(carts.get_Z(atomB), carts.get_Z(atomC));
       rBC = carts.R(atomB,atomC);
 
       A = 0.0015; B = 14.0; C = 2.85; D = 0.57; E = 4.00;
-      L = 2; // # of bonds connected to atom a and b except the central bond?
 
+      // count number of additional bonds on central atoms
+      double **bonds = simples.bond_connectivity_matrix(natom);
+      //print_mat(bonds,natom,natom,outfile);
+      L = 0;
+      for (j=0; j<natom; ++j) {
+        if (j == atomC) continue;
+        if (bonds[atomB][j]) ++L;
+      }
+      for (j=0; j<natom; ++j) {
+        if (j == atomB) continue;
+        if (bonds[atomC][j]) ++L;
+      }
+      //fprintf(outfile,"Number of bonds %d\n", L);
       tval = B * pow(L,D) / pow(rBC * rBCcov, E);
       tval = A + tval * exp(-C * (rBC - rBCcov));
-      f[++count] = tval * _hartree2J*1.0e18;
+      f[++count] = tval * _hartree2aJ;
     }
     for (i=0;i<simples.out.get_num();++i) {
       atomA = simples.out.get_A(i);
@@ -230,54 +199,59 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
 
       A = 0.0025; B = 0.0061; C = 3.00; D = 4.00; E = 0.80;
 
-      rABcov = Rcov(carts.get_atomic_num(atomA), carts.get_atomic_num(atomB));
-      rBCcov = Rcov(carts.get_atomic_num(atomB), carts.get_atomic_num(atomC));
-      rBDcov = Rcov(carts.get_atomic_num(atomB), carts.get_atomic_num(atomD));
+      rABcov = Rcov(carts.get_Z(atomA), carts.get_Z(atomB));
+      rBCcov = Rcov(carts.get_Z(atomB), carts.get_Z(atomC));
+      rBDcov = Rcov(carts.get_Z(atomB), carts.get_Z(atomD));
       carts.R(atomA, atomB);
 
       tval = B * pow(rBCcov*rBDcov, E) * pow(cos(val),D);
       tval = A + tval * exp(-C*(rAB - rABcov));
-      f[++count] = tval * _hartree2J*1.0E18 ;
+      f[++count] = tval * _hartree2aJ;
     }
     for (i=0;i<simples.lin_bend.get_num();++i) {
-      f[++count] = 0.10 * _hartree2J*1.0E18;
+      f[++count] = 0.10 * _hartree2aJ;
     }
-    for (i=0;i<simples.frag.get_num();++i) {
-      if (simples.frag.get_coord_on(i,0)) {
-        int min_a,min_b;
-        rAB = 1e6;
-        // find minimum distance between two atoms, one in each fragment
-        for (a=0; a<simples.frag.get_A_natom(i); ++a) {
-          atomA = simples.frag.get_A_atom(i,a);
-          for (b=0; b<simples.frag.get_B_natom(i); ++b) {
-            atomB = simples.frag.get_B_atom(i,b);
-            tval = carts.R(atomA,atomB);
-            if (tval < rAB) {
-              rAB = tval;
-              min_a = atomA;
-              min_b = atomB;
-            }
+  }
+
+  // use same guess force constants for interfragment coordinates
+  // regardless of chosen empirical_H type 
+  for (i=0;i<simples.frag.get_num();++i) {
+    if (simples.frag.get_coord_on(i,0)) {
+      int min_a,min_b;
+      rAB = 1e6;
+      // find minimum distance between two atoms, one in each fragment
+      for (a=0; a<simples.frag.get_A_natom(i); ++a) {
+        atomA = simples.frag.get_A_atom(i,a);
+        for (b=0; b<simples.frag.get_B_natom(i); ++b) {
+          atomB = simples.frag.get_B_atom(i,b);
+          tval = carts.R(atomA,atomB);
+          if (tval < rAB) {
+            rAB = tval;
+            min_a = atomA;
+            min_b = atomB;
           }
         }
-        rABcov = Rcov(carts.get_atomic_num(min_a), carts.get_atomic_num(min_b));
-        A = 0.3601; B = 1.944;
-        tval = A * exp(-B*(rAB - rABcov));
-        if (optinfo.frag_dist_rho == 1)
-          tval *= pow(rAB,4);
-        tval *= _hartree2J*1.0E18 / SQR(_bohr2angstroms);
-        f[++count] = tval;
       }
-      if (simples.frag.get_coord_on(i,1))
-        f[++count] = 0.001;
-      if (simples.frag.get_coord_on(i,2))
-        f[++count] = 0.001;
-      if (simples.frag.get_coord_on(i,3))
-        f[++count] = 0.001;
-      if (simples.frag.get_coord_on(i,4))
-        f[++count] = 0.001;
-      if (simples.frag.get_coord_on(i,5))
-        f[++count] = 0.001;
+      rABcov = Rcov(carts.get_Z(min_a), carts.get_Z(min_b));
+      A = 0.3601; B = 1.944;
+
+      tval = A * exp(-B*(rAB - rABcov));
+
+      if (optinfo.frag_dist_rho == 1)
+        tval *= pow(rAB,4);
+
+      f[++count] = tval * _hartree2aJ / SQR(_bohr2angstroms);
     }
+    if (simples.frag.get_coord_on(i,1))
+      f[++count] = 0.001;
+    if (simples.frag.get_coord_on(i,2))
+      f[++count] = 0.001;
+    if (simples.frag.get_coord_on(i,3))
+      f[++count] = 0.001;
+    if (simples.frag.get_coord_on(i,4))
+      f[++count] = 0.001;
+    if (simples.frag.get_coord_on(i,5))
+      f[++count] = 0.001;
   }
   free(coord);
 

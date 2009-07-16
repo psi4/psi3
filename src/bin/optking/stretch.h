@@ -34,9 +34,9 @@ class stretch_class {
     void set_id(int i) { id = i;}
     int  get_id(void)  { return id;}
     void set_A(int i)  { A = i;}
-    int  get_A(void)   { return A;}
+    int  get_A(void) const   { return A;}
     void set_B(int i)  { B = i;}
-    int  get_B(void)   { return B;}
+    int  get_B(void) const   { return B;}
     void    set_value(double length) { value = length;}
     double  get_value(void)          { return value;}
     void set_s_A(double s_A0, double s_A1, double s_A2) {
@@ -150,9 +150,9 @@ class stretch_set {
     void set_id(int index, int new_id) { stre_array[index].set_id(new_id);}
     int  get_id(int index) { return stre_array[index].get_id();}
     void set_A(int index, int new_A) { stre_array[index].set_A(new_A);}
-    int  get_A(int index) {return stre_array[index].get_A();}
+    int  get_A(int index) const {return stre_array[index].get_A();}
     void set_B(int index, int new_B) { stre_array[index].set_B(new_B);}
-    int  get_B(int index) { return stre_array[index].get_B();}
+    int  get_B(int index) const { return stre_array[index].get_B();}
     void set_val(int index, double new_val) { stre_array[index].set_value(new_val);}
     double  get_val(int index) { return stre_array[index].get_value();}
 
@@ -176,6 +176,17 @@ class stretch_set {
        }
    //    fprintf(outfile,"returning id: %d\n", get_id(i));
        return get_id(i);
+    }
+
+    double **bond_connectivity_matrix(int natoms) const {
+      int i, a, b;
+      double **B = block_matrix(natoms,natoms);
+      for (i=0; i<num; ++i) {
+        a = get_A(i);
+        b = get_B(i);
+        B[b][a] = B[a][b] = 1;
+      }
+      return B;
     }
 };
 

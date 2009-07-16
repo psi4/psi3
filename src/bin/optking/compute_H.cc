@@ -335,7 +335,6 @@ void fconst_init(cartesians &carts, internals &simples, salc_set &symm) {
 
   ffile_noexit(&fp_fconst, "fconst.dat",2);
   if (fp_fconst == NULL) { // generate empirical Hessian
-    fprintf(outfile, "\nGenerating empirical Hessian.\n");
     empirical_H(simples,symm,carts);
     return;
   }

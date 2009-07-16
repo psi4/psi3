@@ -305,6 +305,8 @@ class out_set {
       }
       return;
     }
+    // multiplies sign by -1 if matching out-of-plane coordinate has
+    // atoms C and D reversed
     int get_id_from_atoms(int a, int b, int c, int d, int *sign) {
        *sign = 1;
        int i,A,B,C,D;
@@ -316,7 +318,6 @@ class out_set {
          if ( (a == A) && (b == B) && (c == C) && (d == D)) break;
          if ( (a == A) && (b == B) && (c == D) && (d == C)) {
            *sign = -1;
-fprintf(outfile,"ordering change of out of plane %d\n",i);
            break;
          }
        }

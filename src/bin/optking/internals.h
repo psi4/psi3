@@ -57,6 +57,9 @@ class internals {
     void fix_near_lin(void) {
       tors.fix_near_lin();
     }
+    double **bond_connectivity_matrix(int natoms) const {
+      stre.bond_connectivity_matrix(natoms);
+    }
 };
 
 }} /* namespace psi::optking */

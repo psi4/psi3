@@ -140,7 +140,7 @@ class cartesians {
     void set_natom(int new_num) {natom = new_num;}
     void set_energy(double new_energy) {energy = new_energy;}
     double get_energy() {return energy;} 
-    double get_atomic_num(int i) { return atomic_num[i]; }
+    double get_Z(int i) { return atomic_num[i]; }
     double get_fatomic_num(int i) { return fatomic_num[i]; }
     cartesians();
     double R(int i, int j) {
