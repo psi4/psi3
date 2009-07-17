@@ -164,6 +164,7 @@ void SimpleVector::alloc() {
         release();
     
     vector_ = new double[dim_];
+    memset(vector_, 0, sizeof(double) * dim_);
 }
 
 void SimpleVector::release() {

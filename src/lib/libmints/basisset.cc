@@ -340,6 +340,11 @@ void BasisSet::initialize_shells_via_genbas(std::string& genbas_filename, std::s
     // Close the file
     fclose(genbas);
 
+    // Initialize SphericalTransform
+    for (int i=0; i<=max_am_; ++i) {
+        sphericaltransforms_.push_back(SphericalTransform(i));
+    }
+
     // Counters
     nao_ = ao_start;
     nbf_ = puream_start;
