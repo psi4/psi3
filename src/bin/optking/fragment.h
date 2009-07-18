@@ -346,6 +346,7 @@ class fragment_set {
        }
        return get_id(i-1);
     }
+    int *atom2fragment(int natom);
 
 };
 

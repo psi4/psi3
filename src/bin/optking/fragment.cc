@@ -168,19 +168,24 @@ void fragment_class::compute(double *geom) {
   dot_arr(e32B, e12B, 3, &dot);
   alpha_B = acos(dot);
 
-  if (coord_on[0]) {      /* monomer-monomer distance or inverse distance */
+  // try to compute all interfragment coordinates even if not "on"
+  // as long as the necessary reference points are present
+  //if (coord_on[0]) {      /* monomer-monomer distance or inverse distance */
     if (optinfo.frag_dist_rho)
       value[0] = 1.0 / R / _bohr2angstroms;
     else
       value[0] = R * _bohr2angstroms;
-  }
-  if (coord_on[1]) { /* monomer polar angles */
+  //}
+  //if (coord_on[1]) { /* monomer polar angles */
+  if (A_P >= 2)
     value[1] = theta_A/_pi*180.0;
-  }
-  if (coord_on[2]) {
+  //}
+  //if (coord_on[2]) {
+  if (B_P >= 2)
     value[2] = theta_B/_pi*180.0;
-  }
-  if (coord_on[3]) { /* monomer-monomer torsion angle */
+  //}
+  //if (coord_on[3]) { /* monomer-monomer torsion angle */
+  if ((A_P >= 2) && (B_P >= 2)) {
     cross_product(e12A,eRA,v);
     cross_product(e12B,eRA,v2);
     dot_arr(v, v2, 3, &dot);
@@ -192,12 +197,9 @@ void fragment_class::compute(double *geom) {
     }
     else dot = 2.0 ;
 
-//fprintf(outfile,"dot: %15.10lf\n",dot);
-
     if (dot > optinfo.cos_tors_near_1_tol) value[3] = 0.0 ;
     else if (dot < optinfo.cos_tors_near_neg1_tol) value[3] = 180.0 ;
     else {
-//fprintf(outfile,"using acos to get value (J=3)\n");
       value[3] = acos(dot) / _pi * 180.0;
       // determine sign
       cross_product(e12B,eRA,v);
@@ -210,7 +212,9 @@ void fragment_class::compute(double *geom) {
           value[3] = asin(dot)/_pi*180.0; */
     }
   }
-  if (coord_on[4]) { /* monomer-monomer internal rotation angles */
+  //}
+  //if (coord_on[4]) { /* monomer-monomer internal rotation angles */
+  if ((A_P == 3) && (B_P >= 2)) {
     cross_product(e32A,e12A,v);
     cross_product(e12A,eRA,v2);
     dot_arr(v, v2, 3, &dot);
@@ -237,7 +241,9 @@ void fragment_class::compute(double *geom) {
           value[4] = asin(dot)/_pi*180.0; */
     }
   }
-  if (coord_on[5]) {
+  //}
+  //if (coord_on[5]) {
+  if ((A_P >= 2) && (B_P == 3)) {
     cross_product(e32B,e12B,v);
     cross_product(e12B,eRB,v2);
     dot_arr(v, v2, 3, &dot);
@@ -264,16 +270,16 @@ void fragment_class::compute(double *geom) {
           value[5] = asin(dot)/_pi*180.0; */
     }
   }
+  //}
 
   // fix jumps through 180 degrees
   for (I=3; I<6; ++I) {
-    if (coord_on[I]) {
+  //  if (coord_on[I]) {
       if ((near_180[I] == -1) && (value[I] > 160.0))
         value[I] = -180.0 - (180.0 - value[I]);
-      else if ((near_180[I] == +1) && (value[I] < -160.0)) {
+      else if ((near_180[I] == +1) && (value[I] < -160.0))
         value[I] = +180.0 + (180.0 + value[I]);
-      }
-    }
+   // }
   }
 
   free(e12A); free(e12B);
@@ -499,15 +505,34 @@ void fragment_class::print_s(void) {
 void fragment_class::fix_near_180(void) {
   int I, lin;
   for (I=3; I<6; ++I) {
-    if (coord_on[I]) {
+    //if (coord_on[I]) {
       if (value[I] > 160.0) lin = +1;
       else if (value[I] < -160.0) lin = -1;
       else lin = 0;
       set_near_180(I,lin);
-    }
+    //}
   }
   return;
 }
 
+// returns an array indicating which fragment each atom belongs to
+int * fragment_set::atom2fragment(int natom) {
+  int i, a, b, fid=0, na, nb ;
+  int *f = new int [natom];
+  for (i=0; i<natom; ++i) f[i] = 0;
+
+  for (i=0; i<num; ++i) {
+    na = get_A_natom(i);
+    for (a=0; a<na; ++a)
+      f[get_A_atom(i, a)] = fid;
+    ++fid;
+
+    nb = get_B_natom(i);
+    for (b=0; b<nb; ++b)
+      f[get_B_atom(i, b)] = fid;
+    ++fid;
+  }
+  return f;
+}
 
 }} /* namespace psi::optking */
