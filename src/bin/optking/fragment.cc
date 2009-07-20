@@ -85,8 +85,8 @@ void fragment_class::print(FILE *fp_out, int print_values, int print_weights) {
 
 double fragment_class::get_val_A_or_rad(int I) {
   double tval;
-  if (!coord_on[I])
-    throw("fragment.get_val_A_or_rad() - coordinate is not active\n");
+  //if (!coord_on[I])
+  //  throw("fragment.get_val_A_or_rad() - coordinate is not active\n");
   if (I==0)
     tval = get_value(I);
   else if (I==1)

@@ -61,7 +61,18 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
     }
   }
 
-  if (nirr_salcs == 0) { fprintf(outfile,"No coordinates of irrep %d\n.", irrep); }
+  // assume all coordinates in SYMM list are symmetric
+  if ( (nirr_salcs == 0) && (optinfo.mode == MODE_FREQ_GRAD_IRREP) && (optinfo.irrep == 0) ) {
+    fprintf(outfile,"\tNo proper irrep labels were detected.\n");
+    fprintf(outfile,"\tAssuming all coordinates in SYMM vector are symmetric.\n");
+      
+    salc_set symm_salcs("SYMM");
+    nirr_salcs = symm_salcs.get_num();
+    for (i=0; i<nirr_salcs; ++i)
+      irrep_salcs[i] = i;
+  }
+
+  if (nirr_salcs == 0) { fprintf(outfile,"No coordinates of irrep %d\n.", irrep); return;  }
   fprintf(outfile,"Found %d salcs of this irrep\n",nirr_salcs);
 
   open_PSIF();

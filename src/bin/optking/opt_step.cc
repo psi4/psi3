@@ -518,7 +518,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   fprintf(outfile, "\t       Value         Force        Displacement  New Value\n");
   fprintf(outfile, "\t----------------------------------------------------------\n");
   for (i=0;i<dim;++i)
-    fprintf(outfile,"\t%2d %13.8lf %13.8lf %13.8lf %13.8lf\n", i+1, q[i], f_q[i], dq[i], q[i]+dq[i]);
+    fprintf(outfile,"\t%3d %13.8lf %13.8lf %13.8lf %13.8lf\n", i+1, q[i], f_q[i], dq[i], q[i]+dq[i]);
   fprintf(outfile, "\t----------------------------------------------------------\n");
   fprintf(outfile,"\n\t   MAX force: %15.10lf   RMS force: %15.10lf\n", max_force, rms_force);
 
@@ -552,11 +552,14 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
       dot_arr(inter_q,inter_q,6,&tval); // check if there are any non-zero displacements
       if (fabs(tval) < 1.0e-15) continue;
 
+      for (I=0; I<6; ++I)
+        inter_q[I] += simples.frag.get_val_A_or_rad(sub_index,I);
+
       // calculate new coordinates
-      for (cnt=0, I=0; I<6; ++I) {
-        if ( simples.frag.get_coord_on(sub_index,I) )
-          inter_q[I] += q[isalc + cnt++];
-      }
+      //for (cnt=0, I=0; I<6; ++I) {
+        //if ( simples.frag.get_coord_on(sub_index,I) )
+          //inter_q[I] += q[isalc + cnt++];
+      //}
       if (optinfo.frag_dist_rho)
         inter_q[0]  = 1.0 / inter_q[0];
       inter_q[0]  /= _bohr2angstroms;
@@ -590,7 +593,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
       fprintf(outfile,"\nAnalytically doing interfragment displacements\n");
       // move fragment B and put result back into main geometry matrix
-      orient_fragment(a, b, simples.frag.get_A_P(sub_index), simples.frag.get_B_P(sub_index),
+      i = orient_fragment(a, b, simples.frag.get_A_P(sub_index), simples.frag.get_B_P(sub_index),
         geom_A, geom_B, weight_A, weight_B, inter_q[0], inter_q[1], inter_q[2], inter_q[3],
         inter_q[4], inter_q[5], outfile);
 
@@ -601,11 +604,31 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
       symmetrize_geom(geom[0]);
       carts.set_coord_2d(geom);
       free_block(geom);
+
+      // leave any residual error in dq for back-transformation to clean up
+      // put inter_q in rad/Ang and/or 1/R
+      inter_q[0]  *= _bohr2angstroms;
+      if (optinfo.frag_dist_rho)
+        inter_q[0]  = 1.0 / inter_q[0]; // convert back to 1/R
+      for (I=1; I<6; ++I) inter_q[I] *= _pi/180.0;
+
+      for (cnt=0, I=0; I<6; ++I) {
+        coord = carts.get_coord();
+        simples.compute_internals(carts.get_natom(), coord);
+        if ( simples.frag.get_coord_on(sub_index,I) ) {
+          dq[isalc + cnt] = simples.frag.get_val_A_or_rad(sub_index,I) - inter_q[I];
+          //fprintf(outfile,"val: %20.15lf\n", simples.frag.get_val_A_or_rad(sub_index,I));
+          //fprintf(outfile,"inter_q[%d]: %20.15lf\n", I, inter_q[I]);
+          ++cnt;
+        }
+        free(coord);
+      }
+
       free_block(geom_A); free_block(geom_B);
       free_block(weight_A); free_block(weight_B);
     }
-    // fprintf(outfile,"\nNew Cartesian Geometry in a.u. after analytic interfragment steps\n");
-    // carts.print(1, outfile,0, disp_label, 0);
+    sprintf(disp_label,"\nNew Geometry in au after analytic fragment orientation\n");
+    carts.print(1,outfile,0,disp_label,0);
   } // if analytic_interfragment
 
   // Do displacements with iterative backtransformation
@@ -740,6 +763,10 @@ bool line_search(cartesians &carts, int dim, double *dq) {
       break;
     }
   }
+
+  // things do not look good but lets keep going anyway - 10% step
+  if (!success) { success = true; t = 0.10 * xnorm; }
+
   fprintf(outfile,"\t\tNew scalar with which to scale unit step, t = %15.10lf\n", t);
   fprintf(outfile,"\nSetting step to previous step reduced to %.0lf%% of original.\n\n", t/xnorm*100);
 

@@ -159,7 +159,7 @@ class fragment_class {
     }
     double get_value(int I)  {
       if (I<0 || I>5) throw("fragment.get_value() expects an id between 0 and 5");
-      else if (!coord_on[I]) throw("fragment.get_value() - coordinate is not active");
+      //else if (!coord_on[I]) throw("fragment.get_value() - coordinate is not active");
       return value[I];
     }
     double get_A_s(int I, int ref_atom_xyz) {

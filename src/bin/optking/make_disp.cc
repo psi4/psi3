@@ -59,8 +59,17 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
     }
   }
   fprintf(outfile,"Found %d internals of irrep %d \n", nsalcs, irrep+1);
-//  for (i=0; i<nsalcs; ++i)
-//    fprintf(outfile,"internal id %d\n",irrep_salcs[i]);
+
+  // assume all coordinates in SYMM list are symmetric
+  if ( (nsalcs == 0) && (optinfo.mode == MODE_DISP_IRREP) && (optinfo.irrep == 0) ) {
+    fprintf(outfile,"\tNo proper irrep labels were detected.\n");
+    fprintf(outfile,"\tAssuming all coordinates in SYMM vector are symmetric.\n");
+
+    salc_set symm_salcs("SYMM");
+    nsalcs = symm_salcs.get_num();
+    for (i=0; i<nsalcs; ++i)
+      irrep_salcs[i] = i; // list of salcs of this irreps
+  }
 
   if (nsalcs == 0) { 
     fprintf(outfile,"Produced 0 displacements.\n");
