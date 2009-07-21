@@ -440,7 +440,9 @@ BasisSet* BasisSet::zero_basis_set()
     new_basis->nbf_ = 1;
     new_basis->uso2ao_ = Chkpt::matrix<double>(1, 1);
     new_basis->uso2ao_[0][0] = 1.0;
-    
+    new_basis->uso2bf_ = Chkpt::matrix<double>(1, 1);
+    new_basis->uso2bf_[0][0] = 1.0;
+ 
     // Create shell array
     new_basis->shells_ = new Ref<GaussianShell>[1];
 
