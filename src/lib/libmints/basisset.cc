@@ -135,7 +135,6 @@ void BasisSet::initialize_shells(Ref<Chkpt> &chkpt)
     int ncontr = 1;
     int ao_start = 0;
     int puream_start = 0;
-    int *sym_transform = new int[nirreps];
     
     for (int i=0; i<nshells_; ++i) {
         int *am = new int[ncontr];
@@ -179,7 +178,6 @@ void BasisSet::initialize_shells(Ref<Chkpt> &chkpt)
         delete[] am;
     }
         
-    delete[] sym_transform;
     delete[] so2symblk;
     delete[] so2index;
     Chkpt::free(sopi);

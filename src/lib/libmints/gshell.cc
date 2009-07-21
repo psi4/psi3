@@ -12,7 +12,7 @@ extern FILE *outfile;
 
 GaussianShell::GaussianShell(int ncn, int nprm, double* e, int* am, GaussianType pure,
     double** c, int nc, Vector3& center, int start, PrimitiveType pt):
-    nprimitives_(nprm), ncontractions_(ncn), nc_(nc), center_(center), start_(start), sym_transfrom_(0)
+    nprimitives_(nprm), ncontractions_(ncn), nc_(nc), center_(center), start_(start)
 {
     puream_ = new int[ncontraction()];
     for (int i=0; i<ncontraction(); ++i) {
@@ -38,9 +38,6 @@ GaussianShell::~GaussianShell()
         delete[] coef_[i];
     
     delete[] coef_;
-    
-    if (sym_transfrom_)
-        delete[] sym_transfrom_;
 }
 
 // expects coef to be in primitive x contraction format. the data is transposed here
@@ -189,12 +186,3 @@ double GaussianShell::normalize(int l, int m, int n)
     }
 }
 
-void GaussianShell::set_sym_transform(int nirreps, int *vec)
-{
-    if (sym_transfrom_)
-        delete[] sym_transfrom_;
-    
-    sym_transfrom_ = new int[nirreps];
-    for (int i=0; i<nirreps; ++i)
-        sym_transfrom_[i] = vec[0];
-}

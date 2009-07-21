@@ -48,9 +48,6 @@ private:
     int max_am_;
     int min_am_;
     
-    /// What does this shell transform into for each irrep
-    int *sym_transfrom_;
-    
     void init_data();
     void copy_data(int *l, double *exp, double **coef);
 
@@ -109,11 +106,6 @@ public:
     
     /// Normalize the angular momentum component
     double normalize(int l, int m, int n);
-    
-    /// Set the symmetry transformation vector
-    void set_sym_transform(int nirreps, int *vec);
-    /// Get the symmetry transformation vector element
-    int sym_transfrom(int i) const { return sym_transfrom_[i]; }
     
     /// Basis function index where this shell starts.
     int function_index() const { return start_; }
