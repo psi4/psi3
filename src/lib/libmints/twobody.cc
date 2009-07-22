@@ -1,5 +1,7 @@
 #include <stdexcept>
 
+#include <libqt/qt.h>
+
 #include <libmints/twobody.h>
 #include <libmints/basisset.h>
 #include <libmints/gshell.h>
@@ -73,6 +75,9 @@ Ref<TwoBodyInt> TwoBodyInt::clone()
 
 void TwoBodyInt::normalize_am(Ref<GaussianShell> &s1, Ref<GaussianShell> &s2, Ref<GaussianShell> &s3, Ref<GaussianShell> &s4, int nchunk)
 {
+#ifdef MINTS_TIMER
+    timer_on("Angular momentum normalization");
+#endif
     int am1 = s1->am(0);
     int am2 = s2->am(0);
     int am3 = s3->am(0);
@@ -123,10 +128,16 @@ void TwoBodyInt::normalize_am(Ref<GaussianShell> &s1, Ref<GaussianShell> &s2, Re
             }
         }
     }
+#ifdef MINTS_TIMER
+    timer_off("Angular momentum normalization");
+#endif
 }
 
 void TwoBodyInt::permute_target(double *s, double *t, int sh1, int sh2, int sh3, int sh4, bool p12, bool p34, bool p13p24)
 {
+#ifdef MINTS_TIMER
+    timer_on("Permute target");
+#endif
     Ref<GaussianShell> s1, s2, s3, s4;
 
     s1 = bs1_->shell(sh1);
@@ -164,6 +175,9 @@ void TwoBodyInt::permute_target(double *s, double *t, int sh1, int sh2, int sh3,
             }
         }
     }
+#ifdef MINTS_TIMER
+    timer_off("Permute target");
+#endif
 }
 
 void TwoBodyInt::permute_1234_to_1243(double *s, double *t, int nbf1, int nbf2, int nbf3, int nbf4)
@@ -294,6 +308,9 @@ void TwoBodyInt::permute_1234_to_4321(double *s, double *t, int nbf1, int nbf2, 
 
 void TwoBodyInt::pure_transform(int sh1, int sh2, int sh3, int sh4, int nchunk)
 {
+#ifdef MINTS_TIMER
+    timer_on("Pure transformation");
+#endif
     Ref<GaussianShell> s1, s2, s3, s4;
     
     s1 = bs1_->shell(sh1);
@@ -479,6 +496,9 @@ void TwoBodyInt::pure_transform(int sh1, int sh2, int sh3, int sh4, int nchunk)
         if (is_pure1 || is_pure2 || is_pure3 || is_pure4)
             memcpy(source, target, size * sizeof(double));
     }
+#ifdef MINTS_TIMER
+    timer_off("Pure transformation");
+#endif
 }
 
 static void transform2e_1(int am, SphericalTransformIter& sti, double *s, double *t, int njkl)

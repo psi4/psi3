@@ -279,6 +279,9 @@ void ERI::int_fjt(double *F, int J, double wval)
 
 void ERI::compute_shell(int sh1, int sh2, int sh3, int sh4)
 {
+#ifdef MINTS_TIMER
+    timer_on("ERI::compute_shell");
+#endif
     // Need to ensure the ordering asked by the user is valid for libint
     // compute_quartet does NOT check this. SEGFAULTS should occur if order
     // is not guaranteed.
@@ -364,6 +367,9 @@ void ERI::compute_shell(int sh1, int sh2, int sh3, int sh4)
         // copy the integrals to the target_
         memcpy(target_, source_, n1 * n2 * n3 * n4 *sizeof(double));
     }
+#ifdef MINTS_TIMER
+    timer_off("ERI::compute_shell");
+#endif
 }
 
 void ERI::compute_quartet(int sh1, int sh2, int sh3, int sh4)
@@ -417,6 +423,10 @@ void ERI::compute_quartet(int sh1, int sh2, int sh3, int sh4)
     libint_.CD[1] = C[1] - D[1];
     libint_.CD[2] = C[2] - D[2];
 
+#ifdef MINTS_TIMER
+    timer_on("Primitive Setup for libint");
+#endif
+    
     // Prepare all the data needed by libint
     nprim = 0;
     for (int p1=0; p1<nprim1; ++p1) {
@@ -516,8 +526,16 @@ void ERI::compute_quartet(int sh1, int sh2, int sh3, int sh4)
         }
     }
 
+#ifdef MINTS_TIMER
+    timer_off("Primitive data setup for libint");
+#endif
+
     // How many are there?
     size_t size = INT_NCART(am1) * INT_NCART(am2) * INT_NCART(am3) * INT_NCART(am4);
+
+#ifdef MINTS_TIMER
+    timer_on("libint overhead");
+#endif
 
     // Compute the integral
     if (am) {
@@ -534,6 +552,12 @@ void ERI::compute_quartet(int sh1, int sh2, int sh3, int sh4)
         source_[0] = temp;
     }
 
+#ifdef MINTS_TIMER
+    timer_off("libint overhead");
+#endif
+
+    // The following two functions time themselves.
+    
     // Normalize the integrals for angular momentum
     normalize_am(s1, s2, s3, s4);
 
