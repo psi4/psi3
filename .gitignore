@@ -1,0 +1,11 @@
+# Ignore results of autoconf
+autom4te.cache/
+configure
+
+# Ignore results of configure
+Makefile
+
+# Ignore results of make
+*.o
+*.d
+
