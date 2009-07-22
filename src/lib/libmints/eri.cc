@@ -424,7 +424,7 @@ void ERI::compute_quartet(int sh1, int sh2, int sh3, int sh4)
     libint_.CD[2] = C[2] - D[2];
 
 #ifdef MINTS_TIMER
-    timer_on("Primitive Setup for libint");
+    timer_on("Primitive setup");
 #endif
     
     // Prepare all the data needed by libint
@@ -527,7 +527,7 @@ void ERI::compute_quartet(int sh1, int sh2, int sh3, int sh4)
     }
 
 #ifdef MINTS_TIMER
-    timer_off("Primitive data setup for libint");
+    timer_off("Primitive setup");
 #endif
 
     // How many are there?
