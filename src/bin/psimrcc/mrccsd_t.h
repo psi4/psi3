@@ -1,0 +1,136 @@
+#ifndef _psi_src_bin_psimrcc_mrccsd_t_h_
+#define _psi_src_bin_psimrcc_mrccsd_t_h_
+
+#include <vector>
+
+namespace psi{ namespace psimrcc{
+
+class CCIndex;
+class BlockMatrix;
+class IndexMatrix;
+class Hamiltonian;
+
+class MRCCSD_T
+{
+public:
+  // Constructor and destructor
+  MRCCSD_T(Hamiltonian* h_eff_);
+  ~MRCCSD_T();
+private:
+  void startup();
+  void cleanup();
+  void compute();
+  void compute_ooo_triples();
+  void compute_OOO_triples();
+  void compute_ooO_triples();
+  void compute_oOO_triples();
+
+  void compute_ooO_contribution_to_Heff(int i,int j,int k,int mu,BlockMatrix* T3);
+  void compute_oOO_contribution_to_Heff(int i,int j,int k,int mu,BlockMatrix* T3);
+
+  double compute_AB_ooO_contribution_to_Heff(int u,int V,int x,int Y,int i,int j,int k,int mu,int nu,BlockMatrix* T3);
+  double compute_AB_oOO_contribution_to_Heff(int u,int V,int x,int Y,int i,int j,int k,int mu,int nu,BlockMatrix* T3);
+
+  void form_T2_ij_a_b(IndexMatrix* T2_ij_a_b,bool spin1,bool spin2,bool transpose);
+  void form_T2_i_ab_j(IndexMatrix* T2_i_ab_j,bool spin1,bool spin2,bool transpose);
+  void form_V_k_bc_e(IndexMatrix* V_k_bc_e,double direct,double exchange);
+  void form_V_jk_c_m(IndexMatrix* V_jk_c_m,double direct,double exchange);
+
+  int nirreps;
+  int nurefs;
+
+  double threshold;
+
+  Hamiltonian* h_eff;
+
+  std::vector<std::vector<bool> > is_aocc;
+  std::vector<std::vector<bool> > is_bocc;
+  std::vector<std::vector<bool> > is_avir;
+  std::vector<std::vector<bool> > is_bvir;
+
+  // Denominators
+  std::vector<std::vector<double> > e_oo;
+  std::vector<std::vector<double> > e_OO;
+  std::vector<std::vector<double> > e_vv;
+  std::vector<std::vector<double> > e_VV;
+
+  std::vector<std::vector<double> > Mk_factor;
+  std::vector<double>               Mk_shift;
+
+  std::vector<double***> F_ov;
+  std::vector<double***> F_OV;
+
+  std::vector<double***> T1_ov;
+  std::vector<double***> T1_OV;
+
+  std::vector<double***> V_oovv;
+  std::vector<double***> V_oOvV;
+
+  double*** V_ooov;
+  double*** V_oOoV;
+  double*** V_vovv;
+  double*** V_vOvV;
+
+  std::vector<double***> T2_oovv;
+  std::vector<double***> T2_oOvV;
+  std::vector<double***> T2_OOVV;
+
+  CCIndex* o;
+  CCIndex* oo;
+  CCIndex* v;
+  CCIndex* vv;
+  CCIndex* vvv;
+  CCIndex* vo;
+  CCIndex* ov;
+  CCIndex* ovv;
+
+
+  BlockMatrix*** Z;
+  BlockMatrix*** W;
+  BlockMatrix*** T;
+
+  IndexMatrix* T2_ij_a_b;
+  IndexMatrix* T2_iJ_a_B;
+  IndexMatrix* T2_iJ_B_a;
+  IndexMatrix* T2_IJ_A_B;
+
+  IndexMatrix* T2_i_ab_j;
+  IndexMatrix* T2_i_aB_J;
+  IndexMatrix* T2_J_aB_i;
+  IndexMatrix* T2_I_AB_J;
+
+  IndexMatrix* V_k_bc_e;
+  IndexMatrix* V_K_bC_e;
+  IndexMatrix* V_k_bC_E;
+
+  IndexMatrix* V_jk_c_m;
+  IndexMatrix* V_jK_c_M;
+  IndexMatrix* V_jK_C_m;
+
+  std::vector<double> e4T;
+  std::vector<double> e4ST;
+  std::vector<double> e4DT;
+
+  std::vector<double> E4T_ooo;
+  std::vector<double> E4T_ooO;
+  std::vector<double> E4T_oOO;
+  std::vector<double> E4T_OOO;
+  std::vector<double> E4ST_ooo;
+  std::vector<double> E4ST_ooO;
+  std::vector<double> E4ST_oOO;
+  std::vector<double> E4ST_OOO;
+  std::vector<double> E4DT_ooo;
+  std::vector<double> E4DT_ooO;
+  std::vector<double> E4DT_oOO;
+  std::vector<double> E4DT_OOO;
+  std::vector<double> E4_ooo;
+  std::vector<double> E4_ooO;
+  std::vector<double> E4_oOO;
+  std::vector<double> E4_OOO;
+
+  std::vector<std::vector<double> > d_h_eff;
+};
+
+}} /* End Namespaces */
+
+#endif // _psi_src_bin_psimrcc_mrccsd_t_h_
