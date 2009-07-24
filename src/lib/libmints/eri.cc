@@ -364,8 +364,14 @@ void ERI::compute_shell(int sh1, int sh2, int sh3, int sh4)
     if (p12 || p34 || p13p24)
         permute_target(source_, target_, s1, s2, s3, s4, p12, p34, p13p24);
     else {
+#ifdef MINTS_TIMER
+        timer_on("memcpy - no resort");
+#endif
         // copy the integrals to the target_
         memcpy(target_, source_, n1 * n2 * n3 * n4 *sizeof(double));
+#ifdef MINTS_TIMER
+        timer_off("memcpy - no resort");
+#endif
     }
 #ifdef MINTS_TIMER
     timer_off("ERI::compute_shell");
