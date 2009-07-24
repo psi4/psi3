@@ -80,15 +80,15 @@ void MemoryManager::allocate(const char *type, T*& matrix, size_t size, const ch
     matrix    = new T[size];
     for(size_t i=0;i<size;i++)
       matrix[i]=static_cast<T>(0);   // Zero all the elements
-  }
 
-  newEntry.variable = matrix;
-  newEntry.type = type;
-  newEntry.variableName = variableName;
-  newEntry.fileName = fileName;
-  newEntry.lineNumber = lineNumber;
-  newEntry.argumentList.push_back(size);
-  RegisterMemory((void*)matrix, newEntry, size*sizeof(T));
+    newEntry.variable = matrix;
+    newEntry.type = type;
+    newEntry.variableName = variableName;
+    newEntry.fileName = fileName;
+    newEntry.lineNumber = lineNumber;
+    newEntry.argumentList.push_back(size);
+    RegisterMemory((void*)matrix, newEntry, size*sizeof(T));
+  }
 }
 
 template <typename T>
@@ -121,16 +121,16 @@ void MemoryManager::allocate(const char *type, T**& matrix, size_t size1, size_t
       vector[i]=static_cast<T>(0);   // Zero all the elements
     for(size_t i=0;i<size1;i++)
       matrix[i]=&(vector[i*size2]);  // Assign the rows pointers
-  }
 
-  newEntry.variable = matrix;
-  newEntry.type = type;
-  newEntry.variableName = variableName;
-  newEntry.fileName = fileName;
-  newEntry.lineNumber = lineNumber;
-  newEntry.argumentList.push_back(size1);
-  newEntry.argumentList.push_back(size2);
-  RegisterMemory((void*)matrix, newEntry, size*sizeof(T));
+    newEntry.variable = matrix;
+    newEntry.type = type;
+    newEntry.variableName = variableName;
+    newEntry.fileName = fileName;
+    newEntry.lineNumber = lineNumber;
+    newEntry.argumentList.push_back(size1);
+    newEntry.argumentList.push_back(size2);
+    RegisterMemory((void*)matrix, newEntry, size*sizeof(T));
+  }
 }
 
 template <typename T>
@@ -166,17 +166,16 @@ void MemoryManager::allocate(const char *type, T***& matrix,size_t size1,size_t 
     for(size_t i=0;i<size1;i++)
       for(size_t j=0;j<size2;j++)
         matrix[i][j]=&(vector[i*size2*size3+j*size3]);  // Assign the rows pointers
+    newEntry.variable = matrix;
+    newEntry.type = type;
+    newEntry.variableName = variableName;
+    newEntry.fileName = fileName;
+    newEntry.lineNumber = lineNumber;
+    newEntry.argumentList.push_back(size1);
+    newEntry.argumentList.push_back(size2);
+    newEntry.argumentList.push_back(size3);
+    RegisterMemory((void*)matrix, newEntry, size*sizeof(T));
   }
-
-  newEntry.variable = matrix;
-  newEntry.type = type;
-  newEntry.variableName = variableName;
-  newEntry.fileName = fileName;
-  newEntry.lineNumber = lineNumber;
-  newEntry.argumentList.push_back(size1);
-  newEntry.argumentList.push_back(size2);
-  newEntry.argumentList.push_back(size3);
-  RegisterMemory((void*)matrix, newEntry, size*sizeof(T));
 }
 
 template <typename T>

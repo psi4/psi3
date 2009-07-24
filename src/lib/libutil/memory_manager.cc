@@ -48,7 +48,7 @@ void MemoryManager::RegisterMemory(void *mem, AllocationEntry& entry, size_t siz
 void MemoryManager::UnregisterMemory(void *mem, size_t size, const char *fileName, size_t lineNumber)
 {
   CurrentAllocated -= size;
-  AllocationEntry& entry = AllocationTable[mem];
+//  AllocationEntry& entry = AllocationTable[mem];
 //  if(options_get_int("DEBUG") > 1){
 //    fprintf(outfile, "\n  ==============================================================================");
 //    fprintf(outfile, "\n  MemoryManager Deallocated %12ld bytes (%8.1f Mb)",size,double(size)/1048576.0);
@@ -70,7 +70,7 @@ void MemoryManager::MemCheck(FILE *output)
   fprintf(output, "  ==============================================================================\n");
   fprintf(output, "  Memory Usage Report\n\n");
   fprintf(output, "  Maximum memory used: %8.1f Mb \n",double(MaximumAllocated)/1048576.0);
-  fprintf(output, "  Number of objects still in memory: %-6d  Current bytes used: %-12lu",CurrentAllocated,AllocationTable.size());
+  fprintf(output, "  Number of objects still in memory: %-6lu  Current bytes used: %-14lu",(long unsigned)CurrentAllocated,(long unsigned)AllocationTable.size());
 
   fflush(output);
   if (AllocationTable.size() > 0) {
@@ -83,7 +83,7 @@ void MemoryManager::MemCheck(FILE *output)
     std::map<void*, AllocationEntry>::iterator it;
 
     for (it=AllocationTable.begin(); it != AllocationTable.end(); it++)
-      fprintf(output, "  %15s allocated at %s:%d\n", (*it).second.variableName.c_str(), (*it).second.fileName.c_str(), (*it).second.lineNumber);
+      fprintf(output, "  %15s allocated at %s:%lu\n", (*it).second.variableName.c_str(), (*it).second.fileName.c_str(), (long unsigned)(*it).second.lineNumber);
       fflush(output);
     //
 //    it = AllocationTable.begin();
