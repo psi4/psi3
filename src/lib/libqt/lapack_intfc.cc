@@ -146,7 +146,7 @@ int C_DGEEV(int n, double **a, int lda,
 ** exit, the factors L and U from the factorization A = P*L*U; the
 ** unit diagonal elements of L are not stored.
 **
-** \params lda = The leading dimension of the array A. lda >=
+** \param lda = The leading dimension of the array A. lda >=
 ** max(1,n).
 **
 ** \param int ipiv = An integer array of length n.  The pivot indices
