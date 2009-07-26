@@ -21,7 +21,7 @@ extern FILE* outfile;
 
 namespace psi{ namespace psimrcc{
 
-void MRCCSD_T::compute()
+void MRCCSD_T::compute_restricted()
 {
   // TODO: Use blas for matrix multiplications (perhaps call it contract)
   compute_ooo_triples();
@@ -61,30 +61,30 @@ void MRCCSD_T::compute()
   h_eff->print_matrix();
 }
 
-void MRCCSD_T::compute_ooo_triples()
+void MRCCSD_T::compute_ooo_triples_restricted()
 {
   CCIndexIterator  ijk("[ooo]");
   CCIndexIterator  abc("[vvv]");
 
   size_t tot_cycles   = 0;
   size_t tot_triplets = 0;
-  
+
   while(++ijk){
     int i_sym    = o->get_tuple_irrep(ijk.ind_abs[0]);
-    
+
     size_t i_abs = o->get_tuple_abs_index(ijk.ind_abs[0]);
     size_t j_abs = o->get_tuple_abs_index(ijk.ind_abs[1]);
     size_t k_abs = o->get_tuple_abs_index(ijk.ind_abs[2]);
-    
+
     size_t i_rel = o->get_tuple_rel_index(ijk.ind_abs[0]);
-    
+
     size_t ij_abs = oo->get_tuple_abs_index(ijk.ind_abs[0],ijk.ind_abs[1]);
     size_t kj_abs = oo->get_tuple_abs_index(ijk.ind_abs[2],ijk.ind_abs[1]);
     size_t ik_abs = oo->get_tuple_abs_index(ijk.ind_abs[0],ijk.ind_abs[2]);
-    
+
     int    jk_sym = oo->get_tuple_irrep(ijk.ind_abs[1],ijk.ind_abs[2]);
     size_t jk_rel = oo->get_tuple_rel_index(ijk.ind_abs[1],ijk.ind_abs[2]);
-    
+
     // Compute W for all unique references (d N^7)
     for(int mu = 0; mu < nurefs; ++mu){
       // Check if ijk belong to the occupied space of mu
@@ -92,20 +92,20 @@ void MRCCSD_T::compute_ooo_triples()
         Z[mu][ijk.sym]->contract(T2_ij_a_b->get_block_matrix(ij_abs,mu),V_k_bc_e->get_block_matrix(k_abs),1.0,0.0);
         Z[mu][ijk.sym]->contract(T2_ij_a_b->get_block_matrix(kj_abs,mu),V_k_bc_e->get_block_matrix(i_abs),-1.0,1.0);
         Z[mu][ijk.sym]->contract(T2_ij_a_b->get_block_matrix(ik_abs,mu),V_k_bc_e->get_block_matrix(j_abs),-1.0,1.0);
-        
+
         Z[mu][ijk.sym]->contract(V_jk_c_m->get_block_matrix(ij_abs),T2_i_ab_j->get_block_matrix(k_abs,mu),-1.0,1.0);
         Z[mu][ijk.sym]->contract(V_jk_c_m->get_block_matrix(kj_abs),T2_i_ab_j->get_block_matrix(i_abs,mu),1.0,1.0);
         Z[mu][ijk.sym]->contract(V_jk_c_m->get_block_matrix(ik_abs),T2_i_ab_j->get_block_matrix(j_abs,mu),1.0,1.0);
-        
+
         W[mu][ijk.sym]->cyclical_permutation_1_2(Z[mu][ijk.sym],vvv,v,vv);
       }
     }
-    
+
     for(int mu = 0; mu < nurefs; ++mu){
       T[mu][ijk.sym]->zero();
     }
-    
-    
+
+
     // Compute T (d^2 N^6)
     int    cycle = 0;
     double oldE  = 1.0;
@@ -121,28 +121,28 @@ void MRCCSD_T::compute_ooo_triples()
         e4T[mu] = e4ST[mu] = e4DT[mu] = 0.0;
         // Check if ijk belong to the occupied space of mu
         if(is_aocc[mu][i_abs] && is_aocc[mu][j_abs] && is_aocc[mu][k_abs]){
-          
+
           double***  F_ov_mu    = F_ov[mu];
           double***  T1_ov_mu   = T1_ov[mu];
           double***  V_oovv_mu  = V_oovv[mu];
           double***  T2_oovv_mu = T2_oovv[mu];
-          
+
           double D_ijk = e_oo[mu][i_abs] + e_oo[mu][j_abs] + e_oo[mu][k_abs];
-          
+
           // Add W
           Z[mu][ijk.sym]->add(W[mu][ijk.sym],0.0,1.0);
-          
+
           // Add the coupling terms
           for(int nu = 0; nu < nurefs; ++nu){
             if(nu != mu){
               Z[mu][ijk.sym]->add(T[nu][ijk.sym],1.0,Mk_factor[mu][nu]);
             }
           }
-          
+
           // Divide by the denominator
           vector<double>& e_vv_mu  = e_vv[mu];
           vector<bool>& is_avir_mu = is_avir[mu];
-          
+
           abc.reset();
           abc.set_irrep(ijk.sym);
           // Loop over abc
@@ -155,12 +155,12 @@ void MRCCSD_T::compute_ooo_triples()
               int    bc_sym = vv->get_tuple_irrep(abc.ind_abs[1],abc.ind_abs[2]);
               size_t  a_rel = v->get_tuple_rel_index(abc.ind_abs[0]);
               size_t bc_rel = vv->get_tuple_rel_index(abc.ind_abs[1],abc.ind_abs[2]);
-              
+
               double D_abc = e_vv_mu[a_abs] + e_vv_mu[b_abs] + e_vv_mu[c_abs];
-              
+
               // Update T
               T[mu][ijk.sym]->set(a_sym,a_rel,bc_rel,Z[mu][ijk.sym]->get(a_sym,a_rel,bc_rel)/(Mk_shift[mu] + D_ijk - D_abc));
-              
+
               // Compute the energy
               e4T[mu] += W[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) / 36.0;
               if((i_sym == a_sym) & (jk_sym == bc_sym)){
@@ -173,8 +173,8 @@ void MRCCSD_T::compute_ooo_triples()
         }  // End loop over allowed ijk
       }  // End of iterations
     }
-    
-    
+
+
     for(int mu = 0; mu < nurefs; ++mu){
       E4T_ooo[mu]  += e4T[mu];
       E4ST_ooo[mu] += e4ST[mu];
@@ -190,7 +190,7 @@ void MRCCSD_T::compute_ooo_triples()
   }
 }
 
-void MRCCSD_T::compute_OOO_triples()
+void MRCCSD_T::compute_OOO_triples_restricted()
 {
   CCIndexIterator  ijk("[ooo]");
   CCIndexIterator  abc("[vvv]");
@@ -215,6 +215,14 @@ void MRCCSD_T::compute_OOO_triples()
     for(int mu = 0; mu < nurefs; ++mu){
       // Check if ijk belong to the occupied space of mu
       if(is_bocc[mu][i_abs] && is_bocc[mu][j_abs] && is_bocc[mu][k_abs]){
+//        Z[mu][ijk.sym]->multiply(T2_IJ_A_B->get_block_matrix(ij_abs,mu),V_k_bc_e->get_block_matrix(k_abs),0.0,1.0);
+//        Z[mu][ijk.sym]->multiply(T2_IJ_A_B->get_block_matrix(kj_abs,mu),V_k_bc_e->get_block_matrix(i_abs),1.0,-1.0);
+//        Z[mu][ijk.sym]->multiply(T2_IJ_A_B->get_block_matrix(ik_abs,mu),V_k_bc_e->get_block_matrix(j_abs),1.0,-1.0);
+//
+//        Z[mu][ijk.sym]->multiply(V_jk_c_m->get_block_matrix(ij_abs),T2_I_AB_J->get_block_matrix(k_abs,mu),1.0,-1.0);
+//        Z[mu][ijk.sym]->multiply(V_jk_c_m->get_block_matrix(kj_abs),T2_I_AB_J->get_block_matrix(i_abs,mu),1.0,1.0);
+//        Z[mu][ijk.sym]->multiply(V_jk_c_m->get_block_matrix(ik_abs),T2_I_AB_J->get_block_matrix(j_abs,mu),1.0,1.0);
+
         Z[mu][ijk.sym]->contract(T2_IJ_A_B->get_block_matrix(ij_abs,mu),V_k_bc_e->get_block_matrix(k_abs),1.0,0.0);
         Z[mu][ijk.sym]->contract(T2_IJ_A_B->get_block_matrix(kj_abs,mu),V_k_bc_e->get_block_matrix(i_abs),-1.0,1.0);
         Z[mu][ijk.sym]->contract(T2_IJ_A_B->get_block_matrix(ik_abs,mu),V_k_bc_e->get_block_matrix(j_abs),-1.0,1.0);
@@ -312,7 +320,7 @@ void MRCCSD_T::compute_OOO_triples()
 }
 
 
-void MRCCSD_T::compute_ooO_triples()
+void MRCCSD_T::compute_ooO_triples_restricted()
 {
   CCIndexIterator  ijk("[ooo]");
   CCIndexIterator  abc("[vvv]");
@@ -341,6 +349,16 @@ void MRCCSD_T::compute_ooO_triples()
     for(int mu = 0; mu < nurefs; ++mu){
       // Check if ijk belong to the occupied space of mu
       if(is_aocc[mu][i_abs] && is_aocc[mu][j_abs] && is_bocc[mu][k_abs]){
+//        Z[mu][ijk.sym]->multiply(T2_ij_a_b->get_block_matrix(ij_abs,mu),V_K_bC_e->get_block_matrix(k_abs),0.0,1.0);
+//
+//        Z[mu][ijk.sym]->multiply(T2_iJ_a_B->get_block_matrix(jk_abs,mu),V_k_bC_E->get_block_matrix(i_abs),1.0,-1.0);
+//        Z[mu][ijk.sym]->multiply(T2_iJ_a_B->get_block_matrix(ik_abs,mu),V_k_bC_E->get_block_matrix(j_abs),1.0,1.0);
+//
+//        Z[mu][ijk.sym]->multiply(V_jk_c_m->get_block_matrix(ij_abs),T2_J_aB_i->get_block_matrix(k_abs,mu),1.0,1.0);
+//
+//        Z[mu][ijk.sym]->multiply(V_jK_c_M->get_block_matrix(jk_abs),T2_i_aB_J->get_block_matrix(i_abs,mu),1.0,1.0);
+//        Z[mu][ijk.sym]->multiply(V_jK_c_M->get_block_matrix(ik_abs),T2_i_aB_J->get_block_matrix(j_abs,mu),1.0,-1.0);
+
         Z[mu][ijk.sym]->contract(T2_ij_a_b->get_block_matrix(ij_abs,mu),V_K_bC_e->get_block_matrix(k_abs),1.0,0.0);
 
         Z[mu][ijk.sym]->contract(T2_iJ_a_B->get_block_matrix(jk_abs,mu),V_k_bC_E->get_block_matrix(i_abs),-1.0,1.0);
@@ -352,6 +370,12 @@ void MRCCSD_T::compute_ooO_triples()
         Z[mu][ijk.sym]->contract(V_jK_c_M->get_block_matrix(ik_abs),T2_i_aB_J->get_block_matrix(j_abs,mu),-1.0,1.0);
 
         W[mu][ijk.sym]->a_b_permutation_1_2(Z[mu][ijk.sym],vvv,v,vv);
+
+//        Z[mu][ijk.sym]->multiply(T2_iJ_B_a->get_block_matrix(ik_abs,mu),V_k_bc_e->get_block_matrix(j_abs),0.0,1.0);
+//        Z[mu][ijk.sym]->multiply(T2_iJ_B_a->get_block_matrix(jk_abs,mu),V_k_bc_e->get_block_matrix(i_abs),1.0,-1.0);
+//
+//        Z[mu][ijk.sym]->multiply(V_jK_C_m->get_block_matrix(jk_abs),T2_i_ab_j->get_block_matrix(i_abs,mu),1.0,-1.0);
+//        Z[mu][ijk.sym]->multiply(V_jK_C_m->get_block_matrix(ik_abs),T2_i_ab_j->get_block_matrix(j_abs,mu),1.0,1.0);
 
         Z[mu][ijk.sym]->contract(T2_iJ_B_a->get_block_matrix(ik_abs,mu),V_k_bc_e->get_block_matrix(j_abs),1.0,0.0);
         Z[mu][ijk.sym]->contract(T2_iJ_B_a->get_block_matrix(jk_abs,mu),V_k_bc_e->get_block_matrix(i_abs),-1.0,1.0);
@@ -468,7 +492,7 @@ void MRCCSD_T::compute_ooO_triples()
   }
 }
 
-void MRCCSD_T::compute_oOO_triples()
+void MRCCSD_T::compute_oOO_triples_restricted()
 {
   CCIndexIterator  ijk("[ooo]");
   CCIndexIterator  abc("[vvv]");

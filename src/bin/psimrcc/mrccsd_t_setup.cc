@@ -14,7 +14,7 @@ void MRCCSD_T::startup()
   nirreps  = moinfo->get_nirreps();
   nurefs   = moinfo->get_nunique();
 
-  threshold = pow(10.0,-static_cast<double>(options_get_int("CONVERGENCE")));
+  threshold = 0.0001 * pow(10.0,-static_cast<double>(options_get_int("CONVERGENCE")));
 
   o   = blas->get_index("[o]");
   oo  = blas->get_index("[oo]");

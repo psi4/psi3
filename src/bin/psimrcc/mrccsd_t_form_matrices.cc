@@ -110,7 +110,6 @@ void MRCCSD_T::form_V_k_bc_e(IndexMatrix* V_k_bc_e,double direct,double exchange
     ebc.reset();
     ebc.set_irrep(k.sym);
     while(++ebc){
-      int    e_sym   = v->get_tuple_irrep(ebc.ind_abs[0]);
       size_t e_rel   = v->get_tuple_rel_index(ebc.ind_abs[0]);
 
       int    ek_sym  = vo->get_tuple_irrep(ebc.ind_abs[0],k.ind_abs[0]);
