@@ -23,7 +23,6 @@ namespace psi{ namespace psimrcc{
 
 void MRCCSD_T::compute()
 {
-  // TODO: Use blas for matrix multiplications (perhaps call it contract)
   compute_ooo_triples();
   compute_ooO_triples();
   compute_oOO_triples();
@@ -32,25 +31,44 @@ void MRCCSD_T::compute()
   fprintf(outfile,"\n\n  Mk-MRCCSD(T) diagonal contributions to the effective Hamiltonian:\n");
   fprintf(outfile,"\n  ref          E[4]              E_T[4]            E_ST[4]           E_DT[4]");
   fprintf(outfile,"\n  ------------------------------------------------------------------------------");
-  for(int mu = 0; mu < nurefs; ++mu){
-    fprintf(outfile,"\n   %2d  ",mu);
-    fprintf(outfile," %17.12lf",E4_ooo[mu] + E4_ooO[mu] + E4_oOO[mu] + E4_OOO[mu]);
-    fprintf(outfile," %17.12lf",E4T_ooo[mu] + E4T_ooO[mu] + E4T_oOO[mu] + E4T_OOO[mu]);
-    fprintf(outfile," %17.12lf",E4ST_ooo[mu] + E4ST_ooO[mu] + E4ST_oOO[mu] + E4ST_OOO[mu]);
-    fprintf(outfile," %17.12lf",E4DT_ooo[mu] + E4DT_ooO[mu] + E4DT_oOO[mu] + E4DT_OOO[mu]);
+  if(nrefs < 100){
+    for(int mu = 0; mu < nrefs; ++mu){
+      fprintf(outfile,"\n   %2d  ",mu);
+      fprintf(outfile," %17.12lf",E4_ooo[mu] + E4_ooO[mu] + E4_oOO[mu] + E4_OOO[mu]);
+      fprintf(outfile," %17.12lf",E4T_ooo[mu] + E4T_ooO[mu] + E4T_oOO[mu] + E4T_OOO[mu]);
+      fprintf(outfile," %17.12lf",E4ST_ooo[mu] + E4ST_ooO[mu] + E4ST_oOO[mu] + E4ST_OOO[mu]);
+      fprintf(outfile," %17.12lf",E4DT_ooo[mu] + E4DT_ooO[mu] + E4DT_oOO[mu] + E4DT_OOO[mu]);
+    }
   }
+  fprintf(outfile,"\n   Tot ");
+  double E4 = 0.0;
+  for(int mu = 0; mu < nrefs; ++mu)
+    E4 += (E4_ooo[mu] + E4_ooO[mu] + E4_oOO[mu] + E4_OOO[mu]) * h_eff->get_left_eigenvector(mu) * h_eff->get_right_eigenvector(mu);
+  fprintf(outfile," %17.12lf",E4);
+  double E4T = 0.0;
+  for(int mu = 0; mu < nrefs; ++mu)
+    E4T += (E4T_ooo[mu] + E4T_ooO[mu] + E4T_oOO[mu] + E4T_OOO[mu])  * h_eff->get_left_eigenvector(mu) * h_eff->get_right_eigenvector(mu);
+  fprintf(outfile," %17.12lf",E4T);
+  double E4ST = 0.0;
+  for(int mu = 0; mu < nrefs; ++mu)
+    E4ST += (E4ST_ooo[mu] + E4ST_ooO[mu] + E4ST_oOO[mu] + E4ST_OOO[mu])  * h_eff->get_left_eigenvector(mu) * h_eff->get_right_eigenvector(mu);
+  fprintf(outfile," %17.12lf",E4ST);
+  double E4DT = 0.0;
+  for(int mu = 0; mu < nrefs; ++mu)
+    E4DT += (E4DT_ooo[mu] + E4DT_ooO[mu] + E4DT_oOO[mu] + E4DT_OOO[mu]) * h_eff->get_left_eigenvector(mu) * h_eff->get_right_eigenvector(mu);
+  fprintf(outfile," %17.12lf",E4DT);
   fprintf(outfile,"\n  ------------------------------------------------------------------------------");
 
   fprintf(outfile,"\n\n  Mk-MRCCSD(T) off-diagonal contributions to the effective Hamiltonian:\n");
-  for(int mu = 0; mu < nurefs; ++mu){
+  for(int mu = 0; mu < nrefs; ++mu){
     fprintf(outfile,"\n");
-    for(int nu = 0; nu < nurefs; ++nu){
+    for(int nu = 0; nu < nrefs; ++nu){
       fprintf(outfile," %17.12lf",d_h_eff[mu][nu]);
     }
   }
 
-  for(int mu = 0; mu < nurefs; ++mu){
-    for(int nu = 0; nu < nurefs; ++nu){
+  for(int mu = 0; mu < nrefs; ++mu){
+    for(int nu = 0; nu < nrefs; ++nu){
       if(mu != nu){
         h_eff->add_matrix(mu,nu,d_h_eff[mu][nu]);
       }else{
@@ -86,7 +104,7 @@ void MRCCSD_T::compute_ooo_triples()
     size_t jk_rel = oo->get_tuple_rel_index(ijk.ind_abs[1],ijk.ind_abs[2]);
     
     // Compute W for all unique references (d N^7)
-    for(int mu = 0; mu < nurefs; ++mu){
+    for(int mu = 0; mu < nrefs; ++mu){
       // Check if ijk belong to the occupied space of mu
       if(is_aocc[mu][i_abs] && is_aocc[mu][j_abs] && is_aocc[mu][k_abs]){
         Z[mu][ijk.sym]->contract(T2_ij_a_b->get_block_matrix(ij_abs,mu),V_k_bc_e->get_block_matrix(k_abs),1.0,0.0);
@@ -101,10 +119,9 @@ void MRCCSD_T::compute_ooo_triples()
       }
     }
     
-    for(int mu = 0; mu < nurefs; ++mu){
+    for(int mu = 0; mu < nrefs; ++mu){
       T[mu][ijk.sym]->zero();
     }
-    
     
     // Compute T (d^2 N^6)
     int    cycle = 0;
@@ -117,7 +134,7 @@ void MRCCSD_T::compute_ooo_triples()
       oldE = newE;
       newE = 0.0;
       // Iterate the Mk-MRCCSD(T) Equations
-      for(int mu = 0; mu < nurefs; ++mu){
+      for(int mu = 0; mu < nrefs; ++mu){
         e4T[mu] = e4ST[mu] = e4DT[mu] = 0.0;
         // Check if ijk belong to the occupied space of mu
         if(is_aocc[mu][i_abs] && is_aocc[mu][j_abs] && is_aocc[mu][k_abs]){
@@ -133,7 +150,7 @@ void MRCCSD_T::compute_ooo_triples()
           Z[mu][ijk.sym]->add(W[mu][ijk.sym],0.0,1.0);
           
           // Add the coupling terms
-          for(int nu = 0; nu < nurefs; ++nu){
+          for(int nu = 0; nu < nrefs; ++nu){
             if(nu != mu){
               Z[mu][ijk.sym]->add(T[nu][ijk.sym],1.0,Mk_factor[mu][nu]);
             }
@@ -175,14 +192,14 @@ void MRCCSD_T::compute_ooo_triples()
     }
     
     
-    for(int mu = 0; mu < nurefs; ++mu){
+    for(int mu = 0; mu < nrefs; ++mu){
       E4T_ooo[mu]  += e4T[mu];
       E4ST_ooo[mu] += e4ST[mu];
       E4DT_ooo[mu] += e4DT[mu];
     }
   } // End loop over ijk
 
-  for(int mu = 0; mu < nurefs; ++mu){
+  for(int mu = 0; mu < nrefs; ++mu){
     fprintf(outfile,"\n  E_T[4]  (aaa) = %20.15lf (%d)",E4T_ooo[mu],mu);
     fprintf(outfile,"\n  E_ST[4] (aaa) = %20.15lf (%d)",E4ST_ooo[mu],mu);
     fprintf(outfile,"\n  E_DT[4] (aaa) = %20.15lf (%d)",E4DT_ooo[mu],mu);
@@ -212,7 +229,7 @@ void MRCCSD_T::compute_OOO_triples()
     size_t jk_rel = oo->get_tuple_rel_index(ijk.ind_abs[1],ijk.ind_abs[2]);
 
     // Compute W for all unique references (d N^7)
-    for(int mu = 0; mu < nurefs; ++mu){
+    for(int mu = 0; mu < nrefs; ++mu){
       // Check if ijk belong to the occupied space of mu
       if(is_bocc[mu][i_abs] && is_bocc[mu][j_abs] && is_bocc[mu][k_abs]){
         Z[mu][ijk.sym]->contract(T2_IJ_A_B->get_block_matrix(ij_abs,mu),V_k_bc_e->get_block_matrix(k_abs),1.0,0.0);
@@ -227,7 +244,7 @@ void MRCCSD_T::compute_OOO_triples()
       }
     }
 
-    for(int mu = 0; mu < nurefs; ++mu){
+    for(int mu = 0; mu < nrefs; ++mu){
       T[mu][ijk.sym]->zero();
     }
 
@@ -235,12 +252,12 @@ void MRCCSD_T::compute_OOO_triples()
     int    cycle = 0;
     double oldE  = 1.0;
     double newE  = 0.0;
-    while(cycle < 10){//while(fabs(oldE-newE) > threshold){
+    while(fabs(oldE-newE) > threshold){
       cycle++;
       oldE = newE;
       newE = 0.0;
       // Iterate the Mk-MRCCSD(T) Equations
-      for(int mu = 0; mu < nurefs; ++mu){
+      for(int mu = 0; mu < nrefs; ++mu){
         e4T[mu] = e4ST[mu] = e4DT[mu] = 0.0;
         // Check if ijk belong to the occupied space of mu
         if(is_bocc[mu][i_abs] && is_bocc[mu][j_abs] && is_bocc[mu][k_abs]){
@@ -256,7 +273,7 @@ void MRCCSD_T::compute_OOO_triples()
           Z[mu][ijk.sym]->add(W[mu][ijk.sym],0.0,1.0);
 
           // Add the coupling terms
-          for(int nu = 0; nu < nurefs; ++nu){
+          for(int nu = 0; nu < nrefs; ++nu){
             if(nu != mu){
               Z[mu][ijk.sym]->add(T[nu][ijk.sym],1.0,Mk_factor[mu][nu]);
             }
@@ -296,14 +313,14 @@ void MRCCSD_T::compute_OOO_triples()
         }  // End loop over allowed ijk
       }  // End of iterations
     }
-    for(int mu = 0; mu < nurefs; ++mu){
+    for(int mu = 0; mu < nrefs; ++mu){
       E4T_OOO[mu]  += e4T[mu];
       E4ST_OOO[mu] += e4ST[mu];
       E4DT_OOO[mu] += e4DT[mu];
     }
   }
 
-  for(int mu = 0; mu < nurefs; ++mu){
+  for(int mu = 0; mu < nrefs; ++mu){
     fprintf(outfile,"\n  E_T[4]  (bbb) = %20.15lf (%d)",E4T_OOO[mu],mu);
     fprintf(outfile,"\n  E_ST[4] (bbb) = %20.15lf (%d)",E4ST_OOO[mu],mu);
     fprintf(outfile,"\n  E_DT[4] (bbb) = %20.15lf (%d)",E4DT_OOO[mu],mu);
@@ -338,7 +355,7 @@ void MRCCSD_T::compute_ooO_triples()
     size_t jk_rel = oo->get_tuple_rel_index(ijk.ind_abs[1],ijk.ind_abs[2]);
 
     // Compute W for all unique references (d N^7)
-    for(int mu = 0; mu < nurefs; ++mu){
+    for(int mu = 0; mu < nrefs; ++mu){
       // Check if ijk belong to the occupied space of mu
       if(is_aocc[mu][i_abs] && is_aocc[mu][j_abs] && is_bocc[mu][k_abs]){
         Z[mu][ijk.sym]->contract(T2_ij_a_b->get_block_matrix(ij_abs,mu),V_K_bC_e->get_block_matrix(k_abs),1.0,0.0);
@@ -363,7 +380,7 @@ void MRCCSD_T::compute_ooO_triples()
       }
     }
 
-    for(int mu = 0; mu < nurefs; ++mu){
+    for(int mu = 0; mu < nrefs; ++mu){
       T[mu][ijk.sym]->zero();
     }
 
@@ -371,12 +388,12 @@ void MRCCSD_T::compute_ooO_triples()
     int    cycle = 0;
     double oldE  = 1.0;
     double newE  = 0.0;
-    while(cycle < 10){//while(fabs(oldE-newE) > threshold){
+    while(fabs(oldE-newE) > threshold){
       cycle++;
       oldE = newE;
       newE = 0.0;
       // Iterate the Mk-MRCCSD(T) Equations
-      for(int mu = 0; mu < nurefs; ++mu){
+      for(int mu = 0; mu < nrefs; ++mu){
         e4T[mu] = e4ST[mu] = e4DT[mu] = 0.0;
         // Check if ijk belong to the occupied space of mu
         if(is_aocc[mu][i_abs] && is_aocc[mu][j_abs] && is_bocc[mu][k_abs]){
@@ -396,7 +413,7 @@ void MRCCSD_T::compute_ooO_triples()
           Z[mu][ijk.sym]->add(W[mu][ijk.sym],0.0,1.0);
 
           // Add the coupling terms
-          for(int nu = 0; nu < nurefs; ++nu){
+          for(int nu = 0; nu < nrefs; ++nu){
             if(nu != mu){
               Z[mu][ijk.sym]->add(T[nu][ijk.sym],1.0,Mk_factor[mu][nu]);
             }
@@ -448,19 +465,19 @@ void MRCCSD_T::compute_ooO_triples()
     }
 
     // Compute the contributions to the off-diagonal elements of Heff
-    for(int mu = 0; mu < nurefs; ++mu){
+    for(int mu = 0; mu < nrefs; ++mu){
       compute_ooO_contribution_to_Heff(i_abs,j_abs,k_abs,mu,T[mu][ijk.sym]);
     }
 
     // Add the energy contributions from ijk
-    for(int mu = 0; mu < nurefs; ++mu){
+    for(int mu = 0; mu < nrefs; ++mu){
       E4T_ooO[mu]  += e4T[mu];
       E4ST_ooO[mu] += e4ST[mu];
       E4DT_ooO[mu] += e4DT[mu];
     }
   } // End loop over ijk
 
-  for(int mu = 0; mu < nurefs; ++mu){
+  for(int mu = 0; mu < nrefs; ++mu){
 //    fprintf(outfile,"\n  E_T[4]  (aab) = %20.15lf (%d)",E4T_ooO[mu],mu);
 //    fprintf(outfile,"\n  E_ST[4] (aab) = %20.15lf (%d)",E4ST_ooO[mu],mu);
 //    fprintf(outfile,"\n  E_DT[4] (aab) = %20.15lf (%d)",E4DT_ooO[mu],mu);
@@ -494,7 +511,7 @@ void MRCCSD_T::compute_oOO_triples()
     size_t jk_rel = oo->get_tuple_rel_index(ijk.ind_abs[1],ijk.ind_abs[2]);
 
     // Compute W for all unique references (d N^7)
-    for(int mu = 0; mu < nurefs; ++mu){
+    for(int mu = 0; mu < nrefs; ++mu){
       // Check if ijk belong to the occupied space of mu
       if(is_aocc[mu][i_abs] && is_bocc[mu][j_abs] && is_bocc[mu][k_abs]){
         W[mu][ijk.sym]->contract(T2_iJ_a_B->get_block_matrix(ij_abs,mu),V_k_bc_e->get_block_matrix(k_abs),1.0,0.0);
@@ -517,7 +534,7 @@ void MRCCSD_T::compute_oOO_triples()
       }
     }
 
-    for(int mu = 0; mu < nurefs; ++mu){
+    for(int mu = 0; mu < nrefs; ++mu){
       T[mu][ijk.sym]->zero();
     }
 
@@ -525,12 +542,12 @@ void MRCCSD_T::compute_oOO_triples()
     int    cycle = 0;
     double oldE  = 1.0;
     double newE  = 0.0;
-    while(cycle < 10){//while(fabs(oldE-newE) > threshold){
+    while(fabs(oldE-newE) > threshold){
       cycle++;
       oldE = newE;
       newE = 0.0;
       // Iterate the Mk-MRCCSD(T) Equations
-      for(int mu = 0; mu < nurefs; ++mu){
+      for(int mu = 0; mu < nrefs; ++mu){
         e4T[mu] = e4ST[mu] = e4DT[mu] = 0.0;
         // Check if ijk belong to the occupied space of mu
         if(is_aocc[mu][i_abs] && is_bocc[mu][j_abs] && is_bocc[mu][k_abs]){
@@ -551,7 +568,7 @@ void MRCCSD_T::compute_oOO_triples()
           Z[mu][ijk.sym]->add(W[mu][ijk.sym],0.0,1.0);
 
           // Add the coupling terms
-          for(int nu = 0; nu < nurefs; ++nu){
+          for(int nu = 0; nu < nrefs; ++nu){
             if(nu != mu){
               Z[mu][ijk.sym]->add(T[nu][ijk.sym],1.0,Mk_factor[mu][nu]);
             }
@@ -604,19 +621,19 @@ void MRCCSD_T::compute_oOO_triples()
     }
 
     // Compute the contributions to the off-diagonal elements of Heff
-    for(int mu = 0; mu < nurefs; ++mu){
+    for(int mu = 0; mu < nrefs; ++mu){
       compute_oOO_contribution_to_Heff(i_abs,j_abs,k_abs,mu,T[mu][ijk.sym]);
     }
 
     // Add the energy contributions from ijk
-    for(int mu = 0; mu < nurefs; ++mu){
+    for(int mu = 0; mu < nrefs; ++mu){
       E4T_oOO[mu]  += e4T[mu];
       E4ST_oOO[mu] += e4ST[mu];
       E4DT_oOO[mu] += e4DT[mu];
     }
   }
 
-  for(int mu = 0; mu < nurefs; ++mu){
+  for(int mu = 0; mu < nrefs; ++mu){
 //    fprintf(outfile,"\n  E_T[4]  (abb) = %20.15lf (%d)",E4T_oOO[mu],mu);
 //    fprintf(outfile,"\n  E_ST[4] (abb) = %20.15lf (%d)",E4ST_oOO[mu],mu);
 //    fprintf(outfile,"\n  E_DT[4] (abb) = %20.15lf (%d)",E4DT_oOO[mu],mu);
