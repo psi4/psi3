@@ -18,19 +18,18 @@
 namespace psi { namespace ccresponse {
 
 void transpert(const char *pert);
-void sort_pert(const char *pert, double **pertX, double **pertY, double **pertZ,
-	       int irrep_x, int irrep_y, int irrep_z);
-void pertbar(const char *pert, int irrep_x, int irrep_y, int irrep_z, int anti);
-void compute_X(const char *pert, const char *cart, int irrep, double omega);
-void linresp(double **tensor, double A, double B,
-	     const char *pert_x, int *x_irreps, double omega_x,
-	     const char *pert_y, int *y_irreps, double omega_y);
+void sort_pert(const char *pert, double **pertints, int irrep);
+void pertbar(const char *pert, int irrep, int anti);
+void compute_X(const char *pert, int irrep, double omega);
+void linresp(double *tensor, double A, double B,
+	     const char *pert_x, int x_irrep, double omega_x,
+	     const char *pert_y, int y_irrep, double omega_y);
 
 void polar(void)
 {
   double ***tensor;
   double polar, polar_LCX, polar_HXY, polar_LHX1Y1, polar_LHX2Y2, polar_LHX1Y2;
-  char **cartcomp;
+  char **cartcomp, pert[32], pert_x[32], pert_y[32];
   int alpha, beta, i;
   double omega_nm, omega_ev, omega_cm, *trace;
   char lbl[32];
@@ -51,20 +50,26 @@ void polar(void)
     sprintf(lbl, "<<Mu;Mu>_(%5.3f)", params.omega[i]);
     if(!params.restart || !psio_tocscan(CC_INFO, lbl)) {
 
-      transpert("Mu");
-      sort_pert("Mu", moinfo.MUX, moinfo.MUY, moinfo.MUZ, moinfo.irrep_x,
-		moinfo.irrep_y, moinfo.irrep_z);
-      pertbar("Mu", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 0);
-
-      /* Compute the electric-dipole-perturbed CC wave functions */
       for(alpha=0; alpha < 3; alpha++) {
-	compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i]);
-	if(params.omega[i] != 0.0) compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i]);
+        sprintf(pert, "Mu_%1s", cartcomp[alpha]);
+        transpert(pert);
+        sort_pert(pert, moinfo.MU[alpha], moinfo.mu_irreps[alpha]);
+        pertbar(pert, moinfo.mu_irreps[alpha], 0);
+	compute_X(pert, moinfo.mu_irreps[alpha], params.omega[i]);
+	if(params.omega[i] != 0.0) compute_X(pert, moinfo.mu_irreps[alpha], -params.omega[i]);
       }
 
       fprintf(outfile, "\n\tComputing %s tensor.\n", lbl); fflush(outfile);
-      linresp(tensor[i], -1.0, 0.0, "Mu", moinfo.mu_irreps, -params.omega[i],
-	      "Mu", moinfo.mu_irreps, params.omega[i]);
+      for(alpha=0; alpha < 3; alpha++) {
+        for(beta=0; beta < 3; beta++) {
+          sprintf(pert_x,"Mu_%1s", cartcomp[alpha]);
+          sprintf(pert_y,"Mu_%1s", cartcomp[beta]);
+          linresp(&tensor[i][alpha][beta], -1.0, 0.0, 
+                  pert_x, moinfo.mu_irreps[alpha], -params.omega[i], 
+                  pert_y, moinfo.mu_irreps[beta], params.omega[i]);
+        }
+      }
+
       psio_write_entry(CC_INFO, lbl, (char *) tensor[i][0], 9*sizeof(double));
 
       psio_close(CC_LR, 0);

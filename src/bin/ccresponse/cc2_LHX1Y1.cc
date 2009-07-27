@@ -16,8 +16,8 @@
 
 namespace psi { namespace ccresponse {
 
-double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double omega_x,
-		  const char *pert_y, const char *cart_y, int irrep_y, double omega_y)
+double cc2_LHX1Y1(const char *pert_x, int irrep_x, double omega_x,
+		  const char *pert_y, int irrep_y, double omega_y)
 {
 	
   int am, a, A, m, M, fe, ef, f, e, E;
@@ -33,14 +33,14 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
 	
   /* The Lambda 1 contractions */
   dpd_file2_init(&ZIA, CC_TMP0, 0, 0, 1, "ZIA");
-  sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert_x, cart_x, omega_x);
+  sprintf(lbl, "X_%s_IA (%5.3f)", pert_x, omega_x);
   dpd_file2_init(&X1, CC_OEI, irrep_x, 0, 1, lbl);
-  sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert_y, cart_y, omega_y);
+  sprintf(lbl, "X_%s_IA (%5.3f)", pert_y, omega_y);
   dpd_file2_init(&Y1, CC_OEI, irrep_y, 0, 1, lbl);
 	
   /* Contraction of FME, XIE, YMA */
   dpd_file2_init(&F, CC_OEI, 0, 0, 1, "FME");
-  sprintf(lbl, "Z_%s_%1s_MI" , pert_x, cart_x);
+  sprintf(lbl, "Z_%s_MI" , pert_x);
   dpd_file2_init(&Zmi, CC_TMP0, irrep_x, 0, 0, lbl);
   dpd_contract222(&F, &X1, &Zmi, 0, 0, 1, 0);
   dpd_file2_close(&F);
@@ -56,7 +56,7 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
 	
   /* Contraction of WAMEF, XIE, YMF */
   /** Begin out-of-core dot24 contraction **/
-  sprintf(lbl, "Z_%s_%1s_AE" , pert_x, cart_x);
+  sprintf(lbl, "Z_%s_AE" , pert_x);
   dpd_file2_init(&Zae, CC_TMP0, irrep_y, 1, 1, lbl);
   dpd_file2_scm(&Zae, 0);
   dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
@@ -117,7 +117,7 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
 	
   /* Contraction of WAMEF, XMF, YIE */
   /** Begin out-of-core dot24 contraction **/
-  sprintf(lbl, "Z_%s_%1s_AE" , pert_y, cart_y);
+  sprintf(lbl, "Z_%s_AE" , pert_y);
   dpd_file2_init(&Zae, CC_TMP0, irrep_y, 1, 1, lbl);
   dpd_file2_scm(&Zae, 0);
   dpd_buf4_init(&W, CC_HBAR, 0, 11, 5, 11, 5, 0, "WAmEf");
@@ -177,7 +177,7 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
   dpd_file2_close(&Zae);
 	
   /* Contraction of WAMEF, XMA, YNE */
-  sprintf(lbl, "Z_%s_%1s_MI" , pert_y, cart_y);
+  sprintf(lbl, "Z_%s_MI" , pert_y);
   dpd_file2_init(&Zmi, CC_TMP0, irrep_y, 0, 0, lbl);
   dpd_buf4_init(&W1, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe (Mn,eI)");
   dpd_dot13(&Y1, &W1, &Zmi, 0, 0, 1, 0);
@@ -186,7 +186,7 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
   dpd_file2_close(&Zmi);
 	
   /* Contraction of WAMEF, XMA, YNE */
-  sprintf(lbl, "Z_%s_%1s_MI" , pert_x, cart_x);
+  sprintf(lbl, "Z_%s_MI" , pert_x);
   dpd_file2_init(&Zmi, CC_TMP0, irrep_x, 0, 0, lbl);
   dpd_buf4_init(&W1, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe (Mn,eI)");
   dpd_dot13(&X1, &W1, &Zmi, 0, 0, 1, 0);
@@ -206,14 +206,14 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
   /*   fprintf(outfile, "L(1)HX1Y1 = %20.12f\n", polar); */
 	
   /* The Lambda 2 contractions */
-  sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert_x, cart_x, omega_x);
+  sprintf(lbl, "X_%s_IA (%5.3f)", pert_x, omega_x);
   dpd_file2_init(&X1, CC_OEI, irrep_x, 0, 1, lbl);
-  sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert_y, cart_y, omega_y);
+  sprintf(lbl, "X_%s_IA (%5.3f)", pert_y, omega_y);
   dpd_file2_init(&Y1, CC_OEI, irrep_y, 0, 1, lbl);
 	
 	
   /* Contraction with Wmnij */
-  sprintf(lbl, "Z_%s_%1s_MbIj", pert_y, cart_y);
+  sprintf(lbl, "Z_%s_MbIj", pert_y);
   dpd_buf4_init(&Z1, CC_TMP0, irrep_y, 10, 0, 10, 0, 0, lbl);
   dpd_buf4_init(&W1, CC2_HET1, 0, 0, 0, 0, 0, 0, "CC2 WMnIj");
   dpd_contract424(&W1, &Y1, &Z1, 1, 0, 1, 1, 0);
@@ -236,7 +236,7 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
 
   /* Plus Combination */
   dpd_buf4_init(&B, CC_BINTS, 0, 5, 8, 8, 8, 0, "B(+) <ab|cd> + <ab|dc>");
-  sprintf(lbl, "Z1_%s_%1s_(ei,a>=b)", pert_y, cart_y);
+  sprintf(lbl, "Z1_%s_(ei,a>=b)", pert_y);
   dpd_buf4_init(&Z1, CC_TMP8, irrep_y, 11, 8, 11, 8, 0, lbl);
   dpd_buf4_scm(&Z1, 0);
 
@@ -270,7 +270,7 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
 
   /* Minus Combination */
   dpd_buf4_init(&B, CC_BINTS, 0, 5, 9, 9, 9, 0, "B(-) <ab|cd> - <ab|dc>");
-  sprintf(lbl, "Z2_%s_%1s_(ei,a>=b)", pert_y, cart_y);
+  sprintf(lbl, "Z2_%s_(ei,a>=b)", pert_y);
   dpd_buf4_init(&Z2, CC_TMP8, irrep_y, 11, 9, 11, 9, 0, lbl);
   dpd_buf4_scm(&Z2, 0);
 
@@ -303,27 +303,27 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
   dpd_buf4_close(&B);
   dpd_file2_mat_close(&Y1);
 
-  sprintf(lbl, "Z_%s_%1s_AbEj (Ej,Ab)", pert_y, cart_y);
+  sprintf(lbl, "Z_%s_AbEj (Ej,Ab)", pert_y);
   dpd_buf4_init(&Z, CC_TMP8, irrep_y, 11, 5, 11, 5, 0, lbl);
   dpd_buf4_scm(&Z, 0);
-  sprintf(lbl, "Z1_%s_%1s_(ei,a>=b)", pert_y, cart_y);
+  sprintf(lbl, "Z1_%s_(ei,a>=b)", pert_y);
   dpd_buf4_init(&Z1, CC_TMP8, irrep_y, 11, 5, 11, 8, 0, lbl);
   dpd_buf4_axpy(&Z1, &Z, 1);
   dpd_buf4_close(&Z1);
-  sprintf(lbl, "Z2_%s_%1s_(ei,a>=b)", pert_y, cart_y);
+  sprintf(lbl, "Z2_%s_(ei,a>=b)", pert_y);
   dpd_buf4_init(&Z2, CC_TMP8, irrep_y, 11, 5, 11, 9, 0, lbl);
   dpd_buf4_axpy(&Z2, &Z, 1);
   dpd_buf4_close(&Z2);
   dpd_buf4_close(&Z);
 
-  sprintf(lbl, "Z_%s_%1s_AbEj", pert_y, cart_y);
+  sprintf(lbl, "Z_%s_AbEj", pert_y);
   dpd_buf4_init(&Z, CC_TMP9, irrep_y, 5, 11, 5, 11, 0, lbl);
   dpd_buf4_scm(&Z, 0);
   dpd_buf4_close(&Z);
 
-  sprintf(lbl, "Z_%s_%1s_AbEj (Ej,Ab)", pert_y, cart_y);
+  sprintf(lbl, "Z_%s_AbEj (Ej,Ab)", pert_y);
   dpd_buf4_init(&Z, CC_TMP8, irrep_y, 11, 5, 11, 5, 0, lbl);
-  sprintf(lbl, "Z_%s_%1s_AbEj", pert_y, cart_y);
+  sprintf(lbl, "Z_%s_AbEj", pert_y);
   dpd_buf4_sort_axpy(&Z, CC_TMP9, rspq, 5, 11, lbl, 1);
   dpd_buf4_close(&Z);
 
@@ -331,7 +331,7 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
   psio_close(CC_TMP8, 0);
   psio_open(CC_TMP8, 0);
 
-  /*   sprintf(lbl, "Z_%s_%1s_AbEj", pert_y, cart_y); */
+  /*   sprintf(lbl, "Z_%s_AbEj", pert_y); */
   /*   dpd_buf4_init(&Z, CC_TMP9, irrep_y, 5, 11, 5, 11, 0, lbl); */
   /*   dpd_buf4_init(&I, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>"); */
   /*   dpd_contract424(&I, &Y1, &Z, 3, 1, 0, 1, 0); */
@@ -340,7 +340,7 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
 
   /** Begin out-of-core contract244 **/
   dpd_buf4_init(&Z, CC_TMP0, 0, 5, 0, 5, 0, 0, "ZIjAb (Ab,Ij)");
-  sprintf(lbl, "Z_%s_%1s_AbEj", pert_y, cart_y);
+  sprintf(lbl, "Z_%s_AbEj", pert_y);
   dpd_buf4_init(&X, CC_TMP9, irrep_y, 5, 11, 5, 11, 0, lbl);
 
   /* Symmetry Info */
@@ -397,7 +397,7 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
   psio_open(CC_TMP9, 0);
 	
   /* D -> Wabef */
-  sprintf(lbl, "Z_%s_%1s_MnIf", pert_x, cart_x);
+  sprintf(lbl, "Z_%s_MnIf", pert_x);
   dpd_buf4_init(&Z, CC_TMP0, irrep_x, 0, 10, 0, 10, 0, lbl);
   dpd_buf4_init(&I, CC_DINTS, 0, 0, 5, 0, 5, 0, "D <ij|ab>");
   dpd_contract244(&X1, &I, &Z, 1, 2, 1, 1, 0);
@@ -431,7 +431,7 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
 	
   /* F -> Wabef */
   /** Begin out-of-core contract244 **/
-  sprintf(lbl, "Z_%s_%1s_MbEj (Mb,jE)", pert_x, cart_x);
+  sprintf(lbl, "Z_%s_MbEj (Mb,jE)", pert_x);
   dpd_buf4_init(&Z, CC_TMP0, irrep_x, 10, 10, 10, 10, 0, lbl);
   dpd_buf4_init(&X, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
 
@@ -484,16 +484,16 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
   dpd_buf4_close(&Z);
   /** End out-of-core contract244 **/
 
-  /*   sprintf(lbl, "Z_%s_%1s_MbEj (jE,Mb)", pert_x, cart_x); */
+  /*   sprintf(lbl, "Z_%s_MbEj (jE,Mb)", pert_x); */
   /*   dpd_buf4_init(&Z, CC_TMP0, irrep_x, 10, 10, 10, 10, 0, lbl); */
   /*   dpd_buf4_init(&I, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>"); */
   /*   dpd_contract244(&X1, &I, &Z, 1, 2, 0, 1, 0); */
   /*   dpd_buf4_close(&I); */
-  /*   sprintf(lbl, "Z_%s_%1s_MbEj (Mb,jE)", pert_x, cart_x); */
+  /*   sprintf(lbl, "Z_%s_MbEj (Mb,jE)", pert_x); */
   /*   dpd_buf4_sort(&Z, CC_TMP0, rspq, 10, 10, lbl); */
   /*   dpd_buf4_close(&Z); */
 
-  sprintf(lbl, "Z_%s_%1s_MbeJ (Mb,eJ)", pert_x, cart_x);
+  sprintf(lbl, "Z_%s_MbeJ (Mb,eJ)", pert_x);
   dpd_buf4_init(&Z, CC_TMP0, irrep_x, 10, 11, 10, 11, 0, lbl);
   dpd_buf4_init(&I, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
   dpd_contract424(&I, &X1, &Z, 3, 1, 0, 1, 0);
@@ -501,11 +501,11 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
   dpd_buf4_close(&Z);
 	
   dpd_buf4_init(&Z, CC_TMP0, 0, 10, 0, 10, 0, 0, "ZMbIj");
-  sprintf(lbl, "Z_%s_%1s_MbEj (Mb,jE)", pert_x, cart_x);
+  sprintf(lbl, "Z_%s_MbEj (Mb,jE)", pert_x);
   dpd_buf4_init(&Z1, CC_TMP0, irrep_x, 10, 10, 10, 10, 0, lbl);
   dpd_contract424(&Z1, &Y1, &Z, 3, 1, 0, 1, 0);
   dpd_buf4_close(&Z1);
-  sprintf(lbl, "Z_%s_%1s_MbeJ (Mb,eJ)", pert_x, cart_x);
+  sprintf(lbl, "Z_%s_MbeJ (Mb,eJ)", pert_x);
   dpd_buf4_init(&Z1, CC_TMP0, irrep_x, 10, 11, 10, 11, 0, lbl);
   dpd_contract244(&Y1, &Z1, &Z, 1, 2, 1, 1, 1);
   dpd_buf4_close(&Z1);
@@ -524,26 +524,26 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
   dpd_buf4_close(&Z);
 	
   /* Contraction with Wmbej */	
-  sprintf(lbl, "X_%s_%1s_jbMI", pert_x, cart_x);
+  sprintf(lbl, "X_%s_jbMI", pert_x);
   dpd_buf4_init(&Z, CC_TMP0, irrep_x, 10, 0, 10, 0, 0, lbl);
   dpd_buf4_init(&W1, CC2_HET1, 0, 10, 10, 10, 10, 0, "CC2 WMbEj (ME,jb)");
   dpd_contract424(&W1, &X1, &Z, 1, 1, 0, -1, 0);
   dpd_buf4_close(&W1);
-  sprintf(lbl, "X_%s_%1s_IjMb", pert_x, cart_x);
+  sprintf(lbl, "X_%s_IjMb", pert_x);
   dpd_buf4_sort(&Z, CC_TMP0, sprq, 0, 10, lbl);
   dpd_buf4_close(&Z);
 	
-  sprintf(lbl, "X_%s_%1s_IbMj", pert_x, cart_x);
+  sprintf(lbl, "X_%s_IbMj", pert_x);
   dpd_buf4_init(&Z, CC_TMP0, irrep_x, 10, 0, 10, 0, 0, lbl);
   dpd_buf4_init(&W1, CC2_HET1, 0, 10, 10, 10, 10, 0, "CC2 WMbeJ (Me,Jb)");
   dpd_contract424(&W1, &X1, &Z, 1, 1, 0, 1, 0);
   dpd_buf4_close(&W1);
-  sprintf(lbl, "X_%s_%1s_IjMb", pert_x, cart_x);
+  sprintf(lbl, "X_%s_IjMb", pert_x);
   dpd_buf4_sort_axpy(&Z, CC_TMP0, psrq, 0, 10, lbl, 1);
   dpd_buf4_close(&Z);
 	
   dpd_buf4_init(&Z, CC_TMP0, 0, 0, 5, 0, 5, 0, "ZIjAb");
-  sprintf(lbl, "X_%s_%1s_IjMb", pert_x, cart_x);
+  sprintf(lbl, "X_%s_IjMb", pert_x);
   dpd_buf4_init(&Z1, CC_TMP0, irrep_x, 0, 10, 0, 10, 0, lbl);
   dpd_contract244(&Y1, &Z1, &Z, 0, 2, 1, 1, 0);
   dpd_buf4_close(&Z1);
@@ -554,26 +554,26 @@ double cc2_LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double om
   dpd_buf4_sort_axpy(&Z, CC_TMP0, qpsr, 0, 5, "Z(Ij,Ab) Final", 1);
   dpd_buf4_close(&Z);
 	
-  sprintf(lbl, "Y_%s_%1s_jbMI", pert_y, cart_y);
+  sprintf(lbl, "Y_%s_jbMI", pert_y);
   dpd_buf4_init(&Z, CC_TMP0, irrep_y, 10, 0, 10, 0, 0, lbl);
   dpd_buf4_init(&W1, CC2_HET1, 0, 10, 10, 10, 10, 0, "CC2 WMbEj (ME,jb)");
   dpd_contract424(&W1, &Y1, &Z, 1, 1, 0, -1, 0);
   dpd_buf4_close(&W1);
-  sprintf(lbl, "Y_%s_%1s_IjMb", pert_y, cart_y);
+  sprintf(lbl, "Y_%s_IjMb", pert_y);
   dpd_buf4_sort(&Z, CC_TMP0, sprq, 0, 10, lbl);
   dpd_buf4_close(&Z);
 	
-  sprintf(lbl, "Y_%s_%1s_IbMj", pert_y, cart_y);
+  sprintf(lbl, "Y_%s_IbMj", pert_y);
   dpd_buf4_init(&Z, CC_TMP0, irrep_y, 10, 0, 10, 0, 0, lbl);
   dpd_buf4_init(&W1, CC2_HET1, 0, 10, 10, 10, 10, 0, "CC2 WMbeJ (Me,Jb)");
   dpd_contract424(&W1, &Y1, &Z, 1, 1, 0, 1, 0);
   dpd_buf4_close(&W1);
-  sprintf(lbl, "Y_%s_%1s_IjMb", pert_y, cart_y);
+  sprintf(lbl, "Y_%s_IjMb", pert_y);
   dpd_buf4_sort_axpy(&Z, CC_TMP0, psrq, 0, 10, lbl, 1);
   dpd_buf4_close(&Z);
 	
   dpd_buf4_init(&Z, CC_TMP0, 0, 0, 5, 0, 5, 0, "ZIjAb");
-  sprintf(lbl, "Y_%s_%1s_IjMb", pert_y, cart_y);
+  sprintf(lbl, "Y_%s_IjMb", pert_y);
   dpd_buf4_init(&Z1, CC_TMP0, irrep_y, 0, 10, 0, 10, 0, lbl);
   dpd_contract244(&X1, &Z1, &Z, 0, 2, 1, 1, 0);
   dpd_buf4_close(&Z1);

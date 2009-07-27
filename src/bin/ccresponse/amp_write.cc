@@ -35,19 +35,19 @@ void twostack_insert(struct twostack *stack, double value, int i, int j,
 void amp_write_T1(dpdfile2 *T1, int length, const char *label, FILE *outfile);
 void amp_write_T2(dpdbuf4 *T2, int length, const char *label, FILE *outfile);
 
-void amp_write(const char *pert, const char *cart, int irrep, double omega)
+void amp_write(const char *pert, int irrep, double omega)
 {
   dpdfile2 T1;
   dpdbuf4 T2;
   char lbl[32];
 
   if(params.ref == 0) { /** RHF **/
-    sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert, cart, omega);
+    sprintf(lbl, "X_%s_IA (%5.3f)", pert, omega);
     dpd_file2_init(&T1, CC_OEI, irrep, 0, 1, lbl);
     amp_write_T1(&T1, params.num_amps, "\n\tLargest XIA Amplitudes:\n", outfile);
     dpd_file2_close(&T1);
 
-    sprintf(lbl, "X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+    sprintf(lbl, "X_%s_IjAb (%5.3f)", pert, omega);
     dpd_buf4_init(&T2, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
     amp_write_T2(&T2, params.num_amps, "\n\tLargest XIjAb Amplitudes:\n", outfile);
     dpd_buf4_close(&T2);

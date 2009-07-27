@@ -61,20 +61,19 @@
 namespace psi { namespace ccresponse {
 
 void transpert(const char *pert);
-void sort_pert(const char *pert, double **pertX, double **pertY, double **pertZ,
-	       int irrep_x, int irrep_y, int irrep_z);
-void pertbar(const char *pert, int irrep_x, int irrep_y, int irrep_z, int anti);
-void compute_X(const char *pert, const char *cart, int irrep, double omega);
-void linresp(double **tensor, double A, double B,
-	     const char *pert_x, int *x_irreps, double omega_x,
-	     const char *pert_y, int *y_irreps, double omega_y);
+void sort_pert(const char *pert, double **pertints, int irrep);
+void pertbar(const char *pert, int irrep, int anti);
+void compute_X(const char *pert, int irrep, double omega);
+void linresp(double *tensor, double A, double B,
+	     const char *pert_x, int x_irrep, double omega_x,
+	     const char *pert_y, int y_irrep, double omega_y);
 
 void optrot(void)
 {
   double ***tensor_rl, ***tensor_pl, ***tensor_rp, **tensor0;
   double **tensor_rl0, **tensor_rl1, **tensor_pl0, **tensor_pl1;
-  char **cartcomp;
-  int alpha, i, j, k;
+  char **cartcomp, pert[32], pert_x[32], pert_y[32];
+  int alpha, beta, i, j, k;
   double TrG_rl, TrG_pl, M, nu, bohr2a4, m2a, hbar, prefactor;
   double *rotation_rl, *rotation_pl, *rotation_rp, *rotation_mod, **delta;
   char lbl1[32], lbl2[32], lbl3[32];
@@ -124,25 +123,30 @@ void optrot(void)
     sprintf(lbl1, "<<P;L>>_(%5.3f)", 0.0);
     if(!params.restart || !psio_tocscan(CC_INFO, lbl1)) {
 
-      transpert("P");
-      sort_pert("P", moinfo.PX, moinfo.PY, moinfo.PZ,
-		moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
-      pertbar("P", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 1);
-
-      /* prepare the magnetic-dipole integrals */
-      transpert("L");
-      sort_pert("L", moinfo.LX, moinfo.LY, moinfo.LZ,
-		moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz);
-      pertbar("L", moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz, 1);
-
-      /* Compute the magnetic-dipole and electric-dipole CC wave functions */
       for(alpha=0; alpha < 3; alpha++) {
-	compute_X("P", cartcomp[alpha], moinfo.mu_irreps[alpha], 0);
-	compute_X("L", cartcomp[alpha], moinfo.l_irreps[alpha], 0);
+        sprintf(pert, "P_%1s", cartcomp[alpha]);
+        transpert(pert);
+        sort_pert(pert, moinfo.P[alpha], moinfo.mu_irreps[alpha]);
+        pertbar(pert, moinfo.mu_irreps[alpha], 1);
+	compute_X(pert, moinfo.mu_irreps[alpha], 0);
+
+        sprintf(pert, "L_%1s", cartcomp[alpha]);
+        transpert(pert);
+        sort_pert(pert, moinfo.L[alpha], moinfo.l_irreps[alpha]);
+        pertbar(pert, moinfo.l_irreps[alpha], 1);
+	compute_X(pert, moinfo.l_irreps[alpha], 0);
       }
 
       fprintf(outfile, "\n\tComputing %s tensor.\n", lbl1); fflush(outfile);
-      linresp(tensor0, +1.0, 0.0, "P", moinfo.mu_irreps, 0.0, "L", moinfo.l_irreps, 0.0);
+      for(alpha=0; alpha < 3; alpha ++) {
+        for(beta=0; beta < 3; beta++) {
+          sprintf(pert_x, "P_%1s", cartcomp[alpha]);
+          sprintf(pert_y, "L_%1s", cartcomp[beta]);
+          linresp(&tensor0[alpha][beta], +1.0, 0.0, 
+                  pert_x, moinfo.mu_irreps[alpha], 0.0, 
+                  pert_y, moinfo.l_irreps[beta], 0.0);
+        }
+      }
       psio_write_entry(CC_INFO, lbl1, (char *) tensor0[0], 9*sizeof(double));
 
       /* Clean up disk space */
@@ -183,46 +187,71 @@ void optrot(void)
 
       /* prepare the dipole-length and/or dipole-velocity integrals */
       if(compute_rl) {
-	transpert("Mu");
-	sort_pert("Mu", moinfo.MUX, moinfo.MUY, moinfo.MUZ,
-		  moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
-	pertbar("Mu", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 0);
+        for(alpha=0; alpha < 3; alpha++) {
+          sprintf(pert, "Mu_%1s", cartcomp[alpha]);
+  	  transpert(pert);
+	  sort_pert(pert, moinfo.MU[alpha], moinfo.mu_irreps[alpha]);
+	  pertbar(pert, moinfo.mu_irreps[alpha], 0);
+        }
       }
       if(compute_pl) {
-	transpert("P");
-	sort_pert("P", moinfo.PX, moinfo.PY, moinfo.PZ,
-		  moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
-	pertbar("P", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 1);
+        for(alpha=0; alpha < 3; alpha++) {
+          sprintf(pert, "P_%1s", cartcomp[alpha]);
+	  transpert(pert);
+  	  sort_pert(pert, moinfo.P[alpha], moinfo.mu_irreps[alpha]);
+	  pertbar(pert, moinfo.mu_irreps[alpha], 1);
+        }
       }
 
       /* prepare the magnetic-dipole integrals */
-      transpert("L");
-      sort_pert("L", moinfo.LX, moinfo.LY, moinfo.LZ,
-		moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz);
-      pertbar("L", moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz, 1);
+      for(alpha=0; alpha < 3; alpha++) {
+        sprintf(pert, "L_%1s", cartcomp[alpha]);
+        transpert(pert);
+        sort_pert(pert, moinfo.L[alpha], moinfo.l_irreps[alpha]);
+        pertbar(pert, moinfo.l_irreps[alpha], 1);
+      }
 
       /* Compute the +omega magnetic-dipole and -omega electric-dipole CC wave functions */
       for(alpha=0; alpha < 3; alpha++) {
-	if(compute_rl)
-	  compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i]);
+	if(compute_rl) {
+          sprintf(pert, "Mu_%1s", cartcomp[alpha]);
+	  compute_X(pert, moinfo.mu_irreps[alpha], -params.omega[i]);
+        }
 
-	if(compute_pl)
-	  compute_X("P", cartcomp[alpha], moinfo.mu_irreps[alpha], -params.omega[i]);
+	if(compute_pl) {
+          sprintf(pert, "P_%1s", cartcomp[alpha]);
+	  compute_X(pert, moinfo.mu_irreps[alpha], -params.omega[i]);
+        }
 
-	compute_X("L", cartcomp[alpha], moinfo.l_irreps[alpha], params.omega[i]);
+        sprintf(pert, "L_%1s", cartcomp[alpha]);
+	compute_X(pert, moinfo.l_irreps[alpha], params.omega[i]);
       }
 
       fprintf(outfile, "\n");
       if(compute_rl) {
         fprintf(outfile, "\tComputing %s tensor.\n", lbl1); fflush(outfile);
-	linresp(tensor_rl0, -0.5, 0.0, "Mu", moinfo.mu_irreps, -params.omega[i],
-		"L", moinfo.l_irreps, params.omega[i]);
+        for(alpha=0; alpha < 3; alpha++) {
+          for(beta=0; beta < 3; beta++) {
+            sprintf(pert_x, "Mu_%1s", cartcomp[alpha]);
+            sprintf(pert_y, "L_%1s", cartcomp[beta]);
+            linresp(&tensor_rl0[alpha][beta], -0.5, 0.0, 
+                    pert_x, moinfo.mu_irreps[alpha], -params.omega[i],
+		    pert_y, moinfo.l_irreps[beta], params.omega[i]);
+          }
+        }
 	psio_write_entry(CC_INFO, lbl1, (char *) tensor_rl0[0], 9*sizeof(double));
       }
       if(compute_pl) {
         fprintf(outfile, "\tComputing %s tensor.\n", lbl2); fflush(outfile);
-	linresp(tensor_pl0, +0.5, 0.0, "P", moinfo.mu_irreps, -params.omega[i],
-		"L", moinfo.l_irreps, params.omega[i]);
+        for(alpha=0; alpha < 3; alpha++) {
+          for(beta=0; beta < 3; beta++) {
+            sprintf(pert_x, "P_%1s", cartcomp[alpha]);
+            sprintf(pert_y, "L_%1s", cartcomp[beta]);
+	    linresp(&tensor_pl0[alpha][beta], +0.5, 0.0, 
+                    pert_x, moinfo.mu_irreps[alpha], -params.omega[i],
+		    pert_y, moinfo.l_irreps[beta], params.omega[i]);
+          }
+        }
 	psio_write_entry(CC_INFO, lbl2, (char *) tensor_pl0[0], 9*sizeof(double));
       }
 
@@ -257,54 +286,93 @@ void optrot(void)
 
       /* prepare the dipole-length or dipole-velocity integrals */
       if(compute_rl) {
-	transpert("Mu");
-	sort_pert("Mu", moinfo.MUX, moinfo.MUY, moinfo.MUZ,
-		  moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
-	pertbar("Mu", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 0);
+        for(alpha=0; alpha < 3; alpha++) {
+          sprintf(pert, "Mu_%1s", cartcomp[alpha]);
+	  transpert(pert);
+	  sort_pert(pert, moinfo.MU[alpha], moinfo.mu_irreps[alpha]);
+	  pertbar(pert, moinfo.mu_irreps[alpha], 0);
+        }
       }
       if(compute_pl) {
-	transpert("P*");
-	sort_pert("P*", moinfo.PX, moinfo.PY, moinfo.PZ,
-		  moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z);
-	pertbar("P*", moinfo.irrep_x, moinfo.irrep_y, moinfo.irrep_z, 1);
+        for(alpha=0; alpha < 3; alpha++) {
+          sprintf(pert, "P*_%1s", cartcomp[alpha]);
+	  transpert(pert);
+	  sort_pert(pert, moinfo.P[alpha], moinfo.mu_irreps[alpha]);
+	  pertbar(pert, moinfo.mu_irreps[alpha], 1);
+        }
       }
 
       /* prepare the complex-conjugate of the magnetic-dipole integrals */
-      transpert("L*");
-      sort_pert("L*", moinfo.LX, moinfo.LY, moinfo.LZ,
-		moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz);
-      pertbar("L*", moinfo.irrep_Rx, moinfo.irrep_Ry, moinfo.irrep_Rz, 1);
+      for(alpha=0; alpha < 3; alpha++) {
+        sprintf(pert, "L*_%1s", cartcomp[alpha]);
+        transpert(pert);
+        sort_pert(pert, moinfo.L[alpha], moinfo.l_irreps[alpha]);
+        pertbar(pert, moinfo.l_irreps[alpha], 1);
+      }
 
       /* Compute the -omega magnetic-dipole and +omega electric-dipole CC wave functions */
       for(alpha=0; alpha < 3; alpha++) {
-	if(compute_rl)
-	  compute_X("Mu", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i]);
-	if(compute_pl)
-	  compute_X("P*", cartcomp[alpha], moinfo.mu_irreps[alpha], params.omega[i]);
+	if(compute_rl) {
+          sprintf(pert, "Mu_%1s", cartcomp[alpha]);
+	  compute_X(pert, moinfo.mu_irreps[alpha], params.omega[i]);
+        }
+	if(compute_pl) {
+          sprintf(pert, "P*_%1s", cartcomp[alpha]);
+	  compute_X(pert, moinfo.mu_irreps[alpha], params.omega[i]);
+        }
 
-	compute_X("L*", cartcomp[alpha], moinfo.l_irreps[alpha], -params.omega[i]);
+        sprintf(pert, "L*_%1s", cartcomp[alpha]);
+	compute_X(pert, moinfo.l_irreps[alpha], -params.omega[i]);
       }
 
       fprintf(outfile, "\n");
       if(compute_rl) {
 	fprintf(outfile, "\tComputing %s tensor.\n", lbl1); fflush(outfile);
-	linresp(tensor_rl1, -0.5, 0.0, "Mu", moinfo.mu_irreps, params.omega[i],
-		"L*", moinfo.l_irreps, -params.omega[i]);
+        for(alpha=0; alpha < 3; alpha++) {
+          for(beta=0; beta < 3; beta++) {
+            sprintf(pert_x, "Mu_%1s", cartcomp[alpha]);
+            sprintf(pert_y, "L*_%1s", cartcomp[beta]);
+	    linresp(&tensor_rl1[alpha][beta], -0.5, 0.0, 
+                    pert_x, moinfo.mu_irreps[alpha], params.omega[i],
+		    pert_y, moinfo.l_irreps[beta], -params.omega[i]);
+          }
+        }
 	psio_write_entry(CC_INFO, lbl1, (char *) tensor_rl1[0], 9*sizeof(double));
       }
       if(compute_pl) {
 	fprintf(outfile, "\tComputing %s tensor.\n", lbl2); fflush(outfile);
-	linresp(tensor_pl1, +0.5, 0.0, "P*", moinfo.mu_irreps, params.omega[i],
-		"L*", moinfo.l_irreps, -params.omega[i]);
+        for(alpha=0; alpha < 3; alpha++) {
+          for(beta=0; beta < 3; beta++) {
+            sprintf(pert_x, "P*_%1s", cartcomp[alpha]);
+            sprintf(pert_y, "L*_%1s", cartcomp[beta]);
+	    linresp(&tensor_pl1[alpha][beta], +0.5, 0.0, 
+                    pert_x, moinfo.mu_irreps[alpha], params.omega[i],
+		    pert_y, moinfo.l_irreps[beta], -params.omega[i]);
+          }
+        }
 	psio_write_entry(CC_INFO, lbl2, (char *) tensor_pl1[0], 9*sizeof(double));
       }
 
       if(!strcmp(params.gauge,"BOTH")) {
 	fprintf(outfile, "\tComputing %s tensor.\n", lbl3); fflush(outfile);
-	linresp(tensor_rp[i],-0.5, 0.0, "P", moinfo.mu_irreps, -params.omega[i],
-		"Mu", moinfo.l_irreps, params.omega[i]);
-	linresp(tensor_rp[i],-0.5, 1.0, "P*", moinfo.mu_irreps, params.omega[i],
-		"Mu", moinfo.l_irreps, -params.omega[i]);
+        for(alpha=0; alpha < 3; alpha++) {
+          for(beta=0; beta < 3; beta++) {
+            sprintf(pert_x, "P_%1s", cartcomp[alpha]);
+            sprintf(pert_y, "Mu_%1s", cartcomp[beta]);
+	    linresp(&tensor_rp[i][alpha][beta],-0.5, 0.0, 
+                    pert_x, moinfo.mu_irreps[alpha], -params.omega[i],
+		    pert_y, moinfo.mu_irreps[beta], params.omega[i]);
+          }
+        }
+        for(alpha=0; alpha < 3; alpha++) {
+          for(beta=0; beta < 3; beta++) {
+            sprintf(pert_x, "P*_%1s", cartcomp[alpha]);
+            sprintf(pert_y, "Mu_%1s", cartcomp[beta]);
+	    linresp(&tensor_rp[i][alpha][beta],-0.5, 1.0, 
+                    pert_x, moinfo.mu_irreps[alpha], params.omega[i],
+		    pert_y, moinfo.mu_irreps[beta], -params.omega[i]);
+          }
+        }
 	psio_write_entry(CC_INFO, lbl3, (char *) tensor_rp[i][0], 9*sizeof(double));
       }
 

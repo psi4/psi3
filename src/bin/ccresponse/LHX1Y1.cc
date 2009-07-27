@@ -30,10 +30,10 @@ namespace psi { namespace ccresponse {
 ** TDC, 9/10/05
 */
 
-void build_XY(const char *, const char *, int, double, const char *, const char *, int, double);
+void build_XY(const char *, int, double, const char *, int, double);
 
-double LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double omega_x, 
-	      const char *pert_y, const char *cart_y, int irrep_y, double omega_y)
+double LHX1Y1(const char *pert_x, int irrep_x, double omega_x, 
+	      const char *pert_y, int irrep_y, double omega_y)
 {
 
   dpdfile2 F, X1, Y1, Zmi, Zae_1, Zae_2, Zfb, Znj, ZIA, L1, t1, z;
@@ -43,7 +43,7 @@ double LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double omega_
   int Gbm, Gfe, bm, b, m, Gb, Gm, Ge, Gf, B, M, fe, f, e, ef, nrows, ncols;
   double *X;
 
-  build_XY(pert_x, cart_x, irrep_x, omega_x, pert_y, cart_y, irrep_y, omega_y);
+  build_XY(pert_x, irrep_x, omega_x, pert_y, irrep_y, omega_y);
 
   /* Type-I L2 residual */
   dpd_buf4_init(&L2, CC_LAMPS, 0, 0, 5, 0, 5, 0, "LHX1Y1 I (2 Lijab - Lijba)");
@@ -74,8 +74,8 @@ double LHX1Y1(const char *pert_x, const char *cart_x, int irrep_x, double omega_
 ** TDC, 9/10/05
 **/
 
-void build_XY(const char *pert_x, const char *cart_x, int irrep_x, double omega_x, 
-		 const char *pert_y, const char *cart_y, int irrep_y, double omega_y)
+void build_XY(const char *pert_x, int irrep_x, double omega_x, 
+              const char *pert_y, int irrep_y, double omega_y)
 {
   int h, row, col, i, j, m, e, f, a, I, J, M, E, F, A, ij, ef;
   int Isym, Jsym, Msym, Esym, Fsym, Asym;
@@ -86,12 +86,12 @@ void build_XY(const char *pert_x, const char *cart_x, int irrep_x, double omega_
 
   nirreps = moinfo.nirreps;
 
-  sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert_y, cart_y, omega_y);
+  sprintf(lbl, "X_%s_IA (%5.3f)", pert_y, omega_y);
   dpd_file2_init(&Y1, CC_OEI, irrep_y, 0, 1, lbl);
   dpd_file2_mat_init(&Y1);
   dpd_file2_mat_rd(&Y1);
 
-  sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert_x, cart_x, omega_x);
+  sprintf(lbl, "X_%s_IA (%5.3f)", pert_x, omega_x);
   dpd_file2_init(&X1, CC_OEI, irrep_x, 0, 1, lbl);
   dpd_file2_mat_init(&X1);
   dpd_file2_mat_rd(&X1);

@@ -201,56 +201,11 @@ void get_moinfo(void)
   chkpt_init(PSIO_OPEN_OLD);
 
   if(params.ref == 0 || params.ref == 1) {  /* RHF/ROHF */
-
     moinfo.scf = chkpt_rd_scf();
-    /*
-    moinfo.scf = block_matrix(moinfo.nso, moinfo.nactive);
-    offset = 0;
-    act_offset = 0;
-    for(h=0; h < nirreps; h++) {
-      for(p=0; p < moinfo.orbspi[h]; p++)
-	for(q=0; q < moinfo.actpi[h]; q++)
-	  moinfo.scf[p+offset][q+act_offset] = scf[p+offset][q+offset+moinfo.frdocc[h]];
-
-      offset += moinfo.orbspi[h];
-      act_offset += moinfo.actpi[h];
-    }
-    free_block(scf);
-    */
   }
   else if(params.ref == 2) {  /* UHF */
-
     moinfo.scf_alpha = chkpt_rd_alpha_scf();
-    /*
-    moinfo.scf_alpha = block_matrix(moinfo.nso, moinfo.nactive);
-    offset = 0;
-    act_offset = 0;
-    for(h=0; h < nirreps; h++) {
-      for(p=0; p < moinfo.orbspi[h]; p++)
-	for(q=0; q < moinfo.actpi[h]; q++)
-	  moinfo.scf_alpha[p+offset][q+act_offset] = scf[p+offset][q+offset+moinfo.frdocc[h]];
-
-      offset += moinfo.orbspi[h];
-      act_offset += moinfo.actpi[h];
-    }
-    free_block(scf);
-    */
-
     moinfo.scf_beta = chkpt_rd_beta_scf();
-    /*
-    moinfo.scf_beta = block_matrix(moinfo.nso, moinfo.nactive);
-    offset = 0;
-    act_offset = 0;
-    for(h=0; h < nirreps; h++) {
-      for(p=0; p < moinfo.orbspi[h]; p++)
-	for(q=0; q < moinfo.actpi[h]; q++)
-	  moinfo.scf_beta[p+offset][q+act_offset] = scf[p+offset][q+offset+moinfo.frdocc[h]];
-
-      offset += moinfo.orbspi[h];
-      act_offset += moinfo.actpi[h];
-    }
-    free_block(scf);
-    */
   }
 
   /* Get the active virtual orbitals */
@@ -269,6 +224,11 @@ void get_moinfo(void)
   }
 
   chkpt_close();
+
+  /* Prepare memory for property integrals */
+  moinfo.MU = (double ***) malloc(3 * sizeof(double **));
+  moinfo.L = (double ***) malloc(3 * sizeof(double **));
+  moinfo.P = (double ***) malloc(3 * sizeof(double **));
 }
 
 /* Frees memory allocated in get_moinfo() and dumps out the energy. */
@@ -325,12 +285,9 @@ void cleanup(void)
   free(moinfo.labels);
 
   free_block(moinfo.usotao);
-  free_block(moinfo.MUX);
-  free_block(moinfo.MUY);
-  free_block(moinfo.MUZ);
-  free_block(moinfo.LX);
-  free_block(moinfo.LY);
-  free_block(moinfo.LZ);
+  free(moinfo.MU);
+  free(moinfo.L);
+  free(moinfo.P);
   free(moinfo.pitzer2qt);
   free(moinfo.qt2pitzer);
 

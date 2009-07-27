@@ -17,7 +17,7 @@ namespace psi { namespace ccresponse {
 void denom1(dpdfile2 *X1, double omega);
 void local_filter_T1(dpdfile2 *T1);
 
-void cc2_X1_build(const char *pert, const char *cart, int irrep, double omega)
+void cc2_X1_build(const char *pert, int irrep, double omega)
 {
   int GX2, GX1, GW, Gam, Gim, Gef, Ga, Gi, Gm;
   int a, A, i, I, num_m, nlinks, length;
@@ -25,16 +25,16 @@ void cc2_X1_build(const char *pert, const char *cart, int irrep, double omega)
   dpdbuf4 W, X2, D, T2;
   char lbl[32];
 
-  sprintf(lbl, "%sBAR_%1s_IA", pert, cart);
+  sprintf(lbl, "%sBAR_IA", pert);
   dpd_file2_init(&X1new, CC_OEI, irrep, 0, 1, lbl);
-  sprintf(lbl, "New X_%s_%1s_IA (%5.3f)", pert, cart, omega);
+  sprintf(lbl, "New X_%s_IA (%5.3f)", pert, omega);
   dpd_file2_copy(&X1new, CC_OEI, lbl);
   dpd_file2_close(&X1new);
   dpd_file2_init(&X1new, CC_OEI, irrep, 0, 1, lbl);
 
   /*** S-S ***/
 
-  sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert, cart, omega);
+  sprintf(lbl, "X_%s_IA (%5.3f)", pert, omega);
   dpd_file2_init(&X1, CC_OEI, irrep, 0, 1, lbl);
 
   dpd_file2_axpy(&X1, &X1new, -omega, 0);
@@ -51,7 +51,7 @@ void cc2_X1_build(const char *pert, const char *cart, int irrep, double omega)
   dpd_contract422(&W, &X1, &X1new, 0, 0, 1, 1);
   dpd_buf4_close(&W);
 
-  sprintf(lbl, "X_%s_%1s_ME", pert, cart);
+  sprintf(lbl, "X_%s_ME", pert);
   dpd_file2_init(&Xme, CC_OEI, irrep, 0, 1, lbl);
   dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D 2<ij|ab> - <ij|ba> (ia,jb)");
   dpd_contract422(&D, &X1, &Xme, 0, 0, 1, 0);
@@ -68,7 +68,7 @@ void cc2_X1_build(const char *pert, const char *cart, int irrep, double omega)
   /*** S-D ***/
 
   dpd_file2_init(&F, CC_OEI, 0, 0, 1, "FME");
-  sprintf(lbl, "X_%s_%1s_(2IjAb-IjbA) (%5.3f)", pert, cart, omega);
+  sprintf(lbl, "X_%s_(2IjAb-IjbA) (%5.3f)", pert, omega);
   dpd_buf4_init(&X2, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
   dpd_dot24(&F, &X2, &X1new, 0, 0, 1, 1);
   dpd_file2_close(&F);
@@ -124,7 +124,7 @@ void cc2_X1_build(const char *pert, const char *cart, int irrep, double omega)
   dpd_buf4_close(&W);
   dpd_buf4_close(&X2);
 
-  sprintf(lbl, "X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+  sprintf(lbl, "X_%s_IjAb (%5.3f)", pert, omega);
   dpd_buf4_init(&X2, CC_LR, irrep, 0, 5, 0, 5, 0, lbl);
   dpd_buf4_init(&W, CC_HBAR, 0, 0, 11, 0, 11, 0, "WMnIe - 2WnMIe (Mn,eI)");
   dpd_contract442(&W, &X2, &X1new, 3, 3, 1, 1);

@@ -12,7 +12,7 @@
 double **Build_R(void);
 double **Build_U(void);
 
-void analyze(char *pert, char *cart, int irrep, double omega)
+void analyze(char *pert, int irrep, double omega)
 {
   int nirreps, h, i, j, a, b, ij, ab, u, v;
   int position, num_div, tot1, tot2, nvir, nso, nocc;
@@ -31,7 +31,7 @@ void analyze(char *pert, char *cart, int irrep, double omega)
   width = (max-min) / (num_div);
 
 
-  sprintf(lbl, "X_%s_%1s_%5.3f", pert, cart, omega);
+  sprintf(lbl, "X_%s_%5.3f", pert, omega);
   ffile(&efile, lbl, 1);
   amp_array = init_array(num_div);
 
@@ -39,7 +39,7 @@ void analyze(char *pert, char *cart, int irrep, double omega)
   nocc = moinfo.occpi[0];
   nso = moinfo.nso;
 
-  sprintf(lbl, "X_%s_%1s_IjAb (%5.3f)", pert, cart, omega);
+  sprintf(lbl, "X_%s_IjAb (%5.3f)", pert, omega);
   dpd_buf4_init(&T2, CC_LR, 0, 0, 5, 0, 5, 0, lbl);
   dpd_buf4_mat_irrep_init(&T2, 0);
   dpd_buf4_mat_irrep_rd(&T2, 0);
@@ -93,11 +93,11 @@ void analyze(char *pert, char *cart, int irrep, double omega)
   min = -5;
   width = (max-min) / (num_div);
 
-  sprintf(lbl, "X1_%s_%1s_%5.3f", pert, cart, omega);
+  sprintf(lbl, "X1_%s_%5.3f", pert, omega);
   ffile(&efile, lbl, 1);
   amp_array = init_array(num_div);
 
-  sprintf(lbl, "X_%s_%1s_IA (%5.3f)", pert, cart, omega);
+  sprintf(lbl, "X_%s_IA (%5.3f)", pert, omega);
   dpd_file2_init(&T1, CC_OEI, 0, 0, 1, lbl);
   dpd_file2_print(&T1, outfile);
   dpd_file2_mat_init(&T1);

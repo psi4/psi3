@@ -50,6 +50,7 @@ void local_done(void);
 
 void polar(void);
 void optrot(void);
+void roa(void);
 
 }} // namespace psi::ccresponse
 
@@ -98,6 +99,8 @@ int main(int argc, char *argv[])
 
   if(!strcmp(params.prop,"POLARIZABILITY")) polar();
   if(!strcmp(params.prop,"ROTATION")) optrot();
+
+//  if(!strcmp(params.prop,"ROA")) roa();
 
   if(params.local) local_done();
 

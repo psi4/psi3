@@ -207,7 +207,9 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
         if(!rows_per_bucket) dpd_error("buf4_sort_pqsr: Not enough memory for one row!", stderr);
 
         nbuckets = (int) ceil(((double) InBuf->params->rowtot[Gpq])/((double) rows_per_bucket));
-        rows_left = InBuf->params->rowtot[Gpq] % rows_per_bucket;
+        if(nbuckets == 1) rows_left = rows_per_bucket;
+        else rows_left = InBuf->params->rowtot[Gpq] % rows_per_bucket;
+
         dpd_buf4_mat_irrep_init_block(InBuf, Gpq, rows_per_bucket);
         dpd_buf4_mat_irrep_init_block(&OutBuf, Gpq, rows_per_bucket);
 
@@ -309,7 +311,8 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
         if(out_rows_per_bucket > OutBuf.params->rowtot[Gpq])
           out_rows_per_bucket = OutBuf.params->rowtot[Gpq];
         out_nbuckets = (int) ceil((double) OutBuf.params->rowtot[Gpq]/(double) out_rows_per_bucket);
-        out_rows_left = OutBuf.params->rowtot[Gpq] % out_rows_per_bucket;
+        if(out_nbuckets == 1) out_rows_left = out_rows_per_bucket;
+        else out_rows_left = OutBuf.params->rowtot[Gpq] % out_rows_per_bucket;
 
         /* allocate space for the bucket of rows */
         dpd_buf4_mat_irrep_init_block(&OutBuf, Gpq, out_rows_per_bucket);
@@ -326,7 +329,8 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
             if(in_rows_per_bucket > InBuf->params->rowtot[Grow])
               in_rows_per_bucket = InBuf->params->rowtot[Grow];
             in_nbuckets = (int) ceil((double) InBuf->params->rowtot[Grow]/(double) in_rows_per_bucket);
-            in_rows_left = InBuf->params->rowtot[Grow] % in_rows_per_bucket;
+            if(in_nbuckets == 1) in_rows_left = in_rows_per_bucket;
+            else in_rows_left = InBuf->params->rowtot[Grow] % in_rows_per_bucket;
 
             /* allocate space for the bucket of rows */
             dpd_buf4_mat_irrep_init_block(InBuf, Grow, in_rows_per_bucket);
@@ -405,7 +409,8 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
             if(in_rows_per_bucket > InBuf->params->rowtot[Grow])
               in_rows_per_bucket = InBuf->params->rowtot[Grow];
             in_nbuckets = (int) ceil((double) InBuf->params->rowtot[Grow]/(double) in_rows_per_bucket);
-            in_rows_left = InBuf->params->rowtot[Grow] % in_rows_per_bucket;
+            if(in_nbuckets == 1) in_rows_left = in_rows_per_bucket;
+            else in_rows_left = InBuf->params->rowtot[Grow] % in_rows_per_bucket;
 
             /* allocate space for the bucket of rows */
             dpd_buf4_mat_irrep_init_block(InBuf, Grow, in_rows_per_bucket);
@@ -536,7 +541,8 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
         if(out_rows_per_bucket > OutBuf.params->rowtot[Gpq])
           out_rows_per_bucket = OutBuf.params->rowtot[Gpq];
         out_nbuckets = (int) ceil((double) OutBuf.params->rowtot[Gpq]/(double) out_rows_per_bucket);
-        out_rows_left = OutBuf.params->rowtot[Gpq] % out_rows_per_bucket;
+        if(out_nbuckets == 1) out_rows_left = out_rows_per_bucket;
+        else out_rows_left = OutBuf.params->rowtot[Gpq] % out_rows_per_bucket;
 
         /* allocate space for the bucket of rows */
         dpd_buf4_mat_irrep_init_block(&OutBuf, Gpq, out_rows_per_bucket);
@@ -553,7 +559,8 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
             if(in_rows_per_bucket > InBuf->params->rowtot[Grow])
               in_rows_per_bucket = InBuf->params->rowtot[Grow];
             in_nbuckets = (int) ceil((double) InBuf->params->rowtot[Grow]/(double) in_rows_per_bucket);
-            in_rows_left = InBuf->params->rowtot[Grow] % in_rows_per_bucket;
+            if(in_nbuckets == 1) in_rows_left = in_rows_per_bucket;
+            else in_rows_left = InBuf->params->rowtot[Grow] % in_rows_per_bucket;
 
             /* allocate space for the bucket of rows */
             dpd_buf4_mat_irrep_init_block(InBuf, Grow, in_rows_per_bucket);
@@ -632,7 +639,8 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
             if(in_rows_per_bucket > InBuf->params->rowtot[Grow])
               in_rows_per_bucket = InBuf->params->rowtot[Grow];
             in_nbuckets = (int) ceil((double) InBuf->params->rowtot[Grow]/(double) in_rows_per_bucket);
-            in_rows_left = InBuf->params->rowtot[Grow] % in_rows_per_bucket;
+            if(in_nbuckets == 1) in_rows_left = in_rows_per_bucket;
+            else in_rows_left = InBuf->params->rowtot[Grow] % in_rows_per_bucket;
 
             /* allocate space for the bucket of rows */
             dpd_buf4_mat_irrep_init_block(InBuf, Grow, in_rows_per_bucket);
@@ -858,7 +866,8 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
         if(rows_per_bucket > OutBuf.params->rowtot[Gpq])
           rows_per_bucket = OutBuf.params->rowtot[Gpq];
         nbuckets = (int) ceil((double) OutBuf.params->rowtot[Gpq]/(double) rows_per_bucket);
-        rows_left = OutBuf.params->rowtot[Gpq] % rows_per_bucket;
+        if(nbuckets == 1) rows_left = rows_per_bucket;
+        else rows_left = OutBuf.params->rowtot[Gpq] % rows_per_bucket;
 
         /* allocate space for the bucket of rows */
         dpd_buf4_mat_irrep_init_block(&OutBuf, Gpq, rows_per_bucket);
@@ -985,7 +994,8 @@ int dpd_buf4_sort(dpdbuf4 *InBuf, int outfilenum, enum indices index,
         if(rows_per_bucket > OutBuf.params->rowtot[Gpq])
           rows_per_bucket = OutBuf.params->rowtot[Gpq];
         nbuckets = (int) ceil((double) OutBuf.params->rowtot[Gpq]/(double) rows_per_bucket);
-        rows_left = OutBuf.params->rowtot[Gpq] % rows_per_bucket;
+        if(nbuckets == 1) rows_left = rows_per_bucket;
+        else rows_left = OutBuf.params->rowtot[Gpq] % rows_per_bucket;
 
         /* allocate space for the bucket of rows */
         dpd_buf4_mat_irrep_init_block(&OutBuf, Gpq, rows_per_bucket);

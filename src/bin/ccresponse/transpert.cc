@@ -75,52 +75,66 @@ void transpert(const char *pert)
   X = block_matrix(nao, nao);
   scratch = init_array(noei_ao);
 
-  if(!strcmp(pert,"Mu")) { prefactor = 1.0; anti = 1.0; sign = 1.0; }
-  else if(!strcmp(pert, "L")) { prefactor = -0.5; anti = -1.0; sign = 1.0; }
-  else if(!strcmp(pert, "L*")) { prefactor = -0.5; anti = -1.0; sign = -1.0; }
-  else if(!strcmp(pert, "P")) { prefactor = 1.0; anti = -1.0; sign = 1.0; }
-  else if(!strcmp(pert, "P*")) { prefactor = 1.0; anti = -1.0; sign = -1.0; }
-
-  for(alpha=0; alpha < 3; alpha++) {
-
-    target = block_matrix(nmo,nmo);
-
-    if(!strcmp(pert,"Mu")) {
-      if(alpha == 0) { name = PSIF_AO_MX; moinfo.MUX = target; }
-      else if(alpha == 1) { name = PSIF_AO_MY; moinfo.MUY = target; }
-      else if(alpha == 2) { name = PSIF_AO_MZ; moinfo.MUZ = target; }
-    }
-    else if(!strcmp(pert,"L") || !strcmp(pert, "L*")) {
-      if(alpha == 0) { name = PSIF_AO_LX; moinfo.LX = target; }
-      else if(alpha == 1) { name = PSIF_AO_LY; moinfo.LY = target; }
-      else if(alpha == 2) { name = PSIF_AO_LZ; moinfo.LZ = target; }
-    }
-    else if(!strcmp(pert,"P") || !strcmp(pert, "P*")) {
-      if(alpha == 0) { name = PSIF_AO_NablaX; moinfo.PX = target; }
-      else if(alpha == 1) { name = PSIF_AO_NablaY; moinfo.PY = target; }
-      else if(alpha == 2) { name = PSIF_AO_NablaZ; moinfo.PZ = target; }
-    }
-
-    iwl_rdone(PSIF_OEI, name, scratch, noei_ao, 0, 0, outfile);
-    for(i=0,ij=0; i < nao; i++)
-      for(j=0; j <= i; j++,ij++) {
-	TMP[i][j] = prefactor * sign * scratch[ij];
-	TMP[j][i] = anti * prefactor * sign * scratch[ij];
-      }
-
-    C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(moinfo.usotao[0][0]),nao,
-	    0,&(X[0][0]),nao);
-    C_DGEMM('n','n',nso,nso,nao,1,&(moinfo.usotao[0][0]),nao,&(X[0][0]),nao,
-	    0,&(TMP[0][0]),nao);
-
-    C_DGEMM('n','n',nso,nmo,nso,1,&(TMP[0][0]),nao,&(moinfo.scf[0][0]),nmo,
-	    0,&(X[0][0]),nao);
-    C_DGEMM('t','n',nmo,nmo,nso,1,&(moinfo.scf[0][0]),nmo,&(X[0][0]),nao,
-	    0,&(target[0][0]),nmo);
-
-    zero_arr(scratch,noei_ao);
-
+  if(!strcmp(pert,"Mu_X") || !strcmp(pert,"Mu_Y") || !strcmp(pert,"Mu_Z")) { 
+    prefactor = 1.0; anti = 1.0; sign = 1.0; 
   }
+  if(!strcmp(pert,"L_X") || !strcmp(pert,"L_Y") || !strcmp(pert,"L_Z")) { 
+    prefactor = -0.5; anti = -1.0; sign = 1.0; 
+  }
+  if(!strcmp(pert,"L*_X") || !strcmp(pert,"L*_Y") || !strcmp(pert,"L*_Z")) { 
+    prefactor = -0.5; anti = -1.0; sign = -1.0; 
+  }
+  if(!strcmp(pert,"P_X") || !strcmp(pert,"P_Y") || !strcmp(pert,"P_Z")) { 
+    prefactor = 1.0; anti = -1.0; sign = 1.0; 
+  }
+  if(!strcmp(pert,"P*_X") || !strcmp(pert,"P*_Y") || !strcmp(pert,"P*_Z")) { 
+    prefactor = 1.0; anti = -1.0; sign = -1.0; 
+  }
+
+  target = block_matrix(nmo,nmo);
+
+  if(!strcmp(pert,"Mu_X")) { name = PSIF_AO_MX; moinfo.MU[0] = target; }
+  if(!strcmp(pert,"Mu_Y")) { name = PSIF_AO_MY; moinfo.MU[1] = target; }
+  if(!strcmp(pert,"Mu_Z")) { name = PSIF_AO_MZ; moinfo.MU[2] = target; }
+
+  if(!strcmp(pert,"L_X") || !strcmp(pert, "L*_X")) {
+    name = PSIF_AO_LX; moinfo.L[0] = target; 
+  }
+  if(!strcmp(pert,"L_Y") || !strcmp(pert, "L*_Y")) {
+    name = PSIF_AO_LY; moinfo.L[1] = target; 
+  }
+  if(!strcmp(pert,"L_Z") || !strcmp(pert, "L*_Z")) {
+    name = PSIF_AO_LZ; moinfo.L[2] = target;
+  }
+
+  if(!strcmp(pert,"P_X") || !strcmp(pert, "P*_X")) {
+    name = PSIF_AO_NablaX; moinfo.P[0] = target; 
+  }
+  if(!strcmp(pert,"P_Y") || !strcmp(pert, "P*_Y")) {
+    name = PSIF_AO_NablaY; moinfo.P[1] = target;
+  }
+  if(!strcmp(pert,"P_Z") || !strcmp(pert, "P*_Z")) {
+    name = PSIF_AO_NablaZ; moinfo.P[2] = target;
+  }
+
+  iwl_rdone(PSIF_OEI, name, scratch, noei_ao, 0, 0, outfile);
+  for(i=0,ij=0; i < nao; i++)
+    for(j=0; j <= i; j++,ij++) {
+      TMP[i][j] = prefactor * sign * scratch[ij];
+      TMP[j][i] = anti * prefactor * sign * scratch[ij];
+    }
+
+  C_DGEMM('n','t',nao,nso,nao,1,&(TMP[0][0]),nao,&(moinfo.usotao[0][0]),nao,
+	  0,&(X[0][0]),nao);
+  C_DGEMM('n','n',nso,nso,nao,1,&(moinfo.usotao[0][0]),nao,&(X[0][0]),nao,
+	  0,&(TMP[0][0]),nao);
+
+  C_DGEMM('n','n',nso,nmo,nso,1,&(TMP[0][0]),nao,&(moinfo.scf[0][0]),nmo,
+	  0,&(X[0][0]),nao);
+  C_DGEMM('t','n',nmo,nmo,nso,1,&(moinfo.scf[0][0]),nmo,&(X[0][0]),nao,
+	  0,&(target[0][0]),nmo);
+
+  zero_arr(scratch,noei_ao);
 
   free(scratch);
   free_block(TMP);
