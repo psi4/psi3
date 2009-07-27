@@ -35,6 +35,10 @@ void CCMRCC::synchronize_amps()
   blas->solve("t2[V][vOo]{u} = #4321# t2[oO][vV]{u}");
   blas->solve("t2[V][VOO]{u} = #3412# t2[OO][VV]{u}");
 
+  if(triples_type == ccsd_t){
+    blas->solve("t2[Oo][Vv]{u} = #2143# t2[oO][vV]{u}");
+  }
+
   if(triples_type>=ccsd_t){
     blas->solve("t2[ovv][o]{u} = #1423# t2[oo][vv]{u}"); // T2_iab_j
     blas->solve("t2[oVv][O]{u} = #1432# t2[oO][vV]{u}"); // T2_iBa_J
@@ -65,7 +69,7 @@ void CCMRCC::update_amps()
   delta_t1_amps=0.0;
   delta_t2_amps=0.0;
   for(int n=0;n<moinfo->get_nunique();n++){
-    int m = moinfo->get_ref_number("u",n);
+    int m = moinfo->get_ref_number(n,UniqueRefs);
     delta_t1_amps+=blas->get_scalar("||Delta_t1||",m);
     delta_t2_amps+=blas->get_scalar("||Delta_t2||",m);
   }
@@ -126,7 +130,7 @@ void CCMRCC::update_t3_ijkabc_amps()
 {
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int unique_ref  = moinfo->get_ref_number("u",ref);
+    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  TijkabcMatTmp = blas->get_MatTmp("t3[ooo][vvv]",unique_ref,none);
@@ -158,7 +162,7 @@ void CCMRCC::update_t3_ijKabC_amps()
 {
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int unique_ref  = moinfo->get_ref_number("u",ref);
+    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  TijKabCMatTmp = blas->get_MatTmp("t3[ooO][vvV]",unique_ref,none);
@@ -191,7 +195,7 @@ void CCMRCC::update_t3_iJKaBC_amps()
 {
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int unique_ref  = moinfo->get_ref_number("u",ref);
+    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  TiJKaBCMatTmp = blas->get_MatTmp("t3[oOO][vVV]",unique_ref,none);
@@ -223,7 +227,7 @@ void CCMRCC::update_t3_IJKABC_amps()
 {
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int unique_ref  = moinfo->get_ref_number("u",ref);
+    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  TIJKABCMatTmp = blas->get_MatTmp("t3[OOO][VVV]",unique_ref,none);

@@ -1,0 +1,674 @@
+******************************************************************************
+PSI3 started on wigwam.ccqc.uga.edu at Mon Jul 27 16:14:27 2009
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a ROHF PSIMRCC energy computation.
+
+The following programs will be executed:
+
+ input
+ cints
+ mcscf
+ transqt2
+ psimrcc
+ psiclean
+
+******************************************************************************
+INPUT tstart called on wigwam.ccqc.uga.edu
+Mon Jul 27 16:14:27 2009
+
+                                --------------
+                                    INPUT
+                                --------------
+
+  LABEL       =	CH2 Mk-MRCCSD(T)
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /Users/frank/Source/psi3-install/share/psi/pbasis.dat
+Coordinates after reading z-matrices
+
+           1           2           3
+
+    1   0.0000000   0.0000000   0.0000000
+    2   0.0000000   0.0000000   2.1164931
+    3   0.9707286   0.0000000  -1.8807522
+
+  -Geometry before Center-of-Mass shift (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    C         0.000000000000     0.000000000000     0.000000000000
+    H         0.000000000000     0.000000000000     2.116493107208
+    H         0.970728620690     0.000000000000    -1.880752247861
+
+
+  -Rotational constants (cm-1) :
+    A =  139.82646  B =    7.06043  C =    6.72106
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    C         0.000000000000    -0.071831139101     0.000000000000
+    H         2.056713670133     0.427640533717     0.000000000000
+    H        -2.056713670133     0.427640533717     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  6665.00000000     0.00069200)
+           (  1000.00000000     0.00532900)
+           (   228.00000000     0.02707700)
+           (    64.71000000     0.10171800)
+           (    21.06000000     0.27474000)
+           (     7.49500000     0.44856400)
+           (     2.79700000     0.28507400)
+           (     0.52150000     0.01520400)
+           (     0.15960000    -0.00319100) )
+        (S (  6665.00000000    -0.00014600)
+           (  1000.00000000    -0.00115400)
+           (   228.00000000    -0.00572500)
+           (    64.71000000    -0.02331200)
+           (    21.06000000    -0.06395500)
+           (     7.49500000    -0.14998100)
+           (     2.79700000    -0.12726200)
+           (     0.52150000     0.54452900)
+           (     0.15960000     0.58049600) )
+        (S (     0.15960000     1.00000000) )
+        (P (     9.43900000     0.03810900)
+           (     2.00200000     0.20948000)
+           (     0.54560000     0.50855700)
+           (     0.15170000     0.46884200) )
+        (P (     0.15170000     1.00000000) )
+        (D (     0.55000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    13.01000000     0.01968500)
+           (     1.96200000     0.13797700)
+           (     0.44460000     0.47814800)
+           (     0.12200000     0.50124000) )
+        (S (     0.12200000     1.00000000) )
+        (P (     0.72700000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 31
+    Number of AO           = 25
+    Number of SO           = 24
+
+    Irrep    Number of SO
+    -----    ------------
+      1           11
+      2            2
+      3            4
+      4            7
+
+  -Contraction Scheme:
+    Atom     All Primitives // Unique Primitives // Shells
+    ----     ---------------------------------------------
+       1      19s 5p 1d //  9s 4p 1d //  3s 2p 1d
+       2      5s 1p //  4s 1p //  2s 1p
+       3      5s 1p //  4s 1p //  2s 1p
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    C         0.000000000000     0.000000000000    -0.071831139101
+    H         0.000000000000     2.056713670133     0.427640533717
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    C         0.000000000000     0.000000000000    -0.071831139101
+    H         0.000000000000     2.056713670133     0.427640533717
+    H         0.000000000000    -2.056713670133     0.427640533717
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    C         0.000000000000     0.000000000000    -0.038011404582
+    H         0.000000000000     1.088366081942     0.226297641193
+    H         0.000000000000    -1.088366081942     0.226297641193
+
+
+  -Geometry in the reference coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    C         0.000000000000     0.000000000000    -0.071831139101
+    H         0.000000000000     2.056713670133     0.427640533717
+    H         0.000000000000    -2.056713670133     0.427640533717
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       5.912862514729
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   1.1200000   0.0000000
+    3   1.1200000   2.1767322   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+INPUT tstop called on wigwam.ccqc.uga.edu
+Mon Jul 27 16:14:27 2009
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+cints tstart called on wigwam.ccqc.uga.edu
+Mon Jul 27 16:14:27 2009
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = CH2 Mk-MRCCSD(T)
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 24
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 11412 two-electron integrals to IWL file 33
+
+******************************************************************************
+cints tstop called on wigwam.ccqc.uga.edu
+Mon Jul 27 16:14:27 2009
+
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+MCSCF tstart called on wigwam.ccqc.uga.edu
+Mon Jul 27 16:14:27 2009
+
+
+         ------------------------------------------
+           MCSCF: a self-consistent field program
+            written by Francesco A. Evangelista
+         ------------------------------------------
+
+
+  Compiled on Jul 22 2009 at 11:20:36
+
+  Options:
+  ----------------------------------------------------------------------------
+  CANONICALIZE_ACTIVE_FAVG   = FALSE
+  CANONICALIZE_INACTIVE_FAVG = FALSE
+  CI_DIIS                    = FALSE
+  FORCE_TWOCON               = FALSE
+  INTERNAL_ROTATIONS         = TRUE
+  READ_MOS                   = TRUE
+  USE_DIIS                   = TRUE
+  USE_FAVG                   = FALSE
+  CHARGE                     = 0
+  CONVERGENCE                = 14
+  DAMPING_FACTOR             = 0
+  DEBUG                      = 0
+  DENOMINATOR_SHIFT          = 0
+  MAXITER                    = 100
+  MEMORY                     = 1800
+  MULTP                      = 3
+  NDIIS                      = 7
+  ROOT                       = 1
+  ROTATE_MO_ANGLE            = 0
+  ROTATE_MO_IRREP            = 0
+  ROTATE_MO_P                = 1
+  ROTATE_MO_Q                = 1
+  START_FAVG                 = 5
+  TURN_ON_ACTV               = 0
+  REFERENCE                  = ROHF
+  WFN_SYM                    = 1
+  ----------------------------------------------------------------------------
+
+  MOs per irrep:                                      A1   A2   B1   B2  Total
+  ----------------------------------------------------------------------------
+  Total                                               11    2    4    7    24
+  Doubly Occupied                                      2    0    0    1     3
+  Active/Singly Occupied                               1    0    1    0     2
+  ----------------------------------------------------------------------------
+
+  Running an SCF calculation
+
+  Generated 300 pairs
+  Distributed as [107 A1 ][50 A2 ][58 B1 ][85 B2 ]
+  batch   0 pq = [       0,     107] index = [               0,            5778]
+
+  Allocated the PK matrix (5778 elements) 
+  Allocated the  K matrix (5778 elements) 
+  Reading the two-electron integrals to form PK and K ... 
+  batch   0 ... done.
+
+
+  ===========================================================================
+         Cycle          Energy               D(Energy)            DIIS
+  ===========================================================================
+  @SCF    0      -35.306182112885      -35.306182112885 S
+  @SCF    1      -37.734567096249       -2.428384983364 S
+  @SCF    2      -38.693389625212       -0.958822528963 S
+  @SCF    3      -38.872526763595       -0.179137138382 S
+  @SCF    4      -38.906442299408       -0.033915535813 S
+  @SCF    5      -38.910369310753       -0.003927011345 S
+  @SCF    6      -38.910926536614       -0.000557225861 S
+  @SCF    7      -38.911006332339       -0.000079795726 S/E
+  @SCF    8      -38.911021622553       -0.000015290214 S/E
+  @SCF    9      -38.911021661943       -0.000000039390 S/E
+  @SCF   10      -38.911021662951       -0.000000001008 S/E
+  @SCF   11      -38.911021663019       -0.000000000068 S/E
+  @SCF   12      -38.911021663021       -0.000000000002 S/E
+  @SCF   13      -38.911021663021       -0.000000000000 S/E
+  @SCF   14      -38.911021663021       -0.000000000000 S/E
+  @SCF   15      -38.911021663021        0.000000000000 S/E
+  @SCF   16      -38.911021663021        0.000000000000 S/E
+  @SCF   17      -38.911021663021        0.000000000000 S/E
+  ===========================================================================
+
+      * SCF total energy   =     -38.911021663021
+
+
+  End of SCF
+  MOs orthonormality check passed.
+
+  Orbitals are canonicalized as:
+  inactive (docc + uocc) : Fock(core)
+  active   (actv)        : Fock(core)
+
+  =========================================================================
+  Eigenvalues (Eh)
+  -------------------------------------------------------------------------
+  Doubly occupied orbitals
+      1    -11.249144 A1       2     -0.832273 A1       3     -0.600230 B2 
+  Active orbitals
+      4     -0.119393 A1       5     -0.101822 B1 
+  Unoccupied orbitals
+      6      0.192203 A1       7      0.255889 B2       8      0.558801 A1 
+      9      0.722857 B1      10      0.727209 A1      11      0.815014 B2 
+     12      0.917228 B2      13      0.990963 A1      14      1.173739 A2 
+     15      1.381505 B2      16      1.401341 A1      17      1.404815 B1 
+     18      1.717272 A1      19      1.772014 B1      20      2.053598 A1 
+     21      2.197022 B2      22      2.251307 A2      23      2.646863 B2 
+     24      3.077410 A1 
+  =========================================================================
+
+
+  MCSCF Execution Completed.
+
+******************************************************************************
+MCSCF tstop called on wigwam.ccqc.uga.edu
+Mon Jul 27 16:14:27 2009
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+TRANSQT tstart called on wigwam.ccqc.uga.edu
+Mon Jul 27 16:14:27 2009
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	PSIMRCC
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	ROHF
+	Derivative      =	None
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 24
+	Number of MOs        = 24
+	Number of active MOs = 24
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   11	    0	    2	    1	    8	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    0	    1	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      5.91286251472932
+	SCF energy          (chkpt) =    -38.91102166302084
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on wigwam.ccqc.uga.edu
+Mon Jul 27 16:14:27 2009
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+PSIMRCC tstart called on wigwam.ccqc.uga.edu
+Mon Jul 27 16:14:27 2009
+
+
+  MRCC          MRCC
+   MRCC  MRCC  MRCC
+   MRCC  MRCC  MRCC      PSIMRCC Version 0.9.3, July 2009
+   MRCC  MRCC  MRCC      Multireference Coupled Cluster, written by
+     MRCCMRCCMRCC        Francesco A. Evangelista and Andrew C. Simmonett
+         MRCC            Compiled on Jul 27 2009 at 13:03:26
+         MRCC            id = 6a707c99fd2213714c6c78cfcd145480721f0359 
+       MRCCMRCC
+
+  Options:
+  ----------------------------------------------------------------------------
+  COUPLING_TERMS     = TRUE
+  DIIS_TRIPLES       = FALSE
+  LOCK_SINGLET       = FALSE
+  MP2_GUESS          = TRUE
+  ONLY_CLOSED_SHELL  = FALSE
+  PERT_CBS           = FALSE
+  PERT_CBS_COUPLING  = TRUE
+  PRINT_HEFF         = FALSE
+  USE_DIIS           = TRUE
+  USE_SPIN_SYMMETRY  = TRUE
+  ZERO_INTERNAL_AMPS = TRUE
+  CHARGE             = 0
+  CONVERGENCE        = 14
+  CORR_CHARGE        = 0
+  DAMPING_FACTOR     = 0
+  DEBUG              = 0
+  DENOMINATOR_SHIFT  = 0
+  MAXDIIS            = 7
+  MAXITER            = 100
+  MEMORY             = 1800
+  MULTP              = 1
+  NEL                = 0
+  NUM_THREADS        = 1
+  ROOT               = 1
+  START_DIIS         = 2
+  TIKHONOW_OMEGA     = 0
+  CORR_ANSATZ        = MK
+  CORR_CCSD_T        = STANDARD
+  CORR_REFERENCE     = GENERAL
+  CORR_WFN           = CCSD_T
+  COUPLING           = CUBIC
+  MP2_CCSD_METHOD    = II
+  PT_ENERGY          = SECOND_ORDER
+  WFN_SYM            = 3
+  ----------------------------------------------------------------------------
+
+  ==============================================================================
+  System Info:
+  ------------------------------------------------------------------------------
+  Nuclear Energy   = 5.912862515      SCF Energy       = -38.911021663  
+
+  MOs and Symmetry:
+  ------------------------------------------------------------------------------
+  nirreps          = 4         
+  nso              = 24               nmo              = 24        
+  nael             = 4                nbel             = 4         
+  nactive_ael      = 1                nactive_bel      = 1         
+
+  Details of the Computation:
+  ------------------------------------------------------------------------------
+
+  MOs per irrep:                                        A1   A2   B1   B2  Total
+  ------------------------------------------------------------------------------
+  Total                                                 11    2    4    7    24
+  Frozen Occupied                                        0    0    0    0     0
+  Doubly Occupied                                        2    0    0    1     3
+  Active                                                 1    0    1    0     2
+  External                                               8    2    3    6    19
+  Frozen Virtual                                         0    0    0    0     0
+
+  Model space:
+  ------------------------------------------------------------------------------
+   0 |22-+2>
+   1 |22+-2>
+
+  Closed-shell to model space mapping
+
+  Open-shell to model space mapping
+  0 -> 0
+  1 -> 1
+
+  Model space
+  ------------------------------------------------------------------------------
+   0  |[22-][][+][2]>
+   1  |[22+][][-][2]>
+  ==============================================================================
+
+  Allocated work array of size 23960 (0.02 MiB)
+  Allocated buffer array of size 95302376 (90.89 MiB)
+
+  Presorting two-electron integrals from IWL buffer
+    Memory available                       =     1791846588 bytes
+    Memory available for presorting        =     1343884941 bytes (75.0%)
+    Memory required for in-core presort    =          99352 bytes
+    Presorting is not required
+    Reading irreps 0 -> 3 (12419 non-zero integrals)
+
+  Sorting integrals:
+    Memory available                       =     1791841980 bytes
+    Memory available for sorting           =      895920990 bytes (50.0%)
+
+    Pass 1:
+    Setting up the matrix list: added 240 matrices blocks
+    Integrals from irreps 0 -> 3 will be read in core
+
+    Frozen-core energy                     =          0.000000000
+
+  Computing storage strategy:
+    Input memory                           =     1887436800 bytes
+    Free memory                            =     1791841980 bytes
+    Free memory available for matrices     =     1738086720 bytes ( 97%)
+    Memory required by fock matrices       =           7240 bytes
+    Memory required by integrals           =        1352776 bytes
+    Memory required by other matrices      =       21566224 bytes
+    Memory required for in-core algorithm  =       22926240 bytes
+    PSIMRCC will perform a full in-core computation
+
+  Heff Matrix
+
+         -38.876572843758         0.034448819263
+           0.034448819263       -38.876572843758
+
+  Left Matrix
+
+          -0.707106781187         0.707106781187
+           0.707106781187         0.707106781187
+
+  Right Matrix
+
+          -0.707106781187         0.707106781187
+           0.707106781187         0.707106781187
+
+  Real                  Imaginary
+
+        -38.911021663021           0.000000000000
+        -38.842124024495           0.000000000000
+
+
+  The eigenvalue for root 0 is -38.911021663021 (0.000000000000)
+
+  Heff Matrix
+
+      -38.876572843758169      0.034448819262681
+        0.034448819262681    -38.876572843758169
+
+  Most important determinants in the wave function
+
+  determinant  eigenvector   eigenvector^2
+
+            1    0.707107     0.500000  |[22+][][-][2]>
+            0   -0.707107     0.500000  |[22-][][+][2]>
+
+  ==============================================================================
+  	Multireference Coupled Cluster
+		Using the DPD Library
+  ==============================================================================
+
+  ------------------------------------------------------------------------------
+  @CC Cycle      Energy          Delta E    ||DeltaT1|| ||DeltaT2|| Timing  DIIS
+  @CC           (Hartree)       (Hartree)                           (Sec)
+  ------------------------------------------------------------------------------
+  @CC   0    -38.911021663021   0.0000e+00   0.000e+00   0.000e+00       0   S
+  @CC   1    -39.012803809276  -1.0178e-01   3.974e-02   1.631e-01       1   S
+  @CC   2    -39.029302489682  -1.6499e-02   1.140e-02   2.837e-02       1   S
+  @CC   3    -39.033143539278  -3.8410e-03   5.310e-03   1.014e-02       1   S
+  @CC   4    -39.034433659311  -1.2901e-03   3.008e-03   4.970e-03       2   S
+  @CC   5    -39.034989311964  -5.5565e-04   1.898e-03   2.751e-03       2   S
+  @CC   6    -39.035266348600  -2.7704e-04   1.259e-03   1.651e-03       3   S/E
+  @CC   7    -39.035663099749  -3.9675e-04   8.557e-04   1.048e-03       4   S
+  @CC   8    -39.035658090607   5.0091e-06   3.493e-05   1.028e-04       4   S
+  @CC   9    -39.035657804515   2.8609e-07   1.168e-05   5.413e-05       4   S
+  @CC  10    -39.035657921889  -1.1737e-07   5.313e-06   3.550e-05       5   S
+  @CC  11    -39.035658132827  -2.1094e-07   2.960e-06   2.422e-05       6   S
+  @CC  12    -39.035658338737  -2.0591e-07   1.807e-06   1.683e-05       6   S
+  @CC  13    -39.035658516352  -1.7761e-07   1.197e-06   1.181e-05       6   S/E
+  @CC  14    -39.035659121554  -6.0520e-07   8.373e-07   8.338e-06       7   S
+  @CC  15    -39.035659178938  -5.7384e-08   1.982e-07   2.149e-07       7   S
+  @CC  16    -39.035659191003  -1.2065e-08   4.502e-08   7.110e-08       8   S
+  @CC  17    -39.035659195726  -4.7235e-09   1.996e-08   3.668e-08       8   S
+  @CC  18    -39.035659197973  -2.2469e-09   1.169e-08   2.116e-08       9   S
+  @CC  19    -39.035659199197  -1.2238e-09   7.633e-09   1.296e-08       9   S
+  @CC  20    -39.035659199913  -7.1614e-10   5.182e-09   8.240e-09      10   S/E
+  @CC  21    -39.035659201161  -1.2477e-09   3.561e-09   5.365e-09      10   S
+  @CC  22    -39.035659201163  -2.6006e-12   1.180e-10   3.901e-10      11   S
+  @CC  23    -39.035659201168  -4.8388e-12   5.199e-11   2.045e-10      11   S
+  @CC  24    -39.035659201172  -3.6238e-12   3.143e-11   1.365e-10      12   S
+  @CC  25    -39.035659201175  -2.6645e-12   2.119e-11   9.469e-11      12   S
+  @CC  26    -39.035659201176  -1.9327e-12   1.445e-11   6.665e-11      12   S
+  @CC  27    -39.035659201178  -1.3927e-12   1.001e-11   4.724e-11      13   S/E
+  @CC  28    -39.035659201181  -3.6096e-12   7.013e-12   3.362e-11      13   S
+  @CC  29    -39.035659201182  -1.9185e-13   5.460e-13   8.578e-13      14   S
+  @CC  30    -39.035659201182  -4.9738e-14   2.166e-13   3.391e-13      14   S
+  @CC  31    -39.035659201182  -1.4211e-14   1.407e-13   1.855e-13      15   S
+  @CC  32    -39.035659201182  -1.4211e-14   9.298e-14   1.117e-13      15   S
+  @CC  33    -39.035659201182   0.0000e+00   6.244e-14   7.016e-14      16
+  ------------------------------------------------------------------------------
+
+        Mk-MRCCSD total energy      =     -39.035659201182
+
+
+  Heff Matrix
+
+      -39.005469228428467      0.030189972753292
+        0.030189972753292    -39.005469228428467
+
+  Most important determinants in the wave function
+
+  determinant  eigenvector   eigenvector^2
+
+            1    0.707107     0.500000  |[22+][][-][2]>
+            0   -0.707107     0.500000  |[22-][][+][2]>
+
+  Timing for singles and doubles:            15.631204 s
+
+
+  Computing (T) correction
+
+  Mk-MRCCSD(T) diagonal contributions to the effective Hamiltonian:
+
+   Ref         E[4]              E_T[4]            E_ST[4]           E_DT[4]
+  ------------------------------------------------------------------------------
+    0     -0.001945486774   -0.001938481421    0.000001473116   -0.000008478468
+    1     -0.001945486774   -0.001938481421    0.000001473116   -0.000008478468
+   Tot    -0.001945486774   -0.001938481421    0.000001473116   -0.000008478468
+  ------------------------------------------------------------------------------
+
+  Mk-MRCCSD(T) off-diagonal contributions to the effective Hamiltonian:
+
+    0.000000000000    0.000293541513
+    0.000293541513    0.000000000000
+
+  Hamiltonian Matrix
+
+      -39.007414715202096      0.030483514266401
+        0.030483514266401    -39.007414715202096
+
+      * Mk-MRCCSD(T) total energy   =        -39.037898229468
+
+  Timing for triples:                         1.907922 s
+
+  PSIMRCC job completed.
+  Wall Time =            18.090300 s
+  GEMM Time =             0.399250 s
+
+  ==============================================================================
+  Memory Usage Report
+
+  Maximum memory used:    114.4 Mb 
+  Number of objects still in memory: 0       Current bytes used: 0             
+  ==============================================================================
+******************************************************************************
+PSIMRCC tstop called on wigwam.ccqc.uga.edu
+Mon Jul 27 16:14:45 2009
+
+user time   =      16.36 seconds =       0.27 minutes
+system time =       0.38 seconds =       0.01 minutes
+total time  =         18 seconds =       0.30 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on wigwam.ccqc.uga.edu at Mon Jul 27 16:14:45 2009
+
+Total PSI3 wall time         18 seconds =       0.30 minutes
+******************************************************************************

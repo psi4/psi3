@@ -11,10 +11,9 @@ namespace psi{ namespace psimrcc{
 
 void MRCCSD_T::startup()
 {
-  nirreps  = moinfo->get_nirreps();
-  nurefs   = moinfo->get_nunique();
-
-  threshold = 0.0001 * pow(10.0,-static_cast<double>(options_get_int("CONVERGENCE")));
+  nirreps   = moinfo->get_nirreps();
+  nrefs     = moinfo->get_ref_size(AllRefs);
+  threshold = 0.1 * pow(10.0,-static_cast<double>(options_get_int("CONVERGENCE")));
 
   o   = blas->get_index("[o]");
   oo  = blas->get_index("[oo]");
@@ -61,91 +60,159 @@ void MRCCSD_T::startup()
   form_V_jk_c_m(V_jK_c_M,0.0,1.0);
   form_V_jk_c_m(V_jK_C_m,1.0,0.0);  // = <jK|mC>
 
-  for(int mu = 0; mu < nurefs; ++mu){
-    int unique_mu = moinfo->get_ref_number(mu,UniqueRefs);
+  for(int mu = 0; mu < nrefs; ++mu){
+    int unique_mu = moinfo->get_ref_number(mu,AllRefs);
 
-    // Setup the denominators
-    double*** F_oo = blas->get_MatTmp("fock[o][o]",unique_mu,none)->get_matrix();
-    std::vector<double>  e_oo_mu;
-    {
-      CCIndexIterator i("[o]");
-      while(++i){
-        int    i_sym = o->get_tuple_irrep(i.ind_abs[0]);
-        size_t i_rel = o->get_tuple_rel_index(i.ind_abs[0]);
-        e_oo_mu.push_back(F_oo[i_sym][i_rel][i_rel]);
+    //  Unique references
+    if(mu == unique_mu){
+      // Setup the denominators
+      double*** F_oo = blas->get_MatTmp("fock[o][o]",mu,none)->get_matrix();
+      std::vector<double>  e_oo_mu;
+      {
+        CCIndexIterator i("[o]");
+        while(++i){
+          int    i_sym = o->get_tuple_irrep(i.ind_abs[0]);
+          size_t i_rel = o->get_tuple_rel_index(i.ind_abs[0]);
+          e_oo_mu.push_back(F_oo[i_sym][i_rel][i_rel]);
+        }
       }
-    }
-    e_oo.push_back(e_oo_mu);
+      e_oo.push_back(e_oo_mu);
 
-    double*** F_OO = blas->get_MatTmp("fock[O][O]",unique_mu,none)->get_matrix();
-    std::vector<double>  e_OO_mu;
-    {
-      CCIndexIterator i("[o]");
-      while(++i){
-        int    i_sym = o->get_tuple_irrep(i.ind_abs[0]);
-        size_t i_rel = o->get_tuple_rel_index(i.ind_abs[0]);
-        e_OO_mu.push_back(F_OO[i_sym][i_rel][i_rel]);
+      double*** F_OO = blas->get_MatTmp("fock[O][O]",mu,none)->get_matrix();
+      std::vector<double>  e_OO_mu;
+      {
+        CCIndexIterator i("[o]");
+        while(++i){
+          int    i_sym = o->get_tuple_irrep(i.ind_abs[0]);
+          size_t i_rel = o->get_tuple_rel_index(i.ind_abs[0]);
+          e_OO_mu.push_back(F_OO[i_sym][i_rel][i_rel]);
+        }
       }
-    }
-    e_OO.push_back(e_OO_mu);
+      e_OO.push_back(e_OO_mu);
 
 
-    double*** F_vv = blas->get_MatTmp("fock[v][v]",unique_mu,none)->get_matrix();
-    std::vector<double>  e_vv_mu;
-    {
-      CCIndexIterator a("[v]");
-      while(++a){
-        int    a_sym = v->get_tuple_irrep(a.ind_abs[0]);
-        size_t a_rel = v->get_tuple_rel_index(a.ind_abs[0]);
-        e_vv_mu.push_back(F_vv[a_sym][a_rel][a_rel]);
+      double*** F_vv = blas->get_MatTmp("fock[v][v]",mu,none)->get_matrix();
+      std::vector<double>  e_vv_mu;
+      {
+        CCIndexIterator a("[v]");
+        while(++a){
+          int    a_sym = v->get_tuple_irrep(a.ind_abs[0]);
+          size_t a_rel = v->get_tuple_rel_index(a.ind_abs[0]);
+          e_vv_mu.push_back(F_vv[a_sym][a_rel][a_rel]);
+        }
       }
-    }
-    e_vv.push_back(e_vv_mu);
+      e_vv.push_back(e_vv_mu);
 
-    double*** F_VV = blas->get_MatTmp("fock[V][V]",unique_mu,none)->get_matrix();
-    std::vector<double>  e_VV_mu;
-    {
-      CCIndexIterator a("[v]");
-      while(++a){
-        int    a_sym = v->get_tuple_irrep(a.ind_abs[0]);
-        size_t a_rel = v->get_tuple_rel_index(a.ind_abs[0]);
-        e_VV_mu.push_back(F_VV[a_sym][a_rel][a_rel]);
+      double*** F_VV = blas->get_MatTmp("fock[V][V]",mu,none)->get_matrix();
+      std::vector<double>  e_VV_mu;
+      {
+        CCIndexIterator a("[v]");
+        while(++a){
+          int    a_sym = v->get_tuple_irrep(a.ind_abs[0]);
+          size_t a_rel = v->get_tuple_rel_index(a.ind_abs[0]);
+          e_VV_mu.push_back(F_VV[a_sym][a_rel][a_rel]);
+        }
       }
+      e_VV.push_back(e_VV_mu);
+
+      V_oovv.push_back(blas->get_MatTmp("<[oo]:[vv]>",none)->get_matrix());
+      V_oOvV.push_back(blas->get_MatTmp("<[oo]|[vv]>",none)->get_matrix());
+
+      F_ov.push_back(blas->get_MatTmp("fock[o][v]",mu,none)->get_matrix());
+      F_OV.push_back(blas->get_MatTmp("fock[O][V]",mu,none)->get_matrix());
+
+      T1_ov.push_back(blas->get_MatTmp("t1[o][v]",mu,none)->get_matrix());
+      T1_OV.push_back(blas->get_MatTmp("t1[O][V]",mu,none)->get_matrix());
+
+      T2_oovv.push_back(blas->get_MatTmp("t2[oo][vv]",mu,none)->get_matrix());
+      T2_oOvV.push_back(blas->get_MatTmp("t2[oO][vV]",mu,none)->get_matrix());
+      T2_OOVV.push_back(blas->get_MatTmp("t2[OO][VV]",mu,none)->get_matrix());
+
+      is_aocc.push_back(moinfo->get_is_aocc(mu,AllRefs));
+      is_bocc.push_back(moinfo->get_is_bocc(mu,AllRefs));
+      is_avir.push_back(moinfo->get_is_avir(mu,AllRefs));
+      is_bvir.push_back(moinfo->get_is_bvir(mu,AllRefs));
+    }else{
+      // Setup the denominators
+      double*** F_oo = blas->get_MatTmp("fock[O][O]",unique_mu,none)->get_matrix();
+      std::vector<double>  e_oo_mu;
+      {
+        CCIndexIterator i("[o]");
+        while(++i){
+          int    i_sym = o->get_tuple_irrep(i.ind_abs[0]);
+          size_t i_rel = o->get_tuple_rel_index(i.ind_abs[0]);
+          e_oo_mu.push_back(F_oo[i_sym][i_rel][i_rel]);
+        }
+      }
+      e_oo.push_back(e_oo_mu);
+
+      double*** F_OO = blas->get_MatTmp("fock[o][o]",unique_mu,none)->get_matrix();
+      std::vector<double>  e_OO_mu;
+      {
+        CCIndexIterator i("[o]");
+        while(++i){
+          int    i_sym = o->get_tuple_irrep(i.ind_abs[0]);
+          size_t i_rel = o->get_tuple_rel_index(i.ind_abs[0]);
+          e_OO_mu.push_back(F_OO[i_sym][i_rel][i_rel]);
+        }
+      }
+      e_OO.push_back(e_OO_mu);
+
+      double*** F_vv = blas->get_MatTmp("fock[V][V]",unique_mu,none)->get_matrix();
+      std::vector<double>  e_vv_mu;
+      {
+        CCIndexIterator a("[v]");
+        while(++a){
+          int    a_sym = v->get_tuple_irrep(a.ind_abs[0]);
+          size_t a_rel = v->get_tuple_rel_index(a.ind_abs[0]);
+          e_vv_mu.push_back(F_vv[a_sym][a_rel][a_rel]);
+        }
+      }
+      e_vv.push_back(e_vv_mu);
+
+      double*** F_VV = blas->get_MatTmp("fock[v][v]",unique_mu,none)->get_matrix();
+      std::vector<double>  e_VV_mu;
+      {
+        CCIndexIterator a("[v]");
+        while(++a){
+          int    a_sym = v->get_tuple_irrep(a.ind_abs[0]);
+          size_t a_rel = v->get_tuple_rel_index(a.ind_abs[0]);
+          e_VV_mu.push_back(F_VV[a_sym][a_rel][a_rel]);
+        }
+      }
+      e_VV.push_back(e_VV_mu);
+
+      V_oovv.push_back(blas->get_MatTmp("<[oo]:[vv]>",none)->get_matrix());
+      V_oOvV.push_back(blas->get_MatTmp("<[oo]|[vv]>",none)->get_matrix());
+
+      F_ov.push_back(blas->get_MatTmp("fock[O][V]",unique_mu,none)->get_matrix());
+      F_OV.push_back(blas->get_MatTmp("fock[o][v]",unique_mu,none)->get_matrix());
+
+      T1_ov.push_back(blas->get_MatTmp("t1[O][V]",unique_mu,none)->get_matrix());
+      T1_OV.push_back(blas->get_MatTmp("t1[o][v]",unique_mu,none)->get_matrix());
+
+      T2_oovv.push_back(blas->get_MatTmp("t2[OO][VV]",unique_mu,none)->get_matrix());
+      T2_oOvV.push_back(blas->get_MatTmp("t2[Oo][Vv]",unique_mu,none)->get_matrix());
+      T2_OOVV.push_back(blas->get_MatTmp("t2[oo][vv]",unique_mu,none)->get_matrix());
+
+      is_bocc.push_back(moinfo->get_is_aocc(unique_mu,AllRefs));
+      is_aocc.push_back(moinfo->get_is_bocc(unique_mu,AllRefs));
+      is_bvir.push_back(moinfo->get_is_avir(unique_mu,AllRefs));
+      is_avir.push_back(moinfo->get_is_bvir(unique_mu,AllRefs));
     }
-    e_VV.push_back(e_VV_mu);
-
-    V_oovv.push_back(blas->get_MatTmp("<[oo]:[vv]>",none)->get_matrix());
-    V_oOvV.push_back(blas->get_MatTmp("<[oo]|[vv]>",none)->get_matrix());
-
-    F_ov.push_back(blas->get_MatTmp("fock[o][v]",unique_mu,none)->get_matrix());
-    F_OV.push_back(blas->get_MatTmp("fock[O][V]",unique_mu,none)->get_matrix());
-
-    T1_ov.push_back(blas->get_MatTmp("t1[o][v]",unique_mu,none)->get_matrix());
-    T1_OV.push_back(blas->get_MatTmp("t1[O][V]",unique_mu,none)->get_matrix());
-
-    T2_oovv.push_back(blas->get_MatTmp("t2[oo][vv]",unique_mu,none)->get_matrix());
-    T2_oOvV.push_back(blas->get_MatTmp("t2[oO][vV]",unique_mu,none)->get_matrix());
-    T2_OOVV.push_back(blas->get_MatTmp("t2[OO][VV]",unique_mu,none)->get_matrix());
-
-    is_aocc.push_back(moinfo->get_is_aocc(mu,UniqueRefs));
-    is_bocc.push_back(moinfo->get_is_bocc(mu,UniqueRefs));
-    is_avir.push_back(moinfo->get_is_avir(mu,UniqueRefs));
-    is_bvir.push_back(moinfo->get_is_bvir(mu,UniqueRefs));
-
 
     if(options_get_str("CORR_CCSD_T") == "STANDARD"){
       vector<double> factor_row;
-      for(int nu = 0; nu < nurefs; ++nu){
-        int unique_nu = moinfo->get_ref_number(nu,UniqueRefs);
-        double factor = h_eff->get_matrix(unique_mu,unique_nu) * h_eff->get_right_eigenvector(unique_nu) / h_eff->get_right_eigenvector(unique_mu);
+      for(int nu = 0; nu < nrefs; ++nu){
+        double factor = h_eff->get_matrix(mu,nu) * h_eff->get_right_eigenvector(nu) / h_eff->get_right_eigenvector(mu);
         factor_row.push_back(factor);
       }
       Mk_factor.push_back(factor_row);
 
-      Mk_shift.push_back(h_eff->get_eigenvalue() - h_eff->get_matrix(unique_mu,unique_mu));
+      Mk_shift.push_back(h_eff->get_eigenvalue() - h_eff->get_matrix(mu,mu));
     }else if(options_get_str("CORR_CCSD_T") == "PITTNER"){
       vector<double> factor_row;
-      for(int nu = 0; nu < nurefs; ++nu){
+      for(int nu = 0; nu < nrefs; ++nu){
         factor_row.push_back(0.0);
       }
       Mk_factor.push_back(factor_row);
@@ -154,7 +221,7 @@ void MRCCSD_T::startup()
     }
 
     vector<double> d_h_eff_row;
-    for(int nu = 0; nu < nurefs; ++nu){
+    for(int nu = 0; nu < nrefs; ++nu){
       d_h_eff_row.push_back(0.0);
     }
     d_h_eff.push_back(d_h_eff_row);
@@ -165,57 +232,57 @@ void MRCCSD_T::startup()
   V_vovv = blas->get_MatTmp("<[v]:[ovv]>",none)->get_matrix();
   V_vOvV = blas->get_MatTmp("<[v]|[ovv]>",none)->get_matrix();
 
-//  for(int mu = 0; mu < nurefs; ++mu){
+//  for(int mu = 0; mu < nrefs; ++mu){
 //    fprintf(outfile,"\n  ");
-//    for(int nu = 0; nu < nurefs; ++nu){
+//    for(int nu = 0; nu < nrefs; ++nu){
 //      fprintf(outfile,"%15.12f",Mk_factor[mu][nu]);
 //    }
 //  }
 
   // Allocate Z, this will hold the results
-  allocate2(BlockMatrix**,Z,nurefs,nirreps);
-  for(int mu = 0; mu < nurefs; ++mu){
+  allocate2(BlockMatrix**,Z,nrefs,nirreps);
+  for(int mu = 0; mu < nrefs; ++mu){
     for(int h = 0; h < nirreps; ++h){
       Z[mu][h] = new BlockMatrix(nirreps,v->get_tuplespi(),vv->get_tuplespi(),h);
     }
   }
 
   // Allocate W
-  allocate2(BlockMatrix**,W,nurefs,nirreps);
-  for(int mu = 0; mu < nurefs; ++mu){
+  allocate2(BlockMatrix**,W,nrefs,nirreps);
+  for(int mu = 0; mu < nrefs; ++mu){
     for(int h = 0; h < nirreps; ++h){
       W[mu][h] = new BlockMatrix(nirreps,v->get_tuplespi(),vv->get_tuplespi(),h);
     }
   }
 
   // Allocate T
-  allocate2(BlockMatrix**,T,nurefs,nirreps);
-  for(int mu = 0; mu < nurefs; ++mu){
+  allocate2(BlockMatrix**,T,nrefs,nirreps);
+  for(int mu = 0; mu < nrefs; ++mu){
     for(int h = 0; h < nirreps; ++h){
       T[mu][h] = new BlockMatrix(nirreps,v->get_tuplespi(),vv->get_tuplespi(),h);
     }
   }
 
-  e4T.assign(nurefs,0.0);
-  e4ST.assign(nurefs,0.0);
-  e4DT.assign(nurefs,0.0);
+  e4T.assign(nrefs,0.0);
+  e4ST.assign(nrefs,0.0);
+  e4DT.assign(nrefs,0.0);
 
-  E4T_ooo.assign(nurefs,0.0);
-  E4T_ooO.assign(nurefs,0.0);
-  E4T_oOO.assign(nurefs,0.0);
-  E4T_OOO.assign(nurefs,0.0);
-  E4ST_ooo.assign(nurefs,0.0);
-  E4ST_ooO.assign(nurefs,0.0);
-  E4ST_oOO.assign(nurefs,0.0);
-  E4ST_OOO.assign(nurefs,0.0);
-  E4DT_ooo.assign(nurefs,0.0);
-  E4DT_ooO.assign(nurefs,0.0);
-  E4DT_oOO.assign(nurefs,0.0);
-  E4DT_OOO.assign(nurefs,0.0);
-  E4_ooo.assign(nurefs,0.0);
-  E4_ooO.assign(nurefs,0.0);
-  E4_oOO.assign(nurefs,0.0);
-  E4_OOO.assign(nurefs,0.0);
+  E4T_ooo.assign(nrefs,0.0);
+  E4T_ooO.assign(nrefs,0.0);
+  E4T_oOO.assign(nrefs,0.0);
+  E4T_OOO.assign(nrefs,0.0);
+  E4ST_ooo.assign(nrefs,0.0);
+  E4ST_ooO.assign(nrefs,0.0);
+  E4ST_oOO.assign(nrefs,0.0);
+  E4ST_OOO.assign(nrefs,0.0);
+  E4DT_ooo.assign(nrefs,0.0);
+  E4DT_ooO.assign(nrefs,0.0);
+  E4DT_oOO.assign(nrefs,0.0);
+  E4DT_OOO.assign(nrefs,0.0);
+  E4_ooo.assign(nrefs,0.0);
+  E4_ooO.assign(nrefs,0.0);
+  E4_oOO.assign(nrefs,0.0);
+  E4_OOO.assign(nrefs,0.0);
 }
 
 void MRCCSD_T::cleanup()
@@ -239,7 +306,7 @@ void MRCCSD_T::cleanup()
   delete V_jK_C_m;
 
   // Deallocate Z
-  for(int mu = 0; mu < nurefs; ++mu){
+  for(int mu = 0; mu < nrefs; ++mu){
     for(int h = 0; h < nirreps; ++h){
       delete Z[mu][h];
     }
@@ -247,7 +314,7 @@ void MRCCSD_T::cleanup()
   release2(Z);
 
   // Deallocate W
-  for(int mu = 0; mu < nurefs; ++mu){
+  for(int mu = 0; mu < nrefs; ++mu){
     for(int h = 0; h < nirreps; ++h){
       delete W[mu][h];
     }
@@ -255,7 +322,7 @@ void MRCCSD_T::cleanup()
   release2(W);
 
   // Deallocate T
-  for(int mu = 0; mu < nurefs; ++mu){
+  for(int mu = 0; mu < nrefs; ++mu){
     for(int h = 0; h < nirreps; ++h){
       delete T[mu][h];
     }

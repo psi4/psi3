@@ -24,14 +24,16 @@ void CCMRCC::print_mrccsd_energy(int cycle)
 
     
     if((fabs(log10(fabs(delta_energy))) > options_get_int("CONVERGENCE")) && (cycle!=0)){
+      char star = (options_get_str("CORR_WFN") == "CCSD") ? '*' : ' ';
       fprintf(outfile,"\n  ------------------------------------------------------------------------------");
-      
-      fprintf(outfile,"\n\n%6c* %s-MR%s total energy   =    %20.12f",' ',options_get_str("CORR_ANSATZ").c_str(),options_get_str("CORR_WFN").c_str(),current_energy);
-//      fprintf(outfile,"\n\n%6c* Mk-MRCCSD total energy   = %20.12f\n",' ',current_energy);      
+      fprintf(outfile,"\n\n%6c%1c Mk-MRCCSD total energy      = %20.12f\n",' ',star,current_energy);
     }
   }else if(cycle==-1){
-    fprintf(outfile,"\n\n%6c* Mk-MRCCSD total energy   = %20.12f\n",' ',current_energy);
-    print_eigensystem(moinfo->get_nrefs(),Heff,eigenvector);
+    char star = ' ';
+    if(options_get_str("CORR_WFN") == "CCSD")
+      star = '*';
+    fprintf(outfile,"\n\n%6c%1c Mk-MRCCSD total energy      = %20.12f\n",' ',star,current_energy);
+    print_eigensystem(moinfo->get_nrefs(),Heff,right_eigenvector);
   }
 
   fflush(outfile);

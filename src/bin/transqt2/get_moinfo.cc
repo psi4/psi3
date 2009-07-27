@@ -349,7 +349,7 @@ namespace psi {
 
       }
       else if(!strcmp(params.wfn,"SCF") || !strcmp(params.wfn,"SCF_MVD")
-           || !strcmp(params.wfn,"PSIMRCC")) {  /* psimrcc requires no freezing nor reordering */
+           || !strcmp(params.wfn,"PSIMRCC") || !strcmp(params.wfn,"PSIMRCC_CSCF")) {  /* psimrcc requires no freezing nor reordering */
 
 	/* Note that no frozen orbitals are allowed in this case */
 

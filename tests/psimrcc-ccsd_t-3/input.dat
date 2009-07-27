@@ -1,0 +1,25 @@
+psi: (
+  label        = "CH2 Mk-MRCCSD(T)"
+  jobtype      = sp
+  wfn          = psimrcc
+  reference    = rohf
+  multp        = 3
+  docc         = (2 0 0 1)
+  actv         = (1 0 1 0)
+  convergence  =   14
+  basis        = cc-pVDZ
+  zmat =
+  (
+    C
+    H 1 1.12
+    H 1 1.12 2 152.7
+  )
+)
+
+mrcc:(
+  corr_wfn      = ccsd_t
+  corr_docc     = (2 0 0 1)
+  corr_actv     = (1 0 1 0)
+  multp         = 1
+  wfn_sym       = 3
+)

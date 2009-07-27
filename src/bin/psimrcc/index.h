@@ -64,15 +64,21 @@ public:
   // Get the tuples irrep structure
   int         get_first(int i)                            {return(first[i]);}
   int         get_last(int i)                             {return(last[i]);}
-  int         get_pairpi(int i)                           {return(pairpi[i]);}
-  Size_tVec&  get_pairpi()                                {return(pairpi);}
+  int         get_pairpi(int i)                           {return(tuplespi[i]);}
+  Size_tVec&  get_pairpi()                                {return(tuplespi);}
   Size_tVec&  get_first()                                 {return(first);}
   Size_tVec&  get_last()                                  {return(last);}
+  Size_tVec&  get_tuplespi()                              {return(tuplespi);}
 
-  // Given a set of number retrieve the corresponding tuple index
-  size_t      get_tuple_index(short p)                    {return(one_index_to_tuple[p]);}
-  size_t      get_tuple_index(short p, short q)           {return(two_index_to_tuple[p][q]);}
-  size_t      get_tuple_index(short p, short q, short r)  {return(three_index_to_tuple[p][q][r]);}
+  // Given a set of number retrieve the corresponding tuple index relative to the tuple's irrep
+  size_t      get_tuple_abs_index(short p)                    {return(first[one_index_to_irrep[p]] + one_index_to_tuple_rel_index[p]);}
+  size_t      get_tuple_abs_index(short p, short q)           {return(first[two_index_to_irrep[p][q]] + two_index_to_tuple_rel_index[p][q]);}
+  size_t      get_tuple_abs_index(short p, short q, short r)  {return(first[three_index_to_irrep[p][q][r]] + three_index_to_tuple_rel_index[p][q][r]);}
+
+  // Given a set of number retrieve the corresponding tuple index relative to the tuple's irrep
+  size_t      get_tuple_rel_index(short p)                    {return(one_index_to_tuple_rel_index[p]);}
+  size_t      get_tuple_rel_index(short p, short q)           {return(two_index_to_tuple_rel_index[p][q]);}
+  size_t      get_tuple_rel_index(short p, short q, short r)  {return(three_index_to_tuple_rel_index[p][q][r]);}
 
   // Given a set of number retrieve the corresponding tuple irrep
   int         get_tuple_irrep(short p)                    {return(one_index_to_irrep[p]);}
@@ -81,12 +87,14 @@ public:
 
   vecvecint&   get_indices_to_pitzer()                     {return(indices_to_pitzer);}
 
-  size_t*     get_one_index_to_tuple()                    {return(one_index_to_tuple);};
-  size_t**    get_two_index_to_tuple()                    {return(two_index_to_tuple);};
-  size_t***   get_three_index_to_tuple()                  {return(three_index_to_tuple);};
+  size_t*     get_one_index_to_tuple_rel_index()     {return(one_index_to_tuple_rel_index);};
+  size_t**    get_two_index_to_tuple_rel_index()     {return(two_index_to_tuple_rel_index);};
+  size_t***   get_three_index_to_tuple_rel_index()   {return(three_index_to_tuple_rel_index);};
   int*        get_one_index_to_irrep()                    {return(one_index_to_irrep);};
   int**       get_two_index_to_irrep()                    {return(two_index_to_irrep);};
   int***      get_three_index_to_irrep()                  {return(three_index_to_irrep);};
+
+  int**       get_element_irrep()                         {return(element_irrep);}
 
 private:
   ///////////////////////////////////////////////////////////////////////////////
@@ -114,13 +122,14 @@ private:
   short**                           tuples;                 // The tuples ordered as matrix : tuples[number][element]
   Size_tVec                         first;                  // First pair of irrep
   Size_tVec                         last;                   // Last  pair of irrep
-  Size_tVec                         pairpi;                 // Number of pairs for irrep
-  size_t*                           one_index_to_tuple;     // 1->tuple mapping array
-  size_t**                          two_index_to_tuple;     // 2->tuple mapping array
-  size_t***                         three_index_to_tuple;   // 3->tuple mapping array
+  Size_tVec                         tuplespi;               // Number of tuples for irrep
+  size_t*                           one_index_to_tuple_rel_index;     // 1->tuple mapping array
+  size_t**                          two_index_to_tuple_rel_index;     // 2->tuple mapping array
+  size_t***                         three_index_to_tuple_rel_index;   // 3->tuple mapping array
   int*                              one_index_to_irrep;     // 1->irrep mapping array
   int**                             two_index_to_irrep;     // 2->irrep mapping array
   int***                            three_index_to_irrep;   // 3->irrep mapping array
+  int**                             element_irrep;          // Irrep of each element
 protected:
   static int                        nirreps;
 };

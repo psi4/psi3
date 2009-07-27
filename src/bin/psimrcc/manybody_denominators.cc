@@ -58,10 +58,10 @@ void CCManyBody::generate_denominators()
         ind += spl_str[i];
       }
 
-      std::vector<int> aocc     = moinfo->get_aocc("a",reference);
-      std::vector<int> bocc     = moinfo->get_bocc("a",reference);
-      std::vector<int> avir     = moinfo->get_avir("a",reference);
-      std::vector<int> bvir     = moinfo->get_bvir("a",reference);
+      std::vector<int> aocc     = moinfo->get_aocc(reference,AllRefs);
+      std::vector<int> bocc     = moinfo->get_bocc(reference,AllRefs);
+      std::vector<int> avir     = moinfo->get_avir(reference,AllRefs);
+      std::vector<int> bvir     = moinfo->get_bvir(reference,AllRefs);
 
 
       // Build the is_arrays for reference ref
@@ -243,10 +243,10 @@ void CCManyBody::generate_denominators()
         ind += spl_str[i];
       }
 
-      std::vector<int> aocc     = moinfo->get_aocc("a",reference);
-      std::vector<int> bocc     = moinfo->get_bocc("a",reference);
-      std::vector<int> avir     = moinfo->get_avir("a",reference);
-      std::vector<int> bvir     = moinfo->get_bvir("a",reference);
+      std::vector<int> aocc     = moinfo->get_aocc(reference,AllRefs);
+      std::vector<int> bocc     = moinfo->get_bocc(reference,AllRefs);
+      std::vector<int> avir     = moinfo->get_avir(reference,AllRefs);
+      std::vector<int> bvir     = moinfo->get_bvir(reference,AllRefs);
 
 
       // Build the is_arrays for reference ref

@@ -14,10 +14,12 @@ namespace psi {
 
 class Chkpt;
 
+enum    ReferenceType {AllRefs,UniqueRefs,ClosedShellRefs,UniqueOpenShellRefs};
+
 class MOInfo : public MOInfoBase
 {
-  typedef std::vector<std::string>            strvec;
 
+  typedef std::vector<std::string>            strvec;
   typedef std::vector<std::pair<int,int> >    intpairvec;
 public:
   /*********************************************************
@@ -48,8 +50,6 @@ public:
     typedef std::bitset<size_det> bitdet;
     SlaterDeterminant();
     ~SlaterDeterminant();
-    void        print();
-    void        print_occ();
     void        set(int n)                               {bits.set(n);}
     bool        test(int n)                        const {return(bits.test(n));}
     bool        is_closed_shell();
@@ -64,6 +64,10 @@ public:
     intvec      get_bocc();
     intvec      get_avir();
     intvec      get_bvir();
+    boolvec     get_is_aocc();
+    boolvec     get_is_bocc();
+    boolvec     get_is_avir();
+    boolvec     get_is_bvir();
 
   private:
     double      annihilate(bitdet& bits_det,int so);
@@ -149,23 +153,22 @@ public:
   void        setup_model_space();
   int         get_nrefs()                              {return(all_refs.size());};
   int         get_nunique()                            {return(unique_refs.size());};
-  int         get_ref_number(std::string str,int n);
-  int         get_ref_size(std::string str);
+  int         get_ref_number(int n, ReferenceType ref_type = AllRefs);
+  int         get_ref_size(ReferenceType ref_type);
   std::string get_determinant_label(int i);
 
   strvec      get_matrix_names(std::string str);
-  intvec      get_aocc(std::string str,int i);
-  intvec      get_bocc(std::string str,int i);
-  intvec      get_avir(std::string str,int i);
-  intvec      get_bvir(std::string str,int i);
+  intvec      get_aocc(int i, ReferenceType ref_type);
+  intvec      get_bocc(int i, ReferenceType ref_type);
+  intvec      get_avir(int i, ReferenceType ref_type);
+  intvec      get_bvir(int i, ReferenceType ref_type);
 
-  intvec      get_aocc(int i);
-  intvec      get_bocc(int i);
-  intvec      get_auoc(int i);
-  intvec      get_buoc(int i);
+  boolvec     get_is_aocc(int i, ReferenceType ref_type);
+  boolvec     get_is_bocc(int i, ReferenceType ref_type);
+  boolvec     get_is_avir(int i, ReferenceType ref_type);
+  boolvec     get_is_bvir(int i, ReferenceType ref_type);
+
   intvec      get_determinant(int i);  // Array with occupation of reference i (in all ordering)
-
-
 
   intpairvec  get_alpha_internal_excitation(int i,int j);
   intpairvec  get_beta_internal_excitation(int i,int j);
@@ -205,11 +208,11 @@ private:
   // Total number of orbitals in each space
   int         nfocc;                                // Frozen doubly-occupied MOs
   int         nfvir;                                // Frozen external MOs
-  int         nactv_docc;
-  int         nocc;                                  // Generalized occupied (docc + actv)
-  int         nvir;                                  // Generalized virtual (actv + extr)
-  int         nall;                                  // Non-frozen MOs (docc + actv + extr)
-  int         nextr;                                  // Non-frozen external orbitals (extr)
+  int         nactv_docc;                           // Number of active ???
+  int         nocc;                                 // Generalized occupied (docc + actv)
+  int         nvir;                                 // Generalized virtual (actv + extr)
+  int         nall;                                 // Non-frozen MOs (docc + actv + extr)
+  int         nextr;                                // Non-frozen external orbitals (extr)
 
   // Orbitals arrays
   intvec      focc;

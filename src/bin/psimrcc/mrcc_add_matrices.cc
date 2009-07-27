@@ -28,6 +28,8 @@ void CCMRCC::add_matrices()
   blas->add_Matrix("<[o]|[voo]>");
   blas->add_Matrix("<[o]|[ovo]>");
   blas->add_Matrix("<[o]:[ovo]>");
+  blas->add_Matrix("<[oo]:[ov]>");
+  blas->add_Matrix("<[oo]|[ov]>");
 
   // O^2V^2
   blas->add_Matrix("<[o>o]:[v>v]>");
@@ -115,10 +117,6 @@ void CCMRCC::add_matrices()
   mrcc_w_int.cc:  blas->append("W_JBME[OV][OV]{o} += #2431# - ([vvo]|[v]) 2@2 t1[O][V]{o}");
 */
 
-//  blas->add_Matrix("<[ov]|[vv]>");  // Eliminated
-//  blas->add_Matrix("<[ovv]:[v]>");  // Eliminated
-//  blas->add_Matrix("<[vo]:[vv]>");  // Eliminated : used originally two times in mrcc_z_int.cpp
-
   // V^4
   blas->add_Matrix("<[v>v]:[v>v]>");
   blas->add_Matrix("<[vv]|[v>=v]>");
@@ -167,6 +165,7 @@ void CCMRCC::add_matrices()
   blas->add_Matrix("t1[OV]{u}");
   blas->add_Matrix("t1[o][v]{u}");
   blas->add_Matrix("t1[O][V]{u}");
+
   blas->add_Matrix("t2[oO][vV]{u}");
   blas->add_Matrix("t2[oo][vv]{u}");
   blas->add_Matrix("t2[OO][VV]{u}");
@@ -319,6 +318,10 @@ void CCMRCC::add_matrices()
   blas->add_Matrix("Mk2[OO][VV]{u}");
 
   // Triples
+  if(triples_type == ccsd_t){
+    blas->add_Matrix("t2[Oo][Vv]{u}");
+  }
+
   if(triples_type >= ccsd_t){  // TODO: ccsd_t should not require storage
 
     blas->add_Matrix("ERROR{u}");

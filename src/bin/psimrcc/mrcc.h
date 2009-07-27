@@ -2,8 +2,11 @@
 #define _psi_src_bin_psimrcc_mrcc_h_
 
 #include "manybody.h"
+#include "heff.h"
 
 namespace psi{ namespace psimrcc{
+
+class IndexMatrix;
 
 class CCMRCC : public CCManyBody
 {
@@ -11,15 +14,21 @@ public:
   // Constructor and destructor
   CCMRCC();
   virtual ~CCMRCC();
-  // public member functions
+
+  // CCSD
   void compute_mkccsd_energy();
   void compute_mkccsd_residual_energy();
   void compute_bwccsd_energy();
   void compute_apbwccsd_energy();
   void compute_ccsd_energy();
+
+  // CCSD(T)
+  void compute_perturbative_triples();
+
   // Perturbative correction for CBS
   void compute_first_order_amps();
   void perturbative_cbs();
+
 private:
   bool ap_correction;
 
@@ -27,10 +36,12 @@ private:
   void compute_energy(void(*updater)());
 
   // These are used to call member functions
+
+  Hamiltonian h_eff;
+
   static CCMRCC* ptr;
   static void update_amps_ccsd_wrapper();
   static void update_amps_mkccsd_wrapper();
-  static void update_amps_mkccsd_residual_wrapper();
   static void update_amps_bwccsd_wrapper();
 
   void diis(int cycle);
@@ -165,6 +176,12 @@ private:
   void update_t1_t2_amps_mkccsd_residual();
 
   void print_mrccsd_energy(int cycle);
+
+  // CCSD(T)
+  std::vector<double>  compute_ooo_triples();
+  std::vector<double>  compute_OOO_triples();
+  std::vector<double>  compute_ooO_triples();
+  std::vector<double>  compute_oOO_triples();
 
 
 };

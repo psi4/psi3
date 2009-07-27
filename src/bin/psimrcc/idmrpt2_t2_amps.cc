@@ -50,7 +50,7 @@ void IDMRPT2::build_t2_iJaB_amplitudes()
 void IDMRPT2::build_t2_ijab_amplitudes()
 {
   START_TIMER(1,"Building the T2_ijab Amplitudes");
-  if(moinfo->get_ref_size("o")==0){
+  if(moinfo->get_ref_size(UniqueOpenShellRefs)==0){
     blas->solve("t2_eqns[oo][vv]{c}  = t2_eqns[oO][vV]{c}");
     blas->solve("t2_eqns[oo][vv]{c} += #2134# - t2_eqns[oO][vV]{c}");
   }else{

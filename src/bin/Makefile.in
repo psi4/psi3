@@ -14,6 +14,11 @@ ifeq ($(HAVE_RUBY),yes)
 subdirs += psirb
 endif
 
+#COMPILE_LOOPMRCC=@COMPILE_LOOPMRCC@
+#ifeq ($(COMPILE_LOOPMRCC),yes)
+#subdirs += loopmrcc
+#endif
+
 all: default
 
 default:

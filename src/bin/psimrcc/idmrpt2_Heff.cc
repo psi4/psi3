@@ -29,11 +29,11 @@ void IDMRPT2::build_Heff_mrpt2_offdiagonal()
   intvec occ_to_act = moinfo->get_occ_to_actv();
   intvec vir_to_act = moinfo->get_vir_to_actv();
 
-  for(int i=0;i<moinfo->get_ref_size("a");i++){
-    int i_unique = moinfo->get_ref_number("a",i);
+  for(int i = 0; i < moinfo->get_ref_size(AllRefs); ++i){
+    int i_unique = moinfo->get_ref_number(i);
     // Find the off_diagonal elements for reference i
     // Loop over reference j (in a safe way)
-    for(int j=0;j<moinfo->get_ref_size("a");j++){
+    for(int j=0;j<moinfo->get_ref_size(AllRefs);j++){
       if(i!=j){
         vector<pair<int,int> >  alpha_internal_excitation = moinfo->get_alpha_internal_excitation(i,j);
         vector<pair<int,int> >   beta_internal_excitation = moinfo->get_beta_internal_excitation(i,j);

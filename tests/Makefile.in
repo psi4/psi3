@@ -15,7 +15,10 @@ fci-dipole fci-trans zaptn-nh2
 mcscf_subdirs = casscf-sp casscf-sa-sp casscf-fzc-sp rasscf-sp \
 casscf-opt-numer casscf-opt casscf-sp-reorder
 
-psimrcc_subdirs = psimrcc-sp1 psimrcc-idmrpt2 psimrcc-mp2-ccsd-1 psimrcc-mp2-ccsd-2 psimrcc-mp2-ccsd-3 psimrcc-mp2-ccsd-4
+psimrcc_subdirs = psimrcc-sp1 \
+psimrcc-idmrpt2 \
+psimrcc-mp2-ccsd-1 psimrcc-mp2-ccsd-2 psimrcc-mp2-ccsd-3 psimrcc-mp2-ccsd-4 \
+psimrcc-ccsd_t-1 psimrcc-ccsd_t-2 psimrcc-ccsd_t-3
 
 scf_subdirs   = mcscf-rhf1 mcscf-rohf1 mcscf-twocon1
 
@@ -87,6 +90,12 @@ mcscf_tests:
 
 scf_tests:
 	for dir in $(scf_subdirs); \
+	do \
+	 (cd $${dir} && echo ...Testing $${dir}... && $(MAKE)) || exit 1; \
+	done
+
+psimrcc_tests:
+	for dir in $(psimrcc_subdirs); \
 	do \
 	 (cd $${dir} && echo ...Testing $${dir}... && $(MAKE)) || exit 1; \
 	done

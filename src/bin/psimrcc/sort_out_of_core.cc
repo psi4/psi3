@@ -154,8 +154,8 @@ void CCSort::form_fock_out_of_core(CCMatrix* Matrix, int h)
       alpha = false;
 
     // N.B. Never introduce Matrices/Vectors with O or V in the name before you compute the Fock matrix elements
-    vector<int> aocc = moinfo->get_aocc("a",Matrix->get_reference());
-    vector<int> bocc = moinfo->get_bocc("a",Matrix->get_reference());
+    vector<int> aocc = moinfo->get_aocc(Matrix->get_reference(),AllRefs);
+    vector<int> bocc = moinfo->get_bocc(Matrix->get_reference(),AllRefs);
 
     for(int i = 0;i<Matrix->get_left_pairpi(h);i++)
       for(int j = 0;j<Matrix->get_right_pairpi(h);j++){

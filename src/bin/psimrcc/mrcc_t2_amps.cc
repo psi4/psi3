@@ -32,7 +32,7 @@ void CCMRCC::build_t2_ijab_amplitudes()
     fprintf(outfile,"\n\tBuilding the t2_ijab Amplitudes   ...");
     fflush(outfile);
   )
-  if(moinfo->get_ref_size("o")==0){
+  if(moinfo->get_ref_size(UniqueOpenShellRefs) == 0){
     blas->append("t2_eqns[oo][vv]{c}  = t2_eqns[oO][vV]{c}");
     blas->append("t2_eqns[oo][vv]{c} += #2134# - t2_eqns[oO][vV]{c}");
   }else{
@@ -354,7 +354,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram1()
 {
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int unique_ref  = moinfo->get_ref_number("u",ref);
+    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  TijkabcMatTmp = blas->get_MatTmp("t3[ooo][vvv]",unique_ref,none);
@@ -493,7 +493,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram1()
 {
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int unique_ref  = moinfo->get_ref_number("u",ref);
+    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  TijKabCMatTmp  = blas->get_MatTmp("t3[ooO][vvV]",unique_ref,none);
@@ -732,7 +732,7 @@ void CCMRCC::build_t2_IJAB_amplitudes_triples_diagram1()
 {
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int unique_ref  = moinfo->get_ref_number("u",ref);
+    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  TiJKaBCMatTmp = blas->get_MatTmp("t3[oOO][vVV]",unique_ref,none);
@@ -875,7 +875,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram2()
 {
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int unique_ref  = moinfo->get_ref_number("u",ref);
+    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  TijkabcMatTmp = blas->get_MatTmp("t3[ooo][vvv]",unique_ref,none);
@@ -1010,7 +1010,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram2()
 {
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int unique_ref  = moinfo->get_ref_number("u",ref);
+    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  TijKabCMatTmp = blas->get_MatTmp("t3[ooO][vvV]",unique_ref,none);
@@ -1213,7 +1213,7 @@ void CCMRCC::build_t2_IJAB_amplitudes_triples_diagram2()
 {
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int unique_ref  = moinfo->get_ref_number("u",ref);
+    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  TiJKaBCMatTmp = blas->get_MatTmp("t3[oOO][vVV]",unique_ref,none);
@@ -1345,7 +1345,7 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram3()
 {
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int unique_ref  = moinfo->get_ref_number("u",ref);
+    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  HijabMatTmp   = blas->get_MatTmp("t2_eqns[oo][vv]",unique_ref,none);
@@ -1382,11 +1382,11 @@ void CCMRCC::build_t2_ijab_amplitudes_triples_diagram3()
             size_t e_offset = FmeMatTmp->get_right()->get_first(m_sym);
             for(int e = 0;e <FmeMatTmp->get_right_pairpi(m_sym);e++){
               int e_abs = e + e_offset;
-              size_t abe  = abcIndex->get_tuple_index(a,b,e_abs);
+              size_t abe  = abcIndex->get_tuple_rel_index(a,b,e_abs);
               int abe_sym = abcIndex->get_tuple_irrep(a,b,e_abs);
               for(int m = 0;m <FmeMatTmp->get_left_pairpi(m_sym);m++){
                 int m_abs = m + m_offset;
-                size_t ijm  = ijkIndex->get_tuple_index(i,j,m_abs);
+                size_t ijm  = ijkIndex->get_tuple_rel_index(i,j,m_abs);
                 Hijab_matrix[h][ij][ab] += Tijkabc_matrix[abe_sym][ijm][abe] * Fme_matrix[m_sym][m][e];
                 Hijab_matrix[h][ij][ab] += TijKabC_matrix[abe_sym][ijm][abe] * FME_matrix[m_sym][m][e];
               }
@@ -1412,7 +1412,7 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram3()
 {
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int unique_ref  = moinfo->get_ref_number("u",ref);
+    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  HiJaBMatTmp   = blas->get_MatTmp("t2_eqns[oO][vV]",unique_ref,none);
@@ -1449,11 +1449,11 @@ void CCMRCC::build_t2_iJaB_amplitudes_triples_diagram3()
             size_t e_offset = FmeMatTmp->get_right()->get_first(m_sym);
             for(int e = 0;e <FmeMatTmp->get_right_pairpi(m_sym);e++){
               int e_abs = e + e_offset;
-              size_t aeb  = abcIndex->get_tuple_index(a,e_abs,b);
+              size_t aeb  = abcIndex->get_tuple_rel_index(a,e_abs,b);
               int aeb_sym = abcIndex->get_tuple_irrep(a,e_abs,b);
               for(int m = 0;m <FmeMatTmp->get_left_pairpi(m_sym);m++){
                 int m_abs = m + m_offset;
-                size_t imj  = ijkIndex->get_tuple_index(i,m_abs,j);
+                size_t imj  = ijkIndex->get_tuple_rel_index(i,m_abs,j);
                 HiJaB_matrix[h][ij][ab] += TijKabC_matrix[aeb_sym][imj][aeb] * Fme_matrix[m_sym][m][e];
                 HiJaB_matrix[h][ij][ab] += TiJKaBC_matrix[aeb_sym][imj][aeb] * FME_matrix[m_sym][m][e];
               }
@@ -1479,7 +1479,7 @@ void CCMRCC::build_t2_IJAB_amplitudes_triples_diagram3()
 {
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int unique_ref  = moinfo->get_ref_number("u",ref);
+    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  HIJABMatTmp   = blas->get_MatTmp("t2_eqns[OO][VV]",unique_ref,none);
@@ -1516,11 +1516,11 @@ void CCMRCC::build_t2_IJAB_amplitudes_triples_diagram3()
             size_t e_offset = FmeMatTmp->get_right()->get_first(m_sym);
             for(int e = 0;e <FmeMatTmp->get_right_pairpi(m_sym);e++){
               int e_abs = e + e_offset;
-              size_t eab  = abcIndex->get_tuple_index(e_abs,a,b);
+              size_t eab  = abcIndex->get_tuple_rel_index(e_abs,a,b);
               int eab_sym = abcIndex->get_tuple_irrep(e_abs,a,b);
               for(int m = 0;m <FmeMatTmp->get_left_pairpi(m_sym);m++){
                 int m_abs = m + m_offset;
-                size_t mij  = ijkIndex->get_tuple_index(m_abs,i,j);
+                size_t mij  = ijkIndex->get_tuple_rel_index(m_abs,i,j);
                 HIJAB_matrix[h][ij][ab] += TiJKaBC_matrix[eab_sym][mij][eab] * Fme_matrix[m_sym][m][e];
                 HIJAB_matrix[h][ij][ab] += TIJKABC_matrix[eab_sym][mij][eab] * FME_matrix[m_sym][m][e];
               }

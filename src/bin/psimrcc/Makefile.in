@@ -16,7 +16,7 @@ blas_diis.cc			manybody_denominators.cc	mrcc_compute.cc			psimrcc.cc \
 blas_interface.cc		matrix.cc			mrcc_energy.cc			sort.cc \
 blas_parser.cc			matrix_addressing.cc		mrcc_f_int.cc			sort_in_core.cc \
 blas_resorting.cc		matrix_memory_and_io.cc		mrcc_mkccsd.cc			sort_mrpt2.cc \
-blas_solve.cc			matrixtmp.cc			mrcc_mkccsd_residual.cc		sort_out_of_core.cc \
+blas_solve.cc			matrixtmp.cc		sort_out_of_core.cc \
 debugging.cc			mp2_ccsd.cc			mrcc_mp3.cc			transform.cc \
 idmrpt2.cc			mp2_ccsd_add_matrices.cc	mrcc_pert_cbs.cc		transform_block.cc \
 idmrpt2_Heff.cc			mp2_ccsd_amps.cc		mrcc_t1_amps.cc			transform_mrpt2.cc \
@@ -25,6 +25,8 @@ idmrpt2_Heff_singles.cc		mp2_ccsd_t1_amps.cc		mrcc_t_amps.cc			transform_read_so
 idmrpt2_add_matrices.cc		mp2_ccsd_t2_amps.cc		mrcc_tau.cc \
 idmrpt2_f_int.cc		mp2_ccsd_w_int.cc		mrcc_w_int.cc \
 idmrpt2_t1_amps.cc		mp2_ccsd_z_int.cc		mrcc_z_int.cc \
+index_iterator.cc special_matrices.cc mrcc_pert_triples.cc \
+mrccsd_t.cc mrccsd_t_compute.cc mrccsd_t_setup.cc mrccsd_t_form_matrices.cc mrccsd_t_heff.cc mrccsd_t_heff_ab.cc heff.cc
 
 LD = ${CXX}
 BINOBJ = $(CXXSRC:%.cc=%.o)

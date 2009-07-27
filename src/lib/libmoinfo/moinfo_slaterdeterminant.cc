@@ -43,42 +43,6 @@ bool MOInfo::SlaterDeterminant::is_spin_flipped(SlaterDeterminant& det)
   return(true);
 }
 
-
-/**
- * @fn MOInfo::SlaterDeterminant::print(int n)
- */
-void MOInfo::SlaterDeterminant::print()
-{
-  fprintf(outfile,"|");
-  for(int i=0;i<moinfo->get_nall();i++){
-    fprintf(outfile,"%s",get_occupation_symbol(i));
-  }
-  fprintf(outfile,">");
-}
-
-/**
- * @fn MOInfo::SlaterDeterminant::print(int n)
- */
-void MOInfo::SlaterDeterminant::print_occ()
-{
-  fprintf(outfile,"|");
-  int counter = 0;
-  for(int h=0;h<moinfo->get_nirreps();h++){
-    fprintf(outfile,"[");
-    for(int i=0;i<moinfo->get_docc(h);i++){
-      fprintf(outfile,"%c",get_occupation_symbol(counter));
-      counter++;
-    }
-    for(int i=0;i<moinfo->get_actv(h);i++){
-      fprintf(outfile,"%c",get_occupation_symbol(counter));
-      counter++;
-    }
-    counter += moinfo->get_extr(h);
-    fprintf(outfile,"]");
-  }
-  fprintf(outfile,">");
-}
-
 /**
  * @fn MOInfo::SlaterDeterminant::print(int n)
  */
@@ -87,13 +51,15 @@ std::string MOInfo::SlaterDeterminant::get_label()
   std::string label;
   label = "|";
   int counter = 0;
-  for(int h=0;h<moinfo->get_nirreps();h++){
+  for(int h = 0; h < moinfo->get_nirreps(); ++h){
     label += "[";
-    for(int i=0;i<moinfo->get_docc(h);i++){
+    for(int i = 0; i < moinfo->get_docc(h); ++i){
       label += get_occupation_symbol(counter);
+      counter++;
     }
-    for(int i=0;i<moinfo->get_actv(h);i++){
+    for(int i = 0; i < moinfo->get_actv(h); ++i){
       label += get_occupation_symbol(counter);
+      counter++;
     }
     counter += moinfo->get_extr(h);
     label += "]";
@@ -201,6 +167,38 @@ vector<int> MOInfo::SlaterDeterminant::get_bvir()
     if(!bits[i+moinfo->get_nall()])
       bvir.push_back(moinfo->get_all_to_vir(i));
   return(bvir);
+}
+
+vector<bool> MOInfo::SlaterDeterminant::get_is_aocc()
+{
+  std::vector<int>  aocc = get_aocc();
+  std::vector<bool> is_aocc(moinfo->get_nocc(),false);
+  for(int i = 0; i < aocc.size(); i++) is_aocc[aocc[i]]=true;
+  return(is_aocc);
+}
+
+vector<bool> MOInfo::SlaterDeterminant::get_is_bocc()
+{
+  std::vector<int>  bocc = get_bocc();
+  std::vector<bool> is_bocc(moinfo->get_nocc(),false);
+  for(int i = 0; i < bocc.size(); i++) is_bocc[bocc[i]]=true;
+  return(is_bocc);
+}
+
+vector<bool> MOInfo::SlaterDeterminant::get_is_avir()
+{
+  std::vector<int>  avir = get_avir();
+  std::vector<bool> is_avir(moinfo->get_nvir(),false);
+  for(int i = 0; i < avir.size(); i++) is_avir[avir[i]]=true;
+  return(is_avir);
+}
+
+vector<bool> MOInfo::SlaterDeterminant::get_is_bvir()
+{
+  std::vector<int>  bvir = get_bvir();
+  std::vector<bool> is_bvir(moinfo->get_nvir(),false);
+  for(int i = 0; i < bvir.size(); i++) is_bvir[bvir[i]]=true;
+  return(is_bvir);
 }
 
 char MOInfo::SlaterDeterminant::get_occupation_symbol(int i)

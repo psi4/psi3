@@ -29,7 +29,7 @@ void MRCCSD_T::compute()
   compute_OOO_triples();
 
   fprintf(outfile,"\n\n  Mk-MRCCSD(T) diagonal contributions to the effective Hamiltonian:\n");
-  fprintf(outfile,"\n  ref          E[4]              E_T[4]            E_ST[4]           E_DT[4]");
+  fprintf(outfile,"\n   Ref         E[4]              E_T[4]            E_ST[4]           E_DT[4]");
   fprintf(outfile,"\n  ------------------------------------------------------------------------------");
   if(nrefs < 100){
     for(int mu = 0; mu < nrefs; ++mu){
@@ -110,7 +110,7 @@ void MRCCSD_T::compute_ooo_triples()
         Z[mu][ijk.sym]->contract(T2_ij_a_b->get_block_matrix(ij_abs,mu),V_k_bc_e->get_block_matrix(k_abs),1.0,0.0);
         Z[mu][ijk.sym]->contract(T2_ij_a_b->get_block_matrix(kj_abs,mu),V_k_bc_e->get_block_matrix(i_abs),-1.0,1.0);
         Z[mu][ijk.sym]->contract(T2_ij_a_b->get_block_matrix(ik_abs,mu),V_k_bc_e->get_block_matrix(j_abs),-1.0,1.0);
-        
+
         Z[mu][ijk.sym]->contract(V_jk_c_m->get_block_matrix(ij_abs),T2_i_ab_j->get_block_matrix(k_abs,mu),-1.0,1.0);
         Z[mu][ijk.sym]->contract(V_jk_c_m->get_block_matrix(kj_abs),T2_i_ab_j->get_block_matrix(i_abs,mu),1.0,1.0);
         Z[mu][ijk.sym]->contract(V_jk_c_m->get_block_matrix(ik_abs),T2_i_ab_j->get_block_matrix(j_abs,mu),1.0,1.0);
@@ -200,9 +200,9 @@ void MRCCSD_T::compute_ooo_triples()
   } // End loop over ijk
 
   for(int mu = 0; mu < nrefs; ++mu){
-    fprintf(outfile,"\n  E_T[4]  (aaa) = %20.15lf (%d)",E4T_ooo[mu],mu);
-    fprintf(outfile,"\n  E_ST[4] (aaa) = %20.15lf (%d)",E4ST_ooo[mu],mu);
-    fprintf(outfile,"\n  E_DT[4] (aaa) = %20.15lf (%d)",E4DT_ooo[mu],mu);
+//    fprintf(outfile,"\n  E_T[4]  (aaa) = %20.15lf (%d)",E4T_ooo[mu],mu);
+//    fprintf(outfile,"\n  E_ST[4] (aaa) = %20.15lf (%d)",E4ST_ooo[mu],mu);
+//    fprintf(outfile,"\n  E_DT[4] (aaa) = %20.15lf (%d)",E4DT_ooo[mu],mu);
     E4_ooo[mu] = E4T_ooo[mu] + E4ST_ooo[mu] + E4DT_ooo[mu];
   }
 }
@@ -321,9 +321,9 @@ void MRCCSD_T::compute_OOO_triples()
   }
 
   for(int mu = 0; mu < nrefs; ++mu){
-    fprintf(outfile,"\n  E_T[4]  (bbb) = %20.15lf (%d)",E4T_OOO[mu],mu);
-    fprintf(outfile,"\n  E_ST[4] (bbb) = %20.15lf (%d)",E4ST_OOO[mu],mu);
-    fprintf(outfile,"\n  E_DT[4] (bbb) = %20.15lf (%d)",E4DT_OOO[mu],mu);
+//    fprintf(outfile,"\n  E_T[4]  (bbb) = %20.15lf (%d)",E4T_OOO[mu],mu);
+//    fprintf(outfile,"\n  E_ST[4] (bbb) = %20.15lf (%d)",E4ST_OOO[mu],mu);
+//    fprintf(outfile,"\n  E_DT[4] (bbb) = %20.15lf (%d)",E4DT_OOO[mu],mu);
     E4_OOO[mu] = E4T_OOO[mu] + E4ST_OOO[mu] + E4DT_OOO[mu];
   }
 }

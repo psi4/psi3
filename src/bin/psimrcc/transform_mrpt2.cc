@@ -72,8 +72,8 @@ void CCTransform::read_tei_mo_integrals_mrpt2()
 
         integral_map[four(p,q,r,s)]=value;
 //         irrep = mo_indexing->get_tuple_irrep(p,q);
-//         pq    = mo_indexing->get_tuple_index(p,q);
-//         rs    = mo_indexing->get_tuple_index(r,s);
+//         pq    = mo_indexing->get_tuple_rel_index(p,q);
+//         rs    = mo_indexing->get_tuple_rel_index(r,s);
 //         pqrs  = INDEX(pq,rs);
 //         tei_mo[irrep][pqrs]=value;
         fi += 4;

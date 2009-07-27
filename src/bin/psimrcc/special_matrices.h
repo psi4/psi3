@@ -21,7 +21,9 @@ public:
   double** get_matrix() {return matrix;}
   void     zero();
   void     print();
+  void     add(MatrixBase* A, double alpha, double beta);
   void     multiply(MatrixBase* A, MatrixBase* B, double alpha, double beta);
+  void     contract(MatrixBase* A, MatrixBase* B, double const alpha, double const beta);
   double   norm();
 private:
   size_t   nrows;
@@ -39,16 +41,21 @@ public:
 
   void print();
 
+  void     add(BlockMatrix* A, double alpha, double beta);
+
   void     add(int h,size_t row,size_t col,double value) {blocks[h]->add(row,col,value);}
   void     set(int h,size_t row,size_t col,double value) {blocks[h]->set(row,col,value);}
   double   get(int h,size_t row,size_t col) {return blocks[h]->get(row,col);}
   double** get_matrix(int h) {return blocks[h]->get_matrix();}
   MatrixBase* get_matrixbase(int h) {return blocks[h];}
   void     multiply(BlockMatrix* A, BlockMatrix* B,double alpha, double beta);
+  void     contract(BlockMatrix* A, BlockMatrix* B, double alpha, double beta);
   void     cyclical_permutation_1_2(BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index);
   void     a_b_permutation_1_2(BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index);
   void     add_c_ab_permutation_1_2(BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index);
-  void     add_a_b_permutation_1_2(BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index);
+  void     add_permutation_1_2(double z,BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index,
+      double a,double b,double c,double d,double e,double f);
+//  void     add_a_b_permutation_1_2(BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index);
   void     zero();
   double   norm();
 private:

@@ -16,7 +16,7 @@ namespace psi{ namespace psimrcc{
 using namespace std;
 
 CCBLAS::CCBLAS():
-full_in_core(false),work_size(0)
+full_in_core(false),work_size(0),buffer_size(0)
 {
   init();
 }
@@ -47,7 +47,7 @@ void CCBLAS::allocate_work()
 {
   // Make sure work is empty
   if(!work.empty())
-    for(int n=0;n<work.size();n++)
+    for(size_t n = 0; n < work.size(); ++n)
       if(work[n]!=NULL)
         release1(work[n]);
 
@@ -79,7 +79,7 @@ void CCBLAS::allocate_buffer()
 {
   // Make sure buffer is empty
   if(!buffer.empty())
-    for(int n=0;n<buffer.size();n++)
+    for(size_t n = 0; n < buffer.size(); ++n)
       if(buffer[n]!=NULL)
         release1(buffer[n]);
 
@@ -111,7 +111,7 @@ void CCBLAS::free_sortmap()
 void CCBLAS::free_work()
 {
   // Delete the temporary work space
-  for(int n=0;n<work.size();n++){
+  for(size_t n = 0; n < work.size(); ++n){
     if(work[n]!=NULL){
       release1(work[n]);
     }
@@ -121,7 +121,7 @@ void CCBLAS::free_work()
 void CCBLAS::free_buffer()
 {
   // Delete the temporary buffer space
-  for(int n=0;n<buffer.size();n++){
+  for(size_t n = 0; n < buffer.size(); ++n){
     if(buffer[n]!=NULL){
       release1(buffer[n]);
     }
@@ -222,7 +222,7 @@ void CCBLAS::print(const char* cstr)
 {
   string str(cstr);
   vector<string> names = moinfo->get_matrix_names(str);
-  for(int n=0;n<names.size();n++)
+  for(size_t n = 0; n < names.size(); ++n)
     print_ref(names[n]);
 }
 
@@ -233,27 +233,27 @@ void CCBLAS::print_ref(string& str)
 
 void CCBLAS::print_memory()
 {
-  size_t total_memory_required = 0;
-  fprintf(outfile,"\n\n\t-----------------------------------------------------------------------------");
-  fprintf(outfile,"\n\tMatrix ID    Memory(bytes)   Cumulative Memory(bytes)  Accessed    Label");
-  fprintf(outfile,"\n\t------------------------------------------------------------------------------");
-
-  for(MatrixMap::iterator iter=matrices.begin();iter!=matrices.end();++iter){
-    total_memory_required += iter->second->get_memory2();
-    fprintf(outfile,"\n  %4d",distance(matrices.begin(),iter));
-    fprintf(outfile,"     %14d",iter->second->get_memory2());
-    fprintf(outfile,"        %14d",total_memory_required);
-    fprintf(outfile,"             %4d",iter->second->get_naccess());
-    fprintf(outfile,"         %s",iter->second->get_label().c_str());
-  }
-  fprintf(outfile,"\n\t------------------------------------------------------------------------------");
-  fprintf(outfile,"\n\n\tTotal memory required for matrices = %14d (bytes)\n",total_memory_required);
-
-  total_memory_required = 0;
-
-  fprintf(outfile,"\n\n\t-------------------------------------------------------------");
-  fprintf(outfile,"\n\tIndex ID    Memory(MB)   Cumulative Memory(MB)     Label");
-  fprintf(outfile,"\n\t--------------------------------------------------------------");
+//  size_t total_memory_required = 0;
+//  fprintf(outfile,"\n\n\t-----------------------------------------------------------------------------");
+//  fprintf(outfile,"\n\tMatrix ID    Memory(bytes)   Cumulative Memory(bytes)  Accessed    Label");
+//  fprintf(outfile,"\n\t------------------------------------------------------------------------------");
+//
+//  for(MatrixMap::iterator iter=matrices.begin();iter!=matrices.end();++iter){
+//    total_memory_required += iter->second->get_memory2();
+//    fprintf(outfile,"\n  %4d",distance(matrices.begin(),iter));
+//    fprintf(outfile,"     %14d",iter->second->get_memory2());
+//    fprintf(outfile,"        %14d",total_memory_required);
+//    fprintf(outfile,"             %4d",iter->second->get_naccess());
+//    fprintf(outfile,"         %s",iter->second->get_label().c_str());
+//  }
+//  fprintf(outfile,"\n\t------------------------------------------------------------------------------");
+//  fprintf(outfile,"\n\n\tTotal memory required for matrices = %14d (bytes)\n",total_memory_required);
+//
+//  total_memory_required = 0;
+//
+//  fprintf(outfile,"\n\n\t-------------------------------------------------------------");
+//  fprintf(outfile,"\n\tIndex ID    Memory(MB)   Cumulative Memory(MB)     Label");
+//  fprintf(outfile,"\n\t--------------------------------------------------------------");
 
 //  for(IndexMap::iterator iter=indices.begin();iter!=indices.end();++iter){
 //    total_memory_required += iter->second->get_memory();
@@ -337,14 +337,14 @@ int CCBLAS::compute_storage_strategy()
   }
   sort(integrals.begin(),integrals.end());
   sort(others.begin(),others.end());
-  for(int i=0;i<fock.size();i++){
+  for(size_t i = 0; i < fock.size(); ++i){
     // Store all the fock matrices in core and allocate them
     storage_memory -= fock[i].first;
     load_irrep(fock[i].second.first,fock[i].second.second);
   }
   // Let the CCBlas class worry about allocating matrices
   int number_of_others_on_disk = 0;
-  for(int i=0;i<others.size();i++){
+  for(size_t i = 0;i < others.size(); ++i){
     // Check if this matrix can be stored in core
     if(others[i].first < storage_memory){
       storage_memory -= others[i].first;
@@ -354,7 +354,7 @@ int CCBLAS::compute_storage_strategy()
     }
   }
   int number_of_integrals_on_disk = 0;
-  for(int i=0;i<integrals.size();i++){
+  for(size_t i = 0; i < integrals.size(); ++i){
     // Check if this matrix can be stored in core
     if(integrals[i].first < storage_memory){
       storage_memory -= integrals[i].first;
@@ -396,8 +396,8 @@ int CCBLAS::compute_storage_strategy()
 //  );
 
   if(!full_in_core){
-    fprintf(outfile,"\n    Out-of-core algorithm will store %lu other matrices on disk",number_of_others_on_disk);
-    fprintf(outfile,"\n    Out-of-core algorithm will store %lu integrals on disk",number_of_integrals_on_disk);
+    fprintf(outfile,"\n    Out-of-core algorithm will store %d other matrices on disk",number_of_others_on_disk);
+    fprintf(outfile,"\n    Out-of-core algorithm will store %d integrals on disk",number_of_integrals_on_disk);
   }
   return(strategy);
 }

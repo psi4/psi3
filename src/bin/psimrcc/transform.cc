@@ -105,8 +105,8 @@ void CCTransform::read_tei_so_integrals()
         s = ERIIN.labels[fi+3];
         value = ERIIN.values[index];
         irrep = indexing->get_tuple_irrep(p,q);
-        pq = indexing->get_tuple_index(p,q);
-        rs = indexing->get_tuple_index(r,s);
+        pq = indexing->get_tuple_rel_index(p,q);
+        rs = indexing->get_tuple_rel_index(r,s);
         pqrs = INDEX(pq,rs);
         tei_so[irrep][pqrs]=value;
         fi+=4;
@@ -181,7 +181,7 @@ void CCTransform::transform_tei_so_integrals()
             for(int p=0;p<cols_A;p++){
               p_abs = p + elemindx->get_first(h_p);
               q_abs = q + elemindx->get_first(h_q);
-              p_abs >= q_abs ? (pq = rsindx->get_tuple_index(p_abs,q_abs)) : (pq = rsindx->get_tuple_index(q_abs,p_abs));
+              p_abs >= q_abs ? (pq = rsindx->get_tuple_rel_index(p_abs,q_abs)) : (pq = rsindx->get_tuple_rel_index(q_abs,p_abs));
               pqrs = INDEX(pq,rs);
               A[q][p]=tei_so[h_rs][pqrs];
             }
@@ -218,7 +218,7 @@ void CCTransform::transform_tei_so_integrals()
               i_abs = i + elemindx->get_first(h_p);
               j_abs = j + elemindx->get_first(h_q);
               if(i_abs >= j_abs){
-                int ij = ijindx->get_tuple_index(i_abs,j_abs);
+                int ij = ijindx->get_tuple_rel_index(i_abs,j_abs);
                 tei_half_transformed[h_rs][ij][rs]=D[j][i];
               }
             }
@@ -259,7 +259,7 @@ void CCTransform::transform_tei_so_integrals()
             for(int s=0;s<elemindx->get_pairpi(h_s);s++){
               r_abs = r + elemindx->get_first(h_r);
               s_abs = s + elemindx->get_first(h_s);
-              r_abs >= s_abs ? (rs = rsindx->get_tuple_index(r_abs,s_abs)) : (rs = rsindx->get_tuple_index(s_abs,r_abs));
+              r_abs >= s_abs ? (rs = rsindx->get_tuple_rel_index(r_abs,s_abs)) : (rs = rsindx->get_tuple_rel_index(s_abs,r_abs));
               A[s][r]=tei_half_transformed[h_ij][ij][rs];
             }
           }
@@ -296,7 +296,7 @@ void CCTransform::transform_tei_so_integrals()
               k_abs = k + elemindx->get_first(h_r);
               l_abs = l + elemindx->get_first(h_s);
               if(k_abs >= l_abs){
-                kl = ijindx->get_tuple_index(k_abs,l_abs);
+                kl = ijindx->get_tuple_rel_index(k_abs,l_abs);
                 tei_half_transformed[h_ij][ij][kl]=D[l][k];
               }
             }
@@ -352,8 +352,8 @@ void CCTransform::read_tei_mo_integrals()
         s = ERIIN.labels[fi+3];
         value = ERIIN.values[index];
         irrep = mo_indexing->get_tuple_irrep(p,q);
-        pq    = mo_indexing->get_tuple_index(p,q);
-        rs    = mo_indexing->get_tuple_index(r,s);
+        pq    = mo_indexing->get_tuple_rel_index(p,q);
+        rs    = mo_indexing->get_tuple_rel_index(r,s);
         pqrs  = INDEX(pq,rs);
         tei_mo[irrep][pqrs]=value;
         fi += 4;
@@ -617,7 +617,7 @@ double CCTransform::oei(int p, int q)
 double CCTransform::tei(int p, int q, int r, int s)
 {
   // Get the (pq|rs) integral
-  return(tei_mo[tei_mo_indexing->get_tuple_irrep(MAX(p,q),MIN(p,q))][INDEX(tei_mo_indexing->get_tuple_index(MAX(p,q),MIN(p,q)),tei_mo_indexing->get_tuple_index(MAX(r,s),MIN(r,s)))]);
+  return(tei_mo[tei_mo_indexing->get_tuple_irrep(MAX(p,q),MIN(p,q))][INDEX(tei_mo_indexing->get_tuple_rel_index(MAX(p,q),MIN(p,q)),tei_mo_indexing->get_tuple_rel_index(MAX(r,s),MIN(r,s)))]);
 }
 
 

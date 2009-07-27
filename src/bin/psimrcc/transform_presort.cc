@@ -122,8 +122,8 @@ void CCTransform::presort_blocks(int first_irrep, int last_irrep)
         int    irrep = pair_index->get_tuple_irrep(p,q);
         // Fill in only the blocks that fit
         if((first_irrep<=irrep) && (irrep<=last_irrep)){
-          size_t pq    = pair_index->get_tuple_index(p,q);
-          size_t rs    = pair_index->get_tuple_index(r,s);
+          size_t pq    = pair_index->get_tuple_rel_index(p,q);
+          size_t rs    = pair_index->get_tuple_rel_index(r,s);
           size_t pqrs  = INDEX(pq,rs);
           tei_mo[irrep][pqrs] = value;
         }

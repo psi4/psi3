@@ -35,12 +35,6 @@ void CCMRCC::compute_mkccsd_energy()
   compute_energy(update_amps_mkccsd_wrapper);
 }
 
-void CCMRCC::compute_mkccsd_residual_energy()
-{
-  CCMRCC::ptr = this;
-  compute_energy(update_amps_mkccsd_residual_wrapper);
-}
-
 void CCMRCC::compute_bwccsd_energy()
 {
   CCMRCC::ptr = this;
@@ -103,6 +97,12 @@ void CCMRCC::compute_energy(void(*updater)())
     cycle++;
   }
 
+  fprintf(outfile,"\n\n  Timing for singles and doubles: %20.6f s",cc_timer.get());
+
+  if(options_get_str("CORR_WFN")=="CCSD_T"){
+    compute_perturbative_triples();
+  }
+
   // Compute the apBWCCSD energy
   if(ap_correction){
     zero_internal_amps();
@@ -133,12 +133,13 @@ void CCMRCC::compute_energy(void(*updater)())
 
     zero_internal_amps();
 
-    converged=build_diagonalize_Heff(-1,cc_timer.get());
+    converged = build_diagonalize_Heff(-1,cc_timer.get());
   }
 
   DEBUGGING(1,
     blas->print_memory();
   );
+
   CCOperation::print_timing();
 }
 

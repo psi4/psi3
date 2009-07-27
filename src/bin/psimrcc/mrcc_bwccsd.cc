@@ -38,9 +38,9 @@ void CCMRCC::update_amps_bwccsd()
   // Compute the T-AMPS difference
   delta_t1_amps=0.0;
   delta_t2_amps=0.0;
-  for(int n=0;n<moinfo->get_ref_size("a");n++){
-    delta_t1_amps+=blas->get_scalar("||Delta_t1||",moinfo->get_ref_number("a",n));
-    delta_t2_amps+=blas->get_scalar("||Delta_t2||",moinfo->get_ref_number("a",n));
+  for(int n=0;n<moinfo->get_ref_size(AllRefs);n++){
+    delta_t1_amps+=blas->get_scalar("||Delta_t1||",moinfo->get_ref_number(n));
+    delta_t2_amps+=blas->get_scalar("||Delta_t2||",moinfo->get_ref_number(n));
   }
   delta_t1_amps=pow(delta_t1_amps,0.5)/((double)moinfo->get_nrefs());
   delta_t2_amps=pow(delta_t2_amps,0.5)/((double)moinfo->get_nrefs());
@@ -51,9 +51,9 @@ void CCMRCC::update_t1_amps_bwccsd()
   blas->solve("d'1[o][v]{u}  = d1[o][v]{u}");
   blas->solve("d'1[O][V]{u}  = d1[O][V]{u}");
 
-  for(int n=0;n<moinfo->get_ref_size("u");n++){
-    double shift = current_energy-Heff[moinfo->get_ref_number("u",n)][moinfo->get_ref_number("u",n)];
-    string n_str = to_string(moinfo->get_ref_number("u",n));
+  for(int n=0;n<moinfo->get_ref_size(UniqueRefs);n++){
+    double shift = current_energy-Heff[moinfo->get_ref_number(n,UniqueRefs)][moinfo->get_ref_number(n,UniqueRefs)];
+    string n_str = to_string(moinfo->get_ref_number(n,UniqueRefs));
     blas->solve("d'1[o][v]{" + n_str + "} += " + to_string(shift));
     blas->solve("d'1[O][V]{" + n_str + "} += " + to_string(shift));
   }
@@ -81,9 +81,9 @@ void CCMRCC::update_t2_amps_bwccsd()
   blas->solve("d'2[oO][vV]{u}  = d2[oO][vV]{u}");
   blas->solve("d'2[OO][VV]{u}  = d2[OO][VV]{u}");
 
-  for(int n=0;n<moinfo->get_ref_size("u");n++){
-    string shift = to_string(current_energy-Heff[moinfo->get_ref_number("u",n)][moinfo->get_ref_number("u",n)]);
-    string n_str = to_string(moinfo->get_ref_number("u",n));
+  for(int n=0;n<moinfo->get_ref_size(UniqueRefs);n++){
+    string shift = to_string(current_energy-Heff[moinfo->get_ref_number(n,UniqueRefs)][moinfo->get_ref_number(n,UniqueRefs)]);
+    string n_str = to_string(moinfo->get_ref_number(n,UniqueRefs));
     blas->solve("d'2[oo][vv]{" + n_str + "} += " + shift);
     blas->solve("d'2[oO][vV]{" + n_str + "} += " + shift);
     blas->solve("d'2[OO][VV]{" + n_str + "} += " + shift);
@@ -103,8 +103,8 @@ void CCMRCC::update_t2_amps_bwccsd()
   blas->solve("t2_eqns[oo][vv]{u} += #1423# - t1[o][v]{u} X t1_eqns[o][v]{u}");
   blas->solve("t2_eqns[oo][vv]{u} += #2413#   t1[o][v]{u} X t1_eqns[o][v]{u}");
   // (c) Subtract (term from c) from the T2 equations
-  for(int n=0;n<moinfo->get_ref_size("u");n++){
-    int ref = moinfo->get_ref_number("u",n);
+  for(int n=0;n<moinfo->get_ref_size(UniqueRefs);n++){
+    int ref = moinfo->get_ref_number(n,UniqueRefs);
     string neg_shift = to_string(-current_energy+Heff[ref][ref]);
     string shift     = to_string(current_energy-Heff[ref][ref]);
     string n_str     = to_string(ref);
@@ -117,8 +117,8 @@ void CCMRCC::update_t2_amps_bwccsd()
   blas->solve("t2_eqns[oO][vV]{u} += #1324# t1[o][v]{u} X t1_eqns[O][V]{u}");
   blas->solve("t2_eqns[oO][vV]{u} += #2413# t1[O][V]{u} X t1_eqns[o][v]{u}");
   // (c) Subtract (term from c) from the T2 equations
-  for(int n=0;n<moinfo->get_ref_size("u");n++){
-    int ref = moinfo->get_ref_number("u",n);
+  for(int n=0;n<moinfo->get_ref_size(UniqueRefs);n++){
+    int ref = moinfo->get_ref_number(n,UniqueRefs);
     string n_str = to_string(ref);
     string neg_shift = to_string(-current_energy+Heff[ref][ref]);
     blas->solve("t2_eqns[oO][vV]{" + n_str + "} += #1324# " + neg_shift + "  t1[o][v]{" + n_str + "} X t1[O][V]{" + n_str + "}");
@@ -132,7 +132,7 @@ void CCMRCC::update_t2_amps_bwccsd()
   blas->solve("t2_eqns[OO][VV]{u} += #2413#   t1[O][V]{u} X t1_eqns[O][V]{u}");
   // (c) Subtract (term from c) from the T2 equations
   for(int n=0;n<moinfo->get_nunique();n++){
-    int ref = moinfo->get_ref_number("u",n);
+    int ref = moinfo->get_ref_number(n,UniqueRefs);
     string neg_shift = to_string(-current_energy+Heff[ref][ref]);
     string shift     = to_string(current_energy-Heff[ref][ref]);
     string n_str     = to_string(ref);

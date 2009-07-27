@@ -47,9 +47,9 @@ void CCMRCC::update_amps_mkccsd()
   // Compute the T-AMPS difference
   delta_t1_amps=0.0;
   delta_t2_amps=0.0;
-  for(int n=0;n<moinfo->get_ref_size("a");n++){
-    delta_t1_amps+=blas->get_scalar("||Delta_t1||",moinfo->get_ref_number("a",n));
-    delta_t2_amps+=blas->get_scalar("||Delta_t2||",moinfo->get_ref_number("a",n));
+  for(int n=0;n<moinfo->get_ref_size(AllRefs);n++){
+    delta_t1_amps+=blas->get_scalar("||Delta_t1||",moinfo->get_ref_number(n));
+    delta_t2_amps+=blas->get_scalar("||Delta_t2||",moinfo->get_ref_number(n));
   }
   delta_t1_amps=pow(delta_t1_amps,0.5)/((double)moinfo->get_nrefs());
   delta_t2_amps=pow(delta_t2_amps,0.5)/((double)moinfo->get_nrefs());
@@ -72,7 +72,7 @@ void CCMRCC::update_t1_t2_amps_mkccsd()
 
   if(options_get_bool("COUPLING_TERMS")){
     for(int n=0;n<moinfo->get_nunique();n++){
-      int m = moinfo->get_ref_number("u",n);
+      int m = moinfo->get_ref_number(n,UniqueRefs);
       string shift = to_string(current_energy-Heff[m][m]);
       blas->solve("d'1[o][v]{" + to_string(m) + "} += " + shift);
       blas->solve("d'1[O][V]{" + to_string(m) + "} += " + shift);
@@ -83,16 +83,16 @@ void CCMRCC::update_t1_t2_amps_mkccsd()
   }
 
   for(int i=0;i<moinfo->get_nunique();i++){
-    int unique_i = moinfo->get_ref_number("u",i);
+    int unique_i = moinfo->get_ref_number(i,UniqueRefs);
     string i_str = to_string(unique_i);
     // Form the coupling terms
     if(options_get_bool("COUPLING_TERMS")){
       for(int j=0;j<moinfo->get_nrefs();j++){
-        int unique_j = moinfo->get_ref_number("a",j);
+        int unique_j = moinfo->get_ref_number(j);
         string j_str = to_string(unique_j);
 
         double omega =  static_cast<double>(options_get_int("TIKHONOW_OMEGA")) / 1000.0;
-        double term = eigenvector[j] * eigenvector[unique_i] / (pow(eigenvector[unique_i],2.0) + pow(omega,2.0));
+        double term = right_eigenvector[j] * right_eigenvector[unique_i] / (pow(right_eigenvector[unique_i],2.0) + pow(omega,2.0));
 
         if(fabs(term) > 100.0) {
           fprintf(outfile,"\n  Warning: c_nu/c_mu = %e ."
@@ -124,11 +124,11 @@ void CCMRCC::update_t1_t2_amps_mkccsd()
     if(options_get_bool("COUPLING_TERMS")){
     // Add the contribution from the other references
     for(int j=0;j<moinfo->get_nrefs();j++){
-      int unique_j = moinfo->get_ref_number("a",j);
+      int unique_j = moinfo->get_ref_number(j);
       string j_str = to_string(unique_j);
 
       double omega =  static_cast<double>(options_get_int("TIKHONOW_OMEGA")) / 1000.0;
-      double term = eigenvector[j] * eigenvector[unique_i] / (pow(eigenvector[unique_i],2.0) + pow(omega,2.0));
+      double term = right_eigenvector[j] * right_eigenvector[unique_i] / (pow(right_eigenvector[unique_i],2.0) + pow(omega,2.0));
 
       if(fabs(term) > 100.0) {
         fprintf(outfile,"\n  Warning: c_nu/c_mu = %e ."
@@ -315,7 +315,7 @@ void CCMRCC::update_t1_amps_mkccsd()
   blas->solve("d'1[O][V]{u}  = d1[O][V]{u}");
 
   for(int n=0;n<moinfo->get_nunique();n++){
-    int m = moinfo->get_ref_number("u",n);
+    int m = moinfo->get_ref_number(n,UniqueRefs);
     string n_str = to_string(m);
     string shift = to_string(current_energy-Heff[m][m]);
     blas->solve("d'1[o][v]{" + n_str + "} += " + shift);
@@ -324,13 +324,13 @@ void CCMRCC::update_t1_amps_mkccsd()
 
   // Add the contribution from the other references
   for(int i=0;i<moinfo->get_nunique();i++){
-    int unique_i = moinfo->get_ref_number("u",i);
+    int unique_i = moinfo->get_ref_number(i,UniqueRefs);
     string i_str = to_string(unique_i);
     for(int j=0;j<moinfo->get_nunique();j++){
-      int unique_j = moinfo->get_ref_number("u",j);
+      int unique_j = moinfo->get_ref_number(j,UniqueRefs);
       string j_str = to_string(unique_j);
       if(i!=j){
-        double term = eigenvector[unique_j]/eigenvector[unique_i];
+        double term = right_eigenvector[unique_j]/right_eigenvector[unique_i];
         if(fabs(term)>1.0e5) term = 0.0;
         string factor = to_string(Heff[unique_i][unique_j]*term);
         blas->solve("t1_eqns[o][v]{" + i_str + "} += " + factor + " t1[o][v]{" + j_str + "}");
@@ -369,7 +369,7 @@ void CCMRCC::update_t2_amps_mkccsd()
   blas->solve("d'2[OO][VV]{u}  = d2[OO][VV]{u}");
 
   for(int n=0;n<moinfo->get_nunique();n++){
-    int m = moinfo->get_ref_number("u",n);
+    int m = moinfo->get_ref_number(n,UniqueRefs);
     string shift = to_string(current_energy-Heff[m][m]);
     string n_str = to_string(m);
     blas->solve("d'2[oo][vv]{" + n_str + "} += " + shift);
@@ -379,13 +379,13 @@ void CCMRCC::update_t2_amps_mkccsd()
 
   // Add the contribution from the other references
   for(int i=0;i<moinfo->get_nunique();i++){
-    int unique_i = moinfo->get_ref_number("u",i);
+    int unique_i = moinfo->get_ref_number(i,UniqueRefs);
     string i_str = to_string(unique_i);
     for(int j=0;j<moinfo->get_nunique();j++){
-      int unique_j = moinfo->get_ref_number("u",j);
+      int unique_j = moinfo->get_ref_number(j,UniqueRefs);
       string j_str = to_string(unique_j);
       if(i!=j){
-        double term = eigenvector[unique_j]/eigenvector[unique_i];
+        double term = right_eigenvector[unique_j]/right_eigenvector[unique_i];
         if(fabs(term)>1.0e5) term = 0.0;
         string     factor = to_string(Heff[unique_i][unique_j]*term);
         string neg_factor = to_string(-Heff[unique_i][unique_j]*term);
@@ -487,7 +487,7 @@ void CCMRCC::update_t3_ijkabc_amps_mkccsd()
 {
   // Loop over references
   for(int mu=0;mu<moinfo->get_nunique();mu++){
-    int unique_mu  = moinfo->get_ref_number("u",mu);
+    int unique_mu  = moinfo->get_ref_number(mu,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  TijkabcMatTmp = blas->get_MatTmp("t3[ooo][vvv]",unique_mu,none);
@@ -499,12 +499,12 @@ void CCMRCC::update_t3_ijkabc_amps_mkccsd()
     // Add the Mk coupling terms
     for(int nu=0;nu<moinfo->get_nrefs();nu++){
       if(unique_mu!=nu){
-        int unique_nu = moinfo->get_ref_number("a",nu);
-        double factor = Heff[unique_mu][nu]*eigenvector[nu]/eigenvector[unique_mu];
+        int unique_nu = moinfo->get_ref_number(nu);
+        double factor = Heff[unique_mu][nu]*right_eigenvector[nu]/right_eigenvector[unique_mu];
 
-        if(fabs(eigenvector[nu]/eigenvector[unique_mu])>1.0e5) {
+        if(fabs(right_eigenvector[nu]/right_eigenvector[unique_mu])>1.0e5) {
           factor = 0.0;
-          fprintf(outfile,"\n  Warning: setting Heff[unique_mu][nu]*eigenvector[j]/eigenvector[unique_i] = 0.0 in T3 couplings");
+          fprintf(outfile,"\n  Warning: setting Heff[unique_mu][nu]*right_eigenvector[j]/right_eigenvector[unique_i] = 0.0 in T3 couplings");
         }
 
         // Linear Coupling Terms
@@ -615,7 +615,7 @@ void CCMRCC::update_t3_ijkabc_amps_mkccsd()
       }
     }
 
-    if(fabs(eigenvector[unique_mu])>1.0e-6){
+    if(fabs(right_eigenvector[unique_mu])>1.0e-6){
       if(!options_get_bool("DIIS_TRIPLES")){
         // Update the equations
         double shift = current_energy - Heff[unique_mu][unique_mu];
@@ -664,7 +664,7 @@ void CCMRCC::update_t3_ijKabC_amps_mkccsd()
 {
   // Loop over references
   for(int mu=0;mu<moinfo->get_nunique();mu++){
-    int unique_mu  = moinfo->get_ref_number("u",mu);
+    int unique_mu  = moinfo->get_ref_number(mu,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  TijkabcMatTmp = blas->get_MatTmp("t3[ooO][vvV]",unique_mu,none);
@@ -676,12 +676,12 @@ void CCMRCC::update_t3_ijKabC_amps_mkccsd()
     // Add the Mk coupling terms
     for(int nu=0;nu<moinfo->get_nrefs();nu++){
       if(unique_mu!=nu){
-        int unique_nu = moinfo->get_ref_number("a",nu);
-        double factor = Heff[unique_mu][nu]*eigenvector[nu]/eigenvector[unique_mu];
+        int unique_nu = moinfo->get_ref_number(nu);
+        double factor = Heff[unique_mu][nu]*right_eigenvector[nu]/right_eigenvector[unique_mu];
 
-        if(fabs(eigenvector[nu]/eigenvector[unique_mu])>1.0e5) {
+        if(fabs(right_eigenvector[nu]/right_eigenvector[unique_mu])>1.0e5) {
           factor = 0.0;
-          fprintf(outfile,"\n  Warning: setting Heff[unique_mu][nu]*eigenvector[j]/eigenvector[unique_i] = 0.0 in T3 couplings");
+          fprintf(outfile,"\n  Warning: setting Heff[unique_mu][nu]*right_eigenvector[j]/right_eigenvector[unique_i] = 0.0 in T3 couplings");
         }
 
         // Linear Coupling Terms
@@ -826,7 +826,7 @@ void CCMRCC::update_t3_ijKabC_amps_mkccsd()
       }
     }
 
-    if(fabs(eigenvector[unique_mu])>1.0e-6){
+    if(fabs(right_eigenvector[unique_mu])>1.0e-6){
       if(!options_get_bool("DIIS_TRIPLES")){
         // Update the equations
         double shift = current_energy - Heff[unique_mu][unique_mu];
@@ -876,7 +876,7 @@ void CCMRCC::update_t3_iJKaBC_amps_mkccsd()
 {
   // Loop over references
   for(int mu=0;mu<moinfo->get_nunique();mu++){
-    int unique_mu  = moinfo->get_ref_number("u",mu);
+    int unique_mu  = moinfo->get_ref_number(mu,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  TijkabcMatTmp = blas->get_MatTmp("t3[oOO][vVV]",unique_mu,none);
@@ -888,12 +888,12 @@ void CCMRCC::update_t3_iJKaBC_amps_mkccsd()
     // Add the Mk coupling terms
     for(int nu=0;nu<moinfo->get_nrefs();nu++){
       if(unique_mu!=nu){
-        int unique_nu = moinfo->get_ref_number("a",nu);
-        double factor = Heff[unique_mu][nu]*eigenvector[nu]/eigenvector[unique_mu];
+        int unique_nu = moinfo->get_ref_number(nu);
+        double factor = Heff[unique_mu][nu]*right_eigenvector[nu]/right_eigenvector[unique_mu];
 
-        if(fabs(eigenvector[nu]/eigenvector[unique_mu])>1.0e5) {
+        if(fabs(right_eigenvector[nu]/right_eigenvector[unique_mu])>1.0e5) {
           factor = 0.0;
-          fprintf(outfile,"\n  Warning: setting Heff[unique_mu][nu]*eigenvector[j]/eigenvector[unique_i] = 0.0 in T3 couplings");
+          fprintf(outfile,"\n  Warning: setting Heff[unique_mu][nu]*right_eigenvector[j]/right_eigenvector[unique_i] = 0.0 in T3 couplings");
         }
 
         // Linear Coupling Terms
@@ -1040,7 +1040,7 @@ void CCMRCC::update_t3_iJKaBC_amps_mkccsd()
         }
       }
     }
-    if(fabs(eigenvector[unique_mu])>1.0e-6){
+    if(fabs(right_eigenvector[unique_mu])>1.0e-6){
       if(!options_get_bool("DIIS_TRIPLES")){
         // Update the equations
         double shift = current_energy - Heff[unique_mu][unique_mu];
@@ -1089,7 +1089,7 @@ void CCMRCC::update_t3_IJKABC_amps_mkccsd()
 {
   // Loop over references
   for(int mu=0;mu<moinfo->get_nunique();mu++){
-    int unique_mu  = moinfo->get_ref_number("u",mu);
+    int unique_mu  = moinfo->get_ref_number(mu,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  TijkabcMatTmp = blas->get_MatTmp("t3[OOO][VVV]",unique_mu,none);
@@ -1103,12 +1103,12 @@ void CCMRCC::update_t3_IJKABC_amps_mkccsd()
     // Add the Mk coupling terms
     for(int nu=0;nu<moinfo->get_nrefs();nu++){
       if(unique_mu!=nu){
-        int unique_nu = moinfo->get_ref_number("a",nu);
-        double factor = Heff[unique_mu][nu]*eigenvector[nu]/eigenvector[unique_mu];
+        int unique_nu = moinfo->get_ref_number(nu);
+        double factor = Heff[unique_mu][nu]*right_eigenvector[nu]/right_eigenvector[unique_mu];
 
-        if(fabs(eigenvector[nu]/eigenvector[unique_mu])>1.0e5) {
+        if(fabs(right_eigenvector[nu]/right_eigenvector[unique_mu])>1.0e5) {
           factor = 0.0;
-          fprintf(outfile,"\n  Warning: setting Heff[unique_mu][nu]*eigenvector[j]/eigenvector[unique_i] = 0.0 in T3 couplings");
+          fprintf(outfile,"\n  Warning: setting Heff[unique_mu][nu]*right_eigenvector[j]/right_eigenvector[unique_i] = 0.0 in T3 couplings");
         }
 
         // Linear Coupling Terms
@@ -1217,7 +1217,7 @@ void CCMRCC::update_t3_IJKABC_amps_mkccsd()
         }
       }
     }
-    if(fabs(eigenvector[unique_mu])>1.0e-6){
+    if(fabs(right_eigenvector[unique_mu])>1.0e-6){
       if(!options_get_bool("DIIS_TRIPLES")){
         // Update the equations
         double shift = current_energy - Heff[unique_mu][unique_mu];

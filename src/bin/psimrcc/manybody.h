@@ -31,6 +31,7 @@
 namespace psi{ namespace psimrcc{
 
 
+enum SpinCase             {aaSpin,abSpin,bbSpin,aaaSpin,aabSpin,abbSpin,bbbSpin};
 enum TriplesType          {pt2,ccsd,ccsd_t,ccsdt_1a,ccsdt_1b,ccsdt_2,ccsdt_3,ccsdt};
 enum TriplesCouplingType  {nocoupling,linear,quadratic,cubic};
 
@@ -54,12 +55,13 @@ public:
 protected:
   // Effective Hamiltonian and the correpsonding eigenvectors
   void        print_eigensystem(int ndets, double** Heff,double*& eigenvector);
-  double      diagonalize_Heff(int root,int ndets, double** Heff,double*& eigenvector, bool initial);
+  double      diagonalize_Heff(int root,int ndets, double** Heff,double*& right_eigenvector,double*& left_eigenvector, bool initial);
   void        sort_eigensystem(int ndets,double*& real,double*& imaginary,double**& left,double**& right);
   double      c_H_c(int ndets, double** H,double*& c);
 
   double*     zeroth_order_eigenvector;
-  double*     eigenvector;
+  double*     right_eigenvector;
+  double*     left_eigenvector;
   double**    Heff;
   double**    Heff_mrpt2;
 

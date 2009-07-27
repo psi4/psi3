@@ -25,15 +25,27 @@ void MRCCSD_T::form_T2_ij_a_b(IndexMatrix* T2_ij_a_b,bool spin1,bool spin2,bool 
   CCIndexIterator  ab("[vv]");
 
   // Copy the matrix elements
-  for(int ref = 0; ref < nurefs; ++ref){
-    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
+  for(int ref = 0; ref < nrefs; ++ref){
+    int unique_ref = moinfo->get_ref_number(ref,AllRefs);
+
     double*** Tijab;
-    if(spin1 && spin2){
-      Tijab = blas->get_MatTmp("t2[oo][vv]",unique_ref,none)->get_matrix();
-    }else if (!spin1 && !spin2){
-      Tijab = blas->get_MatTmp("t2[OO][VV]",unique_ref,none)->get_matrix();
-    }else if (spin1 && !spin2){
-      Tijab = blas->get_MatTmp("t2[oO][vV]",unique_ref,none)->get_matrix();
+
+    if(unique_ref == ref){
+      if(spin1 && spin2){
+        Tijab = blas->get_MatTmp("t2[oo][vv]",ref,none)->get_matrix();
+      }else if (!spin1 && !spin2){
+        Tijab = blas->get_MatTmp("t2[OO][VV]",ref,none)->get_matrix();
+      }else if (spin1 && !spin2){
+        Tijab = blas->get_MatTmp("t2[oO][vV]",ref,none)->get_matrix();
+      }
+    }else{
+      if(spin1 && spin2){
+        Tijab = blas->get_MatTmp("t2[OO][VV]",unique_ref,none)->get_matrix();
+      }else if (!spin1 && !spin2){
+        Tijab = blas->get_MatTmp("t2[oo][vv]",unique_ref,none)->get_matrix();
+      }else if (spin1 && !spin2){
+        Tijab = blas->get_MatTmp("t2[Oo][Vv]",unique_ref,none)->get_matrix();
+      }
     }
 
     ij.reset();
@@ -62,16 +74,29 @@ void MRCCSD_T::form_T2_i_ab_j(IndexMatrix* T2_i_ab_j,bool spin1,bool spin2,bool 
   CCIndexIterator  abj("[vvo]");
 
   // Copy the matrix elements
-  for(int ref = 0; ref < nurefs; ++ref){
-    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
+  for(int ref = 0; ref < nrefs; ++ref){
+    int unique_ref = moinfo->get_ref_number(ref,AllRefs);
+
     double*** Tijab;
-    if(spin1 && spin2){
-      Tijab = blas->get_MatTmp("t2[oo][vv]",unique_ref,none)->get_matrix();
-    }else if (!spin1 && !spin2){
-      Tijab = blas->get_MatTmp("t2[OO][VV]",unique_ref,none)->get_matrix();
-    }else if (spin1 && !spin2){
-      Tijab = blas->get_MatTmp("t2[oO][vV]",unique_ref,none)->get_matrix();
+
+    if(unique_ref == ref){
+      if(spin1 && spin2){
+        Tijab = blas->get_MatTmp("t2[oo][vv]",ref,none)->get_matrix();
+      }else if (!spin1 && !spin2){
+        Tijab = blas->get_MatTmp("t2[OO][VV]",ref,none)->get_matrix();
+      }else if (spin1 && !spin2){
+        Tijab = blas->get_MatTmp("t2[oO][vV]",ref,none)->get_matrix();
+      }
+    }else{
+      if(spin1 && spin2){
+        Tijab = blas->get_MatTmp("t2[OO][VV]",unique_ref,none)->get_matrix();
+      }else if (!spin1 && !spin2){
+        Tijab = blas->get_MatTmp("t2[oo][vv]",unique_ref,none)->get_matrix();
+      }else if (spin1 && !spin2){
+        Tijab = blas->get_MatTmp("t2[Oo][Vv]",unique_ref,none)->get_matrix();
+      }
     }
+
     i.reset();
     while(++i){
       BlockMatrix* block_matrix = new BlockMatrix(nirreps,vv->get_tuplespi(),o->get_tuplespi(),i.sym);
@@ -147,84 +172,8 @@ void MRCCSD_T::form_V_jk_c_m(IndexMatrix* V_jk_c_m,double direct,double exchange
       double value = direct * V[jk.sym][jk.rel][mc.rel] + exchange * V[jk.sym][kj_rel][mc.rel];
       block_matrix->set(c_sym,c_rel,m_rel,value);
     }
-    V_jk_c_m->add_block_matrix(jk.abs,0,block_matrix);
+    V_jk_c_m->add_block_matrix(jk.abs,int(0),block_matrix);
   }
 }
-
-
-
-//void CCMRCC::form_V_k_bc_e(IndexMatrix* V_k_bc_e,bool same_spin)
-//{
-//  // Build the matrices
-//  // (v_k)_{bc,e} = <bc||ek> and (v_k)_{bc,e} = <bc|ek>
-//  // from the integrals <ek||bc>
-//  // <bc||ek> = <ek||bc>
-//
-//  CCIndex* o   = blas->get_index("[o]");
-//  CCIndex* v   = blas->get_index("[v]");
-//  CCIndex* vv  = blas->get_index("[vv]");
-//  CCIndex* ovv = blas->get_index("[ovv]");
-//
-//  CCIndexIterator  k("[o]");
-//  CCIndexIterator  ebc("[vvv]");
-//
-//  int nirreps = moinfo->get_nirreps();
-//
-//  double*** V;
-//  if(same_spin){
-//    V = blas->get_MatTmp("<[v]:[ovv]>",none)->get_matrix();
-//  }else{
-//    V = blas->get_MatTmp("<[v]|[ovv]>",none)->get_matrix();
-//  }
-//  k.reset();
-//  while(++k){
-//    BlockMatrix* block_matrix = new BlockMatrix(nirreps,vv->get_tuplespi(),v->get_tuplespi(),k.sym);
-//    ebc.reset();
-//    ebc.set_irrep(k.sym);
-//    while(++ebc){
-//      size_t bc_sym  = vv->get_tuple_irrep(ebc.ind_abs[1],ebc.ind_abs[2]);
-//      size_t bc_rel  = vv->get_tuple_rel_index(ebc.ind_abs[1],ebc.ind_abs[2]);
-//      size_t e_sym   = v->get_tuple_irrep(ebc.ind_abs[0]);
-//      size_t e_rel   = v->get_tuple_rel_index(ebc.ind_abs[0]);
-//      size_t kbc_rel = ovv->get_tuple_rel_index(k.ind_abs[0],ebc.ind_abs[1],ebc.ind_abs[2]);
-//
-//      block_matrix->set(bc_sym,bc_rel,e_rel,V[e_sym][e_rel][kbc_rel]);
-//    }
-//    V_k_bc_e->add_block_matrix(k.abs,int(0),block_matrix);
-//  }
-//}
-
-//void CCMRCC::form_V_jk_c_m(IndexMatrix* V_jk_c_m,bool same_spin)
-//{
-//  CCIndex* o   = blas->get_index("[o]");
-//  CCIndex* v   = blas->get_index("[v]");
-//
-//  CCIndexIterator  jk("[oo]");
-//  CCIndexIterator  mc("[ov]");
-//
-//  int nirreps = moinfo->get_nirreps();
-//
-//  double*** V;
-//  if(same_spin){
-//    V = blas->get_MatTmp("<[oo]:[ov]>",none)->get_matrix();
-//  }else{
-//    V = blas->get_MatTmp("<[oo]|[ov]>",none)->get_matrix();
-//  }
-//
-//  jk.reset();
-//  while(++jk){
-//    BlockMatrix* block_matrix = new BlockMatrix(nirreps,v->get_tuplespi(),o->get_tuplespi(),jk.sym);
-//    mc.reset();
-//    mc.set_irrep(jk.sym);
-//    while(++mc){
-//      size_t m_rel   = o->get_tuple_rel_index(mc.ind_abs[0]);
-//      size_t c_sym   = v->get_tuple_irrep(mc.ind_abs[1]);
-//      size_t c_rel   = v->get_tuple_rel_index(mc.ind_abs[1]);
-//
-//      block_matrix->set(c_sym,c_rel,m_rel,V[jk.sym][jk.rel][mc.rel]);
-//    }
-//    V_jk_c_m->add_block_matrix(jk.abs,0,block_matrix);
-//  }
-//}
 
 }}  /* End Namespaces */

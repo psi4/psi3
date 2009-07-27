@@ -99,6 +99,11 @@ psi: (
   transqt_psimrcc   = "transqt2"
   psimrcc           = "psimrcc"
 
+  % LOOPMRCC
+  transqt_loopmrcc  = "transqt --psimrcc"
+  loopmrcc          = "loopmrcc_old"
+  
+
   % NONBONDED
   nonbonded = "nonbonded"
 
@@ -1240,6 +1245,14 @@ psi: (
   PSIMRCCTWOCONEnergy  = ($PSIMRCC_MCSCF_Energy $done)
   PSIMRCCUHFEnergy     = ERROR
 
+  % Procedures for the PSIMRCC energy using CSCF 
+  PSIMRCC_CSCF_Energy      = ($SCFEnergy $transqt_psimrcc $psimrcc)
+  PSIMRCC_CSCFRHFEnergy    = ($PSIMRCC_CSCF_Energy $done)
+  PSIMRCC_CSCFROHFEnergy   = ($PSIMRCC_CSCF_Energy $done)
+  PSIMRCC_CSCFTWOCONEnergy = ($PSIMRCC_CSCF_Energy $done)
+  PSIMRCCUHFEnergy         = ERROR
+
+
   % Procedures for the PSIMRCC optimization 
 
   PSIMRCCSCFEnergyOpt = (repeat $nopt $PSIMRCCSCFEnergy $findif_disp_symm
@@ -1276,4 +1289,11 @@ psi: (
   IDMKPT2ROHFEnergy    = ($IDMKPT2_MCSCF_Energy $done)
   IDMKPT2TWOCONEnergy  = ($IDMKPT2_MCSCF_Energy $done)
   IDMKPT2UHFEnergy     = ERROR
+
+  % Procedures for LOOPMRCC energy [This code is not checked in the psi repo]
+  LOOPMRCC_MCSCF_Energy = ($MCSCFEnergy $transqt_loopmrcc $loopmrcc)
+  LOOPMRCCRHFEnergy     = ($LOOPMRCC_MCSCF_Energy $done)
+  LOOPMRCCROHFEnergy    = ($LOOPMRCC_MCSCF_Energy $done)
+  LOOPMRCCTWOCONEnergy  = ($LOOPMRCC_MCSCF_Energy $done)
+  LOOPMRCCUHFEnergy     = ERROR
 ) 

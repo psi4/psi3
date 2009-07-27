@@ -26,7 +26,7 @@ namespace psi{ namespace psimrcc{
 using namespace std;
 
 CCSort::CCSort(SortAlgorithm algorithm):
-efzc(0.0),frozen_core(0),fraction_of_memory_for_sorting(0.5)
+  fraction_of_memory_for_sorting(0.5),nfzc(0),efzc(0.0),frozen_core(0)
 {
   init();
 
@@ -74,8 +74,8 @@ void CCSort::init()
   int count2  = 0;
   for(int h = 0; h < moinfo->get_nirreps(); ++h){
     for(int i = 0; i < focc[h]; ++i)
-      frozen_core[count1++]=count2+i;
-    count2+=mopi[h];
+      frozen_core[count1++] = count2 + i;
+    count2 += mopi[h];
   }
 }
 
@@ -84,8 +84,7 @@ void CCSort::init()
  */
 void CCSort::cleanup()
 {
-  if(frozen_core!=0)
-    release1(frozen_core);
+  release1(frozen_core);
 }
 
 }} /* End Namespaces */

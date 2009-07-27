@@ -28,8 +28,8 @@ private:
   void compute_ooO_contribution_to_Heff(int i,int j,int k,int mu,BlockMatrix* T3);
   void compute_oOO_contribution_to_Heff(int i,int j,int k,int mu,BlockMatrix* T3);
 
-  double compute_AB_ooO_contribution_to_Heff(int u,int V,int x,int Y,int i,int j,int k,int mu,int nu,BlockMatrix* T3);
-  double compute_AB_oOO_contribution_to_Heff(int u,int V,int x,int Y,int i,int j,int k,int mu,int nu,BlockMatrix* T3);
+  double compute_AB_ooO_contribution_to_Heff(int u,int V,int x,int Y,int i,int j,int k,int mu,BlockMatrix* T3);
+  double compute_AB_oOO_contribution_to_Heff(int u,int V,int x,int Y,int i,int j,int k,int mu,BlockMatrix* T3);
 
   void form_T2_ij_a_b(IndexMatrix* T2_ij_a_b,bool spin1,bool spin2,bool transpose);
   void form_T2_i_ab_j(IndexMatrix* T2_i_ab_j,bool spin1,bool spin2,bool transpose);
@@ -37,7 +37,7 @@ private:
   void form_V_jk_c_m(IndexMatrix* V_jk_c_m,double direct,double exchange);
 
   int nirreps;
-  int nurefs;
+  int nrefs;
 
   double threshold;
 
@@ -110,6 +110,8 @@ private:
   std::vector<double> e4T;
   std::vector<double> e4ST;
   std::vector<double> e4DT;
+
+  double E4,E4T,E4ST,E4DT;
 
   std::vector<double> E4T_ooo;
   std::vector<double> E4T_ooO;

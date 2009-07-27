@@ -23,19 +23,19 @@ bool CCMRCC::build_diagonalize_Heff(int cycle, double time)
   build_Heff_offdiagonal();
 
   if(cycle==0){
-    current_energy=diagonalize_Heff(moinfo->get_root(),moinfo->get_nrefs(),Heff,eigenvector,true);
+    current_energy=diagonalize_Heff(moinfo->get_root(),moinfo->get_nrefs(),Heff,right_eigenvector,left_eigenvector,true);
     old_energy=current_energy;
-    print_eigensystem(moinfo->get_nrefs(),Heff,eigenvector);
+    print_eigensystem(moinfo->get_nrefs(),Heff,right_eigenvector);
   }
   if((cycle>0) || (cycle==-1)){
     // Compute the energy difference
     old_energy=current_energy;
-    current_energy=diagonalize_Heff(moinfo->get_root(),moinfo->get_nrefs(),Heff,eigenvector,false);
+    current_energy=diagonalize_Heff(moinfo->get_root(),moinfo->get_nrefs(),Heff,right_eigenvector,left_eigenvector,false);
 
     if(options_get_bool("PRINT_HEFF"))
-      print_eigensystem(moinfo->get_nrefs(),Heff,eigenvector);
+      print_eigensystem(moinfo->get_nrefs(),Heff,right_eigenvector);
     DEBUGGING(3,
-      print_eigensystem(moinfo->get_nrefs(),Heff,eigenvector);
+      print_eigensystem(moinfo->get_nrefs(),Heff,right_eigenvector);
     )
     double delta_energy = current_energy-old_energy;
     if(fabs(log10(fabs(delta_energy))) > options_get_int("CONVERGENCE"))
@@ -54,7 +54,7 @@ bool CCMRCC::build_diagonalize_Heff(int cycle, double time)
   }
   print_mrccsd_energy(cycle);
   if(converged){
-    print_eigensystem(moinfo->get_nrefs(),Heff,eigenvector);
+    print_eigensystem(moinfo->get_nrefs(),Heff,right_eigenvector);
     _default_chkpt_lib_->wt_etot(current_energy);
   }
   return(converged);
@@ -74,16 +74,16 @@ void CCMRCC::build_Heff_diagonal()
   blas->solve("ECCSD{u}  = Eaa{u} + Ebb{u} + Eaaaa{u} + Eabab{u} + Ebbbb{u} + ERef{u}");
 
   for(int n=0;n<moinfo->get_nrefs();n++)
-    Heff[n][n]=blas->get_scalar("ECCSD",moinfo->get_ref_number("a",n));
+    Heff[n][n] = blas->get_scalar("ECCSD",moinfo->get_ref_number(n));
 }
 
 void CCMRCC::build_Heff_offdiagonal()
 {
-  for(int i=0;i<moinfo->get_ref_size("a");i++){
-    int i_unique = moinfo->get_ref_number("a",i);
+  for(int i=0;i<moinfo->get_ref_size(AllRefs);i++){
+    int i_unique = moinfo->get_ref_number(i);
     // Find the off_diagonal elements for reference i
     // Loop over reference j (in a safe way)
-    for(int j=0;j<moinfo->get_ref_size("a");j++){
+    for(int j=0;j<moinfo->get_ref_size(AllRefs);j++){
       if(i!=j){
         vector<pair<int,int> >  alpha_internal_excitation = moinfo->get_alpha_internal_excitation(i,j);
         vector<pair<int,int> >   beta_internal_excitation = moinfo->get_beta_internal_excitation(i,j);

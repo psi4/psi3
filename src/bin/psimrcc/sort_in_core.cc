@@ -65,8 +65,8 @@ void CCSort::form_fock_in_core(MatrixMap::iterator& iter)
       alpha = false;
 
     // N.B. Never introduce Matrices/Vectors with O or V in the name before you compute the Fock matrix elements
-    vector<int> aocc = moinfo->get_aocc("a",Matrix->get_reference());
-    vector<int> bocc = moinfo->get_bocc("a",Matrix->get_reference());
+    vector<int> aocc = moinfo->get_aocc(Matrix->get_reference(),AllRefs);
+    vector<int> bocc = moinfo->get_bocc(Matrix->get_reference(),AllRefs);
 
     for(int n=0;n<moinfo->get_nirreps();n++)
       for(int i = 0;i<Matrix->get_left_pairpi(n);i++)

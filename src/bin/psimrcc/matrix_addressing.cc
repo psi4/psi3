@@ -39,13 +39,13 @@ double CCMatrix::get_two_address_element(short p, short q)
 {
   if(left->get_nelements() == 2){
     // Case A
-    return(matrix[0][left->get_tuple_index(p,q)][0]);
+    return(matrix[0][left->get_tuple_rel_index(p,q)][0]);
   }else if (left->get_nelements() == 0){
     // Case B
-    return(matrix[0][0][right->get_tuple_index(p,q)]);
+    return(matrix[0][0][right->get_tuple_rel_index(p,q)]);
   }else if (left->get_nelements() == 1){
     // Case C
-    return(matrix[left->get_tuple_irrep(p)][left->get_tuple_index(p)][right->get_tuple_index(q)]);
+    return(matrix[left->get_tuple_irrep(p)][left->get_tuple_rel_index(p)][right->get_tuple_rel_index(q)]);
   }
   fprintf(outfile,"\n\n\tdouble CCMatrix::get_two_address_element(int p, int q) Critical Error!!!");
   fflush(outfile);
@@ -63,13 +63,13 @@ void CCMatrix::set_two_address_element(short p, short q,double value)
 {
   if(left->get_nelements() == 2){
     // Case A
-    matrix[0][left->get_tuple_index(p,q)][0]=value;
+    matrix[0][left->get_tuple_rel_index(p,q)][0]=value;
   }else if (left->get_nelements() == 0){
     // Case B
-    matrix[0][0][right->get_tuple_index(p,q)]=value;
+    matrix[0][0][right->get_tuple_rel_index(p,q)]=value;
   }else if (left->get_nelements() == 1){
     // Case C
-    matrix[left->get_tuple_irrep(p)][left->get_tuple_index(p)][right->get_tuple_index(q)]=value;
+    matrix[left->get_tuple_irrep(p)][left->get_tuple_rel_index(p)][right->get_tuple_rel_index(q)]=value;
   }
 }
 
@@ -84,13 +84,13 @@ void CCMatrix::add_two_address_element(short p, short q,double value)
 {
   if(left->get_nelements() == 2){
     // Case A
-    matrix[0][left->get_tuple_index(p,q)][0]=value;
+    matrix[0][left->get_tuple_rel_index(p,q)][0]=value;
   }else if (left->get_nelements() == 0){
     // Case B
-    matrix[0][0][right->get_tuple_index(p,q)]=value;
+    matrix[0][0][right->get_tuple_rel_index(p,q)]=value;
   }else if (left->get_nelements() == 1){
     // Case C
-    matrix[left->get_tuple_irrep(p)][left->get_tuple_index(p)][right->get_tuple_index(q)]=value;
+    matrix[left->get_tuple_irrep(p)][left->get_tuple_rel_index(p)][right->get_tuple_rel_index(q)]=value;
   }
 }
 
@@ -162,13 +162,13 @@ double CCMatrix::get_four_address_element(short p, short q, short r, short s)
   if(left->get_nelements() == 1)
   {
     // Case A
-    return(matrix[left->get_tuple_irrep(p)][left->get_tuple_index(p)][right->get_tuple_index(q,r,s)]);
+    return(matrix[left->get_tuple_irrep(p)][left->get_tuple_rel_index(p)][right->get_tuple_rel_index(q,r,s)]);
   }else if (left->get_nelements() == 2){
     // Case B
-    return(matrix[left->get_tuple_irrep(p,q)][left->get_tuple_index(p,q)][right->get_tuple_index(r,s)]);
+    return(matrix[left->get_tuple_irrep(p,q)][left->get_tuple_rel_index(p,q)][right->get_tuple_rel_index(r,s)]);
   }else if (left->get_nelements() == 3){
     // Case C
-    return(matrix[right->get_tuple_irrep(s)][left->get_tuple_index(p,q,r)][right->get_tuple_index(s)]);
+    return(matrix[right->get_tuple_irrep(s)][left->get_tuple_rel_index(p,q,r)][right->get_tuple_rel_index(s)]);
   }
   fprintf(outfile,"\n\n\tdouble CCMatrix::get_four_address_element(int p, int q, int r, int s) Critical Error!!!");
   fflush(outfile);
@@ -181,13 +181,13 @@ void CCMatrix::set_four_address_element(short p, short q, short r, short s,doubl
   if(left->get_nelements() == 1)
   {
     // Case A
-    matrix[left->get_tuple_irrep(p)][left->get_tuple_index(p)][right->get_tuple_index(q,r,s)]=value;
+    matrix[left->get_tuple_irrep(p)][left->get_tuple_rel_index(p)][right->get_tuple_rel_index(q,r,s)]=value;
   }else if (left->get_nelements() == 2){
     // Case B
-    matrix[left->get_tuple_irrep(p,q)][left->get_tuple_index(p,q)][right->get_tuple_index(r,s)]=value;
+    matrix[left->get_tuple_irrep(p,q)][left->get_tuple_rel_index(p,q)][right->get_tuple_rel_index(r,s)]=value;
   }else if (left->get_nelements() == 3){
     // Case C
-    matrix[right->get_tuple_irrep(s)][left->get_tuple_index(p,q,r)][right->get_tuple_index(s)]=value;
+    matrix[right->get_tuple_irrep(s)][left->get_tuple_rel_index(p,q,r)][right->get_tuple_rel_index(s)]=value;
   }
 }
 
@@ -195,13 +195,13 @@ void CCMatrix::add_four_address_element(short p, short q, short r, short s,doubl
 {
   if(left->get_nelements() == 1){
     // Case A
-    matrix[left->get_tuple_irrep(p)][left->get_tuple_index(p)][right->get_tuple_index(q,r,s)]+=value;
+    matrix[left->get_tuple_irrep(p)][left->get_tuple_rel_index(p)][right->get_tuple_rel_index(q,r,s)]+=value;
   }else if (left->get_nelements() == 2){
     // Case B
-    matrix[left->get_tuple_irrep(p,q)][left->get_tuple_index(p,q)][right->get_tuple_index(r,s)]+=value;
+    matrix[left->get_tuple_irrep(p,q)][left->get_tuple_rel_index(p,q)][right->get_tuple_rel_index(r,s)]+=value;
   }else if (left->get_nelements() == 3){
     // Case C
-    matrix[right->get_tuple_irrep(s)][left->get_tuple_index(p,q,r)][right->get_tuple_index(s)]+=value;
+    matrix[right->get_tuple_irrep(s)][left->get_tuple_rel_index(p,q,r)][right->get_tuple_rel_index(s)]+=value;
   }
 }
 
@@ -270,7 +270,7 @@ void CCMatrix::get_four_indices_pitzer(short*& pqrs,int irrep, int i, int j)
 double CCMatrix::get_six_address_element(short i, short j, short k, short a, short b, short c)
 {
   // Assume three-three splitting
-  return(matrix[left->get_tuple_irrep(i,j,k)][left->get_tuple_index(i,j,k)][right->get_tuple_index(a,b,c)]);
+  return(matrix[left->get_tuple_irrep(i,j,k)][left->get_tuple_rel_index(i,j,k)][right->get_tuple_rel_index(a,b,c)]);
 }
 
 /**
@@ -280,7 +280,7 @@ double CCMatrix::get_six_address_element(short i, short j, short k, short a, sho
 void CCMatrix::add_six_address_element(short i, short j, short k, short a, short b, short c,double value)
 {
   // Assume three-three splitting
-  matrix[left->get_tuple_irrep(i,j,k)][left->get_tuple_index(i,j,k)][right->get_tuple_index(a,b,c)]+=value;
+  matrix[left->get_tuple_irrep(i,j,k)][left->get_tuple_rel_index(i,j,k)][right->get_tuple_rel_index(a,b,c)]+=value;
 }
 
 /**
@@ -290,7 +290,7 @@ void CCMatrix::add_six_address_element(short i, short j, short k, short a, short
 void CCMatrix::add_six_address_element_abc(short i, short j, short k, size_t abc,double value)
 {
   // Assume three-three splitting
-  matrix[left->get_tuple_irrep(i,j,k)][left->get_tuple_index(i,j,k)][abc]+=value;
+  matrix[left->get_tuple_irrep(i,j,k)][left->get_tuple_rel_index(i,j,k)][abc]+=value;
 }
 
 /**
@@ -300,7 +300,7 @@ void CCMatrix::add_six_address_element_abc(short i, short j, short k, size_t abc
 void CCMatrix::add_six_address_element_ijk(size_t ijk, short a, short b, short c,double value)
 {
   // Assume three-three splitting
-  matrix[right->get_tuple_irrep(a,b,c)][ijk][right->get_tuple_index(a,b,c)]+=value;
+  matrix[right->get_tuple_irrep(a,b,c)][ijk][right->get_tuple_rel_index(a,b,c)]+=value;
 }
 
 /**
@@ -311,10 +311,10 @@ void CCMatrix::add_six_address_element_Pij(short i, short j, short k, short a, s
 {
   // Assume three-three splitting
   int  irrep = left->get_tuple_irrep(i,j,k);
-  size_t ijk = left->get_tuple_index(i,j,k);
-  size_t jik = left->get_tuple_index(j,i,k);
+  size_t ijk = left->get_tuple_rel_index(i,j,k);
+  size_t jik = left->get_tuple_rel_index(j,i,k);
 
-  size_t abc = right->get_tuple_index(a,b,c);
+  size_t abc = right->get_tuple_rel_index(a,b,c);
   matrix[irrep][ijk][abc]+=value;
   matrix[irrep][jik][abc]-=value;
 }
@@ -327,8 +327,8 @@ void CCMatrix::add_six_address_element_Pij_abc(short i, short j, short k, size_t
 {
   // Assume three-three splitting
   int  irrep = left->get_tuple_irrep(i,j,k);
-  size_t ijk = left->get_tuple_index(i,j,k);
-  size_t jik = left->get_tuple_index(j,i,k);
+  size_t ijk = left->get_tuple_rel_index(i,j,k);
+  size_t jik = left->get_tuple_rel_index(j,i,k);
 
   matrix[irrep][ijk][abc]+=value;
   matrix[irrep][jik][abc]-=value;
@@ -342,9 +342,9 @@ void CCMatrix::add_six_address_element_Pab_c(size_t ijk, short a, short b, short
 {
   // Assume three-three splitting
   int  irrep = right->get_tuple_irrep(a,b,c);
-  size_t abc = right->get_tuple_index(a,b,c);
-  size_t cba = right->get_tuple_index(c,b,a);
-  size_t acb = right->get_tuple_index(a,c,b);
+  size_t abc = right->get_tuple_rel_index(a,b,c);
+  size_t cba = right->get_tuple_rel_index(c,b,a);
+  size_t acb = right->get_tuple_rel_index(a,c,b);
   matrix[irrep][ijk][abc]+=value;
   matrix[irrep][ijk][cba]-=value;
   matrix[irrep][ijk][acb]-=value;
@@ -359,10 +359,10 @@ void CCMatrix::add_six_address_element_Pjk(short i, short j, short k, short a, s
 {
   // Assume three-three splitting
   int  irrep = left->get_tuple_irrep(i,j,k);
-  size_t ijk = left->get_tuple_index(i,j,k);
-  size_t ikj = left->get_tuple_index(i,k,j);
+  size_t ijk = left->get_tuple_rel_index(i,j,k);
+  size_t ikj = left->get_tuple_rel_index(i,k,j);
 
-  size_t abc = right->get_tuple_index(a,b,c);
+  size_t abc = right->get_tuple_rel_index(a,b,c);
   matrix[irrep][ijk][abc]+=value;
   matrix[irrep][ikj][abc]-=value;
 }
@@ -376,8 +376,8 @@ void CCMatrix::add_six_address_element_Pjk_abc(short i, short j, short k, size_t
 {
   // Assume three-three splitting
   int  irrep = left->get_tuple_irrep(i,j,k);
-  size_t ijk = left->get_tuple_index(i,j,k);
-  size_t ikj = left->get_tuple_index(i,k,j);
+  size_t ijk = left->get_tuple_rel_index(i,j,k);
+  size_t ikj = left->get_tuple_rel_index(i,k,j);
 
   matrix[irrep][ijk][abc]+=value;
   matrix[irrep][ikj][abc]-=value;
@@ -391,12 +391,12 @@ void CCMatrix::add_six_address_element_Pab(short i, short j, short k, short a, s
 {
   // Assume three-three splitting
   int  irrep = left->get_tuple_irrep(i,j,k);
-  size_t ijk = left->get_tuple_index(i,j,k);
+  size_t ijk = left->get_tuple_rel_index(i,j,k);
 
-  size_t abc = right->get_tuple_index(a,b,c);
+  size_t abc = right->get_tuple_rel_index(a,b,c);
   matrix[irrep][ijk][abc]+=value;
 
-  size_t bac = right->get_tuple_index(b,a,c);
+  size_t bac = right->get_tuple_rel_index(b,a,c);
   matrix[irrep][ijk][bac]-=value;
 }
 
@@ -409,10 +409,10 @@ void CCMatrix::add_six_address_element_Pab_ijk(size_t ijk, short a, short b, sho
   // Assume three-three splitting
   int  irrep = right->get_tuple_irrep(a,b,c);
 
-  size_t abc = right->get_tuple_index(a,b,c);
+  size_t abc = right->get_tuple_rel_index(a,b,c);
   matrix[irrep][ijk][abc]+=value;
 
-  size_t bac = right->get_tuple_index(b,a,c);
+  size_t bac = right->get_tuple_rel_index(b,a,c);
   matrix[irrep][ijk][bac]-=value;
 }
 
@@ -424,12 +424,12 @@ void CCMatrix::add_six_address_element_Pbc(short i, short j, short k, short a, s
 {
   // Assume three-three splitting
   int  irrep = left->get_tuple_irrep(i,j,k);
-  size_t ijk = left->get_tuple_index(i,j,k);
+  size_t ijk = left->get_tuple_rel_index(i,j,k);
 
-  size_t abc = right->get_tuple_index(a,b,c);
+  size_t abc = right->get_tuple_rel_index(a,b,c);
   matrix[irrep][ijk][abc]+=value;
 
-  size_t acb = right->get_tuple_index(a,c,b);
+  size_t acb = right->get_tuple_rel_index(a,c,b);
   matrix[irrep][ijk][acb]-=value;
 }
 
@@ -443,10 +443,10 @@ void CCMatrix::add_six_address_element_Pbc_ijk(size_t ijk, short a, short b, sho
   // Assume three-three splitting
   int  irrep = right->get_tuple_irrep(a,b,c);
 
-  size_t abc = right->get_tuple_index(a,b,c);
+  size_t abc = right->get_tuple_rel_index(a,b,c);
   matrix[irrep][ijk][abc]+=value;
 
-  size_t acb = right->get_tuple_index(a,c,b);
+  size_t acb = right->get_tuple_rel_index(a,c,b);
   matrix[irrep][ijk][acb]-=value;
 }
 
@@ -458,9 +458,9 @@ void CCMatrix::add_six_address_element_Pij_k(short i, short j, short k, size_t a
 {
   // Assume three-three splitting
   int  irrep = left->get_tuple_irrep(i,j,k);
-  size_t ijk = left->get_tuple_index(i,j,k);
-  size_t kji = left->get_tuple_index(k,j,i);
-  size_t ikj = left->get_tuple_index(i,k,j);
+  size_t ijk = left->get_tuple_rel_index(i,j,k);
+  size_t kji = left->get_tuple_rel_index(k,j,i);
+  size_t ikj = left->get_tuple_rel_index(i,k,j);
 
   matrix[irrep][ijk][abc]+=value;
   matrix[irrep][kji][abc]-=value;
@@ -475,24 +475,24 @@ void CCMatrix::add_six_address_element_Pijk(short i, short j, short k, short a, 
 {
   // Assume three-three splitting
   int  irrep = left->get_tuple_irrep(i,j,k);
-  size_t abc = right->get_tuple_index(a,b,c);
+  size_t abc = right->get_tuple_rel_index(a,b,c);
 
-  size_t ijk = left->get_tuple_index(i,j,k);
+  size_t ijk = left->get_tuple_rel_index(i,j,k);
   matrix[irrep][ijk][abc]+=value;
 
-  size_t kij = left->get_tuple_index(k,i,j);
+  size_t kij = left->get_tuple_rel_index(k,i,j);
   matrix[irrep][kij][abc]+=value;
 
-  size_t jki = left->get_tuple_index(j,k,i);
+  size_t jki = left->get_tuple_rel_index(j,k,i);
   matrix[irrep][jki][abc]+=value;
 
-  size_t jik = left->get_tuple_index(j,i,k);
+  size_t jik = left->get_tuple_rel_index(j,i,k);
   matrix[irrep][jik][abc]-=value;
 
-  size_t kji = left->get_tuple_index(k,j,i);
+  size_t kji = left->get_tuple_rel_index(k,j,i);
   matrix[irrep][kji][abc]-=value;
 
-  size_t ikj = left->get_tuple_index(i,k,j);
+  size_t ikj = left->get_tuple_rel_index(i,k,j);
   matrix[irrep][ikj][abc]-=value;
 }
 
@@ -504,14 +504,14 @@ void CCMatrix::add_six_address_element_Pij_Pab(short i, short j, short k, short 
 {
   // Assume three-three splitting
   int  irrep = left->get_tuple_irrep(i,j,k);
-  size_t ijk = left->get_tuple_index(i,j,k);
-  size_t jik = left->get_tuple_index(j,i,k);
+  size_t ijk = left->get_tuple_rel_index(i,j,k);
+  size_t jik = left->get_tuple_rel_index(j,i,k);
 
-  size_t abc = right->get_tuple_index(a,b,c);
+  size_t abc = right->get_tuple_rel_index(a,b,c);
   matrix[irrep][ijk][abc]+=value;
   matrix[irrep][jik][abc]-=value;
 
-  size_t bac = right->get_tuple_index(b,a,c);
+  size_t bac = right->get_tuple_rel_index(b,a,c);
   matrix[irrep][ijk][bac]-=value;
   matrix[irrep][jik][bac]+=value;
 }
@@ -524,14 +524,14 @@ void CCMatrix::add_six_address_element_Pjk_Pbc(short i, short j, short k, short 
 {
   // Assume three-three splitting
   int  irrep = left->get_tuple_irrep(i,j,k);
-  size_t ijk = left->get_tuple_index(i,j,k);
-  size_t ikj = left->get_tuple_index(i,k,j);
+  size_t ijk = left->get_tuple_rel_index(i,j,k);
+  size_t ikj = left->get_tuple_rel_index(i,k,j);
 
-  size_t abc = right->get_tuple_index(a,b,c);
+  size_t abc = right->get_tuple_rel_index(a,b,c);
   matrix[irrep][ijk][abc]+=value;
   matrix[irrep][ikj][abc]-=value;
 
-  size_t acb = right->get_tuple_index(a,c,b);
+  size_t acb = right->get_tuple_rel_index(a,c,b);
   matrix[irrep][ijk][acb]-=value;
   matrix[irrep][ikj][acb]+=value;
 }
@@ -552,21 +552,21 @@ void CCMatrix::add_six_address_element_Pij_k_Pa_bc(short i, short j, short k, sh
 {
   // Assume three-three splitting
   int  irrep = left->get_tuple_irrep(i,j,k);
-  size_t ijk = left->get_tuple_index(i,j,k);
-  size_t kji = left->get_tuple_index(k,j,i);
-  size_t ikj = left->get_tuple_index(i,k,j);
+  size_t ijk = left->get_tuple_rel_index(i,j,k);
+  size_t kji = left->get_tuple_rel_index(k,j,i);
+  size_t ikj = left->get_tuple_rel_index(i,k,j);
 
-  size_t abc = right->get_tuple_index(a,b,c);
+  size_t abc = right->get_tuple_rel_index(a,b,c);
   matrix[irrep][ijk][abc]+=value;
   matrix[irrep][kji][abc]-=value;
   matrix[irrep][ikj][abc]-=value;
 
-  size_t bac = right->get_tuple_index(b,a,c);
+  size_t bac = right->get_tuple_rel_index(b,a,c);
   matrix[irrep][ijk][bac]-=value;
   matrix[irrep][kji][bac]+=value;
   matrix[irrep][ikj][bac]+=value;
 
-  size_t cba = right->get_tuple_index(c,b,a);
+  size_t cba = right->get_tuple_rel_index(c,b,a);
   matrix[irrep][ijk][cba]-=value;
   matrix[irrep][kji][cba]+=value;
   matrix[irrep][ikj][cba]+=value;
@@ -588,21 +588,21 @@ void CCMatrix::add_six_address_element_Pi_jk_Pab_c(short i, short j, short k, sh
 {
   // Assume three-three splitting
   int  irrep = left->get_tuple_irrep(i,j,k);
-  size_t ijk = left->get_tuple_index(i,j,k);
-  size_t jik = left->get_tuple_index(j,i,k);
-  size_t kji = left->get_tuple_index(k,j,i);
+  size_t ijk = left->get_tuple_rel_index(i,j,k);
+  size_t jik = left->get_tuple_rel_index(j,i,k);
+  size_t kji = left->get_tuple_rel_index(k,j,i);
 
-  size_t abc = right->get_tuple_index(a,b,c);
+  size_t abc = right->get_tuple_rel_index(a,b,c);
   matrix[irrep][ijk][abc]+=value;
   matrix[irrep][jik][abc]-=value;
   matrix[irrep][kji][abc]-=value;
 
-  size_t cba = right->get_tuple_index(c,b,a);
+  size_t cba = right->get_tuple_rel_index(c,b,a);
   matrix[irrep][ijk][cba]-=value;
   matrix[irrep][jik][cba]+=value;
   matrix[irrep][kji][cba]+=value;
 
-  size_t acb = right->get_tuple_index(a,c,b);
+  size_t acb = right->get_tuple_rel_index(a,c,b);
   matrix[irrep][ijk][acb]-=value;
   matrix[irrep][jik][acb]+=value;
   matrix[irrep][kji][acb]+=value;
@@ -625,21 +625,21 @@ void CCMatrix::add_six_address_element_Pi_jk_Pa_bc(short i, short j, short k, sh
 {
   // Assume three-three splitting
   int  irrep = left->get_tuple_irrep(i,j,k);
-  size_t ijk = left->get_tuple_index(i,j,k);
-  size_t jik = left->get_tuple_index(j,i,k);
-  size_t kji = left->get_tuple_index(k,j,i);
+  size_t ijk = left->get_tuple_rel_index(i,j,k);
+  size_t jik = left->get_tuple_rel_index(j,i,k);
+  size_t kji = left->get_tuple_rel_index(k,j,i);
 
-  size_t abc = right->get_tuple_index(a,b,c);
+  size_t abc = right->get_tuple_rel_index(a,b,c);
   matrix[irrep][ijk][abc]+=value;
   matrix[irrep][jik][abc]-=value;
   matrix[irrep][kji][abc]-=value;
 
-  size_t bac = right->get_tuple_index(b,a,c);
+  size_t bac = right->get_tuple_rel_index(b,a,c);
   matrix[irrep][ijk][bac]-=value;
   matrix[irrep][jik][bac]+=value;
   matrix[irrep][kji][bac]+=value;
 
-  size_t cba = right->get_tuple_index(c,b,a);
+  size_t cba = right->get_tuple_rel_index(c,b,a);
   matrix[irrep][ijk][cba]-=value;
   matrix[irrep][jik][cba]+=value;
   matrix[irrep][kji][cba]+=value;
@@ -660,8 +660,8 @@ double CCMatrix::get_two_address_element_check(short p, short q)
     exit(1);
   }else if (left->get_nelements() == 1){
     // Case C
-    if((left->get_tuple_index(p)!=-1) && (right->get_tuple_index(q)!=-1))
-      return(matrix[left->get_tuple_irrep(p)][left->get_tuple_index(p)][right->get_tuple_index(q)]);
+    if((left->get_tuple_rel_index(p)!=-1) && (right->get_tuple_rel_index(q)!=-1))
+      return(matrix[left->get_tuple_irrep(p)][left->get_tuple_rel_index(p)][right->get_tuple_rel_index(q)]);
     else return(0.0);
   }
   fprintf(outfile,"\n\n\tdouble CCMatrix::get_two_address_element_check(int p, int q) Critical Error!!!");

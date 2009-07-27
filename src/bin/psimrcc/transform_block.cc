@@ -120,7 +120,7 @@ double CCTransform::tei_block(int p, int q, int r, int s)
   // Get the (pq|rs) integral
   int irrep(tei_mo_indexing->get_tuple_irrep(MAX(p,q),MIN(p,q)));
   if((first_irrep_in_core <= irrep) && (irrep < last_irrep_in_core))
-    return(tei_mo[tei_mo_indexing->get_tuple_irrep(MAX(p,q),MIN(p,q))][INDEX(tei_mo_indexing->get_tuple_index(MAX(p,q),MIN(p,q)),tei_mo_indexing->get_tuple_index(MAX(r,s),MIN(r,s)))]);
+    return(tei_mo[tei_mo_indexing->get_tuple_irrep(MAX(p,q),MIN(p,q))][INDEX(tei_mo_indexing->get_tuple_rel_index(MAX(p,q),MIN(p,q)),tei_mo_indexing->get_tuple_rel_index(MAX(r,s),MIN(r,s)))]);
   else
     return(0.0);
 }
@@ -155,8 +155,8 @@ double CCTransform::tei_block(int p, int q, int r, int s)
 //        irrep = mo_indexing->get_tuple_irrep(p,q);
 //        // Fill in only the blocks that fit
 //        if((first_irrep<=irrep) && (irrep<last_irrep)){
-//          pq    = mo_indexing->get_tuple_index(p,q);
-//          rs    = mo_indexing->get_tuple_index(r,s);
+//          pq    = mo_indexing->get_tuple_rel_index(p,q);
+//          rs    = mo_indexing->get_tuple_rel_index(r,s);
 //          pqrs  = INDEX(pq,rs);
 //          tei_mo[irrep][pqrs]=value;
 //        }

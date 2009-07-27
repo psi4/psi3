@@ -138,7 +138,7 @@ void CCMRCC::build_t1_ia_amplitudes_triples()
 {
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int unique_ref  = moinfo->get_ref_number("u",ref);
+    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  HiaMatTmp     = blas->get_MatTmp("t1_eqns[o][v]",unique_ref,none);
@@ -177,12 +177,12 @@ void CCMRCC::build_t1_ia_amplitudes_triples()
             for(int ef = 0;ef <ImnefMatTmp->get_right_pairpi(mn_sym);ef++){
               int e = ef_tuples[ef_offset + ef][0];
               int f = ef_tuples[ef_offset + ef][1];
-              size_t aef  = abcIndex->get_tuple_index(a_abs,e,f);
+              size_t aef  = abcIndex->get_tuple_rel_index(a_abs,e,f);
               int aef_sym = abcIndex->get_tuple_irrep(a_abs,e,f);
               for(int mn = 0;mn <ImnefMatTmp->get_left_pairpi(mn_sym);mn++){
                 int m = mn_tuples[mn_offset + mn][0];
                 int n = mn_tuples[mn_offset + mn][1];
-                size_t imn  = ijkIndex->get_tuple_index(i_abs,m,n);
+                size_t imn  = ijkIndex->get_tuple_rel_index(i_abs,m,n);
                 Hia_matrix[h][i][a] += 0.25 * Tijkabc_matrix[aef_sym][imn][aef] * Imnef_matrix[mn_sym][mn][ef];
                 Hia_matrix[h][i][a] += 0.25 * TiJKaBC_matrix[aef_sym][imn][aef] * Imnef_matrix[mn_sym][mn][ef];
                 Hia_matrix[h][i][a] +=        TijKabC_matrix[aef_sym][imn][aef] * ImNeF_matrix[mn_sym][mn][ef];
@@ -209,7 +209,7 @@ void CCMRCC::build_t1_IA_amplitudes_triples()
 {
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int unique_ref  = moinfo->get_ref_number("u",ref);
+    int unique_ref  = moinfo->get_ref_number(ref,UniqueRefs);
 
     // Grab the temporary matrices
     CCMatTmp  HIAMatTmp     = blas->get_MatTmp("t1_eqns[O][V]",unique_ref,none);
@@ -248,12 +248,12 @@ void CCMRCC::build_t1_IA_amplitudes_triples()
             for(int ef = 0;ef <ImnefMatTmp->get_right_pairpi(mn_sym);ef++){
               int e = ef_tuples[ef_offset + ef][0];
               int f = ef_tuples[ef_offset + ef][1];
-              size_t efa  = abcIndex->get_tuple_index(e,f,a_abs);
+              size_t efa  = abcIndex->get_tuple_rel_index(e,f,a_abs);
               int efa_sym = abcIndex->get_tuple_irrep(e,f,a_abs);
               for(int mn = 0;mn <ImnefMatTmp->get_left_pairpi(mn_sym);mn++){
                 int m = mn_tuples[mn_offset + mn][0];
                 int n = mn_tuples[mn_offset + mn][1];
-                size_t mni  = ijkIndex->get_tuple_index(m,n,i_abs);
+                size_t mni  = ijkIndex->get_tuple_rel_index(m,n,i_abs);
                 HIA_matrix[h][i][a] += 0.25 * TijKabC_matrix[efa_sym][mni][efa] * Imnef_matrix[mn_sym][mn][ef];
                 HIA_matrix[h][i][a] += 0.25 * TIJKABC_matrix[efa_sym][mni][efa] * Imnef_matrix[mn_sym][mn][ef];
                 HIA_matrix[h][i][a] +=        TiJKaBC_matrix[efa_sym][mni][efa] * ImNeF_matrix[mn_sym][mn][ef];

@@ -73,34 +73,3 @@ private:
 }}
 
 #endif // _psi_src_lib_libmemtrix_block_matrix_h_
-
-/*
-
-
-}
-  double*** get_matrix()                           {return(matrix);}
-  double**  get_block(int h)                       {return(matrix[h]);}
-  const double**  get_block(int h) const           {return((const double**)matrix[h]);}
-  double    get(int h, int i, int j)               {return(matrix[h][i][j]);}
-
-  void      add(int h, int i, int j, double value) {matrix[h][i][j] += value;}
-  int       get_block_size(int h)                  {return(block_size[h]);}
-  int       get_block_size(int h) const            {return(block_size[h]);}
-  void      diagonalize(BlockMatrix* eigenvectors, double* eigenvalues);
-  void      DGEMM(bool transpose_A, bool transpose_B, BlockMatrix* A, BlockMatrix* B);
-  void      minus(BlockMatrix* B);
-
-
-
-  BlockMatrix& operator+=(const BlockMatrix& lhs);
-private:
-
-
-  // Block sizes etc.
-  int*  block_size;
-  int*  block_offset;
-
-  // Private functions
-  void  sort_eigensystem(int n,double*& eigenvalues,double**& eigenvectors);
-  void  cleanup();
-*/

@@ -51,6 +51,7 @@ using namespace psi;
 
 namespace psi{
 MOInfo              *moinfo;
+ModelSpace          *model_space;
 MemoryManager       *_memory_manager_;
 
 namespace psimrcc{
@@ -76,9 +77,6 @@ int main(int argc, char *argv[])
   using namespace psi::psimrcc;
   init_psi(argc,argv);
 
-
-
-
   run_psimrcc();
 
   fprintf(outfile,"\n\n  PSIMRCC job completed.");
@@ -87,7 +85,6 @@ int main(int argc, char *argv[])
   fflush(outfile);
 
   _memory_manager_->MemCheck(outfile);
-
 
   close_psi();
   return PSI_RETURN_SUCCESS;
@@ -125,7 +122,8 @@ void read_calculation_options()
   options_add_bool("PERT_CBS_COUPLING",true);
 
   options_add_str_with_choices("PT_ENERGY","SECOND_ORDER","SECOND_ORDER SCS_SECOND_ORDER PSEUDO_SECOND_ORDER SCS_PSEUDO_SECOND_ORDER");
-  options_add_str_with_choices("CORR_WFN","CCSD","PT2 CCSD MP2-CCSD");
+  options_add_str_with_choices("CORR_WFN","CCSD","PT2 CCSD MP2-CCSD CCSD_T");
+  options_add_str_with_choices("CORR_CCSD_T","STANDARD","STANDARD PITTNER");
   options_add_str_with_choices("CORR_REFERENCE","GENERAL","RHF ROHF TCSCF MCSCF GENERAL");
   options_add_str_with_choices("CORR_ANSATZ","MK","SR MK BW APBW");
   options_add_str_with_choices("COUPLING","CUBIC","NONE LINEAR QUADRATIC CUBIC");
@@ -181,7 +179,7 @@ void init_psi(int argc, char *argv[])
 
   fprintf(outfile,"\n  MRCC          MRCC");
   fprintf(outfile,"\n   MRCC  MRCC  MRCC");
-  fprintf(outfile,"\n   MRCC  MRCC  MRCC      PSIMRCC Version 0.9.2, May 2009");
+  fprintf(outfile,"\n   MRCC  MRCC  MRCC      PSIMRCC Version 0.9.3.1, July 2009");
   fprintf(outfile,"\n   MRCC  MRCC  MRCC      Multireference Coupled Cluster, written by");
   fprintf(outfile,"\n     MRCCMRCCMRCC        Francesco A. Evangelista and Andrew C. Simmonett");
   fprintf(outfile,"\n         MRCC            Compiled on %s at %s",__DATE__,__TIME__);
@@ -201,6 +199,8 @@ void init_psi(int argc, char *argv[])
 
   moinfo = new MOInfo();
 
+  model_space = new ModelSpace(moinfo);
+
   moinfo->setup_model_space();  // The is a bug here DELETEME
 }
 
@@ -213,6 +213,7 @@ void close_psi()
     Close the checkpoint
   ***********************/
 
+  delete model_space;
   delete moinfo;
   delete debugging;
   delete _memory_manager_;

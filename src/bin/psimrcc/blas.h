@@ -88,9 +88,9 @@ public:
   // These have to be improved
   MatrixMap& get_MatrixMap() {return(matrices);}
 private:
+  bool       full_in_core;
   size_t     work_size;
   size_t     buffer_size;
-  bool       full_in_core;
   MatrixMap  matrices;
   IndexMap   indices;
   OpDeque    operations;

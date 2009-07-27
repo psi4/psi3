@@ -5,7 +5,7 @@
 
 namespace psi{ namespace psimrcc{
 
-double MRCCSD_T::compute_AB_ooO_contribution_to_Heff(int u_abs,int V_abs,int x_abs,int Y_abs,int i_abs,int j_abs,int k_abs,int mu,int nu,BlockMatrix* T3)
+double MRCCSD_T::compute_AB_ooO_contribution_to_Heff(int u_abs,int V_abs,int x_abs,int Y_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3)
 {
   double value = 0.0;
   int    i_sym  = o->get_tuple_irrep(i_abs);
@@ -15,7 +15,6 @@ double MRCCSD_T::compute_AB_ooO_contribution_to_Heff(int u_abs,int V_abs,int x_a
   int  ijk_sym  = i_sym xor j_sym xor k_sym;
 
   size_t i_rel  = o->get_tuple_rel_index(i_abs);
-
 
   int  x_sym    = v->get_tuple_irrep(x_abs);
   int  y_sym    = v->get_tuple_irrep(Y_abs);
@@ -79,7 +78,7 @@ double MRCCSD_T::compute_AB_ooO_contribution_to_Heff(int u_abs,int V_abs,int x_a
     }
   }
   if((j_abs == u_abs) and (k_abs == V_abs)){
-    CCIndexIterator  ef("[vv]",ijk_sym xor x_sym);
+    CCIndexIterator  ef("[vv]",ijk_sym xor y_sym);
     while(++ef){
       int      e_sym =   v->get_tuple_irrep(ef.ind_abs[0]);
       int    ief_sym = ovv->get_tuple_irrep(i_abs,ef.ind_abs[0],ef.ind_abs[1]);
@@ -87,16 +86,15 @@ double MRCCSD_T::compute_AB_ooO_contribution_to_Heff(int u_abs,int V_abs,int x_a
       size_t  fy_rel =  vv->get_tuple_rel_index(ef.ind_abs[1],Y_abs);
       size_t ief_rel = ovv->get_tuple_rel_index(i_abs,ef.ind_abs[0],ef.ind_abs[1]);
 
-      if(y_sym == ief_sym){
+      if(x_sym == ief_sym){
         value -= 0.5 * T3->get(e_sym,e_rel,fy_rel) * V_vovv[x_sym][x_rel][ief_rel];
       }
     }
   }
-
   return value;
 }
 
-double MRCCSD_T::compute_AB_oOO_contribution_to_Heff(int u_abs,int V_abs,int x_abs,int Y_abs,int i_abs,int j_abs,int k_abs,int mu,int nu,BlockMatrix* T3)
+double MRCCSD_T::compute_AB_oOO_contribution_to_Heff(int u_abs,int V_abs,int x_abs,int Y_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3)
 {
   double value = 0.0;
   int    i_sym  = o->get_tuple_irrep(i_abs);
@@ -165,7 +163,7 @@ double MRCCSD_T::compute_AB_oOO_contribution_to_Heff(int u_abs,int V_abs,int x_a
     }
   }
   if((i_abs == u_abs) and (j_abs == V_abs)){
-    CCIndexIterator  ef("[vv]",ijk_sym xor x_sym);
+    CCIndexIterator  ef("[vv]",ijk_sym xor y_sym);
     while(++ef){
       int      e_sym =   v->get_tuple_irrep(ef.ind_abs[0]);
       int   kef_sym  = ovv->get_tuple_irrep(k_abs,ef.ind_abs[0],ef.ind_abs[1]);
@@ -178,7 +176,6 @@ double MRCCSD_T::compute_AB_oOO_contribution_to_Heff(int u_abs,int V_abs,int x_a
       }
     }
   }
-
   return value;
 }
 

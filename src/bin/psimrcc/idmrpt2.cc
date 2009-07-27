@@ -45,8 +45,8 @@ void IDMRPT2::compute_mrpt2_energy()
 
   for(int m=0;m<moinfo->get_nrefs();m++)
     for(int n=0;n<moinfo->get_nrefs();n++)
-      Heff[m][n]=Heff_mrpt2[m][n];
-  cas_energy     = diagonalize_Heff(moinfo->get_root(),moinfo->get_nrefs(),Heff_mrpt2,zeroth_order_eigenvector,true);
+      Heff[m][n] = Heff_mrpt2[m][n];
+  cas_energy     = diagonalize_Heff(moinfo->get_root(),moinfo->get_nrefs(),Heff_mrpt2,zeroth_order_eigenvector,left_eigenvector,true);
   current_energy = cas_energy;
   old_energy=current_energy;
 
@@ -58,7 +58,7 @@ void IDMRPT2::compute_mrpt2_energy()
 
   // Compute the shifted denominators
   for(int n=0;n<moinfo->get_nunique();n++){
-    int m = moinfo->get_ref_number("u",n);
+    int m = moinfo->get_ref_number(n,UniqueRefs);
     string shift = to_string(cas_energy-Heff[m][m]);
     blas->solve("d'1[o][v]{" + to_string(m) + "} += " + shift);
     blas->solve("d'1[O][V]{" + to_string(m) + "} += " + shift);
@@ -123,14 +123,14 @@ void IDMRPT2::compute_mrpt2_energy()
   // Diagonalize Heff
   build_Heff_mrpt2_diagonal();
   build_Heff_mrpt2_offdiagonal();
-  current_energy  = diagonalize_Heff(moinfo->get_root(),moinfo->get_nrefs(),Heff_mrpt2,eigenvector,false);
+  current_energy  = diagonalize_Heff(moinfo->get_root(),moinfo->get_nrefs(),Heff_mrpt2,right_eigenvector,left_eigenvector,false);
 
   double pseudo_second_order_energy = current_energy;
 
   // Diagonalize SCS Heff
   build_Heff_scs_mrpt2_diagonal();
   build_Heff_mrpt2_offdiagonal();
-  current_energy  = diagonalize_Heff(moinfo->get_root(),moinfo->get_nrefs(),Heff_mrpt2,eigenvector,false);
+  current_energy  = diagonalize_Heff(moinfo->get_root(),moinfo->get_nrefs(),Heff_mrpt2,right_eigenvector,left_eigenvector,false);
 
   double scs_pseudo_second_order_energy = current_energy;
 
@@ -156,7 +156,7 @@ void IDMRPT2::compute_mrpt2_energy()
     fprintf(outfile,"\n\n  Wrote spin-component-scaled pseudo-second order energy to checkpoint file");
   }
 
-//   print_eigensystem(moinfo->get_nrefs(),Heff_mrpt2,eigenvector);
+//   print_eigensystem(moinfo->get_nrefs(),Heff_mrpt2,right_eigenvector);
   fflush(outfile);
 }
 
@@ -174,7 +174,7 @@ void IDMRPT2::build_Heff_mrpt2_diagonal()
   blas->solve("EPT2{u}  = Eaa{u} + Ebb{u} + Eaaaa{u} + Eabab{u} + Ebbbb{u} + ERef{u}");
 
   for(int n=0;n<moinfo->get_nrefs();n++)
-    Heff_mrpt2[n][n]=blas->get_scalar("EPT2",moinfo->get_ref_number("a",n));
+    Heff_mrpt2[n][n]=blas->get_scalar("EPT2",moinfo->get_ref_number(n));
 }
 
 void IDMRPT2::build_Heff_scs_mrpt2_diagonal()
@@ -192,7 +192,7 @@ void IDMRPT2::build_Heff_scs_mrpt2_diagonal()
   blas->solve("EPT2{u}  = Eaa{u} + Ebb{u} + 1/3 Eaaaa{u} + 6/5 Eabab{u} + 1/3 Ebbbb{u} + ERef{u}");
 
   for(int n=0;n<moinfo->get_nrefs();n++)
-    Heff_mrpt2[n][n]=blas->get_scalar("EPT2",moinfo->get_ref_number("a",n));
+    Heff_mrpt2[n][n]=blas->get_scalar("EPT2",moinfo->get_ref_number(n));
 }
 
 
@@ -280,11 +280,11 @@ void IDMRPT2::build_amplitudes()
 void IDMRPT2::update_amps_mkpt2()
 {
   for(int i=0;i<moinfo->get_nunique();i++){
-    int unique_i = moinfo->get_ref_number("u",i);
+    int unique_i = moinfo->get_ref_number(i,UniqueRefs);
     string i_str = to_string(unique_i);
     // Form the coupling terms
     for(int j=0;j<moinfo->get_nrefs();j++){
-      int unique_j = moinfo->get_ref_number("a",j);
+      int unique_j = moinfo->get_ref_number(j);
       string j_str = to_string(unique_j);
       double term = zeroth_order_eigenvector[j]/zeroth_order_eigenvector[unique_i];
       if(fabs(term)>1.0e5) term = 0.0;
@@ -306,7 +306,7 @@ void IDMRPT2::update_amps_mkpt2()
 
     // Add the contribution from the other references
     for(int j=0;j<moinfo->get_nrefs();j++){
-      int unique_j = moinfo->get_ref_number("a",j);
+      int unique_j = moinfo->get_ref_number(j);
       string j_str = to_string(unique_j);
       double term = zeroth_order_eigenvector[j]/zeroth_order_eigenvector[unique_i];
       if(fabs(term)>1.0e5) term = 0.0;

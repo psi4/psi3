@@ -580,7 +580,6 @@ AC_SUBST(RUBYLIB)
 AC_SUBST(RUBYINC)
 AC_SUBST(HAVE_RUBY)
 AC_SUBST(RUBYLDFLAGS)
-
 ########
 ## Check for compiler characteristics
 ########
@@ -996,6 +995,9 @@ AC_CONFIG_FILES([include/Makefile
           tests/psimrcc-mp2-ccsd-2/Makefile
           tests/psimrcc-mp2-ccsd-3/Makefile
           tests/psimrcc-mp2-ccsd-4/Makefile
+          tests/psimrcc-ccsd_t-1/Makefile
+          tests/psimrcc-ccsd_t-2/Makefile
+          tests/psimrcc-ccsd_t-3/Makefile
           tests/dboc-rhf1/Makefile
           tests/dboc-rohf1/Makefile
           tests/dboc-uhf1/Makefile
@@ -1034,6 +1036,49 @@ AC_CONFIG_FILES([include/Makefile
           src/samples/MakeRules
           src/samples/mints/Makefile
 ])
+
+########################
+#  Check for loopmrcc  #
+########################
+
+COMPILE_LOOPMRCC="no"
+AC_ARG_WITH(loopmrcc,[  --with-loopmrcc         compile loopmrcc],[
+case $withval in
+  yes)
+        COMPILE_LOOPMRCC="yes"
+    ;;
+  no)
+    ;;
+  *)
+    ;;
+esac
+])
+
+if test X$COMPILE_LOOPMRCC = Xyes; then
+        AC_CONFIG_FILES([src/bin/loopmrcc_old/Makefile])
+        AC_CONFIG_FILES([src/bin/loopmrcc/Makefile])
+fi
+
+AC_SUBST(COMPILE_LOOPMRCC)
+
+COMPILE_WICKED="no"
+AC_ARG_WITH(wicked,[  --with-wicked           compile wick&d],[
+case $withval in
+  yes)
+        COMPILE_WICKED="yes"
+    ;;
+  no)
+    ;;
+  *)
+    ;;
+esac
+])
+
+if test X$COMPILE_WICKED = Xyes; then
+        AC_CONFIG_FILES([src/bin/wick&d/Makefile])
+fi
+
+AC_SUBST(COMPILE_WICKED)
 
 AC_OUTPUT
 

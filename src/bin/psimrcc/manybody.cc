@@ -36,7 +36,8 @@ CCManyBody::CCManyBody()
 {
   // Allocate memory for the eigenvector and the effective Hamiltonian
   allocate1(double,zeroth_order_eigenvector,moinfo->get_nrefs());
-  allocate1(double,eigenvector,moinfo->get_nrefs());
+  allocate1(double,right_eigenvector,moinfo->get_nrefs());
+  allocate1(double,left_eigenvector,moinfo->get_nrefs());
   allocate2(double,Heff,moinfo->get_nrefs(),moinfo->get_nrefs());
   allocate2(double,Heff_mrpt2,moinfo->get_nrefs(),moinfo->get_nrefs());
 
@@ -56,7 +57,8 @@ CCManyBody::CCManyBody()
 CCManyBody::~CCManyBody()
 {
   release1(zeroth_order_eigenvector);
-  release1(eigenvector);
+  release1(left_eigenvector);
+  release1(right_eigenvector);
   release2(Heff);
   release2(Heff_mrpt2);
 
@@ -104,11 +106,11 @@ void CCManyBody::generate_d3_ijk(double***& d3,bool alpha_i,bool alpha_j,bool al
   allocate2(double*,d3,moinfo->get_nunique(),moinfo->get_nirreps());
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int reference = moinfo->get_ref_number("u",ref);
+    int reference = moinfo->get_ref_number(ref,UniqueRefs);
 
     // N.B. Never introduce Matrices/Vectors with O or V in the name before you compute the Fock matrix elements
-    std::vector<int> aocc     = moinfo->get_aocc("a",reference);
-    std::vector<int> bocc     = moinfo->get_bocc("a",reference);
+    std::vector<int> aocc     = moinfo->get_aocc(reference,AllRefs);
+    std::vector<int> bocc     = moinfo->get_bocc(reference,AllRefs);
 
     // Build the is_ arrays for reference ref
     bool* is_aocc = new bool[moinfo->get_nocc()];
@@ -180,11 +182,11 @@ void CCManyBody::generate_d3_abc(double***& d3,bool alpha_a,bool alpha_b,bool al
   allocate2(double*,d3,moinfo->get_nunique(),moinfo->get_nirreps());
   // Loop over references
   for(int ref=0;ref<moinfo->get_nunique();ref++){
-    int reference = moinfo->get_ref_number("u",ref);
+    int reference = moinfo->get_ref_number(ref,UniqueRefs);
 
     // N.B. Never introduce Matrices/Vectors with O or V in the name before you compute the Fock matrix elements
-    std::vector<int> avir     = moinfo->get_avir("a",reference);
-    std::vector<int> bvir     = moinfo->get_bvir("a",reference);
+    std::vector<int> avir     = moinfo->get_avir(reference,AllRefs);
+    std::vector<int> bvir     = moinfo->get_bvir(reference,AllRefs);
 
     // Build the is_ arrays for reference ref
     bool* is_avir = new bool[moinfo->get_nvir()];
@@ -292,11 +294,11 @@ void CCManyBody::compute_reference_energy()
 
   // Compute the zeroth-order energy for the unique references
   for(int n=0;n<moinfo->get_nunique();n++){
-    int unique_n = moinfo->get_ref_number("u",n);
+    int unique_n = moinfo->get_ref_number(n,UniqueRefs);
     double ref_energy=moinfo->get_nuclear_energy()+moinfo->get_fzcore_energy();
     // Grab reference n and the list of occupied orbitals
-    std::vector<int> aocc     = moinfo->get_aocc("u",n);
-    std::vector<int> bocc     = moinfo->get_bocc("u",n);
+    std::vector<int> aocc     = moinfo->get_aocc(n,UniqueRefs);
+    std::vector<int> bocc     = moinfo->get_bocc(n,UniqueRefs);
 
     // Read these matrices
     CCMatTmp f_oo_Matrix = blas->get_MatTmp("fock[o][o]",unique_n,none);
@@ -353,8 +355,9 @@ void CCManyBody::print_eigensystem(int ndets, double** Heff,double*& eigenvector
   }
 
   std::vector<std::pair<double,int> > eigenvector_index_pair;
-  for(int i = 0; i < ndets; ++i)
+  for(int i = 0; i < ndets; ++i){
     eigenvector_index_pair.push_back(make_pair(eigenvector[i]*eigenvector[i],i));
+  }
   sort(eigenvector_index_pair.begin(),eigenvector_index_pair.end(),greater<pair<double,int> >());
   int max_size_list = std::min(10,static_cast<int>(eigenvector_index_pair.size()));
   fprintf(outfile,"\n\n  Most important determinants in the wave function");
@@ -391,113 +394,130 @@ double CCManyBody::c_H_c(int ndets, double** H,double*& c)
  * @param eigenvector the \f$ \mathbf{c} \f$ left-eigenvector stored as a double*  * @param initial a bool used to enable root following. initial = true allows you to select a root while initial = false follows the root that has the largest overlap with the previous eigenvector
  * @return
  */
-double CCManyBody::diagonalize_Heff(int root,int ndets, double** Heff,double*& eigenvector, bool initial)
+double CCManyBody::diagonalize_Heff(int root,int ndets, double** Heff,double*& right_eigenvector,double*& left_eigenvector, bool initial)
 {
-    double      energy;
-    double*     real;
-    double*     imaginary;
-    double*     work;
-    double**    left;
-    double**    right;
-    double**    H;
+  double      energy;
+  double*     real;
+  double*     imaginary;
+  double*     work;
+  double**    left;
+  double**    right;
+  double**    H;
 
-    int lwork = 6*ndets*ndets;
-    allocate1(double,work,lwork);
-    allocate1(double,real,ndets);
-    allocate1(double,imaginary,ndets);
+  int lwork = 6*ndets*ndets;
+  allocate1(double,work,lwork);
+  allocate1(double,real,ndets);
+  allocate1(double,imaginary,ndets);
 
-    allocate2(double,H,ndets,ndets);
-    allocate2(double,left,ndets,ndets);
-    allocate2(double,right,ndets,ndets);
+  allocate2(double,H,ndets,ndets);
+  allocate2(double,left,ndets,ndets);
+  allocate2(double,right,ndets,ndets);
 
-    for(int i=0;i<ndets;i++)
-      for(int j=0;j<ndets;j++)
-        H[j][i] = Heff[i][j];
+  for(int i=0;i<ndets;i++)
+    for(int j=0;j<ndets;j++)
+      H[j][i] = Heff[i][j];
 
-    int info;
+  int info;
 
-    F_DGEEV("V","V",&ndets, &(H[0][0]), &ndets, &(real[0]), &(imaginary[0]),
-       &(left[0][0]), &ndets, &(right[0][0]), &ndets, &(work[0]), &lwork, &info);
+  F_DGEEV("V","V",&ndets, &(H[0][0]), &ndets, &(real[0]), &(imaginary[0]),
+      &(left[0][0]), &ndets, &(right[0][0]), &ndets, &(work[0]), &lwork, &info);
 
-    sort_eigensystem(ndets,real,imaginary,left,right);
+  sort_eigensystem(ndets,real,imaginary,left,right);
 
-    if(initial){
-      if(ndets < 8){
-        fprintf(outfile,"\n\n  Heff Matrix\n");
-        for(int i=0;i<ndets;i++){
-          fprintf(outfile,"\n  ");
-          for(int j=0;j<ndets;j++)
-            fprintf(outfile," %22.12f",Heff[i][j]);
-        }
-
-        fprintf(outfile,"\n\n  Left Matrix\n");
-        for(int i=0;i<ndets;i++){
-          fprintf(outfile,"\n  ");
-          for(int j=0;j<ndets;j++)
-            fprintf(outfile," %22.12f",left[j][i]);
-        }
-
-        fprintf(outfile,"\n\n  Right Matrix\n");
-        for(int i=0;i<ndets;i++){
-          fprintf(outfile,"\n  ");
-          for(int j=0;j<ndets;j++)
-            fprintf(outfile," %22.12f",right[j][i]);
-        }
-
-        fprintf(outfile,"\n\n  Real                  Imaginary\n");
-        for(int i=0;i<ndets;i++)
-          fprintf(outfile,"\n  %22.12f   %22.12f",real[i],imaginary[i]);
-        fprintf(outfile,"\n");
-      }else{
-        fprintf(outfile,"\n\n  There are too many determinants to print the eigensystem");
-      }
-      fprintf(outfile,"\n\n  The eigenvalue for root %d is %.12f (%.12f)",root,real[root],imaginary[root]);
-    }
-
-    // Select the eigenvector to follow
-    if(initial){
-      for(int k=0;k<ndets;k++){
-        zeroth_order_eigenvector[k] = right[root][k];
-        eigenvector[k]              = right[root][k];
-      }
-      energy = real[root];
-      // Eliminate the triplet solution if required
-      if((options_get_bool("LOCK_SINGLET")==1)&&(ndets==4)){
-        if((fabs(eigenvector[0])<5.0e-2)&& (fabs(eigenvector[3])<5.0e-2) && ((eigenvector[1]/eigenvector[2])<-0.5)){
-          fprintf(outfile,"\n\tSelecting root %d since original root is a triplet\n",root+1,root);
-          root++;
-          for(int k=0;k<ndets;k++)
-            eigenvector[k]=right[root][k];
-          energy = real[root];
-        }
-      }
-    }
-    else // find vector with maximum overlap
-    {
-      int select_vect=0;
-      double max_overlap=0.0;
-      double overlap=0.0;
+  if(initial){
+    if(ndets < 8){
+      fprintf(outfile,"\n\n  Heff Matrix\n");
       for(int i=0;i<ndets;i++){
-          overlap=0.0;
-          for(int m=0;m<ndets;m++)
-              overlap+=zeroth_order_eigenvector[m]*right[i][m];
-          overlap=sqrt(overlap*overlap);
-          if(overlap>max_overlap){
-              select_vect=i;
-              max_overlap=overlap;
-          }
+        fprintf(outfile,"\n  ");
+        for(int j=0;j<ndets;j++)
+          fprintf(outfile," %22.12f",Heff[i][j]);
       }
-      for(int m=0;m<ndets;m++)
-        eigenvector[m]=right[select_vect][m];
-      energy = real[select_vect];
+
+      fprintf(outfile,"\n\n  Left Matrix\n");
+      for(int i=0;i<ndets;i++){
+        fprintf(outfile,"\n  ");
+        for(int j=0;j<ndets;j++)
+          fprintf(outfile," %22.12f",left[j][i]);
+      }
+
+      fprintf(outfile,"\n\n  Right Matrix\n");
+      for(int i=0;i<ndets;i++){
+        fprintf(outfile,"\n  ");
+        for(int j=0;j<ndets;j++)
+          fprintf(outfile," %22.12f",right[j][i]);
+      }
+
+      fprintf(outfile,"\n\n  Real                  Imaginary\n");
+      for(int i=0;i<ndets;i++)
+        fprintf(outfile,"\n  %22.12f   %22.12f",real[i],imaginary[i]);
+      fprintf(outfile,"\n");
+    }else{
+      fprintf(outfile,"\n\n  There are too many determinants to print the eigensystem");
     }
-    release1(work);
-    release1(real);
-    release1(imaginary);
-    release2(H);
-    release2(left);
-    release2(right);
-    return(energy);
+    fprintf(outfile,"\n\n  The eigenvalue for root %d is %.12f (%.12f)",root,real[root],imaginary[root]);
+  }
+
+  // Select the eigenvector to follow
+  if(initial){
+    for(int k=0;k<ndets;k++){
+      zeroth_order_eigenvector[k] = right[root][k];
+      right_eigenvector[k]        = right[root][k];
+      left_eigenvector[k]         =  left[root][k];
+    }
+    energy = real[root];
+    // Eliminate the triplet solution if required
+    if((options_get_bool("LOCK_SINGLET")==1)&&(ndets==4)){
+      if((fabs(right_eigenvector[0])<5.0e-2)&& (fabs(right_eigenvector[3])<5.0e-2) && ((right_eigenvector[1]/right_eigenvector[2])<-0.5)){
+        fprintf(outfile,"\n\tSelecting root %d since original root is a triplet\n",root+1,root);
+        root++;
+        for(int k=0;k<ndets;k++){
+          right_eigenvector[k] = right[root][k];
+          left_eigenvector[k]  =  left[root][k];
+        }
+        energy = real[root];
+      }
+    }
+  }
+  else // find vector with maximum overlap
+  {
+    int select_vect=0;
+    double max_overlap=0.0;
+    double overlap=0.0;
+    for(int i=0;i<ndets;i++){
+      overlap=0.0;
+      for(int m=0;m<ndets;m++)
+        overlap += zeroth_order_eigenvector[m] * right[i][m];
+      overlap=sqrt(overlap*overlap);
+      if(overlap>max_overlap){
+        select_vect=i;
+        max_overlap=overlap;
+      }
+    }
+    for(int m=0;m<ndets;m++){
+      right_eigenvector[m] = right[select_vect][m];
+      left_eigenvector[m]  =  left[select_vect][m];
+    }
+    energy = real[select_vect];
+  }
+
+  // Normalize the left-eigenvector to <L|R> = 1
+  double lnorm = 0.0;
+  for(int m = 0; m < ndets; m++){
+    lnorm += right_eigenvector[m] * left_eigenvector[m];
+  }
+
+  for(int m = 0; m < ndets; m++){
+    left_eigenvector[m] = left_eigenvector[m] / lnorm;
+  }
+
+
+  release1(work);
+  release1(real);
+  release1(imaginary);
+  release2(H);
+  release2(left);
+  release2(right);
+  return(energy);
 }
 
 void CCManyBody::sort_eigensystem(int ndets,double*& real,double*& imaginary,double**& left,double**& right)
@@ -541,9 +561,9 @@ void CCManyBody::zero_internal_amps()
   if(options_get_bool("ZERO_INTERNAL_AMPS")){
     // Zero internal amplitudes for unique reference i
     for(int i=0;i<moinfo->get_nunique();i++){
-      int unique_i = moinfo->get_ref_number("u",i);
+      int unique_i = moinfo->get_ref_number(i,UniqueRefs);
       // Loop over reference j
-      for(int j=0;j<moinfo->get_ref_size("a");j++){
+      for(int j=0;j<moinfo->get_ref_size(AllRefs);j++){
         vector<pair<int,int> >  alpha_internal_excitation = moinfo->get_alpha_internal_excitation(unique_i,j);
         vector<pair<int,int> >   beta_internal_excitation = moinfo->get_beta_internal_excitation(unique_i,j);
 
@@ -649,9 +669,9 @@ void CCManyBody::zero_t1_internal_amps()
   if(options_get_bool("ZERO_INTERNAL_AMPS")){
     // Zero internal amplitudes for unique reference i
     for(int i=0;i<moinfo->get_nunique();i++){
-      int unique_i = moinfo->get_ref_number("u",i);
+      int unique_i = moinfo->get_ref_number(i,UniqueRefs);
       // Loop over reference j
-      for(int j=0;j<moinfo->get_ref_size("a");j++){
+      for(int j=0;j<moinfo->get_ref_size(AllRefs);j++){
         vector<pair<int,int> >  alpha_internal_excitation = moinfo->get_alpha_internal_excitation(unique_i,j);
         vector<pair<int,int> >   beta_internal_excitation = moinfo->get_beta_internal_excitation(unique_i,j);
 
@@ -686,9 +706,9 @@ void CCManyBody::zero_internal_delta_amps()
   if(options_get_bool("ZERO_INTERNAL_AMPS")){
     // Zero internal amplitudes for unique reference i
     for(int i=0;i<moinfo->get_nunique();i++){
-      int unique_i = moinfo->get_ref_number("u",i);
+      int unique_i = moinfo->get_ref_number(i,UniqueRefs);
       // Loop over reference j
-      for(int j=0;j<moinfo->get_ref_size("a");j++){
+      for(int j=0;j<moinfo->get_ref_size(AllRefs);j++){
         vector<pair<int,int> >  alpha_internal_excitation = moinfo->get_alpha_internal_excitation(unique_i,j);
         vector<pair<int,int> >   beta_internal_excitation = moinfo->get_beta_internal_excitation(unique_i,j);
 

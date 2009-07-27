@@ -2677,7 +2677,12 @@ sub seek_psimrcc
   open(OUT, "$_[0]") || die "cannot open $_[0] $!";
   seek(OUT,0,0);
   while(<OUT>) {
-    if (/\* MK-MRCCSD total energy/) {
+    if (/\* Mk-MRCCSD\(T\) total energy/) {
+      @data = split(/ +/, $_);
+      $psimrcc = $data[6];
+      return $psimrcc;
+    }
+    if (/\* Mk-MRCCSD total energy/) {
       @data = split(/ +/, $_);
       $psimrcc = $data[6];
       return $psimrcc;

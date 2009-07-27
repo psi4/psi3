@@ -24,10 +24,9 @@ void MOInfo::print_model_space()
   fprintf(outfile,"\n");
   fprintf(outfile,"\n  Model space");
   fprintf(outfile,"\n  ------------------------------------------------------------------------------");
-  if(references.size() < 21){
+  if(references.size() <= 20){
     for(int i = 0; i < references.size(); ++i){
-      fprintf(outfile,"\n  %3d) ",i);
-      references[i].print_occ();
+      fprintf(outfile,"\n  %2d  %s",i,references[i].get_label().c_str());
     }
   }else{
     fprintf(outfile,"\n  There are %d determinants in the model space",static_cast<int>(references.size()));
@@ -216,50 +215,6 @@ void MOInfo::make_internal_excitations()
   }
 }
 
-vector<int> MOInfo::get_aocc(string str,int i)
-{
-  int i_ref = get_ref_number(str,i);
-  return(references[i_ref].get_aocc());
-}
-
-vector<int> MOInfo::get_bocc(std::string str,int i)
-{
-  int i_ref = get_ref_number(str,i);
-  return(references[i_ref].get_bocc());
-}
-
-vector<int> MOInfo::get_avir(std::string str,int i)
-{
-  int i_ref = get_ref_number(str,i);
-  return(references[i_ref].get_avir());
-}
-
-vector<int> MOInfo::get_bvir(std::string str,int i)
-{
-  int i_ref = get_ref_number(str,i);
-  return(references[i_ref].get_bvir());
-}
-
-vector<int> MOInfo::get_aocc(int i)
-{
-  return(references[i].get_aocc());
-}
-
-vector<int> MOInfo::get_bocc(int i)
-{
-  return(references[i].get_bocc());
-}
-
-vector<int> MOInfo::get_auoc(int i)
-{
-  return(references[i].get_avir());
-}
-
-vector<int> MOInfo::get_buoc(int i)
-{
-  return(references[i].get_bvir());
-}
-
 vector<int> MOInfo::get_determinant(int i)
 {
   vector<int> occupation(nall * 2,0);
@@ -285,17 +240,17 @@ double  MOInfo::get_sign_internal_excitation(int i,int j)
 }
 
 /*!
-    \fn MOInfo::get_ref_number(string str, int n)
+ *  \fn MOInfo::get_ref_number(ReferenceType ref_type, int n)
  */
-int MOInfo::get_ref_number(string str, int n)
+int MOInfo::get_ref_number(int n, ReferenceType ref_type)
 {
-  if(str=="a")
+  if(ref_type == AllRefs) // a
     return(all_refs[n]);
-  if(str=="u")
+  if(ref_type == UniqueRefs) // u
     return(unique_refs[n]);
-  if(str=="c")
+  if(ref_type == ClosedShellRefs) // c
     return(closed_shell_refs[n]);
-  if(str=="o")
+  if(ref_type == UniqueOpenShellRefs) // o
     return(unique_open_shell_refs[n]);
   print_error(outfile,"MOInfo::get_ref_number(string str, int n) undefined space", __FILE__,__LINE__);
   return(NULL);
@@ -304,15 +259,15 @@ int MOInfo::get_ref_number(string str, int n)
 /*!
     \fn MOInfo::get_ref_size(string str)
  */
-int MOInfo::get_ref_size(string str)
+int MOInfo::get_ref_size(ReferenceType ref_type)
 {
-  if(str=="a")
+  if(ref_type == AllRefs) // a
     return(all_refs.size());
-  if(str=="u")
+  if(ref_type == UniqueRefs) // u
     return(unique_refs.size());
-  if(str=="c")
+  if(ref_type == ClosedShellRefs) // c
     return(closed_shell_refs.size());
-  if(str=="o")
+  if(ref_type == UniqueOpenShellRefs) // o
     return(unique_open_shell_refs.size());
   print_error(outfile,"MOInfo::get_ref_size(string str) undefined space", __FILE__,__LINE__);
   return(NULL);
@@ -336,6 +291,54 @@ vector<string> MOInfo::get_matrix_names(std::string str)
   }else
     names.push_back(str);
   return(names);
+}
+
+vector<int> MOInfo::get_aocc(int i,ReferenceType ref_type)
+{
+  int i_ref = get_ref_number(i,ref_type);
+  return(references[i_ref].get_aocc());
+}
+
+vector<int> MOInfo::get_bocc(int i,ReferenceType ref_type)
+{
+  int i_ref = get_ref_number(i,ref_type);
+  return(references[i_ref].get_bocc());
+}
+
+vector<int> MOInfo::get_avir(int i,ReferenceType ref_type)
+{
+  int i_ref = get_ref_number(i,ref_type);
+  return(references[i_ref].get_avir());
+}
+
+vector<int> MOInfo::get_bvir(int i,ReferenceType ref_type)
+{
+  int i_ref = get_ref_number(i,ref_type);
+  return(references[i_ref].get_bvir());
+}
+
+vector<bool> MOInfo::get_is_aocc(int i,ReferenceType ref_type)
+{
+  int i_ref = get_ref_number(i,ref_type);
+  return(references[i_ref].get_is_aocc());
+}
+
+vector<bool> MOInfo::get_is_bocc(int i,ReferenceType ref_type)
+{
+  int i_ref = get_ref_number(i,ref_type);
+  return(references[i_ref].get_is_bocc());
+}
+
+vector<bool> MOInfo::get_is_avir(int i,ReferenceType ref_type)
+{
+  int i_ref = get_ref_number(i,ref_type);
+  return(references[i_ref].get_is_avir());
+}
+
+vector<bool> MOInfo::get_is_bvir(int i,ReferenceType ref_type)
+{
+  int i_ref = get_ref_number(i,ref_type);
+  return(references[i_ref].get_is_bvir());
 }
 
 }
