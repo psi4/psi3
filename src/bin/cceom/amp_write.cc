@@ -195,6 +195,7 @@ void amp_write_UHF(dpdfile2 *RIA, dpdfile2 *Ria, dpdbuf4 *RIJAB,
           lbli, lblj, lbla, lblb, R2_stack[m].value);
     }
   }
+  R2_stack.clear();
 
   // Do RIJAB
   get_largest_R2_amps(RIJAB, namps, R2_stack);
