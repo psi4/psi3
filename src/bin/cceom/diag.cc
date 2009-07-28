@@ -997,7 +997,7 @@ timer_off("INIT GUESS");
 	        sprintf(lbl, "%s %d %d", "Ria", C_irr, i);
 	        dpd_file2_init(&Cme, CC_RAMPS, C_irr, 0, 1, lbl);
 	        sprintf(lbl, "%s %d %d", "RIJAB", C_irr, i);
-	        dpd_buf4_init(&CMNEF, CC_RAMPS, C_irr, 0, 5, 2, 7, 0, lbl);
+	        dpd_buf4_init(&CMNEF, CC_RAMPS, C_irr, 2, 7, 2, 7, 0, lbl);
 	        sprintf(lbl, "%s %d %d", "Rijab", C_irr, i);
 	        dpd_buf4_init(&Cmnef, CC_RAMPS, C_irr, 2, 7, 2, 7, 0, lbl);
 	        sprintf(lbl, "%s %d %d", "RIjAb", C_irr, i);
