@@ -8,16 +8,16 @@
 
 #include <string>
 
-#include "index.h"
-
 namespace psi{ namespace psimrcc{
+
+class CCIndex;
 
 class CCIndexIterator{
 public:
   ///////////////////////////////////////////////////////////////////////////////
   // Class Constructor and Destructor
   ///////////////////////////////////////////////////////////////////////////////
-  CCIndexIterator(string str,int select_irrep = -1);
+  CCIndexIterator(std::string str,int select_irrep = -1);
   CCIndexIterator(CCIndex* index,int select_irrep = -1);
   ~CCIndexIterator();
   ///////////////////////////////////////////////////////////////////////////////

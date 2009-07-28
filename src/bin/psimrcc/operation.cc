@@ -1,12 +1,10 @@
-/***************************************************************************
- *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
-
-#include "debugging.h"
-#include "blas.h"
 #include <libutil/libutil.h>
+
+#include "blas.h"
+#include "debugging.h"
+#include "matrix.h"
+
+extern FILE *outfile;
 
 namespace psi{ namespace psimrcc{
 

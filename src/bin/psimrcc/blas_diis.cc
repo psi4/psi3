@@ -11,6 +11,7 @@
 
 #include "algebra_interface.h"
 #include "blas.h"
+#include "matrix.h"
 
 extern FILE *infile, *outfile;
 

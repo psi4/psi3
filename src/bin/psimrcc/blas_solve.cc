@@ -3,6 +3,8 @@
 #include "blas.h"
 #include "debugging.h"
 
+extern FILE* outfile;
+
 namespace psi{ namespace psimrcc{
 
 using namespace std;

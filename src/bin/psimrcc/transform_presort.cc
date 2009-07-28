@@ -12,15 +12,16 @@
 #include <libutil/libutil.h>
 #include "psifiles.h"
 
-#include "algebra_interface.h"
-#include "blas.h"
-#include "matrix.h"
-#include "transform.h"
-
 #define MAX(i,j) ((i>j) ? i : j)
 #define MIN(i,j) ((i>j) ? j : i)
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 #define four(i,j,k,l) INDEX(INDEX(i,j),INDEX(k,l))
+
+#include "algebra_interface.h"
+#include "blas.h"
+#include "matrix.h"
+#include "index.h"
+#include "transform.h"
 
 extern FILE* outfile;
 

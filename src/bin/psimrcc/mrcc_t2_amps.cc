@@ -4,12 +4,14 @@
  *  A multireference coupled cluster code
  ***************************************************************************/
 #include <libmoinfo/libmoinfo.h>
-#include "mrcc.h"
-#include "matrix.h"
+#include <libutil/libutil.h>
+
+#include "algebra_interface.h"
 #include "blas.h"
 #include "debugging.h"
-#include <libutil/libutil.h>
-#include "algebra_interface.h"
+#include "index.h"
+#include "matrix.h"
+#include "mrcc.h"
 
 extern FILE* outfile;
 

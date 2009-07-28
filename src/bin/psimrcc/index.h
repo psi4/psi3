@@ -85,11 +85,11 @@ public:
   int         get_tuple_irrep(short p, short q)           {return(two_index_to_irrep[p][q]);}
   int         get_tuple_irrep(short p, short q, short r)  {return(three_index_to_irrep[p][q][r]);}
 
-  vecvecint&   get_indices_to_pitzer()                     {return(indices_to_pitzer);}
+  vecvecint&   get_indices_to_pitzer()                    {return(indices_to_pitzer);}
 
-  size_t*     get_one_index_to_tuple_rel_index()     {return(one_index_to_tuple_rel_index);};
-  size_t**    get_two_index_to_tuple_rel_index()     {return(two_index_to_tuple_rel_index);};
-  size_t***   get_three_index_to_tuple_rel_index()   {return(three_index_to_tuple_rel_index);};
+  size_t*     get_one_index_to_tuple_rel_index()          {return(one_index_to_tuple_rel_index);};
+  size_t**    get_two_index_to_tuple_rel_index()          {return(two_index_to_tuple_rel_index);};
+  size_t***   get_three_index_to_tuple_rel_index()        {return(three_index_to_tuple_rel_index);};
   int*        get_one_index_to_irrep()                    {return(one_index_to_irrep);};
   int**       get_two_index_to_irrep()                    {return(two_index_to_irrep);};
   int***      get_three_index_to_irrep()                  {return(three_index_to_irrep);};

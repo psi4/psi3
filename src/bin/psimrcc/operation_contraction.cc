@@ -9,6 +9,8 @@
 #include "algebra_interface.h"
 #include "blas.h"
 #include "debugging.h"
+#include "index.h"
+#include "matrix.h"
 #include "operation.h"
 
 extern FILE *outfile;

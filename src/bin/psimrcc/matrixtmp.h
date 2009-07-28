@@ -6,9 +6,10 @@
  *   SR/MRCC Code
  ***************************************************************************/
 
-#include "matrix.h"
 
 namespace psi{ namespace psimrcc{
+
+class CCMatrix;
 
 enum DiskOpt {none,dump,release};
 

@@ -10,15 +10,15 @@
 #include <map>
 #include <vector>
 
-#include "blas.h"
 
 namespace psi{ namespace psimrcc{
 
+class CCMatrix;
+
+#include "matrix_types.h"
+
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 #define four(i,j,k,l) INDEX(INDEX(i,j),INDEX(k,l))
-
-typedef std::vector<std::pair<CCMatrix*,int> > MatrixBlks;
-typedef std::vector<std::pair<CCMatrix*,int> >::iterator MatBlksIt;
 
 enum SortAlgorithm {in_core_sort,out_of_core_sort,mrpt2_sort};
 

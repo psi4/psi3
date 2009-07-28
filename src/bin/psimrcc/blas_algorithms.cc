@@ -3,6 +3,7 @@
 
 #include "blas.h"
 #include "debugging.h"
+#include "matrix.h"
 
 extern FILE *outfile;
 

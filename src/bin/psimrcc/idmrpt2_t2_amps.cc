@@ -10,6 +10,8 @@
 #include "debugging.h"
 #include <libmoinfo/libmoinfo.h>
 
+extern FILE *outfile;
+
 namespace psi{ namespace psimrcc{
 
 /**

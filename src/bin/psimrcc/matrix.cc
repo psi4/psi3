@@ -1,9 +1,3 @@
-/***************************************************************************
- *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
-
 #include <iostream>
 #include <cmath>
 #include <algorithm>
@@ -12,6 +6,7 @@
 #include <libmoinfo/libmoinfo.h>
 #include <libutil/libutil.h>
 
+#include "index.h"
 #include "matrix.h"
 
 extern FILE *outfile;
@@ -19,7 +14,6 @@ extern FILE *outfile;
 namespace psi{ namespace psimrcc{
 
 using namespace std;
-
 
 int CCMatrix::nirreps                          = -1;
 double CCMatrix::fraction_of_memory_for_buffer = 0.05;

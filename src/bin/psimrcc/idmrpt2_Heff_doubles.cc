@@ -5,9 +5,13 @@
  *  A multireference coupled cluster code
  ***************************************************************************/
 
+#include <libutil/libutil.h>
+
 #include "idmrpt2.h"
 #include "blas.h"
 #include "debugging.h"
+
+extern FILE* outfile;
 
 namespace psi{ namespace psimrcc{
 

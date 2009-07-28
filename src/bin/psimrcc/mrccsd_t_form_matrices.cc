@@ -11,6 +11,7 @@
 
 #include "blas.h"
 #include "index_iterator.h"
+#include "matrix.h"
 #include "mrccsd_t.h"
 #include "special_matrices.h"
 

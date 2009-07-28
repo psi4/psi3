@@ -4,10 +4,6 @@
 #include <libmoinfo/libmoinfo.h>
 #include <libutil/libutil.h>
 
-#include "algebra_interface.h"
-#include "blas.h"
-#include "matrix.h"
-#include "transform.h"
 
 #define CCTRANSFORM_USE_BLAS
 
@@ -23,6 +19,12 @@
 #include <libiwl/iwl.h>
 #include <libqt/qt.h>
 #include "psifiles.h"
+
+#include "algebra_interface.h"
+#include "blas.h"
+#include "index.h"
+#include "matrix.h"
+#include "transform.h"
 
 extern FILE* outfile;
 

@@ -5,6 +5,8 @@
 #include "blas.h"
 #include "debugging.h"
 
+extern FILE* outfile;
+
 namespace psi{ namespace psimrcc{
 
 void MP2_CCSD::build_mp2_t2_iJaB_amplitudes()

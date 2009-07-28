@@ -4,11 +4,6 @@
 #include <libmoinfo/libmoinfo.h>
 #include <libutil/libutil.h>
 
-#include "transform.h"
-#include "matrix.h"
-#include "algebra_interface.h"
-#include "blas.h"
-
 #define CCTRANSFORM_USE_BLAS
 
 #define MAX(i,j) ((i>j) ? i : j)
@@ -23,6 +18,12 @@
 #include <libiwl/iwl.h>
 #include <libqt/qt.h>
 #include "psifiles.h"
+
+#include "algebra_interface.h"
+#include "blas.h"
+#include "matrix.h"
+#include "index.h"
+#include "transform.h"
 
 extern FILE* outfile;
 

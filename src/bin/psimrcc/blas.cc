@@ -8,6 +8,8 @@
 
 #include "blas.h"
 #include "debugging.h"
+#include "index.h"
+#include "matrix.h"
 
 extern FILE *outfile;
 

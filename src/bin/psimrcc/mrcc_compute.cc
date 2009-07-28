@@ -10,12 +10,16 @@
  *  @brief Contains all the methods to compute the energy
 */
 
+#include <cstdlib>
+
 #include <liboptions/liboptions.h>
+#include <libmoinfo/libmoinfo.h>
+
 #include "blas.h"
 #include "mrcc.h"
 #include "debugging.h"
-#include <libmoinfo/libmoinfo.h>
-#include <cstdlib>
+
+extern FILE *outfile;
 
 namespace psi{ namespace psimrcc{
 

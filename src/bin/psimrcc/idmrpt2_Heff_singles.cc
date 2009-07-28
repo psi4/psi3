@@ -5,10 +5,13 @@
  *  A multireference coupled cluster code
  ***************************************************************************/
 
-#include "idmrpt2.h"
-#include "blas.h"
 #include <libmoinfo/libmoinfo.h>
+
+#include "blas.h"
 #include "debugging.h"
+#include "idmrpt2.h"
+
+extern FILE* outfile;
 
 namespace psi{ namespace psimrcc{
 

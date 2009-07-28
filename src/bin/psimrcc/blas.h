@@ -6,25 +6,23 @@
     \brief   A class to perform contractions
 */
 
-#include "index.h"
-#include "matrix.h"
-#include "matrixtmp.h"
-#include "operation.h"
-
 #include <deque>
 #include <string>
 #include <vector>
 #include <map>
 #include <utility>
 
+#include "matrixtmp.h"
+#include "operation.h"
+
+#include "index_types.h"
+#include "matrix_types.h"
+#include "types.h"
+
 namespace psi{ namespace psimrcc{
 
-typedef std::map<CCMatrix*,int> MatCnt;
-typedef std::map<std::string,CCMatrix*> MatrixMap;
-typedef std::map<std::string,CCMatrix*>::iterator MatMapIt;
-typedef std::map<std::string,CCIndex*>  IndexMap;
-typedef std::vector<double*>            ArrayVec;
-typedef std::map<std::string,double***> SortMap;
+class CCIndex;
+class CCMatrix;
 
 enum DiisType {DiisEachCycle,DiisCC};
 
@@ -67,7 +65,7 @@ public:
   void       diis(int cycle, double delta, DiisType diis_type);
   // Printing
   void       print(const char* cstr);
-  void       print_ref(string& str);
+  void       print_ref(std::string& str);
   void       print_memory();
   // Safe get and set
   CCIndex*   get_index(const char* cstr);
@@ -119,7 +117,7 @@ private:
   void       add_Matrix_ref(std::string& str);
   void       add_indices();
   void       add_matrix_ref(std::string& str);
-  void       solve_ref(string& str);
+  void       solve_ref(std::string& str);
   int        parse(std::string& str);
   void       process_operations();
   void       process_reduce_spaces(CCMatrix* out_Matrix,CCMatrix* in_Matrix);

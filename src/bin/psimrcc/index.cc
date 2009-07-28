@@ -20,10 +20,9 @@ using namespace std;
 int                       CCIndex::nirreps=-1;
 
 CCIndex::CCIndex(std::string str):
-nelements(0),ntuples(0), greater_than_or_equal(false), greater_than(false), label(str),tuples(0),
-one_index_to_tuple_rel_index(0),one_index_to_irrep(0),
-two_index_to_tuple_rel_index(0),two_index_to_irrep(0),
-three_index_to_tuple_rel_index(0),three_index_to_irrep(0)
+  label(str),nelements(0), greater_than_or_equal(false), greater_than(false), ntuples(0), tuples(0),
+  one_index_to_tuple_rel_index(0), two_index_to_tuple_rel_index(0), three_index_to_tuple_rel_index(0),
+  one_index_to_irrep(0), two_index_to_irrep(0), three_index_to_irrep(0)
 {
   if(nirreps<0) nirreps = moinfo->get_nirreps();
   init();
@@ -37,12 +36,12 @@ CCIndex::~CCIndex()
 void CCIndex::init()
 {
   // New orbital spaces must be added here
-  for(int i =0;i<label.size();i++)
+  for(size_t i = 0; i < label.size(); ++i)
     if( label[i]=='o' || label[i]=='a' || label[i]=='v' || label[i]=='s' || label[i]=='n' || label[i]=='f')
       nelements++;
 
   // Get the orbital spaces data pointers
-  for(int i=0;i<label.size();i++)
+  for(size_t i = 0; i < label.size(); ++i)
   {
     if(label[i]=='o'){
       mospi.push_back(moinfo->get_occ());
@@ -156,13 +155,13 @@ void CCIndex::make_one_index()
   allocate1(size_t,one_index_to_tuple_rel_index,dimension[0]);
   allocate1(int,one_index_to_irrep,dimension[0]);
 
-  for(int i=0;i<dimension[0];i++){
+  for(size_t i = 0; i < dimension[0]; ++i){
     one_index_to_tuple_rel_index[i] =  0;
     one_index_to_irrep[i] = -1;
   }
 
   ntuples = 0;
-  for(int h=0;h<nirreps;h++){
+  for(int h = 0; h < nirreps; ++h){
     first.push_back(ntuples);
     for(int p = 0; p < mospi[0][h]; ++p){
       one_index_to_tuple_rel_index[ntuples] = p;
@@ -177,7 +176,7 @@ void CCIndex::make_one_index()
   }
 
   allocate2(short,tuples,ntuples,1);
-  for(int n=0;n<pairs.size();n++)
+  for(size_t n = 0; n < pairs.size(); ++n)
     tuples[n][0] = pairs[n][0];
 }
 
@@ -189,8 +188,8 @@ void CCIndex::make_two_index()
   allocate2(size_t,two_index_to_tuple_rel_index,dimension[0],dimension[1]);
   allocate2(int,two_index_to_irrep,dimension[0],dimension[1]);
 
-  for(int i=0;i<dimension[0];i++){
-    for(int j=0;j<dimension[1];j++){
+  for(size_t i = 0; i < dimension[0]; ++i){
+    for(size_t j = 0; j < dimension[1]; ++j){
       two_index_to_tuple_rel_index[i][j] = 0;
       two_index_to_irrep[i][j] = -1;
     }
@@ -282,7 +281,7 @@ void CCIndex::make_two_index()
 
   // Allocate the memory for the tuples and store them
   allocate2(short,tuples,ntuples,2);
-  for(int n=0;n<pairs.size();n++){
+  for(size_t n = 0; n < pairs.size(); ++n){
     tuples[n][0] = pairs[n][0];
     tuples[n][1] = pairs[n][1];
   }
@@ -302,9 +301,9 @@ void CCIndex::make_three_index()
   // Allocate the 3->tuple mapping array and set them to -1
   allocate3(size_t,three_index_to_tuple_rel_index,dimension[0],dimension[1],dimension[2]);
   allocate3(int,three_index_to_irrep,dimension[0],dimension[1],dimension[2]);
-  for(int i=0;i<dimension[0];i++){
-    for(int j=0;j<dimension[1];j++){
-      for(int k=0;k<dimension[2];k++){
+  for(size_t i = 0; i < dimension[0]; ++i){
+    for(size_t j = 0; j < dimension[1]; ++j){
+      for(size_t k = 0; k < dimension[2]; ++k){
         three_index_to_tuple_rel_index[i][j][k] =  0;
         three_index_to_irrep[i][j][k] = -1;
       }
@@ -381,7 +380,7 @@ void CCIndex::make_three_index()
 
   // Allocate the memory for the tuples and store them
   allocate2(short,tuples,ntuples,3);
-  for(int n=0;n<pairs.size();n++){
+  for(size_t n = 0; n < pairs.size(); ++n){
     tuples[n][0] = pairs[n][0];
     tuples[n][1] = pairs[n][1];
     tuples[n][2] = pairs[n][2];
@@ -391,13 +390,13 @@ void CCIndex::make_three_index()
 void CCIndex::print()
 {
   fprintf(outfile,"\n\n---------------------------------");
-  fprintf(outfile,"\n\tPair Type %s has %d elements",label.c_str(),ntuples);
+  fprintf(outfile,"\n\tPair Type %s has %lu elements",label.c_str(),(unsigned long) ntuples);
   fprintf(outfile,"\n---------------------------------");
   int index=0;
   for(int h=0;h<nirreps;h++){
     if(tuplespi[h]>0)
       fprintf(outfile,"\n\t%s",moinfo->get_irr_labs(h));
-    for(int tuple=0;tuple<tuplespi[h];tuple++){
+    for(size_t tuple = 0; tuple < tuplespi[h]; ++tuple){
       fprintf(outfile,"\n\t\t( ");
       for(int k=0;k<nelements;k++)
         fprintf(outfile,"%d ",tuples[index][k]);

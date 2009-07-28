@@ -4,6 +4,8 @@
 #include <libutil/libutil.h>
 #include <algorithm>
 
+extern FILE *outfile;
+
 namespace psi{ namespace psimrcc{
 
 typedef std::vector<std::string>            strvec;

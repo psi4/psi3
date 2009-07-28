@@ -5,12 +5,12 @@
 #include <libqt/qt.h>
 #include <libutil/libutil.h>
 
-
 #include "blas.h"
+#include "index.h"
 #include "debugging.h"
+#include "matrix.h"
 
-
-extern FILE *infile, *outfile;
+extern FILE *outfile;
 
 namespace psi{ namespace psimrcc{
 

@@ -1,8 +1,12 @@
-#include "blas.h"
-#include <libutil/libutil.h>
 #include <cstdlib>
 
-extern FILE *infile, *outfile;
+#include <libutil/libutil.h>
+
+#include "blas.h"
+#include "index.h"
+#include "matrix.h"
+
+extern FILE *outfile;
 
 namespace psi{ namespace psimrcc{
 

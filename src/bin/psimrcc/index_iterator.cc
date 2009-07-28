@@ -1,6 +1,7 @@
 #include <libmoinfo/libmoinfo.h>
 
 #include "blas.h"
+#include "index.h"
 #include "index_iterator.h"
 
 namespace psi{ namespace psimrcc{

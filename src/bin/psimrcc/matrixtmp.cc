@@ -1,3 +1,4 @@
+#include "matrix.h"
 #include "matrixtmp.h"
 
 namespace psi{ namespace psimrcc{

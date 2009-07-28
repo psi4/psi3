@@ -1,9 +1,10 @@
 #include <libmoinfo/libmoinfo.h>
+#include <libutil/libutil.h>
+
 #include "mp2_ccsd.h"
 #include "matrix.h"
 #include "blas.h"
 #include "debugging.h"
-#include <libutil/libutil.h>
 
 extern FILE* outfile;
 

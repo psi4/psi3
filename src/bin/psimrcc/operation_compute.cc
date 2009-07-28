@@ -4,15 +4,18 @@
  *  A multireference coupled cluster code
  ***************************************************************************/
 
-#include "operation.h"
-#include "blas.h"
-#include <libutil/libutil.h>
-#include "debugging.h"
-#include "algebra_interface.h"
-#include <libmoinfo/libmoinfo.h>
 #include <cstdlib>
 
-extern FILE *infile, *outfile;
+#include <libmoinfo/libmoinfo.h>
+#include <libutil/libutil.h>
+
+#include "algebra_interface.h"
+#include "blas.h"
+#include "debugging.h"
+#include "matrix.h"
+#include "operation.h"
+
+extern FILE *outfile;
 
 namespace psi{ namespace psimrcc{
 

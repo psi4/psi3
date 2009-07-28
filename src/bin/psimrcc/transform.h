@@ -1,10 +1,11 @@
 #ifndef _psi_src_bin_psimrcc_cctransform_h
 #define _psi_src_bin_psimrcc_cctransform_h
 
-#include "index.h"
 #include <map>
 
 namespace psi{ namespace psimrcc{
+
+class CCIndex;
 
 /**
 	@author Francesco A. Evangelista and Andrew C. Simmonett <frank@ccc.uga.edu>

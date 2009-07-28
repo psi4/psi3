@@ -3,9 +3,11 @@
  *  frank@ccc.uga.edu   andysim@ccc.uga.edu
  *  A multireference coupled cluster code
  ***************************************************************************/
-#include "idmrpt2.h"
+#include <libutil/libutil.h>
+
 #include "blas.h"
 #include "debugging.h"
+#include "idmrpt2.h"
 
 extern FILE* outfile;
 

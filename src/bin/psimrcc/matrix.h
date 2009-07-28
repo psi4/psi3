@@ -1,50 +1,17 @@
-#ifndef _psi_src_bin_psimrcc_ccmatrix_h
-#define _psi_src_bin_psimrcc_ccmatrix_h
+#ifndef _psi_src_bin_psimrcc_matrix_h_
+#define _psi_src_bin_psimrcc_matrix_h_
 /***************************************************************************
  *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
  *  frank@ccc.uga.edu   andysim@ccc.uga.edu
  *  A multireference coupled cluster code
  ***************************************************************************/
 
-/*********************************************************
-  CCMatrix Class
-  1) Purpose
-    This class is used to store block diagonal matrices
-  2) Details
-    The matrix elements are stored using according to the irreps
-    where the row and column index can be either a regular or a
-    compund index (for example, [pq], [pqr], ...).
-
-        A1     A2    B1     B2
-    -----------------------------
-    |*******|     |      |      |
-    |*******|     |      |      |
-    |*******|     |      |      |
-    |*******|     |      |      |
-    -----------------------------
-    |       |*****|      |      |
-    |       |*****|      |      |
-    |       |*****|      |      |
-    -----------------------------
-    |       |     |******|      |
-    |       |     |******|      |
-    |       |     |******|      |
-    |       |     |******|      |
-    -----------------------------
-    |       |     |      |******|
-    |       |     |      |******|
-    |       |     |      |******|
-    |       |     |      |******|
-    -----------------------------
-  3) Uses
-    MOInfo,CCSort,CCIndex classes
-  4) TODO Allow for non-symmetric tensors to be stored
-
-*********************************************************/
-
-#include "index.h"
+#include <vector>
+#include <string>
 
 namespace psi{ namespace psimrcc{
+
+class CCIndex;
 
 /**
   @author Francesco Evangelista <frank@ccc.uga.edu>
@@ -73,8 +40,8 @@ public:
   bool         is_out_of_core(int h)             const {return(out_of_core[h]);}
 
   // Functions to get the properties of a matrix
-  string&      get_label()                             {return(label);}
-  string&      get_index_label()                       {return(index_label);}
+  std::string&  get_label()                             {return(label);}
+  std::string&  get_index_label()                       {return(index_label);}
   size_t       get_memory2()                      const {return(memory2);}
   size_t       get_memorypi2(int h)               const {return(memorypi2[h]);}
   int          get_reference()                   const {return(reference);}
@@ -141,7 +108,7 @@ public:
   void         element_by_element_product(double factor,CCMatrix* B_Matrix,CCMatrix* C_Matrix,int h);
   void         element_by_element_division(double factor,CCMatrix* B_Matrix,CCMatrix* C_Matrix,int h);
   void         element_by_element_addition(double factor,CCMatrix* B_Matrix,int h);
-  void         tensor_product(string& reindexing,double factor,CCMatrix* B_Matrix,CCMatrix* C_Matrix);
+  void         tensor_product(std::string& reindexing,double factor,CCMatrix* B_Matrix,CCMatrix* C_Matrix);
   static double dot_product(CCMatrix* B_Matrix, CCMatrix* C_Matrix, int h);
 
   // Very Special (VS) Matrix operations
@@ -176,7 +143,7 @@ private:
   ///////////////////////////////////////////////////////////////////////////////
   // Class private functions
   ///////////////////////////////////////////////////////////////////////////////
-  string       compute_index_label();
+  std::string  compute_index_label();
   ///////////////////////////////////////////////////////////////////////////////
   // Class data
   ///////////////////////////////////////////////////////////////////////////////
@@ -207,4 +174,4 @@ public:
 
 }} /* End Namespaces */
 
-#endif // _psi_src_bin_psimrcc_ccmatrix_h
+#endif // _psi_src_bin_psimrcc_matrix_h_
