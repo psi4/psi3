@@ -56,6 +56,7 @@ private:
 
 
 void print_error(FILE* output, std::string message, const char* file, int line);
+void print_error(FILE* output, std::string message, const char* file, int line, int error);
 void print_error(FILE* output, const char* message, const char* file, int line);
 void print_error(FILE* output, const char* message, const char* file, int line,int error);
 void print_developing(FILE* output, const char* message, const char* file, int line);

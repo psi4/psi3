@@ -233,10 +233,22 @@ unsigned long int free_smatrix(short*** matrix, int size1, int size2, int size3)
 
 void print_error(FILE* output, string message, const char* file, int line)
 {
-  printf("\n\n%s in file %s, line %d\n",message.c_str(),file,line);
+  printf("\n\n!!!!!!!!!!!!!!!!!!!! ERROR !!!!!!!!!!!!!!!!!!!!!\n");
+  printf("\n%s in file %s, line %d\n",message.c_str(),file,line);
+  printf("\n!!!!!!!!!!!!!!!!!!!! ERROR !!!!!!!!!!!!!!!!!!!!!\n");
   fprintf(output,"\n\n%s in file %s, line %d\n",message.c_str(),file,line);
   fflush(output);
   exit(1);
+}
+
+void print_error(FILE* output, string message, const char* file, int line, int error)
+{
+  printf("\n\n!!!!!!!!!!!!!!!!!!!! ERROR !!!!!!!!!!!!!!!!!!!!!\n");
+  printf("\n%s in file %s, line %d\n",message.c_str(),file,line);
+  printf("\n!!!!!!!!!!!!!!!!!!!! ERROR !!!!!!!!!!!!!!!!!!!!!\n");
+  fprintf(output,"\n\n%s in file %s, line %d\n",message.c_str(),file,line);
+  fflush(output);
+  exit(error);
 }
 
 void print_error(FILE* output, const char* message, const char* file, int line)

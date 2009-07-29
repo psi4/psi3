@@ -15,6 +15,7 @@
 #include <libipv1/ip_lib.h>
 #include <libutil/libutil.h>
 #include <libqt/qt.h>
+#include <psifiles.h>
 
 #include "moinfo.h"
 
@@ -293,6 +294,24 @@ void MOInfo::read_mo_spaces()
   nactive_bel = nbel - ndocc - nfocc;
   nocc        = ndocc + nactv;
   nvir        = nactv + nextr;
+
+  bool active_space_problem = false;
+  string error_msg;
+  if(nactv < nactive_ael){
+    error_msg += "\n  - the number of active orbitals (nactv = " + to_string(nactv) + ")";
+    error_msg += " is smaller than the number of active alpha electrons (nactive_ael =" + to_string(nactive_ael) +")",
+    active_space_problem = true;
+  }
+  if(nactv < nactive_bel){
+    error_msg += "\n  - the number of active orbitals (nactv = " + to_string(nactv) + ")";
+    error_msg += " is smaller than the number of active beta electrons (nactive_bel =" + to_string(nactive_bel) +")",
+    active_space_problem = true;
+  }
+  if(active_space_problem){
+    error_msg = "MOInfo found a problem with the definition of the active space:" + error_msg;
+    print_error(outfile,error_msg,__FILE__,__LINE__,PSI_RETURN_FAILURE);
+  }
+
 
   /*********************************************
     Define the symmetry of each  non-frozen MO
