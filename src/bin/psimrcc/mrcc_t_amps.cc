@@ -41,7 +41,7 @@ void CCMRCC::synchronize_amps()
     blas->solve("t2[Oo][Vv]{u} = #2143# t2[oO][vV]{u}");
   }
 
-  if(triples_type>=ccsd_t){
+  if(triples_type > ccsd_t){
     blas->solve("t2[ovv][o]{u} = #1423# t2[oo][vv]{u}"); // T2_iab_j
     blas->solve("t2[oVv][O]{u} = #1432# t2[oO][vV]{u}"); // T2_iBa_J
     blas->solve("t2[OvV][o]{u} = #4123# t2[oO][vV]{u}"); // T2_JaB_i
@@ -63,7 +63,7 @@ void CCMRCC::update_amps()
 {
   update_t1_amps();
   update_t2_amps();
-  if(triples_type>ccsd_t)
+  if(triples_type > ccsd_t)
     update_t3_amps();
   synchronize_amps();
 

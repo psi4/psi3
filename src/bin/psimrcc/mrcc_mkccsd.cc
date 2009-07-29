@@ -33,7 +33,7 @@ void CCMRCC::update_amps_mkccsd()
 //   update_t2_amps_mkccsd();
 
   update_t1_t2_amps_mkccsd();
-  if(triples_type>ccsd)
+  if(triples_type > ccsd_t)
     update_t3_amps_mkccsd();
   zero_internal_delta_amps();
 

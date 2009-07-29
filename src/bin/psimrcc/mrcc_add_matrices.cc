@@ -318,11 +318,20 @@ void CCMRCC::add_matrices()
   blas->add_Matrix("Mk2[OO][VV]{u}");
 
   // Triples
-  if(triples_type == ccsd_t){
+  if(triples_type >= ccsd_t){
     blas->add_Matrix("t2[Oo][Vv]{u}");
+    blas->add_Matrix("F2_me[o][v]{u}");
+    blas->add_Matrix("F2_ME[O][V]{u}");
+
+    // Required by T2*W_bcek
+    blas->add_Matrix("t2[oov][v]{u}");
+    blas->add_Matrix("t2[oOv][V]{u}");
+    blas->add_Matrix("t2[OoV][v]{u}");
+    blas->add_Matrix("t2[OOV][V]{u}");
+
   }
 
-  if(triples_type >= ccsd_t){  // TODO: ccsd_t should not require storage
+  if(triples_type > ccsd_t){  // TODO: ccsd_t should not require storage
 
     blas->add_Matrix("ERROR{u}");
     blas->add_Matrix("<[oo]:[ov]>");
@@ -334,8 +343,7 @@ void CCMRCC::add_matrices()
     blas->add_Matrix("t2_test[oO][vV]{u}");
     blas->add_Matrix("t2_test[OO][VV]{u}");*/
 
-    blas->add_Matrix("F2_me[o][v]{u}");
-    blas->add_Matrix("F2_ME[O][V]{u}");
+
 
     blas->add_Matrix("W'_abic[vvo][v]{u}");
     blas->add_Matrix("W'_aBIc[vVO][v]{u}");
@@ -370,21 +378,11 @@ void CCMRCC::add_matrices()
     blas->add_Matrix("t2[oVv][O]{u}");
     blas->add_Matrix("t2[OVV][O]{u}");
 
-    // Required by T2*W_bcek
-    blas->add_Matrix("t2[oov][v]{u}");
-    blas->add_Matrix("t2[oOv][V]{u}");
-    blas->add_Matrix("t2[OoV][v]{u}");
-    blas->add_Matrix("t2[OOV][V]{u}");
 
     blas->add_Matrix("t3[ooo][vvv]{u}");
     blas->add_Matrix("t3[ooO][vvV]{u}");
     blas->add_Matrix("t3[oOO][vVV]{u}");
     blas->add_Matrix("t3[OOO][VVV]{u}");
-/*
-    blas->add_Matrix("t3_test[ooo][vvv]{u}");
-    blas->add_Matrix("t3_test[ooO][vvV]{u}");
-    blas->add_Matrix("t3_test[oOO][vVV]{u}");
-    blas->add_Matrix("t3_test[OOO][VVV]{u}");*/
 
     blas->add_Matrix("t3_eqns[ooo][vvv]{u}");
     blas->add_Matrix("t3_eqns[ooO][vvV]{u}");
@@ -394,7 +392,6 @@ void CCMRCC::add_matrices()
 
   blas->add_Matrix("fock[ff]{u}");
   blas->add_Matrix("fock[FF]{u}");
-
 
   if(pert_cbs){
     blas->add_Matrix("t2_eqns[oo][vf]{u}");

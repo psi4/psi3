@@ -6,6 +6,7 @@
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.hpp>
 #include <libipv1/ip_lib.h>
+#include <liboptions/liboptions.h>
 
 #include "moinfo_scf.h"
 
@@ -18,6 +19,27 @@ namespace psi {
 MOInfoSCF::MOInfoSCF() : MOInfoBase()
 {
   read_chkpt_data();
+
+  // Determine the wave function irrep
+  if(use_liboptions){
+    // The first irrep is 0
+    wfn_sym = 0;
+    string wavefunction_sym_str = options_get_str("WFN_SYM");
+    to_lower(wavefunction_sym_str);
+
+    for(int h = 0; h < nirreps; ++h){
+      string irr_label_str = irr_labs[h];
+      trim_spaces(irr_label_str);
+      to_lower(irr_label_str);
+      if(wavefunction_sym_str == irr_label_str){
+        wfn_sym = h;
+      }
+      if(wavefunction_sym_str == to_string(h+1)){
+        wfn_sym = h;
+      }
+    }
+  }
+
   compute_number_of_electrons();
   read_mo_spaces();
   print_mo();

@@ -63,8 +63,7 @@ MOInfo::MOInfo(bool silent_, bool use_liboptions_) : MOInfoBase(silent_,use_libo
   nvir  = 0;
   nall  = 0;
   nextr = 0;
-
-//  read_mo_spaces2();
+  root  = 0;
 
   read_info();
   read_mo_spaces();
@@ -74,29 +73,6 @@ MOInfo::MOInfo(bool silent_, bool use_liboptions_) : MOInfoBase(silent_,use_libo
     print_info();
     print_mo();
   }
-  // Determine the wave function irrep
-
-  if(use_liboptions){
-    // The first irrep in the input is 1
-    wfn_sym = 1;
-    string wavefunction_sym_str = options_get_str("WFN_SYM");
-    to_lower(wavefunction_sym_str);
-
-    for(int h=0; h < nirreps; ++h){
-      string irr_label_str = irr_labs[h];
-      trim_spaces(irr_label_str);
-      to_lower(irr_label_str);
-      if(wavefunction_sym_str==irr_label_str){
-        wfn_sym = h;
-      }
-      if(to_string(h+1) == wavefunction_sym_str){
-        wfn_sym = h;
-      }
-    }
-
-    // The lowest root in the input is 1, here we subtract one
-    root = options_get_int("ROOT") - 1;
-  }
 }
 
 MOInfo::~MOInfo()
@@ -104,20 +80,46 @@ MOInfo::~MOInfo()
   free_memory();
 }
 
+void MOInfo::read_info()
+{
+  /***********************************
+    Read Nuclear,SCF and other stuff
+  ***********************************/
+  read_chkpt_data();
+  nmo            = _default_chkpt_lib_->rd_nmo();
+  compute_number_of_electrons();
+  scf_energy     = _default_chkpt_lib_->rd_escf();
+  mopi           = read_chkpt_intvec(nirreps,_default_chkpt_lib_->rd_orbspi());
+  scf            = _default_chkpt_lib_->rd_scf();
+  scf_irrep      = new double**[nirreps];
+  for(int i=0;i<nirreps;i++)
+    scf_irrep[i] = _default_chkpt_lib_->rd_scf_irrep(i);
 
+  // Determine the wave function irrep
+  if(use_liboptions){
+    // The defalut irrep is 0 (A)
+    wfn_sym = 0;
+    string wavefunction_sym_str = options_get_str("WFN_SYM");
+    to_lower(wavefunction_sym_str);
+    fprintf(outfile,"\n wavefunction_sym_str = %s",wavefunction_sym_str.c_str());
 
-///*!
-//    \fn MOInfo::read_mo_spaces()
-// */
-//void MOInfo::read_mo_spaces2()
-//{
-//  read_recursively(mo_spaces);
-//}
-//
-//void read_recursively()
-//{
-//
-//}
+    for(int h = 0; h < nirreps; ++h){
+      string irr_label_str = irr_labs[h];
+      trim_spaces(irr_label_str);
+      to_lower(irr_label_str);
+      fprintf(outfile,"\n %s %s",irr_label_str.c_str(),to_string(h+1).c_str());
+
+      if(wavefunction_sym_str == irr_label_str){
+        wfn_sym = h;
+      }
+      if(wavefunction_sym_str == to_string(h+1)){
+        wfn_sym = h;
+      }
+    }
+    // The lowest root in the input is 1, here we subtract one
+    root = options_get_int("ROOT") - 1;
+  }
+}
 
 void MOInfo::setup_model_space()
 {
@@ -137,21 +139,7 @@ void MOInfo::setup_model_space()
 }
 
 
-void MOInfo::read_info()
-{
-  /***********************************
-    Read Nuclear,SCF and other stuff
-  ***********************************/
-  read_chkpt_data();
-  nmo            = _default_chkpt_lib_->rd_nmo();
-  compute_number_of_electrons();
-  scf_energy     = _default_chkpt_lib_->rd_escf();
-  mopi           = read_chkpt_intvec(nirreps,_default_chkpt_lib_->rd_orbspi());
-  scf            = _default_chkpt_lib_->rd_scf();
-  scf_irrep      = new double**[nirreps];
-  for(int i=0;i<nirreps;i++)
-    scf_irrep[i] = _default_chkpt_lib_->rd_scf_irrep(i);
-}
+
 
 
 /*!
@@ -167,7 +155,7 @@ void MOInfo::print_info()
   fprintf(outfile,"\n");
   fprintf(outfile,"\n  MOs and Symmetry:");
   fprintf(outfile,"\n  ------------------------------------------------------------------------------");
-  fprintf(outfile,"\n  nirreps          = %-10d",nirreps);
+  fprintf(outfile,"\n  nirreps          = %-10d       root             = %-10d",nirreps,root);
   fprintf(outfile,"\n  nso              = %-10d       nmo              = %-10d",nso,nmo);
   fprintf(outfile,"\n  nael             = %-10d       nbel             = %-10d",nael,nbel);
   fprintf(outfile,"\n  nactive_ael      = %-10d       nactive_bel      = %-10d",nactive_ael,nactive_bel);

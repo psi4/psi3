@@ -43,7 +43,7 @@ void CCMRCC::build_F_intermediates()
   build_F_prime_mi_intermediates();
   build_F_prime_MI_intermediates();
 
-  if(triples_type>ccsd_t){
+  if(triples_type == ccsd_t){
     build_F2_me_intermediates();
     build_F2_ME_intermediates();
   }
@@ -332,62 +332,62 @@ void CCMRCC::build_F_prime_MI_intermediates()
 
 void CCMRCC::build_F2_me_intermediates()
 {
-  Timer timer;
-  DEBUGGING(1,
-    fprintf(outfile,"\n\tBuilding the F2_me Intermediates   ...");
-    fflush(outfile);
-  );
-  // Closed-Shell
-  // Add the VV Fock matrix with the diagonal terms zeroed
-  if(triples_type==ccsdt_1a){
-    blas->solve("F2_me[o][v]{c} = fock[o][v]{c}");
-  }else{
-    blas->solve("F2_me[o][v]{c} = F_me[o][v]{c}");
-  }
-
-  // Open-Shell
-  // Add the VV Fock matrix with the diagonal terms zeroed
-  if(triples_type==ccsdt_1a){
-    blas->solve("F2_me[o][v]{o} = fock[o][v]{o}");
-  }else{
-    blas->solve("F2_me[o][v]{o} = F_me[o][v]{o}");
-  }
-
-  DEBUGGING(3,blas->print("F2_me[o][v]{u}"););
-
-  DEBUGGING(1,
-    fprintf(outfile," done. Timing %20.6f s",timer.get());
-    fflush(outfile);
-  );
+//  Timer timer;
+//  DEBUGGING(1,
+//    fprintf(outfile,"\n\tBuilding the F2_me Intermediates   ...");
+//    fflush(outfile);
+//  );
+//  // Closed-Shell
+//  // Add the VV Fock matrix with the diagonal terms zeroed
+//  if(triples_type==ccsdt_1a){
+//    blas->solve("F2_me[o][v]{c} = fock[o][v]{c}");
+//  }else{
+//    blas->solve("F2_me[o][v]{c} = F_me[o][v]{c}");
+//  }
+//
+//  // Open-Shell
+//  // Add the VV Fock matrix with the diagonal terms zeroed
+//  if(triples_type==ccsdt_1a){
+//    blas->solve("F2_me[o][v]{o} = fock[o][v]{o}");
+//  }else{
+//    blas->solve("F2_me[o][v]{o} = F_me[o][v]{o}");
+//  }
+//
+//  DEBUGGING(3,blas->print("F2_me[o][v]{u}"););
+//
+//  DEBUGGING(1,
+//    fprintf(outfile," done. Timing %20.6f s",timer.get());
+//    fflush(outfile);
+//  );
 }
 
 void CCMRCC::build_F2_ME_intermediates()
 {
-  Timer timer;
-  DEBUGGING(1,
-    fprintf(outfile,"\n\tBuilding the F_ME Intermediates   ...");
-    fflush(outfile);
-  );
-  // Closed-Shell
-  if(triples_type==ccsdt_1a){
-    blas->solve("F2_ME[O][V]{c} = fock[O][V]{c}");
-  }else{
-    blas->solve("F2_ME[O][V]{c} = F_ME[O][V]{c}");
-  }
-
-  // Open-Shell
-  if(triples_type==ccsdt_1a){
-    blas->solve("F2_ME[O][V]{o} = fock[O][V]{o}");
-  }else{
-    blas->solve("F2_ME[O][V]{o} = F_ME[O][V]{o}");
-  }
-
-  DEBUGGING(3,blas->print("F2_ME[O][V]{o}"););
-
-  DEBUGGING(1,
-    fprintf(outfile," done. Timing %20.6f s",timer.get());
-    fflush(outfile);
-  );
+//  Timer timer;
+//  DEBUGGING(1,
+//    fprintf(outfile,"\n\tBuilding the F_ME Intermediates   ...");
+//    fflush(outfile);
+//  );
+//  // Closed-Shell
+//  if(triples_type==ccsdt_1a){
+//    blas->solve("F2_ME[O][V]{c} = fock[O][V]{c}");
+//  }else{
+//    blas->solve("F2_ME[O][V]{c} = F_ME[O][V]{c}");
+//  }
+//
+//  // Open-Shell
+//  if(triples_type==ccsdt_1a){
+//    blas->solve("F2_ME[O][V]{o} = fock[O][V]{o}");
+//  }else{
+//    blas->solve("F2_ME[O][V]{o} = F_ME[O][V]{o}");
+//  }
+//
+//  DEBUGGING(3,blas->print("F2_ME[O][V]{o}"););
+//
+//  DEBUGGING(1,
+//    fprintf(outfile," done. Timing %20.6f s",timer.get());
+//    fflush(outfile);
+//  );
 }
 
 }} /* End Namespaces */
