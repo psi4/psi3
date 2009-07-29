@@ -218,6 +218,8 @@ void MOInfo::read_mo_spaces()
     focc_ref = read_chkpt_intvec(nirreps,_default_chkpt_lib_->rd_frzcpi());
     docc_ref = read_chkpt_intvec(nirreps,_default_chkpt_lib_->rd_clsdpi());
     actv_ref = read_chkpt_intvec(nirreps,_default_chkpt_lib_->rd_openpi());
+    fvir_ref.assign(nirreps_ref,0); 
+    actv_docc_ref.assign(nirreps_ref,0); 
 
     for (int h = 0; h < nirreps_ref; h++)
       docc_ref[h] -= focc_ref[h];
