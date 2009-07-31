@@ -406,7 +406,9 @@ int main(int argc, char **argv) {
       else
         a = opt_step(carts, simples, symm_salcs);
       free_info(simples.get_num());
+      //fprintf(outfile,"Returning code %d\n", a);
       exit_io();
+      //fprintf(stdout, "Returning code %d\n", a);
       return a;
     }
 

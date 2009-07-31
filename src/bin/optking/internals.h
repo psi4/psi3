@@ -58,9 +58,13 @@ class internals {
       tors.fix_near_180();
       frag.fix_near_180();
     }
-    double **bond_connectivity_matrix(int natoms) const {
-      stre.bond_connectivity_matrix(natoms);
+    double **bond_connectivity_matrix(int natom) const {
+      return stre.bond_connectivity_matrix(natom);
     }
+    int *atom2fragment(int natom) {
+      return frag.atom2fragment(natom);
+    } 
+
 };
 
 }} /* namespace psi::optking */

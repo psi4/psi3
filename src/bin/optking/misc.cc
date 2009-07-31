@@ -110,8 +110,6 @@ void punt(const char *message) {
   fprintf(outfile,"         *** stopping execution ***\n");
   fprintf(stderr,"\n OPTKING error: %s\n", message);
   fprintf(stderr,"                 *** stopping execution ***\n");
-  /* fclose(outfile); */
-  /* exit(1); */
   exit_io();
 }
 

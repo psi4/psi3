@@ -7,7 +7,7 @@ PSILIBS = libPSI_ciomr.a libPSI_ipv1.a -lPSI_psio
 
 CXXINC += -DINSTALLEDPSIDATADIR=\"$(pkgdatadir)\"
 
-CXXSRC = gprgid.cc psi3.cc parse_var.cc runcmd.cc
+CXXSRC = gprgid.cc psi3.cc parse_var.cc runcmd.cc execut_opt_fc.cc
 
 BINOBJ = $(CXXSRC:%.cc=%.o)
 

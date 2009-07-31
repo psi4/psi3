@@ -149,6 +149,7 @@ integrals out (i.e. multiply by i=sqrt(-1) to get the integrals) */
 #define PSI_RETURN_SUCCESS      0
 #define PSI_RETURN_FAILURE      1
 #define PSI_RETURN_ENDLOOP      2
+#define PSI_RETURN_BALK         3
 
 //Added by ACS (01/06) for the UMP2R12 routines
 #define PSIF_MO_AA_R12      54

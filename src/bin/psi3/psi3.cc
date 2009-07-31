@@ -59,6 +59,8 @@ const char *ofname = NULL;
 
 void psi3_abort(void);
 int execut(char **module_names, int num_modules, int depth);
+extern int execut_opt_fc(char **module_names, int num_modules,
+  char **module_names_fc, int num_modules_fc);
 extern char **parse_var(int *nvars, int mxvars, const char *name);
 extern void runcmd(int *errcod, char *cmd);
 int parse_cmdline(int argc, char *argv[]);
@@ -87,10 +89,12 @@ int main(int argc, char *argv[])
   using namespace psi::psi3;
   FILE *psidat;
   char *psidat_dirname, *psidat_filename;
-  char *wfn, *dertyp, *reftyp, *calctyp, *jobtype, **exec, proced[132];
+  char *wfn, *dertyp, *reftyp, *calctyp, *jobtype;
+  char **exec, **exec_fc;
+  char proced[132], proced_fc[132]; //used for opt_fc compound jobs
   char tmpstr[133];
   int check=0;
-  int i,j,nexec=0,rdepth=0;
+  int i, j, nexec=0, nexec_fc=0, rdepth=0;
   int direct=0;
   int errcod;
   int plus_d=0;
@@ -105,8 +109,10 @@ int main(int argc, char *argv[])
     SYMM_FC,      /* force constants in internal coordinates, symmetric modes */
     FC,           /* force constants in internal coordinates, all modes */
     OEPROP,       /* one-electron properties */
-    DBOC          /* compute Diagonal Born-Oppenheimer Correction (DBOC)
+    DBOC,          /* compute Diagonal Born-Oppenheimer Correction (DBOC)
                      by finite difference */
+    OPT_FC        /* optimization with initial and possibly additional
+                     force constant evaluations */
   } JobType;
 
   // Set these to a known value
@@ -250,6 +256,8 @@ int main(int argc, char *argv[])
     else
       JobType = DBOC;
   }
+  else if ((strcmp(calctyp,"OPT_FC")==0) ||(strcmp(calctyp,"OPT-FC")==0)) 
+    JobType = OPT_FC;
   else {
     fprintf(stdout,"Error: Unrecognized calculation type %s\n", calctyp);
     psi3_abort();
@@ -262,6 +270,7 @@ int main(int argc, char *argv[])
     if (strcmp(calctyp,"FORCE")==0)
       strcpy(dertyp,"FIRST");
     else if (JobType == OPT) strcpy(dertyp, "FIRST");
+    else if (JobType == OPT_FC) strcpy(dertyp, "FIRST");
     else if (JobType == FREQ || JobType == SYMM_FC) {
       if (strcmp(wfn,"SCF")==0) strcpy(dertyp,"SECOND");
       else strcpy(dertyp,"FIRST"); /* guess analyt grads unless overridden */
@@ -311,6 +320,23 @@ int main(int argc, char *argv[])
       fprintf(stdout,"optimization using DERTYPE=%s.\n", dertyp);
       if (have_outfile)
       fprintf(outfile,"optimization using DERTYPE=%s.\n", dertyp);
+    }
+  }
+  if (JobType == OPT_FC) {
+    if (strcmp(dertyp,"FIRST")==0) {
+      fprintf(stdout,"optimization with force constants via analytic gradients.\n");
+      if (have_outfile)
+      fprintf(outfile,"optimization with force constants via analytic gradients.\n");
+    }
+    else if (strcmp(dertyp,"NONE")==0) {
+      fprintf(stdout,"optimization with force constants via energy points.\n");
+      if (have_outfile)
+      fprintf(outfile,"optimization with force constants via energy points.\n");
+    }
+    else {
+      fprintf(stdout,"optimization with force constants using DERTYPE=%s.\n", dertyp);
+      if (have_outfile)
+      fprintf(outfile,"optimization with force constants using DERTYPE=%s.\n", dertyp);
     }
   }
   else if (JobType == DISP) {
@@ -416,6 +442,11 @@ int main(int argc, char *argv[])
     fprintf(stdout,"Using the user provided execution list from 'exec'.\n");
     if (have_outfile)
     fprintf(outfile,"Using the user provided execution list from 'exec'.\n");
+    if (JobType == OPT_FC) {
+      fprintf(stdout,"Compound JobType OPT_FC is not a valid JOBTYPE");
+      fprintf(stdout," type for a user-specified EXEC statement.\n");
+      psi3_abort();
+    }
     exec = parse_var(&nexec,MXEXEC,"EXEC");
     /* turn off auto-run of $input command */
     auto_input = 0;
@@ -430,6 +461,10 @@ int main(int argc, char *argv[])
     else
       strcat(proced,wfn);
     strcat(proced,reftyp);
+
+    if (JobType == OPT_FC)
+      strcpy(proced_fc, proced);
+      
     /*
       For some cases do not need to append DERTYPE since it's irrelevant
       and determined by JobType
@@ -437,12 +472,16 @@ int main(int argc, char *argv[])
     if (JobType != DBOC) {
       if (strcmp(dertyp,"NONE")==0) strcat(proced,"ENERGY");
       else strcat(proced,dertyp);
+      if (JobType == OPT_FC)
+        strcat(proced_fc, dertyp);
     }
 
     switch (JobType) {
       case SP:
         jobtype = strdup("SP"); break;
       case OPT:
+        jobtype = strdup("OPT"); break;
+      case OPT_FC:
         jobtype = strdup("OPT"); break;
       case FREQ:
         jobtype = strdup("FREQ"); break;
@@ -461,6 +500,9 @@ int main(int argc, char *argv[])
     /* Unless jobtype = SP, append it to the calculation type */
     if (strcmp(jobtype,"SP"))
       strcat(proced,jobtype);
+
+    if (JobType == OPT_FC)
+      strcat(proced_fc,"SYMM_FC");
 
     if (auto_check || check) {
       fprintf(stdout, "Calculation type string = %s\n", proced);
@@ -494,6 +536,26 @@ int main(int argc, char *argv[])
     }
     exec = parse_var(&nexec,MXEXEC,proced);
     /* fprintf(outfile, "nexec = %d\n", nexec); */
+
+    if (JobType == OPT_FC) {
+      if (auto_check || check) {
+        fprintf(stdout, "Setup for force constants:\n");
+        if (have_outfile) fprintf(outfile, "Setup for force constants:\n");
+        fprintf(stdout, "Calculation type string = %s\n", proced_fc);
+        if (have_outfile)
+        fprintf(outfile, "Calculation type string = %s\n", proced_fc);
+      }
+
+      if (!ip_exist(proced_fc,0)) {
+        fprintf(stdout,"Error: Did not find a valid calculation type,\n");
+        fprintf(stdout,
+                "probably because of incompatible wfn,dertype,reference.\n");
+        fprintf(stdout,"Full calculation type is: %s\n", proced_fc);
+        psi3_abort();
+      }
+      exec_fc = parse_var(&nexec_fc,MXEXEC,proced_fc);
+      /* fprintf(outfile, "nexec_fc = %d\n", nexec); */
+    } // end OPT_FC
   } /* end default sequence from psi.dat */
 
 
@@ -522,6 +584,11 @@ int main(int argc, char *argv[])
     fprintf(outfile, " %s\n", input_exec[0]);
   }
 
+  if (JobType == OPT_FC) {
+    fprintf(stdout,"\n For optimization:\n");
+    if (have_outfile) fprintf(outfile,"\n For optimization:\n");
+  }
+
   rdepth = 0;
   for (i=0; i<nexec; i++) {
     if (strcmp(exec[i],"END")==0) rdepth=rdepth-1;
@@ -543,11 +610,41 @@ int main(int argc, char *argv[])
   fprintf(stdout,"\n");
   if (have_outfile) fprintf(outfile,"\n");
 
+  if (JobType == OPT_FC) {
+    fprintf(stdout," For force constants:\n");
+    if (have_outfile) fprintf(outfile," For force constants:\n");
+    rdepth = 0;
+    for (i=0; i<nexec_fc; i++) {
+      if (strcmp(exec_fc[i],"END")==0) rdepth=rdepth-1;
+      for (j=0; j<rdepth; j++) {
+        fprintf(stdout," ");
+        if (have_outfile) fprintf(outfile," ");
+      }
+      if (strcmp(exec_fc[i],"REPEAT")==0) {
+        rdepth=rdepth+1;
+        fprintf(stdout," %s %s\n",exec_fc[i],exec_fc[i+1]);
+        if (have_outfile) fprintf(outfile," %s %s\n",exec_fc[i],exec_fc[i+1]);
+        i++;
+      }
+      else if (strlen(exec_fc[i]) != 0)
+        fprintf(stdout," %s\n",exec_fc[i]);
+        if (have_outfile) fprintf(outfile," %s\n",exec_fc[i]);
+    }
+
+    fprintf(stdout,"\n");
+    if (have_outfile) fprintf(outfile,"\n");
+  }
+
   /* don't write in between, b/c modules will be writing there...*/
   if (have_outfile) fclose(outfile);
 
   if(auto_input && !check && !auto_check) execut(input_exec,1,0);
-  if (!check && !auto_check) execut(exec,nexec,0);
+  if (!check && !auto_check) {
+    if (JobType == OPT_FC)
+      execut_opt_fc(exec,nexec,exec_fc,nexec_fc);
+    else
+      execut(exec,nexec,0);
+  }
 
   /* clean up and free memory */
   free(wfn);
@@ -555,6 +652,7 @@ int main(int argc, char *argv[])
   free(reftyp);
   if (!ip_exist("EXEC",0)) free(jobtype);
   for (i=0; i<nexec; i++) free(exec[i]);
+  for (i=0; i<nexec_fc; i++) free(exec_fc[i]);
   ip_done();
 
   /* Normal completion */

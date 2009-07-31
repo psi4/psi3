@@ -111,7 +111,6 @@ int opt_step_cart(cartesians &carts, internals &simples, salc_set &symm) {
       fprintf(outfile,"\n");
     }
     free(f);
-    fprintf(stderr,"\n  Returning code %d\n", PSI_RETURN_ENDLOOP);
     return(PSI_RETURN_ENDLOOP);
   } /* end converged geometry */
 

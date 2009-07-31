@@ -168,7 +168,7 @@ void get_optinfo() {
   if (errcod == IPE_OK) optinfo.step_energy_limit = tval;
 
   //fraction error to accept in guess step backward
-  optinfo.step_energy_limit_back = optinfo.step_energy_limit * 0.50;
+  optinfo.step_energy_limit_back = 2.0/3.0*optinfo.step_energy_limit;
   errcod = ip_data("STEP_ENERGY_LIMIT_BACK", "%lf", &tval,0);
   if (errcod == IPE_OK) optinfo.step_energy_limit_back = tval;
 
@@ -195,7 +195,7 @@ void get_optinfo() {
     optinfo.step_limit_cart = tval;
 
   // max change in a simple internal coordinate in bohr or radian
-  optinfo.step_limit = 0.2;
+  optinfo.step_limit = 0.4;
   errcod = ip_data("STEP_LIMIT","%lf",&tval,0);
   if (errcod == IPE_OK)
     optinfo.step_limit = tval;

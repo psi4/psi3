@@ -49,6 +49,7 @@ inline double nr_energy(double rfo_t, double rfo_g, double rfo_h) {
 
 bool line_search(cartesians &carts, int num_ints, double *dq);
 void step_limit(internals &simples, salc_set &symm, double *dq);
+void check_zero_angles(internals &simples, salc_set &symm, double *dq);
 
 int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
@@ -111,10 +112,10 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   // *** Bad step - step back and do line search
   if (do_line_search) {
     dq = init_array(dim);
-    if (! line_search(carts,dim,dq) ) {
-      fprintf(outfile,"Unable to complete line search. Quitting.\n");
+    if (!line_search(carts,dim,dq) ) {
+      fprintf(outfile,"Unable to successfully complete line search. Balking.\n");
       exit_io();
-      exit(PSI_RETURN_FAILURE);
+      exit(PSI_RETURN_BALK);
     }
     f_q = init_array(dim);
     open_PSIF(); // read old forces from previous step - should be same
@@ -300,7 +301,6 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
       fprintf(outfile,"\n");
     }
     free(f_q); free(q);
-    fprintf(stdout,"\n  Returning code %d\n", PSI_RETURN_ENDLOOP);
     return(PSI_RETURN_ENDLOOP);
   } // end converged geometry
 
@@ -317,13 +317,15 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     free_block(H_inv);
 
     step_limit(simples, symm, dq);
+    check_zero_angles(simples, symm, dq);
 
     // get norm |x| and unit vector in the step direction
+    dot_arr(dq, dq, dim, &tval);
+    nr_xnorm = sqrt(tval);
+
     nr_u = init_array(dim);
     for (i=0; i<dim; ++i)
       nr_u[i] = dq[i];
-    dot_arr(nr_u, nr_u, dim, &tval);
-    nr_xnorm = sqrt(tval);
     normalize(&nr_u, 1, dim);
     
     // get gradient and hessian in step direction
@@ -467,14 +469,17 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     rfo_eval = lambda[rfo_root];
     free(lambda);
 
+    // scales dq
     step_limit(simples, symm, dq);
+    check_zero_angles(simples, symm, dq);
 
     // get norm |x| and unit vector in the step direction
+    dot_arr(dq, dq, dim, &tval);
+    rfo_xnorm = sqrt(tval);
+
     rfo_u = init_array(dim);
     for (j=0; j<dim; ++j)
       rfo_u[j] = rfo_mat[rfo_root][j];
-    dot_arr(rfo_u, rfo_u, dim, &tval);
-    rfo_xnorm = sqrt(tval);
     normalize(&rfo_u, 1, dim);
 
     free_block(rfo_mat);
@@ -627,8 +632,8 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
       free_block(geom_A); free_block(geom_B);
       free_block(weight_A); free_block(weight_B);
     }
-    sprintf(disp_label,"\nNew Geometry in au after analytic fragment orientation\n");
-    carts.print(1,outfile,0,disp_label,0);
+    // sprintf(disp_label,"\nNew Geometry in au after analytic fragment orientation\n");
+    // carts.print(1,outfile,0,disp_label,0);
   } // if analytic_interfragment
 
   // Do displacements with iterative backtransformation
@@ -699,7 +704,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   }
   delete [] djunk;
   delete [] disp_label;
-  return 0;
+  return(PSI_RETURN_SUCCESS);
 }
 
 
@@ -755,7 +760,7 @@ bool line_search(cartesians &carts, int dim, double *dq) {
       
   bool success = false;
   // reduce step size in 5% increments and test magnitude of cubic term
-  for (t = xnorm; t > 0.01*xnorm; t -= 0.05*xnorm) {
+  for (t = xnorm; t > 0.05*xnorm; t -= 0.10*xnorm) {
     //fprintf(outfile,"delta abs(g+0.5ht) = %10.5e\n", optinfo.step_energy_limit_back*fabs(g+0.5*h*t));
     //fprintf(outfile,"1/6 Mt^2 = %10.5e\n", M*t*t/6);
     if (M*t*t/6 < optinfo.step_energy_limit_back*fabs(g+0.5*h*t)) {
@@ -763,49 +768,45 @@ bool line_search(cartesians &carts, int dim, double *dq) {
       break;
     }
   }
+  // things do not look good.  Try 10% step.
+  if (!success) t = 0.10 * xnorm;
 
-  // things do not look good but lets keep going anyway - 10% step
-  if (!success) { success = true; t = 0.10 * xnorm; }
+  fprintf(outfile,"\tNew scalar with which to scale unit step, t = %15.10lf\n", t);
+  fprintf(outfile,"\tSetting step to previous step reduced to %.0lf%% of original.\n\n", t/xnorm*100);
 
-  fprintf(outfile,"\t\tNew scalar with which to scale unit step, t = %15.10lf\n", t);
-  fprintf(outfile,"\nSetting step to previous step reduced to %.0lf%% of original.\n\n", t/xnorm*100);
+  if (optinfo.rfo) DE_old = rfo_energy(t, g, h);
+  else DE_old = nr_energy(t, g, h);
+  fprintf(outfile,"\tNew Projected DE %d: %20.10lf\n", optinfo.iteration-1,DE_old); 
 
-  if (success) {
-    // put last geometry into cartesian object
-    old_x = init_array(dim_carts);
-    sprintf(value_string,"Cartesian Values %d", optinfo.iteration-1);
-    psio_read_entry(PSIF_OPTKING, value_string, (char *) old_x, dim_carts*sizeof(double));
-    carts.set_coord(old_x);
-    fprintf(outfile,"Setting cartesian coordinates to prevous step.\n");
-    carts.print(5, outfile, 0, NULL, 0);
-    free(old_x);
-
-    // reduced step is dq = u * rho_t;
-    for (i=0; i<dim; ++i)
-      dq[i] = t * u[i]; 
-
-    //fprintf(outfile,"dq's\n");
-    //for (i=0; i<dim; ++i)
-    //  fprintf(outfile,"%15.10lf\n", dq[i]);
+  // if we are searching for a minimum; and projected energy change is positive; give up!
+  if (!optinfo.ts && DE_old > 0.0) {
+    fprintf(outfile,"\tProjected energy change is positive for minimum seach - giving up!\n");
+    return false;
   }
 
-  // what needs to be changed from 1st try from previous geometries?
-  // energy, gradient, hessian, unit step, unchanged
-  if (optinfo.rfo)
-    DE_old = rfo_energy(t, g, h);
-  else
-    DE_old = nr_energy(t, g, h);
+  // put last geometry into cartesian object
+  old_x = init_array(dim_carts);
+  sprintf(value_string,"Cartesian Values %d", optinfo.iteration-1);
+  psio_read_entry(PSIF_OPTKING, value_string, (char *) old_x, dim_carts*sizeof(double));
+  carts.set_coord(old_x);
+  fprintf(outfile,"Setting cartesian coordinates to prevous step.\n");
+  carts.print(5, outfile, 0, NULL, 0);
+  free(old_x);
 
+  // reduced step is dq = u * rho_t;
+  for (i=0; i<dim; ++i)
+    dq[i] = t * u[i]; 
+
+  // replace old energy, gradient, hessian, unit step, unchanged
   sprintf(value_string,"DE prediction %d", optinfo.iteration-1);
   psio_write_entry(PSIF_OPTKING, value_string, (char *) &DE_old, sizeof(double));
-  fprintf(outfile,"\tNew Projected DE %d: %20.10lf\n", optinfo.iteration-1,DE_old); 
    
   sprintf(value_string,"Xnorm %d", optinfo.iteration-1);
   psio_write_entry(PSIF_OPTKING, value_string, (char *) &t, sizeof(double));
-  
+
   close_PSIF();
   fflush(outfile);
-  return success;
+  return true;
 }
 
 }} /* namespace psi::optking */

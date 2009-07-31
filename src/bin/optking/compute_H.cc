@@ -90,7 +90,7 @@ double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &c
 void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts) {
   int i,j,dim,n_previous,i_step, natom, step_start, skip;
   double qq, qg, qz, zz, *q, *f, *q_old, *f_old, *Z;
-  double *dq, *dg, **X, **temp_mat, *x, *x_old, phi;
+  double *dq, *dg, **X, **temp_mat, *x, *x_old, phi, **H_new, max;
   char force_string[30], x_string[30];
 
   if (optinfo.H_update == OPTInfo::BFGS)
@@ -111,6 +111,7 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
   dg    = init_array(dim);
   x = init_array(3*natom);
   x_old = init_array(3*natom);
+  H_new = block_matrix(dim,dim);
 
   /*** read/compute current internals and forces from PSIF_OPTKING ***/
   n_previous = optinfo.iteration+1;
@@ -150,6 +151,7 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
     q_old = compute_q(simples, symm);
 
     /* check for scary passages through 0 */
+/*
     skip=0;
     for (i=0;i<dim;++i) {
       if (q[i] * q_old[i] < 0.0)
@@ -159,14 +161,13 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
       fprintf(outfile,"Warning a coordinate has passed through 0. Skipping Hessian update.\n");
       skip = 0;
       continue;
-    }
+    } */
 
     // compute delta(coordinate) and delta(gradient)
     for (i=0;i<dim;++i) {
       dq[i] = q[i] - q_old[i];
       dg[i] = (-1.0) * (f[i] - f_old[i]); // gradients -- not forces!
     }
-
     // for (i=0;i<dim;++i) fprintf(outfile,"dq[%d]: %20.15lf\n",i,dq[i]);
     // for (i=0;i<dim;++i) fprintf(outfile,"dg[%d]: %20.15lf\n",i,dg[i]);
 
@@ -178,26 +179,24 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
       // you have to switch DQ and DG in the equation
   
       dot_arr(dq,dg,dim,&qg);
-
-     // fprintf(outfile,"dq dot dg = %20.15lf\n", qg);
+      // fprintf(outfile,"dq dot dg = %20.15lf\n", qg);
 
       X = unit_mat(dim);
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)
           X[i][j] -= (dg[i] * dq[j]) / qg ; 
-
-      // fprintf(outfile,"Xmat\n");
-      // print_mat5(X,dim,dim,outfile);
+      //fprintf(outfile,"Xmat\n");
+      //print_mat5(X,dim,dim,outfile);
   
       temp_mat = block_matrix(dim,dim);
       mmult(X,0,H,0,temp_mat,0,dim,dim,dim,0);
-      mmult(temp_mat,0,X,1,H,0,dim,dim,dim,0);
+      mmult(temp_mat,0,X,1,H_new,0,dim,dim,dim,0);
       free_block(temp_mat);
       free_block(X);
     
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)
-          H[i][j] += dg[i] * dg[j] / qg ; 
+          H_new[i][j] += dg[i] * dg[j] / qg ; 
     }
     else if (optinfo.H_update == OPTInfo::MS) {
       // Equations taken from Bofill article below
@@ -210,7 +209,7 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
 
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)
-          H[i][j] += Z[i] * Z[j] / qz ;
+          H_new[i][j] = H[i][j] + Z[i] * Z[j] / qz ;
 
       free(Z);
     }
@@ -226,7 +225,7 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
 
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)
-          H[i][j] += -1.0*qz/(qq*qq)*dq[i]*dq[j] + (Z[i]*dq[j] + dq[i]*Z[j])/qq;
+          H_new[i][j] = H[i][j] -1.0*qz/(qq*qq)*dq[i]*dq[j] + (Z[i]*dq[j] + dq[i]*Z[j])/qq;
 
       free(Z);
     }
@@ -249,16 +248,44 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
 
       for (i=0;i<dim;++i) 
         for (j=0;j<dim;++j)
-          H[i][j] += (1.0-phi) * Z[i] * Z[j] / qz ;
+          H_new[i][j] = H[i][j] + (1.0-phi) * Z[i] * Z[j] / qz ;
 
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)
-          H[i][j] += phi*(-1.0*qz/(qq*qq)*dq[i]*dq[j] + (Z[i]*dq[j] + dq[i]*Z[j])/qq);
+          H_new[i][j] += phi*(-1.0*qz/(qq*qq)*dq[i]*dq[j] + (Z[i]*dq[j] + dq[i]*Z[j])/qq);
       free(Z);
     }
   } //end over old steps
 
   free(x);
+
+  // limit allowed changes to Hessian to 0.3 or 50%
+  for (i=0;i<dim;++i)
+    for (j=0;j<dim;++j)
+      H_new[i][j] -= H[i][j];
+   //fprintf(outfile,"H_new\n");
+   //print_mat5(H_new,dim,dim,outfile);
+
+  for (i=0;i<dim;++i) {
+    for (j=0;j<dim;++j) {
+      max = ((0.5*fabs(H[i][j]) > 0.3) ? (0.5*fabs(H[i][j])) : 0.3);
+
+      if (fabs(H_new[i][j]) < max)
+        H[i][j] += H_new[i][j];
+      else
+        H[i][j] += 0.3 * H_new[i][j]/fabs(H_new[i][j]);
+    }
+  }
+
+
+/*
+  // using fragments to make hessian block diagonal
+  int *a2f = simples.atom2fragment(natom);
+  for (i=0; i<dim; ++i)
+    for (j=0; j<dim; ++j)
+      if (a2f[i] != a2f[j]) H[i][j] = 0.0;
+  delete [] a2f;
+*/
 
   // put current values of internal coordinates back in place(!)
   x = carts.get_coord();
@@ -274,6 +301,7 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
   free(dq);
   free(dg);
   free(x_old);
+  free_block(H_new);
   return;
 }
 
