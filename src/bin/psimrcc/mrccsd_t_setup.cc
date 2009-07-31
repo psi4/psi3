@@ -16,6 +16,26 @@ void MRCCSD_T::startup()
   nrefs     = moinfo->get_ref_size(AllRefs);
   threshold = 0.1 * pow(10.0,-static_cast<double>(options_get_int("CONVERGENCE")));
 
+//  for(int mu = 0; mu < nrefs; mu++){
+//    fprintf(outfile,"\n  Reference mu = %d",mu);
+//    for(int nu = 0; nu < nrefs; nu++){
+//      if(nu != mu){
+//        fprintf(outfile,"\n  -> reference nu = %d",nu);
+//        vector<pair<int,int> >  alpha_internal_excitation = moinfo->get_alpha_internal_excitation(mu,nu);
+//        vector<pair<int,int> >   beta_internal_excitation = moinfo->get_beta_internal_excitation(mu,nu);
+//        double                   sign = moinfo->get_sign_internal_excitation(mu,nu);
+//        fprintf(outfile," = %s{",sign > 0.0 ? "+" : "-");
+//        for(size_t i = 0; i < beta_internal_excitation.size();i++)
+//          fprintf(outfile," %db+ %db-",beta_internal_excitation[i].second,beta_internal_excitation[i].first);
+//        for(size_t i = 0; i < alpha_internal_excitation.size();i++)
+//          fprintf(outfile," %da+ %da-",alpha_internal_excitation[i].second,alpha_internal_excitation[i].first);
+//        fprintf(outfile," }");
+//      }
+//    }
+//  }
+
+  build_W_intermediates();
+
   o   = blas->get_index("[o]");
   oo  = blas->get_index("[oo]");
   ov  = blas->get_index("[ov]");
@@ -116,11 +136,26 @@ void MRCCSD_T::startup()
       }
       e_VV.push_back(e_VV_mu);
 
-      V_oovv.push_back(blas->get_MatTmp("<[oo]:[vv]>",none)->get_matrix());
-      V_oOvV.push_back(blas->get_MatTmp("<[oo]|[vv]>",none)->get_matrix());
+      F_ov.push_back(blas->get_MatTmp("fock[o][v]",unique_mu,none)->get_matrix());
+      F_OV.push_back(blas->get_MatTmp("fock[O][V]",unique_mu,none)->get_matrix());
 
-      F_ov.push_back(blas->get_MatTmp("fock[o][v]",mu,none)->get_matrix());
-      F_OV.push_back(blas->get_MatTmp("fock[O][V]",mu,none)->get_matrix());
+      if(options_get_bool("HEFF4")){
+        F2_ov.push_back(blas->get_MatTmp("F_me[o][v]",unique_mu,none)->get_matrix());
+        F2_OV.push_back(blas->get_MatTmp("F_ME[O][V]",unique_mu,none)->get_matrix());
+      }else{
+        F2_ov.push_back(blas->get_MatTmp("fock[o][v]",unique_mu,none)->get_matrix());
+        F2_OV.push_back(blas->get_MatTmp("fock[O][V]",unique_mu,none)->get_matrix());
+      }
+
+      W_ooov.push_back(blas->get_MatTmp("W_ijka[oo][ov]",unique_mu,none)->get_matrix());
+      W_oOoV.push_back(blas->get_MatTmp("W_iJkA[oO][oV]",unique_mu,none)->get_matrix());
+      W_OoOv.push_back(blas->get_MatTmp("W_IjKa[Oo][Ov]",unique_mu,none)->get_matrix());
+      W_OOOV.push_back(blas->get_MatTmp("W_IJKA[OO][OV]",unique_mu,none)->get_matrix());
+
+      W_vovv.push_back(blas->get_MatTmp("W_aibc[v][ovv]",unique_mu,none)->get_matrix());
+      W_vOvV.push_back(blas->get_MatTmp("W_aIbC[v][OvV]",unique_mu,none)->get_matrix());
+      W_VoVv.push_back(blas->get_MatTmp("W_AiBc[V][oVv]",unique_mu,none)->get_matrix());
+      W_VOVV.push_back(blas->get_MatTmp("W_AIBC[V][OVV]",unique_mu,none)->get_matrix());
 
       T1_ov.push_back(blas->get_MatTmp("t1[o][v]",mu,none)->get_matrix());
       T1_OV.push_back(blas->get_MatTmp("t1[O][V]",mu,none)->get_matrix());
@@ -183,11 +218,26 @@ void MRCCSD_T::startup()
       }
       e_VV.push_back(e_VV_mu);
 
-      V_oovv.push_back(blas->get_MatTmp("<[oo]:[vv]>",none)->get_matrix());
-      V_oOvV.push_back(blas->get_MatTmp("<[oo]|[vv]>",none)->get_matrix());
-
       F_ov.push_back(blas->get_MatTmp("fock[O][V]",unique_mu,none)->get_matrix());
       F_OV.push_back(blas->get_MatTmp("fock[o][v]",unique_mu,none)->get_matrix());
+
+      if(options_get_bool("HEFF4")){
+        F2_ov.push_back(blas->get_MatTmp("F_ME[O][V]",unique_mu,none)->get_matrix());
+        F2_OV.push_back(blas->get_MatTmp("F_me[o][v]",unique_mu,none)->get_matrix());
+      }else{
+        F2_ov.push_back(blas->get_MatTmp("fock[O][V]",unique_mu,none)->get_matrix());
+        F2_OV.push_back(blas->get_MatTmp("fock[o][v]",unique_mu,none)->get_matrix());
+      }
+
+      W_ooov.push_back(blas->get_MatTmp("W_IJKA[OO][OV]",unique_mu,none)->get_matrix());
+      W_oOoV.push_back(blas->get_MatTmp("W_IjKa[Oo][Ov]",unique_mu,none)->get_matrix());
+      W_OoOv.push_back(blas->get_MatTmp("W_iJkA[oO][oV]",unique_mu,none)->get_matrix());
+      W_OOOV.push_back(blas->get_MatTmp("W_ijka[oo][ov]",unique_mu,none)->get_matrix());
+
+      W_vovv.push_back(blas->get_MatTmp("W_AIBC[V][OVV]",unique_mu,none)->get_matrix());
+      W_vOvV.push_back(blas->get_MatTmp("W_AiBc[V][oVv]",unique_mu,none)->get_matrix());
+      W_VoVv.push_back(blas->get_MatTmp("W_aIbC[v][OvV]",unique_mu,none)->get_matrix());
+      W_VOVV.push_back(blas->get_MatTmp("W_aibc[v][ovv]",unique_mu,none)->get_matrix());
 
       T1_ov.push_back(blas->get_MatTmp("t1[O][V]",unique_mu,none)->get_matrix());
       T1_OV.push_back(blas->get_MatTmp("t1[o][v]",unique_mu,none)->get_matrix());
@@ -205,7 +255,10 @@ void MRCCSD_T::startup()
     if(options_get_str("CORR_CCSD_T") == "STANDARD"){
       vector<double> factor_row;
       for(int nu = 0; nu < nrefs; ++nu){
-        double factor = h_eff->get_matrix(mu,nu) * h_eff->get_right_eigenvector(nu) / h_eff->get_right_eigenvector(mu);
+        double omega  =  static_cast<double>(options_get_int("TIKHONOW_OMEGA")) / 1000.0;
+        double c_mu   = h_eff->get_right_eigenvector(mu);
+        double c_nu   = h_eff->get_right_eigenvector(nu);
+        double factor = h_eff->get_matrix(mu,nu) * c_nu * c_mu / (pow(c_mu,2.0) + pow(omega,2.0));
         factor_row.push_back(factor);
       }
       Mk_factor.push_back(factor_row);
@@ -228,17 +281,8 @@ void MRCCSD_T::startup()
     d_h_eff.push_back(d_h_eff_row);
   }
 
-  V_ooov = blas->get_MatTmp("<[oo]:[ov]>",none)->get_matrix();
-  V_oOoV = blas->get_MatTmp("<[oo]|[ov]>",none)->get_matrix();
-  V_vovv = blas->get_MatTmp("<[v]:[ovv]>",none)->get_matrix();
-  V_vOvV = blas->get_MatTmp("<[v]|[ovv]>",none)->get_matrix();
-
-//  for(int mu = 0; mu < nrefs; ++mu){
-//    fprintf(outfile,"\n  ");
-//    for(int nu = 0; nu < nrefs; ++nu){
-//      fprintf(outfile,"%15.12f",Mk_factor[mu][nu]);
-//    }
-//  }
+  V_oovv = blas->get_MatTmp("<[oo]:[vv]>",none)->get_matrix();
+  V_oOvV = blas->get_MatTmp("<[oo]|[vv]>",none)->get_matrix();
 
   // Allocate Z, this will hold the results
   allocate2(BlockMatrix**,Z,nrefs,nirreps);
@@ -284,6 +328,43 @@ void MRCCSD_T::startup()
   E4_ooO.assign(nrefs,0.0);
   E4_oOO.assign(nrefs,0.0);
   E4_OOO.assign(nrefs,0.0);
+}
+
+
+
+void MRCCSD_T::build_W_intermediates()
+{
+  blas->solve("W_ijka[oo][ov]{u}  = <[oo]:[ov]>");
+  if(options_get_bool("HEFF4"))
+    blas->solve("W_ijka[oo][ov]{u} += #4123# <[v]:[voo]> 1@2 t1[o][v]{u}");
+
+  blas->solve("W_iJkA[oO][oV]{u}  = <[oo]|[ov]>");
+  if(options_get_bool("HEFF4"))
+    blas->solve("W_iJkA[oO][oV]{u} += #4123# <[v]|[voo]> 1@2 t1[o][v]{u}");
+
+  blas->solve("W_IjKa[Oo][Ov]{u}  = <[oo]|[ov]>");
+  if(options_get_bool("HEFF4"))
+    blas->solve("W_IjKa[Oo][Ov]{u} += #4123# <[v]|[voo]> 1@2 t1[O][V]{u}");
+
+  blas->solve("W_IJKA[OO][OV]{u}  = <[oo]:[ov]>");
+  if(options_get_bool("HEFF4"))
+    blas->solve("W_IJKA[OO][OV]{u} += #4123# <[v]:[voo]> 1@2 t1[O][V]{u}");
+
+  blas->solve("W_aibc[v][ovv]{u}  = <[v]:[ovv]>");
+  if(options_get_bool("HEFF4"))
+    blas->solve("W_aibc[v][ovv]{u} += - t1[o][v]{u} 1@1 <[o]:[ovv]>");
+
+  blas->solve("W_aIbC[v][OvV]{u}  = <[v]|[ovv]>");
+  if(options_get_bool("HEFF4"))
+    blas->solve("W_aIbC[v][OvV]{u} += - t1[o][v]{u} 1@1 <[o]|[ovv]>");
+
+  blas->solve("W_AiBc[V][oVv]{u}  = <[v]|[ovv]>");
+  if(options_get_bool("HEFF4"))
+    blas->solve("W_AiBc[V][oVv]{u} += - t1[O][V]{u} 1@1 <[o]|[ovv]>");
+
+  blas->solve("W_AIBC[V][OVV]{u}  = <[v]:[ovv]>");
+  if(options_get_bool("HEFF4"))
+    blas->solve("W_AIBC[V][OVV]{u} += - t1[O][V]{u} 1@1 <[o]:[ovv]>");
 }
 
 void MRCCSD_T::cleanup()

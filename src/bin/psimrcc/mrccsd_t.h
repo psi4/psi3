@@ -25,16 +25,28 @@ private:
   void compute_ooO_triples();
   void compute_oOO_triples();
 
+  void compute_ooo_contribution_to_Heff(int i,int j,int k,int mu,BlockMatrix* T3);
   void compute_ooO_contribution_to_Heff(int i,int j,int k,int mu,BlockMatrix* T3);
   void compute_oOO_contribution_to_Heff(int i,int j,int k,int mu,BlockMatrix* T3);
+  void compute_OOO_contribution_to_Heff(int i,int j,int k,int mu,BlockMatrix* T3);
 
-  double compute_AB_ooO_contribution_to_Heff(int u,int V,int x,int Y,int i,int j,int k,int mu,BlockMatrix* T3);
-  double compute_AB_oOO_contribution_to_Heff(int u,int V,int x,int Y,int i,int j,int k,int mu,BlockMatrix* T3);
+  double compute_A_ooo_contribution_to_Heff(int u_abs,int x_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
+  double compute_A_ooO_contribution_to_Heff(int u_abs,int x_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
+  double compute_A_oOO_contribution_to_Heff(int u_abs,int x_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
+
+  double compute_B_ooO_contribution_to_Heff(int U_abs,int X_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
+  double compute_B_oOO_contribution_to_Heff(int U_abs,int X_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
+  double compute_B_OOO_contribution_to_Heff(int U_abs,int X_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
+
+  double compute_AB_ooO_contribution_to_Heff(int u_abs,int V_abs,int x_abs,int Y_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
+  double compute_AB_oOO_contribution_to_Heff(int u_abs,int V_abs,int x_abs,int Y_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
 
   void form_T2_ij_a_b(IndexMatrix* T2_ij_a_b,bool spin1,bool spin2,bool transpose);
   void form_T2_i_ab_j(IndexMatrix* T2_i_ab_j,bool spin1,bool spin2,bool transpose);
   void form_V_k_bc_e(IndexMatrix* V_k_bc_e,double direct,double exchange);
   void form_V_jk_c_m(IndexMatrix* V_jk_c_m,double direct,double exchange);
+
+  void build_W_intermediates();
 
   int nirreps;
   int nrefs;
@@ -60,16 +72,28 @@ private:
   std::vector<double***> F_ov;
   std::vector<double***> F_OV;
 
+  std::vector<double***> F2_ov;
+  std::vector<double***> F2_OV;
+
   std::vector<double***> T1_ov;
   std::vector<double***> T1_OV;
 
-  std::vector<double***> V_oovv;
-  std::vector<double***> V_oOvV;
+  std::vector<double***> W_ooov;
+  std::vector<double***> W_oOoV;
+  std::vector<double***> W_OoOv;
+  std::vector<double***> W_OOOV;
 
-  double*** V_ooov;
-  double*** V_oOoV;
-  double*** V_vovv;
-  double*** V_vOvV;
+  std::vector<double***> W_vovv;
+  std::vector<double***> W_vOvV;
+  std::vector<double***> W_VoVv;
+  std::vector<double***> W_VOVV;
+
+  double*** V_oovv;
+  double*** V_oOvV;
+//  double*** V_ooov;
+//  double*** V_oOoV;
+//  double*** V_vovv;
+//  double*** V_vOvV;
 
   std::vector<double***> T2_oovv;
   std::vector<double***> T2_oOvV;

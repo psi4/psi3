@@ -22,4 +22,5 @@ mrcc:(
   corr_actv     = (1 0 1 0)
   multp         = 1
   wfn_sym       = 3
+  heff4         = false
 )

@@ -19,4 +19,5 @@ mrcc:(
   corr_wfn      = ccsd_t
   corr_docc     = (2 0 0 1)
   corr_actv     = (1 0 1 0)
+  heff4         = false
 )

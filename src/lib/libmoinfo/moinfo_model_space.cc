@@ -180,15 +180,12 @@ void MOInfo::make_internal_excitations()
     Build the mappings between references
     |m> = (+/-) ... b+ j a+ i |n>
   ****************************************/
-  for(int m=0;m<references.size();m++){
+  for(int m = 0; m < references.size(); ++m){
     vector<vector<pair<int,int> > > alpha_internals_ref_m;
     vector<vector<pair<int,int> > >  beta_internals_ref_m;
     vector<double>                   sign_internals_ref_m;
-//     DEBUGGING(1,
-//       fprintf(outfile,"\n\n\tReference ");
-//       references[m].print_occ();
+//       fprintf(outfile,"\n\n\tReference %s",references[m].get_label().c_str());
 //       fprintf(outfile," gives:");
-//     );
     for(int n=0;n<references.size();n++){
       double sign=1.0;
       std::vector<pair<int,int> > alpha_operators;
@@ -197,17 +194,14 @@ void MOInfo::make_internal_excitations()
       alpha_internals_ref_m.push_back(alpha_operators);
       beta_internals_ref_m.push_back(beta_operators);
       sign_internals_ref_m.push_back(sign);
-//       DEBUGGING(1,
-//         fprintf(outfile,"\n\t  ");
-//         references[n].print_occ();
+//         fprintf(outfile,"\n\t  %s",references[n].get_label().c_str());
 //         fprintf(outfile," = %s{",sign > 0.0 ? "+" : (sign == 0.0 ? "0" : "-"));
 //         for(int i = 0; i<beta_operators.size();i++)
 //           fprintf(outfile," %db+ %db-",beta_operators[i].second,beta_operators[i].first);
 //         for(int i = 0; i<alpha_operators.size();i++)
 //           fprintf(outfile," %da+ %da-",alpha_operators[i].second,alpha_operators[i].first);
 //         fprintf(outfile," }");
-//         references[m].print_occ();
-//       );
+//         fprintf(outfile,"%s",references[m].get_label().c_str());
     }
     alpha_internal_excitations.push_back(alpha_internals_ref_m);
     beta_internal_excitations.push_back(beta_internals_ref_m);

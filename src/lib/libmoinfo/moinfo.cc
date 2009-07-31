@@ -101,13 +101,11 @@ void MOInfo::read_info()
     wfn_sym = 0;
     string wavefunction_sym_str = options_get_str("WFN_SYM");
     to_lower(wavefunction_sym_str);
-    fprintf(outfile,"\n wavefunction_sym_str = %s",wavefunction_sym_str.c_str());
 
     for(int h = 0; h < nirreps; ++h){
       string irr_label_str = irr_labs[h];
       trim_spaces(irr_label_str);
       to_lower(irr_label_str);
-      fprintf(outfile,"\n %s %s",irr_label_str.c_str(),to_string(h+1).c_str());
 
       if(wavefunction_sym_str == irr_label_str){
         wfn_sym = h;

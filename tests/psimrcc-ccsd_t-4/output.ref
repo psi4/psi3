@@ -1,0 +1,1075 @@
+******************************************************************************
+PSI3 started on wigwam.ccqc.uga.edu at Fri Jul 31 14:16:00 2009
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a TWOCON PSIMRCC energy computation.
+
+The following programs will be executed:
+
+ input
+ cints
+ mcscf
+ transqt2
+ psimrcc
+ psiclean
+
+******************************************************************************
+INPUT tstart called on wigwam.ccqc.uga.edu
+Fri Jul 31 14:16:00 2009
+
+                                --------------
+                                    INPUT
+                                --------------
+
+  LABEL       =	O3 Mk-MRCCSD cc-pVDZ
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /Users/frank/Source/psi3-install/share/psi/pbasis.dat
+Coordinates after reading z-matrices
+
+           1           2           3
+
+    1   0.0000000   0.0000000   0.0000000
+    2   0.0000000   0.0000000   2.4107607
+    3   2.1702611   0.0000000   3.4667201
+
+  -Geometry before Center-of-Mass shift (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000     0.000000000000
+    O         0.000000000000     0.000000000000     2.410760671232
+    O         2.170261129698     0.000000000000     3.466720053653
+
+
+  -Rotational constants (cm-1) :
+    A =    3.45001  B =    0.44998  C =    0.39806
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O        -2.044380893268     0.426793459237     0.000000000000
+    O        -0.001248077996    -0.852806209845     0.000000000000
+    O         2.045628971264     0.426012750608     0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is Cs  
+    Number of irr. rep.      = 2
+    Number of atoms          = 3
+    Number of unique atoms   = 3
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  7816.54000000     0.00203100)
+           (  1175.82000000     0.01543600)
+           (   273.18800000     0.07377100)
+           (    81.16960000     0.24760600)
+           (    27.18360000     0.61183200)
+           (     3.41360000     0.24120500) )
+        (S (     9.53220000     1.00000000) )
+        (S (     0.93980000     1.00000000) )
+        (S (     0.28460000     1.00000000) )
+        (P (    35.18320000     0.01958000)
+           (     7.90400000     0.12418900)
+           (     2.30510000     0.39472700)
+           (     0.71710000     0.62737500) )
+        (P (     0.21370000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (  7816.54000000     0.00203100)
+           (  1175.82000000     0.01543600)
+           (   273.18800000     0.07377100)
+           (    81.16960000     0.24760600)
+           (    27.18360000     0.61183200)
+           (     3.41360000     0.24120500) )
+        (S (     9.53220000     1.00000000) )
+        (S (     0.93980000     1.00000000) )
+        (S (     0.28460000     1.00000000) )
+        (P (    35.18320000     0.01958000)
+           (     7.90400000     0.12418900)
+           (     2.30510000     0.39472700)
+           (     0.71710000     0.62737500) )
+        (P (     0.21370000     1.00000000) )
+       )
+
+   -Basis set on unique center 3:
+      ( (S (  7816.54000000     0.00203100)
+           (  1175.82000000     0.01543600)
+           (   273.18800000     0.07377100)
+           (    81.16960000     0.24760600)
+           (    27.18360000     0.61183200)
+           (     3.41360000     0.24120500) )
+        (S (     9.53220000     1.00000000) )
+        (S (     0.93980000     1.00000000) )
+        (S (     0.28460000     1.00000000) )
+        (P (    35.18320000     0.01958000)
+           (     7.90400000     0.12418900)
+           (     2.30510000     0.39472700)
+           (     0.71710000     0.62737500) )
+        (P (     0.21370000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 18
+    Number of primitives   = 42
+    Number of AO           = 30
+    Number of SO           = 30
+
+    Irrep    Number of SO
+    -----    ------------
+      1           24
+      2            6
+
+  -Contraction Scheme:
+    Atom     All Primitives // Unique Primitives // Shells
+    ----     ---------------------------------------------
+       1      9s 5p //  9s 5p //  4s 2p
+       2      9s 5p //  9s 5p //  4s 2p
+       3      9s 5p //  9s 5p //  4s 2p
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O        -2.044380893268     0.426793459237     0.000000000000
+    O        -0.001248077996    -0.852806209845     0.000000000000
+    O         2.045628971264     0.426012750608     0.000000000000
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O        -2.044380893268     0.426793459237     0.000000000000
+    O        -0.001248077996    -0.852806209845     0.000000000000
+    O         2.045628971264     0.426012750608     0.000000000000
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O        -1.081839857008     0.225849388650     0.000000000000
+    O        -0.000660454480    -0.451285644056     0.000000000000
+    O         1.082500311488     0.225436255406     0.000000000000
+
+
+  -Geometry in the reference coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O        -2.044380893268     0.426793459237     0.000000000000
+    O        -0.001248077996    -0.852806209845     0.000000000000
+    O         2.045628971264     0.426012750608     0.000000000000
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =      68.712796104070
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   1.2757197   0.0000000
+    3   2.1643402   1.2771804   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+INPUT tstop called on wigwam.ccqc.uga.edu
+Fri Jul 31 14:16:00 2009
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+cints tstart called on wigwam.ccqc.uga.edu
+Fri Jul 31 14:16:00 2009
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = O3 Mk-MRCCSD cc-pVDZ
+    Number of atoms             = 3
+    Number of atomic orbitals   = 30
+    Number of symmetry orbitals = 30
+    Maximum AM in the basis     = 1
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = Cs 
+    Number of irreps                 = 2
+
+    Wrote 59150 two-electron integrals to IWL file 33
+
+******************************************************************************
+cints tstop called on wigwam.ccqc.uga.edu
+Fri Jul 31 14:16:01 2009
+
+user time   =       0.19 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+MCSCF tstart called on wigwam.ccqc.uga.edu
+Fri Jul 31 14:16:01 2009
+
+
+         ------------------------------------------
+           MCSCF: a self-consistent field program
+            written by Francesco A. Evangelista
+         ------------------------------------------
+
+
+  Compiled on Jul 31 2009 at 12:17:53
+
+  Options:
+  ----------------------------------------------------------------------------
+  CANONICALIZE_ACTIVE_FAVG   = TRUE
+  CANONICALIZE_INACTIVE_FAVG = FALSE
+  CI_DIIS                    = FALSE
+  FORCE_TWOCON               = FALSE
+  INTERNAL_ROTATIONS         = TRUE
+  READ_MOS                   = TRUE
+  USE_DIIS                   = TRUE
+  USE_FAVG                   = FALSE
+  CHARGE                     = 0
+  CONVERGENCE                = 12
+  DAMPING_FACTOR             = 0
+  DEBUG                      = 0
+  DENOMINATOR_SHIFT          = 0
+  MAXITER                    = 100
+  MEMORY                     = 1800
+  MULTP                      = 1
+  NDIIS                      = 7
+  ROOT                       = 1
+  ROTATE_MO_ANGLE            = 0
+  ROTATE_MO_IRREP            = 0
+  ROTATE_MO_P                = 1
+  ROTATE_MO_Q                = 1
+  START_FAVG                 = 5
+  TURN_ON_ACTV               = 0
+  REFERENCE                  = TWOCON
+  WFN_SYM                    = 1
+  ----------------------------------------------------------------------------
+
+  MOs per irrep:                                                Ap   App Total
+  ----------------------------------------------------------------------------
+  Total                                                         24    6    30
+  Doubly Occupied                                               10    1    11
+  Active/Singly Occupied                                         0    2     2
+  ----------------------------------------------------------------------------
+  TWOCON MOs = [25 (App),26 (App)]
+
+  Running an SCF calculation
+
+  Generated 465 pairs
+  Distributed as [321 Ap ][144 App]
+  batch   0 pq = [       0,     321] index = [               0,           51681]
+
+  Allocated the PK matrix (51681 elements) 
+  Allocated the  K matrix (51681 elements) 
+  Reading the two-electron integrals to form PK and K ... 
+  batch   0 ... done.
+
+
+  ===========================================================================
+         Cycle          Energy               D(Energy)            DIIS
+  ===========================================================================
+  @SCF    0     -213.381640207876     -213.381640207876
+    ci      = [ 0.71529871,-0.69881883]
+    ci_grad = [ 0.00000000, 0.00000000] S
+  @SCF    1     -218.616568104261       -5.234927896385
+    ci      = [-0.03821890, 0.99926939]
+    ci_grad = [-3.13324373, 3.68164622] S
+  @SCF    2     -219.818225461755       -1.201657357494
+    ci      = [-0.10416179, 0.99456037]
+    ci_grad = [ 0.13183867,-1.19178166] S
+  @SCF    3     -220.965780648420       -1.147555186665
+    ci      = [ 0.99955394,-0.02986498]
+    ci_grad = [ 0.19451720, 1.36839403] S
+  @SCF    4     -218.806562026294        2.159218622126
+    ci      = [ 0.99554405,-0.09429766]
+    ci_grad = [ 2.16355690,-0.00851552] S
+  @SCF    5     -219.289441467749       -0.482879441454
+    ci      = [ 0.98558655,-0.16917194]
+    ci_grad = [-0.47731504, 0.06541667] S
+  @SCF    6     -219.306284873973       -0.016843406224
+    ci      = [-0.02191700, 0.99975979]
+    ci_grad = [ 1.55237066, 0.03724484] S
+  @SCF    7     -219.296141576774        0.010143297198
+    ci      = [ 0.99600274,-0.08932274]
+    ci_grad = [ 0.11061316, 1.24602362] S/E
+  @SCF    8     -223.847739875552       -4.551598298778
+    ci      = [ 0.97933388,-0.20225021]
+    ci_grad = [-4.52410639, 0.45158375] S/E
+  @SCF    9     -224.213622618333       -0.365882742781
+    ci      = [ 0.95960513,-0.28135030]
+    ci_grad = [-0.34295978, 0.12639381] S/E
+  @SCF   10     -224.222390016961       -0.008767398628
+    ci      = [ 0.95545133,-0.29514870]
+    ci_grad = [-0.00578191, 0.01098482] S/E
+  @SCF   11     -224.266305448493       -0.043915431532
+    ci      = [ 0.93357308,-0.35838708]
+    ci_grad = [-0.02748933, 0.05065420] S/E
+  @SCF   12     -224.284002831952       -0.017697383459
+    ci      = [ 0.92975115,-0.36818854]
+    ci_grad = [-0.01415937, 0.01230813] S/E
+  @SCF   13     -224.293183226688       -0.009180394736
+    ci      = [ 0.91540365,-0.40253715]
+    ci_grad = [ 0.00064335, 0.02425357] S/E
+  @SCF   14     -224.300758545045       -0.007575318357
+    ci      = [ 0.90690427,-0.42133674]
+    ci_grad = [-0.00163000, 0.01446693] S/E
+  @SCF   15     -224.306733501401       -0.005974956355
+    ci      = [ 0.89374293,-0.44857950]
+    ci_grad = [ 0.00285708, 0.01900604] S/E
+  @SCF   16     -224.308826775735       -0.002093274334
+    ci      = [ 0.88983471,-0.45628302]
+    ci_grad = [ 0.00053144, 0.00562390] S/E
+  @SCF   17     -224.310577481793       -0.001750706058
+    ci      = [ 0.88269503,-0.46994626]
+    ci_grad = [ 0.00284305, 0.00906496] S/E
+  @SCF   18     -224.311167915152       -0.000590433360
+    ci      = [ 0.87896123,-0.47689324]
+    ci_grad = [ 0.00174286, 0.00445031] S/E
+  @SCF   19     -224.311419893900       -0.000251978748
+    ci      = [ 0.87391483,-0.48607907]
+    ci_grad = [ 0.00283784, 0.00562048] S/E
+  @SCF   20     -224.311463275392       -0.000043381492
+    ci      = [ 0.87486843,-0.48436065]
+    ci_grad = [-0.00060909,-0.00101060] S/E
+  @SCF   21     -224.311485070745       -0.000021795353
+    ci      = [ 0.87385432,-0.48618785]
+    ci_grad = [ 0.00059039, 0.00110597] S/E
+  @SCF   22     -224.311490345667       -0.000005274922
+    ci      = [ 0.87343714,-0.48693691]
+    ci_grad = [ 0.00024566, 0.00045148] S/E
+  @SCF   23     -224.311491664735       -0.000001319068
+    ci      = [ 0.87309590,-0.48754851]
+    ci_grad = [ 0.00020348, 0.00036710] S/E
+  @SCF   24     -224.311492095111       -0.000000430377
+    ci      = [ 0.87306921,-0.48759630]
+    ci_grad = [ 0.00001562, 0.00002885] S/E
+  @SCF   25     -224.311492179359       -0.000000084248
+    ci      = [ 0.87301968,-0.48768498]
+    ci_grad = [ 0.00002961, 0.00005319] S/E
+  @SCF   26     -224.311492295470       -0.000000116111
+    ci      = [ 0.87290814,-0.48788459]
+    ci_grad = [ 0.00006675, 0.00011966] S/E
+  @SCF   27     -224.311492278182        0.000000017288
+    ci      = [ 0.87295226,-0.48780565]
+    ci_grad = [-0.00002642,-0.00004731] S/E
+  @SCF   28     -224.311492303916       -0.000000025734
+    ci      = [ 0.87290691,-0.48788679]
+    ci_grad = [ 0.00002715, 0.00004863] S/E
+  @SCF   29     -224.311492304584       -0.000000000668
+    ci      = [ 0.87290535,-0.48788959]
+    ci_grad = [ 0.00000094, 0.00000168] S/E
+  @SCF   30     -224.311492307031       -0.000000002447
+    ci      = [ 0.87289385,-0.48791016]
+    ci_grad = [ 0.00000689, 0.00001233] S/E
+  @SCF   31     -224.311492307634       -0.000000000603
+    ci      = [ 0.87288913,-0.48791860]
+    ci_grad = [ 0.00000283, 0.00000506] S/E
+  @SCF   32     -224.311492307972       -0.000000000338
+    ci      = [ 0.87288389,-0.48792798]
+    ci_grad = [ 0.00000314, 0.00000562] S/E
+  @SCF   33     -224.311492307971        0.000000000001
+    ci      = [ 0.87288394,-0.48792789]
+    ci_grad = [-0.00000003,-0.00000005] S/E
+  @SCF   34     -224.311492308021       -0.000000000050
+    ci      = [ 0.87288007,-0.48793482]
+    ci_grad = [ 0.00000232, 0.00000415] S/E
+  @SCF   35     -224.311492308024       -0.000000000003
+    ci      = [ 0.87288120,-0.48793278]
+    ci_grad = [-0.00000068,-0.00000122] S/E
+  @SCF   36     -224.311492308025       -0.000000000001
+    ci      = [ 0.87288066,-0.48793376]
+    ci_grad = [ 0.00000033, 0.00000058] S/E
+  @SCF   37     -224.311492308024        0.000000000001
+    ci      = [ 0.87288076,-0.48793358]
+    ci_grad = [-0.00000006,-0.00000011] S/E
+  ===========================================================================
+
+      * SCF total energy   =    -224.311492308024
+
+
+      CI coefficients  = [ 0.872880759,-0.487933581]
+
+  End of SCF
+  MOs orthonormality check passed.
+
+  Forming Favg for final canonicalization
+
+  Orbitals are canonicalized as:
+  inactive (docc + uocc) : Fock(core)
+  active   (actv)        : Fock(avg)
+
+  =========================================================================
+  Eigenvalues (Eh)
+  -------------------------------------------------------------------------
+  Doubly occupied orbitals
+      1    -20.787164 Ap       2    -20.713633 Ap       3    -20.713426 Ap 
+      4     -1.745782 Ap       5     -1.433574 Ap       6     -1.073777 Ap 
+      7     -0.796722 Ap       8     -0.774914 Ap       9     -0.764883 App
+     10     -0.580023 Ap      11     -0.544727 Ap 
+  Active orbitals
+     12     -0.403787 App     13     -0.116089 App
+  Unoccupied orbitals
+     14      0.272310 Ap      15      0.372487 Ap      16      0.747976 App
+     17      0.748276 Ap      18      0.781490 Ap      19      0.786529 Ap 
+     20      0.856213 Ap      21      0.877985 App     22      0.910762 Ap 
+     23      0.912418 App     24      1.010276 Ap      25      1.191134 Ap 
+     26      1.766836 Ap      27      1.837008 Ap      28     42.981799 Ap 
+     29     43.246953 Ap      30     43.248698 Ap 
+  =========================================================================
+
+
+  MCSCF Execution Completed.
+
+******************************************************************************
+MCSCF tstop called on wigwam.ccqc.uga.edu
+Fri Jul 31 14:16:01 2009
+
+user time   =       0.24 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+TRANSQT tstart called on wigwam.ccqc.uga.edu
+Fri Jul 31 14:16:01 2009
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	PSIMRCC
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	ROHF
+	Derivative      =	None
+	Delete TEI File =	Yes
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 2
+	Number of SOs        = 30
+	Number of MOs        = 30
+	Number of active MOs = 30
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 Ap 	   24	    0	    10	    0	    14	    0
+	 App	   6	    0	    1	    2	    3	    0
+
+	Nuclear Rep. energy (chkpt) =     68.71279610407002
+	SCF energy          (chkpt) =   -224.31149230802447
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on wigwam.ccqc.uga.edu
+Fri Jul 31 14:16:01 2009
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+PSIMRCC tstart called on wigwam.ccqc.uga.edu
+Fri Jul 31 14:16:01 2009
+
+
+  MRCC          MRCC
+   MRCC  MRCC  MRCC
+   MRCC  MRCC  MRCC      PSIMRCC Version 0.9.3.1, July 2009
+   MRCC  MRCC  MRCC      Multireference Coupled Cluster, written by
+     MRCCMRCCMRCC        Francesco A. Evangelista and Andrew C. Simmonett
+         MRCC            Compiled on Jul 31 2009 at 10:07:47
+         MRCC            id = 6a707c99fd2213714c6c78cfcd145480721f0359 
+       MRCCMRCC
+
+  Options:
+  ----------------------------------------------------------------------------
+  COUPLING_TERMS     = TRUE
+  DIIS_TRIPLES       = FALSE
+  HEFF4              = TRUE
+  LOCK_SINGLET       = FALSE
+  MP2_GUESS          = TRUE
+  ONLY_CLOSED_SHELL  = FALSE
+  PERT_CBS           = FALSE
+  PERT_CBS_COUPLING  = TRUE
+  PRINT_HEFF         = FALSE
+  USE_DIIS           = TRUE
+  USE_SPIN_SYMMETRY  = TRUE
+  ZERO_INTERNAL_AMPS = TRUE
+  CHARGE             = 0
+  CONVERGENCE        = 12
+  CORR_CHARGE        = 0
+  DAMPING_FACTOR     = 0
+  DEBUG              = 0
+  DENOMINATOR_SHIFT  = 0
+  MAXDIIS            = 7
+  MAXITER            = 100
+  MEMORY             = 1800
+  MULTP              = 1
+  NEL                = 0
+  NUM_THREADS        = 1
+  ROOT               = 1
+  START_DIIS         = 2
+  TIKHONOW_OMEGA     = 0
+  CORR_ANSATZ        = MK
+  CORR_CCSD_T        = STANDARD
+  CORR_REFERENCE     = GENERAL
+  CORR_WFN           = CCSD_T
+  COUPLING           = CUBIC
+  MP2_CCSD_METHOD    = II
+  PT_ENERGY          = SECOND_ORDER
+  WFN_SYM            = 1
+  ----------------------------------------------------------------------------
+
+  ==============================================================================
+  System Info:
+  ------------------------------------------------------------------------------
+  Nuclear Energy   = 68.712796104     SCF Energy       = -224.311492308 
+
+  MOs and Symmetry:
+  ------------------------------------------------------------------------------
+  nirreps          = 2                root             = 0         
+  nso              = 30               nmo              = 30        
+  nael             = 12               nbel             = 12        
+  nactive_ael      = 1                nactive_bel      = 1         
+
+  Details of the Computation:
+  ------------------------------------------------------------------------------
+
+  MOs per irrep:                                                  Ap   App Total
+  ------------------------------------------------------------------------------
+  Total                                                           24    6    30
+  Frozen Occupied                                                  3    0     3
+  Doubly Occupied                                                  7    1     8
+  Active                                                           0    2     2
+  External                                                        14    3    17
+  Frozen Virtual                                                   0    0     0
+
+  Model space
+  ------------------------------------------------------------------------------
+   0  |[2222222][202]>
+   1  |[2222222][2-+]>
+   2  |[2222222][2+-]>
+   3  |[2222222][220]>
+  ==============================================================================
+
+  Allocated work array of size 149584 (0.14 MiB)
+  Allocated buffer array of size 95292120 (90.88 MiB)
+
+  Presorting two-electron integrals from IWL buffer
+    Memory available                       =     1791645850 bytes
+    Memory available for presorting        =     1343734387 bytes (75.0%)
+    Memory required for in-core presort    =         496968 bytes
+    Presorting is not required
+    Reading irreps 0 -> 1 (62121 non-zero integrals)
+
+  Sorting integrals:
+    Memory available                       =     1791638650 bytes
+    Memory available for sorting           =      895819325 bytes (50.0%)
+
+    Pass 1:
+    Setting up the matrix list: added 200 matrices blocks
+    Integrals from irreps 0 -> 1 will be read in core
+
+    Frozen-core energy                     =       -207.374880849
+
+  Computing storage strategy:
+    Input memory                           =     1887436800 bytes
+    Free memory                            =     1791638650 bytes
+    Free memory available for matrices     =     1737889490 bytes ( 97%)
+    Memory required by fock matrices       =          48848 bytes
+    Memory required by integrals           =        5573704 bytes
+    Memory required by other matrices      =       33744744 bytes
+    Memory required for in-core algorithm  =       39367296 bytes
+    PSIMRCC will perform a full in-core computation
+
+  Heff Matrix
+
+        -223.854937091240        -0.000547512891        -0.000547512891         0.255209526737
+          -0.000547512891      -224.022536140378         0.255209526737         0.000292410092
+          -0.000547512891         0.255209526737      -224.022536140378         0.000292410092
+           0.255209526737         0.000292410092         0.000292410092      -224.168831571414
+
+  Left Matrix
+
+           0.487932989348        -0.000000000001         0.006854350090         0.872854177850
+           0.000959980644         0.707106781187         0.707079910716        -0.006089195205
+           0.000959980642        -0.707106781186         0.707079910717        -0.006089195205
+          -0.872880034587         0.000000000002         0.005386799328         0.487905142024
+
+  Right Matrix
+
+           0.487932989348        -0.000000000001         0.006854350089         0.872854177850
+           0.000959980644         0.707106781187         0.707079910716        -0.006089195205
+           0.000959980642        -0.707106781186         0.707079910717        -0.006089195205
+          -0.872880034587         0.000000000002         0.005386799328         0.487905142024
+
+  Real                  Imaginary
+
+       -224.311492308024           0.000000000000
+       -224.277745667114           0.000000000000
+       -223.767329693478           0.000000000000
+       -223.712273274793           0.000000000000
+
+
+  The eigenvalue for root 0 is -224.311492308024 (0.000000000000)
+
+  Heff Matrix
+
+     -223.854937091240259     -0.000547512891215     -0.000547512891215      0.255209526736516
+       -0.000547512891215   -224.022536140377724      0.255209526736516      0.000292410092234
+       -0.000547512891215      0.255209526736516   -224.022536140377724      0.000292410092234
+        0.255209526736516      0.000292410092234      0.000292410092234   -224.168831571413705
+
+  Most important determinants in the wave function
+
+  determinant  eigenvector   eigenvector^2
+
+            3   -0.872880     0.761920  |[2222222][220]>
+            0    0.487933     0.238079  |[2222222][202]>
+            1    0.000960     0.000001  |[2222222][2-+]>
+            2    0.000960     0.000001  |[2222222][2+-]>
+
+  ==============================================================================
+  	Multireference Coupled Cluster
+		Using the DPD Library
+  ==============================================================================
+
+  ------------------------------------------------------------------------------
+  @CC Cycle      Energy          Delta E    ||DeltaT1|| ||DeltaT2|| Timing  DIIS
+  @CC           (Hartree)       (Hartree)                           (Sec)
+  ------------------------------------------------------------------------------
+  @CC   0   -224.311492308024   0.0000e+00   0.000e+00   0.000e+00       1
+  Warning: c_nu/c_mu = 5.082738e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -9.092684e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.082738e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -9.092684e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC   1   -224.645417762193  -3.3393e-01   7.754e-02   2.922e-01       3
+  Warning: c_nu/c_mu = 5.762581e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.635794e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.762581e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.635794e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC   2   -224.618065589116   2.7352e-02   5.324e-02   8.621e-02       5
+  Warning: c_nu/c_mu = 5.323604e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.435111e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.323604e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.435111e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC   3   -224.641105790554  -2.3040e-02   2.279e-02   3.928e-02       7
+  Warning: c_nu/c_mu = 5.965979e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.703476e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.965979e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.703476e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC   4   -224.638842238697   2.2636e-03   1.605e-02   1.937e-02       9
+  Warning: c_nu/c_mu = 5.726146e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.640430e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.726146e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.640430e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC   5   -224.643132531760  -4.2903e-03   7.302e-03   1.100e-02      11
+  Warning: c_nu/c_mu = 5.998854e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.746350e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.998854e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.746350e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC   6   -224.642798643247   3.3389e-04   5.448e-03   5.612e-03      13
+  Warning: c_nu/c_mu = 5.839528e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.699027e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.839528e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.699027e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S/E
+  @CC   7   -224.644258130900  -1.4595e-03   2.438e-03   3.524e-03      15
+  Warning: c_nu/c_mu = 5.872487e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.721779e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.872487e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.721779e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC   8   -224.644274359806  -1.6229e-05   3.827e-04   6.656e-04      17
+  Warning: c_nu/c_mu = 5.893437e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.728011e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.893437e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.728011e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC   9   -224.644257063782   1.7296e-05   3.081e-04   2.378e-04      19
+  Warning: c_nu/c_mu = 5.863841e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.719158e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.863841e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.719158e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  10   -224.644268803169  -1.1739e-05   1.295e-04   2.043e-04      21
+  Warning: c_nu/c_mu = 5.870848e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.721130e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.870848e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.721130e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  11   -224.644265463325   3.3398e-06   1.185e-04   9.406e-05      23
+  Warning: c_nu/c_mu = 5.861466e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.718309e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.861466e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.718309e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  12   -224.644270014608  -4.5513e-06   6.595e-05   8.082e-05      25
+  Warning: c_nu/c_mu = 5.862963e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.718716e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.862963e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.718716e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  13   -224.644269756709   2.5790e-07   5.101e-05   4.526e-05      27
+  Warning: c_nu/c_mu = 5.859889e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717779e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.859889e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717779e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S/E
+  @CC  14   -224.644274851707  -5.0950e-06   3.192e-05   3.598e-05      28
+  Warning: c_nu/c_mu = 5.858101e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717207e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858101e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717207e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  15   -224.644273981326   8.7038e-07   2.906e-06   6.278e-06      30
+  Warning: c_nu/c_mu = 5.858279e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717253e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858279e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717253e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  16   -224.644274320637  -3.3931e-07   1.892e-06   3.428e-06      32
+  Warning: c_nu/c_mu = 5.858190e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717232e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858190e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717232e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  17   -224.644273972088   3.4855e-07   9.275e-07   2.022e-06      34
+  Warning: c_nu/c_mu = 5.858209e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717235e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858209e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717235e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  18   -224.644274069833  -9.7745e-08   7.264e-07   1.404e-06      36
+  Warning: c_nu/c_mu = 5.858212e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717239e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858212e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717239e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  19   -224.644273965381   1.0445e-07   3.939e-07   1.038e-06      38
+  Warning: c_nu/c_mu = 5.858206e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717236e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858206e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717236e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  20   -224.644273989614  -2.4232e-08   2.849e-07   7.752e-07      40
+  Warning: c_nu/c_mu = 5.858216e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717240e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858216e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717240e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S/E
+  @CC  21   -224.644273945908   4.3706e-08   1.790e-07   5.989e-07      42
+  Warning: c_nu/c_mu = 5.858223e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717242e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858223e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717242e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  22   -224.644273949692  -3.7841e-09   6.446e-08   1.169e-07      44
+  Warning: c_nu/c_mu = 5.858217e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717240e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858217e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717240e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  23   -224.644273947459   2.2326e-09   3.794e-08   6.365e-08      46
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  24   -224.644273949005  -1.5457e-09   1.854e-08   3.344e-08      48
+  Warning: c_nu/c_mu = 5.858218e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717240e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858218e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717240e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  25   -224.644273948361   6.4449e-10   1.274e-08   2.133e-08      50
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  26   -224.644273948857  -4.9653e-10   6.175e-09   1.280e-08      51
+  Warning: c_nu/c_mu = 5.858218e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717240e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858218e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717240e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  27   -224.644273948680   1.7675e-10   4.521e-09   8.693e-09      53
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S/E
+  @CC  28   -224.644273948916  -2.3545e-10   2.179e-09   5.776e-09      55
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  29   -224.644273948871   4.5333e-11   4.026e-10   1.514e-09      57
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  30   -224.644273948882  -1.1937e-11   3.019e-10   6.726e-10      59
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  31   -224.644273948876   5.9686e-12   1.691e-10   4.792e-10      61
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  32   -224.644273948878  -1.9611e-12   7.026e-11   3.362e-10      63
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  33   -224.644273948877   1.1653e-12   6.131e-11   2.580e-10      65
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = 5.858219e+02 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)
+  Warning: c_nu/c_mu = -1.717241e+03 .
+  1) turn on Tikhonow regularization or increase omega (TIKHONOW_OMEGA > 0)   S
+  @CC  34   -224.644273948878  -5.1159e-13   2.618e-11   1.981e-10      67
+  ------------------------------------------------------------------------------
+
+        Mk-MRCCSD total energy      =    -224.644273948878
+
+
+  Heff Matrix
+
+     -224.287269558333804     -0.000376899636381     -0.000376899636381      0.121788545605807
+       -0.000435372931911   -224.476355659960689      0.115079421251604      0.000016274205976
+       -0.000435372931911      0.115079421251604   -224.476355659960689      0.000016274205976
+        0.139974576208467     -0.000003112013726     -0.000003112013726   -224.596522826877646
+
+  Most important determinants in the wave function
+
+  determinant  eigenvector   eigenvector^2
+
+            3    0.946443     0.895754  |[2222222][220]>
+            0   -0.322871     0.104246  |[2222222][202]>
+            2   -0.000551     0.000000  |[2222222][2+-]>
+            1   -0.000551     0.000000  |[2222222][2-+]>
+
+  Timing for singles and doubles:            66.815514 s
+
+
+  Computing (T) correction
+
+  Mk-MRCCSD(T) diagonal contributions to the effective Hamiltonian:
+
+   Ref         E[4]              E_T[4]            E_ST[4]           E_DT[4]
+  ------------------------------------------------------------------------------
+    0     -0.017663885847   -0.020561628304    0.002312474951    0.000585267506
+    1     -0.018029304511   -0.021284517827    0.003361866449   -0.000106653133
+    2     -0.018029304510   -0.021284517827    0.003361866449   -0.000106653133
+    3     -0.017022942166   -0.020936456046    0.004008184136   -0.000094670257
+   Tot    -0.017098558346   -0.020892235738    0.003808131658   -0.000014454265
+  ------------------------------------------------------------------------------
+
+  Mk-MRCCSD(T) off-diagonal contributions to the effective Hamiltonian:
+
+    0.000000000000    0.000049281388    0.000049281388    0.006267698078
+    0.000149504802    0.000000000000   -0.000445308573   -0.000020094516
+    0.000149504802   -0.000445308573    0.000000000000   -0.000020094516
+   -0.011297266025    0.000115987101    0.000115987101    0.000000000000
+
+  Hamiltonian Matrix
+
+     -224.304933444180989     -0.000327618248561     -0.000327618248561      0.128056243683351
+       -0.000285868129726   -224.494384964471266      0.114634112678368     -0.000003820310261
+       -0.000285868129726      0.114634112678368   -224.494384964471067     -0.000003820310261
+        0.128677310183966      0.000112875087339      0.000112875087337   -224.613545769043441
+
+      * Mk-MRCCSD(T) total energy   =       -224.660140784419
+
+  Timing for triples:                       109.556197 s
+
+  PSIMRCC job completed.
+  Wall Time =           177.401197 s
+  GEMM Time =             7.148859 s
+
+  ==============================================================================
+  Memory Usage Report
+
+  Maximum memory used:    135.7 Mb 
+  Number of objects still in memory: 0       Current bytes used: 0             
+  ==============================================================================
+******************************************************************************
+PSIMRCC tstop called on wigwam.ccqc.uga.edu
+Fri Jul 31 14:18:59 2009
+
+user time   =     173.64 seconds =       2.89 minutes
+system time =       3.48 seconds =       0.06 minutes
+total time  =        178 seconds =       2.97 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on wigwam.ccqc.uga.edu at Fri Jul 31 14:18:59 2009
+
+Total PSI3 wall time        179 seconds =       2.98 minutes
+******************************************************************************

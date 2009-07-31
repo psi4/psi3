@@ -112,6 +112,7 @@ void read_calculation_options()
   options_add_bool("DIIS_TRIPLES",false);
   options_add_bool("LOCK_SINGLET",false);
   options_add_bool("MP2_GUESS",true);
+  options_add_bool("HEFF4",true);
   options_add_bool("ONLY_CLOSED_SHELL",false);
   options_add_bool("USE_DIIS",true);
   options_add_bool("USE_SPIN_SYMMETRY",true);

@@ -18,7 +18,7 @@ casscf-opt-numer casscf-opt casscf-sp-reorder
 psimrcc_subdirs = psimrcc-sp1 \
 psimrcc-idmrpt2 \
 psimrcc-mp2-ccsd-1 psimrcc-mp2-ccsd-2 psimrcc-mp2-ccsd-3 psimrcc-mp2-ccsd-4 \
-psimrcc-ccsd_t-1 psimrcc-ccsd_t-2 psimrcc-ccsd_t-3
+psimrcc-ccsd_t-1 psimrcc-ccsd_t-2 psimrcc-ccsd_t-3 psimrcc-ccsd_t-4
 
 scf_subdirs   = mcscf-rhf1 mcscf-rohf1 mcscf-twocon1
 

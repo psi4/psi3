@@ -1,0 +1,32 @@
+% Test Mk-MRCCSD(T) for the general CAS(2,2) case
+
+psi: (
+  wfn       = psimrcc
+  reference = twocon
+  label     = "O3 Mk-MRCCSD(T) DZ"
+  jobtype   = sp
+  dertype   = none
+  basis     = DZ 
+  docc      = (10 1)
+  actv      = (0  2)
+  zmat = (
+    ( O )
+    ( O  1    1.2757197)
+    ( O  2    1.2771804 1  115.94564)
+  )
+  convergence = 12
+
+  % Canonicalize active orbitals by diagonalizing
+  % the average fock matrix.  This avoids having
+  % configurations with c_mu = 0 on the first cycle
+  % of the Mk-MRCCSD iterations
+  canonicalize_active_favg = true
+)
+
+mrcc:(
+  corr_wfn      = ccsd_t
+  corr_focc     = (3 0)
+  corr_docc     = (7 1)
+  corr_actv     = (0 2)
+)
+

@@ -231,6 +231,13 @@ void CCMRCC::build_F_ME_intermediates()
     fprintf(outfile,"\n\tBuilding the F_ME Intermediates   ...");
     fflush(outfile);
   );
+  if(triples_type >= ccsd_t){
+    blas->append("F_ME[O][V]{c} = fock[O][V]{c}");
+
+    blas->append("F_ME[O][V]{c} += #12# ([ov]:[ov]) 2@1 t1[OV]{c}");
+    blas->append("F_ME[O][V]{c} += #12# ([ov]|[ov]) 2@1 t1[OV]{c} ");
+  }
+
   // Open-Shell
   // Add the VV Fock matrix with the diagonal terms zeroed
   blas->append("F_ME[O][V]{o} = fock[O][V]{o}");

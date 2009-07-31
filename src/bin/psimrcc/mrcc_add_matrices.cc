@@ -320,15 +320,17 @@ void CCMRCC::add_matrices()
   // Triples
   if(triples_type >= ccsd_t){
     blas->add_Matrix("t2[Oo][Vv]{u}");
-    blas->add_Matrix("F2_me[o][v]{u}");
-    blas->add_Matrix("F2_ME[O][V]{u}");
+    blas->add_Matrix("F_ME[O][V]{u}");
 
-    // Required by T2*W_bcek
-    blas->add_Matrix("t2[oov][v]{u}");
-    blas->add_Matrix("t2[oOv][V]{u}");
-    blas->add_Matrix("t2[OoV][v]{u}");
-    blas->add_Matrix("t2[OOV][V]{u}");
+    blas->add_Matrix("W_ijka[oo][ov]{u}");
+    blas->add_Matrix("W_iJkA[oO][oV]{u}");
+    blas->add_Matrix("W_IjKa[Oo][Ov]{u}");
+    blas->add_Matrix("W_IJKA[OO][OV]{u}");
 
+    blas->add_Matrix("W_aibc[v][ovv]{u}");
+    blas->add_Matrix("W_aIbC[v][OvV]{u}");
+    blas->add_Matrix("W_AiBc[V][oVv]{u}");
+    blas->add_Matrix("W_AIBC[V][OVV]{u}");
   }
 
   if(triples_type > ccsd_t){  // TODO: ccsd_t should not require storage
@@ -337,6 +339,11 @@ void CCMRCC::add_matrices()
     blas->add_Matrix("<[oo]:[ov]>");
     blas->add_Matrix("<[oo]|[ov]>");
 
+    // Required by T2 * W_bcek
+    blas->add_Matrix("t2[oov][v]{u}");
+    blas->add_Matrix("t2[oOv][V]{u}");
+    blas->add_Matrix("t2[OoV][v]{u}");
+    blas->add_Matrix("t2[OOV][V]{u}");
 
 /*
     blas->add_Matrix("t2_test[oo][vv]{u}");

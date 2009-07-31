@@ -26,7 +26,8 @@ idmrpt2_add_matrices.cc		mp2_ccsd_t2_amps.cc		mrcc_tau.cc \
 idmrpt2_f_int.cc		mp2_ccsd_w_int.cc		mrcc_w_int.cc \
 idmrpt2_t1_amps.cc		mp2_ccsd_z_int.cc		mrcc_z_int.cc \
 index_iterator.cc special_matrices.cc mrcc_pert_triples.cc \
-mrccsd_t.cc mrccsd_t_compute.cc mrccsd_t_setup.cc mrccsd_t_form_matrices.cc mrccsd_t_heff.cc mrccsd_t_heff_ab.cc heff.cc
+mrccsd_t.cc mrccsd_t_compute.cc mrccsd_t_setup.cc mrccsd_t_form_matrices.cc \
+mrccsd_t_heff.cc mrccsd_t_heff_ab.cc heff.cc mrccsd_t_heff_a.cc mrccsd_t_heff_b.cc
 
 LD = ${CXX}
 BINOBJ = $(CXXSRC:%.cc=%.o)

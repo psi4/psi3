@@ -141,7 +141,6 @@ void MRCCSD_T::compute_ooo_triples()
           
           double***  F_ov_mu    = F_ov[mu];
           double***  T1_ov_mu   = T1_ov[mu];
-          double***  V_oovv_mu  = V_oovv[mu];
           double***  T2_oovv_mu = T2_oovv[mu];
           
           double D_ijk = e_oo[mu][i_abs] + e_oo[mu][j_abs] + e_oo[mu][k_abs];
@@ -181,7 +180,7 @@ void MRCCSD_T::compute_ooo_triples()
               // Compute the energy
               e4T[mu] += W[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) / 36.0;
               if((i_sym == a_sym) & (jk_sym == bc_sym)){
-                e4ST[mu] += 0.25 * T1_ov_mu[i_sym][i_rel][a_rel] * V_oovv_mu[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
+                e4ST[mu] += 0.25 * T1_ov_mu[i_sym][i_rel][a_rel] * V_oovv[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
                 e4DT[mu] += 0.25 * F_ov_mu[i_sym][i_rel][a_rel] * T2_oovv_mu[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
               }
             }
@@ -191,7 +190,12 @@ void MRCCSD_T::compute_ooo_triples()
       }  // End of iterations
     }
     
+    // Compute the contributions to the off-diagonal elements of Heff
+    for(int mu = 0; mu < nrefs; ++mu){
+      compute_ooo_contribution_to_Heff(i_abs,j_abs,k_abs,mu,T[mu][ijk.sym]);
+    }
     
+    // Add the energy contributions from ijk
     for(int mu = 0; mu < nrefs; ++mu){
       E4T_ooo[mu]  += e4T[mu];
       E4ST_ooo[mu] += e4ST[mu];
@@ -264,7 +268,6 @@ void MRCCSD_T::compute_OOO_triples()
 
           double***  F_OV_mu    = F_OV[mu];
           double***  T1_OV_mu   = T1_OV[mu];
-          double***  V_oovv_mu  = V_oovv[mu];
           double***  T2_OOVV_mu = T2_OOVV[mu];
 
           double D_IJK = e_OO[mu][i_abs] + e_OO[mu][j_abs] + e_OO[mu][k_abs];
@@ -304,7 +307,7 @@ void MRCCSD_T::compute_OOO_triples()
               // Compute the energy
               e4T[mu] += W[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) / 36.0;
               if((i_sym == a_sym) & (jk_sym == bc_sym)){
-                e4ST[mu] += 0.25 * T1_OV_mu[i_sym][i_rel][a_rel] * V_oovv_mu[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
+                e4ST[mu] += 0.25 * T1_OV_mu[i_sym][i_rel][a_rel] * V_oovv[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
                 e4DT[mu] += 0.25 * F_OV_mu[i_sym][i_rel][a_rel] * T2_OOVV_mu[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
               }
             }
@@ -313,6 +316,13 @@ void MRCCSD_T::compute_OOO_triples()
         }  // End loop over allowed ijk
       }  // End of iterations
     }
+
+    // Compute the contributions to the off-diagonal elements of Heff
+    for(int mu = 0; mu < nrefs; ++mu){
+      compute_OOO_contribution_to_Heff(i_abs,j_abs,k_abs,mu,T[mu][ijk.sym]);
+    }
+
+    // Add the energy contributions from ijk
     for(int mu = 0; mu < nrefs; ++mu){
       E4T_OOO[mu]  += e4T[mu];
       E4ST_OOO[mu] += e4ST[mu];
@@ -402,8 +412,6 @@ void MRCCSD_T::compute_ooO_triples()
           double***  F_OV_mu    = F_OV[mu];
           double***  T1_ov_mu   = T1_ov[mu];
           double***  T1_OV_mu   = T1_OV[mu];
-          double***  V_oovv_mu  = V_oovv[mu];
-          double***  V_oOvV_mu  = V_oOvV[mu];
           double***  T2_oovv_mu = T2_oovv[mu];
           double***  T2_oOvV_mu = T2_oOvV[mu];
 
@@ -450,11 +458,11 @@ void MRCCSD_T::compute_ooO_triples()
               // Compute the energy
               e4T[mu] += W[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) / 4.0;
               if((i_sym == a_sym) & (jk_sym == bc_sym)){
-                e4ST[mu] += T1_ov_mu[i_sym][i_rel][a_rel] *  V_oOvV_mu[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
+                e4ST[mu] += T1_ov_mu[i_sym][i_rel][a_rel] *  V_oOvV[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
                 e4DT[mu] +=  F_ov_mu[i_sym][i_rel][a_rel] * T2_oOvV_mu[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
               }
               if((k_sym == c_sym) & (ij_sym == ab_sym)){
-                e4ST[mu] += 0.25 * T1_OV_mu[k_sym][k_rel][c_rel] *  V_oovv_mu[ij_sym][ij_rel][ab_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
+                e4ST[mu] += 0.25 * T1_OV_mu[k_sym][k_rel][c_rel] *  V_oovv[ij_sym][ij_rel][ab_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
                 e4DT[mu] += 0.25 *  F_OV_mu[k_sym][k_rel][c_rel] * T2_oovv_mu[ij_sym][ij_rel][ab_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
               }
             }
@@ -556,8 +564,6 @@ void MRCCSD_T::compute_oOO_triples()
           double***  F_OV_mu    = F_OV[mu];
           double***  T1_ov_mu   = T1_ov[mu];
           double***  T1_OV_mu   = T1_OV[mu];
-          double***  V_oovv_mu  = V_oovv[mu];
-          double***  V_oOvV_mu  = V_oOvV[mu];
           double***  T2_oOvV_mu = T2_oOvV[mu];
           double***  T2_OOVV_mu = T2_OOVV[mu];
 
@@ -606,11 +612,11 @@ void MRCCSD_T::compute_oOO_triples()
               // Compute the energy
               e4T[mu] += W[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) / 4.0;
               if((i_sym == a_sym) & (jk_sym == bc_sym)){
-                e4ST[mu] += 0.25 * T1_ov_mu[i_sym][i_rel][a_rel] *  V_oovv_mu[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
+                e4ST[mu] += 0.25 * T1_ov_mu[i_sym][i_rel][a_rel] *  V_oovv[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
                 e4DT[mu] += 0.25 *  F_ov_mu[i_sym][i_rel][a_rel] * T2_OOVV_mu[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
               }
               if((k_sym == c_sym) & (ij_sym == ab_sym)){
-                e4ST[mu] += T1_OV_mu[k_sym][k_rel][c_rel] *  V_oOvV_mu[ij_sym][ij_rel][ab_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
+                e4ST[mu] += T1_OV_mu[k_sym][k_rel][c_rel] *  V_oOvV[ij_sym][ij_rel][ab_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
                 e4DT[mu] +=  F_OV_mu[k_sym][k_rel][c_rel] * T2_oOvV_mu[ij_sym][ij_rel][ab_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
               }
             }
