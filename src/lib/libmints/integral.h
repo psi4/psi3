@@ -154,35 +154,33 @@ public:
         fij = usj->function_index();
         fik = usk->function_index();
         fil = usl->function_index();
+        
+        iimax = ni - 1;
+        if (usi == usj && usk == usl && usi == usk) {
+            kkmax = 0;
+            llmax = 0;
+            jjmax = 0;
+        }
+        else if(usi == usk && usj == usl){
+            kkmax = 0;
+            llmax = 0;
+            jjmax = nj - 1;
+        }
+        else{
+            kkmax = nk - 1;
+            jjmax = (usi == usj) ? 0 : nj - 1;
+            llmax = (usk == usl) ? 0 : nl - 1;
+        }
 
         ii = 0;
         jj = 0;
         kk = 0;
         ll = 0;
-
-        iimax = ni - 1;
-        if (usi == usj && usk == usl) {
-            kkmax = 0;
-            llmax = 0;
-            if(usi == usk) {
-                jjmax = 0;
-            }
-            else if(usj == usl){
-                jjmax = nj - 1;
-            }
-        }
-        else{
-            kkmax = nk-1;
-            jjmax = (usi == usj) ? 0 : nj - 1;
-            llmax = (usk == usl) ? 0 : nl - 1;
-        }
-
-        //generate_combinations(s1, s2, s3, s4);
+        
     }
     
     void first();
     void next();
-    //int size() { return unique_integrals_.size(); }
     bool is_done() { return done; }
     
     int i() const { return current.i; }
@@ -203,34 +201,39 @@ private:
         bool end_of_PK;
     };
         
-    std::vector<ShellQuartet> unique_quartets_;
-    int i_, j_;
+    ShellQuartet current;
+    int usi_arr[3], usj_arr[3], usk_arr[3], usl_arr[3];
+    int usii, usjj, uskk, usll, upk;
+    
+    int num_unique_pk;
+
+    bool done;
     
     Ref<BasisSet> bs1_;
     Ref<BasisSet> bs2_;
     Ref<BasisSet> bs3_;
     Ref<BasisSet> bs4_;
     
-    void generate_combinations(const Ref<BasisSet> &bs1, const Ref<BasisSet> &bs2,
-        const Ref<BasisSet> &bs3, const Ref<BasisSet> &bs4);
+//    void generate_combinations(const Ref<BasisSet> &bs1, const Ref<BasisSet> &bs2,
+//        const Ref<BasisSet> &bs3, const Ref<BasisSet> &bs4);
         
 public:
     ShellCombinationsIterator(const Ref<BasisSet> &bs1, const Ref<BasisSet> &bs2,
                               const Ref<BasisSet> &bs3, const Ref<BasisSet> &bs4) : bs1_(bs1), bs2_(bs2), bs3_(bs3), bs4_(bs4) {
-        i_ = 0; j_ = 0;
-        generate_combinations(bs1, bs2, bs3, bs4);
+
+        usii = usjj = uskk = usll = upk = 0;
+        done = false;
     }
                  
-    void first() { i_ = 0; }
-    void next() { i_++; }
-    int size() { return unique_quartets_.size(); }
-    bool is_done() { return i_ < unique_quartets_.size() ? false : true; }
+    void first();
+    void next();
+    bool is_done() { return done; }
     
-    int p() const { return unique_quartets_[i_].P; }
-    int q() const { return unique_quartets_[i_].Q; }
-    int r() const { return unique_quartets_[i_].R; }
-    int s() const { return unique_quartets_[i_].S; }
-    int end_of_PK() const { return unique_quartets_[i_].end_of_PK; }
+    int p() const { return current.P; }
+    int q() const { return current.Q; }
+    int r() const { return current.R; }
+    int s() const { return current.S; }
+    int end_of_PK() const { return current.end_of_PK; }
     
     IntegralsIterator integrals_iterator();
 };

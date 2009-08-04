@@ -91,13 +91,9 @@ IntegralsIterator ShellCombinationsIterator::integrals_iterator()
     return IntegralsIterator(bs1_->shell(p()), bs2_->shell(q()), bs3_->shell(r()), bs4_->shell(s()));
 }
 
+/*
 void ShellCombinationsIterator::generate_combinations(const Ref<BasisSet> &bs1, const Ref<BasisSet> &bs2, const Ref<BasisSet> &bs3, const Ref<BasisSet> &bs4)
 {
-    // Assumes bs1 == bs2 == bs3 == bs4
-    int usii, usjj, uskk, usll;
-    int usi, usj, usk, usl;
-    int usi_arr[3], usj_arr[3], usk_arr[3], usl_arr[3];
-    int num_unique_pk;
     
     for (usii=0; usii<bs1->nshell(); usii++) {
         for (usjj=0; usjj<=usii; usjj++) { 
@@ -155,41 +151,137 @@ void ShellCombinationsIterator::generate_combinations(const Ref<BasisSet> &bs1, 
             }
         }
     }    
+}*/
+
+void ShellCombinationsIterator::first(){
+    num_unique_pk = 1;
+    usi_arr[0] = usii; usj_arr[0] = usjj; usk_arr[0] = uskk; usl_arr[0] = usll;
+    
+    int usi, usj, usk, usl;
+    usi = usi_arr[upk]; usj = usj_arr[upk]; usk = usk_arr[upk]; usl = usl_arr[upk];
+
+    // Sort shells based on AM, save ERI some work doing permutation resorting.
+    if (bs1_->shell(usi)->am(0) < bs2_->shell(usj)->am(0)) {
+        swap(usi, usj);
+    }
+    if (bs3_->shell(usk)->am(0) < bs4_->shell(usl)->am(0)) {
+        swap(usk, usl);
+    }
+    if (bs1_->shell(usi)->am(0) + bs2_->shell(usj)->am(0) >
+        bs3_->shell(usk)->am(0) + bs4_->shell(usl)->am(0)) {
+        swap(usi, usk);
+        swap(usj, usl);
+    }
+
+    current.P = usi; current.Q = usj; current.R = usk; current.S = usl; current.end_of_PK = false;
+
+    if (upk == num_unique_pk - 1) {
+        // If this is the last unique shell flag it as end of a pk block.
+        current.end_of_PK = true;
+    }
+    else{
+        current.end_of_PK = false;
+    }
+
 }
 
-void IntegralsIterator::first(){
-    if (usi == usj && usk == usl) {
-        if(usi == usk) { // (aa|aa) case
-            current.i = ii + fii;
-            current.j = jj + fij;
-            current.k = kk + fik;
-            current.l = ll + fil;
-            current.index = ll+nl*(kk+nk*(jj+nj*ii));
+
+void ShellCombinationsIterator::next(){
+    ++upk;
+    if(upk >= num_unique_pk){
+        upk = 0;
+        ++usll;
+        if (usll > uskk){
+            ++uskk;
+            usll = 0;
+            if(uskk > usjj){
+                ++usjj;
+                uskk = 0;
+                if(usjj > usii){
+                    ++usii;
+                    usjj = 0;
+                    if(usii >= bs1_->nshell()){
+                        done = true;
+                        return;
+                    }
+                }
+            }
         }
-        else if(usj == usl){
-            current.i = ii + fii;
-            current.j = jj + fij;
-            current.k = kk + fik;
-            current.l = ll + fil;
-            current.index = ll+nl*(kk+nk*(jj+nj*ii));
-            if (current.i < current.j) {
-                swap(current.i, current.j);
-                swap(current.k, current.l);
-            }
-            if (current.i < current.k) {
-                swap(current.i, current.k);
-                swap(current.j, current.l);
-            }
+        usi_arr[0] = usii; usj_arr[0] = usjj; usk_arr[0] = uskk; usl_arr[0] = usll;
+        if (usii == usjj && usii == uskk || usjj == uskk && usjj == usll)
+            num_unique_pk = 1;
+        else if (usii == uskk || usjj == usll) {
+            num_unique_pk = 2;
+            usi_arr[1] = usii; usj_arr[1] = uskk; usk_arr[1] = usjj; usl_arr[1] = usll;
+        }
+        else if (usjj == uskk) {
+            num_unique_pk = 2;
+            usi_arr[1] = usii; usj_arr[1] = usll; usk_arr[1] = usjj; usl_arr[1] = uskk;
+        }
+        else if (usii == usjj || uskk == usll) {
+            num_unique_pk = 2;
+            usi_arr[1] = usii; usj_arr[1] = uskk; usk_arr[1] = usjj; usl_arr[1] = usll;
+        }
+        else {
+            num_unique_pk = 3;
+            usi_arr[1] = usii; usj_arr[1] = uskk; usk_arr[1] = usjj; usl_arr[1] = usll;
+            usi_arr[2] = usii; usj_arr[2] = usll; usk_arr[2] = usjj; usl_arr[2] = uskk;
+        }
+    }
+
+    
+
+    int usi, usj, usk, usl;
+    usi = usi_arr[upk]; usj = usj_arr[upk]; usk = usk_arr[upk]; usl = usl_arr[upk];
+
+    
+    // Sort shells based on AM, save ERI some work doing permutation resorting.
+    if (bs1_->shell(usi)->am(0) < bs2_->shell(usj)->am(0)) {
+        swap(usi, usj);
+    }
+    if (bs3_->shell(usk)->am(0) < bs4_->shell(usl)->am(0)) {
+        swap(usk, usl);
+    }
+    if (bs1_->shell(usi)->am(0) + bs2_->shell(usj)->am(0) >
+        bs3_->shell(usk)->am(0) + bs4_->shell(usl)->am(0)) {
+        swap(usi, usk);
+        swap(usj, usl);
+    }
+
+    current.P = usi; current.Q = usj; current.R = usk; current.S = usl; current.end_of_PK = false;
+
+    if (upk == num_unique_pk - 1) {
+        // If this is the last unique shell flag it as end of a pk block.
+        current.end_of_PK = true;
+    }
+    else{
+        current.end_of_PK = false;
+    }
+    
+}
+
+
+
+
+void IntegralsIterator::first(){
+    current.i = 0 + fii;
+    current.j = 0 + fij;
+    current.k = 0 + fik;
+    current.l = 0 + fil;
+    current.index = 0;
+    if (usi == usj && usk == usl && usi == usk) {     // (aa|aa) case        
+    }
+    else if(usi== usk && usj == usl){
+        if (current.i < current.j) {
+            swap(current.i, current.j);
+            swap(current.k, current.l);
+        }
+        if (current.i < current.k) {
+            swap(current.i, current.k);
+            swap(current.j, current.l);
         }
     }
     else{
-        current.i = ii + fii;
-        current.j = jj + fij;
-        current.k = kk + fik;
-        current.l = ll + fil;
-        current.index = ll+nl*(kk+nk*(jj+nj*ii));
-
-        // Might need to swap indices
         if (current.i < current.j) {
             swap(current.i, current.j);
         }
@@ -205,71 +297,7 @@ void IntegralsIterator::first(){
 
 
 void IntegralsIterator::next(){
-    if (usi == usj && usk == usl) {
-        if(usi == usk) { // (aa|aa) case
-            ++ll;
-            if(ll > llmax){
-                ++kk;
-                ll = 0;
-                if(kk > kkmax){
-                    kk = 0;
-                    ++jj;
-                    if(jj >= jjmax){
-                        jj = 0;
-                        ++ii;
-                        if(ii > iimax){
-                            done = true;
-                        }
-                        jjmax = ii;
-                    }
-                    kkmax = ii;
-
-                }
-                llmax = (kk==ii) ? jj : kk;
-            }
-            current.i = ii + fii;
-            current.j = jj + fij;
-            current.k = kk + fik;
-            current.l = ll + fil;
-            current.index = ll+nl*(kk+nk*(jj+nj*ii));
-        }
-        else if(usj == usl){
-            ++ll;
-            if(ll > llmax){
-                ++kk;
-                ll = 0;
-                if(kk > kkmax){
-                    kk = 0;
-                    ++jj;
-                    if(jj >= jjmax){
-                        jj = 0;
-                        ++ii;
-                        if(ii > iimax){
-                            done = true;
-                            return;
-                        }
-                        jjmax = (usi == usj) ? ii : nj - 1;
-                    }
-                }
-                llmax = (usk == usl) ? kk : nl - 1;
-            }
-
-            current.i = ii + fii;
-            current.j = jj + fij;
-            current.k = kk + fik;
-            current.l = ll + fil;
-            current.index = ll+nl*(kk+nk*(jj+nj*ii));
-            if (current.i < current.j) {
-                swap(current.i, current.j);
-                swap(current.k, current.l);
-            }
-            if (current.i < current.k) {
-                swap(current.i, current.k);
-                swap(current.j, current.l);
-            }
-        }        
-    }
-    else{        
+    if (usi == usj && usk == usl && usi == usk) {
         ++ll;
         if(ll > llmax){
             ++kk;
@@ -277,27 +305,83 @@ void IntegralsIterator::next(){
             if(kk > kkmax){
                 kk = 0;
                 ++jj;
-                if(jj >= jjmax){
+                if(jj > jjmax){
                     jj = 0;
                     ++ii;
                     if(ii > iimax){
-                        done = true;
-                        return;
+                        done = true;                        
                     }
+                    jjmax = ii;
                 }
                 kkmax = ii;
 
             }
-            llmax = (kk==ii) ? jj : nl - 1;
+            llmax = (kk==ii) ? jj : kk;
         }
-
         current.i = ii + fii;
         current.j = jj + fij;
         current.k = kk + fik;
         current.l = ll + fil;
         current.index = ll+nl*(kk+nk*(jj+nj*ii));
-
-        // Might need to swap indices
+        
+    }
+    else if(usi == usk && usj == usl){ //(ab|ab)
+        ++ll;
+        if(ll > llmax){
+            ++kk;
+            ll = 0;
+            if(kk > kkmax){
+                kk = 0;
+                ++jj;
+                if(jj > jjmax){
+                    jj = 0;
+                    ++ii;
+                    if(ii > iimax){
+                        done = true;
+                    }
+                }
+                kkmax = ii;
+            }
+            llmax = (kk == ii) ? jj : nl - 1;
+        }
+        current.i = ii + fii;
+        current.j = jj + fij;
+        current.k = kk + fik;
+        current.l = ll + fil;
+        current.index = ll+nl*(kk+nk*(jj+nj*ii));
+        if (current.i < current.j) {
+            swap(current.i, current.j);
+            swap(current.k, current.l);
+        }
+        if (current.i < current.k) {
+            swap(current.i, current.k);
+            swap(current.j, current.l);
+        }
+    }
+    else{
+        ++ll;
+        if(ll > llmax){
+            ++kk;
+            ll = 0;
+            if(kk > kkmax){
+                kk = 0;
+                ++jj;
+                if(jj > jjmax){
+                    jj = 0;
+                    ++ii;
+                    if(ii > iimax){
+                        done = true;
+                    }
+                    jjmax = (usi == usj) ? ii : nj - 1;
+                }
+            }
+            llmax = (usk==usl) ? kk : nl - 1;
+        }
+        current.i = ii + fii;
+        current.j = jj + fij;
+        current.k = kk + fik;
+        current.l = ll + fil;
+        current.index = ll+nl*(kk+nk*(jj+nj*ii));
         if (current.i < current.j) {
             swap(current.i, current.j);
         }
@@ -310,109 +394,5 @@ void IntegralsIterator::next(){
         }
     }
 
-
-
 }
-/*
-void IntegralsIterator::generate_combinations(const Ref<GaussianShell> &usi, const Ref<GaussianShell> &usj, const Ref<GaussianShell> &usk, const Ref<GaussianShell> &usl)
-{
-    int ni =usi->nfunction(0);
-    int nj =usj->nfunction(0);
-    int nk =usk->nfunction(0);
-    int nl =usl->nfunction(0);
-    
-    int fii = usi->function_index();
-    int fij = usj->function_index();
-    int fik = usk->function_index();
-    int fil = usl->function_index();
-    
-    // For a given quartet save the individual integrals information.
-    // Unfortunately we don't know if an individual integral exists until we compute it. :(
-    if (usi == usj && usk == usl && usi == usk) { // (aa|aa) case
-        int iimax = ni - 1;
-        for (int ii=0; ii <= iimax; ++ii) {
-            int jjmax = ii;
-            for (int jj=0; jj <= jjmax; ++jj) {
-                int kkmax = ii;
-                for (int kk=0; kk <= kkmax; ++kk) {
-                    int llmax = (kk==ii) ? jj : kk;
-                    for (int ll=0; ll <= llmax; ++ll) {
-                        // Save this integral
-                        Integral integral;
-                        integral.i = ii + fii;
-                        integral.j = jj + fij;
-                        integral.k = kk + fik;
-                        integral.l = ll + fil;
-                        integral.index = ll+nl*(kk+nk*(jj+nj*ii));
-                        unique_integrals_.push_back(integral);
-                    }
-                }
-            }
-        }
-    }
-    else if (usi == usk && usj == usl) { // (ab|ab) case
-        int iimax = ni-1;
-        for (int ii=0; ii <= iimax; ++ii) {
-            int jjmax = nj-1;
-            for (int jj=0; jj <= jjmax; ++jj) {
-                int kkmax = ii;
-                for (int kk=0; kk <= kkmax; ++kk) {
-                    int llmax = (kk==ii)? jj : nl - 1;
-                    for (int ll=0; ll <= llmax; ++ll) {
-                        Integral integral;
-                        integral.i = ii + fii;
-                        integral.j = jj + fij;
-                        integral.k = kk + fik;
-                        integral.l = ll + fil;
-                        integral.index = ll+nl*(kk+nk*(jj+nj*ii));
-                        
-                        // Might need to swap indices
-                        if (integral.i < integral.j) {
-                            swap(integral.i, integral.j);
-                            swap(integral.k, integral.l);
-                        }
-                        if (integral.i < integral.k) {
-                            swap(integral.i, integral.k);
-                            swap(integral.j, integral.l);
-                        }
-                        unique_integrals_.push_back(integral);
-                    }
-                }
-            }
-        }
-    }
-    else { // (ab|cd)
-        int iimax = ni-1;
-        int kkmax = nk-1;
-        for (int ii=0; ii <= iimax; ++ii) {
-            int jjmax = (usi == usj) ? ii : nj - 1;
-            for (int jj=0; jj <= jjmax; ++jj) {
-                for (int kk=0; kk <= kkmax; ++kk) {
-                    int llmax = (usk == usl) ? kk : nl - 1;
-                    for (int ll=0; ll <= llmax; ++ll) {
-                        Integral integral;
-                        integral.i = ii + fii;
-                        integral.j = jj + fij;
-                        integral.k = kk + fik;
-                        integral.l = ll + fil;
-                        integral.index = ll+nl*(kk+nk*(jj+nj*ii));
-                        
-                        // Might need to swap indices
-                        if (integral.i < integral.j) {
-                            swap(integral.i, integral.j);
-                        }
-                        if (integral.k < integral.l) {
-                            swap(integral.k, integral.l);
-                        }
-                        if ((integral.i < integral.k) || (integral.i == integral.k && integral.j < integral.l)) {
-                            swap(integral.i, integral.k);
-                            swap(integral.j, integral.l);
-                        }
-                        unique_integrals_.push_back(integral);
-                    }
-                }
-            }
-        }
-    }    
-}
-*/
+
