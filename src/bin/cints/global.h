@@ -3,7 +3,7 @@
 
 /*! \file
     \ingroup CINTS
-    \brief Enter brief description of file here 
+    \brief Enter brief description of file here
 */
 /*-----------------
   global variables
@@ -20,7 +20,7 @@
 
 namespace psi {
   namespace CINTS {
-    
+
     /*--- Expensive/frequently-used quantities ---*/
 EXTERN int ioff[IOFFMAX];             /* Offset array */
 EXTERN double fac[CINTS_MAX_AM*2];          /* Factorials */
@@ -88,7 +88,9 @@ EXTERN double **Hess;    /* Nuclear force constants */
 
 #include<cstdio>
 /*--- Mandatory: Input and Output files, PSI file prefix ---*/
+extern "C" {
 EXTERN FILE *infile;
 EXTERN FILE *outfile;
 EXTERN char *psi_file_prefix;
+}
 #endif
