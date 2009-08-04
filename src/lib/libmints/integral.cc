@@ -157,6 +157,163 @@ void ShellCombinationsIterator::generate_combinations(const Ref<BasisSet> &bs1, 
     }    
 }
 
+void IntegralsIterator::first(){
+    if (usi == usj && usk == usl) {
+        if(usi == usk) { // (aa|aa) case
+            current.i = ii + fii;
+            current.j = jj + fij;
+            current.k = kk + fik;
+            current.l = ll + fil;
+            current.index = ll+nl*(kk+nk*(jj+nj*ii));
+        }
+        else if(usj == usl){
+            current.i = ii + fii;
+            current.j = jj + fij;
+            current.k = kk + fik;
+            current.l = ll + fil;
+            current.index = ll+nl*(kk+nk*(jj+nj*ii));
+            if (current.i < current.j) {
+                swap(current.i, current.j);
+                swap(current.k, current.l);
+            }
+            if (current.i < current.k) {
+                swap(current.i, current.k);
+                swap(current.j, current.l);
+            }
+        }
+    }
+    else{
+        current.i = ii + fii;
+        current.j = jj + fij;
+        current.k = kk + fik;
+        current.l = ll + fil;
+        current.index = ll+nl*(kk+nk*(jj+nj*ii));
+
+        // Might need to swap indices
+        if (current.i < current.j) {
+            swap(current.i, current.j);
+        }
+        if (current.k < current.l) {
+            swap(current.k, current.l);
+        }
+        if ((current.i < current.k) || (current.i == current.k && current.j < current.l)) {
+            swap(current.i, current.k);
+            swap(current.j, current.l);
+        }
+    }
+}
+
+
+void IntegralsIterator::next(){
+    if (usi == usj && usk == usl) {
+        if(usi == usk) { // (aa|aa) case
+            ++ll;
+            if(ll > llmax){
+                ++kk;
+                ll = 0;
+                if(kk > kkmax){
+                    kk = 0;
+                    ++jj;
+                    if(jj >= jjmax){
+                        jj = 0;
+                        ++ii;
+                        if(ii > iimax){
+                            done = true;
+                        }
+                        jjmax = ii;
+                    }
+                    kkmax = ii;
+
+                }
+                llmax = (kk==ii) ? jj : kk;
+            }
+            current.i = ii + fii;
+            current.j = jj + fij;
+            current.k = kk + fik;
+            current.l = ll + fil;
+            current.index = ll+nl*(kk+nk*(jj+nj*ii));
+        }
+        else if(usj == usl){
+            ++ll;
+            if(ll > llmax){
+                ++kk;
+                ll = 0;
+                if(kk > kkmax){
+                    kk = 0;
+                    ++jj;
+                    if(jj >= jjmax){
+                        jj = 0;
+                        ++ii;
+                        if(ii > iimax){
+                            done = true;
+                            return;
+                        }
+                        jjmax = (usi == usj) ? ii : nj - 1;
+                    }
+                }
+                llmax = (usk == usl) ? kk : nl - 1;
+            }
+
+            current.i = ii + fii;
+            current.j = jj + fij;
+            current.k = kk + fik;
+            current.l = ll + fil;
+            current.index = ll+nl*(kk+nk*(jj+nj*ii));
+            if (current.i < current.j) {
+                swap(current.i, current.j);
+                swap(current.k, current.l);
+            }
+            if (current.i < current.k) {
+                swap(current.i, current.k);
+                swap(current.j, current.l);
+            }
+        }        
+    }
+    else{        
+        ++ll;
+        if(ll > llmax){
+            ++kk;
+            ll = 0;
+            if(kk > kkmax){
+                kk = 0;
+                ++jj;
+                if(jj >= jjmax){
+                    jj = 0;
+                    ++ii;
+                    if(ii > iimax){
+                        done = true;
+                        return;
+                    }
+                }
+                kkmax = ii;
+
+            }
+            llmax = (kk==ii) ? jj : nl - 1;
+        }
+
+        current.i = ii + fii;
+        current.j = jj + fij;
+        current.k = kk + fik;
+        current.l = ll + fil;
+        current.index = ll+nl*(kk+nk*(jj+nj*ii));
+
+        // Might need to swap indices
+        if (current.i < current.j) {
+            swap(current.i, current.j);
+        }
+        if (current.k < current.l) {
+            swap(current.k, current.l);
+        }
+        if ((current.i < current.k) || (current.i == current.k && current.j < current.l)) {
+            swap(current.i, current.k);
+            swap(current.j, current.l);
+        }
+    }
+
+
+
+}
+/*
 void IntegralsIterator::generate_combinations(const Ref<GaussianShell> &usi, const Ref<GaussianShell> &usj, const Ref<GaussianShell> &usk, const Ref<GaussianShell> &usl)
 {
     int ni =usi->nfunction(0);
@@ -258,3 +415,4 @@ void IntegralsIterator::generate_combinations(const Ref<GaussianShell> &usi, con
         }
     }    
 }
+*/

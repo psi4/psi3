@@ -125,30 +125,71 @@ private:
         int l;
         unsigned int index;
     };
-    
-    std::vector<Integral> unique_integrals_;
-    int i_;
-    
-    void generate_combinations(const Ref<GaussianShell> &s1, const Ref<GaussianShell> &s2,
-        const Ref<GaussianShell> &s3, const Ref<GaussianShell> &s4);
+
+    Integral current;
+    Ref<GaussianShell> usi, usj, usk, usl;
+
+    bool done;
+
+    //std::vector<Integral> unique_integrals_;
+    int ii, iimax, jj, jjmax, kk, kkmax, ll, llmax;
+    int ni, nj, nk, nl, fii, fij, fik, fil;
+    //void generate_combinations(const Ref<GaussianShell> &s1, const Ref<GaussianShell> &s2,
+    //    const Ref<GaussianShell> &s3, const Ref<GaussianShell> &s4);
         
 public:
     IntegralsIterator(const Ref<GaussianShell> &s1, const Ref<GaussianShell> &s2,
                      const Ref<GaussianShell> &s3, const Ref<GaussianShell> &s4) {
-        i_ = 0;
-        generate_combinations(s1, s2, s3, s4);
+        done = false;
+        usi = s1;
+        usj = s2;
+        usk = s3;
+        usl = s4;
+        ni =usi->nfunction(0);
+        nj =usj->nfunction(0);
+        nk =usk->nfunction(0);
+        nl =usl->nfunction(0);
+
+        fii = usi->function_index();
+        fij = usj->function_index();
+        fik = usk->function_index();
+        fil = usl->function_index();
+
+        ii = 0;
+        jj = 0;
+        kk = 0;
+        ll = 0;
+
+        iimax = ni - 1;
+        if (usi == usj && usk == usl) {
+            kkmax = 0;
+            llmax = 0;
+            if(usi == usk) {
+                jjmax = 0;
+            }
+            else if(usj == usl){
+                jjmax = nj - 1;
+            }
+        }
+        else{
+            kkmax = nk-1;
+            jjmax = (usi == usj) ? 0 : nj - 1;
+            llmax = (usk == usl) ? 0 : nl - 1;
+        }
+
+        //generate_combinations(s1, s2, s3, s4);
     }
     
-    void first() { i_ = 0; }
-    void next() { i_++; }
-    int size() { return unique_integrals_.size(); }
-    bool is_done() { return i_ < unique_integrals_.size() ? false : true; }
+    void first();
+    void next();
+    //int size() { return unique_integrals_.size(); }
+    bool is_done() { return done; }
     
-    int i() const { return unique_integrals_[i_].i; }
-    int j() const { return unique_integrals_[i_].j; }
-    int k() const { return unique_integrals_[i_].k; }
-    int l() const { return unique_integrals_[i_].l; }
-    int index() const { return unique_integrals_[i_].index;}
+    int i() const { return current.i; }
+    int j() const { return current.j; }
+    int k() const { return current.k; }
+    int l() const { return current.l; }
+    int index() const { return current.index;}
 };
 
 class ShellCombinationsIterator
