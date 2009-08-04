@@ -3,8 +3,9 @@
 inline Vector3 operator*(double d, const Vector3& x)
 {
     Vector3 result;
-    for (int i=0; i<3; ++i)
-        result[0] = d * x[i];
+    result[0] = d * x[0];
+    result[1] = d * x[1];
+    result[2] = d * x[2];
     return result;
 }
 
