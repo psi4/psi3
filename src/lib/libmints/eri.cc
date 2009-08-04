@@ -82,26 +82,49 @@ ERI::ERI(IntegralFactory* integral, Ref<BasisSet> &bs1, Ref<BasisSet> &bs2, Ref<
         abort();
     }
 
-    // Initialize libint
-    init_libint(&libint_, max_am, max_nprim);
-    // and libderiv, if needed
-    if (deriv_)
-        init_libderiv1(&libderiv_, max_am, max_nprim, max_cart_-1);
-
+    try {
+        // Initialize libint
+        init_libint(&libint_, max_am, max_nprim);
+        // and libderiv, if needed
+        if (deriv_)
+            init_libderiv1(&libderiv_, max_am, max_nprim, max_cart_-1);
+    }
+    catch (std::bad_alloc& e) {
+        fprintf(stderr, "Error allocating memory for libint/libderiv.\n");
+        exit(EXIT_FAILURE);
+    }
     size_t size = INT_NCART(bs1->max_am()) * INT_NCART(bs2->max_am()) *
                   INT_NCART(bs3->max_am()) * INT_NCART(bs4->max_am());
 
     // Used in pure_transform
-    tformbuf_ = new double[size];
+    try {
+        tformbuf_ = new double[size];
+    }
+    catch (std::bad_alloc& e) {
+        fprintf(stderr, "Error allocating tformbuf_.\n%s\n", e.what());
+        exit(EXIT_FAILURE);
+    }
     memset(tformbuf_, 0, sizeof(double)*size);
 
     if (deriv_ == 1)
         size *= 3*natom_;
 
-    target_ = new double[size];
+    try {
+        target_ = new double[size];
+    }
+    catch (std::bad_alloc& e) {
+        fprintf(stderr, "Error allocating target_.\n%s\n", e.what());
+        exit(EXIT_FAILURE);
+    }
     memset(target_, 0, sizeof(double)*size);
 
-    source_ = new double[size];
+    try {
+        source_ = new double[size];
+    }
+    catch (std::bad_alloc& e) {
+        fprintf(stderr, "Error allocating source_.\n%s\n", e.what());
+        exit(EXIT_FAILURE);        
+    }
     memset(source_, 0, sizeof(double)*size);
 
     init_fjt(4*max_am + DERIV_LVL);
