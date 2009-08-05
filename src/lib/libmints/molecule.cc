@@ -282,11 +282,11 @@ SimpleMatrix* Molecule::inertia_tensor()
         // I(alpha, beta)
         tensor->add(0, 1, -mass(i) * x(i) * y(i));
         tensor->add(0, 2, -mass(i) * x(i) * z(i));
-        tensor->add(1, 2, -mass(i) * y(1) * z(i));
+        tensor->add(1, 2, -mass(i) * y(i) * z(i));
         //    mirror
         tensor->add(1, 0, -mass(i) * x(i) * y(i));
         tensor->add(2, 0, -mass(i) * x(i) * z(i));
-        tensor->add(2, 1, -mass(i) * y(1) * z(i));
+        tensor->add(2, 1, -mass(i) * y(i) * z(i));
     }
     
     return tensor;
