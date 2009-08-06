@@ -32,6 +32,7 @@ void polar(void)
   int alpha, beta, i;
   double omega_nm, omega_ev, omega_cm, *trace;
   char lbl[32];
+  double value;
 
   cartcomp = (char **) malloc(3 * sizeof(char *));
   cartcomp[0] = strdup("X");
@@ -78,6 +79,15 @@ void polar(void)
       fprintf(outfile, "Using %s tensor found on disk.\n", lbl);
       psio_read_entry(CC_INFO, lbl, (char *) tensor[i], 9*sizeof(double));
     }
+
+    /* symmetrize the polarizability */
+    for(alpha=0; alpha < 3; alpha++)
+      for(beta=0; beta < alpha; beta++) {
+        if(alpha!=beta) {
+          value = 0.5 * (tensor[i][alpha][beta] + tensor[i][beta][alpha]);
+          tensor[i][alpha][beta] = value;
+        }
+      }
 
     if (!strcmp(params.wfn,"CC2"))
       fprintf(outfile, "\n                 CC2 Dipole Polarizability [(e^2 a0^2)/E_h]:\n");
