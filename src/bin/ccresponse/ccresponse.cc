@@ -99,8 +99,7 @@ int main(int argc, char *argv[])
 
   if(!strcmp(params.prop,"POLARIZABILITY")) polar();
   if(!strcmp(params.prop,"ROTATION")) optrot();
-
-//  if(!strcmp(params.prop,"ROA")) roa();
+  if(!strcmp(params.prop,"ROA")) roa();
 
   if(params.local) local_done();
 

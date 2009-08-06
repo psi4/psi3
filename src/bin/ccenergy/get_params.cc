@@ -153,7 +153,8 @@ void get_params()
   if(ip_exist("PROPERTY",0)) {
     errcod = ip_string("PROPERTY", &(params.prop), 0);
     if(strcmp(params.prop,"POLARIZABILITY") && strcmp(params.prop,"ROTATION") && 
-       strcmp(params.prop,"ALL") && strcmp(params.prop,"MAGNETIZABILITY")) {
+       strcmp(params.prop,"ALL") && strcmp(params.prop,"MAGNETIZABILITY")
+       && strcmp(params.prop, "ROA")) {
       fprintf(outfile, "Invalid choice of response property: %s\n", params.prop);
       exit(PSI_RETURN_FAILURE);
     }

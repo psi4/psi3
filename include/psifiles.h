@@ -101,6 +101,12 @@
 #define PSIF_AO_QYY         "AO-basis Q-YY Ints"
 #define PSIF_AO_QYZ         "AO-basis Q-YZ Ints"
 #define PSIF_AO_QZZ         "AO-basis Q-ZZ Ints"
+#define PSIF_AO_TXX         "AO-basis T-XX Ints"    /* Traceless electric quadrupole moment integrals */
+#define PSIF_AO_TXY         "AO-basis T-XY Ints"    /* Traceless electric quadrupole moment integrals */
+#define PSIF_AO_TXZ         "AO-basis T-XZ Ints"    /* Traceless electric quadrupole moment integrals */
+#define PSIF_AO_TYY         "AO-basis T-YY Ints"    /* Traceless electric quadrupole moment integrals */
+#define PSIF_AO_TYZ         "AO-basis T-YZ Ints"    /* Traceless electric quadrupole moment integrals */
+#define PSIF_AO_TZZ         "AO-basis T-ZZ Ints"    /* Traceless electric quadrupole moment integrals */
 
 /* These integrals are anti-Hermitian -- upper triangle has sign opposite of that of the lower triangle */
 #define PSIF_AO_NablaX      "AO-basis Nabla-X Ints" /* integrals of nabla operator */

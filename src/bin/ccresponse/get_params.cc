@@ -133,12 +133,7 @@ void get_params()
 
   moinfo.mu_irreps = init_int_array(3);
   errcod = ip_int_array("MU_IRREPS", moinfo.mu_irreps, 3);
-  if(errcod == IPE_OK) {
-    moinfo.irrep_x = moinfo.mu_irreps[0];
-    moinfo.irrep_y = moinfo.mu_irreps[1];
-    moinfo.irrep_z = moinfo.mu_irreps[2];
-  }
-  else {
+  if(errcod != IPE_OK) {
     fprintf(outfile, "\nYou must supply the irreps of x, y, and z with the MU_IRREPS keyword.\n");
     exit(PSI_RETURN_FAILURE);
   }
@@ -147,10 +142,6 @@ void get_params()
   moinfo.l_irreps = init_int_array(3);
   for(i=0; i < 3; i++)
     moinfo.l_irreps[i] = moinfo.mu_irreps[(int) (i+1)%3] ^ moinfo.mu_irreps[(int) (i+2)%3];
-
-  moinfo.irrep_Rx = moinfo.l_irreps[0];
-  moinfo.irrep_Ry = moinfo.l_irreps[1];
-  moinfo.irrep_Rz = moinfo.l_irreps[2];
 
   params.maxiter = 50;
   errcod = ip_data("MAXITER","%d",&(params.maxiter),0);
@@ -162,9 +153,9 @@ void get_params()
 
   if(ip_exist("PROPERTY",0)) {
     errcod = ip_string("PROPERTY", &(params.prop), 0);
-    if(strcmp(params.prop,"POLARIZABILITY") && strcmp(params.prop,"ROTATION") && 
-       strcmp(params.prop,"ALL")) {
-      fprintf(outfile, "Invalid choice of response property: %s\n", params.prop);
+    if(strcmp(params.prop,"POLARIZABILITY") && strcmp(params.prop,"ROTATION") 
+       && strcmp(params.prop,"ROA") && strcmp(params.prop,"ALL")) {
+      fprintf(outfile, "Invalid choice of resp. property: %s\n", params.prop);
       exit(PSI_RETURN_FAILURE);
     }
   }
@@ -274,12 +265,12 @@ void get_params()
   fprintf(outfile, "\tModel III        =     %s\n", params.sekino ? "Yes" : "No");
   fprintf(outfile, "\tLinear Model     =     %s\n", params.linear ? "Yes" : "No");
   fprintf(outfile, "\tABCD             =     %s\n", params.abcd);
-  fprintf(outfile, "\tIrrep X          =    %3s\n", moinfo.labels[moinfo.irrep_x]);
-  fprintf(outfile, "\tIrrep Y          =    %3s\n", moinfo.labels[moinfo.irrep_y]);
-  fprintf(outfile, "\tIrrep Z          =    %3s\n", moinfo.labels[moinfo.irrep_z]);
-  fprintf(outfile, "\tIrrep RX         =    %3s\n", moinfo.labels[moinfo.irrep_Rx]);
-  fprintf(outfile, "\tIrrep RY         =    %3s\n", moinfo.labels[moinfo.irrep_Ry]);
-  fprintf(outfile, "\tIrrep RZ         =    %3s\n", moinfo.labels[moinfo.irrep_Rz]);
+  fprintf(outfile, "\tIrrep X          =    %3s\n", moinfo.labels[moinfo.mu_irreps[0]]);
+  fprintf(outfile, "\tIrrep Y          =    %3s\n", moinfo.labels[moinfo.mu_irreps[1]]);
+  fprintf(outfile, "\tIrrep Z          =    %3s\n", moinfo.labels[moinfo.mu_irreps[2]]);
+  fprintf(outfile, "\tIrrep RX         =    %3s\n", moinfo.labels[moinfo.l_irreps[0]]);
+  fprintf(outfile, "\tIrrep RY         =    %3s\n", moinfo.labels[moinfo.l_irreps[1]]);
+  fprintf(outfile, "\tIrrep RZ         =    %3s\n", moinfo.labels[moinfo.l_irreps[2]]);
   fprintf(outfile, "\tGauge            =    %s\n", params.gauge);
   for(i=0; i < params.nomega; i++) {
     if(params.omega[i] == 0.0) 

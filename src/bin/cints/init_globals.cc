@@ -41,6 +41,12 @@ namespace psi { namespace CINTS {
     IOUnits.itapQYY_AO = PSIF_OEI;
     IOUnits.itapQYZ_AO = PSIF_OEI;
     IOUnits.itapQZZ_AO = PSIF_OEI;
+    IOUnits.itapTXX_AO = PSIF_OEI;
+    IOUnits.itapTXY_AO = PSIF_OEI;
+    IOUnits.itapTXZ_AO = PSIF_OEI;
+    IOUnits.itapTYY_AO = PSIF_OEI;
+    IOUnits.itapTYZ_AO = PSIF_OEI;
+    IOUnits.itapTZZ_AO = PSIF_OEI;
     IOUnits.itapNablaX_AO = PSIF_OEI;
     IOUnits.itapNablaY_AO = PSIF_OEI;
     IOUnits.itapNablaZ_AO = PSIF_OEI;

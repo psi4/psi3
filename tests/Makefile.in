@@ -4,7 +4,7 @@
 cc_subdirs = cc1 cc2 cc3 cc4 cc8 cc8a cc9 cc9a cc10 cc11 cc12 cc13 cc13a \
 cc14 cc15 cc16 cc17 cc18 cc19 cc21 cc22 cc23 cc24 cc25 cc26 cc27 cc28 cc29 \
 cc30 cc31 cc32 cc33 cc34 cc35 cc36 cc37 cc38 cc39 cc40 cc41 cc42 cc43 cc44 \
-cc45 cc46 cc47 cc48 cc49 cc50 cc51 \
+cc45 cc46 cc47 cc48 cc49 cc50 cc51 cc52 \
 
 rb_subdirs = rb-scf-opt-numer rb-ccsd_t-sp rb-fci-h2o rb-ccsd-opt-grad
 

@@ -28,7 +28,6 @@ void linresp(double *tensor, double A, double B,
 void polar(void)
 {
   double ***tensor;
-  double polar, polar_LCX, polar_HXY, polar_LHX1Y1, polar_LHX2Y2, polar_LHX1Y2;
   char **cartcomp, pert[32], pert_x[32], pert_y[32];
   int alpha, beta, i;
   double omega_nm, omega_ev, omega_cm, *trace;

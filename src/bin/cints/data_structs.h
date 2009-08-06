@@ -229,6 +229,12 @@ namespace psi {
       int itapQYY_AO;           /* AO q(yy) IWL file */
       int itapQYZ_AO;           /* AO q(yz) IWL file */
       int itapQZZ_AO;           /* AO q(zz) IWL file */
+      int itapTXX_AO;           /* AO T(xx) IWL file */
+      int itapTXY_AO;           /* AO T(xy) IWL file */
+      int itapTXZ_AO;           /* AO T(xz) IWL file */
+      int itapTYY_AO;           /* AO T(yy) IWL file */
+      int itapTYZ_AO;           /* AO T(yz) IWL file */
+      int itapTZZ_AO;           /* AO T(zz) IWL file */
       int itapNablaX_AO;        /* AO nabla(x) IWL file */
       int itapNablaY_AO;        /* AO nabla(y) IWL file */
       int itapNablaZ_AO;        /* AO nabla(z) IWL file */

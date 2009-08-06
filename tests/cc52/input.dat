@@ -1,0 +1,22 @@
+psi: (
+  label = "cc-pVDZ/CCSD H2O2"
+  jobtype = sp
+  wfn = ccsd
+  reference = rhf
+  dertype = response
+  property = roa
+  freeze_core = false
+  omega = (589 nm)
+  mu_irreps = (1 1 0)
+  gauge = length
+  convergence = 12
+
+  basis = "cc-pVDZ"
+  zmat = (
+    O
+    O 1 1.39
+    H 1 0.94 2 102.3
+    H 2 0.94 1 102.3 3 -50.0
+  )
+)
+

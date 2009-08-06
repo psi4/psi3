@@ -229,6 +229,9 @@ void get_moinfo(void)
   moinfo.MU = (double ***) malloc(3 * sizeof(double **));
   moinfo.L = (double ***) malloc(3 * sizeof(double **));
   moinfo.P = (double ***) malloc(3 * sizeof(double **));
+  moinfo.Q = (double ****) malloc(3 * sizeof(double ***));
+  for(i=0; i < 3; i++)
+    moinfo.Q[i] = (double ***) malloc(3 * sizeof(double **));
 }
 
 /* Frees memory allocated in get_moinfo() and dumps out the energy. */
@@ -288,6 +291,9 @@ void cleanup(void)
   free(moinfo.MU);
   free(moinfo.L);
   free(moinfo.P);
+  for(i=0; i < 3; i++)
+    free(moinfo.Q[i]);
+  free(moinfo.Q);
   free(moinfo.pitzer2qt);
   free(moinfo.qt2pitzer);
 

@@ -554,15 +554,16 @@ sub compare_cc_response
   my $fail = 0;
   my $REF_FILE = "$SRC_PATH/output.ref";
   my $TEST_FILE = "output.dat";
+  my $i;
+  my $j;
+  my $cart;
 
   # Grab field frequencies
   $nfreqs = seek_num_cc_response_freqs($TEST_FILE);
-#  printf "Number of frequencies = %d\n", $nfreqs;
   @polar_freqs = seek_cc_response_freqs($TEST_FILE);
 
   # What response property are we testing?
   $property = seek_cc_response_property($TEST_FILE);
-#  printf "Response property = %s\n", $property;
 
   if($property eq "ROTATION") {
       # Length, velocity, or both?
@@ -612,7 +613,7 @@ sub compare_cc_response
 	  }
       }
 
-  }
+  } # rotation
   elsif($property eq "POLARIZABILITY") {
       for($i=0; $i < $nfreqs; $i++) {
 	  $alpha_ref = seek_cc_polar($REF_FILE, $polar_freqs[$i], $gauge);
@@ -624,7 +625,81 @@ sub compare_cc_response
 	      pass_test("$wfn Polarizability @ $polar_freqs[$i]");
 	  }
       }
-  }
+  } # polarizability
+  elsif($property eq "ROA") {
+
+    # ROA requires three property tensors (all components (not just the
+    # trace) so we have to make direct comparisons of all terms. -TDC, 8/09
+    for($i=0; $i < $nfreqs; $i++) {
+      @polar_ref = seek_cc_polar_tensor($REF_FILE, $polar_freqs[$i]);
+      @polar_test = seek_cc_polar_tensor($TEST_FILE, $polar_freqs[$i]);
+
+      if(!compare_arrays(\@polar_ref,\@polar_test,($#polar_ref+1),$PSITEST_POLARTOL))
+      {
+        fail_test("$wfn Polarizability Tensor @ $polar_freqs[$i]"); $fail = 1;
+      }
+      else {
+        pass_test("$wfn Polarizability Tensor @ $polar_freqs[$i]");
+      }
+    }
+
+    $gauge = seek_cc_response_gauge($TEST_FILE);
+    for($i=0; $i < $nfreqs; $i++) {
+      if($gauge eq "BOTH") {
+        @polar_ref = seek_cc_optrot_tensor($REF_FILE, $polar_freqs[$i], "VELOCITY");
+        @polar_test = seek_cc_optrot_tensor($TEST_FILE, $polar_freqs[$i], "VELOCITY");
+
+        if(!compare_arrays(\@polar_ref,\@polar_test,($#polar_ref+1),$PSITEST_POLARTOL))
+        {
+          fail_test("$wfn Optical Rotation Tensor (Velocity) @ $polar_freqs[$i]"); $fail = 1;
+        }
+        else {
+          pass_test("$wfn Optical Rotation Tensor (Velocity) @ $polar_freqs[$i]");
+        }
+
+        @polar_ref = seek_cc_optrot_tensor($REF_FILE, $polar_freqs[$i], "LENGTH");
+        @polar_test = seek_cc_optrot_tensor($TEST_FILE, $polar_freqs[$i], "LENGTH");
+
+        if(!compare_arrays(\@polar_ref,\@polar_test,($#polar_ref+1),$PSITEST_POLARTOL))
+        {
+          fail_test("$wfn Optical Rotation Tensor (Length) @ $polar_freqs[$i]"); $fail = 1;
+        }
+        else {
+          pass_test("$wfn Optical Rotation Tensor (Length) @ $polar_freqs[$i]");
+        }
+      }
+      else {
+        @polar_ref = seek_cc_optrot_tensor($REF_FILE, $polar_freqs[$i], $gauge);
+        @polar_test = seek_cc_optrot_tensor($TEST_FILE, $polar_freqs[$i], $gauge);
+
+        if(!compare_arrays(\@polar_ref,\@polar_test,($#polar_ref+1),$PSITEST_POLARTOL))
+        {
+          fail_test("$wfn Optical Rotation Tensor ($gauge) @ $polar_freqs[$i]"); $fail = 1;
+        }
+        else {
+          pass_test("$wfn Optical Rotation Tensor ($gauge) @ $polar_freqs[$i]");
+        }
+      }
+
+      # cartesian components of <<mu;Q>>
+      for($j=0; $j < 3; $j++) { 
+        if($j eq 0) { $cart = "X"; }
+        elsif($j eq 1) { $cart = "Y"; }
+        elsif($j eq 2) { $cart = "Z"; }
+
+        @polar_ref = seek_cc_dipquad_tensor($REF_FILE, $polar_freqs[$i], $j);
+        @polar_test = seek_cc_dipquad_tensor($TEST_FILE, $polar_freqs[$i], $j);
+        if(!compare_arrays(\@polar_ref,\@polar_test,($#polar_ref+1),$PSITEST_POLARTOL))
+        {
+          fail_test("$wfn Dipole ($cart)/Quadrupole Tensor @ $polar_freqs[$i]"); $fail = 1;
+        }
+        else {
+          pass_test("$wfn Dipole ($cart)/Quadrupole Tensor @ $polar_freqs[$i]");
+        }
+      }
+
+    }
+  } # ROA
 
   return $fail;
 }
@@ -2237,6 +2312,134 @@ sub seek_cc_delta
   }
 
   printf "Error: Could not find CC origin-dependence vector in $_[0].\n";
+  exit 1;
+}
+
+sub seek_cc_polar_tensor
+{
+  my $freq = $_[1];
+  my $linenum;
+  my $start;
+  my $freq_check;
+
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+
+  $linenum=0;
+  $start = 0;
+  foreach $line (@datafile) {
+    if ($line =~ m/Dipole Polarizability/) {
+      @freq_line = split(/ +/,$datafile[$linenum+2]);
+      $freq_check = sprintf("%5.3f", $freq_line[5]);
+      if($freq_check eq $freq) { 
+        $start = $linenum;
+      }
+    }
+    $linenum++;
+  }
+
+  for(my $i=0; $i < 3; $i++) {
+    @line = split(/ +/, $datafile[$start+7+$i]);
+    for(my $j=0; $j < 3; $j++) {
+      $polar[3*$i+$j] = $line[$j+2];
+    }
+  }
+
+  if($start != 0) {
+    return @polar;
+  }
+
+  printf "Error: Could not find CC polarizability tensor in $_[0].\n";
+  exit 1;
+}
+
+sub seek_cc_optrot_tensor
+{
+  my $freq = $_[1];
+  my $gauge = $_[2];
+  my $linenum;
+  my $start;
+  my $freq_check;
+
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+
+  $linenum=0;
+  $start = 0;
+  foreach $line (@datafile) {
+    if (($line =~ m/Optical Rotation Tensor/)) {
+      if($gauge eq "LENGTH" && $line =~ m/Length Gauge/) {
+        @freq_line = split(/ +/,$datafile[$linenum+2]);
+        $freq_check = sprintf("%5.3f", $freq_line[5]);
+        if($freq_check eq $freq) {
+          $start = $linenum;
+        }
+      }
+      elsif($gauge eq "VELOCITY" && $line =~ m/Velocity Gauge/) {
+        @freq_line = split(/ +/,$datafile[$linenum+2]);
+        $freq_check = sprintf("%5.3f", $freq_line[5]);
+        if($freq_check eq $freq) {
+          $start = $linenum;
+        }
+      }
+    }
+    $linenum++;
+  }
+
+  for(my $i=0; $i < 3; $i++) {
+    @line = split(/ +/, $datafile[$start+7+$i]);
+    for(my $j=0; $j < 3; $j++) {
+      $polar[3*$i+$j] = $line[$j+2];
+    }
+  }
+
+  if($start != 0) {
+    return @polar;
+  }
+
+  printf "Error: Could not find CC optical rotation tensor in $_[0].\n";
+  exit 1;
+}
+
+sub seek_cc_dipquad_tensor
+{
+  my $freq = $_[1];
+  my $offset = 6 * $_[2]; # the tensor output is 6 lines long
+  my $linenum;
+  my $start;
+  my $freq_check;
+
+  open(OUT, "$_[0]") || die "cannot open $_[0] $!";
+  @datafile = <OUT>;
+  close(OUT);
+
+  $linenum=0;
+  $start = 0;
+  foreach $line (@datafile) {
+    if ($line =~ m/Quadrupole Polarizability/) {
+      @freq_line = split(/ +/,$datafile[$linenum+2]);
+      $freq_check = sprintf("%5.3f", $freq_line[5]);
+      if($freq_check eq $freq) {
+        $start = $linenum;
+      }
+    }
+    $linenum++;
+  }
+
+  for(my $i=0; $i < 3; $i++) {
+    @line = split(/ +/, $datafile[$start+$offset+7+$i]);
+    for(my $j=0; $j < 3; $j++) {
+      $polar[3*$i+$j] = $line[$j+2];
+    }
+  }
+
+  if($start != 0) {
+    return @polar;
+  }
+
+  printf "Error: Could not find CC dipole/quadrupole tensor in $_[0].\n";
   exit 1;
 }
 

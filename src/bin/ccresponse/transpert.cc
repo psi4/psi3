@@ -47,6 +47,10 @@ namespace psi { namespace ccresponse {
 ** Use "P*" to select the complex conjugate of the operator (i.e., multiply 
 ** by -1).
 **
+** (4) Q: Traceless quadrupole integrals: Q_ab = -1/2 (3 r_a r_b - r^2).
+** They are real, already include the electronic charge and the leading 1/2 
+** and are symmetric wrt index permutation.
+**
 ** NB: The magnetic-dipole and velocity-gauge electric-dipole operators are
 ** both pure-imaginary, which means that one must take care to account for
 ** the factor of i included implicity in their definition.  This matters,
@@ -90,6 +94,11 @@ void transpert(const char *pert)
   if(!strcmp(pert,"P*_X") || !strcmp(pert,"P*_Y") || !strcmp(pert,"P*_Z")) { 
     prefactor = 1.0; anti = -1.0; sign = -1.0; 
   }
+  if(!strcmp(pert,"Q_XX") || !strcmp(pert,"Q_XY") || !strcmp(pert,"Q_XZ") || 
+     !strcmp(pert,"Q_YX") || !strcmp(pert,"Q_YY") || !strcmp(pert,"Q_YZ") ||
+     !strcmp(pert,"Q_ZX") || !strcmp(pert,"Q_ZY") || !strcmp(pert,"Q_ZZ")) { 
+    prefactor = 1.0; anti = 1.0; sign = 1.0; 
+  }
 
   target = block_matrix(nmo,nmo);
 
@@ -116,6 +125,16 @@ void transpert(const char *pert)
   if(!strcmp(pert,"P_Z") || !strcmp(pert, "P*_Z")) {
     name = PSIF_AO_NablaZ; moinfo.P[2] = target;
   }
+
+  if(!strcmp(pert,"Q_XX")) { name = PSIF_AO_TXX; moinfo.Q[0][0] = target; }
+  if(!strcmp(pert,"Q_XY")) { name = PSIF_AO_TXY; moinfo.Q[0][1] = target; }
+  if(!strcmp(pert,"Q_XZ")) { name = PSIF_AO_TXZ; moinfo.Q[0][2] = target; }
+  if(!strcmp(pert,"Q_YX")) { name = PSIF_AO_TXY; moinfo.Q[1][0] = target; }
+  if(!strcmp(pert,"Q_YY")) { name = PSIF_AO_TYY; moinfo.Q[1][1] = target; }
+  if(!strcmp(pert,"Q_YZ")) { name = PSIF_AO_TYZ; moinfo.Q[1][2] = target; }
+  if(!strcmp(pert,"Q_ZX")) { name = PSIF_AO_TXZ; moinfo.Q[2][0] = target; }
+  if(!strcmp(pert,"Q_ZY")) { name = PSIF_AO_TYZ; moinfo.Q[2][1] = target; }
+  if(!strcmp(pert,"Q_ZZ")) { name = PSIF_AO_TZZ; moinfo.Q[2][2] = target; }
 
   iwl_rdone(PSIF_OEI, name, scratch, noei_ao, 0, 0, outfile);
   for(i=0,ij=0; i < nao; i++)

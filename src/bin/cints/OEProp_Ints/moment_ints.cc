@@ -54,6 +54,7 @@ void moment_ints()
      **qyytemp, **qyztemp, **qzztemp, **nxtemp, **nytemp, **nztemp,
      **temp, **tmp_dptr;
    double *S, *MX, *MY, *MZ, *QXX, *QXY, *QXZ, *QYY, *QYZ, *QZZ, *NX, *NY, *NZ;
+   double *TXX, *TXY, *TXZ, *TYY, *TYZ, *TZZ;
    double inorm, jnorm, over_pf;
    double *ptr1, *ptr2, norm1, norm12;
    double **OIX, **OIY, **OIZ;
@@ -72,6 +73,12 @@ void moment_ints()
   QYY = init_array(dimension);
   QYZ = init_array(dimension);
   QZZ = init_array(dimension);
+  TXX = init_array(dimension);
+  TXY = init_array(dimension);
+  TXZ = init_array(dimension);
+  TYY = init_array(dimension);
+  TYZ = init_array(dimension);
+  TZZ = init_array(dimension);
   NX = init_array(dimension);
   NY = init_array(dimension);
   NZ = init_array(dimension);
@@ -253,6 +260,16 @@ void moment_ints()
     }
   }  /*--- This shell pair is done ---*/
 
+  /* Generate the traceless electric quadrupole integrals while were here */
+  for(ij=0; ij < ioff[BasisSet.num_ao]; ij++) {
+    TXX[ij] = 0.5 * (3.0 * QXX[ij] - QXX[ij] - QYY[ij] - QZZ[ij]);
+    TYY[ij] = 0.5 * (3.0 * QYY[ij] - QXX[ij] - QYY[ij] - QZZ[ij]);
+    TZZ[ij] = 0.5 * (3.0 * QZZ[ij] - QXX[ij] - QYY[ij] - QZZ[ij]);
+    TXY[ij] = 0.5 * 3.0 * QXY[ij];
+    TXZ[ij] = 0.5 * 3.0 * QXZ[ij];
+    TYZ[ij] = 0.5 * 3.0 * QYZ[ij];
+  }
+
   /*--- flush it all away ---*/
   fflush(outfile);
   free_block(OIX);
@@ -269,6 +286,12 @@ void moment_ints()
   iwl_wrtone(IOUnits.itapQYY_AO,PSIF_AO_QYY,dimension,QYY);
   iwl_wrtone(IOUnits.itapQYZ_AO,PSIF_AO_QYZ,dimension,QYZ);
   iwl_wrtone(IOUnits.itapQZZ_AO,PSIF_AO_QZZ,dimension,QZZ);
+  iwl_wrtone(IOUnits.itapTXX_AO,PSIF_AO_TXX,dimension,TXX);
+  iwl_wrtone(IOUnits.itapTXY_AO,PSIF_AO_TXY,dimension,TXY);
+  iwl_wrtone(IOUnits.itapTXZ_AO,PSIF_AO_TXZ,dimension,TXZ);
+  iwl_wrtone(IOUnits.itapTYY_AO,PSIF_AO_TYY,dimension,TYY);
+  iwl_wrtone(IOUnits.itapTYZ_AO,PSIF_AO_TYZ,dimension,TYZ);
+  iwl_wrtone(IOUnits.itapTZZ_AO,PSIF_AO_TZZ,dimension,TZZ);
   iwl_wrtone(IOUnits.itapNablaX_AO,PSIF_AO_NablaX,dimension,NX);
   iwl_wrtone(IOUnits.itapNablaY_AO,PSIF_AO_NablaY,dimension,NY);
   iwl_wrtone(IOUnits.itapNablaZ_AO,PSIF_AO_NablaZ,dimension,NZ);
@@ -293,6 +316,18 @@ void moment_ints()
     print_array(QYZ,BasisSet.num_ao,outfile);
     fprintf(outfile,"  -q(zz) AO integrals:\n\n");
     print_array(QZZ,BasisSet.num_ao,outfile);
+    fprintf(outfile,"  -T(xx) AO integrals:\n\n");
+    print_array(TXX,BasisSet.num_ao,outfile);
+    fprintf(outfile,"  -T(xy) AO integrals:\n\n");
+    print_array(TXY,BasisSet.num_ao,outfile);
+    fprintf(outfile,"  -T(xz) AO integrals:\n\n");
+    print_array(TXZ,BasisSet.num_ao,outfile);
+    fprintf(outfile,"  -T(yy) AO integrals:\n\n");
+    print_array(TYY,BasisSet.num_ao,outfile);
+    fprintf(outfile,"  -T(yz) AO integrals:\n\n");
+    print_array(TYZ,BasisSet.num_ao,outfile);
+    fprintf(outfile,"  -T(zz) AO integrals:\n\n");
+    print_array(TZZ,BasisSet.num_ao,outfile);
     fprintf(outfile,"  -Nabla_x AO integrals:\n\n");
     print_array(NX,BasisSet.num_ao,outfile);
     fprintf(outfile,"  -Nabla_y AO integrals:\n\n");
@@ -326,6 +361,12 @@ void moment_ints()
   free(QYY);
   free(QYZ);
   free(QZZ);
+  free(TXX);
+  free(TXY);
+  free(TXZ);
+  free(TYY);
+  free(TYZ);
+  free(TZZ);
   free(NX);
   free(NY);
   free(NZ);
