@@ -36,13 +36,15 @@ MatrixFactory::~MatrixFactory()
         Chkpt::free(colspi_);
 }
 
-bool MatrixFactory::init_with_chkpt(Ref<PSIO>& psio)
+bool MatrixFactory::init_with_chkpt(PSIO* psio)
 {
-    Ref<Chkpt> chkpt(new Chkpt(psio.pointer(), PSIO_OPEN_OLD));
-    return init_with_chkpt(chkpt);
+    Chkpt* chkpt(new Chkpt(psio, PSIO_OPEN_OLD));
+    bool result = init_with_chkpt(chkpt);
+    delete chkpt;
+    return result;
 }
 
-bool MatrixFactory::init_with_chkpt(Ref<Chkpt>& chkpt)
+bool MatrixFactory::init_with_chkpt(Chkpt* chkpt)
 {
     nirreps_ = chkpt->rd_nirreps();
     rowspi_  = chkpt->rd_sopi();

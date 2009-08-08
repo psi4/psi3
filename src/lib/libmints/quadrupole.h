@@ -22,20 +22,20 @@ class QuadrupoleInt : public OneBodyInt
 {
     ObaraSaikaTwoCenterRecursion overlap_recur_;
     
-    void compute_pair(Ref<GaussianShell> &, Ref<GaussianShell> &);
+    void compute_pair(GaussianShell*, GaussianShell*);
     
 public:
-    QuadrupoleInt(IntegralFactory*, Ref<BasisSet> &, Ref<BasisSet> &);
+    QuadrupoleInt(IntegralFactory*, BasisSet*, BasisSet*);
     virtual ~QuadrupoleInt();
     
     void compute_shell(int, int);
     
     /// Computes all quadrupole integrals (Qxx, Qxy, Qxz, Qyy, Qyz, Qzz) result must be an array of enough
     /// size to contain it.
-    void compute(RefMatrixArray& result);
-    void compute(RefSimpleMatrixArray& result);
+    void compute(Matrix** result);
+    void compute(SimpleMatrix** result);
     
-    virtual void spherical_transform(Ref<GaussianShell> & , Ref<GaussianShell> &);
+    virtual void spherical_transform(GaussianShell* , GaussianShell*);
 };
 
 }

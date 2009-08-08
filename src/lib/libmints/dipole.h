@@ -24,13 +24,13 @@ class DipoleInt : public OneBodyInt
     ObaraSaikaTwoCenterRecursion overlap_recur_;
     
     //! Computes the dipole between two gaussian shells.
-    void compute_pair(Ref<GaussianShell> &, Ref<GaussianShell> &);
+    void compute_pair(GaussianShell*, GaussianShell*);
     //! Computes the dipole derivative between two gaussian shells.
-    void compute_pair_deriv1(Ref<GaussianShell> &, Ref<GaussianShell> &);
+    void compute_pair_deriv1(GaussianShell*, GaussianShell*);
         
 public:
     //! Constructor. Do not call directly use an IntegralFactory.
-    DipoleInt(IntegralFactory*, Ref<BasisSet> &, Ref<BasisSet> &, int deriv=0);
+    DipoleInt(IntegralFactory*, BasisSet*, BasisSet*, int deriv=0);
     //! Virtual destructor
     virtual ~DipoleInt();
     
@@ -41,10 +41,10 @@ public:
     
     //! Compute all dipole integrals and store them in an array of matrices. 
     //! Order is [mu_x, mu_y, mu_].
-    void compute(RefSimpleMatrixArray& result);
+    void compute(SimpleMatrix** result);
     //! Compute all dipole derivatives and store them in an array of matrices.
     //! Order is [mu_x(Aix,Aiy,Aiz...An), mu_y..., mu_z...]
-    void compute_deriv1(RefSimpleMatrixArray& result);
+    void compute_deriv1(SimpleMatrix** result);
     
     /// Does the method provide first derivatives?
     bool has_deriv1() { return true; }

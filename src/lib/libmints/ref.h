@@ -11,6 +11,16 @@
 #include <cstdlib>
 #include <assert.h>
 
+// Need to wrap the following into proprocessor wrappers
+#ifdef HAVE_PTHREAD
+    #include <pthread.h>
+    #define __LOCK(l) pthread_mutex_lock(&l);
+    #define __UNLOCK(l) pthread_mutex_unlock(&l);
+#else
+    #define __LOCK(l) 0
+    #define __UNLOCK(l) 0
+#endif
+
 namespace psi {
     
 // For most object counted by Refs we can use the following simple object policy:
@@ -33,27 +43,50 @@ public:
 class SimpleReferenceCount {
 private:
 	size_t* _counter;
+#ifdef HAVE_PTHREAD
+    pthread_mutex_t _lock;
+#else
+    int _lock;
+#endif
 public:
 	SimpleReferenceCount() {
 		_counter = NULL;
 	}
 	
 public:
-	template<typename T> void init(T*) {
+	template<typename T>
+	void init(T*) {
 		_counter = ::new size_t;
 		*_counter = 1;
+#ifdef HAVE_PTHREAD
+		// Initialize pthread mutex
+        pthread_mutex_init(&_lock, 0);
+#endif
 	}
 	
-	template<typename T> void dispose(T*) {
+	template<typename T> 
+	void dispose(T*) {
+        __LOCK(_lock);
 		::delete _counter;
+        _counter = 0;
+        __UNLOCK(_lock);
+#ifdef HAVE_PTHREAD
+        pthread_mutex_destroy(&_lock);
+#endif
 	}
 	
-	template<typename T> void increment(T*) {
+	template<typename T>
+	void increment(T*) {
+        __LOCK(_lock);
 		++*_counter;
+        __UNLOCK(_lock);
 	}
 	
 	template<typename T> void decrement(T*) {
-		--*_counter;
+        __LOCK(_lock);
+        if (_counter != 0)
+		    --*_counter;
+        __UNLOCK(_lock);
 	}
 	
 	template<typename T> bool is_zero(T*) {
@@ -69,15 +102,15 @@ protected:
     typedef ObjectPolicy  OP;
 
     T* _object_pointed_to;		// Object referred to (or NULL if none)
-
+    bool _managed;             // While false the counter is not incremented/decremented.
 public:
     // default constructor
-    Ref() {
+    Ref() : _managed(true) {
         _object_pointed_to = NULL;
     }
 
     // Test of copy constructor
-    Ref(T* p) {
+    Ref(T* p) : _managed(true) {
         _object_pointed_to = NULL;
         if (p) {
             init(p);
@@ -88,7 +121,7 @@ public:
     //     init(p);
     // }
 
-    Ref(Ref<T, CP, OP> const& cp) : CP((CP const&) cp), OP((OP const&)cp) {
+    Ref(Ref<T, CP, OP> const& cp) : CP((CP const&) cp), OP((OP const&)cp), _managed(cp._managed) {
         _object_pointed_to = NULL;
         attach(cp);
     }
@@ -122,6 +155,9 @@ public:
         return *_object_pointed_to;
     }
 
+    void set_managed(bool managed) { _managed = managed; }
+    bool get_managed() const { return _managed; }
+    
     operator T*() const { return _object_pointed_to; }
     
     T* pointer() const {
@@ -144,13 +180,14 @@ private:
 
     void attach(Ref<T,CP,OP> const& cp) {
         _object_pointed_to = cp._object_pointed_to;
-        if (cp._object_pointed_to != NULL) {
+        _managed = cp._managed;
+        if (cp._object_pointed_to != NULL && _managed) {
             CounterPolicy::increment(cp._object_pointed_to);
         }
     }
 
     void detach() {
-        if (_object_pointed_to != NULL) {
+        if (_object_pointed_to != NULL && _managed) {
             CounterPolicy::decrement(_object_pointed_to);
             if (CounterPolicy::is_zero(_object_pointed_to)) {
                 CounterPolicy::dispose(_object_pointed_to);

@@ -26,13 +26,13 @@ class PotentialInt : public OneBodyInt
     ObaraSaikaTwoCenterVIDerivRecursion potential_deriv_recur_;
     
     /// Computes integrals between two shell objects.
-    void compute_pair(Ref<GaussianShell> &, Ref<GaussianShell> &);
+    void compute_pair(GaussianShell*, GaussianShell*);
     /// Computes integrals between two shell objects.
-    void compute_pair_deriv1(Ref<GaussianShell> &, Ref<GaussianShell> &);
+    void compute_pair_deriv1(GaussianShell*, GaussianShell*);
     
 public:
     /// Constructor
-    PotentialInt(IntegralFactory*, Ref<BasisSet> &, Ref<BasisSet> &, int deriv=0);
+    PotentialInt(IntegralFactory*, BasisSet*, BasisSet*, int deriv=0);
     ~PotentialInt();
     
     /// Computes integrals between two shells.

@@ -71,37 +71,6 @@ public:
     friend class Matrix;
 };
 
-class RefVector : public Ref< Vector >{
-public:
-    RefVector();
-    RefVector(Vector* o);
-    RefVector(const RefVector& o);
-
-    void set(double *vec);
-    double get(int h, int m) {
-        return pointer()->get(h, m);
-    }
-    void set(int h, int m, double val) {
-        pointer()->set(h, m, val);
-    }
-    double* to_block_vector() {
-        return pointer()->to_block_vector();
-    }
-    int *dimpi() {
-        return pointer()->dimpi();
-    }
-    int nirreps() {
-        return pointer()->nirreps();
-    }
-
-    void print(FILE *out) {
-        pointer()->print(out);
-    }
-    void copy(const RefVector& rhs) {
-        pointer()->copy(rhs.pointer());
-    }
-};
-
 class SimpleVector
 {
 protected:
@@ -160,39 +129,6 @@ public:
     void copy(const SimpleVector* rhs);
 
     friend class SimpleMatrix;
-};
-
-class RefSimpleVector : public Ref< SimpleVector >
-{
-public:
-    RefSimpleVector();
-    RefSimpleVector(SimpleVector* o);
-    RefSimpleVector(const RefSimpleVector& o);
-
-    void set(double *vec) {
-    	pointer()->set(vec);
-    }
-    double get(int m) {
-        return pointer()->get(m);
-    }
-    void set(int m, double val) {
-        pointer()->set(m, val);
-    }
-    double* to_block_vector() {
-        return pointer()->to_block_vector();
-    }
-    int dim() {
-        return pointer()->dim();
-    }
-
-    void print(FILE *out) {
-        pointer()->print(out);
-    }
-    void copy(const RefSimpleVector& rhs) {
-        pointer()->copy(rhs.pointer());
-    }
-
-    double& operator[](int i) { return (*pointer())[i]; }
 };
 
 }

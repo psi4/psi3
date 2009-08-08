@@ -50,19 +50,19 @@ class BasisSet
     int max_stability_index_;
     //! Unique symmetry orbitals to atomic orbitals.
     double **uso2ao_;
-    RefSimpleMatrix simple_mat_uso2ao_;
+    SimpleMatrix *simple_mat_uso2ao_;
     double **uso2bf_;
-    RefSimpleMatrix simple_mat_uso2bf_;
+    SimpleMatrix *simple_mat_uso2bf_;
     
     //! Does the loaded basis set contain pure angular momentum functions?
     bool puream_;
     
     //! Array of gaussian shells
-    Ref<Ref<GaussianShell>, SimpleReferenceCount, StandardArrayPolicy> shells_;
+    GaussianShell** shells_;
     //! Molecule object.
-    Ref<Molecule> molecule_;
+    Molecule *molecule_;
     //! Symmetry orbital transformation (used in one-electron integrals)
-    Ref<SOTransform> sotransform_;
+    SOTransform *sotransform_;
     //! Spherical transfromation (used in two-electron integrals)
     std::vector<SphericalTransform> sphericaltransforms_;
     
@@ -72,14 +72,14 @@ class BasisSet
     BasisSet& operator=(const BasisSet&);
     
     //! Initialize shells based on information found in checkpoint
-    void initialize_shells(Ref<psi::Chkpt> &chkpt);
+    void initialize_shells(psi::Chkpt* chkpt);
     
     //! Initialize shells based on information found in GENBAS file
     void initialize_shells_via_genbas(std::string& genbas_filename, std::string& genbas_basis);
     
 public:
     /// Constructor, reads in the basis set from the checkpoint file
-    BasisSet(Ref<psi::Chkpt> &chkpt, std::string genbas_filename = "", std::string genbas_basis = "");
+    BasisSet(psi::Chkpt* chkpt, std::string genbas_filename = "", std::string genbas_basis = "");
     /// Copy constructor, currently errors if used
     BasisSet(const BasisSet&);
     /// Destructor
@@ -100,7 +100,7 @@ public:
     /// Spherical harmonics?
     bool has_puream() const            { return puream_;      }
     /// Molecule this basis is for
-    Ref<Molecule> molecule() const     { return molecule_;    }
+    Molecule* molecule() const         { return molecule_;    }
     /// Maximum stabilizer index
     int max_stability_index() const    { return max_stability_index_; }
     /// Given a shell what is its first AO function
@@ -108,7 +108,7 @@ public:
     int shell_to_basis_function(int i) const { return shell_first_basis_function_[i]; }
     
     /// Return the si'th Gaussian shell
-    Ref<GaussianShell>& shell(int si) const;
+    GaussianShell* shell(int si) const;
     
     /// Returns i'th shell's transform
     SOTransformShell* so_transform(int i) { return sotransform_->aoshell(i); }
@@ -120,10 +120,10 @@ public:
     void print(FILE *out = outfile) const;
     
     /// Returns the uso2ao_ matrix.
-    const RefSimpleMatrix& uso_to_ao() const { return simple_mat_uso2ao_; }
+    const SimpleMatrix* uso_to_ao() const { return simple_mat_uso2ao_; }
 
     /// Returns the uso2bf_ matrix.
-    const RefSimpleMatrix& uso_to_bf() const { return simple_mat_uso2bf_; }
+    const SimpleMatrix* uso_to_bf() const { return simple_mat_uso2bf_; }
     
     /// Returns an empty basis set object
     static BasisSet* zero_basis_set();

@@ -24,13 +24,13 @@ class OverlapInt : public OneBodyInt
     ObaraSaikaTwoCenterRecursion overlap_recur_;
     
     /// Computes the overlap between a given shell pair.
-    void compute_pair(Ref<GaussianShell> & , Ref<GaussianShell> &);
-    void compute_pair_deriv1(Ref<GaussianShell> &, Ref<GaussianShell> &);
-    void compute_pair_deriv2(Ref<GaussianShell> &, Ref<GaussianShell> &);
+    void compute_pair(GaussianShell* , GaussianShell*);
+    void compute_pair_deriv1(GaussianShell*, GaussianShell*);
+    void compute_pair_deriv2(GaussianShell*, GaussianShell*);
     
 public:
     /// Constructor, it assumes you are not computing derivatives by default
-    OverlapInt(IntegralFactory*, Ref<BasisSet> &, Ref<BasisSet> &, int deriv=0);
+    OverlapInt(IntegralFactory*, BasisSet*, BasisSet*, int deriv=0);
     ~OverlapInt();
     
     /// Compute overlap between 2 shells. Result is stored in buffer.

@@ -13,7 +13,7 @@ using namespace psi;
 
 // Initialize overlap_recur_ to +1 basis set angular momentum, +1 on each center is sufficient
 // to compute the dipole derivatives
-DipoleInt::DipoleInt(IntegralFactory* integral, Ref<BasisSet>& bs1, Ref<BasisSet>& bs2, int nderiv) :
+DipoleInt::DipoleInt(IntegralFactory* integral, BasisSet* bs1, BasisSet* bs2, int nderiv) :
     OneBodyInt(integral, bs1, bs2, nderiv), overlap_recur_(bs1->max_am()+1, bs2->max_am()+1)
 {
     int maxam1 = bs1_->max_am();
@@ -47,7 +47,7 @@ void DipoleInt::compute_shell_deriv1(int sh1, int sh2)
 }
 
 // The engine only supports segmented basis sets
-void DipoleInt::compute_pair(Ref<GaussianShell>& s1, Ref<GaussianShell>& s2)
+void DipoleInt::compute_pair(GaussianShell* s1, GaussianShell* s2)
 {
     int ao12;
     int am1 = s1->am(0);
@@ -141,7 +141,7 @@ void DipoleInt::compute_pair(Ref<GaussianShell>& s1, Ref<GaussianShell>& s2)
 }
 
 // The engine only supports segmented basis sets
-void DipoleInt::compute_pair_deriv1(Ref<GaussianShell>& s1, Ref<GaussianShell>& s2)
+void DipoleInt::compute_pair_deriv1(GaussianShell* s1, GaussianShell* s2)
 {
     int ao12;
     int am1 = s1->am(0);
@@ -506,7 +506,7 @@ void DipoleInt::compute_pair_deriv1(Ref<GaussianShell>& s1, Ref<GaussianShell>& 
     normalize_am(s1, s2, 3*3*natom_);
 }
 
-void DipoleInt::compute(RefSimpleMatrixArray& result)
+void DipoleInt::compute(SimpleMatrix** result)
 {
     // Do not worry about zeroing out result
     int ns1 = bs1_->nshell();
@@ -525,7 +525,7 @@ void DipoleInt::compute(RefSimpleMatrixArray& result)
     }
 }
 
-void DipoleInt::compute_deriv1(RefSimpleMatrixArray& result)
+void DipoleInt::compute_deriv1(SimpleMatrix** result)
 {
     // Do not worry about zeroing out result
     int ns1 = bs1_->nshell();

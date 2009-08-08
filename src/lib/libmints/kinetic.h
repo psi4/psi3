@@ -24,13 +24,13 @@ class KineticInt : public OneBodyInt
     ObaraSaikaTwoCenterRecursion overlap_recur_;
     
     //! Computes the kinetic integral between two gaussian shells.
-    void compute_pair(Ref<GaussianShell> &, Ref<GaussianShell> &);
+    void compute_pair(GaussianShell*, GaussianShell*);
     //! Computes the kinetic derivatve between two gaussian shells.
-    void compute_pair_deriv1(Ref<GaussianShell> &, Ref<GaussianShell> &);
+    void compute_pair_deriv1(GaussianShell*, GaussianShell*);
     
 public:
     //! Constructor. Do not call directly, use an IntegralFactory.
-    KineticInt(IntegralFactory*, Ref<BasisSet> &, Ref<BasisSet> &, int deriv=0);
+    KineticInt(IntegralFactory*, BasisSet*, BasisSet*, int deriv=0);
     //! Virtual destructor.
     virtual ~KineticInt();
     

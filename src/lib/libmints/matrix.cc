@@ -691,15 +691,15 @@ void Matrix::save(const char *filename, bool append, bool saveLowerTriangle, boo
     fclose(out);
 }
 
-bool Matrix::load(Ref<psi::PSIO>& psio, unsigned int fileno, char *tocentry, int nso)
+bool Matrix::load(psi::PSIO* psio, unsigned int fileno, char *tocentry, int nso)
 {
     double *integrals = init_array(ioff[nso]);
 
     // If psi fails to read in the data this will abort out.
     if (tocentry != NULL)
-        psi::IWL::read_one(psio.pointer(), fileno, tocentry, integrals, ioff[nso], 0, 0, outfile);
+        psi::IWL::read_one(psio, fileno, tocentry, integrals, ioff[nso], 0, 0, outfile);
     else
-        psi::IWL::read_one(psio.pointer(), fileno, const_cast<char*>(name_.c_str()), integrals, ioff[nso], 0, 0, outfile);
+        psi::IWL::read_one(psio, fileno, const_cast<char*>(name_.c_str()), integrals, ioff[nso], 0, 0, outfile);
 
     set(integrals);
 
@@ -708,7 +708,7 @@ bool Matrix::load(Ref<psi::PSIO>& psio, unsigned int fileno, char *tocentry, int
     return true;
 }
 
-void Matrix::save(Ref<psi::PSIO>& psio, unsigned int fileno, bool saveSubBlocks)
+void Matrix::save(psi::PSIO* psio, unsigned int fileno, bool saveSubBlocks)
 {
     // Check to see if the file is open
     bool already_open = false;
@@ -1095,7 +1095,7 @@ void SimpleMatrix::diagonalize(SimpleMatrix* eigvectors, SimpleVector* eigvalues
     }
 }
 
-void SimpleMatrix::save(Ref<psi::PSIO>& psio, unsigned int fileno)
+void SimpleMatrix::save(psi::PSIO* psio, unsigned int fileno)
 {
     // Check to see if the file is open
     bool already_open = false;

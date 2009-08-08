@@ -21,7 +21,6 @@ namespace psi {
 
 class MatrixFactory;
 class SimpleMatrix;
-class RefSimpleMatrix;
 
 //! Makes using matrices just a little earlier.
 //! Using a matrix factory makes creating these a breeze.
@@ -86,7 +85,7 @@ public:
     void copy(Matrix* cp);
 
     /// Load a matrix from a PSIO object from fileno with tocentry of size nso
-    bool load(Ref<psi::PSIO>& psio, unsigned int fileno, char *tocentry, int nso);
+    bool load(psi::PSIO* psio, unsigned int fileno, char *tocentry, int nso);
 
     /// Saves the matrix in ASCII format to filename
     void save(const char *filename, bool append=true, bool saveLowerTriangle = true, bool saveSubBlocks=false);
@@ -94,7 +93,7 @@ public:
         save(filename.c_str(), append, saveSubBlocks);
     }
     /// Saves the block matrix to PSIO object with fileno and with the toc position of the name of the matrix
-    void save(Ref<psi::PSIO>& psio, unsigned int fileno, bool saveSubBlocks=true);
+    void save(psi::PSIO* psio, unsigned int fileno, bool saveSubBlocks=true);
 
     /// Set every element of matrix_ to val
     void set(double val);
@@ -181,79 +180,6 @@ public:
     void gemm(bool transa, bool transb, double alpha, const Matrix* a, const Matrix* b, double beta);
     /// Diagonalize this places eigvectors and eigvalues must be created by caller.
     void diagonalize(Matrix* eigvectors, Vector* eigvalues);
-};
-
-//! Matrix reference wrapped class.
-class RefMatrix : public Ref< Matrix > {
-public:
-    RefMatrix();
-    RefMatrix(Matrix *o);
-    RefMatrix(const RefMatrix& o);
-
-    Matrix* clone() const;
-    void copy(const RefMatrix& cp);
-
-    bool load(Ref<psi::PSIO>& psio, unsigned int fileno, char *tocentry, int nso);
-
-    void save(const char *filename, bool append=true, bool saveLowerTriangle = true, bool saveSubBlocks=false);
-    void save(std::string filename, bool append=true, bool saveLowerTriangle = true, bool saveSubBlocks=false);
-    void save(Ref<psi::PSIO>& psio, unsigned int fileno, bool saveSubBlocks=true);
-
-    void set(double val);
-    void set(const double *tri);
-    void set(const double **sq);
-    void set(int h, int m, int n, double val);
-    void set(const RefVector& vec);
-    void set(const RefSimpleMatrix& sq);
-    double get(int h, int m, int n);
-    double **to_block_matrix();
-    RefSimpleMatrix to_simple_matrix();
-
-    void set_name(std::string name);
-
-    void print(FILE *out = outfile, char *extra=NULL);
-    void eivprint(RefVector& values, FILE *out=outfile);
-    int *rowspi() const;
-    int *colspi() const;
-    int nirreps() const;
-    void set_to_identity();
-    void zero();
-    void zero_diagonal();
-
-    // Math routines
-    double trace();
-    RefMatrix transpose();
-
-    void add(const RefMatrix&);
-    void subtract(const RefMatrix&);
-    void scale(double);
-    double sum_of_squares();
-    void add(int h, int m, int n, double val);
-    void scale_row(int h, int m, double a);
-    void scale_column(int h, int n, double a);
-    void transform(RefMatrix& a, RefMatrix& transformer);
-    void transform(RefMatrix& transformer);
-    void back_transform(RefMatrix& a, RefMatrix& transformer);
-    void back_transform(RefMatrix& transformer);
-
-    double vector_dot(RefMatrix& rhs);
-
-    void gemm(bool transa, bool transb, double alpha, const RefMatrix& a, const RefMatrix& b, double beta);
-    void diagonalize(RefMatrix& eigvectors, RefVector& eigvalues);
-
-    // Make this refer to m
-    RefMatrix& operator=(Matrix* m);
-    // Make this and m refer to the same matrix
-    RefMatrix& operator=(const RefMatrix& m);
-
-    // Multiply this by a matrix and return a matrix
-    RefMatrix operator*(const RefMatrix&) const;
-    // Multiply this by a scalar and return the result
-    RefMatrix operator*(double) const;
-    // Matrix addition
-    RefMatrix operator+(const RefMatrix&) const;
-    // Matrix subtraction
-    RefMatrix operator-(const RefMatrix&) const;
 };
 
 //! Simple matrix class. Not symmetry blocked.
@@ -386,7 +312,7 @@ public:
     void diagonalize(SimpleMatrix* eigvectors, SimpleVector* eigvalues);
 
     /// Saves the block matrix to PSIO object with fileno and with the toc position of the name of the matrix
-    void save(Ref<psi::PSIO>& psio, unsigned int fileno);
+    void save(psi::PSIO* psio, unsigned int fileno);
     /// Saves the matrix in ASCII format to filename
     void save(const char *filename, bool append=true, bool saveLowerTriangle = true);
     /// Saves the matrix in ASCII format to filename
@@ -394,80 +320,6 @@ public:
     
     friend class Matrix;
 };
-
-//! Simple matrix reference wrapped class.
-class RefSimpleMatrix : public Ref< SimpleMatrix > {
-public:
-    RefSimpleMatrix();
-    RefSimpleMatrix(SimpleMatrix *o);
-    RefSimpleMatrix(const RefSimpleMatrix& o);
-
-    SimpleMatrix* clone() const;
-    void copy(const RefSimpleMatrix& cp);
-
-    void set(double val);
-    void set(const double *tri);
-    void set(int m, int n, double val);
-    void set(const RefSimpleVector& vec);
-    void set(double **mat);
-    double get(int m, int n);
-    double **to_block_matrix();
-
-    void set_name(std::string name);
-
-    void print(FILE *out = outfile);
-    void eivprint(RefSimpleVector& values, FILE *out=outfile);
-    int rows() const;
-    int cols() const;
-    void set_to_identity();
-    void zero();
-    void zero_diagonal();
-
-    // Math routines
-    double trace();
-    RefSimpleMatrix transpose();
-
-    void add(const RefSimpleMatrix&);
-    void subtract(const RefSimpleMatrix&);
-    void scale(double);
-    double sum_of_squares();
-    void add(int m, int n, double val);
-    void scale_row(int m, double a);
-    void scale_column(int n, double a);
-    void transform(RefSimpleMatrix& a, RefSimpleMatrix& transformer);
-    void transform(RefSimpleMatrix& transformer);
-    void transform(const RefSimpleMatrix& transformer);
-    void back_transform(RefSimpleMatrix& a, RefSimpleMatrix& transformer);
-    void back_transform(RefSimpleMatrix& transformer);
-    void back_transform(const RefSimpleMatrix& transformer);
-
-    double vector_dot(RefSimpleMatrix& rhs);
-
-    void gemm(bool transa, bool transb, double alpha, const RefSimpleMatrix& a, const RefSimpleMatrix& b, double beta);
-    void diagonalize(RefSimpleMatrix& eigvectors, RefSimpleVector& eigvalues);
-
-    void save(Ref<psi::PSIO>& psio, unsigned int fileno);
-    void save(const char *filename, bool append=true, bool saveLowerTriangle = true);
-    void save(std::string filename, bool append=true, bool saveLowerTriangle = true);
-
-    // Make this refer to m
-    RefSimpleMatrix& operator=(SimpleMatrix* m);
-    // Make this and m refer to the same matrix
-    RefSimpleMatrix& operator=(const RefSimpleMatrix& m);
-
-    // Multiply this by a matrix and return a matrix
-    RefSimpleMatrix operator*(const RefSimpleMatrix&) const;
-    // Multiply this by a scalar and return the result
-    RefSimpleMatrix operator*(double) const;
-    // Matrix addition
-    RefSimpleMatrix operator+(const RefSimpleMatrix&) const;
-    // Matrix subtraction
-    RefSimpleMatrix operator-(const RefSimpleMatrix&) const;
-};
-
-typedef Ref<RefMatrix, SimpleReferenceCount, StandardArrayPolicy> RefMatrixArray;
-typedef Ref<RefVector, SimpleReferenceCount, StandardArrayPolicy> RefVectorArray;
-typedef Ref<RefSimpleMatrix, SimpleReferenceCount, StandardArrayPolicy> RefSimpleMatrixArray;
 
 #include "matrix_i.cc"
 

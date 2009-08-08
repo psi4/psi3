@@ -127,19 +127,17 @@ private:
     };
 
     Integral current;
-    Ref<GaussianShell> usi, usj, usk, usl;
+    GaussianShell *usi, *usj, *usk, *usl;
 
     bool done;
 
     //std::vector<Integral> unique_integrals_;
     int ii, iimax, jj, jjmax, kk, kkmax, ll, llmax;
     int ni, nj, nk, nl, fii, fij, fik, fil;
-    //void generate_combinations(const Ref<GaussianShell> &s1, const Ref<GaussianShell> &s2,
-    //    const Ref<GaussianShell> &s3, const Ref<GaussianShell> &s4);
         
 public:
-    IntegralsIterator(const Ref<GaussianShell> &s1, const Ref<GaussianShell> &s2,
-                     const Ref<GaussianShell> &s3, const Ref<GaussianShell> &s4) {
+    IntegralsIterator(GaussianShell*s1, GaussianShell*s2,
+                     GaussianShell*s3, GaussianShell*s4) {
         done = false;
         usi = s1;
         usj = s2;
@@ -209,17 +207,17 @@ private:
 
     bool done;
     
-    Ref<BasisSet> bs1_;
-    Ref<BasisSet> bs2_;
-    Ref<BasisSet> bs3_;
-    Ref<BasisSet> bs4_;
+    BasisSet* bs1_;
+    BasisSet* bs2_;
+    BasisSet* bs3_;
+    BasisSet* bs4_;
     
-//    void generate_combinations(const Ref<BasisSet> &bs1, const Ref<BasisSet> &bs2,
-//        const Ref<BasisSet> &bs3, const Ref<BasisSet> &bs4);
+//    void generate_combinations(BasisSet*bs1, BasisSet*bs2,
+//        BasisSet*bs3, BasisSet*bs4);
         
 public:
-    ShellCombinationsIterator(const Ref<BasisSet> &bs1, const Ref<BasisSet> &bs2,
-                              const Ref<BasisSet> &bs3, const Ref<BasisSet> &bs4) : bs1_(bs1), bs2_(bs2), bs3_(bs3), bs4_(bs4) {
+    ShellCombinationsIterator(BasisSet*bs1, BasisSet*bs2,
+                              BasisSet*bs3, BasisSet*bs4) : bs1_(bs1), bs2_(bs2), bs3_(bs3), bs4_(bs4) {
 
         usii = usjj = uskk = usll = upk = 0;
         done = false;
@@ -242,45 +240,45 @@ class IntegralFactory
 {
 protected:
     /// Center 1 basis set
-    Ref<BasisSet> bs1_;
+    BasisSet* bs1_;
     /// Center 2 basis set
-    Ref<BasisSet> bs2_;
+    BasisSet* bs2_;
     /// Center 3 basis set
-    Ref<BasisSet> bs3_;
+    BasisSet* bs3_;
     /// Center 4 basis set
-    Ref<BasisSet> bs4_;
+    BasisSet* bs4_;
     
     /// Provides ability to transform to and from sphericals (d=0, f=1, g=2)
     std::vector<SphericalTransform> spherical_transforms_;
     
 public:
     /** Initialize IntegralFactory object given a GaussianBasisSet for each center. */
-    IntegralFactory(const Ref<BasisSet> &bs1, const Ref<BasisSet> &bs2,
-                    const Ref<BasisSet> &bs3 =0, const Ref<BasisSet> &bs4 =0);
+    IntegralFactory(BasisSet*bs1, BasisSet*bs2,
+                    BasisSet*bs3 =0, BasisSet*bs4 =0);
     
     virtual ~IntegralFactory();
     
     /// Set the basis set for each center.
-    virtual void set_basis(const Ref<BasisSet> &bs1, const Ref<BasisSet> &bs2 = 0,
-        const Ref<BasisSet> &bs3 = 0, const Ref<BasisSet> &bs4 = 0);
+    virtual void set_basis(BasisSet*bs1, BasisSet*bs2 = 0,
+        BasisSet*bs3 = 0, BasisSet*bs4 = 0);
         
     /// Returns an OneBodyInt that computes the overlap integral.
-    virtual Ref<OneBodyInt> overlap(int deriv=0);
+    virtual OneBodyInt* overlap(int deriv=0);
     
     /// Returns an OneBodyInt that computes the kinetic energy integral.
-    virtual Ref<OneBodyInt> kinetic(int deriv=0);
+    virtual OneBodyInt* kinetic(int deriv=0);
     
     /// Returns an OneBodyInt that computes the nuclear attraction integral.
-    virtual Ref<OneBodyInt> potential(int deriv=0);
+    virtual OneBodyInt* potential(int deriv=0);
 
     /// Returns an OneBodyInt that computes the dipole integral.
-    virtual Ref<OneBodyInt> dipole(int deriv=0);
+    virtual OneBodyInt* dipole(int deriv=0);
     
     /// Returns an OneBodyInt that computes the quadrupole integral.
-    virtual Ref<OneBodyInt> quadrupole();
+    virtual OneBodyInt* quadrupole();
     
     /// Returns an ERI integral object
-    virtual Ref<TwoBodyInt> eri(int deriv=0);
+    virtual TwoBodyInt* eri(int deriv=0);
 
     /// Returns an ERI iterator object, only coded for standard ERIs
     ShellCombinationsIterator shells_iterator();

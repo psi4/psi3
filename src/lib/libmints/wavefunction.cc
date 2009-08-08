@@ -28,13 +28,11 @@ Wavefunction::Wavefunction(PSIO *psio, Chkpt *chkpt) : psio_(psio), chkpt_(chkpt
     common_init();
 }
 
-Wavefunction::Wavefunction(Ref<PSIO>& psio, Ref<Chkpt>& chkpt) : psio_(psio), chkpt_(chkpt)
-{
-    common_init();
-}
-
 Wavefunction::~Wavefunction()
 {
+    delete basisset_;
+    delete chkpt_;
+    delete psio_;
 }
 
 void Wavefunction::common_init()
@@ -42,9 +40,9 @@ void Wavefunction::common_init()
     Wavefunction::initialize_singletons();
 
     // Was a chkpt object sent to us?
-    if (chkpt_.pointer() == 0) {
+    if (chkpt_ == 0) {
         // No, create a checkpoint object
-        chkpt_ = new Chkpt(psio_.pointer(), PSIO_OPEN_OLD);
+        chkpt_ = new Chkpt(psio_, PSIO_OPEN_OLD);
     }
     
     // Initialize the matrix factory

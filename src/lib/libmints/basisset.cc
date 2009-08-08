@@ -14,12 +14,16 @@
 
 using namespace psi;
 
-BasisSet::BasisSet()
+BasisSet::BasisSet() :
+    shell_first_basis_function_(NULL), shell_first_ao_(NULL), shell_center_(NULL), uso2ao_(NULL),
+    max_nprimitives_(0), max_stability_index_(0), uso2bf_(NULL), simple_mat_uso2ao_(NULL),
+    simple_mat_uso2bf_(NULL)
 {}
 
-BasisSet::BasisSet(Ref<Chkpt> &chkpt, std::string genbas_filename, std::string genbas_basis) :
+BasisSet::BasisSet(Chkpt* chkpt, std::string genbas_filename, std::string genbas_basis) :
     shell_first_basis_function_(NULL), shell_first_ao_(NULL), shell_center_(NULL), uso2ao_(NULL),
-    max_nprimitives_(0), max_stability_index_(0), uso2bf_(NULL)
+    max_nprimitives_(0), max_stability_index_(0), uso2bf_(NULL), simple_mat_uso2ao_(NULL),
+    simple_mat_uso2bf_(NULL)
 {
     // This requirement holds no matter what.
     puream_ = chkpt->rd_puream() ? true : false;
@@ -54,9 +58,21 @@ BasisSet::~BasisSet()
         Chkpt::free(uso2ao_);
     if (uso2bf_)
         Chkpt::free(uso2bf_);
+    if (molecule_)
+        delete molecule_;
+    if (simple_mat_uso2ao_)
+        delete simple_mat_uso2ao_;
+    if (simple_mat_uso2bf_)
+        delete simple_mat_uso2bf_;
+    if (sotransform_)
+        delete sotransform_;
+    
+    for  (int i=0; i < nshells_; ++i)
+        delete shells_[i];
+    delete[] shells_;
 }
 
-void BasisSet::initialize_shells(Ref<Chkpt> &chkpt)
+void BasisSet::initialize_shells(Chkpt *chkpt)
 {
     // Initialize some data from checkpoint.
     nshells_      = chkpt->rd_nshell();
@@ -70,15 +86,15 @@ void BasisSet::initialize_shells(Ref<Chkpt> &chkpt)
     uso2bf_       = chkpt->rd_usotbf();
 
     simple_mat_uso2ao_ = new SimpleMatrix("Unique SO to AO transformation matrix", nbf_, nao_);
-    simple_mat_uso2ao_.set(uso2ao_);
+    simple_mat_uso2ao_->set(uso2ao_);
     // simple_mat_uso2ao_.print();
     
     simple_mat_uso2bf_ = new SimpleMatrix("Unique SO to BF transformation matrix", nbf_, nbf_);
-    simple_mat_uso2bf_.set(uso2bf_);
+    simple_mat_uso2bf_->set(uso2bf_);
     // simple_mat_uso2bf_.print();
     
     // Allocate memory for the shells
-    shells_       = new Ref<GaussianShell>[nshells_];
+    shells_       = new GaussianShell*[nshells_];
     
     // Retrieve angular momentum of each shell (1=s, 2=p, ...)
     int *shell_am = chkpt->rd_stype();
@@ -205,7 +221,7 @@ void BasisSet::initialize_shells_via_genbas(std::string& genbas_filename, std::s
     max_nprimitives_ = 0;
     
     // Temporary storage for shells, will be moved into shells_ once we know the total number.
-    std::vector<Ref<GaussianShell> > shells;
+    std::vector<GaussianShell* > shells;
     
     // Attempt to open user specific genbas file
     FILE *genbas = fopen(genbas_filename.c_str(), "r");
@@ -309,8 +325,8 @@ void BasisSet::initialize_shells_via_genbas(std::string& genbas_filename, std::s
                     e[p] = exponents[k+p];
                 }
                 
-                Ref<GaussianShell> shell(new GaussianShell(ncontr, kount, e, am, puream_ ? GaussianShell::Pure : GaussianShell::Cartesian,
-                                         cc, i, center, puream_start, GaussianShell::Unnormalized));
+                GaussianShell* shell = new GaussianShell(ncontr, kount, e, am, puream_ ? GaussianShell::Pure : GaussianShell::Cartesian,
+                                         cc, i, center, puream_start, GaussianShell::Unnormalized);
                 shells.push_back(shell);
                 
                 if (kount > max_nprimitives_)
@@ -349,7 +365,7 @@ void BasisSet::initialize_shells_via_genbas(std::string& genbas_filename, std::s
     
     // Okay, we now know how many shells we have, allocate permanent home for it.
     nshells_ = shells.size();
-    shells_ = new Ref<GaussianShell>[nshells_];
+    shells_ = new GaussianShell*[nshells_];
     
     // Reading basis sets from GENBAS means that symmetry must be ignored. But we
     // must have an sotransform_ object created. Create an identity matrix that will
@@ -405,7 +421,7 @@ void BasisSet::print(FILE *out) const
         shells_[s]->print(out);
 }
 
-Ref<GaussianShell>& BasisSet::shell(int si) const
+GaussianShell* BasisSet::shell(int si) const
 {
     #ifdef DEBUG
     assert(si < nshell());
@@ -444,7 +460,7 @@ BasisSet* BasisSet::zero_basis_set()
     new_basis->uso2bf_[0][0] = 1.0;
  
     // Create shell array
-    new_basis->shells_ = new Ref<GaussianShell>[1];
+    new_basis->shells_ = new GaussianShell*[1];
 
     // Spherical and SO-transforms are expected even if not used.
     new_basis->sphericaltransforms_.push_back(SphericalTransform(0));

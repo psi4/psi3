@@ -63,7 +63,7 @@ void do_sparse_transform12(double *source, double *target, int chunk,
     }
 }
 
-OneBodyInt::OneBodyInt(IntegralFactory *integral, const Ref<BasisSet> &bs1, const Ref<BasisSet> &bs2, int deriv)
+OneBodyInt::OneBodyInt(IntegralFactory *integral, BasisSet* bs1, BasisSet *bs2, int deriv)
     : integral_(integral), bs1_(bs1), bs2_(bs2), deriv_(deriv)
 {
     buffer_ = 0;
@@ -75,17 +75,17 @@ OneBodyInt::~OneBodyInt()
     
 }
 
-Ref<BasisSet> OneBodyInt::basis()
+BasisSet* OneBodyInt::basis()
 {
     return bs1_;
 }
 
-Ref<BasisSet> OneBodyInt::basis1()
+BasisSet* OneBodyInt::basis1()
 {
     return bs1_;
 }
 
-Ref<BasisSet> OneBodyInt::basis2()
+BasisSet* OneBodyInt::basis2()
 {
     return bs2_;
 }
@@ -100,12 +100,12 @@ bool OneBodyInt::cloneable()
     return false;
 }
 
-Ref<OneBodyInt> OneBodyInt::clone()
+OneBodyInt* OneBodyInt::clone()
 {
     throw std::runtime_error("OneBodyInt::clone() not implemented");
 }
 
-void OneBodyInt::normalize_am(Ref<GaussianShell> & s1, Ref<GaussianShell> & s2, int nchunk)
+void OneBodyInt::normalize_am(GaussianShell* s1, GaussianShell* s2, int nchunk)
 {
     // Integrals are done. Normalize for angular momentum
     int am1 = s1->am(0);
@@ -135,7 +135,7 @@ void OneBodyInt::normalize_am(Ref<GaussianShell> & s1, Ref<GaussianShell> & s2, 
     }
 }
 
-void OneBodyInt::do_transform(Ref<GaussianShell> & s1, Ref<GaussianShell> & s2, int chunk)
+void OneBodyInt::do_transform(GaussianShell* s1, GaussianShell* s2, int chunk)
 {
     int i, j;
     int ogc1, ogc2;
@@ -227,7 +227,7 @@ void OneBodyInt::do_transform(Ref<GaussianShell> & s1, Ref<GaussianShell> & s2, 
     }
 }
 
-void OneBodyInt::spherical_transform(Ref<GaussianShell> & s1, Ref<GaussianShell> & s2)
+void OneBodyInt::spherical_transform(GaussianShell* s1, GaussianShell* s2)
 {
     do_transform(s1, s2, 1);
 }
@@ -235,7 +235,7 @@ void OneBodyInt::spherical_transform(Ref<GaussianShell> & s1, Ref<GaussianShell>
 // Converts the AO integrals stored in the buffer to SO integrals (plus spherical transform)
 // This function does a full transform. It might be of use to create two half transform
 // functions.
-void OneBodyInt::so_transform(RefMatrix &result, int sh1, int sh2, int ichunk)
+void OneBodyInt::so_transform(Matrix *result, int sh1, int sh2, int ichunk)
 {
     // Get the transforms from the basis sets
     SOTransformIter trans1(bs1_->so_transform(sh1));
@@ -263,7 +263,7 @@ void OneBodyInt::so_transform(RefMatrix &result, int sh1, int sh2, int ichunk)
                 // Compute and store
                 double val = coef1 * coef2 * localbuffer[offset1 + aofunc2];
                                 
-                result.add(irrep1, soirrepfunc1, soirrepfunc2, val);
+                result->add(irrep1, soirrepfunc1, soirrepfunc2, val);
             }
         }
     }
@@ -272,7 +272,7 @@ void OneBodyInt::so_transform(RefMatrix &result, int sh1, int sh2, int ichunk)
 // Converts the AO integrals stored in the buffer to SO integrals (plus spherical transform)
 // This function does a full transform. It might be of use to create two half transform
 // functions.
-void OneBodyInt::so_transform(RefSimpleMatrix &result, int sh1, int sh2, int ichunk)
+void OneBodyInt::so_transform(SimpleMatrix *result, int sh1, int sh2, int ichunk)
 {
     // Get the transforms from the basis sets
     SOTransformIter trans1(bs1_->so_transform(sh1));
@@ -296,12 +296,12 @@ void OneBodyInt::so_transform(RefSimpleMatrix &result, int sh1, int sh2, int ich
             // Compute and store
             double val = coef1 * coef2 * localbuffer[offset1 + aofunc2];
                                 
-            result.add(sofunc1, sofunc2, val);
+            result->add(sofunc1, sofunc2, val);
         }
     }
 }
 
-void OneBodyInt::compute(RefMatrix& result)
+void OneBodyInt::compute(Matrix* result)
 {
     // Do not worry about zeroing out result
     int ns1 = bs1_->nshell();
@@ -317,22 +317,22 @@ void OneBodyInt::compute(RefMatrix& result)
     }
 }
 
-void OneBodyInt::compute(RefMatrixArray& result)
+void OneBodyInt::compute(Matrix** result)
 {
     throw std::runtime_error("OneBodyInt::compute(Array) not implemented");
 }
 
-void OneBodyInt::compute(RefSimpleMatrixArray& result)
+void OneBodyInt::compute(SimpleMatrix** result)
 {
     throw std::runtime_error("OneBodyInt::compute(SimpleArray) not implemented");
 }
 
-void OneBodyInt::compute_deriv1(RefMatrixArray& result)
+void OneBodyInt::compute_deriv1(Matrix** result)
 {
     throw std::runtime_error("OneBodyInt::deriv1(Array) not implemented");
 }
 
-void OneBodyInt::compute_deriv1(RefSimpleMatrixArray& result)
+void OneBodyInt::compute_deriv1(SimpleMatrix** result)
 {
     // Do not worry about zeroing out result
     int ns1 = bs1_->nshell();
@@ -354,7 +354,7 @@ void OneBodyInt::compute_shell_deriv1(int, int)
     throw std::runtime_error("OneBodyInt::compute_shell_deriv1(Array) not implemented");   
 }
 
-void OneBodyInt::compute_deriv2(RefSimpleMatrixArray& result)
+void OneBodyInt::compute_deriv2(SimpleMatrix** result)
 {
     // Do not worry about zeroing out result
     int ns1 = bs1_->nshell();

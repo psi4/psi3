@@ -11,7 +11,7 @@
 
 using namespace psi;
 
-Symmetry::Symmetry(Ref<Chkpt> &chkpt) 
+Symmetry::Symmetry(Chkpt* chkpt) 
 {
     symlabel_ = chkpt->rd_sym_label();
     nirreps_ = chkpt->rd_nirreps();

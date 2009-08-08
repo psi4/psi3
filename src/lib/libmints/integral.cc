@@ -18,8 +18,8 @@ static void swap(T& x, T& y) {
 }
 
 /** Initialize IntegralFactory object given a GaussianBasisSet for each center. */
-IntegralFactory::IntegralFactory(const Ref<BasisSet> &bs1, const Ref<BasisSet> &bs2,
-                const Ref<BasisSet> &bs3, const Ref<BasisSet> &bs4)
+IntegralFactory::IntegralFactory(BasisSet*bs1, BasisSet*bs2,
+                BasisSet*bs3, BasisSet*bs4)
 {
     set_basis(bs1, bs2, bs3, bs4);
 }
@@ -29,8 +29,8 @@ IntegralFactory::~IntegralFactory()
     
 }
 
-void IntegralFactory::set_basis(const Ref<BasisSet> &bs1, const Ref<BasisSet> &bs2,
-    const Ref<BasisSet> &bs3, const Ref<BasisSet> &bs4)
+void IntegralFactory::set_basis(BasisSet*bs1, BasisSet*bs2,
+    BasisSet*bs3, BasisSet*bs4)
 {
     bs1_ = bs1;
     bs2_ = bs2;
@@ -38,39 +38,39 @@ void IntegralFactory::set_basis(const Ref<BasisSet> &bs1, const Ref<BasisSet> &b
     bs4_ = bs4;
     
     // Find the max am
-    Ref<BasisSet> max12 = bs1_->max_am() > bs2_->max_am() ? bs1_ : bs2_;
-    Ref<BasisSet> max34 = bs3_->max_am() > bs4_->max_am() ? bs3_ : bs4_;
-    Ref<BasisSet> max1234 = max12->max_am() > max34->max_am() ? max12 : max34;
+    BasisSet* max12 = bs1_->max_am() > bs2_->max_am() ? bs1_ : bs2_;
+    BasisSet* max34 = bs3_->max_am() > bs4_->max_am() ? bs3_ : bs4_;
+    BasisSet* max1234 = max12->max_am() > max34->max_am() ? max12 : max34;
     
     init_spherical_harmonics(max1234->max_am());
 }
 
-Ref<OneBodyInt> IntegralFactory::overlap(int deriv)
+OneBodyInt* IntegralFactory::overlap(int deriv)
 {
     return new OverlapInt((IntegralFactory*)this, bs1_, bs2_, deriv);
 }
 
-Ref<OneBodyInt> IntegralFactory::kinetic(int deriv)
+OneBodyInt* IntegralFactory::kinetic(int deriv)
 {
     return new KineticInt((IntegralFactory*)this, bs1_, bs2_, deriv);
 }
 
-Ref<OneBodyInt> IntegralFactory::potential(int deriv)
+OneBodyInt* IntegralFactory::potential(int deriv)
 {
     return new PotentialInt((IntegralFactory*)this, bs1_, bs2_, deriv);
 }
 
-Ref<OneBodyInt> IntegralFactory::dipole(int deriv)
+OneBodyInt* IntegralFactory::dipole(int deriv)
 {
     return new DipoleInt((IntegralFactory*)this, bs1_, bs2_, deriv);
 }
 
-Ref<OneBodyInt> IntegralFactory::quadrupole()
+OneBodyInt* IntegralFactory::quadrupole()
 {
     return new QuadrupoleInt((IntegralFactory*)this, bs1_, bs2_);
 }
 
-Ref<TwoBodyInt> IntegralFactory::eri(int deriv)
+TwoBodyInt* IntegralFactory::eri(int deriv)
 {
     return new ERI((IntegralFactory*)this, bs1_, bs2_, bs3_, bs4_, deriv);
 }
@@ -92,7 +92,7 @@ IntegralsIterator ShellCombinationsIterator::integrals_iterator()
 }
 
 /*
-void ShellCombinationsIterator::generate_combinations(const Ref<BasisSet> &bs1, const Ref<BasisSet> &bs2, const Ref<BasisSet> &bs3, const Ref<BasisSet> &bs4)
+void ShellCombinationsIterator::generate_combinations(BasisSet*bs1, BasisSet*bs2, BasisSet*bs3, BasisSet*bs4)
 {
     
     for (usii=0; usii<bs1->nshell(); usii++) {

@@ -34,7 +34,7 @@ class Symmetry
     int **trans_vec_;           // a matrix of nshell*nirreps integers that contains symmetry information
     int nshells_;               // number of shells
 public:
-    Symmetry(Ref<psi::Chkpt> &chkpt);
+    Symmetry(psi::Chkpt* chkpt);
     Symmetry(const Symmetry&);
     ~Symmetry();
     

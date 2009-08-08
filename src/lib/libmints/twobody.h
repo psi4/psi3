@@ -20,15 +20,15 @@ class TwoBodyInt
 {
 protected:
     IntegralFactory *integral_;
-    Ref<BasisSet> bs1_;
-    Ref<BasisSet> bs2_;
-    Ref<BasisSet> bs3_;
-    Ref<BasisSet> bs4_;
-    
-    Ref<BasisSet> original_bs1_;
-    Ref<BasisSet> original_bs2_;
-    Ref<BasisSet> original_bs3_;
-    Ref<BasisSet> original_bs4_;
+    BasisSet *bs1_;
+    BasisSet *bs2_;
+    BasisSet *bs3_;
+    BasisSet *bs4_;
+
+    BasisSet *original_bs1_;
+    BasisSet *original_bs2_;
+    BasisSet *original_bs3_;
+    BasisSet *original_bs4_;
     
     /// Buffer to hold the final integrals.
     double *target_;
@@ -53,25 +53,25 @@ protected:
     void permute_1234_to_4321(double *s, double *t, int nbf1, int nbf2, int nbf3, int nbf4);
     
     TwoBodyInt(IntegralFactory *integral,
-               const Ref<BasisSet>& bs1,
-               const Ref<BasisSet>& bs2,
-               const Ref<BasisSet>& bs3,
-               const Ref<BasisSet>& bs4,
+               BasisSet* bs1,
+               BasisSet* bs2,
+               BasisSet* bs3,
+               BasisSet* bs4,
                int deriv = 0);
                
 public:
     virtual ~TwoBodyInt();
     
     /// Basis set on center one
-    Ref<BasisSet> basis();
+    BasisSet* basis();
     /// Basis set on center one
-    Ref<BasisSet> basis1();
+    BasisSet* basis1();
     /// Basis set on center two
-    Ref<BasisSet> basis2();
+    BasisSet* basis2();
     /// Basis set on center three
-    Ref<BasisSet> basis3();
+    BasisSet* basis3();
     /// Basis set on center four
-    Ref<BasisSet> basis4();
+    BasisSet* basis4();
 
     /// Buffer where the integrals are placed
     const double *buffer() const { return target_; };
@@ -83,13 +83,13 @@ public:
     IntegralFactory *integral() const { return integral_; }
     
     /// Normalize Cartesian functions based on angular momentum
-    void normalize_am(Ref<GaussianShell> &, Ref<GaussianShell> &, Ref<GaussianShell> &, Ref<GaussianShell> &, int nchunk=1);
+    void normalize_am(GaussianShell*, GaussianShell*, GaussianShell*, GaussianShell*, int nchunk=1);
         
     /// Return true if the clone member can be called. By default returns false.
     virtual bool cloneable();
     
     /// Returns a clone of this object. By default throws an exception
-    virtual Ref<TwoBodyInt> clone();
+    virtual TwoBodyInt* clone();
     
     /// Results go back to buffer_
     void pure_transform(int, int, int, int, int nchunk);

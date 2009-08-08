@@ -120,21 +120,6 @@ double *Vector::to_block_vector() {
 }
 
 //
-// Reference Vector class
-//
-RefVector::RefVector() {
-    
-}
-
-RefVector::RefVector(Vector* o) : Ref<Vector>(o) {
-    
-}
-
-RefVector::RefVector(const RefVector& o) : Ref<Vector>(o) {
-    
-}
-
-//
 // SimpleVector class
 //
 SimpleVector::SimpleVector() {
@@ -210,19 +195,4 @@ double *SimpleVector::to_block_vector() {
     }
     
     return temp;
-}
-
-//
-// Reference SimpleVector class
-//
-RefSimpleVector::RefSimpleVector() {
-    
-}
-
-RefSimpleVector::RefSimpleVector(SimpleVector* o) : Ref<SimpleVector>(o) {
-    
-}
-
-RefSimpleVector::RefSimpleVector(const RefSimpleVector& o) : Ref<SimpleVector>(o) {
-    
 }
