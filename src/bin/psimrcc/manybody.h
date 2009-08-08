@@ -49,9 +49,9 @@ public:
   void        make_fock_matrix();
   void        make_denominators();
   void        print_method(const char* text);
-  void        zero_internal_amps();
-  void        zero_t1_internal_amps();
-  void        zero_internal_delta_amps();
+//  void        zero_internal_amps();
+//  void        zero_t1_internal_amps();
+//  void        zero_internal_delta_amps();
 protected:
   // Effective Hamiltonian and the correpsonding eigenvectors
   void        print_eigensystem(int ndets, double** Heff,double*& eigenvector);

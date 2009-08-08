@@ -18,45 +18,17 @@
 #include "blas.h"
 #include "mrcc.h"
 #include "debugging.h"
+#include "updater.h"
 
 extern FILE *outfile;
 
 namespace psi{ namespace psimrcc{
 
-// typedef void(CCMRCC::*voidFunction)();
-
-CCMRCC* CCMRCC::ptr = NULL;
-
-void CCMRCC::compute_ccsd_energy()
-{
-  CCMRCC::ptr = this;
-  compute_energy(update_amps_ccsd_wrapper);
-}
-
-void CCMRCC::compute_mkccsd_energy()
-{
-  CCMRCC::ptr = this;
-  compute_energy(update_amps_mkccsd_wrapper);
-}
-
-void CCMRCC::compute_bwccsd_energy()
-{
-  CCMRCC::ptr = this;
-  compute_energy(update_amps_bwccsd_wrapper);
-}
-
-void CCMRCC::compute_apbwccsd_energy()
-{
-  ap_correction = true;
-  CCMRCC::ptr = this;
-  compute_energy(update_amps_bwccsd_wrapper);
-}
-
 /**
- * This is a generic coupled cluster cycle. By specifying updater you can get all the falvours, single-reference, Mukherjee MRCC,...
- * @param (* updater)( ) the pointer to a CCMRCC static function that wrapps the updater function
+ * This is a generic coupled cluster cycle. By specifying the updater object you can get all the flavors of CC, single-reference, Mukherjee MRCC,...
+ * @param updater the pointer to a Updater object
  */
-void CCMRCC::compute_energy(void(*updater)())
+void CCMRCC::compute_energy(Updater* updater)
 {
   blas->diis_add("t1[o][v]{u}","t1_delta[o][v]{u}");
   blas->diis_add("t1[O][V]{u}","t1_delta[O][V]{u}");
@@ -71,7 +43,7 @@ void CCMRCC::compute_energy(void(*updater)())
   while(!converged){
     diis_step = cycle % options_get_int("MAXDIIS");
 
-    zero_internal_amps();
+    updater->zero_internal_amps();
 
     synchronize_amps();
     build_tau_intermediates();
@@ -86,10 +58,18 @@ void CCMRCC::compute_energy(void(*updater)())
     if(triples_type>ccsd_t)
       build_t2_amplitudes_triples();
 
-    converged=build_diagonalize_Heff(cycle,cc_timer.get());
+    converged = build_diagonalize_Heff(cycle,cc_timer.get());
+
+    h_eff.set_eigenvalue(current_energy);
+    h_eff.set_matrix(Heff,moinfo->get_nrefs());
+    h_eff.set_right_eigenvector(right_eigenvector,moinfo->get_nrefs());
+    h_eff.set_left_eigenvector(left_eigenvector,moinfo->get_nrefs());
+
     if(!converged){
       blas->diis_save_t_amps(cycle);
-      updater();
+      updater->update(cycle,&h_eff);
+      updater->zero_internal_delta_amps();
+      compute_delta_amps();
       blas->diis(cycle,delta_energy,DiisCC);
     }
 
@@ -109,7 +89,7 @@ void CCMRCC::compute_energy(void(*updater)())
 
   // Compute the apBWCCSD energy
   if(ap_correction){
-    zero_internal_amps();
+    updater->zero_internal_amps();
 
     synchronize_amps();
 
@@ -121,9 +101,9 @@ void CCMRCC::compute_energy(void(*updater)())
     build_t1_amplitudes();
     build_t2_amplitudes();
 
-    update_amps();
+    updater->update(cycle,&h_eff);
 
-    zero_internal_amps();
+    updater->zero_internal_amps();
 
     synchronize_amps();
 
@@ -135,7 +115,7 @@ void CCMRCC::compute_energy(void(*updater)())
     build_t1_amplitudes();
     build_t2_amplitudes();
 
-    zero_internal_amps();
+    updater->zero_internal_amps();
 
     converged = build_diagonalize_Heff(-1,cc_timer.get());
   }

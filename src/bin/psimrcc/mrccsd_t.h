@@ -25,6 +25,12 @@ private:
   void compute_ooO_triples();
   void compute_oOO_triples();
 
+  void compute_restricted();
+  void compute_ooo_triples_restricted();
+  void compute_ooO_triples_restricted();
+  void compute_oOO_triples_restricted();
+  void compute_OOO_triples_restricted();
+
   void compute_ooo_contribution_to_Heff(int i,int j,int k,int mu,BlockMatrix* T3);
   void compute_ooO_contribution_to_Heff(int i,int j,int k,int mu,BlockMatrix* T3);
   void compute_oOO_contribution_to_Heff(int i,int j,int k,int mu,BlockMatrix* T3);
@@ -40,6 +46,23 @@ private:
 
   double compute_AB_ooO_contribution_to_Heff(int u_abs,int V_abs,int x_abs,int Y_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
   double compute_AB_oOO_contribution_to_Heff(int u_abs,int V_abs,int x_abs,int Y_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
+
+  void compute_ooo_contribution_to_Heff_restricted(int i,int j,int k,int mu,BlockMatrix* T3);
+  void compute_ooO_contribution_to_Heff_restricted(int i,int j,int k,int mu,BlockMatrix* T3);
+  void compute_oOO_contribution_to_Heff_restricted(int i,int j,int k,int mu,BlockMatrix* T3);
+  void compute_OOO_contribution_to_Heff_restricted(int i,int j,int k,int mu,BlockMatrix* T3);
+
+  double compute_A_ooo_contribution_to_Heff_restricted(int u_abs,int x_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
+  double compute_A_ooO_contribution_to_Heff_restricted(int u_abs,int x_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
+  double compute_A_oOO_contribution_to_Heff_restricted(int u_abs,int x_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
+
+  double compute_B_ooO_contribution_to_Heff_restricted(int U_abs,int X_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
+  double compute_B_oOO_contribution_to_Heff_restricted(int U_abs,int X_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
+  double compute_B_OOO_contribution_to_Heff_restricted(int U_abs,int X_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
+
+  double compute_AB_ooO_contribution_to_Heff_restricted(int u_abs,int V_abs,int x_abs,int Y_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
+  double compute_AB_oOO_contribution_to_Heff_restricted(int u_abs,int V_abs,int x_abs,int Y_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
+
 
   void form_T2_ij_a_b(IndexMatrix* T2_ij_a_b,bool spin1,bool spin2,bool transpose);
   void form_T2_i_ab_j(IndexMatrix* T2_i_ab_j,bool spin1,bool spin2,bool transpose);

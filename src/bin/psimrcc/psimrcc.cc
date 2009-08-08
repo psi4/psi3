@@ -1,10 +1,3 @@
-/***************************************************************************
- *  PSIMRCC
- *  Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
-
 /**
  *  @defgroup PSIMRCC PSIMRCC is a code for SR/MRCC computations
  *  @file psimrcc.cpp
@@ -24,6 +17,7 @@
 #include "transform.h"
 #include "debugging.h"
 #include "psimrcc.h"
+#include "updater.h"
 
 namespace psi{ namespace psimrcc{
 
@@ -60,18 +54,23 @@ void mrccsd()
     mrcc.compute_first_order_amps();
   }
 
-  if(options_get_str("CORR_ANSATZ")=="SR")
-    mrcc.compute_ccsd_energy();
+  // Initialize the appropriate updater
+  Updater* updater;
+//  if(options_get_str("CORR_ANSATZ")=="SR")
+//    updater = static_cast<Updater*>(new MkUpdater());
   if(options_get_str("CORR_ANSATZ")=="MK")
-    mrcc.compute_mkccsd_energy();
+    updater = dynamic_cast<Updater*>(new MkUpdater());
   if(options_get_str("CORR_ANSATZ")=="BW")
-    mrcc.compute_bwccsd_energy();
-  if(options_get_str("CORR_ANSATZ")=="APBW")
-    mrcc.compute_apbwccsd_energy();
+    updater = dynamic_cast<Updater*>(new BWUpdater());
+
+	// Compute the energy
+  mrcc.compute_energy(updater);
 
   if(options_get_bool("PERT_CBS")){
     mrcc.perturbative_cbs();
   }
+
+  delete updater;
 }
 
 /*!
@@ -98,8 +97,12 @@ void mrpt2()
   // Initialize the mp2 module (integrals,fock matrix(ces),denominators)
   IDMRPT2        idmrpt2;
 
+  Updater* updater = dynamic_cast<Updater*>(new MkUpdater());
+
   // Compute the initial amplitudes and MP2 energy
-  idmrpt2.compute_mrpt2_energy();
+  idmrpt2.compute_mrpt2_energy(updater);
+
+  delete updater;
 
   DEBUGGING(1,
     blas->print_memory();

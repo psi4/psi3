@@ -16,24 +16,6 @@ void MRCCSD_T::startup()
   nrefs     = moinfo->get_ref_size(AllRefs);
   threshold = 0.1 * pow(10.0,-static_cast<double>(options_get_int("CONVERGENCE")));
 
-//  for(int mu = 0; mu < nrefs; mu++){
-//    fprintf(outfile,"\n  Reference mu = %d",mu);
-//    for(int nu = 0; nu < nrefs; nu++){
-//      if(nu != mu){
-//        fprintf(outfile,"\n  -> reference nu = %d",nu);
-//        vector<pair<int,int> >  alpha_internal_excitation = moinfo->get_alpha_internal_excitation(mu,nu);
-//        vector<pair<int,int> >   beta_internal_excitation = moinfo->get_beta_internal_excitation(mu,nu);
-//        double                   sign = moinfo->get_sign_internal_excitation(mu,nu);
-//        fprintf(outfile," = %s{",sign > 0.0 ? "+" : "-");
-//        for(size_t i = 0; i < beta_internal_excitation.size();i++)
-//          fprintf(outfile," %db+ %db-",beta_internal_excitation[i].second,beta_internal_excitation[i].first);
-//        for(size_t i = 0; i < alpha_internal_excitation.size();i++)
-//          fprintf(outfile," %da+ %da-",alpha_internal_excitation[i].second,alpha_internal_excitation[i].first);
-//        fprintf(outfile," }");
-//      }
-//    }
-//  }
-
   build_W_intermediates();
 
   o   = blas->get_index("[o]");

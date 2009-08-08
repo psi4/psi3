@@ -1,18 +1,16 @@
-/***************************************************************************
- *  PSIMRCC : Copyright (C) 2007 by Francesco Evangelista and Andrew Simmonett
- *  frank@ccc.uga.edu   andysim@ccc.uga.edu
- *  A multireference coupled cluster code
- ***************************************************************************/
+#include <cstdlib>
+
 #include <libmoinfo/libmoinfo.h>
+#include <libutil/libutil.h>
+#include <liboptions/liboptions.h>
+#include <libchkpt/chkpt.h>
+
 #include "idmrpt2.h"
 #include "matrix.h"
 #include "blas.h"
 #include "sort.h"
 #include "debugging.h"
-#include <libutil/libutil.h>
-#include <liboptions/liboptions.h>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
+#include "updater.h"
 
 extern FILE* outfile;
 
@@ -32,7 +30,7 @@ IDMRPT2::~IDMRPT2()
 }
 
 
-void IDMRPT2::compute_mrpt2_energy()
+void IDMRPT2::compute_mrpt2_energy(Updater* updater)
 {
   read_mrpt2_integrals();
   generate_denominators();
@@ -79,10 +77,10 @@ void IDMRPT2::compute_mrpt2_energy()
   int  cycle     = 0;
   while(!converged){
     // Iterate the amps equation
-    zero_internal_amps();
+    updater->zero_internal_amps();
     build_amplitudes();
-    update_amps_mkpt2();
-    zero_internal_amps();
+    update_amps_mkpt2(updater);
+    updater->zero_internal_amps();
     synchronize_amps();
 
     // Compute the effective Hamiltonian
@@ -277,7 +275,7 @@ void IDMRPT2::build_amplitudes()
   build_t2_IJAB_amplitudes();
 }
 
-void IDMRPT2::update_amps_mkpt2()
+void IDMRPT2::update_amps_mkpt2(Updater* updater)
 {
   for(int i=0;i<moinfo->get_nunique();i++){
     int unique_i = moinfo->get_ref_number(i,UniqueRefs);
@@ -302,7 +300,7 @@ void IDMRPT2::update_amps_mkpt2()
     // Update t1 for reference i
     blas->solve("t1[o][v]{" + i_str + "} = t1_eqns[o][v]{" + i_str + "} / d'1[o][v]{" + i_str + "}");
     blas->solve("t1[O][V]{" + i_str + "} = t1_eqns[O][V]{" + i_str + "} / d'1[O][V]{" + i_str + "}");
-    zero_internal_amps();
+    updater->zero_internal_amps();
 
     // Add the contribution from the other references
     for(int j=0;j<moinfo->get_nrefs();j++){

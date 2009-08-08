@@ -204,9 +204,9 @@ void MRCCSD_T::compute_ooo_triples()
   } // End loop over ijk
 
   for(int mu = 0; mu < nrefs; ++mu){
-//    fprintf(outfile,"\n  E_T[4]  (aaa) = %20.15lf (%d)",E4T_ooo[mu],mu);
-//    fprintf(outfile,"\n  E_ST[4] (aaa) = %20.15lf (%d)",E4ST_ooo[mu],mu);
-//    fprintf(outfile,"\n  E_DT[4] (aaa) = %20.15lf (%d)",E4DT_ooo[mu],mu);
+    fprintf(outfile,"\n  E_T[4]  (aaa) = %20.15lf (%d)",E4T_ooo[mu],mu);
+    fprintf(outfile,"\n  E_ST[4] (aaa) = %20.15lf (%d)",E4ST_ooo[mu],mu);
+    fprintf(outfile,"\n  E_DT[4] (aaa) = %20.15lf (%d)",E4DT_ooo[mu],mu);
     E4_ooo[mu] = E4T_ooo[mu] + E4ST_ooo[mu] + E4DT_ooo[mu];
   }
 }
@@ -331,9 +331,9 @@ void MRCCSD_T::compute_OOO_triples()
   }
 
   for(int mu = 0; mu < nrefs; ++mu){
-//    fprintf(outfile,"\n  E_T[4]  (bbb) = %20.15lf (%d)",E4T_OOO[mu],mu);
-//    fprintf(outfile,"\n  E_ST[4] (bbb) = %20.15lf (%d)",E4ST_OOO[mu],mu);
-//    fprintf(outfile,"\n  E_DT[4] (bbb) = %20.15lf (%d)",E4DT_OOO[mu],mu);
+    fprintf(outfile,"\n  E_T[4]  (bbb) = %20.15lf (%d)",E4T_OOO[mu],mu);
+    fprintf(outfile,"\n  E_ST[4] (bbb) = %20.15lf (%d)",E4ST_OOO[mu],mu);
+    fprintf(outfile,"\n  E_DT[4] (bbb) = %20.15lf (%d)",E4DT_OOO[mu],mu);
     E4_OOO[mu] = E4T_OOO[mu] + E4ST_OOO[mu] + E4DT_OOO[mu];
   }
 }
@@ -640,9 +640,9 @@ void MRCCSD_T::compute_oOO_triples()
   }
 
   for(int mu = 0; mu < nrefs; ++mu){
-//    fprintf(outfile,"\n  E_T[4]  (abb) = %20.15lf (%d)",E4T_oOO[mu],mu);
-//    fprintf(outfile,"\n  E_ST[4] (abb) = %20.15lf (%d)",E4ST_oOO[mu],mu);
-//    fprintf(outfile,"\n  E_DT[4] (abb) = %20.15lf (%d)",E4DT_oOO[mu],mu);
+    fprintf(outfile,"\n  E_T[4]  (abb) = %20.15lf (%d)",E4T_oOO[mu],mu);
+    fprintf(outfile,"\n  E_ST[4] (abb) = %20.15lf (%d)",E4ST_oOO[mu],mu);
+    fprintf(outfile,"\n  E_DT[4] (abb) = %20.15lf (%d)",E4DT_oOO[mu],mu);
     E4_oOO[mu] = E4T_oOO[mu] + E4ST_oOO[mu] + E4DT_oOO[mu];
   }
 }

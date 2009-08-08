@@ -6,7 +6,7 @@
 
 namespace psi{ namespace psimrcc{
 
-class IndexMatrix;
+class Updater;
 
 class CCMRCC : public CCManyBody
 {
@@ -16,11 +16,7 @@ public:
   virtual ~CCMRCC();
 
   // CCSD
-  void compute_mkccsd_energy();
-  void compute_mkccsd_residual_energy();
-  void compute_bwccsd_energy();
-  void compute_apbwccsd_energy();
-  void compute_ccsd_energy();
+  void compute_energy(Updater* updater);
 
   // CCSD(T)
   void compute_perturbative_triples();
@@ -33,21 +29,16 @@ private:
   bool ap_correction;
 
   void add_matrices();
-  void compute_energy(void(*updater)());
 
   // These are used to call member functions
 
   Hamiltonian h_eff;
 
-  static CCMRCC* ptr;
-  static void update_amps_ccsd_wrapper();
-  static void update_amps_mkccsd_wrapper();
-  static void update_amps_bwccsd_wrapper();
-
   void diis(int cycle);
   void diis_save_t_amps();
 
   void synchronize_amps();
+  void compute_delta_amps();
   void add_ccsd_matrices();
 
   void build_tau_intermediates();

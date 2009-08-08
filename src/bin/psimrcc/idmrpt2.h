@@ -11,6 +11,8 @@
 
 namespace psi{ namespace psimrcc{
 
+class Updater;
+
 /**
 	@author Francesco Evangelista <frank@ccc.uga.edu>
 */
@@ -19,11 +21,11 @@ class IDMRPT2 : public CCManyBody
 public:
   IDMRPT2();
   virtual ~IDMRPT2();
-  void compute_mrpt2_energy();
+  void compute_mrpt2_energy(Updater* updater);
 private:
   void add_matrices();
   void read_mrpt2_integrals();
-  void update_amps_mkpt2();
+  void update_amps_mkpt2(Updater* updater);
   void synchronize_amps();
   void build_amplitudes();
   void build_t1_ia_amplitudes();

@@ -63,28 +63,35 @@ void Hamiltonian::print()
 void Hamiltonian::set_matrix(double** M,int ndets_)
 {
   ndets = ndets_;
+
+  matrix.clear();
   for(int mu = 0; mu < ndets; ++mu){
-    std::vector<double> row;
-    for(int nu = 0; nu < ndets; ++nu){
-      row.push_back(M[mu][nu]);
-    }
+    std::vector<double> row(ndets,0.0);
     matrix.push_back(row);
+  }
+
+  for(int mu = 0; mu < ndets; ++mu){
+    for(int nu = 0; nu < ndets; ++nu){
+      matrix[mu][nu] = M[mu][nu];
+    }
   }
 }
 
 void Hamiltonian::set_left_eigenvector(double* v,int ndets_)
 {
   ndets = ndets_;
+  left_eigenvector.assign(ndets,0.0);
   for(int mu = 0; mu < ndets; ++mu){
-    left_eigenvector.push_back(v[mu]);
+    left_eigenvector[mu] = v[mu];
   }
 }
 
 void Hamiltonian::set_right_eigenvector(double* v,int ndets_)
 {
   ndets = ndets_;
+  right_eigenvector.assign(ndets,0.0);
   for(int mu = 0; mu < ndets; ++mu){
-    right_eigenvector.push_back(v[mu]);
+    right_eigenvector[mu] = v[mu];
   }
 }
 

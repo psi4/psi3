@@ -20,12 +20,13 @@ void CCMRCC::compute_perturbative_triples()
 {
   Timer timer;
   fprintf(outfile,"\n\n\n  Computing (T) correction");
+  fflush(outfile);
+  
   h_eff.set_eigenvalue(current_energy);
   h_eff.set_matrix(Heff,moinfo->get_nrefs());
   h_eff.set_right_eigenvector(right_eigenvector,moinfo->get_nrefs());
   h_eff.set_left_eigenvector(left_eigenvector,moinfo->get_nrefs());
-  fflush(outfile);
-  
+
   MRCCSD_T mrccsd_t(&h_eff);
 
   current_energy = h_eff.expectation_value();

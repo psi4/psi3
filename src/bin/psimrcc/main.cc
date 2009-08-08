@@ -108,6 +108,7 @@ void read_calculation_options()
   options_add_int("DENOMINATOR_SHIFT",0);
   options_add_int("START_DIIS",2);
   options_add_int("TIKHONOW_OMEGA",0);  // Omega = TIKHONOW_OMEGA / 1000
+  options_add_int("TIKHONOW_MAX",5);
 
   options_add_bool("DIIS_TRIPLES",false);
   options_add_bool("LOCK_SINGLET",false);
@@ -121,6 +122,7 @@ void read_calculation_options()
   options_add_bool("PRINT_HEFF",false);
   options_add_bool("PERT_CBS",false);
   options_add_bool("PERT_CBS_COUPLING",true);
+  options_add_bool("RESTRICTED_TRIPLES",true);
 
   options_add_str_with_choices("PT_ENERGY","SECOND_ORDER","SECOND_ORDER SCS_SECOND_ORDER PSEUDO_SECOND_ORDER SCS_PSEUDO_SECOND_ORDER");
   options_add_str_with_choices("CORR_WFN","CCSD","PT2 CCSD MP2-CCSD CCSD_T");
