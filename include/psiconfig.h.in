@@ -8,5 +8,41 @@
 /* Which integrals standard is used? */
 #undef PSI_INTEGRALS_STANDARD
 
+/* C++ header for math.h */
+#undef HAVE_CMATH
+
+/* C++ header for stdio.h */
+#undef HAVE_CSTDIO
+
+/* C++ header for stdlib.h */
+#undef HAVE_CSTDLIB
+
+/* C++ header for string.h */
+#undef HAVE_CSTRING
+
+/* C++ header for stddef.h */
+#undef HAVE_CSTDDEF
+
+/* Compile Ruby dependent modules? */
+#undef HAVE_RUBY
+
+/* Have putenv declaration */
+#undef HAVE_DECL_PUTENV
+
+/* Have putenv */
+#undef HAVE_PUTENV
+
+/* Have setenv declaration */
+#undef HAVE_DECL_SETENV
+
+/* Have setenv */
+#undef HAVE_SETENV
+
+/* Have function isinf() */
+#undef HAVE_FUNC_ISINF
+
+/* Have function finite() */
+#undef HAVE_FUNC_FINITE
+
 #endif /* _psi_src_psiconfig_h */
 

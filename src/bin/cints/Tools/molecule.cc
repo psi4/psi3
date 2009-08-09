@@ -2,6 +2,8 @@
     \ingroup CINTS
     \brief Enter brief description of file here
 */
+
+#include <psiconfig.h>
 #include<cstdio>
 #include<cmath>
 #include<cstdlib>

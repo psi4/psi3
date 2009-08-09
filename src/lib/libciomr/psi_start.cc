@@ -4,6 +4,7 @@
 ** \ingroup CIOMR
 */
 
+#include <psiconfig.h>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>

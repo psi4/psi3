@@ -15,6 +15,7 @@
  * July 2002
  */
 
+#include <psiconfig.h>
 #include <cstdio>
 #include <cstdlib>
 #include <unistd.h>

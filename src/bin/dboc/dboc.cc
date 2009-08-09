@@ -6,6 +6,7 @@
       Born-Oppenheimer Correction
 */
 
+#include <psiconfig.h>
 #include <stdexcept>
 #include <cstdio>
 #include <cstdlib>

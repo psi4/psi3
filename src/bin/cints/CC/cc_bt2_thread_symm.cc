@@ -2,6 +2,9 @@
     \ingroup CINTS
     \brief Enter brief description of file here 
 */
+
+#include <psiconfig.h>
+
 #if HAVE_CMATH
 # include <cmath>
 #else

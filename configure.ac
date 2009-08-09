@@ -490,15 +490,20 @@ LIBS=$SAVE_LIBS
 AC_CHECK_HEADERS([errno.h fcntl.h unistd.h stdint.h sys/types.h sys/times.h sys/param.h])
 # check for C++ headers
 AC_CXX_PROCESS_CHECK([cmath],[#include <cmath>],,[HAVE_CMATH=1],[HAVE_CMATH=0]) 
-CXXDEF="$CXXDEF -DHAVE_CMATH=$HAVE_CMATH"
+#CXXDEF="$CXXDEF -DHAVE_CMATH=$HAVE_CMATH"
+AC_DEFINE_UNQUOTED(HAVE_CMATH,$HAVE_CMATH)
 AC_CXX_PROCESS_CHECK([cstdio],[#include <cstdio>],,[HAVE_CSTDIO=1],[HAVE_CSTDIO=0]) 
-CXXDEF="$CXXDEF -DHAVE_CSTDIO=$HAVE_CSTDIO"
+#CXXDEF="$CXXDEF -DHAVE_CSTDIO=$HAVE_CSTDIO"
+AC_DEFINE_UNQUOTED(HAVE_CSTDIO,$HAVE_CSTDIO)
 AC_CXX_PROCESS_CHECK([cstdlib],[#include <cstdlib>],,[HAVE_CSTDLIB=1],[HAVE_CSTDLIB=0]) 
-CXXDEF="$CXXDEF -DHAVE_CSTDLIB=$HAVE_CSTDLIB"
+#CXXDEF="$CXXDEF -DHAVE_CSTDLIB=$HAVE_CSTDLIB"
+AC_DEFINE_UNQUOTED(HAVE_CSTDLIB,$HAVE_CSTDLIB)
 AC_CXX_PROCESS_CHECK([cstring],[#include <cstring>],,[HAVE_CSTRING=1],[HAVE_CSTRING=0]) 
-CXXDEF="$CXXDEF -DHAVE_CSTRING=$HAVE_CSTRING"
+#CXXDEF="$CXXDEF -DHAVE_CSTRING=$HAVE_CSTRING"
+AC_DEFINE_UNQUOTED(HAVE_CSTRING,$HAVE_CSTRING)
 AC_CXX_PROCESS_CHECK([cstddef],[#include <cstddef>],,[HAVE_CSTDDEF=1],[HAVE_CSTDDEF=0]) 
-CXXDEF="$CXXDEF -DHAVE_CSTDDEF=$HAVE_CSTDDEF"
+#CXXDEF="$CXXDEF -DHAVE_CSTDDEF=$HAVE_CSTDDEF"
+AC_DEFINE_UNQUOTED(HAVE_CSTDDEF,$HAVE_CSTDDEF)
 
 ####################
 #  Check for Ruby  #
@@ -579,6 +584,7 @@ esac
 AC_SUBST(RUBYLIB)
 AC_SUBST(RUBYINC)
 AC_SUBST(HAVE_RUBY)
+AC_DEFINE_UNQUOTED(HAVE_RUBY,$HAVE_RUBY)
 AC_SUBST(RUBYLDFLAGS)
 ########
 ## Check for compiler characteristics
@@ -616,29 +622,40 @@ AC_SUBST(CCDEPENDFLAGS)
 AC_SUBST(CXXDEPENDFLAGS)
 
 AC_CHECK_DECLS([putenv],[extradef="-DHAVE_DECL_PUTENV=1"])
-CDEF="$CDEF $extradef"
-CXXDEF="$CXXDEF $extradef"
+#CDEF="$CDEF $extradef"
+#CXXDEF="$CXXDEF $extradef"
+AC_DEFINE_UNQUOTED(HAVE_DECL_PUTENV,1)
+
 AC_CHECK_FUNC(putenv,[extradef="-DHAVE_PUTENV=1"])
-CDEF="$CDEF $extradef"
-CXXDEF="$CXXDEF $extradef"
+#CDEF="$CDEF $extradef"
+#CXXDEF="$CXXDEF $extradef"
+AC_DEFINE_UNQUOTED(HAVE_PUTENV,1)
 
 AC_CHECK_DECLS([setenv],[extradef="-DHAVE_DECL_SETENV=1"])
-CDEF="$CDEF $extradef"
-CXXDEF="$CXXDEF $extradef"
-AC_CHECK_FUNC(setenv,[extradef="-DHAVE_SETENV=1"])
-CDEF="$CDEF $extradef"
-CXXDEF="$CXXDEF $extradef"
+#CDEF="$CDEF $extradef"
+#CXXDEF="$CXXDEF $extradef"
+AC_DEFINE_UNQUOTED(HAVE_DECL_SETENV,1)
 
-AC_CHECK_LIB(m,isinf,[extradef="-DHAVE_FUNC_ISINF=1"],[extradef=""])
-if test X$extradef = X; then
-  AC_CHECK_LIB(m,finite,[extradef="-DHAVE_FUNC_FINITE=1"],[extradef=""])
-fi
-if test X$extradef = X; then
-  AC_MSG_ERROR([Did not find isinf() or finite() functions.])
-else
-  CDEF="$CDEF $extradef"
-  CXXDEF="$CXXDEF $extradef"
-fi
+AC_CHECK_FUNC(setenv,[extradef="-DHAVE_SETENV=1"])
+#CDEF="$CDEF $extradef"
+#CXXDEF="$CXXDEF $extradef"
+AC_DEFINE_UNQUOTED(HAVE_SETENV,1)
+
+#AC_CHECK_LIB(m,isinf,[extradef="-DHAVE_FUNC_ISINF=1"],[extradef=""])
+AC_CHECK_LIB(m,isinf,[AC_DEFINE_UNQUOTED(HAVE_FUNC_ISINF,1)],[
+  AC_CHECK_LIB(m,finite,[AC_DEFINE_UNQUOTED(HAVE_FUNC_FINITE,1)],[
+    AC_MSG_ERROR([Did not find isinf() or finite() functions.])
+  ])
+])
+#if test X$extradef = X; then
+#  AC_CHECK_LIB(m,finite,[AC_DEFINE_UNQUOTED(HAVE_FUNC_FINITE,1)],[extradef=""])
+#fi
+#if test X$extradef = X; then
+#  AC_MSG_ERROR([Did not find isinf() or finite() functions.])
+#else
+  #CDEF="$CDEF $extradef"
+  #CXXDEF="$CXXDEF $extradef"
+#fi
 
 
 dnl ------------------- Determine Compiler Flags --------------------
