@@ -16,8 +16,8 @@ LHX2Y2.cc      cc2_sort_X.cc      lambda_residuals.cc  sort_lamps.cc \
 X1.cc          ccresponse.cc      linresp.cc           sort_pert.cc \
 X2.cc          compute_X.cc       local.cc             transpert.cc \
 amp_write.cc   converged.cc       optrot.cc            update_X.cc \
-cache.cc       denom.cc           pertbar.cc           roa.cc \
-cc2_LHX1Y1.cc  diis.cc            polar.cc
+cache.cc       denom.cc           pertbar.cc           analyze.cc \
+cc2_LHX1Y1.cc  diis.cc            polar.cc             roa.cc \
 
 BINOBJ = $(CXXSRC:%.cc=%.o)
 

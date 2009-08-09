@@ -127,7 +127,7 @@ void invert_RPA_RHF(void)
 
   fprintf(outfile, "\n\tHartree-Fock Electric Polarizability Tensor  [(e^2 a0^2)/E_h]:\n");
   fprintf(outfile, "\t---------------------------------------------------------------\n");
-  print_mat(alpha, 3, 3, outfile);
+  mat_print(alpha, 3, 3, outfile);
   free_block(alpha);
 
   dpd_buf4_close(&A);

@@ -3,16 +3,23 @@
     \brief Enter brief description of file here 
 */
 #include <cstdio>
+#include <cstdlib>
 #include <cmath>
 #include <libdpd/dpd.h>
 #include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
+#include "Params.h"
+#include "MOInfo.h"
+#include "Local.h"
+#define EXTERN
 #include "globals.h"
+
+namespace psi { namespace ccresponse {
 
 double **Build_R(void);
 double **Build_U(void);
 
-void analyze(char *pert, int irrep, double omega)
+void analyze(const char *pert, int irrep, double omega)
 {
   int nirreps, h, i, j, a, b, ij, ab, u, v;
   int position, num_div, tot1, tot2, nvir, nso, nocc;
@@ -66,7 +73,7 @@ void analyze(char *pert, int irrep, double omega)
 	tot1++;
       }
       else if ((value < max) && (value > min)) {
-	position = floor((value-min)/width);
+	position = (int) floor((value-min)/width);
 	amp_array[position]++;
 	tot1++;
       }
@@ -125,7 +132,7 @@ void analyze(char *pert, int irrep, double omega)
 	tot1++;
       }
       else if ((value < max) && (value > min)) {
-	position = floor((value-min)/width);
+	position = (int) floor((value-min)/width);
 	amp_array[position]++;
 	tot1++;
       }
@@ -148,3 +155,4 @@ void analyze(char *pert, int irrep, double omega)
 
 }
 
+}} // namespace psi::ccresponse

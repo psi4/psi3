@@ -34,6 +34,8 @@ void cleanup(void);
 void exit_io(void);
 void amp_write(const char *pert, int irrep, double omega);
 
+void analyze(const char *pert, int irrep, double omega);
+
 void compute_X(const char *pert, int irrep, double omega)
 {
   int i, iter=0, done=0;
@@ -124,6 +126,8 @@ void compute_X(const char *pert, int irrep, double omega)
     psio_close(i,0);
     psio_open(i,0);
   }
+
+  if(params.analyze) analyze(pert, irrep, omega);
 
   /*  print_X(pert, irrep, omega); */
 
