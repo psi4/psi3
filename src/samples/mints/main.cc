@@ -49,33 +49,33 @@ int main (int argc, char * argv[])
     // ioff, fac, df, bc
     Wavefunction::initialize_singletons();
     
-    Ref<PSIO> psio(new PSIO);
-    psiopp_ipv1_config(psio.pointer());
-    Ref<Chkpt> chkpt(new Chkpt(psio.pointer(), PSIO_OPEN_OLD));
+    PSIO psio;
+    psiopp_ipv1_config(&psio);
+    Chkpt chkpt(&psio, PSIO_OPEN_OLD);
     
     // Create a new matrix factory
-    Ref<MatrixFactory> factory(new MatrixFactory);
+    MatrixFactory factory;
     
     // Initialize the factory with data from checkpoint file.
-    factory->init_with_chkpt(chkpt);
+    factory.init_with_chkpt(&chkpt);
     
     // Initialize the psi3 timer library.
     timer_init();
 
     // Needed in the examples.
-    int nso = chkpt->rd_nso();
+    int nso = chkpt.rd_nso();
 
     // Some simple examples for programming meeting.
     //  1. Creating and loading overlap integral matrix from a psi file.
     #if 0
     {
-        RefMatrix overlap = factory->create_matrix(PSIF_SO_S);
+        Matrix *overlap = factory.create_matrix(PSIF_SO_S);
 
-        // A RefMatrix knows how to read itself in from a psi file.
-        overlap.load(psio, PSIF_OEI, NULL, nso);
+        // A Matrix* knows how to read itself in from a psi file.
+        overlap->load(&psio, PSIF_OEI, NULL, nso);
 
         // Print it out
-        overlap.print();
+        overlap->print();
 
         // Going out of scope releases all memory.
     }
@@ -84,24 +84,26 @@ int main (int argc, char * argv[])
     //  2. Diagonalizing overlap matrix.
     #if 0
     {
-        RefMatrix overlap = factory->create_matrix(PSIF_SO_S);
+        Matrix *overlap = factory.create_matrix(PSIF_SO_S);
     
-        // A RefMatrix knows how to read itself in from a psi file.
-        overlap.load(psio, PSIF_OEI, NULL, nso);
+        // A Matrix* knows how to read itself in from a psi file.
+        overlap->load(psio, PSIF_OEI, NULL, nso);
     
         // Print it out
-        overlap.print();
+        overlap->print();
     
         // Diagonalize the overlap matrix, first we need storage for eigen-vectors and -values.
-        RefMatrix eigenvectors = factory->create_matrix("Eigenvectors");
-        RefVector eigenvalues  = factory->create_vector();
+        Matrix* eigenvectors = factory.create_matrix("Eigenvectors");
+        Vector* eigenvalues  = factory.create_vector();
     
-        overlap.diagonalize(eigenvectors, eigenvalues);
+        overlap->diagonalize(eigenvectors, eigenvalues);
     
         // Print out the information.
-        eigenvectors.eivprint(eigenvalues);
+        eigenvectors->eivprint(eigenvalues);
 
-        // Going out of scope releases all memory.
+        delete overlap;
+        delete eigenvectors;
+        delete eigenvalues;
     }
     #endif
     
@@ -109,20 +111,22 @@ int main (int argc, char * argv[])
     #if 0
     {
         // Load in kinetic and potential integrals to form one-electron Hamiltonian.
-        RefMatrix kinetic = factory->create_matrix(PSIF_SO_T);
-        RefMatrix potential = factory->create_matrix(PSIF_SO_V);
+        Matrix* kinetic = factory.create_matrix(PSIF_SO_T);
+        Matrix* potential = factory.create_matrix(PSIF_SO_V);
     
-        kinetic.load(psio, PSIF_OEI, NULL, nso);
-        potential.load(psio, PSIF_OEI, NULL, nso);
+        kinetic->load(psio, PSIF_OEI, NULL, nso);
+        potential->load(psio, PSIF_OEI, NULL, nso);
     
         // Form one-electron Hamiltonian
-        RefMatrix H = factory->create_matrix("One-electron Hamiltonian");
-        H.copy(kinetic + potential);
+        Matrix* H = factory.create_matrix("One-electron Hamiltonian");
+        H->copy(kinetic + potential);
     
         // Print out the matrix
-        H.print();
-    
-        // Going out of scope releases all memory.
+        H->print();
+
+        delete kinetic;
+        delete potential;
+        delete H;
     }
     #endif
 
@@ -130,21 +134,21 @@ int main (int argc, char * argv[])
     #if 0
     {
         // Create a basis set object and have it initialize itself using the checkpoint file
-        Ref<BasisSet> basis(new BasisSet(chkpt));
+        BasisSet* basis = new BasisSet(&chkpt);
         
         // Create a basis set object and have it initialize itself using checkpoint and GENBAS file
-        Ref<BasisSet> genbas(new BasisSet(chkpt, "GENBAS", "6-31G"));
+        BasisSet* genbas = new BasisSet(&chkpt, "GENBAS", "6-31G");
 
         // Create a basis set object to be used with 3 center integrals
-        Ref<BasisSet> zero(BasisSet::zero_basis_set());
+        BasisSet* zero = BasisSet::zero_basis_set();
         
         // Since we're using a mixed basis we need a special matrix factory.
         int *row = new int[1], *col = new int[1];
         row[0] = genbas->nbf(); col[0] = genbas->nbf();
         
         // Create matrix factory to be used with genbas
-        Ref<MatrixFactory> genbas_factory(new MatrixFactory);
-        genbas_factory->init_with(1, row, col);
+        MatrixFactory genbas_factory;
+        genbas_factory.init_with(1, row, col);
         
         char *label = chkpt->rd_label();
         fprintf(outfile, "\nLabel: %s\n\n", label);
@@ -165,17 +169,17 @@ int main (int argc, char * argv[])
         //  1st: Creates integral objects that use basis set read in from chkpt
         //  2nd: Creates integral objects that use GENBAS file. (Make sure GENBAS is in your run folder).
         //  3rd: Creates mixed integral objects that use both chkpt and genbas basis sets.
-        Ref<IntegralFactory> psi_integral(new IntegralFactory(basis, basis, basis, basis));
-        Ref<IntegralFactory> genbas_integral(new IntegralFactory(genbas, genbas, genbas, genbas));
-        Ref<IntegralFactory> mixed_integral(new IntegralFactory(basis, genbas, basis, basis));
+        IntegralFactory* psi_integral = new IntegralFactory(basis, basis, basis, basis);
+        IntegralFactory* genbas_integral = new IntegralFactory(genbas, genbas, genbas, genbas);
+        IntegralFactory* mixed_integral = new IntegralFactory(basis, genbas, basis, basis);
         
         // Create two overlap integral objects
-        Ref<OneBodyInt> psi_s = psi_integral->overlap();
-        Ref<OneBodyInt> genbas_s = genbas_integral->overlap();
+        OneBodyInt* psi_s = psi_integral->overlap();
+        OneBodyInt* genbas_s = genbas_integral->overlap();
         
         // Allocate matrix memory
-        RefMatrix psi_s_mat = factory->create_matrix("PSI Overlap");
-        RefMatrix genbas_s_mat = genbas_factory->create_matrix("GENBAS Overlap");
+        Matrix* psi_s_mat = factory.create_matrix("PSI Overlap");
+        Matrix* genbas_s_mat = genbas_factory.create_matrix("GENBAS Overlap");
         
         // Compute
         psi_s->compute(psi_s_mat);
@@ -186,28 +190,28 @@ int main (int argc, char * argv[])
         genbas_s_mat.print();
             
         // Get mixed integral objects
-        Ref<OneBodyInt> mixed_s = mixed_integral->overlap();
-        Ref<OneBodyInt> mixed_t = mixed_integral->kinetic();
+        OneBodyInt* mixed_s = mixed_integral->overlap();
+        OneBodyInt* mixed_t = mixed_integral->kinetic();
 
         // Create matrix objects by hand
         row[0] = basis->nbf(); col[0] = genbas->nbf();
-        RefMatrix mixed_s_mat(new Matrix("PSI x GENBAS Overlap", 1, row, col));
-        RefMatrix mixed_t_mat(new Matrix("PSI x GENBAS Kinetic", 1, row, col));        
+        Matrix* mixed_s_mat = new Matrix("PSI x GENBAS Overlap", 1, row, col);
+        Matrix* mixed_t_mat = new Matrix("PSI x GENBAS Kinetic", 1, row, col);
         
         // Compute overlap between a mixed basis
         mixed_s->compute(mixed_s_mat);
         mixed_t->compute(mixed_t_mat);
         
         // Print results
-        mixed_s_mat.print();
-        mixed_t_mat.print();
+        mixed_s_mat->print();
+        mixed_t_mat->print();
         fflush(outfile);
         
         // Compute normal ERIs using data from chkpt.
         {
             // Initialize an integral object
-            Ref<IntegralFactory> mint(new IntegralFactory(basis, basis, basis, basis));
-            Ref<TwoBodyInt> eri = mint->eri();
+            IntegralFactory mint(basis, basis, basis, basis);
+            TwoBodyInt* eri = mint->eri();
             
             const double *buffer = eri->buffer();
             
@@ -257,14 +261,16 @@ int main (int argc, char * argv[])
             }
             fclose(ints_out);
             fprintf(outfile, "done.\n"); fflush(outfile);
+
+            delete eri;
         }
 
         // Compute 3 center integrals using basis set from chkpt file.
         // Note any center can be genbas (if you change it make sure you modifiy the for loops!!!!)
         {
             // Initialize an integral object
-            Ref<IntegralFactory> mint(new IntegralFactory(basis, basis, basis, zero));
-            Ref<TwoBodyInt> eri = mint->eri();
+            IntegralFactory mint(basis, basis, basis, zero);
+            TwoBodyInt* eri = mint->eri();
             
             const double *buffer = eri->buffer();
             
@@ -317,9 +323,11 @@ int main (int argc, char * argv[])
             }
             fclose(ints_out);
             fprintf(outfile, "done.\n"); fflush(outfile);
+            delete eri;
         }
 
         delete[] row; delete[] col;
+        delete zero, basis, ribasis; // and many others.
     }
     #endif
     
@@ -327,7 +335,7 @@ int main (int argc, char * argv[])
     #if 0
     {
         // Create a basis set object and have it initialize itself using the checkpoint file
-        Ref<BasisSet> basis(new BasisSet(chkpt));
+        BasisSet* basis(new BasisSet(chkpt));
             
         char *label = chkpt->rd_label();
         fprintf(outfile, "\nLabel: %s\n\n", label);
@@ -338,19 +346,19 @@ int main (int argc, char * argv[])
         int natom = basis->molecule()->natom();
     
         // Initialize an integral object
-        Ref<IntegralFactory> integral(new IntegralFactory(basis, basis, basis, basis));
-        Ref<OneBodyInt> deriv = integral->dipole(1);
+        IntegralFactory* integral(new IntegralFactory(basis, basis, basis, basis));
+        OneBodyInt* deriv = integral->dipole(1);
         
         RefSimpleMatrixArray in = new RefSimpleMatrix[3];
         RefSimpleMatrixArray o1 = new RefSimpleMatrix[3*3*natom];
         
         for (int i=0; i<3; ++i) {
             std::string name = "SO-basis " + to_string(i);
-            in[i] = factory->create_simple_matrix(name);
+            in[i] = factory.create_simple_matrix(name);
         }
         for (int i=0; i<3*3*natom; ++i) {
             std::string name = "SO-basis Derivative " + to_string(i);
-            o1[i] = factory->create_simple_matrix(name);
+            o1[i] = factory.create_simple_matrix(name);
         }
     
         deriv->compute(in);
@@ -368,7 +376,7 @@ int main (int argc, char * argv[])
     #if 0
     {
         // Create a basis set object and have it initialize itself using the checkpoint file
-        Ref<BasisSet> basis(new BasisSet(chkpt));
+        BasisSet* basis(new BasisSet(chkpt));
         // Ref<Symmetry> symmetry(new Symmetry(chkpt));
         
         char *label = chkpt->rd_label();
@@ -395,10 +403,10 @@ int main (int argc, char * argv[])
         basis->molecule()->print();
     
         // Initialize an integral object
-        Ref<IntegralFactory> integral(new IntegralFactory(basis, basis, basis, basis));
+        IntegralFactory* integral(new IntegralFactory(basis, basis, basis, basis));
         Ref<TwoBodyInt> eri = integral->eri();
 
-        RefMatrix C = factory->create_matrix("MO coefficients");
+        Matrix* C = factory.create_matrix("MO coefficients");
                 
         // Compute MP2 in C1 symmetry
         double **vectors = chkpt->rd_scf();
@@ -531,7 +539,7 @@ int main (int argc, char * argv[])
     // #if 0
     {
         // Create a basis set object and have it initialize itself using the checkpoint file
-        Ref<BasisSet> basis(new BasisSet(chkpt));
+        BasisSet basis(&chkpt);
 
         char *label = chkpt->rd_label();
         fprintf(outfile, "Label from file32: %s\n\n", label);
@@ -547,13 +555,13 @@ int main (int argc, char * argv[])
         }
 
         // Print the molecule
-        basis->molecule()->print();
+        basis.molecule()->print();
         int natom = basis->molecule()->natom();
         //basis->print();
 
         // Initialize an integral object
-        Ref<IntegralFactory> integral(new IntegralFactory(basis, basis, basis, basis));
-        Ref<TwoBodyInt> eri = integral->eri();
+        IntegralFactory* integral = new IntegralFactory(&basis, &basis, &basis, &basis);
+        TwoBodyInt* eri = integral->eri();
 
         const double *buffer = eri->buffer();
 
@@ -561,7 +569,7 @@ int main (int argc, char * argv[])
         
         fprintf(outfile, "  Computing integrals..."); fflush(outfile);
 
-        int nshell = basis->nshell();
+        int nshell = basis.nshell();
         FILE *ints_out = fopen("mints.integrals", "w");
         int P, Q, R, S;
         int op, oq, oor, os;
@@ -596,6 +604,9 @@ int main (int argc, char * argv[])
         fclose(ints_out);
         fprintf(outfile, "done.\n"); fflush(outfile);
         fprintf(outfile, "  Computed %d two-electron integrals.\n", count); fflush(outfile);
+
+        delete eri;
+        delete integral;
     }
     // #endif
     
@@ -603,7 +614,7 @@ int main (int argc, char * argv[])
     #if 0
     {
         // Create a basis set object and have it initialize itself using the checkpoint file
-        Ref<BasisSet> basis(new BasisSet(chkpt));
+        BasisSet* basis(new BasisSet(chkpt));
 
         char *label = chkpt->rd_label();
         fprintf(outfile, "Label from file32: %s\n\n", label);
@@ -624,7 +635,7 @@ int main (int argc, char * argv[])
         //basis->print();
 
         // Initialize an integral object
-        Ref<IntegralFactory> integral(new IntegralFactory(basis, basis, basis, basis));
+        IntegralFactory* integral(new IntegralFactory(basis, basis, basis, basis));
         Ref<TwoBodyInt> eri = integral->eri(1);
 
         const double *buffer = eri->buffer();
