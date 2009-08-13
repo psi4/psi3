@@ -49,7 +49,7 @@ double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &c
   // Current point has already been put in PSIF_OPTKING by opt_step()
   n_previous = optinfo.iteration+1;
 
-  if (optinfo.H_update == OPTInfo::NONE || n_previous < 2 )
+  if (optinfo.H_update == OPTInfo::NONE || n_previous < 2 || optinfo.balked_last_time)
     fprintf(outfile,"\nNo Hessian update performed.\n");
   else
     H_update(H, simples, symm, carts);

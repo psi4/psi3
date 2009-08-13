@@ -124,6 +124,7 @@ namespace psi {
       double hf_exch;                    /* Fraction of exact HF exchange in the Fock matrix */
       int  make_dft;                     /* Use DFT? */
       int print_lvl;                     /* Print level */
+      int print_aobasis;                 /* print AO basis for all atoms - for WebMO */
       long int max_memory;               /* Maximum amount of memory to use, in double words */
       long int memory;                   /* Amount left available */
       int make_oei;                      /* Flag to compute one-electron integrals */

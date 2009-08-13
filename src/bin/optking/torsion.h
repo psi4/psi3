@@ -258,12 +258,12 @@ class torsion_set {
         }
 
         // extend domain of torsions so delta(values) can be calculated
-        if ((get_near_180(i) == -1) && (angle > 160.0)) {
+        if ((get_near_180(i) == -1) && (angle > FIX_NEAR_180)) {
  //fprintf(outfile,"get_near_180(%d)=%d angle %15.10lf angle %15.10lf\n",
  //    i, get_near_180(i), angle, -180.0 - (180.0 - angle) );
           angle = -180.0 - (180.0 - angle);
         }
-        else if ((get_near_180(i) == +1) && (angle < -160.0)) {
+        else if ((get_near_180(i) == +1) && (angle < -1*FIX_NEAR_180)) {
  //fprintf(outfile,"get_near_180(%d)=%d angle %15.10lf angle %15.10lf\n",
  //    i, get_near_180(i), angle, +180.0 + (180.0 + angle) );
           angle = +180.0 + (180.0 + angle);
@@ -277,10 +277,10 @@ class torsion_set {
     void fix_near_180(void) {
       int i, lin;
       for (i=0;i<num;++i) {
-        if ( get_val(i) > 160.0) {
+        if ( get_val(i) > FIX_NEAR_180) {
           lin = +1;
         }
-        else if ( get_val(i) < -160.0) {
+        else if ( get_val(i) < -1*FIX_NEAR_180) {
           lin = -1;
         }
         else

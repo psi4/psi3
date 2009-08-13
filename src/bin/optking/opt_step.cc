@@ -39,6 +39,7 @@ extern void print_zmat(FILE *outfile, int *unique_zvars);
 extern double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &carts);
 extern void opt_report(FILE *of);
 extern void free_info(int nsimples);
+extern void empirical_H(internals &simples, salc_set &symm, cartesians &carts);
 
 inline double rfo_energy(double rfo_t, double rfo_g, double rfo_h) {
   return (rfo_t * rfo_g + 0.5 * rfo_t * rfo_t * rfo_h)/(1 + rfo_t*rfo_t)/(_hartree2J*1.0e18);
@@ -82,9 +83,10 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   ip_string("WFN", &(wfn),0);
   fprintf(outfile,"\nCurrent %s energy before step   %20.12lf\n", wfn, carts.get_energy());
   free(wfn);
-
+  
   open_PSIF();
-  if (optinfo.iteration > 0) {
+  DE = 1.0e6; // for if iteration == 0
+  if ((optinfo.iteration > 0) && !optinfo.balked_last_time) {
     sprintf(value_string,"Energy %d", optinfo.iteration-1);
     psio_read_entry(PSIF_OPTKING, value_string, (char *) &E_old, sizeof(double));
     fprintf(outfile,"  Previous energy                %20.12lf\n", E_old);
@@ -114,6 +116,13 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     dq = init_array(dim);
     if (!line_search(carts,dim,dq) ) {
       fprintf(outfile,"Unable to successfully complete line search. Balking.\n");
+      // if fc_selected is used, then replace the other fc's with new empirically determined ones
+      if ((optinfo.selected_fc) && (optinfo.nonselected_fc == OPTInfo::EMPIRICAL))
+        empirical_H(simples, symm, carts);
+      open_PSIF();
+      i = 1;
+      psio_write_entry(PSIF_OPTKING, "Balked last time", (char *) &i, sizeof(int));
+      close_PSIF();
       exit_io();
       exit(PSI_RETURN_BALK);
     }
@@ -131,9 +140,15 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     simples.compute_internals(carts.get_natom(), coord);
     simples.compute_s(carts.get_natom(), coord);
     q = compute_q(simples,symm); 
+    free(coord);
   }
   else {
   fprintf(outfile,"\n ** Taking geometry step number %d **\n", optinfo.iteration+1);
+
+  open_PSIF();
+  i=1;
+  psio_write_entry(PSIF_OPTKING,"Consecutive line searches", (char *) &i, sizeof(int));
+  close_PSIF();
 
   // compute forces in internal coordinates, f_q = G_inv B u f
   q = compute_q(simples,symm);
@@ -265,7 +280,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
   printf("Energy: %15.10lf MAX force: %6.2e RMS force: %6.2e\n",carts.get_energy(),max_force, rms_force);
       
-  if (max_force < optinfo.conv) {
+  if ( (fabs(DE) < optinfo.econv) || (max_force < optinfo.conv)) {
     fprintf(outfile, "\n\t       *** Internal Coordinates and Forces *** \n");
     fprintf(outfile, "\t-----------------------------------------------------------\n");
     fprintf(outfile, "\t Coordinate    Value (Ang or Rad)   Force aJ/Ang or aJ/Rad \n");
@@ -273,7 +288,10 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     for (i=0;i<dim;++i)
       fprintf(outfile,"\t %6d %20.8lf %20.8lf \n", i+1,  q[i],  f_q[i] );
     fprintf(outfile, "\t-----------------------------------------------------------\n");
-    fprintf(outfile,"\nMAX force is < %5.1e.  Optimization is complete.\n", optinfo.conv);
+    if (fabs(DE) < optinfo.econv)
+      fprintf(outfile,"\nEnergy change is < %5.1e.  Optimization is complete.\n", optinfo.econv);
+    else
+      fprintf(outfile,"\nMAX force is < %5.1e.  Optimization is complete.\n", optinfo.conv);
     ip_string("WFN", &(wfn),0);
     fprintf(outfile,"\nFinal %s energy is %15.10lf\n", wfn, carts.get_energy());
     free(wfn);
@@ -281,6 +299,8 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     optinfo.iteration += 1; // set for the NEXT step
     open_PSIF();
     psio_write_entry(PSIF_OPTKING, "Iteration", (char *) &(optinfo.iteration),sizeof(int));
+    i = 0;
+    psio_write_entry(PSIF_OPTKING, "Balked last time", (char *) &(i), sizeof(int));
     close_PSIF();
 
     opt_report(outfile);
@@ -545,6 +565,13 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
       if ( (simples.frag.get_A_P(sub_index) != 3) || (simples.frag.get_B_P(sub_index) != 3) )
         continue;
 
+    coord = carts.get_coord();
+    simples.compute_internals(carts.get_natom(),coord);
+    // fix configuration for torsions; sets flag for torsions > FIX_NEAR_180 or < -FIX_NEAR_180 
+    // so that when I calculate residual below, I get the right answer
+    simples.fix_near_180();
+    free(coord);
+
       for (cnt=0, I=0; I<6; ++I) {
         inter_q[I] = 0;
         if ( simples.frag.get_coord_on(sub_index,I) ) {
@@ -557,14 +584,11 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
       dot_arr(inter_q,inter_q,6,&tval); // check if there are any non-zero displacements
       if (fabs(tval) < 1.0e-15) continue;
 
-      for (I=0; I<6; ++I)
+      for (I=0; I<6; ++I) {
         inter_q[I] += simples.frag.get_val_A_or_rad(sub_index,I);
+        //fprintf(outfile,"val[%d]: %15.10lf\n",i,inter_q[I]);
+      }
 
-      // calculate new coordinates
-      //for (cnt=0, I=0; I<6; ++I) {
-        //if ( simples.frag.get_coord_on(sub_index,I) )
-          //inter_q[I] += q[isalc + cnt++];
-      //}
       if (optinfo.frag_dist_rho)
         inter_q[0]  = 1.0 / inter_q[0];
       inter_q[0]  /= _bohr2angstroms;
@@ -622,8 +646,8 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
         simples.compute_internals(carts.get_natom(), coord);
         if ( simples.frag.get_coord_on(sub_index,I) ) {
           dq[isalc + cnt] = simples.frag.get_val_A_or_rad(sub_index,I) - inter_q[I];
-          //fprintf(outfile,"val: %20.15lf\n", simples.frag.get_val_A_or_rad(sub_index,I));
-          //fprintf(outfile,"inter_q[%d]: %20.15lf\n", I, inter_q[I]);
+//fprintf(outfile,"val: %20.15lf\n", simples.frag.get_val_A_or_rad(sub_index,I));
+//fprintf(outfile,"inter_q[%d]: %20.15lf\n", I, inter_q[I]);
           ++cnt;
         }
         free(coord);
@@ -635,6 +659,9 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     // sprintf(disp_label,"\nNew Geometry in au after analytic fragment orientation\n");
     // carts.print(1,outfile,0,disp_label,0);
   } // if analytic_interfragment
+
+//for (i=0; i<dim; ++i)
+//fprintf(outfile, "dq[%d]: %15.10lf\n", i, dq[i]);
 
   // Do displacements with iterative backtransformation
   for (i=0;i<dim;++i)
@@ -700,6 +727,8 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     optinfo.iteration += 1;
     open_PSIF();
     psio_write_entry(PSIF_OPTKING, "Iteration", (char *) &(optinfo.iteration),sizeof(int));
+    i = 0;
+    psio_write_entry(PSIF_OPTKING, "Balked last time", (char *) &(i), sizeof(int));
     close_PSIF();
   }
   delete [] djunk;
@@ -715,6 +744,20 @@ bool line_search(cartesians &carts, int dim, double *dq) {
   double E, E_old, DE, DE_old;
 
   fprintf(outfile,"\tTrying smaller step in same direction from previous geometry.\n");
+
+  int consecutive = 1;
+  open_PSIF();
+  if (psio_tocscan(PSIF_OPTKING,"Consecutive line searches") != NULL)
+    psio_read_entry(PSIF_OPTKING, "Consecutive line searches", (char *) &consecutive, sizeof(int));
+  close_PSIF();
+
+  fprintf(outfile,"\tConsecutive line search %d\n", consecutive);
+
+  if (consecutive > optinfo.max_consecutive_line_searches) {
+    fprintf(outfile,"\tConsecutive line searches(%d) exceeded max_consecutive_line_searches(%d)\n",
+      consecutive, optinfo.max_consecutive_line_searches);
+    return false;
+  }
       
   E = carts.get_energy();
   dim_carts = 3*carts.get_natom();
@@ -747,6 +790,7 @@ bool line_search(cartesians &carts, int dim, double *dq) {
   sprintf(value_string,"Scalar hesian %d", optinfo.iteration-1);
   psio_read_entry(PSIF_OPTKING, value_string, (char *) &h, sizeof(double));
   fprintf(outfile,"\t\tScalar hessian %d : %15.10lf\n", optinfo.iteration-1, h);
+  close_PSIF();
 
   if (optinfo.rfo)
     fprintf(outfile,"\t\tCheck energy      : %20.15lf\n", rfo_energy(xnorm, g, h));
@@ -778,13 +822,21 @@ bool line_search(cartesians &carts, int dim, double *dq) {
   else DE_old = nr_energy(t, g, h);
   fprintf(outfile,"\tNew Projected DE %d: %20.10lf\n", optinfo.iteration-1,DE_old); 
 
-  // if we are searching for a minimum; and projected energy change is positive; give up!
+  // if we are searching for a minimum; line search has failed; and projected energy change
+  //  is positive; give up!
   if (!optinfo.ts && DE_old > 0.0) {
     fprintf(outfile,"\tProjected energy change is positive for minimum seach - giving up!\n");
     return false;
   }
 
+  ++consecutive;
+  open_PSIF();
+    psio_write_entry(PSIF_OPTKING, "Consecutive line searches",
+       (char *) &consecutive, sizeof(int));
+  close_PSIF();
+
   // put last geometry into cartesian object
+  open_PSIF();
   old_x = init_array(dim_carts);
   sprintf(value_string,"Cartesian Values %d", optinfo.iteration-1);
   psio_read_entry(PSIF_OPTKING, value_string, (char *) old_x, dim_carts*sizeof(double));

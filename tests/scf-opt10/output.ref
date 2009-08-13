@@ -1,5 +1,5 @@
 ******************************************************************************
-PSI3 started on mac8319.local at Thu Jul 30 21:30:29 2009
+PSI3 started on mac8319.local at Wed Aug 12 20:08:15 2009
 
     -----------------------------------------------------------------------    
             PSI3: An Open-Source Ab Initio Electronic Structure Package 
@@ -27,7 +27,7 @@ The following programs will be executed:
 
 ******************************************************************************
 INPUT tstart called on mac8319.local
-Thu Jul 30 21:30:29 2009
+Wed Aug 12 20:08:16 2009
 
                                 --------------
                                     INPUT
@@ -214,14 +214,14 @@ Thu Jul 30 21:30:29 2009
 
 ******************************************************************************
 INPUT tstop called on mac8319.local
-Thu Jul 30 21:30:29 2009
+Wed Aug 12 20:08:16 2009
 
 user time   =       0.04 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:29 2009
+Wed Aug 12 20:08:16 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -251,14 +251,14 @@ Thu Jul 30 21:30:29 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:30 2009
+Wed Aug 12 20:08:16 2009
 
-user time   =       0.15 seconds =       0.00 minutes
+user time   =       0.22 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on mac8319.local
-Thu Jul 30 21:30:30 2009
+Wed Aug 12 20:08:16 2009
 
 
              ------------------------------------------
@@ -364,14 +364,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on mac8319.local
-Thu Jul 30 21:30:30 2009
+Wed Aug 12 20:08:16 2009
 
-user time   =       0.03 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:30 2009
+Wed Aug 12 20:08:16 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -412,11 +412,11 @@ Thu Jul 30 21:30:30 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:30 2009
+Wed Aug 12 20:08:17 2009
 
-user time   =       0.58 seconds =       0.01 minutes
+user time   =       0.71 seconds =       0.01 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -522,7 +522,7 @@ Geometry written to chkpt
 
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:30 2009
+Wed Aug 12 20:08:17 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -552,14 +552,14 @@ Thu Jul 30 21:30:30 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:31 2009
+Wed Aug 12 20:08:17 2009
 
-user time   =       0.15 seconds =       0.00 minutes
+user time   =       0.22 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on mac8319.local
-Thu Jul 30 21:30:31 2009
+Wed Aug 12 20:08:17 2009
 
 
              ------------------------------------------
@@ -664,14 +664,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on mac8319.local
-Thu Jul 30 21:30:31 2009
+Wed Aug 12 20:08:17 2009
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:31 2009
+Wed Aug 12 20:08:17 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -712,11 +712,11 @@ Thu Jul 30 21:30:31 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:31 2009
+Wed Aug 12 20:08:18 2009
 
-user time   =       0.58 seconds =       0.01 minutes
+user time   =       0.72 seconds =       0.01 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -812,7 +812,7 @@ Geometry written to chkpt
 
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:32 2009
+Wed Aug 12 20:08:18 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -842,14 +842,14 @@ Thu Jul 30 21:30:32 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:32 2009
+Wed Aug 12 20:08:19 2009
 
-user time   =       0.15 seconds =       0.00 minutes
+user time   =       0.22 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 SCF tstart called on mac8319.local
-Thu Jul 30 21:30:32 2009
+Wed Aug 12 20:08:19 2009
 
 
              ------------------------------------------
@@ -955,14 +955,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on mac8319.local
-Thu Jul 30 21:30:32 2009
+Wed Aug 12 20:08:19 2009
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:32 2009
+Wed Aug 12 20:08:19 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1003,9 +1003,9 @@ Thu Jul 30 21:30:32 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:32 2009
+Wed Aug 12 20:08:19 2009
 
-user time   =       0.58 seconds =       0.01 minutes
+user time   =       0.72 seconds =       0.01 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
@@ -1102,7 +1102,7 @@ Geometry written to chkpt
 
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:33 2009
+Wed Aug 12 20:08:20 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1132,14 +1132,14 @@ Thu Jul 30 21:30:33 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:33 2009
+Wed Aug 12 20:08:20 2009
 
-user time   =       0.15 seconds =       0.00 minutes
+user time   =       0.22 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on mac8319.local
-Thu Jul 30 21:30:33 2009
+Wed Aug 12 20:08:20 2009
 
 
              ------------------------------------------
@@ -1243,14 +1243,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on mac8319.local
-Thu Jul 30 21:30:33 2009
+Wed Aug 12 20:08:20 2009
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:33 2009
+Wed Aug 12 20:08:20 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1291,9 +1291,9 @@ Thu Jul 30 21:30:33 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:34 2009
+Wed Aug 12 20:08:21 2009
 
-user time   =       0.57 seconds =       0.01 minutes
+user time   =       0.71 seconds =       0.01 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
@@ -1390,7 +1390,7 @@ Geometry written to chkpt
 
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:34 2009
+Wed Aug 12 20:08:21 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1420,14 +1420,14 @@ Thu Jul 30 21:30:34 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:34 2009
+Wed Aug 12 20:08:21 2009
 
-user time   =       0.15 seconds =       0.00 minutes
+user time   =       0.22 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on mac8319.local
-Thu Jul 30 21:30:34 2009
+Wed Aug 12 20:08:21 2009
 
 
              ------------------------------------------
@@ -1530,14 +1530,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on mac8319.local
-Thu Jul 30 21:30:34 2009
+Wed Aug 12 20:08:21 2009
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:34 2009
+Wed Aug 12 20:08:21 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1578,9 +1578,9 @@ Thu Jul 30 21:30:34 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:35 2009
+Wed Aug 12 20:08:22 2009
 
-user time   =       0.57 seconds =       0.01 minutes
+user time   =       0.71 seconds =       0.01 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
@@ -1677,7 +1677,7 @@ Geometry written to chkpt
 
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:35 2009
+Wed Aug 12 20:08:22 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1707,14 +1707,14 @@ Thu Jul 30 21:30:35 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:35 2009
+Wed Aug 12 20:08:22 2009
 
-user time   =       0.15 seconds =       0.00 minutes
+user time   =       0.22 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on mac8319.local
-Thu Jul 30 21:30:35 2009
+Wed Aug 12 20:08:23 2009
 
 
              ------------------------------------------
@@ -1815,14 +1815,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on mac8319.local
-Thu Jul 30 21:30:35 2009
+Wed Aug 12 20:08:23 2009
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:35 2009
+Wed Aug 12 20:08:23 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1863,11 +1863,11 @@ Thu Jul 30 21:30:35 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:36 2009
+Wed Aug 12 20:08:23 2009
 
-user time   =       0.57 seconds =       0.01 minutes
+user time   =       0.71 seconds =       0.01 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -1962,7 +1962,7 @@ Geometry written to chkpt
 
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:36 2009
+Wed Aug 12 20:08:24 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1992,14 +1992,14 @@ Thu Jul 30 21:30:36 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:36 2009
+Wed Aug 12 20:08:24 2009
 
-user time   =       0.15 seconds =       0.00 minutes
+user time   =       0.22 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on mac8319.local
-Thu Jul 30 21:30:36 2009
+Wed Aug 12 20:08:24 2009
 
 
              ------------------------------------------
@@ -2098,14 +2098,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on mac8319.local
-Thu Jul 30 21:30:36 2009
+Wed Aug 12 20:08:24 2009
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:36 2009
+Wed Aug 12 20:08:24 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2146,10 +2146,10 @@ Thu Jul 30 21:30:36 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:37 2009
+Wed Aug 12 20:08:25 2009
 
-user time   =       0.57 seconds =       0.01 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.71 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
@@ -2244,7 +2244,7 @@ Geometry written to chkpt
 
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:37 2009
+Wed Aug 12 20:08:25 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2274,14 +2274,14 @@ Thu Jul 30 21:30:37 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:37 2009
+Wed Aug 12 20:08:25 2009
 
-user time   =       0.15 seconds =       0.00 minutes
+user time   =       0.22 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on mac8319.local
-Thu Jul 30 21:30:37 2009
+Wed Aug 12 20:08:25 2009
 
 
              ------------------------------------------
@@ -2380,14 +2380,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on mac8319.local
-Thu Jul 30 21:30:37 2009
+Wed Aug 12 20:08:25 2009
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:37 2009
+Wed Aug 12 20:08:26 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2428,11 +2428,11 @@ Thu Jul 30 21:30:37 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:38 2009
+Wed Aug 12 20:08:26 2009
 
-user time   =       0.57 seconds =       0.01 minutes
+user time   =       0.71 seconds =       0.01 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -2526,7 +2526,7 @@ Geometry written to chkpt
 
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:38 2009
+Wed Aug 12 20:08:26 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2556,14 +2556,14 @@ Thu Jul 30 21:30:38 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:38 2009
+Wed Aug 12 20:08:27 2009
 
-user time   =       0.15 seconds =       0.00 minutes
+user time   =       0.22 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 SCF tstart called on mac8319.local
-Thu Jul 30 21:30:38 2009
+Wed Aug 12 20:08:27 2009
 
 
              ------------------------------------------
@@ -2662,14 +2662,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on mac8319.local
-Thu Jul 30 21:30:38 2009
+Wed Aug 12 20:08:27 2009
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on mac8319.local
-Thu Jul 30 21:30:39 2009
+Wed Aug 12 20:08:27 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2710,11 +2710,11 @@ Thu Jul 30 21:30:39 2009
 
 ******************************************************************************
 cints tstop called on mac8319.local
-Thu Jul 30 21:30:39 2009
+Wed Aug 12 20:08:28 2009
 
-user time   =       0.57 seconds =       0.01 minutes
+user time   =       0.71 seconds =       0.01 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -2766,298 +2766,18 @@ Current SCF energy before step      -151.672436062982
  ** Taking geometry step number 9 **
 
 BuB^t Determinant: 4.701986e-02
-	Symmetric Force Constants found in PSIF_OPTKING
-
-Force Constants read from PSIF_OPTKING
-
-Performing BFGS update with previous 3 gradient(s).
-Projected energy change by quadratic approximation:        -0.0000000000
-
-	Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-	----------------------------------------------------------
-	       Value         Force        Displacement  New Value
-	----------------------------------------------------------
-	  1   -1.82806797    0.00003738    0.00000303   -1.82806494
-	  2   -0.23511166    0.00004451    0.00000391   -0.23510775
-	  3   -1.40757842   -0.00000008   -0.00000020   -1.40757862
-	  4    0.02345383   -0.00000341   -0.00000650    0.02344734
-	----------------------------------------------------------
-
-	   MAX force:    0.0000445104   RMS force:    0.0000291120
-
-	Back-transformation to cartesian coordinates...
-	------------------------------------
-	 Iter  RMS Delta(dx)  RMS Delta(dq)
-	------------------------------------
-	    1      2.3e-06      3.1e-12
-	    2      1.5e-12      1.8e-16
-	------------------------------------
-
-Successfully converged to displaced geometry.
-
-New Cartesian Geometry in a.u.
-  1.0   1.7523137928   0.0000000000  -3.4543161033
-  1.0  -1.7523137928   0.0000000000  -3.4543161033
-  6.0   0.0000000000   0.0000000000  -2.4439287854
-  6.0   0.0000000000   0.0000000000   0.0324750957
-  8.0   0.0000000000   0.0000000000   2.2444719216
-
-Geometry written to chkpt
-
-******** OPTKING execution completed ********
-
-******************************************************************************
-cints tstart called on mac8319.local
-Thu Jul 30 21:30:39 2009
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = DZ RHF Opt Ketene delocalized coords
-    Number of atoms             = 5
-    Number of atomic orbitals   = 34
-    Number of symmetry orbitals = 34
-    Maximum AM in the basis     = 1
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C2v
-    Number of irreps                 = 4
-
-    Wrote 55545 two-electron integrals to IWL file 33
-
-******************************************************************************
-cints tstop called on mac8319.local
-Thu Jul 30 21:30:39 2009
-
-user time   =       0.15 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-SCF tstart called on mac8319.local
-Thu Jul 30 21:30:40 2009
-
-
-             ------------------------------------------
-
-                CSCF3.0: An SCF program written in C
-
-              Written by too many people to mention here
-
-             ------------------------------------------
-
-  I think the multiplicity is 1.
-  If this is wrong, please specify the MULTP keyword
-
-  label        = DZ RHF Opt Ketene delocalized coords
-  wfn          = SCF
-  reference    = RHF
-  multiplicity = 1
-  charge       = 0
-  direct       = false
-  dertype      = FIRST
-  convergence  = 12
-  maxiter      = 100
-  guess        = AUTO
-
-  nuclear repulsion energy       58.4516536576607
-
-  using old vector from file30 as initial guess
-  energy from old vector:  -151.67243606
-
-  level shift                      = 0.100000
-
-  level shifting will stop after 10 cycles
-  diis scale factor                = 1.000000
-  iterations before extrapolation  = 0
-  6 error matrices will be kept
-
-  keeping integrals in 572528 bytes of core
-
-  The lowest eigenvalue of the overlap matrix was 7.037715e-03
-
-
-  Reading Occupations from checkpoint file.
-
-  Symmetry block:   A1    A2    B1    B2   
-  DOCC:              7     0     2     2   
-  SOCC:              0     0     0     0   
-
-  reading integrals in the IWL format from files 33,35,36,37
-  wrote 35292 integrals to file92
-
-  iter       total energy        delta E         delta P          diiser
-    1      -151.6724360630    2.101241e+02    0.000000e+00    0.000000e+00
-    2      -151.6724360630    9.123369e-12    4.793768e-08    1.052885e-06
-    3      -151.6724360630    1.193712e-12    1.315966e-08    3.226431e-07
-    4      -151.6724360630    5.115908e-13    7.015538e-09    1.804043e-07
-    5      -151.6724360630    2.842171e-14    2.675683e-09    4.739036e-08
-    6      -151.6724360630   -8.526513e-14    1.103586e-09    1.581690e-08
-    7      -151.6724360630    8.526513e-14    3.832884e-10    5.696622e-09
-    8      -151.6724360630   -1.989520e-13    6.211894e-11    1.901354e-09
-    9      -151.6724360630    2.842171e-14    4.157867e-11    8.930560e-10
-   10      -151.6724360630    1.421085e-13    2.316269e-11    3.542194e-10
-   11      -151.6724360630   -1.136868e-13    5.102114e-12    1.082439e-10
-   12      -151.6724360630    1.705303e-13    1.711981e-12    5.670704e-11
-   13      -151.6724360630   -1.136868e-13    6.931674e-13    1.305794e-11
-
- Correcting phases of orbitals.
-
-Orbital energies (a.u.):
-
-  Doubly occupied orbitals
-   1A1    -20.642471     2A1    -11.416517     3A1    -11.259304  
-   4A1     -1.499272     5A1     -1.071112     6A1     -0.755632  
-   7A1     -0.685292     1B1     -0.668298     1B2     -0.652982  
-   2B1     -0.560365     2B2     -0.368920  
-
-
-  Unoccupied orbitals
-   3B1      0.116221     3B2      0.190265     8A1      0.271079  
-   9A1      0.278176    10A1      0.334856     4B1      0.407151  
-   4B2      0.435267     5B1      0.489298    11A1      0.537559  
-   6B1      0.545563     5B2      0.560403    12A1      0.749096  
-  13A1      0.802936     6B2      1.005366     7B1      1.073696  
-  14A1      1.147140    15A1      1.294076    16A1      1.386912  
-   8B1      1.526960    17A1      1.877768    18A1     23.651741  
-  19A1     24.019916    20A1     43.357091  
-
-
-      * SCF total energy   =    -151.672436063021
-        kinetic energy     =     151.673501346673
-        nuc. attr. energy  =    -472.761351612668
-        elec. rep. energy  =     169.415414202974
-        potential energy   =    -303.345937409693
-        virial theorem     =       2.000007023581
-        wavefunction norm  =       1.000000000000
-******************************************************************************
-SCF tstop called on mac8319.local
-Thu Jul 30 21:30:40 2009
-
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-cints tstart called on mac8319.local
-Thu Jul 30 21:30:40 2009
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = DZ RHF Opt Ketene delocalized coords
-    Number of atoms             = 5
-    Number of atomic orbitals   = 34
-    Number of symmetry orbitals = 34
-    Maximum AM in the basis     = 1
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C2v
-    Number of irreps                 = 4
-  Rotational invariance condition satisfied.
-  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
-  So long..
-
-
-  -SCF forces in the reference frame (a.u.):
-     Atom            X                  Y                   Z
-    ------   -----------------  -----------------  -----------------
-       1        0.000000062304     0.000000000000    -0.000000136982
-       2       -0.000000062304     0.000000000000    -0.000000136982
-       3        0.000000000000     0.000000000000    -0.000000368175
-       4        0.000000000000     0.000000000000     0.000000562224
-       5        0.000000000000     0.000000000000     0.000000079916
-
-******************************************************************************
-cints tstop called on mac8319.local
-Thu Jul 30 21:30:40 2009
-
-user time   =       0.57 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-
-	------------------------------------------------------
-	    OPTKING: for internal coordinate optimizations    
-	------------------------------------------------------
-
-Cartesian geometry and possibly gradient in a.u. with masses
-  1.0     1.00782503   1.7523137928   0.0000000000  -3.4543161033
-  1.0     1.00782503  -1.7523137928   0.0000000000  -3.4543161033
-  6.0    12.00000000   0.0000000000   0.0000000000  -2.4439287854
-  6.0    12.00000000   0.0000000000   0.0000000000   0.0324750957
-  8.0    15.99491462   0.0000000000   0.0000000000   2.2444719216
-                       0.0000000623   0.0000000000  -0.0000001370
-                      -0.0000000623   0.0000000000  -0.0000001370
-                       0.0000000000   0.0000000000  -0.0000003682
-                       0.0000000000   0.0000000000   0.0000005622
-                       0.0000000000   0.0000000000   0.0000000799
-
-Searching for geometrical constraints...none found.
-
-Simple Internal Coordinates and Values
-Stretches
-    (1 1 3) (1.07038917)
-    (2 2 3) (1.07038917)
-    (3 3 4) (1.31045659)
-    (4 4 5) (1.17053840)
-Bends
-    (5 1 3 2) (120.06434552)
-    (6 1 3 4) (119.96782724)
-    (7 2 3 4) (119.96782724)
- 
- ** Taking normal optimization step. **
-
-  SYMM = (
-    ("A1 " (1 2 3 4 5 6 7)
-     (-0.04 -0.04 -0.69 -0.72  0.02 -0.01 -0.01))
-    ("A1 " (1 2 3 4 5 6 7)
-     (-0.05 -0.05 -0.72  0.69  0.02 -0.01 -0.01))
-    ("A1 " (1 2 3 4 5 6 7)
-     (-0.70 -0.70  0.08 -0.01 -0.04  0.02  0.02))
-    ("A1 " (1 2 3 4 5 6 7)
-     ( 0.04  0.04 -0.04  0.00 -0.81  0.41  0.41))
-  )
-
-Current SCF energy before step      -151.672436063021
-  Previous energy                   -151.672436062982
-  Actual Delta(E) from last step      -0.000000000039
-  Previous Predicted Delta(E)         -0.000000000036  (  9.2% error)
-
- ** Taking geometry step number 10 **
-
-BuB^t Determinant: 4.701990e-02
 
 	       *** Internal Coordinates and Forces *** 
 	-----------------------------------------------------------
 	 Coordinate    Value (Ang or Rad)   Force aJ/Ang or aJ/Rad 
 	-----------------------------------------------------------
-	      1          -1.82806494           0.00000421 
-	      2          -0.23510775           0.00000346 
-	      3          -1.40757862           0.00000096 
-	      4           0.02344734          -0.00000049 
+	      1          -1.82806797           0.00003738 
+	      2          -0.23511166           0.00004451 
+	      3          -1.40757842          -0.00000008 
+	      4           0.02345383          -0.00000341 
 	-----------------------------------------------------------
 
-MAX force is < 1.0e-05.  Optimization is complete.
+Energy change is < 1.0e-08.  Optimization is complete.
 
 Final SCF energy is -151.6724360630
 
@@ -3074,22 +2794,21 @@ Final SCF energy is -151.6724360630
 	   7   -151.672436037443     -0.000000235491    5.18e-04     6.68e-04
 	   8   -151.672436061928     -0.000000024484    1.58e-04     2.43e-04
 	   9   -151.672436062982     -0.000000001054    2.91e-05     4.45e-05
-	  10   -151.672436063021     -0.000000000039    2.78e-06     4.21e-06
 	----------------------------------------------------------------------
 
 The Optimized geometry in a.u.
-  (  H    1.7523137928    0.0000000000   -3.4543161033 )
-  (  H   -1.7523137928    0.0000000000   -3.4543161033 )
-  (  C    0.0000000000    0.0000000000   -2.4439287854 )
-  (  C    0.0000000000    0.0000000000    0.0324750957 )
-  (  O    0.0000000000    0.0000000000    2.2444719216 )
+  (  H    1.7523116725    0.0000000000   -3.4543264970 )
+  (  H   -1.7523116725    0.0000000000   -3.4543264970 )
+  (  C    0.0000000000    0.0000000000   -2.4439340418 )
+  (  C    0.0000000000    0.0000000000    0.0324786427 )
+  (  O    0.0000000000    0.0000000000    2.2444745138 )
 
 The Optimized geometry in Angstrom
-  (  H    0.9272845923    0.0000000000   -1.8279454927 )
-  (  H   -0.9272845923    0.0000000000   -1.8279454927 )
-  (  C    0.0000000000    0.0000000000   -1.2932715114 )
-  (  C    0.0000000000    0.0000000000    0.0171850818 )
-  (  O    0.0000000000    0.0000000000    1.1877234769 )
+  (  H    0.9272834702    0.0000000000   -1.8279509928 )
+  (  H   -0.9272834702    0.0000000000   -1.8279509928 )
+  (  C    0.0000000000    0.0000000000   -1.2932742930 )
+  (  C    0.0000000000    0.0000000000    0.0171869588 )
+  (  O    0.0000000000    0.0000000000    1.1877248487 )
 
 
 ******** OPTKING execution completed ********
@@ -3099,7 +2818,7 @@ The Optimized geometry in Angstrom
                           PSI3 Computation Completed
                           --------------------------
 
-PSI3 stopped on mac8319.local at Thu Jul 30 21:30:40 2009
+PSI3 stopped on mac8319.local at Wed Aug 12 20:08:28 2009
 
-Total PSI3 wall time         11 seconds =       0.18 minutes
+Total PSI3 wall time         13 seconds =       0.22 minutes
 ******************************************************************************

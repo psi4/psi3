@@ -46,6 +46,7 @@ namespace psi { namespace optking {
 #define MIN_DQ_STEP (1.0E-12)
 #define MIN_CART_OUT (1.0E-12)
 #define MIN_LIN_COS (1.0E-10)
+#define FIX_NEAR_180 (150.0)
 
 /* optking running modes */
 #define MODE_DISP_NOSYMM   (10)
@@ -133,6 +134,7 @@ struct OPTInfo {
 /* optimization parameters */
   bool ts;  // search for a transition state? 
   bool selected_fc; // choose coordinates for which to get force constants
+  int balked_last_time; // boolean to indicate we've recomputed fc's
   int cartesian;
   int optimize;
   int redundant;
@@ -143,6 +145,7 @@ struct OPTInfo {
 
   enum { NONE, BFGS, MS, POWELL, BOFILL} H_update;
   enum { FISCHER, SCHLEGEL} empirical_H;
+  enum { EMPIRICAL, KEEP } nonselected_fc;
 
   int H_update_use_last;
   bool rfo; // whether to use rfo step
@@ -155,7 +158,8 @@ struct OPTInfo {
   int numerical_dertype;
   int iteration;
   int micro_iteration;
-  double conv; /* MAX force */
+  double conv;  /* MAX force convergence */
+  double econv; /* MAX DE convergence */
   double ev_tol;
   double scale_connectivity;
   double disp_size;
@@ -178,6 +182,7 @@ struct OPTInfo {
   int fix_interfragment;
   int fix_intrafragment;
   int analytic_interfragment;
+  int max_consecutive_line_searches;
 
 /* Back-transformation parameters */
   int bt_max_iter;

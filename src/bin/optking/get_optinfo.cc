@@ -33,6 +33,8 @@ void get_optinfo() {
     psio_read_entry(PSIF_OPTKING, "Iteration", (char *) &(optinfo.iteration),sizeof(int));
   if (psio_tocscan(PSIF_OPTKING, "Micro_iteration") != NULL)
     psio_read_entry(PSIF_OPTKING, "Micro_iteration", (char *) &(optinfo.micro_iteration),sizeof(int));
+  if (psio_tocscan(PSIF_OPTKING, "Balked last time") != NULL)
+    psio_read_entry(PSIF_OPTKING, "Balked last time", (char *) &(optinfo.balked_last_time), sizeof(int));
   close_PSIF();
 
   optinfo.dertype = 0;
@@ -47,6 +49,7 @@ void get_optinfo() {
       printf("Invalid value of input keyword DERTYPE: %s\n", junk);
       exit(PSI_RETURN_FAILURE);
     }
+    free(junk);
   }
 
   errcod = ip_string("WFN", &(optinfo.wfn), 0);
@@ -61,6 +64,18 @@ void get_optinfo() {
   // only use listed force constants for finite differences
   if (ip_exist("SELECTED_FC",0))
     optinfo.selected_fc = true;
+
+  optinfo.nonselected_fc = OPTInfo::EMPIRICAL;
+  if (ip_exist("NONSELECTED_FC",0)) {
+    errcod = ip_string("NONSELECTED_FC",&(junk),0);
+    if (!strcmp(junk,"KEEP"))
+      optinfo.nonselected_fc = OPTInfo::KEEP;
+    else if (!strcmp(junk,"EMPIRICAL"))
+      optinfo.nonselected_fc = OPTInfo::EMPIRICAL;
+    else
+      fprintf(outfile,"Unable to understand NONSELECTED_FC keyword entry.\n");
+    free(junk);
+  }
 
   /* optimize in cartesian coordinates and ignore redundant/delocalize keywords */
   optinfo.cartesian = 0;
@@ -163,6 +178,10 @@ void get_optinfo() {
   ip_data("RFO_ROOT", "%d", &i,0);
   optinfo.rfo_root = i-1;
 
+  i=2;
+  ip_data("MAX_CONSECUTIVE_LINE_SEARCHES", "%d", &i,0);
+  optinfo.max_consecutive_line_searches = i;
+
   optinfo.step_energy_limit = 0.4; // fraction error in energy prediction to tolerate
   errcod = ip_data("STEP_ENERGY_LIMIT", "%lf", &tval,0);
   if (errcod == IPE_OK) optinfo.step_energy_limit = tval;
@@ -221,6 +240,10 @@ void get_optinfo() {
   ip_data("CONV","%d",&a,0);
   optinfo.conv = power(10.0, -1*a);
 
+  a = 8;
+  ip_data("ECONV","%d",&a,0);
+  optinfo.econv = power(10.0, -1*a);
+
   a= 5;
   ip_data("EV_TOL","%d",&a,0);
   optinfo.ev_tol = power(10.0, -1*a);
@@ -243,9 +266,9 @@ void get_optinfo() {
 
 
   /* These determing how seriously to take torsions very near 180 */
-  optinfo.cos_tors_near_1_tol    =  0.9999999;
+  optinfo.cos_tors_near_1_tol    =  0.9999999999;
   ip_data("COS_TORS_NEAR_1_TOL","%lf",&(optinfo.cos_tors_near_1_tol),0);
-  optinfo.cos_tors_near_neg1_tol = -0.9999999;
+  optinfo.cos_tors_near_neg1_tol = -0.9999999999;
   ip_data("COS_TORS_NEAR_NEG1_TOL","%lf",&(optinfo.cos_tors_near_neg1_tol),0);
   optinfo.sin_phi_denominator_tol = 1.0e-7;
   ip_data("SIN_PHI_DENOMINATOR_TOL","%lf",&(optinfo.sin_phi_denominator_tol),0);
@@ -326,6 +349,7 @@ void get_optinfo() {
     else if (optinfo.empirical_H == OPTInfo::FISCHER)
       fprintf(outfile,"empirical_H:  Fischer\n");
 
+    fprintf(outfile,"Max. consecutive line searches: %d\n", optinfo.max_consecutive_line_searches);
 
     fprintf(outfile,"H_update_use_last: %d\n",optinfo.H_update_use_last);
     fprintf(outfile,"step_limit_cart: %f\n",optinfo.step_limit_cart);
@@ -334,7 +358,8 @@ void get_optinfo() {
     fprintf(outfile,"step_limit: %f\n",optinfo.step_limit);
     fprintf(outfile,"mix_types:     %d\n",optinfo.mix_types);
     fprintf(outfile,"delocalize:    %d\n",optinfo.delocalize);
-    fprintf(outfile,"conv:          %.1e\n",optinfo.conv);
+    fprintf(outfile,"MAX force conv: %.1e\n",optinfo.conv);
+    fprintf(outfile,"energy conv:    %.1e\n",optinfo.econv);
     fprintf(outfile,"dertype:       %d\n",optinfo.dertype);
     fprintf(outfile,"numerical dertype: %d\n",optinfo.numerical_dertype);
     fprintf(outfile,"iteration:       %d\n",optinfo.iteration);

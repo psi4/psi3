@@ -86,9 +86,45 @@ void print_scalars()
 }
 
 
+void print_basisset_aobasis()
+{
+  int i, L, k, a, bf_cnt_i=1, bf_cnt_f=0;
+  /*---------------------
+     Print basis set info for all atoms and AOs in Gaussian like format for WebMO
+    ---------------------*/
+  if (UserOptions.print_aobasis) {
+    fprintf(outfile,"\n  -AO basis set");
+    if (BasisSet.puream) fprintf(outfile,"(5d, 7f, ...)");
+    else fprintf(outfile,"(6d, 10f, ...)");
+    fprintf(outfile,":\n");
+    for (i=0; i<BasisSet.num_shells; ++i) {
+      L = BasisSet.shells[i].am-1;
+      a = BasisSet.shells[i].center-1;
+      fprintf(outfile,"  Atom %d    Shell %d    L %d  ", a+1, i+1, L);
+
+      if (BasisSet.puream)
+        bf_cnt_f = bf_cnt_i + (2*L+1) - 1;
+      else {
+        if (L<2)
+          bf_cnt_f = bf_cnt_i + (2*L+1) - 1;
+        else
+          bf_cnt_f = bf_cnt_i + (((L+1)*(L+2))/2) - 1;
+      }
+      fprintf(outfile,"     bf %d - %d\n", bf_cnt_i, bf_cnt_f);
+      bf_cnt_i = bf_cnt_f+1;
+
+      fprintf(outfile,"    %20.10lf%20.10lf%20.10lf\n", Molecule.centers[a].x,
+        Molecule.centers[a].y, Molecule.centers[a].z);
+      for(k=BasisSet.shells[i].fprim-1; k<BasisSet.shells[i].fprim-1 + BasisSet.shells[i].n_prims; ++k)
+        fprintf(outfile, "    %15.10lf %15.10lf\n", BasisSet.cgtos[k].exp, BasisSet.cgtos[k].ccoeff[L]);
+    }
+  }
+  return;
+}
+
 void print_basisset()
 {
-  int i, j;
+  int i, j, k, a;
 
   /*---------------------
      Print basis set info
@@ -106,7 +142,7 @@ void print_basisset()
      for(i=0;i<BasisSet.num_prims;i++) {
        fprintf(outfile,"    %3d    %14.7lf",i+1,BasisSet.cgtos[i].exp);
        for(j=0;j<BasisSet.max_am;j++)
-	 fprintf(outfile,"    %15.10lf  ",BasisSet.cgtos[i].ccoeff[j]);
+     fprintf(outfile,"    %15.10lf  ",BasisSet.cgtos[i].ccoeff[j]);
        fprintf(outfile,"\n");
      }
      fprintf(outfile,"\n\n");
@@ -114,14 +150,19 @@ void print_basisset()
      fprintf(outfile,"    ------  ----  -  -----  -----\n");
      for(i=0;i<BasisSet.num_shells;i++)
        fprintf(outfile,"    %4d    %3d  %2d  %3d    %3d\n",i+1,
-	       BasisSet.shells[i].center,BasisSet.shells[i].am-1,
-	       BasisSet.shells[i].fprim,BasisSet.shells[i].n_prims);
+           BasisSet.shells[i].center,BasisSet.shells[i].am-1,
+           BasisSet.shells[i].fprim,BasisSet.shells[i].n_prims);
      fprintf(outfile,"\n\n");
      fflush(outfile);
    }
 
+   if (UserOptions.print_aobasis)
+     print_basisset_aobasis();
+
    return;
 }
+
+
 
 
 void print_quote()

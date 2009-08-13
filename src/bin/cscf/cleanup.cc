@@ -230,7 +230,7 @@ void cleanup()
   int nat,iend,ierr,ci_calc,irot,nbfao;
   int numso;
   int n_there[20],nc[10],no[10];
-  int mo_print;
+  int mo_print, mo_aobasis_print;
   int errcod;
   const char *ci_type="SCF";
   const char *der_type="FIRST";
@@ -265,6 +265,8 @@ void cleanup()
   errcod = ip_boolean("ROTATE",&irot,0);
   mo_print = 0;
   errcod = ip_boolean("PRINT_MOS",&mo_print,0);
+  mo_aobasis_print = 0;
+  errcod = ip_boolean("PRINT_MOS_AOBASIS",&mo_aobasis_print,0);
 
   /* TDC(6/19/96) - If we're not rotating, check the phases on the MOs,
      and correct them, if possible. */
@@ -274,16 +276,31 @@ void cleanup()
   }
    
   /* first print mo's, then rotate if this is a ci */
-
+  // need to put nso and nmo inside spin data for printing functions
+  if (uhf) {
+    for (i=0; i < num_ir ; i++) {
+      spin_info[0].scf_spin[i].num_so = spin_info[1].scf_spin[i].num_so = scf_info[i].num_so;
+      spin_info[0].scf_spin[i].num_mo = spin_info[1].scf_spin[i].num_mo = scf_info[i].num_mo;
+    }
+  }
   if (mo_print) {
     if(uhf) {
-      print_mos("Alpha",spin_info[0].scf_spin);
-      print_mos("Beta",spin_info[1].scf_spin);
+      print_mos("Alpha", spin_info[0].scf_spin);
+      print_mos("Beta", spin_info[1].scf_spin);
     }
     else {
-      print_mos("Alpha",scf_info);
+      print_mos("Alpha",scf_info); // MO -> SO's to output.dat
       if (print&4)
         print_mos_aobasis("Alpha",scf_info);
+    }
+  }
+  if (mo_aobasis_print) {
+    if (uhf) {
+      print_mos_aobasis("Alpha",spin_info[0].scf_spin);
+      print_mos_aobasis("Beta",spin_info[1].scf_spin);
+    }
+    else {
+      print_mos_aobasis("Alpha",scf_info);
     }
   }
 

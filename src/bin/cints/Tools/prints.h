@@ -8,6 +8,7 @@ namespace psi { namespace CINTS {
 void print_intro();
 void print_scalars();
 void print_basisset();
+void print_basisset_aobasis();
 void print_quote();
 void print_opdm();
 void print_atomvec(const char *quantity, double **vecs);

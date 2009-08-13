@@ -7,6 +7,8 @@
 #include <cstring>
 #include <psifiles.h>
 
+extern "C" FILE *outfile;
+
 namespace psi { namespace psi3 {
 
 extern int execut(char **module_names, int num_modules, int depth);
@@ -16,6 +18,7 @@ extern void runcmd(int *errcod, char *cmd);
 int execut_opt_fc(char **exec, int nexec, char **exec_fc, int nexec_fc)
 {
   int i, j, nrep, inloop, nopt, I;
+  bool balked_last_time = false;
   int errcod, start_loop;
 
   // compute force constants
@@ -32,14 +35,14 @@ int execut_opt_fc(char **exec, int nexec, char **exec_fc, int nexec_fc)
 
     fprintf(stderr," %s\n",exec[i]);
     runcmd(&errcod,exec[i]);
-    fprintf(stderr," errcod after runcmd is %d\n", errcod);
+    //fprintf(stderr," errcod after runcmd is %d\n", errcod);
 
     if (WIFSIGNALED(errcod)) {
       fprintf(stdout,"\nCommand %s was terminated with signal %d", exec[i], WTERMSIG(errcod));
       psi3_abort();
     }
     errcod = WEXITSTATUS(errcod);
-    fprintf(stderr,"  errcod after wexitstatus is %d\n",errcod);
+    //fprintf(stderr,"  errcod after wexitstatus is %d\n",errcod);
   }
 
   // do geometry optimization loop
@@ -60,16 +63,30 @@ int execut_opt_fc(char **exec, int nexec, char **exec_fc, int nexec_fc)
 
       if (!strcmp(exec[j], "optking --opt_step")) {
 
-    fprintf(stderr,"  errcod after wexitstatus is %d\n",errcod);
+    //fprintf(stderr,"  errcod after wexitstatus is %d\n",errcod);
 
-        if (errcod == PSI_RETURN_FAILURE) //failed
+        if (errcod == PSI_RETURN_FAILURE) { //failed
           psi3_abort();
+        }
         else if (errcod == PSI_RETURN_BALK) { //balked
+          if (balked_last_time) {
+            fprintf(outfile,"\nBalked two times consecutively. Aborting.\n");
+            fprintf(outfile,"Unable to take an acceptable step after computing force constants.\n");
+            fprintf(stdout,"\nBalked two times consecutively. Aborting.\n");
+            fprintf(stdout,"Unable to take an acceptable step after computing force constants.\n");
+            psi3_abort();
+          }
+          else balked_last_time = true;
+
           execut(exec_fc,nexec_fc,1);
           I--;
         }
-        else if (errcod == PSI_RETURN_ENDLOOP) //converged
+        else if (errcod == PSI_RETURN_ENDLOOP) { //converged
           I=nopt;
+        }
+        else { // took step
+          balked_last_time = false;
+        }
 
         break; // skip 'end' and 'psiclean'
       }

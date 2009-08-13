@@ -109,9 +109,13 @@ void fc_grad_selected(cartesians &carts, internals &simples, salc_set &symm) {
 
   if (optinfo.print_hessian) {
     fprintf(outfile,"Internal coordinate forces for each displacement\n");
+    cnt = 0;
     for (i=0; i<ndisps; ++i) {
-      for (j=0; j<nsymm; ++j)
-        fprintf(outfile, "   %12.8lf", all_f_q[i][j]);
+      for (j=0; j<nsymm; ++j) {
+        fprintf(outfile, " %12.8lf", all_f_q[i][j]);
+        ++cnt;
+        if ((cnt == 8) && (j+1 != nsymm)) { fprintf(outfile,"\n"); cnt = 0; }
+      }
       fprintf(outfile,"\n");
     }
   }

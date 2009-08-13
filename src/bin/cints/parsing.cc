@@ -30,6 +30,9 @@ namespace psi { namespace CINTS {
   
     UserOptions.print_lvl = 1;
     errcod = ip_data("PRINT","%d",&(UserOptions.print_lvl),0);
+
+    UserOptions.print_aobasis = 0; // for constructing MOs for WebMO
+    errcod = ip_boolean("PRINT_MOS_AOBASIS",&(UserOptions.print_aobasis),0);
     
     /*--- This piece of code from CPHF by Ed Seidl ---*/
     if (ip_exist("MEMORY", 0)) {

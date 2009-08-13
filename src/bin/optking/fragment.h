@@ -32,7 +32,7 @@ class fragment_class {
     double *value;  /* D = value of coordinate [6] */
     double **A_s; /* S vectors fragment A [6][A_P*3] */
     double **B_s; /* S vectors fragment B [6][B_P*3] */
-    int *near_180; /* [6] ; +1 => val>160, -1 => value<160, 0 otherwise */
+    int *near_180; /* [6] ; +1 => val>FIX_NEAR_180, -1 => value<FIX_NEAR_180, 0 otherwise */
 
   public:
 

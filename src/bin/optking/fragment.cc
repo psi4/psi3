@@ -247,6 +247,8 @@ void fragment_class::compute(double *geom) {
     cross_product(e32B,e12B,v);
     cross_product(e12B,eRB,v2);
     dot_arr(v, v2, 3, &dot);
+//printf("sin(theta_B): %15.10lf\n", sin(theta_B));
+//printf("sin(alpha_B): %15.10lf\n", sin(alpha_B));
     if ((sin(theta_B) > optinfo.sin_phi_denominator_tol) &&
         (sin(alpha_B) > optinfo.sin_phi_denominator_tol)) {
       dot /= sin(theta_B);
@@ -255,6 +257,7 @@ void fragment_class::compute(double *geom) {
     else
       dot = 2.0;
 
+//printf("dot: %15.10lf\n", dot);
     if (dot > optinfo.cos_tors_near_1_tol) value[5] = 0.0 ;
     else if (dot < optinfo.cos_tors_near_neg1_tol) value[5] = 180.0 ;
     else {
@@ -275,9 +278,9 @@ void fragment_class::compute(double *geom) {
   // fix jumps through 180 degrees
   for (I=3; I<6; ++I) {
   //  if (coord_on[I]) {
-      if ((near_180[I] == -1) && (value[I] > 160.0))
+      if ((near_180[I] == -1) && (value[I] > FIX_NEAR_180))
         value[I] = -180.0 - (180.0 - value[I]);
-      else if ((near_180[I] == +1) && (value[I] < -160.0))
+      else if ((near_180[I] == +1) && (value[I] < -1*FIX_NEAR_180))
         value[I] = +180.0 + (180.0 + value[I]);
    // }
   }
@@ -506,8 +509,8 @@ void fragment_class::fix_near_180(void) {
   int I, lin;
   for (I=3; I<6; ++I) {
     //if (coord_on[I]) {
-      if (value[I] > 160.0) lin = +1;
-      else if (value[I] < -160.0) lin = -1;
+      if (value[I] > FIX_NEAR_180) lin = +1;
+      else if (value[I] < -1*FIX_NEAR_180) lin = -1;
       else lin = 0;
       set_near_180(I,lin);
     //}
