@@ -496,14 +496,27 @@ void ERI::compute_quartet(int sh1, int sh2, int sh3, int sh4)
                     double oo2n = 1.0/(2.0*nu);
                     double oo2zn = 1.0/(2.0*(zeta+nu));
                     double rho = (zeta*nu)/(zeta+nu);
-                    double oo2rho = 1 / (2.0*rho);
+                    double oo2rho = 1.0 / (2.0*rho);
 
                     double QC[3], QD[3], WP[3], WQ[3], PQ[3];
-                    double Q[3], W[3];
+                    double Q[3], W[3], a3C[3], a4D[3];
 
-                    Q[0] = (a3*C[0] + a4*D[0])*oon;
-                    Q[1] = (a3*C[1] + a4*D[1])*oon;
-                    Q[2] = (a3*C[2] + a4*D[2])*oon;
+                    a3C[0] = a3*C[0];
+                    a3C[1] = a3*C[1];
+                    a3C[2] = a3*C[2];
+                    
+                    a4D[0] = a4*D[0];
+                    a4D[1] = a4*D[1];
+                    a4D[2] = a4*D[2];
+
+//                  Q[0] = (a3*C[0] + a4*D[0])*oon;
+//                  Q[1] = (a3*C[1] + a4*D[1])*oon;
+//                  Q[2] = (a3*C[2] + a4*D[2])*oon;
+
+                    Q[0] = (a3C[0] + a4D[0])*oon;
+                    Q[1] = (a3C[1] + a4D[1])*oon;
+                    Q[2] = (a3C[2] + a4D[2])*oon;
+
                     QC[0] = Q[0] - C[0];
                     QC[1] = Q[1] - C[1];
                     QC[2] = Q[2] - C[2];
