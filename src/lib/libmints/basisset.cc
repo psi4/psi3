@@ -28,7 +28,7 @@ BasisSet::BasisSet(Chkpt* chkpt, std::string genbas_filename, std::string genbas
     // This requirement holds no matter what.
     puream_ = chkpt->rd_puream() ? true : false;
 
-    // Initialize molecule, retrieves number of center and geometry
+    // Initialize molecule, retrieves number of centers and geometry
     molecule_ = new Molecule;
     molecule_->init_with_chkpt(chkpt);
 
