@@ -13,11 +13,11 @@ extern "C" {
 
 using namespace psi;
 
-int Chkpt::rd_nprim(void)
+int Chkpt::rd_nprim(const char *key2)
 {
 	int nprim;
 	char *keyword;
-	keyword = build_keyword("Num. primitives");
+	keyword = build_keyword("Num. primitives", key2);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) &nprim, sizeof(int));
 
@@ -25,10 +25,10 @@ int Chkpt::rd_nprim(void)
 	return nprim;
 }
 
-void Chkpt::wt_nprim(int nprim)
+void Chkpt::wt_nprim(int nprim, const char *key2)
 {
 	char *keyword;
-	keyword = build_keyword("Num. primitives");
+	keyword = build_keyword("Num. primitives", key2);
 
 	psio->write_entry(PSIF_CHKPT, keyword, (char *) &nprim, sizeof(int));
 
@@ -59,8 +59,8 @@ extern "C" {
 ** returns: none
 ** \ingroup CHKPT
 */
-	void chkpt_wt_nprim(int nprim)
+	void chkpt_wt_nprim(int nprim, const char *key2)
 	{
-		_default_chkpt_lib_->wt_nprim(nprim);
+		_default_chkpt_lib_->wt_nprim(nprim, key2);
 	}
 }

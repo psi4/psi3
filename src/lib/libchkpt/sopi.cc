@@ -14,11 +14,11 @@ extern "C" {
 
 using namespace psi;
 
-int *Chkpt::rd_sopi(void)
+int *Chkpt::rd_sopi(const char *key2)
 {
 	int nirreps, *sopi;
 	char *keyword;
-	keyword = build_keyword("SO's per irrep");
+	keyword = build_keyword("SO's per irrep", key2);
 
 	nirreps = rd_nirreps();
 	sopi = array<int>(nirreps);
@@ -29,11 +29,11 @@ int *Chkpt::rd_sopi(void)
 	return sopi;
 }
 
-void Chkpt::wt_sopi(int *sopi)
+void Chkpt::wt_sopi(int *sopi, const char *key2)
 {
 	int nirreps;
 	char *keyword;
-	keyword = build_keyword("SO's per irrep");
+	keyword = build_keyword("SO's per irrep", key2);
 
 	nirreps = rd_nirreps();
 
@@ -76,8 +76,8 @@ extern "C" {
 **
 ** \ingroup CHKPT
 */
-	void chkpt_wt_sopi(int *sopi)
+	void chkpt_wt_sopi(int *sopi, const char *key2)
 	{
-		_default_chkpt_lib_->wt_sopi(sopi);
+		_default_chkpt_lib_->wt_sopi(sopi, key2);
 	}
 }

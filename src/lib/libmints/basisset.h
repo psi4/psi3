@@ -72,14 +72,19 @@ class BasisSet
     BasisSet& operator=(const BasisSet&);
     
     //! Initialize shells based on information found in checkpoint
-    void initialize_shells(psi::Chkpt* chkpt);
+    void initialize_shells(psi::Chkpt* chkpt, std::string& basiskey);
     
     //! Initialize shells based on information found in GENBAS file
     void initialize_shells_via_genbas(std::string& genbas_filename, std::string& genbas_basis);
     
 public:
+
+    /// Constructor, reads in the basis set from the checkpoint file using basiskey
+    BasisSet(psi::Chkpt* chkpt, std::string basiskey = "");
+    
     /// Constructor, reads in the basis set from the checkpoint file
-    BasisSet(psi::Chkpt* chkpt, std::string genbas_filename = "", std::string genbas_basis = "");
+    BasisSet(psi::Chkpt* chkpt, std::string genbas_filename, std::string genbas_basis);
+
     /// Copy constructor, currently errors if used
     BasisSet(const BasisSet&);
     /// Destructor

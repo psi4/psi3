@@ -171,7 +171,7 @@ int main(int argc, char *argv[])
      atom_basis = (char **) malloc(sizeof(char *)*num_atoms);
      for(i=0;i<num_atoms;i++)
        atom_basis[i] = NULL;
-     read_basis();
+     read_basis("BASIS");
      
      /*----------------------------------------------
        Form symmetry information arrays of all kinds
@@ -194,7 +194,7 @@ int main(int argc, char *argv[])
      /*-------------------------------------------------
        Write the information out to the checkpoint file
       -------------------------------------------------*/
-     write_to_chkpt(repulsion);
+     write_to_chkpt(repulsion, "");
 
      /*-------------------------------------------------
        Project old MOs onto new basis and write 'em out
@@ -223,6 +223,22 @@ int main(int argc, char *argv[])
       ----------------------*/
 
      print_basis_info();
+
+     // RI basis?
+     if (ip_exist("DF_BASIS",0) || ip_exist("RI_BASIS",0)) {
+       for(i=0;i<num_atoms;i++)
+         atom_basis[i] = NULL;
+       if (ip_exist("DF_BASIS",0)) read_basis("DF_BASIS");
+       else if (ip_exist("RI_BASIS",0)) read_basis("RI_BASIS");
+       build_transmat();
+       if (puream)
+         build_cart2pureang();
+       build_so_classes();
+       build_usotao();
+       write_to_chkpt(repulsion, "DF_BASIS");
+       print_basis_info();
+     }
+
      fprintf(outfile,"\n  -Unique atoms in the canonical coordinate system (a.u.):\n");
      print_unique_geometry(1.0);
      fprintf(outfile,"\n  -Geometry in the canonical coordinate system (a.u.):\n");

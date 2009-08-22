@@ -131,7 +131,7 @@ void init_elem_names();
 /*
    Main routine to read the basis set info.  It calls recur, and all of the normalization
    routines. */
-void read_basis();
+void read_basis(const char *basiskey);
 
 /*
    normalization functions in read_basis.c 
@@ -190,7 +190,7 @@ void build_transmat();
 void build_usotao();
 void build_cart2pureang();
 void build_so_classes();
-void write_to_chkpt(double erep);
+void write_to_chkpt(double erep, const char *basiskey);
 void read_charges();
 
 void median_vec(double *A, double *B, double *median);

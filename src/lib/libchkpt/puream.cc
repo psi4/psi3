@@ -13,11 +13,11 @@ extern "C" {
 
 using namespace psi;
 
-bool Chkpt::rd_puream(void)
+bool Chkpt::rd_puream(const char *key2)
 {
 	int puream;
 	char *keyword;
-	keyword = build_keyword("Pure Harmonics?");
+	keyword = build_keyword("Pure Harmonics?", key2);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) &puream, sizeof(int));
 
@@ -25,10 +25,10 @@ bool Chkpt::rd_puream(void)
 	return (puream == 1);
 }
 
-void Chkpt::wt_puream(bool puream)
+void Chkpt::wt_puream(bool puream, const char *key2)
 {
 	char *keyword;
-	keyword = build_keyword("Pure Harmonics?");
+	keyword = build_keyword("Pure Harmonics?", key2);
 
 	int p = puream ? 1 : 0;
 	psio->write_entry(PSIF_CHKPT, keyword, (char *) &p, sizeof(int));
@@ -60,8 +60,8 @@ extern "C" {
 **  returns: none
 **  \ingroup CHKPT
 */
-	void chkpt_wt_puream(int puream)
+	void chkpt_wt_puream(int puream, const char *key2)
 	{
-		_default_chkpt_lib_->wt_puream(puream == 1);
+		_default_chkpt_lib_->wt_puream(puream == 1, key2);
 	}
 }

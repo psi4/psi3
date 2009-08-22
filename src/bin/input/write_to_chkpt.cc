@@ -22,7 +22,7 @@ namespace psi { namespace input {
   This function writes information out to checkpoint file
  -----------------------------------------------------------------------------------------------------------------*/
 
-void write_to_chkpt(double repulsion)
+void write_to_chkpt(double repulsion, const char *basiskey)
 {
 
   char *calc_label;
@@ -57,18 +57,24 @@ void write_to_chkpt(double repulsion)
   /*----------------------------------
     Write out basic info to chkpt
    ----------------------------------*/
-  chkpt_init(keep_chkpt ? PSIO_OPEN_OLD : PSIO_OPEN_NEW);
+  if (basiskey[0] == '\0') {
+    chkpt_init(keep_chkpt ? PSIO_OPEN_OLD : PSIO_OPEN_NEW);
+  }
+  else {
+    chkpt_init(PSIO_OPEN_OLD);
+  }
+
   chkpt_wt_label(calc_label);
   chkpt_wt_num_unique_atom(num_uniques);
-  chkpt_wt_num_unique_shell(num_unique_shells);
+  chkpt_wt_num_unique_shell(num_unique_shells, basiskey);
   chkpt_wt_rottype(rotor);
-  chkpt_wt_max_am(max_angmom);
-  chkpt_wt_puream(puream);
-  chkpt_wt_nso(num_so);
-  chkpt_wt_nao(num_ao);
-  chkpt_wt_nshell(num_shells);
+  chkpt_wt_max_am(max_angmom, basiskey);
+  chkpt_wt_puream(puream, basiskey);
+  chkpt_wt_nso(num_so, basiskey);
+  chkpt_wt_nao(num_ao, basiskey);
+  chkpt_wt_nshell(num_shells, basiskey);
   chkpt_wt_nirreps(nirreps);
-  chkpt_wt_nprim(num_prims);
+  chkpt_wt_nprim(num_prims, basiskey);
   chkpt_wt_natom(num_atoms);
   chkpt_wt_nallatom(num_allatoms);
   chkpt_wt_nfzc(nfzc);
@@ -108,7 +114,7 @@ void write_to_chkpt(double repulsion)
   free(ict);
 
   /* Exponents of primitive gaussians */
-  chkpt_wt_exps(exponents);
+  chkpt_wt_exps(exponents, basiskey);
 
   /* Contraction coefficients */
   /*------This piece of code is for segmented contractions ONLY------*/
@@ -120,32 +126,32 @@ void write_to_chkpt(double repulsion)
 	multiplied by sqrt(3), f - by sqrt(15), g - sqrt(105), etc
 	---*/
       cspd[shell_ang_mom[j]*num_prims+first_prim_shell[j]+k] = contr_coeff[first_prim_shell[j]+k];
-  chkpt_wt_contr(cspd);
+  chkpt_wt_contr(cspd, basiskey);
   free(cspd);
 
   /* Pointer to primitives for a shell */
   arr_int = init_int_array(num_shells);
   for(i=0;i<num_shells;i++)
     arr_int[i] = first_prim_shell[i]+1;
-  chkpt_wt_sprim(arr_int);
+  chkpt_wt_sprim(arr_int, basiskey);
 
   /* Atom on which nth shell is centered */
   for(i=0;i<num_shells;i++)
     arr_int[i] = shell_nucleus[i]+1;
-  chkpt_wt_snuc(arr_int);
+  chkpt_wt_snuc(arr_int, basiskey);
 
   /* Angular momentum of a shell */
   for(i=0;i<num_shells;i++)
     arr_int[i] = shell_ang_mom[i]+1;
-  chkpt_wt_stype(arr_int);
+  chkpt_wt_stype(arr_int, basiskey);
 
   /* Number of contracted functions (primitives) in a shell */
-  chkpt_wt_snumg(nprim_in_shell);
+  chkpt_wt_snumg(nprim_in_shell, basiskey);
 
   /* Pointer to the first AO in shell */
   for(i=0;i<num_shells;i++)
     arr_int[i] = first_ao_shell[i]+1;
-  chkpt_wt_sloc(arr_int);
+  chkpt_wt_sloc(arr_int, basiskey);
   free(arr_int);
 
   /* Labels of irreps */
@@ -169,7 +175,7 @@ void write_to_chkpt(double repulsion)
       for(i=0;i<nshells_per_atom[atom];i++)
 	shell_transm[first_shell_on_atom[atom]+i][symop] = first_shell_on_atom[eq_atom] + i + 1;
     }
-  chkpt_wt_shell_transm(shell_transm);
+  chkpt_wt_shell_transm(shell_transm, basiskey);
   free_int_matrix(shell_transm);
 
   /* Labels of atoms including dummy atoms */
@@ -189,7 +195,7 @@ void write_to_chkpt(double repulsion)
   free(tmp_atom_label);
 
   /* Orbitals per irrep */
-  chkpt_wt_sopi(num_so_per_irrep);
+  chkpt_wt_sopi(num_so_per_irrep, basiskey);
 
   /* Symmetry label */
   chkpt_wt_sym_label(symmetry);
@@ -206,22 +212,22 @@ void write_to_chkpt(double repulsion)
     for(i=0;i<nshells_per_atom[atom];i++,shell++,us++)
       arr_int[us] = shell;
   }
-  chkpt_wt_us2s(arr_int);
+  chkpt_wt_us2s(arr_int, basiskey);
   free(arr_int);
 
   /* SO to AO transformation matrix */
-  chkpt_wt_usotao(usotao);
+  chkpt_wt_usotao(usotao, basiskey);
 
   /* SO to basis functions transformation matrix */
   if (puream) {
-    chkpt_wt_usotbf(usotbf);
+    chkpt_wt_usotbf(usotbf, basiskey);
   }
 
   /* Pointers to first basis functions from shells */
   arr_int = init_int_array(num_shells);
   for(i=0;i<num_shells;i++)
     arr_int[i] = first_basisfn_shell[i]+1;
-  chkpt_wt_sloc_new(arr_int);
+  chkpt_wt_sloc_new(arr_int, basiskey);
   free(arr_int);
 
   /* Unique atom number to full atom number mapping array */
@@ -237,11 +243,11 @@ void write_to_chkpt(double repulsion)
   }
 
   /* Number of shells in each angmom block */
-  chkpt_wt_shells_per_am(shells_per_am);
+  chkpt_wt_shells_per_am(shells_per_am, basiskey);
 
   /* Mapping array from the am-blocked to the canonical (in the order of
      appearance) ordering of shells */
-  chkpt_wt_am2canon_shell_order(am2canon_shell_order);
+  chkpt_wt_am2canon_shell_order(am2canon_shell_order, basiskey);
 
   /* Matrix representation of rotation back to the reference frame */
   chkpt_wt_rref(Rref);

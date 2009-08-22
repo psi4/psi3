@@ -14,15 +14,15 @@ extern "C" {
 
 using namespace psi;
 
-double *Chkpt::rd_contr(void)
+double *Chkpt::rd_contr(const char *key2)
 {
 	double *contr;
 	double *temp_contr;
 	int nprim, i, j, ij = 0;
 	char *keyword;
-	keyword = build_keyword("Contraction coefficients");
+	keyword = build_keyword("Contraction coefficients", key2);
 
-	nprim = rd_nprim();
+	nprim = rd_nprim(key2);
 
 	temp_contr = array<double>(MAXANGMOM*nprim);
 	contr = array<double>(nprim);
@@ -44,13 +44,13 @@ double *Chkpt::rd_contr(void)
 	return contr;
 }
 
-void Chkpt::wt_contr(double *contr)
+void Chkpt::wt_contr(double *contr, const char *key2)
 {
 	int nprim;
 	char *keyword;
-	keyword = build_keyword("Contraction coefficients");
+	keyword = build_keyword("Contraction coefficients", key2);
 
-	nprim = rd_nprim();
+	nprim = rd_nprim(key2);
 
 	psio->write_entry(PSIF_CHKPT, keyword, (char *) contr,
 		MAXANGMOM*nprim*sizeof(double));
@@ -88,9 +88,9 @@ extern "C" {
 ** Returns: none
 ** \ingroup CHKPT
 */
-	void chkpt_wt_contr(double *contr)
+	void chkpt_wt_contr(double *contr, const char *key2)
 	{
-		_default_chkpt_lib_->wt_contr(contr);
+		_default_chkpt_lib_->wt_contr(contr, key2);
 	}
 }
 

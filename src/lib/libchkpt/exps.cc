@@ -14,14 +14,14 @@ extern "C" {
 
 using namespace psi;
 
-double *Chkpt::rd_exps(void)
+double *Chkpt::rd_exps(const char *key2)
 {
 	double *exps;
 	int nprim = 0;
 	char *keyword;
-	keyword = build_keyword("Exponents");
+	keyword = build_keyword("Exponents",key2);
 
-	nprim = rd_nprim();
+	nprim = rd_nprim(key2);
 	exps = array<double>(nprim);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) exps, 
@@ -31,13 +31,13 @@ double *Chkpt::rd_exps(void)
 	return exps;
 }
 
-void Chkpt::wt_exps(double *exps)
+void Chkpt::wt_exps(double *exps, const char *key2)
 {
 	int nprim;
 	char *keyword;
-	keyword = build_keyword("Exponents");
+	keyword = build_keyword("Exponents",key2);
 
-	nprim = rd_nprim();
+	nprim = rd_nprim(key2);
 
 	psio->write_entry(PSIF_CHKPT, keyword, (char *) exps, 
 		nprim*sizeof(double));
@@ -73,8 +73,8 @@ extern "C" {
 ** returns: none
 ** \ingroup CHKPT
 */
-	void chkpt_wt_exps(double *exps)
+	void chkpt_wt_exps(double *exps, const char *key2)
 	{
-		_default_chkpt_lib_->wt_exps(exps);
+		_default_chkpt_lib_->wt_exps(exps, key2);
 	}
 }

@@ -13,14 +13,14 @@ extern "C" {
 
 using namespace psi;
 
-int *Chkpt::rd_us2s(void)
+int *Chkpt::rd_us2s(const char *key2)
 {
 	int *us2s;
 	int num_unique_shells;
 	char *keyword;
-	keyword = build_keyword("Unique shell -> full shell map");
+	keyword = build_keyword("Unique shell -> full shell map", key2);
 
-	num_unique_shells = rd_num_unique_shell();
+	num_unique_shells = rd_num_unique_shell(key2);
 	us2s = array<int>(num_unique_shells);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) us2s, num_unique_shells*sizeof(int));
@@ -29,13 +29,13 @@ int *Chkpt::rd_us2s(void)
 	return us2s;
 }
 
-void Chkpt::wt_us2s(int *us2s)
+void Chkpt::wt_us2s(int *us2s, const char *key2)
 {
 	int num_unique_shells;
 	char *keyword;
-	keyword = build_keyword("Unique shell -> full shell map");
+	keyword = build_keyword("Unique shell -> full shell map", key2);
 
-	num_unique_shells = rd_num_unique_shell();
+	num_unique_shells = rd_num_unique_shell(key2);
 
 	psio->write_entry(PSIF_CHKPT, keyword, (char *) us2s, num_unique_shells*sizeof(int));
 
@@ -68,8 +68,8 @@ extern "C" {
 ** 
 ** \ingroup CHKPT
 */
-	void chkpt_wt_us2s(int *us2s)
+	void chkpt_wt_us2s(int *us2s, const char *key2)
 	{
-		_default_chkpt_lib_->wt_us2s(us2s);
+		_default_chkpt_lib_->wt_us2s(us2s, key2);
 	}
 }

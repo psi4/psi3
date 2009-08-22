@@ -14,14 +14,14 @@ extern "C" {
 
 using namespace psi;
 
-int *Chkpt::rd_stype(void)
+int *Chkpt::rd_stype(const char *key2)
 {
 	int *stype;
 	int nshell;
 	char *keyword;
-	keyword = build_keyword("Shell ang. mom.");
+	keyword = build_keyword("Shell ang. mom.", key2);
 
-	nshell = rd_nshell();
+	nshell = rd_nshell(key2);
 
 	stype = array<int>(nshell);
 
@@ -31,13 +31,13 @@ int *Chkpt::rd_stype(void)
 	return stype;
 }
 
-void Chkpt::wt_stype(int *stype)
+void Chkpt::wt_stype(int *stype, const char *key2)
 {
 	int nshell;
 	char *keyword;
-	keyword = build_keyword("Shell ang. mom.");
+	keyword = build_keyword("Shell ang. mom.", key2);
 
-	nshell = rd_nshell();
+	nshell = rd_nshell(key2);
 
 	psio->write_entry(PSIF_CHKPT, keyword, (char *) stype, nshell*sizeof(int));
 
@@ -71,8 +71,8 @@ extern "C" {
 **
 ** \ingroup CHKPT
 */
-	void chkpt_wt_stype(int *stype)
+	void chkpt_wt_stype(int *stype, const char *key2)
 	{
-		_default_chkpt_lib_->wt_stype(stype);
+		_default_chkpt_lib_->wt_stype(stype, key2);
 	}
 }

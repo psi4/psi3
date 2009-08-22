@@ -13,14 +13,14 @@ extern "C" {
 
 using namespace psi;
 
-int *Chkpt::rd_sloc_new(void)
+int *Chkpt::rd_sloc_new(const char *key2)
 {
 	int *sloc_new;
 	int nshell;
 	char *keyword;
-	keyword = build_keyword("First BF per shell");
+	keyword = build_keyword("First BF per shell", key2);
 
-	nshell = rd_nshell();
+	nshell = rd_nshell(key2);
 	sloc_new = array<int>(nshell);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) sloc_new, nshell*sizeof(int));
@@ -29,13 +29,13 @@ int *Chkpt::rd_sloc_new(void)
 	return sloc_new;
 }
 
-void Chkpt::wt_sloc_new(int *sloc_new)
+void Chkpt::wt_sloc_new(int *sloc_new, const char *key2)
 {
 	int nshell;
 	char *keyword;
-	keyword = build_keyword("First BF per shell");
+	keyword = build_keyword("First BF per shell", key2);
 
-	nshell = rd_nshell();
+	nshell = rd_nshell(key2);
 
 	psio->write_entry(PSIF_CHKPT, keyword, (char *) sloc_new, nshell*sizeof(int));
 
@@ -67,8 +67,8 @@ extern "C" {
 **
 ** returns: none
 */
-	void chkpt_wt_sloc_new(int *sloc_new)
+	void chkpt_wt_sloc_new(int *sloc_new, const char *key2)
 	{
-		_default_chkpt_lib_->wt_sloc_new(sloc_new);
+		_default_chkpt_lib_->wt_sloc_new(sloc_new, key2);
 	}
 }

@@ -14,14 +14,14 @@ extern "C" {
 
 using namespace psi;
 
-int *Chkpt::rd_snumg(void)
+int *Chkpt::rd_snumg(const char *key2)
 {
 	int *snumg;
 	int nshell;
 	char *keyword;
-	keyword = build_keyword("Primitives per shell");
+	keyword = build_keyword("Primitives per shell", key2);
 
-	nshell = rd_nshell();
+	nshell = rd_nshell(key2);
 	snumg = array<int>(nshell);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) snumg, nshell*sizeof(int));
@@ -30,13 +30,13 @@ int *Chkpt::rd_snumg(void)
 	return snumg;
 }
 
-void Chkpt::wt_snumg(int *snumg)
+void Chkpt::wt_snumg(int *snumg, const char *key2)
 {
 	int nshell;
 	char *keyword;
-	keyword = build_keyword("Primitives per shell");
+	keyword = build_keyword("Primitives per shell", key2);
 
-	nshell = rd_nshell();
+	nshell = rd_nshell(key2);
 
 	psio->write_entry(PSIF_CHKPT, keyword, (char *) snumg, nshell*sizeof(int));
 
@@ -72,8 +72,8 @@ extern "C" {
 **
 ** \ingroup CHKPT
 */
-	void chkpt_wt_snumg(int *snumg)
+	void chkpt_wt_snumg(int *snumg, const char *key2)
 	{
-		_default_chkpt_lib_->wt_snumg(snumg);
+		_default_chkpt_lib_->wt_snumg(snumg, key2);
 	}
 }

@@ -20,6 +20,22 @@ BasisSet::BasisSet() :
     simple_mat_uso2bf_(NULL)
 {}
 
+BasisSet::BasisSet(Chkpt* chkpt, std::string basiskey) :
+    shell_first_basis_function_(NULL), shell_first_ao_(NULL), shell_center_(NULL), uso2ao_(NULL),
+    max_nprimitives_(0), max_stability_index_(0), uso2bf_(NULL), simple_mat_uso2ao_(NULL),
+    simple_mat_uso2bf_(NULL)
+{
+    // This requirement holds no matter what.
+    puream_ = chkpt->rd_puream(basiskey.c_str()) ? true : false;
+
+    // Initialize molecule, retrieves number of center and geometry
+    molecule_ = new Molecule;
+    molecule_->init_with_chkpt(chkpt);
+
+    // Initialize the shells
+    initialize_shells(chkpt, basiskey);
+}
+
 BasisSet::BasisSet(Chkpt* chkpt, std::string genbas_filename, std::string genbas_basis) :
     shell_first_basis_function_(NULL), shell_first_ao_(NULL), shell_center_(NULL), uso2ao_(NULL),
     max_nprimitives_(0), max_stability_index_(0), uso2bf_(NULL), simple_mat_uso2ao_(NULL),
@@ -32,11 +48,7 @@ BasisSet::BasisSet(Chkpt* chkpt, std::string genbas_filename, std::string genbas
     molecule_ = new Molecule;
     molecule_->init_with_chkpt(chkpt);
 
-    // Determine if we read from chkpt or genbas
-    if (genbas_filename.empty()) {
-        // Initialize the shells
-        initialize_shells(chkpt);
-    } else if (!genbas_filename.empty() && !genbas_basis.empty()) {
+    if (!genbas_filename.empty() && !genbas_basis.empty()) {
         fprintf(outfile, "  Initializing BasisSet object with data in: %s (basis: %s)\n", 
             genbas_filename.c_str(), genbas_basis.c_str());
         initialize_shells_via_genbas(genbas_filename, genbas_basis);
@@ -72,18 +84,18 @@ BasisSet::~BasisSet()
     delete[] shells_;
 }
 
-void BasisSet::initialize_shells(Chkpt *chkpt)
+void BasisSet::initialize_shells(Chkpt *chkpt, std::string& basiskey)
 {
     // Initialize some data from checkpoint.
-    nshells_      = chkpt->rd_nshell();
-    nprimitives_  = chkpt->rd_nprim();
-    nao_          = chkpt->rd_nao();
+    nshells_      = chkpt->rd_nshell(basiskey.c_str());
+    nprimitives_  = chkpt->rd_nprim(basiskey.c_str());
+    nao_          = chkpt->rd_nao(basiskey.c_str());
 
     // Psi3 only allows either all Cartesian or all Spherical harmonic
-    nbf_          = chkpt->rd_nso();
-    max_am_       = chkpt->rd_max_am();
-    uso2ao_       = chkpt->rd_usotao();
-    uso2bf_       = chkpt->rd_usotbf();
+    nbf_          = chkpt->rd_nso(basiskey.c_str());
+    max_am_       = chkpt->rd_max_am(basiskey.c_str());
+    uso2ao_       = chkpt->rd_usotao(basiskey.c_str());
+    uso2bf_       = chkpt->rd_usotbf(basiskey.c_str());
 
     simple_mat_uso2ao_ = new SimpleMatrix("Unique SO to AO transformation matrix", nbf_, nao_);
     simple_mat_uso2ao_->set(uso2ao_);
@@ -97,28 +109,32 @@ void BasisSet::initialize_shells(Chkpt *chkpt)
     shells_       = new GaussianShell*[nshells_];
     
     // Retrieve angular momentum of each shell (1=s, 2=p, ...)
-    int *shell_am = chkpt->rd_stype();
+    int *shell_am = chkpt->rd_stype(basiskey.c_str());
     
     // Retrieve number of primitives per shell
-    int *shell_num_prims = chkpt->rd_snumg();
+    int *shell_num_prims = chkpt->rd_snumg(basiskey.c_str());
     
     // Retrieve exponents of primitive Gaussians
-    double *exponents = chkpt->rd_exps();
-    
+    double *exponents = chkpt->rd_exps(basiskey.c_str());
+    fprintf(outfile, "Exponents:\n");
+    for (int i=0; i<nprimitives_; i++) {
+      fprintf(outfile, "%lf\n", exponents[i]);
+    }
+ 
     // Retrieve coefficients of primitive Gaussian
-    double **ccoeffs = chkpt->rd_contr_full();
+    double **ccoeffs = chkpt->rd_contr_full(basiskey.c_str());
     
     // Retrieve pointer to first primitive in shell
-    int *shell_fprim = chkpt->rd_sprim();
+    int *shell_fprim = chkpt->rd_sprim(basiskey.c_str());
     
     // Retrieve pointer to first basis function in shell
-    shell_first_basis_function_ = chkpt->rd_sloc_new();
+    shell_first_basis_function_ = chkpt->rd_sloc_new(basiskey.c_str());
     
     // Retrieve pointer to first AO in shell
-    shell_first_ao_ = chkpt->rd_sloc();
+    shell_first_ao_ = chkpt->rd_sloc(basiskey.c_str());
     
     // Retrieve location of shells (which atom it's centered on)
-    shell_center_ = chkpt->rd_snuc();
+    shell_center_ = chkpt->rd_snuc(basiskey.c_str());
         
     // Initialize SphericalTransform
     for (int i=0; i<=max_am_; ++i) {
@@ -131,7 +147,7 @@ void BasisSet::initialize_shells(Chkpt *chkpt)
     
     int *so2symblk = new int[nbf_];
     int *so2index  = new int[nbf_];
-    int *sopi = chkpt->rd_sopi();
+    int *sopi = chkpt->rd_sopi(basiskey.c_str());
     int nirreps = chkpt->rd_nirreps();
     
     // Create so2symblk and so2index

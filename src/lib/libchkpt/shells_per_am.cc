@@ -13,14 +13,14 @@ extern "C" {
 
 using namespace psi;
 
-int *Chkpt::rd_shells_per_am(void)
+int *Chkpt::rd_shells_per_am(const char *key2)
 {
 	int *shells_per_am;
 	int max_am;
 	char *keyword;
-	keyword = build_keyword("Shells per am");
+	keyword = build_keyword("Shells per am", key2);
 
-	max_am = rd_max_am();
+	max_am = rd_max_am(key2);
 	shells_per_am = array<int>(max_am+1);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) shells_per_am,
@@ -30,13 +30,13 @@ int *Chkpt::rd_shells_per_am(void)
 	return shells_per_am; 
 }
 
-void Chkpt::wt_shells_per_am(int *shells_per_am)
+void Chkpt::wt_shells_per_am(int *shells_per_am, const char *key2)
 {
 	int max_am;
 	char *keyword;
-	keyword = build_keyword("Shells per am");
+	keyword = build_keyword("Shells per am", key2);
 
-	max_am = rd_max_am();
+	max_am = rd_max_am(key2);
 
 	psio->write_entry(PSIF_CHKPT, keyword, (char *) shells_per_am,
 		(max_am+1)*sizeof(int));
@@ -68,8 +68,8 @@ extern "C" {
 **
 ** \ingroup CHKPT
 */
-	void chkpt_wt_shells_per_am(int *shells_per_am)
+	void chkpt_wt_shells_per_am(int *shells_per_am, const char *key2)
 	{
-		_default_chkpt_lib_->wt_shells_per_am(shells_per_am);
+		_default_chkpt_lib_->wt_shells_per_am(shells_per_am,key2);
 	}
 }

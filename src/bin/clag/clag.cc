@@ -19,6 +19,7 @@
 #include <libpsio/psio.h>
 #include <cmath>
 #include <cstring>
+#include "indpairs.h"
 #include "clag.h"
 
 extern "C" {
@@ -94,6 +95,10 @@ main(int argc, char **argv)
   double eci_chkpt;                    /* ci energy from checkpoint file  */
   double lagtr;                        /* trace of lagrangian             */
 
+  char *wfn;                           /* wavefunction type: CI, DETCAS,  */
+  char *dertype;                       /* derivative level: none, first,  */  
+  int do_zorb;                         /* do z-orbital computation?       */
+
   /*
   ** initialize the io parser
   */
@@ -101,6 +106,29 @@ main(int argc, char **argv)
 
   errcod = ip_data("PRINT","%d", &print_lvl,0);  
   errcod = ip_boolean("WRITE_CAS_FILES", &write_cas_files,0);
+
+   /* need to figure out wheter to filter tei's */
+   errcod = ip_string("DERTYPE", &(dertype),0);
+   if(errcod == IPE_KEY_NOT_FOUND) {
+     dertype = (char *) malloc(sizeof(char)*5);
+     strcpy(dertype, "NONE");
+   }
+
+   errcod = ip_string("WFN", &(wfn),0);
+   if(errcod == IPE_KEY_NOT_FOUND) {
+     wfn = (char *) malloc(sizeof(char)*5);
+     strcpy(wfn, "NONE");
+   }
+
+  // later probably need zorb on for any deriv calc in case they have
+  // frozen orbitals or something.  For now, keep it off for MCSCF
+  if (strcmp(dertype, "NONE")!=0 &&
+    strcmp(wfn, "DETCAS")!=0   &&
+    strcmp(wfn, "CASSCF")!=0   &&
+    strcmp(wfn, "RASSCF")!=0) do_zorb = 1;
+  else
+    do_zorb = 0;
+
 
   /*
   ** print out header information
@@ -195,6 +223,104 @@ main(int argc, char **argv)
   ci_energy(opdm, tpdm, onel_ints, twoel_ints, npop, enuc, eci_chkpt, lagtr); 
   
 
+  /* z-orbital computation and modification of PDM's */
+  if (do_zorb) {
+    IndepPairs IndPairs;
+
+    int **fzc_orbs = init_int_matrix(nirreps,nmo);
+    int **cor_orbs = init_int_matrix(nirreps,nmo);
+    int **vir_orbs = init_int_matrix(nirreps,nmo);
+    int **fzv_orbs = init_int_matrix(nirreps,nmo);
+
+    int cnt = 0;
+    int irrep;
+
+    /* FZC */
+    for (irrep=0; irrep<nirreps; irrep++)
+      for (j=0; j<frdocc[irrep]; j++)
+        fzc_orbs[irrep][j] = cnt++;
+
+    /* COR */
+    for (irrep=0; irrep<nirreps; irrep++)
+      for (j=0; j<cor[irrep]; j++)
+        cor_orbs[irrep][j] = cnt++;
+
+    /* RAS */
+    int ***ras_orbs = (int ***) malloc (MAX_RAS_SPACES * sizeof(int **));
+    for (i=0; i<MAX_RAS_SPACES; i++) {
+      ras_orbs[i] = init_int_matrix(nirreps, nmo);
+      for (irrep=0; irrep<nirreps; irrep++) {
+        for (j=0; j<ras_opi[i][irrep]; j++) {
+          ras_orbs[i][irrep][j] = cnt++;
+        }
+      }
+    }
+
+    /* VIR */
+    for (irrep=0; irrep<nirreps; irrep++)
+      for (j=0; j<vir[irrep]; j++)
+        vir_orbs[irrep][j] = cnt++;
+
+    /* FZV */
+    for (irrep=0; irrep<nirreps; irrep++)
+      for (j=0; j<fruocc[irrep]; j++)
+        fzv_orbs[irrep][j] = cnt++;
+
+    int *ci2relpitz = init_int_array(nmo);
+    for (irrep=0,cnt=0;irrep<nirreps; irrep++) {
+      for (i=0; i<orbspi[irrep]; i++,cnt++) {
+        j = pitz_to_corr[cnt];
+        ci2relpitz[j] = i;
+      }
+    }
+ 
+    IndPairs.set(nirreps, MAX_RAS_SPACES, ras_opi,
+               ras_orbs, frdocc, fzc_orbs,
+               cor, cor_orbs,
+               vir, vir_orbs,
+               fruocc, fzv_orbs,
+               ci2relpitz, 0, 0);
+
+    free(ci2relpitz);
+    free_int_matrix(fzc_orbs);
+    free_int_matrix(cor_orbs);
+    free_int_matrix(vir_orbs);
+    free_int_matrix(fzv_orbs);
+    for (i=0; i<MAX_RAS_SPACES; i++) free_int_matrix(ras_orbs[i]);
+
+    int nocc=0;
+    for (irrep=0; irrep<nirreps; irrep++)
+      nocc += docc[irrep];
+
+    double *epsilon_pitz;
+    chkpt_init(PSIO_OPEN_OLD);
+    epsilon_pitz = chkpt_rd_evals();
+    chkpt_close();
+
+    double *epsilon = init_array(nmo);
+    for (int i=0; i<nmo; i++) {
+      epsilon[pitz_to_corr[i]] = epsilon_pitz[i];      
+    }
+    free(epsilon_pitz);
+
+    double *Zvec = init_array(ntri);
+    double **X_tilde = block_matrix(nmo, nmo);
+    compute_zorb(twoel_ints,lag,epsilon,
+      IndPairs, nmo, nocc, nmo-nocc, Zvec, X_tilde);
+
+    if (print_lvl > 1) {
+      fprintf(outfile,"Z vector:\n");
+      print_array(Zvec,nmo,outfile);
+    }
+
+    relax_pdms(opdm,tpdm,twoel_ints,X_tilde,epsilon,IndPairs,nmo,nocc,
+      npop, Zvec, opdm_file, lag_file, tpdm_file);
+
+    free(Zvec);
+    free_block(X_tilde);
+  } // done computing orbital z vector
+
+  
   /*
   ** write out the two-pdm in a form that the CAS program will like
   ** this is obsolete stuff for the very old CAS program of YY's, we

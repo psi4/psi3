@@ -13,11 +13,11 @@ extern "C" {
 
 using namespace psi;
 
-int Chkpt::rd_nshell(void)
+int Chkpt::rd_nshell(const char *key2)
 {
 	int nshell;
 	char *keyword;
-	keyword = build_keyword("Num. shells");
+	keyword = build_keyword("Num. shells", key2);
 
 	psio->read_entry(PSIF_CHKPT, keyword, (char *) &nshell, sizeof(int));
 
@@ -25,10 +25,10 @@ int Chkpt::rd_nshell(void)
 	return nshell;
 }
 
-void Chkpt::wt_nshell(int nshell)
+void Chkpt::wt_nshell(int nshell, const char *key2)
 {
 	char *keyword;
-	keyword = build_keyword("Num. shells");
+	keyword = build_keyword("Num. shells", key2);
 
 	psio->write_entry(PSIF_CHKPT, keyword, (char *) &nshell, sizeof(int));
 
@@ -65,8 +65,8 @@ extern "C" {
 **
 ** \ingroup CHKPT
 */
-	void chkpt_wt_nshell(int nshell)
+	void chkpt_wt_nshell(int nshell, const char *key2)
 	{
-		_default_chkpt_lib_->wt_nshell(nshell);
+		_default_chkpt_lib_->wt_nshell(nshell, key2);
 	}
 }

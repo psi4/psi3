@@ -14,16 +14,16 @@ extern "C" {
 
 using namespace psi;
 
-double **Chkpt::rd_usotbf(void)
+double **Chkpt::rd_usotbf(const char *key2)
 {
-  if (rd_puream()) {
+  if (rd_puream(key2)) {
 	double **usotbf;
 	int num_so, i;
 	psio_address ptr;
 	char *keyword;
-	keyword = build_keyword("SO->BF transmat");
+	keyword = build_keyword("SO->BF transmat", key2);
 
-	num_so = rd_nso();
+	num_so = rd_nso(key2);
 	usotbf = matrix<double>(num_so,num_so);
 
 	ptr = PSIO_ZERO;
@@ -34,17 +34,17 @@ double **Chkpt::rd_usotbf(void)
 	return usotbf;
   }
   else
-    return rd_usotao();
+    return rd_usotao(key2);
 }
 
-void Chkpt::wt_usotbf(double **usotbf)
+void Chkpt::wt_usotbf(double **usotbf, const char *key2)
 {
 	int num_so, i;
 	psio_address ptr;
 	char *keyword;
-	keyword = build_keyword("SO->BF transmat");
+	keyword = build_keyword("SO->BF transmat", key2);
 
-	num_so = rd_nso();
+	num_so = rd_nso(key2);
 
 	ptr = PSIO_ZERO;
 	for(i=0;i<num_so;i++)
@@ -78,8 +78,8 @@ extern "C" {
 **
 ** \ingroup CHKPT
 */
-	void chkpt_wt_usotbf(double **usotbf)
+	void chkpt_wt_usotbf(double **usotbf, const char *key2)
 	{
-		_default_chkpt_lib_->wt_usotbf(usotbf);
+		_default_chkpt_lib_->wt_usotbf(usotbf, key2);
 	}
 }

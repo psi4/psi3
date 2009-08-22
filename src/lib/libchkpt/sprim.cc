@@ -14,14 +14,14 @@ extern "C" {
 
 using namespace psi;
 
-int *Chkpt::rd_sprim(void)
+int *Chkpt::rd_sprim(const char *key2)
 {
 	int *sprim;
 	int nshell;
 	char *keyword;
-	keyword = build_keyword("First primitive per shell");
+	keyword = build_keyword("First primitive per shell", key2);
 
-	nshell = rd_nshell();
+	nshell = rd_nshell(key2);
 
 	sprim = array<int>(nshell);
 
@@ -31,13 +31,13 @@ int *Chkpt::rd_sprim(void)
 	return sprim;
 }
 
-void Chkpt::wt_sprim(int *sprim)
+void Chkpt::wt_sprim(int *sprim, const char *key2)
 {
 	int nshell;
 	char *keyword;
-	keyword = build_keyword("First primitive per shell");
+	keyword = build_keyword("First primitive per shell", key2);
 
-	nshell = rd_nshell();
+	nshell = rd_nshell(key2);
 
 	psio->write_entry(PSIF_CHKPT, keyword, (char *) sprim, nshell*sizeof(int));
 
@@ -72,8 +72,8 @@ extern "C" {
 ** 
 ** \ingroup CHKPT
 */
-	void chkpt_wt_sprim(int *sprim)
+	void chkpt_wt_sprim(int *sprim, const char *key2)
 	{
-		_default_chkpt_lib_->wt_sprim(sprim);
+		_default_chkpt_lib_->wt_sprim(sprim, key2);
 	}
 }

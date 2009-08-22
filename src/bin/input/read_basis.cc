@@ -20,7 +20,7 @@ namespace psi { namespace input {
    Main routine to read the basis set info.  It calls recur, and all of the
    normalization routines. */
 
-void read_basis()
+void read_basis(const char *basiskey)
 {
    int i = 0;
    int j = 0;
@@ -81,16 +81,16 @@ void read_basis()
     -----------------------*/
    
      depth = 0;
-     errcod = ip_count("BASIS",&depth,0);
+     errcod = ip_count(basiskey,&depth,0);
      if (depth == 0) { /* the same basis for all atoms */
-       errcod = ip_string("BASIS",&basis_type,0);
+       errcod = ip_string(basiskey,&basis_type,0);
        if (errcod != IPE_OK)
 	 punt("There is a problem with the BASIS keyword!");
        for(i=0;i<num_atoms;i++)
 	 atom_basis[i] = basis_type;
      }
      else {
-       errcod = ip_count("BASIS",&j,1,0);
+       errcod = ip_count(basiskey,&j,1,0);
        if (errcod == IPE_NOT_AN_ARRAY)
          /*----------
 	   Basis sets for each atom is specified, e.g.
@@ -98,7 +98,7 @@ void read_basis()
 	  ----------*/
          if (depth == num_atoms)
 	   for(i=0;i<num_atoms;i++) {
-	     errcod = ip_string("BASIS",&basis_type,1,i);
+	     errcod = ip_string(basiskey,&basis_type,1,i);
 	     if (errcod != IPE_OK)
 	       punt("There is a problem with the BASIS array!");
 	     atom_basis[i] = basis_type;
@@ -114,15 +114,15 @@ void read_basis()
 	     )
 	    ----------*/
 	 for(i=0;i<depth;i++) {
-	   errcod = ip_count("BASIS",&j,1,i);
+	   errcod = ip_count(basiskey,&j,1,i);
 	   if (errcod != IPE_OK || j != 2) {
 	     fprintf(outfile,"  There is a problem with line %d of the BASIS array!\n",i+1);
 	     punt("Invalid basis set file");;
 	   }
-	   errcod = ip_string("BASIS",&elem_label,2,i,0);
+	   errcod = ip_string(basiskey,&elem_label,2,i,0);
 	   atom_num(elem_label,&Z);
 	   free(elem_label);
-	   errcod = ip_string("BASIS",&basis_type,2,i,1);
+	   errcod = ip_string(basiskey,&basis_type,2,i,1);
 	   for(k=0;k<num_atoms;k++)
 	     if (!strcmp(elem_name[(int)Z],element[k]))
 	        atom_basis[k] = basis_type;
