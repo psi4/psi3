@@ -5,23 +5,16 @@
       according to Fischer and Almlof, J. Phys. Chem., 96, 9770 (1992).
 */
 
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <libciomr/libciomr.h>
-#include <libipv1/ip_lib.h>
-#include <libpsio/psio.h>
-#include <psifiles.h>
-#include <physconst.h>
-#include <cov_radii.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
+#include "opt.h"
+
+#include <cov_radii.h>
+#include <libpsio/psio.h>
 
 namespace psi { namespace optking {
 
@@ -45,7 +38,7 @@ inline int period(double ZA) {
   return period((int) ZA);
 }
 
-void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
+void empirical_H(const simples_class & simples, const salc_set &symm, const cartesians &carts) {
   int i, j, k, atomA, atomB, atomC, atomD, simple, count = -1, perA, perB;
   int I, K, L;
   int a, b, natom;
@@ -65,9 +58,9 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
 
   // Form diagonal Hessian in simple internals first
   if (optinfo.empirical_H == OPTInfo::SCHLEGEL) {
-    for (i=0;i<simples.stre.get_num();++i) {
-      atomA = simples.stre.get_A(i);
-      atomB = simples.stre.get_B(i);
+    for (i=0;i<simples.stre.size();++i) {
+      atomA = simples.stre[i].get_A();
+      atomB = simples.stre[i].get_B();
       perA = period(carts.get_Z(atomA));
       perB = period(carts.get_Z(atomB));
       A = 1.734;
@@ -91,10 +84,10 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
       // fc in aJ/Ang^2
       f[++count] = tval * _hartree2aJ / SQR(_bohr2angstroms);
     }
-    for (i=0;i<simples.bend.get_num();++i) {
-      atomA = simples.bend.get_A(i);
-      atomB = simples.bend.get_B(i);
-      atomC = simples.bend.get_C(i);
+    for (i=0;i<simples.bend.size();++i) {
+      atomA = simples.bend[i].get_A();
+      atomB = simples.bend[i].get_B();
+      atomC = simples.bend[i].get_C();
       if ( ((int) (carts.get_Z(atomA) == 1)) ||
            ((int) (carts.get_Z(atomC) == 1)) )
         val = 0.160;
@@ -102,9 +95,9 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
         val = 0.250;
       f[++count] = val * _hartree2aJ;
     }
-    for (i=0;i<simples.tors.get_num();++i) {
-      atomB = simples.tors.get_B(i);
-      atomC = simples.tors.get_C(i);
+    for (i=0;i<simples.tors.size();++i) {
+      atomB = simples.tors[i].get_B();
+      atomC = simples.tors[i].get_C();
       A = 0.0023;
       B = 0.07;
       rBCcov = Rcov(carts.get_Z(atomB), carts.get_Z(atomC));
@@ -112,11 +105,11 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
       if (rBC > (rBCcov + A/B)) B = 0.0; // keep > 0
       f[++count] = (A - (B*(rBC - rBCcov))) * _hartree2aJ;
     }
-    for (i=0;i<simples.out.get_num();++i) {
-      atomA = simples.out.get_A(i);
-      atomB = simples.out.get_B(i);
-      atomC = simples.out.get_C(i);
-      atomD = simples.out.get_D(i);
+    for (i=0;i<simples.out.size();++i) {
+      atomA = simples.out[i].get_A();
+      atomB = simples.out[i].get_B();
+      atomC = simples.out[i].get_C();
+      atomD = simples.out[i].get_D();
       A = 0.045;
       for (j=0;j<3;++j) {
          r1[j] = coord[3*atomA+j] - coord[3*atomB+j];
@@ -134,14 +127,14 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
       tval = 1 - fabs(tval);
       f[++count] = A * pow(tval,4) * _hartree2aJ;
     }
-    for (i=0;i<simples.lin_bend.get_num();++i) {
+    for (i=0;i<simples.linb.size();++i) {
       f[++count] = 0.10 * _hartree2aJ;
     }
   }
   else if (optinfo.empirical_H == OPTInfo::FISCHER) {
-    for (i=0;i<simples.stre.get_num();++i) {
-      atomA = simples.stre.get_A(i);
-      atomB = simples.stre.get_B(i);
+    for (i=0;i<simples.stre.size();++i) {
+      atomA = simples.stre[i].get_A();
+      atomB = simples.stre[i].get_B();
 
       rAB   = carts.R(atomA,atomB);
       rABcov = Rcov(carts.get_Z(atomA), carts.get_Z(atomB));
@@ -151,10 +144,10 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
       tval = A * exp(-B*(rAB - rABcov));
       f[++count] = tval * _hartree2aJ / SQR(_bohr2angstroms);
     }
-    for (i=0;i<simples.bend.get_num();++i) {
-      atomA = simples.bend.get_A(i);
-      atomB = simples.bend.get_B(i);
-      atomC = simples.bend.get_C(i);
+    for (i=0;i<simples.bend.size();++i) {
+      atomA = simples.bend[i].get_A();
+      atomB = simples.bend[i].get_B();
+      atomC = simples.bend[i].get_C();
 
       rABcov = Rcov(carts.get_Z(atomA), carts.get_Z(atomB));
       rBCcov = Rcov(carts.get_Z(atomB), carts.get_Z(atomC));
@@ -166,9 +159,9 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
       tval = A + B/(pow(rABcov*rBCcov, D)) * exp(-C*( rAB + rBC - rABcov - rBCcov));
       f[++count] = tval * _hartree2aJ;
     }
-    for (i=0;i<simples.tors.get_num();++i) {
-      atomB = simples.tors.get_B(i);
-      atomC = simples.tors.get_C(i);
+    for (i=0;i<simples.tors.size();++i) {
+      atomB = simples.tors[i].get_B();
+      atomC = simples.tors[i].get_C();
 
       rBCcov = Rcov(carts.get_Z(atomB), carts.get_Z(atomC));
       rBC = carts.R(atomB,atomC);
@@ -192,12 +185,12 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
       tval = A + tval * exp(-C * (rBC - rBCcov));
       f[++count] = tval * _hartree2aJ;
     }
-    for (i=0;i<simples.out.get_num();++i) {
-      atomA = simples.out.get_A(i);
-      atomB = simples.out.get_B(i);
-      atomC = simples.out.get_C(i);
-      atomD = simples.out.get_D(i);
-      val = simples.out.get_val(i)*_pi/180.0;
+    for (i=0;i<simples.out.size();++i) {
+      atomA = simples.out[i].get_A();
+      atomB = simples.out[i].get_B();
+      atomC = simples.out[i].get_C();
+      atomD = simples.out[i].get_D();
+      val = simples.out[i].get_val()*_pi/180.0;
 
       A = 0.0025; B = 0.0061; C = 3.00; D = 4.00; E = 0.80;
 
@@ -210,22 +203,22 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
       tval = A + tval * exp(-C*(rAB - rABcov));
       f[++count] = tval * _hartree2aJ;
     }
-    for (i=0;i<simples.lin_bend.get_num();++i) {
+    for (i=0;i<simples.linb.size();++i) {
       f[++count] = 0.10 * _hartree2aJ;
     }
   }
 
   // use same guess force constants for interfragment coordinates
   // regardless of chosen empirical_H type 
-  for (i=0;i<simples.frag.get_num();++i) {
-    if (simples.frag.get_coord_on(i,0)) {
+  for (i=0;i<simples.frag.size();++i) {
+    if (simples.frag[i].get_coord_on(0)) {
       int min_a,min_b;
       rAB = 1e6;
       // find minimum distance between two atoms, one in each fragment
-      for (a=0; a<simples.frag.get_A_natom(i); ++a) {
-        atomA = simples.frag.get_A_atom(i,a);
-        for (b=0; b<simples.frag.get_B_natom(i); ++b) {
-          atomB = simples.frag.get_B_atom(i,b);
+      for (a=0; a<simples.frag[i].get_A_natom(); ++a) {
+        atomA = simples.frag[i].get_A_atom(a);
+        for (b=0; b<simples.frag[i].get_B_natom(); ++b) {
+          atomB = simples.frag[i].get_B_atom(b);
           tval = carts.R(atomA,atomB);
           if (tval < rAB) {
             rAB = tval;
@@ -288,15 +281,15 @@ void empirical_H(internals &simples, salc_set &symm, cartesians &carts) {
       f[++count] = 0.001;
       }
     } */
-    if (simples.frag.get_coord_on(i,1))
+    if (simples.frag[i].get_coord_on(1))
       f[++count] = 0.001;
-    if (simples.frag.get_coord_on(i,2))
+    if (simples.frag[i].get_coord_on(2))
       f[++count] = 0.001;
-    if (simples.frag.get_coord_on(i,3))
+    if (simples.frag[i].get_coord_on(3))
       f[++count] = 0.0005;
-    if (simples.frag.get_coord_on(i,4))
+    if (simples.frag[i].get_coord_on(4))
       f[++count] = 0.0005;
-    if (simples.frag.get_coord_on(i,5))
+    if (simples.frag[i].get_coord_on(5))
       f[++count] = 0.0005;
   }
   free(coord);

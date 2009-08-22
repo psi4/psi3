@@ -1,6 +1,6 @@
 /*! \file
     \ingroup OPTKING
-    \brief opt.h header file
+    \brief opt.h : function declarations
 */
 
 #ifndef _psi3_bin_optking_opt_h_
@@ -8,214 +8,105 @@
 
 namespace psi { namespace optking {
 
-/* Global variables */
-#ifdef EXTERN
-# undef EXTERN
-# define EXTERN extern
-#else
-# define EXTERN
-#endif
+void open_PSIF(void);
+void close_PSIF(void);
+void exit_io(void);
+void print_mat2(double **matrix, int rows, int cols, FILE *of);
+void print_mat5(double **matrix, int rows, int cols, FILE *of);
+int div_int(int big, int little);
+double **symm_matrix_invert(double **A, int dim, int print_det, int redundant);
+double energy_chkpt(void);
+void dgeev_optking(int L, double **G, double *lambda, double **alpha);
+void print_evects(double **evects, double *evals, int nrow, int ncol, FILE *out);
+double **mass_mat(double *masses);
+double **unit_mat(int dim);
+void symmetrize_geom(double *x);
 
-#define OPT_AUX (13)
-#define SQR(A) ((A)*(A))
-/*--- These are just internal type specifiers ---*/
-#define STRE_TYPE (0)
-#define BEND_TYPE (1)
-#define TORS_TYPE (2)
-#define OUT_TYPE (3)
-#define LIN_BEND_TYPE (4)
-#define FRAG_TYPE (5)
-#define PRINT_TO_GEOM (113)
-#define PRINT_TO_30 (114)
-/* Limits to hard-wired arrays */
-#define MAX_SALCS (500)
-#define MAX_ATOMS (300)
-#define MAX_ZVARS (500)
-#define MAX_LINELENGTH (133)
-#define MAX_SALC_LENGTH (1000)
-#define MAX(I,J) ((I>J) ? I : J)
-#define MIN(I,J) ((I>J) ? J : I)
-#define EVAL_TOL (1.0E-14)               /* tolerance for eigenvalues (used in sq_rsp() and irrep() ) */
-#define REDUNDANT_EVAL_TOL (1.0E-10)
-#define SPANNED_IRREP_TOL (0.05)         /* if character greater than this, irrep projected and kept */
-#define LABEL_LENGTH (4) // for point group and irrep labels
-/* step size limits */
+double nuclear_repulsion(double *fatomic_num, double *geom);
+double get_disp_nuclear_repulsion(const cartesians & carts, int x1, int x2, double disp1,
+    double disp2, double disp_size);
 
-#define STEP_LIMIT_CART (0.3) /* default max change in value of one cartesian coordinate if cartesian=true */
-#define NONLINEAR_DIST (1.0E-4) /* designed to exclude angle for CO2 if angle exceeds 179 */
-#define MIN_DQ_STEP (1.0E-12)
-#define MIN_CART_OUT (1.0E-12)
-#define MIN_LIN_COS (1.0E-10)
-#define FIX_NEAR_180 (150.0)
+// character-table related functions
+int **get_char_table(char *ptgrp);    /* returns the character table */
+int get_nirreps(char *ptgrp);         /* "     " number of irreps */
+const char **get_irrep_labels(char *ptgrp); /* "     " number of symmetry operations */
+const char **get_symm_ops(char *ptgrp);/* "     " symm operation labels */
+int *get_ops_coeffs(char *ptgrp);      /* "     " coefficients of the symmetry operations */
+int get_num_ops(char *ptgrp);          /* "     " number of operations */
+int get_num_classes(char *ptgrp);      /* "     " number of classes of operations */
+int *get_ops_in_class(char *ptgrp, int nirreps);
+int get_irrep_xyz(double **cartrep, int xyz);
 
-/* optking running modes */
-#define MODE_DISP_NOSYMM   (10)
-#define MODE_DISP_IRREP    (11)
-#define MODE_DISP_LOAD     (12)
-#define MODE_DISP_USER     (13)
-#define MODE_LOAD_REF      (14)
-#define MODE_OPT_STEP      (15)
-#define MODE_FREQ_ENERGY   (16)
-#define MODE_GRAD_ENERGY   (17)
-#define MODE_FREQ_GRAD_NOSYMM (18)
-#define MODE_FREQ_GRAD_IRREP  (19)
-#define MODE_DISP_FREQ_GRAD_CART  (20)
-#define MODE_FREQ_GRAD_CART  (21)
-#define MODE_DISP_FREQ_ENERGY_CART  (22)
-#define MODE_FREQ_ENERGY_CART  (23)
-#define MODE_GRAD_SAVE        (24)
-#define MODE_ENERGY_SAVE      (25)
-#define MODE_RESET_PREFIX     (26)
-#define MODE_DISP_NUM_PLUS    (27)
-#define MODE_DELETE_BINARIES  (28)
-#define MODE_TEST_BMAT        (29)
-#define MODE_OPT_REPORT       (30)
-#define MODE_DISP_INTERFRAGMENT      (31)
-#define MODE_FREQ_GRAD_INTERFRAGMENT (32)
-#define MODE_FCONST_INIT (33)
+int check_coordinates(int natom, double *coord, double *masses, double *Zvals,
+    int *ndisp_small, double ***disp_small);
+double **irrep(const simples_class &simples, double **di_coord);
 
-extern "C" {
-  EXTERN FILE *infile, *outfile;
-  EXTERN char *psi_file_prefix;
-}
+double **compute_B(const simples_class &simples, const salc_set &salcs);
+double *compute_q(const simples_class &simples, const salc_set &symm);
+double **compute_G(double **B, int num_intcos, const cartesians &carts);
+void get_optinfo(void);
+void get_syminfo(const simples_class &simples);
 
-EXTERN FILE *fp_input, *fp_intco, *fp_fconst, *fp_opt_aux, *fp_11, *fp_fintco;
-EXTERN int *ops_in_class;
-EXTERN int nirreps, *irr;
-EXTERN int num_nonzero;  /* # of non-redundant di coordinates (evects of G with nonzero eigenvalues) */
-EXTERN char ptgrp[4];    /*molecular point group*/
+void disp_user(const cartesians &carts, simples_class & simples, const salc_set &all_salcs);
 
-EXTERN void punt(const char *message);
-EXTERN void open_PSIF(void);
-EXTERN void close_PSIF(void);
-EXTERN void exit_io(void);
-EXTERN double nuclear_repulsion(double *fatomic_num, double *geom);
-EXTERN void print_mat2(double **matrix, int rows, int cols, FILE *of);
-EXTERN void print_mat5(double **matrix, int rows, int cols, FILE *of);
-EXTERN void cross_product(double *u,double *v,double *out);
-EXTERN void scalar_mult(double a, double *vect, int dim);
-EXTERN void scalar_div(double a, double *vect);
-EXTERN int div_int(int big, int little);
-EXTERN double **symm_matrix_invert(double **A, int dim, int print_det, int redundant);
-EXTERN double energy_chkpt(void);
-EXTERN void dgeev_optking(int L, double **G, double *lambda, double **alpha);
-EXTERN void print_evects(double **evects, double *evals, int nrow, int ncol, FILE *out);
-EXTERN double **mass_mat(double *masses);
-EXTERN double **unit_mat(int dim);
-EXTERN void swap(int *a, int *b);
-EXTERN void swap_tors(int *a, int *b, int *c, int *d);
-EXTERN void zval_to_symbol(double zval, char *sym);
-EXTERN void symmetrize_geom(double *x);
+int make_disp_irrep(const cartesians &carts, simples_class &simples, const salc_set &all_salcs);
+int make_disp_nosymm(const cartesians &carts, simples_class &simples, const salc_set &all_salcs);
 
-struct OPTInfo {
+int disp_fc_grad_selected(const cartesians &carts, simples_class &simples, const salc_set &symm);
+void fc_grad_selected(const cartesians &carts, simples_class &simples, const salc_set &symm);
 
-  int mode;
-  int disp_num;
-  int points;
-  int freq_irrep;
-  int points_freq_grad_ints;
-  int irrep;
-  int simples_present;
-  int salcs_present;
-  int constraints_present;
-  int nconstraints;
-  int *constraints;
-  int test_B;
 
-/* print options */
-  int print_simples;
-  int print_params;
-  int print_delocalize;
-  int print_symmetry;
-  int print_hessian;
-  int print_cartesians;
-  int print_fconst;
+void freq_grad_irrep(const cartesians &carts, simples_class &simples, const salc_set &all_salcs);
 
-/* optimization parameters */
-  bool ts;  // search for a transition state? 
-  bool selected_fc; // choose coordinates for which to get force constants
-  int balked_last_time; // boolean to indicate we've recomputed fc's
-  int cartesian;
-  int optimize;
-  int redundant;
-  int delocalize;
-  int do_only_displacements;
-  int zmat;
-  int zmat_simples;
+void freq_grad_nosymm(const cartesians &carts, simples_class &simples, const salc_set &all_salcs);
 
-  enum { NONE, BFGS, MS, POWELL, BOFILL} H_update;
-  enum { FISCHER, SCHLEGEL} empirical_H;
-  enum { EMPIRICAL, KEEP } nonselected_fc;
+void grad_energy(cartesians &carts, simples_class &simples, const salc_set &all_salcs);
+void grad_save(const cartesians &carts);
+void energy_save(void);
 
-  int H_update_use_last;
-  bool rfo; // whether to use rfo step
-  bool rfo_follow_root; // whether to follow an initial root
-  int rfo_root; // which root to follow
-  double step_energy_limit; // fraction error in energy prediction to tolerate
-  double step_energy_limit_back; // fraction error to tolerate in guess step backward
-  double step_limit; // max change in au or radians
-  int dertype;
-  int numerical_dertype;
-  int iteration;
-  int micro_iteration;
-  double conv;  /* MAX force convergence */
-  double econv; /* MAX DE convergence */
-  double ev_tol;
-  double scale_connectivity;
-  double disp_size;
-  double step_limit_cart;
-  int mix_types;
-  int natom;
-  int nallatom;
-  int *atom_dummy;
-  int *to_dummy;
-  int *to_nodummy;
-  int dummy_axis_1;
-  int dummy_axis_2;
-  char *wfn;
-  char *jobtype;
-  int energy_dat;
-  int grad_dat;
-  int external_energies; //ACS (11/07) Are we getting energy.dat from another program?
-/* parameters involving fragment coordinates */
-  int frag_dist_rho;
-  int fix_interfragment;
-  int fix_intrafragment;
-  int analytic_interfragment;
-  int max_consecutive_line_searches;
+int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm_salcs);
 
-/* Back-transformation parameters */
-  int bt_max_iter;
-  double bt_dq_conv;
-  double bt_dx_conv;
+int opt_step_cart(cartesians &carts);
 
-/* Obscure limits in intco evaluation */
-  double cos_tors_near_1_tol;
-  double cos_tors_near_neg1_tol;
-  double sin_phi_denominator_tol;
+int *read_constraints(const simples_class &simples);
+void opt_report(FILE *of);
+int disp_freq_grad_cart(const cartesians &carts);
+void freq_grad_cart(const cartesians &carts);
+int disp_freq_energy_cart(const cartesians &carts);
 
-  int nfragment;
-  int *natom_per_fragment;
-  int *nallatom_per_fragment;
-  int *nref_per_fragment;
-  double ***fragment_coeff;
-};
+void freq_energy_cart(void);
 
-struct SYMInfo {
-  char *symmetry;
-  int nirreps;
-  int **ct;
-  char **irrep_lbls;
-  char **clean_irrep_lbls;
-  char **op_lbls;
-  int **ict;
-  int **fict;
-  int **ict_ops;
-  int **ict_ops_sign;
-};
+int test_B(const cartesians &carts, simples_class &simples, const salc_set &symm);
 
-EXTERN struct OPTInfo optinfo;
-EXTERN struct SYMInfo syminfo;
+void H_update_cart(double **H, cartesians & carts);
+void sort_evals_all(int nsalc_all, double *evals_all, int *evals_all_irrep);
+void empirical_H(const simples_class & simples, const salc_set &symm, const cartesians &carts);
+
+// functions involving z-matrices
+void zmat_to_intco(void);
+void compute_zmat(const cartesians &carts, int *unique_zvars);
+void print_zmat(FILE *outfile, int *unique_zvars);
+
+
+double **compute_H(simples_class & simples, const salc_set &symm,
+    double **P, const cartesians &carts);
+double **compute_H_cart(cartesians & carts, double **P);
+
+void delocalize(const simples_class &simples, const cartesians &carts);
+void rm_rotations(const simples_class & simples, const cartesians &carts,
+    int &num_nonzero, double **evects);
+
+
+bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &all_salcs,
+    double *dq, int print_flag, int restart_geom_file, char *disp_label, int disp_num,
+    int last_disp, double *return_geom);
+
+void step_limit(const simples_class &, const salc_set &, double *dq);
+void check_zero_angles(const simples_class &, const salc_set &, double *dq);
+
+void fconst_init(const cartesians &carts, const simples_class &simples, const salc_set &symm);
+void fconst_init_cart(cartesians &carts);
+
 
 }} /* namespace psi::optking */
 

@@ -4,35 +4,22 @@
      displaces + and - along all cartesian coordinates
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-#include <libciomr/libciomr.h>
-#include <libqt/qt.h>
-#include <libipv1/ip_lib.h>
-#include <physconst.h>
-#include <libpsio/psio.h>
-#include <psifiles.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
-#include "bond_lengths.h"
+#include "opt.h"
+
+#include <libqt/qt.h>
+#include <libciomr/libciomr.h>
+#include <libpsio/psio.h>
+#include <libchkpt/chkpt.h>
 
 namespace psi { namespace optking {
 
-int get_irrep_xyz( double **cartrep, int xyz);
-int check_coordinates(int natom, double *coord, double *masses, double *Zvals,
-    int *ndisp_small, double ***disp_small);
-double repulsion_energy(int natom, double *coord, double *Zvals);
-
-int disp_freq_grad_cart(cartesians &carts)
+int disp_freq_grad_cart(const cartesians &carts)
 {
   int i,j,a,b,I,k,dim, ndisp_all, nsalc_all, natom, atom, xyz, cnt, loner, *ndisp;
   int op, atom2, nirreps, natom_unique, irrep, diag_ind, atom_unique;
@@ -491,7 +478,7 @@ int check_coordinates(int natom, double *coord, double *masses, double *Zvals,
   for (xyz=0; xyz<3 ; ++xyz)
     com[xyz] = com[xyz] / tval;
 
-  energy = repulsion_energy(natom,coord,Zvals);
+  energy = nuclear_repulsion(Zvals, coord);
 
   /* construct displaced geometry */
   for (irrep=0; irrep<nirreps; ++irrep) {
@@ -520,7 +507,7 @@ int check_coordinates(int natom, double *coord, double *masses, double *Zvals,
 
       /* check repulsion energy of displaced geometry */
       /*
-      energy_disp = repulsion_energy(natom,coord,Zvals);
+      energy_disp = nuclear_repulsion(Zvals, coord);
       if (fabs( energy - energy_disp ) > 1.0E-10) {
         fprintf(outfile,"Repulsion energy invariance failed, Irrep: %d, %20.10lf.\n",
         irrep, fabs( energy - energy_disp));
@@ -538,21 +525,6 @@ int check_coordinates(int natom, double *coord, double *masses, double *Zvals,
   }
   else
     exit(1);
-}
-                                                                                                                
-double repulsion_energy(int natom, double *coord, double *Zvals) {
-  int i, j;
-  double dist, energy = 0.0;
-
-  for (i=0; i<natom; ++i)
-    for (j=0; j<i; ++j) {
-      dist = sqrt( SQR(coord[3*i+0]-coord[3*j+0])
-                 + SQR(coord[3*i+1]-coord[3*j+1])
-                 + SQR(coord[3*i+2]-coord[3*j+2]) );
-
-      energy += Zvals[i]*Zvals[j] / dist;
-    }
-    return energy;
 }
 
 }} /* namespace psi::optking */

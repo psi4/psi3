@@ -3,36 +3,23 @@
     \brief OPT_STEP_CART.CC takes geometry step in cartesian coordinates
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-#include <libciomr/libciomr.h>
-#include <libqt/qt.h>
-#include <libipv1/ip_lib.h>
-#include <physconst.h>
-#include <libpsio/psio.h>
-#include <psifiles.h>
 
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
-#include "bond_lengths.h"
+#include "opt.h"
+
+#include <libipv1/ip_lib.h>
+#include <libciomr/libciomr.h>
+#include <libpsio/psio.h>
 
 namespace psi { namespace optking {
 
-extern void compute_zmat(cartesians &carts, int *unique_zvars);
-extern void print_zmat(FILE *outfile, int *unique_zvars);
-void fconst_init_cart(cartesians &carts);
-extern double **compute_H_cart(cartesians & carts, double **P);
-
-int opt_step_cart(cartesians &carts, internals &simples, salc_set &symm) {
-  int xyz, i,j,k,ii,a,b, dim, dim_carts, success,nbfgs, nsimples, constraint, nf;
+int opt_step_cart(cartesians &carts) {
+  int xyz, i,j,k,ii,a,b, dim, dim_carts, success,nbfgs, constraint, nf;
   double **H_inv, **temp_mat, **u, **P;
   double *f, *x, *dx, *q, tval, tval2, scale, temp;
   double **geom_A, **geom_B;
@@ -105,8 +92,8 @@ int opt_step_cart(cartesians &carts, internals &simples, salc_set &symm) {
     if (optinfo.zmat) {
       int *unique_zvars;
       unique_zvars = init_int_array(MAX_ZVARS);
-      compute_zmat(carts, unique_zvars);
-      print_zmat(outfile, unique_zvars);
+      //compute_zmat(carts, unique_zvars);
+      //print_zmat(outfile, unique_zvars);
       free(unique_zvars);
       fprintf(outfile,"\n");
     }

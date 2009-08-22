@@ -4,16 +4,12 @@
   - may not work for dummy atoms
 */
 
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <cmath>
+#define EXTERN
+#include "globals.h"
+#undef EXTERN
+
 #include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
-
-#define EXTERN
-#include "opt.h"
-#undef EXTERN
 
 namespace psi { namespace optking {
 

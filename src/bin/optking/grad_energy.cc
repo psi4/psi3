@@ -3,32 +3,21 @@
     \brief GRAD_ENERGY computes a file11 entry from energies in chkpt Rollin King, 2002
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-#include <libciomr/libciomr.h>
-#include <libipv1/ip_lib.h>
-#include <physconst.h>
-#include <libpsio/psio.h>
-#include <psifiles.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
-#include "bond_lengths.h"
-#define MAX_LINE 132
+#include "opt.h"
+
+#include <libchkpt/chkpt.h>
+#include <libipv1/ip_lib.h>
+#include <libpsio/psio.h>
 
 namespace psi { namespace optking {
 
-double **compute_B(internals &simples, salc_set &symm);
-
-void grad_energy(cartesians &carts, internals &simples, salc_set &symm) {
+void grad_energy(cartesians &carts, simples_class &simples, const salc_set &symm) {
 
   int i,j,a,b, dim, dim_carts, num_disps, cnt, natom;
   double **B, *geom, *forces;
@@ -57,7 +46,7 @@ void grad_energy(cartesians &carts, internals &simples, salc_set &symm) {
   if (optinfo.energy_dat) { /* read from energy.dat text file */
     fp_energy_dat = fopen("energy.dat", "r");
     rewind (fp_energy_dat);
-    line1 = new char[MAX_LINE+1];
+    line1 = new char[MAX_LINELENGTH+1];
     // ACS (11/06) Allow external program to be used to compute energies
     if(optinfo.external_energies){
       /* Read the first energy and dump it as the reference energy */
@@ -122,8 +111,8 @@ for (i=0;i<symm.get_num();++i)
   close_PSIF();
 
   // Transform forces to cartesian coordinates
-  simples.compute_internals(natom, geom);
-  simples.compute_s(natom, geom);
+  simples.compute(geom);
+  simples.compute_s(geom);
   B = compute_B(simples, symm);
   f = new double[dim_carts];
   mmult(B,1,&f_q,1,&f,1,dim_carts,symm.get_num(),1,0);
@@ -169,8 +158,8 @@ for (i=0;i<symm.get_num();++i)
   free(geom);
 
   // recompute values of internals and s vectors -- too late!
-//  simples.compute_internals(carts.get_natom(),carts.get_coord());
-//  simples.compute_s(carts.get_natom(),carts.get_coord() );
+//  simples.compute(carts.get_coord());
+//  simples.compute_s(carts.get_coord() );
 
   // use optking --opt_step to take a step
   // opt_step(carts, simples, symm);

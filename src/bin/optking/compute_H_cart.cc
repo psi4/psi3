@@ -5,28 +5,18 @@
     BFGS update on H inverts H to form H_inv and returns H_inv.
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <libciomr/libciomr.h>
-#include <physconst.h>
-#include <libipv1/ip_lib.h>
-#include <psifiles.h>
-#include <libpsio/psio.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
+#include "opt.h"
+
+#include <libipv1/ip_lib.h>
+#include <libpsio/psio.h>
 
 namespace psi { namespace optking {
-
-void H_update_cart(double **H, cartesians &carts);
-double get_disp_nuclear_repulsion(cartesians & carts, int x1, int x2, double disp1, double disp2, double disp_size);
 
 double **compute_H_cart(cartesians & carts, double **P) {
   double **H, **H_inv, **H_inv_new, **H_new, **temp_mat;

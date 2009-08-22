@@ -1,34 +1,23 @@
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-#include <libciomr/libciomr.h>
-#include <libqt/qt.h>
-#include <libipv1/ip_lib.h>
-#include <physconst.h>
-#include <libpsio/psio.h>
-#include <psifiles.h>
+/* STEP_LIMIT limits maximum change in primitive to value in au or rad */
 
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
-#include "bond_lengths.h"
 
 namespace psi { namespace optking {
 
 // no internal coordinate value can change more than optinfo.step_limit
 // dq is passed in in Angstroms or radians
 
-void step_limit(internals &simples, salc_set &symm, double *dq) {
+void step_limit(const simples_class & simples, const salc_set &symm, double *dq) {
 
-  int i, j, dim, max_i, simple, intco_type, sub_index, sub_index2;
+  int i, j, dim, max_i, simple, sub_index, sub_index2;
   double min_scale = 1.0, scale, coeff, prefactor, tval, dq_simple;
   double inv_limit, tval2, R, dR, inv_R_min, inv_R_max, step_limit;
+  Intco_type intco_type;
   
   dim = symm.get_num();
   step_limit = optinfo.step_limit;
@@ -63,7 +52,7 @@ void step_limit(internals &simples, salc_set &symm, double *dq) {
       else {  // interfragment 1/R(A-B)
         dq_simple *= _bohr2angstroms;
         // fprintf(outfile, "dq_simple (1/au) %15.10lf\n", dq_simple);
-        R = 1.0 / simples.frag.get_val(sub_index,0) / _bohr2angstroms;
+        R = 1.0 / simples.frag[sub_index].get_val(0) / _bohr2angstroms;
         // fprintf(outfile, "R in au %15.10lf\n", R);
         inv_R_min = - step_limit / (R * (R + step_limit));
         // fprintf(outfile, "1/R min in au %15.10lf\n", inv_R_min);

@@ -4,19 +4,17 @@
     of inverse masses.
 */
 
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <libciomr/libciomr.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
+#include "simples.h"
+#include "salc.h"
+#include "opt.h"
 
 namespace psi { namespace optking {
 
-double **compute_G(double **B, int num_intcos, cartesians &carts) {
+double **compute_G(double **B, int num_intcos, const cartesians & carts) {
   double **u, **G, **temp_mat, *masses;
   int i, dim_carts;
 

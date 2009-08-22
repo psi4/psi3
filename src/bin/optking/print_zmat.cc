@@ -12,15 +12,15 @@
 #include <libchkpt/chkpt.h>
 
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
+#include "salc.h"
+
+#include <masses.h>
 
 namespace psi { namespace optking {
-
-void compute_zmat(cartesians &carts, int *unique_zvars);
-void print_zmat(FILE *outfile, int *unique_zvars);
 
 /* recompute values for z-matrix and write back to chkpt */
 void compute_zmat(cartesians &carts, int *unique_zvars) {
@@ -95,7 +95,7 @@ void compute_zmat(cartesians &carts, int *unique_zvars) {
   nints[1] = nallatom-2; /* bend */
   nints[2] = nallatom-3; /* tors */
   nints[3] = 0; /* oop */
-  nints[4] = 0; /* lin_bend */
+  nints[4] = 0; /* linb */
   nints[5] = 0; /* fragment */
   for (i=0; i<6; ++i)
     if (nints[i] < 0) nints[i] = 0;
@@ -105,7 +105,7 @@ void compute_zmat(cartesians &carts, int *unique_zvars) {
   zints.bend.set_num(nints[1]);
   zints.tors.set_num(nints[2]);
   zints.out.set_num(0);
-  zints.lin_bend.set_num(0);
+  zints.linb.set_num(0);
   zints.frag.set_num(0);
 
   cnt = 0;
@@ -158,9 +158,10 @@ void print_zmat(FILE *outfile, int *unique_zvars) {
   int i, a, b, c, d, cnt = 0;
   int nallatom, natom, *to_nodummy, *atom_dummy;
   char **felement;
-  char buf[2], sym[3];
+  char buf[2], *sym;
   double *zvals;
   struct z_entry *zmat;
+  const char *X = "X";
 
   nallatom = optinfo.nallatom;
   natom = optinfo.natom;
@@ -175,8 +176,8 @@ void print_zmat(FILE *outfile, int *unique_zvars) {
 
   fprintf(outfile,"  zmat = ( \n");
   for (i=0; i<nallatom; ++i) {
-    if (atom_dummy[i]) strcpy(sym,"X");
-    else zval_to_symbol(zvals[to_nodummy[i]], sym);
+    if (atom_dummy[i]) sym = X;
+    else sym = atomic_labels[to_nodummy[i]];
     fprintf(outfile,"    ( %s ", sym);
     if (i > 0) {
       fprintf(outfile," %d", zmat[i].bond_atom);

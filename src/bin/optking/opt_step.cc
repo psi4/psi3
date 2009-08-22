@@ -4,42 +4,20 @@
     gradients -- optking's default operation
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
+#define EXTERN
+#include "globals.h"
+#undef EXTERN
+#include "cartesians.h"
+#include "simples.h"
+#include "salc.h"
+#include "opt.h"
+
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libipv1/ip_lib.h>
-#include <physconst.h>
 #include <libpsio/psio.h>
-#include <psifiles.h>
-
-#define EXTERN
-#include "opt.h"
-#undef EXTERN
-#include "cartesians.h"
-#include "internals.h"
-#include "salc.h"
-#include "bond_lengths.h"
 
 namespace psi { namespace optking {
-
-extern double *compute_q(internals &simples, salc_set &symm);
-extern double **compute_B(internals &simples, salc_set &symm);
-extern double **compute_G(double **B, int num_intcos, cartesians &carts);
-extern int new_geom(cartesians &carts, internals &simples, salc_set &symm, double *dq,
-    int print_to_geom_file, int restart_geom_file, 
-    char *disp_label, int disp_num, int last_disp, double *return_geom);
-void fconst_init(cartesians &carts, internals &simples, salc_set &symm);
-extern void compute_zmat(cartesians &carts, int *unique_zvars);
-extern void print_zmat(FILE *outfile, int *unique_zvars);
-extern double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &carts);
-extern void opt_report(FILE *of);
-extern void free_info(int nsimples);
-extern void empirical_H(internals &simples, salc_set &symm, cartesians &carts);
 
 inline double rfo_energy(double rfo_t, double rfo_g, double rfo_h) {
   return (rfo_t * rfo_g + 0.5 * rfo_t * rfo_t * rfo_h)/(1 + rfo_t*rfo_t)/(_hartree2J*1.0e18);
@@ -48,11 +26,9 @@ inline double nr_energy(double rfo_t, double rfo_g, double rfo_h) {
   return (rfo_t * rfo_g + 0.5 * rfo_t * rfo_t * rfo_h)/(_hartree2J*1.0e18);
 }
 
-bool line_search(cartesians &carts, int num_ints, double *dq);
-void step_limit(internals &simples, salc_set &symm, double *dq);
-void check_zero_angles(internals &simples, salc_set &symm, double *dq);
+static bool line_search(cartesians & carts, int num_ints, double *dq);
 
-int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
+int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
 
   int xyz, i,j,k,ii,a,b, dim, dim_carts, nsimples, constraint, cnt;
   double **B, **G, **G2, **G_inv, **H, **H_inv, **temp_mat, **u, **P;
@@ -69,9 +45,10 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
   double nr_xnorm, nr_g, nr_h, *nr_u;
 
   // for analytic interfragment coordinates
-  int isalc, I, simple_id, intco_type, sub_index, sub_index2, atom;
+  int isalc, I, simple_id, sub_index, sub_index2, atom;
   double **geom_A, **geom_B, **weight_A, **weight_B;
   double inter_q[6];
+  Intco_type intco_type;
 
   dim_carts = carts.get_natom()*3;
   dim = symm.get_num();
@@ -137,8 +114,8 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     close_PSIF();
     // update internal coordinate data to new cartesan geometry
     coord = carts.get_coord();
-    simples.compute_internals(carts.get_natom(), coord);
-    simples.compute_s(carts.get_natom(), coord);
+    simples.compute(coord);
+    simples.compute_s(coord);
     q = compute_q(simples,symm); 
     free(coord);
   }
@@ -315,8 +292,8 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
     if (optinfo.zmat) {
       int *unique_zvars;
       unique_zvars = init_int_array(MAX_ZVARS);
-      compute_zmat(carts, unique_zvars);
-      print_zmat(outfile, unique_zvars);
+      //compute_zmat(carts, unique_zvars);
+      //print_zmat(outfile, unique_zvars);
       free(unique_zvars);
       fprintf(outfile,"\n");
     }
@@ -553,7 +530,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
      
       // find any interfragment coordinate sets
       simple_id = symm.get_simple(isalc,0);
-      simples.locate_id(simple_id,&intco_type,&sub_index,&sub_index2);
+      simples.locate_id(simple_id, &intco_type, &sub_index, &sub_index2);
       // only execute for single (non-salc) interfragment coordinates
       if ( (symm.get_length(isalc) != 1) || (intco_type != FRAG_TYPE) ) continue;
       // only execute this code once for each fragment pair
@@ -562,11 +539,11 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
       // don't do analytic steps unless all reference points (and all coordinates) are present
       // because we may have to fix their values in orient_fragment even if we are not optmizing
       // with them
-      if ( (simples.frag.get_A_P(sub_index) != 3) || (simples.frag.get_B_P(sub_index) != 3) )
+      if ( (simples.frag[sub_index].get_A_P() != 3) || (simples.frag[sub_index].get_B_P() != 3) )
         continue;
 
     coord = carts.get_coord();
-    simples.compute_internals(carts.get_natom(),coord);
+    simples.compute(coord);
     // fix configuration for torsions; sets flag for torsions > FIX_NEAR_180 or < -FIX_NEAR_180 
     // so that when I calculate residual below, I get the right answer
     simples.fix_near_180();
@@ -574,7 +551,7 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
       for (cnt=0, I=0; I<6; ++I) {
         inter_q[I] = 0;
-        if ( simples.frag.get_coord_on(sub_index,I) ) {
+        if ( simples.frag[sub_index].get_coord_on(I) ) {
           inter_q[I] = dq[isalc + cnt];
           dq[isalc + cnt] = 0; // so that back-transformation code if used, doesn't change q again
           ++cnt;
@@ -584,10 +561,8 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
       dot_arr(inter_q,inter_q,6,&tval); // check if there are any non-zero displacements
       if (fabs(tval) < 1.0e-15) continue;
 
-      for (I=0; I<6; ++I) {
-        inter_q[I] += simples.frag.get_val_A_or_rad(sub_index,I);
-        //fprintf(outfile,"val[%d]: %15.10lf\n",i,inter_q[I]);
-      }
+      for (I=0; I<6; ++I)
+        inter_q[I] += simples.frag[sub_index].get_val_A_or_rad(I);
 
       if (optinfo.frag_dist_rho)
         inter_q[0]  = 1.0 / inter_q[0];
@@ -597,38 +572,38 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
       // get geometries of fragments
       geom = carts.get_coord_2d();
 
-      a = simples.frag.get_A_natom(sub_index);
+      a = simples.frag[sub_index].get_A_natom();
       geom_A = block_matrix(a,3);
       for (atom=0;atom<a;++atom)
         for (xyz=0;xyz<3;++xyz)
-          geom_A[atom][xyz] = geom[simples.frag.get_A_atom(sub_index,atom)][xyz];
+          geom_A[atom][xyz] = geom[simples.frag[sub_index].get_A_atom(atom)][xyz];
 
-      b = simples.frag.get_B_natom(sub_index);
+      b = simples.frag[sub_index].get_B_natom();
       geom_B = block_matrix(b,3);
       for (atom=0;atom<b;++atom)
         for (xyz=0;xyz<3;++xyz)
-          geom_B[atom][xyz] = geom[simples.frag.get_B_atom(sub_index,atom)][xyz];
+          geom_B[atom][xyz] = geom[simples.frag[sub_index].get_B_atom(atom)][xyz];
 
       // get reference point information for fragments
       weight_A = block_matrix(3,a);
-      for (cnt=0; cnt<simples.frag.get_A_P(sub_index); ++cnt)
+      for (cnt=0; cnt<simples.frag[sub_index].get_A_P(); ++cnt)
         for (atom=0;atom<a;++atom)
-          weight_A[cnt][atom] = simples.frag.get_A_weight(sub_index,cnt,atom);
+          weight_A[cnt][atom] = simples.frag[sub_index].get_A_weight(cnt,atom);
 
       weight_B = block_matrix(3,b);
-      for (cnt=0; cnt<simples.frag.get_B_P(sub_index); ++cnt)
+      for (cnt=0; cnt<simples.frag[sub_index].get_B_P(); ++cnt)
         for (atom=0;atom<b;++atom)
-          weight_B[cnt][atom] = simples.frag.get_B_weight(sub_index,cnt,atom);
+          weight_B[cnt][atom] = simples.frag[sub_index].get_B_weight(cnt,atom);
 
       fprintf(outfile,"\nAnalytically doing interfragment displacements\n");
       // move fragment B and put result back into main geometry matrix
-      i = orient_fragment(a, b, simples.frag.get_A_P(sub_index), simples.frag.get_B_P(sub_index),
+      i = orient_fragment(a, b, simples.frag[sub_index].get_A_P(), simples.frag[sub_index].get_B_P(),
         geom_A, geom_B, weight_A, weight_B, inter_q[0], inter_q[1], inter_q[2], inter_q[3],
         inter_q[4], inter_q[5], outfile);
 
       for (atom=0; atom<b; ++atom)
         for (xyz=0; xyz<3; ++xyz)
-          geom[simples.frag.get_B_atom(sub_index,atom)][xyz] = geom_B[atom][xyz];
+          geom[simples.frag[sub_index].get_B_atom(atom)][xyz] = geom_B[atom][xyz];
 
       symmetrize_geom(geom[0]);
       carts.set_coord_2d(geom);
@@ -643,10 +618,10 @@ int opt_step(cartesians &carts, internals &simples, salc_set &symm) {
 
       for (cnt=0, I=0; I<6; ++I) {
         coord = carts.get_coord();
-        simples.compute_internals(carts.get_natom(), coord);
-        if ( simples.frag.get_coord_on(sub_index,I) ) {
-          dq[isalc + cnt] = simples.frag.get_val_A_or_rad(sub_index,I) - inter_q[I];
-//fprintf(outfile,"val: %20.15lf\n", simples.frag.get_val_A_or_rad(sub_index,I));
+        simples.compute(coord);
+        if ( simples.frag[sub_index].get_coord_on(I) ) {
+          dq[isalc + cnt] = simples.frag[sub_index].get_val_A_or_rad(I) - inter_q[I];
+//fprintf(outfile,"val: %20.15lf\n", simples.frag[sub_index].get_val_A_or_rad(I));
 //fprintf(outfile,"inter_q[%d]: %20.15lf\n", I, inter_q[I]);
           ++cnt;
         }

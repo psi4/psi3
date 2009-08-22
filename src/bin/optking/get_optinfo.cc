@@ -3,25 +3,24 @@
     \brief GET_OPTINFO   reads optimization parameters from input.dat
 */
 
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <cmath>
-#include <libciomr/libciomr.h>
-#include <libchkpt/chkpt.h>
+#define EXTERN
+#include "globals.h"
+#undef EXTERN
+#include "cartesians.h"
+#include "simples.h"
+#include "salc.h"
+#include "opt.h"
+
+#include <libqt/qt.h>
 #include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>
-#include <psifiles.h>
-
-#define EXTERN
-#include "opt.h"
-#undef EXTERN
+#include <libchkpt/chkpt.h>
 
 namespace psi { namespace optking {
 
-double power(double x, int y);
+static double power(double x, int y);
 
-void get_optinfo() {
+void get_optinfo(void) {
   int a, i, cnt, cnt2, natom, nallatom, errcod;
   double tval;
   char *junk;
@@ -208,7 +207,7 @@ void get_optinfo() {
   }
   */
 
-  optinfo.step_limit_cart = STEP_LIMIT_CART;
+  optinfo.step_limit_cart = 0.3;
   errcod = ip_data("STEP_LIMIT_CART","%lf",&tval,0);
   if (errcod == IPE_OK)
     optinfo.step_limit_cart = tval;

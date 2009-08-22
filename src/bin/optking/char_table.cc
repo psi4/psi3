@@ -4,26 +4,15 @@
      from the group character tables as given in Cotton 
 */
 
-#include <cstdlib>
-#include <cstring>
-#include <cstdio>
-#include <cctype>
-#include <libciomr/libciomr.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
+#include "cartesians.h"
+#include "simples.h"
+#include "salc.h"
+#include "opt.h"
 
 namespace psi { namespace optking {
-
-int **get_char_table(char *ptgrp);    /* returns the character table */
-int get_nirreps(char *ptgrp);      /* "     " number of irreps */
-const char **get_irrep_labels(char *ptgrp); /* "     " number of symmetry operations */
-const char **get_symm_ops(char *ptgrp);     /* "     " symm operation labels */
-int *get_ops_coeffs(char *ptgrp);     /* "     " coefficients of the symmetry operations */
-int get_num_ops(char *ptgrp);         /* "     " number of operations */
-int get_num_classes(char *ptgrp);     /* "     " number of classes of operations */
-int *get_ops_in_class(char *ptgrp, int nirreps);
 
 int **get_char_table(char *ptgrp) {
 

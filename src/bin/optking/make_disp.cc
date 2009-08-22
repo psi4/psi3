@@ -4,38 +4,24 @@
     need to save geometry to last step for gradients by energy
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-#include <libciomr/libciomr.h>
-#include <libqt/qt.h>
-#include <libipv1/ip_lib.h>
-#include <physconst.h>
-#include <libpsio/psio.h>
-#include <psifiles.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
-#include "bond_lengths.h"
+#include "opt.h"
+
+#include <libqt/qt.h>
+#include <libipv1/ip_lib.h>
+#include <libpsio/psio.h>
 
 namespace psi { namespace optking {
-
-extern double *compute_q(internals &simples, salc_set &symm);
-extern int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs, 
-    double *dq, int print_to_geom_file, int restart_geom_file,
-    char *disp_label, int disp_num, int last_disp, double *return_geom);
 
 /* MAKE_DISP_IRREP - make displacements for modes labelled with 
 * symmetry IRREP (+ and - if symmetric; otherwise, just +) */
 
-int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs) 
+int make_disp_irrep(const cartesians &carts, simples_class &simples, const salc_set &all_salcs) 
 {
   int i,j,a,b, cnt,dim, dim_carts, ndisps, nsalcs, *irrep_salcs, irrep;
   int *irrep_per_disp, success;
@@ -314,7 +300,7 @@ int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
 /* MAKE_DISP_NOSYMM generate displacements - do positive and
 * negative displacements along all coordinates ignorning symmetry */
 
-int make_disp_nosymm(cartesians &carts, internals &simples, salc_set &all_salcs) 
+int make_disp_nosymm(const cartesians &carts, simples_class &simples, const salc_set &all_salcs) 
 {
   int i,j,a,b, dim, dim_carts, ndisps, nsalcs, *irrep_per_disp, cnt, success;
   double *fgeom, energy, **micro_geoms, **displacements;
@@ -445,78 +431,5 @@ int make_disp_nosymm(cartesians &carts, internals &simples, salc_set &all_salcs)
   return(ndisps);
 }
 
-
-/*
-void disp_docc(char **salc_lbl, int disp_nirrep, int *disp_clsdpi,
-    int *disp_openpi, int *disp_frdocc, int *disp_fruocc) {
-  int irrep, disp_irrep;
-  char *ptgrp;
-
-  ptgrp = syminfo.symmetry;
-
-  for (irrep=0; irrep<syminfo.nirreps; ++irrep) {
-    if (strcmp(salc_lbl, syminfo.irrep_lbls[irrep]) == 0) break;
-  }
-  fprintf(outfile,"Irrep of displacement %s or %d ", salc_lbl, irrep);
-
-  static int nirrep_C1[1]  = {1};
-  static int nirrep_CS[2]  = {2, 1};
-  static int nirrep_C2V[4] = {4, 2, 2, 2};
-  static int nirrep_C2H[4] = {4, 2, 2, 2};
-  static int nirrep_D2H[8] = {8, 4, 4, 4, 4, 4, 4, 4};
-
-  static int corr_table_C2V[4][2][4] = {
-    { { 0, 0, 0, 0}, { 0, 0, 0, 0} }, // don't use for A1
-    { { 1, 1, 0, 0}, { 0, 0, 1, 1} },
-    { { 1, 0, 1, 0}, { 0, 1, 0, 1} },
-    { { 1, 0, 0, 1}, { 0, 1, 1, 0} }
-  }
-  static int corr_table_CS[2][2][2] = {
-    { { 0, 0} }, // don't use for A1
-    { { 1, 1} }
-  }
-  static int corr_table_C2H[4][2][4] = {
-    { { 0, 0, 0, 0}, { 0, 0, 0, 0} }, // don't use for A1
-    { { 1, 1, 0, 0}, { 0, 0, 1, 1} },
-    { { 1, 0, 1, 0}, { 0, 1, 0, 1} },
-    { { 1, 0, 0, 1}, { 0, 1, 1, 0} }
-  }
-  static int corr_table_D2H[4][2][4] = {
-    { { 0, 0, 0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0, 0, 0},
-      { 0, 0, 0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0, 0, 0} },
-    { { 1, 1, 0, 0, 0, 0, 0, 0}, { 0, 0, 1, 1, 0, 0, 0, 0},
-      { 0, 0, 0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0, 0, 0} },
-    { { 1, 0, 1, 0, 0, 0, 0, 0}, { 0, 1, 0, 1, 0, 0, 0, 0},
-      { 0, 0, 0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0, 0, 0} },
-    { { 1, 0, 0, 1, 0, 0, 0, 0}, { 0, 1, 1, 0, 0, 0, 0, 0},
-      { 0, 0, 0, 0, 0, 0, 0, 0}, { 0, 0, 0, 0, 0, 0, 0, 0} }
-  }
-
-  if (strcmp(ptgrp,"C1 ") == 0) {
-    disp_nirrep = 1;
-  }
-  else if ((strcmp(ptgrp,"CS ") == 0) || (strcmp(ptgrp,"CI ") == 0) ||
-      (strcmp(ptgrp,"C2 ") == 0)) {
-    disp_nirrep = disp_nirrep_CS[irrep];
-  }
-  else if ((strcmp(ptgrp,"D2 ") == 0) || (strcmp(ptgrp,"C2V") == 0)) {
-    disp_nirrep = disp_nirrep_C2V[irrep];
-  }
-  else if (strcmp(ptgrp,"C2H") == 0) {
-    disp_nirrep = disp_nirrep_C2H[irrep];
-  }
-  else if (strcmp(ptgrp,"D2H") == 0) {
-    disp_nirrep = disp_nirrep_D2H[irrep];
-  }
-
-  disp_clsdpi = new int[disp_nirrep];
-  disp_openpi = new int[disp_nirrep];
-  disp_frdocc = new int[disp_nirrep];
-  disp_fruocc = new int[disp_nirrep];
-
-  fprintf(outfile,"disp_nirrep: %d\n", disp_nirrep);
-  return;
-}
-*/
 }} /* namespace psi::optking */
 

@@ -6,6 +6,9 @@
 #ifndef _psi3_bin_optking_cartesians_h_
 #define _psi3_bin_optking_cartesians_h_
 
+#include <libciomr/libciomr.h>
+// init_array()
+
 namespace psi { namespace optking {
 
 class cartesians {
@@ -33,8 +36,9 @@ class cartesians {
       delete [] fgrad;
       delete [] fmass;
     }
+
     void print(int flag, FILE *fp_out, int new_geom_file, char *disp_label,
-               int disp_num);
+               int disp_num) const ;
 
     void set_coord(double *geom) {
       int i, xyz, cnt;
@@ -75,7 +79,7 @@ class cartesians {
         grad[i] = gradient[i];
       return;
     }
-    double *get_coord() {
+    double *get_coord() const {
       int i;
       double *copy;
       copy = init_array(natom*3);
@@ -83,7 +87,7 @@ class cartesians {
         copy[i] = coord[i];
       return copy;
     }
-    double **get_coord_2d() {
+    double **get_coord_2d() const {
       int i,j,cnt;
       double **copy;
       copy = block_matrix(natom,3);
@@ -93,7 +97,7 @@ class cartesians {
           copy[i][j] = coord[cnt++];
       return copy;
     }
-    double *get_fcoord() {
+    double *get_fcoord() const {
       int i;
       double *copy;
       copy = init_array(nallatom*3);
@@ -101,7 +105,7 @@ class cartesians {
         copy[i] = fcoord[i];
       return copy;
     }
-    double *get_mass() {
+    double *get_mass() const {
       int i;
       double *copy;
       copy = init_array(natom*3);
@@ -109,7 +113,7 @@ class cartesians {
         copy[i] = mass[i];
       return copy;
     }
-    double *get_Zvals() {
+    double *get_Zvals() const {
       int i;
       double *copy;
       copy = init_array(natom*3);
@@ -117,7 +121,7 @@ class cartesians {
         copy[i] = atomic_num[i];
       return copy;
     }
-    double *get_fmass() {
+    double *get_fmass() const {
       int i;
       double *copy;
       copy = init_array(nallatom*3);
@@ -125,25 +129,25 @@ class cartesians {
         copy[i] = fmass[i];
       return copy;
     }
-    void mult(double factor) {
+    void mult(double factor) const {
       int i;
       for (i=0;i<natom*3;++i) {
          coord[i] *= factor;
       }
       return;
     }
-    double val(int i, int j) { return coord[3*i+j]; }
-    double *get_forces();
-    double *get_fforces();
-    int get_natom() {return natom; }
-    int get_nallatom() {return nallatom; }
+    double val(int i, int j) const { return coord[3*i+j]; }
+    double *get_forces() const;
+    double *get_fforces() const;
+    int get_natom() const {return natom; }
+    int get_nallatom() const {return nallatom; }
     void set_natom(int new_num) {natom = new_num;}
     void set_energy(double new_energy) {energy = new_energy;}
-    double get_energy() {return energy;} 
-    double get_Z(int i) { return atomic_num[i]; }
-    double get_fatomic_num(int i) { return fatomic_num[i]; }
+    double get_energy() const {return energy;} 
+    double get_Z(int i) const { return atomic_num[i]; }
+    double get_fatomic_num(int i) const { return fatomic_num[i]; }
 
-    double *get_fatomic_num(void) {
+    double *get_fatomic_num(void) const {
       double *Zs = new double[natom];
       for (int i=0; i<natom; ++i)
         Zs[i] = get_fatomic_num(i);
@@ -151,7 +155,7 @@ class cartesians {
     }
 
     cartesians();
-    double R(int i, int j) {
+    double R(int i, int j) const {
       int xyz;
       double tval = 0.0;
       for (xyz=0; xyz<3; ++xyz)

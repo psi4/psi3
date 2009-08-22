@@ -23,34 +23,22 @@ Formulas for finite differences
     + 1f(0,-2) - 7f(0,-1)  - 7f(0,+1) + 1f(0,+2) + 12f(0,0)]/(12h^2)
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-#include <libciomr/libciomr.h>
-#include <libqt/qt.h>
-#include <libipv1/ip_lib.h>
-#include <physconst.h>
-#include <libpsio/psio.h>
-#include <psifiles.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
-#include "bond_lengths.h"
+#include "opt.h"
+
+#include <libchkpt/chkpt.h>
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include <libpsio/psio.h>
 
 namespace psi { namespace optking {
 
-extern int get_irrep_xyz( double **cartrep, int xyz);
-extern int check_coordinates(int natom, double *coord, double *masses, double *Zvals,
-    int *ndisp_small, double ***disp_small);
-
-int disp_freq_energy_cart(cartesians &carts)
+int disp_freq_energy_cart(const cartesians &carts)
 {
   int i,j,a,b,I,k,dim, ndisp_all, nsalc_all, natom, atom, xyz, cnt, loner, *ndisp;
   int op, atom2, nirreps, natom_unique, irrep, diag_ind, atom_unique;

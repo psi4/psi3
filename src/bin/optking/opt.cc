@@ -33,63 +33,22 @@ command-line      internal specifier   what it does
 --grad_dat         optinfo.grad_dat   read gradients from file11.dat 
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-#include <libciomr/libciomr.h>
-#include <libipv1/ip_lib.h>
-#include <physconst.h>
-#include <libpsio/psio.h>
-#include <libqt/qt.h>	  
-#include <psifiles.h>
-#include <ccfiles.h>
-
-#include "opt.h"
+#include "globals.h"
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
-#include "bond_lengths.h"
+#include "opt.h"
+
+#include <libipv1/ip_lib.h>
+#include <libpsio/psio.h>
+#include <ccfiles.h>
 
 namespace psi { namespace optking {
 
 void intro(int argc, char **argv);
-void free_info(int nsimples);
-int *count_internals(cartesians &cart_geom, int intco_given);
-extern void zmat_to_intco(void);
-extern void get_optinfo();
-extern void get_syminfo(internals &simples);
-extern void delocalize(internals &simples, cartesians &carts);
-extern void load_ref(cartesians &carts);
-
-extern void disp_user(cartesians &carts, internals &simples, salc_set &all_salcs);
-extern int make_disp_irrep(cartesians &carts, internals &simples, salc_set &all_salcs);
-extern int make_disp_nosymm(cartesians &carts, internals &simples, salc_set &all_salcs);
-extern int disp_fc_grad_selected(cartesians &carts, internals &simples, salc_set &symm);
-extern void fc_grad_selected(cartesians &carts, internals &simples, salc_set &symm);
-
-extern void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs);
-extern void freq_grad_nosymm(cartesians &carts, internals &simples, salc_set &all_salcs);
-
-extern void grad_energy(cartesians &carts, internals &simples, 
-                        salc_set &all_salcs);
-extern void grad_save(cartesians &carts);
-extern void energy_save(cartesians &carts);
-extern int opt_step(cartesians &carts, internals &simples, salc_set &symm_salcs);
-extern int opt_step_cart(cartesians &carts, internals &simples, salc_set &symm_salcs);
-extern int *read_constraints(internals &simples);
-extern void opt_report(FILE *of);
-extern void fconst_init(cartesians &carts, internals &simples, salc_set &symm);
-
-extern int disp_freq_grad_cart(cartesians &carts);
-extern void freq_grad_cart(cartesians &carts);
-extern int disp_freq_energy_cart(cartesians &carts);
-extern void freq_energy_cart(cartesians &carts);
-int test_B(cartesians &carts, internals &simples, salc_set &symm);
-
 void chkpt_restart(char *new_prefix);
+void load_ref(const cartesians &carts);
+void free_info(int nsimples);
 
 }} // namespace psi::optking
 
@@ -290,7 +249,7 @@ int main(int argc, char **argv) {
     delete [] disp_label;
     fflush(outfile);
 
-    internals simples(carts, optinfo.simples_present);
+    simples_class simples(carts, optinfo.simples_present);
 
     /* read in constraints */
     ffile_noexit(&fp_fintco, "fintco.dat", 2);
@@ -299,9 +258,11 @@ int main(int argc, char **argv) {
     if (fp_fintco != NULL) fclose(fp_fintco);
 
     coord = carts.get_coord();
-    simples.compute_internals(carts.get_natom(), coord);
-    simples.compute_s(carts.get_natom(), coord);
-//simples.print_s();
+    simples.compute(coord);
+    simples.compute_s(coord);
+    //simples.print(outfile, 1);
+    //simples.print_s(outfile);
+
     free(coord);
     if ( (optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_LOAD_REF)
       && (optinfo.mode != MODE_RESET_PREFIX) && (optinfo.mode != MODE_DISP_NUM_PLUS)
@@ -398,11 +359,11 @@ int main(int argc, char **argv) {
       if (optinfo.test_B) {
         test_B(carts,simples,symm_salcs);
         coord = carts.get_coord(); // restore internals to undisplaced state
-        simples.compute_internals(carts.get_natom(), coord);
-        simples.compute_s(carts.get_natom(), coord);
+        simples.compute(coord);
+        simples.compute_s(coord);
       }
       if (optinfo.cartesian)
-        a = opt_step_cart(carts, simples, symm_salcs);
+        a = opt_step_cart(carts);
       else
         a = opt_step(carts, simples, symm_salcs);
       free_info(simples.get_num());
@@ -526,7 +487,7 @@ int main(int argc, char **argv) {
 
     // save the energy and increment disp_num
     if (optinfo.mode == MODE_ENERGY_SAVE) {
-      energy_save(carts);
+      energy_save();
       free_info(simples.get_num());
       exit_io();
       return 0;
@@ -610,7 +571,7 @@ int main(int argc, char **argv) {
     }
     if (optinfo.mode==MODE_FREQ_ENERGY_CART) {
       fprintf(outfile,"\n ** Calculating frequencies from energies. **\n");
-      freq_energy_cart(carts);
+      freq_energy_cart();
       free_info(simples.get_num());
       exit_io();
       return(0);
@@ -749,7 +710,7 @@ void free_info(int nsimples) {
 }
 
 
-void load_ref(cartesians &carts) {
+void load_ref(const cartesians &carts) {
   int i,j,cnt;
   double *geom, **geom2D,*grad, energy;
 

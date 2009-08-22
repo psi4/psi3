@@ -4,21 +4,12 @@
     \param double *geom
 */
 
-#include <math.h>
-#include <stdio.h>
-#include <libchkpt/chkpt.h>
-#include <stdlib.h>
-#include <string.h>
-#include <libciomr/libciomr.h>
-#include <physconst.h>
-#include <psifiles.h>
-
 #define EXTERN
-#include "opt.h"
+#include "def.h"
 #undef EXTERN
-#include "cartesians.h"
-#include "internals.h"
-#include "salc.h"
+
+#include <libciomr/libciomr.h>
+#include <libchkpt/chkpt.h>
 
 namespace psi { namespace optking {
 
@@ -26,7 +17,7 @@ void symmetrize_geom(double *x) {
   int ua, op, xyz, num_uniques, i;
   int atom1, atom2, *ua2a, **ict, diag_ind, natom;
   double **cartrep, *x_temp;
-  int stab_order;
+  int stab_order, nirreps;
 
   chkpt_init(PSIO_OPEN_OLD);
   num_uniques = chkpt_rd_num_unique_atom();

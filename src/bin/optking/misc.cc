@@ -3,20 +3,14 @@
     \brief miscellaneous little matrix and print functions
 */
 
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <cmath>
+#define EXTERN
+#include "globals.h"
+#undef EXTERN
+
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libchkpt/chkpt.h>
-#include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>
-#include <psifiles.h>
-
-#define EXTERN
-#include "opt.h"
-#undef EXTERN
 
 namespace psi { namespace optking {
 
@@ -104,6 +98,12 @@ void scalar_div(double a, double *vect) {
   return;
 }
 
+void exit_io(void) {
+  fprintf(outfile,"\n******** OPTKING execution completed ********\n\n");
+  psio_done();
+  psi_stop(infile,outfile,psi_file_prefix);
+}
+
 
 void punt(const char *message) {
   fprintf(outfile,"\nerror: %s\n", message);
@@ -121,12 +121,6 @@ void open_PSIF(void) {
 void close_PSIF(void) {
   psio_close(PSIF_OPTKING, 1);
   return;
-}
-
-void exit_io(void) {
-  fprintf(outfile,"\n******** OPTKING execution completed ********\n\n");
-  psio_done();
-  psi_stop(infile,outfile,psi_file_prefix);
 }
 
 /*** SWAP_TORS -- canonical torsion order is atom a < atom d ***/

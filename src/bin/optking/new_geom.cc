@@ -6,29 +6,17 @@ and a set of internal coordinate displacements
 it returns 1 if a new cartesian geometry was successfully determined
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <libciomr/libciomr.h>
-#include <physconst.h>
-#include <psifiles.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
+#include "opt.h"
 
 namespace psi { namespace optking {
 
-double *compute_q(internals &simples, salc_set &all_salcs);
-double **compute_B(internals &simples, salc_set &all_salcs);
-double **compute_G(double **B, int num_intcos, cartesians &carts);
-
-bool new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
+bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &all_salcs,
     double *dq, int print_flag, int restart_geom_file,
     char *disp_label, int disp_num, int last_disp, double *return_geom) {
 
@@ -56,10 +44,10 @@ bool new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
 
   // Compute B matrix -- Isn't this slick?
   coord = carts.get_coord();
-  simples.compute_internals(natom,coord);
+  simples.compute(coord);
   // fix configuration for torsions, sets flag for torsions > FIX_NEAR180 or < -FIX_NEAR180 
   simples.fix_near_180(); // subsequent computes will modify torsional values
-  simples.compute_s(natom,coord);
+  simples.compute_s(coord);
   free(coord);
 
   B = compute_B(simples, all_salcs);
@@ -124,9 +112,9 @@ bool new_geom(cartesians &carts, internals &simples, salc_set &all_salcs,
       fprintf(outfile,"%15.10lf\n", new_x[i]);
     */
 
-    simples.compute_internals(natom,new_x);
+    simples.compute(new_x);
     // simples.print(outfile,1);
-    simples.compute_s(natom,new_x);
+    simples.compute_s(new_x);
     free_block(B);
     B = compute_B(simples, all_salcs);
 

@@ -4,28 +4,21 @@
     function executes if optinfo.mode == MODE_ENERGY_SAVE
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-#include <libciomr/libciomr.h>
-#include <libipv1/ip_lib.h>
-#include <libpsio/psio.h>
-#include <physconst.h>
-#include <psifiles.h>
-#include <ccfiles.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
+#include "salc.h"
+#include "opt.h"
+
+#include <libchkpt/chkpt.h>
+#include <libpsio/psio.h>
+#include <ccfiles.h>
 
 namespace psi { namespace optking {
 
-void grad_save(cartesians &carts) {
+void grad_save(const cartesians &carts) {
   int i,j,dim_carts,total_num_disps;
   double energy, *micro_e, *micro_grad, *grad, **ggrad, **refgrad, **rref;
 

@@ -3,26 +3,19 @@
     \brief six coordinates for non-bonded fragments
 */
 
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <libciomr/libciomr.h>
-#include <libqt/qt.h>
-#include <physconst.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
-#include "fragment.h"
+
+#include "frag.h"
 
 namespace psi { namespace optking {
 
-void fragment_class::print(FILE *fp_out, int print_values, int print_weights) {
+void frag_class::print(FILE *fp_out, bool print_vals, bool print_weights) const {
   int I,i,a,b;
   fprintf(fp_out,"\t(%d ", id);
 
-  /* print_values implicitly lists which coordinates are present */
-  if (!print_values) {
+  if (!print_vals) {
     fprintf(fp_out,"(");
     for (I=0; I<6; ++I)
       if (get_coord_on(I))
@@ -61,48 +54,46 @@ void fragment_class::print(FILE *fp_out, int print_values, int print_weights) {
 
   fprintf(outfile,"\t)\n");
 
-  if (print_values) {
+  if (print_vals) {
     if (coord_on[0]) {
       if (optinfo.frag_dist_rho)
         fprintf(fp_out, "\t\t 1/R(AB)  = %12.6lf    [R(AB) = %.6lf]\n",
-          get_value(0), 1/get_value(0));
+          get_val(0), 1/get_val(0));
       else
-        fprintf(fp_out, "\t\t R(AB)    = %12.6lf\n", get_value(0));
+        fprintf(fp_out, "\t\t R(AB)    = %12.6lf\n", get_val(0));
     }
     if (coord_on[1])
-      fprintf(fp_out,   "\t\t theta-A  = %12.6lf\n", get_value(1));
+      fprintf(fp_out,   "\t\t theta-A  = %12.6lf\n", get_val(1));
     if (coord_on[2])
-      fprintf(fp_out,   "\t\t theta-B  = %12.6lf\n", get_value(2));
+      fprintf(fp_out,   "\t\t theta-B  = %12.6lf\n", get_val(2));
     if (coord_on[3])
-      fprintf(fp_out,   "\t\t tau A-B  = %12.6lf\n", get_value(3));
+      fprintf(fp_out,   "\t\t tau A-B  = %12.6lf\n", get_val(3));
     if (coord_on[4])
-      fprintf(fp_out,   "\t\t chi-A    = %12.6lf\n", get_value(4));
+      fprintf(fp_out,   "\t\t chi-A    = %12.6lf\n", get_val(4));
     if (coord_on[5])
-      fprintf(fp_out,   "\t\t chi-B    = %12.6lf\n", get_value(5));
+      fprintf(fp_out,   "\t\t chi-B    = %12.6lf\n", get_val(5));
   }
   else fprintf(outfile,"\n");
 }
 
-double fragment_class::get_val_A_or_rad(int I) {
-  double tval;
-  //if (!coord_on[I])
-  //  throw("fragment.get_val_A_or_rad() - coordinate is not active\n");
-  if (I==0)
-    tval = get_value(I);
-  else if (I==1)
-    tval = get_value(I) *_pi/180.0;
-  else if (I==2)
-    tval = get_value(I) *_pi/180.0;
-  else if (I==3)
-    tval = get_value(I) *_pi/180.0;
-  else if (I==4)
-    tval = get_value(I) *_pi/180.0;
-  else if (I==5)
-    tval = get_value(I) *_pi/180.0;
-  return tval;
+void frag_class::print_s(FILE *fp_out) const {
+  int i,I;
+  fprintf(fp_out,"S_vectors on fragment reference points: DJ/dk\n");
+  for (I=0; I<6; ++I) {
+    if (coord_on[I]) {
+      fprintf(fp_out,"A:");
+      for (i=0;i<(3*A_P);++i)
+        fprintf(fp_out," %11.7lf", A_s[I][i]);
+      fprintf(fp_out,"\n");
+      fprintf(fp_out,"B:");
+      for (i=0;i<(3*B_P);++i)
+        fprintf(fp_out," %11.7lf", B_s[I][i]);
+      fprintf(fp_out,"\n");
+    }
+  }
 }
 
-void fragment_class::compute(double *geom) {
+void frag_class::compute(double *geom) {
   int xyz, k, i, a, I, b;
   double **dkA, **dkB; /* location of reference points */
   double *e12A, *e12B, *e32A, *e32B, *eRA, *eRB, *v, *v2, *v3;
@@ -172,17 +163,17 @@ void fragment_class::compute(double *geom) {
   // as long as the necessary reference points are present
   //if (coord_on[0]) {      /* monomer-monomer distance or inverse distance */
     if (optinfo.frag_dist_rho)
-      value[0] = 1.0 / R / _bohr2angstroms;
+      val[0] = 1.0 / R / _bohr2angstroms;
     else
-      value[0] = R * _bohr2angstroms;
+      val[0] = R * _bohr2angstroms;
   //}
   //if (coord_on[1]) { /* monomer polar angles */
   if (A_P >= 2)
-    value[1] = theta_A/_pi*180.0;
+    val[1] = theta_A/_pi*180.0;
   //}
   //if (coord_on[2]) {
   if (B_P >= 2)
-    value[2] = theta_B/_pi*180.0;
+    val[2] = theta_B/_pi*180.0;
   //}
   //if (coord_on[3]) { /* monomer-monomer torsion angle */
   if ((A_P >= 2) && (B_P >= 2)) {
@@ -197,19 +188,19 @@ void fragment_class::compute(double *geom) {
     }
     else dot = 2.0 ;
 
-    if (dot > optinfo.cos_tors_near_1_tol) value[3] = 0.0 ;
-    else if (dot < optinfo.cos_tors_near_neg1_tol) value[3] = 180.0 ;
+    if (dot > optinfo.cos_tors_near_1_tol) val[3] = 0.0 ;
+    else if (dot < optinfo.cos_tors_near_neg1_tol) val[3] = 180.0 ;
     else {
-      value[3] = acos(dot) / _pi * 180.0;
+      val[3] = acos(dot) / _pi * 180.0;
       // determine sign
       cross_product(e12B,eRA,v);
       dot_arr(e12A, v, 3, &dot);
-      if (dot < 0) value[3] *= -1;
+      if (dot < 0) val[3] *= -1;
       /* using the sin formula
           cross_product(e12B,eRA,v);
           dot_arr(e12A, v, 3, &dot);
           dot /= sin(theta_A) * sin(theta_B);
-          value[3] = asin(dot)/_pi*180.0; */
+          val[3] = asin(dot)/_pi*180.0; */
     }
   }
   //}
@@ -226,19 +217,19 @@ void fragment_class::compute(double *geom) {
     }
     else dot = 2.0;
 
-    if (dot > optinfo.cos_tors_near_1_tol) value[4] = 0.0 ;
-    else if (dot < optinfo.cos_tors_near_neg1_tol) value[4] = 180.0 ;
+    if (dot > optinfo.cos_tors_near_1_tol) val[4] = 0.0 ;
+    else if (dot < optinfo.cos_tors_near_neg1_tol) val[4] = 180.0 ;
     else {
-      value[4] = acos(dot) / _pi * 180.0;
+      val[4] = acos(dot) / _pi * 180.0;
       // determine sign
       cross_product(eRA,e12A,v);
       dot_arr(e32A, v, 3, &dot);
-      if (dot < 0) value[4] *= -1;
+      if (dot < 0) val[4] *= -1;
       /* using the sine formula
           cross_product(eRA,e12A,v);
           dot_arr(e32A, v, 3, &dot);
           dot /= sin(theta_A) * sin(alpha_A);
-          value[4] = asin(dot)/_pi*180.0; */
+          val[4] = asin(dot)/_pi*180.0; */
     }
   }
   //}
@@ -258,19 +249,19 @@ void fragment_class::compute(double *geom) {
       dot = 2.0;
 
 //printf("dot: %15.10lf\n", dot);
-    if (dot > optinfo.cos_tors_near_1_tol) value[5] = 0.0 ;
-    else if (dot < optinfo.cos_tors_near_neg1_tol) value[5] = 180.0 ;
+    if (dot > optinfo.cos_tors_near_1_tol) val[5] = 0.0 ;
+    else if (dot < optinfo.cos_tors_near_neg1_tol) val[5] = 180.0 ;
     else {
-      value[5] = acos(dot) / _pi * 180.0;
+      val[5] = acos(dot) / _pi * 180.0;
       // determine sign
       cross_product(eRB,e12B,v);
       dot_arr(e32B, v, 3, &dot);
-      if (dot < 0) value[5] *= -1;
+      if (dot < 0) val[5] *= -1;
       /* using the sine formula
           cross_product(eRB,e12B,v); // (e12B x eRA) = (eRB x e12B)
           dot_arr(e32B, v, 3, &dot);
           dot /= sin(theta_B) * sin(alpha_B);
-          value[5] = asin(dot)/_pi*180.0; */
+          val[5] = asin(dot)/_pi*180.0; */
     }
   }
   //}
@@ -278,10 +269,10 @@ void fragment_class::compute(double *geom) {
   // fix jumps through 180 degrees
   for (I=3; I<6; ++I) {
   //  if (coord_on[I]) {
-      if ((near_180[I] == -1) && (value[I] > FIX_NEAR_180))
-        value[I] = -180.0 - (180.0 - value[I]);
-      else if ((near_180[I] == +1) && (value[I] < -1*FIX_NEAR_180))
-        value[I] = +180.0 + (180.0 + value[I]);
+      if ((near_180[I] == -1) && (val[I] > FIX_NEAR_180))
+        val[I] = -180.0 - (180.0 - val[I]);
+      else if ((near_180[I] == +1) && (val[I] < -1*FIX_NEAR_180))
+        val[I] = +180.0 + (180.0 + val[I]);
    // }
   }
 
@@ -296,16 +287,12 @@ void fragment_class::compute(double *geom) {
     interfragment coordinates with respect to changes in the
     cartesian coordinates of the 6 reference atoms (3 on each fragment) **/
 
-void fragment_class::compute_s(int natom, double *geom) {
+void frag_class::compute_s(double *geom) {
   int xyz, k, i, a, b;
   double **dkA, **dkB; /* location of reference points */
-  double *e12A, *e12B, *e32A, *e32B, *eRA, *eRB, *v, *v2, *geom_ang;
+  double *e12A, *e12B, *e32A, *e32B, *eRA, *eRB, *v, *v2;
   double  d12A,  d12B,  d32A,  d32B,  R, c1, c2;
   double dot, alpha_A, alpha_B, theta_A, theta_B;
-
-  geom_ang  = new double[3*natom];
-  for (i=0;i<natom*3;++i)
-    geom_ang[i] = geom[i] * _bohr2angstroms;
 
   dkA = block_matrix(3,3);
   dkB = block_matrix(3,3);
@@ -322,12 +309,12 @@ void fragment_class::compute_s(int natom, double *geom) {
   for (k=0; k<A_P; ++k)
     for (a=0; a<A_natom; ++a)
       for (xyz=0; xyz<3; ++xyz)
-        dkA[k][xyz] += get_A_weight(k,a) * geom_ang[3*get_A_atom(a)+xyz];
+        dkA[k][xyz] += get_A_weight(k,a) * geom[3*get_A_atom(a)+xyz] * _bohr2angstroms;
 
   for (k=0; k<B_P; ++k)
     for (b=0; b<B_natom; ++b)
       for (xyz=0; xyz<3; ++xyz)
-        dkB[k][xyz] += get_B_weight(k,b) * geom_ang[3*get_B_atom(b)+xyz];
+        dkB[k][xyz] += get_B_weight(k,b) * geom[3*get_B_atom(b)+xyz] * _bohr2angstroms;
 
   /* compute e vectors */
   for (xyz=0; xyz<3; ++xyz) {
@@ -488,43 +475,15 @@ void fragment_class::compute_s(int natom, double *geom) {
   free_block(dkA); free_block(dkB);
 }
 
-void fragment_class::print_s(void) {
-  int i,I;
-  fprintf(outfile,"S_vectors on fragment reference points: DJ/dk\n");
-  for (I=0; I<6; ++I) {
-    if (coord_on[I]) {
-      fprintf(outfile,"A:");
-      for (i=0;i<(3*A_P);++i)
-        fprintf(outfile," %11.7lf", A_s[I][i]);
-      fprintf(outfile,"\n");
-      fprintf(outfile,"B:");
-      for (i=0;i<(3*B_P);++i)
-        fprintf(outfile," %11.7lf", B_s[I][i]);
-      fprintf(outfile,"\n");
-    }
-  }
-}
-
-void fragment_class::fix_near_180(void) {
-  int I, lin;
-  for (I=3; I<6; ++I) {
-    //if (coord_on[I]) {
-      if (value[I] > FIX_NEAR_180) lin = +1;
-      else if (value[I] < -1*FIX_NEAR_180) lin = -1;
-      else lin = 0;
-      set_near_180(I,lin);
-    //}
-  }
-  return;
-}
 
 // returns an array indicating which fragment each atom belongs to
+/*
 int * fragment_set::atom2fragment(int natom) {
   int i, a, b, fid=0, na, nb ;
   int *f = new int [natom];
   for (i=0; i<natom; ++i) f[i] = 0;
 
-  for (i=0; i<num; ++i) {
+  for (i=0; i<vfrag.size(); ++i) {
     na = get_A_natom(i);
     for (a=0; a<na; ++a)
       f[get_A_atom(i, a)] = fid;
@@ -537,5 +496,6 @@ int * fragment_set::atom2fragment(int natom) {
   }
   return f;
 }
+*/
 
 }} /* namespace psi::optking */

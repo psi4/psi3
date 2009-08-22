@@ -6,31 +6,25 @@
     unless an RFO step is being used in which case H is returned
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <libciomr/libciomr.h>
-#include <physconst.h>
-#include <libipv1/ip_lib.h>
-#include <psifiles.h>
-#include <libpsio/psio.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
+#include "opt.h"
+
+#include <libpsio/psio.h>
+#include <libipv1/ip_lib.h>
 
 namespace psi { namespace optking {
 
-void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts);
-extern double *compute_q(internals &simples, salc_set &symm);
-extern void empirical_H(internals &simples, salc_set &symm, cartesians &carts);
+static void H_update(double **H, simples_class &simples, const salc_set &symm, 
+  const cartesians &carts);
 
-double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &carts) {
+double **compute_H(simples_class & simples, const salc_set &symm,
+    double **P, const cartesians &carts) {
+
   double **H, **H_inv, **H_inv_new, **H_new, **temp_mat;
   int i,j,dim, n_previous;
   char buffer[MAX_LINELENGTH];
@@ -87,7 +81,9 @@ double **compute_H(internals &simples, salc_set &symm, double **P, cartesians &c
 }
 
 /* This functions performs update of Hessian */
-void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts) {
+void H_update(double **H, simples_class &simples, const salc_set &symm, 
+    const cartesians &carts) {
+
   int i,j,dim,n_previous,i_step, natom, step_start, skip;
   double qq, qg, qz, zz, *q, *f, *q_old, *f_old, *Z;
   double *dq, *dg, **X, **temp_mat, *x, *x_old, phi, **H_new, max;
@@ -123,7 +119,7 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
   psio_read_entry(PSIF_OPTKING, x_string, (char *) &(x[0]), 3*natom*sizeof(double));
   close_PSIF();
 
-  simples.compute_internals(natom,x);
+  simples.compute(x);
   simples.fix_near_180(); // fix configuration for torsions
   q = compute_q(simples, symm);
 
@@ -147,7 +143,7 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
     psio_read_entry(PSIF_OPTKING, x_string, (char *) &(x_old[0]), 3*natom*sizeof(double));
     close_PSIF();
 
-    simples.compute_internals(natom, x_old);
+    simples.compute(x_old);
     q_old = compute_q(simples, symm);
 
     /* check for scary passages through 0 */
@@ -289,9 +285,9 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
 
   // put current values of internal coordinates back in place(!)
   x = carts.get_coord();
-  simples.compute_internals(natom, x);
+  simples.compute(x);
   simples.fix_near_180();
-  simples.compute_s(natom, x);
+  simples.compute_s(x);
   free(x);
 
   free(q);
@@ -315,7 +311,7 @@ void H_update(double **H, internals &simples, salc_set &symm, cartesians &carts)
   4) generate empirical force constants
 */
 
-void fconst_init(cartesians &carts, internals &simples, salc_set &symm) {
+void fconst_init(const cartesians & carts, const simples_class & simples, const salc_set &symm) {
   int i, j, dim, count, constants_in_PSIF, cnt;
   char *buffer;
   double **F, **temp_mat;

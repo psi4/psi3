@@ -4,26 +4,19 @@
     and salc_set the value of the simple internals must already be computed.
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <libciomr/libciomr.h>
-#include <physconst.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
 
 namespace psi { namespace optking {
 
-double *compute_q(internals &simples,salc_set &symm) {
-  int i, j, simple, intco_type, sub_index, sub_index2;
+double *compute_q(const simples_class & simples, const salc_set & symm) {
+  int i, j, simple, sub_index, sub_index2;
   double *q, coeff, prefactor, tval;
+  Intco_type intco_type;
 
   q = init_array(symm.get_num());
 
@@ -35,23 +28,23 @@ double *compute_q(internals &simples,salc_set &symm) {
       coeff = symm.get_coeff(i,j);
       simples.locate_id(simple,&intco_type,&sub_index,&sub_index2);
       if (intco_type == STRE_TYPE) {
-        q[i] += prefactor * coeff * simples.stre.get_val(sub_index);
+        q[i] += prefactor * coeff * simples.stre[sub_index].get_val();
       }
       else if (intco_type == BEND_TYPE) {
-        q[i] += prefactor * coeff * simples.bend.get_val(sub_index)*_pi/180.0;
+        q[i] += prefactor * coeff * simples.bend[sub_index].get_val()*_pi/180.0;
       }
       else if (intco_type == TORS_TYPE) {
-        q[i] += prefactor * coeff * simples.tors.get_val(sub_index)*_pi/180.0;
+        q[i] += prefactor * coeff * simples.tors[sub_index].get_val()*_pi/180.0;
       }
       else if (intco_type == OUT_TYPE) {
-        q[i] += prefactor * coeff * simples.out.get_val(sub_index)*_pi/180.0;
+        q[i] += prefactor * coeff * simples.out[sub_index].get_val()*_pi/180.0;
       }
-      else if (intco_type == LIN_BEND_TYPE) {
-        tval = simples.lin_bend.get_val(sub_index);
+      else if (intco_type == LINB_TYPE) {
+        tval = simples.linb[sub_index].get_val();
         q[i] += prefactor * coeff * tval*_pi/180.0;
       }
       else if (intco_type == FRAG_TYPE) {
-        q[i] += prefactor * coeff * simples.frag.get_val_A_or_rad(sub_index,sub_index2);
+        q[i] += prefactor * coeff * simples.frag[sub_index].get_val_A_or_rad(sub_index2);
       }
     }
   }

@@ -1,8 +1,7 @@
 /*! \file
     \ingroup OPTKING
-    \brief 
-IRREP.CC :  symmetrizes set of delocalized internal coordinates
-  also places irreps of coordinates in global array 'irr'
+    \brief IRREP.CC :  symmetrizes set of delocalized internal coordinates
+            also places irreps of coordinates in global array 'irr'
 
   &simples  -- address of an object of class internals
  **di_coord -- pointer to delocalized internal corrdinate matrix 
@@ -12,27 +11,19 @@ IRREP.CC :  symmetrizes set of delocalized internal coordinates
 significant modifications by J. Kenny June '00
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <physconst.h>
-#include <libciomr/libciomr.h>
-#include <libipv1/ip_lib.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
-#include "salc.h"
+#include "simples.h"
+
+#include <libciomr/libciomr.h>
 
 namespace psi { namespace optking {
 
-double **irrep_reduce( double **coord_mat, internals &simples, int coords, int order);
+static double **irrep_reduce(double **coord_mat, const simples_class &simples, int coords, int order);
 
-double **irrep(internals &simples, double **di_coord) {
+double **irrep(const simples_class &simples, double **di_coord) {
 
   int i, j, k, a, ops, coord_num, irrep, offset,index,
   order,                  /* order of point group */
@@ -322,7 +313,7 @@ num_coords -- number of coordinates
 order      -- order of irrep
 returns:    characters -- matrix of characters, (coordinate,irrep) ***/
 
-double **irrep_reduce(double **coord_mat, internals &simples, int num_coords, int order) {
+double **irrep_reduce(double **coord_mat, const simples_class &simples, int num_coords, int order) {
 
   int coord, operations, irreducible, i, j, a;
 

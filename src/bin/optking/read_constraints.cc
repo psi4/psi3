@@ -5,27 +5,20 @@
    list of all of the simple internal coordinates
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <libciomr/libciomr.h>
-#include <libipv1/ip_lib.h>
-#include <physconst.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
-#include "salc.h"
+#include "simples.h"
+
+#include <libipv1/ip_lib.h>
 
 namespace psi { namespace optking {
 
-int *read_constraints(internals &simples) {
-  int num_type, i,j,a,b,c,d,cnt,*sign,id, intco_type, sub_index, sub_index2;
+int *read_constraints(const simples_class & simples) {
+  int num_type, i,j,a,b,c,d,cnt,*sign,id, sub_index, sub_index2;
   int iconstraints, *constraints;
+  Intco_type intco_type;
 
   optinfo.constraints_present = 0;
   optinfo.nconstraints = 0;
@@ -59,7 +52,7 @@ int *read_constraints(internals &simples) {
             ip_data("STRE","%d",&(a),2,i,0);
             ip_data("STRE","%d",&(b),2,i,1);
             swap(&a,&b);
-            id = simples.stre.get_id_from_atoms(a-1,b-1);
+            id = simples.get_id_from_atoms_stre(a-1,b-1);
             constraints[iconstraints++] = simples.id_to_index(id);
             fprintf(outfile,"Stretch %d: %d %d\n", id, a, b);
           }
@@ -83,7 +76,7 @@ int *read_constraints(internals &simples) {
           ip_data("BEND","%d",&(c),2,i,2);
           if (!cnt) {
             swap(&a,&c);
-            id = simples.bend.get_id_from_atoms(a-1,b-1,c-1);
+            id = simples.get_id_from_atoms_bend(a-1,b-1,c-1);
             constraints[iconstraints++] = simples.id_to_index(id);
             fprintf(outfile,"Angle %d: %d %d %d\n", id, a, b, c);
           }
@@ -108,7 +101,7 @@ int *read_constraints(internals &simples) {
           ip_data("LIN1","%d",&(c),2,i,2);
           if (!cnt) {
             swap(&a,&c);
-            id = simples.lin_bend.get_id_from_atoms(a-1,b-1,c-1,1);
+            id = simples.get_id_from_atoms_linb(a-1,b-1,c-1,1);
             constraints[iconstraints++] = simples.id_to_index(id);
             fprintf(outfile,"Lin1 %d: %d %d %d\n", id, a, b, c);
           }
@@ -133,7 +126,7 @@ int *read_constraints(internals &simples) {
           ip_data("LIN2","%d",&(c),2,i,2); 
           if (!cnt) {
             swap(&a,&c);
-            id = simples.lin_bend.get_id_from_atoms(a-1,b-1,c-1,2);
+            id = simples.get_id_from_atoms_linb(a-1,b-1,c-1,2);
             constraints[iconstraints++] = simples.id_to_index(id);
             fprintf(outfile,"Lin2 %d: %d %d %d\n", id, a, b, c);
           }
@@ -159,7 +152,7 @@ int *read_constraints(internals &simples) {
           ip_data("TORS","%d",&(d),2,i,3);
           if (!cnt) {
             swap_tors(&a,&b,&c,&d);
-            id = simples.tors.get_id_from_atoms(a-1,b-1,c-1,d-1);
+            id = simples.get_id_from_atoms_tors(a-1,b-1,c-1,d-1);
             constraints[iconstraints++] = simples.id_to_index(id);
             fprintf(outfile,"Torsion %d: %d %d %d %d\n", id, a, b, c, d);
           }
@@ -184,7 +177,7 @@ int *read_constraints(internals &simples) {
           ip_data("OUT","%d",&(c),2,i,2);
           ip_data("OUT","%d",&(d),2,i,3);
           if (!cnt) {
-            id = simples.out.get_id_from_atoms(a-1,b-1,c-1,d-1,sign);
+            id = simples.get_id_from_atoms_out(a-1,b-1,c-1,d-1,sign);
             constraints[iconstraints++] = simples.id_to_index(id);
             fprintf(outfile,"Out-of-plane %d: %d %d %d %d\n", id, a, b, c, d);
           }
@@ -211,10 +204,10 @@ int *read_constraints(internals &simples) {
       }
 
       if (optinfo.fix_interfragment) {
-        for (i=0; i<simples.frag.get_num(); ++i) {
-          id = simples.frag.get_id(i); // executes once for each interfragment set
+        for (i=0; i<simples.frag.size(); ++i) {
+          id = simples.frag[i].get_id(); // executes once for each interfragment set
           for (int I=0; I<6; ++I) {
-            if (simples.frag.get_coord_on(i,I)) {
+            if (simples.frag[i].get_coord_on(I)) {
               if (!cnt) {
                 constraints[iconstraints++] = simples.id_to_index(id) + I;
                 fprintf(outfile,"Fragment coordinate %d \n", id+I);

@@ -6,6 +6,13 @@
 #ifndef _psi3_bin_optking_salc_h_
 #define _psi3_bin_optking_salc_h_
 
+#define EXTERN
+#include "globals.h"
+#undef EXTERN
+#include "cartesians.h"
+
+#include <libipv1/ip_lib.h>
+
 namespace psi { namespace optking {
 
 class salc_class {
@@ -26,7 +33,7 @@ class salc_class {
       delete [] coeff;
       delete [] label;
     }
-    void print() {
+    void print() const {
       int i, col = 0;
         fprintf(outfile,"    (");
         fprintf(outfile,"\"%s\"",label);
@@ -55,7 +62,7 @@ class salc_class {
         exit(2);
       }
     }
-    int get_length() { return length; }
+    int get_length() const { return length; }
     void set_simple(int pos, int i) {
       if (pos < length)
          simple[pos] = i;
@@ -64,7 +71,7 @@ class salc_class {
          exit(2);
       }
     }
-    int  get_simple(int pos) {
+    int  get_simple(int pos) const {
       if (pos >= length) {
          fprintf(outfile,"Position in SALC array exceeds SALC length\n");
          exit(2);
@@ -78,16 +85,16 @@ class salc_class {
       }
       coeff[pos] = new_coeff;
     }
-    double get_coeff(int pos) {
+    double get_coeff(int pos) const {
       if (pos >= length) {
          fprintf(outfile,"Position in SALC array exceeds SALC length\n");
          exit(2);
       }
       return coeff[pos];
     }
-    char *get_label() { return label; }
+    char *get_label() const { return label; }
     void set_prefactor(double new_prefactor) { prefactor = new_prefactor; }
-    double get_prefactor() { return prefactor; }
+    double get_prefactor() const { return prefactor; }
     void set_label(char *new_label);
 };
 
@@ -103,7 +110,7 @@ class salc_set {
       delete [] salc_array;
       delete [] name ;
     }
-    void print() {
+    void print() const {
       int i;
       if (num > 0) {
         fprintf(outfile,"\n  %s = (\n",name);
@@ -116,23 +123,23 @@ class salc_set {
       return;
     }
     void set_num(int i) {num = i;}
-    int  get_num(void) { return num;}
+    int  get_num(void) const { return num;}
     void set_coeff(int index, int pos, double new_coeff) {
       salc_array[index].set_coeff(pos, new_coeff);
     }
-    double get_coeff(int index, int pos) {
+    double get_coeff(int index, int pos) const {
       return salc_array[index].get_coeff(pos);
     }
-    int get_length(int index) {
+    int get_length(int index) const {
       return salc_array[index].get_length();
     }
-    int get_simple(int index, int pos) {
+    int get_simple(int index, int pos) const {
       return salc_array[index].get_simple(pos);
     }
-    double get_prefactor(int index) {
+    double get_prefactor(int index) const {
       return salc_array[index].get_prefactor();
     }
-    char *get_label(int index) {
+    char *get_label(int index) const {
       return salc_array[index].get_label();
     }
 };

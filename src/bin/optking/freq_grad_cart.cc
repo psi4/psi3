@@ -3,38 +3,22 @@
     \brief freq_grad_cart(): computes frequencies from gradients and cartesian disps
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-#include <libciomr/libciomr.h>
-#include <libqt/qt.h>
-#include <libipv1/ip_lib.h>
-#include <physconst.h>
-#include <libpsio/psio.h>
-#include <psifiles.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
-#include "bond_lengths.h"
-#define MAX_LINE 132
+#include "opt.h"
+
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include <libpsio/psio.h>
+#include <libchkpt/chkpt.h>
 
 namespace psi { namespace optking {
 
-extern double **compute_B(internals &simples, salc_set &salcs);
-extern double *compute_q(internals &simples, salc_set &symm);
-extern double **compute_G(double **B, int num_intcos, cartesians &carts);
-extern int get_irrep_xyz(double **cartrep, int xyz);
-void sort_evals_all(int nsalc_all, double *evals_all, int *evals_all_irrep);
-FILE *fp11;
-
-void freq_grad_cart(cartesians &carts) {
+void freq_grad_cart(const cartesians &carts) {
   int i,j,k,l,a,b, ii, cnt, dim, natom, xyz, cnt_eval = -1, *evals_all_irrep,op_disp;
   int xyzA, xyzB, atomA, atomB, row, col,h,nirreps,xyz_irr,I,cnt_all,match;
   int nsalcs,ncoord,start_disp, start_salc, atom, atom2, op, natom_unique;
@@ -77,25 +61,25 @@ void freq_grad_cart(cartesians &carts) {
 
   disp_grad = block_matrix(ndisp_all,3*natom);
   if (optinfo.grad_dat) { /* read in gradients from "file11.dat" */
-    ffile(&fp11, "file11.dat", 2);
-    rewind(fp11);
-    line1 = new char[MAX_LINE+1];
+    ffile(&fp_11, "file11.dat", 2);
+    rewind(fp_11);
+    line1 = new char[MAX_LINELENGTH+1];
     for (i=0;i<ndisp_all;++i) {
       /* read in 2 header lines */
-      fgets(line1, MAX_LINE, fp11);
-      fgets(line1, MAX_LINE, fp11);
+      fgets(line1, MAX_LINELENGTH, fp_11);
+      fgets(line1, MAX_LINELENGTH, fp_11);
 
       for (j=0; j<natom; ++j) {
-        fgets(line1, MAX_LINE, fp11);
+        fgets(line1, MAX_LINELENGTH, fp_11);
       }
       /* read in xyz for N atoms */
       for (j=0; j<natom; ++j) {
-        fgets(line1, MAX_LINE, fp11);
+        fgets(line1, MAX_LINELENGTH, fp_11);
         sscanf(line1, "%lf %lf %lf",
            &(disp_grad[i][3*j]), &(disp_grad[i][3*j+1]), &(disp_grad[i][3*j+2]) );
       }
     }
-    fclose(fp11);
+    fclose(fp_11);
   }
   else {
     psio_read_entry(PSIF_OPTKING, "OPT: Displaced gradients",

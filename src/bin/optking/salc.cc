@@ -3,16 +3,6 @@
     \brief SALC.CC : constructor functions for salc_set
 */
 
-#include <cmath>
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <libciomr/libciomr.h>
-#include <libipv1/ip_lib.h>
-
-#define EXTERN
-#include "opt.h"
-#undef EXTERN
 #include "salc.h"
 
 namespace psi { namespace optking {

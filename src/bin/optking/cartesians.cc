@@ -3,26 +3,19 @@
     \brief cartesians.cc : contains member functions for cartesian class
 */
 
-#include <cmath>
+#define EXTERN
+#include "globals.h"
+#undef EXTERN
+#include "cartesians.h"
 
-#include <cstdio>
-#include <cstdlib>
-#include <cstring>
-#include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <libchkpt/chkpt.h>
-#include <physconst.h>
 #include <masses.h>
-
-#define EXTERN
-#include "opt.h"
-#include "cartesians.h"
-#undef EXTERN
 
 namespace psi { namespace optking {
 
 /*** FORCES returns forces in cartesian coordinates in aJ/Ang ***/ 
-double *cartesians:: get_forces() {
+double *cartesians:: get_forces() const {
   int i;
   double *f;
   f = init_array(3*natom);
@@ -31,7 +24,7 @@ double *cartesians:: get_forces() {
   return f;
 }
 
-double *cartesians:: get_fforces() {
+double *cartesians:: get_fforces() const {
   int i;
   double *f;
   f = init_array(3*nallatom);
@@ -205,11 +198,11 @@ cartesians::cartesians() {
  * disp_label is only used for geom.dat writing ***/
 
 void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
-			 char *disp_label, int disp_num) {
+			 char *disp_label, int disp_num) const {
   int i,j;
   double x,y,z;
   int cnt = -1;
-  char sym[3];
+  const char *sym;
 
   if (print_flag == 0) {
     for (i = 0; i < natom; ++i) {
@@ -309,22 +302,18 @@ void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
 
     fprintf(outfile,"\nGeometry written to chkpt\n");
 
-  //  double **geom;
-  //  geom = block_matrix(nallatom,3);
-  //  for (i=0; i<nallatom; ++i)
-  //  for (i=0; i<natom; ++i)
-  //    for (j=0; j<3; ++j)
-  //      geom[optinfo.to_dummy[i]][j] = coord[3*i+j];
+    // send copy so print function can be 'const'
+    double *fcoord_tmp = get_fcoord();
     chkpt_init(PSIO_OPEN_OLD);
-    chkpt_wt_fgeom(&fcoord);
+    chkpt_wt_fgeom(&fcoord_tmp);
     chkpt_close();
-  //  free_block(geom);
+    free(fcoord_tmp);
 
   }
   else if (print_flag == 12) { 
     for (i = 0; i < natom; ++i) {
       x = coord[++cnt]; y = coord[++cnt]; z = coord[++cnt];
-      zval_to_symbol(atomic_num[i],sym);
+      sym = atomic_labels[(int) (atomic_num[i])];
       fprintf(fp_out,"  (%3s %15.10f %15.10f %15.10f )\n",sym,x,y,z);
     }
   }
@@ -333,7 +322,7 @@ void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
       x = coord[++cnt] * _bohr2angstroms; 
       y = coord[++cnt] * _bohr2angstroms; 
       z = coord[++cnt] * _bohr2angstroms;
-      zval_to_symbol(atomic_num[i],sym);
+      sym = atomic_labels[(int) (atomic_num[i])];
       fprintf(fp_out,"  (%3s %15.10f %15.10f %15.10f )\n",sym,x,y,z);
     }
   }

@@ -3,42 +3,27 @@
     \brief makes +/- displacements suitable for determining selected force constants from gradients
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-#include <libciomr/libciomr.h>
-#include <libqt/qt.h>
-#include <libipv1/ip_lib.h>
-#include <physconst.h>
-#include <libpsio/psio.h>
-#include <psifiles.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
-#include "bond_lengths.h"
+#include "opt.h"
+
+#include <libqt/qt.h>
+#include <libipv1/ip_lib.h>
+#include <libpsio/psio.h>
 
 namespace psi { namespace optking {
-
-extern double *compute_q(internals &simples, salc_set &symm);
-extern int new_geom(cartesians &carts, internals &simples, salc_set &symm, 
-    double *dq, int print_to_geom_file, int restart_geom_file,
-    char *disp_label, int disp_num, int last_disp, double *return_geom);
 
 // only the symmetric salcs are passed in
 // make displacements for selected coordinates
 
-int disp_fc_grad_selected(cartesians &carts, internals &simples, salc_set &symm) 
+int disp_fc_grad_selected(const cartesians &carts, simples_class &simples, const salc_set &symm) 
 {
   int i, j, errcod, ndisps, *irrep_per_disp, cnt, success;
   double *fgeom, energy, **micro_geoms, **displacements;
-  //int simple_id, sub_index, sub_index2, intco_type;
   char disp_label[MAX_LINELENGTH];
 
   int ncoord = 0;        // # of coordinates to displace
@@ -69,24 +54,6 @@ int disp_fc_grad_selected(cartesians &carts, internals &simples, salc_set &symm)
   psio_write_entry(PSIF_OPTKING, "OPT: Reference geometry", (char *) fgeom, dim_carts*sizeof(double));
   psio_write_entry(PSIF_OPTKING, "OPT: Reference energy", (char *) &(energy), sizeof(double));
   close_PSIF();
-
-/* automate interfragment coordinates later?
-  // find number of single uncombined interfragment-type coodinates
-  int ncoord=0;
-  for (i=0; i<nsymm; ++i) {
-    simple_id = symm.get_simple(i,0);
-    simples.locate_id(simple_id,&intco_type,&sub_index,&sub_index2);
-    if ( (symm.get_length(i) != 1) || (intco_type != FRAG_TYPE) ) continue;
-    ++ncoord;
-  }
-  cnt = 0;
-  for (i=0; i<ncoord; ++i) {
-    simple_id = symm.get_simple(i,0);
-    simples.locate_id(simple_id,&intco_type,&sub_index,&sub_index2);
-    if ( (symm.get_length(i) != 1) || (intco_type != FRAG_TYPE) ) continue;
-    coord2salc[cnt] = i;
-  }
-*/
 
   displacements = block_matrix(ndisps, nsymm);
   for (i=0; i<ncoord; ++i) {

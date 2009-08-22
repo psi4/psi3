@@ -5,34 +5,21 @@
            ignoring symmetry
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-#include <libciomr/libciomr.h>
-#include <libipv1/ip_lib.h>
-#include <physconst.h>
-#include <libpsio/psio.h>
-#include <libqt/qt.h>
-#include <psifiles.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
-#include "bond_lengths.h"
+#include "opt.h"
+
+#include <libqt/qt.h>
+#include <libciomr/libciomr.h>
+#include <libpsio/psio.h>
 
 namespace psi { namespace optking {
 
-extern double **compute_B(internals &simples, salc_set &salcs);
-extern double *compute_q(internals &simples, salc_set &symm);
-extern double **compute_G(double **B, int num_intcos, cartesians &carts);
-
-void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs) {
+void freq_grad_irrep(const cartesians &carts, simples_class &simples, const salc_set &all_salcs) {
 
   int i,j,ii,jj,k,a,b, cnt, dim, dim_carts, ndisps,irrep;
   int nirr_salcs, nsalcs, *irrep_salcs;
@@ -97,8 +84,8 @@ void freq_grad_irrep(cartesians &carts, internals &simples, salc_set &all_salcs)
   u = mass_mat(masses);
   for (i=0; i<ndisps; ++i) {
 
-    simples.compute_internals(carts.get_natom(), &(micro_geom[i*dim_carts]));
-    simples.compute_s(carts.get_natom(), &(micro_geom[i*dim_carts]));
+    simples.compute(&(micro_geom[i*dim_carts]));
+    simples.compute_s(&(micro_geom[i*dim_carts]));
     q = compute_q(simples, all_salcs);
     /* fprintf(outfile,"Values of internal coordinates, displacement %d\n",i);
      for (j=0; j<salcs.get_num();++j) fprintf(outfile,"%15.10lf",all_q[i][j]);
@@ -264,8 +251,8 @@ print_mat2(&(full_all_f_q[24]), 12, all_salcs.get_num(), outfile);
 }
 
 
-void freq_grad_nosymm(cartesians &carts, internals &simples,
-    salc_set &all_salcs) {
+void freq_grad_nosymm(const cartesians &carts, simples_class &simples,
+    const salc_set &all_salcs) {
 
   int i,j,k,a,b, ii, cnt, dim, dim_carts, ndisps;
   int nsalcs;
@@ -300,8 +287,8 @@ void freq_grad_nosymm(cartesians &carts, internals &simples,
 
   // compute forces in internal coordinates, f_q = G_inv B u f
   for (i=0; i<ndisps; ++i) {
-    simples.compute_internals(carts.get_natom(), &(micro_geom[i*dim_carts]));
-    simples.compute_s(carts.get_natom(), &(micro_geom[i*dim_carts]));
+    simples.compute(&(micro_geom[i*dim_carts]));
+    simples.compute_s(&(micro_geom[i*dim_carts]));
 
     all_q[i] = compute_q(simples, all_salcs);
     B = compute_B(simples,all_salcs);

@@ -3,33 +3,20 @@
     \brief DISP_USER only performs input-specified displacements
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-#include <libciomr/libciomr.h>
-#include <libipv1/ip_lib.h>
-#include <physconst.h>
-#include <libpsio/psio.h>
-#include <psifiles.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
-#include "bond_lengths.h"
+#include "opt.h"
+
+#include <libciomr/libciomr.h>
+#include <libipv1/ip_lib.h>
 
 namespace psi { namespace optking {
 
-int new_geom(cartesians &carts, internals &simples, salc_set &all_salcs, double *dq,
-    int print_to_geom_file, int restart_geom_file, 
-    char *disp_label, int disp_num, int last_disp, double *return_geom);
-
-void disp_user(cartesians &carts, internals &simples, salc_set &all_salcs) {
+void disp_user(const cartesians &carts, simples_class & simples, const salc_set &all_salcs) {
   int i,j,a,b,success;
   int  num_disps = 0, disp_length = 0, restart_geom_file, line_length_count;
   double *geom, *djunk, *dq, **displacements, disp = 0;
@@ -43,10 +30,7 @@ void disp_user(cartesians &carts, internals &simples, salc_set &all_salcs) {
   ip_count("DISPLACEMENTS",&num_disps,0);
 
   if (num_disps < 1) {
-    fprintf(outfile,"\nNo DISPLACEMENTS vector found in input\n");
-    psio_done();
-    ip_done();
-    exit(2);
+    punt("No DISPLACEMENTS vector found in input.");
   }
 
   displacements = block_matrix(num_disps,all_salcs.get_num());

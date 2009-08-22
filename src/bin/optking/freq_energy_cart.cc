@@ -4,35 +4,24 @@
     cartesian displacements - formulas are in disp_freq_energy_cart.cc
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-#include <libciomr/libciomr.h>
-#include <libqt/qt.h>
-#include <libipv1/ip_lib.h>
-#include <physconst.h>
-#include <libpsio/psio.h>
-#include <psifiles.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
-#include "bond_lengths.h"
-#define MAX_LINE 132
+#include "opt.h"
+
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include <libpsio/psio.h>
+#include <libchkpt/chkpt.h>
 
 namespace psi { namespace optking {
 
-void sort_evals_all(int nsalc_all, double *evals_all, int *evals_all_irrep);
-FILE *fp_energy_dat;
-int iE(int *ndisp, int *nsalc, int irr, int ii, int jj, int disp_i, int disp_j);
+static int iE(int *ndisp, int *nsalc, int irr, int ii, int jj, int disp_i, int disp_j);
 
-void freq_energy_cart(cartesians &carts) {
+void freq_energy_cart(void) {
   int i, j, k, l, dim, natom, cnt_eval = -1, *evals_all_irrep;
   int h, nirreps, *nsalc, *ndisp, ndisp_all, nsalc_all, **ict, *start_irr;
   double **B, **force_constants, energy_ref, *energies, cm_convert, k_convert;
@@ -43,7 +32,7 @@ void freq_energy_cart(cartesians &carts) {
   print = optinfo.print_cartesians;
 
   nirreps = syminfo.nirreps;
-  natom = carts.get_natom();
+  natom = optinfo.natom;
   disp_size = optinfo.disp_size;
 
   chkpt_init(PSIO_OPEN_OLD);
@@ -81,7 +70,7 @@ void freq_energy_cart(cartesians &carts) {
       exit(PSI_RETURN_FAILURE);
     }
     rewind (fp_energy_dat);
-    line1 = new char[MAX_LINE+1];
+    line1 = new char[MAX_LINELENGTH+1];
     // ACS (11/06) Allow external program to be used to compute energies
     if(optinfo.external_energies){
       /* Read the first energy and dump it as the reference energy */

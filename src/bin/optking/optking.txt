@@ -16,7 +16,7 @@ stretch.h
 bend.h
 torsion.h
 out_of_plane.h
-lin_bend.h
+linb.h
     These headers define the internal coordinate types and each contain
 2 classes.  The simplest are in stretch.h:
     The first class is "stretch_class", which is a single stretch

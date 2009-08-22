@@ -3,32 +3,18 @@
     \brief TEST_BMAT.CC : compares analytic and numerical B matrices
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-#include <libciomr/libciomr.h>
-#include <libipv1/ip_lib.h>
-#include <physconst.h>
-#include <libpsio/psio.h>
-#include <psifiles.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
-#include "bond_lengths.h"
+
+#include <libqt/qt.h>
 
 namespace psi { namespace optking {
 
-extern double **compute_B(internals &simples, salc_set &symm);
-extern double *compute_q(internals &simples, salc_set &symm);
-
-int test_B(cartesians &carts, internals &simples, salc_set &symm) {
+int test_B(const cartesians &carts, simples_class &simples, const salc_set &symm) {
   int i, j, atom, xyz, ncarts, natom, nsalcs;
   double **B, **dq, disp_size=0.01, max_error;
   double *coord, *q_plus, *q_minus;
@@ -38,8 +24,8 @@ int test_B(cartesians &carts, internals &simples, salc_set &symm) {
   nsalcs = symm.get_num();
 
   coord = carts.get_coord();
-  simples.compute_internals(natom, coord);
-  simples.compute_s(natom, coord);
+  simples.compute(coord);
+  simples.compute_s(coord);
   B = compute_B(simples,symm);
   free(coord);
 
@@ -56,11 +42,11 @@ int test_B(cartesians &carts, internals &simples, salc_set &symm) {
         coord = carts.get_coord(); /* coord is in au */
 
         coord[3*atom+xyz] += disp_size;
-        simples.compute_internals(natom, coord);
+        simples.compute(coord);
         q_plus = compute_q(simples,symm); /* q is in Ang and radians */
 
         coord[3*atom+xyz] -= 2.0*disp_size;
-        simples.compute_internals(natom, coord);
+        simples.compute(coord);
         q_minus = compute_q(simples,symm);
  
         dq[i][3*atom+xyz] = (q_plus[i]-q_minus[i]) / (2.0*disp_size*_bohr2angstroms);

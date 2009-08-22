@@ -3,38 +3,24 @@
     \brief fc_grad_selected(): computes force constants from gradients for selected coordinates
 */
 
-#include <cmath>
-#include <cstdio>
-#include <libchkpt/chkpt.h>
-#include <cstdlib>
-#include <cstring>
-#include <cctype>
-#include <libciomr/libciomr.h>
-#include <libipv1/ip_lib.h>
-#include <physconst.h>
-#include <libpsio/psio.h>
-#include <libqt/qt.h>
-#include <psifiles.h>
-
 #define EXTERN
-#include "opt.h"
+#include "globals.h"
 #undef EXTERN
 #include "cartesians.h"
-#include "internals.h"
+#include "simples.h"
 #include "salc.h"
-#include "bond_lengths.h"
+#include "opt.h"
+
+#include <libciomr/libciomr.h>
+#include <libqt/qt.h>
+#include <libpsio/psio.h>
 
 namespace psi { namespace optking {
-
-extern double **compute_B(internals &simples, salc_set &salcs);
-extern double *compute_q(internals &simples, salc_set &symm);
-extern double **compute_G(double **B, int num_intcos, cartesians &carts);
-extern void empirical_H(internals &simples, salc_set &symm, cartesians &carts);
 
 // only the symmetric salcs are passed in
 // compute force constants for selected coordinates
 
-void fc_grad_selected(cartesians &carts, internals &simples, salc_set &symm) {
+void fc_grad_selected(const cartesians &carts, simples_class & simples, const salc_set &symm) {
 
   int i,j,k,a,b, ii, jj,cnt;
   double **B, **G, **G_inv, *masses, **u, *geom, *forces, **force_constants;
@@ -74,8 +60,8 @@ void fc_grad_selected(cartesians &carts, internals &simples, salc_set &symm) {
 
   // compute forces in internal coordinates, f_q = G_inv B u f
   for (i=0; i<ndisps; ++i) {
-    simples.compute_internals(carts.get_natom(), &(micro_geom[i*dim_carts]));
-    simples.compute_s(carts.get_natom(), &(micro_geom[i*dim_carts]));
+    simples.compute(&(micro_geom[i*dim_carts]));
+    simples.compute_s(&(micro_geom[i*dim_carts]));
 
     all_q[i] = compute_q(simples, symm);
     B = compute_B(simples,symm);
