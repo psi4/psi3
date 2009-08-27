@@ -36,7 +36,7 @@ typedef struct {
 class MemoryManager
 {
 public:
-  MemoryManager(int max_memory_mb);
+  MemoryManager();
   ~MemoryManager();
 
   void MemCheck(FILE *output);

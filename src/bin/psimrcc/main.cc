@@ -99,7 +99,6 @@ void read_calculation_options()
   options_add_int("DEBUG",0);
   options_add_int("DAMPING_FACTOR",0);
   options_add_int("MAXDIIS",7);
-  options_add_int("MEMORY",1800);
   options_add_int("NUM_THREADS",1);
   options_add_int("NEL",0);
   options_add_int("ROOT",1);
@@ -122,7 +121,7 @@ void read_calculation_options()
   options_add_bool("PRINT_HEFF",false);
   options_add_bool("PERT_CBS",false);
   options_add_bool("PERT_CBS_COUPLING",true);
-  options_add_bool("RESTRICTED_TRIPLES",true);
+  options_add_bool("RESTRICTED_TRIPLES",false);
 
   options_add_str_with_choices("PT_ENERGY","SECOND_ORDER","SECOND_ORDER SCS_SECOND_ORDER PSEUDO_SECOND_ORDER SCS_PSEUDO_SECOND_ORDER");
   options_add_str_with_choices("CORR_WFN","CCSD","PT2 CCSD MP2-CCSD CCSD_T");
@@ -131,6 +130,8 @@ void read_calculation_options()
   options_add_str_with_choices("CORR_ANSATZ","MK","SR MK BW APBW");
   options_add_str_with_choices("COUPLING","CUBIC","NONE LINEAR QUADRATIC CUBIC");
   options_add_str_with_choices("WFN_SYM","1","A AG AU AP APP A1 A2 B BG BU B1 B2 B3 B1G B2G B3G B1U B2U B3U 0 1 2 3 4 5 6 7 8");
+  options_add_str_with_choices("TRIPLES_ALGORITHM","RESTRICTED","SPIN_ADAPTED RESTRICTED UNRESTRICTED");
+
 
   // MP2_CCSD
   options_add_str_with_choices("MP2_CCSD_METHOD","II","I IA II");
@@ -174,6 +175,8 @@ void init_psi(int argc, char *argv[])
   ip_cwk_add(const_cast<char*>(":PSI"));
   ip_cwk_add(const_cast<char*>(":INPUT"));
 
+  _memory_manager_    = new MemoryManager();
+
   options_init();
 
   tstart(outfile);
@@ -197,8 +200,6 @@ void init_psi(int argc, char *argv[])
   ip_cwk_add(const_cast<char*>(":PSIMRCC"));
 
   debugging = new Debugging;
-
-  _memory_manager_    = new MemoryManager(options_get_int("MEMORY"));
 
   moinfo = new MOInfo();
 

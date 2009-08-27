@@ -87,15 +87,14 @@ void add_calculation_options()
   options_add_int("DEBUG",0);
   options_add_int("DENOMINATOR_SHIFT",0);
   options_add_int("MAXITER",100);
-  options_add_int("MEMORY",1800);
   options_add_int("NDIIS",7);
   options_add_int("ROOT",1);
   options_add_int("START_FAVG",5);
   options_add_int("TURN_ON_ACTV",0);
   options_add_int("ROTATE_MO_ANGLE",0);
-  options_add_int("ROTATE_MO_IRREP",0);
-  options_add_int("ROTATE_MO_P",1);  // P and Q are one-based
-  options_add_int("ROTATE_MO_Q",1);
+  options_add_int("ROTATE_MO_IRREP",1);  // IRREP is one-based
+  options_add_int("ROTATE_MO_P",1);      // P and Q are one-based
+  options_add_int("ROTATE_MO_Q",2);
 
   options_add_bool("CI_DIIS",false);
   options_add_bool("USE_DIIS",true);
@@ -160,7 +159,7 @@ void init_psi(int argc, char *argv[])
 
   _default_psio_lib_->open(PSIF_MCSCF,PSIO_OPEN_NEW);
 
-  psi::_memory_manager_   = new MemoryManager(options_get_int("MEMORY") );
+  psi::_memory_manager_   = new MemoryManager();
   moinfo_scf = new MOInfoSCF();
 }
 

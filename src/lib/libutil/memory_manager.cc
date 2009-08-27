@@ -5,8 +5,11 @@
 #include <cstdlib>
 
 #include <liboptions/liboptions.h>
+#include <libciomr/libciomr.h>
 
 #include "memory_manager.h"
+
+extern FILE *infile, *outfile;
 
 namespace psi{
 
@@ -18,10 +21,12 @@ double bytes_to_MiB(size_t n)
   return(static_cast<double>(n) / static_cast<double>(1048576));
 }
 
-MemoryManager::MemoryManager(int max_memory_mb){
+MemoryManager::MemoryManager(){
+  long int maxcor = 0;
+  fndcor(&maxcor,infile,outfile);
   CurrentAllocated    = 0;
   MaximumAllocated    = 0;
-  MaximumAllowed      = 1024 * 1024 * static_cast<size_t>(max_memory_mb);
+  MaximumAllowed      = static_cast<size_t>(maxcor);
 }
 
 MemoryManager::~MemoryManager()
