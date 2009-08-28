@@ -97,7 +97,7 @@ class simples_class {
    }
 
    // compute and store s sectors 
-   void simples_class :: compute_s(double *geom) {
+   void compute_s(double *geom) {
      int i;
      for (i=0; i<stre.size(); ++i) stre.at(i).compute_s(geom);
      for (i=0; i<bend.size(); ++i) bend.at(i).compute_s(geom);
