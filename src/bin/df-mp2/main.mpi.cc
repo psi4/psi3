@@ -19,10 +19,11 @@
 #include "mpi.h"
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <iostream>
 #define DEBUG 0
 #define TIME_DF_MP2 1
 
+//#include <omp.h>
 #include <psifiles.h>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.hpp>
@@ -30,6 +31,8 @@
 #include <libipv1/ip_lib.h>
 #include <libiwl/iwl.h>
 #include <libqt/qt.h>
+
+#include <iostream>
 
 #include <libmints/basisset.h>
 #include <libmints/onebody.h>
@@ -62,6 +65,7 @@ using namespace psi;
 using namespace psi::dfmp2;
 
 int main(int argc, char * argv[]) {
+
   int myproc, nprocs;
   MPI_Init(&argc, &argv);
   MPI_Comm_size(MPI_COMM_WORLD, &nprocs);
@@ -79,18 +83,18 @@ int main(int argc, char * argv[]) {
   // ioff, fac, df, bc
   Wavefunction::initialize_singletons();
 
-  Ref<PSIO> psio(new PSIO);
-  psiopp_ipv1_config(psio.pointer());
-  Ref<Chkpt> chkpt(new Chkpt(psio.pointer(), PSIO_OPEN_OLD));
+  PSIO* psio = new PSIO;
+  psiopp_ipv1_config(psio);
+  Chkpt* chkpt = new Chkpt(psio, PSIO_OPEN_OLD);
 
   // Create a new matrix factory
-  Ref<MatrixFactory> factory(new MatrixFactory);
+  MatrixFactory factory;
 
   // Initialize the factory with data from checkpoint
-  factory->init_with_chkpt(chkpt);
+  factory.init_with_chkpt(chkpt);
 
   // Form basis object:
-  Ref<BasisSet> basis(new BasisSet(chkpt));
+  BasisSet* basis = new BasisSet(chkpt);
   char *ri_basis,*orbital_basis;
   int errcod;
   if(ip_exist("RI_BASIS",0)) {
@@ -110,25 +114,15 @@ int main(int argc, char * argv[]) {
   }
   if (myproc == 0) {
     fprintf(outfile, 
-    "  Using the %s basis set for the orbitals, with the %s RI basis\n\n",
-    orbital_basis,ri_basis);
+      "  Using the %s basis set for the orbitals, with the %s RI basis\n\n",
+      orbital_basis,ri_basis);
   }
-  Ref<BasisSet> ribasis;
-  if(ip_exist("RI_BASISFILE",0)){
-    //User provided RI_BASISFILE
-  	char* ri_basisfile;
-  	errcod = ip_string("RI_BASISFILE", &(ri_basisfile),0);
-  	if (errcod) {
-  		fprintf(outfile,"Error reading RI_BASISFILE %s\n",ri_basisfile);
-  		return EXIT_FAILURE;
-  	} else {
-  		ribasis = (new BasisSet(chkpt, ri_basisfile, ri_basis));
-  	}
-  } else {
-  	//Default RI_BASISFILE
-  	ribasis = (new BasisSet(chkpt, "GENBAS", ri_basis)); //find pbasis via the prefx
-  }
-  Ref<BasisSet> zero = BasisSet::zero_basis_set();
+
+  BasisSet* ribasis;
+  ribasis = new BasisSet(chkpt, "DF_BASIS"); //find pbasis via the prefx
+  ribasis->print();
+
+  BasisSet* zero = BasisSet::zero_basis_set();
   
   // Taken from mp2 module, get_params.cc 
   // get parameters related to SCS-MP2 or SCS-N-MP2 
@@ -148,7 +142,7 @@ int main(int argc, char * argv[]) {
       fprintf(outfile,"    Same-spin scaled by     %10.4lf\n",scs_scale_ss);
     }
   }
-  if (scsn == 1 && myproc == 0) {
+  if (scsn == 1 && mproc == 0) {
     fprintf(outfile,"\n  SCSN-RI-MP2 energies will be printed\n");
   }
     
@@ -187,41 +181,39 @@ int main(int argc, char * argv[]) {
 
   // Read in C coefficients
 
-  RefSimpleMatrix C_so = 
-    factory->create_simple_matrix("MO coefficients (SO basis)");
+  SimpleMatrix *C_so = 
+    factory.create_simple_matrix("MO coefficients (SO basis)");
   double **vectors = chkpt->rd_scf();
   if (vectors == NULL) {
     fprintf(stderr, "Could not find MO coefficients. Run cscf first.\n");
     return EXIT_FAILURE;
   }
-  C_so.set(vectors);
+  C_so->set(vectors);
   free_block(vectors);
   double **Umat = chkpt->rd_usotbf();
-  RefSimpleMatrix U = factory->create_simple_matrix("SO->BF");
-  U.set(Umat);
+  SimpleMatrix *U = factory.create_simple_matrix("SO->BF");
+  U->set(Umat);
   free_block(Umat);
   // Transfrom the eigenvectors from the SO to the AO basis
-  RefSimpleMatrix C = 
-    factory->create_simple_matrix("MO coefficients (AO basis)");
-  C.gemm(true, false, 1.0, U, C_so, 0.0);
+  SimpleMatrix *C = 
+    factory.create_simple_matrix("MO coefficients (AO basis)");
+  C->gemm(true, false, 1.0, U, C_so, 0.0);
 
   // Load in orbital energies
   double *orbital_energies = chkpt->rd_evals();
 
   // Create integral factory
-  Ref<IntegralFactory> rifactory(new IntegralFactory(ribasis, zero, 
-    basis, basis));
-  Ref<IntegralFactory> rifactory_J(new IntegralFactory(ribasis, zero,
-    ribasis, zero));
+  IntegralFactory rifactory(ribasis, zero, basis, basis);
+  IntegralFactory rifactory_J(ribasis, zero, ribasis, zero);
     
-  Ref<TwoBodyInt> eri = rifactory->eri();
-  Ref<TwoBodyInt> Jint = rifactory_J->eri();
+  TwoBodyInt* eri = rifactory.eri();
+  TwoBodyInt* Jint = rifactory_J.eri();
   double **J = block_matrix(ribasis->nbf(), ribasis->nbf());
   double **J_mhalf = block_matrix(ribasis->nbf(), ribasis->nbf());
   const double *Jbuffer = Jint->buffer();
 
 #ifdef TIME_DF_MP2
-  if (myproc==0) {
+  if (myproc == 0) {
     timer_init();
     timer_on("Form J");
   }
@@ -251,13 +243,11 @@ int main(int argc, char * argv[]) {
   }
     
   // fprintf(outfile, "J:\n");
-  // print_mat(J, ribasis->nbf(), ribasis->nbf(), outfile);
-    
+  // print_mat(J, ribasis->nbf(), ribasis->nbf(), outfile);    
   // Invert J matrix
   // invert_matrix(J, J_inverse, ribasis->nbf(), outfile);
   // fprintf(outfile, "J^-1:\n");
   // print_mat(J_inverse, ribasis->nbf(), ribasis->nbf(), outfile);
-    
   // Form J^-1/2
   // First, diagonalize J
   // the C_DSYEV call replaces the original matrix J with its eigenvectors
@@ -320,7 +310,7 @@ int main(int argc, char * argv[]) {
     // Copy over the info for active occupied orbitals
     for(int i=0; i<clsdpi[h]-frzcpi[h]; ++i){
       for (int mu=0; mu<norbs; ++mu)
-        Co[mu][act_docc_count] = C.get(mu, offset);
+        Co[mu][act_docc_count] = C->get(mu, offset);
       epsilon_act_docc[act_docc_count] = orbital_energies[offset];
       docc_sym[act_docc_count] = h;
       ++act_docc_count;
@@ -329,7 +319,7 @@ int main(int argc, char * argv[]) {
     // Copy over the info for active virtual orbitals
     for(int a=0; a<orbspi[h]-clsdpi[h]-frzvpi[h]; ++a){
       for (int mu=0; mu<norbs; ++mu)
-        Cv[mu][act_virt_count] = C.get(mu, offset);
+        Cv[mu][act_virt_count] = C->get(mu, offset);
       epsilon_act_virt[act_virt_count] = orbital_energies[offset];
       virt_sym[act_virt_count] = h;
       ++offset;
@@ -341,10 +331,12 @@ int main(int argc, char * argv[]) {
   Chkpt::free(orbital_energies);
 
 #if DEBUG 
-  fprintf(outfile, "Co:\n");
-  print_mat(Co, norbs, nact_docc, outfile);
-  fprintf(outfile, "Cv:\n");
-  print_mat(Cv, norbs, nact_virt, outfile);
+  if (myproc == 0) {
+    fprintf(outfile, "Co:\n");
+    print_mat(Co, norbs, nact_docc, outfile);
+    fprintf(outfile, "Cv:\n");
+    print_mat(Cv, norbs, nact_virt, outfile);
+  }
 #endif
 
   double **mo_p_ia = block_matrix(ribasis->nbf(),nact_docc*nact_virt);
@@ -364,41 +356,31 @@ int main(int argc, char * argv[]) {
 #endif
 
 
-  for (int Pshell=0; Pshell < ribasis->nshell(); ++Pshell) {
-    if (Pshell % nprocs == myproc) {
-    int numPshell = ribasis->shell(Pshell)->nfunction();
-    for (int P=0; P<numPshell; ++P) 
-      zero_mat(temp[P], norbs, norbs);
-
-    for (int MU=0; MU < basis->nshell(); ++MU) {
-      int nummu = basis->shell(MU)->nfunction();
-        
-      for (int NU=0; NU <= MU; ++NU) {
-
-        int numnu = basis->shell(NU)->nfunction();
-
+  int numPshell,Pshell,MU,NU,P,mu,nu,nummu,numnu,omu,onu;
+  for (Pshell=0; Pshell < ribasis->nshell(); ++Pshell) {
+    if (Pshell % nprocs == myproc) { 
+    numPshell = ribasis->shell(Pshell)->nfunction();
+    for (P=0; P<numPshell; ++P){
+       zero_mat(temp[P], norbs, norbs);
+    }
+    
+    for (MU=0; MU < basis->nshell(); ++MU) {
+      nummu = basis->shell(MU)->nfunction();
+      for (NU=0; NU <= MU; ++NU) {
+        numnu = basis->shell(NU)->nfunction();
         eri->compute_shell(Pshell, 0, MU, NU);
-
-        for (int P=0, index=0; P < numPshell; ++P) {
-          // int oP = ribasis->shell(Pshell)->function_index() + P;
-                
-          for (int mu=0; mu < nummu; ++mu) {
-            int omu = basis->shell(MU)->function_index() + mu;
-                        
-            for (int nu=0; nu < numnu; ++nu, ++index) {
-              int onu = basis->shell(NU)->function_index() + nu;
-                            
+        for (P=0, index=0; P < numPshell; ++P) {
+          for (mu=0; mu < nummu; ++mu) {
+            omu = basis->shell(MU)->function_index() + mu;
+            for (nu=0; nu < numnu; ++nu, ++index) {
+              onu = basis->shell(NU)->function_index() + nu;
               temp[P][omu][onu] = buffer[index]; // (oP | omu onu) integral
               temp[P][onu][omu] = buffer[index]; // (oP | onu omu) integral
             }
           }
-
         } // end loop over P in Pshell
-
       } // end loop over NU shell
-
     } // end loop over MU shell
-
     // now we've gone through all P, mu, nu for a given Pshell
     // transform the integrals for all P in the given P shell
             
@@ -412,32 +394,21 @@ int main(int argc, char * argv[]) {
         norbs, Cv[0], nact_virt, 0.0, mo_p_ia[oP], nact_virt);
          
     }
-    // send this block of mo_p_ia[]
-    // this doesn't work b/c it's a collective call, and everyone needs
-    // to be doing it at the same time
-    //MPI_Bcast(mo_p_ia[ribasis->shell(Pshell)->function_index()],
-    //  nact_docc*nact_virt*numPshell, MPI_DOUBLE, myproc, MPI_COMM_WORLD);   
     }
   } // end loop over P shells; done with forming MO basis (P|ia)'s
-
-  // now each process has a chunk of mo_p_ia... need to synchronize it
-
+   
   for (int Pshell=0; Pshell < ribasis->nshell(); ++Pshell) {
     int numPshell = ribasis->shell(Pshell)->nfunction();
-    MPI_Barrier(MPI_COMM_WORLD);
+    MPI_Barrier(MPI_COMM_WORLD); // shouldn't need this, implied by b'cast
     MPI_Bcast(mo_p_ia[ribasis->shell(Pshell)->function_index()],
       nact_docc*nact_virt*numPshell, MPI_DOUBLE, Pshell%nprocs, MPI_COMM_WORLD);
-  } 
+  }
 
   // should free temp here
   for (int P=0; P<maxPshell; P++) free_block(temp[P]);
   // destruct temp[] itself?
 
-  // need to sync mo_p_ia... another way to do this is to broadcast
-  // each process's data to the others... .or, to post asynchronous
-  // receives at the beginning of this computation, then post sends down
-  // here 
-  // This doesn't work b/c can't have send/recv same buffer
+  // This doesn't work b/c can't have send/recv same buffer w/out C++ API
   // MPI_Allreduce(mo_p_ia[0],mo_p_ia[0],ribasis->nbf()*nact_docc*nact_virt,
   //  MPI_DOUBLE,MPI_SUM,MPI_COMM_WORLD);
 
@@ -550,14 +521,20 @@ int main(int argc, char * argv[]) {
     fprintf(outfile,"      * SCSN-RI-MP2 total energy          = %20.15f\n\n",
       escf + 1.76*ss_mp2);
     }
-  }  
-
+  }
+  
   // Shut down psi
+  delete basis;
+  delete ribasis;
+  delete zero;
+  delete chkpt;
+  delete psio;
+    
   if (myproc == 0) {
     tstop(outfile);
     fflush(outfile);
     psi_stop(infile,outfile, psi_file_prefix);
-  }
+   }
 
   Chkpt::free(clsdpi);
   Chkpt::free(frzcpi);
