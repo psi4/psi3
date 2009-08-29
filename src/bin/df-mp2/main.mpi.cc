@@ -142,7 +142,7 @@ int main(int argc, char * argv[]) {
       fprintf(outfile,"    Same-spin scaled by     %10.4lf\n",scs_scale_ss);
     }
   }
-  if (scsn == 1 && mproc == 0) {
+  if (scsn == 1 && myproc == 0) {
     fprintf(outfile,"\n  SCSN-RI-MP2 energies will be printed\n");
   }
     
