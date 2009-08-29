@@ -108,7 +108,7 @@ int main(int argc, char * argv[]) {
     orbital_basis,ri_basis);
   BasisSet* ribasis;
   ribasis = new BasisSet(chkpt, "DF_BASIS"); //find pbasis via the prefx
-  ribasis->print();
+  //ribasis->print();
 
   BasisSet* zero = BasisSet::zero_basis_set();
   
