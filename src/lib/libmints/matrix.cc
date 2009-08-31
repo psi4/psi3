@@ -87,28 +87,28 @@ Matrix::Matrix(const Matrix* c)
     copy_from(c->matrix_);
 }
 
-Matrix::Matrix(int nirreps, int *rowspi, int *colspi)
+Matrix::Matrix(int l_nirreps, int *l_rowspi, int *l_colspi)
 {
     matrix_ = NULL;
-    nirreps_ = nirreps;
+    nirreps_ = l_nirreps;
     rowspi_ = new int[nirreps_];
     colspi_ = new int[nirreps_];
     for (int i=0; i<nirreps_; ++i) {
-        rowspi_[i] = rowspi[i];
-        colspi_[i] = colspi[i];
+        rowspi_[i] = l_rowspi[i];
+        colspi_[i] = l_colspi[i];
     }
     alloc();
 }
 
-Matrix::Matrix(std::string name, int nirreps, int *rowspi, int *colspi) : name_(name)
+Matrix::Matrix(std::string name, int l_nirreps, int *l_rowspi, int *l_colspi) : name_(name)
 {
     matrix_ = NULL;
-    nirreps_ = nirreps;
+    nirreps_ = l_nirreps;
     rowspi_ = new int[nirreps_];
     colspi_ = new int[nirreps_];
     for (int i=0; i<nirreps_; ++i) {
-        rowspi_[i] = rowspi[i];
-        colspi_[i] = colspi[i];
+        rowspi_[i] = l_rowspi[i];
+        colspi_[i] = l_colspi[i];
     }
     alloc();
 }
@@ -122,17 +122,17 @@ Matrix::~Matrix()
         delete[] colspi_;
 }
 
-void Matrix::init(int nirreps, int *rowspi, int *colspi, std::string name)
+void Matrix::init(int l_nirreps, int *l_rowspi, int *l_colspi, std::string name)
 {
     if (rowspi_) delete[] rowspi_;
     if (colspi_) delete[] colspi_;
     name_ = name;
-    nirreps_ = nirreps;
+    nirreps_ = l_nirreps;
     rowspi_ = new int[nirreps_];
     colspi_ = new int[nirreps_];
     for (int i=0; i<nirreps_; ++i) {
-        rowspi_[i] = rowspi[i];
-        colspi_[i] = colspi[i];
+        rowspi_[i] = l_rowspi[i];
+        colspi_[i] = l_colspi[i];
     }
     alloc();    
 }
@@ -186,6 +186,11 @@ void Matrix::copy(Matrix& cp)
 void Matrix::copy(const Matrix& cp)
 {
     copy(const_cast<Matrix&>(cp));
+}
+
+void Matrix::copy(const Matrix* cp)
+{
+    copy(const_cast<Matrix*>(cp));
 }
 
 void Matrix::alloc()
@@ -687,17 +692,7 @@ void Matrix::gemm(bool transa, bool transb, double alpha, const Matrix& a, const
 
 double Matrix::vector_dot(Matrix& rhs)
 {
-    double sum = 0.0;
-    int h;
-    size_t size;
-
-    for (h=0; h<nirreps_; ++h) {
-        size = rowspi_[h] & colspi_[h];
-        if (size)
-            sum += C_DDOT(size, (&matrix_[h][0][0]), 1, &(rhs.matrix_[h][0][0]), 1);
-    }
-
-    return sum;
+    return vector_dot(&rhs);
 }
 
 void Matrix::diagonalize(Matrix& eigvectors, Vector& eigvalues)
@@ -722,7 +717,7 @@ void Matrix::save(const char *filename, bool append, bool saveLowerTriangle, boo
         out = fopen(filename, "w");
     }
 
-    fprintf(out, name_.c_str());
+    fprintf(out, "%s", name_.c_str());
     fprintf(out, "\n");
 
     if (saveSubBlocks == false) {
@@ -912,17 +907,17 @@ SimpleMatrix::SimpleMatrix(const SimpleMatrix* c) : matrix_(0)
     copy_from(c->matrix_);
 }
 
-SimpleMatrix::SimpleMatrix(int rows, int cols) : matrix_(0)
+SimpleMatrix::SimpleMatrix(int l_rows, int l_cols) : matrix_(0)
 {
-    rows_ = rows;
-    cols_ = cols;
+    rows_ = l_rows;
+    cols_ = l_cols;
     alloc();
 }
 
-SimpleMatrix::SimpleMatrix(std::string name, int rows, int cols) : matrix_(0)
+SimpleMatrix::SimpleMatrix(std::string name, int l_rows, int l_cols) : matrix_(0)
 {
-    rows_ = rows;
-    cols_ = cols;
+    rows_ = l_rows;
+    cols_ = l_cols;
     name_ = name;
     alloc();
 }
@@ -950,10 +945,10 @@ SimpleMatrix::~SimpleMatrix()
     release();
 }
 
-void SimpleMatrix::init(int rowspi, int colspi, std::string name = "")
+void SimpleMatrix::init(int rowspi, int colspi, std::string name)
 {
     rows_ = rowspi;
-    cols_ = colpsi;
+    cols_ = colspi;
     name_ = name;
     alloc();
 }
@@ -1269,8 +1264,7 @@ void SimpleMatrix::save(const char *filename, bool append, bool saveLowerTriangl
         out = fopen(filename, "w");
     }
 
-    fprintf(out, name_.c_str());
-    fprintf(out, "\n");
+    fprintf(out, "%s\n", name_.c_str());
 
     if (saveLowerTriangle) {
         // Count the number of non-zero element

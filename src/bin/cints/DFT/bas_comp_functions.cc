@@ -55,6 +55,6 @@ namespace psi { namespace CINTS {
     return bastmp;
   }
   
-};
+}
 
-};
+}

@@ -52,7 +52,7 @@ void Wavefunction::common_init()
     factory_.init_with_chkpt(chkpt_);
 
     // Initialize the basis set object
-    basisset_ = new BasisSet(chkpt_);
+    basisset_ = new BasisSet(&chkpt_);
     
     // Basis set object has reference to initialized molecule, grab it
     molecule_ = basisset_->molecule();

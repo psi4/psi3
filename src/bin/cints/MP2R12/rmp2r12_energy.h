@@ -22,5 +22,5 @@ typedef struct {
     int ibatch_first;
     int num_arrived;
 } RMP2R12_Status_t;
-};}
+}}
 #endif

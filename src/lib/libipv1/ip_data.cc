@@ -383,4 +383,4 @@ int ip_double_array(const char *keyword, double *arr, int len)
 
   return(IPE_OK);
 }
-}; /* extern "C" */
+} /* extern "C" */

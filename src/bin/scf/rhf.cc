@@ -56,8 +56,8 @@ RHF::~RHF()
         delete[] pk_;
     if (diis_enabled_ == true) {
         for (int i=0; i<num_diis_vectors_; ++i) {
-            delete diis_F_;
-            delete diis_E_;
+            delete diis_F_[i];
+            delete diis_E_[i];
         }
         delete[] diis_F_;
         delete[] diis_E_;
@@ -432,17 +432,23 @@ void RHF::save_fock()
     diis_F_[current_diis_fock_]->copy(F_);
     
     // Determine error matrix for this Fock
-    Matrix FDS;
-    Matrix SDF;
+    Matrix FDS, DS;
+    Matrix SDF, DF;
     factory_.create_matrix(FDS);
     factory_.create_matrix(SDF);
+    factory_.create_matrix(DS);
+    factory_.create_matrix(DF);
     
     // FDS = F_ * D_ * S_;
-    FDS = F_;
-    FDS *= D_;
-    FDS *= S_;
+    DS.gemm(false, false, 1.0, D_, S_, 0.0);
+    FDS.gemm(false, false, 1.0, F_, DS, 0.0);
     // SDF = S_ * D_ * F_;
-    diis_E_[current_diis_fock_]->copy(FDS - SDF);
+    DF.gemm(false, false, 1.0, D_, F_, 0.0);
+    SDF.gemm(false, false, 1.0, S_, DF, 0.0);
+    
+    Matrix FDSmSDF;
+    FDSmSDF.copy(&(FDS-SDF));
+    diis_E_[current_diis_fock_]->copy(&FDSmSDF);
     
     // Orthonormalize the error matrix
     diis_E_[current_diis_fock_]->transform(Shalf_);
@@ -518,7 +524,7 @@ void RHF::diis()
     if (errcode == 0) {
     	F_.zero();
     	for (i=0; i<num_diis_vectors_; ++i)
-    		F_.add(diis_F_[i] * b[i+1]);
+    		F_.add(&((*diis_F_[i]) * b[i+1]));
     } else if (errcode > 0) {
     	fprintf(outfile, "  DIIS: singularity detected, DIIS skipped this iteration.\n");
     } else {
@@ -572,7 +578,7 @@ void RHF::allocate_PK()
     }
 }
 
-void RHF::find_occupation(RefMatrix& mat)
+void RHF::find_occupation(Matrix& mat)
 {
     if (input_docc_)
         return;
@@ -580,7 +586,7 @@ void RHF::find_occupation(RefMatrix& mat)
     Matrix eigvector;
     Vector eigvalues;
     factory_.create_matrix(eigvector);
-    factory_.create_matrix(eigvalues);
+    factory_.create_vector(eigvalues);
     
     mat.diagonalize(eigvector, eigvalues);
     std::vector<std::pair<double, int> > pairs;
@@ -615,7 +621,7 @@ void RHF::form_initialF()
 
 void RHF::form_F()
 {
-    F_.copy(H_ + G_);
+    F_.copy(&(H_ + G_));
     
 #ifdef _DEBUG
     if (debug_) {
@@ -668,7 +674,7 @@ void RHF::form_D()
 
 double RHF::compute_initial_E()
 {
-    double Etotal = nuclearrep_ + D_.vector_dot(H_);
+    double Etotal = nuclearrep_ + D_.vector_dot(&H_);
     fprintf(outfile, "\n  Initial RHF energy: %20.14f\n\n", Etotal);
     fflush(outfile);
     return Etotal;
@@ -676,7 +682,8 @@ double RHF::compute_initial_E()
 
 double RHF::compute_E()
 {
-    Matrix HF = H_ + F_;
+    Matrix HF;
+    HF.copy(&(H_ + F_));
     double Etotal = nuclearrep_ + D_.vector_dot(HF);
     return Etotal;
 }
@@ -907,13 +914,13 @@ void RHF::form_G_from_direct_integrals()
     G_.zero();
     
     // Need to back-transform the density from SO to AO basis
-    SimpleMatrix D = D_.to_simple_matrix();
+    SimpleMatrix *D = D_.to_simple_matrix();
     
-    // D.set_name("D (AO basis) pre-transform");
-    // D.print();
-    // D.back_transform(basisset_->uso_to_bf());
-    // D.set_name("D (AO basis) post-transform");
-    // D.print();
+    // D->set_name("D (AO basis) pre-transform");
+    // D->print();
+    // D->back_transform(basisset_->uso_to_bf());
+    // D->set_name("D (AO basis) post-transform");
+    // D->print();
     
     // Need a temporary G in the AO basis
     SimpleMatrix G;
@@ -925,7 +932,7 @@ void RHF::form_G_from_direct_integrals()
     IntegralFactory integral(basisset_, basisset_, basisset_, basisset_);
     TwoBodyInt* eri = integral.eri();
     ShellCombinationsIterator iter = integral.shells_iterator();
-    const double *buffer = eri.buffer();
+    const double *buffer = eri->buffer();
     // End factor out
     
     fprintf(outfile, "\n      Computing integrals..."); fflush(outfile);
@@ -967,21 +974,21 @@ void RHF::form_G_from_direct_integrals()
                 itype = integral_type(i, j, k, l);
                 switch(itype) {
                     case 1:
-                    temp1 = D.get(i, i) * value;
+                    temp1 = D->get(i, i) * value;
 
                     G.add(i, i, temp1);
 // #ifdef _DEBUG
 //                     if (debug_) {
 //                         fprintf(outfile, "INTEGRAL CASE 1:\n");
-//                         fprintf(outfile, "G[%d][%d] %.11f %.11f\n", i, i, G.get(i,i), D.get(i, i));
+//                         fprintf(outfile, "G[%d][%d] %.11f %.11f\n", i, i, G.get(i,i), D->get(i, i));
 //                     }
 // #endif
                     break;
 
                     case 2:
-                    temp1 = D.get(k, k) * 2.0 * value;
-                    temp2 = D.get(i, k) * value;
-                    temp3 = D.get(i, i) * 2.0 * value;
+                    temp1 = D->get(k, k) * 2.0 * value;
+                    temp2 = D->get(i, k) * value;
+                    temp3 = D->get(i, i) * 2.0 * value;
 
                     G.add(i, i, temp1);
                     G.add(k, k, temp3);
@@ -990,16 +997,16 @@ void RHF::form_G_from_direct_integrals()
 // #ifdef _DEBUG
 //                     if (debug_) {
 //                         fprintf(outfile, "INTEGRAL CASE 2:\n");
-//                         fprintf(outfile, "G[%d][%d] %.11f %.11f\n", i, i, G.get(i,i), D.get(k, k));
-//                         fprintf(outfile, "G[%d][%d] %.11f %.11f\n", i, k, G.get(i,k), D.get(i, k));
-//                         fprintf(outfile, "G[%d][%d] %.11f %.11f\n", k, k, G.get(k,k), D.get(i, i));
+//                         fprintf(outfile, "G[%d][%d] %.11f %.11f\n", i, i, G.get(i,i), D->get(k, k));
+//                         fprintf(outfile, "G[%d][%d] %.11f %.11f\n", i, k, G.get(i,k), D->get(i, k));
+//                         fprintf(outfile, "G[%d][%d] %.11f %.11f\n", k, k, G.get(k,k), D->get(i, i));
 //                     }
 // #endif
                     break;
 
                     case 3:
-                    temp1 = D.get(i, i) * value;
-                    temp2 = D.get(i, l) * value * 2.0;
+                    temp1 = D->get(i, i) * value;
+                    temp2 = D->get(i, l) * value * 2.0;
 
                     G.add(i, l, temp1);
                     G.add(l, i, temp1);
@@ -1007,15 +1014,15 @@ void RHF::form_G_from_direct_integrals()
 // #ifdef _DEBUG
 //                     if (debug_) {
 //                         fprintf(outfile, "INTEGRAL CASE 3:\n");
-//                         fprintf(outfile, "G[%d][%d] %.11f %.11f\n", i, l, G.get(i,l), D.get(i, i));
-//                         fprintf(outfile, "G[%d][%d] %.11f %.11f\n", i, i, G.get(i,i), D.get(i, l));
+//                         fprintf(outfile, "G[%d][%d] %.11f %.11f\n", i, l, G.get(i,l), D->get(i, i));
+//                         fprintf(outfile, "G[%d][%d] %.11f %.11f\n", i, i, G.get(i,i), D->get(i, l));
 //                     }
 // #endif
                     break;
 
                     case 4:
-                    temp1 = D.get(j, j) * value;
-                    temp2 = D.get(i, j) * value * 2.0;
+                    temp1 = D->get(j, j) * value;
+                    temp2 = D->get(i, j) * value * 2.0;
 
                     G.add(i, j, temp1);
                     G.add(j, i, temp1);
@@ -1023,19 +1030,19 @@ void RHF::form_G_from_direct_integrals()
 // #ifdef _DEBUG
 //                     if (debug_) {
 //                         fprintf(outfile, "INTEGRAL CASE 4:\n");
-//                         fprintf(outfile, "G[%d][%d] %.11f %.11f\n", i, j, G.get(i,j), D.get(j, j));
-//                         fprintf(outfile, "G[%d][%d] %.11f %.11f\n", j, j, G.get(j,j), D.get(i, j));
+//                         fprintf(outfile, "G[%d][%d] %.11f %.11f\n", i, j, G.get(i,j), D->get(j, j));
+//                         fprintf(outfile, "G[%d][%d] %.11f %.11f\n", j, j, G.get(j,j), D->get(i, j));
 //                     }
 // #endif
                     break;
 
                     case 5:
-                    temp1 = D.get(i, j) * value * 3.0;
+                    temp1 = D->get(i, j) * value * 3.0;
                     G.add(i, j, temp1);
                     G.add(j, i, temp1);
 
-                    temp2 = D.get(i, i) * value;
-                    temp3 = D.get(j, j) * value;
+                    temp2 = D->get(i, i) * value;
+                    temp3 = D->get(j, j) * value;
                     G.add(j, j, -temp2);
                     G.add(i, i, -temp3);                
 // #ifdef _DEBUG
@@ -1049,10 +1056,10 @@ void RHF::form_G_from_direct_integrals()
                     break;
 
                     case 6:
-                    temp1 = D.get(k, l) * value * 4.0;
-                    temp2 = D.get(i, l) * value;
-                    temp3 = D.get(i, i) * value * 2.0;
-                    temp4 = D.get(i, k) * value;
+                    temp1 = D->get(k, l) * value * 4.0;
+                    temp2 = D->get(i, l) * value;
+                    temp3 = D->get(i, i) * value * 2.0;
+                    temp4 = D->get(i, k) * value;
 
                     G.add(i, i, temp1);
                     G.add(i, k, -temp2);
@@ -1073,10 +1080,10 @@ void RHF::form_G_from_direct_integrals()
                     break;
 
                     case 7:
-                    temp1 = D.get(i, j) * value * 4.0;
-                    temp2 = D.get(j, k) * value;
-                    temp3 = D.get(i, k) * value;
-                    temp4 = D.get(k, k) * value * 2.0;
+                    temp1 = D->get(i, j) * value * 4.0;
+                    temp2 = D->get(j, k) * value;
+                    temp3 = D->get(i, k) * value;
+                    temp4 = D->get(k, k) * value * 2.0;
 
                     G.add(k, k,  temp1);
                     G.add(i, k, -temp2);
@@ -1097,10 +1104,10 @@ void RHF::form_G_from_direct_integrals()
                     break;
 
                     case 8:
-                    temp1 = D.get(k, k) * value * 2.0;
-                    temp2 = D.get(i, j) * value * 4.0;
-                    temp3 = D.get(j, k) * value;
-                    temp4 = D.get(i, k) * value;
+                    temp1 = D->get(k, k) * value * 2.0;
+                    temp2 = D->get(i, j) * value * 4.0;
+                    temp3 = D->get(j, k) * value;
+                    temp4 = D->get(i, k) * value;
 
                     G.add(i, j, temp1);
                     G.add(j, i, temp1);
@@ -1121,10 +1128,10 @@ void RHF::form_G_from_direct_integrals()
                     break;
 
                     case 9:
-                    temp1 = D.get(i, l) * value * 3.0;
-                    temp2 = D.get(i, j) * value * 3.0;
-                    temp3 = D.get(j, l) * value * 2.0;
-                    temp4 = D.get(i, i) * value;
+                    temp1 = D->get(i, l) * value * 3.0;
+                    temp2 = D->get(i, j) * value * 3.0;
+                    temp3 = D->get(j, l) * value * 2.0;
+                    temp4 = D->get(i, i) * value;
 
                     G.add(i, j, temp1);
                     G.add(j, i, temp1);
@@ -1145,10 +1152,10 @@ void RHF::form_G_from_direct_integrals()
                     break;
 
                     case 10:
-                    temp1 = D.get(j, l) * value * 3.0;
-                    temp2 = D.get(i, j) * value * 3.0;
-                    temp3 = D.get(j, j) * value;
-                    temp4 = D.get(i, l) * value * 2.0;
+                    temp1 = D->get(j, l) * value * 3.0;
+                    temp2 = D->get(i, j) * value * 3.0;
+                    temp3 = D->get(j, j) * value;
+                    temp4 = D->get(i, l) * value * 2.0;
 
                     G.add(i, j, temp1);
                     G.add(j, i, temp1);
@@ -1169,10 +1176,10 @@ void RHF::form_G_from_direct_integrals()
                     break;
 
                     case 11:
-                    temp1 = D.get(k, j) * value * 3.0;
-                    temp2 = D.get(i, j) * value * 3.0;
-                    temp3 = D.get(j, j) * value;
-                    temp4 = D.get(i, k) * value * 2.0;
+                    temp1 = D->get(k, j) * value * 3.0;
+                    temp2 = D->get(i, j) * value * 3.0;
+                    temp3 = D->get(j, j) * value;
+                    temp4 = D->get(i, k) * value * 2.0;
 
                     G.add(i, j, temp1);
                     G.add(j, i, temp1);
@@ -1195,12 +1202,12 @@ void RHF::form_G_from_direct_integrals()
                     case 12:
                     case 13:
                     case 14:
-                    temp1 = D.get(k, l) * value * 4.0;
-                    temp2 = D.get(i, j) * value * 4.0;
-                    temp3 = D.get(j, l) * value;
-                    temp4 = D.get(i, k) * value;
-                    temp5 = D.get(j, k) * value;
-                    temp6 = D.get(i, l) * value;
+                    temp1 = D->get(k, l) * value * 4.0;
+                    temp2 = D->get(i, j) * value * 4.0;
+                    temp3 = D->get(j, l) * value;
+                    temp4 = D->get(i, k) * value;
+                    temp5 = D->get(j, k) * value;
+                    temp6 = D->get(i, l) * value;
 
                     G.add(i, j, temp1);
                     G.add(j, i, temp1);
@@ -1239,7 +1246,8 @@ void RHF::form_G_from_direct_integrals()
     // Transform G back to symmetry blocking
     // G.transform(basisset_->uso_to_bf()); 
     // G.print();
-    G_.set(G);
+    G_.set(&G);
+    delete D;
     // G_.print();
 }
 

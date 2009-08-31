@@ -125,4 +125,4 @@ void r12_quartet_data(prim_data* Data, double_array_t *fjt_table, double AB2, do
 
   return;
 }
-};};
+}}

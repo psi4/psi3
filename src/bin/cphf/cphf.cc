@@ -197,7 +197,7 @@ namespace psi { namespace cphf {
 
 extern "C" {
 extern const char *gprgid(void);
-};
+}
 
 void init_io(int argc, char *argv[])
 {

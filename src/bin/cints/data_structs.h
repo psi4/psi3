@@ -537,8 +537,8 @@ namespace psi {
     } DFT_options_t;
     
     
-  };
-};
+  }
+}
     
 #endif
 #endif

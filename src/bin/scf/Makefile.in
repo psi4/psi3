@@ -7,7 +7,7 @@ LDLIBS += $(LAPACK) $(BLAS)
 
 PSILIBS = -lPSI_mints -lPSI_qt -lPSI_chkpt -lPSI_iwl -lPSI_psio -lPSI_ciomr -lPSI_ipv1 -lPSI_deriv -lPSI_int
 
-CXXSRC = main.cc hfenergy.cc hf.cc rhf.cc rohf.cc uhf.cc
+CXXSRC = main.cc hfenergy.cc hf.cc rhf.cc
 
 BINOBJ = $(CXXSRC:%.cc=%.o)
 

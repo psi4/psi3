@@ -165,6 +165,4 @@ void get_primitives(void)
 
    return;
 }
-
-
-};};
+}}

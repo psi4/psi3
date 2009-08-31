@@ -90,6 +90,7 @@ public:
     void copy(Matrix* cp);
     void copy(Matrix& cp);
     void copy(const Matrix& cp);
+    void copy(const Matrix* cp);
 
     /// Load a matrix from a PSIO object from fileno with tocentry of size nso
     bool load(psi::PSIO* psio, unsigned int fileno, char *tocentry, int nso);
@@ -97,7 +98,7 @@ public:
     /// Saves the matrix in ASCII format to filename
     void save(const char *filename, bool append=true, bool saveLowerTriangle = true, bool saveSubBlocks=false);
     void save(std::string filename, bool append=true, bool saveLowerTriangle = true, bool saveSubBlocks=false) {
-        save(filename.c_str(), append, saveSubBlocks);
+        save(filename.c_str(), append, saveLowerTriangle, saveSubBlocks);
     }
     /// Saves the block matrix to PSIO object with fileno and with the toc position of the name of the matrix
     void save(psi::PSIO* psio, unsigned int fileno, bool saveSubBlocks=true);
@@ -218,10 +219,12 @@ public:
         r.accumulate_product(this, &rhs);
         return r;
     }
-    
-    Matrix& Matrix::operator*=(const Matrix& rhs) {
-        this->accumulate_product(&rhs);
-        return *this;
+
+    const Matrix operator*(const double rhs) const {
+        Matrix r(*this);
+        r.zero();
+        r.scale(rhs);
+        return r;
     }
     
     const Matrix operator-(const Matrix& rhs) const {
@@ -229,8 +232,14 @@ public:
         r.subtract(&rhs);
         return r;
     }
+
+    const Matrix operator+(const Matrix& rhs) const {
+        Matrix r(*this);
+        r.add(&rhs);
+        return r;
+    }
     
-    Matrix& Matrix::operator=(const Matrix& rhs) {
+    Matrix& operator=(const Matrix& rhs) {
         if (this != &rhs) {
             this->copy(rhs);
         }

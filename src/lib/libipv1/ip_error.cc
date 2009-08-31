@@ -63,4 +63,4 @@ void ip_warn(const char *msg, ...)
   va_end(args);
   }
 
-}; /* extern "C" */
+} /* extern "C" */

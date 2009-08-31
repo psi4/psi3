@@ -115,7 +115,7 @@ void calc_mass_analysis(int natom, double *M, double *X, double *Y,
 void fill_sym_matrix(double **A, int size);
 }} // namespace psi::geom
 
-main(int argc, char* argv[])
+int main(int argc, char* argv[])
 {
   using namespace psi::geom;
   int natom;                     /* number of atoms */

@@ -47,7 +47,7 @@ int print_lvl=1;         /* diagnostic info flag           */
 /***************************************************************************/
 using namespace psi::clag;
 
-main(int argc, char **argv) 
+int main(int argc, char **argv) 
 {
 
   double **opdm;                       /* the one particle density matrix */

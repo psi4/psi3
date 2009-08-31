@@ -13,7 +13,7 @@ namespace PrintLevels {
   static const int print_params = 1;
   static const int print_contrib = 2;
   static const int print_everything = 5;
-};
+}
 
 typedef struct {
 

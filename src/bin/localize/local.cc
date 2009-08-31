@@ -372,7 +372,7 @@ namespace psi { namespace localize {
 
 extern "C" {
 extern const char *gprgid();
-};
+}
 
 void init_io(int argc, char * argv[])
 {

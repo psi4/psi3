@@ -57,7 +57,7 @@ void compute_ddisp_hess(int natom, double *AN, double **geom,
 int label2an(char *label);
 double compute_estatic(int natom, double *R, double *AC);
 
-}}; // close namespace decl
+}} // close namespace decl
 
 using namespace psi::nonbonded;
 

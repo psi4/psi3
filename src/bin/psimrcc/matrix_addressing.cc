@@ -433,7 +433,6 @@ void CCMatrix::add_six_address_element_Pbc(short i, short j, short k, short a, s
   matrix[irrep][ijk][acb]-=value;
 }
 
-;
 /**
  * @brief Given a value \f$ Z_{ijk}^{abc} \f$ do
  * \f[ Z_{ijk}^{abc} \rightarrow \{ \bar{H}_{ijk}^{abc}, -\bar{H}_{ijk}^{acb} \f]

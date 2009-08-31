@@ -135,29 +135,29 @@ void BasisSet::check_shell_index(int si) const {
     throw std::runtime_error("ERROR: BasisSet::check_shell_index -- shell index out of bounds");
 }
 
-int BasisSet::num_prims() const { return num_prims_; };
-int BasisSet::num_shells() const { return num_shells_; };
-int BasisSet::num_ao() const { return num_ao_; };
-int BasisSet::num_bf() const { return num_bf_; };
-int BasisSet::max_am() const { return max_am_; };
+int BasisSet::num_prims() const { return num_prims_; }
+int BasisSet::num_shells() const { return num_shells_; }
+int BasisSet::num_ao() const { return num_ao_; }
+int BasisSet::num_bf() const { return num_bf_; }
+int BasisSet::max_am() const { return max_am_; }
 
 GaussianShell& BasisSet::shell(int si) const
 {
   check_shell_index(si);
   return *(shells_[si]);
-};
+}
 
 int BasisSet::first_bf(int si) const
 {
   check_shell_index(si);
   return shell_fbf_[si] - 1;
-};
+}
 
 int BasisSet::first_ao(int si) const
 {
   check_shell_index(si);
   return shell_fao_[si] - 1;
-};
+}
 
 int BasisSet::center(int si) const
 {

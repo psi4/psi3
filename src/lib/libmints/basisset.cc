@@ -15,14 +15,14 @@
 using namespace psi;
 
 BasisSet::BasisSet() :
-    shell_first_basis_function_(NULL), shell_first_ao_(NULL), shell_center_(NULL), uso2ao_(NULL),
-    max_nprimitives_(0), max_stability_index_(0), uso2bf_(NULL), simple_mat_uso2ao_(NULL),
+    max_nprimitives_(0), shell_first_basis_function_(NULL), shell_first_ao_(NULL), shell_center_(NULL), 
+    max_stability_index_(0), uso2ao_(NULL), simple_mat_uso2ao_(NULL), uso2bf_(NULL), 
     simple_mat_uso2bf_(NULL)
-{}
+{ }
 
 BasisSet::BasisSet(Chkpt* chkpt, std::string basiskey) :
-    shell_first_basis_function_(NULL), shell_first_ao_(NULL), shell_center_(NULL), uso2ao_(NULL),
-    max_nprimitives_(0), max_stability_index_(0), uso2bf_(NULL), simple_mat_uso2ao_(NULL),
+    max_nprimitives_(0), shell_first_basis_function_(NULL), shell_first_ao_(NULL), shell_center_(NULL), 
+    max_stability_index_(0), uso2ao_(NULL), simple_mat_uso2ao_(NULL), uso2bf_(NULL), 
     simple_mat_uso2bf_(NULL)
 {
     // This requirement holds no matter what.
@@ -37,8 +37,8 @@ BasisSet::BasisSet(Chkpt* chkpt, std::string basiskey) :
 }
 
 BasisSet::BasisSet(Chkpt* chkpt, std::string genbas_filename, std::string genbas_basis) :
-    shell_first_basis_function_(NULL), shell_first_ao_(NULL), shell_center_(NULL), uso2ao_(NULL),
-    max_nprimitives_(0), max_stability_index_(0), uso2bf_(NULL), simple_mat_uso2ao_(NULL),
+    max_nprimitives_(0), shell_first_basis_function_(NULL), shell_first_ao_(NULL), shell_center_(NULL), 
+    max_stability_index_(0), uso2ao_(NULL), simple_mat_uso2ao_(NULL), uso2bf_(NULL), 
     simple_mat_uso2bf_(NULL)
 {
     // This requirement holds no matter what.
@@ -49,32 +49,6 @@ BasisSet::BasisSet(Chkpt* chkpt, std::string genbas_filename, std::string genbas
     molecule_->init_with_chkpt(chkpt);
 
     if (!genbas_filename.empty() && !genbas_basis.empty()) {
-        fprintf(outfile, "  Initializing BasisSet object with data in: %s (basis: %s)\n", 
-            genbas_filename.c_str(), genbas_basis.c_str());
-        initialize_shells_via_genbas(genbas_filename, genbas_basis);
-    } else {
-        fprintf(outfile, "  BasisSet: When using GENBAS you must provide basis set name.\n");
-        exit(EXIT_FAILURE);
-    }
-}
-
-BasisSet::BasisSet(Chkpt& chkpt, std::string genbas_filename, std::string genbas_basis) :
-    shell_first_basis_function_(NULL), shell_first_ao_(NULL), shell_center_(NULL), uso2ao_(NULL),
-    max_nprimitives_(0), max_stability_index_(0), uso2bf_(NULL), simple_mat_uso2ao_(NULL),
-    simple_mat_uso2bf_(NULL)
-{
-    // This requirement holds no matter what.
-    puream_ = chkpt.rd_puream() ? true : false;
-
-    // Initialize molecule, retrieves number of centers and geometry
-    molecule_ = new Molecule;
-    molecule_->init_with_chkpt(&chkpt);
-
-    // Determine if we read from chkpt or genbas
-    if (genbas_filename.empty()) {
-        // Initialize the shells
-        initialize_shells(&chkpt);
-    } else if (!genbas_filename.empty() && !genbas_basis.empty()) {
         fprintf(outfile, "  Initializing BasisSet object with data in: %s (basis: %s)\n", 
             genbas_filename.c_str(), genbas_basis.c_str());
         initialize_shells_via_genbas(genbas_filename, genbas_basis);
@@ -144,7 +118,7 @@ void BasisSet::initialize_shells(Chkpt *chkpt, std::string& basiskey)
     double *exponents = chkpt->rd_exps(basiskey.c_str());
     fprintf(outfile, "Exponents:\n");
     for (int i=0; i<nprimitives_; i++) {
-      fprintf(outfile, "%lf\n", exponents[i]);
+      fprintf(outfile, "%f\n", exponents[i]);
     }
  
     // Retrieve coefficients of primitive Gaussian
@@ -252,7 +226,7 @@ void BasisSet::initialize_shells_via_genbas(std::string& genbas_filename, std::s
     char line[120];
     int len, j, tval, k, l;
     int totalAM;
-    int *num_primitives, *num_contracted_to;
+    int *num_primitives, *num_contractedto;
     Vector3 center;
     int puream_start = 0;
     int ao_start = 0;
@@ -312,8 +286,8 @@ void BasisSet::initialize_shells_via_genbas(std::string& genbas_filename, std::s
             max_am_ = totalAM - 1;
             
         // Create the arrays num_primitives, num_contractedto
-        int *num_primitives = new int[totalAM];
-        int *num_contractedto = new int[totalAM];
+        num_primitives = new int[totalAM];
+        num_contractedto = new int[totalAM];
 
         // Now just loop on the numbers that define the angular momentum, I'm just assuming it
         // goes in order
@@ -367,9 +341,9 @@ void BasisSet::initialize_shells_via_genbas(std::string& genbas_filename, std::s
                     e[p] = exponents[k+p];
                 }
                 
-                GaussianShell* shell = new GaussianShell(ncontr, kount, e, am, puream_ ? GaussianShell::Pure : GaussianShell::Cartesian,
+                GaussianShell* pshell = new GaussianShell(ncontr, kount, e, am, puream_ ? GaussianShell::Pure : GaussianShell::Cartesian,
                                          cc, i, center, puream_start, GaussianShell::Unnormalized);
-                shells.push_back(shell);
+                shells.push_back(pshell);
                 
                 if (kount > max_nprimitives_)
                     max_nprimitives_ = kount;

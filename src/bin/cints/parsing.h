@@ -8,5 +8,5 @@
 namespace psi { namespace CINTS {
 void parsing();
 void parsing_cmdline(int argc, char *argv[]);
-};};
+}}
 #endif

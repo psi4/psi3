@@ -21,7 +21,7 @@ namespace {
     obj->thread_compute(tid);
     return 0;
   }
-};
+}
 
 CIOverlap::CIOverlap(SlaterDetVector* vecbra, SlaterDetVector* vecket,
 		     StringBlockedMatrix& ovlp_a, StringBlockedMatrix& ovlp_b,

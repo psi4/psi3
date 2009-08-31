@@ -7,5 +7,5 @@
 */
 namespace psi { namespace CINTS {
   void direct_cc();
-};};
+}}
 #endif

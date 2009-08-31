@@ -417,4 +417,4 @@ static inline int hash(int L, int M, int N)
   int result = N + io[MpN];
   return result;
 }
-};};
+}}

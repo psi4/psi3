@@ -136,4 +136,4 @@ namespace psi { namespace CINTS {
     }
     /*print_close_shell_info(DFT_options.close_shell_info);*/
   }
-};};
+}}
