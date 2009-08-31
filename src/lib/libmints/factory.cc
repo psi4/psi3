@@ -44,12 +44,29 @@ bool MatrixFactory::init_with_chkpt(PSIO* psio)
     return result;
 }
 
+bool MatrixFactory::init_with_chkpt(PSIO& psio)
+{
+    Chkpt chkpt(psio, PSIO_OPEN_OLD);
+    bool result = init_with_chkpt(chkpt);
+    return result;
+}
+
 bool MatrixFactory::init_with_chkpt(Chkpt* chkpt)
 {
     nirreps_ = chkpt->rd_nirreps();
     rowspi_  = chkpt->rd_sopi();
     colspi_  = chkpt->rd_sopi();
     nso_     = chkpt->rd_nso();
+    
+    return true;
+}
+
+bool MatrixFactory::init_with_chkpt(Chkpt& chkpt)
+{
+    nirreps_ = chkpt.rd_nirreps();
+    rowspi_  = chkpt.rd_sopi();
+    colspi_  = chkpt.rd_sopi();
+    nso_     = chkpt.rd_nso();
     
     return true;
 }

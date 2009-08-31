@@ -19,7 +19,7 @@ namespace psi {
 	*/
 	class Chkpt {
 		/*! Instance of libpsio to use. */
-		PSIO *psio;
+		PSIO * psio;
 		/*! Active TOC entry prefix. */
 		char chkpt_prefix[CHKPT_PREFIX_LEN];
 	public:
@@ -28,6 +28,8 @@ namespace psi {
 			\param status Either PSIO_OPEN_OLD or PSIO_OPEN_NEW.
 		*/
 		Chkpt(PSIO *psioObject, int status);
+        Chkpt(PSIO& psioObject, int status);
+
 		/*! Destructor. Call PSIO::close to close the checkpoint file.*/
 		~Chkpt();
 		/// update this object. call rehash() if the state of the checkpoint file may have changed

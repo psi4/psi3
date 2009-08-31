@@ -217,11 +217,7 @@ private:
         
 public:
     ShellCombinationsIterator(BasisSet*bs1, BasisSet*bs2,
-                              BasisSet*bs3, BasisSet*bs4) : bs1_(bs1), bs2_(bs2), bs3_(bs3), bs4_(bs4) {
-
-        usii = usjj = uskk = usll = upk = 0;
-        done = false;
-    }
+                              BasisSet*bs3, BasisSet*bs4) : bs1_(bs1), bs2_(bs2), bs3_(bs3), bs4_(bs4) {    }
                  
     void first();
     void next();

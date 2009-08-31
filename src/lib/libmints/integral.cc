@@ -154,6 +154,9 @@ void ShellCombinationsIterator::generate_combinations(BasisSet*bs1, BasisSet*bs2
 }*/
 
 void ShellCombinationsIterator::first(){
+    usii = usjj = uskk = usll = upk = 0;
+    done = false;
+    
     num_unique_pk = 1;
     usi_arr[0] = usii; usj_arr[0] = usjj; usk_arr[0] = uskk; usl_arr[0] = usll;
     

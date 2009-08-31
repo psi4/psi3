@@ -17,10 +17,10 @@
  
 class HF : public Wavefunction {
 protected:
-    RefMatrix H_;
-    RefMatrix S_;
-    RefMatrix Shalf_;
-    RefMatrix Sphalf_;
+    Matrix H_;
+    Matrix S_;
+    Matrix Shalf_;
+    Matrix Sphalf_;
     
     // Previous iteration's energy and current energy
     double Eold_;
@@ -71,8 +71,8 @@ protected:
 
 public:    
     // Exactly what their name says
-    RefSimpleMatrixArray Dipole_;
-    RefSimpleMatrixArray Quadrupole_;
+    SimpleMatrix** Dipole_;
+    SimpleMatrix** Quadrupole_;
     
     // Nuclear contributions
     SimpleVector nuclear_dipole_contribution_;
@@ -92,8 +92,8 @@ protected:
     void form_multipole_integrals();
     
     // Determine how many core and virtual orbitals to freeze
-    int *compute_fcpi(int nfzc, RefVector& eigvalues);
-    int *compute_fvpi(int nfvc, RefVector& eigvalues);
+    int *compute_fcpi(int nfzc, Vector& eigvalues);
+    int *compute_fvpi(int nfvc, Vector& eigvalues);
     
     // Forms the _so2* mapping arrays and determines _pk_pairs
     void form_indexing();
@@ -138,7 +138,7 @@ protected:
     }
 public:
     HF(psi::PSIO *psio, psi::Chkpt *chkpt = 0);
-    HF(Ref<psi::PSIO> &psio, Ref<psi::Chkpt> &chkpt);
+    HF(psi::PSIO &psio, psi::Chkpt &chkpt);
     
     virtual ~HF();
 };

@@ -43,7 +43,7 @@ RHF::RHF(PSIO *psio, Chkpt *chkpt) : HF(psio, chkpt)
     common_init();
 }
 
-RHF::RHF(Ref<PSIO> &psio, Ref<Chkpt> &chkpt) : HF(psio, chkpt)
+RHF::RHF(PSIO &psio, Chkpt &chkpt) : HF(psio, chkpt)
 {
     common_init();
 }
@@ -54,6 +54,14 @@ RHF::~RHF()
         free_block(diis_B_);
     if (pk_)
         delete[] pk_;
+    if (diis_enabled_ == true) {
+        for (int i=0; i<num_diis_vectors_; ++i) {
+            delete diis_F_;
+            delete diis_E_;
+        }
+        delete[] diis_F_;
+        delete[] diis_E_;
+    }
 }
 
 void RHF::common_init()
@@ -64,11 +72,11 @@ void RHF::common_init()
     use_out_of_core_ = false;
     
     // Allocate matrix memory
-    F_    = factory_.create_matrix("F");
-    C_    = factory_.create_matrix("C");
-    D_    = factory_.create_matrix("D");
-    Dold_ = factory_.create_matrix("D old");
-    G_    = factory_.create_matrix("G");
+    factory_.create_matrix(F_, "F");
+    factory_.create_matrix(C_, "C");
+    factory_.create_matrix(D_, "D");
+    factory_.create_matrix(Dold_, "D old");
+    factory_.create_matrix(G_, "G");
     
     // PK super matrix for fast G
     pk_ = NULL;
@@ -90,8 +98,8 @@ void RHF::common_init()
         diis_B_ = block_matrix(num_diis_vectors_, num_diis_vectors_);
         
         // Allocate space for diis_F_ and diis_E_
-        diis_F_ = new RefMatrix[num_diis_vectors_];
-        diis_E_ = new RefMatrix[num_diis_vectors_];
+        diis_F_ = new Matrix*[num_diis_vectors_];
+        diis_E_ = new Matrix*[num_diis_vectors_];
         
         for (int i=0; i < num_diis_vectors_; ++i) {
             diis_F_[i] = factory_.create_matrix();
@@ -129,19 +137,19 @@ double RHF::compute_energy()
     form_initialF();
     // Check to see if there are MOs already in the checkpoint file.
     // If so, read them in instead of forming them.
-    string prefix(chkpt_->build_keyword(const_cast<char*>("MO coefficients")));
-    if (chkpt_->exist(const_cast<char*>(prefix.c_str()))) {
+    string prefix(chkpt_.build_keyword(const_cast<char*>("MO coefficients")));
+    if (chkpt_.exist(const_cast<char*>(prefix.c_str()))) {
         fprintf(outfile, "  Reading previous MOs from file32.\n\n");
         
         // Read MOs from checkpoint and set C_ to them
-        double **vectors = chkpt_->rd_scf();
+        double **vectors = chkpt_.rd_scf();
         C_.set(const_cast<const double**>(vectors));
         free_block(vectors);
         
         form_D();
         
         // Read SCF energy from checkpoint file.
-        E_ = chkpt_->rd_escf();
+        E_ = chkpt_.rd_escf();
     } else {
         form_C();
         form_D();
@@ -211,7 +219,7 @@ void RHF::compute_multipole()
     // Begin dipole
     double dex, dey, dez, dx, dy, dz;
     // Convert blocked density to a full block
-    RefSimpleMatrix D(D_.to_simple_matrix());
+    SimpleMatrix D(D_.to_simple_matrix());
     
     dex = D.vector_dot(Dipole_[0]) * 2.0;
     dey = D.vector_dot(Dipole_[1]) * 2.0;
@@ -303,15 +311,15 @@ void RHF::compute_multipole()
     // Compute orbital extents
     fprintf(outfile, "\n  Orbital extents (a.u.):\n");
     fprintf(outfile, "\t%3s%15s  %15s  %15s  %15s\n", "MO", "<x^2>", "<y^2>", "<z^2>", "<r^2>");
-    RefSimpleMatrix C(C_.to_simple_matrix());
+    SimpleMatrix C(C_.to_simple_matrix());
     for (int i=0; i<C.rows(); ++i) {
         double sumx=0.0, sumy=0.0, sumz=0.0;
         for (int k=0; k<C.cols(); ++k) {
             for (int l=0; l<C.cols(); ++l) {
                 double tmp = C.get(k, i) * C.get(l, i);
-                sumx += Quadrupole_[0].get(k, l) * tmp;
-                sumy += Quadrupole_[3].get(k, l) * tmp;
-                sumz += Quadrupole_[5].get(k, l) * tmp;
+                sumx += Quadrupole_[0]->get(k, l) * tmp;
+                sumy += Quadrupole_[3]->get(k, l) * tmp;
+                sumz += Quadrupole_[5]->get(k, l) * tmp;
             }
         }
         fprintf(outfile, "\t%3d%15.10f  %15.10f  %15.10f  %15.10f\n", i+1, fabs(sumx), fabs(sumy), fabs(sumz), fabs(sumx + sumy + sumz));
@@ -321,8 +329,8 @@ void RHF::compute_multipole()
 void RHF::save_information()
 {
     // Print the final docc vector
-    char **temp2 = chkpt_->rd_irr_labs();
-    int nso = chkpt_->rd_nso();
+    char **temp2 = chkpt_.rd_irr_labs();
+    int nso = chkpt_.rd_nso();
     
     fprintf(outfile, "\n  Final occupation vector = (");
     for (int h=0; h<factory_.nirreps(); ++h) {
@@ -331,8 +339,11 @@ void RHF::save_information()
     fprintf(outfile, ")\n");
     
     // Needed for a couple of places.
-    RefMatrix eigvector = factory_.create_matrix();
-    RefVector eigvalues = factory_.create_vector();
+    Matrix eigvector;
+    Vector eigvalues;
+    factory_.create_matrix(eigvector);
+    factory_.create_vector(eigvalues);
+    
     F_.diagonalize(eigvector, eigvalues);
     
     int print_mos = false;
@@ -377,35 +388,35 @@ void RHF::save_information()
     for (int i=0; i<eigvalues.nirreps(); ++i)
         vec[i] = 0;
     
-    chkpt_->wt_nmo(nso);
-    chkpt_->wt_ref(0);        // Only RHF right now
-    chkpt_->wt_etot(E_);
-    chkpt_->wt_escf(E_);
-    chkpt_->wt_eref(E_);
-    chkpt_->wt_clsdpi(doccpi_);
-    chkpt_->wt_orbspi(eigvalues.dimpi());
-    chkpt_->wt_openpi(vec);
-    chkpt_->wt_phase_check(0);
+    chkpt_.wt_nmo(nso);
+    chkpt_.wt_ref(0);        // Only RHF right now
+    chkpt_.wt_etot(E_);
+    chkpt_.wt_escf(E_);
+    chkpt_.wt_eref(E_);
+    chkpt_.wt_clsdpi(doccpi_);
+    chkpt_.wt_orbspi(eigvalues.dimpi());
+    chkpt_.wt_openpi(vec);
+    chkpt_.wt_phase_check(0);
     
     // Figure out frozen core orbitals
-    int nfzc = chkpt_->rd_nfzc();
-    int nfzv = chkpt_->rd_nfzv();
+    int nfzc = chkpt_.rd_nfzc();
+    int nfzv = chkpt_.rd_nfzv();
     int *frzcpi = compute_fcpi(nfzc, eigvalues);
     int *frzvpi = compute_fvpi(nfzv, eigvalues);
-    chkpt_->wt_frzcpi(frzcpi);
-    chkpt_->wt_frzvpi(frzvpi);
+    chkpt_.wt_frzcpi(frzcpi);
+    chkpt_.wt_frzvpi(frzvpi);
     delete[](frzcpi);
     delete[](frzvpi);
     
     // This code currently only handles RHF
-    chkpt_->wt_iopen(0);
+    chkpt_.wt_iopen(0);
     
     // Write eigenvectors and eigenvalue to checkpoint 
     double *values = eigvalues.to_block_vector();
-    chkpt_->wt_evals(values);
+    chkpt_.wt_evals(values);
     free(values);
     double **vectors = C_.to_block_matrix();
-    chkpt_->wt_scf(vectors);
+    chkpt_.wt_scf(vectors);
     free_block(vectors);
 }
 
@@ -418,23 +429,25 @@ void RHF::save_fock()
 #endif
     
     // Save the current Fock matrix
-    diis_F_[current_diis_fock_].copy(F_);
+    diis_F_[current_diis_fock_]->copy(F_);
     
     // Determine error matrix for this Fock
-    RefMatrix FDS = factory_.create_matrix();
-    RefMatrix SDF = factory_.create_matrix();
+    Matrix FDS;
+    Matrix SDF;
+    factory_.create_matrix(FDS);
+    factory_.create_matrix(SDF);
     
     FDS.copy(F_ * D_ * S_);
     SDF.copy(S_ * D_ * F_);
-    diis_E_[current_diis_fock_].copy(FDS - SDF);
+    diis_E_[current_diis_fock_]->copy(FDS - SDF);
     
     // Orthonormalize the error matrix
-    diis_E_[current_diis_fock_].transform(Shalf_);
+    diis_E_[current_diis_fock_]->transform(Shalf_);
     
 #ifdef _DEBUG
     if (debug_) {
         fprintf(outfile, "  New error matrix:\n");
-        diis_E_[current_diis_fock_].print(outfile);
+        diis_E_[current_diis_fock_]->print(outfile);
     }
 #endif
     current_diis_fock_++;
@@ -447,7 +460,8 @@ void RHF::diis()
     int i, j;
     // Construct the B matrix
     // Assumes all the error matrices are available
-    RefMatrix temp = factory_.create_matrix();
+    Matrix temp;
+    factory_.create_matrix(temp);
     for (i=0; i<num_diis_vectors_; ++i) {
         for (j=0; j<num_diis_vectors_; ++j) {
             temp.gemm(false, true, 1.0, diis_E_[i], diis_E_[j], 0.0);
@@ -560,8 +574,10 @@ void RHF::find_occupation(RefMatrix& mat)
     if (input_docc_)
         return;
     
-    RefMatrix eigvector = factory_.create_matrix();
-    RefVector eigvalues = factory_.create_vector();
+    Matrix eigvector;
+    Vector eigvalues;
+    factory_.create_matrix(eigvector);
+    factory_.create_matrix(eigvalues);
     
     mat.diagonalize(eigvector, eigvalues);
     std::vector<std::pair<double, int> > pairs;
@@ -607,8 +623,10 @@ void RHF::form_F()
 
 void RHF::form_C()
 {
-    RefMatrix eigvec = factory_.create_matrix();
-    RefVector eigval = factory_.create_vector();
+    Matrix eigvec;
+    Vector eigval;
+    factory_.create_matrix(eigvec);
+    factory_.create_vector(eigval);
     
     F_.transform(Shalf_);
     F_.diagonalize(eigvec, eigval);
@@ -655,7 +673,7 @@ double RHF::compute_initial_E()
 
 double RHF::compute_E()
 {
-    RefMatrix HF = H_ + F_;
+    Matrix HF = H_ + F_;
     double Etotal = nuclearrep_ + D_.vector_dot(HF);
     return Etotal;
 }
@@ -679,7 +697,7 @@ void RHF::form_PK()
     fprintf(outfile, "  Forming PK matrix.\n");
     fflush(outfile);
     
-    IWL ERIIN(psio_.pointer(), PSIF_SO_TEI, 0.0, 1, 1);
+    IWL ERIIN(&psio_, PSIF_SO_TEI, 0.0, 1, 1);
     // iwl_buf_init(&ERIIN, PSIF_SO_TEI, 0.0, 1, 1);
     
     do {
@@ -886,7 +904,7 @@ void RHF::form_G_from_direct_integrals()
     G_.zero();
     
     // Need to back-transform the density from SO to AO basis
-    RefSimpleMatrix D = D_.to_simple_matrix();
+    SimpleMatrix D = D_.to_simple_matrix();
     
     // D.set_name("D (AO basis) pre-transform");
     // D.print();
@@ -895,15 +913,16 @@ void RHF::form_G_from_direct_integrals()
     // D.print();
     
     // Need a temporary G in the AO basis
-    RefSimpleMatrix G = factory_.create_simple_matrix("G (AO basis)");
+    SimpleMatrix G;
+    factory_.create_simple_matrix(G, "G (AO basis)");
     G.zero();
     
     // Initialize an integral object 
     // Begin factor out
-    Ref<IntegralFactory> integral(new IntegralFactory(basisset_, basisset_, basisset_, basisset_));
-    Ref<TwoBodyInt> eri = integral->eri();
-    ShellCombinationsIterator iter = integral->shells_iterator();
-    const double *buffer = eri->buffer();
+    IntegralFactory integral(basisset_, basisset_, basisset_, basisset_);
+    TwoBodyInt* eri = integral.eri();
+    ShellCombinationsIterator iter = integral.shells_iterator();
+    const double *buffer = eri.buffer();
     // End factor out
     
     fprintf(outfile, "\n      Computing integrals..."); fflush(outfile);
@@ -1211,6 +1230,7 @@ void RHF::form_G_from_direct_integrals()
         }
     }
     fprintf(outfile, "done. %d two-electron integrals.\n", count); fflush(outfile);
+    delete eri;
     
     // Set RefMatrix to RefSimpleMatrix handling symmetry blocking, if needed
     // Transform G back to symmetry blocking
@@ -1237,7 +1257,7 @@ void RHF::form_G()
     // Zero out the G matrix
     G_.zero();
     
-    IWL ERIIN(psio_.pointer(), PSIF_SO_TEI, 0.0, 1, 1);
+    IWL ERIIN(&psio_, PSIF_SO_TEI, 0.0, 1, 1);
     
     do {
         ilsti = ERIIN.last_buffer();

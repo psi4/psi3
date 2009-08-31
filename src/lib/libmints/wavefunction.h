@@ -37,8 +37,8 @@ protected:
     Molecule* molecule_;
 
     // PSI file access variables
-    psi::PSIO* psio_;
-    psi::Chkpt* chkpt_;
+    psi::PSIO& psio_;
+    psi::Chkpt& chkpt_;
 
     MatrixFactory factory_;
     long int memory_;
@@ -47,12 +47,14 @@ protected:
     double density_threshold_;
 
 private:
-    Wavefunction() {}
+    // Wavefunction() {}
     void common_init();
 
 public:
     /// Set the PSIO object. Note: Wavefunction assumes ownership of the object. DO NOT DELETE!
     Wavefunction(psi::PSIO *psio, psi::Chkpt *chkpt = 0);
+    Wavefunction(psi::PSIO& psio, psi::Chkpt& chkpt);
+    
     virtual ~Wavefunction();
 
     /// Compute energy. Subclasses override this function to compute its energy.

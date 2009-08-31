@@ -17,14 +17,14 @@
  
 class RHF : public HF {
 protected:
-    RefMatrix F_;
-    RefMatrix C_;
-    RefMatrix D_;
-    RefMatrix Dold_;
-    RefMatrix G_;
+    Matrix F_;
+    Matrix C_;
+    Matrix D_;
+    Matrix Dold_;
+    Matrix G_;
         
-    Ref<RefMatrix, SimpleReferenceCount, StandardArrayPolicy> diis_F_;
-    Ref<RefMatrix, SimpleReferenceCount, StandardArrayPolicy> diis_E_;
+    Matrix** diis_F_;
+    Matrix** diis_E_;
         
     int num_diis_vectors_;
     double **diis_B_;
@@ -49,7 +49,7 @@ protected:
     void form_PK();
     void form_F();
     
-    void find_occupation(RefMatrix&);
+    void find_occupation(Matrix&);
     void save_fock();
     void diis();
     void allocate_PK();
@@ -60,7 +60,7 @@ protected:
     void common_init();
 public:
     RHF(psi::PSIO *psio, psi::Chkpt *chkpt = 0);
-    RHF(Ref<psi::PSIO> &psio, Ref<psi::Chkpt> &chkpt);
+    RHF(psi::PSIO &psio, psi::Chkpt &chkpt);
     virtual ~RHF();
     
     double compute_energy();

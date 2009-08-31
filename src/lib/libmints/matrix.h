@@ -79,10 +79,14 @@ public:
     /// Destructor, frees memory
     ~Matrix();
 
+    /// Initializes a matrix
+    void init(int nirreps, int *rowspi, int *colspi, std::string name = "");
+    
     /// Creates an exact copy of the matrix and returns it.
     Matrix* clone() const;
     /// Copies cp's data onto this
     void copy(Matrix* cp);
+    void copy(Matrix& cp);
 
     /// Load a matrix from a PSIO object from fileno with tocentry of size nso
     bool load(psi::PSIO* psio, unsigned int fileno, char *tocentry, int nso);
@@ -107,6 +111,7 @@ public:
     void set(int h, int m, int n, double val) { matrix_[h][m][n] = val; }
     /// Set the diagonal of matrix_ to vec
     void set(Vector *vec);
+    void set(Vector& vec);
     /// Returns a single element of matrix_
     double get(int h, int m, int n) { return matrix_[h][m][n]; }
     /// Returns matrix_
@@ -123,6 +128,8 @@ public:
     void print(FILE *out = outfile, char *extra=NULL);
     /// Print the matrix with corresponding eigenvalues below each column
     void eivprint(Vector *values, FILE *out = outfile);
+    void eivprint(Vector &values, FILE *out = outfile);
+    
     /// Returns the rows per irrep array
     int *rowspi() const {
         return rowspi_;
@@ -150,6 +157,8 @@ public:
 
     /// Adds a matrix to this
     void add(const Matrix*);
+    void add(const Matrix&);
+    
     /// Subtracts a matrix from this
     void subtract(const Matrix*);
     /// Multiplies the two arguments and adds their result to this
@@ -180,6 +189,26 @@ public:
     void gemm(bool transa, bool transb, double alpha, const Matrix* a, const Matrix* b, double beta);
     /// Diagonalize this places eigvectors and eigvalues must be created by caller.
     void diagonalize(Matrix* eigvectors, Vector* eigvalues);
+    
+    // Reference versions of the above functions:
+    
+    /// Transform a by transformer save result to this
+    void transform(Matrix& a, Matrix& transformer);
+    /// Transform this by transformer
+    void transform(Matrix& transformer);
+    /// Back transform a by transformer save result to this
+    void back_transform(Matrix& a, Matrix& transformer);
+    /// Back transform this by transformer
+    void back_transform(Matrix& transformer);
+
+    /// Returns the vector dot product of this by rhs
+    double vector_dot(Matrix& rhs);
+
+    /// General matrix multiply, saves result to this
+    void gemm(bool transa, bool transb, double alpha, const Matrix& a, const Matrix& b, double beta);
+    /// Diagonalize this places eigvectors and eigvalues must be created by caller.
+    void diagonalize(Matrix& eigvectors, Vector& eigvalues);
+    
 };
 
 //! Simple matrix class. Not symmetry blocked.
@@ -236,6 +265,9 @@ public:
 
     /// Destructor, frees memory
     ~SimpleMatrix();
+
+    /// Initializes a matrix
+    void init(int rowspi, int colspi, std::string name = "");
 
     /// Creates an exact copy of the matrix and returns it.
     SimpleMatrix* clone() const;
@@ -313,6 +345,8 @@ public:
 
     /// Saves the block matrix to PSIO object with fileno and with the toc position of the name of the matrix
     void save(psi::PSIO* psio, unsigned int fileno);
+    void save(psi::PSIO& psio, unsigned int fileno);
+    
     /// Saves the matrix in ASCII format to filename
     void save(const char *filename, bool append=true, bool saveLowerTriangle = true);
     /// Saves the matrix in ASCII format to filename

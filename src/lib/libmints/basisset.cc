@@ -58,6 +58,32 @@ BasisSet::BasisSet(Chkpt* chkpt, std::string genbas_filename, std::string genbas
     }
 }
 
+BasisSet::BasisSet(Chkpt& chkpt, std::string genbas_filename, std::string genbas_basis) :
+    shell_first_basis_function_(NULL), shell_first_ao_(NULL), shell_center_(NULL), uso2ao_(NULL),
+    max_nprimitives_(0), max_stability_index_(0), uso2bf_(NULL), simple_mat_uso2ao_(NULL),
+    simple_mat_uso2bf_(NULL)
+{
+    // This requirement holds no matter what.
+    puream_ = chkpt.rd_puream() ? true : false;
+
+    // Initialize molecule, retrieves number of centers and geometry
+    molecule_ = new Molecule;
+    molecule_->init_with_chkpt(&chkpt);
+
+    // Determine if we read from chkpt or genbas
+    if (genbas_filename.empty()) {
+        // Initialize the shells
+        initialize_shells(&chkpt);
+    } else if (!genbas_filename.empty() && !genbas_basis.empty()) {
+        fprintf(outfile, "  Initializing BasisSet object with data in: %s (basis: %s)\n", 
+            genbas_filename.c_str(), genbas_basis.c_str());
+        initialize_shells_via_genbas(genbas_filename, genbas_basis);
+    } else {
+        fprintf(outfile, "  BasisSet: When using GENBAS you must provide basis set name.\n");
+        exit(EXIT_FAILURE);
+    }
+}
+
 BasisSet::~BasisSet()
 {
     if (shell_first_basis_function_)

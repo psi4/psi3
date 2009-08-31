@@ -48,6 +48,7 @@ public:
     
     /// Computes all integrals and stores them in result
     void compute(Matrix* result);
+    void compute(Matrix& result);
     
     /// Computes all integrals and stores them in result by default this method throws
     virtual void compute(Matrix** result);

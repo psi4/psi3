@@ -35,6 +35,16 @@ Vector::~Vector() {
         delete[] dimpi_;
 }
 
+void Vector::init(int nirreps, int *dimpi)
+{
+    if (dimpi_) delete[] dimpi_;
+    nirreps_ = nirreps;
+    dimpi_ = new int[nirreps_];
+    for (int h=0; h<nirreps_; ++h)
+        dimpi_[h] = dimpi[h];
+    alloc();
+}
+
 void Vector::alloc() {
     if (vector_)
         release();

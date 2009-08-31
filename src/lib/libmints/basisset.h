@@ -84,7 +84,6 @@ public:
     
     /// Constructor, reads in the basis set from the checkpoint file
     BasisSet(psi::Chkpt* chkpt, std::string genbas_filename, std::string genbas_basis);
-
     /// Copy constructor, currently errors if used
     BasisSet(const BasisSet&);
     /// Destructor

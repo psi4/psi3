@@ -41,6 +41,8 @@ public:
     /// Destructor, frees memory
     ~Vector();
 
+    void init(int nirreps, int *dimpi);
+    
     /// Sets the vector_ to the data in vec
     void set(double *vec);
     /// Returns a single element value

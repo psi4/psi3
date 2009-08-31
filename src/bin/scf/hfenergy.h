@@ -18,7 +18,7 @@
 class HFEnergy : public Wavefunction {
 public:
     HFEnergy(PSIO *psio, Chkpt *chkpt = 0);
-    HFEnergy(Ref<PSIO> &psio, Ref<Chkpt> &chkpt);
+    HFEnergy(PSIO &psio, Chkpt &chkpt);
     virtual ~HFEnergy() {}
     
     double compute_energy();

@@ -86,7 +86,7 @@ Matrix::Matrix(int nirreps, int *rowspi, int *colspi)
     alloc();
 }
 
-Matrix::Matrix(std::string name, int nirreps, int *rowspi, int *colspi)
+Matrix::Matrix(std::string name, int nirreps, int *rowspi, int *colspi) : name_(name)
 {
     matrix_ = NULL;
     nirreps_ = nirreps;
@@ -97,7 +97,6 @@ Matrix::Matrix(std::string name, int nirreps, int *rowspi, int *colspi)
         colspi_[i] = colspi[i];
     }
     alloc();
-    name_ = name;
 }
 
 Matrix::~Matrix()
@@ -107,6 +106,21 @@ Matrix::~Matrix()
         delete[] rowspi_;
     if (colspi_)
         delete[] colspi_;
+}
+
+void Matrix::init(int nirreps, int *rowspi, int *colspi, std::string name)
+{
+    if (rowspi_) delete[] rowspi_;
+    if (colspi_) delete[] colspi_;
+    name_ = name;
+    nirreps_ = nirreps;
+    rowspi_ = new int[nirreps_];
+    colspi_ = new int[nirreps_];
+    for (int i=0; i<nirreps_; ++i) {
+        rowspi_[i] = rowspi[i];
+        colspi_[i] = colspi[i];
+    }
+    alloc();    
 }
 
 Matrix* Matrix::clone() const
@@ -148,6 +162,11 @@ void Matrix::copy(Matrix* cp)
         if (rowspi_[h] != 0 && colspi_[h] != 0)
             memcpy(&(matrix_[h][0][0]), &(cp->matrix_[h][0][0]), rowspi_[h] * colspi_[h] * sizeof(double));
     }
+}
+
+void Matrix::copy(Matrix& cp)
+{
+    copy(&cp);
 }
 
 void Matrix::alloc()
@@ -259,6 +278,11 @@ void Matrix::set(Vector* vec)
     }
 }
 
+void Matrix::set(Vector& vec)
+{
+    set(&vec);
+}
+
 double **Matrix::to_block_matrix() const
 {
     int sizer=0, sizec=0;
@@ -355,6 +379,11 @@ void Matrix::eivprint(Vector *values, FILE *out)
     fflush(out);
 }
 
+void Matrix::eivprint(Vector& values, FILE *out)
+{
+    eivprint(&values, out);
+}
+
 void Matrix::set_to_identity()
 {
     int h;
@@ -439,6 +468,11 @@ void Matrix::add(const Matrix* plus)
             }
         }
     }
+}
+
+void Matrix::add(const Matrix& plus)
+{
+    add(&plus);
 }
 
 void Matrix::subtract(const Matrix* plus)
@@ -574,6 +608,87 @@ void Matrix::diagonalize(Matrix* eigvectors, Vector* eigvalues)
             sq_rsp(rowspi_[h], colspi_[h], matrix_[h], eigvalues->vector_[h], 1, eigvectors->matrix_[h], 1.0e-14);
         }
     }
+}
+
+// Reference versions of the above functions:
+
+void Matrix::transform(Matrix& a, Matrix& transformer)
+{
+    Matrix temp(a);
+
+    temp.gemm(false, false, 1.0, a, transformer, 0.0);
+    gemm(true, false, 1.0, transformer, temp, 0.0);
+}
+
+void Matrix::transform(Matrix& transformer)
+{
+    Matrix temp(this);
+
+    temp.gemm(false, false, 1.0, *this, transformer, 0.0);
+    gemm(true, false, 1.0, transformer, temp, 0.0);
+}
+
+void Matrix::back_transform(Matrix& a, Matrix& transformer)
+{
+    Matrix temp(a);
+
+    temp.gemm(false, true, 1.0, a, transformer, 0.0);
+    gemm(false, false, 1.0, transformer, temp, 0.0);
+}
+
+void Matrix::back_transform(Matrix& transformer)
+{
+    Matrix temp(this);
+
+    temp.gemm(false, true, 1.0, *this, transformer, 0.0);
+    gemm(false, false, 1.0, transformer, temp, 0.0);
+}
+
+void Matrix::gemm(bool transa, bool transb, double alpha, const Matrix& a, const Matrix& b, double beta)
+{
+    char ta = transa ? 't' : 'n';
+    char tb = transb ? 't' : 'n';
+    int h, m, n, k, nca, ncb, ncc;
+
+    for (h=0; h<nirreps_; ++h) {
+        m = rowspi_[h];
+        n = colspi_[h];
+        k = a.colspi_[h];
+        nca = transa ? m : k;
+        ncb = transb ? k : n;
+        ncc = n;
+
+        if (m && n && k) {
+            C_DGEMM(ta, tb, m, n, k, alpha, &(a.matrix_[h][0][0]),
+                    nca, &(b.matrix_[h][0][0]), ncb, beta, &(matrix_[h][0][0]),
+                    ncc);
+        }
+    }
+}
+
+double Matrix::vector_dot(Matrix& rhs)
+{
+    double sum = 0.0;
+    int h;
+    size_t size;
+
+    for (h=0; h<nirreps_; ++h) {
+        size = rowspi_[h] & colspi_[h];
+        if (size)
+            sum += C_DDOT(size, (&matrix_[h][0][0]), 1, &(rhs.matrix_[h][0][0]), 1);
+    }
+
+    return sum;
+}
+
+void Matrix::diagonalize(Matrix& eigvectors, Vector& eigvalues)
+{
+    int h;
+    for (h=0; h<nirreps_; ++h) {
+        if (rowspi_[h]) {
+            sq_rsp(rowspi_[h], colspi_[h], matrix_[h], eigvalues.vector_[h], 1, eigvectors.matrix_[h], 1.0e-14);
+        }
+    }                                                                              
 }
 
 void Matrix::save(const char *filename, bool append, bool saveLowerTriangle, bool saveSubBlocks)
@@ -814,6 +929,14 @@ SimpleMatrix::SimpleMatrix(const Matrix& c) : matrix_(0), rows_(0), cols_(0)
 SimpleMatrix::~SimpleMatrix()
 {
     release();
+}
+
+void SimpleMatrix::init(int rowspi, int colspi, std::string name = "")
+{
+    rows_ = rowspi;
+    cols_ = colpsi;
+    name_ = name;
+    alloc();
 }
 
 SimpleMatrix* SimpleMatrix::clone() const
@@ -1109,6 +1232,11 @@ void SimpleMatrix::save(psi::PSIO* psio, unsigned int fileno)
 
     if (!already_open)
         psio->close(fileno, 1);     // Close and keep
+}
+
+void SimpleMatrix::save(psi::PSIO& psio, unsigned int fileno)
+{
+    save(&psio, fileno);
 }
 
 void SimpleMatrix::save(const char *filename, bool append, bool saveLowerTriangle)

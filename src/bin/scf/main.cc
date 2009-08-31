@@ -54,11 +54,11 @@ int main (int argc, char * argv[])
     
     // psio_init();
     // psio_ipv1_config();
-    Ref<PSIO> psio(new PSIO);
-    psiopp_ipv1_config(psio.pointer());
+    PSIO psio;
+    psiopp_ipv1_config(&psio);
     
     // chkpt_init(PSIO_OPEN_OLD);
-    Ref<Chkpt> chkpt(new Chkpt(psio.pointer(), PSIO_OPEN_OLD));
+    Chkpt chkpt(psio, PSIO_OPEN_OLD);
     
     // Initialize the psi3 timer library.
     timer_init();

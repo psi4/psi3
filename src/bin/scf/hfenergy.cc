@@ -27,7 +27,7 @@ HFEnergy::HFEnergy(PSIO *psio, Chkpt *chkpt) : Wavefunction(psio, chkpt)
     
 }
 
-HFEnergy::HFEnergy(Ref<PSIO> &psio, Ref<Chkpt> &chkpt) : Wavefunction(psio, chkpt)
+HFEnergy::HFEnergy(PSIO &psio, Chkpt &chkpt) : Wavefunction(psio, chkpt)
 {
     
 }

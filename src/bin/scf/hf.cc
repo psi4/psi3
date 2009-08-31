@@ -40,7 +40,7 @@ HF::HF(PSIO *psio, Chkpt *chkpt) : Wavefunction(psio, chkpt), nuclear_dipole_con
     common_init();
 }
 
-HF::HF(Ref<PSIO> &psio, Ref<Chkpt> &chkpt) : Wavefunction(psio, chkpt), nuclear_dipole_contribution_(3), nuclear_quadrupole_contribution_(6)
+HF::HF(PSIO &psio, Chkpt &chkpt) : Wavefunction(psio, chkpt), nuclear_dipole_contribution_(3), nuclear_quadrupole_contribution_(6)
 {
     common_init();
 }
@@ -51,14 +51,21 @@ HF::~HF()
     delete[] so2index_;
     delete[] pk_symoffset_;
     free(zvals_);
+    
+    for (int i=0; i<3; ++i)
+        delete Dipole_[i];
+    delete[] Dipole_;
+    for (int i=0; i<6; ++i)
+        delete Quadrupole_[i];
+    delete[] Quadrupole_;
 }
 
 void HF::common_init()
 {
-    S_      = factory_.create_matrix("S");
-    Shalf_  = factory_.create_matrix("S^-1/2");
-    Sphalf_ = factory_.create_matrix("S^+1/2");
-    H_      = factory_.create_matrix("One-electron Hamiltonion");
+    factory_.create_matrix(S_,      "S");
+    factory_.create_matrix(Shalf_,  "S^-1/2");
+    factory_.create_matrix(Sphalf_, "S^+1/2");
+    factory_.create_matrix(H_,      "One-electron Hamiltonion");
     
     Eold_    = 0.0;
     E_       = 0.0;
@@ -129,16 +136,16 @@ void HF::common_init()
     ip_boolean(const_cast<char*>("DIRECT"), &direct_integrals_, 0);
     
     // Read information from checkpoint
-    nuclearrep_ = chkpt_->rd_enuc();
-    natom_ = chkpt_->rd_natom();
-    zvals_ = chkpt_->rd_zvals();
+    nuclearrep_ = chkpt_.rd_enuc();
+    natom_ = chkpt_.rd_natom();
+    zvals_ = chkpt_.rd_zvals();
     
     // Alloc memory for multipoles
-    Dipole_ = new RefSimpleMatrix[3];
+    Dipole_ = new SimpleMatrix*[3];
     Dipole_[0] = factory_.create_simple_matrix("Dipole X SO-basis");
     Dipole_[1] = factory_.create_simple_matrix("Dipole Y SO-basis");
     Dipole_[2] = factory_.create_simple_matrix("Dipole Z SO-basis");
-    Quadrupole_ = new RefSimpleMatrix[6];
+    Quadrupole_ = new SimpleMatrix*[6];
     Quadrupole_[0] = factory_.create_simple_matrix("Quadrupole XX");
     Quadrupole_[1] = factory_.create_simple_matrix("Quadrupole XY");
     Quadrupole_[2] = factory_.create_simple_matrix("Quadrupole XZ");
@@ -165,11 +172,11 @@ void HF::print_header()
 #else
     fprintf(outfile, "  Release version.\n");
 #endif
-    temp = chkpt_->rd_sym_label();
+    temp = chkpt_.rd_sym_label();
     fprintf(outfile, "  Running in %s symmetry.\n", temp);
     free(temp);
     
-	temp2 = chkpt_->rd_irr_labs();
+	temp2 = chkpt_.rd_irr_labs();
 	fprintf(outfile, "  Input DOCC vector = (");
 	for (int h=0; h<factory_.nirreps(); ++h) {
 		fprintf(outfile, "%2d %3s ", doccpi_[h], temp2[h]);
@@ -197,7 +204,7 @@ void HF::form_indexing()
     int *opi = factory_.rowspi();
     int nso;
     
-    nso = chkpt_->rd_nso();
+    nso = chkpt_.rd_nso();
     so2symblk_ = new int[nso];
     so2index_  = new int[nso];
     
@@ -233,30 +240,35 @@ void HF::form_indexing()
 
 void HF::form_H()
 {
-    RefMatrix kinetic = factory_.create_matrix("Kinetic Integrals");
-    RefMatrix potential = factory_.create_matrix("Potential Integrals");
+    Matrix kinetic;
+    Matrix potential;
+    factory_.create_matrix(kinetic, "Kinetic Integrals");
+    factory_.create_matrix(potential, "Potential Integrals");
     
     // Form the multipole integrals
     form_multipole_integrals();
     
     // Load in kinetic and potential matrices
-    int nso = chkpt_->rd_nso();
+    int nso = chkpt_.rd_nso();
     double *integrals = init_array(ioff[nso]);
     
     // Kinetic
     if (!direct_integrals_) {
-        IWL::read_one(psio_.pointer(), PSIF_OEI, const_cast<char*>(PSIF_SO_T), integrals, ioff[nso], 0, 0, outfile);
+        IWL::read_one(&psio_, PSIF_OEI, const_cast<char*>(PSIF_SO_T), integrals, ioff[nso], 0, 0, outfile);
         kinetic.set(integrals);
-        IWL::read_one(psio_.pointer(), PSIF_OEI, const_cast<char*>(PSIF_SO_V), integrals, ioff[nso], 0, 0, outfile);
+        IWL::read_one(&psio_, PSIF_OEI, const_cast<char*>(PSIF_SO_V), integrals, ioff[nso], 0, 0, outfile);
         potential.set(integrals);
     }
     else {
-        Ref<IntegralFactory> integral(new IntegralFactory(basisset_, basisset_, basisset_, basisset_));
-        Ref<OneBodyInt> T = integral->kinetic();
-        Ref<OneBodyInt> V = integral->potential();
+        IntegralFactory integral(basisset_, basisset_, basisset_, basisset_);
+        OneBodyInt* T = integral.kinetic();
+        OneBodyInt* V = integral.potential();
         
         T->compute(kinetic);
         V->compute(potential);
+        
+        delete T;
+        delete V;
     }
     
     if (debug_ > 2)
@@ -265,7 +277,8 @@ void HF::form_H()
     if (debug_ > 2)
         potential.print(outfile);
     
-    H_.copy(kinetic + potential);
+    H_.copy(kinetic);
+    H_.add(potential);
     
     if (debug_ > 2)
         H_.print(outfile);
@@ -289,25 +302,30 @@ void HF::form_H()
 
 void HF::form_Shalf()
 {
-    int nso = chkpt_->rd_nso();
+    int nso = chkpt_.rd_nso();
     
     // Overlap
     if (!direct_integrals_) {
         double *integrals = init_array(ioff[nso]);
-        IWL::read_one(psio_.pointer(), PSIF_OEI, const_cast<char*>(PSIF_SO_S), integrals, ioff[nso], 0, 0, outfile);
+        IWL::read_one(&psio_, PSIF_OEI, const_cast<char*>(PSIF_SO_S), integrals, ioff[nso], 0, 0, outfile);
         S_.set(integrals);
         free(integrals);
     }
     else {
-        Ref<IntegralFactory> integral(new IntegralFactory(basisset_, basisset_, basisset_, basisset_));
-        Ref<OneBodyInt> S = integral->overlap();        
+        IntegralFactory integral(basisset_, basisset_, basisset_, basisset_);
+        OneBodyInt *S = integral.overlap();        
         S->compute(S_);
+        delete S;
     }
     // Form S^(-1/2) matrix
-    RefMatrix eigvec = factory_.create_matrix("L");
-    RefMatrix eigtemp = factory_.create_matrix("Temp");
-    RefMatrix eigtemp2 = factory_.create_matrix();
-    RefVector eigval = factory_.create_vector();
+    Matrix eigvec; 
+    Matrix eigtemp;
+    Matrix eigtemp2;
+    Vector eigval;
+    factory_.create_matrix(eigvec, "L");
+    factory_.create_matrix(eigtemp, "Temp");
+    factory_.create_matrix(eigtemp2);
+    factory_.create_vector(eigval);
     
     S_.diagonalize(eigvec, eigval);    
     
@@ -345,7 +363,7 @@ void HF::form_Shalf()
     }
 }
 
-int *HF::compute_fcpi(int nfzc, RefVector& eigvalues)
+int *HF::compute_fcpi(int nfzc, Vector& eigvalues)
 {
     int *frzcpi = new int[eigvalues.nirreps()];
     // Print out orbital energies.
@@ -363,7 +381,7 @@ int *HF::compute_fcpi(int nfzc, RefVector& eigvalues)
     return frzcpi;
 }
 
-int *HF::compute_fvpi(int nfzv, RefVector& eigvalues)
+int *HF::compute_fvpi(int nfzv, Vector& eigvalues)
 {
     int *frzvpi = new int[eigvalues.nirreps()];
     // Print out orbital energies.
@@ -384,15 +402,18 @@ int *HF::compute_fvpi(int nfzv, RefVector& eigvalues)
 void HF::form_multipole_integrals()
 {
     // Initialize an integral object
-    Ref<IntegralFactory> integral(new IntegralFactory(basisset_, basisset_, basisset_, basisset_));
+    IntegralFactory integral(basisset_, basisset_, basisset_, basisset_);
     
     // Get a dipole integral object
-    Ref<OneBodyInt> dipole = integral->dipole();
-    Ref<OneBodyInt> quadrupole= integral->quadrupole();
+    OneBodyInt* dipole = integral.dipole();
+    OneBodyInt* quadrupole= integral.quadrupole();
     
     // Compute the dipole integrals
     dipole->compute(Dipole_);
     quadrupole->compute(Quadrupole_);
+    
+    delete quadrupole;
+    delete dipole;
     
     // Get the nuclear contribution to the dipole
     nuclear_dipole_contribution_ = molecule_->nuclear_dipole_contribution();
