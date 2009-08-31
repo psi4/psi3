@@ -21,9 +21,9 @@ double MRCCSD_T::compute_A_ooo_contribution_to_Heff(int u_abs,int x_abs,int i_ab
 
   if(i_abs == u_abs){
     CCIndexIterator  ef("[vv]",ijk_sym xor x_sym);
-    while(++ef){
-      int    ef_sym  = vv->get_tuple_irrep(ef.ind_abs[0],ef.ind_abs[1]);
-      size_t ef_rel  = vv->get_tuple_rel_index(ef.ind_abs[0],ef.ind_abs[1]);
+    for(ef.first(); !ef.end(); ef.next()){
+      int    ef_sym  = vv->get_tuple_irrep(ef.ind_abs<0>(),ef.ind_abs<1>());
+      size_t ef_rel  = vv->get_tuple_rel_index(ef.ind_abs<0>(),ef.ind_abs<1>());
       if(jk_sym == ef_sym){
         value += 0.25 * T3->get(x_sym,x_rel,ef_rel) * V_oovv[jk_sym][jk_rel][ef_rel];
       }
@@ -48,9 +48,9 @@ double MRCCSD_T::compute_A_ooO_contribution_to_Heff(int u_abs,int x_abs,int i_ab
 
   if(i_abs == u_abs){
     CCIndexIterator  ef("[vv]",ijk_sym xor x_sym);
-    while(++ef){
-      int    ef_sym  = vv->get_tuple_irrep(ef.ind_abs[0],ef.ind_abs[1]);
-      size_t ef_rel  = vv->get_tuple_rel_index(ef.ind_abs[0],ef.ind_abs[1]);
+    for(ef.first(); !ef.end(); ef.next()){
+      int    ef_sym  = vv->get_tuple_irrep(ef.ind_abs<0>(),ef.ind_abs<1>());
+      size_t ef_rel  = vv->get_tuple_rel_index(ef.ind_abs<0>(),ef.ind_abs<1>());
       if(jk_sym == ef_sym){
         value += T3->get(x_sym,x_rel,ef_rel) * V_oOvV[jk_sym][jk_rel][ef_rel];
       }
@@ -75,9 +75,9 @@ double MRCCSD_T::compute_A_oOO_contribution_to_Heff(int u_abs,int x_abs,int i_ab
 
   if(i_abs == u_abs){
     CCIndexIterator  ef("[vv]",ijk_sym xor x_sym);
-    while(++ef){
-      int    ef_sym  = vv->get_tuple_irrep(ef.ind_abs[0],ef.ind_abs[1]);
-      size_t ef_rel  = vv->get_tuple_rel_index(ef.ind_abs[0],ef.ind_abs[1]);
+    for(ef.first(); !ef.end(); ef.next()){
+      int    ef_sym  = vv->get_tuple_irrep(ef.ind_abs<0>(),ef.ind_abs<1>());
+      size_t ef_rel  = vv->get_tuple_rel_index(ef.ind_abs<0>(),ef.ind_abs<1>());
       if(jk_sym == ef_sym){
         value += 0.25 * T3->get(x_sym,x_rel,ef_rel) * V_oovv[jk_sym][jk_rel][ef_rel];
       }

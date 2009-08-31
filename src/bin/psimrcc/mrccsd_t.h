@@ -12,6 +12,7 @@ class Hamiltonian;
 
 class MRCCSD_T
 {
+enum TriplesAlgorithm {UnrestrictedTriples,RestrictedTriples,SpinAdaptedTriples};
 public:
   // Constructor and destructor
   MRCCSD_T(Hamiltonian* h_eff_);
@@ -30,6 +31,12 @@ private:
   void compute_ooO_triples_restricted();
   void compute_oOO_triples_restricted();
   void compute_OOO_triples_restricted();
+
+  void compute_spin_adapted();
+  void compute_ooo_triples_spin_adapted();
+  void compute_ooO_triples_spin_adapted();
+  void compute_oOO_triples_spin_adapted();
+  void compute_OOO_triples_spin_adapted();
 
   void compute_ooo_contribution_to_Heff(int i,int j,int k,int mu,BlockMatrix* T3);
   void compute_ooO_contribution_to_Heff(int i,int j,int k,int mu,BlockMatrix* T3);
@@ -75,6 +82,8 @@ private:
   int nrefs;
 
   double threshold;
+
+  TriplesAlgorithm triples_algorithm;
 
   Hamiltonian* h_eff;
 
@@ -130,10 +139,13 @@ private:
   CCIndex* vo;
   CCIndex* ov;
   CCIndex* ovv;
-
+  CCIndex* ooo;
 
   BlockMatrix*** Z;
   BlockMatrix*** W;
+  BlockMatrix*** W_ijk;
+  BlockMatrix*** W_ikj;
+  BlockMatrix*** W_jki;
   BlockMatrix*** T;
 
   IndexMatrix* T2_ij_a_b;

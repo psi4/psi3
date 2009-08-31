@@ -62,13 +62,15 @@ public:
   short*      get_tuple(int i)                            {return(tuples[i]);}
 
   // Get the tuples irrep structure
-  int         get_first(int i)                            {return(first[i]);}
-  int         get_last(int i)                             {return(last[i]);}
-  int         get_pairpi(int i)                           {return(tuplespi[i]);}
+  size_t      get_first(int i)                            {return(first[i]);}
+  size_t      get_last(int i)                             {return(last[i]);}
+  size_t      get_pairpi(int i)                           {return(tuplespi[i]);}
+  size_t      get_tuplespi(int i)                         {return(tuplespi[i]);}
   Size_tVec&  get_pairpi()                                {return(tuplespi);}
   Size_tVec&  get_first()                                 {return(first);}
   Size_tVec&  get_last()                                  {return(last);}
   Size_tVec&  get_tuplespi()                              {return(tuplespi);}
+
 
   // Given a set of number retrieve the corresponding tuple index relative to the tuple's irrep
   size_t      get_tuple_abs_index(short p)                    {return(first[one_index_to_irrep[p]] + one_index_to_tuple_rel_index[p]);}

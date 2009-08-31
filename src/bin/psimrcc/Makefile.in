@@ -29,6 +29,7 @@ index_iterator.cc special_matrices.cc mrcc_pert_triples.cc \
 mrccsd_t.cc mrccsd_t_compute.cc mrccsd_t_compute_restricted.cc mrccsd_t_setup.cc mrccsd_t_form_matrices.cc \
 mrccsd_t_heff.cc mrccsd_t_heff_ab.cc heff.cc mrccsd_t_heff_a.cc mrccsd_t_heff_b.cc \
 mrccsd_t_heff_restricted.cc mrccsd_t_heff_ab_restricted.cc mrccsd_t_heff_a_restricted.cc mrccsd_t_heff_b_restricted.cc \
+mrccsd_t_compute_spin_adapted.cc \
 updater.cc updater_mk.cc updater_bw.cc  updater_sr.cc
 
 LD = ${CXX}

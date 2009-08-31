@@ -79,8 +79,6 @@ protected:
   double      delta_t1_amps;
   double      delta_t2_amps;
 
-  int         diis_step;
-
   bool        pert_cbs;
   bool        pert_cbs_coupling;
   TriplesType         triples_type;

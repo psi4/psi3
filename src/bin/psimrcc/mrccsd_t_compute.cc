@@ -17,6 +17,8 @@
 #include "mrccsd_t.h"
 #include "special_matrices.h"
 
+#define SA_DEBUG 0
+
 extern FILE* outfile;
 
 namespace psi{ namespace psimrcc{
@@ -82,45 +84,47 @@ void MRCCSD_T::compute()
 void MRCCSD_T::compute_ooo_triples()
 {
   CCIndexIterator  ijk("[ooo]");
-  CCIndexIterator  abc("[vvv]");
 
   size_t tot_cycles   = 0;
   size_t tot_triplets = 0;
   
-  while(++ijk){
-    int i_sym    = o->get_tuple_irrep(ijk.ind_abs[0]);
+  for(ijk.first(); !ijk.end(); ijk.next()){
+    int i_sym    = o->get_tuple_irrep(ijk.ind_abs<0>());
     
-    size_t i_abs = o->get_tuple_abs_index(ijk.ind_abs[0]);
-    size_t j_abs = o->get_tuple_abs_index(ijk.ind_abs[1]);
-    size_t k_abs = o->get_tuple_abs_index(ijk.ind_abs[2]);
+    size_t i_abs = o->get_tuple_abs_index(ijk.ind_abs<0>());
+    size_t j_abs = o->get_tuple_abs_index(ijk.ind_abs<1>());
+    size_t k_abs = o->get_tuple_abs_index(ijk.ind_abs<2>());
     
-    size_t i_rel = o->get_tuple_rel_index(ijk.ind_abs[0]);
+    size_t i_rel = o->get_tuple_rel_index(ijk.ind_abs<0>());
     
-    size_t ij_abs = oo->get_tuple_abs_index(ijk.ind_abs[0],ijk.ind_abs[1]);
-    size_t kj_abs = oo->get_tuple_abs_index(ijk.ind_abs[2],ijk.ind_abs[1]);
-    size_t ik_abs = oo->get_tuple_abs_index(ijk.ind_abs[0],ijk.ind_abs[2]);
+    size_t ij_abs = oo->get_tuple_abs_index(ijk.ind_abs<0>(),ijk.ind_abs<1>());
+    size_t kj_abs = oo->get_tuple_abs_index(ijk.ind_abs<2>(),ijk.ind_abs<1>());
+    size_t ik_abs = oo->get_tuple_abs_index(ijk.ind_abs<0>(),ijk.ind_abs<2>());
     
-    int    jk_sym = oo->get_tuple_irrep(ijk.ind_abs[1],ijk.ind_abs[2]);
-    size_t jk_rel = oo->get_tuple_rel_index(ijk.ind_abs[1],ijk.ind_abs[2]);
+    int    jk_sym = oo->get_tuple_irrep(ijk.ind_abs<1>(),ijk.ind_abs<2>());
+    size_t jk_rel = oo->get_tuple_rel_index(ijk.ind_abs<1>(),ijk.ind_abs<2>());
+
+    int ijk_sym = ijk.sym();
     
     // Compute W for all unique references (d N^7)
     for(int mu = 0; mu < nrefs; ++mu){
       // Check if ijk belong to the occupied space of mu
       if(is_aocc[mu][i_abs] && is_aocc[mu][j_abs] && is_aocc[mu][k_abs]){
-        Z[mu][ijk.sym]->contract(T2_ij_a_b->get_block_matrix(ij_abs,mu),V_k_bc_e->get_block_matrix(k_abs),1.0,0.0);
-        Z[mu][ijk.sym]->contract(T2_ij_a_b->get_block_matrix(kj_abs,mu),V_k_bc_e->get_block_matrix(i_abs),-1.0,1.0);
-        Z[mu][ijk.sym]->contract(T2_ij_a_b->get_block_matrix(ik_abs,mu),V_k_bc_e->get_block_matrix(j_abs),-1.0,1.0);
-
-        Z[mu][ijk.sym]->contract(V_jk_c_m->get_block_matrix(ij_abs),T2_i_ab_j->get_block_matrix(k_abs,mu),-1.0,1.0);
-        Z[mu][ijk.sym]->contract(V_jk_c_m->get_block_matrix(kj_abs),T2_i_ab_j->get_block_matrix(i_abs,mu),1.0,1.0);
-        Z[mu][ijk.sym]->contract(V_jk_c_m->get_block_matrix(ik_abs),T2_i_ab_j->get_block_matrix(j_abs,mu),1.0,1.0);
-        
-        W[mu][ijk.sym]->cyclical_permutation_1_2(Z[mu][ijk.sym],vvv,v,vv);
+        Z[mu][ijk_sym]->contract(T2_ij_a_b->get_block_matrix(ij_abs,mu),V_k_bc_e->get_block_matrix(k_abs),1.0,0.0);
+        Z[mu][ijk_sym]->contract(T2_ij_a_b->get_block_matrix(kj_abs,mu),V_k_bc_e->get_block_matrix(i_abs),-1.0,1.0);
+        Z[mu][ijk_sym]->contract(T2_ij_a_b->get_block_matrix(ik_abs,mu),V_k_bc_e->get_block_matrix(j_abs),-1.0,1.0);
+#if SA_DEBUG
+#else
+        Z[mu][ijk_sym]->contract(V_jk_c_m->get_block_matrix(ij_abs),T2_i_ab_j->get_block_matrix(k_abs,mu),-1.0,1.0);
+        Z[mu][ijk_sym]->contract(V_jk_c_m->get_block_matrix(kj_abs),T2_i_ab_j->get_block_matrix(i_abs,mu),1.0,1.0);
+        Z[mu][ijk_sym]->contract(V_jk_c_m->get_block_matrix(ik_abs),T2_i_ab_j->get_block_matrix(j_abs,mu),1.0,1.0);
+#endif
+        W[mu][ijk_sym]->cyclical_permutation_1_2(Z[mu][ijk_sym],vvv,v,vv);
       }
     }
     
     for(int mu = 0; mu < nrefs; ++mu){
-      T[mu][ijk.sym]->zero();
+      T[mu][ijk_sym]->zero();
     }
     
     // Compute T (d^2 N^6)
@@ -146,12 +150,12 @@ void MRCCSD_T::compute_ooo_triples()
           double D_ijk = e_oo[mu][i_abs] + e_oo[mu][j_abs] + e_oo[mu][k_abs];
           
           // Add W
-          Z[mu][ijk.sym]->add(W[mu][ijk.sym],0.0,1.0);
+          Z[mu][ijk_sym]->add(W[mu][ijk_sym],0.0,1.0);
           
           // Add the coupling terms
           for(int nu = 0; nu < nrefs; ++nu){
             if(nu != mu){
-              Z[mu][ijk.sym]->add(T[nu][ijk.sym],1.0,Mk_factor[mu][nu]);
+              Z[mu][ijk_sym]->add(T[nu][ijk_sym],1.0,Mk_factor[mu][nu]);
             }
           }
           
@@ -159,29 +163,30 @@ void MRCCSD_T::compute_ooo_triples()
           vector<double>& e_vv_mu  = e_vv[mu];
           vector<bool>& is_avir_mu = is_avir[mu];
           
-          abc.reset();
-          abc.set_irrep(ijk.sym);
+          CCIndexIterator  abc("[vvv]",ijk_sym);
+//          abc.reset();
+//          abc.set_irrep();
           // Loop over abc
-          while(++abc){
-            size_t a_abs = v->get_tuple_abs_index(abc.ind_abs[0]);
-            size_t b_abs = v->get_tuple_abs_index(abc.ind_abs[1]);
-            size_t c_abs = v->get_tuple_abs_index(abc.ind_abs[2]);
+          for(abc.first(); !abc.end(); abc.next()){
+            size_t a_abs = v->get_tuple_abs_index(abc.ind_abs<0>());
+            size_t b_abs = v->get_tuple_abs_index(abc.ind_abs<1>());
+            size_t c_abs = v->get_tuple_abs_index(abc.ind_abs<2>());
             if(is_avir_mu[a_abs] && is_avir_mu[b_abs] && is_avir_mu[c_abs]){
-              int     a_sym = v->get_tuple_irrep(abc.ind_abs[0]);
-              int    bc_sym = vv->get_tuple_irrep(abc.ind_abs[1],abc.ind_abs[2]);
-              size_t  a_rel = v->get_tuple_rel_index(abc.ind_abs[0]);
-              size_t bc_rel = vv->get_tuple_rel_index(abc.ind_abs[1],abc.ind_abs[2]);
+              int     a_sym = v->get_tuple_irrep(abc.ind_abs<0>());
+              int    bc_sym = vv->get_tuple_irrep(abc.ind_abs<1>(),abc.ind_abs<2>());
+              size_t  a_rel = v->get_tuple_rel_index(abc.ind_abs<0>());
+              size_t bc_rel = vv->get_tuple_rel_index(abc.ind_abs<1>(),abc.ind_abs<2>());
               
               double D_abc = e_vv_mu[a_abs] + e_vv_mu[b_abs] + e_vv_mu[c_abs];
               
               // Update T
-              T[mu][ijk.sym]->set(a_sym,a_rel,bc_rel,Z[mu][ijk.sym]->get(a_sym,a_rel,bc_rel)/(Mk_shift[mu] + D_ijk - D_abc));
+              T[mu][ijk_sym]->set(a_sym,a_rel,bc_rel,Z[mu][ijk_sym]->get(a_sym,a_rel,bc_rel)/(Mk_shift[mu] + D_ijk - D_abc));
               
               // Compute the energy
-              e4T[mu] += W[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) / 36.0;
+              e4T[mu] += W[mu][ijk_sym]->get(a_sym,a_rel,bc_rel) * T[mu][ijk_sym]->get(a_sym,a_rel,bc_rel) / 36.0;
               if((i_sym == a_sym) & (jk_sym == bc_sym)){
-                e4ST[mu] += 0.25 * T1_ov_mu[i_sym][i_rel][a_rel] * V_oovv[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
-                e4DT[mu] += 0.25 * F_ov_mu[i_sym][i_rel][a_rel] * T2_oovv_mu[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
+                e4ST[mu] += 0.25 * T1_ov_mu[i_sym][i_rel][a_rel] * V_oovv[jk_sym][jk_rel][bc_rel] * T[mu][ijk_sym]->get(a_sym,a_rel,bc_rel);
+                e4DT[mu] += 0.25 * F_ov_mu[i_sym][i_rel][a_rel] * T2_oovv_mu[jk_sym][jk_rel][bc_rel] * T[mu][ijk_sym]->get(a_sym,a_rel,bc_rel);
               }
             }
           }  // End loop over abc
@@ -192,7 +197,7 @@ void MRCCSD_T::compute_ooo_triples()
     
     // Compute the contributions to the off-diagonal elements of Heff
     for(int mu = 0; mu < nrefs; ++mu){
-      compute_ooo_contribution_to_Heff(i_abs,j_abs,k_abs,mu,T[mu][ijk.sym]);
+      compute_ooo_contribution_to_Heff(i_abs,j_abs,k_abs,mu,T[mu][ijk_sym]);
     }
     
     // Add the energy contributions from ijk
@@ -216,40 +221,42 @@ void MRCCSD_T::compute_OOO_triples()
   CCIndexIterator  ijk("[ooo]");
   CCIndexIterator  abc("[vvv]");
 
-  while(++ijk){
-    int i_sym    = o->get_tuple_irrep(ijk.ind_abs[0]);
+  for(ijk.first(); !ijk.end(); ijk.next()){
+    int i_sym    = o->get_tuple_irrep(ijk.ind_abs<0>());
 
-    size_t i_abs = o->get_tuple_abs_index(ijk.ind_abs[0]);
-    size_t j_abs = o->get_tuple_abs_index(ijk.ind_abs[1]);
-    size_t k_abs = o->get_tuple_abs_index(ijk.ind_abs[2]);
+    size_t i_abs = o->get_tuple_abs_index(ijk.ind_abs<0>());
+    size_t j_abs = o->get_tuple_abs_index(ijk.ind_abs<1>());
+    size_t k_abs = o->get_tuple_abs_index(ijk.ind_abs<2>());
 
-    size_t i_rel = o->get_tuple_rel_index(ijk.ind_abs[0]);
+    size_t i_rel = o->get_tuple_rel_index(ijk.ind_abs<0>());
 
-    size_t ij_abs = oo->get_tuple_abs_index(ijk.ind_abs[0],ijk.ind_abs[1]);
-    size_t kj_abs = oo->get_tuple_abs_index(ijk.ind_abs[2],ijk.ind_abs[1]);
-    size_t ik_abs = oo->get_tuple_abs_index(ijk.ind_abs[0],ijk.ind_abs[2]);
+    size_t ij_abs = oo->get_tuple_abs_index(ijk.ind_abs<0>(),ijk.ind_abs<1>());
+    size_t kj_abs = oo->get_tuple_abs_index(ijk.ind_abs<2>(),ijk.ind_abs<1>());
+    size_t ik_abs = oo->get_tuple_abs_index(ijk.ind_abs<0>(),ijk.ind_abs<2>());
 
-    int    jk_sym = oo->get_tuple_irrep(ijk.ind_abs[1],ijk.ind_abs[2]);
-    size_t jk_rel = oo->get_tuple_rel_index(ijk.ind_abs[1],ijk.ind_abs[2]);
+    int    jk_sym = oo->get_tuple_irrep(ijk.ind_abs<1>(),ijk.ind_abs<2>());
+    size_t jk_rel = oo->get_tuple_rel_index(ijk.ind_abs<1>(),ijk.ind_abs<2>());
+
+    int ijk_sym = ijk.sym();
 
     // Compute W for all unique references (d N^7)
     for(int mu = 0; mu < nrefs; ++mu){
       // Check if ijk belong to the occupied space of mu
       if(is_bocc[mu][i_abs] && is_bocc[mu][j_abs] && is_bocc[mu][k_abs]){
-        Z[mu][ijk.sym]->contract(T2_IJ_A_B->get_block_matrix(ij_abs,mu),V_k_bc_e->get_block_matrix(k_abs),1.0,0.0);
-        Z[mu][ijk.sym]->contract(T2_IJ_A_B->get_block_matrix(kj_abs,mu),V_k_bc_e->get_block_matrix(i_abs),-1.0,1.0);
-        Z[mu][ijk.sym]->contract(T2_IJ_A_B->get_block_matrix(ik_abs,mu),V_k_bc_e->get_block_matrix(j_abs),-1.0,1.0);
+        Z[mu][ijk_sym]->contract(T2_IJ_A_B->get_block_matrix(ij_abs,mu),V_k_bc_e->get_block_matrix(k_abs),1.0,0.0);
+        Z[mu][ijk_sym]->contract(T2_IJ_A_B->get_block_matrix(kj_abs,mu),V_k_bc_e->get_block_matrix(i_abs),-1.0,1.0);
+        Z[mu][ijk_sym]->contract(T2_IJ_A_B->get_block_matrix(ik_abs,mu),V_k_bc_e->get_block_matrix(j_abs),-1.0,1.0);
 
-        Z[mu][ijk.sym]->contract(V_jk_c_m->get_block_matrix(ij_abs),T2_I_AB_J->get_block_matrix(k_abs,mu),-1.0,1.0);
-        Z[mu][ijk.sym]->contract(V_jk_c_m->get_block_matrix(kj_abs),T2_I_AB_J->get_block_matrix(i_abs,mu),1.0,1.0);
-        Z[mu][ijk.sym]->contract(V_jk_c_m->get_block_matrix(ik_abs),T2_I_AB_J->get_block_matrix(j_abs,mu),1.0,1.0);
+        Z[mu][ijk_sym]->contract(V_jk_c_m->get_block_matrix(ij_abs),T2_I_AB_J->get_block_matrix(k_abs,mu),-1.0,1.0);
+        Z[mu][ijk_sym]->contract(V_jk_c_m->get_block_matrix(kj_abs),T2_I_AB_J->get_block_matrix(i_abs,mu),1.0,1.0);
+        Z[mu][ijk_sym]->contract(V_jk_c_m->get_block_matrix(ik_abs),T2_I_AB_J->get_block_matrix(j_abs,mu),1.0,1.0);
 
-        W[mu][ijk.sym]->cyclical_permutation_1_2(Z[mu][ijk.sym],vvv,v,vv);
+        W[mu][ijk_sym]->cyclical_permutation_1_2(Z[mu][ijk_sym],vvv,v,vv);
       }
     }
 
     for(int mu = 0; mu < nrefs; ++mu){
-      T[mu][ijk.sym]->zero();
+      T[mu][ijk_sym]->zero();
     }
 
     // Compute T (d^2 N^6)
@@ -273,12 +280,12 @@ void MRCCSD_T::compute_OOO_triples()
           double D_IJK = e_OO[mu][i_abs] + e_OO[mu][j_abs] + e_OO[mu][k_abs];
 
           // Add W
-          Z[mu][ijk.sym]->add(W[mu][ijk.sym],0.0,1.0);
+          Z[mu][ijk_sym]->add(W[mu][ijk_sym],0.0,1.0);
 
           // Add the coupling terms
           for(int nu = 0; nu < nrefs; ++nu){
             if(nu != mu){
-              Z[mu][ijk.sym]->add(T[nu][ijk.sym],1.0,Mk_factor[mu][nu]);
+              Z[mu][ijk_sym]->add(T[nu][ijk_sym],1.0,Mk_factor[mu][nu]);
             }
           }
 
@@ -286,29 +293,29 @@ void MRCCSD_T::compute_OOO_triples()
           vector<double>& e_VV_mu  = e_VV[mu];
           vector<bool>& is_bvir_mu = is_bvir[mu];
 
-          abc.reset();
-          abc.set_irrep(ijk.sym);
-          // Loop over abc
-          while(++abc){
-            size_t a_abs = v->get_tuple_abs_index(abc.ind_abs[0]);
-            size_t b_abs = v->get_tuple_abs_index(abc.ind_abs[1]);
-            size_t c_abs = v->get_tuple_abs_index(abc.ind_abs[2]);
+          CCIndexIterator  abc("[vvv]",ijk_sym);
+//          abc.reset();
+//          abc.set_irrep();          // Loop over abc
+          for(abc.first(); !abc.end(); abc.next()){
+            size_t a_abs = v->get_tuple_abs_index(abc.ind_abs<0>());
+            size_t b_abs = v->get_tuple_abs_index(abc.ind_abs<1>());
+            size_t c_abs = v->get_tuple_abs_index(abc.ind_abs<2>());
             if(is_bvir_mu[a_abs] && is_bvir_mu[b_abs] && is_bvir_mu[c_abs]){
-              int     a_sym = v->get_tuple_irrep(abc.ind_abs[0]);
-              int    bc_sym = vv->get_tuple_irrep(abc.ind_abs[1],abc.ind_abs[2]);
-              size_t  a_rel = v->get_tuple_rel_index(abc.ind_abs[0]);
-              size_t bc_rel = vv->get_tuple_rel_index(abc.ind_abs[1],abc.ind_abs[2]);
+              int     a_sym = v->get_tuple_irrep(abc.ind_abs<0>());
+              int    bc_sym = vv->get_tuple_irrep(abc.ind_abs<1>(),abc.ind_abs<2>());
+              size_t  a_rel = v->get_tuple_rel_index(abc.ind_abs<0>());
+              size_t bc_rel = vv->get_tuple_rel_index(abc.ind_abs<1>(),abc.ind_abs<2>());
 
               double D_ABC = e_VV_mu[a_abs] + e_VV_mu[b_abs] + e_VV_mu[c_abs];
 
               // Update T
-              T[mu][ijk.sym]->set(a_sym,a_rel,bc_rel,Z[mu][ijk.sym]->get(a_sym,a_rel,bc_rel)/(Mk_shift[mu] + D_IJK - D_ABC));
+              T[mu][ijk_sym]->set(a_sym,a_rel,bc_rel,Z[mu][ijk_sym]->get(a_sym,a_rel,bc_rel)/(Mk_shift[mu] + D_IJK - D_ABC));
 
               // Compute the energy
-              e4T[mu] += W[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) / 36.0;
+              e4T[mu] += W[mu][ijk_sym]->get(a_sym,a_rel,bc_rel) * T[mu][ijk_sym]->get(a_sym,a_rel,bc_rel) / 36.0;
               if((i_sym == a_sym) & (jk_sym == bc_sym)){
-                e4ST[mu] += 0.25 * T1_OV_mu[i_sym][i_rel][a_rel] * V_oovv[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
-                e4DT[mu] += 0.25 * F_OV_mu[i_sym][i_rel][a_rel] * T2_OOVV_mu[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
+                e4ST[mu] += 0.25 * T1_OV_mu[i_sym][i_rel][a_rel] * V_oovv[jk_sym][jk_rel][bc_rel] * T[mu][ijk_sym]->get(a_sym,a_rel,bc_rel);
+                e4DT[mu] += 0.25 * F_OV_mu[i_sym][i_rel][a_rel] * T2_OOVV_mu[jk_sym][jk_rel][bc_rel] * T[mu][ijk_sym]->get(a_sym,a_rel,bc_rel);
               }
             }
           }  // End loop over abc
@@ -319,7 +326,7 @@ void MRCCSD_T::compute_OOO_triples()
 
     // Compute the contributions to the off-diagonal elements of Heff
     for(int mu = 0; mu < nrefs; ++mu){
-      compute_OOO_contribution_to_Heff(i_abs,j_abs,k_abs,mu,T[mu][ijk.sym]);
+      compute_OOO_contribution_to_Heff(i_abs,j_abs,k_abs,mu,T[mu][ijk_sym]);
     }
 
     // Add the energy contributions from ijk
@@ -331,9 +338,9 @@ void MRCCSD_T::compute_OOO_triples()
   }
 
   for(int mu = 0; mu < nrefs; ++mu){
-    fprintf(outfile,"\n  E_T[4]  (bbb) = %20.15lf (%d)",E4T_OOO[mu],mu);
-    fprintf(outfile,"\n  E_ST[4] (bbb) = %20.15lf (%d)",E4ST_OOO[mu],mu);
-    fprintf(outfile,"\n  E_DT[4] (bbb) = %20.15lf (%d)",E4DT_OOO[mu],mu);
+//    fprintf(outfile,"\n  E_T[4]  (bbb) = %20.15lf (%d)",E4T_OOO[mu],mu);
+//    fprintf(outfile,"\n  E_ST[4] (bbb) = %20.15lf (%d)",E4ST_OOO[mu],mu);
+//    fprintf(outfile,"\n  E_DT[4] (bbb) = %20.15lf (%d)",E4DT_OOO[mu],mu);
     E4_OOO[mu] = E4T_OOO[mu] + E4ST_OOO[mu] + E4DT_OOO[mu];
   }
 }
@@ -344,54 +351,56 @@ void MRCCSD_T::compute_ooO_triples()
   CCIndexIterator  ijk("[ooo]");
   CCIndexIterator  abc("[vvv]");
 
-  while(++ijk){
-    int i_sym     = o->get_tuple_irrep(ijk.ind_abs[0]);
-    int k_sym     = o->get_tuple_irrep(ijk.ind_abs[2]);
+  for(ijk.first(); !ijk.end(); ijk.next()){
+    int i_sym     = o->get_tuple_irrep(ijk.ind_abs<0>());
+    int k_sym     = o->get_tuple_irrep(ijk.ind_abs<2>());
 
-    size_t i_abs = o->get_tuple_abs_index(ijk.ind_abs[0]);
-    size_t j_abs = o->get_tuple_abs_index(ijk.ind_abs[1]);
-    size_t k_abs = o->get_tuple_abs_index(ijk.ind_abs[2]);
+    size_t i_abs = o->get_tuple_abs_index(ijk.ind_abs<0>());
+    size_t j_abs = o->get_tuple_abs_index(ijk.ind_abs<1>());
+    size_t k_abs = o->get_tuple_abs_index(ijk.ind_abs<2>());
 
-    size_t i_rel = o->get_tuple_rel_index(ijk.ind_abs[0]);
-    size_t k_rel = o->get_tuple_rel_index(ijk.ind_abs[2]);
+    size_t i_rel = o->get_tuple_rel_index(ijk.ind_abs<0>());
+    size_t k_rel = o->get_tuple_rel_index(ijk.ind_abs<2>());
 
-    size_t ij_abs = oo->get_tuple_abs_index(ijk.ind_abs[0],ijk.ind_abs[1]);
-    size_t ik_abs = oo->get_tuple_abs_index(ijk.ind_abs[0],ijk.ind_abs[2]);
-    size_t jk_abs = oo->get_tuple_abs_index(ijk.ind_abs[1],ijk.ind_abs[2]);
+    size_t ij_abs = oo->get_tuple_abs_index(ijk.ind_abs<0>(),ijk.ind_abs<1>());
+    size_t ik_abs = oo->get_tuple_abs_index(ijk.ind_abs<0>(),ijk.ind_abs<2>());
+    size_t jk_abs = oo->get_tuple_abs_index(ijk.ind_abs<1>(),ijk.ind_abs<2>());
 
-    int    ij_sym = oo->get_tuple_irrep(ijk.ind_abs[0],ijk.ind_abs[1]);
-    size_t ij_rel = oo->get_tuple_rel_index(ijk.ind_abs[0],ijk.ind_abs[1]);
-    int    jk_sym = oo->get_tuple_irrep(ijk.ind_abs[1],ijk.ind_abs[2]);
-    size_t jk_rel = oo->get_tuple_rel_index(ijk.ind_abs[1],ijk.ind_abs[2]);
+    int    ij_sym = oo->get_tuple_irrep(ijk.ind_abs<0>(),ijk.ind_abs<1>());
+    size_t ij_rel = oo->get_tuple_rel_index(ijk.ind_abs<0>(),ijk.ind_abs<1>());
+    int    jk_sym = oo->get_tuple_irrep(ijk.ind_abs<1>(),ijk.ind_abs<2>());
+    size_t jk_rel = oo->get_tuple_rel_index(ijk.ind_abs<1>(),ijk.ind_abs<2>());
+
+    int ijk_sym = ijk.sym();
 
     // Compute W for all unique references (d N^7)
     for(int mu = 0; mu < nrefs; ++mu){
       // Check if ijk belong to the occupied space of mu
       if(is_aocc[mu][i_abs] && is_aocc[mu][j_abs] && is_bocc[mu][k_abs]){
-        Z[mu][ijk.sym]->contract(T2_ij_a_b->get_block_matrix(ij_abs,mu),V_K_bC_e->get_block_matrix(k_abs),1.0,0.0);
+        Z[mu][ijk_sym]->contract(T2_ij_a_b->get_block_matrix(ij_abs,mu),V_K_bC_e->get_block_matrix(k_abs),1.0,0.0);
 
-        Z[mu][ijk.sym]->contract(T2_iJ_a_B->get_block_matrix(jk_abs,mu),V_k_bC_E->get_block_matrix(i_abs),-1.0,1.0);
-        Z[mu][ijk.sym]->contract(T2_iJ_a_B->get_block_matrix(ik_abs,mu),V_k_bC_E->get_block_matrix(j_abs),1.0,1.0);
+        Z[mu][ijk_sym]->contract(T2_iJ_a_B->get_block_matrix(jk_abs,mu),V_k_bC_E->get_block_matrix(i_abs),-1.0,1.0);
+        Z[mu][ijk_sym]->contract(T2_iJ_a_B->get_block_matrix(ik_abs,mu),V_k_bC_E->get_block_matrix(j_abs),1.0,1.0);
 
-        Z[mu][ijk.sym]->contract(V_jk_c_m->get_block_matrix(ij_abs),T2_J_aB_i->get_block_matrix(k_abs,mu),1.0,1.0);
+        Z[mu][ijk_sym]->contract(V_jk_c_m->get_block_matrix(ij_abs),T2_J_aB_i->get_block_matrix(k_abs,mu),1.0,1.0);
 
-        Z[mu][ijk.sym]->contract(V_jK_c_M->get_block_matrix(jk_abs),T2_i_aB_J->get_block_matrix(i_abs,mu),1.0,1.0);
-        Z[mu][ijk.sym]->contract(V_jK_c_M->get_block_matrix(ik_abs),T2_i_aB_J->get_block_matrix(j_abs,mu),-1.0,1.0);
+        Z[mu][ijk_sym]->contract(V_jK_c_M->get_block_matrix(jk_abs),T2_i_aB_J->get_block_matrix(i_abs,mu),1.0,1.0);
+        Z[mu][ijk_sym]->contract(V_jK_c_M->get_block_matrix(ik_abs),T2_i_aB_J->get_block_matrix(j_abs,mu),-1.0,1.0);
 
-        W[mu][ijk.sym]->a_b_permutation_1_2(Z[mu][ijk.sym],vvv,v,vv);
+        W[mu][ijk_sym]->a_b_permutation_1_2(Z[mu][ijk_sym],vvv,v,vv);
 
-        Z[mu][ijk.sym]->contract(T2_iJ_B_a->get_block_matrix(ik_abs,mu),V_k_bc_e->get_block_matrix(j_abs),1.0,0.0);
-        Z[mu][ijk.sym]->contract(T2_iJ_B_a->get_block_matrix(jk_abs,mu),V_k_bc_e->get_block_matrix(i_abs),-1.0,1.0);
+        Z[mu][ijk_sym]->contract(T2_iJ_B_a->get_block_matrix(ik_abs,mu),V_k_bc_e->get_block_matrix(j_abs),1.0,0.0);
+        Z[mu][ijk_sym]->contract(T2_iJ_B_a->get_block_matrix(jk_abs,mu),V_k_bc_e->get_block_matrix(i_abs),-1.0,1.0);
 
-        Z[mu][ijk.sym]->contract(V_jK_C_m->get_block_matrix(jk_abs),T2_i_ab_j->get_block_matrix(i_abs,mu),-1.0,1.0);
-        Z[mu][ijk.sym]->contract(V_jK_C_m->get_block_matrix(ik_abs),T2_i_ab_j->get_block_matrix(j_abs,mu),1.0,1.0);
+        Z[mu][ijk_sym]->contract(V_jK_C_m->get_block_matrix(jk_abs),T2_i_ab_j->get_block_matrix(i_abs,mu),-1.0,1.0);
+        Z[mu][ijk_sym]->contract(V_jK_C_m->get_block_matrix(ik_abs),T2_i_ab_j->get_block_matrix(j_abs,mu),1.0,1.0);
 
-        W[mu][ijk.sym]->add_c_ab_permutation_1_2(Z[mu][ijk.sym],vvv,v,vv);
+        W[mu][ijk_sym]->add_c_ab_permutation_1_2(Z[mu][ijk_sym],vvv,v,vv);
       }
     }
 
     for(int mu = 0; mu < nrefs; ++mu){
-      T[mu][ijk.sym]->zero();
+      T[mu][ijk_sym]->zero();
     }
 
     // Compute T (d^2 N^6)
@@ -418,12 +427,12 @@ void MRCCSD_T::compute_ooO_triples()
           double D_ijK = e_oo[mu][i_abs] + e_oo[mu][j_abs] + e_OO[mu][k_abs];
 
           // Add W
-          Z[mu][ijk.sym]->add(W[mu][ijk.sym],0.0,1.0);
+          Z[mu][ijk_sym]->add(W[mu][ijk_sym],0.0,1.0);
 
           // Add the coupling terms
           for(int nu = 0; nu < nrefs; ++nu){
             if(nu != mu){
-              Z[mu][ijk.sym]->add(T[nu][ijk.sym],1.0,Mk_factor[mu][nu]);
+              Z[mu][ijk_sym]->add(T[nu][ijk_sym],1.0,Mk_factor[mu][nu]);
             }
           }
 
@@ -433,37 +442,38 @@ void MRCCSD_T::compute_ooO_triples()
           vector<bool>& is_avir_mu = is_avir[mu];
           vector<bool>& is_bvir_mu = is_bvir[mu];
 
-          abc.reset();
-          abc.set_irrep(ijk.sym);
+          CCIndexIterator  abc("[vvv]",ijk_sym);
+//          abc.reset();
+//          abc.set_irrep();
           // Loop over abc
-          while(++abc){
-            size_t a_abs = v->get_tuple_abs_index(abc.ind_abs[0]);
-            size_t b_abs = v->get_tuple_abs_index(abc.ind_abs[1]);
-            size_t c_abs = v->get_tuple_abs_index(abc.ind_abs[2]);
+          for(abc.first(); !abc.end(); abc.next()){
+            size_t a_abs = v->get_tuple_abs_index(abc.ind_abs<0>());
+            size_t b_abs = v->get_tuple_abs_index(abc.ind_abs<1>());
+            size_t c_abs = v->get_tuple_abs_index(abc.ind_abs<2>());
             if(is_avir_mu[a_abs] && is_avir_mu[b_abs] && is_bvir_mu[c_abs]){
-              int     a_sym = v->get_tuple_irrep(abc.ind_abs[0]);
-              int     c_sym = v->get_tuple_irrep(abc.ind_abs[2]);
-              int    ab_sym = vv->get_tuple_irrep(abc.ind_abs[0],abc.ind_abs[1]);
-              int    bc_sym = vv->get_tuple_irrep(abc.ind_abs[1],abc.ind_abs[2]);
-              size_t  a_rel = v->get_tuple_rel_index(abc.ind_abs[0]);
-              size_t  c_rel = v->get_tuple_rel_index(abc.ind_abs[2]);
-              size_t ab_rel = vv->get_tuple_rel_index(abc.ind_abs[0],abc.ind_abs[1]);
-              size_t bc_rel = vv->get_tuple_rel_index(abc.ind_abs[1],abc.ind_abs[2]);
+              int     a_sym = v->get_tuple_irrep(abc.ind_abs<0>());
+              int     c_sym = v->get_tuple_irrep(abc.ind_abs<2>());
+              int    ab_sym = vv->get_tuple_irrep(abc.ind_abs<0>(),abc.ind_abs<1>());
+              int    bc_sym = vv->get_tuple_irrep(abc.ind_abs<1>(),abc.ind_abs<2>());
+              size_t  a_rel = v->get_tuple_rel_index(abc.ind_abs<0>());
+              size_t  c_rel = v->get_tuple_rel_index(abc.ind_abs<2>());
+              size_t ab_rel = vv->get_tuple_rel_index(abc.ind_abs<0>(),abc.ind_abs<1>());
+              size_t bc_rel = vv->get_tuple_rel_index(abc.ind_abs<1>(),abc.ind_abs<2>());
 
               double D_abC = e_vv_mu[a_abs] + e_vv_mu[b_abs] + e_VV_mu[c_abs];
 
               // Update T
-              T[mu][ijk.sym]->set(a_sym,a_rel,bc_rel,Z[mu][ijk.sym]->get(a_sym,a_rel,bc_rel)/(Mk_shift[mu] + D_ijK - D_abC));
+              T[mu][ijk_sym]->set(a_sym,a_rel,bc_rel,Z[mu][ijk_sym]->get(a_sym,a_rel,bc_rel)/(Mk_shift[mu] + D_ijK - D_abC));
 
               // Compute the energy
-              e4T[mu] += W[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) / 4.0;
+              e4T[mu] += W[mu][ijk_sym]->get(a_sym,a_rel,bc_rel) * T[mu][ijk_sym]->get(a_sym,a_rel,bc_rel) / 4.0;
               if((i_sym == a_sym) & (jk_sym == bc_sym)){
-                e4ST[mu] += T1_ov_mu[i_sym][i_rel][a_rel] *  V_oOvV[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
-                e4DT[mu] +=  F_ov_mu[i_sym][i_rel][a_rel] * T2_oOvV_mu[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
+                e4ST[mu] += T1_ov_mu[i_sym][i_rel][a_rel] *  V_oOvV[jk_sym][jk_rel][bc_rel] * T[mu][ijk_sym]->get(a_sym,a_rel,bc_rel);
+                e4DT[mu] +=  F_ov_mu[i_sym][i_rel][a_rel] * T2_oOvV_mu[jk_sym][jk_rel][bc_rel] * T[mu][ijk_sym]->get(a_sym,a_rel,bc_rel);
               }
               if((k_sym == c_sym) & (ij_sym == ab_sym)){
-                e4ST[mu] += 0.25 * T1_OV_mu[k_sym][k_rel][c_rel] *  V_oovv[ij_sym][ij_rel][ab_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
-                e4DT[mu] += 0.25 *  F_OV_mu[k_sym][k_rel][c_rel] * T2_oovv_mu[ij_sym][ij_rel][ab_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
+                e4ST[mu] += 0.25 * T1_OV_mu[k_sym][k_rel][c_rel] *  V_oovv[ij_sym][ij_rel][ab_rel] * T[mu][ijk_sym]->get(a_sym,a_rel,bc_rel);
+                e4DT[mu] += 0.25 *  F_OV_mu[k_sym][k_rel][c_rel] * T2_oovv_mu[ij_sym][ij_rel][ab_rel] * T[mu][ijk_sym]->get(a_sym,a_rel,bc_rel);
               }
             }
           }  // End loop over abc
@@ -474,7 +484,7 @@ void MRCCSD_T::compute_ooO_triples()
 
     // Compute the contributions to the off-diagonal elements of Heff
     for(int mu = 0; mu < nrefs; ++mu){
-      compute_ooO_contribution_to_Heff(i_abs,j_abs,k_abs,mu,T[mu][ijk.sym]);
+      compute_ooO_contribution_to_Heff(i_abs,j_abs,k_abs,mu,T[mu][ijk_sym]);
     }
 
     // Add the energy contributions from ijk
@@ -483,12 +493,13 @@ void MRCCSD_T::compute_ooO_triples()
       E4ST_ooO[mu] += e4ST[mu];
       E4DT_ooO[mu] += e4DT[mu];
     }
+
   } // End loop over ijk
 
   for(int mu = 0; mu < nrefs; ++mu){
-//    fprintf(outfile,"\n  E_T[4]  (aab) = %20.15lf (%d)",E4T_ooO[mu],mu);
-//    fprintf(outfile,"\n  E_ST[4] (aab) = %20.15lf (%d)",E4ST_ooO[mu],mu);
-//    fprintf(outfile,"\n  E_DT[4] (aab) = %20.15lf (%d)",E4DT_ooO[mu],mu);
+    fprintf(outfile,"\n  E_T[4]  (aab) = %20.15lf (%d)",E4T_ooO[mu],mu);
+    fprintf(outfile,"\n  E_ST[4] (aab) = %20.15lf (%d)",E4ST_ooO[mu],mu);
+    fprintf(outfile,"\n  E_DT[4] (aab) = %20.15lf (%d)",E4DT_ooO[mu],mu);
     E4_ooO[mu] = E4T_ooO[mu] + E4ST_ooO[mu] + E4DT_ooO[mu];
   }
 }
@@ -498,52 +509,54 @@ void MRCCSD_T::compute_oOO_triples()
   CCIndexIterator  ijk("[ooo]");
   CCIndexIterator  abc("[vvv]");
 
-  while(++ijk){
-    int i_sym     = o->get_tuple_irrep(ijk.ind_abs[0]);
-    int k_sym     = o->get_tuple_irrep(ijk.ind_abs[2]);
+  for(ijk.first(); !ijk.end(); ijk.next()){
+    int i_sym     = o->get_tuple_irrep(ijk.ind_abs<0>());
+    int k_sym     = o->get_tuple_irrep(ijk.ind_abs<2>());
 
-    size_t i_abs = o->get_tuple_abs_index(ijk.ind_abs[0]);
-    size_t j_abs = o->get_tuple_abs_index(ijk.ind_abs[1]);
-    size_t k_abs = o->get_tuple_abs_index(ijk.ind_abs[2]);
+    size_t i_abs = o->get_tuple_abs_index(ijk.ind_abs<0>());
+    size_t j_abs = o->get_tuple_abs_index(ijk.ind_abs<1>());
+    size_t k_abs = o->get_tuple_abs_index(ijk.ind_abs<2>());
 
-    size_t i_rel = o->get_tuple_rel_index(ijk.ind_abs[0]);
-    size_t k_rel = o->get_tuple_rel_index(ijk.ind_abs[2]);
+    size_t i_rel = o->get_tuple_rel_index(ijk.ind_abs<0>());
+    size_t k_rel = o->get_tuple_rel_index(ijk.ind_abs<2>());
 
-    size_t ij_abs = oo->get_tuple_abs_index(ijk.ind_abs[0],ijk.ind_abs[1]);
-    size_t ik_abs = oo->get_tuple_abs_index(ijk.ind_abs[0],ijk.ind_abs[2]);
-    size_t jk_abs = oo->get_tuple_abs_index(ijk.ind_abs[1],ijk.ind_abs[2]);
+    size_t ij_abs = oo->get_tuple_abs_index(ijk.ind_abs<0>(),ijk.ind_abs<1>());
+    size_t ik_abs = oo->get_tuple_abs_index(ijk.ind_abs<0>(),ijk.ind_abs<2>());
+    size_t jk_abs = oo->get_tuple_abs_index(ijk.ind_abs<1>(),ijk.ind_abs<2>());
 
-    int    ij_sym = oo->get_tuple_irrep(ijk.ind_abs[0],ijk.ind_abs[1]);
-    size_t ij_rel = oo->get_tuple_rel_index(ijk.ind_abs[0],ijk.ind_abs[1]);
-    int    jk_sym = oo->get_tuple_irrep(ijk.ind_abs[1],ijk.ind_abs[2]);
-    size_t jk_rel = oo->get_tuple_rel_index(ijk.ind_abs[1],ijk.ind_abs[2]);
+    int    ij_sym = oo->get_tuple_irrep(ijk.ind_abs<0>(),ijk.ind_abs<1>());
+    size_t ij_rel = oo->get_tuple_rel_index(ijk.ind_abs<0>(),ijk.ind_abs<1>());
+    int    jk_sym = oo->get_tuple_irrep(ijk.ind_abs<1>(),ijk.ind_abs<2>());
+    size_t jk_rel = oo->get_tuple_rel_index(ijk.ind_abs<1>(),ijk.ind_abs<2>());
+
+    int ijk_sym = ijk.sym();
 
     // Compute W for all unique references (d N^7)
     for(int mu = 0; mu < nrefs; ++mu){
       // Check if ijk belong to the occupied space of mu
       if(is_aocc[mu][i_abs] && is_bocc[mu][j_abs] && is_bocc[mu][k_abs]){
-        W[mu][ijk.sym]->contract(T2_iJ_a_B->get_block_matrix(ij_abs,mu),V_k_bc_e->get_block_matrix(k_abs),1.0,0.0);
-        W[mu][ijk.sym]->contract(T2_iJ_a_B->get_block_matrix(ik_abs,mu),V_k_bc_e->get_block_matrix(j_abs),-1.0,1.0);
+        W[mu][ijk_sym]->contract(T2_iJ_a_B->get_block_matrix(ij_abs,mu),V_k_bc_e->get_block_matrix(k_abs),1.0,0.0);
+        W[mu][ijk_sym]->contract(T2_iJ_a_B->get_block_matrix(ik_abs,mu),V_k_bc_e->get_block_matrix(j_abs),-1.0,1.0);
 
-        W[mu][ijk.sym]->contract(V_jK_c_M->get_block_matrix(ij_abs),T2_I_AB_J->get_block_matrix(k_abs,mu),1.0,1.0);
-        W[mu][ijk.sym]->contract(V_jK_c_M->get_block_matrix(ik_abs),T2_I_AB_J->get_block_matrix(j_abs,mu),-1.0,1.0);
+        W[mu][ijk_sym]->contract(V_jK_c_M->get_block_matrix(ij_abs),T2_I_AB_J->get_block_matrix(k_abs,mu),1.0,1.0);
+        W[mu][ijk_sym]->contract(V_jK_c_M->get_block_matrix(ik_abs),T2_I_AB_J->get_block_matrix(j_abs,mu),-1.0,1.0);
 
-        Z[mu][ijk.sym]->contract(T2_IJ_A_B->get_block_matrix(jk_abs,mu),V_k_bC_E->get_block_matrix(i_abs),1.0,0.0);
+        Z[mu][ijk_sym]->contract(T2_IJ_A_B->get_block_matrix(jk_abs,mu),V_k_bC_E->get_block_matrix(i_abs),1.0,0.0);
 
-        Z[mu][ijk.sym]->contract(T2_iJ_B_a->get_block_matrix(ij_abs,mu),V_K_bC_e->get_block_matrix(k_abs),1.0,1.0);
-        Z[mu][ijk.sym]->contract(T2_iJ_B_a->get_block_matrix(ik_abs,mu),V_K_bC_e->get_block_matrix(j_abs),-1.0,1.0);
+        Z[mu][ijk_sym]->contract(T2_iJ_B_a->get_block_matrix(ij_abs,mu),V_K_bC_e->get_block_matrix(k_abs),1.0,1.0);
+        Z[mu][ijk_sym]->contract(T2_iJ_B_a->get_block_matrix(ik_abs,mu),V_K_bC_e->get_block_matrix(j_abs),-1.0,1.0);
 
-        Z[mu][ijk.sym]->contract(V_jk_c_m->get_block_matrix(jk_abs),T2_i_aB_J->get_block_matrix(i_abs,mu),1.0,1.0);
+        Z[mu][ijk_sym]->contract(V_jk_c_m->get_block_matrix(jk_abs),T2_i_aB_J->get_block_matrix(i_abs,mu),1.0,1.0);
 
-        Z[mu][ijk.sym]->contract(V_jK_C_m->get_block_matrix(ij_abs),T2_J_aB_i->get_block_matrix(k_abs,mu),-1.0,1.0);
-        Z[mu][ijk.sym]->contract(V_jK_C_m->get_block_matrix(ik_abs),T2_J_aB_i->get_block_matrix(j_abs,mu),1.0,1.0);
+        Z[mu][ijk_sym]->contract(V_jK_C_m->get_block_matrix(ij_abs),T2_J_aB_i->get_block_matrix(k_abs,mu),-1.0,1.0);
+        Z[mu][ijk_sym]->contract(V_jK_C_m->get_block_matrix(ik_abs),T2_J_aB_i->get_block_matrix(j_abs,mu),1.0,1.0);
 
-        W[mu][ijk.sym]->add_permutation_1_2(1.0,Z[mu][ijk.sym],vvv,v,vv,0.0,0.0,1.0,0.0,-1.0,0.0);
+        W[mu][ijk_sym]->add_permutation_1_2(1.0,Z[mu][ijk_sym],vvv,v,vv,0.0,0.0,1.0,0.0,-1.0,0.0);
       }
     }
 
     for(int mu = 0; mu < nrefs; ++mu){
-      T[mu][ijk.sym]->zero();
+      T[mu][ijk_sym]->zero();
     }
 
     // Compute T (d^2 N^6)
@@ -571,12 +584,12 @@ void MRCCSD_T::compute_oOO_triples()
           double D_iJK = e_oo[mu][i_abs] + e_OO[mu][j_abs] + e_OO[mu][k_abs];
 
           // Add W
-          Z[mu][ijk.sym]->add(W[mu][ijk.sym],0.0,1.0);
+          Z[mu][ijk_sym]->add(W[mu][ijk_sym],0.0,1.0);
 
           // Add the coupling terms
           for(int nu = 0; nu < nrefs; ++nu){
             if(nu != mu){
-              Z[mu][ijk.sym]->add(T[nu][ijk.sym],1.0,Mk_factor[mu][nu]);
+              Z[mu][ijk_sym]->add(T[nu][ijk_sym],1.0,Mk_factor[mu][nu]);
             }
           }
 
@@ -586,38 +599,39 @@ void MRCCSD_T::compute_oOO_triples()
           vector<bool>& is_avir_mu = is_avir[mu];
           vector<bool>& is_bvir_mu = is_bvir[mu];
 
-          abc.reset();
-          abc.set_irrep(ijk.sym);
+          CCIndexIterator  abc("[vvv]",ijk_sym);
+//          abc.reset();
+//          abc.set_irrep();
           // Loop over abc
-          while(++abc){
-            size_t a_abs = v->get_tuple_abs_index(abc.ind_abs[0]);
-            size_t b_abs = v->get_tuple_abs_index(abc.ind_abs[1]);
-            size_t c_abs = v->get_tuple_abs_index(abc.ind_abs[2]);
+          for(abc.first(); !abc.end(); abc.next()){
+            size_t a_abs = v->get_tuple_abs_index(abc.ind_abs<0>());
+            size_t b_abs = v->get_tuple_abs_index(abc.ind_abs<1>());
+            size_t c_abs = v->get_tuple_abs_index(abc.ind_abs<2>());
             if(is_avir_mu[a_abs] && is_bvir_mu[b_abs] && is_bvir_mu[c_abs]){
-              int     a_sym = v->get_tuple_irrep(abc.ind_abs[0]);
-              int     c_sym = v->get_tuple_irrep(abc.ind_abs[2]);
-              int    ab_sym = vv->get_tuple_irrep(abc.ind_abs[0],abc.ind_abs[1]);
-              int    bc_sym = vv->get_tuple_irrep(abc.ind_abs[1],abc.ind_abs[2]);
+              int     a_sym = v->get_tuple_irrep(abc.ind_abs<0>());
+              int     c_sym = v->get_tuple_irrep(abc.ind_abs<2>());
+              int    ab_sym = vv->get_tuple_irrep(abc.ind_abs<0>(),abc.ind_abs<1>());
+              int    bc_sym = vv->get_tuple_irrep(abc.ind_abs<1>(),abc.ind_abs<2>());
 
-              size_t  a_rel = v->get_tuple_rel_index(abc.ind_abs[0]);
-              size_t  c_rel = v->get_tuple_rel_index(abc.ind_abs[2]);
-              size_t ab_rel = vv->get_tuple_rel_index(abc.ind_abs[0],abc.ind_abs[1]);
-              size_t bc_rel = vv->get_tuple_rel_index(abc.ind_abs[1],abc.ind_abs[2]);
+              size_t  a_rel = v->get_tuple_rel_index(abc.ind_abs<0>());
+              size_t  c_rel = v->get_tuple_rel_index(abc.ind_abs<2>());
+              size_t ab_rel = vv->get_tuple_rel_index(abc.ind_abs<0>(),abc.ind_abs<1>());
+              size_t bc_rel = vv->get_tuple_rel_index(abc.ind_abs<1>(),abc.ind_abs<2>());
 
               double D_aBC = e_vv_mu[a_abs] + e_VV_mu[b_abs] + e_VV_mu[c_abs];
 
               // Update T
-              T[mu][ijk.sym]->set(a_sym,a_rel,bc_rel,Z[mu][ijk.sym]->get(a_sym,a_rel,bc_rel)/(Mk_shift[mu] + D_iJK - D_aBC));
+              T[mu][ijk_sym]->set(a_sym,a_rel,bc_rel,Z[mu][ijk_sym]->get(a_sym,a_rel,bc_rel)/(Mk_shift[mu] + D_iJK - D_aBC));
 
               // Compute the energy
-              e4T[mu] += W[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel) / 4.0;
+              e4T[mu] += W[mu][ijk_sym]->get(a_sym,a_rel,bc_rel) * T[mu][ijk_sym]->get(a_sym,a_rel,bc_rel) / 4.0;
               if((i_sym == a_sym) & (jk_sym == bc_sym)){
-                e4ST[mu] += 0.25 * T1_ov_mu[i_sym][i_rel][a_rel] *  V_oovv[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
-                e4DT[mu] += 0.25 *  F_ov_mu[i_sym][i_rel][a_rel] * T2_OOVV_mu[jk_sym][jk_rel][bc_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
+                e4ST[mu] += 0.25 * T1_ov_mu[i_sym][i_rel][a_rel] *  V_oovv[jk_sym][jk_rel][bc_rel] * T[mu][ijk_sym]->get(a_sym,a_rel,bc_rel);
+                e4DT[mu] += 0.25 *  F_ov_mu[i_sym][i_rel][a_rel] * T2_OOVV_mu[jk_sym][jk_rel][bc_rel] * T[mu][ijk_sym]->get(a_sym,a_rel,bc_rel);
               }
               if((k_sym == c_sym) & (ij_sym == ab_sym)){
-                e4ST[mu] += T1_OV_mu[k_sym][k_rel][c_rel] *  V_oOvV[ij_sym][ij_rel][ab_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
-                e4DT[mu] +=  F_OV_mu[k_sym][k_rel][c_rel] * T2_oOvV_mu[ij_sym][ij_rel][ab_rel] * T[mu][ijk.sym]->get(a_sym,a_rel,bc_rel);
+                e4ST[mu] += T1_OV_mu[k_sym][k_rel][c_rel] *  V_oOvV[ij_sym][ij_rel][ab_rel] * T[mu][ijk_sym]->get(a_sym,a_rel,bc_rel);
+                e4DT[mu] +=  F_OV_mu[k_sym][k_rel][c_rel] * T2_oOvV_mu[ij_sym][ij_rel][ab_rel] * T[mu][ijk_sym]->get(a_sym,a_rel,bc_rel);
               }
             }
           }  // End loop over abc
@@ -628,7 +642,7 @@ void MRCCSD_T::compute_oOO_triples()
 
     // Compute the contributions to the off-diagonal elements of Heff
     for(int mu = 0; mu < nrefs; ++mu){
-      compute_oOO_contribution_to_Heff(i_abs,j_abs,k_abs,mu,T[mu][ijk.sym]);
+      compute_oOO_contribution_to_Heff(i_abs,j_abs,k_abs,mu,T[mu][ijk_sym]);
     }
 
     // Add the energy contributions from ijk

@@ -12,6 +12,14 @@ namespace psi{ namespace psimrcc{
 
 void MRCCSD_T::startup()
 {
+  if(options_get_str("TRIPLES_ALGORITHM") == "SPIN_ADAPTED"){
+    triples_algorithm = SpinAdaptedTriples;
+  }else if(options_get_str("TRIPLES_ALGORITHM") == "RESTRICTED"){
+    triples_algorithm = RestrictedTriples;
+  }else{
+    triples_algorithm = UnrestrictedTriples;
+  }
+
   nirreps   = moinfo->get_nirreps();
   nrefs     = moinfo->get_ref_size(AllRefs);
   threshold = 0.1 * pow(10.0,-static_cast<double>(options_get_int("CONVERGENCE")));
@@ -26,6 +34,7 @@ void MRCCSD_T::startup()
   vv  = blas->get_index("[vv]");
   vvv = blas->get_index("[vvv]");
   ovv = blas->get_index("[ovv]");
+  ooo = blas->get_index("[ooo]");
 
   T2_ij_a_b = new IndexMatrix();
   T2_iJ_a_B = new IndexMatrix();
@@ -59,9 +68,9 @@ void MRCCSD_T::startup()
   form_V_k_bc_e(V_k_bC_E,0.0,1.0);  // = <bC|kE> = <Ek|Cb>
   form_V_k_bc_e(V_K_bC_e,1.0,0.0);  // = <bC|eK> = <eK|bC>
 
-  form_V_jk_c_m(V_jk_c_m,1.0,-1.0);
-  form_V_jk_c_m(V_jK_c_M,0.0,1.0);
-  form_V_jk_c_m(V_jK_C_m,1.0,0.0);  // = <jK|mC>
+  form_V_jk_c_m(V_jk_c_m,1.0,-1.0); // = <jk:mc>
+  form_V_jk_c_m(V_jK_c_M,0.0,1.0);  // = <jk|cm>
+  form_V_jk_c_m(V_jK_C_m,1.0,0.0);  // = <jk|mc>
 
   for(int mu = 0; mu < nrefs; ++mu){
     int unique_mu = moinfo->get_ref_number(mu,AllRefs);
@@ -73,9 +82,9 @@ void MRCCSD_T::startup()
       std::vector<double>  e_oo_mu;
       {
         CCIndexIterator i("[o]");
-        while(++i){
-          int    i_sym = o->get_tuple_irrep(i.ind_abs[0]);
-          size_t i_rel = o->get_tuple_rel_index(i.ind_abs[0]);
+        for(i.first(); !i.end(); i.next()){
+          int    i_sym = o->get_tuple_irrep(i.ind_abs<0>());
+          size_t i_rel = o->get_tuple_rel_index(i.ind_abs<0>());
           e_oo_mu.push_back(F_oo[i_sym][i_rel][i_rel]);
         }
       }
@@ -85,9 +94,9 @@ void MRCCSD_T::startup()
       std::vector<double>  e_OO_mu;
       {
         CCIndexIterator i("[o]");
-        while(++i){
-          int    i_sym = o->get_tuple_irrep(i.ind_abs[0]);
-          size_t i_rel = o->get_tuple_rel_index(i.ind_abs[0]);
+        for(i.first(); !i.end(); i.next()){
+          int    i_sym = o->get_tuple_irrep(i.ind_abs<0>());
+          size_t i_rel = o->get_tuple_rel_index(i.ind_abs<0>());
           e_OO_mu.push_back(F_OO[i_sym][i_rel][i_rel]);
         }
       }
@@ -98,9 +107,9 @@ void MRCCSD_T::startup()
       std::vector<double>  e_vv_mu;
       {
         CCIndexIterator a("[v]");
-        while(++a){
-          int    a_sym = v->get_tuple_irrep(a.ind_abs[0]);
-          size_t a_rel = v->get_tuple_rel_index(a.ind_abs[0]);
+        for(a.first(); !a.end(); a.next()){
+          int    a_sym = v->get_tuple_irrep(a.ind_abs<0>());
+          size_t a_rel = v->get_tuple_rel_index(a.ind_abs<0>());
           e_vv_mu.push_back(F_vv[a_sym][a_rel][a_rel]);
         }
       }
@@ -110,9 +119,9 @@ void MRCCSD_T::startup()
       std::vector<double>  e_VV_mu;
       {
         CCIndexIterator a("[v]");
-        while(++a){
-          int    a_sym = v->get_tuple_irrep(a.ind_abs[0]);
-          size_t a_rel = v->get_tuple_rel_index(a.ind_abs[0]);
+        for(a.first(); !a.end(); a.next()){
+          int    a_sym = v->get_tuple_irrep(a.ind_abs<0>());
+          size_t a_rel = v->get_tuple_rel_index(a.ind_abs<0>());
           e_VV_mu.push_back(F_VV[a_sym][a_rel][a_rel]);
         }
       }
@@ -156,9 +165,9 @@ void MRCCSD_T::startup()
       std::vector<double>  e_oo_mu;
       {
         CCIndexIterator i("[o]");
-        while(++i){
-          int    i_sym = o->get_tuple_irrep(i.ind_abs[0]);
-          size_t i_rel = o->get_tuple_rel_index(i.ind_abs[0]);
+        for(i.first(); !i.end(); i.next()){
+          int    i_sym = o->get_tuple_irrep(i.ind_abs<0>());
+          size_t i_rel = o->get_tuple_rel_index(i.ind_abs<0>());
           e_oo_mu.push_back(F_oo[i_sym][i_rel][i_rel]);
         }
       }
@@ -168,9 +177,9 @@ void MRCCSD_T::startup()
       std::vector<double>  e_OO_mu;
       {
         CCIndexIterator i("[o]");
-        while(++i){
-          int    i_sym = o->get_tuple_irrep(i.ind_abs[0]);
-          size_t i_rel = o->get_tuple_rel_index(i.ind_abs[0]);
+        for(i.first(); !i.end(); i.next()){
+          int    i_sym = o->get_tuple_irrep(i.ind_abs<0>());
+          size_t i_rel = o->get_tuple_rel_index(i.ind_abs<0>());
           e_OO_mu.push_back(F_OO[i_sym][i_rel][i_rel]);
         }
       }
@@ -180,9 +189,9 @@ void MRCCSD_T::startup()
       std::vector<double>  e_vv_mu;
       {
         CCIndexIterator a("[v]");
-        while(++a){
-          int    a_sym = v->get_tuple_irrep(a.ind_abs[0]);
-          size_t a_rel = v->get_tuple_rel_index(a.ind_abs[0]);
+        for(a.first(); !a.end(); a.next()){
+          int    a_sym = v->get_tuple_irrep(a.ind_abs<0>());
+          size_t a_rel = v->get_tuple_rel_index(a.ind_abs<0>());
           e_vv_mu.push_back(F_vv[a_sym][a_rel][a_rel]);
         }
       }
@@ -192,9 +201,9 @@ void MRCCSD_T::startup()
       std::vector<double>  e_VV_mu;
       {
         CCIndexIterator a("[v]");
-        while(++a){
-          int    a_sym = v->get_tuple_irrep(a.ind_abs[0]);
-          size_t a_rel = v->get_tuple_rel_index(a.ind_abs[0]);
+        for(a.first(); !a.end(); a.next()){
+          int    a_sym = v->get_tuple_irrep(a.ind_abs<0>());
+          size_t a_rel = v->get_tuple_rel_index(a.ind_abs<0>());
           e_VV_mu.push_back(F_VV[a_sym][a_rel][a_rel]);
         }
       }
@@ -237,10 +246,13 @@ void MRCCSD_T::startup()
     if(options_get_str("CORR_CCSD_T") == "STANDARD"){
       vector<double> factor_row;
       for(int nu = 0; nu < nrefs; ++nu){
-        double omega  =  static_cast<double>(options_get_int("TIKHONOW_OMEGA")) / 1000.0;
         double c_mu   = h_eff->get_right_eigenvector(mu);
         double c_nu   = h_eff->get_right_eigenvector(nu);
-        double factor = h_eff->get_matrix(mu,nu) * c_nu * c_mu / (pow(c_mu,2.0) + pow(omega,2.0));
+        double factor = h_eff->get_matrix(mu,nu) * c_nu / c_mu;
+        if(options_get_bool("TIKHONOW_TRIPLES")){
+          double omega  = static_cast<double>(options_get_int("TIKHONOW_OMEGA")) / 1000.0;
+          factor = h_eff->get_matrix(mu,nu) * c_nu * c_mu / (pow(c_mu,2.0) + pow(omega,2.0));
+        }
         factor_row.push_back(factor);
       }
       Mk_factor.push_back(factor_row);
@@ -275,10 +287,23 @@ void MRCCSD_T::startup()
   }
 
   // Allocate W
-  allocate2(BlockMatrix**,W,nrefs,nirreps);
-  for(int mu = 0; mu < nrefs; ++mu){
-    for(int h = 0; h < nirreps; ++h){
-      W[mu][h] = new BlockMatrix(nirreps,v->get_tuplespi(),vv->get_tuplespi(),h);
+  if((triples_algorithm == UnrestrictedTriples) or (triples_algorithm == RestrictedTriples)){
+    allocate2(BlockMatrix**,W,nrefs,nirreps);
+    for(int mu = 0; mu < nrefs; ++mu){
+      for(int h = 0; h < nirreps; ++h){
+        W[mu][h] = new BlockMatrix(nirreps,v->get_tuplespi(),vv->get_tuplespi(),h);
+      }
+    }
+  }else if(triples_algorithm == SpinAdaptedTriples){
+    allocate2(BlockMatrix**,W_ijk,nrefs,nirreps);
+    allocate2(BlockMatrix**,W_ikj,nrefs,nirreps);
+    allocate2(BlockMatrix**,W_jki,nrefs,nirreps);
+    for(int mu = 0; mu < nrefs; ++mu){
+      for(int h = 0; h < nirreps; ++h){
+        W_ijk[mu][h] = new BlockMatrix(nirreps,v->get_tuplespi(),vv->get_tuplespi(),h);
+        W_ikj[mu][h] = new BlockMatrix(nirreps,v->get_tuplespi(),vv->get_tuplespi(),h);
+        W_jki[mu][h] = new BlockMatrix(nirreps,v->get_tuplespi(),vv->get_tuplespi(),h);
+      }
     }
   }
 
@@ -378,12 +403,21 @@ void MRCCSD_T::cleanup()
   release2(Z);
 
   // Deallocate W
-  for(int mu = 0; mu < nrefs; ++mu){
-    for(int h = 0; h < nirreps; ++h){
-      delete W[mu][h];
+  if((triples_algorithm == UnrestrictedTriples) or (triples_algorithm == RestrictedTriples)){
+    for(int mu = 0; mu < nrefs; ++mu){
+      for(int h = 0; h < nirreps; ++h){
+        delete W[mu][h];
+      }
     }
+    release2(W);
+  }else if(triples_algorithm == SpinAdaptedTriples){
+    for(int mu = 0; mu < nrefs; ++mu){
+      for(int h = 0; h < nirreps; ++h){
+        delete W_ijk[mu][h];  delete W_ikj[mu][h];  delete W_jki[mu][h];
+      }
+    }
+    release2(W_ijk);  release2(W_ikj);  release2(W_jki);
   }
-  release2(W);
 
   // Deallocate T
   for(int mu = 0; mu < nrefs; ++mu){

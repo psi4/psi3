@@ -56,12 +56,17 @@ double MatrixBase::norm()
 // (this) = alpha (this) + beta A
 void MatrixBase::add(MatrixBase* A, double alpha, double beta)
 {
-  double** a = A->get_matrix();
-  for(int p = 0; p < nrows; ++p){
-    for(int q = 0; q < ncols; ++q){
-      matrix[p][q] = alpha * matrix[p][q] + beta * a[p][q];
-    }
+  if(nrows * ncols > 0){
+    double** a = A->get_matrix();
+    if(alpha != 1.0)
+      C_DSCAL(nrows * ncols,alpha,&(matrix[0][0]),1);
+    C_DAXPY(nrows * ncols,beta,&(a[0][0]),1,&(matrix[0][0]),1);
   }
+//  for(int p = 0; p < nrows; ++p){
+//    for(int q = 0; q < ncols; ++q){
+//      matrix[p][q] = alpha * matrix[p][q] + beta * a[p][q];
+//    }
+//  }
 }
 
 // (this) =  alpha A * B + beta (this)
@@ -197,18 +202,18 @@ void BlockMatrix::multiply(BlockMatrix* A, BlockMatrix* B, double alpha, double 
 void BlockMatrix::cyclical_permutation_1_2(BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index)
 {
   CCIndexIterator pqr(pqr_index,sym);
-  while(++pqr){
-    int p_sym    = p_index->get_tuple_irrep(pqr.ind_abs[0]);
-    int q_sym    = p_index->get_tuple_irrep(pqr.ind_abs[1]);
-    int r_sym    = p_index->get_tuple_irrep(pqr.ind_abs[2]);
+  for(pqr.first(); !pqr.end(); pqr.next()){
+    int p_sym    = p_index->get_tuple_irrep(pqr.ind_abs<0>());
+    int q_sym    = p_index->get_tuple_irrep(pqr.ind_abs<1>());
+    int r_sym    = p_index->get_tuple_irrep(pqr.ind_abs<2>());
 
-    size_t p_rel = p_index->get_tuple_rel_index(pqr.ind_abs[0]);
-    size_t q_rel = p_index->get_tuple_rel_index(pqr.ind_abs[1]);
-    size_t r_rel = p_index->get_tuple_rel_index(pqr.ind_abs[2]);
+    size_t p_rel = p_index->get_tuple_rel_index(pqr.ind_abs<0>());
+    size_t q_rel = p_index->get_tuple_rel_index(pqr.ind_abs<1>());
+    size_t r_rel = p_index->get_tuple_rel_index(pqr.ind_abs<2>());
 
-    size_t qr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs[1],pqr.ind_abs[2]);
-    size_t pr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs[0],pqr.ind_abs[2]);
-    size_t qp_rel = qr_index->get_tuple_rel_index(pqr.ind_abs[1],pqr.ind_abs[0]);
+    size_t qr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<1>(),pqr.ind_abs<2>());
+    size_t pr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<0>(),pqr.ind_abs<2>());
+    size_t qp_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<1>(),pqr.ind_abs<0>());
 
     double value = A->blocks[p_sym]->get(p_rel,qr_rel)
                  - A->blocks[q_sym]->get(q_rel,pr_rel)
@@ -220,20 +225,42 @@ void BlockMatrix::cyclical_permutation_1_2(BlockMatrix* A, CCIndex* pqr_index,CC
 void BlockMatrix::a_b_permutation_1_2(BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index)
 {
   CCIndexIterator pqr(pqr_index,sym);
-  while(++pqr){
-    int p_sym    = p_index->get_tuple_irrep(pqr.ind_abs[0]);
-    int q_sym    = p_index->get_tuple_irrep(pqr.ind_abs[1]);
+  for(pqr.first(); !pqr.end(); pqr.next()){
+    int p_sym    = p_index->get_tuple_irrep(pqr.ind_abs<0>());
+    int q_sym    = p_index->get_tuple_irrep(pqr.ind_abs<1>());
 
-    size_t p_rel = p_index->get_tuple_rel_index(pqr.ind_abs[0]);
-    size_t q_rel = p_index->get_tuple_rel_index(pqr.ind_abs[1]);
+    size_t p_rel = p_index->get_tuple_rel_index(pqr.ind_abs<0>());
+    size_t q_rel = p_index->get_tuple_rel_index(pqr.ind_abs<1>());
 
-    size_t qr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs[1],pqr.ind_abs[2]);
-    size_t pr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs[0],pqr.ind_abs[2]);
+    size_t qr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<1>(),pqr.ind_abs<2>());
+    size_t pr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<0>(),pqr.ind_abs<2>());
 
     double value = A->blocks[p_sym]->get(p_rel,qr_rel) - A->blocks[q_sym]->get(q_rel,pr_rel);
     blocks[p_sym]->set(p_rel,qr_rel,value);
   }
 }
+
+void BlockMatrix::a_b_permutation(CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index)
+{
+  CCIndexIterator pqr(pqr_index,sym);
+  for(pqr.first(); !pqr.end(); pqr.next()){
+    if(pqr.ind_abs<0>() >= pqr.ind_abs<1>()){
+      int p_sym    = p_index->get_tuple_irrep(pqr.ind_abs<0>());
+      int q_sym    = p_index->get_tuple_irrep(pqr.ind_abs<1>());
+
+      size_t p_rel = p_index->get_tuple_rel_index(pqr.ind_abs<0>());
+      size_t q_rel = p_index->get_tuple_rel_index(pqr.ind_abs<1>());
+
+      size_t qr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<1>(),pqr.ind_abs<2>());
+      size_t pr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<0>(),pqr.ind_abs<2>());
+
+      double value = blocks[p_sym]->get(p_rel,qr_rel) - blocks[q_sym]->get(q_rel,pr_rel);
+      blocks[p_sym]->set(p_rel,qr_rel,value);
+      blocks[q_sym]->set(q_rel,pr_rel,-value);
+    }
+  }
+}
+
 
 /**
  * Sets the block matrix B to B(pqr) = z * A(pqr) + a * M(pqr) + b * M(prq) + c * M(qpr) + d * M(qrp) + e * M(rpq) + f * M(rqp)
@@ -242,23 +269,23 @@ void BlockMatrix::add_permutation_1_2(double z,BlockMatrix* A, CCIndex* pqr_inde
     double a,double b,double c,double d,double e,double f)
 {
   CCIndexIterator pqr(pqr_index,sym);
-  while(++pqr){
-    int p_sym    = p_index->get_tuple_irrep(pqr.ind_abs[0]);
-    int q_sym    = p_index->get_tuple_irrep(pqr.ind_abs[1]);
-    int r_sym    = p_index->get_tuple_irrep(pqr.ind_abs[2]);
+  for(pqr.first(); !pqr.end(); pqr.next()){
+    int p_sym    = p_index->get_tuple_irrep(pqr.ind_abs<0>());
+    int q_sym    = p_index->get_tuple_irrep(pqr.ind_abs<1>());
+    int r_sym    = p_index->get_tuple_irrep(pqr.ind_abs<2>());
 
-    size_t p_rel = p_index->get_tuple_rel_index(pqr.ind_abs[0]);
-    size_t q_rel = p_index->get_tuple_rel_index(pqr.ind_abs[1]);
-    size_t r_rel = p_index->get_tuple_rel_index(pqr.ind_abs[2]);
+    size_t p_rel = p_index->get_tuple_rel_index(pqr.ind_abs<0>());
+    size_t q_rel = p_index->get_tuple_rel_index(pqr.ind_abs<1>());
+    size_t r_rel = p_index->get_tuple_rel_index(pqr.ind_abs<2>());
 
-    size_t qr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs[1],pqr.ind_abs[2]);
-    size_t rq_rel = qr_index->get_tuple_rel_index(pqr.ind_abs[2],pqr.ind_abs[1]);
+    size_t qr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<1>(),pqr.ind_abs<2>());
+    size_t rq_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<2>(),pqr.ind_abs<1>());
 
-    size_t pr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs[0],pqr.ind_abs[2]);
-    size_t rp_rel = qr_index->get_tuple_rel_index(pqr.ind_abs[2],pqr.ind_abs[0]);
+    size_t pr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<0>(),pqr.ind_abs<2>());
+    size_t rp_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<2>(),pqr.ind_abs<0>());
 
-    size_t pq_rel = qr_index->get_tuple_rel_index(pqr.ind_abs[0],pqr.ind_abs[1]);
-    size_t qp_rel = qr_index->get_tuple_rel_index(pqr.ind_abs[1],pqr.ind_abs[0]);
+    size_t pq_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<0>(),pqr.ind_abs<1>());
+    size_t qp_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<1>(),pqr.ind_abs<0>());
 
     double value = z * blocks[p_sym]->get(p_rel,qr_rel)
                  + a * A->blocks[p_sym]->get(p_rel,qr_rel)
@@ -271,19 +298,91 @@ void BlockMatrix::add_permutation_1_2(double z,BlockMatrix* A, CCIndex* pqr_inde
   }
 }
 
+/**
+ * Sets the block matrix B to B(pqr) = z * A(pqr) + a * M(pqr) + b * M(prq) + c * M(qpr) + d * M(qrp) + e * M(rpq) + f * M(rqp)
+ */
+void BlockMatrix::add_acb(double z,BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index,double a)
+{
+  CCIndexIterator pqr(pqr_index,sym);
+  for(pqr.first(); !pqr.end(); pqr.next()){
+    int p_sym    = p_index->get_tuple_irrep(pqr.ind_abs<0>());
+
+    size_t p_rel = p_index->get_tuple_rel_index(pqr.ind_abs<0>());
+    size_t rq_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<2>(),pqr.ind_abs<1>());
+    size_t qr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<1>(),pqr.ind_abs<2>());
+
+    double value = z * blocks[p_sym]->get(p_rel,qr_rel) + a * A->blocks[p_sym]->get(p_rel,rq_rel);
+    blocks[p_sym]->set(p_rel,qr_rel,value);
+  }
+}
+
+/**
+ * Sets the block matrix B to B(pqr) = z * A(pqr) + a * M(pqr) + b * M(prq) + c * M(qpr) + d * M(qrp) + e * M(rpq) + f * M(rqp)
+ */
+void BlockMatrix::add_cab(double z,BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index,double a)
+{
+  CCIndexIterator pqr(pqr_index,sym);
+  for(pqr.first(); !pqr.end(); pqr.next()){
+    int p_sym    = p_index->get_tuple_irrep(pqr.ind_abs<0>());
+    int r_sym    = p_index->get_tuple_irrep(pqr.ind_abs<2>());
+
+    size_t p_rel = p_index->get_tuple_rel_index(pqr.ind_abs<0>());
+    size_t r_rel = p_index->get_tuple_rel_index(pqr.ind_abs<2>());
+    size_t pq_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<0>(),pqr.ind_abs<1>());
+    size_t qr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<1>(),pqr.ind_abs<2>());
+
+    double value = z * blocks[p_sym]->get(p_rel,qr_rel) + a * A->blocks[r_sym]->get(r_rel,pq_rel);
+    blocks[p_sym]->set(p_rel,qr_rel,value);
+  }
+}
+///**
+// * Sets the block matrix B to B(pqr) = z * A(pqr) + a * M(pqr) + b * M(prq) + c * M(qpr) + d * M(qrp) + e * M(rpq) + f * M(rqp)
+// */
+//void BlockMatrix::add_permutation_1_2_abc(double z,BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index,
+//    double a,double b,double c,double d,double e,double f)
+//{
+//  CCIndexIterator pqr(pqr_index,sym);
+//  for(pqr.first(); !pqr.end(); pqr.next()){
+//    int p_sym    = p_index->get_tuple_irrep(pqr.ind_abs<0>());
+//    int q_sym    = p_index->get_tuple_irrep(pqr.ind_abs<1>());
+//    int r_sym    = p_index->get_tuple_irrep(pqr.ind_abs<2>());
+//
+//    size_t p_rel = p_index->get_tuple_rel_index(pqr.ind_abs<0>());
+//    size_t q_rel = p_index->get_tuple_rel_index(pqr.ind_abs<1>());
+//    size_t r_rel = p_index->get_tuple_rel_index(pqr.ind_abs<2>());
+//
+//    size_t qr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<1>(),pqr.ind_abs<2>());
+//    size_t rq_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<2>(),pqr.ind_abs<1>());
+//
+//    size_t pr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<0>(),pqr.ind_abs<2>());
+//    size_t rp_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<2>(),pqr.ind_abs<0>());
+//
+//    size_t pq_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<0>(),pqr.ind_abs<1>());
+//    size_t qp_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<1>(),pqr.ind_abs<0>());
+//
+//    double value = z * blocks[p_sym]->get(p_rel,qr_rel)
+//                 + a * A->blocks[p_sym]->get(p_rel,qr_rel)
+//                 + b * A->blocks[p_sym]->get(p_rel,rq_rel)
+//                 + c * A->blocks[q_sym]->get(q_rel,pr_rel)
+//                 + d * A->blocks[q_sym]->get(q_rel,rp_rel)
+//                 + e * A->blocks[r_sym]->get(r_rel,pq_rel)
+//                 + f * A->blocks[r_sym]->get(r_rel,qp_rel);
+//    blocks[p_sym]->set(p_rel,qr_rel,value);
+//  }
+//}
 //
 //void BlockMatrix::add_a_b_permutation_1_2(BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index)
 //{
 //  CCIndexIterator pqr(pqr_index,sym);
 //  while(++pqr){
-//    int p_sym    = p_index->get_tuple_irrep(pqr.ind_abs[0]);
-//    int q_sym    = p_index->get_tuple_irrep(pqr.ind_abs[1]);
+//    int p_sym    = p_index->get_tuple_irrep(pqr.ind_abs<0>());
+//    int q_sym    = p_index->get_tuple_irrep(pqr.ind_abs<1>());
 //
-//    size_t p_rel = p_index->get_tuple_rel_index(pqr.ind_abs[0]);
-//    size_t q_rel = p_index->get_tuple_rel_index(pqr.ind_abs[1]);
+//    size_t p_rel = p_index->get_tuple_rel_index(pqr.ind_abs<0>());
+//    size_t q_rel = p_index->get_tuple_rel_index(pqr.ind_abs<1>());
 //
-//    size_t qr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs[1],pqr.ind_abs[2]);
-//    size_t pr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs[0],pqr.ind_abs[2]);
+//    size_t qr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<1>(),pqr.ind_abs<2>());
+//    size_t pr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<0>(),pqr.ind_abs<2>());
 //
 //    double value = A->blocks[p_sym]->get(p_rel,qr_rel)
 //                 - A->blocks[q_sym]->get(q_rel,pr_rel);
@@ -294,15 +393,15 @@ void BlockMatrix::add_permutation_1_2(double z,BlockMatrix* A, CCIndex* pqr_inde
 void BlockMatrix::add_c_ab_permutation_1_2(BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index)
 {
   CCIndexIterator pqr(pqr_index,sym);
-  while(++pqr){
-    int p_sym    = p_index->get_tuple_irrep(pqr.ind_abs[0]);
-    int r_sym    = p_index->get_tuple_irrep(pqr.ind_abs[2]);
+  for(pqr.first(); !pqr.end(); pqr.next()){
+    int p_sym    = p_index->get_tuple_irrep(pqr.ind_abs<0>());
+    int r_sym    = p_index->get_tuple_irrep(pqr.ind_abs<2>());
 
-    size_t p_rel = p_index->get_tuple_rel_index(pqr.ind_abs[0]);
-    size_t r_rel = p_index->get_tuple_rel_index(pqr.ind_abs[2]);
+    size_t p_rel = p_index->get_tuple_rel_index(pqr.ind_abs<0>());
+    size_t r_rel = p_index->get_tuple_rel_index(pqr.ind_abs<2>());
 
-    size_t qr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs[1],pqr.ind_abs[2]);
-    size_t pq_rel = qr_index->get_tuple_rel_index(pqr.ind_abs[0],pqr.ind_abs[1]);
+    size_t qr_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<1>(),pqr.ind_abs<2>());
+    size_t pq_rel = qr_index->get_tuple_rel_index(pqr.ind_abs<0>(),pqr.ind_abs<1>());
 
     double value = A->blocks[r_sym]->get(r_rel,pq_rel);
     blocks[p_sym]->add(p_rel,qr_rel,value);

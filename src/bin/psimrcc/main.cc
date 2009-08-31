@@ -122,6 +122,7 @@ void read_calculation_options()
   options_add_bool("PERT_CBS",false);
   options_add_bool("PERT_CBS_COUPLING",true);
   options_add_bool("RESTRICTED_TRIPLES",false);
+  options_add_bool("TIKHONOW_TRIPLES",false);
 
   options_add_str_with_choices("PT_ENERGY","SECOND_ORDER","SECOND_ORDER SCS_SECOND_ORDER PSEUDO_SECOND_ORDER SCS_PSEUDO_SECOND_ORDER");
   options_add_str_with_choices("CORR_WFN","CCSD","PT2 CCSD MP2-CCSD CCSD_T");

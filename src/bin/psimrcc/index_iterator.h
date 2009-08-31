@@ -1,5 +1,5 @@
-#ifndef _psi_src_bin_psimrcc_ccindex_iterator_h
-#define _psi_src_bin_psimrcc_ccindex_iterator_h
+#ifndef _psi_src_bin_psimrcc_index_iterator_h_
+#define _psi_src_bin_psimrcc_index_iterator_h_
 
 /*! \file    index_iterator.h
     \ingroup (PSIMRCC)
@@ -14,51 +14,50 @@ class CCIndex;
 
 class CCIndexIterator{
 public:
-  ///////////////////////////////////////////////////////////////////////////////
   // Class Constructor and Destructor
-  ///////////////////////////////////////////////////////////////////////////////
-  CCIndexIterator(std::string str,int select_irrep = -1);
-  CCIndexIterator(CCIndex* index,int select_irrep = -1);
+  explicit CCIndexIterator(std::string str);
+  explicit CCIndexIterator(std::string str,int select_irrep);
+  explicit CCIndexIterator(CCIndex* index);
+  explicit CCIndexIterator(CCIndex* index,int select_irrep);
   ~CCIndexIterator();
-  ///////////////////////////////////////////////////////////////////////////////
-  // Class Methods
-  ///////////////////////////////////////////////////////////////////////////////
-  bool operator++();
-  bool next_irrep();
-  bool next_element_in_irrep();
 
-  void        reset();
-  void        set_irrep(int n)  {select = n;}
+  // Class Public Methods
+  bool first();
+  void next();
+  bool end()   {return(absolute >= max_abs);}
 
-  ///////////////////////////////////////////////////////////////////////////////
-  // Class Public Members
-  ///////////////////////////////////////////////////////////////////////////////
-  int                               sym;
-  size_t                            rel;
-  size_t                            abs;
-  short*                            ind_abs;
-  int*                              ind_sym;
+  template <int N>
+  short ind_abs() {return tuples[absolute][N];}
+
+  int   sym()     {return symmetry;}
+  size_t rel()    {return relative;}
+  size_t abs()    {return absolute;}
 private:
-  ///////////////////////////////////////////////////////////////////////////////
   // Class private functions
-  ///////////////////////////////////////////////////////////////////////////////
-  void        init();
-  void        cleanup();
-  int         next_non_empty_irrep(int n);
-  ///////////////////////////////////////////////////////////////////////////////
-  // Class data
-  ///////////////////////////////////////////////////////////////////////////////
-  // Type                           // Name
-  CCIndex*                          ccindex_;
-  int                               nelements_;
+  void        startup(int min_sym,int max_sym);
+
+  // Generica data
+  int                               nirreps;
+
+  // Index object
+  CCIndex*                          ccindex;
+
+  // Internal iterator
+  size_t                            relative;  // Relative address of the current tuple
+  size_t                            absolute;      // Absolute address of the current tuple
+  size_t                            max_abs;  // Max absolute address of the current tuple
+  size_t                            min_abs;  // Min absolute address of the current tuple
+  int                               symmetry; // Symmetry of the current tuple
+  int                               current_block;
+
+  // Properties of the tuples
+  int                               nelements;
   int**                             element_irrep;
   short**                           tuples;
-  size_t                            max_index_in_irrep_;
-  int                               select;
-protected:
-  static int                        nirreps_;
+  std::vector<size_t>               block_last;
+  std::vector<int>                  block_symmetry;
 };
 
 }} /* End Namespaces */
 
-#endif // _psi_src_bin_psimrcc_ccindex_iterator_h
+#endif // _psi_src_bin_psimrcc_index_iterator_h_

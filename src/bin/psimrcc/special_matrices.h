@@ -42,6 +42,8 @@ public:
   void print();
 
   void     add(BlockMatrix* A, double alpha, double beta);
+  void     add_acb(double z,BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index,double a);
+  void     add_cab(double z,BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index,double a);
 
   void     add(int h,size_t row,size_t col,double value) {blocks[h]->add(row,col,value);}
   void     set(int h,size_t row,size_t col,double value) {blocks[h]->set(row,col,value);}
@@ -55,6 +57,7 @@ public:
   void     add_c_ab_permutation_1_2(BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index);
   void     add_permutation_1_2(double z,BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index,
       double a,double b,double c,double d,double e,double f);
+  void     a_b_permutation(CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index);
 //  void     add_a_b_permutation_1_2(BlockMatrix* A, CCIndex* pqr_index,CCIndex* p_index,CCIndex* qr_index);
   void     zero();
   double   norm();
