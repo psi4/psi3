@@ -69,6 +69,8 @@ public:
     Matrix(std::string name);
     /// Explicit copy reference constructor
     explicit Matrix(const Matrix& copy);
+    Matrix(Matrix& copy);
+    
     /// Explicit copy pointer constructor
     explicit Matrix(const Matrix* copy);
     /// Constructor, sets up the matrix
@@ -87,6 +89,7 @@ public:
     /// Copies cp's data onto this
     void copy(Matrix* cp);
     void copy(Matrix& cp);
+    void copy(const Matrix& cp);
 
     /// Load a matrix from a PSIO object from fileno with tocentry of size nso
     bool load(psi::PSIO* psio, unsigned int fileno, char *tocentry, int nso);
@@ -209,7 +212,33 @@ public:
     /// Diagonalize this places eigvectors and eigvalues must be created by caller.
     void diagonalize(Matrix& eigvectors, Vector& eigvalues);
     
+    const Matrix operator*(const Matrix& rhs) const {
+        Matrix r(*this);
+        r.zero();
+        r.accumulate_product(this, &rhs);
+        return r;
+    }
+    
+    Matrix& Matrix::operator*=(const Matrix& rhs) {
+        this->accumulate_product(&rhs);
+        return *this;
+    }
+    
+    const Matrix operator-(const Matrix& rhs) const {
+        Matrix r(*this);
+        r.subtract(&rhs);
+        return r;
+    }
+    
+    Matrix& Matrix::operator=(const Matrix& rhs) {
+        if (this != &rhs) {
+            this->copy(rhs);
+        }
+        
+        return *this;
+    }
 };
+
 
 //! Simple matrix class. Not symmetry blocked.
 class SimpleMatrix

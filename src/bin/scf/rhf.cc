@@ -437,8 +437,11 @@ void RHF::save_fock()
     factory_.create_matrix(FDS);
     factory_.create_matrix(SDF);
     
-    FDS.copy(F_ * D_ * S_);
-    SDF.copy(S_ * D_ * F_);
+    // FDS = F_ * D_ * S_;
+    FDS = F_;
+    FDS *= D_;
+    FDS *= S_;
+    // SDF = S_ * D_ * F_;
     diis_E_[current_diis_fock_]->copy(FDS - SDF);
     
     // Orthonormalize the error matrix

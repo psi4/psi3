@@ -59,6 +59,20 @@ Matrix::Matrix(const Matrix& c)
     copy_from(c.matrix_);
 }
 
+Matrix::Matrix(Matrix& c)
+{
+    matrix_ = NULL;
+    nirreps_ = c.nirreps_;
+    rowspi_ = new int[nirreps_];
+    colspi_ = new int[nirreps_];
+    for (int i=0; i<nirreps_; ++i) {
+        rowspi_[i] = c.rowspi_[i];
+        colspi_[i] = c.colspi_[i];
+    }
+    alloc();
+    copy_from(c.matrix_);
+}
+
 Matrix::Matrix(const Matrix* c)
 {
     matrix_ = NULL;
@@ -167,6 +181,11 @@ void Matrix::copy(Matrix* cp)
 void Matrix::copy(Matrix& cp)
 {
     copy(&cp);
+}
+
+void Matrix::copy(const Matrix& cp)
+{
+    copy(const_cast<Matrix&>(cp));
 }
 
 void Matrix::alloc()
