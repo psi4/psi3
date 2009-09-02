@@ -1,3 +1,6 @@
+#ifndef _psi_src_lib_liboptions_liboptions_h_
+#define _psi_src_lib_liboptions_liboptions_h_
+
 /*!
 ** \file
 ** \brief Header file for the options library
@@ -5,9 +8,6 @@
 **
 ** Francesco Evangelista 2008
 */
-
-#ifndef _psi_src_lib_liboptions_liboptions_h
-#define _psi_src_lib_liboptions_liboptions_h
 
 #include <map>
 #include <string>
@@ -95,78 +95,6 @@ private:
 
 extern Options *_default_psi_options_;
 
-/*
-enum PolymorphType {eVoid,eBool,eInt,eDouble,eString,eArray};
-typedef std::vector<std::string> VecString;
+} /* End Namespace */
 
-class Polymorph
-{
-public:
-  // Polymorph can be instantiated explicitly
-  explicit Polymorph(bool value);
-  explicit Polymorph(int value);
-  explicit Polymorph(double value);
-  explicit Polymorph(std::string value);
-  explicit Polymorph(std::vector<Polymorph> value);
-  // or can be a void object
-  Polymorph();
-  ~Polymorph();
-
-  // Get functions
-  bool           to_b();
-  int            to_i();
-  double         to_d();
-  std::string    to_s();
-  std::vector<Polymorph> to_a();
-
-  // Set functions
-  void           b(bool value);
-  void           i(int value);
-  void           d(double value);
-  void           s(std::string value);
-
-private:
-  PolymorphType             type;
-  bool                      b_value;
-  int                       i_value;
-  double                    d_value;
-  std::string               s_value;
-  std::vector<Polymorph>    a_value;
-};
-
-typedef std::vector<Polymorph> PolymorphArray;
-
-class Option
-{
-public:
-  Option(VecString labels_,VecString choices_,std::string description, Polymorph def);
-  ~Option();
-//  Polymorph& operator() {return polymorph;}
-private:
-  VecString   labels;
-  VecString   choices;
-  std::string description;
-  Polymorph   polymorph;
-};
-
-class LibOptions
-{
-public:
-  LibOptions();
-  ~LibOptions();
-  void        add(const char* cstr_labels,
-                  const char* cstr_choices,
-                  const char* cstr_description,
-                  PolymorphType,Polymorph def);
-  Polymorph   get(const char* cstr_option);
-  void        set(const char* cstr_option, Polymorph p);
-private:
-  std::map<std::string,Option> options;
-};
-
-extern LibOptions *_liboptions_;
-*/
-
-}
-
-#endif // _psi_src_lib_liboptions_liboptions_h
+#endif // _psi_src_lib_liboptions_liboptions_h_

@@ -213,9 +213,9 @@ void MOInfo::read_mo_spaces()
     // build orbital information for current point group
     // Read the values stored in the chkpt
     // override if the user defines values
-    focc_ref = read_chkpt_intvec(nirreps,_default_chkpt_lib_->rd_frzcpi());
-    docc_ref = read_chkpt_intvec(nirreps,_default_chkpt_lib_->rd_clsdpi());
-    actv_ref = read_chkpt_intvec(nirreps,_default_chkpt_lib_->rd_openpi());
+    focc_ref = read_chkpt_intvec(nirreps_ref,_default_chkpt_lib_->rd_frzcpi());
+    docc_ref = read_chkpt_intvec(nirreps_ref,_default_chkpt_lib_->rd_clsdpi());
+    actv_ref = read_chkpt_intvec(nirreps_ref,_default_chkpt_lib_->rd_openpi());
     fvir_ref.assign(nirreps_ref,0); 
     actv_docc_ref.assign(nirreps_ref,0); 
 

@@ -24,8 +24,10 @@ namespace psi{ namespace psimrcc{
 void MRCCSD_T::compute_restricted()
 {
   bool closed_shell_case = false;
+  double closed_shell_factor = 1.0;
   if(moinfo->get_ref_size(UniqueOpenShellRefs) == 0){
     closed_shell_case = true;
+    closed_shell_factor = 2.0;
   }
 
   compute_ooo_triples_restricted();
@@ -35,7 +37,8 @@ void MRCCSD_T::compute_restricted()
     compute_OOO_triples_restricted();
   }
 
-  fprintf(outfile,"\n\n  Using restricted loops algorithm\n");
+  // This line adds to the "Computing (T) correction"
+  fprintf(outfile," using the restricted loop algorithm.\n");
 
   fprintf(outfile,"\n\n  Mk-MRCCSD(T) diagonal contributions to the effective Hamiltonian:\n");
   fprintf(outfile,"\n   Ref         E[4]              E_T[4]            E_ST[4]           E_DT[4]");
@@ -43,28 +46,28 @@ void MRCCSD_T::compute_restricted()
   if(nrefs < 100){
     for(int mu = 0; mu < nrefs; ++mu){
       fprintf(outfile,"\n   %2d  ",mu);
-      fprintf(outfile," %17.12lf",E4_ooo[mu] + E4_ooO[mu] + E4_oOO[mu] + E4_OOO[mu]);
-      fprintf(outfile," %17.12lf",E4T_ooo[mu] + E4T_ooO[mu] + E4T_oOO[mu] + E4T_OOO[mu]);
-      fprintf(outfile," %17.12lf",E4ST_ooo[mu] + E4ST_ooO[mu] + E4ST_oOO[mu] + E4ST_OOO[mu]);
-      fprintf(outfile," %17.12lf",E4DT_ooo[mu] + E4DT_ooO[mu] + E4DT_oOO[mu] + E4DT_OOO[mu]);
+      fprintf(outfile," %17.12lf",closed_shell_factor * (E4_ooo[mu] + E4_ooO[mu] + E4_oOO[mu] + E4_OOO[mu]));
+      fprintf(outfile," %17.12lf",closed_shell_factor * (E4T_ooo[mu] + E4T_ooO[mu] + E4T_oOO[mu] + E4T_OOO[mu]));
+      fprintf(outfile," %17.12lf",closed_shell_factor * (E4ST_ooo[mu] + E4ST_ooO[mu] + E4ST_oOO[mu] + E4ST_OOO[mu]));
+      fprintf(outfile," %17.12lf",closed_shell_factor * (E4DT_ooo[mu] + E4DT_ooO[mu] + E4DT_oOO[mu] + E4DT_OOO[mu]));
     }
   }
   fprintf(outfile,"\n   Tot ");
   double E4 = 0.0;
   for(int mu = 0; mu < nrefs; ++mu)
-    E4 += (E4_ooo[mu] + E4_ooO[mu] + E4_oOO[mu] + E4_OOO[mu]) * h_eff->get_left_eigenvector(mu) * h_eff->get_right_eigenvector(mu);
+    E4 += closed_shell_factor * (E4_ooo[mu] + E4_ooO[mu] + E4_oOO[mu] + E4_OOO[mu]) * h_eff->get_left_eigenvector(mu) * h_eff->get_right_eigenvector(mu);
   fprintf(outfile," %17.12lf",E4);
   double E4T = 0.0;
   for(int mu = 0; mu < nrefs; ++mu)
-    E4T += (E4T_ooo[mu] + E4T_ooO[mu] + E4T_oOO[mu] + E4T_OOO[mu])  * h_eff->get_left_eigenvector(mu) * h_eff->get_right_eigenvector(mu);
+    E4T += closed_shell_factor * (E4T_ooo[mu] + E4T_ooO[mu] + E4T_oOO[mu] + E4T_OOO[mu])  * h_eff->get_left_eigenvector(mu) * h_eff->get_right_eigenvector(mu);
   fprintf(outfile," %17.12lf",E4T);
   double E4ST = 0.0;
   for(int mu = 0; mu < nrefs; ++mu)
-    E4ST += (E4ST_ooo[mu] + E4ST_ooO[mu] + E4ST_oOO[mu] + E4ST_OOO[mu])  * h_eff->get_left_eigenvector(mu) * h_eff->get_right_eigenvector(mu);
+    E4ST += closed_shell_factor * (E4ST_ooo[mu] + E4ST_ooO[mu] + E4ST_oOO[mu] + E4ST_OOO[mu])  * h_eff->get_left_eigenvector(mu) * h_eff->get_right_eigenvector(mu);
   fprintf(outfile," %17.12lf",E4ST);
   double E4DT = 0.0;
   for(int mu = 0; mu < nrefs; ++mu)
-    E4DT += (E4DT_ooo[mu] + E4DT_ooO[mu] + E4DT_oOO[mu] + E4DT_OOO[mu]) * h_eff->get_left_eigenvector(mu) * h_eff->get_right_eigenvector(mu);
+    E4DT += closed_shell_factor * (E4DT_ooo[mu] + E4DT_ooO[mu] + E4DT_oOO[mu] + E4DT_OOO[mu]) * h_eff->get_left_eigenvector(mu) * h_eff->get_right_eigenvector(mu);
   fprintf(outfile," %17.12lf",E4DT);
   fprintf(outfile,"\n  ------------------------------------------------------------------------------");
 
@@ -72,24 +75,29 @@ void MRCCSD_T::compute_restricted()
   for(int mu = 0; mu < nrefs; ++mu){
     fprintf(outfile,"\n");
     for(int nu = 0; nu < nrefs; ++nu){
-      fprintf(outfile," %17.12lf",d_h_eff[mu][nu]);
+      fprintf(outfile," %17.12lf",closed_shell_factor * d_h_eff[mu][nu]);
     }
   }
+
+  double Heff_E = 0.0;
+  for(int mu = 0; mu < nrefs; ++mu){
+    for(int nu = 0; nu < nrefs; ++nu){
+      if(mu != nu){
+        Heff_E += h_eff->get_left_eigenvector(mu) *  h_eff->get_right_eigenvector(nu) * closed_shell_factor * d_h_eff[mu][nu];
+      }
+    }
+  }
+
+  fprintf(outfile,"\n\n  Total     diagonal (T) correction: %17.12f",E4);
+  fprintf(outfile,"\n  Total off-diagonal (T) correction: %17.12f",Heff_E);
+  fprintf(outfile,"\n  Total              (T) correction: %17.12f",Heff_E + E4);
 
   for(int mu = 0; mu < nrefs; ++mu){
     for(int nu = 0; nu < nrefs; ++nu){
       if(mu != nu){
-        if(closed_shell_case){
-          h_eff->add_matrix(mu,nu,2.0 * d_h_eff[mu][nu]);
-        }else{
-          h_eff->add_matrix(mu,nu,d_h_eff[mu][nu]);
-        }
+        h_eff->add_matrix(mu,nu,closed_shell_factor * d_h_eff[mu][nu]);
       }else{
-        if(closed_shell_case){
-          h_eff->add_matrix(mu,nu,2.0 * E4_ooo[mu] + 2.0 * E4_ooO[mu]);
-        }else{
-          h_eff->add_matrix(mu,nu,E4_ooo[mu] + E4_ooO[mu] + E4_oOO[mu] + E4_OOO[mu]);
-        }
+        h_eff->add_matrix(mu,nu,closed_shell_factor * (E4_ooo[mu] + E4_ooO[mu] + E4_oOO[mu] + E4_OOO[mu]));
       }
     }
   }
