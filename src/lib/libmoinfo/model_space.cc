@@ -1,5 +1,6 @@
 #include "model_space.h"
 #include "moinfo.h"
+#include <cstdio>
 
 extern FILE *outfile;
 

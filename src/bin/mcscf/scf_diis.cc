@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdio>
 
 #include <liboptions/liboptions.h>
 #include <libutil/libutil.h>

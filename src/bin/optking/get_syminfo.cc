@@ -42,6 +42,12 @@ void get_syminfo(const simples_class & simples) {
   syminfo.irrep_lbls = chkpt_rd_irr_labs();
   chkpt_close();
 
+  //for (j=0; j<syminfo.nirreps; ++j) {
+    //for(i=0; i<natom; ++i)
+      //fprintf(outfile,"%d", syminfo.ict[j][i]);
+    //fprintf(outfile,"\n");
+  //}
+
   // abort if group label is greater than 3 characters
   j = strlen(syminfo.symmetry);
   if (j > 3) abort();
@@ -123,13 +129,13 @@ void get_syminfo(const simples_class & simples) {
       b = simples.tors[sub_index].get_B();
       c = simples.tors[sub_index].get_C();
       d = simples.tors[sub_index].get_D();
-//fprintf(outfile,"tors %d %d %d %d\n", a, b, c, d);
+      //fprintf(outfile,"tors %d %d %d %d\n", a, b, c, d);
       for (ops=0;ops < syminfo.nirreps;++ops) {
         aa = syminfo.ict[ops][a]-1;
         bb = syminfo.ict[ops][b]-1;
         cc = syminfo.ict[ops][c]-1;
         dd = syminfo.ict[ops][d]-1;
-//fprintf(outfile,"transformed tors %d %d %d %d\n", aa, bb, cc, dd);
+        //fprintf(outfile,"transformed tors %d %d %d %d\n", aa, bb, cc, dd);
         syminfo.ict_ops[i][ops] = simples.get_id_from_atoms_tors(aa,bb,cc,dd);
         if ( ('S' == syminfo.op_lbls[ops][0]) || ('I' == syminfo.op_lbls[ops][0]) )
           syminfo.ict_ops_sign[i][ops] = -1;

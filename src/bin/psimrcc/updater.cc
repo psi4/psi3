@@ -7,6 +7,7 @@
 #include <vector>
 //#include <string>
 //
+#include <cstdio>
 #include <libmoinfo/libmoinfo.h>
 #include <liboptions/liboptions.h>
 

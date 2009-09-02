@@ -3,6 +3,7 @@
  *  @ingroup (PSIMRCC)
 */
 
+#include <cstdio>
 #include <libmoinfo/libmoinfo.h>
 
 #include "blas.h"

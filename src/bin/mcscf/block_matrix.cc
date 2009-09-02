@@ -1,4 +1,5 @@
 #include <libutil/libutil.h>
+#include <cstdio>
 
 #include "block_matrix.h"
 #include "matrix_base.h"

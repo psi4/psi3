@@ -1,4 +1,5 @@
 #include <libutil/libutil.h>
+#include <cstdio>
 
 #include "block_vector.h"
 #include "vector_base.h"

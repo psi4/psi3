@@ -1,4 +1,5 @@
 #include <libutil/libutil.h>
+#include <cstdio>
 
 #include "blas.h"
 #include "debugging.h"

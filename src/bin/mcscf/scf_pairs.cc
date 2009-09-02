@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstdio>
 
 #include <libmoinfo/libmoinfo.h>
 #include <libutil/libutil.h>

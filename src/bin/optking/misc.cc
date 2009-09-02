@@ -81,10 +81,8 @@ void cross_product(double *u,double *v,double *out)
 void scalar_mult(double a, double *vect, int dim) {
   int i;
   if (dim == 0) return;
-  if ( (fabs(a) < 1.0e-10) || (fabs(a) > 1.0e10) ) {
-    fprintf(outfile,"Warning: scalar_mult() scaling by %9.5e\n",a);
-    //abort();
-  }
+  //if ( (fabs(a) < 1.0e-10) || (fabs(a) > 1.0e10) )
+    //fprintf(outfile,"Warning: scalar_mult() scaling by %9.5e\n",a);
   for (i=0;i<dim;++i)
     vect[i] *= a;
   return;

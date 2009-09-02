@@ -1,6 +1,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <cmath>
+#include <cstdio>
 
 #include <liboptions/liboptions.h>
 #include <libutil/libutil.h>

@@ -2,6 +2,7 @@
 #include <cmath>
 #include <cstdlib>
 #include <cstring>
+#include <cstdio>
 
 #include "orbital_space.h"
 #include <libutil/libutil.h>

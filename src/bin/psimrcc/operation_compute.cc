@@ -5,6 +5,7 @@
  ***************************************************************************/
 
 #include <cstdlib>
+#include <cstdio>
 
 #include <libmoinfo/libmoinfo.h>
 #include <libutil/libutil.h>

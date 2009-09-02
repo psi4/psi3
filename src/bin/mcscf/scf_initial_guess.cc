@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdlib>
+#include <cstdio>
 
 #include <libchkpt/chkpt.hpp>
 #include <liboptions/liboptions.h>

@@ -1,4 +1,5 @@
 #include "scf.h"
+#include <cstdio>
 
 #include <liboptions/liboptions.h>
 

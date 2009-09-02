@@ -3,6 +3,7 @@
 #include <string>
 #include <utility>
 #include <algorithm>
+#include <cstdio>
 
 #include <libmoinfo/libmoinfo.h>
 

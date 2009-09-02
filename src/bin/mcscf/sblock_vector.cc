@@ -1,5 +1,6 @@
 #include <cstdlib>
 #include <psifiles.h>
+#include <cstdio>
 
 #include "sblock_vector.h"
 

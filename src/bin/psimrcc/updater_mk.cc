@@ -4,6 +4,7 @@
  *  @brief Contains methods for updating the CC equations
 */
 
+#include <cstdio>
 #include <cmath>
 #include <string>
 

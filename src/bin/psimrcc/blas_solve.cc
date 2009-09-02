@@ -1,3 +1,4 @@
+#include <cstdio>
 #include <libmoinfo/libmoinfo.h>
 
 #include "blas.h"

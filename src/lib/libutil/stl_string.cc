@@ -2,6 +2,7 @@
 #include <cmath>
 #include <iomanip>
 #include <algorithm>
+#include <cstdio>
 
 #include "libutil.h"
 

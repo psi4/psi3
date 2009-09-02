@@ -1,4 +1,5 @@
 #include <libmoinfo/libmoinfo.h>
+#include <cstdio>
 #include "blas.h"
 #include "debugging.h"
 #include <libutil/libutil.h>

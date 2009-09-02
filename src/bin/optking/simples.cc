@@ -179,6 +179,8 @@ int simples_class::get_id_from_atoms_tors(int a, int b, int c, int d) const {
   int i;
   char error[100];
 
+  //fprintf(outfile,"get_id_from_atoms_tors(%d %d %d %d)\n", a, b, c, d);
+
   tors_class t1(0, a, b, c, d);
   for (i=0; i<tors.size(); ++i) {
     if (t1 == tors[i])
@@ -645,7 +647,7 @@ simples_class :: simples_class(cartesians& carts, int user_intcos)
 
       // add bonus torsions aa-a-b-c-cc if a-b-c is linear, etc.
       int aa, bb, cc, ia, ib, ic, ba, bc, lin_aa, lin_cc, found_aa, found_cc;
-      int *taa, *tbb, *tcc, *tdd, skip;
+      int *taa, *tbb, *tcc, *tdd, skip, nbonds, central;
       taa = new int[300]; tbb = new int[300]; tcc = new int[300]; tdd = new int[300];
 
       for(ia=0;ia<natom;++ia)
@@ -716,28 +718,35 @@ simples_class :: simples_class(cartesians& carts, int user_intcos)
       delete taa, tbb, tcc, tdd;
 
       // add bonus torsions for cases like BH3 and H2CO
-      // where natom = 3 and total number of bonds is 3
-      if (natom == 4) {
-        int nbonds=0;
-        for (a=0;a<natom;++a)
-          for (b=0;b<a;++b) {
+      // where natom = 4 but the bonds are not in a line so no torsions
+      if ((natom == 4) && (tors.size() == 0)) {
+        // find central atom
+        for (a=0; a<natom; ++a) {
+          nbonds=0;
+          for (b=0;b<natom;++b) {
             if (bonds[a][b])
-              nbonds++;
+               nbonds++;
           }
-        if (nbonds == 3) {
-          // make sure whole molecule is not linear
-          if (bend.size() > 2) {
-            // we'll just try 3 torsions for now - this works with NH3 with different
-            // atom numberings -- these torsions may have to be changed to
-            // use the central atom in a specific way someday
-            t1 = new tors_class(++id_count, 0, 1, 2, 3, 0.0);
-            tors.push_back(*t1);
-
-            t1 = new tors_class(++id_count, 0, 2, 3, 1, 0.0);
-            tors.push_back(*t1);
-
-            t1 = new tors_class(++id_count, 0, 3, 1, 2, 0.0);
-            tors.push_back(*t1);
+          if (nbonds == 3) {
+            central = a;
+            break;
+          }
+        }
+        fprintf(outfile,"Found central atom %d needing torsions.\n", central+1);
+        if (a!=natom) { // found a central atom with 3 bonds
+          for (i=0; i<natom; ++i) {
+            if (i!=central) {
+              for (j=0; j<natom; ++j) {
+                if ((j!=i) && (j!=central)) {
+                  for (k=0; k<natom; ++k) {
+                    if ((k!=i) && (k!=j) && (k!=central)) {
+                      t1 = new tors_class(++id_count, i, central, j, k, 0.0);
+                      tors.push_back(*t1);
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
