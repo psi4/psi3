@@ -659,6 +659,17 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
     strcpy(disp_label,"New Cartesian Geometry in a.u.");
     success = new_geom(carts,simples,symm,dq_to_new_geom,32,0,disp_label,0,0,djunk);
   }
+
+  if (!success && do_line_search) {
+    fprintf(outfile,"Giving up - unable to back-transform to new cartesian coordinates.\n");
+    fprintf(outfile,"Returning balk code.\n");
+    open_PSIF();
+    i = 1;
+    psio_write_entry(PSIF_OPTKING, "Balked last time", (char *) &i, sizeof(int));
+    close_PSIF();
+    exit_io();
+    exit(PSI_RETURN_BALK);
+  }
   
   int retry = 1;
   while (!success) {
@@ -672,10 +683,14 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
     }
     success = new_geom(carts,simples,symm,dq_to_new_geom,32,0,disp_label,0,0,djunk);
     ++retry;
-    if ((!success) && ((retry == 5) || ((retry == 2) && do_line_search))) {
+    if (!success && retry == 5) {
       fprintf(outfile,"Giving up - unable to back-transform to new cartesian coordinates.\n");
-      fclose(outfile);
-      exit(PSI_RETURN_FAILURE);
+      open_PSIF();
+      i = 1;
+      psio_write_entry(PSIF_OPTKING, "Balked last time", (char *) &i, sizeof(int));
+      close_PSIF();
+      exit_io();
+      exit(PSI_RETURN_BALK);
     }
   }
 
