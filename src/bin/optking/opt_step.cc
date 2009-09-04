@@ -672,7 +672,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
     }
     success = new_geom(carts,simples,symm,dq_to_new_geom,32,0,disp_label,0,0,djunk);
     ++retry;
-    if ((retry == 5) || (retry == 2 && do_line_search)) {
+    if ((!success) && ((retry == 5) || ((retry == 2) && do_line_search))) {
       fprintf(outfile,"Giving up - unable to back-transform to new cartesian coordinates.\n");
       fclose(outfile);
       exit(PSI_RETURN_FAILURE);
