@@ -26,7 +26,7 @@ void CCBLAS::diis_add(string amps, string delta_amps)
 {
   vector<string> amps_names = moinfo->get_matrix_names(amps);
   vector<string> delta_amps_names = moinfo->get_matrix_names(delta_amps);
-  for(int n=0;n<amps_names.size();n++){
+  for(size_t n=0;n<amps_names.size();n++){
     diis_matrices.push_back(make_pair(amps_names[n],delta_amps_names[n]));
   }
 }

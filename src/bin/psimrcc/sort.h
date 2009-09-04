@@ -20,7 +20,7 @@ class CCMatrix;
 #define INDEX(i,j) ((i>j) ? (ioff[(i)]+(j)) : (ioff[(j)]+(i)))
 #define four(i,j,k,l) INDEX(INDEX(i,j),INDEX(k,l))
 
-enum SortAlgorithm {in_core_sort,out_of_core_sort,mrpt2_sort};
+enum SortAlgorithm {out_of_core_sort,mrpt2_sort};
 
 /**
  *  @class CCSort

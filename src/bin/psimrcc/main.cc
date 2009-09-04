@@ -113,6 +113,9 @@ void read_calculation_options()
   options_add_bool("LOCK_SINGLET",false);
   options_add_bool("MP2_GUESS",true);
   options_add_bool("HEFF4",true);
+  options_add_bool("OFFDIAGONAL_CCSD_T",true);
+  options_add_bool("DIAGONAL_CCSD_T",true);
+  options_add_bool("DIAGONALIZE_HEFF",false);
   options_add_bool("ONLY_CLOSED_SHELL",false);
   options_add_bool("USE_DIIS",true);
   options_add_bool("USE_SPIN_SYMMETRY",true);
@@ -186,7 +189,7 @@ void init_psi(int argc, char *argv[])
 
   fprintf(outfile,"\n  MRCC          MRCC");
   fprintf(outfile,"\n   MRCC  MRCC  MRCC");
-  fprintf(outfile,"\n   MRCC  MRCC  MRCC      PSIMRCC Version 0.9.3.1, July 2009");
+  fprintf(outfile,"\n   MRCC  MRCC  MRCC      PSIMRCC Version 0.9.3.3, July 2009");
   fprintf(outfile,"\n   MRCC  MRCC  MRCC      Multireference Coupled Cluster, written by");
   fprintf(outfile,"\n     MRCCMRCCMRCC        Francesco A. Evangelista and Andrew C. Simmonett");
   fprintf(outfile,"\n         MRCC            Compiled on %s at %s",__DATE__,__TIME__);

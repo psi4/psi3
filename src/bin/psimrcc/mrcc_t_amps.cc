@@ -92,17 +92,13 @@ void CCMRCC::update_t3_ijkabc_amps()
     CCMatTmp  TijkabcMatTmp = blas->get_MatTmp("t3[ooo][vvv]",unique_ref,none);
     CCMatTmp  HijkabcMatTmp = blas->get_MatTmp("t3_eqns[ooo][vvv]",unique_ref,none);
 
-    // Grab the indexing for t3[ijk][abc]
-    short**   left_tuples  = TijkabcMatTmp->get_left()->get_tuples();
-    short**   right_tuples = TijkabcMatTmp->get_right()->get_tuples();
-
     double*** Tijkabc_matrix = TijkabcMatTmp->get_matrix();
     double*** Hijkabc_matrix = HijkabcMatTmp->get_matrix();
 
     for(int h =0; h < moinfo->get_nirreps();h++){
-      for(int abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
+      for(size_t abc = 0;abc<TijkabcMatTmp->get_right_pairpi(h);abc++){
         double delta_abc = d3_vvv[ref][h][abc];
-        for(int ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
+        for(size_t ijk = 0;ijk<TijkabcMatTmp->get_left_pairpi(h);ijk++){
           double delta_ijk = d3_ooo[ref][h][ijk];
           Tijkabc_matrix[h][ijk][abc]+=Hijkabc_matrix[h][ijk][abc]/(delta_ijk-delta_abc);
         }
@@ -124,17 +120,13 @@ void CCMRCC::update_t3_ijKabC_amps()
     CCMatTmp  TijKabCMatTmp = blas->get_MatTmp("t3[ooO][vvV]",unique_ref,none);
     CCMatTmp  HijKabCMatTmp = blas->get_MatTmp("t3_eqns[ooO][vvV]",unique_ref,none);
 
-    // Grab the indexing for t3[ijk][abc]
-    short**   left_tuples  = TijKabCMatTmp->get_left()->get_tuples();
-    short**   right_tuples = TijKabCMatTmp->get_right()->get_tuples();
-
     double*** TijKabC_matrix = TijKabCMatTmp->get_matrix();
     double*** HijKabC_matrix = HijKabCMatTmp->get_matrix();
 
     for(int h =0; h < moinfo->get_nirreps();h++){
-      for(int abc = 0;abc<TijKabCMatTmp->get_right_pairpi(h);abc++){
+      for(size_t abc = 0;abc<TijKabCMatTmp->get_right_pairpi(h);abc++){
         double delta_abc = d3_vvV[ref][h][abc];
-        for(int ijk = 0;ijk<TijKabCMatTmp->get_left_pairpi(h);ijk++){
+        for(size_t ijk = 0;ijk<TijKabCMatTmp->get_left_pairpi(h);ijk++){
           double delta_ijk = d3_ooO[ref][h][ijk];
           TijKabC_matrix[h][ijk][abc]+=HijKabC_matrix[h][ijk][abc]/(delta_ijk-delta_abc);
         }

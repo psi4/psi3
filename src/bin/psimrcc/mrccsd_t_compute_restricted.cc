@@ -79,25 +79,31 @@ void MRCCSD_T::compute_restricted()
     }
   }
 
-  double Heff_E = 0.0;
-  for(int mu = 0; mu < nrefs; ++mu){
-    for(int nu = 0; nu < nrefs; ++nu){
-      if(mu != nu){
-        Heff_E += h_eff->get_left_eigenvector(mu) *  h_eff->get_right_eigenvector(nu) * closed_shell_factor * d_h_eff[mu][nu];
+  if(not options_get_bool("DIAGONALIZE_HEFF")){
+    double Heff_E = 0.0;
+    for(int mu = 0; mu < nrefs; ++mu){
+      for(int nu = 0; nu < nrefs; ++nu){
+        if(mu != nu){
+          Heff_E += h_eff->get_left_eigenvector(mu) *  h_eff->get_right_eigenvector(nu) * closed_shell_factor * d_h_eff[mu][nu];
+        }
       }
     }
-  }
 
-  fprintf(outfile,"\n\n  Total     diagonal (T) correction: %17.12f",E4);
-  fprintf(outfile,"\n  Total off-diagonal (T) correction: %17.12f",Heff_E);
-  fprintf(outfile,"\n  Total              (T) correction: %17.12f",Heff_E + E4);
+    fprintf(outfile,"\n\n  Total     diagonal (T) correction: %17.12f",E4);
+    fprintf(outfile,"\n  Total off-diagonal (T) correction: %17.12f",Heff_E);
+    fprintf(outfile,"\n  Total              (T) correction: %17.12f",Heff_E + E4);
+  }
 
   for(int mu = 0; mu < nrefs; ++mu){
     for(int nu = 0; nu < nrefs; ++nu){
       if(mu != nu){
-        h_eff->add_matrix(mu,nu,closed_shell_factor * d_h_eff[mu][nu]);
+        if(options_get_bool("DIAGONAL_CCSD_T")){  // Option to add the diagonal correction
+          h_eff->add_matrix(mu,nu,closed_shell_factor * d_h_eff[mu][nu]);
+        }
       }else{
-        h_eff->add_matrix(mu,nu,closed_shell_factor * (E4_ooo[mu] + E4_ooO[mu] + E4_oOO[mu] + E4_OOO[mu]));
+        if(options_get_bool("OFFDIAGONAL_CCSD_T")){  // Option to add the off-diagonal correction
+          h_eff->add_matrix(mu,nu,closed_shell_factor * (E4_ooo[mu] + E4_ooO[mu] + E4_oOO[mu] + E4_OOO[mu]));
+        }
       }
     }
   }
@@ -110,8 +116,6 @@ void MRCCSD_T::compute_ooo_triples_restricted()
 
   size_t tot_cycles   = 0;
   size_t tot_triplets = 0;
-
-//  size_t ntriplets = ijk;
 
   for(ijk.first(); !ijk.end(); ijk.next()){
     size_t i_abs = o->get_tuple_abs_index(ijk.ind_abs<0>());

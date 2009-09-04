@@ -69,9 +69,13 @@ void MRCCSD_T::compute_spin_adapted()
   for(int mu = 0; mu < nrefs; ++mu){
     for(int nu = 0; nu < nrefs; ++nu){
       if(mu != nu){
-        h_eff->add_matrix(mu,nu,2.0 * d_h_eff[mu][nu]);
+        if(options_get_bool("DIAGONAL_CCSD_T")){  // Option to add the diagonal correction
+          h_eff->add_matrix(mu,nu,2.0 * d_h_eff[mu][nu]);
+        }
       }else{
-        h_eff->add_matrix(mu,nu,2.0 * E4_ooo[mu] + 2.0 * E4_ooO[mu]);
+        if(options_get_bool("OFFDIAGONAL_CCSD_T")){  // Option to add the off-diagonal correction
+          h_eff->add_matrix(mu,nu,2.0 * E4_ooo[mu] + 2.0 * E4_ooO[mu]);
+        }
       }
     }
   }

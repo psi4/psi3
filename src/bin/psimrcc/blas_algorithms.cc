@@ -17,7 +17,7 @@ void CCBLAS::zero(const char* cstr)
   string str(cstr);
   // To zero diagonals of things like "Fae[v][v]{u}"
   vector<string> names = moinfo->get_matrix_names(str);
-  for(int n=0;n<names.size();n++){
+  for(size_t n = 0; n < names.size(); ++n){
     CCMatrix* Matrix = get_Matrix(names[n]);
     Matrix->zero_matrix();
     DEBUGGING(5,
@@ -31,7 +31,7 @@ void CCBLAS::zero_right_four_diagonal(const char* cstr)
   string str(cstr);
   // To zero diagonals of things like "Fae[v][v]{u}"
   vector<string> names = moinfo->get_matrix_names(str);
-  for(int n=0;n<names.size();n++){
+  for(size_t n = 0; n < names.size(); ++n){
     CCMatrix* Matrix = get_Matrix(names[n]);
     Matrix->zero_right_four_diagonal();
     DEBUGGING(5,
@@ -45,7 +45,7 @@ void CCBLAS::zero_non_doubly_occupied(const char* cstr)
   string str(cstr);
   // To zero non-doubly occupied MOs of things like "Fae[v][v]{u}"
   vector<string> names = moinfo->get_matrix_names(str);
-  for(int n=0;n<names.size();n++){
+  for(size_t n = 0; n < names.size(); ++n){
     CCMatrix* Matrix = get_Matrix(names[n]);
     Matrix->zero_non_doubly_occupied();
     DEBUGGING(5,
@@ -59,7 +59,7 @@ void CCBLAS::zero_non_external(const char* cstr)
   string str(cstr);
   // To zero non-external MOs of things like "Fae[v][v]{u}"
   vector<string> names = moinfo->get_matrix_names(str);
-  for(int n=0;n<names.size();n++){
+  for(size_t n = 0; n < names.size(); ++n){
     CCMatrix* Matrix = get_Matrix(names[n]);
     Matrix->zero_non_external();
     DEBUGGING(5,
@@ -77,7 +77,7 @@ void CCBLAS::reduce_spaces(const char* out,const char* in)
   vector<string> out_names = moinfo->get_matrix_names(out_str);
   if(in_names.size()!=out_names.size())
     print_error(outfile,"CCBLAS::map_spaces, number of references mismatch",__FILE__,__LINE__);
-  for(int n=0;n<in_names.size();n++){
+  for(size_t n = 0; n < in_names.size(); ++n){
     CCMatrix*  in_Matrix = get_Matrix(in_names[n]);
     CCMatrix* out_Matrix = get_Matrix(out_names[n]);
     process_reduce_spaces(out_Matrix,in_Matrix);
@@ -116,22 +116,20 @@ void CCBLAS::process_reduce_spaces(CCMatrix* out_Matrix,CCMatrix* in_Matrix)
 
   if(index_label_size==2){
     short* pq = new short[2];
-
     for(int h=0;h<moinfo->get_nirreps();h++){
-      for(int i=0;i<out_Matrix->get_left_pairpi(h);i++){
-        for(int j=0;j<out_Matrix->get_right_pairpi(h);j++){
+      for(size_t i = 0;i < out_Matrix->get_left_pairpi(h); ++i){
+        for(size_t j = 0; j < out_Matrix->get_right_pairpi(h); ++j){
           out_Matrix->get_two_indices(pq,h,i,j);
           out_matrix[h][i][j] = in_Matrix->get_two_address_element(map[0][pq[0]],map[1][pq[1]]);
         }
       }
     }
-
     delete[] pq;
   }else if(index_label_size==4){
     short* pqrs = new short[4];
     for(int h=0;h<moinfo->get_nirreps();h++){
-      for(int i=0;i<out_Matrix->get_left_pairpi(h);i++){
-        for(int j=0;j<out_Matrix->get_right_pairpi(h);j++){
+      for(size_t i = 0; i < out_Matrix->get_left_pairpi(h); ++i){
+        for(size_t j = 0; j < out_Matrix->get_right_pairpi(h); ++j){
           out_Matrix->get_four_indices(pqrs,h,i,j);
           out_matrix[h][i][j] = in_Matrix->get_four_address_element(map[0][pqrs[0]],map[1][pqrs[1]],map[2][pqrs[2]],map[3][pqrs[3]]);
         }
@@ -151,7 +149,7 @@ void CCBLAS::expand_spaces(const char* out,const char* in)
   vector<string> out_names = moinfo->get_matrix_names(out_str);
   if(in_names.size()!=out_names.size())
     print_error(outfile,"CCBLAS::map_spaces, number of references mismatch",__FILE__,__LINE__);
-  for(int n=0;n<in_names.size();n++){
+  for(size_t n = 0; n < in_names.size(); ++n){
     CCMatrix*  in_Matrix = get_Matrix(in_names[n]);
     CCMatrix* out_Matrix = get_Matrix(out_names[n]);
     process_expand_spaces(out_Matrix,in_Matrix);
@@ -192,8 +190,8 @@ void CCBLAS::process_expand_spaces(CCMatrix* out_Matrix,CCMatrix* in_Matrix)
     short* pq = new short[2];
 
     for(int h=0;h<moinfo->get_nirreps();h++){
-      for(int i=0;i<out_Matrix->get_left_pairpi(h);i++){
-        for(int j=0;j<out_Matrix->get_right_pairpi(h);j++){
+      for(size_t i = 0; i < out_Matrix->get_left_pairpi(h); ++i){
+        for(size_t j = 0; j < out_Matrix->get_right_pairpi(h); ++j){
           out_Matrix->get_two_indices(pq,h,i,j);
           in_Matrix->set_two_address_element(map[0][pq[0]],
                                              map[1][pq[1]],
@@ -206,8 +204,8 @@ void CCBLAS::process_expand_spaces(CCMatrix* out_Matrix,CCMatrix* in_Matrix)
   }else if(index_label_size==4){
     short* pqrs = new short[4];
     for(int h=0;h<moinfo->get_nirreps();h++){
-      for(int i=0;i<out_Matrix->get_left_pairpi(h);i++){
-        for(int j=0;j<out_Matrix->get_right_pairpi(h);j++){
+      for(size_t i = 0; i < out_Matrix->get_left_pairpi(h); ++i){
+        for(size_t j = 0; j < out_Matrix->get_right_pairpi(h); ++j){
           out_Matrix->get_four_indices(pqrs,h,i,j);
           in_Matrix->set_four_address_element(map[0][pqrs[0]],
                                               map[1][pqrs[1]],

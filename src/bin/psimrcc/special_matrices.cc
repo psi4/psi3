@@ -33,9 +33,9 @@ void MatrixBase::zero()
 void MatrixBase::print()
 {
   if(nrows * ncols > 0){
-    for(int p = 0; p < nrows; ++p){
+    for(size_t p = 0; p < nrows; ++p){
       fprintf(outfile,"\n  ");
-      for(int q = 0; q < ncols; ++q){
+      for(size_t q = 0; q < ncols; ++q){
         fprintf(outfile,"%10.6f",matrix[p][q]);
       }
     }
@@ -45,8 +45,8 @@ void MatrixBase::print()
 double MatrixBase::norm()
 {
   double norm = 0.0;
-  for(int p = 0; p < nrows; ++p){
-    for(int q = 0; q < ncols; ++q){
+  for(size_t p = 0; p < nrows; ++p){
+    for(size_t q = 0; q < ncols; ++q){
       norm += matrix[p][q] * matrix[p][q];
     }
   }
@@ -86,10 +86,10 @@ void MatrixBase::multiply(MatrixBase* A, MatrixBase* B, double alpha, double bet
   double** a = A->get_matrix();
   double** b = B->get_matrix();
   size_t max_r = A->get_ncols();
-  for(int p = 0; p < nrows; ++p){
-    for(int q = 0; q < ncols; ++q){
+  for(size_t p = 0; p < nrows; ++p){
+    for(size_t q = 0; q < ncols; ++q){
       double sum = 0.0;
-      for(int r = 0; r < max_r; ++r){
+      for(size_t r = 0; r < max_r; ++r){
         sum += a[p][r] * b[q][r];
       }
       matrix[p][q] = alpha * matrix[p][q] + beta * sum;
@@ -439,7 +439,7 @@ BlockMatrix* IndexMatrix::get_block_matrix(size_t index,int ref)
 void IndexMatrix::print()
 {
   for(BMMap::iterator iter = matrices.begin(); iter != matrices.end(); ++iter){
-    fprintf(outfile,"\n  Index = %4d Ref = %d",iter->first.first,iter->first.second);
+    fprintf(outfile,"\n  Index = %4d Ref = %d",static_cast<int>(iter->first.first),static_cast<int>(iter->first.second));
     iter->second->print();
   }
 }

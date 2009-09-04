@@ -29,7 +29,7 @@ void CCOperation::sort(CCIndex* T_left,CCIndex* T_right,double*** T_matrix,doubl
   if(reindexing.size()>6)
     print_developing(outfile,"CCOperation::sort() doesn't support more that six indices",__FILE__,__LINE__);
   short* reindexing_array = new short[6];
-  for(int i = 0; i< reindexing.size(); i++)
+  for(size_t i = 0; i< reindexing.size(); i++)
     reindexing_array[i]=string_to_integer(reindexing.substr(i,1))-1;
 
   CCIndex* A_left    = A_Matrix->get_left();

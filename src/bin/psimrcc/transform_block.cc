@@ -75,7 +75,6 @@ int CCTransform::allocate_tei_mo_block(int first_irrep)
 
   // Find how many irreps we can store in 95% of the free memory
   std::vector<size_t> pairpi = tei_mo_indexing->get_pairpi();
-  size_t matrix_size = 0;
   for(int h = first_irrep; h < moinfo->get_nirreps(); ++h){
     size_t required_memory = (INDEX(pairpi[h]-1,pairpi[h]-1) + 1) * static_cast<size_t>(sizeof(double));
     if(required_memory != 0){

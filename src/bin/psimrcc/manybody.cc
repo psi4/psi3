@@ -120,8 +120,8 @@ void CCManyBody::generate_d3_ijk(double***& d3,bool alpha_i,bool alpha_j,bool al
       is_aocc[i]=false;
       is_bocc[i]=false;
     }
-    for(int i=0;i<aocc.size();i++) is_aocc[aocc[i]]=true;
-    for(int i=0;i<bocc.size();i++) is_bocc[bocc[i]]=true;
+    for(size_t i=0;i<aocc.size();i++) is_aocc[aocc[i]]=true;
+    for(size_t i=0;i<bocc.size();i++) is_bocc[bocc[i]]=true;
 
     // Read the Fock matrices
     CCMatTmp f_oo_Matrix = blas->get_MatTmp("fock[oo]",reference,none);
@@ -196,8 +196,8 @@ void CCManyBody::generate_d3_abc(double***& d3,bool alpha_a,bool alpha_b,bool al
       is_avir[i]=false;
       is_bvir[i]=false;
     }
-    for(int i=0;i<avir.size();i++) is_avir[avir[i]]=true;
-    for(int i=0;i<bvir.size();i++) is_bvir[bvir[i]]=true;
+    for(size_t i=0;i<avir.size();i++) is_avir[avir[i]]=true;
+    for(size_t i=0;i<bvir.size();i++) is_bvir[bvir[i]]=true;
 
     // Read the Fock matrices
     CCMatTmp f_vv_Matrix = blas->get_MatTmp("fock[vv]",reference,none);
@@ -257,8 +257,6 @@ void CCManyBody::generate_d3_abc(double***& d3,bool alpha_a,bool alpha_b,bool al
 
 void CCManyBody::deallocate_triples_denominators()
 {
-  CCIndex* ooo_indexing = blas->get_index("[ooo]");
-  CCIndex* vvv_indexing = blas->get_index("[vvv]");
   for(int ref=0;ref<moinfo->get_nunique();ref++)
     for(int h=0;h<moinfo->get_nirreps();h++){
       release1(d3_ooo[ref][h]);
@@ -307,19 +305,19 @@ void CCManyBody::compute_reference_energy()
     CCMatTmp V_oooo_Matrix = blas->get_MatTmp("<[oo]:[oo]>",none);
     CCMatTmp V_oOoO_Matrix = blas->get_MatTmp("<[oo]|[oo]>",none);
 
-    for(int i=0;i<aocc.size();i++)
+    for(size_t i=0;i<aocc.size();i++)
       ref_energy+=f_oo_Matrix->get_two_address_element(aocc[i],aocc[i]);
-    for(int i=0;i<bocc.size();i++)
+    for(size_t i=0;i<bocc.size();i++)
       ref_energy+=f_OO_Matrix->get_two_address_element(bocc[i],bocc[i]);
 
-    for(int i=0;i<aocc.size();i++)
-      for(int j=0;j<aocc.size();j++)
+    for(size_t i=0;i<aocc.size();i++)
+      for(size_t j=0;j<aocc.size();j++)
         ref_energy -= 0.5 * V_oooo_Matrix->get_four_address_element(aocc[i],aocc[j],aocc[i],aocc[j]);
-    for(int i=0;i<bocc.size();i++)
-      for(int j=0;j<bocc.size();j++)
+    for(size_t i=0;i<bocc.size();i++)
+      for(size_t j=0;j<bocc.size();j++)
         ref_energy -= 0.5 * V_oooo_Matrix->get_four_address_element(bocc[i],bocc[j],bocc[i],bocc[j]);
-    for(int i=0;i<aocc.size();i++)
-      for(int j=0;j<bocc.size();j++)
+    for(size_t i=0;i<aocc.size();i++)
+      for(size_t j=0;j<bocc.size();j++)
         ref_energy -= V_oOoO_Matrix->get_four_address_element(aocc[i],bocc[j],aocc[i],bocc[j]);
     // Write the energy to the ERef
     CCMatTmp ERef_Matrix = blas->get_MatTmp("ERef",unique_n,none);
@@ -469,7 +467,7 @@ double CCManyBody::diagonalize_Heff(int root,int ndets, double** Heff,double*& r
     // Eliminate the triplet solution if required
     if((options_get_bool("LOCK_SINGLET")==1)&&(ndets==4)){
       if((fabs(right_eigenvector[0])<5.0e-2)&& (fabs(right_eigenvector[3])<5.0e-2) && ((right_eigenvector[1]/right_eigenvector[2])<-0.5)){
-        fprintf(outfile,"\n\tSelecting root %d since original root is a triplet\n",root+1,root);
+        fprintf(outfile,"\n\tSelecting root %d since original root is a triplet\n",root+1);
         root++;
         for(int k=0;k<ndets;k++){
           right_eigenvector[k] = right[root][k];

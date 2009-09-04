@@ -46,12 +46,6 @@ void CCSort::build_integrals_out_of_core()
                   (unsigned long)ccintegrals_memory,fraction_of_memory_for_sorting*100.0);
   fflush(outfile);
 
-  for(MatMapIt it = mat_it; it != mat_end; ++it){
-    for(int h = 0; h < moinfo->get_nirreps(); ++h){
-      size_t block_size = it->second->get_block_sizepi(mat_irrep);
-    }
-  }
-
   while(mat_it!=mat_end){
     fprintf(outfile,"\n\n    Pass %d:",cycle + 1);
     // Find how many matrices blocks we can store in 95% of the free memory and allocate them
@@ -98,7 +92,7 @@ void CCSort::setup_out_of_core_list(MatMapIt& mat_it,int& mat_irrep,MatMapIt& ma
         }else{
           if(blocks_added == 0){
             fprintf(outfile,"\n    Matrix: %s irrep %d does not fit into memory",Matrix->get_label().c_str(),mat_irrep);
-            fprintf(outfile,"\n            memory required = %14d bytes",block_memory);
+            fprintf(outfile,"\n            memory required = %14lu bytes",(unsigned long)block_memory);
             fflush(outfile);
           }
           out_of_memory = true;
@@ -131,8 +125,8 @@ void CCSort::form_fock_one_out_of_core(MatrixBlks& to_be_processed)
       double*** matrix = Matrix->get_matrix();
       short* pq = new short[2];
 
-      for(int i = 0;i<Matrix->get_left_pairpi(h);i++){
-        for(int j = 0;j<Matrix->get_right_pairpi(h);j++){
+      for(size_t i = 0; i < Matrix->get_left_pairpi(h); ++i){
+        for(size_t j = 0; j < Matrix->get_right_pairpi(h); ++j){
           // Find p and q from the pairs
           Matrix->get_two_indices_pitzer(pq,h,i,j);
           // Add the h(p,q) contribution
@@ -160,8 +154,8 @@ void CCSort::form_fock_out_of_core(CCMatrix* Matrix, int h)
     vector<int> aocc = moinfo->get_aocc(Matrix->get_reference(),AllRefs);
     vector<int> bocc = moinfo->get_bocc(Matrix->get_reference(),AllRefs);
 
-    for(int i = 0;i<Matrix->get_left_pairpi(h);i++)
-      for(int j = 0;j<Matrix->get_right_pairpi(h);j++){
+    for(size_t i = 0; i < Matrix->get_left_pairpi(h); ++i)
+      for(size_t j = 0; j < Matrix->get_right_pairpi(h); ++j){
         // Find p and q from the pairs
         Matrix->get_two_indices_pitzer(pq,h,i,j);
         // Add the core contribution//
@@ -170,14 +164,14 @@ void CCSort::form_fock_out_of_core(CCMatrix* Matrix, int h)
           matrix[h][i][j]+=add_fock_two_out_of_core(pq[0],pq[1],kk,true);
           matrix[h][i][j]+=add_fock_two_out_of_core(pq[0],pq[1],kk,false);
         }
-        for(int k=0;k<aocc.size();k++){
+        for(size_t k = 0; k < aocc.size(); ++k){
           int kk=oa2p[aocc[k]];
           if(alpha)
             matrix[h][i][j]+=add_fock_two_out_of_core(pq[0],pq[1],kk,true);
           else
             matrix[h][i][j]+=add_fock_two_out_of_core(pq[0],pq[1],kk,false);
         }
-        for(int k=0;k<bocc.size();k++){
+        for(size_t k = 0; k < bocc.size(); ++k){
           int kk=oa2p[bocc[k]];
           if(!alpha)
             matrix[h][i][j]+=add_fock_two_out_of_core(pq[0],pq[1],kk,true);
@@ -197,8 +191,8 @@ void CCSort::form_two_electron_integrals_out_of_core(CCMatrix* Matrix, int h)
     double*** matrix = Matrix->get_matrix();
     bool antisymmetric = Matrix->is_antisymmetric();
     if(Matrix->is_chemist()){
-      for(int i = 0;i<Matrix->get_left_pairpi(h);i++)
-        for(int j = 0;j<Matrix->get_right_pairpi(h);j++){
+      for(size_t i = 0; i < Matrix->get_left_pairpi(h); ++i)
+        for(size_t j = 0; j < Matrix->get_right_pairpi(h); ++j){
           Matrix->get_four_indices_pitzer(pqrs,h,i,j);
           // From (pq|rs) = <pr|qs> we define
           // (pq:rs) = <pr:qs> = (pq|rs) - (ps|qr)
@@ -211,8 +205,8 @@ void CCSort::form_two_electron_integrals_out_of_core(CCMatrix* Matrix, int h)
             matrix[h][i][j] -= trans->tei_block(pqrs[0],pqrs[3],pqrs[1],pqrs[2]);
         }
     }else{
-      for(int i = 0;i<Matrix->get_left_pairpi(h);i++)
-        for(int j = 0;j<Matrix->get_right_pairpi(h);j++){
+      for(size_t i = 0; i < Matrix->get_left_pairpi(h); ++i)
+        for(size_t j = 0; j < Matrix->get_right_pairpi(h); ++j){
           Matrix->get_four_indices_pitzer(pqrs,h,i,j);
           // Add the +<pq|rs> = (pr|qs) contribution
           matrix[h][i][j] += trans->tei_block(pqrs[0],pqrs[2],pqrs[1],pqrs[3]);

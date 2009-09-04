@@ -18,6 +18,8 @@ public:
   double get_right_eigenvector(int mu)  const {return right_eigenvector[mu];}
 
   double expectation_value();
+  double diagonalize(int root = 0);
+
   double trace();
 
   void add_matrix(int mu,int nu,double value) {matrix[mu][nu] += value;}

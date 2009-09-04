@@ -6,6 +6,7 @@
 
 #include <libmoinfo/libmoinfo.h>
 #include <libutil/libutil.h>
+#include <liboptions/liboptions.h>
 #include <libchkpt/chkpt.hpp>
 
 #include "mrcc.h"
@@ -29,22 +30,18 @@ void CCMRCC::compute_perturbative_triples()
 
   MRCCSD_T mrccsd_t(&h_eff);
 
-  current_energy = h_eff.expectation_value();
+  if(options_get_bool("DIAGONALIZE_HEFF")){
+    fprintf(outfile,"\n\n  Diagonalizing Heff");
+    current_energy = h_eff.diagonalize();
+  }else{
+    fprintf(outfile,"\n\n  Computing the expectation value of Heff");
+    current_energy = h_eff.expectation_value();
+  }
   _default_chkpt_lib_->wt_etot(current_energy);
 
   fprintf(outfile,"\n\n%6c* Mk-MRCCSD(T) total energy   =    %20.12f",' ',current_energy);
   fprintf(outfile,"\n\n  Timing for triples:             %20.6f s",timer.get());
   fflush(outfile);
-//
-//  for(int mu = 0; mu < moinfo->get_ref_size(UniqueRefs); ++mu){
-//    int unique_mu = moinfo->get_ref_number(mu,UniqueRefs);
-//    E4_all[unique_mu] = E4[mu];
-//  }
-//
-//  for(int mu = 0; mu < moinfo->get_ref_size(AllRefs); ++mu){
-//    int unique_mu = moinfo->get_ref_number(mu);
-//    Heff[mu][mu] += E4_all[unique_mu];
-//  }
 }
 
 

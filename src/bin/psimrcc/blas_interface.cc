@@ -30,14 +30,14 @@ void CCBLAS::add_Matrix(const char* cstr)
 {
   string str(cstr);
   vector<string> names = moinfo->get_matrix_names(str);
-  for(int n=0;n<names.size();n++)
+  for(size_t n = 0; n < names.size(); ++n)
     add_Matrix_ref(names[n]);
 }
 
 void CCBLAS::add_Matrix(string str)
 {
   vector<string> names = moinfo->get_matrix_names(str);
-  for(int n=0;n<names.size();n++)
+  for(size_t n = 0; n < names.size(); ++n)
     add_Matrix_ref(names[n]);
 }
 
@@ -51,7 +51,7 @@ void CCBLAS::add_Matrix_ref(std::string& str)
     index_pointer[0]=get_index("[]");
     index_pointer[1]=get_index("[]");
     vector<string> index_string_vec = split_indices(str);
-    for(int i=0;i<index_string_vec.size();++i)
+    for(size_t i = 0; i < index_string_vec.size(); ++i)
       index_pointer[i]=get_index(index_string_vec[i]);
     matrices.insert(make_pair(str,new CCMatrix(str,index_pointer[0],index_pointer[1])));
   }
@@ -155,6 +155,7 @@ CCMatrix* CCBLAS::get_Matrix(string& str, string& expression)
   }
   string err("\n\nCCBLAS::parse() couldn't find the matrix " + str + " in the CCMatrix list\n\nwhile parsing the string:\n\t " + expression + "\n\n");
   print_error(outfile,err,__FILE__,__LINE__);
+  return NULL;
 }
 
 void CCBLAS::set_scalar(const char* cstr,int reference,double value)
