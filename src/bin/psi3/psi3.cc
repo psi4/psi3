@@ -746,7 +746,7 @@ int execut(char **exec, int nexec, int depth)
         else return(-j);
       }
       /* if we got a 'command failed' failed flag */
-      else if (errcod == PSI_RETURN_FAILURE) {
+      else if ((errcod == PSI_RETURN_FAILURE) || (errcod == PSI_RETURN_BALK)) {
         fprintf(stdout,"\nCommand %s has returned a fail status.", exec[i]);
 	psi3_abort();
       }
