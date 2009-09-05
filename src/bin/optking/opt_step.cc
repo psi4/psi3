@@ -671,7 +671,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
     exit(PSI_RETURN_BALK);
   }
   
-  int retry = 1;
+  int retry = 0;
   while (!success) {
     fprintf(outfile,"\tWarning: halving displacement size and reducing back-transformation \
  convergence criteria.\n");
@@ -683,7 +683,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
     }
     success = new_geom(carts,simples,symm,dq_to_new_geom,32,0,disp_label,0,0,djunk);
     ++retry;
-    if (!success && retry == 5) {
+    if (!success && retry == 4) {
       fprintf(outfile,"Giving up - unable to back-transform to new cartesian coordinates.\n");
       open_PSIF();
       i = 1;
@@ -695,7 +695,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
   }
 
   // Modify predicted energe change if displacement size was reduced
-  if (retry > 2) {
+  if (retry > 0) {
     dot_arr(f_q, dq, dim, &tval);
     DE_old = -tval; // g^T x
     for (i=0; i<dim; ++i) {
