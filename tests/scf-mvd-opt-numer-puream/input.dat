@@ -12,8 +12,8 @@ psi: (
   (  H   0.0000000000   1.4287822934   0.9533506869 )
   )
   puream = true
+  opt_conv = tight
 )
 optking: (
-conv = 6
 points = 5
 )

@@ -1,5 +1,5 @@
 ******************************************************************************
-PSI3 started on elrond.chem at Tue Sep  8 21:54:04 2009
+PSI3 started on elrond.chem at Wed Sep  9 14:39:45 2009
 
     -----------------------------------------------------------------------    
             PSI3: An Open-Source Ab Initio Electronic Structure Package 
@@ -38,7 +38,7 @@ The following programs will be executed:
 
 ******************************************************************************
 INPUT tstart called on elrond.chem
-Tue Sep  8 21:54:04 2009
+Wed Sep  9 14:39:45 2009
 
                                 --------------
                                     INPUT
@@ -49,7 +49,7 @@ Tue Sep  8 21:54:04 2009
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /home/rking/psi3/lib/pbasis.dat
+  Parsed basis sets from /usr/local/psi/share/psi/pbasis.dat
 
   -Geometry before Center-of-Mass shift (a.u.):
    Atom            X                  Y                   Z
@@ -185,14 +185,14 @@ Tue Sep  8 21:54:04 2009
 
 ******************************************************************************
 INPUT tstop called on elrond.chem
-Tue Sep  8 21:54:04 2009
+Wed Sep  9 14:39:45 2009
 
 user time   =       0.11 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on elrond.chem
-Tue Sep  8 21:54:04 2009
+Wed Sep  9 14:39:45 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -222,14 +222,14 @@ Tue Sep  8 21:54:04 2009
 
 ******************************************************************************
 cints tstop called on elrond.chem
-Tue Sep  8 21:54:04 2009
+Wed Sep  9 14:39:46 2009
 
-user time   =       0.14 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.15 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 SCF tstart called on elrond.chem
-Tue Sep  8 21:54:04 2009
+Wed Sep  9 14:39:46 2009
 
 
              ------------------------------------------
@@ -339,14 +339,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on elrond.chem
-Tue Sep  8 21:54:04 2009
+Wed Sep  9 14:39:46 2009
 
-user time   =       0.10 seconds =       0.00 minutes
+user time   =       0.11 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 OEPROP tstart called on elrond.chem
-Tue Sep  8 21:54:04 2009
+Wed Sep  9 14:39:46 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -588,9 +588,9 @@ Tue Sep  8 21:54:04 2009
  -Updating total energy ( -76.1148169023) in chkpt file with MVD correction
 ******************************************************************************
 OEPROP tstop called on elrond.chem
-Tue Sep  8 21:54:04 2009
+Wed Sep  9 14:39:46 2009
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
@@ -714,7 +714,7 @@ Setting chkpt prefix to irrep A1 .
 
 ******************************************************************************
 INPUT tstart called on elrond.chem
-Tue Sep  8 21:54:05 2009
+Wed Sep  9 14:39:46 2009
 
 
   -Geometry before Center-of-Mass shift (a.u.):
@@ -851,14 +851,14 @@ Tue Sep  8 21:54:05 2009
 
 ******************************************************************************
 INPUT tstop called on elrond.chem
-Tue Sep  8 21:54:05 2009
+Wed Sep  9 14:39:46 2009
 
 user time   =       0.10 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on elrond.chem
-Tue Sep  8 21:54:05 2009
+Wed Sep  9 14:39:46 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -888,14 +888,14 @@ Tue Sep  8 21:54:05 2009
 
 ******************************************************************************
 cints tstop called on elrond.chem
-Tue Sep  8 21:54:05 2009
+Wed Sep  9 14:39:46 2009
 
-user time   =       0.29 seconds =       0.00 minutes
-system time =       0.08 seconds =       0.00 minutes
+user time   =       0.14 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on elrond.chem
-Tue Sep  8 21:54:05 2009
+Wed Sep  9 14:39:46 2009
 
 
              ------------------------------------------
@@ -1005,14 +1005,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on elrond.chem
-Tue Sep  8 21:54:05 2009
+Wed Sep  9 14:39:46 2009
 
-user time   =       0.11 seconds =       0.00 minutes
+user time   =       0.10 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 OEPROP tstart called on elrond.chem
-Tue Sep  8 21:54:05 2009
+Wed Sep  9 14:39:46 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -1254,10 +1254,10 @@ Tue Sep  8 21:54:05 2009
  -Updating total energy ( -76.1147059253) in chkpt file with MVD correction
 ******************************************************************************
 OEPROP tstop called on elrond.chem
-Tue Sep  8 21:54:05 2009
+Wed Sep  9 14:39:46 2009
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 ******* OPTKING: --energy_save 
@@ -1296,7 +1296,7 @@ Setting chkpt prefix to irrep A1 .
 
 ******************************************************************************
 INPUT tstart called on elrond.chem
-Tue Sep  8 21:54:05 2009
+Wed Sep  9 14:39:46 2009
 
 
   -Geometry before Center-of-Mass shift (a.u.):
@@ -1433,14 +1433,14 @@ Tue Sep  8 21:54:05 2009
 
 ******************************************************************************
 INPUT tstop called on elrond.chem
-Tue Sep  8 21:54:05 2009
+Wed Sep  9 14:39:46 2009
 
-user time   =       0.11 seconds =       0.00 minutes
+user time   =       0.06 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on elrond.chem
-Tue Sep  8 21:54:05 2009
+Wed Sep  9 14:39:46 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1470,14 +1470,14 @@ Tue Sep  8 21:54:05 2009
 
 ******************************************************************************
 cints tstop called on elrond.chem
-Tue Sep  8 21:54:06 2009
+Wed Sep  9 14:39:47 2009
 
-user time   =       0.13 seconds =       0.00 minutes
-system time =       0.04 seconds =       0.00 minutes
+user time   =       0.16 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 SCF tstart called on elrond.chem
-Tue Sep  8 21:54:06 2009
+Wed Sep  9 14:39:47 2009
 
 
              ------------------------------------------
@@ -1587,14 +1587,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on elrond.chem
-Tue Sep  8 21:54:06 2009
+Wed Sep  9 14:39:47 2009
 
-user time   =       0.10 seconds =       0.00 minutes
+user time   =       0.09 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 OEPROP tstart called on elrond.chem
-Tue Sep  8 21:54:06 2009
+Wed Sep  9 14:39:47 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -1836,10 +1836,10 @@ Tue Sep  8 21:54:06 2009
  -Updating total energy ( -76.1148741177) in chkpt file with MVD correction
 ******************************************************************************
 OEPROP tstop called on elrond.chem
-Tue Sep  8 21:54:06 2009
+Wed Sep  9 14:39:47 2009
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 ******* OPTKING: --energy_save 
@@ -1878,7 +1878,7 @@ Setting chkpt prefix to irrep A1 .
 
 ******************************************************************************
 INPUT tstart called on elrond.chem
-Tue Sep  8 21:54:06 2009
+Wed Sep  9 14:39:47 2009
 
 
   -Geometry before Center-of-Mass shift (a.u.):
@@ -2015,14 +2015,14 @@ Tue Sep  8 21:54:06 2009
 
 ******************************************************************************
 INPUT tstop called on elrond.chem
-Tue Sep  8 21:54:06 2009
+Wed Sep  9 14:39:47 2009
 
-user time   =       0.04 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on elrond.chem
-Tue Sep  8 21:54:06 2009
+Wed Sep  9 14:39:47 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2052,14 +2052,14 @@ Tue Sep  8 21:54:06 2009
 
 ******************************************************************************
 cints tstop called on elrond.chem
-Tue Sep  8 21:54:06 2009
+Wed Sep  9 14:39:47 2009
 
 user time   =       0.14 seconds =       0.00 minutes
-system time =       0.05 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on elrond.chem
-Tue Sep  8 21:54:06 2009
+Wed Sep  9 14:39:47 2009
 
 
              ------------------------------------------
@@ -2168,14 +2168,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on elrond.chem
-Tue Sep  8 21:54:06 2009
+Wed Sep  9 14:39:47 2009
 
 user time   =       0.09 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 OEPROP tstart called on elrond.chem
-Tue Sep  8 21:54:06 2009
+Wed Sep  9 14:39:47 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -2417,9 +2417,9 @@ Tue Sep  8 21:54:06 2009
  -Updating total energy ( -76.1148103011) in chkpt file with MVD correction
 ******************************************************************************
 OEPROP tstop called on elrond.chem
-Tue Sep  8 21:54:06 2009
+Wed Sep  9 14:39:47 2009
 
-user time   =       0.03 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
@@ -2459,7 +2459,7 @@ Setting chkpt prefix to irrep A1 .
 
 ******************************************************************************
 INPUT tstart called on elrond.chem
-Tue Sep  8 21:54:06 2009
+Wed Sep  9 14:39:47 2009
 
 
   -Geometry before Center-of-Mass shift (a.u.):
@@ -2596,14 +2596,14 @@ Tue Sep  8 21:54:06 2009
 
 ******************************************************************************
 INPUT tstop called on elrond.chem
-Tue Sep  8 21:54:06 2009
+Wed Sep  9 14:39:47 2009
 
-user time   =       0.06 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on elrond.chem
-Tue Sep  8 21:54:06 2009
+Wed Sep  9 14:39:47 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2633,14 +2633,14 @@ Tue Sep  8 21:54:06 2009
 
 ******************************************************************************
 cints tstop called on elrond.chem
-Tue Sep  8 21:54:07 2009
+Wed Sep  9 14:39:48 2009
 
 user time   =       0.14 seconds =       0.00 minutes
-system time =       0.05 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 SCF tstart called on elrond.chem
-Tue Sep  8 21:54:07 2009
+Wed Sep  9 14:39:48 2009
 
 
              ------------------------------------------
@@ -2749,14 +2749,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on elrond.chem
-Tue Sep  8 21:54:07 2009
+Wed Sep  9 14:39:48 2009
 
-user time   =       0.19 seconds =       0.00 minutes
-system time =       0.03 seconds =       0.00 minutes
+user time   =       0.09 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 OEPROP tstart called on elrond.chem
-Tue Sep  8 21:54:07 2009
+Wed Sep  9 14:39:48 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -2998,9 +2998,9 @@ Tue Sep  8 21:54:07 2009
  -Updating total energy ( -76.1148192350) in chkpt file with MVD correction
 ******************************************************************************
 OEPROP tstop called on elrond.chem
-Tue Sep  8 21:54:07 2009
+Wed Sep  9 14:39:48 2009
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
@@ -3115,7 +3115,7 @@ Projected energy change by quadratic approximation:        -0.0000678349
 	             MAX Force  &&  ( Delta(E) ||   MAX disp )
 	----------------------------------------------------------
 	Actual         7.3e-02        1.0e+06        8.1e-03
-	Limit          1.0e-04        1.0e-08        1.0e-03
+	Limit          1.0e-05        1.0e-10        1.0e-04
 	Conv?            N              N              N
 	----------------------------------------------------------
 
@@ -3141,7 +3141,7 @@ Geometry written to chkpt
 
 ******************************************************************************
 cints tstart called on elrond.chem
-Tue Sep  8 21:54:07 2009
+Wed Sep  9 14:39:48 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -3171,14 +3171,14 @@ Tue Sep  8 21:54:07 2009
 
 ******************************************************************************
 cints tstop called on elrond.chem
-Tue Sep  8 21:54:07 2009
+Wed Sep  9 14:39:48 2009
 
-user time   =       0.19 seconds =       0.00 minutes
-system time =       0.05 seconds =       0.00 minutes
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on elrond.chem
-Tue Sep  8 21:54:07 2009
+Wed Sep  9 14:39:48 2009
 
 
              ------------------------------------------
@@ -3288,14 +3288,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on elrond.chem
-Tue Sep  8 21:54:07 2009
+Wed Sep  9 14:39:48 2009
 
-user time   =       0.16 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.09 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 OEPROP tstart called on elrond.chem
-Tue Sep  8 21:54:07 2009
+Wed Sep  9 14:39:48 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -3537,11 +3537,11 @@ Tue Sep  8 21:54:07 2009
  -Updating total energy ( -76.1148816053) in chkpt file with MVD correction
 ******************************************************************************
 OEPROP tstop called on elrond.chem
-Tue Sep  8 21:54:08 2009
+Wed Sep  9 14:39:48 2009
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 
 ******* OPTKING: --disp_irrep --irrep 1 
 
@@ -3657,7 +3657,7 @@ Setting chkpt prefix to irrep A1 .
 
 ******************************************************************************
 INPUT tstart called on elrond.chem
-Tue Sep  8 21:54:08 2009
+Wed Sep  9 14:39:48 2009
 
 
   -Geometry before Center-of-Mass shift (a.u.):
@@ -3794,14 +3794,14 @@ Tue Sep  8 21:54:08 2009
 
 ******************************************************************************
 INPUT tstop called on elrond.chem
-Tue Sep  8 21:54:08 2009
+Wed Sep  9 14:39:48 2009
 
 user time   =       0.05 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on elrond.chem
-Tue Sep  8 21:54:08 2009
+Wed Sep  9 14:39:48 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -3831,14 +3831,14 @@ Tue Sep  8 21:54:08 2009
 
 ******************************************************************************
 cints tstop called on elrond.chem
-Tue Sep  8 21:54:08 2009
+Wed Sep  9 14:39:49 2009
 
-user time   =       0.14 seconds =       0.00 minutes
-system time =       0.06 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.12 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 SCF tstart called on elrond.chem
-Tue Sep  8 21:54:08 2009
+Wed Sep  9 14:39:49 2009
 
 
              ------------------------------------------
@@ -3946,14 +3946,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on elrond.chem
-Tue Sep  8 21:54:08 2009
+Wed Sep  9 14:39:49 2009
 
-user time   =       0.08 seconds =       0.00 minutes
+user time   =       0.17 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 OEPROP tstart called on elrond.chem
-Tue Sep  8 21:54:08 2009
+Wed Sep  9 14:39:49 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -4195,10 +4195,10 @@ Tue Sep  8 21:54:08 2009
  -Updating total energy ( -76.1148582494) in chkpt file with MVD correction
 ******************************************************************************
 OEPROP tstop called on elrond.chem
-Tue Sep  8 21:54:08 2009
+Wed Sep  9 14:39:49 2009
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 ******* OPTKING: --energy_save 
@@ -4237,7 +4237,7 @@ Setting chkpt prefix to irrep A1 .
 
 ******************************************************************************
 INPUT tstart called on elrond.chem
-Tue Sep  8 21:54:08 2009
+Wed Sep  9 14:39:49 2009
 
 
   -Geometry before Center-of-Mass shift (a.u.):
@@ -4374,14 +4374,14 @@ Tue Sep  8 21:54:08 2009
 
 ******************************************************************************
 INPUT tstop called on elrond.chem
-Tue Sep  8 21:54:08 2009
+Wed Sep  9 14:39:49 2009
 
-user time   =       0.11 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on elrond.chem
-Tue Sep  8 21:54:08 2009
+Wed Sep  9 14:39:49 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -4411,14 +4411,14 @@ Tue Sep  8 21:54:08 2009
 
 ******************************************************************************
 cints tstop called on elrond.chem
-Tue Sep  8 21:54:09 2009
+Wed Sep  9 14:39:49 2009
 
-user time   =       0.21 seconds =       0.00 minutes
+user time   =       0.13 seconds =       0.00 minutes
 system time =       0.04 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on elrond.chem
-Tue Sep  8 21:54:09 2009
+Wed Sep  9 14:39:49 2009
 
 
              ------------------------------------------
@@ -4528,14 +4528,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on elrond.chem
-Tue Sep  8 21:54:09 2009
+Wed Sep  9 14:39:49 2009
 
 user time   =       0.09 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 OEPROP tstart called on elrond.chem
-Tue Sep  8 21:54:09 2009
+Wed Sep  9 14:39:49 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -4777,10 +4777,10 @@ Tue Sep  8 21:54:09 2009
  -Updating total energy ( -76.1148490681) in chkpt file with MVD correction
 ******************************************************************************
 OEPROP tstop called on elrond.chem
-Tue Sep  8 21:54:09 2009
+Wed Sep  9 14:39:49 2009
 
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 ******* OPTKING: --energy_save 
@@ -4819,7 +4819,7 @@ Setting chkpt prefix to irrep A1 .
 
 ******************************************************************************
 INPUT tstart called on elrond.chem
-Tue Sep  8 21:54:09 2009
+Wed Sep  9 14:39:49 2009
 
 
   -Geometry before Center-of-Mass shift (a.u.):
@@ -4956,14 +4956,14 @@ Tue Sep  8 21:54:09 2009
 
 ******************************************************************************
 INPUT tstop called on elrond.chem
-Tue Sep  8 21:54:09 2009
+Wed Sep  9 14:39:49 2009
 
 user time   =       0.05 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on elrond.chem
-Tue Sep  8 21:54:09 2009
+Wed Sep  9 14:39:49 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -4993,14 +4993,14 @@ Tue Sep  8 21:54:09 2009
 
 ******************************************************************************
 cints tstop called on elrond.chem
-Tue Sep  8 21:54:09 2009
+Wed Sep  9 14:39:50 2009
 
-user time   =       0.14 seconds =       0.00 minutes
-system time =       0.06 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 SCF tstart called on elrond.chem
-Tue Sep  8 21:54:09 2009
+Wed Sep  9 14:39:50 2009
 
 
              ------------------------------------------
@@ -5109,14 +5109,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on elrond.chem
-Tue Sep  8 21:54:09 2009
+Wed Sep  9 14:39:50 2009
 
-user time   =       0.19 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 OEPROP tstart called on elrond.chem
-Tue Sep  8 21:54:09 2009
+Wed Sep  9 14:39:50 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -5358,10 +5358,10 @@ Tue Sep  8 21:54:09 2009
  -Updating total energy ( -76.1148765597) in chkpt file with MVD correction
 ******************************************************************************
 OEPROP tstop called on elrond.chem
-Tue Sep  8 21:54:09 2009
+Wed Sep  9 14:39:50 2009
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 ******* OPTKING: --energy_save 
@@ -5400,7 +5400,7 @@ Setting chkpt prefix to irrep A1 .
 
 ******************************************************************************
 INPUT tstart called on elrond.chem
-Tue Sep  8 21:54:09 2009
+Wed Sep  9 14:39:50 2009
 
 
   -Geometry before Center-of-Mass shift (a.u.):
@@ -5537,14 +5537,14 @@ Tue Sep  8 21:54:09 2009
 
 ******************************************************************************
 INPUT tstop called on elrond.chem
-Tue Sep  8 21:54:09 2009
+Wed Sep  9 14:39:50 2009
 
-user time   =       0.06 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on elrond.chem
-Tue Sep  8 21:54:09 2009
+Wed Sep  9 14:39:50 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -5574,14 +5574,14 @@ Tue Sep  8 21:54:09 2009
 
 ******************************************************************************
 cints tstop called on elrond.chem
-Tue Sep  8 21:54:10 2009
+Wed Sep  9 14:39:50 2009
 
-user time   =       0.15 seconds =       0.00 minutes
+user time   =       0.12 seconds =       0.00 minutes
 system time =       0.05 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on elrond.chem
-Tue Sep  8 21:54:10 2009
+Wed Sep  9 14:39:50 2009
 
 
              ------------------------------------------
@@ -5690,14 +5690,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on elrond.chem
-Tue Sep  8 21:54:10 2009
+Wed Sep  9 14:39:50 2009
 
-user time   =       0.14 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.09 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 OEPROP tstart called on elrond.chem
-Tue Sep  8 21:54:10 2009
+Wed Sep  9 14:39:50 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -5939,10 +5939,10 @@ Tue Sep  8 21:54:10 2009
  -Updating total energy ( -76.1148823531) in chkpt file with MVD correction
 ******************************************************************************
 OEPROP tstop called on elrond.chem
-Tue Sep  8 21:54:10 2009
+Wed Sep  9 14:39:50 2009
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 ******* OPTKING: --energy_save 
@@ -6058,7 +6058,7 @@ Projected energy change by quadratic approximation:        -0.0000013013
 	             MAX Force  &&  ( Delta(E) ||   MAX disp )
 	----------------------------------------------------------
 	Actual         4.0e-03        6.5e-05        3.7e-03
-	Limit          1.0e-04        1.0e-08        1.0e-03
+	Limit          1.0e-05        1.0e-10        1.0e-04
 	Conv?            N              N              N
 	----------------------------------------------------------
 
@@ -6084,7 +6084,7 @@ Geometry written to chkpt
 
 ******************************************************************************
 cints tstart called on elrond.chem
-Tue Sep  8 21:54:10 2009
+Wed Sep  9 14:39:50 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -6114,14 +6114,14 @@ Tue Sep  8 21:54:10 2009
 
 ******************************************************************************
 cints tstop called on elrond.chem
-Tue Sep  8 21:54:10 2009
+Wed Sep  9 14:39:50 2009
 
-user time   =       0.13 seconds =       0.00 minutes
+user time   =       0.12 seconds =       0.00 minutes
 system time =       0.05 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on elrond.chem
-Tue Sep  8 21:54:10 2009
+Wed Sep  9 14:39:50 2009
 
 
              ------------------------------------------
@@ -6229,14 +6229,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on elrond.chem
-Tue Sep  8 21:54:10 2009
+Wed Sep  9 14:39:51 2009
 
-user time   =       0.08 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 OEPROP tstart called on elrond.chem
-Tue Sep  8 21:54:10 2009
+Wed Sep  9 14:39:51 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -6478,10 +6478,10 @@ Tue Sep  8 21:54:10 2009
  -Updating total energy ( -76.1148828353) in chkpt file with MVD correction
 ******************************************************************************
 OEPROP tstop called on elrond.chem
-Tue Sep  8 21:54:10 2009
+Wed Sep  9 14:39:51 2009
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 ******* OPTKING: --disp_irrep --irrep 1 
@@ -6598,7 +6598,7 @@ Setting chkpt prefix to irrep A1 .
 
 ******************************************************************************
 INPUT tstart called on elrond.chem
-Tue Sep  8 21:54:10 2009
+Wed Sep  9 14:39:51 2009
 
 
   -Geometry before Center-of-Mass shift (a.u.):
@@ -6735,14 +6735,14 @@ Tue Sep  8 21:54:10 2009
 
 ******************************************************************************
 INPUT tstop called on elrond.chem
-Tue Sep  8 21:54:11 2009
+Wed Sep  9 14:39:51 2009
 
-user time   =       0.12 seconds =       0.00 minutes
+user time   =       0.06 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on elrond.chem
-Tue Sep  8 21:54:11 2009
+Wed Sep  9 14:39:51 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -6772,14 +6772,14 @@ Tue Sep  8 21:54:11 2009
 
 ******************************************************************************
 cints tstop called on elrond.chem
-Tue Sep  8 21:54:11 2009
+Wed Sep  9 14:39:51 2009
 
-user time   =       0.29 seconds =       0.00 minutes
-system time =       0.10 seconds =       0.00 minutes
+user time   =       0.15 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on elrond.chem
-Tue Sep  8 21:54:11 2009
+Wed Sep  9 14:39:51 2009
 
 
              ------------------------------------------
@@ -6888,14 +6888,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on elrond.chem
-Tue Sep  8 21:54:11 2009
+Wed Sep  9 14:39:51 2009
 
 user time   =       0.09 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 OEPROP tstart called on elrond.chem
-Tue Sep  8 21:54:11 2009
+Wed Sep  9 14:39:51 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -7137,10 +7137,10 @@ Tue Sep  8 21:54:11 2009
  -Updating total energy ( -76.1148548253) in chkpt file with MVD correction
 ******************************************************************************
 OEPROP tstop called on elrond.chem
-Tue Sep  8 21:54:11 2009
+Wed Sep  9 14:39:51 2009
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 ******* OPTKING: --energy_save 
@@ -7179,7 +7179,7 @@ Setting chkpt prefix to irrep A1 .
 
 ******************************************************************************
 INPUT tstart called on elrond.chem
-Tue Sep  8 21:54:11 2009
+Wed Sep  9 14:39:51 2009
 
 
   -Geometry before Center-of-Mass shift (a.u.):
@@ -7316,14 +7316,14 @@ Tue Sep  8 21:54:11 2009
 
 ******************************************************************************
 INPUT tstop called on elrond.chem
-Tue Sep  8 21:54:11 2009
+Wed Sep  9 14:39:51 2009
 
-user time   =       0.11 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on elrond.chem
-Tue Sep  8 21:54:11 2009
+Wed Sep  9 14:39:51 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -7353,14 +7353,14 @@ Tue Sep  8 21:54:11 2009
 
 ******************************************************************************
 cints tstop called on elrond.chem
-Tue Sep  8 21:54:12 2009
+Wed Sep  9 14:39:51 2009
 
-user time   =       0.15 seconds =       0.00 minutes
-system time =       0.06 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on elrond.chem
-Tue Sep  8 21:54:12 2009
+Wed Sep  9 14:39:51 2009
 
 
              ------------------------------------------
@@ -7470,14 +7470,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on elrond.chem
-Tue Sep  8 21:54:12 2009
+Wed Sep  9 14:39:52 2009
 
 user time   =       0.09 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
 OEPROP tstart called on elrond.chem
-Tue Sep  8 21:54:12 2009
+Wed Sep  9 14:39:52 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -7719,7 +7719,7 @@ Tue Sep  8 21:54:12 2009
  -Updating total energy ( -76.1148550391) in chkpt file with MVD correction
 ******************************************************************************
 OEPROP tstop called on elrond.chem
-Tue Sep  8 21:54:12 2009
+Wed Sep  9 14:39:52 2009
 
 user time   =       0.02 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
@@ -7761,7 +7761,7 @@ Setting chkpt prefix to irrep A1 .
 
 ******************************************************************************
 INPUT tstart called on elrond.chem
-Tue Sep  8 21:54:12 2009
+Wed Sep  9 14:39:52 2009
 
 
   -Geometry before Center-of-Mass shift (a.u.):
@@ -7898,14 +7898,14 @@ Tue Sep  8 21:54:12 2009
 
 ******************************************************************************
 INPUT tstop called on elrond.chem
-Tue Sep  8 21:54:12 2009
+Wed Sep  9 14:39:52 2009
 
 user time   =       0.05 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on elrond.chem
-Tue Sep  8 21:54:12 2009
+Wed Sep  9 14:39:52 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -7935,14 +7935,14 @@ Tue Sep  8 21:54:12 2009
 
 ******************************************************************************
 cints tstop called on elrond.chem
-Tue Sep  8 21:54:12 2009
+Wed Sep  9 14:39:52 2009
 
-user time   =       0.25 seconds =       0.00 minutes
-system time =       0.09 seconds =       0.00 minutes
+user time   =       0.14 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on elrond.chem
-Tue Sep  8 21:54:12 2009
+Wed Sep  9 14:39:52 2009
 
 
              ------------------------------------------
@@ -8051,14 +8051,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on elrond.chem
-Tue Sep  8 21:54:12 2009
+Wed Sep  9 14:39:52 2009
 
-user time   =       0.09 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 OEPROP tstart called on elrond.chem
-Tue Sep  8 21:54:12 2009
+Wed Sep  9 14:39:52 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -8300,10 +8300,10 @@ Tue Sep  8 21:54:12 2009
  -Updating total energy ( -76.1148808017) in chkpt file with MVD correction
 ******************************************************************************
 OEPROP tstop called on elrond.chem
-Tue Sep  8 21:54:12 2009
+Wed Sep  9 14:39:52 2009
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
 ******* OPTKING: --energy_save 
@@ -8342,7 +8342,7 @@ Setting chkpt prefix to irrep A1 .
 
 ******************************************************************************
 INPUT tstart called on elrond.chem
-Tue Sep  8 21:54:12 2009
+Wed Sep  9 14:39:52 2009
 
 
   -Geometry before Center-of-Mass shift (a.u.):
@@ -8479,14 +8479,14 @@ Tue Sep  8 21:54:12 2009
 
 ******************************************************************************
 INPUT tstop called on elrond.chem
-Tue Sep  8 21:54:13 2009
+Wed Sep  9 14:39:52 2009
 
-user time   =       0.10 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 cints tstart called on elrond.chem
-Tue Sep  8 21:54:13 2009
+Wed Sep  9 14:39:52 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -8516,14 +8516,14 @@ Tue Sep  8 21:54:13 2009
 
 ******************************************************************************
 cints tstop called on elrond.chem
-Tue Sep  8 21:54:13 2009
+Wed Sep  9 14:39:52 2009
 
-user time   =       0.29 seconds =       0.00 minutes
-system time =       0.10 seconds =       0.00 minutes
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 SCF tstart called on elrond.chem
-Tue Sep  8 21:54:13 2009
+Wed Sep  9 14:39:52 2009
 
 
              ------------------------------------------
@@ -8632,14 +8632,14 @@ Orbital energies (a.u.):
         wavefunction norm  =       1.000000000000
 ******************************************************************************
 SCF tstop called on elrond.chem
-Tue Sep  8 21:54:13 2009
+Wed Sep  9 14:39:52 2009
 
-user time   =       0.10 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.09 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
 OEPROP tstart called on elrond.chem
-Tue Sep  8 21:54:13 2009
+Wed Sep  9 14:39:52 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -8881,11 +8881,11 @@ Tue Sep  8 21:54:13 2009
  -Updating total energy ( -76.1148805865) in chkpt file with MVD correction
 ******************************************************************************
 OEPROP tstop called on elrond.chem
-Tue Sep  8 21:54:13 2009
+Wed Sep  9 14:39:53 2009
 
 user time   =       0.05 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 ******* OPTKING: --energy_save 
 
@@ -9000,13 +9000,2952 @@ Projected energy change by quadratic approximation:        -0.0000000015
 	             MAX Force  &&  ( Delta(E) ||   MAX disp )
 	----------------------------------------------------------
 	Actual         9.4e-05        1.2e-06        1.3e-04
-	Limit          1.0e-04        1.0e-08        1.0e-03
+	Limit          1.0e-05        1.0e-10        1.0e-04
+	Conv?            N              N              N
+	----------------------------------------------------------
+
+	Back-transformation to cartesian coordinates...
+	------------------------------------
+	 Iter  RMS Delta(dx)  RMS Delta(dq)
+	------------------------------------
+	    1      2.7e-05      2.0e-09
+	    2      9.0e-10      0.0e+00
+	------------------------------------
+
+Successfully converged to displaced geometry.
+
+New Cartesian Geometry in a.u.
+  8.0   0.0000000000   0.0000000000  -0.1192628358
+  1.0   0.0000000000  -1.4216801860   0.9463938754
+  1.0   0.0000000000   1.4216801860   0.9463938754
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+cints tstart called on elrond.chem
+Wed Sep  9 14:39:53 2009
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin optimization by energies test
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 66
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 595162 two-electron integrals to IWL file 33
+
+******************************************************************************
+cints tstop called on elrond.chem
+Wed Sep  9 14:39:53 2009
+
+user time   =       0.17 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+SCF tstart called on elrond.chem
+Wed Sep  9 14:39:53 2009
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = mass-velocity and darwin optimization by energies test
+  wfn          = SCF_MVD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = NONE
+  convergence  = 12
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3569622720253
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.06290489
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 3948128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 3.036500e-04
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 228673 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0629048694    8.541987e+01    0.000000e+00    0.000000e+00
+    2       -76.0629048701    6.242828e-10    1.448254e-07    8.594015e-06
+    3       -76.0629048701    3.259970e-11    3.946787e-08    1.498946e-06
+    4       -76.0629048701    1.421085e-12    1.098518e-08    3.814007e-07
+    5       -76.0629048701    8.526513e-14    1.601471e-09    8.697912e-08
+    6       -76.0629048701    1.421085e-14    5.623448e-10    3.392342e-08
+    7       -76.0629048701    7.105427e-14    1.582040e-10    1.076481e-08
+    8       -76.0629048701   -2.842171e-14    3.123175e-11    1.568400e-09
+    9       -76.0629048701    5.684342e-14    8.491439e-12    4.583338e-10
+   10       -76.0629048701   -8.526513e-14    1.992611e-12    6.069485e-11
+   11       -76.0629048701   -7.105427e-14    4.232397e-13    9.047260e-12
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.558215     2A1     -1.357972     1B2     -0.728124  
+   3A1     -0.582062     1B1     -0.509427  
+
+
+  Unoccupied orbitals
+   4A1      0.120184     2B2      0.188788     5A1      0.452946  
+   3B2      0.490823     2B1      0.518103     6A1      0.566587  
+   7A1      0.635215     4B2      0.653576     8A1      0.806079  
+   1A2      0.840856     3B1      0.933175     5B2      1.168386  
+   9A1      1.299405     6B2      1.388237     4B1      1.512823  
+   2A2      1.554511    10A1      1.561580     7B2      1.573016  
+  11A1      1.679184    12A1      1.770314    13A1      2.024131  
+   8B2      2.098989     5B1      2.180331    14A1      2.890957  
+   9B2      3.133592     6B1      3.238956    15A1      3.262747  
+   3A2      3.486222    10B2      3.533894    16A1      3.718541  
+   4A2      3.773345    11B2      3.776850     7B1      3.938253  
+  17A1      3.973062     8B1      4.064770     5A2      4.066042  
+  12B2      4.100265    18A1      4.134520    13B2      4.404726  
+  19A1      4.595207    14B2      4.635509    20A1      4.666687  
+  15B2      4.857013    21A1      4.858641     9B1      5.198454  
+   6A2      5.331458    22A1      5.590459    10B1      5.908103  
+  11B1      6.002653    23A1      6.239071    16B2      6.270418  
+  24A1      6.583496    17B2      6.832129    25A1      6.835348  
+  12B1      6.879984     7A2      7.050829    18B2      7.370686  
+  19B2      8.508606    26A1      8.744488    27A1     11.839973  
+  28A1     57.344638  
+
+
+      * SCF total energy   =     -76.062904870096
+        kinetic energy     =      76.057224516475
+        nuc. attr. energy  =    -199.425358470211
+        elec. rep. energy  =      47.305229083640
+        potential energy   =    -152.120129386571
+        virial theorem     =       1.999925320317
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+SCF tstop called on elrond.chem
+Wed Sep  9 14:39:53 2009
+
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+OEPROP tstart called on elrond.chem
+Wed Sep  9 14:39:53 2009
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density will be computed from the eigenvector in checkpoint.
+    $Only electric dipole moment will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+
+  Title : 'mass-velocity and darwin optimization by energies test'
+
+  List of PARAMETERS :
+    # of atoms                 =      3
+    # of molecular orbitals    =     66
+    # of basis functions       =     66
+    # of atomic orbitals       =     66
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     23
+    # of primitives            =     28
+    Print level                =      1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
+    NIX                        =	  11
+    NIY                        =	  11
+    GRID_ZMIN                  =	   0.00000
+    GRID_ZMAX                  =	   3.00000
+
+	Densities available up to root 1
+	** Analyzing density number 1 **
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     1      1          0        1.06457463
+     1      2          0        0.86696354
+     1      3          0        0.16361246
+     1      4          0        1.02448941
+     1      5          0        0.46094911
+     1      6          1        0.81885829
+     1      7          1        0.58521881
+     1      8          1        0.69052349
+     1      9          1        0.70241579
+     1     10          1        0.48034664
+     1     11          1        0.60054698
+     1     12          1        0.39134146
+     1     13          1        0.14896291
+     1     14          1        0.29416727
+     1     15          2        0.00222008
+     1     16          2        0.00000000
+     1     17          2        0.00050488
+     1     18          2        0.01251544
+     1     19          2        0.00476133
+     1     20          2        0.00525645
+     1     21          2        0.02646746
+     1     22          2        0.00000000
+     1     23          2        0.00181698
+     1     24          2        0.04521833
+     1     25          2        0.00853230
+     1     26          2        0.04146174
+     1     27          3       -0.00140533
+     1     28          3       -0.00091329
+     1     29          3       -0.00160542
+     1     30          3        0.00599372
+     1     31          3        0.00000000
+     1     32          3        0.00343966
+     1     33          3        0.01091354
+     1     34          3        0.00532635
+     1     35          3        0.00187207
+     1     36          3        0.00640251
+     3     37          0        0.27147584
+     3     38          0        0.34546794
+     3     39          0        0.04238958
+     3     40          1        0.00465938
+     3     41          1        0.01024360
+     3     42          1        0.00730836
+     3     43          1        0.02990682
+     3     44          1        0.01293710
+     3     45          1        0.02403420
+     3     46          2       -0.00145131
+     3     47          2        0.00260259
+     3     48          2        0.00134849
+     3     49          2        0.00774258
+     3     50          2        0.00191540
+     3     51          2        0.00354462
+     2     52          0        0.27147584
+     2     53          0        0.34546794
+     2     54          0        0.04238958
+     2     55          1        0.00465938
+     2     56          1        0.01024360
+     2     57          1        0.00730836
+     2     58          1        0.02990682
+     2     59          1        0.01293710
+     2     60          1        0.02403420
+     2     61          2       -0.00145131
+     2     62          2        0.00260259
+     2     63          2        0.00134849
+     2     64          2        0.00774258
+     2     65          2        0.00191540
+     2     66          2        0.00354462
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   6.1232929   0.3821851   0.3821851
+    2   0.3821851   0.3130334  -0.0323209
+    3   0.3821851  -0.0323209   0.3130334
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            8.471750        -0.471750
+       2            0.764125        +0.235875
+       3            0.764125        +0.235875
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000          0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -1.64156422e-45 C*m  =  -0.00000000 a.u.
+    mu(Z)  =   1.98491 D  =   6.62094139e-30 C*m  =   0.78092261 a.u.
+    |mu|   =   1.98491 D  =   6.62094139e-30 C*m  =   0.78092261 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000         -0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      8            0.0000000000          0.0000000000         -0.1192628358
+    2      1            0.0000000000         -1.4216801860          0.9463938754
+    3      1            0.0000000000          1.4216801860          0.9463938754
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1      -22.33715651     0.00000000   -0.00000000   -0.05793265
+       2       -1.00709093     0.00000000   -0.00609661    0.00370613
+       3       -1.00709093     0.00000000    0.00609661    0.00370613
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1          -1254.55036509        -1257.95436464        -1256.43730080
+       2             -1.46761507           -2.04371800           -1.80078624
+       3             -1.46761507           -2.04371800           -1.80078624
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000            0.00000000
+       2              0.00000000            0.00000000           -1.68281353
+       3              0.00000000            0.00000000            1.68281353
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              1.76364509           -1.64035446           -0.12329062
+       2              0.30309137           -0.27301156           -0.03007980
+       3              0.30309137           -0.27301156           -0.03007980
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000            0.00000000
+       2              0.00000000            0.00000000           -1.68281353
+       3              0.00000000            0.00000000            1.68281353
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1            299.92287719
+       2              0.42272502
+       3              0.42272502
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.252749983075011
+    One-electron Darwin term     :   0.200772015705393
+    Total one-electron MVD terms :   -0.051977967369618
+
+ -Updating total energy ( -76.1148828375) in chkpt file with MVD correction
+******************************************************************************
+OEPROP tstop called on elrond.chem
+Wed Sep  9 14:39:53 2009
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+******* OPTKING: --disp_irrep --irrep 1 
+
+Cartesian geometry in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1192628358
+  1.0     1.00782503   0.0000000000  -1.4216801860   0.9463938754
+  1.0     1.00782503   0.0000000000   1.4216801860   0.9463938754
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94020945)
+    (2 1 3) (0.94020945)
+Bends
+    (3 2 1 3) (106.29133942)
+
+  Symmetry Adapted Internal Coordinates = (
+    ("A1 " (1 2 3)
+     (-0.71 -0.71 -0.07))
+    ("A1 " (1 2 3)
+     (-0.05 -0.05  1.00))
+    ("B2 " (1 2)
+     ( 0.71 -0.71))
+  )
+Found 2 internals of irrep 1 
+Generating a total of 4 displacements using 3-point formula for modes of irrep 1.
+
+	Back-transformation to cartesian coordinates...
+	------------------------------------
+	 Iter  RMS Delta(dx)  RMS Delta(dq)
+	------------------------------------
+	    1      1.6e-03      7.1e-07
+	    2      2.5e-07      1.5e-13
+	    3      8.1e-14      1.3e-16
+	------------------------------------
+
+Successfully converged to displaced geometry.
+
+Displaced geometry 1 in a.u.
+
+  8.0   0.0000000000   0.0000000000  -0.1196841539
+  1.0   0.0000000000  -1.4271900888   0.9497371876
+  1.0   0.0000000000   1.4271900888   0.9497371876
+
+	Back-transformation to cartesian coordinates...
+	------------------------------------
+	 Iter  RMS Delta(dx)  RMS Delta(dq)
+	------------------------------------
+	    1      1.6e-03      7.1e-07
+	    2      2.5e-07      1.5e-13
+	    3      8.1e-14      2.9e-16
+	------------------------------------
+
+Successfully converged to displaced geometry.
+
+Displaced geometry 2 in a.u.
+
+  8.0   0.0000000000   0.0000000000  -0.1188413187
+  1.0   0.0000000000  -1.4161715562   0.9430489841
+  1.0   0.0000000000   1.4161715562   0.9430489841
+
+	Back-transformation to cartesian coordinates...
+	------------------------------------
+	 Iter  RMS Delta(dx)  RMS Delta(dq)
+	------------------------------------
+	    1      1.0e-03      2.5e-06
+	    2      1.4e-06      2.2e-12
+	    3      7.9e-13      1.3e-16
+	------------------------------------
+
+Successfully converged to displaced geometry.
+
+Displaced geometry 3 in a.u.
+
+  8.0   0.0000000000   0.0000000000  -0.1196888880
+  1.0   0.0000000000  -1.4193673403   0.9497747541
+  1.0   0.0000000000   1.4193673403   0.9497747541
+
+	Back-transformation to cartesian coordinates...
+	------------------------------------
+	 Iter  RMS Delta(dx)  RMS Delta(dq)
+	------------------------------------
+	    1      1.0e-03      2.5e-06
+	    2      1.4e-06      2.2e-12
+	    3      7.8e-13      1.3e-16
+	------------------------------------
+
+Successfully converged to displaced geometry.
+
+Displaced geometry 4 in a.u.
+
+  8.0   0.0000000000   0.0000000000  -0.1188362372
+  1.0   0.0000000000  -1.4239828730   0.9430086608
+  1.0   0.0000000000   1.4239828730   0.9430086608
+Produced a total of 4 displacements.
+
+******** OPTKING execution completed ********
+
+
+******* OPTKING: --disp_load 
+Reading symmetry information from root area of checkpoint.
+
+Setting chkpt prefix to irrep A1 .
+
+ ** Geometry for displacement 1 sent to chkpt. **
+
+           1           2           3
+
+    1   0.0000000   0.0000000  -0.1196842
+    2   0.0000000  -1.4271901   0.9497372
+    3   0.0000000   1.4271901   0.9497372
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+INPUT tstart called on elrond.chem
+Wed Sep  9 14:39:53 2009
+
+
+  -Geometry before Center-of-Mass shift (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.119684153916
+    H         0.000000000000    -1.427190088815     0.949737187647
+    H         0.000000000000     1.427190088815     0.949737187647
+
+
+  -Rotational constants (cm-1) :
+    A =   29.40538  B =   14.66275  C =    9.78403
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.119684153916
+    H         0.000000000000    -1.427190088815     0.949737187647
+    H         0.000000000000     1.427190088815     0.949737187647
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S ( 18050.00000000     0.00075700)
+           (  2660.00000000     0.00606600)
+           (   585.70000000     0.03278200)
+           (   160.90000000     0.13260900)
+           (    51.16000000     0.39683900)
+           (    17.90000000     0.54257200) )
+        (S (    17.90000000     0.26249000)
+           (     6.63900000     0.76982800) )
+        (S (     2.07700000     1.00000000) )
+        (S (     0.77360000     1.00000000) )
+        (S (     0.25580000     1.00000000) )
+        (P (    49.83000000     0.01635800)
+           (    11.49000000     0.10645300)
+           (     3.60900000     0.34930200)
+           (     1.32100000     0.65718300) )
+        (P (     0.48210000     1.00000000) )
+        (P (     0.16510000     1.00000000) )
+        (D (     1.70000000     1.00000000) )
+        (D (     0.42500000     1.00000000) )
+        (F (     1.40000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    33.64000000     0.02537400)
+           (     5.05800000     0.18968400)
+           (     1.14700000     0.85293300) )
+        (S (     0.32110000     1.00000000) )
+        (S (     0.10130000     1.00000000) )
+        (P (     1.50000000     1.00000000) )
+        (P (     0.37500000     1.00000000) )
+        (D (     1.00000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 23
+    Number of primitives   = 28
+    Number of AO           = 66
+    Number of SO           = 66
+
+    Irrep    Number of SO
+    -----    ------------
+      1           28
+      2            7
+      3           12
+      4           19
+
+  -Contraction Scheme:
+    Atom     All Primitives // Unique Primitives // Shells
+    ----     ---------------------------------------------
+       1      11s 6p 2d 1f //  10s 6p 2d 1f //  5s 3p 2d 1f
+       2      5s 2p 1d //  5s 2p 1d //  3s 2p 1d
+       3      5s 2p 1d //  5s 2p 1d //  3s 2p 1d
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.119684153916
+    H         0.000000000000     1.427190088815     0.949737187647
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.119684153916
+    H         0.000000000000    -1.427190088815     0.949737187647
+    H         0.000000000000     1.427190088815     0.949737187647
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.063334131318
+    H         0.000000000000    -0.755236524999     0.502579312232
+    H         0.000000000000     0.755236524999     0.502579312232
+
+
+  -Geometry in the reference coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.119684153916
+    H         0.000000000000    -1.427190088815     0.949737187647
+    H         0.000000000000     1.427190088815     0.949737187647
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.321940603997
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9437374   0.0000000
+    3   0.9437374   1.5104730   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+INPUT tstop called on elrond.chem
+Wed Sep  9 14:39:53 2009
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+cints tstart called on elrond.chem
+Wed Sep  9 14:39:53 2009
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin optimization by energies test
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 66
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 595162 two-electron integrals to IWL file 33
+
+******************************************************************************
+cints tstop called on elrond.chem
+Wed Sep  9 14:39:53 2009
+
+user time   =       0.14 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+SCF tstart called on elrond.chem
+Wed Sep  9 14:39:53 2009
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = mass-velocity and darwin optimization by energies test
+  wfn          = SCF_MVD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = NONE
+  convergence  = 12
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3219406039973
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.06290362
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 3948128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 3.043194e-04
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 228673 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0628658607    8.538481e+01    0.000000e+00    0.000000e+00
+    2       -76.0628759551    1.009439e-05    1.516194e-05    1.127630e-03
+    3       -76.0628768732    9.181358e-07    4.614606e-06    4.071544e-04
+    4       -76.0628771116    2.384041e-07    1.412485e-06    1.757800e-04
+    5       -76.0628771332    2.151825e-08    7.187728e-07    4.060831e-05
+    6       -76.0628771348    1.643002e-09    1.967453e-07    1.231955e-05
+    7       -76.0628771349    6.717471e-11    6.994396e-08    1.948594e-06
+    8       -76.0628771349    1.307399e-12    1.357174e-08    3.856871e-07
+    9       -76.0628771349    1.421085e-14    1.737415e-09    7.051412e-08
+   10       -76.0628771349   -8.526513e-14    2.115315e-10    9.624895e-09
+   11       -76.0628771349    9.947598e-14    2.189057e-11    1.891751e-09
+   12       -76.0628771349    7.105427e-14    5.862183e-12    1.119004e-09
+   13       -76.0628771349   -1.421085e-13    3.703793e-12    2.502414e-10
+   14       -76.0628771349    1.421085e-14    8.496025e-13    3.903814e-11
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.558828     2A1     -1.356063     1B2     -0.726151  
+   3A1     -0.581355     1B1     -0.509107  
+
+
+  Unoccupied orbitals
+   4A1      0.119883     2B2      0.188502     5A1      0.453621  
+   3B2      0.490202     2B1      0.518245     6A1      0.564370  
+   7A1      0.634886     4B2      0.652258     8A1      0.805581  
+   1A2      0.839992     3B1      0.932529     5B2      1.166436  
+   9A1      1.297970     6B2      1.386010     4B1      1.512297  
+   2A2      1.553968    10A1      1.563430     7B2      1.574889  
+  11A1      1.678978    12A1      1.768639    13A1      2.022439  
+   8B2      2.096000     5B1      2.179918    14A1      2.884444  
+   9B2      3.126210     6B1      3.239054    15A1      3.261551  
+   3A2      3.481428    10B2      3.528925    16A1      3.719087  
+   4A2      3.771777    11B2      3.774249     7B1      3.936814  
+  17A1      3.972889     8B1      4.066477     5A2      4.066738  
+  12B2      4.100994    18A1      4.133698    13B2      4.401489  
+  19A1      4.593944    14B2      4.627459    20A1      4.664908  
+  15B2      4.848727    21A1      4.856726     9B1      5.193218  
+   6A2      5.324623    22A1      5.581163    10B1      5.907415  
+  11B1      5.995683    23A1      6.226158    16B2      6.259049  
+  24A1      6.571557    17B2      6.823684    25A1      6.824115  
+  12B1      6.868324     7A2      7.039238    18B2      7.357688  
+  19B2      8.485480    26A1      8.725030    27A1     11.838097  
+  28A1     57.341631  
+
+
+      * SCF total energy   =     -76.062877134867
+        kinetic energy     =      76.042634815465
+        nuc. attr. energy  =    -199.349262314594
+        elec. rep. energy  =      47.243750364262
+        potential energy   =    -152.105511950332
+        virial theorem     =       1.999733873866
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+SCF tstop called on elrond.chem
+Wed Sep  9 14:39:53 2009
+
+user time   =       0.09 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+OEPROP tstart called on elrond.chem
+Wed Sep  9 14:39:53 2009
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density will be computed from the eigenvector in checkpoint.
+    $Only electric dipole moment will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+
+  Title : 'mass-velocity and darwin optimization by energies test'
+
+  List of PARAMETERS :
+    # of atoms                 =      3
+    # of molecular orbitals    =     66
+    # of basis functions       =     66
+    # of atomic orbitals       =     66
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     23
+    # of primitives            =     28
+    Print level                =      1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
+    NIX                        =	  11
+    NIY                        =	  11
+    GRID_ZMIN                  =	   0.00000
+    GRID_ZMAX                  =	   3.00000
+
+	Densities available up to root 1
+	** Analyzing density number 1 **
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     1      1          0        1.06459026
+     1      2          0        0.86695166
+     1      3          0        0.16353994
+     1      4          0        1.02514270
+     1      5          0        0.46398189
+     1      6          1        0.81901086
+     1      7          1        0.58372217
+     1      8          1        0.68933098
+     1      9          1        0.70266642
+     1     10          1        0.48072628
+     1     11          1        0.60017914
+     1     12          1        0.39164457
+     1     13          1        0.14993896
+     1     14          1        0.29474675
+     1     15          2        0.00217239
+     1     16          2        0.00000000
+     1     17          2        0.00049995
+     1     18          2        0.01241912
+     1     19          2        0.00472236
+     1     20          2        0.00518264
+     1     21          2        0.02626889
+     1     22          2        0.00000000
+     1     23          2        0.00181122
+     1     24          2        0.04521155
+     1     25          2        0.00857466
+     1     26          2        0.04143712
+     1     27          3       -0.00143072
+     1     28          3       -0.00091632
+     1     29          3       -0.00159761
+     1     30          3        0.00598594
+     1     31          3        0.00000000
+     1     32          3        0.00343079
+     1     33          3        0.01090459
+     1     34          3        0.00534009
+     1     35          3        0.00187558
+     1     36          3        0.00644067
+     3     37          0        0.26978439
+     3     38          0        0.34589149
+     3     39          0        0.04293071
+     3     40          1        0.00457844
+     3     41          1        0.01014475
+     3     42          1        0.00722578
+     3     43          1        0.02969370
+     3     44          1        0.01293725
+     3     45          1        0.02382008
+     3     46          2       -0.00143167
+     3     47          2        0.00258019
+     3     48          2        0.00133815
+     3     49          2        0.00776078
+     3     50          2        0.00192287
+     3     51          2        0.00357032
+     2     52          0        0.26978439
+     2     53          0        0.34589149
+     2     54          0        0.04293071
+     2     55          1        0.00457844
+     2     56          1        0.01014475
+     2     57          1        0.00722578
+     2     58          1        0.02969370
+     2     59          1        0.01293725
+     2     60          1        0.02382008
+     2     61          2       -0.00143167
+     2     62          2        0.00258019
+     2     63          2        0.00133815
+     2     64          2        0.00776078
+     2     65          2        0.00192287
+     2     66          2        0.00357032
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   6.1277787   0.3803963   0.3803963
+    2   0.3803963   0.3130164  -0.0320956
+    3   0.3803963  -0.0320956   0.3130164
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            8.474505        -0.474505
+       2            0.762747        +0.237253
+       3            0.762747        +0.237253
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000          0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =   0.00000 D  =   1.32725807e-44 C*m  =   0.00000000 a.u.
+    mu(Z)  =   1.98762 D  =   6.62999082e-30 C*m  =   0.78198997 a.u.
+    |mu|   =   1.98762 D  =   6.62999082e-30 C*m  =   0.78198997 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000          0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      8            0.0000000000          0.0000000000         -0.1196841539
+    2      1            0.0000000000         -1.4271900888          0.9497371876
+    3      1            0.0000000000          1.4271900888          0.9497371876
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1      -22.33654376     0.00000000   -0.00000000   -0.05743304
+       2       -1.00651550     0.00000000   -0.00256472    0.00136288
+       3       -1.00651550     0.00000000    0.00256472    0.00136288
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1          -1254.56889127        -1257.98914816        -1256.47056716
+       2             -1.46132937           -2.02421166           -1.78706064
+       3             -1.46132937           -2.02421166           -1.78706064
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000           -1.66880194
+       3              0.00000000            0.00000000            1.66880194
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              1.77397759           -1.64627930           -0.12769830
+       2              0.29620452           -0.26667777           -0.02952675
+       3              0.29620452           -0.26667777           -0.02952675
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000           -1.66880194
+       3              0.00000000            0.00000000            1.66880194
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1            299.92976670
+       2              0.41958031
+       3              0.41958031
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.252753897438865
+    One-electron Darwin term     :   0.200776099906056
+    Total one-electron MVD terms :   -0.051977797532809
+
+ -Updating total energy ( -76.1148549324) in chkpt file with MVD correction
+******************************************************************************
+OEPROP tstop called on elrond.chem
+Wed Sep  9 14:39:54 2009
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+
+******* OPTKING: --energy_save 
+
+Cartesian geometry in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1196841539
+  1.0     1.00782503   0.0000000000  -1.4271900888   0.9497371876
+  1.0     1.00782503   0.0000000000   1.4271900888   0.9497371876
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94373738)
+    (2 1 3) (0.94373738)
+Bends
+    (3 2 1 3) (106.31012907)
+Saving energy.
+Energy written:  -76.1148549324
+
+******** OPTKING execution completed ********
+
+
+******* OPTKING: --disp_load 
+Reading symmetry information from root area of checkpoint.
+
+Setting chkpt prefix to irrep A1 .
+
+ ** Geometry for displacement 2 sent to chkpt. **
+
+           1           2           3
+
+    1   0.0000000   0.0000000  -0.1188413
+    2   0.0000000  -1.4161716   0.9430490
+    3   0.0000000   1.4161716   0.9430490
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+INPUT tstart called on elrond.chem
+Wed Sep  9 14:39:54 2009
+
+
+  -Geometry before Center-of-Mass shift (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.118841318662
+    H         0.000000000000    -1.416171556194     0.943048984094
+    H         0.000000000000     1.416171556194     0.943048984094
+
+
+  -Rotational constants (cm-1) :
+    A =   29.82395  B =   14.89181  C =    9.93235
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.118841318662
+    H         0.000000000000    -1.416171556194     0.943048984094
+    H         0.000000000000     1.416171556194     0.943048984094
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S ( 18050.00000000     0.00075700)
+           (  2660.00000000     0.00606600)
+           (   585.70000000     0.03278200)
+           (   160.90000000     0.13260900)
+           (    51.16000000     0.39683900)
+           (    17.90000000     0.54257200) )
+        (S (    17.90000000     0.26249000)
+           (     6.63900000     0.76982800) )
+        (S (     2.07700000     1.00000000) )
+        (S (     0.77360000     1.00000000) )
+        (S (     0.25580000     1.00000000) )
+        (P (    49.83000000     0.01635800)
+           (    11.49000000     0.10645300)
+           (     3.60900000     0.34930200)
+           (     1.32100000     0.65718300) )
+        (P (     0.48210000     1.00000000) )
+        (P (     0.16510000     1.00000000) )
+        (D (     1.70000000     1.00000000) )
+        (D (     0.42500000     1.00000000) )
+        (F (     1.40000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    33.64000000     0.02537400)
+           (     5.05800000     0.18968400)
+           (     1.14700000     0.85293300) )
+        (S (     0.32110000     1.00000000) )
+        (S (     0.10130000     1.00000000) )
+        (P (     1.50000000     1.00000000) )
+        (P (     0.37500000     1.00000000) )
+        (D (     1.00000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 23
+    Number of primitives   = 28
+    Number of AO           = 66
+    Number of SO           = 66
+
+    Irrep    Number of SO
+    -----    ------------
+      1           28
+      2            7
+      3           12
+      4           19
+
+  -Contraction Scheme:
+    Atom     All Primitives // Unique Primitives // Shells
+    ----     ---------------------------------------------
+       1      11s 6p 2d 1f //  10s 6p 2d 1f //  5s 3p 2d 1f
+       2      5s 2p 1d //  5s 2p 1d //  3s 2p 1d
+       3      5s 2p 1d //  5s 2p 1d //  3s 2p 1d
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.118841318662
+    H         0.000000000000     1.416171556194     0.943048984094
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.118841318662
+    H         0.000000000000    -1.416171556194     0.943048984094
+    H         0.000000000000     1.416171556194     0.943048984094
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.062888122077
+    H         0.000000000000    -0.749405768219     0.499040067075
+    H         0.000000000000     0.749405768219     0.499040067075
+
+
+  -Geometry in the reference coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.118841318662
+    H         0.000000000000    -1.416171556194     0.943048984094
+    H         0.000000000000     1.416171556194     0.943048984094
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.392247771713
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9366815   0.0000000
+    3   0.9366815   1.4988115   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+INPUT tstop called on elrond.chem
+Wed Sep  9 14:39:54 2009
+
+user time   =       0.09 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+cints tstart called on elrond.chem
+Wed Sep  9 14:39:54 2009
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin optimization by energies test
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 66
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 595162 two-electron integrals to IWL file 33
+
+******************************************************************************
+cints tstop called on elrond.chem
+Wed Sep  9 14:39:54 2009
+
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+SCF tstart called on elrond.chem
+Wed Sep  9 14:39:54 2009
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = mass-velocity and darwin optimization by energies test
+  wfn          = SCF_MVD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = NONE
+  convergence  = 12
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3922477717134
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.06287713
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 3948128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 3.029858e-04
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 228673 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0628435245    8.545509e+01    0.000000e+00    0.000000e+00
+    2       -76.0628734415    2.991701e-05    2.184460e-05    2.095054e-03
+    3       -76.0628760179    2.576380e-06    8.945251e-06    7.239192e-04
+    4       -76.0628766765    6.586432e-07    2.037039e-06    2.882420e-04
+    5       -76.0628767338    5.721938e-08    1.271462e-06    6.818756e-05
+    6       -76.0628767390    5.282700e-09    3.350288e-07    2.217521e-05
+    7       -76.0628767392    1.603411e-10    1.326537e-07    3.181298e-06
+    8       -76.0628767392    3.211653e-12    2.833740e-08    5.535545e-07
+    9       -76.0628767392    1.705303e-13    2.733061e-09    1.025870e-07
+   10       -76.0628767392    4.263256e-14    5.194886e-10    1.222008e-08
+   11       -76.0628767392   -1.278977e-13    3.526319e-11    2.374953e-09
+   12       -76.0628767392    4.263256e-14    1.124219e-11    1.479798e-09
+   13       -76.0628767392    9.947598e-14    5.424069e-12    2.770137e-10
+   14       -76.0628767392   -1.563194e-13    1.266025e-12    6.044154e-11
+   15       -76.0628767392   -2.842171e-14    3.609725e-13    1.168046e-11
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557599     2A1     -1.359899     1B2     -0.730107  
+   3A1     -0.582768     1B1     -0.509750  
+
+
+  Unoccupied orbitals
+   4A1      0.120481     2B2      0.189069     5A1      0.452269  
+   3B2      0.491432     2B1      0.517958     6A1      0.568813  
+   7A1      0.635549     4B2      0.654920     8A1      0.806586  
+   1A2      0.841722     3B1      0.933822     5B2      1.170333  
+   9A1      1.300845     6B2      1.390465     4B1      1.513339  
+   2A2      1.555050    10A1      1.559715     7B2      1.571157  
+  11A1      1.679406    12A1      1.772011    13A1      2.025874  
+   8B2      2.101982     5B1      2.180753    14A1      2.897525  
+   9B2      3.140987     6B1      3.238845    15A1      3.264012  
+   3A2      3.491049    10B2      3.538908    16A1      3.718062  
+   4A2      3.774915    11B2      3.779422     7B1      3.939663  
+  17A1      3.973285     8B1      4.063069     5A2      4.065341  
+  12B2      4.099478    18A1      4.135418    13B2      4.408051  
+  19A1      4.596469    14B2      4.643678    20A1      4.668486  
+  21A1      4.860624    15B2      4.865449     9B1      5.203726  
+   6A2      5.338346    22A1      5.599780    10B1      5.908801  
+  11B1      6.009677    23A1      6.252020    16B2      6.281895  
+  24A1      6.595546    17B2      6.840658    25A1      6.846719  
+  12B1      6.891709     7A2      7.062467    18B2      7.383716  
+  19B2      8.532014    26A1      8.764217    27A1     11.842003  
+  28A1     57.347837  
+
+
+      * SCF total energy   =     -76.062876739210
+        kinetic energy     =      76.072000654416
+        nuc. attr. energy  =    -199.502004913270
+        elec. rep. energy  =      47.367127519645
+        potential energy   =    -152.134877393625
+        virial theorem     =       2.000119952276
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+SCF tstop called on elrond.chem
+Wed Sep  9 14:39:54 2009
+
+user time   =       0.09 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+OEPROP tstart called on elrond.chem
+Wed Sep  9 14:39:54 2009
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density will be computed from the eigenvector in checkpoint.
+    $Only electric dipole moment will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+
+  Title : 'mass-velocity and darwin optimization by energies test'
+
+  List of PARAMETERS :
+    # of atoms                 =      3
+    # of molecular orbitals    =     66
+    # of basis functions       =     66
+    # of atomic orbitals       =     66
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     23
+    # of primitives            =     28
+    Print level                =      1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
+    NIX                        =	  11
+    NIY                        =	  11
+    GRID_ZMIN                  =	   0.00000
+    GRID_ZMAX                  =	   3.00000
+
+	Densities available up to root 1
+	** Analyzing density number 1 **
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     1      1          0        1.06455918
+     1      2          0        0.86697517
+     1      3          0        0.16369192
+     1      4          0        1.02380159
+     1      5          0        0.45787435
+     1      6          1        0.81870999
+     1      7          1        0.58672614
+     1      8          1        0.69171817
+     1      9          1        0.70216421
+     1     10          1        0.47995171
+     1     11          1        0.60090828
+     1     12          1        0.39103278
+     1     13          1        0.14798458
+     1     14          1        0.29358267
+     1     15          2        0.00227072
+     1     16          2        0.00000000
+     1     17          2        0.00050986
+     1     18          2        0.01261376
+     1     19          2        0.00480070
+     1     20          2        0.00533233
+     1     21          2        0.02666694
+     1     22          2        0.00000000
+     1     23          2        0.00182265
+     1     24          2        0.04522229
+     1     25          2        0.00848850
+     1     26          2        0.04148306
+     1     27          3       -0.00138060
+     1     28          3       -0.00091078
+     1     29          3       -0.00161388
+     1     30          3        0.00600142
+     1     31          3        0.00000000
+     1     32          3        0.00344844
+     1     33          3        0.01092201
+     1     34          3        0.00531199
+     1     35          3        0.00186949
+     1     36          3        0.00636164
+     3     37          0        0.27318255
+     3     38          0        0.34505587
+     3     39          0        0.04185656
+     3     40          1        0.00474157
+     3     41          1        0.01034324
+     3     42          1        0.00739152
+     3     43          1        0.03012031
+     3     44          1        0.01294119
+     3     45          1        0.02425219
+     3     46          2       -0.00147127
+     3     47          2        0.00262496
+     3     48          2        0.00135878
+     3     49          2        0.00772498
+     3     50          2        0.00190796
+     3     51          2        0.00351892
+     2     52          0        0.27318255
+     2     53          0        0.34505587
+     2     54          0        0.04185656
+     2     55          1        0.00474157
+     2     56          1        0.01034324
+     2     57          1        0.00739152
+     2     58          1        0.03012031
+     2     59          1        0.01294119
+     2     60          1        0.02425219
+     2     61          2       -0.00147127
+     2     62          2        0.00262496
+     2     63          2        0.00135878
+     2     64          2        0.00772498
+     2     65          2        0.00190796
+     2     66          2        0.00351892
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   6.1187201   0.3839945   0.3839945
+    2   0.3839945   0.3130686  -0.0325436
+    3   0.3839945  -0.0325436   0.3130686
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            8.468901        -0.468901
+       2            0.765549        +0.234451
+       3            0.765549        +0.234451
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000          0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =   0.00000 D  =   2.41859695e-44 C*m  =   0.00000000 a.u.
+    mu(Z)  =   1.98218 D  =   6.61183803e-30 C*m  =   0.77984889 a.u.
+    |mu|   =   1.98218 D  =   6.61183803e-30 C*m  =   0.77984889 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000          0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      8            0.0000000000          0.0000000000         -0.1188413187
+    2      1            0.0000000000         -1.4161715562          0.9430489841
+    3      1            0.0000000000          1.4161715562          0.9430489841
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1      -22.33777633     0.00000000    0.00000000   -0.05844338
+       2       -1.00764937     0.00000000   -0.00971204    0.00610892
+       3       -1.00764937     0.00000000    0.00971204    0.00610892
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1          -1254.53220275        -1257.91992671        -1256.40445395
+       2             -1.47392654           -2.06354040           -1.81470794
+       3             -1.47392654           -2.06354040           -1.81470794
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000            0.00000000
+       2              0.00000000            0.00000000           -1.69696286
+       3              0.00000000            0.00000000            1.69696286
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              1.75332505           -1.63439891           -0.11892615
+       2              0.31013176           -0.27948211           -0.03064965
+       3              0.31013176           -0.27948211           -0.03064965
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000            0.00000000
+       2              0.00000000            0.00000000           -1.69696286
+       3              0.00000000            0.00000000            1.69696286
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1            299.91607753
+       2              0.42591254
+       3              0.42591254
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.252746194312363
+    One-electron Darwin term     :   0.200767998783109
+    Total one-electron MVD terms :   -0.051978195529254
+
+ -Updating total energy ( -76.1148549347) in chkpt file with MVD correction
+******************************************************************************
+OEPROP tstop called on elrond.chem
+Wed Sep  9 14:39:54 2009
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+******* OPTKING: --energy_save 
+
+Cartesian geometry in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1188413187
+  1.0     1.00782503   0.0000000000  -1.4161715562   0.9430489841
+  1.0     1.00782503   0.0000000000   1.4161715562   0.9430489841
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.93668153)
+    (2 1 3) (0.93668153)
+Bends
+    (3 2 1 3) (106.27254977)
+Saving energy.
+Energy written:  -76.1148549347
+
+******** OPTKING execution completed ********
+
+
+******* OPTKING: --disp_load 
+Reading symmetry information from root area of checkpoint.
+
+Setting chkpt prefix to irrep A1 .
+
+ ** Geometry for displacement 3 sent to chkpt. **
+
+           1           2           3
+
+    1   0.0000000   0.0000000  -0.1196889
+    2   0.0000000  -1.4193673   0.9497748
+    3   0.0000000   1.4193673   0.9497748
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+INPUT tstart called on elrond.chem
+Wed Sep  9 14:39:54 2009
+
+
+  -Geometry before Center-of-Mass shift (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.119688887977
+    H         0.000000000000    -1.419367340279     0.949774754144
+    H         0.000000000000     1.419367340279     0.949774754144
+
+
+  -Rotational constants (cm-1) :
+    A =   29.40305  B =   14.82482  C =    9.85566
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.119688887977
+    H         0.000000000000    -1.419367340279     0.949774754144
+    H         0.000000000000     1.419367340279     0.949774754144
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S ( 18050.00000000     0.00075700)
+           (  2660.00000000     0.00606600)
+           (   585.70000000     0.03278200)
+           (   160.90000000     0.13260900)
+           (    51.16000000     0.39683900)
+           (    17.90000000     0.54257200) )
+        (S (    17.90000000     0.26249000)
+           (     6.63900000     0.76982800) )
+        (S (     2.07700000     1.00000000) )
+        (S (     0.77360000     1.00000000) )
+        (S (     0.25580000     1.00000000) )
+        (P (    49.83000000     0.01635800)
+           (    11.49000000     0.10645300)
+           (     3.60900000     0.34930200)
+           (     1.32100000     0.65718300) )
+        (P (     0.48210000     1.00000000) )
+        (P (     0.16510000     1.00000000) )
+        (D (     1.70000000     1.00000000) )
+        (D (     0.42500000     1.00000000) )
+        (F (     1.40000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    33.64000000     0.02537400)
+           (     5.05800000     0.18968400)
+           (     1.14700000     0.85293300) )
+        (S (     0.32110000     1.00000000) )
+        (S (     0.10130000     1.00000000) )
+        (P (     1.50000000     1.00000000) )
+        (P (     0.37500000     1.00000000) )
+        (D (     1.00000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 23
+    Number of primitives   = 28
+    Number of AO           = 66
+    Number of SO           = 66
+
+    Irrep    Number of SO
+    -----    ------------
+      1           28
+      2            7
+      3           12
+      4           19
+
+  -Contraction Scheme:
+    Atom     All Primitives // Unique Primitives // Shells
+    ----     ---------------------------------------------
+       1      11s 6p 2d 1f //  10s 6p 2d 1f //  5s 3p 2d 1f
+       2      5s 2p 1d //  5s 2p 1d //  3s 2p 1d
+       3      5s 2p 1d //  5s 2p 1d //  3s 2p 1d
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.119688887977
+    H         0.000000000000     1.419367340279     0.949774754144
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.119688887977
+    H         0.000000000000    -1.419367340279     0.949774754144
+    H         0.000000000000     1.419367340279     0.949774754144
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.063336636476
+    H         0.000000000000    -0.751096904449     0.502599191567
+    H         0.000000000000     0.751096904449     0.502599191567
+
+
+  -Geometry in the reference coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.119688887977
+    H         0.000000000000    -1.419367340279     0.949774754144
+    H         0.000000000000     1.419367340279     0.949774754144
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.355314884933
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9404413   0.0000000
+    3   0.9404413   1.5021938   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+INPUT tstop called on elrond.chem
+Wed Sep  9 14:39:54 2009
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+cints tstart called on elrond.chem
+Wed Sep  9 14:39:54 2009
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin optimization by energies test
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 66
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 595162 two-electron integrals to IWL file 33
+
+******************************************************************************
+cints tstop called on elrond.chem
+Wed Sep  9 14:39:54 2009
+
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+SCF tstart called on elrond.chem
+Wed Sep  9 14:39:54 2009
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = mass-velocity and darwin optimization by energies test
+  wfn          = SCF_MVD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = NONE
+  convergence  = 12
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3553148849334
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.06287674
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 3948128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 3.035050e-04
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 228673 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0628904530    8.541821e+01    0.000000e+00    0.000000e+00
+    2       -76.0629005763    1.012330e-05    1.511331e-05    1.128745e-03
+    3       -76.0629014925    9.161142e-07    4.629501e-06    4.075160e-04
+    4       -76.0629017290    2.365701e-07    1.399753e-06    1.750958e-04
+    5       -76.0629017502    2.119381e-08    7.149931e-07    4.034091e-05
+    6       -76.0629017518    1.622993e-09    1.949126e-07    1.225936e-05
+    7       -76.0629017519    6.593837e-11    6.902427e-08    1.935499e-06
+    8       -76.0629017519    1.250555e-12    1.349592e-08    3.812325e-07
+    9       -76.0629017519    0.000000e+00    1.718725e-09    6.942566e-08
+   10       -76.0629017519    5.684342e-14    2.090620e-10    9.391310e-09
+   11       -76.0629017519   -7.105427e-14    2.162815e-11    1.811247e-09
+   12       -76.0629017519    5.684342e-14    5.640611e-12    1.081520e-09
+   13       -76.0629017519    0.000000e+00    3.554493e-12    2.373040e-10
+   14       -76.0629017519   -7.105427e-14    8.209446e-13    3.869185e-11
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.558383     2A1     -1.358063     1B2     -0.727432  
+   3A1     -0.582582     1B1     -0.509492  
+
+
+  Unoccupied orbitals
+   4A1      0.120112     2B2      0.188847     5A1      0.452883  
+   3B2      0.490390     2B1      0.518088     6A1      0.567104  
+   7A1      0.635670     4B2      0.653432     8A1      0.804337  
+   1A2      0.841351     3B1      0.932103     5B2      1.169070  
+   9A1      1.299773     6B2      1.387472     4B1      1.514003  
+   2A2      1.553829    10A1      1.561636     7B2      1.573385  
+  11A1      1.680464    12A1      1.769015    13A1      2.023175  
+   8B2      2.098746     5B1      2.180285    14A1      2.891778  
+   9B2      3.133650     6B1      3.235591    15A1      3.259878  
+   3A2      3.489375    10B2      3.533765    16A1      3.717340  
+   4A2      3.771956    11B2      3.775289     7B1      3.936867  
+  17A1      3.972944     8B1      4.063808     5A2      4.066932  
+  12B2      4.101478    18A1      4.134145    13B2      4.403377  
+  19A1      4.596259    14B2      4.639616    20A1      4.666627  
+  15B2      4.856186    21A1      4.858268     9B1      5.199640  
+   6A2      5.329564    22A1      5.590474    10B1      5.908093  
+  11B1      6.003614    23A1      6.236497    16B2      6.270098  
+  24A1      6.586760    17B2      6.827659    25A1      6.838516  
+  12B1      6.877621     7A2      7.051355    18B2      7.365440  
+  19B2      8.508071    26A1      8.741744    27A1     11.839655  
+  28A1     57.344221  
+
+
+      * SCF total energy   =     -76.062901751913
+        kinetic energy     =      76.056777137374
+        nuc. attr. energy  =    -199.421308085276
+        elec. rep. energy  =      47.301629195989
+        potential energy   =    -152.119678889287
+        virial theorem     =       1.999919479610
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+SCF tstop called on elrond.chem
+Wed Sep  9 14:39:55 2009
+
+user time   =       0.09 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+OEPROP tstart called on elrond.chem
+Wed Sep  9 14:39:55 2009
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density will be computed from the eigenvector in checkpoint.
+    $Only electric dipole moment will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+
+  Title : 'mass-velocity and darwin optimization by energies test'
+
+  List of PARAMETERS :
+    # of atoms                 =      3
+    # of molecular orbitals    =     66
+    # of basis functions       =     66
+    # of atomic orbitals       =     66
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     23
+    # of primitives            =     28
+    Print level                =      1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
+    NIX                        =	  11
+    NIY                        =	  11
+    GRID_ZMIN                  =	   0.00000
+    GRID_ZMAX                  =	   3.00000
+
+	Densities available up to root 1
+	** Analyzing density number 1 **
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     1      1          0        1.06458385
+     1      2          0        0.86695334
+     1      3          0        0.16366446
+     1      4          0        1.02446542
+     1      5          0        0.46160366
+     1      6          1        0.81892335
+     1      7          1        0.58529712
+     1      8          1        0.68991819
+     1      9          1        0.70243594
+     1     10          1        0.48064686
+     1     11          1        0.59986953
+     1     12          1        0.39124960
+     1     13          1        0.14932401
+     1     14          1        0.29347432
+     1     15          2        0.00223647
+     1     16          2        0.00000000
+     1     17          2        0.00050688
+     1     18          2        0.01246914
+     1     19          2        0.00477326
+     1     20          2        0.00529504
+     1     21          2        0.02638797
+     1     22          2        0.00000000
+     1     23          2        0.00182391
+     1     24          2        0.04506360
+     1     25          2        0.00856637
+     1     26          2        0.04153405
+     1     27          3       -0.00140939
+     1     28          3       -0.00091548
+     1     29          3       -0.00160478
+     1     30          3        0.00597301
+     1     31          3        0.00000000
+     1     32          3        0.00345879
+     1     33          3        0.01086644
+     1     34          3        0.00529675
+     1     35          3        0.00189359
+     1     36          3        0.00644621
+     3     37          0        0.27143975
+     3     38          0        0.34575620
+     3     39          0        0.04244634
+     3     40          1        0.00465423
+     3     41          1        0.01020742
+     3     42          1        0.00733456
+     3     43          1        0.02991325
+     3     44          1        0.01294735
+     3     45          1        0.02405220
+     3     46          2       -0.00146004
+     3     47          2        0.00259554
+     3     48          2        0.00135593
+     3     49          2        0.00772665
+     3     50          2        0.00191045
+     3     51          2        0.00358443
+     2     52          0        0.27143975
+     2     53          0        0.34575620
+     2     54          0        0.04244634
+     2     55          1        0.00465423
+     2     56          1        0.01020742
+     2     57          1        0.00733456
+     2     58          1        0.02991325
+     2     59          1        0.01294735
+     2     60          1        0.02405220
+     2     61          2       -0.00146004
+     2     62          2        0.00259554
+     2     63          2        0.00135593
+     2     64          2        0.00772665
+     2     65          2        0.00191045
+     2     66          2        0.00358443
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   6.1240082   0.3819539   0.3819539
+    2   0.3819539   0.3134360  -0.0323031
+    3   0.3819539  -0.0323031   0.3134360
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            8.471071        -0.471071
+       2            0.764464        +0.235536
+       3            0.764464        +0.235536
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000          0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =   0.00000 D  =   8.11480699e-45 C*m  =   0.00000000 a.u.
+    mu(Z)  =   1.98984 D  =   6.63737515e-30 C*m  =   0.78286093 a.u.
+    |mu|   =   1.98984 D  =   6.63737515e-30 C*m  =   0.78286093 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000          0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      8            0.0000000000          0.0000000000         -0.1196888880
+    2      1            0.0000000000         -1.4193673403          0.9497747541
+    3      1            0.0000000000          1.4193673403          0.9497747541
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1      -22.33705240     0.00000000    0.00000000   -0.05788977
+       2       -1.00712956     0.00000000   -0.00626083    0.00326476
+       3       -1.00712956     0.00000000    0.00626083    0.00326476
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1          -1254.56526088        -1257.96763225        -1256.46208294
+       2             -1.46774839           -2.04169612           -1.80206144
+       3             -1.46774839           -2.04169612           -1.80206144
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000            0.00000000
+       2              0.00000000            0.00000000           -1.68435983
+       3              0.00000000            0.00000000            1.68435983
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              1.76639781           -1.63597356           -0.13042425
+       2              0.30275359           -0.27119413           -0.03155946
+       3              0.30275359           -0.27119413           -0.03155946
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000            0.00000000
+       2              0.00000000            0.00000000           -1.68435983
+       3              0.00000000            0.00000000            1.68435983
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1            299.92709046
+       2              0.42267621
+       3              0.42267621
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.252753771165904
+    One-electron Darwin term     :   0.200774826961579
+    Total one-electron MVD terms :   -0.051978944204325
+
+ -Updating total energy ( -76.1148806961) in chkpt file with MVD correction
+******************************************************************************
+OEPROP tstop called on elrond.chem
+Wed Sep  9 14:39:55 2009
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+******* OPTKING: --energy_save 
+
+Cartesian geometry in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1196888880
+  1.0     1.00782503   0.0000000000  -1.4193673403   0.9497747541
+  1.0     1.00782503   0.0000000000   1.4193673403   0.9497747541
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94044134)
+    (2 1 3) (0.94044134)
+Bends
+    (3 2 1 3) (106.00547737)
+Saving energy.
+Energy written:  -76.1148806961
+
+******** OPTKING execution completed ********
+
+
+******* OPTKING: --disp_load 
+Reading symmetry information from root area of checkpoint.
+
+Setting chkpt prefix to irrep A1 .
+
+ ** Geometry for displacement 4 sent to chkpt. **
+
+           1           2           3
+
+    1   0.0000000   0.0000000  -0.1188362
+    2   0.0000000  -1.4239829   0.9430087
+    3   0.0000000   1.4239829   0.9430087
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+INPUT tstart called on elrond.chem
+Wed Sep  9 14:39:55 2009
+
+
+  -Geometry before Center-of-Mass shift (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.118836237191
+    H         0.000000000000    -1.423982873049     0.943008660781
+    H         0.000000000000     1.423982873049     0.943008660781
+
+
+  -Rotational constants (cm-1) :
+    A =   29.82650  B =   14.72887  C =    9.85988
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.118836237191
+    H         0.000000000000    -1.423982873049     0.943008660781
+    H         0.000000000000     1.423982873049     0.943008660781
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S ( 18050.00000000     0.00075700)
+           (  2660.00000000     0.00606600)
+           (   585.70000000     0.03278200)
+           (   160.90000000     0.13260900)
+           (    51.16000000     0.39683900)
+           (    17.90000000     0.54257200) )
+        (S (    17.90000000     0.26249000)
+           (     6.63900000     0.76982800) )
+        (S (     2.07700000     1.00000000) )
+        (S (     0.77360000     1.00000000) )
+        (S (     0.25580000     1.00000000) )
+        (P (    49.83000000     0.01635800)
+           (    11.49000000     0.10645300)
+           (     3.60900000     0.34930200)
+           (     1.32100000     0.65718300) )
+        (P (     0.48210000     1.00000000) )
+        (P (     0.16510000     1.00000000) )
+        (D (     1.70000000     1.00000000) )
+        (D (     0.42500000     1.00000000) )
+        (F (     1.40000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    33.64000000     0.02537400)
+           (     5.05800000     0.18968400)
+           (     1.14700000     0.85293300) )
+        (S (     0.32110000     1.00000000) )
+        (S (     0.10130000     1.00000000) )
+        (P (     1.50000000     1.00000000) )
+        (P (     0.37500000     1.00000000) )
+        (D (     1.00000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 23
+    Number of primitives   = 28
+    Number of AO           = 66
+    Number of SO           = 66
+
+    Irrep    Number of SO
+    -----    ------------
+      1           28
+      2            7
+      3           12
+      4           19
+
+  -Contraction Scheme:
+    Atom     All Primitives // Unique Primitives // Shells
+    ----     ---------------------------------------------
+       1      11s 6p 2d 1f //  10s 6p 2d 1f //  5s 3p 2d 1f
+       2      5s 2p 1d //  5s 2p 1d //  3s 2p 1d
+       3      5s 2p 1d //  5s 2p 1d //  3s 2p 1d
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.118836237191
+    H         0.000000000000     1.423982873049     0.943008660781
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.118836237191
+    H         0.000000000000    -1.423982873049     0.943008660781
+    H         0.000000000000     1.423982873049     0.943008660781
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.062885433078
+    H         0.000000000000    -0.753539339383     0.499018728895
+    H         0.000000000000     0.753539339383     0.499018728895
+
+
+  -Geometry in the reference coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.118836237191
+    H         0.000000000000    -1.423982873049     0.943008660781
+    H         0.000000000000     1.423982873049     0.943008660781
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.358615121196
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9399776   0.0000000
+    3   0.9399776   1.5070787   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+INPUT tstop called on elrond.chem
+Wed Sep  9 14:39:55 2009
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+cints tstart called on elrond.chem
+Wed Sep  9 14:39:55 2009
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = mass-velocity and darwin optimization by energies test
+    Number of atoms             = 3
+    Number of atomic orbitals   = 66
+    Number of symmetry orbitals = 66
+    Maximum AM in the basis     = 3
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 595162 two-electron integrals to IWL file 33
+
+******************************************************************************
+cints tstop called on elrond.chem
+Wed Sep  9 14:39:55 2009
+
+user time   =       0.15 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+SCF tstart called on elrond.chem
+Wed Sep  9 14:39:55 2009
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = mass-velocity and darwin optimization by energies test
+  wfn          = SCF_MVD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = NONE
+  convergence  = 12
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.3586151211957
+
+  using old vector from file30 as initial guess
+  energy from old vector:   -76.06290175
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 3948128 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 3.038002e-04
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 228673 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -76.0628993950    8.542151e+01    0.000000e+00    0.000000e+00
+    2       -76.0629034282    4.033130e-06    1.217210e-05    6.782730e-04
+    3       -76.0629036788    2.506486e-07    2.736331e-06    1.516544e-04
+    4       -76.0629037038    2.503421e-08    8.014246e-07    6.166603e-05
+    5       -76.0629037076    3.764569e-09    4.152829e-07    1.882735e-05
+    6       -76.0629037078    1.617337e-10    8.079456e-08    3.757993e-06
+    7       -76.0629037078    4.291678e-12    1.050060e-08    5.805266e-07
+    8       -76.0629037078    1.989520e-13    2.017067e-09    1.197987e-07
+    9       -76.0629037078   -1.278977e-13    5.190549e-10    2.702776e-08
+   10       -76.0629037078    1.421085e-14    1.379678e-10    3.996837e-09
+   11       -76.0629037078    4.263256e-14    2.348812e-11    7.364780e-10
+   12       -76.0629037078    1.421085e-14    3.861975e-12    4.232061e-10
+   13       -76.0629037078   -7.105427e-14    1.789797e-12    1.545553e-10
+   14       -76.0629037078   -2.842171e-14    8.371253e-13    2.246337e-11
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.558046     2A1     -1.357883     1B2     -0.728815  
+   3A1     -0.581542     1B1     -0.509362  
+
+
+  Unoccupied orbitals
+   4A1      0.120255     2B2      0.188728     5A1      0.453012  
+   3B2      0.491259     2B1      0.518118     6A1      0.566061  
+   7A1      0.634773     4B2      0.653722     8A1      0.807832  
+   1A2      0.840363     3B1      0.934246     5B2      1.167695  
+   9A1      1.299041     6B2      1.389010     4B1      1.511637  
+   2A2      1.555197    10A1      1.561521     7B2      1.572656  
+  11A1      1.677854    12A1      1.771619    13A1      2.025165  
+   8B2      2.099231     5B1      2.180376    14A1      2.890128  
+   9B2      3.133499     6B1      3.242304    15A1      3.265633  
+   3A2      3.483093    10B2      3.534002    16A1      3.719735  
+   4A2      3.774742    11B2      3.778441     7B1      3.939612  
+  17A1      3.973170     5A2      4.065158     8B1      4.065761  
+  12B2      4.099033    18A1      4.134987    13B2      4.406106  
+  19A1      4.594158    14B2      4.631398    20A1      4.666748  
+  15B2      4.857904    21A1      4.859022     9B1      5.197261  
+   6A2      5.333360    22A1      5.590404    10B1      5.908106  
+  11B1      6.001633    23A1      6.241618    16B2      6.270735  
+  24A1      6.580151    25A1      6.832279    17B2      6.836534  
+  12B1      6.882403     7A2      7.050270    18B2      7.375934  
+  19B2      8.509173    26A1      8.747212    27A1     11.840292  
+  28A1     57.345056  
+
+
+      * SCF total energy   =     -76.062903707781
+        kinetic energy     =      76.057671475261
+        nuc. attr. energy  =    -199.429413285081
+        elec. rep. energy  =      47.308838102039
+        potential energy   =    -152.120575183042
+        virial theorem     =       1.999931211770
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+SCF tstop called on elrond.chem
+Wed Sep  9 14:39:55 2009
+
+user time   =       0.09 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+OEPROP tstart called on elrond.chem
+Wed Sep  9 14:39:55 2009
+
+    **********************************************
+    *                    OEPROP                  *
+    *          A simple property program         *
+    *              by a big TOOL fan             *
+    **********************************************
+
+
+  TASKS to be performed :
+    $One-particle density will be computed from the eigenvector in checkpoint.
+    $Only electric dipole moment will be computed.
+    $Reference point for the electric multipole moments calculation is 
+      the center of mass.
+    $Reference point for the electric angular momentum calculation is 
+      at (0.000000 0.000000 0.000000)
+    $Electrostatic properties at the nuclei will be evaluated.
+
+  Title : 'mass-velocity and darwin optimization by energies test'
+
+  List of PARAMETERS :
+    # of atoms                 =      3
+    # of molecular orbitals    =     66
+    # of basis functions       =     66
+    # of atomic orbitals       =     66
+    # of irreps                =      4
+    Total charge               =      0
+    # of unique shells         =     23
+    # of primitives            =     28
+    Print level                =      1
+
+  List of GRID PARAMETERS :
+    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
+    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
+    NIX                        =	  11
+    NIY                        =	  11
+    GRID_ZMIN                  =	   0.00000
+    GRID_ZMAX                  =	   3.00000
+
+	Densities available up to root 1
+	** Analyzing density number 1 **
+ --------------------------------------------------------------
+   ** Mulliken population analysis of one-particle density **
+ --------------------------------------------------------------
+
+ -Gross orbital populations :
+
+  Center   AO          L          Q(AO)
+  ------  ----        ---      -----------
+     1      1          0        1.06456538
+     1      2          0        0.86697377
+     1      3          0        0.16356081
+     1      4          0        1.02450878
+     1      5          0        0.46029911
+     1      6          1        0.81879294
+     1      7          1        0.58514331
+     1      8          1        0.69112748
+     1      9          1        0.70239520
+     1     10          1        0.48004958
+     1     11          1        0.60122479
+     1     12          1        0.39143330
+     1     13          1        0.14860369
+     1     14          1        0.29486081
+     1     15          2        0.00220386
+     1     16          2        0.00000000
+     1     17          2        0.00050289
+     1     18          2        0.01256206
+     1     19          2        0.00474921
+     1     20          2        0.00521801
+     1     21          2        0.02654606
+     1     22          2        0.00000000
+     1     23          2        0.00181002
+     1     24          2        0.04537236
+     1     25          2        0.00849810
+     1     26          2        0.04138899
+     1     27          3       -0.00140119
+     1     28          3       -0.00091115
+     1     29          3       -0.00160602
+     1     30          3        0.00601441
+     1     31          3        0.00000000
+     1     32          3        0.00342055
+     1     33          3        0.01096057
+     1     34          3        0.00535606
+     1     35          3        0.00185066
+     1     36          3        0.00635863
+     3     37          0        0.27151084
+     3     38          0        0.34517621
+     3     39          0        0.04233289
+     3     40          1        0.00466457
+     3     41          1        0.01027990
+     3     42          1        0.00728224
+     3     43          1        0.02990067
+     3     44          1        0.01292705
+     3     45          1        0.02401685
+     3     46          2       -0.00144245
+     3     47          2        0.00260965
+     3     48          2        0.00134106
+     3     49          2        0.00775871
+     3     50          2        0.00192033
+     3     51          2        0.00350497
+     2     52          0        0.27151084
+     2     53          0        0.34517621
+     2     54          0        0.04233289
+     2     55          1        0.00466457
+     2     56          1        0.01027990
+     2     57          1        0.00728224
+     2     58          1        0.02990067
+     2     59          1        0.01292705
+     2     60          1        0.02401685
+     2     61          2       -0.00144245
+     2     62          2        0.00260965
+     2     63          2        0.00134106
+     2     64          2        0.00775871
+     2     65          2        0.00192033
+     2     66          2        0.00350497
+
+
+ -Atomic bond populations :
+
+           1           2           3
+
+    1   6.1225811   0.3824162   0.3824162
+    2   0.3824162   0.3126285  -0.0323385
+    3   0.3824162  -0.0323385   0.3126285
+
+
+ -Gross atomic populations and net charges :
+
+    Center    Atomic Population    Net Charge
+    ------    -----------------    ----------
+       1            8.472433        -0.472433
+       2            0.763783        +0.236217
+       3            0.763783        +0.236217
+
+
+ --------------------------------------------------------------
+                *** Electric multipole moments ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000          0.0000000000
+
+ -Electric dipole moment (expectation values) :
+
+    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -1.42956786e-44 C*m  =  -0.00000000 a.u.
+    mu(Z)  =   1.97997 D  =   6.60446085e-30 C*m  =   0.77897877 a.u.
+    |mu|   =   1.97997 D  =   6.60446085e-30 C*m  =   0.77897877 a.u.
+
+
+ --------------------------------------------------------------
+              *** Electronic angular momentum ***
+ --------------------------------------------------------------
+
+ -Coordinates of the reference point (a.u.) :
+           x                     y                     z
+  --------------------  --------------------  --------------------
+          0.0000000000          0.0000000000          0.0000000000
+
+ -Electronic angular momentum (expectation values) :
+
+    Lx  =   0.00000000 a.u.
+    Ly  =   0.00000000 a.u.
+    Lz  =   0.00000000 a.u.
+
+
+ --------------------------------------------------------------
+      *** Electrostatic  properties at atomic centers ***
+ --------------------------------------------------------------
+
+ -Coordinates of atomic centers (a.u.):
+    #   Charge           x                     y                     z
+   ---  ------  --------------------  --------------------  --------------------
+    1      8            0.0000000000          0.0000000000         -0.1188362372
+    2      1            0.0000000000         -1.4239828730          0.9430086608
+    3      1            0.0000000000          1.4239828730          0.9430086608
+
+
+ -Electrostatic potential and electric field (a.u.) :
+
+    Center         phi            Ex             Ey           Ez
+    ------    ------------   ------------  ------------  ------------
+       1      -22.33726081     0.00000000   -0.00000000   -0.05797505
+       2       -1.00704828     0.00000000   -0.00593670    0.00414745
+       3       -1.00704828     0.00000000    0.00593670    0.00414745
+
+
+ -Electric field gradient (regular form) (a.u.):
+
+    Center           XX                    YY                    ZZ
+    ------  --------------------  --------------------  --------------------
+       1          -1254.53542886        -1257.94101663        -1256.41249000
+       2             -1.46747276           -2.04573770           -1.79949682
+       3             -1.46747276           -2.04573770           -1.79949682
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000           -1.68121857
+       3              0.00000000            0.00000000            1.68121857
+
+
+ -Electric field gradient (traceless tensor form) (a.u.):
+
+    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
+    ------  --------------------  --------------------  --------------------
+       1              1.76088297           -1.64470480           -0.11617817
+       2              0.30342967           -0.27483527           -0.02859440
+       3              0.30342967           -0.27483527           -0.02859440
+
+    Center           XY                    XZ                    YZ
+    ------  --------------------  --------------------  --------------------
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000           -1.68121857
+       3              0.00000000            0.00000000            1.68121857
+
+
+ -Electron density (a.u.):
+
+    Center           rho
+    ------  --------------------
+       1            299.91865202
+       2              0.42277181
+       3              0.42277181
+
+
+ --------------------------------------------------------------
+                *** Miscellaneous properties ***
+ --------------------------------------------------------------
+
+ -Relativistic MVD one-electron corrections to the energy (a.u.):
+
+    Mass-velocity (p^4) term     :   -0.252746184368393
+    One-electron Darwin term     :   0.200769196149053
+    Total one-electron MVD terms :   -0.051976988219340
+
+ -Updating total energy ( -76.1148806960) in chkpt file with MVD correction
+******************************************************************************
+OEPROP tstop called on elrond.chem
+Wed Sep  9 14:39:55 2009
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+******* OPTKING: --energy_save 
+
+Cartesian geometry in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1188362372
+  1.0     1.00782503   0.0000000000  -1.4239828730   0.9430086608
+  1.0     1.00782503   0.0000000000   1.4239828730   0.9430086608
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.93997757)
+    (2 1 3) (0.93997757)
+Bends
+    (3 2 1 3) (106.57720146)
+Saving energy.
+Energy written:  -76.1148806960
+Last displacement done, resetting checkpoint prefix.
+
+******** OPTKING execution completed ********
+
+
+******* OPTKING: --grad_energy 
+
+Cartesian geometry in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1192628358
+  1.0     1.00782503   0.0000000000  -1.4216801860   0.9463938754
+  1.0     1.00782503   0.0000000000   1.4216801860   0.9463938754
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94020945)
+    (2 1 3) (0.94020945)
+Bends
+    (3 2 1 3) (106.29133942)
+
+ ** Calculating file11.dat from energies. **
+
+  SYMM = (
+    ("A1 " (1 2 3)
+     (-0.71 -0.71 -0.07))
+    ("A1 " (1 2 3)
+     (-0.05 -0.05  1.00))
+  )
+Energies of displaced geometries. Check for precision!
+Coordinate 0:  -76.1148549324  -76.1148549347 
+Coordinate 1:  -76.1148806961  -76.1148806960 
+
+Internal coordinate forces
+ 0.0000010199
+-0.0000000513
+
+******** OPTKING execution completed ********
+
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1192628358
+  1.0     1.00782503   0.0000000000  -1.4216801860   0.9463938754
+  1.0     1.00782503   0.0000000000   1.4216801860   0.9463938754
+                      -0.0000000000  -0.0000000000  -0.0000000800
+                      -0.0000000000  -0.0000000788   0.0000000400
+                      -0.0000000000   0.0000000788   0.0000000400
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (0.94020945)
+    (2 1 3) (0.94020945)
+Bends
+    (3 2 1 3) (106.29133942)
+ 
+ ** Taking normal optimization step. **
+
+  SYMM = (
+    ("A1 " (1 2 3)
+     (-0.71 -0.71 -0.07))
+    ("A1 " (1 2 3)
+     (-0.05 -0.05  1.00))
+  )
+
+Current SCF_MVD energy before step       -76.114882837465
+  Previous energy                    -76.114882835273
+  Actual Delta(E) from last step      -0.000000002193
+  Previous Predicted Delta(E)         -0.000000001535  ( 42.9% error)
+
+ ** Taking geometry step number 4 **
+
+BuB^t Determinant: 2.508164e+00
+	Symmetric Force Constants found in PSIF_OPTKING
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS update with previous 3 gradient(s).
+Projected energy change by quadratic approximation:        -0.0000000000
+
+	Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+	----------------------------------------------------------
+	       Value         Force        Displacement  New Value
+	----------------------------------------------------------
+	  1   -1.44846881    0.00000102    0.00000011   -1.44846870
+	  2    1.76392944   -0.00000005   -0.00000010    1.76392933
+	----------------------------------------------------------
+
+	   MAX force:    0.0000010199   RMS force:    0.0000007221
+	   MAX  disp:    0.0000001092   RMS  disp:    0.0000001063
+
+	Convergence Check:
+	             MAX Force  &&  ( Delta(E) ||   MAX disp )
+	----------------------------------------------------------
+	Actual         1.0e-06        2.2e-09        1.1e-07
+	Limit          1.0e-05        1.0e-10        1.0e-04
 	Conv?            Y              N              Y
 	----------------------------------------------------------
 
 Optimization is complete.
 
-Final SCF_MVD energy is  -76.1148828353
+Final SCF_MVD energy is  -76.1148828375
 
 	            ****  Optimization Summary  ****
 	----------------------------------------------------------------------
@@ -9015,17 +11954,18 @@ Final SCF_MVD energy is  -76.1148828353
 	   1    -76.114816902323    -76.114816902323    5.19e-02     7.33e-02
 	   2    -76.114881605272     -0.000064702949    3.35e-03     4.00e-03
 	   3    -76.114882835273     -0.000001230001    9.35e-05     9.38e-05
+	   4    -76.114882837465     -0.000000002193    7.22e-07     1.02e-06
 	----------------------------------------------------------------------
 
 The Optimized geometry in a.u.
-  (  O    0.0000000000    0.0000000000   -0.1192528438 )
-  (  H    0.0000000000   -1.4217542751    0.9463145852 )
-  (  H    0.0000000000    1.4217542751    0.9463145852 )
+  (  O    0.0000000000    0.0000000000   -0.1192628358 )
+  (  H    0.0000000000   -1.4216801860    0.9463938754 )
+  (  H    0.0000000000    1.4216801860    0.9463938754 )
 
 The Optimized geometry in Angstrom
-  (  O    0.0000000000    0.0000000000   -0.0631058918 )
-  (  H    0.0000000000   -0.7523600161    0.5007681489 )
-  (  H    0.0000000000    0.7523600161    0.5007681489 )
+  (  O    0.0000000000    0.0000000000   -0.0631111793 )
+  (  H    0.0000000000   -0.7523208098    0.5008101075 )
+  (  H    0.0000000000    0.7523208098    0.5008101075 )
 
 
 ******** OPTKING execution completed ********
@@ -9035,7 +11975,7 @@ The Optimized geometry in Angstrom
                           PSI3 Computation Completed
                           --------------------------
 
-PSI3 stopped on elrond.chem at Tue Sep  8 21:54:13 2009
+PSI3 stopped on elrond.chem at Wed Sep  9 14:39:55 2009
 
-Total PSI3 wall time          9 seconds =       0.15 minutes
+Total PSI3 wall time         10 seconds =       0.17 minutes
 ******************************************************************************
