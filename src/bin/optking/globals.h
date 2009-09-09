@@ -78,8 +78,9 @@ EXTERN struct OPTInfo {
   int numerical_dertype;
   int iteration;
   int micro_iteration;
-  double conv;  /* MAX force convergence */
-  double econv; /* MAX DE convergence */
+  double conv_max_force;  /* MAX force convergence */
+  double conv_max_DE; /* MAX delta-E convergence */
+  double conv_max_disp; /* MAX delta-displacement convergence */
   double ev_tol;
   double scale_connectivity;
   double disp_size;
@@ -103,6 +104,7 @@ EXTERN struct OPTInfo {
   int fix_intrafragment;
   int analytic_interfragment;
   int max_consecutive_line_searches;
+  double line_search_min;
 
 /* Back-transformation parameters */
   int bt_max_iter;

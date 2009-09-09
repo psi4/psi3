@@ -1,5 +1,5 @@
 ******************************************************************************
-PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:39:43 2008
+PSI3 started on elrond.chem at Wed Sep  9 07:43:47 2009
 
     -----------------------------------------------------------------------    
             PSI3: An Open-Source Ab Initio Electronic Structure Package 
@@ -11,12 +11,13 @@ PSI3 started on augustus.chemistry.gatech.edu at Wed Mar 12 18:39:43 2008
     -----------------------------------------------------------------------    
 
 PSI3 will perform a RHF MP2 optimization via analytic gradients.
+calculation of unrecognized type.
 
 The following programs will be executed:
 
  input
- REPEAT 20
- 20
+ REPEAT 40
+ 40
   cints
   cscf
   transqt2
@@ -30,8 +31,8 @@ The following programs will be executed:
  psiclean
 
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:43 2008
+INPUT tstart called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
                                 --------------
                                     INPUT
@@ -42,7 +43,7 @@ Wed Mar 12 18:39:43 2008
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /theoryfs/ds/home/ashley/psi3/lib/pbasis.dat
+  Parsed basis sets from /home/rking/psi3/lib/pbasis.dat
 Coordinates after reading z-matrices
 
            1           2           3
@@ -52,11 +53,11 @@ Coordinates after reading z-matrices
     3   1.8405477   0.0000000  -0.4283089
 
   -Geometry before Center-of-Mass shift (a.u.):
-       Center              X                  Y                   Z
-    ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000     0.000000000000
-        HYDROGEN      0.000000000000     0.000000000000     1.889725988579
-        HYDROGEN      1.840547697619     0.000000000000    -0.428308866009
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000     0.000000000000
+    H         0.000000000000     0.000000000000     1.889725988579
+    H         1.840547697619     0.000000000000    -0.428308866009
 
 
   -Rotational constants (cm-1) :
@@ -64,11 +65,11 @@ Coordinates after reading z-matrices
     It is an asymmetric top.
 
   -Geometry after Center-of-Mass shift and reorientation (a.u.):
-       Center              X                  Y                   Z
-    ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000    -0.131510165113     0.000000000000
-        HYDROGEN      1.479940996653     1.043580877461    -0.000000000000
-        HYDROGEN     -1.479940996653     1.043580877461    -0.000000000000
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000    -0.131510165113     0.000000000000
+    H         1.479940996653     1.043580877461    -0.000000000000
+    H        -1.479940996653     1.043580877461    -0.000000000000
 
 
   -SYMMETRY INFORMATION:
@@ -120,36 +121,43 @@ Coordinates after reading z-matrices
       3            4
       4            7
 
+  -Contraction Scheme:
+    Atom     All Primitives // Unique Primitives // Shells
+    ----     ---------------------------------------------
+       1      10s 4p 1d //  10s 1d //  3s 2p 1d
+       2      4s 1p //  4s 1p //  2s 1p
+       3      4s 1p //  4s 1p //  2s 1p
+
 
   -Unique atoms in the canonical coordinate system (a.u.):
-       Center              X                  Y                   Z
-    ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.131510165113
-        HYDROGEN     -0.000000000000     1.479940996653     1.043580877461
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.131510165113
+    H        -0.000000000000     1.479940996653     1.043580877461
 
 
   -Geometry in the canonical coordinate system (a.u.):
-       Center              X                  Y                   Z
-    ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.131510165113
-        HYDROGEN     -0.000000000000     1.479940996653     1.043580877461
-        HYDROGEN     -0.000000000000    -1.479940996653     1.043580877461
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.131510165113
+    H        -0.000000000000     1.479940996653     1.043580877461
+    H        -0.000000000000    -1.479940996653     1.043580877461
 
 
   -Geometry in the canonical coordinate system (Angstrom):
-       Center              X                  Y                   Z
-    ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.069592187390
-        HYDROGEN     -0.000000000000     0.783151105291     0.552239257844
-        HYDROGEN     -0.000000000000    -0.783151105291     0.552239257844
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.069592187390
+    H        -0.000000000000     0.783151105291     0.552239257844
+    H        -0.000000000000    -0.783151105291     0.552239257844
 
 
   -Geometry in the reference coordinate system (a.u.):
-       Center              X                  Y                   Z
-    ------------   -----------------  -----------------  -----------------
-          OXYGEN      0.000000000000     0.000000000000    -0.131510165113
-        HYDROGEN     -0.000000000000     1.479940996653     1.043580877461
-        HYDROGEN     -0.000000000000    -1.479940996653     1.043580877461
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.131510165113
+    H        -0.000000000000     1.479940996653     1.043580877461
+    H        -0.000000000000    -1.479940996653     1.043580877461
 
 
   --------------------------------------------------------------------------
@@ -169,15 +177,15 @@ Coordinates after reading z-matrices
 
 
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:43 2008
+INPUT tstop called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.11 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:43 2008
+cints tstart called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -206,15 +214,15 @@ Wed Mar 12 18:39:43 2008
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:43 2008
+cints tstop called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:43 2008
+SCF tstart called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
 
              ------------------------------------------
@@ -231,7 +239,7 @@ Wed Mar 12 18:39:43 2008
   charge       = 0
   direct       = false
   dertype      = FIRST
-  convergence  = 10
+  convergence  = 12
   maxiter      = 100
   guess        = AUTO
 
@@ -276,6 +284,8 @@ Wed Mar 12 18:39:43 2008
    14       -76.0172965718    1.421085e-14    5.212206e-10    9.017730e-09
    15       -76.0172965718    5.684342e-14    1.019475e-10    4.425818e-09
    16       -76.0172965718   -4.263256e-14    1.512737e-11    3.058840e-10
+   17       -76.0172965718    0.000000e+00    4.724631e-12    9.451295e-11
+   18       -76.0172965718   -2.842171e-14    7.293966e-13    1.032290e-11
 
 Orbital energies (a.u.):
 
@@ -295,22 +305,22 @@ Orbital energies (a.u.):
 
 
       * SCF total energy   =     -76.017296571842
-        kinetic energy     =      75.657182102721
-        nuc. attr. energy  =    -198.046615211838
-        elec. rep. energy  =      46.372136537275
-        potential energy   =    -151.674478674563
-        virial theorem     =       1.995262729861
+        kinetic energy     =      75.657182103395
+        nuc. attr. energy  =    -198.046615212854
+        elec. rep. energy  =      46.372136537618
+        potential energy   =    -151.674478675236
+        virial theorem     =       1.995262729870
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:43 2008
+SCF tstop called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:43 2008
+TRANSQT tstart called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
 
 	**************************************************
@@ -348,7 +358,7 @@ Wed Mar 12 18:39:43 2008
 	 B2 	   7	    0	    1	    0	    6	    0
 
 	Nuclear Rep. energy (chkpt) =      8.80468729099867
-	SCF energy          (chkpt) =    -76.01729657184156
+	SCF energy          (chkpt) =    -76.01729657184153
 
 	Presorting SO-basis two-electron integrals.
 	Sorting File: SO Ints (pq,rs) nbuckets = 1
@@ -358,15 +368,15 @@ Wed Mar 12 18:39:43 2008
 	Starting second half-transformation.
 	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:44 2008
+TRANSQT tstop called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:44 2008
+CCSORT tstart called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
 
 			**************************
@@ -384,6 +394,7 @@ Wed Mar 12 18:39:44 2008
 	Memory (Mbytes) =	256.0
 	AO Basis        =	NONE
 	Make (ab|cd)    =	False
+	Make unpacked (ab|cd) =	False
 	Cache Level     =	2
 	Cache Type      =	LRU
 	Local CC        =     No
@@ -403,7 +414,7 @@ Wed Mar 12 18:39:44 2008
 	 B2 	   7	    0	    1	    0	    6	    0
 
 	Nuclear Rep. energy (chkpt) =      8.80468729099867
-	SCF energy          (chkpt) =    -76.01729657184156
+	SCF energy          (chkpt) =    -76.01729657184153
 
 	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
 	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
@@ -430,23 +441,23 @@ Wed Mar 12 18:39:44 2008
 	Sorting File: E <ai|jk> nbuckets = 1
 	Sorting File: F <ia|bc> nbuckets = 1
 	Sorting File: F <ai|bc> nbuckets = 1
-	One-electron energy          =   -122.38943310911625
-	Two-electron (AA) energy     =     14.32515340535290
-	Two-electron (BB) energy     =     14.32515340535290
-	Two-electron (AB) energy     =     23.24229584092316
-	Two-electron energy          =     37.56744924627606
+	One-electron energy          =   -122.38943310945933
+	Two-electron (AA) energy     =     14.32515340549598
+	Two-electron (BB) energy     =     14.32515340549598
+	Two-electron (AB) energy     =     23.24229584112314
+	Two-electron energy          =     37.56744924661913
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -76.01729657184153
+	Reference energy             =    -76.01729657184154
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:44 2008
+CCSORT tstop called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:44 2008
+MP2 tstart called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
 			*************************
 			*                       *
@@ -455,7 +466,7 @@ Wed Mar 12 18:39:44 2008
 			*************************
 
 	Nuclear rep. energy     =    8.804687290998672
-	SCF energy              =  -76.017296571841555
+	SCF energy              =  -76.017296571841527
 
 	Input parameters:
 	-----------------
@@ -467,43 +478,52 @@ Wed Mar 12 18:39:44 2008
 	Memory (MB)   	=	256.0
 	Print Level   	=	0
 	OPDM          	=	NO
-	SCS           	=	FALSE
+	SCS           	=	False
+	SCALE_OS      	=	1.200000
+	SCALE_SS      	=	0.333333
 
-        MP2 correlation energy      =   -0.202428539090898
-      * MP2 total energy            =  -76.219725110932458
+	Scaled_OS correlation energy      =   -0.162521258261187
+	Scaled_SS correlation energy      =   -0.016914010461410
+	SCS-MP2 correlation energy        =   -0.179435268722598
+      * SCS-MP2 total energy              =  -76.196731840564127
 
-	Trace of onepdm =    0.000000000000000
+	Opposite-spin correlation energy  =   -0.151686507710441
+	Same-spin correlation energy      =   -0.050742031384231
+	MP2 correlation energy            =   -0.202428539094672
+      * MP2 total energy                  =  -76.219725110936196
+
+	Trace of OPDM(2)        =    0.000000000000000
 
 	Energies re-computed from Fock-adjusted CC density:
 	---------------------------------------------------
-	One-electron energy        =    0.226556388093215
-	IJKL energy                =   -0.660829285214160
-	IJKA energy                =   -0.048691691168654
-	IJAB energy                =   -0.404857078181795
-	IBJA energy                =    0.685393127376673
-	MP2 correlation energy    =   -0.202428539094721
-	Total MP2 energy          =  -76.219725110936281
+	One-electron energy        =    0.226556388121839
+	IJKL energy                =   -0.660829285262059
+	IJKA energy                =   -0.048691691183523
+	IJAB energy                =   -0.404857078189345
+	IBJA energy                =    0.685393127418368
+	MP2 correlation energy    =   -0.202428539094720
+	Total MP2 energy          =  -76.219725110936253
 
 	Energies re-computed from Mulliken density:
 	-------------------------------------------
-	One-electron energy        =    0.226556388093215
-	IJKL energy                =   -0.660829285214160
-	IJKA energy                =   -0.048691691168654
-	IJAB energy                =   -0.436216637622010
-	IBJA energy                =    0.716752686816889
-	Total two-electron energy  =   -0.428984927187935
+	One-electron energy        =    0.226556388121839
+	IJKL energy                =   -0.660829285262059
+	IJKA energy                =   -0.048691691183523
+	IJAB energy                =   -0.436216637631885
+	IBJA energy                =    0.716752686860908
+	Total two-electron energy  =   -0.428984927216559
 	MP2 correlation energy    =   -0.202428539094720
-	Total MP2 energy          =  -76.219725110936281
+	Total MP2 energy          =  -76.219725110936253
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:44 2008
+MP2 tstop called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:44 2008
+OEPROP tstart called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -610,7 +630,7 @@ Wed Mar 12 18:39:44 2008
  -Electric dipole moment (expectation values) :
 
     mu(X)  =  -0.00000 D  =  -3.34446881e-45 C*m  =  -0.00000000 a.u.
-    mu(Y)  =   0.00000 D  =   4.38286674e-45 C*m  =   0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -1.00747105e-45 C*m  =  -0.00000000 a.u.
     mu(Z)  =   2.13913 D  =   7.13537397e-30 C*m  =   0.84159858 a.u.
     |mu|   =   2.13913 D  =   7.13537397e-30 C*m  =   0.84159858 a.u.
 
@@ -656,7 +676,7 @@ Wed Mar 12 18:39:44 2008
 
     Center           XX                    YY                    ZZ
     ------  --------------------  --------------------  --------------------
-       1          -1215.13211289        -1218.47043658        -1217.30325446
+       1          -1215.13211290        -1218.47043658        -1217.30325447
        2             -1.35743275           -1.75973597           -1.62181029
        3             -1.35743275           -1.75973597           -1.62181029
 
@@ -697,20 +717,20 @@ Wed Mar 12 18:39:44 2008
 
  -Relativistic MVD one-electron corrections to the energy (a.u.):
 
-    Mass-velocity (p^4) term     :   -0.245509070711325
-    One-electron Darwin term     :   0.194478795751623
-    Total one-electron MVD terms :   -0.051030274959701
+    Mass-velocity (p^4) term     :   -0.245509070712366
+    One-electron Darwin term     :   0.194478795752241
+    Total one-electron MVD terms :   -0.051030274960125
 
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:44 2008
+OEPROP tstop called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:44 2008
+TRANSQT tstart called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
 
 	**************************************************
@@ -793,15 +813,15 @@ Wed Mar 12 18:39:44 2008
 	Transforming one-electron integrals...
 	One-pdm and lagrangian written to file76.
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:44 2008
+TRANSQT tstop called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
-user time   =       0.05 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
 system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:44 2008
+cints tstart called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -834,15 +854,15 @@ Wed Mar 12 18:39:44 2008
   -MP2 forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.041723782064
-       2        0.000000000000     0.028509698108     0.020861891032
-       3        0.000000000000    -0.028509698108     0.020861891032
+       1        0.000000000000     0.000000000000    -0.041723782025
+       2        0.000000000000     0.028509698097     0.020861891012
+       3        0.000000000000    -0.028509698097     0.020861891012
 
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:44 2008
+cints tstop called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
-user time   =       0.09 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
@@ -854,7 +874,7 @@ Cartesian geometry and possibly gradient in a.u. with masses
   8.0    15.99491462   0.0000000000   0.0000000000  -0.1315101651
   1.0     1.00782503  -0.0000000000   1.4799409967   1.0435808775
   1.0     1.00782503  -0.0000000000  -1.4799409967   1.0435808775
-                       0.0000000000   0.0000000000  -0.0417237821
+                       0.0000000000   0.0000000000  -0.0417237820
                        0.0000000000   0.0285096981   0.0208618910
                        0.0000000000  -0.0285096981   0.0208618910
 
@@ -873,36 +893,53 @@ Putting simple, possibly redundant, internal coordinates in intco.dat.
  
  ** Taking normal optimization step. **
 
-Current MP2 energy before step       -76.2197251109
+Current MP2 energy before step       -76.219725110936
 
-Taking geometry step number 1
+ ** Taking geometry step number 1 **
 
 BuB^t Determinant: 2.370024e+00
 
-Generating empirical Hessian.
+Generating empirical Hessian (Schlegel)
 
 Force Constants read from PSIF_OPTKING
 
-No BFGS update performed.
+No Hessian update performed.
+Projected energy change by quadratic approximation:        -0.0026345519
 
-Scaling displacements by 1.000000
+	Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+	----------------------------------------------------------
+	       Value         Force        Displacement  New Value
+	----------------------------------------------------------
+	  1    1.00000000   -0.29082670   -0.03917089    0.96082911
+	  2    1.00000000   -0.29082670   -0.03917089    0.96082911
+	  3    1.79943446   -0.01145358   -0.01641952    1.78301494
+	----------------------------------------------------------
 
-Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-       Value         Force        Displacement  New Value
- 1    1.00000000   -0.29082670   -0.03917089    0.96082911
- 2    1.00000000   -0.29082670   -0.03917089    0.96082911
- 3    1.79943446   -0.01145358   -0.01641952    1.78301494
-   MAX force:    0.2908267048   RMS force:    0.2375510675
+	   MAX force:    0.2908267046   RMS force:    0.2375510673
+	   MAX  disp:    0.0391708874   RMS  disp:    0.0333582446
 
-Back-transformation to cartesian coordinates...
- Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.018474328984  0.000387291247
-    3  0.000140911503  0.000000046094
-    4  0.000000025395  0.000000000000
-Convergence to displaced geometry took 4 iterations.
+	Convergence Check:
+	             MAX Force  &&  ( Delta(E) ||   MAX disp )
+	----------------------------------------------------------
+	Actual         2.9e-01        1.0e+06        3.9e-02
+	Limit          1.0e-04        1.0e-08        1.0e-03
+	Conv?            N              N              N
+	----------------------------------------------------------
+
+	Back-transformation to cartesian coordinates...
+	------------------------------------
+	 Iter  RMS Delta(dx)  RMS Delta(dq)
+	------------------------------------
+	    1      1.8e-02      3.9e-04
+	    2      1.4e-04      4.6e-08
+	    3      2.5e-08      7.7e-16
+	    4      2.8e-16      1.3e-16
+	------------------------------------
+
+Successfully converged to displaced geometry.
 
 New Cartesian Geometry in a.u.
-  8.0   0.0000000000   0.0000000000  -0.1276610204
+  8.0   0.0000000000   0.0000000000  -0.1276610205
   1.0   0.0000000000   1.4126532533   1.0130365179
   1.0   0.0000000000  -1.4126532533   1.0130365179
 
@@ -911,8 +948,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:45 2008
+cints tstart called on elrond.chem
+Wed Sep  9 07:43:47 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -941,15 +978,15 @@ Wed Mar 12 18:39:45 2008
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:45 2008
+cints tstop called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:45 2008
+SCF tstart called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
 
              ------------------------------------------
@@ -966,11 +1003,11 @@ Wed Mar 12 18:39:45 2008
   charge       = 0
   direct       = false
   dertype      = FIRST
-  convergence  = 10
+  convergence  = 12
   maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy        9.1659541442146
+  nuclear repulsion energy        9.1659541440076
 
   using old vector from file30 as initial guess
   energy from old vector:   -76.01729657
@@ -1002,14 +1039,17 @@ Wed Mar 12 18:39:45 2008
     3       -76.0226518818    7.524123e-05    1.572373e-04    5.413033e-03
     4       -76.0226678096    1.592774e-05    7.569211e-05    1.698024e-03
     5       -76.0226691432    1.333591e-06    2.912719e-05    4.860820e-04
-    6       -76.0226692365    9.333822e-08    9.772073e-06    1.146970e-04
-    7       -76.0226692393    2.804811e-09    1.602940e-06    1.840602e-05
-    8       -76.0226692394    5.540812e-11    1.613397e-07    2.381965e-06
-    9       -76.0226692394    3.097966e-12    3.866592e-08    5.632382e-07
-   10       -76.0226692394   -1.421085e-14    5.810994e-09    5.384244e-08
-   11       -76.0226692394    5.684342e-14    4.583110e-10    1.389876e-08
-   12       -76.0226692394   -2.842171e-14    1.892388e-10    3.842910e-09
-   13       -76.0226692394    2.842171e-14    2.751722e-11    7.225468e-10
+    6       -76.0226692365    9.333826e-08    9.772073e-06    1.146970e-04
+    7       -76.0226692393    2.804853e-09    1.602940e-06    1.840602e-05
+    8       -76.0226692394    5.545076e-11    1.613397e-07    2.381965e-06
+    9       -76.0226692394    2.941647e-12    3.866592e-08    5.632383e-07
+   10       -76.0226692394    5.684342e-14    5.810994e-09    5.384244e-08
+   11       -76.0226692394    1.421085e-14    4.583112e-10    1.389876e-08
+   12       -76.0226692394    1.421085e-14    1.892389e-10    3.842910e-09
+   13       -76.0226692394   -4.263256e-14    2.751719e-11    7.225460e-10
+   14       -76.0226692394   -1.421085e-14    4.279803e-12    7.838312e-11
+   15       -76.0226692394    7.105427e-14    1.379834e-12    1.901801e-11
+   16       -76.0226692394    2.842171e-14    2.045434e-13    3.681142e-12
 
  Correcting phases of orbitals.
 
@@ -1030,23 +1070,23 @@ Orbital energies (a.u.):
    7B2      3.929680    12A1      4.095911  
 
 
-      * SCF total energy   =     -76.022669239356
-        kinetic energy     =      75.800405470942
-        nuc. attr. energy  =    -198.835652990253
-        elec. rep. energy  =      47.012578279955
-        potential energy   =    -151.823074710298
-        virial theorem     =       1.997076348797
+      * SCF total energy   =     -76.022669239353
+        kinetic energy     =      75.800405470018
+        nuc. attr. energy  =    -198.835652988534
+        elec. rep. energy  =      47.012578279162
+        potential energy   =    -151.823074709371
+        virial theorem     =       1.997076348784
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:45 2008
+SCF tstop called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:45 2008
+TRANSQT tstart called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
 
 	**************************************************
@@ -1083,8 +1123,8 @@ Wed Mar 12 18:39:45 2008
 	 B1 	   4	    0	    1	    0	    3	    0
 	 B2 	   7	    0	    1	    0	    6	    0
 
-	Nuclear Rep. energy (chkpt) =      9.16595414421461
-	SCF energy          (chkpt) =    -76.02266923935581
+	Nuclear Rep. energy (chkpt) =      9.16595414400762
+	SCF energy          (chkpt) =    -76.02266923935323
 
 	Presorting SO-basis two-electron integrals.
 	Sorting File: SO Ints (pq,rs) nbuckets = 1
@@ -1094,15 +1134,15 @@ Wed Mar 12 18:39:45 2008
 	Starting second half-transformation.
 	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:45 2008
+TRANSQT tstop called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:45 2008
+CCSORT tstart called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
 
 			**************************
@@ -1120,6 +1160,7 @@ Wed Mar 12 18:39:45 2008
 	Memory (Mbytes) =	256.0
 	AO Basis        =	NONE
 	Make (ab|cd)    =	False
+	Make unpacked (ab|cd) =	False
 	Cache Level     =	2
 	Cache Type      =	LRU
 	Local CC        =     No
@@ -1138,8 +1179,8 @@ Wed Mar 12 18:39:45 2008
 	 B1 	   4	    0	    1	    0	    3	    0
 	 B2 	   7	    0	    1	    0	    6	    0
 
-	Nuclear Rep. energy (chkpt) =      9.16595414421461
-	SCF energy          (chkpt) =    -76.02266923935581
+	Nuclear Rep. energy (chkpt) =      9.16595414400762
+	SCF energy          (chkpt) =    -76.02266923935323
 
 	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
 	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
@@ -1166,23 +1207,23 @@ Wed Mar 12 18:39:45 2008
 	Sorting File: E <ai|jk> nbuckets = 1
 	Sorting File: F <ia|bc> nbuckets = 1
 	Sorting File: F <ai|bc> nbuckets = 1
-	One-electron energy          =   -123.03524751931100
-	Two-electron (AA) energy     =     14.44415810117349
-	Two-electron (BB) energy     =     14.44415810117349
-	Two-electron (AB) energy     =     23.40246603456709
-	Two-electron energy          =     37.84662413574058
+	One-electron energy          =   -123.03524751851565
+	Two-electron (AA) energy     =     14.44415810093077
+	Two-electron (BB) energy     =     14.44415810093077
+	Two-electron (AB) energy     =     23.40246603422408
+	Two-electron energy          =     37.84662413515485
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -76.02266923935582
+	Reference energy             =    -76.02266923935316
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:45 2008
+CCSORT tstop called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:45 2008
+MP2 tstart called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
 			*************************
 			*                       *
@@ -1190,8 +1231,8 @@ Wed Mar 12 18:39:45 2008
 			*                       *
 			*************************
 
-	Nuclear rep. energy     =    9.165954144214609
-	SCF energy              =  -76.022669239355807
+	Nuclear rep. energy     =    9.165954144007625
+	SCF energy              =  -76.022669239353235
 
 	Input parameters:
 	-----------------
@@ -1203,43 +1244,52 @@ Wed Mar 12 18:39:45 2008
 	Memory (MB)   	=	256.0
 	Print Level   	=	0
 	OPDM          	=	NO
-	SCS           	=	FALSE
+	SCS           	=	False
+	SCALE_OS      	=	1.200000
+	SCALE_SS      	=	0.333333
 
-        MP2 correlation energy      =   -0.199703044549616
-      * MP2 total energy            =  -76.222372283905429
+	Scaled_OS correlation energy      =   -0.160161178283178
+	Scaled_SS correlation energy      =   -0.016739759383343
+	SCS-MP2 correlation energy        =   -0.176900937666521
+      * SCS-MP2 total energy              =  -76.199570177019751
 
-	Trace of onepdm =    0.000000000000000
+	Opposite-spin correlation energy  =   -0.149483766397632
+	Same-spin correlation energy      =   -0.050219278150030
+	MP2 correlation energy            =   -0.199703044547663
+      * MP2 total energy                  =  -76.222372283900896
+
+	Trace of OPDM(2)        =   -0.000000000000000
 
 	Energies re-computed from Fock-adjusted CC density:
 	---------------------------------------------------
-	One-electron energy        =    0.230228537105505
-	IJKL energy                =   -0.639672835603226
-	IJKA energy                =   -0.051543220224981
-	IJAB energy                =   -0.399406089099232
-	IBJA energy                =    0.660690563276415
-	MP2 correlation energy    =   -0.199703044545520
-	Total MP2 energy          =  -76.222372283901322
+	One-electron energy        =    0.230228537071484
+	IJKL energy                =   -0.639672835567528
+	IJKA energy                =   -0.051543220205814
+	IJAB energy                =   -0.399406089095325
+	IBJA energy                =    0.660690563249510
+	MP2 correlation energy    =   -0.199703044547674
+	Total MP2 energy          =  -76.222372283900910
 
 	Energies re-computed from Mulliken density:
 	-------------------------------------------
-	One-electron energy        =    0.230228537105505
-	IJKL energy                =   -0.639672835603226
-	IJKA energy                =   -0.051543220224981
-	IJAB energy                =   -0.429307028886900
-	IBJA energy                =    0.690591503064083
-	Total two-electron energy  =   -0.429931581651025
-	MP2 correlation energy    =   -0.199703044545520
-	Total MP2 energy          =  -76.222372283901322
+	One-electron energy        =    0.230228537071484
+	IJKL energy                =   -0.639672835567528
+	IJKA energy                =   -0.051543220205814
+	IJAB energy                =   -0.429307028881650
+	IBJA energy                =    0.690591503035834
+	Total two-electron energy  =   -0.429931581619157
+	MP2 correlation energy    =   -0.199703044547674
+	Total MP2 energy          =  -76.222372283900910
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:45 2008
+MP2 tstop called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:45 2008
+OEPROP tstart called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -1341,12 +1391,12 @@ Wed Mar 12 18:39:45 2008
  -Coordinates of the reference point (a.u.) :
            x                     y                     z
   --------------------  --------------------  --------------------
-          0.0000000000          0.0000000000          0.0000000000
+          0.0000000000          0.0000000000         -0.0000000000
 
  -Electric dipole moment (expectation values) :
 
     mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
-    mu(Y)  =   0.00000 D  =   2.35689394e-45 C*m  =   0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -4.57038872e-45 C*m  =  -0.00000000 a.u.
     mu(Z)  =   2.13760 D  =   7.13024494e-30 C*m  =   0.84099362 a.u.
     |mu|   =   2.13760 D  =   7.13024494e-30 C*m  =   0.84099362 a.u.
 
@@ -1358,7 +1408,7 @@ Wed Mar 12 18:39:45 2008
  -Coordinates of the reference point (a.u.) :
            x                     y                     z
   --------------------  --------------------  --------------------
-          0.0000000000          0.0000000000         -0.0000000000
+          0.0000000000          0.0000000000          0.0000000000
 
  -Electronic angular momentum (expectation values) :
 
@@ -1374,7 +1424,7 @@ Wed Mar 12 18:39:45 2008
  -Coordinates of atomic centers (a.u.):
     #   Charge           x                     y                     z
    ---  ------  --------------------  --------------------  --------------------
-    1      8            0.0000000000          0.0000000000         -0.1276610204
+    1      8            0.0000000000          0.0000000000         -0.1276610205
     2      1            0.0000000000          1.4126532533          1.0130365179
     3      1            0.0000000000         -1.4126532533          1.0130365179
 
@@ -1383,7 +1433,7 @@ Wed Mar 12 18:39:45 2008
 
     Center         phi            Ex             Ey           Ez
     ------    ------------   ------------  ------------  ------------
-       1      -22.29985715     0.00000000    0.00000000   -0.12545491
+       1      -22.29985715     0.00000000   -0.00000000   -0.12545491
        2       -1.00555899     0.00000000    0.01839414    0.00371534
        3       -1.00555899     0.00000000   -0.01839414    0.00371534
 
@@ -1392,7 +1442,7 @@ Wed Mar 12 18:39:45 2008
 
     Center           XX                    YY                    ZZ
     ------  --------------------  --------------------  --------------------
-       1          -1214.99670770        -1218.21806862        -1217.05147643
+       1          -1214.99670770        -1218.21806862        -1217.05147642
        2             -1.40338302           -1.91894103           -1.74554033
        3             -1.40338302           -1.91894103           -1.74554033
 
@@ -1433,20 +1483,20 @@ Wed Mar 12 18:39:45 2008
 
  -Relativistic MVD one-electron corrections to the energy (a.u.):
 
-    Mass-velocity (p^4) term     :   -0.245484045004412
-    One-electron Darwin term     :   0.194449117178863
-    Total one-electron MVD terms :   -0.051034927825549
+    Mass-velocity (p^4) term     :   -0.245484045002976
+    One-electron Darwin term     :   0.194449117177945
+    Total one-electron MVD terms :   -0.051034927825032
 
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:45 2008
+OEPROP tstop called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
-user time   =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:45 2008
+TRANSQT tstart called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
 
 	**************************************************
@@ -1510,7 +1560,7 @@ Wed Mar 12 18:39:45 2008
 	 B1 	   4	   4	    0	    1	    0	    3	    0
 	 B2 	   7	   7	    0	    1	    0	    6	    0
 
-	Nuclear Repulsion Energy    =         9.1659541442
+	Nuclear Repulsion Energy    =         9.1659541440
 	Total SCF Energy            =       -76.0226692394
 
 	Pre-sorting two-electron ints...
@@ -1529,15 +1579,15 @@ Wed Mar 12 18:39:45 2008
 	Transforming one-electron integrals...
 	One-pdm and lagrangian written to file76.
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:46 2008
+TRANSQT tstop called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.11 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:46 2008
+cints tstart called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1570,15 +1620,15 @@ Wed Mar 12 18:39:46 2008
   -MP2 forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.003155934972
-       2        0.000000000000    -0.002543049850     0.001577967486
-       3        0.000000000000     0.002543049850     0.001577967486
+       1        0.000000000000     0.000000000000    -0.003155935080
+       2        0.000000000000    -0.002543049816     0.001577967540
+       3        0.000000000000     0.002543049816     0.001577967540
 
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:46 2008
+cints tstop called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
-user time   =       0.09 seconds =       0.00 minutes
+user time   =       0.10 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
@@ -1587,12 +1637,12 @@ total time  =          0 seconds =       0.00 minutes
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  8.0    15.99491462   0.0000000000   0.0000000000  -0.1276610204
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1276610205
   1.0     1.00782503   0.0000000000   1.4126532533   1.0130365179
   1.0     1.00782503   0.0000000000  -1.4126532533   1.0130365179
-                       0.0000000000   0.0000000000  -0.0031559350
-                       0.0000000000  -0.0025430499   0.0015779675
-                       0.0000000000   0.0025430499   0.0015779675
+                       0.0000000000   0.0000000000  -0.0031559351
+                       0.0000000000  -0.0025430498   0.0015779675
+                       0.0000000000   0.0025430498   0.0015779675
 
 Searching for geometrical constraints...none found.
 
@@ -1601,48 +1651,68 @@ Stretches
     (1 1 2) (0.96082911)
     (2 1 3) (0.96082911)
 Bends
-    (3 2 1 3) (102.15923085)
+    (3 2 1 3) (102.15923084)
  
  ** Taking normal optimization step. **
 
-Current MP2 energy before step       -76.2223722839
+Current MP2 energy before step       -76.222372283901
+  Previous energy                    -76.219725110936
+  Actual Delta(E) from last step      -0.002647172965
+  Previous Predicted Delta(E)         -0.002634551885  (  0.5% error)
 
-Taking geometry step number 2
+ ** Taking geometry step number 2 **
 
 BuB^t Determinant: 2.564798e+00
+	Symmetric Force Constants found in PSIF_OPTKING
 
 Force Constants read from PSIF_OPTKING
 
-Performing BFGS Hessian update with previous 1 gradient(s).
+Performing BFGS update with previous 1 gradient(s).
+Projected energy change by quadratic approximation:        -0.0000756169
 
-Scaling displacements by 1.000000
+	Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+	----------------------------------------------------------
+	       Value         Force        Displacement  New Value
+	----------------------------------------------------------
+	  1    0.96082911    0.00813327    0.00001292    0.96084203
+	  2    0.96082911    0.00813327    0.00001292    0.96084203
+	  3    1.78301494    0.02236536    0.02947103    1.81248597
+	----------------------------------------------------------
 
-Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-       Value         Force        Displacement  New Value
- 1    0.96082911    0.00813327    0.00001292    0.96084203
- 2    0.96082911    0.00813327    0.00001292    0.96084203
- 3    1.78301494    0.02236536    0.02947103    1.81248597
-   MAX force:    0.0223653620   RMS force:    0.0145202114
+	   MAX force:    0.0223653621   RMS force:    0.0145202113
+	   MAX  disp:    0.0294710343   RMS  disp:    0.0170151128
 
-Back-transformation to cartesian coordinates...
- Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.006247040388  0.000085179617
-    3  0.000047158681  0.000000000159
-    4  0.000000000058  0.000000000000
-Convergence to displaced geometry took 4 iterations.
+	Convergence Check:
+	             MAX Force  &&  ( Delta(E) ||   MAX disp )
+	----------------------------------------------------------
+	Actual         2.2e-02        2.6e-03        2.9e-02
+	Limit          1.0e-04        1.0e-08        1.0e-03
+	Conv?            N              N              N
+	----------------------------------------------------------
+
+	Back-transformation to cartesian coordinates...
+	------------------------------------
+	 Iter  RMS Delta(dx)  RMS Delta(dq)
+	------------------------------------
+	    1      6.2e-03      8.5e-05
+	    2      4.7e-05      1.6e-10
+	    3      5.8e-11      0.0e+00
+	------------------------------------
+
+Successfully converged to displaced geometry.
 
 New Cartesian Geometry in a.u.
   8.0   0.0000000000   0.0000000000  -0.1253192903
-  1.0   0.0000000000   1.4293272642   0.9944540396
-  1.0   0.0000000000  -1.4293272642   0.9944540396
+  1.0   0.0000000000   1.4293272642   0.9944540395
+  1.0   0.0000000000  -1.4293272642   0.9944540395
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:46 2008
+cints tstart called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1671,15 +1741,15 @@ Wed Mar 12 18:39:46 2008
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:46 2008
+cints tstop called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:47 2008
+SCF tstart called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
 
              ------------------------------------------
@@ -1696,11 +1766,11 @@ Wed Mar 12 18:39:47 2008
   charge       = 0
   direct       = false
   dertype      = FIRST
-  convergence  = 10
+  convergence  = 12
   maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy        9.1617066882380
+  nuclear repulsion energy        9.1617066887862
 
   using old vector from file30 as initial guess
   energy from old vector:   -76.02266924
@@ -1729,16 +1799,19 @@ Wed Mar 12 18:39:47 2008
   iter       total energy        delta E         delta P          diiser
     1       -76.0228534012    8.518456e+01    0.000000e+00    0.000000e+00
     2       -76.0228829389    2.953773e-05    1.241460e-04    2.301952e-03
-    3       -76.0228845500    1.611097e-06    2.888524e-05    5.868743e-04
-    4       -76.0228846370    8.704698e-08    6.024852e-06    1.375026e-04
-    5       -76.0228846545    1.749294e-08    2.823912e-06    6.691273e-05
-    6       -76.0228846558    1.223739e-09    1.065247e-06    1.379128e-05
-    7       -76.0228846558    6.119194e-11    2.707207e-07    2.584931e-06
+    3       -76.0228845500    1.611097e-06    2.888523e-05    5.868743e-04
+    4       -76.0228846370    8.704696e-08    6.024852e-06    1.375027e-04
+    5       -76.0228846545    1.749299e-08    2.823912e-06    6.691272e-05
+    6       -76.0228846558    1.223725e-09    1.065247e-06    1.379128e-05
+    7       -76.0228846558    6.117773e-11    2.707207e-07    2.584931e-06
     8       -76.0228846558    1.136868e-12    2.115008e-08    3.441520e-07
-    9       -76.0228846558    8.526513e-14    6.102726e-09    9.100123e-08
-   10       -76.0228846558    1.421085e-14    6.412921e-10    1.162939e-08
-   11       -76.0228846558    0.000000e+00    1.516695e-10    4.147979e-09
-   12       -76.0228846558   -4.263256e-14    3.659457e-11    7.359170e-10
+    9       -76.0228846558    8.526513e-14    6.102725e-09    9.100123e-08
+   10       -76.0228846558   -2.842171e-14    6.412922e-10    1.162939e-08
+   11       -76.0228846558    4.263256e-14    1.516695e-10    4.147979e-09
+   12       -76.0228846558    1.421085e-14    3.659443e-11    7.359171e-10
+   13       -76.0228846558   -4.263256e-14    5.836091e-12    2.333356e-10
+   14       -76.0228846558    0.000000e+00    1.612441e-12    2.527245e-11
+   15       -76.0228846558   -2.842171e-14    7.191209e-13    7.835763e-12
 
  Correcting phases of orbitals.
 
@@ -1759,23 +1832,23 @@ Orbital energies (a.u.):
    7B2      3.923617    12A1      4.103317  
 
 
-      * SCF total energy   =     -76.022884655820
-        kinetic energy     =      75.797438305935
-        nuc. attr. energy  =    -198.831490823400
-        elec. rep. energy  =      47.011167861645
-        potential energy   =    -151.820322961755
-        virial theorem     =       1.997034493615
+      * SCF total energy   =     -76.022884655825
+        kinetic energy     =      75.797438308092
+        nuc. attr. energy  =    -198.831490827953
+        elec. rep. energy  =      47.011167864036
+        potential energy   =    -151.820322963917
+        virial theorem     =       1.997034493643
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:47 2008
+SCF tstop called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:47 2008
+TRANSQT tstart called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
 
 	**************************************************
@@ -1812,8 +1885,8 @@ Wed Mar 12 18:39:47 2008
 	 B1 	   4	    0	    1	    0	    3	    0
 	 B2 	   7	    0	    1	    0	    6	    0
 
-	Nuclear Rep. energy (chkpt) =      9.16170668823795
-	SCF energy          (chkpt) =    -76.02288465582001
+	Nuclear Rep. energy (chkpt) =      9.16170668878621
+	SCF energy          (chkpt) =    -76.02288465582484
 
 	Presorting SO-basis two-electron integrals.
 	Sorting File: SO Ints (pq,rs) nbuckets = 1
@@ -1823,15 +1896,15 @@ Wed Mar 12 18:39:47 2008
 	Starting second half-transformation.
 	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:47 2008
+TRANSQT tstop called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:47 2008
+CCSORT tstart called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
 
 			**************************
@@ -1849,6 +1922,7 @@ Wed Mar 12 18:39:47 2008
 	Memory (Mbytes) =	256.0
 	AO Basis        =	NONE
 	Make (ab|cd)    =	False
+	Make unpacked (ab|cd) =	False
 	Cache Level     =	2
 	Cache Type      =	LRU
 	Local CC        =     No
@@ -1867,8 +1941,8 @@ Wed Mar 12 18:39:47 2008
 	 B1 	   4	    0	    1	    0	    3	    0
 	 B2 	   7	    0	    1	    0	    6	    0
 
-	Nuclear Rep. energy (chkpt) =      9.16170668823795
-	SCF energy          (chkpt) =    -76.02288465582001
+	Nuclear Rep. energy (chkpt) =      9.16170668878621
+	SCF energy          (chkpt) =    -76.02288465582484
 
 	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
 	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
@@ -1895,23 +1969,23 @@ Wed Mar 12 18:39:47 2008
 	Sorting File: E <ai|jk> nbuckets = 1
 	Sorting File: F <ia|bc> nbuckets = 1
 	Sorting File: F <ai|bc> nbuckets = 1
-	One-electron energy          =   -123.03405251746490
-	Two-electron (AA) energy     =     14.44546538960548
-	Two-electron (BB) energy     =     14.44546538960548
-	Two-electron (AB) energy     =     23.40399578380147
-	Two-electron energy          =     37.84946117340694
+	One-electron energy          =   -123.03405251986121
+	Two-electron (AA) energy     =     14.44546539038519
+	Two-electron (BB) energy     =     14.44546539038519
+	Two-electron (AB) energy     =     23.40399578486487
+	Two-electron energy          =     37.84946117525006
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -76.02288465582001
+	Reference energy             =    -76.02288465582492
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:47 2008
+CCSORT tstop called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:47 2008
+MP2 tstart called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
 			*************************
 			*                       *
@@ -1919,8 +1993,8 @@ Wed Mar 12 18:39:47 2008
 			*                       *
 			*************************
 
-	Nuclear rep. energy     =    9.161706688237953
-	SCF energy              =  -76.022884655820008
+	Nuclear rep. energy     =    9.161706688786211
+	SCF energy              =  -76.022884655824839
 
 	Input parameters:
 	-----------------
@@ -1932,43 +2006,52 @@ Wed Mar 12 18:39:47 2008
 	Memory (MB)   	=	256.0
 	Print Level   	=	0
 	OPDM          	=	NO
-	SCS           	=	FALSE
+	SCS           	=	False
+	SCALE_OS      	=	1.200000
+	SCALE_SS      	=	0.333333
 
-        MP2 correlation energy      =   -0.199563979486874
-      * MP2 total energy            =  -76.222448635306876
+	Scaled_OS correlation energy      =   -0.160047236468234
+	Scaled_SS correlation energy      =   -0.016728852927735
+	SCS-MP2 correlation energy        =   -0.176776089395969
+      * SCS-MP2 total energy              =  -76.199660745220811
 
-	Trace of onepdm =   -0.000000000000000
+	Opposite-spin correlation energy  =   -0.149377420703685
+	Same-spin correlation energy      =   -0.050186558783205
+	MP2 correlation energy            =   -0.199563979486889
+      * MP2 total energy                  =  -76.222448635311736
+
+	Trace of OPDM(2)        =    0.000000000000000
 
 	Energies re-computed from Fock-adjusted CC density:
 	---------------------------------------------------
-	One-electron energy        =    0.230459204481168
-	IJKL energy                =   -0.638797896070969
-	IJKA energy                =   -0.051732129099068
-	IJAB energy                =   -0.399127958973747
-	IBJA energy                =    0.659634800170876
-	MP2 correlation energy    =   -0.199563979491741
-	Total MP2 energy          =  -76.222448635311750
+	One-electron energy        =    0.230459204565685
+	IJKL energy                =   -0.638797896124098
+	IJKA energy                =   -0.051732129152278
+	IJAB energy                =   -0.399127958973779
+	IBJA energy                =    0.659634800197538
+	MP2 correlation energy    =   -0.199563979486932
+	Total MP2 energy          =  -76.222448635311778
 
 	Energies re-computed from Mulliken density:
 	-------------------------------------------
-	One-electron energy        =    0.230459204481168
-	IJKL energy                =   -0.638797896070969
-	IJKA energy                =   -0.051732129099068
-	IJAB energy                =   -0.428962916792169
-	IBJA energy                =    0.689469757989297
-	Total two-electron energy  =   -0.430023183972909
-	MP2 correlation energy    =   -0.199563979491741
-	Total MP2 energy          =  -76.222448635311750
+	One-electron energy        =    0.230459204565685
+	IJKL energy                =   -0.638797896124098
+	IJKA energy                =   -0.051732129152278
+	IJAB energy                =   -0.428962916793160
+	IBJA energy                =    0.689469758016919
+	Total two-electron energy  =   -0.430023184052617
+	MP2 correlation energy    =   -0.199563979486932
+	Total MP2 energy          =  -76.222448635311764
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:47 2008
+MP2 tstop called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
 user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:47 2008
+OEPROP tstart called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -2070,12 +2153,12 @@ Wed Mar 12 18:39:47 2008
  -Coordinates of the reference point (a.u.) :
            x                     y                     z
   --------------------  --------------------  --------------------
-          0.0000000000          0.0000000000          0.0000000000
+          0.0000000000          0.0000000000         -0.0000000000
 
  -Electric dipole moment (expectation values) :
 
     mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
-    mu(Y)  =   0.00000 D  =   5.28738454e-45 C*m  =   0.00000000 a.u.
+    mu(Y)  =  -0.00000 D  =  -4.66231126e-45 C*m  =  -0.00000000 a.u.
     mu(Z)  =   2.11210 D  =   7.04520664e-30 C*m  =   0.83096358 a.u.
     |mu|   =   2.11210 D  =   7.04520664e-30 C*m  =   0.83096358 a.u.
 
@@ -2087,7 +2170,7 @@ Wed Mar 12 18:39:47 2008
  -Coordinates of the reference point (a.u.) :
            x                     y                     z
   --------------------  --------------------  --------------------
-          0.0000000000          0.0000000000         -0.0000000000
+          0.0000000000          0.0000000000          0.0000000000
 
  -Electronic angular momentum (expectation values) :
 
@@ -2104,8 +2187,8 @@ Wed Mar 12 18:39:47 2008
     #   Charge           x                     y                     z
    ---  ------  --------------------  --------------------  --------------------
     1      8            0.0000000000          0.0000000000         -0.1253192903
-    2      1            0.0000000000          1.4293272642          0.9944540396
-    3      1            0.0000000000         -1.4293272642          0.9944540396
+    2      1            0.0000000000          1.4293272642          0.9944540395
+    3      1            0.0000000000         -1.4293272642          0.9944540395
 
 
  -Electrostatic potential and electric field (a.u.) :
@@ -2121,7 +2204,7 @@ Wed Mar 12 18:39:47 2008
 
     Center           XX                    YY                    ZZ
     ------  --------------------  --------------------  --------------------
-       1          -1214.91681169        -1218.15828129        -1216.92070945
+       1          -1214.91681170        -1218.15828130        -1216.92070946
        2             -1.40034706           -1.92243945           -1.73366326
        3             -1.40034706           -1.92243945           -1.73366326
 
@@ -2136,7 +2219,7 @@ Wed Mar 12 18:39:47 2008
 
     Center        XX - RR/3             YY - RR/3             ZZ - RR/3
     ------  --------------------  --------------------  --------------------
-       1              1.74845578           -1.49301381           -0.25544197
+       1              1.74845579           -1.49301381           -0.25544198
        2              0.28513619           -0.23695619           -0.04818000
        3              0.28513619           -0.23695619           -0.04818000
 
@@ -2162,20 +2245,20 @@ Wed Mar 12 18:39:47 2008
 
  -Relativistic MVD one-electron corrections to the energy (a.u.):
 
-    Mass-velocity (p^4) term     :   -0.245463057355750
-    One-electron Darwin term     :   0.194434563369867
-    Total one-electron MVD terms :   -0.051028493985883
+    Mass-velocity (p^4) term     :   -0.245463057358389
+    One-electron Darwin term     :   0.194434563371425
+    Total one-electron MVD terms :   -0.051028493986964
 
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:47 2008
+OEPROP tstop called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:47 2008
+TRANSQT tstart called on elrond.chem
+Wed Sep  9 07:43:48 2009
 
 
 	**************************************************
@@ -2239,7 +2322,7 @@ Wed Mar 12 18:39:47 2008
 	 B1 	   4	   4	    0	    1	    0	    3	    0
 	 B2 	   7	   7	    0	    1	    0	    6	    0
 
-	Nuclear Repulsion Energy    =         9.1617066882
+	Nuclear Repulsion Energy    =         9.1617066888
 	Total SCF Energy            =       -76.0228846558
 
 	Pre-sorting two-electron ints...
@@ -2258,15 +2341,15 @@ Wed Mar 12 18:39:47 2008
 	Transforming one-electron integrals...
 	One-pdm and lagrangian written to file76.
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:48 2008
+TRANSQT tstop called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:48 2008
+cints tstart called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2299,15 +2382,15 @@ Wed Mar 12 18:39:48 2008
   -MP2 forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.000124242351
-       2        0.000000000000     0.000016991886     0.000062121175
-       3        0.000000000000    -0.000016991886     0.000062121175
+       1        0.000000000000     0.000000000000    -0.000124242197
+       2        0.000000000000     0.000016991833     0.000062121098
+       3        0.000000000000    -0.000016991833     0.000062121098
 
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:48 2008
+cints tstop called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
-user time   =       0.09 seconds =       0.00 minutes
+user time   =       0.17 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
@@ -2317,11 +2400,11 @@ total time  =          0 seconds =       0.00 minutes
 
 Cartesian geometry and possibly gradient in a.u. with masses
   8.0    15.99491462   0.0000000000   0.0000000000  -0.1253192903
-  1.0     1.00782503   0.0000000000   1.4293272642   0.9944540396
-  1.0     1.00782503   0.0000000000  -1.4293272642   0.9944540396
-                       0.0000000000   0.0000000000  -0.0001242424
-                       0.0000000000   0.0000169919   0.0000621212
-                       0.0000000000  -0.0000169919   0.0000621212
+  1.0     1.00782503   0.0000000000   1.4293272642   0.9944540395
+  1.0     1.00782503   0.0000000000  -1.4293272642   0.9944540395
+                       0.0000000000   0.0000000000  -0.0001242422
+                       0.0000000000   0.0000169918   0.0000621211
+                       0.0000000000  -0.0000169918   0.0000621211
 
 Searching for geometrical constraints...none found.
 
@@ -2330,47 +2413,68 @@ Stretches
     (1 1 2) (0.96084203)
     (2 1 3) (0.96084203)
 Bends
-    (3 2 1 3) (103.84779672)
+    (3 2 1 3) (103.84779673)
  
  ** Taking normal optimization step. **
 
-Current MP2 energy before step       -76.2224486353
+Current MP2 energy before step       -76.222448635312
+  Previous energy                    -76.222372283901
+  Actual Delta(E) from last step      -0.000076351411
+  Previous Predicted Delta(E)         -0.000075616884  (  1.0% error)
 
-Taking geometry step number 3
+ ** Taking geometry step number 3 **
 
 BuB^t Determinant: 2.569041e+00
+	Symmetric Force Constants found in PSIF_OPTKING
 
 Force Constants read from PSIF_OPTKING
 
-Performing BFGS Hessian update with previous 2 gradient(s).
+Performing BFGS update with previous 2 gradient(s).
+Projected energy change by quadratic approximation:        -0.0000000234
 
-Scaling displacements by 1.000000
+	Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+	----------------------------------------------------------
+	       Value         Force        Displacement  New Value
+	----------------------------------------------------------
+	  1    0.96084203   -0.00042583   -0.00007408    0.96076795
+	  2    0.96084203   -0.00042583   -0.00007408    0.96076795
+	  3    1.81248597    0.00030415    0.00046330    1.81294927
+	----------------------------------------------------------
 
-Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-       Value         Force        Displacement  New Value
- 1    0.96084203   -0.00042583   -0.00007424    0.96076779
- 2    0.96084203   -0.00042583   -0.00007424    0.96076779
- 3    1.81248597    0.00030416    0.00046342    1.81294940
-   MAX force:    0.0004258305   RMS force:    0.0003895183
+	   MAX force:    0.0004258298   RMS force:    0.0003895177
+	   MAX  disp:    0.0004632997   RMS  disp:    0.0002742406
 
-Back-transformation to cartesian coordinates...
- Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.000100067962  0.000000029511
-    3  0.000000014607  0.000000000000
-Convergence to displaced geometry took 3 iterations.
+	Convergence Check:
+	             MAX Force  &&  ( Delta(E) ||   MAX disp )
+	----------------------------------------------------------
+	Actual         4.3e-04        7.6e-05        4.6e-04
+	Limit          1.0e-04        1.0e-08        1.0e-03
+	Conv?            N              N              Y
+	----------------------------------------------------------
+
+	Back-transformation to cartesian coordinates...
+	------------------------------------
+	 Iter  RMS Delta(dx)  RMS Delta(dq)
+	------------------------------------
+	    1      1.0e-04      2.9e-08
+	    2      1.5e-08      6.7e-16
+	    3      2.5e-16      1.3e-16
+	------------------------------------
+
+Successfully converged to displaced geometry.
 
 New Cartesian Geometry in a.u.
-  8.0   0.0000000000   0.0000000000  -0.1252725413
-  1.0   0.0000000000   1.4294762278   0.9940830692
-  1.0   0.0000000000  -1.4294762278   0.9940830692
+  8.0   0.0000000000   0.0000000000  -0.1252725718
+  1.0   0.0000000000   1.4294763945   0.9940833111
+  1.0   0.0000000000  -1.4294763945   0.9940833111
 
 Geometry written to chkpt
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:48 2008
+cints tstart called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2399,15 +2503,15 @@ Wed Mar 12 18:39:48 2008
     Wrote 13617 two-electron integrals to IWL file 33
 
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:48 2008
+cints tstop called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
-user time   =       0.02 seconds =       0.00 minutes
+user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:49 2008
+SCF tstart called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
 
              ------------------------------------------
@@ -2424,11 +2528,11 @@ Wed Mar 12 18:39:49 2008
   charge       = 0
   direct       = false
   dertype      = FIRST
-  convergence  = 10
+  convergence  = 12
   maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy        9.1623511710234
+  nuclear repulsion energy        9.1623496779027
 
   using old vector from file30 as initial guess
   energy from old vector:   -76.02288466
@@ -2455,16 +2559,19 @@ Wed Mar 12 18:39:49 2008
   wrote 6516 integrals to file92
 
   iter       total energy        delta E         delta P          diiser
-    1       -76.0228920352    8.518524e+01    0.000000e+00    0.000000e+00
-    2       -76.0228920469    1.167119e-08    2.484608e-06    4.116186e-05
-    3       -76.0228920479    9.897434e-10    6.592889e-07    1.572207e-05
-    4       -76.0228920481    1.971188e-10    2.672539e-07    6.033816e-06
-    5       -76.0228920481    1.644196e-11    1.122014e-07    1.550529e-06
-    6       -76.0228920481    6.821210e-13    2.664854e-08    2.821263e-07
-    7       -76.0228920481    0.000000e+00    3.540882e-09    3.516155e-08
-    8       -76.0228920481   -2.842171e-14    5.415981e-10    8.412192e-09
-    9       -76.0228920481   -2.842171e-14    1.068329e-10    1.756857e-09
-   10       -76.0228920481   -1.421085e-14    2.305625e-11    2.219344e-10
+    1       -76.0228920235    8.518524e+01    0.000000e+00    0.000000e+00
+    2       -76.0228920351    1.165076e-08    2.482578e-06    4.112022e-05
+    3       -76.0228920361    9.875407e-10    6.587043e-07    1.570557e-05
+    4       -76.0228920363    1.965788e-10    2.668326e-07    6.025747e-06
+    5       -76.0228920363    1.641354e-11    1.120736e-07    1.548894e-06
+    6       -76.0228920364    6.536993e-13    2.662318e-08    2.817479e-07
+    7       -76.0228920364    4.263256e-14    3.527350e-09    3.506949e-08
+    8       -76.0228920364   -4.263256e-14    5.408989e-10    8.398316e-09
+    9       -76.0228920364   -1.421085e-14    1.065262e-10    1.752128e-09
+   10       -76.0228920364    1.421085e-14    2.302697e-11    2.217647e-10
+   11       -76.0228920364    2.842171e-14    2.139621e-12    9.506869e-11
+   12       -76.0228920364   -4.263256e-14    1.236729e-12    2.234885e-11
+   13       -76.0228920364    0.000000e+00    1.106582e-13    3.615394e-12
 
  Correcting phases of orbitals.
 
@@ -2480,28 +2587,28 @@ Orbital energies (a.u.):
    5A1      1.085602     6A1      1.132383     2B1      1.168762  
    4B2      1.294678     7A1      1.416279     1A2      1.804665  
    8A1      1.812566     3B1      1.922978     9A1      2.566619  
-   5B2      2.576674     6B2      2.799425     2A2      2.972013  
-   4B1      2.990598    10A1      3.369691    11A1      3.701917  
+   5B2      2.576674     6B2      2.799424     2A2      2.972013  
+   4B1      2.990598    10A1      3.369690    11A1      3.701916  
    7B2      3.923634    12A1      4.103491  
 
 
-      * SCF total energy   =     -76.022892048117
-        kinetic energy     =      75.797679174693
-        nuc. attr. energy  =    -198.832978677014
-        elec. rep. energy  =      47.012407454204
-        potential energy   =    -151.820571222811
-        virial theorem     =       1.997037565037
+      * SCF total energy   =     -76.022892036350
+        kinetic energy     =      75.797678575712
+        nuc. attr. energy  =    -198.832975393659
+        elec. rep. energy  =      47.012404781597
+        potential energy   =    -151.820570612062
+        virial theorem     =       1.997037557312
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:49 2008
+SCF tstop called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
 user time   =       0.01 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:49 2008
+TRANSQT tstart called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
 
 	**************************************************
@@ -2538,8 +2645,8 @@ Wed Mar 12 18:39:49 2008
 	 B1 	   4	    0	    1	    0	    3	    0
 	 B2 	   7	    0	    1	    0	    6	    0
 
-	Nuclear Rep. energy (chkpt) =      9.16235117102337
-	SCF energy          (chkpt) =    -76.02289204811726
+	Nuclear Rep. energy (chkpt) =      9.16234967790265
+	SCF energy          (chkpt) =    -76.02289203635021
 
 	Presorting SO-basis two-electron integrals.
 	Sorting File: SO Ints (pq,rs) nbuckets = 1
@@ -2549,15 +2656,15 @@ Wed Mar 12 18:39:49 2008
 	Starting second half-transformation.
 	Two-electron integral transformation complete.
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:49 2008
+TRANSQT tstop called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:49 2008
+CCSORT tstart called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
 
 			**************************
@@ -2575,6 +2682,7 @@ Wed Mar 12 18:39:49 2008
 	Memory (Mbytes) =	256.0
 	AO Basis        =	NONE
 	Make (ab|cd)    =	False
+	Make unpacked (ab|cd) =	False
 	Cache Level     =	2
 	Cache Type      =	LRU
 	Local CC        =     No
@@ -2593,8 +2701,8 @@ Wed Mar 12 18:39:49 2008
 	 B1 	   4	    0	    1	    0	    3	    0
 	 B2 	   7	    0	    1	    0	    6	    0
 
-	Nuclear Rep. energy (chkpt) =      9.16235117102337
-	SCF energy          (chkpt) =    -76.02289204811726
+	Nuclear Rep. energy (chkpt) =      9.16234967790265
+	SCF energy          (chkpt) =    -76.02289203635021
 
 	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
 	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
@@ -2621,23 +2729,23 @@ Wed Mar 12 18:39:49 2008
 	Sorting File: E <ai|jk> nbuckets = 1
 	Sorting File: F <ia|bc> nbuckets = 1
 	Sorting File: F <ai|bc> nbuckets = 1
-	One-electron energy          =   -123.03529950232115
-	Two-electron (AA) energy     =     14.44572083338295
-	Two-electron (BB) energy     =     14.44572083338295
-	Two-electron (AB) energy     =     23.40433544979755
-	Two-electron energy          =     37.85005628318050
+	One-electron energy          =   -123.03529681794747
+	Two-electron (AA) energy     =     14.44572033013006
+	Two-electron (BB) energy     =     14.44572033013006
+	Two-electron (AB) energy     =     23.40433477356457
+	Two-electron energy          =     37.85005510369463
 	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -76.02289204811728
+	Reference energy             =    -76.02289203635019
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:49 2008
+CCSORT tstop called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:49 2008
+MP2 tstart called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
 			*************************
 			*                       *
@@ -2645,8 +2753,8 @@ Wed Mar 12 18:39:49 2008
 			*                       *
 			*************************
 
-	Nuclear rep. energy     =    9.162351171023367
-	SCF energy              =  -76.022892048117257
+	Nuclear rep. energy     =    9.162349677902650
+	SCF energy              =  -76.022892036350214
 
 	Input parameters:
 	-----------------
@@ -2658,43 +2766,52 @@ Wed Mar 12 18:39:49 2008
 	Memory (MB)   	=	256.0
 	Print Level   	=	0
 	OPDM          	=	NO
-	SCS           	=	FALSE
+	SCS           	=	False
+	SCALE_OS      	=	1.200000
+	SCALE_SS      	=	0.333333
 
-        MP2 correlation energy      =   -0.199556609372856
-      * MP2 total energy            =  -76.222448657490119
+	Scaled_OS correlation energy      =   -0.160040958593918
+	Scaled_SS correlation energy      =   -0.016728353264201
+	SCS-MP2 correlation energy        =   -0.176769311858119
+      * SCS-MP2 total energy              =  -76.199661348208338
 
-	Trace of onepdm =    0.000000000000000
+	Opposite-spin correlation energy  =   -0.149371561354324
+	Same-spin correlation energy      =   -0.050185059792602
+	MP2 correlation energy            =   -0.199556621146926
+      * MP2 total energy                  =  -76.222448657497139
+
+	Trace of OPDM(2)        =   -0.000000000000000
 
 	Energies re-computed from Fock-adjusted CC density:
 	---------------------------------------------------
-	One-electron energy        =    0.230470272291961
-	IJKL energy                =   -0.638744879628658
-	IJKA energy                =   -0.051740806088965
-	IJAB energy                =   -0.399113218745711
-	IBJA energy                =    0.659572022797368
-	MP2 correlation energy    =   -0.199556609374006
-	Total MP2 energy          =  -76.222448657491256
+	One-electron energy        =    0.230470256065123
+	IJKL energy                =   -0.638744967841919
+	IJKA energy                =   -0.051740793410878
+	IJAB energy                =   -0.399113242293853
+	IBJA energy                =    0.659572126334585
+	MP2 correlation energy    =   -0.199556621146942
+	Total MP2 energy          =  -76.222448657497154
 
 	Energies re-computed from Mulliken density:
 	-------------------------------------------
-	One-electron energy        =    0.230470272291961
-	IJKL energy                =   -0.638744879628658
-	IJKA energy                =   -0.051740806088965
-	IJAB energy                =   -0.428944432569448
-	IBJA energy                =    0.689403236621105
-	Total two-electron energy  =   -0.430026881665967
-	MP2 correlation energy    =   -0.199556609374006
-	Total MP2 energy          =  -76.222448657491256
+	One-electron energy        =    0.230470256065123
+	IJKL energy                =   -0.638744967841919
+	IJKA energy                =   -0.051740793410878
+	IJAB energy                =   -0.428944462196868
+	IBJA energy                =    0.689403346237601
+	Total two-electron energy  =   -0.430026877212065
+	MP2 correlation energy    =   -0.199556621146942
+	Total MP2 energy          =  -76.222448657497154
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:49 2008
+MP2 tstop called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.04 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:50 2008
+OEPROP tstart called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
     **********************************************
     *                    OEPROP                  *
@@ -2745,39 +2862,39 @@ Wed Mar 12 18:39:50 2008
   Center   AO          L          Q(AO)
   ------  ----        ---      -----------
      1      1          0        1.99507247
-     1      2          0        0.90001393
-     1      3          0        0.90919807
-     1      4          1        1.12126804
-     1      5          1        0.81045604
-     1      6          1        0.93181245
-     1      7          1        0.84533973
-     1      8          1        0.44796020
-     1      9          1        0.64275501
+     1      2          0        0.90001396
+     1      3          0        0.90919815
+     1      4          1        1.12126805
+     1      5          1        0.81045598
+     1      6          1        0.93181236
+     1      7          1        0.84533974
+     1      8          1        0.44796026
+     1      9          1        0.64275499
      1     10          2        0.00134252
      1     11          2        0.00443449
      1     12          2        0.00648956
      1     13          2        0.00723855
      1     14          2        0.01732712
      1     15          2        0.00030169
-     2     16          0        0.48697412
-     2     17          0        0.15054448
-     2     18          1        0.01173451
+     2     16          0        0.48697403
+     2     17          0        0.15054457
+     2     18          1        0.01173450
      2     19          1        0.01643178
-     2     20          1        0.01381018
-     3     21          0        0.48697412
-     3     22          0        0.15054448
-     3     23          1        0.01173451
+     2     20          1        0.01381017
+     3     21          0        0.48697403
+     3     22          0        0.15054457
+     3     23          1        0.01173450
      3     24          1        0.01643178
-     3     25          1        0.01381018
+     3     25          1        0.01381017
 
 
  -Atomic bond populations :
 
            1           2           3
 
-    1   7.1324223   0.2883449   0.2883449
-    2   0.2883449   0.3482229  -0.0265053
-    3   0.2883449  -0.0265053   0.3482229
+    1   7.1324224   0.2883448   0.2883448
+    2   0.2883448   0.3482230  -0.0265053
+    3   0.2883448  -0.0265053   0.3482230
 
 
  -Gross atomic populations and net charges :
@@ -2801,720 +2918,13 @@ Wed Mar 12 18:39:50 2008
  -Electric dipole moment (expectation values) :
 
     mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
-    mu(Y)  =  -0.00000 D  =  -9.96440341e-46 C*m  =  -0.00000000 a.u.
-    mu(Z)  =   2.11166 D  =   7.04373494e-30 C*m  =   0.83079000 a.u.
-    |mu|   =   2.11166 D  =   7.04373494e-30 C*m  =   0.83079000 a.u.
+    mu(Y)  =   0.00000 D  =   1.72446686e-45 C*m  =   0.00000000 a.u.
+    mu(Z)  =   2.11166 D  =   7.04373555e-30 C*m  =   0.83079007 a.u.
+    |mu|   =   2.11166 D  =   7.04373555e-30 C*m  =   0.83079007 a.u.
 
 
  --------------------------------------------------------------
               *** Electronic angular momentum ***
- --------------------------------------------------------------
-
- -Coordinates of the reference point (a.u.) :
-           x                     y                     z
-  --------------------  --------------------  --------------------
-          0.0000000000          0.0000000000         -0.0000000000
-
- -Electronic angular momentum (expectation values) :
-
-    Lx  =   0.00000000 a.u.
-    Ly  =   0.00000000 a.u.
-    Lz  =   0.00000000 a.u.
-
-
- --------------------------------------------------------------
-      *** Electrostatic  properties at atomic centers ***
- --------------------------------------------------------------
-
- -Coordinates of atomic centers (a.u.):
-    #   Charge           x                     y                     z
-   ---  ------  --------------------  --------------------  --------------------
-    1      8            0.0000000000          0.0000000000         -0.1252725413
-    2      1            0.0000000000          1.4294762278          0.9940830692
-    3      1            0.0000000000         -1.4294762278          0.9940830692
-
-
- -Electrostatic potential and electric field (a.u.) :
-
-    Center         phi            Ex             Ey           Ez
-    ------    ------------   ------------  ------------  ------------
-       1      -22.30032506     0.00000000   -0.00000000   -0.12511245
-       2       -1.00544498     0.00000000    0.01594714    0.00512113
-       3       -1.00544498     0.00000000   -0.01594714    0.00512113
-
-
- -Electric field gradient (regular form) (a.u.):
-
-    Center           XX                    YY                    ZZ
-    ------  --------------------  --------------------  --------------------
-       1          -1214.91526267        -1218.15683590        -1216.91809241
-       2             -1.40038225           -1.92283167           -1.73371317
-       3             -1.40038225           -1.92283167           -1.73371317
-
-    Center           XY                    XZ                    YZ
-    ------  --------------------  --------------------  --------------------
-       1              0.00000000            0.00000000            0.00000000
-       2              0.00000000            0.00000000            1.60534975
-       3              0.00000000            0.00000000           -1.60534975
-
-
- -Electric field gradient (traceless tensor form) (a.u.):
-
-    Center        XX - RR/3             YY - RR/3             ZZ - RR/3
-    ------  --------------------  --------------------  --------------------
-       1              1.74813433           -1.49343891           -0.25469542
-       2              0.28526011           -0.23718931           -0.04807080
-       3              0.28526011           -0.23718931           -0.04807080
-
-    Center           XY                    XZ                    YZ
-    ------  --------------------  --------------------  --------------------
-       1              0.00000000            0.00000000            0.00000000
-       2              0.00000000            0.00000000            1.60534975
-       3              0.00000000            0.00000000           -1.60534975
-
-
- -Electron density (a.u.):
-
-    Center           rho
-    ------  --------------------
-       1            290.45699057
-       2              0.40241747
-       3              0.40241747
-
-
- --------------------------------------------------------------
-                *** Miscellaneous properties ***
- --------------------------------------------------------------
-
- -Relativistic MVD one-electron corrections to the energy (a.u.):
-
-    Mass-velocity (p^4) term     :   -0.245462674141627
-    One-electron Darwin term     :   0.194434270907303
-    Total one-electron MVD terms :   -0.051028403234324
-
-******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:50 2008
-
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:50 2008
-
-
-	**************************************************
-	* TRANSQT:  Program to transform integrals from  *
-	*           the SO basis to the MO basis.        *
-	*                                                *
-	*            Daniel, David, & Justin             *
-	*                   Sept  1995                   *
-	**************************************************
-
-	Input Parameters:
-	-----------------
-	Wavefunction           =  MP2
-	Reference orbitals     =  RHF
-	Backtrans              =  Yes
-	Print MOs              =  No
-	Freeze Core            =  No
-	Delete Restricted Docc =  No
-	Do All TEI             =  No
-	Memory (Mbytes)        =  256.0
-	Max Buckets            =  499
-	First Tmp File         =  150
-	Presort File           =  41
-	Source TEI File        =  74
-	Opdm In File           =  73
-	Opdm Out File          =  76
-	Lag In File            =  75
-	Keep Presort           =  No
-	J File                 =  91
-	Keep J                 =  No
-	M File                 =  77
-	Bare OEI file          =  35
-	Frozen Core OEI file   =  35
-	Sorted TEI file        =  72
-	Delete TEI source file =  Yes
-	Add TPDM Ref Part      =  No
-	Do Bare OEI tranform   =  No
-	Do FZC  OEI tranform   =  No
-	Tolerance              =  1.0e-14
-	Print Level            =  1
-	Print TE Ints          =  No
-	Print OE Ints          =  No
-	Print Sorted TE Ints   =  No
-	Print Sorted OE Ints   =  No
-	Reorder MOs            =  No
-	Check C Orthonormality =  No
-	QRHF orbitals          =  No
-	IVO orbitals           =  No
-	Pitzer                 =  No
-
-	Chkpt File Parameters:
-	------------------
-	Number of irreps = 4
-	Number of SOs    = 25
-	Number of MOs    = 25
-
-	Label	# SOs	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	-----	------	------	------	------	------
-	 A1 	   12	   12	    0	    3	    0	    9	    0
-	 A2 	   2	   2	    0	    0	    0	    2	    0
-	 B1 	   4	   4	    0	    1	    0	    3	    0
-	 B2 	   7	   7	    0	    1	    0	    6	    0
-
-	Nuclear Repulsion Energy    =         9.1623511710
-	Total SCF Energy            =       -76.0228920481
-
-	Pre-sorting two-electron ints...
-
-
-	Frozen core energy =    0.000000000000000
-	Transforming two-electron ints...
-
-	Sorting half-transformed integrals...
-	Finished half-transform...
-	Working on second half...
-
-	Transformation finished.
-	Two-electron integrals written to file77.
-
-	Transforming one-electron integrals...
-	One-pdm and lagrangian written to file76.
-******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:50 2008
-
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:50 2008
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = 6-31G** MP2 H2O
-    Number of atoms             = 3
-    Number of atomic orbitals   = 25
-    Number of symmetry orbitals = 25
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C2v
-    Number of irreps                 = 4
-  Rotational invariance condition satisfied.
-  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
-  So long..
-
-
-  -MP2 forces in the reference frame (a.u.):
-     Atom            X                  Y                   Z
-    ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000     0.000011797573
-       2        0.000000000000    -0.000008237747    -0.000005898787
-       3        0.000000000000     0.000008237747    -0.000005898787
-
-******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:50 2008
-
-user time   =       0.09 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-
-	------------------------------------------------------
-	    OPTKING: for internal coordinate optimizations    
-	------------------------------------------------------
-
-Cartesian geometry and possibly gradient in a.u. with masses
-  8.0    15.99491462   0.0000000000   0.0000000000  -0.1252725413
-  1.0     1.00782503   0.0000000000   1.4294762278   0.9940830692
-  1.0     1.00782503   0.0000000000  -1.4294762278   0.9940830692
-                       0.0000000000   0.0000000000   0.0000117976
-                       0.0000000000  -0.0000082377  -0.0000058988
-                       0.0000000000   0.0000082377  -0.0000058988
-
-Searching for geometrical constraints...none found.
-
-Simple Internal Coordinates and Values
-Stretches
-    (1 1 2) (0.96076779)
-    (2 1 3) (0.96076779)
-Bends
-    (3 2 1 3) (103.87434890)
- 
- ** Taking normal optimization step. **
-
-Current MP2 energy before step       -76.2224486575
-
-Taking geometry step number 4
-
-BuB^t Determinant: 2.569505e+00
-
-Force Constants read from PSIF_OPTKING
-
-Performing BFGS Hessian update with previous 3 gradient(s).
-
-Scaling displacements by 1.000000
-
-Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-       Value         Force        Displacement  New Value
- 1    0.96076779    0.00008340    0.00001022    0.96077801
- 2    0.96076779    0.00008340    0.00001022    0.96077801
- 3    1.81294940    0.00000344   -0.00000127    1.81294813
-   MAX force:    0.0000833974   RMS force:    0.0000681227
-
-Back-transformation to cartesian coordinates...
- Iter   RMS Delta(dx)   RMS Delta(dq)
-    2  0.000004604059  0.000000000008
-    3  0.000000000003  0.000000000000
-Convergence to displaced geometry took 3 iterations.
-
-New Cartesian Geometry in a.u.
-  8.0   0.0000000000   0.0000000000  -0.1252739753
-  1.0   0.0000000000   1.4294907236   0.9940944482
-  1.0   0.0000000000  -1.4294907236   0.9940944482
-
-Geometry written to chkpt
-
-******** OPTKING execution completed ********
-
-******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:51 2008
-
-                  --------------------------------------------
-                    CINTS: An integrals program written in C
-                     Justin T. Fermann and Edward F. Valeev
-                  --------------------------------------------
-
-
-  -OPTIONS:
-    Print level                 = 1
-    Integral tolerance          = 1e-15
-    Max. memory to use          = 2500000 double words
-    Number of threads           = 1
-    LIBINT's real type length   = 64 bit
-
-  -CALCULATION CONSTANTS:
-    Label                       = 6-31G** MP2 H2O
-    Number of atoms             = 3
-    Number of atomic orbitals   = 25
-    Number of symmetry orbitals = 25
-    Maximum AM in the basis     = 2
-
-  -SYMMETRY INFORMATION;
-    Computational point group        = C2v
-    Number of irreps                 = 4
-
-    Wrote 13617 two-electron integrals to IWL file 33
-
-******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:51 2008
-
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:51 2008
-
-
-             ------------------------------------------
-
-                CSCF3.0: An SCF program written in C
-
-              Written by too many people to mention here
-
-             ------------------------------------------
-  label        = 6-31G** MP2 H2O
-  wfn          = MP2
-  reference    = RHF
-  multiplicity = 1
-  charge       = 0
-  direct       = false
-  dertype      = FIRST
-  convergence  = 10
-  maxiter      = 100
-  guess        = AUTO
-
-  nuclear repulsion energy        9.1622538850943
-
-  using old vector from file30 as initial guess
-  energy from old vector:   -76.02289205
-
-  level shift                      = 0.100000
-
-  level shifting will stop after 10 cycles
-  diis scale factor                = 1.000000
-  iterations before extrapolation  = 0
-  6 error matrices will be kept
-
-  keeping integrals in 114320 bytes of core
-
-  The lowest eigenvalue of the overlap matrix was 2.200476e-02
-
-
-  Reading Occupations from checkpoint file.
-
-  Symmetry block:   A1    A2    B1    B2   
-  DOCC:              3     0     1     1   
-  SOCC:              0     0     0     0   
-
-  reading integrals in the IWL format from files 33,35,36,37
-  wrote 6516 integrals to file92
-
-  iter       total energy        delta E         delta P          diiser
-    1       -76.0228913188    8.518515e+01    0.000000e+00    0.000000e+00
-    2       -76.0228913188    6.133405e-11    1.546638e-07    2.925810e-06
-    3       -76.0228913188    5.783818e-12    4.340435e-08    1.461998e-06
-    4       -76.0228913188    1.207923e-12    2.154260e-08    4.709258e-07
-    5       -76.0228913188    1.421085e-13    8.230245e-09    1.306080e-07
-    6       -76.0228913188    2.842171e-14    2.624684e-09    3.062432e-08
-    7       -76.0228913188   -7.105427e-14    4.566652e-10    4.609325e-09
-    8       -76.0228913188    0.000000e+00    4.317630e-11    6.514341e-10
-
- Correcting phases of orbitals.
-
-Orbital energies (a.u.):
-
-  Doubly occupied orbitals
-   1A1    -20.561614     2A1     -1.339044     1B2     -0.700348  
-   3A1     -0.569415     1B1     -0.497161  
-
-
-  Unoccupied orbitals
-   4A1      0.211260     2B2      0.303764     3B2      1.000269  
-   5A1      1.085594     6A1      1.132382     2B1      1.168762  
-   4B2      1.294678     7A1      1.416277     1A2      1.804664  
-   8A1      1.812565     3B1      1.922978     9A1      2.566605  
-   5B2      2.576662     6B2      2.799402     2A2      2.972001  
-   4B1      2.990586    10A1      3.369671    11A1      3.701894  
-   7B2      3.923619    12A1      4.103484  
-
-
-      * SCF total energy   =     -76.022891318831
-        kinetic energy     =      75.797639811501
-        nuc. attr. energy  =    -198.832765822738
-        elec. rep. energy  =      47.012234692406
-        potential energy   =    -151.820531130332
-        virial theorem     =       1.997037056820
-        wavefunction norm  =       1.000000000000
-******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:51 2008
-
-user time   =       0.01 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:51 2008
-
-
-	**************************************************
-	* TRANSQT2: Program to transform integrals from  *
-	*           the SO basis to the MO basis.        *
-	*                                                *
-	*            Daniel, David, & Justin             *
-	**************************************************
-
-
-	Input parameters:
-	-----------------
-	Wave function   =	MP2
-	Backtransform   =	No
-	Print Level     =	1
-	Print TEIs      =	No
-	Reference wfn   =	RHF
-	Derivative      =	First
-	Delete TEI File =	Yes
-	Memory (Mbytes) =	256.0
-	Cache Level     =	2
-	Cache Type      =	LRU
-	Chkpt Parameters:
-	--------------------
-	Number of irreps     = 4
-	Number of SOs        = 25
-	Number of MOs        = 25
-	Number of active MOs = 25
-
-	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	------	------	------	------	------
-	 A1 	   12	    0	    3	    0	    9	    0
-	 A2 	   2	    0	    0	    0	    2	    0
-	 B1 	   4	    0	    1	    0	    3	    0
-	 B2 	   7	    0	    1	    0	    6	    0
-
-	Nuclear Rep. energy (chkpt) =      9.16225388509435
-	SCF energy          (chkpt) =    -76.02289131883116
-
-	Presorting SO-basis two-electron integrals.
-	Sorting File: SO Ints (pq,rs) nbuckets = 1
-	Frozen-core energy =    0.000000000000000
-	Starting first half-transformation.
-	Sorting half-transformed integrals.
-	Starting second half-transformation.
-	Two-electron integral transformation complete.
-******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:51 2008
-
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:51 2008
-
-
-			**************************
-			*                        *
-			*         CCSORT         *
-			*                        *
-			**************************
-
-
-	Input parameters:
-	-----------------
-	Wave function   =	MP2
-	Reference wfn   =	RHF
-	Derivative      =	First
-	Memory (Mbytes) =	256.0
-	AO Basis        =	NONE
-	Make (ab|cd)    =	False
-	Cache Level     =	2
-	Cache Type      =	LRU
-	Local CC        =     No
-
-
-	Chkpt Parameters:
-	--------------------
-	Number of irreps     = 4
-	Number of MOs        = 25
-	Number of active MOs = 25
-
-	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
-	-----	-----	------	------	------	------	------
-	 A1 	   12	    0	    3	    0	    9	    0
-	 A2 	   2	    0	    0	    0	    2	    0
-	 B1 	   4	    0	    1	    0	    3	    0
-	 B2 	   7	    0	    1	    0	    6	    0
-
-	Nuclear Rep. energy (chkpt) =      9.16225388509435
-	SCF energy          (chkpt) =    -76.02289131883116
-
-	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
-	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
-	Size of irrep 2 of <ab|cd> integrals:      0.006 (MW) /      0.049 (MB)
-	Size of irrep 3 of <ab|cd> integrals:      0.014 (MW) /      0.115 (MB)
-	Total:                                     0.043 (MW) /      0.341 (MB)
-
-	Size of irrep 0 of <ia|bc> integrals:      0.005 (MW) /      0.037 (MB)
-	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
-	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.012 (MB)
-	Size of irrep 3 of <ia|bc> integrals:      0.003 (MW) /      0.028 (MB)
-	Total:                                     0.011 (MW) /      0.086 (MB)
-
-	Size of irrep 0 of tijab amplitudes:       0.001 (MW) /      0.011 (MB)
-	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
-	Size of irrep 2 of tijab amplitudes:       0.000 (MW) /      0.004 (MB)
-	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
-	Total:                                     0.003 (MW) /      0.022 (MB)
-
-
-	Sorting File: A <ij|kl> nbuckets = 1
-	Sorting File: C <ia|jb> nbuckets = 1
-	Sorting File: D <ij|ab> nbuckets = 1
-	Sorting File: E <ai|jk> nbuckets = 1
-	Sorting File: F <ia|bc> nbuckets = 1
-	Sorting File: F <ai|bc> nbuckets = 1
-	One-electron energy          =   -123.03512601123744
-	Two-electron (AA) energy     =     14.44568865513570
-	Two-electron (BB) energy     =     14.44568865513570
-	Two-electron (AB) energy     =     23.40429215217627
-	Two-electron energy          =     37.84998080731197
-	Frozen-core energy (transqt) =      0.00000000000000
-	Reference energy             =    -76.02289131883113
-******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:51 2008
-
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:51 2008
-
-			*************************
-			*                       *
-			*          MP2          *
-			*                       *
-			*************************
-
-	Nuclear rep. energy     =    9.162253885094348
-	SCF energy              =  -76.022891318831157
-
-	Input parameters:
-	-----------------
-	Wave function 	=	MP2
-	Reference WFN 	=	RHF
-	Derivative    	=	FIRST
-	Cache Level   	=	2
-	Cache Type    	=	LOW
-	Memory (MB)   	=	256.0
-	Print Level   	=	0
-	OPDM          	=	NO
-	SCS           	=	FALSE
-
-        MP2 correlation energy      =   -0.199557338836424
-      * MP2 total energy            =  -76.222448657667584
-
-	Trace of onepdm =   -0.000000000000000
-
-	Energies re-computed from Fock-adjusted CC density:
-	---------------------------------------------------
-	One-electron energy        =    0.230469279713607
-	IJKL energy                =   -0.638750379827540
-	IJKA energy                =   -0.051740031430366
-	IJAB energy                =   -0.399114677672848
-	IBJA energy                =    0.659578470372120
-	MP2 correlation energy    =   -0.199557338845027
-	Total MP2 energy          =  -76.222448657676182
-
-	Energies re-computed from Mulliken density:
-	-------------------------------------------
-	One-electron energy        =    0.230469279713607
-	IJKL energy                =   -0.638750379827540
-	IJKA energy                =   -0.051740031430366
-	IJAB energy                =   -0.428946269138089
-	IBJA energy                =    0.689410061837361
-	Total two-electron energy  =   -0.430026618558634
-	MP2 correlation energy    =   -0.199557338845028
-	Total MP2 energy          =  -76.222448657676182
-******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:51 2008
-
-user time   =       0.02 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
-******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:51 2008
-
-    **********************************************
-    *                    OEPROP                  *
-    *          A simple property program         *
-    *              by a big TOOL fan             *
-    **********************************************
-
-
-  TASKS to be performed :
-    $One-particle density in MO basis in SQUARE form will be read from file73.
-    $Only electric dipole moment will be computed.
-    $Reference point for the electric multipole moments calculation is 
-      the center of mass.
-    $Reference point for the electric angular momentum calculation is 
-      at (0.000000 0.000000 0.000000)
-    $Electrostatic properties at the nuclei will be evaluated.
-
-  Title : '6-31G** MP2 H2O'
-
-  List of PARAMETERS :
-    # of atoms                 =      3
-    # of molecular orbitals    =     25
-    # of basis functions       =     25
-    # of atomic orbitals       =     25
-    # of irreps                =      4
-    Total charge               =      0
-    # of unique shells         =     12
-    # of primitives            =     20
-    Print level                =      1
-
-  List of GRID PARAMETERS :
-    GRID_ORIGIN                =	(  0.00000  0.00000  0.00000 )
-    GRID_STEP_X                =	(  0.00000  0.00000  0.00000 )
-    GRID_STEP_Y                =	(  0.00000  0.00000  0.00000 )
-    NIX                        =	  11
-    NIY                        =	  11
-    GRID_ZMIN                  =	   0.00000
-    GRID_ZMAX                  =	   3.00000
-
-	Densities available up to root 1
-	** Analyzing density number 1 **
- --------------------------------------------------------------
-   ** Mulliken population analysis of one-particle density **
- --------------------------------------------------------------
-
- -Gross orbital populations :
-
-  Center   AO          L          Q(AO)
-  ------  ----        ---      -----------
-     1      1          0        1.99507249
-     1      2          0        0.90001563
-     1      3          0        0.90920293
-     1      4          1        1.12126837
-     1      5          1        0.81045176
-     1      6          1        0.93180754
-     1      7          1        0.84534019
-     1      8          1        0.44796384
-     1      9          1        0.64275507
-     1     10          2        0.00134236
-     1     11          2        0.00443449
-     1     12          2        0.00648951
-     1     13          2        0.00723882
-     1     14          2        0.01732699
-     1     15          2        0.00030196
-     2     16          0        0.48696869
-     2     17          0        0.15054987
-     2     18          1        0.01173414
-     2     19          1        0.01643147
-     2     20          1        0.01380987
-     3     21          0        0.48696869
-     3     22          0        0.15054987
-     3     23          1        0.01173414
-     3     24          1        0.01643147
-     3     25          1        0.01380987
-
-
- -Atomic bond populations :
-
-           1           2           3
-
-    1   7.1324296   0.2883409   0.2883409
-    2   0.2883409   0.3482241  -0.0265047
-    3   0.2883409  -0.0265047   0.3482241
-
-
- -Gross atomic populations and net charges :
-
-    Center    Atomic Population    Net Charge
-    ------    -----------------    ----------
-       1            8.641012        -0.641012
-       2            0.679494        +0.320506
-       3            0.679494        +0.320506
-
-
- --------------------------------------------------------------
-                *** Electric multipole moments ***
  --------------------------------------------------------------
 
  -Coordinates of the reference point (a.u.) :
@@ -3522,23 +2932,6 @@ Wed Mar 12 18:39:51 2008
   --------------------  --------------------  --------------------
           0.0000000000          0.0000000000          0.0000000000
 
- -Electric dipole moment (expectation values) :
-
-    mu(X)  =   0.00000 D  =   0.00000000e+00 C*m  =   0.00000000 a.u.
-    mu(Y)  =   0.00000 D  =   8.93487095e-46 C*m  =   0.00000000 a.u.
-    mu(Z)  =   2.11167 D  =   7.04375472e-30 C*m  =   0.83079233 a.u.
-    |mu|   =   2.11167 D  =   7.04375472e-30 C*m  =   0.83079233 a.u.
-
-
- --------------------------------------------------------------
-              *** Electronic angular momentum ***
- --------------------------------------------------------------
-
- -Coordinates of the reference point (a.u.) :
-           x                     y                     z
-  --------------------  --------------------  --------------------
-          0.0000000000          0.0000000000         -0.0000000000
-
  -Electronic angular momentum (expectation values) :
 
     Lx  =   0.00000000 a.u.
@@ -3553,57 +2946,57 @@ Wed Mar 12 18:39:51 2008
  -Coordinates of atomic centers (a.u.):
     #   Charge           x                     y                     z
    ---  ------  --------------------  --------------------  --------------------
-    1      8            0.0000000000          0.0000000000         -0.1252739753
-    2      1            0.0000000000          1.4294907236          0.9940944482
-    3      1            0.0000000000         -1.4294907236          0.9940944482
+    1      8            0.0000000000          0.0000000000         -0.1252725718
+    2      1            0.0000000000          1.4294763945          0.9940833111
+    3      1            0.0000000000         -1.4294763945          0.9940833111
 
 
  -Electrostatic potential and electric field (a.u.) :
 
     Center         phi            Ex             Ey           Ez
     ------    ------------   ------------  ------------  ------------
-       1      -22.30032361     0.00000000    0.00000000   -0.12511117
-       2       -1.00544387     0.00000000    0.01593821    0.00511477
-       3       -1.00544387     0.00000000   -0.01593821    0.00511477
+       1      -22.30032504     0.00000000   -0.00000000   -0.12511243
+       2       -1.00544496     0.00000000    0.01594701    0.00512103
+       3       -1.00544496     0.00000000   -0.01594701    0.00512103
 
 
  -Electric field gradient (regular form) (a.u.):
 
     Center           XX                    YY                    ZZ
     ------  --------------------  --------------------  --------------------
-       1          -1214.91530441        -1218.15690477        -1216.91817330
-       2             -1.40037082           -1.92278511           -1.73368096
-       3             -1.40037082           -1.92278511           -1.73368096
+       1          -1214.91526360        -1218.15683719        -1216.91809413
+       2             -1.40038208           -1.92283093           -1.73371271
+       3             -1.40038208           -1.92283093           -1.73371271
 
     Center           XY                    XZ                    YZ
     ------  --------------------  --------------------  --------------------
-       1              0.00000000            0.00000000            0.00000000
-       2              0.00000000            0.00000000            1.60531293
-       3              0.00000000            0.00000000           -1.60531293
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000            1.60534923
+       3              0.00000000            0.00000000           -1.60534923
 
 
  -Electric field gradient (traceless tensor form) (a.u.):
 
     Center        XX - RR/3             YY - RR/3             ZZ - RR/3
     ------  --------------------  --------------------  --------------------
-       1              1.74815642           -1.49344395           -0.25471247
-       2              0.28524147           -0.23717281           -0.04806866
-       3              0.28524147           -0.23717281           -0.04806866
+       1              1.74813471           -1.49343888           -0.25469582
+       2              0.28525982           -0.23718902           -0.04807080
+       3              0.28525982           -0.23718902           -0.04807080
 
     Center           XY                    XZ                    YZ
     ------  --------------------  --------------------  --------------------
-       1              0.00000000            0.00000000            0.00000000
-       2              0.00000000            0.00000000            1.60531293
-       3              0.00000000            0.00000000           -1.60531293
+       1              0.00000000            0.00000000           -0.00000000
+       2              0.00000000            0.00000000            1.60534923
+       3              0.00000000            0.00000000           -1.60534923
 
 
  -Electron density (a.u.):
 
     Center           rho
     ------  --------------------
-       1            290.45700580
-       2              0.40241029
-       3              0.40241029
+       1            290.45699088
+       2              0.40241736
+       3              0.40241736
 
 
  --------------------------------------------------------------
@@ -3612,20 +3005,20 @@ Wed Mar 12 18:39:51 2008
 
  -Relativistic MVD one-electron corrections to the energy (a.u.):
 
-    Mass-velocity (p^4) term     :   -0.245462681856922
-    One-electron Darwin term     :   0.194434279903564
-    Total one-electron MVD terms :   -0.051028401953358
+    Mass-velocity (p^4) term     :   -0.245462674336114
+    One-electron Darwin term     :   0.194434271098621
+    Total one-electron MVD terms :   -0.051028403237493
 
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:52 2008
+OEPROP tstop called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
-user time   =       0.01 seconds =       0.00 minutes
+user time   =       0.02 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:52 2008
+TRANSQT tstart called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
 
 	**************************************************
@@ -3689,8 +3082,8 @@ Wed Mar 12 18:39:52 2008
 	 B1 	   4	   4	    0	    1	    0	    3	    0
 	 B2 	   7	   7	    0	    1	    0	    6	    0
 
-	Nuclear Repulsion Energy    =         9.1622538851
-	Total SCF Energy            =       -76.0228913188
+	Nuclear Repulsion Energy    =         9.1623496779
+	Total SCF Energy            =       -76.0228920364
 
 	Pre-sorting two-electron ints...
 
@@ -3708,15 +3101,15 @@ Wed Mar 12 18:39:52 2008
 	Transforming one-electron integrals...
 	One-pdm and lagrangian written to file76.
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:52 2008
+TRANSQT tstop called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.02 seconds =       0.00 minutes
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-tstart called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:52 2008
+cints tstart called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -3749,15 +3142,15 @@ Wed Mar 12 18:39:52 2008
   -MP2 forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.000000376586
-       2        0.000000000000     0.000000525755     0.000000188293
-       3        0.000000000000    -0.000000525755     0.000000188293
+       1        0.000000000000     0.000000000000     0.000011598108
+       2        0.000000000000    -0.000008110708    -0.000005799054
+       3        0.000000000000     0.000008110708    -0.000005799054
 
 ******************************************************************************
-tstop called on augustus.chemistry.gatech.edu
-Wed Mar 12 18:39:52 2008
+cints tstop called on elrond.chem
+Wed Sep  9 07:43:49 2009
 
-user time   =       0.09 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 
@@ -3766,54 +3159,83 @@ total time  =          0 seconds =       0.00 minutes
 	------------------------------------------------------
 
 Cartesian geometry and possibly gradient in a.u. with masses
-  8.0    15.99491462   0.0000000000   0.0000000000  -0.1252739753
-  1.0     1.00782503   0.0000000000   1.4294907236   0.9940944482
-  1.0     1.00782503   0.0000000000  -1.4294907236   0.9940944482
-                       0.0000000000   0.0000000000  -0.0000003766
-                       0.0000000000   0.0000005258   0.0000001883
-                       0.0000000000  -0.0000005258   0.0000001883
+  8.0    15.99491462   0.0000000000   0.0000000000  -0.1252725718
+  1.0     1.00782503   0.0000000000   1.4294763945   0.9940833111
+  1.0     1.00782503   0.0000000000  -1.4294763945   0.9940833111
+                       0.0000000000   0.0000000000   0.0000115981
+                       0.0000000000  -0.0000081107  -0.0000057991
+                       0.0000000000   0.0000081107  -0.0000057991
 
 Searching for geometrical constraints...none found.
 
 Simple Internal Coordinates and Values
 Stretches
-    (1 1 2) (0.96077801)
-    (2 1 3) (0.96077801)
+    (1 1 2) (0.96076795)
+    (2 1 3) (0.96076795)
 Bends
-    (3 2 1 3) (103.87427625)
+    (3 2 1 3) (103.87434184)
  
  ** Taking normal optimization step. **
 
-Current MP2 energy before step       -76.2224486577
+Current MP2 energy before step       -76.222448657497
+  Previous energy                    -76.222448635312
+  Actual Delta(E) from last step      -0.000000022185
+  Previous Predicted Delta(E)         -0.000000023397  ( -5.2% error)
 
-Taking geometry step number 5
+ ** Taking geometry step number 4 **
 
-BuB^t Determinant: 2.569450e+00
+BuB^t Determinant: 2.569504e+00
+	Symmetric Force Constants found in PSIF_OPTKING
 
 Force Constants read from PSIF_OPTKING
 
-Performing BFGS Hessian update with previous 4 gradient(s).
+Performing BFGS update with previous 3 gradient(s).
+Projected energy change by quadratic approximation:        -0.0000000002
 
-Scaling displacements by 1.000000
+	Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+	----------------------------------------------------------
+	       Value         Force        Displacement  New Value
+	----------------------------------------------------------
+	  1    0.96076795    0.00008207    0.00001007    0.96077802
+	  2    0.96076795    0.00008207    0.00001007    0.96077802
+	  3    1.81294927    0.00000344   -0.00000125    1.81294802
+	----------------------------------------------------------
 
-Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
-       Value         Force        Displacement  New Value
- 1    0.96077801   -0.00000437   -0.00000046    0.96077755
- 2    0.96077801   -0.00000437   -0.00000046    0.96077755
- 3    1.81294813   -0.00000139   -0.00000157    1.81294656
-   MAX force:    0.0000043668   RMS force:    0.0000036550
+	   MAX force:    0.0000820668   RMS force:    0.0000670367
+	   MAX  disp:    0.0000100745   RMS  disp:    0.0000082574
 
-MAX force is < 1.0e-05.  Optimization is complete.
-Final MP2 energy is  -76.2224486577
+	Convergence Check:
+	             MAX Force  &&  ( Delta(E) ||   MAX disp )
+	----------------------------------------------------------
+	Actual         8.2e-05        2.2e-08        1.0e-05
+	Limit          1.0e-04        1.0e-08        1.0e-03
+	Conv?            Y              N              Y
+	----------------------------------------------------------
+
+Optimization is complete.
+
+Final MP2 energy is  -76.2224486575
+
+	            ****  Optimization Summary  ****
+	----------------------------------------------------------------------
+	 Step         Energy             Delta(E)      RMS force    MAX force 
+	----------------------------------------------------------------------
+	   1    -76.219725110936    -76.219725110936    2.38e-01     2.91e-01
+	   2    -76.222372283901     -0.002647172965    1.45e-02     2.24e-02
+	   3    -76.222448635312     -0.000076351411    3.90e-04     4.26e-04
+	   4    -76.222448657497     -0.000000022185    6.70e-05     8.21e-05
+	----------------------------------------------------------------------
+
 The Optimized geometry in a.u.
-  (  O   0.0000000000   0.0000000000  -0.1252739753 )
-  (  H   0.0000000000   1.4294907236   0.9940944482 )
-  (  H   0.0000000000  -1.4294907236   0.9940944482 )
-  zmat = ( 
-    ( O )
-    ( H  1    0.96078)
-    ( H  1    0.96078 2  103.87428)
-  )
+  (  O    0.0000000000    0.0000000000   -0.1252725718 )
+  (  H    0.0000000000    1.4294763945    0.9940833111 )
+  (  H    0.0000000000   -1.4294763945    0.9940833111 )
+
+The Optimized geometry in Angstrom
+  (  O    0.0000000000    0.0000000000   -0.0662913949 )
+  (  H    0.0000000000    0.7564463860    0.5260462719 )
+  (  H    0.0000000000   -0.7564463860    0.5260462719 )
+
 
 
 ******** OPTKING execution completed ********
@@ -3823,7 +3245,7 @@ The Optimized geometry in a.u.
                           PSI3 Computation Completed
                           --------------------------
 
-PSI3 stopped on augustus.chemistry.gatech.edu at Wed Mar 12 18:39:53 2008
+PSI3 stopped on elrond.chem at Wed Sep  9 07:43:49 2009
 
-Total PSI3 wall time         10 seconds =       0.17 minutes
+Total PSI3 wall time          2 seconds =       0.03 minutes
 ******************************************************************************

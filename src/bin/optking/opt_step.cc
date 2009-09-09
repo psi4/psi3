@@ -35,6 +35,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
   double DE_error, DE, DE_old, E_old, DE_new;
   double **C, **T, **T2, **T3, R_AB, theta_A, theta_B, tau, phi_A, phi_B;
   double *temp_arr2, *temp_arr, *masses, **geom, *forces, *coord, max_force, rms_force;
+  double max_disp, rms_disp;
   double *f, *f_q, *dq, *dq_to_new_geom, *q, tval, tval2, tval3, tval4, scale, temp, *djunk;
   char *disp_label, *wfn, value_string[30], force_string[30];
   bool do_line_search = false, success;
@@ -77,13 +78,13 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
   close_PSIF();
 
   // searching for a minimum, supersized steps downward permitted
-  if (!optinfo.ts && (DE_error < -1*optinfo.step_energy_limit) && fabs(DE_old) > 1.0e-9 ) {
+  if (!optinfo.ts && (DE_error < -1*optinfo.step_energy_limit) && fabs(DE_old) > optinfo.line_search_min) {
     fprintf(outfile,"\n\tInsufficient energy drop observed.\n");
     do_line_search = true;
   }
 
   // searching for a TS, no supersized steps permitted
-  if (optinfo.ts && (fabs(DE_error) > optinfo.step_energy_limit) && fabs(DE_old) > 1.0e-9 ) {
+  if (optinfo.ts && (fabs(DE_error) > optinfo.step_energy_limit) && fabs(DE_old) > optinfo.line_search_min) {
     fprintf(outfile,"\t\tEnergy deviated too much from projection.\n");
     do_line_search = true;
   }
@@ -256,50 +257,6 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
   close_PSIF();
 
   printf("Energy: %15.10lf MAX force: %6.2e RMS force: %6.2e\n",carts.get_energy(),max_force, rms_force);
-      
-  if ( (fabs(DE) < optinfo.econv) || (max_force < optinfo.conv)) {
-    fprintf(outfile, "\n\t       *** Internal Coordinates and Forces *** \n");
-    fprintf(outfile, "\t-----------------------------------------------------------\n");
-    fprintf(outfile, "\t Coordinate    Value (Ang or Rad)   Force aJ/Ang or aJ/Rad \n");
-    fprintf(outfile, "\t-----------------------------------------------------------\n");
-    for (i=0;i<dim;++i)
-      fprintf(outfile,"\t %6d %20.8lf %20.8lf \n", i+1,  q[i],  f_q[i] );
-    fprintf(outfile, "\t-----------------------------------------------------------\n");
-    if (fabs(DE) < optinfo.econv)
-      fprintf(outfile,"\nEnergy change is < %5.1e.  Optimization is complete.\n", optinfo.econv);
-    else
-      fprintf(outfile,"\nMAX force is < %5.1e.  Optimization is complete.\n", optinfo.conv);
-    ip_string("WFN", &(wfn),0);
-    fprintf(outfile,"\nFinal %s energy is %15.10lf\n", wfn, carts.get_energy());
-    free(wfn);
-
-    optinfo.iteration += 1; // set for the NEXT step
-    open_PSIF();
-    psio_write_entry(PSIF_OPTKING, "Iteration", (char *) &(optinfo.iteration),sizeof(int));
-    i = 0;
-    psio_write_entry(PSIF_OPTKING, "Balked last time", (char *) &(i), sizeof(int));
-    close_PSIF();
-
-    opt_report(outfile);
-
-    fprintf(stdout,"\n  OPTKING:  optimization is complete\n");
-    fprintf(outfile,"The Optimized geometry in a.u.\n");
-    carts.print(12,outfile,0,disp_label,0);
-    fprintf(outfile,"\nThe Optimized geometry in Angstrom\n");
-    carts.print(13,outfile,0,disp_label,0);
-    fprintf(outfile, "\n");
-
-    if (optinfo.zmat) {
-      int *unique_zvars;
-      unique_zvars = init_int_array(MAX_ZVARS);
-      //compute_zmat(carts, unique_zvars);
-      //print_zmat(outfile, unique_zvars);
-      free(unique_zvars);
-      fprintf(outfile,"\n");
-    }
-    free(f_q); free(q);
-    return(PSI_RETURN_ENDLOOP);
-  } // end converged geometry
 
   fconst_init(carts, simples, symm); // makes sure some force constants are in PSIF_OPTKING
 
@@ -522,7 +479,63 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
   for (i=0;i<dim;++i)
     fprintf(outfile,"\t%3d %13.8lf %13.8lf %13.8lf %13.8lf\n", i+1, q[i], f_q[i], dq[i], q[i]+dq[i]);
   fprintf(outfile, "\t----------------------------------------------------------\n");
+
+  rms_disp = 0.0; 
+  max_disp = fabs(dq[0]);
+  for (i=0;i<dim;++i) {
+    rms_disp += SQR(dq[i]);
+    if (fabs(dq[i]) > max_disp) max_disp = fabs(dq[i]);
+  }
+  rms_disp = sqrt(rms_disp/((double) dim));
+
   fprintf(outfile,"\n\t   MAX force: %15.10lf   RMS force: %15.10lf\n", max_force, rms_force);
+  fprintf(outfile,"\t   MAX  disp: %15.10lf   RMS  disp: %15.10lf\n", max_disp, rms_disp);
+
+  fprintf(outfile,"\n\tConvergence Check:\n");
+  fprintf(outfile,"\t       %15s  &&  \(%9s || %10s \)\n", "MAX Force", "Delta\(E\)", "MAX disp");
+  fprintf(outfile, "\t----------------------------------------------------------\n");
+  fprintf(outfile,"\tActual %15.1e%15.1e%15.1e\n", max_force, fabs(DE), max_disp);
+  fprintf(outfile,"\tLimit  %15.1e%15.1e%15.1e\n", optinfo.conv_max_force, optinfo.conv_max_DE, optinfo.conv_max_disp);
+  fprintf(outfile,"\tConv?   ");
+  fprintf(outfile,"%10s     ", (max_force < optinfo.conv_max_force) ? "Y" : "N");
+  fprintf(outfile,"%10s     ", (fabs(DE) < optinfo.conv_max_DE) ? "Y" : "N");
+  fprintf(outfile,"%10s\n", (max_disp < optinfo.conv_max_disp) ? "Y" : "N");
+  fprintf(outfile, "\t----------------------------------------------------------\n");
+
+  if ((max_force < optinfo.conv_max_force) && ((fabs(DE) < optinfo.conv_max_DE) || (max_disp < optinfo.conv_max_disp))) {
+    fprintf(outfile,"\nOptimization is complete.\n");
+
+    ip_string("WFN", &(wfn),0);
+    fprintf(outfile,"\nFinal %s energy is %15.10lf\n", wfn, carts.get_energy());
+    free(wfn);
+
+    optinfo.iteration += 1; // set for the NEXT step
+    open_PSIF();
+    psio_write_entry(PSIF_OPTKING, "Iteration", (char *) &(optinfo.iteration),sizeof(int));
+    i = 0;
+    psio_write_entry(PSIF_OPTKING, "Balked last time", (char *) &(i), sizeof(int));
+    close_PSIF();
+
+    opt_report(outfile);
+
+    fprintf(stdout,"\n  OPTKING:  optimization is complete\n");
+    fprintf(outfile,"The Optimized geometry in a.u.\n");
+    carts.print(12,outfile,0,disp_label,0);
+    fprintf(outfile,"\nThe Optimized geometry in Angstrom\n");
+    carts.print(13,outfile,0,disp_label,0);
+    fprintf(outfile, "\n");
+
+    if (optinfo.zmat) {
+      int *unique_zvars;
+      unique_zvars = init_int_array(MAX_ZVARS);
+      //compute_zmat(carts, unique_zvars);
+      //print_zmat(outfile, unique_zvars);
+      free(unique_zvars);
+      fprintf(outfile,"\n");
+    }
+    free(f_q); free(q);
+    return(PSI_RETURN_ENDLOOP);
+  } // end converged geometry
 
   if (optinfo.analytic_interfragment) { // do interfragment steps analytically
 

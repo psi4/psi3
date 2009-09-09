@@ -1,5 +1,5 @@
 ******************************************************************************
-PSI3 started on mac8319.local at Wed Aug 12 20:05:16 2009
+PSI3 started on elrond.chem at Tue Sep  8 21:28:06 2009
 
     -----------------------------------------------------------------------    
             PSI3: An Open-Source Ab Initio Electronic Structure Package 
@@ -26,8 +26,8 @@ The following programs will be executed:
  psiclean
 
 ******************************************************************************
-INPUT tstart called on mac8319.local
-Wed Aug 12 20:05:16 2009
+INPUT tstart called on elrond.chem
+Tue Sep  8 21:28:06 2009
 
                                 --------------
                                     INPUT
@@ -38,7 +38,7 @@ Wed Aug 12 20:05:16 2009
   PUREAM      =	0
   PRINT_LVL   =	1
 
-  Parsed basis sets from /usr/local/psi/share/psi/pbasis.dat
+  Parsed basis sets from /home/rking/psi3/lib/pbasis.dat
 Coordinates after reading z-matrices
 
            1           2           3
@@ -182,15 +182,15 @@ Coordinates after reading z-matrices
 
 
 ******************************************************************************
-INPUT tstop called on mac8319.local
-Wed Aug 12 20:05:16 2009
+INPUT tstop called on elrond.chem
+Tue Sep  8 21:28:06 2009
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.11 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:16 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:06 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -219,15 +219,15 @@ Wed Aug 12 20:05:16 2009
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:17 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:06 2009
 
-user time   =       0.17 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+user time   =       0.26 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-SCF tstart called on mac8319.local
-Wed Aug 12 20:05:17 2009
+SCF tstart called on elrond.chem
+Tue Sep  8 21:28:06 2009
 
 
              ------------------------------------------
@@ -285,17 +285,17 @@ Wed Aug 12 20:05:17 2009
     6      -187.6490266510    6.005281e-04    2.285563e-04    8.220660e-03
     7      -187.6490786341    5.198313e-05    1.041986e-04    2.144478e-03
     8      -187.6490802769    1.642815e-06    1.130258e-05    4.533130e-04
-    9      -187.6490803388    6.191922e-08    2.163297e-06    7.779054e-05
-   10      -187.6490803397    8.744507e-10    2.449136e-07    7.317092e-06
-   11      -187.6490803397    3.964828e-11    5.622004e-08    1.407497e-06
+    9      -187.6490803388    6.191937e-08    2.163297e-06    7.779054e-05
+   10      -187.6490803397    8.743370e-10    2.449136e-07    7.317092e-06
+   11      -187.6490803397    3.987566e-11    5.622004e-08    1.407497e-06
    12      -187.6490803397    1.904255e-12    7.783861e-09    3.978227e-07
-   13      -187.6490803397    5.115908e-13    2.672141e-09    1.585362e-07
-   14      -187.6490803397   -1.705303e-13    1.350605e-09    4.460091e-08
-   15      -187.6490803397   -5.684342e-14    3.914971e-10    1.170005e-08
-   16      -187.6490803397   -8.526513e-14    9.142014e-11    3.431421e-09
-   17      -187.6490803397    1.421085e-13    2.193425e-11    8.302511e-10
-   18      -187.6490803397    5.684342e-14    3.978854e-12    1.771759e-10
-   19      -187.6490803397    0.000000e+00    9.261971e-13    3.355177e-11
+   13      -187.6490803397    3.126388e-13    2.672141e-09    1.585362e-07
+   14      -187.6490803397    5.684342e-14    1.350604e-09    4.460091e-08
+   15      -187.6490803397    0.000000e+00    3.914971e-10    1.170005e-08
+   16      -187.6490803397   -1.421085e-13    9.142019e-11    3.431420e-09
+   17      -187.6490803397    2.842171e-14    2.193407e-11    8.302521e-10
+   18      -187.6490803397   -2.842171e-14    3.978799e-12    1.771758e-10
+   19      -187.6490803397    0.000000e+00    9.261059e-13    3.355274e-11
 
 Orbital energies (a.u.):
 
@@ -330,15 +330,15 @@ Orbital energies (a.u.):
         virial theorem     =       2.001876516636
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-SCF tstop called on mac8319.local
-Wed Aug 12 20:05:17 2009
+SCF tstop called on elrond.chem
+Tue Sep  8 21:28:06 2009
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:17 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:06 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -376,12 +376,12 @@ Wed Aug 12 20:05:17 2009
        3        0.000000000000     0.155320127036     0.017788619624
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:17 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:07 2009
 
-user time   =       0.75 seconds =       0.01 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.84 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -433,6 +433,15 @@ Projected energy change by quadratic approximation:        -0.0298153612
 	----------------------------------------------------------
 
 	   MAX force:    1.2347495338   RMS force:    1.0346939429
+	   MAX  disp:    0.3699204407   RMS  disp:    0.2166942800
+
+	Convergence Check:
+	             MAX Force  &&  ( Delta(E) ||   MAX disp )
+	----------------------------------------------------------
+	Actual         1.2e+00        1.0e+06        3.7e-01
+	Limit          1.0e-04        1.0e-08        1.0e-03
+	Conv?            N              N              N
+	----------------------------------------------------------
 
 	Back-transformation to cartesian coordinates...
 	------------------------------------
@@ -474,7 +483,7 @@ Could not converge new geometry in 25 iterations.
 	    1      3.2e-02      4.5e-03
 	    2      2.2e-03      1.0e-05
 	    3      3.0e-06      4.0e-11
-	    4      2.0e-11      2.9e-16
+	    4      2.0e-11      1.0e-15
 	------------------------------------
 
 Successfully converged to displaced geometry.
@@ -485,12 +494,14 @@ New Cartesian Geometry in a.u.
   8.0   0.0000000000  -2.1139659811   0.0474238312
 
 Geometry written to chkpt
+	New projected energy change (minus any analytically taken steps
+	along interfragment coordinates:   -0.0223615209
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:18 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:07 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -519,15 +530,15 @@ Wed Aug 12 20:05:18 2009
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:18 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:07 2009
 
-user time   =       0.17 seconds =       0.00 minutes
+user time   =       0.11 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-SCF tstart called on mac8319.local
-Wed Aug 12 20:05:18 2009
+SCF tstart called on elrond.chem
+Tue Sep  8 21:28:07 2009
 
 
              ------------------------------------------
@@ -552,7 +563,7 @@ Wed Aug 12 20:05:18 2009
   maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy       60.3969101312300
+  nuclear repulsion energy       60.3969101312294
 
   using old vector from file30 as initial guess
   energy from old vector:  -187.64908034
@@ -584,19 +595,19 @@ Wed Aug 12 20:05:18 2009
     3      -187.6701849430    8.953424e-04    2.476377e-04    9.935730e-03
     4      -187.6702375180    5.257507e-05    5.337118e-05    1.873264e-03
     5      -187.6702448244    7.306336e-06    2.054977e-05    1.163889e-03
-    6      -187.6702453906    5.662623e-07    6.254523e-06    2.990900e-04
-    7      -187.6702454348    4.412050e-08    1.702585e-06    6.755396e-05
-    8      -187.6702454369    2.164569e-09    3.063985e-07    1.159627e-05
-    9      -187.6702454371    1.341505e-10    8.083195e-08    3.137987e-06
-   10      -187.6702454371    6.053824e-12    1.578320e-08    7.544110e-07
-   11      -187.6702454371    6.252776e-13    3.793036e-09    1.533610e-07
-   12      -187.6702454371    1.705303e-13    8.318515e-10    3.634078e-08
-   13      -187.6702454371   -8.526513e-14    2.037364e-10    1.108953e-08
-   14      -187.6702454371   -1.705303e-13    8.529172e-11    4.593372e-09
-   15      -187.6702454371    5.684342e-14    2.389795e-11    8.429500e-10
-   16      -187.6702454371   -2.842171e-14    5.671949e-12    2.137246e-10
-   17      -187.6702454371   -5.684342e-14    1.207438e-12    4.880839e-11
-   18      -187.6702454371    5.684342e-14    3.507442e-13    1.555955e-11
+    6      -187.6702453906    5.662624e-07    6.254523e-06    2.990900e-04
+    7      -187.6702454348    4.412061e-08    1.702585e-06    6.755396e-05
+    8      -187.6702454369    2.164597e-09    3.063985e-07    1.159627e-05
+    9      -187.6702454371    1.339799e-10    8.083195e-08    3.137987e-06
+   10      -187.6702454371    6.366463e-12    1.578320e-08    7.544110e-07
+   11      -187.6702454371    2.557954e-13    3.793036e-09    1.533610e-07
+   12      -187.6702454371    2.557954e-13    8.318515e-10    3.634078e-08
+   13      -187.6702454371    0.000000e+00    2.037363e-10    1.108953e-08
+   14      -187.6702454371   -2.273737e-13    8.529165e-11    4.593370e-09
+   15      -187.6702454371    5.684342e-14    2.389798e-11    8.429497e-10
+   16      -187.6702454371    5.684342e-14    5.672005e-12    2.137252e-10
+   17      -187.6702454371   -2.842171e-14    1.207440e-12    4.880925e-11
+   18      -187.6702454371    2.842171e-14    3.507080e-13    1.555742e-11
 
  No phase correction possible.
 
@@ -627,21 +638,21 @@ Orbital energies (a.u.):
 
       * SCF total energy   =    -187.670245437060
         kinetic energy     =     187.721669134807
-        nuc. attr. energy  =    -564.035586053205
-        elec. rep. energy  =     188.643671481338
+        nuc. attr. energy  =    -564.035586053203
+        elec. rep. energy  =     188.643671481336
         potential energy   =    -375.391914571867
         virial theorem     =       2.000274010926
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-SCF tstop called on mac8319.local
-Wed Aug 12 20:05:18 2009
+SCF tstop called on elrond.chem
+Tue Sep  8 21:28:08 2009
 
-user time   =       0.05 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+user time   =       0.04 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:18 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:08 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -675,14 +686,14 @@ Wed Aug 12 20:05:18 2009
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000    -0.026477986355
-       2        0.000000000000    -0.068484232268     0.013238993178
-       3        0.000000000000     0.068484232268     0.013238993178
+       2        0.000000000000    -0.068484232267     0.013238993178
+       3        0.000000000000     0.068484232267     0.013238993178
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:19 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:09 2009
 
-user time   =       0.75 seconds =       0.01 minutes
+user time   =       1.09 seconds =       0.02 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
@@ -712,7 +723,7 @@ Bends
 Current SCF energy before step      -187.670245437060
   Previous energy                   -187.649080339748
   Actual Delta(E) from last step      -0.021165097312
-  Previous Predicted Delta(E)         -0.029815361181  (-29.0% error)
+  Previous Predicted Delta(E)         -0.022361520886  ( -5.4% error)
 
  ** Taking geometry step number 2 **
 
@@ -734,6 +745,15 @@ Projected energy change by quadratic approximation:        -0.0051279288
 	----------------------------------------------------------
 
 	   MAX force:    0.5533845439   RMS force:    0.4628597911
+	   MAX  disp:    0.1397729683   RMS  disp:    0.0820897653
+
+	Convergence Check:
+	             MAX Force  &&  ( Delta(E) ||   MAX disp )
+	----------------------------------------------------------
+	Actual         5.5e-01        2.1e-02        1.4e-01
+	Limit          1.0e-04        1.0e-08        1.0e-03
+	Conv?            N              N              N
+	----------------------------------------------------------
 
 	Back-transformation to cartesian coordinates...
 	------------------------------------
@@ -742,7 +762,7 @@ Projected energy change by quadratic approximation:        -0.0051279288
 	    1      2.4e-02      2.6e-03
 	    2      1.3e-03      3.4e-06
 	    3      1.0e-06      4.7e-12
-	    4      2.4e-12      5.4e-16
+	    4      2.4e-12      6.4e-15
 	------------------------------------
 
 Successfully converged to displaced geometry.
@@ -757,8 +777,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:19 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:09 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -787,15 +807,15 @@ Wed Aug 12 20:05:19 2009
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:19 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:09 2009
 
-user time   =       0.17 seconds =       0.00 minutes
+user time   =       0.11 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-SCF tstart called on mac8319.local
-Wed Aug 12 20:05:19 2009
+SCF tstart called on elrond.chem
+Tue Sep  8 21:28:09 2009
 
 
              ------------------------------------------
@@ -820,7 +840,7 @@ Wed Aug 12 20:05:19 2009
   maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy       59.3719639719667
+  nuclear repulsion energy       59.3719639719691
 
   using old vector from file30 as initial guess
   energy from old vector:  -187.67024544
@@ -852,18 +872,18 @@ Wed Aug 12 20:05:19 2009
     3      -187.6760347409    5.234702e-04    1.919462e-04    7.738345e-03
     4      -187.6760684176    3.367669e-05    4.240444e-05    1.823311e-03
     5      -187.6760731435    4.725945e-06    1.706607e-05    8.174488e-04
-    6      -187.6760734211    2.775582e-07    4.775990e-06    1.815289e-04
-    7      -187.6760734343    1.324906e-08    1.163819e-06    3.299998e-05
+    6      -187.6760734211    2.775581e-07    4.775990e-06    1.815289e-04
+    7      -187.6760734343    1.324915e-08    1.163819e-06    3.299998e-05
     8      -187.6760734348    4.097558e-10    1.360301e-07    6.639441e-06
-    9      -187.6760734348    2.282263e-11    3.585273e-08    1.232235e-06
-   10      -187.6760734348    8.526513e-13    7.638529e-09    2.694109e-07
-   11      -187.6760734348    1.136868e-13    1.700814e-09    8.794476e-08
-   12      -187.6760734348    0.000000e+00    5.122081e-10    2.174591e-08
-   13      -187.6760734348    1.136868e-13    1.602810e-10    1.101626e-08
-   14      -187.6760734348    2.273737e-13    5.758633e-11    2.744668e-09
-   15      -187.6760734348   -2.842171e-13    9.952996e-12    3.064343e-10
-   16      -187.6760734348   -5.684342e-14    1.902295e-12    1.024360e-10
-   17      -187.6760734348    2.842171e-14    3.921936e-13    1.995382e-11
+    9      -187.6760734348    2.262368e-11    3.585273e-08    1.232235e-06
+   10      -187.6760734348    9.663381e-13    7.638529e-09    2.694109e-07
+   11      -187.6760734348    2.557954e-13    1.700814e-09    8.794476e-08
+   12      -187.6760734348   -2.842171e-14    5.122082e-10    2.174591e-08
+   13      -187.6760734348   -1.421085e-13    1.602810e-10    1.101626e-08
+   14      -187.6760734348    2.557954e-13    5.758627e-11    2.744667e-09
+   15      -187.6760734348   -3.694822e-13    9.952985e-12    3.064332e-10
+   16      -187.6760734348    2.842171e-14    1.902337e-12    1.024353e-10
+   17      -187.6760734348    1.136868e-13    3.922738e-13    1.995347e-11
 
  Correcting phases of orbitals.
 
@@ -893,22 +913,22 @@ Orbital energies (a.u.):
 
 
       * SCF total energy   =    -187.676073434783
-        kinetic energy     =     187.522045968986
-        nuc. attr. energy  =    -561.833968825176
-        elec. rep. energy  =     186.635849421407
-        potential energy   =    -375.198119403769
+        kinetic energy     =     187.522045968987
+        nuc. attr. energy  =    -561.833968825182
+        elec. rep. energy  =     186.635849421411
+        potential energy   =    -375.198119403770
         virial theorem     =       1.999179290876
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-SCF tstop called on mac8319.local
-Wed Aug 12 20:05:19 2009
+SCF tstop called on elrond.chem
+Tue Sep  8 21:28:09 2009
 
-user time   =       0.05 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:19 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:09 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -946,10 +966,10 @@ Wed Aug 12 20:05:19 2009
        3        0.000000000000     0.011931855482     0.002447673496
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:20 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:10 2009
 
-user time   =       0.75 seconds =       0.01 minutes
+user time   =       0.72 seconds =       0.01 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
@@ -1001,6 +1021,15 @@ Projected energy change by quadratic approximation:        -0.0001473405
 	----------------------------------------------------------
 
 	   MAX force:    0.0980506187   RMS force:    0.0812849077
+	   MAX  disp:    0.0226203536   RMS  disp:    0.0134121989
+
+	Convergence Check:
+	             MAX Force  &&  ( Delta(E) ||   MAX disp )
+	----------------------------------------------------------
+	Actual         9.8e-02        5.8e-03        2.3e-02
+	Limit          1.0e-04        1.0e-08        1.0e-03
+	Conv?            N              N              N
+	----------------------------------------------------------
 
 	Back-transformation to cartesian coordinates...
 	------------------------------------
@@ -1008,7 +1037,7 @@ Projected energy change by quadratic approximation:        -0.0001473405
 	------------------------------------
 	    1      4.0e-03      7.3e-05
 	    2      3.6e-05      2.8e-09
-	    3      8.4e-10      1.9e-14
+	    3      8.4e-10      4.3e-14
 	------------------------------------
 
 Successfully converged to displaced geometry.
@@ -1023,8 +1052,8 @@ Geometry written to chkpt
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:20 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:10 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1053,15 +1082,15 @@ Wed Aug 12 20:05:20 2009
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:20 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:10 2009
 
-user time   =       0.16 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.23 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-SCF tstart called on mac8319.local
-Wed Aug 12 20:05:21 2009
+SCF tstart called on elrond.chem
+Tue Sep  8 21:28:10 2009
 
 
              ------------------------------------------
@@ -1086,7 +1115,7 @@ Wed Aug 12 20:05:21 2009
   maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy       59.1768584255907
+  nuclear repulsion energy       59.1768584255937
 
   using old vector from file30 as initial guess
   energy from old vector:  -187.67607343
@@ -1117,18 +1146,18 @@ Wed Aug 12 20:05:21 2009
     2      -187.6762223300    1.624976e-04    1.098812e-04    4.282544e-03
     3      -187.6762367035    1.437351e-05    3.177845e-05    1.364410e-03
     4      -187.6762377144    1.010935e-06    7.471313e-06    2.945916e-04
-    5      -187.6762378455    1.310555e-07    2.828118e-06    1.052794e-04
-    6      -187.6762378548    9.299470e-09    8.521146e-07    3.416282e-05
+    5      -187.6762378455    1.310553e-07    2.828118e-06    1.052794e-04
+    6      -187.6762378548    9.299555e-09    8.521146e-07    3.416282e-05
     7      -187.6762378552    3.900595e-10    2.008733e-07    5.060288e-06
-    8      -187.6762378552    1.071498e-11    2.252048e-08    1.146319e-06
+    8      -187.6762378552    1.068656e-11    2.252048e-08    1.146319e-06
     9      -187.6762378552    2.557954e-13    5.506232e-09    2.108469e-07
-   10      -187.6762378552    0.000000e+00    1.102564e-09    3.348091e-08
-   11      -187.6762378552    1.136868e-13    1.705732e-10    3.952157e-09
-   12      -187.6762378552   -1.705303e-13    2.895945e-11    1.091846e-09
-   13      -187.6762378552    2.273737e-13    1.086964e-11    6.032232e-10
-   14      -187.6762378552   -8.526513e-14    4.388603e-12    1.938534e-10
-   15      -187.6762378552    2.842171e-14    1.415235e-12    5.898147e-11
-   16      -187.6762378552   -5.684342e-14    2.490913e-13    1.011385e-11
+   10      -187.6762378552    1.421085e-13    1.102564e-09    3.348091e-08
+   11      -187.6762378552   -8.526513e-14    1.705731e-10    3.952157e-09
+   12      -187.6762378552    5.684342e-14    2.895935e-11    1.091846e-09
+   13      -187.6762378552   -1.136868e-13    1.086973e-11    6.032238e-10
+   14      -187.6762378552    2.557954e-13    4.388622e-12    1.938551e-10
+   15      -187.6762378552   -1.705303e-13    1.415184e-12    5.898153e-11
+   16      -187.6762378552   -2.842171e-14    2.491279e-13    1.011626e-11
 
  Correcting phases of orbitals.
 
@@ -1158,22 +1187,22 @@ Orbital energies (a.u.):
 
 
       * SCF total energy   =    -187.676237855170
-        kinetic energy     =     187.484447767367
-        nuc. attr. energy  =    -561.415763781629
-        elec. rep. energy  =     186.255078159092
-        potential energy   =    -375.160685622537
+        kinetic energy     =     187.484447767368
+        nuc. attr. energy  =    -561.415763781636
+        elec. rep. energy  =     186.255078159098
+        potential energy   =    -375.160685622538
         virial theorem     =       1.998978080070
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-SCF tstop called on mac8319.local
-Wed Aug 12 20:05:21 2009
+SCF tstop called on elrond.chem
+Tue Sep  8 21:28:10 2009
 
-user time   =       0.05 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:21 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:10 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1211,12 +1240,12 @@ Wed Aug 12 20:05:21 2009
        3        0.000000000000     0.001878598859     0.000178384327
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:21 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:11 2009
 
-user time   =       0.75 seconds =       0.01 minutes
+user time   =       0.72 seconds =       0.01 minutes
 system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -1266,6 +1295,15 @@ Projected energy change by quadratic approximation:        -0.0000026457
 	----------------------------------------------------------
 
 	   MAX force:    0.0154759883   RMS force:    0.0126740346
+	   MAX  disp:    0.0018808374   RMS  disp:    0.0012058682
+
+	Convergence Check:
+	             MAX Force  &&  ( Delta(E) ||   MAX disp )
+	----------------------------------------------------------
+	Actual         1.5e-02        1.6e-04        1.9e-03
+	Limit          1.0e-04        1.0e-08        1.0e-03
+	Conv?            N              N              N
+	----------------------------------------------------------
 
 	Back-transformation to cartesian coordinates...
 	------------------------------------
@@ -1305,8 +1343,8 @@ Could not converge new geometry in 25 iterations.
 	 Iter  RMS Delta(dx)  RMS Delta(dq)
 	------------------------------------
 	    1      2.1e-04      1.8e-07
-	    2      7.3e-08      8.9e-14
-	    3      2.5e-14      2.4e-13
+	    2      7.3e-08      9.4e-14
+	    3      2.6e-14      2.4e-13
 	------------------------------------
 
 Successfully converged to displaced geometry.
@@ -1317,12 +1355,14 @@ New Cartesian Geometry in a.u.
   8.0   0.0000000000  -2.1636145073   0.0002277897
 
 Geometry written to chkpt
+	New projected energy change (minus any analytically taken steps
+	along interfragment coordinates:   -0.0000019843
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:22 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:11 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1351,15 +1391,15 @@ Wed Aug 12 20:05:22 2009
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:22 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:11 2009
 
-user time   =       0.17 seconds =       0.00 minutes
+user time   =       0.12 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-SCF tstart called on mac8319.local
-Wed Aug 12 20:05:22 2009
+SCF tstart called on elrond.chem
+Tue Sep  8 21:28:11 2009
 
 
              ------------------------------------------
@@ -1384,7 +1424,7 @@ Wed Aug 12 20:05:22 2009
   maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy       59.1602581784940
+  nuclear repulsion energy       59.1602581784963
 
   using old vector from file30 as initial guess
   energy from old vector:  -187.67623786
@@ -1413,17 +1453,17 @@ Wed Aug 12 20:05:22 2009
   iter       total energy        delta E         delta P          diiser
     1      -187.6762394480    2.468365e+02    0.000000e+00    0.000000e+00
     2      -187.6762398481    4.001076e-07    5.303709e-06    1.812352e-04
-    3      -187.6762398828    3.467176e-08    1.478783e-06    5.715030e-05
-    4      -187.6762398870    4.172222e-09    4.584440e-07    1.997026e-05
-    5      -187.6762398875    5.321112e-10    1.701613e-07    7.011204e-06
-    6      -187.6762398875    4.558842e-11    5.748425e-08    2.720857e-06
-    7      -187.6762398875    1.762146e-12    1.148586e-08    3.779761e-07
-    8      -187.6762398875    0.000000e+00    1.588353e-09    6.636993e-08
-    9      -187.6762398875    1.136868e-13    3.255385e-10    1.108192e-08
-   10      -187.6762398875   -1.136868e-13    5.795420e-11    2.002074e-09
-   11      -187.6762398875    1.705303e-13    8.717975e-12    2.059696e-10
-   12      -187.6762398875   -1.136868e-13    1.613077e-12    5.758721e-11
-   13      -187.6762398875   -2.842171e-14    4.879440e-13    2.301186e-11
+    3      -187.6762398828    3.467159e-08    1.478783e-06    5.715030e-05
+    4      -187.6762398870    4.172335e-09    4.584440e-07    1.997026e-05
+    5      -187.6762398875    5.319976e-10    1.701613e-07    7.011204e-06
+    6      -187.6762398875    4.564527e-11    5.748425e-08    2.720857e-06
+    7      -187.6762398875    1.961098e-12    1.148586e-08    3.779761e-07
+    8      -187.6762398875   -1.989520e-13    1.588353e-09    6.636993e-08
+    9      -187.6762398875    1.705303e-13    3.255385e-10    1.108192e-08
+   10      -187.6762398875    3.410605e-13    5.795427e-11    2.002074e-09
+   11      -187.6762398875   -3.979039e-13    8.717883e-12    2.059698e-10
+   12      -187.6762398875   -5.684342e-14    1.613136e-12    5.758921e-11
+   13      -187.6762398875    1.136868e-13    4.879428e-13    2.301251e-11
 
  Correcting phases of orbitals.
 
@@ -1454,21 +1494,21 @@ Orbital energies (a.u.):
 
       * SCF total energy   =    -187.676239887538
         kinetic energy     =     187.481258678571
-        nuc. attr. energy  =    -561.380193026886
-        elec. rep. energy  =     186.222694460777
+        nuc. attr. energy  =    -561.380193026891
+        elec. rep. energy  =     186.222694460781
         potential energy   =    -375.157498566109
         virial theorem     =       1.998961076751
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-SCF tstop called on mac8319.local
-Wed Aug 12 20:05:22 2009
+SCF tstop called on elrond.chem
+Tue Sep  8 21:28:11 2009
 
-user time   =       0.04 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:22 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:11 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1506,10 +1546,10 @@ Wed Aug 12 20:05:22 2009
        3        0.000000000000     0.001033826045     0.000080646393
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:23 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:12 2009
 
-user time   =       0.75 seconds =       0.01 minutes
+user time   =       0.72 seconds =       0.01 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
@@ -1539,7 +1579,7 @@ Bends
 Current SCF energy before step      -187.676239887538
   Previous energy                   -187.676237855170
   Actual Delta(E) from last step      -0.000002032367
-  Previous Predicted Delta(E)         -0.000002645726  (-23.2% error)
+  Previous Predicted Delta(E)         -0.000001984295  (  2.4% error)
 
  ** Taking geometry step number 5 **
 
@@ -1561,6 +1601,15 @@ Projected energy change by quadratic approximation:        -0.0000007994
 	----------------------------------------------------------
 
 	   MAX force:    0.0085171475   RMS force:    0.0069682145
+	   MAX  disp:    0.0008119304   RMS  disp:    0.0005589140
+
+	Convergence Check:
+	             MAX Force  &&  ( Delta(E) ||   MAX disp )
+	----------------------------------------------------------
+	Actual         8.5e-03        2.0e-06        8.1e-04
+	Limit          1.0e-04        1.0e-08        1.0e-03
+	Conv?            N              N              Y
+	----------------------------------------------------------
 
 	Back-transformation to cartesian coordinates...
 	------------------------------------
@@ -1600,7 +1649,7 @@ Could not converge new geometry in 25 iterations.
 	 Iter  RMS Delta(dx)  RMS Delta(dq)
 	------------------------------------
 	    1      1.1e-04      4.3e-08
-	    2      1.5e-08      1.7e-13
+	    2      1.5e-08      2.0e-13
 	------------------------------------
 
 Successfully converged to displaced geometry.
@@ -1611,12 +1660,14 @@ New Cartesian Geometry in a.u.
   8.0   0.0000000000  -2.1639668542   0.0001080042
 
 Geometry written to chkpt
+	New projected energy change (minus any analytically taken steps
+	along interfragment coordinates:   -0.0000005996
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:23 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:12 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1645,15 +1696,15 @@ Wed Aug 12 20:05:23 2009
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:23 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:12 2009
 
-user time   =       0.17 seconds =       0.00 minutes
+user time   =       0.12 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-SCF tstart called on mac8319.local
-Wed Aug 12 20:05:23 2009
+SCF tstart called on elrond.chem
+Tue Sep  8 21:28:12 2009
 
 
              ------------------------------------------
@@ -1678,7 +1729,7 @@ Wed Aug 12 20:05:23 2009
   maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy       59.1506279986516
+  nuclear repulsion energy       59.1506279986591
 
   using old vector from file30 as initial guess
   energy from old vector:  -187.67623989
@@ -1706,17 +1757,17 @@ Wed Aug 12 20:05:23 2009
 
   iter       total energy        delta E         delta P          diiser
     1      -187.6762403879    2.468269e+02    0.000000e+00    0.000000e+00
-    2      -187.6762404860    9.808673e-08    2.582302e-06    7.982801e-05
-    3      -187.6762404945    8.478366e-09    7.139974e-07    2.471055e-05
-    4      -187.6762404957    1.176659e-09    2.414111e-07    1.163980e-05
-    5      -187.6762404958    1.577405e-10    9.107537e-08    3.841337e-06
-    6      -187.6762404958    1.404032e-11    3.136467e-08    1.559049e-06
-    7      -187.6762404958    3.694822e-13    5.824679e-09    2.099607e-07
-    8      -187.6762404958    2.842171e-14    8.630665e-10    3.149140e-08
-    9      -187.6762404958    3.410605e-13    1.609125e-10    5.546387e-09
-   10      -187.6762404958   -2.273737e-13    2.801136e-11    1.000406e-09
-   11      -187.6762404958    1.136868e-13    4.282338e-12    1.074109e-10
-   12      -187.6762404958   -1.705303e-13    8.376689e-13    2.883866e-11
+    2      -187.6762404860    9.808659e-08    2.582302e-06    7.982801e-05
+    3      -187.6762404945    8.478111e-09    7.139974e-07    2.471055e-05
+    4      -187.6762404957    1.176716e-09    2.414111e-07    1.163980e-05
+    5      -187.6762404958    1.578258e-10    9.107537e-08    3.841337e-06
+    6      -187.6762404958    1.398348e-11    3.136467e-08    1.559049e-06
+    7      -187.6762404958    5.968559e-13    5.824678e-09    2.099607e-07
+    8      -187.6762404958   -2.557954e-13    8.630666e-10    3.149140e-08
+    9      -187.6762404958    2.842171e-13    1.609126e-10    5.546388e-09
+   10      -187.6762404958    0.000000e+00    2.801141e-11    1.000405e-09
+   11      -187.6762404958    0.000000e+00    4.282452e-12    1.074113e-10
+   12      -187.6762404958   -2.842171e-14    8.376753e-13    2.883866e-11
 
  Correcting phases of orbitals.
 
@@ -1736,8 +1787,8 @@ Orbital energies (a.u.):
    2A2      0.867895     7B2      0.867895    11A1      1.056167  
    4B1      1.056167    12A1      1.387556     8B2      1.390785  
    9B2      1.425322     5B1      1.588977    13A1      1.588977  
-   3A2      1.706827    10B2      1.706827     4A2      2.122277  
-  11B2      2.122277    14A1      2.397445     6B1      2.397445  
+   3A2      1.706827    10B2      1.706827    11B2      2.122277  
+   4A2      2.122277    14A1      2.397445     6B1      2.397445  
   15A1      2.555225     7B1      2.555225    16A1      2.728560  
   12B2      3.151008     5A2      3.359695    13B2      3.359695  
   17A1      3.371247    18A1      4.359330    14B2      4.525434  
@@ -1745,23 +1796,23 @@ Orbital energies (a.u.):
   15B2     45.452680  
 
 
-      * SCF total energy   =    -187.676240495833
-        kinetic energy     =     187.479409662250
-        nuc. attr. energy  =    -561.359558065041
-        elec. rep. energy  =     186.203907906958
-        potential energy   =    -375.155650158083
+      * SCF total energy   =    -187.676240495834
+        kinetic energy     =     187.479409662252
+        nuc. attr. energy  =    -561.359558065058
+        elec. rep. energy  =     186.203907906973
+        potential energy   =    -375.155650158085
         virial theorem     =       1.998951221353
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-SCF tstop called on mac8319.local
-Wed Aug 12 20:05:23 2009
+SCF tstop called on elrond.chem
+Tue Sep  8 21:28:12 2009
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:23 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:12 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1795,14 +1846,14 @@ Wed Aug 12 20:05:23 2009
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000    -0.000076590754
-       2        0.000000000000    -0.000544421174     0.000038295377
-       3        0.000000000000     0.000544421174     0.000038295377
+       2        0.000000000000    -0.000544421172     0.000038295377
+       3        0.000000000000     0.000544421172     0.000038295377
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:24 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:13 2009
 
-user time   =       0.75 seconds =       0.01 minutes
+user time   =       0.73 seconds =       0.01 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
@@ -1829,10 +1880,10 @@ Bends
  
  ** Taking normal optimization step. **
 
-Current SCF energy before step      -187.676240495833
+Current SCF energy before step      -187.676240495834
   Previous energy                   -187.676239887538
   Actual Delta(E) from last step      -0.000000608296
-  Previous Predicted Delta(E)         -0.000000799437  (-23.9% error)
+  Previous Predicted Delta(E)         -0.000000599578  (  1.5% error)
 
  ** Taking geometry step number 6 **
 
@@ -1853,7 +1904,16 @@ Projected energy change by quadratic approximation:        -0.0000002250
 	  3    3.14122673    0.00036223    0.00037646    3.14160319
 	----------------------------------------------------------
 
-	   MAX force:    0.0044852765   RMS force:    0.0036681794
+	   MAX force:    0.0044852764   RMS force:    0.0036681794
+	   MAX  disp:    0.0003764611   RMS  disp:    0.0002735924
+
+	Convergence Check:
+	             MAX Force  &&  ( Delta(E) ||   MAX disp )
+	----------------------------------------------------------
+	Actual         4.5e-03        6.1e-07        3.8e-04
+	Limit          1.0e-04        1.0e-08        1.0e-03
+	Conv?            N              N              Y
+	----------------------------------------------------------
 
 	Back-transformation to cartesian coordinates...
 	------------------------------------
@@ -1893,7 +1953,7 @@ Could not converge new geometry in 25 iterations.
 	 Iter  RMS Delta(dx)  RMS Delta(dq)
 	------------------------------------
 	    1      5.6e-05      1.1e-08
-	    2      3.6e-09      8.1e-13
+	    2      3.6e-09      9.2e-13
 	------------------------------------
 
 Successfully converged to displaced geometry.
@@ -1904,12 +1964,14 @@ New Cartesian Geometry in a.u.
   8.0   0.0000000000  -2.1641591741   0.0000524518
 
 Geometry written to chkpt
+	New projected energy change (minus any analytically taken steps
+	along interfragment coordinates:   -0.0000001688
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:24 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:13 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -1938,15 +2000,15 @@ Wed Aug 12 20:05:24 2009
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:25 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:13 2009
 
-user time   =       0.17 seconds =       0.00 minutes
+user time   =       0.12 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-SCF tstart called on mac8319.local
-Wed Aug 12 20:05:25 2009
+SCF tstart called on elrond.chem
+Tue Sep  8 21:28:13 2009
 
 
              ------------------------------------------
@@ -1971,7 +2033,7 @@ Wed Aug 12 20:05:25 2009
   maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy       59.1453720921275
+  nuclear repulsion energy       59.1453720921596
 
   using old vector from file30 as initial guess
   energy from old vector:  -187.67624050
@@ -1999,17 +2061,17 @@ Wed Aug 12 20:05:25 2009
 
   iter       total energy        delta E         delta P          diiser
     1      -187.6762406375    2.468216e+02    0.000000e+00    0.000000e+00
-    2      -187.6762406629    2.545735e-08    1.303276e-06    4.355512e-05
-    3      -187.6762406651    2.202171e-09    3.597295e-07    1.146706e-05
-    4      -187.6762406654    3.226717e-10    1.259135e-07    6.367166e-06
-    5      -187.6762406655    4.459366e-11    4.819436e-08    2.046428e-06
-    6      -187.6762406655    4.177991e-12    1.670719e-08    8.476284e-07
+    2      -187.6762406629    2.545758e-08    1.303276e-06    4.355512e-05
+    3      -187.6762406651    2.201944e-09    3.597295e-07    1.146706e-05
+    4      -187.6762406654    3.226148e-10    1.259135e-07    6.367166e-06
+    5      -187.6762406655    4.467893e-11    4.819436e-08    2.046428e-06
+    6      -187.6762406655    4.234835e-12    1.670719e-08    8.476284e-07
     7      -187.6762406655   -5.684342e-14    2.976529e-09    1.108009e-07
-    8      -187.6762406655    1.421085e-13    4.551114e-10    1.538508e-08
-    9      -187.6762406655    3.979039e-13    8.085838e-11    2.750197e-09
-   10      -187.6762406655   -3.126388e-13    1.382330e-11    5.026514e-10
-   11      -187.6762406655    8.526513e-14    2.150474e-12    5.640521e-11
-   12      -187.6762406655   -1.989520e-13    4.329551e-13    1.429742e-11
+    8      -187.6762406655   -5.684342e-14    4.551114e-10    1.538508e-08
+    9      -187.6762406655    1.989520e-13    8.085842e-11    2.750197e-09
+   10      -187.6762406655    2.842171e-14    1.382333e-11    5.026516e-10
+   11      -187.6762406655   -5.684342e-14    2.150423e-12    5.640482e-11
+   12      -187.6762406655    0.000000e+00    4.329279e-13    1.429759e-11
 
  Correcting phases of orbitals.
 
@@ -2038,23 +2100,23 @@ Orbital energies (a.u.):
   15B2     45.452649  
 
 
-      * SCF total energy   =    -187.676240665493
-        kinetic energy     =     187.478400856336
-        nuc. attr. energy  =    -561.348296145202
-        elec. rep. energy  =     186.193654623373
-        potential energy   =    -375.154641521829
+      * SCF total energy   =    -187.676240665494
+        kinetic energy     =     187.478400856342
+        nuc. attr. energy  =    -561.348296145271
+        elec. rep. energy  =     186.193654623436
+        potential energy   =    -375.154641521835
         virial theorem     =       1.998945845204
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-SCF tstop called on mac8319.local
-Wed Aug 12 20:05:25 2009
+SCF tstop called on elrond.chem
+Tue Sep  8 21:28:13 2009
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:25 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:13 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2088,15 +2150,15 @@ Wed Aug 12 20:05:25 2009
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000    -0.000037226491
-       2        0.000000000000    -0.000277518070     0.000018613245
-       3        0.000000000000     0.000277518070     0.000018613245
+       2        0.000000000000    -0.000277518072     0.000018613246
+       3        0.000000000000     0.000277518072     0.000018613246
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:26 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:14 2009
 
-user time   =       0.75 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
+user time   =       0.76 seconds =       0.01 minutes
+system time =       0.01 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
@@ -2122,14 +2184,14 @@ Bends
  
  ** Taking normal optimization step. **
 
-Current SCF energy before step      -187.676240665493
-  Previous energy                   -187.676240495833
+Current SCF energy before step      -187.676240665494
+  Previous energy                   -187.676240495834
   Actual Delta(E) from last step      -0.000000169660
-  Previous Predicted Delta(E)         -0.000000225013  (-24.6% error)
+  Previous Predicted Delta(E)         -0.000000168759  (  0.5% error)
 
  ** Taking geometry step number 7 **
 
-BuB^t Determinant: 5.007784e-03
+BuB^t Determinant: 5.007783e-03
 	Symmetric Force Constants found in PSIF_OPTKING
 
 Force Constants read from PSIF_OPTKING
@@ -2146,7 +2208,16 @@ Projected energy change by quadratic approximation:        -0.0000000591
 	  3    3.14141496    0.00017585    0.00018019    3.14159515
 	----------------------------------------------------------
 
-	   MAX force:    0.0022863804   RMS force:    0.0018695805
+	   MAX force:    0.0022863804   RMS force:    0.0018695806
+	   MAX  disp:    0.0001801900   RMS  disp:    0.0001351684
+
+	Convergence Check:
+	             MAX Force  &&  ( Delta(E) ||   MAX disp )
+	----------------------------------------------------------
+	Actual         2.3e-03        1.7e-07        1.8e-04
+	Limit          1.0e-04        1.0e-08        1.0e-03
+	Conv?            N              N              Y
+	----------------------------------------------------------
 
 	Back-transformation to cartesian coordinates...
 	------------------------------------
@@ -2186,7 +2257,7 @@ Could not converge new geometry in 25 iterations.
 	 Iter  RMS Delta(dx)  RMS Delta(dq)
 	------------------------------------
 	    1      2.9e-05      2.6e-09
-	    2      8.5e-10      1.1e-12
+	    2      8.5e-10      6.0e-13
 	------------------------------------
 
 Successfully converged to displaced geometry.
@@ -2197,12 +2268,14 @@ New Cartesian Geometry in a.u.
   8.0   0.0000000000  -2.1642590482   0.0000258586
 
 Geometry written to chkpt
+	New projected energy change (minus any analytically taken steps
+	along interfragment coordinates:   -0.0000000443
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:26 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:14 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2231,15 +2304,15 @@ Wed Aug 12 20:05:26 2009
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:26 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:14 2009
 
-user time   =       0.17 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.15 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-SCF tstart called on mac8319.local
-Wed Aug 12 20:05:26 2009
+SCF tstart called on elrond.chem
+Tue Sep  8 21:28:14 2009
 
 
              ------------------------------------------
@@ -2264,7 +2337,7 @@ Wed Aug 12 20:05:26 2009
   maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy       59.1426428432856
+  nuclear repulsion energy       59.1426428432624
 
   using old vector from file30 as initial guess
   energy from old vector:  -187.67624067
@@ -2292,17 +2365,17 @@ Wed Aug 12 20:05:26 2009
 
   iter       total energy        delta E         delta P          diiser
     1      -187.6762407027    2.468189e+02    0.000000e+00    0.000000e+00
-    2      -187.6762407091    6.469350e-09    6.540210e-07    2.261314e-05
-    3      -187.6762407097    5.599645e-10    1.804828e-07    5.759668e-06
-    4      -187.6762407098    8.381562e-11    6.406579e-08    3.309851e-06
-    5      -187.6762407098    1.190870e-11    2.471585e-08    1.051663e-06
-    6      -187.6762407098    1.080025e-12    8.591093e-09    4.395965e-07
-    7      -187.6762407098    0.000000e+00    1.499361e-09    5.650448e-08
-    8      -187.6762407098    2.842171e-13    2.325306e-10    7.571470e-09
-    9      -187.6762407098   -1.989520e-13    4.039285e-11    1.356877e-09
-   10      -187.6762407098   -1.136868e-13    6.820631e-12    2.502599e-10
-   11      -187.6762407098    2.557954e-13    1.072924e-12    2.885144e-11
-   12      -187.6762407098   -2.273737e-13    2.189392e-13    7.057063e-12
+    2      -187.6762407091    6.469264e-09    6.540210e-07    2.261315e-05
+    3      -187.6762407097    5.600214e-10    1.804828e-07    5.759668e-06
+    4      -187.6762407098    8.392931e-11    6.406579e-08    3.309851e-06
+    5      -187.6762407098    1.179501e-11    2.471585e-08    1.051663e-06
+    6      -187.6762407098    1.051603e-12    8.591093e-09    4.395965e-07
+    7      -187.6762407098    1.705303e-13    1.499361e-09    5.650448e-08
+    8      -187.6762407098    2.842171e-14    2.325306e-10    7.571469e-09
+    9      -187.6762407098    2.842171e-14    4.039286e-11    1.356878e-09
+   10      -187.6762407098   -1.705303e-13    6.820614e-12    2.502602e-10
+   11      -187.6762407098    2.842171e-14    1.073036e-12    2.885021e-11
+   12      -187.6762407098    5.684342e-14    2.190697e-13    7.058898e-12
 
  Correcting phases of orbitals.
 
@@ -2322,8 +2395,8 @@ Orbital energies (a.u.):
    2A2      0.867902     7B2      0.867902    11A1      1.056132  
    4B1      1.056132    12A1      1.387506     8B2      1.390330  
    9B2      1.425293    13A1      1.589014     5B1      1.589014  
-   3A2      1.706646    10B2      1.706647     4A2      2.122291  
-  11B2      2.122291    14A1      2.397302     6B1      2.397302  
+   3A2      1.706646    10B2      1.706647    11B2      2.122291  
+   4A2      2.122291     6B1      2.397302    14A1      2.397302  
   15A1      2.554970     7B1      2.554970    16A1      2.728459  
   12B2      3.150787     5A2      3.359397    13B2      3.359397  
   17A1      3.370855    18A1      4.359287    14B2      4.525361  
@@ -2332,22 +2405,22 @@ Orbital energies (a.u.):
 
 
       * SCF total energy   =    -187.676240709800
-        kinetic energy     =     187.477877107305
-        nuc. attr. energy  =    -561.342448167990
-        elec. rep. energy  =     186.188330350884
-        potential energy   =    -375.154117817106
+        kinetic energy     =     187.477877107301
+        nuc. attr. energy  =    -561.342448167940
+        elec. rep. energy  =     186.188330350839
+        potential energy   =    -375.154117817101
         virial theorem     =       1.998943054263
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-SCF tstop called on mac8319.local
-Wed Aug 12 20:05:26 2009
+SCF tstop called on elrond.chem
+Tue Sep  8 21:28:14 2009
 
-user time   =       0.04 seconds =       0.00 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:26 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:14 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2381,15 +2454,15 @@ Wed Aug 12 20:05:26 2009
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
        1        0.000000000000     0.000000000000    -0.000018360412
-       2        0.000000000000    -0.000138978225     0.000009180206
-       3        0.000000000000     0.000138978225     0.000009180206
+       2        0.000000000000    -0.000138978224     0.000009180206
+       3        0.000000000000     0.000138978224     0.000009180206
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:27 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:15 2009
 
-user time   =       0.75 seconds =       0.01 minutes
-system time =       0.01 seconds =       0.00 minutes
+user time   =       0.98 seconds =       0.02 minutes
+system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
@@ -2416,9 +2489,9 @@ Bends
  ** Taking normal optimization step. **
 
 Current SCF energy before step      -187.676240709800
-  Previous energy                   -187.676240665493
+  Previous energy                   -187.676240665494
   Actual Delta(E) from last step      -0.000000044307
-  Previous Predicted Delta(E)         -0.000000059064  (-25.0% error)
+  Previous Predicted Delta(E)         -0.000000044298  (  0.0% error)
 
  ** Taking geometry step number 8 **
 
@@ -2440,6 +2513,15 @@ Projected energy change by quadratic approximation:        -0.0000000148
 	----------------------------------------------------------
 
 	   MAX force:    0.0011449995   RMS force:    0.0009362266
+	   MAX  disp:    0.0000879805   RMS  disp:    0.0000667294
+
+	Convergence Check:
+	             MAX Force  &&  ( Delta(E) ||   MAX disp )
+	----------------------------------------------------------
+	Actual         1.1e-03        4.4e-08        8.8e-05
+	Limit          1.0e-04        1.0e-08        1.0e-03
+	Conv?            N              N              Y
+	----------------------------------------------------------
 
 	Back-transformation to cartesian coordinates...
 	------------------------------------
@@ -2479,7 +2561,7 @@ Could not converge new geometry in 25 iterations.
 	 Iter  RMS Delta(dx)  RMS Delta(dq)
 	------------------------------------
 	    1      1.4e-05      6.3e-10
-	    2      2.1e-10      3.5e-12
+	    2      2.1e-10      2.9e-12
 	------------------------------------
 
 Successfully converged to displaced geometry.
@@ -2490,12 +2572,14 @@ New Cartesian Geometry in a.u.
   8.0   0.0000000000  -2.1643091269   0.0000128733
 
 Geometry written to chkpt
+	New projected energy change (minus any analytically taken steps
+	along interfragment coordinates:   -0.0000000111
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:27 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:15 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2524,15 +2608,15 @@ Wed Aug 12 20:05:27 2009
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:27 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:15 2009
 
-user time   =       0.17 seconds =       0.00 minutes
+user time   =       0.20 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-SCF tstart called on mac8319.local
-Wed Aug 12 20:05:27 2009
+SCF tstart called on elrond.chem
+Tue Sep  8 21:28:15 2009
 
 
              ------------------------------------------
@@ -2557,7 +2641,7 @@ Wed Aug 12 20:05:27 2009
   maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy       59.1412744088042
+  nuclear repulsion energy       59.1412744088011
 
   using old vector from file30 as initial guess
   energy from old vector:  -187.67624071
@@ -2585,16 +2669,16 @@ Wed Aug 12 20:05:27 2009
 
   iter       total energy        delta E         delta P          diiser
     1      -187.6762407191    2.468175e+02    0.000000e+00    0.000000e+00
-    2      -187.6762407207    1.597499e-09    3.245213e-07    1.133713e-05
-    3      -187.6762407209    1.383569e-10    8.955576e-08    2.888807e-06
-    4      -187.6762407209    2.077627e-11    3.192204e-08    1.660304e-06
-    5      -187.6762407209    2.813749e-12    1.234732e-08    5.255987e-07
-    6      -187.6762407209    3.410605e-13    4.295350e-09    2.203748e-07
-    7      -187.6762407209    1.136868e-13    7.446876e-10    2.816814e-08
-    8      -187.6762407209    1.421085e-13    1.160070e-10    3.732030e-09
-    9      -187.6762407209   -2.557954e-13    2.000886e-11    6.688509e-10
-   10      -187.6762407209    1.989520e-13    3.363299e-12    1.237622e-10
-   11      -187.6762407209   -1.705303e-13    5.311713e-13    1.440273e-11
+    2      -187.6762407207    1.597300e-09    3.245213e-07    1.133713e-05
+    3      -187.6762407209    1.383569e-10    8.955576e-08    2.888806e-06
+    4      -187.6762407209    2.057732e-11    3.192204e-08    1.660304e-06
+    5      -187.6762407209    3.126388e-12    1.234732e-08    5.255987e-07
+    6      -187.6762407209    2.273737e-13    4.295350e-09    2.203748e-07
+    7      -187.6762407209    0.000000e+00    7.446876e-10    2.816814e-08
+    8      -187.6762407209    1.705303e-13    1.160070e-10    3.732029e-09
+    9      -187.6762407209    8.526513e-14    2.000884e-11    6.688508e-10
+   10      -187.6762407209   -1.989520e-13    3.363252e-12    1.237635e-10
+   11      -187.6762407209   -2.842171e-14    5.312128e-13    1.440361e-11
 
  Correcting phases of orbitals.
 
@@ -2613,9 +2697,9 @@ Orbital energies (a.u.):
    9A1      0.697804    10A1      0.752069     6B2      0.785497  
    2A2      0.867904     7B2      0.867904    11A1      1.056126  
    4B1      1.056126    12A1      1.387498     8B2      1.390252  
-   9B2      1.425288     5B1      1.589021    13A1      1.589021  
-   3A2      1.706616    10B2      1.706616     4A2      2.122293  
-  11B2      2.122293    14A1      2.397277     6B1      2.397277  
+   9B2      1.425288    13A1      1.589021     5B1      1.589021  
+   3A2      1.706616    10B2      1.706616    11B2      2.122293  
+   4A2      2.122293    14A1      2.397277     6B1      2.397277  
   15A1      2.554926     7B1      2.554926    16A1      2.728442  
   12B2      3.150749     5A2      3.359346    13B2      3.359346  
   17A1      3.370788    18A1      4.359279    14B2      4.525349  
@@ -2624,22 +2708,22 @@ Orbital energies (a.u.):
 
 
       * SCF total energy   =    -187.676240720896
-        kinetic energy     =     187.477614526522
-        nuc. attr. energy  =    -561.339516023059
-        elec. rep. energy  =     186.185660775640
+        kinetic energy     =     187.477614526521
+        nuc. attr. energy  =    -561.339516023052
+        elec. rep. energy  =     186.185660775634
         potential energy   =    -375.153855247418
         virial theorem     =       1.998941655089
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-SCF tstop called on mac8319.local
-Wed Aug 12 20:05:28 2009
+SCF tstop called on elrond.chem
+Tue Sep  8 21:28:15 2009
 
-user time   =       0.04 seconds =       0.00 minutes
+user time   =       0.06 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
-total time  =          1 seconds =       0.02 minutes
+total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:28 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:15 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2672,17 +2756,17 @@ Wed Aug 12 20:05:28 2009
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.000009142349
+       1        0.000000000000     0.000000000000    -0.000009142350
        2        0.000000000000    -0.000069529166     0.000004571175
        3        0.000000000000     0.000069529166     0.000004571175
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:28 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:16 2009
 
 user time   =       0.75 seconds =       0.01 minutes
-system time =       0.00 seconds =       0.00 minutes
-total time  =          0 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
 
 	------------------------------------------------------
 	    OPTKING: for internal coordinate optimizations    
@@ -2692,7 +2776,7 @@ Cartesian geometry and possibly gradient in a.u. with masses
   6.0    12.00000000   0.0000000000   0.0000000000  -0.0000343178
   8.0    15.99491462   0.0000000000   2.1643091269   0.0000128733
   8.0    15.99491462   0.0000000000  -2.1643091269   0.0000128733
-                       0.0000000000   0.0000000000  -0.0000091423
+                       0.0000000000   0.0000000000  -0.0000091424
                        0.0000000000  -0.0000695292   0.0000045712
                        0.0000000000   0.0000695292   0.0000045712
 
@@ -2710,11 +2794,11 @@ Bends
 Current SCF energy before step      -187.676240720896
   Previous energy                   -187.676240709800
   Actual Delta(E) from last step      -0.000000011096
-  Previous Predicted Delta(E)         -0.000000014794  (-25.0% error)
+  Previous Predicted Delta(E)         -0.000000011095  (  0.0% error)
 
  ** Taking geometry step number 9 **
 
-BuB^t Determinant: 5.007091e-03
+BuB^t Determinant: 5.007089e-03
 	Symmetric Force Constants found in PSIF_OPTKING
 
 Force Constants read from PSIF_OPTKING
@@ -2732,6 +2816,15 @@ Projected energy change by quadratic approximation:        -0.0000000037
 	----------------------------------------------------------
 
 	   MAX force:    0.0005728306   RMS force:    0.0004683771
+	   MAX  disp:    0.0000436661   RMS  disp:    0.0000332374
+
+	Convergence Check:
+	             MAX Force  &&  ( Delta(E) ||   MAX disp )
+	----------------------------------------------------------
+	Actual         5.7e-04        1.1e-08        4.4e-05
+	Limit          1.0e-04        1.0e-08        1.0e-03
+	Conv?            N              N              Y
+	----------------------------------------------------------
 
 	Back-transformation to cartesian coordinates...
 	------------------------------------
@@ -2742,26 +2835,26 @@ Projected energy change by quadratic approximation:        -0.0000000037
 	    3      1.8e-08      6.7e-08
 	    4      1.9e-08      7.5e-08
 	    5      2.1e-08      6.9e-08
-	    6      1.8e-08      6.5e-08
-	    7      1.8e-08      6.9e-08
-	    8      1.8e-08      6.1e-08
-	    9      1.5e-08      5.9e-08
-	   10      1.5e-08      5.9e-08
-	   11      1.5e-08      5.9e-08
-	   12      1.5e-08      6.5e-08
-	   13      1.9e-08      7.5e-08
-	   14      2.1e-08      6.9e-08
-	   15      1.9e-08      6.7e-08
-	   16      1.8e-08      6.8e-08
-	   17      1.8e-08      6.8e-08
-	   18      1.9e-08      6.9e-08
-	   19      1.8e-08      6.7e-08
-	   20      1.9e-08      7.5e-08
-	   21      2.1e-08      7.4e-08
-	   22      2.1e-08      7.5e-08
-	   23      2.1e-08      7.4e-08
-	   24      2.1e-08      7.5e-08
-	   25      2.1e-08      6.9e-08
+	    6      1.8e-08      6.0e-08
+	    7      1.5e-08      5.9e-08
+	    8      1.5e-08      5.9e-08
+	    9      1.5e-08      6.5e-08
+	   10      1.9e-08      7.5e-08
+	   11      2.1e-08      6.9e-08
+	   12      1.8e-08      6.0e-08
+	   13      1.6e-08      5.9e-08
+	   14      1.5e-08      5.8e-08
+	   15      1.5e-08      6.0e-08
+	   16      1.5e-08      5.9e-08
+	   17      1.5e-08      6.0e-08
+	   18      1.6e-08      6.0e-08
+	   19      1.6e-08      5.9e-08
+	   20      1.5e-08      5.8e-08
+	   21      1.5e-08      6.5e-08
+	   22      1.9e-08      7.5e-08
+	   23      2.1e-08      6.9e-08
+	   24      1.8e-08      6.7e-08
+	   25      1.9e-08      7.4e-08
 	------------------------------------
 Could not converge new geometry in 25 iterations.
 	Warning: halving displacement size and reducing back-transformation  convergence criteria.
@@ -2771,7 +2864,7 @@ Could not converge new geometry in 25 iterations.
 	 Iter  RMS Delta(dx)  RMS Delta(dq)
 	------------------------------------
 	    1      7.1e-06      1.6e-10
-	    2      5.3e-11      3.6e-13
+	    2      5.1e-11      2.0e-12
 	------------------------------------
 
 Successfully converged to displaced geometry.
@@ -2782,12 +2875,14 @@ New Cartesian Geometry in a.u.
   8.0   0.0000000000  -2.1643341925   0.0000064282
 
 Geometry written to chkpt
+	New projected energy change (minus any analytically taken steps
+	along interfragment coordinates:   -0.0000000028
 
 ******** OPTKING execution completed ********
 
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:29 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:16 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2816,15 +2911,15 @@ Wed Aug 12 20:05:29 2009
     Wrote 167644 two-electron integrals to IWL file 33
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:29 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:16 2009
 
-user time   =       0.17 seconds =       0.00 minutes
+user time   =       0.13 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-SCF tstart called on mac8319.local
-Wed Aug 12 20:05:29 2009
+SCF tstart called on elrond.chem
+Tue Sep  8 21:28:16 2009
 
 
              ------------------------------------------
@@ -2849,7 +2944,7 @@ Wed Aug 12 20:05:29 2009
   maxiter      = 100
   guess        = AUTO
 
-  nuclear repulsion energy       59.1405894895589
+  nuclear repulsion energy       59.1405894895576
 
   using old vector from file30 as initial guess
   energy from old vector:  -187.67624072
@@ -2877,16 +2972,16 @@ Wed Aug 12 20:05:29 2009
 
   iter       total energy        delta E         delta P          diiser
     1      -187.6762407232    2.468168e+02    0.000000e+00    0.000000e+00
-    2      -187.6762407236    3.978755e-10    1.619024e-07    5.674124e-06
-    3      -187.6762407237    3.444711e-11    4.467972e-08    1.446111e-06
-    4      -187.6762407237    5.172751e-12    1.594656e-08    8.311728e-07
-    5      -187.6762407237    8.810730e-13    6.173188e-09    2.627958e-07
-    6      -187.6762407237   -1.421085e-13    2.148059e-09    1.103048e-07
-    7      -187.6762407237    8.526513e-14    3.716320e-10    1.407427e-08
-    8      -187.6762407237    1.705303e-13    5.797430e-11    1.857970e-09
-    9      -187.6762407237   -1.136868e-13    9.977027e-12    3.329650e-10
-   10      -187.6762407237    5.684342e-14    1.674598e-12    6.167717e-11
-   11      -187.6762407237   -1.705303e-13    2.648678e-13    7.199426e-12
+    2      -187.6762407236    3.978755e-10    1.619023e-07    5.674124e-06
+    3      -187.6762407237    3.456080e-11    4.467971e-08    1.446111e-06
+    4      -187.6762407237    5.258016e-12    1.594656e-08    8.311728e-07
+    5      -187.6762407237    9.094947e-13    6.173188e-09    2.627958e-07
+    6      -187.6762407237   -2.842171e-14    2.148059e-09    1.103048e-07
+    7      -187.6762407237   -2.842171e-13    3.716320e-10    1.407427e-08
+    8      -187.6762407237    1.705303e-13    5.797428e-11    1.857969e-09
+    9      -187.6762407237   -2.842171e-14    9.976991e-12    3.329645e-10
+   10      -187.6762407237    5.684342e-14    1.674626e-12    6.167756e-11
+   11      -187.6762407237   -5.684342e-14    2.648661e-13    7.199337e-12
 
  Correcting phases of orbitals.
 
@@ -2906,8 +3001,8 @@ Orbital energies (a.u.):
    2A2      0.867904     7B2      0.867904    11A1      1.056123  
    4B1      1.056123    12A1      1.387494     8B2      1.390213  
    9B2      1.425285    13A1      1.589024     5B1      1.589024  
-   3A2      1.706600    10B2      1.706600    11B2      2.122294  
-   4A2      2.122294    14A1      2.397265     6B1      2.397265  
+   3A2      1.706600    10B2      1.706600     4A2      2.122294  
+  11B2      2.122294    14A1      2.397265     6B1      2.397265  
   15A1      2.554904     7B1      2.554904    16A1      2.728433  
   12B2      3.150730     5A2      3.359321    13B2      3.359321  
   17A1      3.370755    18A1      4.359276    14B2      4.525342  
@@ -2917,21 +3012,21 @@ Orbital energies (a.u.):
 
       * SCF total energy   =    -187.676240723673
         kinetic energy     =     187.477483107767
-        nuc. attr. energy  =    -561.338048448428
-        elec. rep. energy  =     186.184324616988
+        nuc. attr. energy  =    -561.338048448425
+        elec. rep. energy  =     186.184324616985
         potential energy   =    -375.153723831440
         virial theorem     =       1.998940954832
         wavefunction norm  =       1.000000000000
 ******************************************************************************
-SCF tstop called on mac8319.local
-Wed Aug 12 20:05:29 2009
+SCF tstop called on elrond.chem
+Tue Sep  8 21:28:16 2009
 
-user time   =       0.04 seconds =       0.00 minutes
+user time   =       0.03 seconds =       0.00 minutes
 system time =       0.01 seconds =       0.00 minutes
 total time  =          0 seconds =       0.00 minutes
 ******************************************************************************
-cints tstart called on mac8319.local
-Wed Aug 12 20:05:29 2009
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:16 2009
 
                   --------------------------------------------
                     CINTS: An integrals program written in C
@@ -2964,15 +3059,15 @@ Wed Aug 12 20:05:29 2009
   -SCF forces in the reference frame (a.u.):
      Atom            X                  Y                   Z
     ------   -----------------  -----------------  -----------------
-       1        0.000000000000     0.000000000000    -0.000004565668
-       2        0.000000000000    -0.000034772583     0.000002282834
-       3        0.000000000000     0.000034772583     0.000002282834
+       1        0.000000000000     0.000000000000    -0.000004565670
+       2        0.000000000000    -0.000034772582     0.000002282835
+       3        0.000000000000     0.000034772582     0.000002282835
 
 ******************************************************************************
-cints tstop called on mac8319.local
-Wed Aug 12 20:05:30 2009
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:17 2009
 
-user time   =       0.75 seconds =       0.01 minutes
+user time   =       0.87 seconds =       0.01 minutes
 system time =       0.00 seconds =       0.00 minutes
 total time  =          1 seconds =       0.02 minutes
 
@@ -3002,24 +3097,309 @@ Bends
 Current SCF energy before step      -187.676240723673
   Previous energy                   -187.676240720896
   Actual Delta(E) from last step      -0.000000002776
-  Previous Predicted Delta(E)         -0.000000003702  (-25.0% error)
+  Previous Predicted Delta(E)         -0.000000002776  (  0.0% error)
 
  ** Taking geometry step number 10 **
 
-BuB^t Determinant: 5.006971e-03
+BuB^t Determinant: 5.006973e-03
+	Symmetric Force Constants found in PSIF_OPTKING
 
-	       *** Internal Coordinates and Forces *** 
-	-----------------------------------------------------------
-	 Coordinate    Value (Ang or Rad)   Force aJ/Ang or aJ/Rad 
-	-----------------------------------------------------------
-	      1           1.14531641           0.00028648 
-	      2           1.14531641           0.00028648 
-	      3           3.14157088           0.00002154 
-	-----------------------------------------------------------
+Force Constants read from PSIF_OPTKING
 
-Energy change is < 1.0e-08.  Optimization is complete.
+Performing BFGS update with previous 3 gradient(s).
+Projected energy change by quadratic approximation:        -0.0000000009
 
-Final SCF energy is -187.6762407237
+	Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+	----------------------------------------------------------
+	       Value         Force        Displacement  New Value
+	----------------------------------------------------------
+	  1    1.14531641    0.00028648    0.00001327    1.14532968
+	  2    1.14531641    0.00028648    0.00001327    1.14532968
+	  3    3.14157088    0.00002154    0.00002178    3.14159266
+	----------------------------------------------------------
+
+	   MAX force:    0.0002864814   RMS force:    0.0002342416
+	   MAX  disp:    0.0000217839   RMS  disp:    0.0000166003
+
+	Convergence Check:
+	             MAX Force  &&  ( Delta(E) ||   MAX disp )
+	----------------------------------------------------------
+	Actual         2.9e-04        2.8e-09        2.2e-05
+	Limit          1.0e-04        1.0e-08        1.0e-03
+	Conv?            N              Y              Y
+	----------------------------------------------------------
+
+	Back-transformation to cartesian coordinates...
+	------------------------------------
+	 Iter  RMS Delta(dx)  RMS Delta(dq)
+	------------------------------------
+	    1      7.1e-06      4.9e-09
+	    2      3.2e-11      4.9e-09
+	------------------------------------
+
+Successfully converged to displaced geometry.
+
+New Cartesian Geometry in a.u.
+  6.0   0.0000000000   0.0000000000   0.0000000065
+  8.0   0.0000000000   2.1643592686  -0.0000000024
+  8.0   0.0000000000  -2.1643592686  -0.0000000024
+
+Geometry written to chkpt
+
+******** OPTKING execution completed ********
+
+******************************************************************************
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:17 2009
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = DZP RHF optimization of CO2
+    Number of atoms             = 3
+    Number of atomic orbitals   = 48
+    Number of symmetry orbitals = 48
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 167320 two-electron integrals to IWL file 33
+
+******************************************************************************
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:18 2009
+
+user time   =       0.20 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+SCF tstart called on elrond.chem
+Tue Sep  8 21:28:18 2009
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = DZP RHF optimization of CO2
+  wfn          = SCF
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = FIRST
+  convergence  = 12
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy       59.1399042913580
+
+  using old vector from file30 as initial guess
+  energy from old vector:  -187.67624072
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 1245120 bytes of core
+
+  The lowest eigenvalue of the overlap matrix was 7.911378e-03
+
+
+  Reading Occupations from checkpoint file.
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              5     1     1     4   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 69912 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1      -187.6762407242    2.468161e+02    0.000000e+00    0.000000e+00
+    2      -187.6762407246    3.977902e-10    1.618038e-07    5.676290e-06
+    3      -187.6762407246    3.441869e-11    4.465299e-08    1.446899e-06
+    4      -187.6762407246    5.229595e-12    1.594373e-08    8.316657e-07
+    5      -187.6762407246    6.536993e-13    6.173810e-09    2.627985e-07
+    6      -187.6762407246    2.273737e-13    2.148462e-09    1.103683e-07
+    7      -187.6762407246   -8.526513e-14    3.714580e-10    1.407546e-08
+    8      -187.6762407246    0.000000e+00    5.797404e-11    1.855699e-09
+    9      -187.6762407246    2.842171e-14    9.969936e-12    3.325548e-10
+   10      -187.6762407246    1.705303e-13    1.672681e-12    6.162212e-11
+   11      -187.6762407246   -1.705303e-13    2.647154e-13    7.200973e-12
+
+ Correcting phases of orbitals.
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1B2    -20.652100     1A1    -20.652071     2A1    -11.475190  
+   3A1     -1.544166     2B2     -1.488371     4A1     -0.797272  
+   3B2     -0.744011     5A1     -0.722813     1B1     -0.722813  
+   4B2     -0.543862     1A2     -0.543862  
+
+
+  Unoccupied orbitals
+   2B1      0.213489     6A1      0.213489     7A1      0.228667  
+   5B2      0.353915     3B1      0.402385     8A1      0.402385  
+   9A1      0.697811    10A1      0.752030     6B2      0.785494  
+   7B2      0.867905     2A2      0.867905     4B1      1.056120  
+  11A1      1.056120    12A1      1.387490     8B2      1.390174  
+   9B2      1.425283    13A1      1.589027     5B1      1.589027  
+  10B2      1.706585     3A2      1.706585     4A2      2.122296  
+  11B2      2.122296    14A1      2.397253     6B1      2.397253  
+   7B1      2.554882    15A1      2.554882    16A1      2.728424  
+  12B2      3.150711     5A2      3.359295    13B2      3.359295  
+  17A1      3.370721    18A1      4.359272    14B2      4.525336  
+  19A1      4.527430    20A1     27.370691    21A1     45.390918  
+  15B2     45.452616  
+
+
+      * SCF total energy   =    -187.676240724599
+        kinetic energy     =     187.477351639652
+        nuc. attr. energy  =    -561.336580277299
+        elec. rep. energy  =     186.182987913048
+        potential energy   =    -375.153592364251
+        virial theorem     =       1.998940254322
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+SCF tstop called on elrond.chem
+Tue Sep  8 21:28:18 2009
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+cints tstart called on elrond.chem
+Tue Sep  8 21:28:18 2009
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = DZP RHF optimization of CO2
+    Number of atoms             = 3
+    Number of atomic orbitals   = 48
+    Number of symmetry orbitals = 48
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+  Rotational invariance condition satisfied.
+  |X cross Grad| =  0.000000000000   (it is the accuracy of the computed forces)
+  So long..
+
+
+  -SCF forces in the reference frame (a.u.):
+     Atom            X                  Y                   Z
+    ------   -----------------  -----------------  -----------------
+       1        0.000000000000     0.000000000000     0.000000001736
+       2        0.000000000000    -0.000000004229    -0.000000000868
+       3        0.000000000000     0.000000004229    -0.000000000868
+
+******************************************************************************
+cints tstop called on elrond.chem
+Tue Sep  8 21:28:18 2009
+
+user time   =       0.73 seconds =       0.01 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+	------------------------------------------------------
+	    OPTKING: for internal coordinate optimizations    
+	------------------------------------------------------
+
+Cartesian geometry and possibly gradient in a.u. with masses
+  6.0    12.00000000   0.0000000000   0.0000000000   0.0000000065
+  8.0    15.99491462   0.0000000000   2.1643592686  -0.0000000024
+  8.0    15.99491462   0.0000000000  -2.1643592686  -0.0000000024
+                       0.0000000000   0.0000000000   0.0000000017
+                       0.0000000000  -0.0000000042  -0.0000000009
+                       0.0000000000   0.0000000042  -0.0000000009
+
+Searching for geometrical constraints...none found.
+
+Simple Internal Coordinates and Values
+Stretches
+    (1 1 2) (1.14532968)
+    (2 1 3) (1.14532968)
+Bends
+    (3 2 1 3) (180.00000000)
+ 
+ ** Taking normal optimization step. **
+
+Current SCF energy before step      -187.676240724599
+  Previous energy                   -187.676240723673
+  Actual Delta(E) from last step      -0.000000000926
+  Previous Predicted Delta(E)         -0.000000000926  (  0.0% error)
+
+ ** Taking geometry step number 11 **
+
+BuB^t Determinant: 2.295357e+13
+	Symmetric Force Constants found in PSIF_OPTKING
+
+Force Constants read from PSIF_OPTKING
+
+Performing BFGS update with previous 3 gradient(s).
+Projected energy change by quadratic approximation:        -0.0000000000
+
+	Internal Coordinate Update in Ang or Rad, aJ/Ang or aJ/Rad
+	----------------------------------------------------------
+	       Value         Force        Displacement  New Value
+	----------------------------------------------------------
+	  1    1.14532968    0.00000003    0.00000000    1.14532969
+	  2    1.14532968    0.00000003    0.00000000    1.14532969
+	  3    3.14159265    0.00000000    0.00000000    3.14159265
+	----------------------------------------------------------
+
+	   MAX force:    0.0000000348   RMS force:    0.0000000284
+	   MAX  disp:    0.0000000016   RMS  disp:    0.0000000013
+
+	Convergence Check:
+	             MAX Force  &&  ( Delta(E) ||   MAX disp )
+	----------------------------------------------------------
+	Actual         3.5e-08        9.3e-10        1.6e-09
+	Limit          1.0e-04        1.0e-08        1.0e-03
+	Conv?            Y              Y              Y
+	----------------------------------------------------------
+
+Optimization is complete.
+
+Final SCF energy is -187.6762407246
 
 	            ****  Optimization Summary  ****
 	----------------------------------------------------------------------
@@ -3030,32 +3410,24 @@ Final SCF energy is -187.6762407237
 	   3   -187.676073434783     -0.005827997723    8.13e-02     9.81e-02
 	   4   -187.676237855170     -0.000164420387    1.27e-02     1.55e-02
 	   5   -187.676239887538     -0.000002032367    6.97e-03     8.52e-03
-	   6   -187.676240495833     -0.000000608296    3.67e-03     4.49e-03
-	   7   -187.676240665493     -0.000000169660    1.87e-03     2.29e-03
+	   6   -187.676240495834     -0.000000608296    3.67e-03     4.49e-03
+	   7   -187.676240665494     -0.000000169660    1.87e-03     2.29e-03
 	   8   -187.676240709800     -0.000000044307    9.36e-04     1.14e-03
 	   9   -187.676240720896     -0.000000011096    4.68e-04     5.73e-04
 	  10   -187.676240723673     -0.000000002776    2.34e-04     2.86e-04
+	  11   -187.676240724599     -0.000000000926    2.84e-08     3.48e-08
 	----------------------------------------------------------------------
 
 The Optimized geometry in a.u.
-  (  C    0.0000000000    0.0000000000   -0.0000171364 )
-  (  O    0.0000000000    2.1643341925    0.0000064282 )
-  (  O    0.0000000000   -2.1643341925    0.0000064282 )
+  (  C    0.0000000000    0.0000000000    0.0000000065 )
+  (  O    0.0000000000    2.1643592686   -0.0000000024 )
+  (  O    0.0000000000   -2.1643592686   -0.0000000024 )
 
 The Optimized geometry in Angstrom
-  (  C    0.0000000000    0.0000000000   -0.0000090682 )
-  (  O    0.0000000000    1.1453164139    0.0000034017 )
-  (  O    0.0000000000   -1.1453164139    0.0000034017 )
+  (  C    0.0000000000    0.0000000000    0.0000000035 )
+  (  O    0.0000000000    1.1453296836   -0.0000000013 )
+  (  O    0.0000000000   -1.1453296836   -0.0000000013 )
 
-  zmat = ( 
-    ( C )
-    ( O  1 CO)
-    ( O  1 CO 2 CO2)
-  )
-  zvars = ( 
-    ( CO    1.14532 )
-    ( CO2  179.99875 )
-  )
 
 
 ******** OPTKING execution completed ********
@@ -3065,7 +3437,7 @@ The Optimized geometry in Angstrom
                           PSI3 Computation Completed
                           --------------------------
 
-PSI3 stopped on mac8319.local at Wed Aug 12 20:05:30 2009
+PSI3 stopped on elrond.chem at Tue Sep  8 21:28:18 2009
 
-Total PSI3 wall time         14 seconds =       0.23 minutes
+Total PSI3 wall time         12 seconds =       0.20 minutes
 ******************************************************************************

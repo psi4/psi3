@@ -76,8 +76,8 @@ int opt_step_cart(cartesians &carts) {
   fprintf(outfile,"MAX force: %15.10e\n",tval2);
   fprintf(outfile,"RMS force: %15.10e\n",tval);
 
-  if (tval2 < optinfo.conv) {
-    fprintf(outfile,"\nMAX force is < %5.1e.  Optimization is complete.\n", optinfo.conv);
+  if (tval2 < optinfo.conv_max_force) {
+    fprintf(outfile,"\nMAX force is < %5.1e.  Optimization is complete.\n", optinfo.conv_max_force);
     ip_string("WFN", &(wfn),0);
     fprintf(outfile,"Final %s energy is %15.10lf\n", wfn, carts.get_energy());
     free(wfn);

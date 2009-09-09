@@ -177,9 +177,13 @@ void get_optinfo(void) {
   ip_data("RFO_ROOT", "%d", &i,0);
   optinfo.rfo_root = i-1;
 
-  i=2;
+  i=3;
   ip_data("MAX_CONSECUTIVE_LINE_SEARCHES", "%d", &i,0);
   optinfo.max_consecutive_line_searches = i;
+
+  i = 8;
+  ip_data("LINE_SEARCH_MIN","%d",&i,0);
+  optinfo.line_search_min = power(10.0,-1*i);
 
   optinfo.step_energy_limit = 0.4; // fraction error in energy prediction to tolerate
   errcod = ip_data("STEP_ENERGY_LIMIT", "%lf", &tval,0);
@@ -235,13 +239,58 @@ void get_optinfo(void) {
   optinfo.test_B = 0;
   ip_boolean("TEST_B",&(optinfo.test_B),0);
 
-  a = 5;
-  ip_data("CONV","%d",&a,0);
-  optinfo.conv = power(10.0, -1*a);
+  if (ip_exist("OPT_CONV",0)) {
+    errcod = ip_string("OPT_CONV", &junk, 0);
+    if (errcod != IPE_OK) {
+      fprintf(outfile,"OPT_CONV should be one of {LOOSE, NORMAL, TIGHT, VERY_TIGHT}\n");
+      throw("Could not read OPT_CONV from input.");
+    }
+    else if (!strcmp(junk,"LOOSE")) {
+      optinfo.conv_max_force = power(10.0, -3);
+      optinfo.conv_max_DE    = power(10.0, -6);
+      optinfo.conv_max_disp    = power(10.0, -2);
+    }
+    else if (!strcmp(junk,"NORMAL")) { // also below
+      optinfo.conv_max_force = power(10.0, -4);
+      optinfo.conv_max_DE    = power(10.0, -8);
+      optinfo.conv_max_disp    = power(10.0, -3);
+    }
+    else if (!strcmp(junk,"TIGHT")) {
+      optinfo.conv_max_force = power(10.0, -5);
+      optinfo.conv_max_DE    = power(10.0, -10);
+      optinfo.conv_max_disp    = power(10.0, -4);
+    }
+    else if (!strcmp(junk,"VERY_TIGHT")) {
+      optinfo.conv_max_force = power(10.0, -6);
+      optinfo.conv_max_DE    = power(10.0, -12);
+      optinfo.conv_max_disp    = power(10.0, -5);
+    }
+    else {
+      fprintf(outfile,"OPT_CONV should be one of {LOOSE, NORMAL, TIGHT, VERY_TIGHT}\n");
+      throw("Could not read OPT_CONV from input.");
+    }
+    free(junk);
+  }
+  else { // default NORMAL criteria
+    optinfo.conv_max_force = power(10.0, -4);
+    optinfo.conv_max_DE    = power(10.0, -8);
+    optinfo.conv_max_disp    = power(10.0, -3);
+  }
 
-  a = 8;
-  ip_data("ECONV","%d",&a,0);
-  optinfo.econv = power(10.0, -1*a);
+  if (ip_exist("CONV_MAX_FORCE",0)) {
+    ip_data("CONV_MAX_FORCE","%d",&a,0);
+    optinfo.conv_max_force = power(10.0, -1*a);
+  }
+
+  if (ip_exist("CONV_MAX_DE",0)) {
+    ip_data("CONV_MAX_DE","%d",&a,0);
+    optinfo.conv_max_DE = power(10.0, -1*a);
+  }
+
+  if (ip_exist("CONV_MAX_DISP",0)) {
+    ip_data("CONV_MAX_DISP","%d",&a,0);
+    optinfo.conv_max_disp = power(10.0, -1*a);
+  }
 
   a= 5;
   ip_data("EV_TOL","%d",&a,0);
@@ -357,8 +406,9 @@ void get_optinfo(void) {
     fprintf(outfile,"step_limit: %f\n",optinfo.step_limit);
     fprintf(outfile,"mix_types:     %d\n",optinfo.mix_types);
     fprintf(outfile,"delocalize:    %d\n",optinfo.delocalize);
-    fprintf(outfile,"MAX force conv: %.1e\n",optinfo.conv);
-    fprintf(outfile,"energy conv:    %.1e\n",optinfo.econv);
+    fprintf(outfile,"MAX force convergence: %.1e\n",optinfo.conv_max_force);
+    fprintf(outfile,"MAX D(Energy) convergence: %.1e\n",optinfo.conv_max_DE);
+    fprintf(outfile,"MAX D(displacement) convergence: %.1e\n",optinfo.conv_max_disp);
     fprintf(outfile,"dertype:       %d\n",optinfo.dertype);
     fprintf(outfile,"numerical dertype: %d\n",optinfo.numerical_dertype);
     fprintf(outfile,"iteration:       %d\n",optinfo.iteration);
