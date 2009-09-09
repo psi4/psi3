@@ -18088,18 +18088,59 @@ HYDROGEN:"D-AUG-CC-PV6Z" = (
     (GET "AUG-CC-PV7Z")
   )
 
-%%%%%%%%%%%%%%%%%%%%% RI basis sets from EMSL %%%%%%%%%%%%%%%%%%%%%%%
- 
-% H He B C N O F Ne: Weigend, Kohn, Hattig, Efficient use of the
-% correlation consistent basis sets in resolution of the identity MP2
-% calculations, The Journal of Chemical Physics 116, 3175 (2002).
-% C N O F: Hattig, Optimization of auxiliary basis sets for RI-MP2 and
-% RI-CC2 calculations: Core-valence and quintuple-? basis sets for H to Ar
-% and QZVPP basis sets for Li to Kr, Physical Chemistry Chemical Physics 7,
-% 59 (2005).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                        RI basis sets from EMSL
+%
+%
+%			 label	pbasis		simplest
+%
+%  cc-pVXZ-RI		 1 	= 1 		= 1
+%  cc-pV(X+d)Z-RI	 2	= 1		= 1	
+%  cc-pwCVXZ-RI		 3	= 1 + tight	= 1 + tight
+%  cc-pwCV(X+d)Z-RI	 4	= 3		= 1 + tight
+%
+%  aug-cc-pVXZ-RI	 5	= 1 + diffuse	= 1 + diffuse 
+%  aug-cc-pV(X+d)Z-RI	 6	= 5		= 1 + diffuse
+%  aug-cc-pwCVXZ-RI	 7	= 3 + diffuse	= 1 + diffuse + tight
+%  aug-cc-pwCV(X+d)Z-RI	 8	= 7		= 1 + diffuse + tight
+%
+%
+%			 label	H-He	B-Ne	Al-Ar	Ga-Kr	Li-Be,Na-Mg
+%
+%  cc-pVXZ-RI		 1 	DTQ56	DTQ56	DTQ56	DTQ	DTQ5
+%  cc-pV(X+d)Z-RI	 2			DTQ56
+%  cc-pwCVXZ-RI		 3		DTQ5	DTQ5
+%  cc-pwCV(X+d)Z-RI	 4			DTQ5
+%
+%  aug-cc-pVXZ-RI	 5	DTQ56	DTQ56	DTQ56	DTQ
+%  aug-cc-pV(X+d)Z-RI	 6			DTQ56
+%  aug-cc-pwCVXZ-RI	 7		DTQ5	DTQ5
+%  aug-cc-pwCV(X+d)Z-RI	 8			DTQ5
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%              CORRELATION CONSISTENT DENSITY FITTING BASIS SETS
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PVDZ-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from EMSL ~24 August 2009
+%  main group (H, He, B-Ne, Al-Ar, Ga-Kr) from reference below
+%  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
+%  basis sets in resolution of the identity MP2 calculations, The Journal of
+%  Chemical Physics 116, 3175 (2002)
+%  alkali and alkali earth (Li, Be, Na, Mg) from reference below
+%  selected (C-F) reoptimized for (aug-)cc-pVDZ-RI in reference below
+%  Christof Hattig, Optimization of auxiliary basis sets for RI-MP2 and RI-CC2
+%  calculations: Core-valence and quintuple-? basis sets for H to Ar and QZVPP
+%  basis sets for Li to Kr, Physical Chemistry Chemical Physics 7, 59 (2005)
+%  for H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar Ga Ge As Se Br Kr 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 "CC-PVDZ-RI":puream = true
-
 HYDROGEN:"CC-PVDZ-RI" = (
    (S    (         5.1158895200           1.0000000000))
    (S    (         1.1429652800           1.0000000000))
@@ -18675,7 +18716,7 @@ HYDROGEN:"CC-PVDZ-RI" = (
    (G    (        18.8439133740           1.0000000000))
    (G    (         1.8832303404           1.0000000000)))
  
-%%%%%%%%%%  ALIASES cc-pVDZ-RI => CC-PVDZ-RI %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%  ALIAS cc-pVDZ-RI=> CC-PVDZ-RI"  %%%%%%%%%%%%%%%%%%
 
  "cc-pVDZ-RI":puream = true
  HYDROGEN:"cc-pVDZ-RI" = (
@@ -18750,6 +18791,24 @@ HYDROGEN:"CC-PVDZ-RI" = (
  KRYPTON:"cc-pVDZ-RI" = (
     (GET "CC-PVDZ-RI")
  )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PVTZ-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from EMSL ~24 August 2009
+%  main group (H, He, B-Ne, Al-Ar, Ga-Kr) from reference below
+%  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
+%  basis sets in resolution of the identity MP2 calculations, The Journal of
+%  Chemical Physics 116, 3175 (2002)
+%  alkali and alkali earth (Li, Be, Na, Mg) from reference below
+%  selected (Ne) reoptimized for (aug-)cc-pVTZ-RI in reference below
+%  Christof Hattig, Optimization of auxiliary basis sets for RI-MP2 and RI-CC2
+%  calculations: Core-valence and quintuple-? basis sets for H to Ar and QZVPP
+%  basis sets for Li to Kr, Physical Chemistry Chemical Physics 7, 59 (2005)
+%  for H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar Ga Ge As Se Br Kr 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 "CC-PVTZ-RI":puream = true
 HYDROGEN:"CC-PVTZ-RI" = (
@@ -19490,7 +19549,7 @@ HYDROGEN:"CC-PVTZ-RI" = (
    (G    (         1.0236297351           1.0000000000))
    (H    (         2.7676462796           1.0000000000)))
  
-%%%%%%%%%%  ALIASES cc-pVTZ-RI => CC-PVTZ-RI %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%  ALIAS cc-pVTZ-RI=> CC-PVTZ-RI"  %%%%%%%%%%%%%%%%%%
 
  "cc-pVTZ-RI":puream = true
  HYDROGEN:"cc-pVTZ-RI" = (
@@ -19565,6 +19624,24 @@ HYDROGEN:"CC-PVTZ-RI" = (
  KRYPTON:"cc-pVTZ-RI" = (
     (GET "CC-PVTZ-RI")
  )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PVQZ-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from EMSL ~24 August 2009
+%  main group (H, He, B-Ne, Al-Ar, Ga-Kr) from reference below
+%  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
+%  basis sets in resolution of the identity MP2 calculations, The Journal of
+%  Chemical Physics 116, 3175 (2002)
+%  alkali and alkali earth (Li, Be, Na, Mg) from reference below
+%  selected (Ne) reoptimized for (aug-)cc-pVQZ-RI in reference below
+%  Christof Hattig, Optimization of auxiliary basis sets for RI-MP2 and RI-CC2
+%  calculations: Core-valence and quintuple-? basis sets for H to Ar and QZVPP
+%  basis sets for Li to Kr, Physical Chemistry Chemical Physics 7, 59 (2005)
+%  for H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar Ga Ge As Se Br Kr 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 "CC-PVQZ-RI":puream = true
 HYDROGEN:"CC-PVQZ-RI" = (
@@ -20464,7 +20541,7 @@ HYDROGEN:"CC-PVQZ-RI" = (
    (H    (         1.0644071714           1.0000000000))
    (I    (         2.6047685807           1.0000000000)))
 
-%%%%%%%%%%  ALIASES cc-pVQZ-RI => CC-PVQZ-RI %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%  ALIAS cc-pVQZ-RI=> CC-PVQZ-RI"  %%%%%%%%%%%%%%%%%%
 
  "cc-pVQZ-RI":puream = true
  HYDROGEN:"cc-pVQZ-RI" = (
@@ -20540,7 +20617,18 @@ HYDROGEN:"CC-PVQZ-RI" = (
     (GET "CC-PVQZ-RI")
  )
  
- 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PV5Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from EMSL ~24 August 2009
+%  Christof Hattig, Optimization of auxiliary basis sets for RI-MP2 and RI-CC2
+%  calculations: Core-valence and quintuple-? basis sets for H to Ar and QZVPP
+%  basis sets for Li to Kr, Physical Chemistry Chemical Physics 7, 59 (2005)
+%  for H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 "CC-PV5Z-RI":puream = true
 HYDROGEN:"CC-PV5Z-RI" = (
    (S    (        23.3215000000           1.0000000000))
@@ -21316,7 +21404,7 @@ HYDROGEN:"CC-PV5Z-RI" = (
    (H    (         1.0427100000           1.0000000000))
    (I    (         1.7849100000           1.0000000000)))
  
-%%%%%%%%%%  ALIASES cc-pV5Z-RI => CC-PV5Z-RI %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%  ALIAS cc-pV5Z-RI=> CC-PV5Z-RI"  %%%%%%%%%%%%%%%%%%
 
  "cc-pV5Z-RI":puream = true
  HYDROGEN:"cc-pV5Z-RI" = (
@@ -21374,7 +21462,15 @@ HYDROGEN:"CC-PV5Z-RI" = (
     (GET "CC-PV5Z-RI")
  )
 
-% cc-pV6Z-RI, Christof Hattig, to be published 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PV6Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from EMSL ~24 August 2009
+%  C. Hattig, to be published
+%  for H He B C N O F Ne Al Si P S Cl Ar
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 "CC-PV6Z-RI":puream = true
 
@@ -22140,7 +22236,7 @@ ARGON:"CC-PV6Z-RI" = (
   (I    (         1.2862200000           1.0000000000))
   (K    (         2.0354000000           1.0000000000)))
 
-%%%%%%%%%%  ALIASES cc-pV6Z-RI => CC-PV6Z-RI %%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%  ALIAS cc-pV6Z-RI=> CC-PV6Z-RI"  %%%%%%%%%%%%%%%%%%
 
  "cc-pV6Z-RI":puream = true
  HYDROGEN:"cc-pV6Z-RI" = (
@@ -22198,7 +22294,6 @@ ARGON:"CC-PV6Z-RI" = (
     (GET "CC-PV6Z-RI")
  )
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %
 %         AUGMENTED CORRELATION CONSISTENT DENSITY FITTING BASIS SETS
@@ -22212,6 +22307,10 @@ ARGON:"CC-PV6Z-RI" = (
 %  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
 %  basis sets in resolution of the identity MP2 calculations, The Journal of
 %  Chemical Physics 116, 3175 (2002)
+%  selected (C-F) reoptimized for (aug-)cc-pVDZ-RI in reference below
+%  Christof Hattig, Optimization of auxiliary basis sets for RI-MP2 and RI-CC2
+%  calculations: Core-valence and quintuple-? basis sets for H to Ar and QZVPP
+%  basis sets for Li to Kr, Physical Chemistry Chemical Physics 7, 59 (2005)
 %  for H He B C N O F Ne Al Si P S Cl Ar Ga Ge As Se Br Kr 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -22426,6 +22525,10 @@ KRYPTON:"aug-cc-pVDZ-RI" = (
 %  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
 %  basis sets in resolution of the identity MP2 calculations, The Journal of
 %  Chemical Physics 116, 3175 (2002)
+%  selected (Ne) reoptimized for (aug-)cc-pVTZ-RI in reference below
+%  Christof Hattig, Optimization of auxiliary basis sets for RI-MP2 and RI-CC2
+%  calculations: Core-valence and quintuple-? basis sets for H to Ar and QZVPP
+%  basis sets for Li to Kr, Physical Chemistry Chemical Physics 7, 59 (2005)
 %  for H He B C N O F Ne Al Si P S Cl Ar Ga Ge As Se Br Kr
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -22660,6 +22763,10 @@ KRYPTON:"aug-cc-pVTZ-RI" = (
 %  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
 %  basis sets in resolution of the identity MP2 calculations, The Journal of
 %  Chemical Physics 116, 3175 (2002)
+%  selected (Ne) reoptimized for (aug-)cc-pVQZ-RI in reference below
+%  Christof Hattig, Optimization of auxiliary basis sets for RI-MP2 and RI-CC2
+%  calculations: Core-valence and quintuple-? basis sets for H to Ar and QZVPP
+%  basis sets for Li to Kr, Physical Chemistry Chemical Physics 7, 59 (2005)
 %  for H He B C N O F Ne Al Si P S Cl Ar Ga Ge As Se Br Kr 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -23310,5 +23417,3923 @@ CHLORINE:"aug-cc-pV6Z-RI" = (
 ARGON:"aug-cc-pV6Z-RI" = (
         (GET "AUG-CC-PV6Z-RI")
         )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%   SECOND-ROW SUPPLEMENTARY CORRELATION CONSISTENT DENSITY FITTING BASIS SETS
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PV(D+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  as reported in the reference below, auxiliary basis sets for (aug-)cc-pVXZ
+%    and (aug-)cc-pV(X+d)Z are identical
+%  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
+%  basis sets in resolution of the identity MP2 calculations, The Journal of
+%  Chemical Physics 116, 3175 (2002)
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"CC-PV(D+D)Z-RI":puream = true
+ALUMINUM:"CC-PV(D+D)Z-RI" = (
+  (GET "CC-PVDZ-RI")
+  )
+
+SILICON:"CC-PV(D+D)Z-RI" = (
+  (GET "CC-PVDZ-RI")
+  )
+
+PHOSPHORUS:"CC-PV(D+D)Z-RI" = (
+  (GET "CC-PVDZ-RI")
+  )
+
+SULFUR:"CC-PV(D+D)Z-RI" = (
+  (GET "CC-PVDZ-RI")
+  )
+
+CHLORINE:"CC-PV(D+D)Z-RI" = (
+  (GET "CC-PVDZ-RI")
+  )
+
+ARGON:"CC-PV(D+D)Z-RI" = (
+  (GET "CC-PVDZ-RI")
+  )
+
+%%%%%%%%%%%  ALIAS cc-pV(D+d)Z-RI=> CC-PV(D+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"cc-pV(D+d)Z-RI":puream = true
+ALUMINUM:"cc-pV(D+d)Z-RI" = (
+        (GET "CC-PV(D+D)Z-RI")
+        )
+SILICON:"cc-pV(D+d)Z-RI" = (
+        (GET "CC-PV(D+D)Z-RI")
+        )
+PHOSPHORUS:"cc-pV(D+d)Z-RI" = (
+        (GET "CC-PV(D+D)Z-RI")
+        )
+SULFUR:"cc-pV(D+d)Z-RI" = (
+        (GET "CC-PV(D+D)Z-RI")
+        )
+CHLORINE:"cc-pV(D+d)Z-RI" = (
+        (GET "CC-PV(D+D)Z-RI")
+        )
+ARGON:"cc-pV(D+d)Z-RI" = (
+        (GET "CC-PV(D+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PV(T+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  as reported in the reference below, auxiliary basis sets for (aug-)cc-pVXZ
+%    and (aug-)cc-pV(X+d)Z are identical
+%  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
+%  basis sets in resolution of the identity MP2 calculations, The Journal of
+%  Chemical Physics 116, 3175 (2002)
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"CC-PV(T+D)Z-RI":puream = true
+ALUMINUM:"CC-PV(T+D)Z-RI" = (
+  (GET "CC-PVTZ-RI")
+  )
+
+SILICON:"CC-PV(T+D)Z-RI" = (
+  (GET "CC-PVTZ-RI")
+  )
+
+PHOSPHORUS:"CC-PV(T+D)Z-RI" = (
+  (GET "CC-PVTZ-RI")
+  )
+
+SULFUR:"CC-PV(T+D)Z-RI" = (
+  (GET "CC-PVTZ-RI")
+  )
+
+CHLORINE:"CC-PV(T+D)Z-RI" = (
+  (GET "CC-PVTZ-RI")
+  )
+
+ARGON:"CC-PV(T+D)Z-RI" = (
+  (GET "CC-PVTZ-RI")
+  )
+
+%%%%%%%%%%%  ALIAS cc-pV(T+d)Z-RI=> CC-PV(T+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"cc-pV(T+d)Z-RI":puream = true
+ALUMINUM:"cc-pV(T+d)Z-RI" = (
+        (GET "CC-PV(T+D)Z-RI")
+        )
+SILICON:"cc-pV(T+d)Z-RI" = (
+        (GET "CC-PV(T+D)Z-RI")
+        )
+PHOSPHORUS:"cc-pV(T+d)Z-RI" = (
+        (GET "CC-PV(T+D)Z-RI")
+        )
+SULFUR:"cc-pV(T+d)Z-RI" = (
+        (GET "CC-PV(T+D)Z-RI")
+        )
+CHLORINE:"cc-pV(T+d)Z-RI" = (
+        (GET "CC-PV(T+D)Z-RI")
+        )
+ARGON:"cc-pV(T+d)Z-RI" = (
+        (GET "CC-PV(T+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PV(Q+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  as reported in the reference below, auxiliary basis sets for (aug-)cc-pVXZ
+%    and (aug-)cc-pV(X+d)Z are identical
+%  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
+%  basis sets in resolution of the identity MP2 calculations, The Journal of
+%  Chemical Physics 116, 3175 (2002)
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"CC-PV(Q+D)Z-RI":puream = true
+ALUMINUM:"CC-PV(Q+D)Z-RI" = (
+  (GET "CC-PVQZ-RI")
+  )
+
+SILICON:"CC-PV(Q+D)Z-RI" = (
+  (GET "CC-PVQZ-RI")
+  )
+
+PHOSPHORUS:"CC-PV(Q+D)Z-RI" = (
+  (GET "CC-PVQZ-RI")
+  )
+
+SULFUR:"CC-PV(Q+D)Z-RI" = (
+  (GET "CC-PVQZ-RI")
+  )
+
+CHLORINE:"CC-PV(Q+D)Z-RI" = (
+  (GET "CC-PVQZ-RI")
+  )
+
+ARGON:"CC-PV(Q+D)Z-RI" = (
+  (GET "CC-PVQZ-RI")
+  )
+
+%%%%%%%%%%%  ALIAS cc-pV(Q+d)Z-RI=> CC-PV(Q+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"cc-pV(Q+d)Z-RI":puream = true
+ALUMINUM:"cc-pV(Q+d)Z-RI" = (
+        (GET "CC-PV(Q+D)Z-RI")
+        )
+SILICON:"cc-pV(Q+d)Z-RI" = (
+        (GET "CC-PV(Q+D)Z-RI")
+        )
+PHOSPHORUS:"cc-pV(Q+d)Z-RI" = (
+        (GET "CC-PV(Q+D)Z-RI")
+        )
+SULFUR:"cc-pV(Q+d)Z-RI" = (
+        (GET "CC-PV(Q+D)Z-RI")
+        )
+CHLORINE:"cc-pV(Q+d)Z-RI" = (
+        (GET "CC-PV(Q+D)Z-RI")
+        )
+ARGON:"cc-pV(Q+d)Z-RI" = (
+        (GET "CC-PV(Q+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PV(5+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  as reported in the reference below, auxiliary basis sets for (aug-)cc-pVXZ
+%    and (aug-)cc-pV(X+d)Z are identical
+%  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
+%  basis sets in resolution of the identity MP2 calculations, The Journal of
+%  Chemical Physics 116, 3175 (2002)
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"CC-PV(5+D)Z-RI":puream = true
+ALUMINUM:"CC-PV(5+D)Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  )
+
+SILICON:"CC-PV(5+D)Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  )
+
+PHOSPHORUS:"CC-PV(5+D)Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  )
+
+SULFUR:"CC-PV(5+D)Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  )
+
+CHLORINE:"CC-PV(5+D)Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  )
+
+ARGON:"CC-PV(5+D)Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  )
+
+%%%%%%%%%%%  ALIAS cc-pV(5+d)Z-RI=> CC-PV(5+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"cc-pV(5+d)Z-RI":puream = true
+ALUMINUM:"cc-pV(5+d)Z-RI" = (
+        (GET "CC-PV(5+D)Z-RI")
+        )
+SILICON:"cc-pV(5+d)Z-RI" = (
+        (GET "CC-PV(5+D)Z-RI")
+        )
+PHOSPHORUS:"cc-pV(5+d)Z-RI" = (
+        (GET "CC-PV(5+D)Z-RI")
+        )
+SULFUR:"cc-pV(5+d)Z-RI" = (
+        (GET "CC-PV(5+D)Z-RI")
+        )
+CHLORINE:"cc-pV(5+d)Z-RI" = (
+        (GET "CC-PV(5+D)Z-RI")
+        )
+ARGON:"cc-pV(5+d)Z-RI" = (
+        (GET "CC-PV(5+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PV(6+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  as reported in the reference below, auxiliary basis sets for (aug-)cc-pVXZ
+%    and (aug-)cc-pV(X+d)Z are identical
+%  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
+%  basis sets in resolution of the identity MP2 calculations, The Journal of
+%  Chemical Physics 116, 3175 (2002)
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"CC-PV(6+D)Z-RI":puream = true
+ALUMINUM:"CC-PV(6+D)Z-RI" = (
+  (GET "CC-PV6Z-RI")
+  )
+
+SILICON:"CC-PV(6+D)Z-RI" = (
+  (GET "CC-PV6Z-RI")
+  )
+
+PHOSPHORUS:"CC-PV(6+D)Z-RI" = (
+  (GET "CC-PV6Z-RI")
+  )
+
+SULFUR:"CC-PV(6+D)Z-RI" = (
+  (GET "CC-PV6Z-RI")
+  )
+
+CHLORINE:"CC-PV(6+D)Z-RI" = (
+  (GET "CC-PV6Z-RI")
+  )
+
+ARGON:"CC-PV(6+D)Z-RI" = (
+  (GET "CC-PV6Z-RI")
+  )
+
+%%%%%%%%%%%  ALIAS cc-pV(6+d)Z-RI=> CC-PV(6+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"cc-pV(6+d)Z-RI":puream = true
+ALUMINUM:"cc-pV(6+d)Z-RI" = (
+        (GET "CC-PV(6+D)Z-RI")
+        )
+SILICON:"cc-pV(6+d)Z-RI" = (
+        (GET "CC-PV(6+D)Z-RI")
+        )
+PHOSPHORUS:"cc-pV(6+d)Z-RI" = (
+        (GET "CC-PV(6+D)Z-RI")
+        )
+SULFUR:"cc-pV(6+d)Z-RI" = (
+        (GET "CC-PV(6+D)Z-RI")
+        )
+CHLORINE:"cc-pV(6+d)Z-RI" = (
+        (GET "CC-PV(6+D)Z-RI")
+        )
+ARGON:"cc-pV(6+d)Z-RI" = (
+        (GET "CC-PV(6+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%           SECOND-ROW SUPPLEMENTARY AUGMENTED CORRELATION CONSISTENT 
+%                          DENSITY FITTING BASIS SETS
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       AUG-CC-PV(D+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  as reported in the reference below, auxiliary basis sets for (aug-)cc-pVXZ
+%    and (aug-)cc-pV(X+d)Z are identical
+%  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
+%  basis sets in resolution of the identity MP2 calculations, The Journal of
+%  Chemical Physics 116, 3175 (2002)
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"AUG-CC-PV(D+D)Z-RI":puream = true
+ALUMINUM:"AUG-CC-PV(D+D)Z-RI" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+SILICON:"AUG-CC-PV(D+D)Z-RI" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+PHOSPHORUS:"AUG-CC-PV(D+D)Z-RI" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+SULFUR:"AUG-CC-PV(D+D)Z-RI" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+CHLORINE:"AUG-CC-PV(D+D)Z-RI" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+ARGON:"AUG-CC-PV(D+D)Z-RI" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+%%%%%%%%%%%  ALIAS aug-cc-pV(D+d)Z-RI=> AUG-CC-PV(D+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"aug-cc-pV(D+d)Z-RI":puream = true
+ALUMINUM:"aug-cc-pV(D+d)Z-RI" = (
+        (GET "AUG-CC-PV(D+D)Z-RI")
+        )
+SILICON:"aug-cc-pV(D+d)Z-RI" = (
+        (GET "AUG-CC-PV(D+D)Z-RI")
+        )
+PHOSPHORUS:"aug-cc-pV(D+d)Z-RI" = (
+        (GET "AUG-CC-PV(D+D)Z-RI")
+        )
+SULFUR:"aug-cc-pV(D+d)Z-RI" = (
+        (GET "AUG-CC-PV(D+D)Z-RI")
+        )
+CHLORINE:"aug-cc-pV(D+d)Z-RI" = (
+        (GET "AUG-CC-PV(D+D)Z-RI")
+        )
+ARGON:"aug-cc-pV(D+d)Z-RI" = (
+        (GET "AUG-CC-PV(D+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       AUG-CC-PV(T+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  as reported in the reference below, auxiliary basis sets for (aug-)cc-pVXZ
+%    and (aug-)cc-pV(X+d)Z are identical
+%  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
+%  basis sets in resolution of the identity MP2 calculations, The Journal of
+%  Chemical Physics 116, 3175 (2002)
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"AUG-CC-PV(T+D)Z-RI":puream = true
+ALUMINUM:"AUG-CC-PV(T+D)Z-RI" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+SILICON:"AUG-CC-PV(T+D)Z-RI" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+PHOSPHORUS:"AUG-CC-PV(T+D)Z-RI" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+SULFUR:"AUG-CC-PV(T+D)Z-RI" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+CHLORINE:"AUG-CC-PV(T+D)Z-RI" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+ARGON:"AUG-CC-PV(T+D)Z-RI" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+%%%%%%%%%%%  ALIAS aug-cc-pV(T+d)Z-RI=> AUG-CC-PV(T+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"aug-cc-pV(T+d)Z-RI":puream = true
+ALUMINUM:"aug-cc-pV(T+d)Z-RI" = (
+        (GET "AUG-CC-PV(T+D)Z-RI")
+        )
+SILICON:"aug-cc-pV(T+d)Z-RI" = (
+        (GET "AUG-CC-PV(T+D)Z-RI")
+        )
+PHOSPHORUS:"aug-cc-pV(T+d)Z-RI" = (
+        (GET "AUG-CC-PV(T+D)Z-RI")
+        )
+SULFUR:"aug-cc-pV(T+d)Z-RI" = (
+        (GET "AUG-CC-PV(T+D)Z-RI")
+        )
+CHLORINE:"aug-cc-pV(T+d)Z-RI" = (
+        (GET "AUG-CC-PV(T+D)Z-RI")
+        )
+ARGON:"aug-cc-pV(T+d)Z-RI" = (
+        (GET "AUG-CC-PV(T+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       AUG-CC-PV(Q+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  as reported in the reference below, auxiliary basis sets for (aug-)cc-pVXZ
+%    and (aug-)cc-pV(X+d)Z are identical
+%  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
+%  basis sets in resolution of the identity MP2 calculations, The Journal of
+%  Chemical Physics 116, 3175 (2002)
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"AUG-CC-PV(Q+D)Z-RI":puream = true
+ALUMINUM:"AUG-CC-PV(Q+D)Z-RI" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+SILICON:"AUG-CC-PV(Q+D)Z-RI" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+PHOSPHORUS:"AUG-CC-PV(Q+D)Z-RI" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+SULFUR:"AUG-CC-PV(Q+D)Z-RI" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+CHLORINE:"AUG-CC-PV(Q+D)Z-RI" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+ARGON:"AUG-CC-PV(Q+D)Z-RI" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+%%%%%%%%%%%  ALIAS aug-cc-pV(Q+d)Z-RI=> AUG-CC-PV(Q+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"aug-cc-pV(Q+d)Z-RI":puream = true
+ALUMINUM:"aug-cc-pV(Q+d)Z-RI" = (
+        (GET "AUG-CC-PV(Q+D)Z-RI")
+        )
+SILICON:"aug-cc-pV(Q+d)Z-RI" = (
+        (GET "AUG-CC-PV(Q+D)Z-RI")
+        )
+PHOSPHORUS:"aug-cc-pV(Q+d)Z-RI" = (
+        (GET "AUG-CC-PV(Q+D)Z-RI")
+        )
+SULFUR:"aug-cc-pV(Q+d)Z-RI" = (
+        (GET "AUG-CC-PV(Q+D)Z-RI")
+        )
+CHLORINE:"aug-cc-pV(Q+d)Z-RI" = (
+        (GET "AUG-CC-PV(Q+D)Z-RI")
+        )
+ARGON:"aug-cc-pV(Q+d)Z-RI" = (
+        (GET "AUG-CC-PV(Q+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       AUG-CC-PV(5+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  as reported in the reference below, auxiliary basis sets for (aug-)cc-pVXZ
+%    and (aug-)cc-pV(X+d)Z are identical
+%  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
+%  basis sets in resolution of the identity MP2 calculations, The Journal of
+%  Chemical Physics 116, 3175 (2002)
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"AUG-CC-PV(5+D)Z-RI":puream = true
+ALUMINUM:"AUG-CC-PV(5+D)Z-RI" = (
+  (GET "AUG-CC-PV5Z-RI")
+  )
+
+SILICON:"AUG-CC-PV(5+D)Z-RI" = (
+  (GET "AUG-CC-PV5Z-RI")
+  )
+
+PHOSPHORUS:"AUG-CC-PV(5+D)Z-RI" = (
+  (GET "AUG-CC-PV5Z-RI")
+  )
+
+SULFUR:"AUG-CC-PV(5+D)Z-RI" = (
+  (GET "AUG-CC-PV5Z-RI")
+  )
+
+CHLORINE:"AUG-CC-PV(5+D)Z-RI" = (
+  (GET "AUG-CC-PV5Z-RI")
+  )
+
+ARGON:"AUG-CC-PV(5+D)Z-RI" = (
+  (GET "AUG-CC-PV5Z-RI")
+  )
+
+%%%%%%%%%%%  ALIAS aug-cc-pV(5+d)Z-RI=> AUG-CC-PV(5+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"aug-cc-pV(5+d)Z-RI":puream = true
+ALUMINUM:"aug-cc-pV(5+d)Z-RI" = (
+        (GET "AUG-CC-PV(5+D)Z-RI")
+        )
+SILICON:"aug-cc-pV(5+d)Z-RI" = (
+        (GET "AUG-CC-PV(5+D)Z-RI")
+        )
+PHOSPHORUS:"aug-cc-pV(5+d)Z-RI" = (
+        (GET "AUG-CC-PV(5+D)Z-RI")
+        )
+SULFUR:"aug-cc-pV(5+d)Z-RI" = (
+        (GET "AUG-CC-PV(5+D)Z-RI")
+        )
+CHLORINE:"aug-cc-pV(5+d)Z-RI" = (
+        (GET "AUG-CC-PV(5+D)Z-RI")
+        )
+ARGON:"aug-cc-pV(5+d)Z-RI" = (
+        (GET "AUG-CC-PV(5+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       AUG-CC-PV(6+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  as reported in the reference below, auxiliary basis sets for (aug-)cc-pVXZ
+%    and (aug-)cc-pV(X+d)Z are identical
+%  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
+%  basis sets in resolution of the identity MP2 calculations, The Journal of
+%  Chemical Physics 116, 3175 (2002)
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"AUG-CC-PV(6+D)Z-RI":puream = true
+ALUMINUM:"AUG-CC-PV(6+D)Z-RI" = (
+  (GET "AUG-CC-PV6Z-RI")
+  )
+
+SILICON:"AUG-CC-PV(6+D)Z-RI" = (
+  (GET "AUG-CC-PV6Z-RI")
+  )
+
+PHOSPHORUS:"AUG-CC-PV(6+D)Z-RI" = (
+  (GET "AUG-CC-PV6Z-RI")
+  )
+
+SULFUR:"AUG-CC-PV(6+D)Z-RI" = (
+  (GET "AUG-CC-PV6Z-RI")
+  )
+
+CHLORINE:"AUG-CC-PV(6+D)Z-RI" = (
+  (GET "AUG-CC-PV6Z-RI")
+  )
+
+ARGON:"AUG-CC-PV(6+D)Z-RI" = (
+  (GET "AUG-CC-PV6Z-RI")
+  )
+
+%%%%%%%%%%%  ALIAS aug-cc-pV(6+d)Z-RI=> AUG-CC-PV(6+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"aug-cc-pV(6+d)Z-RI":puream = true
+ALUMINUM:"aug-cc-pV(6+d)Z-RI" = (
+        (GET "AUG-CC-PV(6+D)Z-RI")
+        )
+SILICON:"aug-cc-pV(6+d)Z-RI" = (
+        (GET "AUG-CC-PV(6+D)Z-RI")
+        )
+PHOSPHORUS:"aug-cc-pV(6+d)Z-RI" = (
+        (GET "AUG-CC-PV(6+D)Z-RI")
+        )
+SULFUR:"aug-cc-pV(6+d)Z-RI" = (
+        (GET "AUG-CC-PV(6+D)Z-RI")
+        )
+CHLORINE:"aug-cc-pV(6+d)Z-RI" = (
+        (GET "AUG-CC-PV(6+D)Z-RI")
+        )
+ARGON:"aug-cc-pV(6+d)Z-RI" = (
+        (GET "AUG-CC-PV(6+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%    CORRELATION CONSISTENT WEIGHTED CORE VALENCE DENSITY FITTING BASIS SETS
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PWCVDZ-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from EMSL 28 August 2009
+%  Christof Hattig, Optimization of auxiliary basis sets for RI-MP2 and RI-CC2
+%  calculations: Core-valence and quintuple-? basis sets for H to Ar and QZVPP
+%  basis sets for Li to Kr, Physical Chemistry Chemical Physics 7, 59 (2005)
+%  for B C N O F Ne Al Si P S Cl Ar
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"CC-PWCVDZ-RI":puream = true
+BORON:"CC-PWCVDZ-RI" = (
+  (GET "CC-PVDZ-RI")
+  (S    (       160.6830000000           1.0000000000))
+  (S    (        23.3433000000           1.0000000000))
+  (S    (         6.4028000000           1.0000000000))
+  (P    (        52.5280000000           1.0000000000))
+  (P    (         9.2486300000           1.0000000000))
+  (D    (         5.9812000000           1.0000000000)))
+
+CARBON:"CC-PWCVDZ-RI" = (
+  (GET "CC-PVDZ-RI")
+  (S    (       275.8860000000           1.0000000000))
+  (S    (        34.1417000000           1.0000000000))
+  (S    (         8.2901000000           1.0000000000))
+  (P    (        62.8272000000           1.0000000000))
+  (P    (        10.1795000000           1.0000000000))
+  (D    (        28.4479000000           1.0000000000)))
+
+NITROGEN:"CC-PWCVDZ-RI" = (
+  (GET "CC-PVDZ-RI")
+  (S    (       418.2000000000           1.0000000000))
+  (S    (        40.2220000000           1.0000000000))
+  (S    (        11.6900000000           1.0000000000))
+  (P    (        73.6756000000           1.0000000000))
+  (P    (        15.4815000000           1.0000000000))
+  (D    (        28.2002000000           1.0000000000)))
+
+OXYGEN:"CC-PWCVDZ-RI" = (
+  (GET "CC-PVDZ-RI")
+  (S    (       506.5590000000           1.0000000000))
+  (S    (        48.1539000000           1.0000000000))
+  (S    (        14.5739000000           1.0000000000))
+  (P    (        76.5639000000           1.0000000000))
+  (P    (        19.8279000000           1.0000000000))
+  (D    (        30.5022000000           1.0000000000)))
+
+FLUORINE:"CC-PWCVDZ-RI" = (
+  (GET "CC-PVDZ-RI")
+  (S    (       582.3270000000           1.0000000000))
+  (S    (        63.1976000000           1.0000000000))
+  (S    (        18.0090000000           1.0000000000))
+  (P    (       103.2490000000           1.0000000000))
+  (P    (        23.0199000000           1.0000000000))
+  (D    (        32.1531000000           1.0000000000)))
+
+NEON:"CC-PWCVDZ-RI" = (
+  (GET "CC-PVDZ-RI")
+  (S    (       726.7080000000           1.0000000000))
+  (S    (        88.9066000000           1.0000000000))
+  (S    (        23.9832000000           1.0000000000))
+  (P    (       117.2660000000           1.0000000000))
+  (P    (        29.0727000000           1.0000000000))
+  (D    (        35.0086000000           1.0000000000)))
+
+ALUMINUM:"CC-PWCVDZ-RI" = (
+  (GET "CC-PVDZ-RI")
+  (S    (       499.0370000000           1.0000000000))
+  (S    (       116.8940000000           1.0000000000))
+  (S    (        28.7395000000           1.0000000000))
+  (P    (       179.3890000000           1.0000000000))
+  (P    (        39.4495000000           1.0000000000))
+  (P    (         9.4324900000           1.0000000000))
+  (D    (        33.6423000000           1.0000000000))
+  (D    (         6.5521600000           1.0000000000))
+  (D    (         0.7000760000           1.0000000000))
+  (F    (        12.9675000000           1.0000000000))
+  (F    (         0.7805280000           1.0000000000)))
+
+SILICON:"CC-PWCVDZ-RI" = (
+  (GET "CC-PVDZ-RI")
+  (S    (       501.1960000000           1.0000000000))
+  (S    (       113.6310000000           1.0000000000))
+  (S    (        29.3353000000           1.0000000000))
+  (P    (       249.7410000000           1.0000000000))
+  (P    (        49.7677000000           1.0000000000))
+  (P    (         3.5486400000           1.0000000000))
+  (D    (        41.8900000000           1.0000000000))
+  (D    (         8.9542500000           1.0000000000))
+  (D    (         0.9889740000           1.0000000000))
+  (F    (        11.4933000000           1.0000000000))
+  (F    (         1.2000000000           1.0000000000)))
+
+PHOSPHORUS:"CC-PWCVDZ-RI" = (
+  (GET "CC-PVDZ-RI")
+  (S    (      1139.2200000000           1.0000000000))
+  (S    (       111.6330000000           1.0000000000))
+  (S    (        29.3111000000           1.0000000000))
+  (P    (       393.8230000000           1.0000000000))
+  (P    (        39.1216000000           1.0000000000))
+  (P    (         4.1106600000           1.0000000000))
+  (D    (        53.5025000000           1.0000000000))
+  (D    (        11.3353000000           1.0000000000))
+  (D    (         1.3339100000           1.0000000000))
+  (F    (        13.4413000000           1.0000000000))
+  (F    (         1.5000000000           1.0000000000)))
+
+SULFUR:"CC-PWCVDZ-RI" = (
+  (GET "CC-PVDZ-RI")
+  (S    (       900.7350000000           1.0000000000))
+  (S    (       111.3840000000           1.0000000000))
+  (S    (        29.0209000000           1.0000000000))
+  (P    (       251.6990000000           1.0000000000))
+  (P    (        45.3874000000           1.0000000000))
+  (P    (         4.2949500000           1.0000000000))
+  (D    (        67.3216000000           1.0000000000))
+  (D    (        12.9274000000           1.0000000000))
+  (D    (         1.6918100000           1.0000000000))
+  (F    (        15.6678000000           1.0000000000))
+  (F    (         2.0000000000           1.0000000000)))
+
+CHLORINE:"CC-PWCVDZ-RI" = (
+  (GET "CC-PVDZ-RI")
+  (S    (      2000.1600000000           1.0000000000))
+  (S    (       142.5260000000           1.0000000000))
+  (S    (        34.0000000000           1.0000000000))
+  (P    (       568.8670000000           1.0000000000))
+  (P    (        43.5568000000           1.0000000000))
+  (P    (         5.0589100000           1.0000000000))
+  (D    (        81.1489000000           1.0000000000))
+  (D    (        15.1852000000           1.0000000000))
+  (D    (         2.0536000000           1.0000000000))
+  (F    (        16.6613000000           1.0000000000))
+  (F    (         2.3500000000           1.0000000000)))
+
+ARGON:"CC-PWCVDZ-RI" = (
+  (GET "CC-PVDZ-RI")
+  (S    (      1501.0100000000           1.0000000000))
+  (S    (       161.3490000000           1.0000000000))
+  (S    (        45.0561000000           1.0000000000))
+  (P    (       388.8580000000           1.0000000000))
+  (P    (       100.0000000000           1.0000000000))
+  (P    (        30.0000000000           1.0000000000))
+  (D    (        81.3468000000           1.0000000000))
+  (D    (        17.5038000000           1.0000000000))
+  (D    (         2.3730500000           1.0000000000))
+  (F    (        24.6097000000           1.0000000000))
+  (F    (         3.0000000000           1.0000000000)))
+
+%%%%%%%%%%%  ALIAS cc-pwCVDZ-RI=> CC-PWCVDZ-RI"  %%%%%%%%%%%%%%%%%%
+
+"cc-pwCVDZ-RI":puream = true
+BORON:"cc-pwCVDZ-RI" = (
+        (GET "CC-PWCVDZ-RI")
+        )
+CARBON:"cc-pwCVDZ-RI" = (
+        (GET "CC-PWCVDZ-RI")
+        )
+NITROGEN:"cc-pwCVDZ-RI" = (
+        (GET "CC-PWCVDZ-RI")
+        )
+OXYGEN:"cc-pwCVDZ-RI" = (
+        (GET "CC-PWCVDZ-RI")
+        )
+FLUORINE:"cc-pwCVDZ-RI" = (
+        (GET "CC-PWCVDZ-RI")
+        )
+NEON:"cc-pwCVDZ-RI" = (
+        (GET "CC-PWCVDZ-RI")
+        )
+ALUMINUM:"cc-pwCVDZ-RI" = (
+        (GET "CC-PWCVDZ-RI")
+        )
+SILICON:"cc-pwCVDZ-RI" = (
+        (GET "CC-PWCVDZ-RI")
+        )
+PHOSPHORUS:"cc-pwCVDZ-RI" = (
+        (GET "CC-PWCVDZ-RI")
+        )
+SULFUR:"cc-pwCVDZ-RI" = (
+        (GET "CC-PWCVDZ-RI")
+        )
+CHLORINE:"cc-pwCVDZ-RI" = (
+        (GET "CC-PWCVDZ-RI")
+        )
+ARGON:"cc-pwCVDZ-RI" = (
+        (GET "CC-PWCVDZ-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PWCVTZ-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from EMSL 28 August 2009
+%  Christof Hattig, Optimization of auxiliary basis sets for RI-MP2 and RI-CC2
+%  calculations: Core-valence and quintuple-? basis sets for H to Ar and QZVPP
+%  basis sets for Li to Kr, Physical Chemistry Chemical Physics 7, 59 (2005)
+%  for B C N O F Ne Al Si P S Cl Ar
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"CC-PWCVTZ-RI":puream = true
+BORON:"CC-PWCVTZ-RI" = (
+  (GET "CC-PVTZ-RI")
+  (S    (       308.3790000000           1.0000000000))
+  (S    (        41.3204000000           1.0000000000))
+  (S    (        14.1735000000           1.0000000000))
+  (S    (         3.1614700000           1.0000000000))
+  (P    (        41.3671000000           1.0000000000))
+  (P    (        10.4871000000           1.0000000000))
+  (P    (         2.1099000000           1.0000000000))
+  (D    (        16.7245000000           1.0000000000))
+  (D    (         3.5381400000           1.0000000000))
+  (F    (         3.6431500000           1.0000000000)))
+
+CARBON:"CC-PWCVTZ-RI" = (
+  (GET "CC-PVTZ-RI")
+  (S    (       508.6800000000           1.0000000000))
+  (S    (       129.9920000000           1.0000000000))
+  (S    (        39.0277000000           1.0000000000))
+  (S    (         2.9172900000           1.0000000000))
+  (P    (        60.8644000000           1.0000000000))
+  (P    (        15.2456000000           1.0000000000))
+  (P    (         3.0495700000           1.0000000000))
+  (D    (        24.4061000000           1.0000000000))
+  (D    (         5.7381500000           1.0000000000))
+  (F    (         6.4901300000           1.0000000000)))
+
+NITROGEN:"CC-PWCVTZ-RI" = (
+  (GET "CC-PVTZ-RI")
+  (S    (       592.5900000000           1.0000000000))
+  (S    (       130.9320000000           1.0000000000))
+  (S    (        34.5954000000           1.0000000000))
+  (S    (         3.8528200000           1.0000000000))
+  (P    (        85.5760000000           1.0000000000))
+  (P    (        20.1106000000           1.0000000000))
+  (P    (         4.3152600000           1.0000000000))
+  (D    (        33.8157000000           1.0000000000))
+  (D    (         7.8843400000           1.0000000000))
+  (F    (         9.5540700000           1.0000000000)))
+
+OXYGEN:"CC-PWCVTZ-RI" = (
+  (GET "CC-PVTZ-RI")
+  (S    (       666.4030000000           1.0000000000))
+  (S    (       171.9830000000           1.0000000000))
+  (S    (        41.6001000000           1.0000000000))
+  (S    (         5.1791800000           1.0000000000))
+  (P    (       133.2370000000           1.0000000000))
+  (P    (        26.1479000000           1.0000000000))
+  (P    (         6.6342400000           1.0000000000))
+  (D    (        40.8836000000           1.0000000000))
+  (D    (        10.5342000000           1.0000000000))
+  (F    (        13.3713000000           1.0000000000)))
+
+FLUORINE:"CC-PWCVTZ-RI" = (
+  (GET "CC-PVTZ-RI")
+  (S    (       910.0440000000           1.0000000000))
+  (S    (       200.7020000000           1.0000000000))
+  (S    (        53.9590000000           1.0000000000))
+  (S    (         6.6052500000           1.0000000000))
+  (P    (       126.9180000000           1.0000000000))
+  (P    (        28.8828000000           1.0000000000))
+  (P    (         8.1780100000           1.0000000000))
+  (D    (        52.1748000000           1.0000000000))
+  (D    (        15.3585000000           1.0000000000))
+  (F    (        17.9929000000           1.0000000000)))
+
+NEON:"CC-PWCVTZ-RI" = (
+  (GET "CC-PVTZ-RI")
+  (S    (      1431.3600000000           1.0000000000))
+  (S    (       301.9480000000           1.0000000000))
+  (S    (        71.1568000000           1.0000000000))
+  (S    (         8.4796100000           1.0000000000))
+  (P    (       200.5890000000           1.0000000000))
+  (P    (        40.2010000000           1.0000000000))
+  (P    (        12.0357000000           1.0000000000))
+  (D    (        62.5225000000           1.0000000000))
+  (D    (        13.4802000000           1.0000000000))
+  (F    (        22.9212000000           1.0000000000)))
+
+ALUMINUM:"CC-PWCVTZ-RI" = (
+  (GET "CC-PVTZ-RI")
+  (S    (       702.3370000000           1.0000000000))
+  (S    (       155.5790000000           1.0000000000))
+  (S    (        75.0619000000           1.0000000000))
+  (S    (        25.6620000000           1.0000000000))
+  (P    (       134.6900000000           1.0000000000))
+  (P    (        40.1557000000           1.0000000000))
+  (P    (        19.9213000000           1.0000000000))
+  (P    (         3.3363400000           1.0000000000))
+  (D    (        76.5170000000           1.0000000000))
+  (D    (        20.3074000000           1.0000000000))
+  (D    (         6.4307300000           1.0000000000))
+  (F    (        11.9177000000           1.0000000000))
+  (F    (         1.3411800000           1.0000000000))
+  (G    (         3.7216800000           1.0000000000)))
+
+SILICON:"CC-PWCVTZ-RI" = (
+  (GET "CC-PVTZ-RI")
+  (S    (       599.8490000000           1.0000000000))
+  (S    (       149.5510000000           1.0000000000))
+  (S    (        49.5116000000           1.0000000000))
+  (S    (        19.6692000000           1.0000000000))
+  (P    (       250.0670000000           1.0000000000))
+  (P    (        47.9889000000           1.0000000000))
+  (P    (        21.9856000000           1.0000000000))
+  (P    (         6.1136300000           1.0000000000))
+  (D    (        80.3511000000           1.0000000000))
+  (D    (        18.0005000000           1.0000000000))
+  (D    (         2.9883700000           1.0000000000))
+  (F    (        15.9060000000           1.0000000000))
+  (F    (         2.1479600000           1.0000000000))
+  (G    (         4.7490800000           1.0000000000)))
+
+PHOSPHORUS:"CC-PWCVTZ-RI" = (
+  (GET "CC-PVTZ-RI")
+  (S    (       677.6140000000           1.0000000000))
+  (S    (       150.5870000000           1.0000000000))
+  (S    (        64.4339000000           1.0000000000))
+  (S    (        22.5568000000           1.0000000000))
+  (P    (       249.5810000000           1.0000000000))
+  (P    (        61.3622000000           1.0000000000))
+  (P    (        25.7646000000           1.0000000000))
+  (P    (         7.1204300000           1.0000000000))
+  (D    (        94.8478000000           1.0000000000))
+  (D    (        19.7120000000           1.0000000000))
+  (D    (         3.9312400000           1.0000000000))
+  (F    (        20.1170000000           1.0000000000))
+  (F    (         5.6391900000           1.0000000000))
+  (G    (         5.9980700000           1.0000000000)))
+
+SULFUR:"CC-PWCVTZ-RI" = (
+  (GET "CC-PVTZ-RI")
+  (S    (       657.0040000000           1.0000000000))
+  (S    (       188.7270000000           1.0000000000))
+  (S    (        60.9220000000           1.0000000000))
+  (S    (        25.3326000000           1.0000000000))
+  (P    (       247.7450000000           1.0000000000))
+  (P    (        54.5658000000           1.0000000000))
+  (P    (        25.8472000000           1.0000000000))
+  (P    (         8.0924900000           1.0000000000))
+  (D    (       103.6620000000           1.0000000000))
+  (D    (        25.5738000000           1.0000000000))
+  (D    (         4.3699300000           1.0000000000))
+  (F    (        23.1035000000           1.0000000000))
+  (F    (         2.9978300000           1.0000000000))
+  (G    (         7.1651800000           1.0000000000)))
+
+CHLORINE:"CC-PWCVTZ-RI" = (
+  (GET "CC-PVTZ-RI")
+  (S    (       880.0760000000           1.0000000000))
+  (S    (       206.8750000000           1.0000000000))
+  (S    (        78.4715000000           1.0000000000))
+  (S    (        28.2263000000           1.0000000000))
+  (P    (       282.5760000000           1.0000000000))
+  (P    (        60.7191000000           1.0000000000))
+  (P    (        31.3588000000           1.0000000000))
+  (P    (         9.1455500000           1.0000000000))
+  (D    (       122.4660000000           1.0000000000))
+  (D    (        19.7301000000           1.0000000000))
+  (D    (         8.9400200000           1.0000000000))
+  (F    (        28.5454000000           1.0000000000))
+  (F    (         8.2515200000           1.0000000000))
+  (G    (         8.6120400000           1.0000000000)))
+
+ARGON:"CC-PWCVTZ-RI" = (
+  (GET "CC-PVTZ-RI")
+  (S    (       807.7880000000           1.0000000000))
+  (S    (       254.2260000000           1.0000000000))
+  (S    (        65.3679000000           1.0000000000))
+  (S    (        27.7121000000           1.0000000000))
+  (P    (       300.6780000000           1.0000000000))
+  (P    (        91.5980000000           1.0000000000))
+  (P    (        37.0423000000           1.0000000000))
+  (P    (        11.0188000000           1.0000000000))
+  (D    (       153.2910000000           1.0000000000))
+  (D    (        20.7698000000           1.0000000000))
+  (D    (         4.8294500000           1.0000000000))
+  (F    (        32.8550000000           1.0000000000))
+  (F    (         9.6923300000           1.0000000000))
+  (G    (        10.0342000000           1.0000000000)))
+
+%%%%%%%%%%%  ALIAS cc-pwCVTZ-RI=> CC-PWCVTZ-RI"  %%%%%%%%%%%%%%%%%%
+
+"cc-pwCVTZ-RI":puream = true
+BORON:"cc-pwCVTZ-RI" = (
+        (GET "CC-PWCVTZ-RI")
+        )
+CARBON:"cc-pwCVTZ-RI" = (
+        (GET "CC-PWCVTZ-RI")
+        )
+NITROGEN:"cc-pwCVTZ-RI" = (
+        (GET "CC-PWCVTZ-RI")
+        )
+OXYGEN:"cc-pwCVTZ-RI" = (
+        (GET "CC-PWCVTZ-RI")
+        )
+FLUORINE:"cc-pwCVTZ-RI" = (
+        (GET "CC-PWCVTZ-RI")
+        )
+NEON:"cc-pwCVTZ-RI" = (
+        (GET "CC-PWCVTZ-RI")
+        )
+ALUMINUM:"cc-pwCVTZ-RI" = (
+        (GET "CC-PWCVTZ-RI")
+        )
+SILICON:"cc-pwCVTZ-RI" = (
+        (GET "CC-PWCVTZ-RI")
+        )
+PHOSPHORUS:"cc-pwCVTZ-RI" = (
+        (GET "CC-PWCVTZ-RI")
+        )
+SULFUR:"cc-pwCVTZ-RI" = (
+        (GET "CC-PWCVTZ-RI")
+        )
+CHLORINE:"cc-pwCVTZ-RI" = (
+        (GET "CC-PWCVTZ-RI")
+        )
+ARGON:"cc-pwCVTZ-RI" = (
+        (GET "CC-PWCVTZ-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PWCVQZ-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from EMSL 28 August 2009
+%  Christof Hattig, Optimization of auxiliary basis sets for RI-MP2 and RI-CC2
+%  calculations: Core-valence and quintuple-? basis sets for H to Ar and QZVPP
+%  basis sets for Li to Kr, Physical Chemistry Chemical Physics 7, 59 (2005)
+%  for B C N O F Ne Al Si P S Cl Ar
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"CC-PWCVQZ-RI":puream = true
+BORON:"CC-PWCVQZ-RI" = (
+  (GET "CC-PVQZ-RI")
+  (S    (       562.5900000000           1.0000000000))
+  (S    (        75.1804000000           1.0000000000))
+  (S    (        17.6344000000           1.0000000000))
+  (S    (         5.7840700000           1.0000000000))
+  (P    (       159.9830000000           1.0000000000))
+  (P    (        83.0330000000           1.0000000000))
+  (P    (        19.7059000000           1.0000000000))
+  (P    (         5.7914000000           1.0000000000))
+  (D    (        50.4872000000           1.0000000000))
+  (D    (        21.4342000000           1.0000000000))
+  (D    (         5.9024600000           1.0000000000))
+  (F    (        15.6076000000           1.0000000000))
+  (F    (         6.5427600000           1.0000000000))
+  (G    (         4.1394300000           1.0000000000)))
+
+CARBON:"CC-PWCVQZ-RI" = (
+  (GET "CC-PVQZ-RI")
+  (S    (       944.9180000000           1.0000000000))
+  (S    (        70.5017000000           1.0000000000))
+  (S    (        27.9213000000           1.0000000000))
+  (S    (         6.1910700000           1.0000000000))
+  (P    (       200.1470000000           1.0000000000))
+  (P    (        93.4590000000           1.0000000000))
+  (P    (        27.8690000000           1.0000000000))
+  (P    (         6.5454900000           1.0000000000))
+  (D    (        54.7128000000           1.0000000000))
+  (D    (        25.2257000000           1.0000000000))
+  (D    (         3.2922300000           1.0000000000))
+  (F    (        21.9219000000           1.0000000000))
+  (F    (        10.2631000000           1.0000000000))
+  (G    (         7.3920500000           1.0000000000)))
+
+NITROGEN:"CC-PWCVQZ-RI" = (
+  (GET "CC-PVQZ-RI")
+  (S    (       927.7870000000           1.0000000000))
+  (S    (       101.8900000000           1.0000000000))
+  (S    (        40.7825000000           1.0000000000))
+  (S    (         7.5049700000           1.0000000000))
+  (P    (       280.7020000000           1.0000000000))
+  (P    (       129.6310000000           1.0000000000))
+  (P    (        36.2049000000           1.0000000000))
+  (P    (         9.0846600000           1.0000000000))
+  (D    (        98.4186000000           1.0000000000))
+  (D    (        39.5811000000           1.0000000000))
+  (D    (         9.1488300000           1.0000000000))
+  (F    (        31.3497000000           1.0000000000))
+  (F    (        14.6463000000           1.0000000000))
+  (G    (        10.7654000000           1.0000000000)))
+
+OXYGEN:"CC-PWCVQZ-RI" = (
+  (GET "CC-PVQZ-RI")
+  (S    (      1360.9500000000           1.0000000000))
+  (S    (       149.9520000000           1.0000000000))
+  (S    (        44.3906000000           1.0000000000))
+  (S    (         7.9723700000           1.0000000000))
+  (P    (       351.4270000000           1.0000000000))
+  (P    (       147.0530000000           1.0000000000))
+  (P    (        45.7078000000           1.0000000000))
+  (P    (        12.0992000000           1.0000000000))
+  (D    (        80.6501000000           1.0000000000))
+  (D    (        35.0853000000           1.0000000000))
+  (D    (        14.8091000000           1.0000000000))
+  (F    (        40.5353000000           1.0000000000))
+  (F    (        18.4997000000           1.0000000000))
+  (G    (        15.2068000000           1.0000000000)))
+
+FLUORINE:"CC-PWCVQZ-RI" = (
+  (GET "CC-PVQZ-RI")
+  (S    (      2403.0400000000           1.0000000000))
+  (S    (       199.3190000000           1.0000000000))
+  (S    (        59.5466000000           1.0000000000))
+  (S    (        10.5292000000           1.0000000000))
+  (P    (       405.7360000000           1.0000000000))
+  (P    (       172.9200000000           1.0000000000))
+  (P    (        62.6788000000           1.0000000000))
+  (P    (        13.8606000000           1.0000000000))
+  (D    (       107.6660000000           1.0000000000))
+  (D    (        56.8439000000           1.0000000000))
+  (D    (        16.4713000000           1.0000000000))
+  (F    (        52.8086000000           1.0000000000))
+  (F    (        23.8725000000           1.0000000000))
+  (G    (        20.4005000000           1.0000000000)))
+
+NEON:"CC-PWCVQZ-RI" = (
+  (GET "CC-PVQZ-RI")
+  (S    (      2084.2800000000           1.0000000000))
+  (S    (       330.0070000000           1.0000000000))
+  (S    (        76.0755000000           1.0000000000))
+  (S    (        13.6186000000           1.0000000000))
+  (P    (       411.2250000000           1.0000000000))
+  (P    (       163.7910000000           1.0000000000))
+  (P    (        51.7701000000           1.0000000000))
+  (P    (        15.5684000000           1.0000000000))
+  (D    (       136.3400000000           1.0000000000))
+  (D    (        71.9263000000           1.0000000000))
+  (D    (        15.4681000000           1.0000000000))
+  (F    (        61.7418000000           1.0000000000))
+  (F    (        26.0985000000           1.0000000000))
+  (G    (        26.4171000000           1.0000000000)))
+
+ALUMINUM:"CC-PWCVQZ-RI" = (
+  (GET "CC-PVQZ-RI")
+  (S    (       692.8470000000           1.0000000000))
+  (S    (       168.1190000000           1.0000000000))
+  (S    (        58.0437000000           1.0000000000))
+  (S    (        22.7118000000           1.0000000000))
+  (P    (       401.3940000000           1.0000000000))
+  (P    (        30.0031000000           1.0000000000))
+  (P    (        14.9635000000           1.0000000000))
+  (P    (         3.5032800000           1.0000000000))
+  (D    (        99.0865000000           1.0000000000))
+  (D    (        25.1171000000           1.0000000000))
+  (D    (         8.0000000000           1.0000000000))
+  (F    (        20.6507000000           1.0000000000))
+  (F    (         4.9105400000           1.0000000000))
+  (F    (         2.0617300000           1.0000000000))
+  (G    (        11.5400000000           1.0000000000))
+  (G    (         3.8169900000           1.0000000000))
+  (G    (         1.0910300000           1.0000000000))
+  (H    (         3.8754900000           1.0000000000))
+  (H    (         1.7962300000           1.0000000000)))
+
+SILICON:"CC-PWCVQZ-RI" = (
+  (GET "CC-PVQZ-RI")
+  (S    (       906.0290000000           1.0000000000))
+  (S    (       163.2060000000           1.0000000000))
+  (S    (        50.4526000000           1.0000000000))
+  (S    (        15.6417000000           1.0000000000))
+  (P    (       454.2540000000           1.0000000000))
+  (P    (        36.1693000000           1.0000000000))
+  (P    (        18.0463000000           1.0000000000))
+  (P    (         4.1461900000           1.0000000000))
+  (D    (       122.8710000000           1.0000000000))
+  (D    (        21.2466000000           1.0000000000))
+  (D    (         1.4585400000           1.0000000000))
+  (F    (        26.6987000000           1.0000000000))
+  (F    (         5.9436300000           1.0000000000))
+  (F    (         1.1526800000           1.0000000000))
+  (G    (        14.4380000000           1.0000000000))
+  (G    (         4.7851200000           1.0000000000))
+  (G    (         1.3390800000           1.0000000000))
+  (H    (         4.7385600000           1.0000000000))
+  (H    (         2.2121100000           1.0000000000)))
+
+PHOSPHORUS:"CC-PWCVQZ-RI" = (
+  (GET "CC-PVQZ-RI")
+  (S    (      1059.6000000000           1.0000000000))
+  (S    (       204.7470000000           1.0000000000))
+  (S    (        52.5158000000           1.0000000000))
+  (S    (        20.4263000000           1.0000000000))
+  (P    (       371.8510000000           1.0000000000))
+  (P    (        31.2387000000           1.0000000000))
+  (P    (        18.0000000000           1.0000000000))
+  (P    (         9.1006700000           1.0000000000))
+  (D    (       106.6520000000           1.0000000000))
+  (D    (        19.5339000000           1.0000000000))
+  (D    (         1.8000000000           1.0000000000))
+  (F    (        34.2326000000           1.0000000000))
+  (F    (         7.2000000000           1.0000000000))
+  (F    (         3.3229900000           1.0000000000))
+  (G    (        17.7952000000           1.0000000000))
+  (G    (         5.9865100000           1.0000000000))
+  (G    (         1.7597500000           1.0000000000))
+  (H    (         5.8083600000           1.0000000000))
+  (H    (         2.6371300000           1.0000000000)))
+
+SULFUR:"CC-PWCVQZ-RI" = (
+  (GET "CC-PVQZ-RI")
+  (S    (      1200.3500000000           1.0000000000))
+  (S    (       216.8300000000           1.0000000000))
+  (S    (        67.0796000000           1.0000000000))
+  (S    (        21.8972000000           1.0000000000))
+  (P    (       414.1360000000           1.0000000000))
+  (P    (        39.5416000000           1.0000000000))
+  (P    (        22.0000000000           1.0000000000))
+  (P    (         8.7220800000           1.0000000000))
+  (D    (       120.2110000000           1.0000000000))
+  (D    (        22.6502000000           1.0000000000))
+  (D    (         2.4230100000           1.0000000000))
+  (F    (        40.2243000000           1.0000000000))
+  (F    (         7.8538500000           1.0000000000))
+  (F    (         3.4313500000           1.0000000000))
+  (G    (        21.4007000000           1.0000000000))
+  (G    (         7.2042100000           1.0000000000))
+  (G    (         2.0273700000           1.0000000000))
+  (H    (         6.8985400000           1.0000000000))
+  (H    (         3.1529900000           1.0000000000)))
+
+CHLORINE:"CC-PWCVQZ-RI" = (
+  (GET "CC-PVQZ-RI")
+  (S    (      1321.7700000000           1.0000000000))
+  (S    (       237.6620000000           1.0000000000))
+  (S    (        78.1835000000           1.0000000000))
+  (S    (        24.1958000000           1.0000000000))
+  (P    (       504.9080000000           1.0000000000))
+  (P    (        46.3595000000           1.0000000000))
+  (P    (        25.0000000000           1.0000000000))
+  (P    (        10.1592000000           1.0000000000))
+  (D    (       225.1760000000           1.0000000000))
+  (D    (        35.1896000000           1.0000000000))
+  (D    (         2.8311800000           1.0000000000))
+  (F    (        48.1427000000           1.0000000000))
+  (F    (         9.5118200000           1.0000000000))
+  (F    (         4.0774100000           1.0000000000))
+  (G    (        25.5945000000           1.0000000000))
+  (G    (         8.8047800000           1.0000000000))
+  (G    (         2.5731200000           1.0000000000))
+  (H    (         8.2536600000           1.0000000000))
+  (H    (         3.7528700000           1.0000000000)))
+
+ARGON:"CC-PWCVQZ-RI" = (
+  (GET "CC-PVQZ-RI")
+  (S    (      2258.4600000000           1.0000000000))
+  (S    (       261.0880000000           1.0000000000))
+  (S    (        81.7107000000           1.0000000000))
+  (S    (        25.2405000000           1.0000000000))
+  (P    (       533.9230000000           1.0000000000))
+  (P    (        55.1987000000           1.0000000000))
+  (P    (        29.6716000000           1.0000000000))
+  (P    (         5.7294100000           1.0000000000))
+  (D    (       152.3420000000           1.0000000000))
+  (D    (        33.0292000000           1.0000000000))
+  (D    (         3.3339500000           1.0000000000))
+  (F    (        57.3941000000           1.0000000000))
+  (F    (        12.0707000000           1.0000000000))
+  (F    (         5.6163600000           1.0000000000))
+  (G    (        30.1310000000           1.0000000000))
+  (G    (        10.4864000000           1.0000000000))
+  (G    (         3.0065000000           1.0000000000))
+  (H    (         9.7740200000           1.0000000000))
+  (H    (         4.4247000000           1.0000000000)))
+
+%%%%%%%%%%%  ALIAS cc-pwCVQZ-RI=> CC-PWCVQZ-RI"  %%%%%%%%%%%%%%%%%%
+
+"cc-pwCVQZ-RI":puream = true
+BORON:"cc-pwCVQZ-RI" = (
+        (GET "CC-PWCVQZ-RI")
+        )
+CARBON:"cc-pwCVQZ-RI" = (
+        (GET "CC-PWCVQZ-RI")
+        )
+NITROGEN:"cc-pwCVQZ-RI" = (
+        (GET "CC-PWCVQZ-RI")
+        )
+OXYGEN:"cc-pwCVQZ-RI" = (
+        (GET "CC-PWCVQZ-RI")
+        )
+FLUORINE:"cc-pwCVQZ-RI" = (
+        (GET "CC-PWCVQZ-RI")
+        )
+NEON:"cc-pwCVQZ-RI" = (
+        (GET "CC-PWCVQZ-RI")
+        )
+ALUMINUM:"cc-pwCVQZ-RI" = (
+        (GET "CC-PWCVQZ-RI")
+        )
+SILICON:"cc-pwCVQZ-RI" = (
+        (GET "CC-PWCVQZ-RI")
+        )
+PHOSPHORUS:"cc-pwCVQZ-RI" = (
+        (GET "CC-PWCVQZ-RI")
+        )
+SULFUR:"cc-pwCVQZ-RI" = (
+        (GET "CC-PWCVQZ-RI")
+        )
+CHLORINE:"cc-pwCVQZ-RI" = (
+        (GET "CC-PWCVQZ-RI")
+        )
+ARGON:"cc-pwCVQZ-RI" = (
+        (GET "CC-PWCVQZ-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PWCV5Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from EMSL 28 August 2009
+%  Christof Hattig, Optimization of auxiliary basis sets for RI-MP2 and RI-CC2
+%  calculations: Core-valence and quintuple-? basis sets for H to Ar and QZVPP
+%  basis sets for Li to Kr, Physical Chemistry Chemical Physics 7, 59 (2005)
+%  for B C N O F Ne Al Si P S Cl Ar
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"CC-PWCV5Z-RI":puream = true
+BORON:"CC-PWCV5Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  (S    (       598.3310000000           1.0000000000))
+  (S    (        81.3940000000           1.0000000000))
+  (S    (        20.0091000000           1.0000000000))
+  (S    (         6.1026900000           1.0000000000))
+  (P    (        95.5846000000           1.0000000000))
+  (P    (        19.2037000000           1.0000000000))
+  (P    (         6.1103200000           1.0000000000))
+  (P    (         2.4172000000           1.0000000000))
+  (D    (        65.0590000000           1.0000000000))
+  (D    (        30.6891000000           1.0000000000))
+  (D    (        18.3513000000           1.0000000000))
+  (D    (         7.3465100000           1.0000000000))
+  (F    (        39.0702000000           1.0000000000))
+  (F    (        23.4218000000           1.0000000000))
+  (F    (         9.3244500000           1.0000000000))
+  (G    (        10.4150000000           1.0000000000))
+  (G    (         4.7042700000           1.0000000000))
+  (H    (         4.8266700000           1.0000000000)))
+
+CARBON:"CC-PWCV5Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  (S    (      1042.4100000000           1.0000000000))
+  (S    (       100.9360000000           1.0000000000))
+  (S    (        25.5989000000           1.0000000000))
+  (S    (         8.4829300000           1.0000000000))
+  (P    (       138.1040000000           1.0000000000))
+  (P    (        26.0072000000           1.0000000000))
+  (P    (         8.8030700000           1.0000000000))
+  (P    (         3.5099600000           1.0000000000))
+  (D    (        88.1557000000           1.0000000000))
+  (D    (        36.1400000000           1.0000000000))
+  (D    (        24.1902000000           1.0000000000))
+  (D    (         8.5320800000           1.0000000000))
+  (F    (        46.2529000000           1.0000000000))
+  (F    (        26.4528000000           1.0000000000))
+  (F    (        12.0000000000           1.0000000000))
+  (G    (        18.0042000000           1.0000000000))
+  (G    (         8.7343900000           1.0000000000))
+  (H    (         8.5555300000           1.0000000000)))
+
+NITROGEN:"CC-PWCV5Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  (S    (      1521.1700000000           1.0000000000))
+  (S    (       139.2730000000           1.0000000000))
+  (S    (        36.1708000000           1.0000000000))
+  (S    (        11.6978000000           1.0000000000))
+  (P    (       189.3310000000           1.0000000000))
+  (P    (        39.5540000000           1.0000000000))
+  (P    (        11.8663000000           1.0000000000))
+  (P    (         4.9393700000           1.0000000000))
+  (D    (       118.1910000000           1.0000000000))
+  (D    (        58.6181000000           1.0000000000))
+  (D    (        33.0482000000           1.0000000000))
+  (D    (        10.9189000000           1.0000000000))
+  (F    (        61.9341000000           1.0000000000))
+  (F    (        34.2568000000           1.0000000000))
+  (F    (        17.1153000000           1.0000000000))
+  (G    (        26.5071000000           1.0000000000))
+  (G    (        12.6099000000           1.0000000000))
+  (H    (        13.0250000000           1.0000000000)))
+
+OXYGEN:"CC-PWCV5Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  (S    (      2010.9300000000           1.0000000000))
+  (S    (       144.0190000000           1.0000000000))
+  (S    (        55.8049000000           1.0000000000))
+  (S    (        21.5261000000           1.0000000000))
+  (P    (       241.5120000000           1.0000000000))
+  (P    (        49.0595000000           1.0000000000))
+  (P    (        16.6893000000           1.0000000000))
+  (P    (         6.9049200000           1.0000000000))
+  (D    (       148.0410000000           1.0000000000))
+  (D    (        65.9765000000           1.0000000000))
+  (D    (        41.3522000000           1.0000000000))
+  (D    (        13.0533000000           1.0000000000))
+  (F    (        87.3561000000           1.0000000000))
+  (F    (        49.0784000000           1.0000000000))
+  (F    (        20.4321000000           1.0000000000))
+  (G    (        35.6559000000           1.0000000000))
+  (G    (        16.7342000000           1.0000000000))
+  (H    (        18.1565000000           1.0000000000)))
+
+FLUORINE:"CC-PWCV5Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  (S    (      2156.2200000000           1.0000000000))
+  (S    (       245.9920000000           1.0000000000))
+  (S    (        76.6519000000           1.0000000000))
+  (S    (        13.7220000000           1.0000000000))
+  (P    (       295.7640000000           1.0000000000))
+  (P    (        61.4873000000           1.0000000000))
+  (P    (        20.1219000000           1.0000000000))
+  (P    (         9.0952700000           1.0000000000))
+  (D    (       184.6010000000           1.0000000000))
+  (D    (        86.8659000000           1.0000000000))
+  (D    (        49.8358000000           1.0000000000))
+  (D    (        16.1398000000           1.0000000000))
+  (F    (       100.2190000000           1.0000000000))
+  (F    (        55.2650000000           1.0000000000))
+  (F    (        28.7491000000           1.0000000000))
+  (G    (        47.3169000000           1.0000000000))
+  (G    (        21.7889000000           1.0000000000))
+  (H    (        23.7802000000           1.0000000000)))
+
+NEON:"CC-PWCV5Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  (S    (      3511.0300000000           1.0000000000))
+  (S    (       300.4210000000           1.0000000000))
+  (S    (       103.5470000000           1.0000000000))
+  (S    (        15.9000000000           1.0000000000))
+  (P    (       361.8290000000           1.0000000000))
+  (P    (        77.9664000000           1.0000000000))
+  (P    (        30.5984000000           1.0000000000))
+  (P    (        12.2000000000           1.0000000000))
+  (D    (       231.6190000000           1.0000000000))
+  (D    (       100.5090000000           1.0000000000))
+  (D    (        76.3038000000           1.0000000000))
+  (D    (        21.1983000000           1.0000000000))
+  (F    (       137.7150000000           1.0000000000))
+  (F    (        80.5744000000           1.0000000000))
+  (F    (        33.6901000000           1.0000000000))
+  (G    (        61.2498000000           1.0000000000))
+  (G    (        27.8129000000           1.0000000000))
+  (H    (        30.4907000000           1.0000000000)))
+
+ALUMINUM:"CC-PWCV5Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  (S    (      1500.0000000000           1.0000000000))
+  (S    (       265.4610000000           1.0000000000))
+  (S    (        29.1355000000           1.0000000000))
+  (S    (         5.0777000000           1.0000000000))
+  (P    (       577.7500000000           1.0000000000))
+  (P    (        82.6945000000           1.0000000000))
+  (P    (        32.9552000000           1.0000000000))
+  (P    (        12.9556000000           1.0000000000))
+  (D    (       145.9980000000           1.0000000000))
+  (D    (        27.0000000000           1.0000000000))
+  (D    (         8.5000000000           1.0000000000))
+  (D    (         1.3056700000           1.0000000000))
+  (F    (        36.7276000000           1.0000000000))
+  (F    (        16.2551000000           1.0000000000))
+  (F    (         2.5453900000           1.0000000000))
+  (G    (        20.5971000000           1.0000000000))
+  (G    (        11.3283000000           1.0000000000))
+  (G    (         5.8315200000           1.0000000000))
+  (H    (        13.3915000000           1.0000000000))
+  (H    (         3.6816400000           1.0000000000))
+  (I    (         3.8693300000           1.0000000000))
+  (I    (         1.9479400000           1.0000000000)))
+
+SILICON:"CC-PWCV5Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  (S    (      1800.0000000000           1.0000000000))
+  (S    (       340.7200000000           1.0000000000))
+  (S    (        37.1676000000           1.0000000000))
+  (S    (         6.1866500000           1.0000000000))
+  (P    (       629.7250000000           1.0000000000))
+  (P    (       106.6730000000           1.0000000000))
+  (P    (        37.2090000000           1.0000000000))
+  (P    (         6.9812500000           1.0000000000))
+  (D    (       183.0570000000           1.0000000000))
+  (D    (        33.2586000000           1.0000000000))
+  (D    (        10.4892000000           1.0000000000))
+  (D    (         1.9715100000           1.0000000000))
+  (F    (        47.6295000000           1.0000000000))
+  (F    (        20.0000000000           1.0000000000))
+  (F    (         3.9846600000           1.0000000000))
+  (G    (        26.9326000000           1.0000000000))
+  (G    (        14.8870000000           1.0000000000))
+  (G    (         7.7198400000           1.0000000000))
+  (H    (        16.9693000000           1.0000000000))
+  (H    (         4.6476700000           1.0000000000))
+  (I    (         5.2027100000           1.0000000000))
+  (I    (         2.5675800000           1.0000000000)))
+
+PHOSPHORUS:"CC-PWCV5Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  (S    (      2400.0000000000           1.0000000000))
+  (S    (       457.8920000000           1.0000000000))
+  (S    (        46.1530000000           1.0000000000))
+  (S    (         7.2066600000           1.0000000000))
+  (P    (       807.4960000000           1.0000000000))
+  (P    (       136.2950000000           1.0000000000))
+  (P    (        44.5141000000           1.0000000000))
+  (P    (         8.3534400000           1.0000000000))
+  (D    (       214.9970000000           1.0000000000))
+  (D    (        42.1591000000           1.0000000000))
+  (D    (        13.9749000000           1.0000000000))
+  (D    (         2.5325900000           1.0000000000))
+  (F    (        58.2818000000           1.0000000000))
+  (F    (        22.5507000000           1.0000000000))
+  (F    (         5.1842700000           1.0000000000))
+  (G    (        29.0809000000           1.0000000000))
+  (G    (        15.8958000000           1.0000000000))
+  (G    (         8.4664900000           1.0000000000))
+  (H    (        20.8629000000           1.0000000000))
+  (H    (         5.6977800000           1.0000000000))
+  (I    (         5.9684000000           1.0000000000))
+  (I    (         2.9499000000           1.0000000000)))
+
+SULFUR:"CC-PWCV5Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  (S    (      2900.0000000000           1.0000000000))
+  (S    (       509.6720000000           1.0000000000))
+  (S    (        52.5124000000           1.0000000000))
+  (S    (         8.8096700000           1.0000000000))
+  (P    (      1035.4000000000           1.0000000000))
+  (P    (       166.6950000000           1.0000000000))
+  (P    (        54.5510000000           1.0000000000))
+  (P    (        10.3221000000           1.0000000000))
+  (D    (       251.4680000000           1.0000000000))
+  (D    (        54.7239000000           1.0000000000))
+  (D    (        18.0473000000           1.0000000000))
+  (D    (         3.1080400000           1.0000000000))
+  (F    (        68.8551000000           1.0000000000))
+  (F    (        30.0000000000           1.0000000000))
+  (F    (         6.0304500000           1.0000000000))
+  (G    (        33.8667000000           1.0000000000))
+  (G    (        18.2992000000           1.0000000000))
+  (G    (         9.4190800000           1.0000000000))
+  (H    (        25.1489000000           1.0000000000))
+  (H    (         6.8372900000           1.0000000000))
+  (I    (         7.0926200000           1.0000000000))
+  (I    (         3.5736400000           1.0000000000)))
+
+CHLORINE:"CC-PWCV5Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  (S    (      3451.3000000000           1.0000000000))
+  (S    (       626.9800000000           1.0000000000))
+  (S    (        64.8043000000           1.0000000000))
+  (S    (         5.2729600000           1.0000000000))
+  (P    (      1150.0200000000           1.0000000000))
+  (P    (       218.4100000000           1.0000000000))
+  (P    (        66.1193000000           1.0000000000))
+  (P    (        12.8179000000           1.0000000000))
+  (D    (       275.2510000000           1.0000000000))
+  (D    (        68.0010000000           1.0000000000))
+  (D    (        22.7269000000           1.0000000000))
+  (D    (         3.9484500000           1.0000000000))
+  (F    (        80.5766000000           1.0000000000))
+  (F    (        35.8778000000           1.0000000000))
+  (F    (         7.0532200000           1.0000000000))
+  (G    (        40.2732000000           1.0000000000))
+  (G    (        21.3047000000           1.0000000000))
+  (G    (        10.6480000000           1.0000000000))
+  (H    (        29.9064000000           1.0000000000))
+  (H    (         8.2030500000           1.0000000000))
+  (I    (         8.5988500000           1.0000000000))
+  (I    (         4.2892600000           1.0000000000)))
+
+ARGON:"CC-PWCV5Z-RI" = (
+  (GET "CC-PV5Z-RI")
+  (S    (      4500.0000000000           1.0000000000))
+  (S    (       774.1070000000           1.0000000000))
+  (S    (        75.9118000000           1.0000000000))
+  (S    (         6.2013900000           1.0000000000))
+  (P    (      1808.1400000000           1.0000000000))
+  (P    (       258.4200000000           1.0000000000))
+  (P    (        31.7157000000           1.0000000000))
+  (P    (         7.3135400000           1.0000000000))
+  (D    (       310.6240000000           1.0000000000))
+  (D    (        79.7927000000           1.0000000000))
+  (D    (        27.1476000000           1.0000000000))
+  (D    (         4.8175300000           1.0000000000))
+  (F    (        99.0705000000           1.0000000000))
+  (F    (        39.9570000000           1.0000000000))
+  (F    (        15.1240000000           1.0000000000))
+  (G    (        47.2034000000           1.0000000000))
+  (G    (        24.4949000000           1.0000000000))
+  (G    (        11.3507000000           1.0000000000))
+  (H    (        35.0842000000           1.0000000000))
+  (H    (         9.7209200000           1.0000000000))
+  (I    (        10.2111000000           1.0000000000))
+  (I    (         5.0900000000           1.0000000000)))
+
+%%%%%%%%%%%  ALIAS cc-pwCV5Z-RI=> CC-PWCV5Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"cc-pwCV5Z-RI":puream = true
+
+BORON:"cc-pwCV5Z-RI" = (
+        (GET "CC-PWCV5Z-RI")
+        )
+CARBON:"cc-pwCV5Z-RI" = (
+        (GET "CC-PWCV5Z-RI")
+        )
+NITROGEN:"cc-pwCV5Z-RI" = (
+        (GET "CC-PWCV5Z-RI")
+        )
+OXYGEN:"cc-pwCV5Z-RI" = (
+        (GET "CC-PWCV5Z-RI")
+        )
+FLUORINE:"cc-pwCV5Z-RI" = (
+        (GET "CC-PWCV5Z-RI")
+        )
+NEON:"cc-pwCV5Z-RI" = (
+        (GET "CC-PWCV5Z-RI")
+        )
+ALUMINUM:"cc-pwCV5Z-RI" = (
+        (GET "CC-PWCV5Z-RI")
+        )
+SILICON:"cc-pwCV5Z-RI" = (
+        (GET "CC-PWCV5Z-RI")
+        )
+PHOSPHORUS:"cc-pwCV5Z-RI" = (
+        (GET "CC-PWCV5Z-RI")
+        )
+SULFUR:"cc-pwCV5Z-RI" = (
+        (GET "CC-PWCV5Z-RI")
+        )
+CHLORINE:"cc-pwCV5Z-RI" = (
+        (GET "CC-PWCV5Z-RI")
+        )
+ARGON:"cc-pwCV5Z-RI" = (
+        (GET "CC-PWCV5Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                 AUGMENTED CORRELATION CONSISTENT WEIGHTED 
+%                  CORE VALENCE DENSITY FITTING BASIS SETS
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       AUG-CC-PWCVDZ-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from EMSL 27 August 2009
+%  augmented portion from reference below
+%  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
+%  basis sets in resolution of the identity MP2 calculations, The Journal of
+%  Chemical Physics 116, 3175 (2002)
+%  for B C N O F Ne Al Si P S Cl Ar
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"AUG-CC-PWCVDZ-RI":puream = true
+BORON:"AUG-CC-PWCVDZ-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  (S    (         0.0356622158           1.0000000000))
+  (P    (         0.0852720673           1.0000000000))
+  (D    (         0.0543136825           1.0000000000))
+  (F    (         0.1847607195           1.0000000000)))
+
+CARBON:"AUG-CC-PWCVDZ-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  (S    (         0.0738301019           1.0000000000))
+  (P    (         0.1259525665           1.0000000000))
+  (D    (         0.1102112489           1.0000000000))
+  (F    (         0.3171462483           1.0000000000)))
+
+NITROGEN:"AUG-CC-PWCVDZ-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  (S    (         0.1036118281           1.0000000000))
+  (P    (         0.1696819939           1.0000000000))
+  (D    (         0.1334994156           1.0000000000))
+  (F    (         0.4197603166           1.0000000000)))
+
+OXYGEN:"AUG-CC-PWCVDZ-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  (S    (         0.1217920948           1.0000000000))
+  (P    (         0.2114429718           1.0000000000))
+  (D    (         0.1664479368           1.0000000000))
+  (F    (         0.5846096311           1.0000000000)))
+
+FLUORINE:"AUG-CC-PWCVDZ-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  (S    (         0.1553387145           1.0000000000))
+  (P    (         0.2770263881           1.0000000000))
+  (D    (         0.2106442687           1.0000000000))
+  (F    (         0.8066132078           1.0000000000)))
+
+NEON:"AUG-CC-PWCVDZ-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  (S    (         0.3726347366           1.0000000000))
+  (P    (         0.4309725138           1.0000000000))
+  (D    (         0.5560892758           1.0000000000))
+  (F    (         1.1649184234           1.0000000000)))
+
+ALUMINUM:"AUG-CC-PWCVDZ-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  (S    (         0.0598580141           1.0000000000))
+  (P    (         0.0635600355           1.0000000000))
+  (D    (         0.0977474671           1.0000000000))
+  (F    (         0.1061017298           1.0000000000)))
+
+SILICON:"AUG-CC-PWCVDZ-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  (S    (         0.0767835988           1.0000000000))
+  (P    (         0.0867713116           1.0000000000))
+  (D    (         0.1129022613           1.0000000000))
+  (F    (         0.1720467046           1.0000000000)))
+
+PHOSPHORUS:"AUG-CC-PWCVDZ-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  (S    (         0.0604185103           1.0000000000))
+  (P    (         0.1108308560           1.0000000000))
+  (D    (         0.0856949362           1.0000000000))
+  (F    (         0.2057346041           1.0000000000)))
+
+SULFUR:"AUG-CC-PWCVDZ-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  (S    (         0.0691550653           1.0000000000))
+  (P    (         0.1384603877           1.0000000000))
+  (D    (         0.1080033961           1.0000000000))
+  (F    (         0.2869034741           1.0000000000)))
+
+CHLORINE:"AUG-CC-PWCVDZ-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  (S    (         0.0807889586           1.0000000000))
+  (P    (         0.1729122234           1.0000000000))
+  (D    (         0.1382907454           1.0000000000))
+  (F    (         0.3725368434           1.0000000000)))
+
+ARGON:"AUG-CC-PWCVDZ-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  (S    (         0.1195682732           1.0000000000))
+  (P    (         0.1065496926           1.0000000000))
+  (D    (         0.2806226213           1.0000000000))
+  (F    (         0.4884151702           1.0000000000)))
+
+%%%%%%%%%%%  ALIAS aug-cc-pwCVDZ-RI=> AUG-CC-PWCVDZ-RI"  %%%%%%%%%%%%%%%%%%
+
+"aug-cc-pwCVDZ-RI":puream = true
+BORON:"aug-cc-pwCVDZ-RI" = (
+        (GET "AUG-CC-PWCVDZ-RI")
+        )
+CARBON:"aug-cc-pwCVDZ-RI" = (
+        (GET "AUG-CC-PWCVDZ-RI")
+        )
+NITROGEN:"aug-cc-pwCVDZ-RI" = (
+        (GET "AUG-CC-PWCVDZ-RI")
+        )
+OXYGEN:"aug-cc-pwCVDZ-RI" = (
+        (GET "AUG-CC-PWCVDZ-RI")
+        )
+FLUORINE:"aug-cc-pwCVDZ-RI" = (
+        (GET "AUG-CC-PWCVDZ-RI")
+        )
+NEON:"aug-cc-pwCVDZ-RI" = (
+        (GET "AUG-CC-PWCVDZ-RI")
+        )
+ALUMINUM:"aug-cc-pwCVDZ-RI" = (
+        (GET "AUG-CC-PWCVDZ-RI")
+        )
+SILICON:"aug-cc-pwCVDZ-RI" = (
+        (GET "AUG-CC-PWCVDZ-RI")
+        )
+PHOSPHORUS:"aug-cc-pwCVDZ-RI" = (
+        (GET "AUG-CC-PWCVDZ-RI")
+        )
+SULFUR:"aug-cc-pwCVDZ-RI" = (
+        (GET "AUG-CC-PWCVDZ-RI")
+        )
+CHLORINE:"aug-cc-pwCVDZ-RI" = (
+        (GET "AUG-CC-PWCVDZ-RI")
+        )
+ARGON:"aug-cc-pwCVDZ-RI" = (
+        (GET "AUG-CC-PWCVDZ-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       AUG-CC-PWCVTZ-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from EMSL 27 August 2009
+%  augmented portion from reference below
+%  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
+%  basis sets in resolution of the identity MP2 calculations, The Journal of
+%  Chemical Physics 116, 3175 (2002)
+%  for B C N O F Ne Al Si P S Cl Ar
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"AUG-CC-PWCVTZ-RI":puream = true
+BORON:"AUG-CC-PWCVTZ-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  (S    (         0.0630605085           1.0000000000))
+  (P    (         0.0645081757           1.0000000000))
+  (D    (         0.0643487942           1.0000000000))
+  (F    (         0.1202439267           1.0000000000))
+  (G    (         0.2502318978           1.0000000000)))
+
+CARBON:"AUG-CC-PWCVTZ-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  (S    (         0.1015362786           1.0000000000))
+  (P    (         0.1150595444           1.0000000000))
+  (D    (         0.1489045600           1.0000000000))
+  (F    (         0.2017927704           1.0000000000))
+  (G    (         0.4359975294           1.0000000000)))
+
+NITROGEN:"AUG-CC-PWCVTZ-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  (S    (         0.1010973623           1.0000000000))
+  (P    (         0.1481018367           1.0000000000))
+  (D    (         0.1341064914           1.0000000000))
+  (F    (         0.2885874334           1.0000000000))
+  (G    (         0.5998118830           1.0000000000)))
+
+OXYGEN:"AUG-CC-PWCVTZ-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  (S    (         0.1121182012           1.0000000000))
+  (P    (         0.2135445993           1.0000000000))
+  (D    (         0.1673457468           1.0000000000))
+  (F    (         0.4038370454           1.0000000000))
+  (G    (         0.7865575716           1.0000000000)))
+
+FLUORINE:"AUG-CC-PWCVTZ-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  (S    (         0.1603633350           1.0000000000))
+  (P    (         0.2796444005           1.0000000000))
+  (D    (         0.2510487948           1.0000000000))
+  (F    (         0.5456614289           1.0000000000))
+  (G    (         1.1028184369           1.0000000000)))
+
+NEON:"AUG-CC-PWCVTZ-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  (S    (         0.2553392440           1.0000000000))
+  (P    (         0.3964168991           1.0000000000))
+  (D    (         0.3325733010           1.0000000000))
+  (F    (         0.7370525083           1.0000000000))
+  (G    (         1.5785006538           1.0000000000)))
+
+ALUMINUM:"AUG-CC-PWCVTZ-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  (S    (         0.0485433370           1.0000000000))
+  (P    (         0.0317963358           1.0000000000))
+  (D    (         0.0794939368           1.0000000000))
+  (F    (         0.0697759025           1.0000000000))
+  (G    (         0.1156175572           1.0000000000)))
+
+SILICON:"AUG-CC-PWCVTZ-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  (S    (         0.0723331678           1.0000000000))
+  (P    (         0.0653969468           1.0000000000))
+  (D    (         0.1102392196           1.0000000000))
+  (F    (         0.1111865290           1.0000000000))
+  (G    (         0.2000034324           1.0000000000)))
+
+PHOSPHORUS:"AUG-CC-PWCVTZ-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  (S    (         0.0508280311           1.0000000000))
+  (P    (         0.0897635661           1.0000000000))
+  (D    (         0.0775245396           1.0000000000))
+  (F    (         0.1422591705           1.0000000000))
+  (G    (         0.2705643751           1.0000000000)))
+
+SULFUR:"AUG-CC-PWCVTZ-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  (S    (         0.0665861922           1.0000000000))
+  (P    (         0.1194650434           1.0000000000))
+  (D    (         0.0967524050           1.0000000000))
+  (F    (         0.1965507439           1.0000000000))
+  (G    (         0.3577437821           1.0000000000)))
+
+CHLORINE:"AUG-CC-PWCVTZ-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  (S    (         0.0926955533           1.0000000000))
+  (P    (         0.1513329895           1.0000000000))
+  (D    (         0.1410290029           1.0000000000))
+  (F    (         0.2507559712           1.0000000000))
+  (G    (         0.4833488446           1.0000000000)))
+
+ARGON:"AUG-CC-PWCVTZ-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  (S    (         0.0887198900           1.0000000000))
+  (P    (         0.1457399178           1.0000000000))
+  (D    (         0.1930376655           1.0000000000))
+  (F    (         0.3205780808           1.0000000000))
+  (G    (         0.6707264822           1.0000000000)))
+
+%%%%%%%%%%%  ALIAS aug-cc-pwCVTZ-RI=> AUG-CC-PWCVTZ-RI"  %%%%%%%%%%%%%%%%%%
+
+"aug-cc-pwCVTZ-RI":puream = true
+BORON:"aug-cc-pwCVTZ-RI" = (
+        (GET "AUG-CC-PWCVTZ-RI")
+        )
+CARBON:"aug-cc-pwCVTZ-RI" = (
+        (GET "AUG-CC-PWCVTZ-RI")
+        )
+NITROGEN:"aug-cc-pwCVTZ-RI" = (
+        (GET "AUG-CC-PWCVTZ-RI")
+        )
+OXYGEN:"aug-cc-pwCVTZ-RI" = (
+        (GET "AUG-CC-PWCVTZ-RI")
+        )
+FLUORINE:"aug-cc-pwCVTZ-RI" = (
+        (GET "AUG-CC-PWCVTZ-RI")
+        )
+NEON:"aug-cc-pwCVTZ-RI" = (
+        (GET "AUG-CC-PWCVTZ-RI")
+        )
+ALUMINUM:"aug-cc-pwCVTZ-RI" = (
+        (GET "AUG-CC-PWCVTZ-RI")
+        )
+SILICON:"aug-cc-pwCVTZ-RI" = (
+        (GET "AUG-CC-PWCVTZ-RI")
+        )
+PHOSPHORUS:"aug-cc-pwCVTZ-RI" = (
+        (GET "AUG-CC-PWCVTZ-RI")
+        )
+SULFUR:"aug-cc-pwCVTZ-RI" = (
+        (GET "AUG-CC-PWCVTZ-RI")
+        )
+CHLORINE:"aug-cc-pwCVTZ-RI" = (
+        (GET "AUG-CC-PWCVTZ-RI")
+        )
+ARGON:"aug-cc-pwCVTZ-RI" = (
+        (GET "AUG-CC-PWCVTZ-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       AUG-CC-PWCVQZ-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from EMSL 27 August 2009
+%  augmented portion from reference below
+%  F. Weigend, A. Kohn, C. Hattig, Efficient use of the correlation consistent
+%  basis sets in resolution of the identity MP2 calculations, The Journal of
+%  Chemical Physics 116, 3175 (2002)
+%  for B C N O F Ne Al Si P S Cl Ar
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"AUG-CC-PWCVQZ-RI":puream = true
+BORON:"AUG-CC-PWCVQZ-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  (S    (         0.0517893354           1.0000000000))
+  (P    (         0.0589220329           1.0000000000))
+  (D    (         0.0864377189           1.0000000000))
+  (F    (         0.0756196296           1.0000000000))
+  (G    (         0.2043135387           1.0000000000))
+  (H    (         0.4284524694           1.0000000000)))
+
+CARBON:"AUG-CC-PWCVQZ-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  (S    (         0.0915822481           1.0000000000))
+  (P    (         0.1045721022           1.0000000000))
+  (D    (         0.1405201455           1.0000000000))
+  (F    (         0.1588368442           1.0000000000))
+  (G    (         0.3243591397           1.0000000000))
+  (H    (         0.6593482930           1.0000000000)))
+
+NITROGEN:"AUG-CC-PWCVQZ-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  (S    (         0.0898489364           1.0000000000))
+  (P    (         0.1144979409           1.0000000000))
+  (D    (         0.1576201348           1.0000000000))
+  (F    (         0.1635338920           1.0000000000))
+  (G    (         0.4265618190           1.0000000000))
+  (H    (         0.7853272633           1.0000000000)))
+
+OXYGEN:"AUG-CC-PWCVQZ-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  (S    (         0.0952819073           1.0000000000))
+  (P    (         0.1898907731           1.0000000000))
+  (D    (         0.1395468771           1.0000000000))
+  (F    (         0.2880146239           1.0000000000))
+  (G    (         0.5371992956           1.0000000000))
+  (H    (         1.0512431837           1.0000000000)))
+
+FLUORINE:"AUG-CC-PWCVQZ-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  (S    (         0.1249830374           1.0000000000))
+  (P    (         0.2517367858           1.0000000000))
+  (D    (         0.1894669725           1.0000000000))
+  (F    (         0.4009086662           1.0000000000))
+  (G    (         0.7658833037           1.0000000000))
+  (H    (         1.3684048531           1.0000000000)))
+
+NEON:"AUG-CC-PWCVQZ-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  (S    (         0.2221438477           1.0000000000))
+  (P    (         0.3332269009           1.0000000000))
+  (D    (         0.1406605015           1.0000000000))
+  (F    (         0.5115323736           1.0000000000))
+  (G    (         1.1078697479           1.0000000000))
+  (H    (         1.9158769568           1.0000000000)))
+
+ALUMINUM:"AUG-CC-PWCVQZ-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  (S    (         0.0504025626           1.0000000000))
+  (P    (         0.0572609019           1.0000000000))
+  (D    (         0.0678572777           1.0000000000))
+  (F    (         0.0722783857           1.0000000000))
+  (G    (         0.0958740737           1.0000000000))
+  (H    (         0.2123902399           1.0000000000)))
+
+SILICON:"AUG-CC-PWCVQZ-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  (S    (         0.0166775503           1.0000000000))
+  (P    (         0.0590703180           1.0000000000))
+  (D    (         0.0736897755           1.0000000000))
+  (F    (         0.0814384652           1.0000000000))
+  (G    (         0.1525744464           1.0000000000))
+  (H    (         0.3219121585           1.0000000000)))
+
+PHOSPHORUS:"AUG-CC-PWCVQZ-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  (S    (         0.0422947354           1.0000000000))
+  (P    (         0.0768654012           1.0000000000))
+  (D    (         0.0736622732           1.0000000000))
+  (F    (         0.1046353435           1.0000000000))
+  (G    (         0.1904997555           1.0000000000))
+  (H    (         0.3723268164           1.0000000000)))
+
+SULFUR:"AUG-CC-PWCVQZ-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  (S    (         0.0674603664           1.0000000000))
+  (P    (         0.1031165057           1.0000000000))
+  (D    (         0.0941350846           1.0000000000))
+  (F    (         0.1400936858           1.0000000000))
+  (G    (         0.2487017174           1.0000000000))
+  (H    (         0.4491879828           1.0000000000)))
+
+CHLORINE:"AUG-CC-PWCVQZ-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  (S    (         0.0818582831           1.0000000000))
+  (P    (         0.1340562203           1.0000000000))
+  (D    (         0.1046264169           1.0000000000))
+  (F    (         0.1890039121           1.0000000000))
+  (G    (         0.3637102623           1.0000000000))
+  (H    (         0.5706329803           1.0000000000)))
+
+ARGON:"AUG-CC-PWCVQZ-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  (S    (         0.1159751800           1.0000000000))
+  (P    (         0.1937629698           1.0000000000))
+  (D    (         0.1348722600           1.0000000000))
+  (F    (         0.2438922654           1.0000000000))
+  (G    (         0.5085591756           1.0000000000))
+  (H    (         0.7347142372           1.0000000000)))
+
+%%%%%%%%%%%  ALIAS aug-cc-pwCVQZ-RI=> AUG-CC-PWCVQZ-RI"  %%%%%%%%%%%%%%%%%%
+
+"aug-cc-pwCVQZ-RI":puream = true
+BORON:"aug-cc-pwCVQZ-RI" = (
+        (GET "AUG-CC-PWCVQZ-RI")
+        )
+CARBON:"aug-cc-pwCVQZ-RI" = (
+        (GET "AUG-CC-PWCVQZ-RI")
+        )
+NITROGEN:"aug-cc-pwCVQZ-RI" = (
+        (GET "AUG-CC-PWCVQZ-RI")
+        )
+OXYGEN:"aug-cc-pwCVQZ-RI" = (
+        (GET "AUG-CC-PWCVQZ-RI")
+        )
+FLUORINE:"aug-cc-pwCVQZ-RI" = (
+        (GET "AUG-CC-PWCVQZ-RI")
+        )
+NEON:"aug-cc-pwCVQZ-RI" = (
+        (GET "AUG-CC-PWCVQZ-RI")
+        )
+ALUMINUM:"aug-cc-pwCVQZ-RI" = (
+        (GET "AUG-CC-PWCVQZ-RI")
+        )
+SILICON:"aug-cc-pwCVQZ-RI" = (
+        (GET "AUG-CC-PWCVQZ-RI")
+        )
+PHOSPHORUS:"aug-cc-pwCVQZ-RI" = (
+        (GET "AUG-CC-PWCVQZ-RI")
+        )
+SULFUR:"aug-cc-pwCVQZ-RI" = (
+        (GET "AUG-CC-PWCVQZ-RI")
+        )
+CHLORINE:"aug-cc-pwCVQZ-RI" = (
+        (GET "AUG-CC-PWCVQZ-RI")
+        )
+ARGON:"aug-cc-pwCVQZ-RI" = (
+        (GET "AUG-CC-PWCVQZ-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       AUG-CC-PWCV5Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from EMSL 27 August 2009
+%  augmented portion from reference below
+%  Christof Hattig, Optimization of auxiliary basis sets for RI-MP2 and RI-CC2
+%  calculations: Core-valence and quintuple-? basis sets for H to Ar and QZVPP
+%  basis sets for Li to Kr, Physical Chemistry Chemical Physics 7, 59 (2005)
+%  for B C N O F Ne Al Si P S Cl Ar
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"AUG-CC-PWCV5Z-RI":puream = true
+BORON:"AUG-CC-PWCV5Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  (S    (         0.0500000000           1.0000000000))
+  (P    (         0.0650000000           1.0000000000))
+  (D    (         0.0700000000           1.0000000000))
+  (F    (         0.0850000000           1.0000000000))
+  (G    (         0.1396790000           1.0000000000))
+  (H    (         0.2896520000           1.0000000000))
+  (I    (         0.5284480000           1.0000000000)))
+
+CARBON:"AUG-CC-PWCV5Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  (S    (         0.0625447000           1.0000000000))
+  (P    (         0.0900000000           1.0000000000))
+  (D    (         0.0847893000           1.0000000000))
+  (F    (         0.1353510000           1.0000000000))
+  (G    (         0.2417170000           1.0000000000))
+  (H    (         0.4754360000           1.0000000000))
+  (I    (         0.8330670000           1.0000000000)))
+
+NITROGEN:"AUG-CC-PWCV5Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  (S    (         0.0850000000           1.0000000000))
+  (P    (         0.1100000000           1.0000000000))
+  (D    (         0.1100000000           1.0000000000))
+  (F    (         0.2000000000           1.0000000000))
+  (G    (         0.3473910000           1.0000000000))
+  (H    (         0.6493390000           1.0000000000))
+  (I    (         1.1088600000           1.0000000000)))
+
+OXYGEN:"AUG-CC-PWCV5Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  (S    (         0.0966305000           1.0000000000))
+  (P    (         0.1699760000           1.0000000000))
+  (D    (         0.1400000000           1.0000000000))
+  (F    (         0.2386920000           1.0000000000))
+  (G    (         0.4103430000           1.0000000000))
+  (H    (         0.7907810000           1.0000000000))
+  (I    (         1.3829200000           1.0000000000)))
+
+FLUORINE:"AUG-CC-PWCV5Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  (S    (         0.1232440000           1.0000000000))
+  (P    (         0.2301060000           1.0000000000))
+  (D    (         0.1800000000           1.0000000000))
+  (F    (         0.3294220000           1.0000000000))
+  (G    (         0.5697670000           1.0000000000))
+  (H    (         1.0185500000           1.0000000000))
+  (I    (         1.8277000000           1.0000000000)))
+
+NEON:"AUG-CC-PWCV5Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  (S    (         0.1800000000           1.0000000000))
+  (P    (         0.3386110000           1.0000000000))
+  (D    (         0.2376930000           1.0000000000))
+  (F    (         0.4551150000           1.0000000000))
+  (G    (         0.7765610000           1.0000000000))
+  (H    (         1.3023800000           1.0000000000))
+  (I    (         2.3811900000           1.0000000000)))
+
+ALUMINUM:"AUG-CC-PWCV5Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  (S    (         0.0400000000           1.0000000000))
+  (P    (         0.0600000000           1.0000000000))
+  (D    (         0.0600399000           1.0000000000))
+  (F    (         0.0779236000           1.0000000000))
+  (G    (         0.0773450000           1.0000000000))
+  (H    (         0.1562970000           1.0000000000))
+  (I    (         0.3213140000           1.0000000000)))
+
+SILICON:"AUG-CC-PWCV5Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  (S    (         0.0500000000           1.0000000000))
+  (P    (         0.0650000000           1.0000000000))
+  (D    (         0.0800000000           1.0000000000))
+  (F    (         0.0978920000           1.0000000000))
+  (G    (         0.1210350000           1.0000000000))
+  (H    (         0.2307520000           1.0000000000))
+  (I    (         0.4663400000           1.0000000000)))
+
+PHOSPHORUS:"AUG-CC-PWCV5Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  (S    (         0.0600000000           1.0000000000))
+  (P    (         0.0731432000           1.0000000000))
+  (D    (         0.0850000000           1.0000000000))
+  (F    (         0.1181590000           1.0000000000))
+  (G    (         0.1441110000           1.0000000000))
+  (H    (         0.2852270000           1.0000000000))
+  (I    (         0.5297980000           1.0000000000)))
+
+SULFUR:"AUG-CC-PWCV5Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  (S    (         0.0650000000           1.0000000000))
+  (P    (         0.0900000000           1.0000000000))
+  (D    (         0.0860772000           1.0000000000))
+  (F    (         0.1535770000           1.0000000000))
+  (G    (         0.2084460000           1.0000000000))
+  (H    (         0.3493280000           1.0000000000))
+  (I    (         0.6795320000           1.0000000000)))
+
+CHLORINE:"AUG-CC-PWCV5Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  (S    (         0.0750000000           1.0000000000))
+  (P    (         0.1200000000           1.0000000000))
+  (D    (         0.1050000000           1.0000000000))
+  (F    (         0.2002040000           1.0000000000))
+  (G    (         0.2841980000           1.0000000000))
+  (H    (         0.4450810000           1.0000000000))
+  (I    (         0.8746310000           1.0000000000)))
+
+ARGON:"AUG-CC-PWCV5Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  (S    (         0.1020860000           1.0000000000))
+  (P    (         0.1594830000           1.0000000000))
+  (D    (         0.1290720000           1.0000000000))
+  (F    (         0.2400560000           1.0000000000))
+  (G    (         0.3780240000           1.0000000000))
+  (H    (         0.5532920000           1.0000000000))
+  (I    (         1.1033800000           1.0000000000)))
+
+%%%%%%%%%%%  ALIAS aug-cc-pwCV5Z-RI=> AUG-CC-PWCV5Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"aug-cc-pwCV5Z-RI":puream = true
+BORON:"aug-cc-pwCV5Z-RI" = (
+        (GET "AUG-CC-PWCV5Z-RI")
+        )
+CARBON:"aug-cc-pwCV5Z-RI" = (
+        (GET "AUG-CC-PWCV5Z-RI")
+        )
+NITROGEN:"aug-cc-pwCV5Z-RI" = (
+        (GET "AUG-CC-PWCV5Z-RI")
+        )
+OXYGEN:"aug-cc-pwCV5Z-RI" = (
+        (GET "AUG-CC-PWCV5Z-RI")
+        )
+FLUORINE:"aug-cc-pwCV5Z-RI" = (
+        (GET "AUG-CC-PWCV5Z-RI")
+        )
+NEON:"aug-cc-pwCV5Z-RI" = (
+        (GET "AUG-CC-PWCV5Z-RI")
+        )
+ALUMINUM:"aug-cc-pwCV5Z-RI" = (
+        (GET "AUG-CC-PWCV5Z-RI")
+        )
+SILICON:"aug-cc-pwCV5Z-RI" = (
+        (GET "AUG-CC-PWCV5Z-RI")
+        )
+PHOSPHORUS:"aug-cc-pwCV5Z-RI" = (
+        (GET "AUG-CC-PWCV5Z-RI")
+        )
+SULFUR:"aug-cc-pwCV5Z-RI" = (
+        (GET "AUG-CC-PWCV5Z-RI")
+        )
+CHLORINE:"aug-cc-pwCV5Z-RI" = (
+        (GET "AUG-CC-PWCV5Z-RI")
+        )
+ARGON:"aug-cc-pwCV5Z-RI" = (
+        (GET "AUG-CC-PWCV5Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%           SECOND-ROW SUPPLEMENTARY CORRELATION CONSISTENT WEIGHTED 
+%                   CORE VALENCE DENSITY FITTING BASIS SETS
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PWCV(D+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  in analogy to the equivalence of (aug-)cc-pVXZ and (aug-)cc-pV(X+d)Z
+%     auxiliary basis sets (see reference thereat), (aug-)cc-pwCVXZ and
+%     (aug-)cc-pwCV(X+d)Z auxiliary sets are here set to be identical
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"CC-PWCV(D+D)Z-RI":puream = true
+ALUMINUM:"CC-PWCV(D+D)Z-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  )
+
+SILICON:"CC-PWCV(D+D)Z-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  )
+
+PHOSPHORUS:"CC-PWCV(D+D)Z-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  )
+
+SULFUR:"CC-PWCV(D+D)Z-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  )
+
+CHLORINE:"CC-PWCV(D+D)Z-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  )
+
+ARGON:"CC-PWCV(D+D)Z-RI" = (
+  (GET "CC-PWCVDZ-RI")
+  )
+
+%%%%%%%%%%%  ALIAS cc-pwCV(D+d)Z-RI=> CC-PWCV(D+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"cc-pwCV(D+d)Z-RI":puream = true
+ALUMINUM:"cc-pwCV(D+d)Z-RI" = (
+        (GET "CC-PWCV(D+D)Z-RI")
+        )
+SILICON:"cc-pwCV(D+d)Z-RI" = (
+        (GET "CC-PWCV(D+D)Z-RI")
+        )
+PHOSPHORUS:"cc-pwCV(D+d)Z-RI" = (
+        (GET "CC-PWCV(D+D)Z-RI")
+        )
+SULFUR:"cc-pwCV(D+d)Z-RI" = (
+        (GET "CC-PWCV(D+D)Z-RI")
+        )
+CHLORINE:"cc-pwCV(D+d)Z-RI" = (
+        (GET "CC-PWCV(D+D)Z-RI")
+        )
+ARGON:"cc-pwCV(D+d)Z-RI" = (
+        (GET "CC-PWCV(D+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PWCV(T+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  in analogy to the equivalence of (aug-)cc-pVXZ and (aug-)cc-pV(X+d)Z
+%     auxiliary basis sets (see reference thereat), (aug-)cc-pwCVXZ and
+%     (aug-)cc-pwCV(X+d)Z auxiliary sets are here set to be identical
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"CC-PWCV(T+D)Z-RI":puream = true
+ALUMINUM:"CC-PWCV(T+D)Z-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  )
+
+SILICON:"CC-PWCV(T+D)Z-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  )
+
+PHOSPHORUS:"CC-PWCV(T+D)Z-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  )
+
+SULFUR:"CC-PWCV(T+D)Z-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  )
+
+CHLORINE:"CC-PWCV(T+D)Z-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  )
+
+ARGON:"CC-PWCV(T+D)Z-RI" = (
+  (GET "CC-PWCVTZ-RI")
+  )
+
+%%%%%%%%%%%  ALIAS cc-pwCV(T+d)Z-RI=> CC-PWCV(T+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"cc-pwCV(T+d)Z-RI":puream = true
+ALUMINUM:"cc-pwCV(T+d)Z-RI" = (
+        (GET "CC-PWCV(T+D)Z-RI")
+        )
+SILICON:"cc-pwCV(T+d)Z-RI" = (
+        (GET "CC-PWCV(T+D)Z-RI")
+        )
+PHOSPHORUS:"cc-pwCV(T+d)Z-RI" = (
+        (GET "CC-PWCV(T+D)Z-RI")
+        )
+SULFUR:"cc-pwCV(T+d)Z-RI" = (
+        (GET "CC-PWCV(T+D)Z-RI")
+        )
+CHLORINE:"cc-pwCV(T+d)Z-RI" = (
+        (GET "CC-PWCV(T+D)Z-RI")
+        )
+ARGON:"cc-pwCV(T+d)Z-RI" = (
+        (GET "CC-PWCV(T+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PWCV(Q+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  in analogy to the equivalence of (aug-)cc-pVXZ and (aug-)cc-pV(X+d)Z
+%     auxiliary basis sets (see reference thereat), (aug-)cc-pwCVXZ and
+%     (aug-)cc-pwCV(X+d)Z auxiliary sets are here set to be identical
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"CC-PWCV(Q+D)Z-RI":puream = true
+ALUMINUM:"CC-PWCV(Q+D)Z-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  )
+
+SILICON:"CC-PWCV(Q+D)Z-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  )
+
+PHOSPHORUS:"CC-PWCV(Q+D)Z-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  )
+
+SULFUR:"CC-PWCV(Q+D)Z-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  )
+
+CHLORINE:"CC-PWCV(Q+D)Z-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  )
+
+ARGON:"CC-PWCV(Q+D)Z-RI" = (
+  (GET "CC-PWCVQZ-RI")
+  )
+
+%%%%%%%%%%%  ALIAS cc-pwCV(Q+d)Z-RI=> CC-PWCV(Q+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"cc-pwCV(Q+d)Z-RI":puream = true
+ALUMINUM:"cc-pwCV(Q+d)Z-RI" = (
+        (GET "CC-PWCV(Q+D)Z-RI")
+        )
+SILICON:"cc-pwCV(Q+d)Z-RI" = (
+        (GET "CC-PWCV(Q+D)Z-RI")
+        )
+PHOSPHORUS:"cc-pwCV(Q+d)Z-RI" = (
+        (GET "CC-PWCV(Q+D)Z-RI")
+        )
+SULFUR:"cc-pwCV(Q+d)Z-RI" = (
+        (GET "CC-PWCV(Q+D)Z-RI")
+        )
+CHLORINE:"cc-pwCV(Q+d)Z-RI" = (
+        (GET "CC-PWCV(Q+D)Z-RI")
+        )
+ARGON:"cc-pwCV(Q+d)Z-RI" = (
+        (GET "CC-PWCV(Q+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PWCV(5+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  in analogy to the equivalence of (aug-)cc-pVXZ and (aug-)cc-pV(X+d)Z
+%     auxiliary basis sets (see reference thereat), (aug-)cc-pwCVXZ and
+%     (aug-)cc-pwCV(X+d)Z auxiliary sets are here set to be identical
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"CC-PWCV(5+D)Z-RI":puream = true
+ALUMINUM:"CC-PWCV(5+D)Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  )
+
+SILICON:"CC-PWCV(5+D)Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  )
+
+PHOSPHORUS:"CC-PWCV(5+D)Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  )
+
+SULFUR:"CC-PWCV(5+D)Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  )
+
+CHLORINE:"CC-PWCV(5+D)Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  )
+
+ARGON:"CC-PWCV(5+D)Z-RI" = (
+  (GET "CC-PWCV5Z-RI")
+  )
+
+%%%%%%%%%%%  ALIAS cc-pwCV(5+d)Z-RI=> CC-PWCV(5+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"cc-pwCV(5+d)Z-RI":puream = true
+ALUMINUM:"cc-pwCV(5+d)Z-RI" = (
+        (GET "CC-PWCV(5+D)Z-RI")
+        )
+SILICON:"cc-pwCV(5+d)Z-RI" = (
+        (GET "CC-PWCV(5+D)Z-RI")
+        )
+PHOSPHORUS:"cc-pwCV(5+d)Z-RI" = (
+        (GET "CC-PWCV(5+D)Z-RI")
+        )
+SULFUR:"cc-pwCV(5+d)Z-RI" = (
+        (GET "CC-PWCV(5+D)Z-RI")
+        )
+CHLORINE:"cc-pwCV(5+d)Z-RI" = (
+        (GET "CC-PWCV(5+D)Z-RI")
+        )
+ARGON:"cc-pwCV(5+d)Z-RI" = (
+        (GET "CC-PWCV(5+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%       AUGMENTED SECOND-ROW SUPPLEMENTARY CORRELATION CONSISTENT WEIGHTED
+%                    CORE VALENCE DENSITY FITTING BASIS SETS
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       AUG-CC-PWCV(D+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  in analogy to the equivalence of (aug-)cc-pVXZ and (aug-)cc-pV(X+d)Z
+%     auxiliary basis sets (see reference thereat), (aug-)cc-pwCVXZ and
+%     (aug-)cc-pwCV(X+d)Z auxiliary sets are here set to be identical
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"AUG-CC-PWCV(D+D)Z-RI":puream = true
+ALUMINUM:"AUG-CC-PWCV(D+D)Z-RI" = (
+  (GET "AUG-CC-PWCVDZ-RI")
+  )
+
+SILICON:"AUG-CC-PWCV(D+D)Z-RI" = (
+  (GET "AUG-CC-PWCVDZ-RI")
+  )
+
+PHOSPHORUS:"AUG-CC-PWCV(D+D)Z-RI" = (
+  (GET "AUG-CC-PWCVDZ-RI")
+  )
+
+SULFUR:"AUG-CC-PWCV(D+D)Z-RI" = (
+  (GET "AUG-CC-PWCVDZ-RI")
+  )
+
+CHLORINE:"AUG-CC-PWCV(D+D)Z-RI" = (
+  (GET "AUG-CC-PWCVDZ-RI")
+  )
+
+ARGON:"AUG-CC-PWCV(D+D)Z-RI" = (
+  (GET "AUG-CC-PWCVDZ-RI")
+  )
+
+%%%%%%%%%%%  ALIAS aug-cc-pwCV(D+d)Z-RI=> AUG-CC-PWCV(D+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"aug-cc-pwCV(D+d)Z-RI":puream = true
+ALUMINUM:"aug-cc-pwCV(D+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(D+D)Z-RI")
+        )
+SILICON:"aug-cc-pwCV(D+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(D+D)Z-RI")
+        )
+PHOSPHORUS:"aug-cc-pwCV(D+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(D+D)Z-RI")
+        )
+SULFUR:"aug-cc-pwCV(D+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(D+D)Z-RI")
+        )
+CHLORINE:"aug-cc-pwCV(D+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(D+D)Z-RI")
+        )
+ARGON:"aug-cc-pwCV(D+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(D+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       AUG-CC-PWCV(T+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  in analogy to the equivalence of (aug-)cc-pVXZ and (aug-)cc-pV(X+d)Z
+%     auxiliary basis sets (see reference thereat), (aug-)cc-pwCVXZ and
+%     (aug-)cc-pwCV(X+d)Z auxiliary sets are here set to be identical
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"AUG-CC-PWCV(T+D)Z-RI":puream = true
+ALUMINUM:"AUG-CC-PWCV(T+D)Z-RI" = (
+  (GET "AUG-CC-PWCVTZ-RI")
+  )
+
+SILICON:"AUG-CC-PWCV(T+D)Z-RI" = (
+  (GET "AUG-CC-PWCVTZ-RI")
+  )
+
+PHOSPHORUS:"AUG-CC-PWCV(T+D)Z-RI" = (
+  (GET "AUG-CC-PWCVTZ-RI")
+  )
+
+SULFUR:"AUG-CC-PWCV(T+D)Z-RI" = (
+  (GET "AUG-CC-PWCVTZ-RI")
+  )
+
+CHLORINE:"AUG-CC-PWCV(T+D)Z-RI" = (
+  (GET "AUG-CC-PWCVTZ-RI")
+  )
+
+ARGON:"AUG-CC-PWCV(T+D)Z-RI" = (
+  (GET "AUG-CC-PWCVTZ-RI")
+  )
+
+%%%%%%%%%%%  ALIAS aug-cc-pwCV(T+d)Z-RI=> AUG-CC-PWCV(T+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"aug-cc-pwCV(T+d)Z-RI":puream = true
+ALUMINUM:"aug-cc-pwCV(T+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(T+D)Z-RI")
+        )
+SILICON:"aug-cc-pwCV(T+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(T+D)Z-RI")
+        )
+PHOSPHORUS:"aug-cc-pwCV(T+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(T+D)Z-RI")
+        )
+SULFUR:"aug-cc-pwCV(T+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(T+D)Z-RI")
+        )
+CHLORINE:"aug-cc-pwCV(T+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(T+D)Z-RI")
+        )
+ARGON:"aug-cc-pwCV(T+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(T+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       AUG-CC-PWCV(Q+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  in analogy to the equivalence of (aug-)cc-pVXZ and (aug-)cc-pV(X+d)Z
+%     auxiliary basis sets (see reference thereat), (aug-)cc-pwCVXZ and
+%     (aug-)cc-pwCV(X+d)Z auxiliary sets are here set to be identical
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"AUG-CC-PWCV(Q+D)Z-RI":puream = true
+ALUMINUM:"AUG-CC-PWCV(Q+D)Z-RI" = (
+  (GET "AUG-CC-PWCVQZ-RI")
+  )
+
+SILICON:"AUG-CC-PWCV(Q+D)Z-RI" = (
+  (GET "AUG-CC-PWCVQZ-RI")
+  )
+
+PHOSPHORUS:"AUG-CC-PWCV(Q+D)Z-RI" = (
+  (GET "AUG-CC-PWCVQZ-RI")
+  )
+
+SULFUR:"AUG-CC-PWCV(Q+D)Z-RI" = (
+  (GET "AUG-CC-PWCVQZ-RI")
+  )
+
+CHLORINE:"AUG-CC-PWCV(Q+D)Z-RI" = (
+  (GET "AUG-CC-PWCVQZ-RI")
+  )
+
+ARGON:"AUG-CC-PWCV(Q+D)Z-RI" = (
+  (GET "AUG-CC-PWCVQZ-RI")
+  )
+
+%%%%%%%%%%%  ALIAS aug-cc-pwCV(Q+d)Z-RI=> AUG-CC-PWCV(Q+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"aug-cc-pwCV(Q+d)Z-RI":puream = true
+ALUMINUM:"aug-cc-pwCV(Q+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(Q+D)Z-RI")
+        )
+SILICON:"aug-cc-pwCV(Q+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(Q+D)Z-RI")
+        )
+PHOSPHORUS:"aug-cc-pwCV(Q+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(Q+D)Z-RI")
+        )
+SULFUR:"aug-cc-pwCV(Q+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(Q+D)Z-RI")
+        )
+CHLORINE:"aug-cc-pwCV(Q+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(Q+D)Z-RI")
+        )
+ARGON:"aug-cc-pwCV(Q+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(Q+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       AUG-CC-PWCV(5+D)Z-RI 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  in analogy to the equivalence of (aug-)cc-pVXZ and (aug-)cc-pV(X+d)Z
+%     auxiliary basis sets (see reference thereat), (aug-)cc-pwCVXZ and
+%     (aug-)cc-pwCV(X+d)Z auxiliary sets are here set to be identical
+%  for Al Si P S Cl Ar 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"AUG-CC-PWCV(5+D)Z-RI":puream = true
+ALUMINUM:"AUG-CC-PWCV(5+D)Z-RI" = (
+  (GET "AUG-CC-PWCV5Z-RI")
+  )
+
+SILICON:"AUG-CC-PWCV(5+D)Z-RI" = (
+  (GET "AUG-CC-PWCV5Z-RI")
+  )
+
+PHOSPHORUS:"AUG-CC-PWCV(5+D)Z-RI" = (
+  (GET "AUG-CC-PWCV5Z-RI")
+  )
+
+SULFUR:"AUG-CC-PWCV(5+D)Z-RI" = (
+  (GET "AUG-CC-PWCV5Z-RI")
+  )
+
+CHLORINE:"AUG-CC-PWCV(5+D)Z-RI" = (
+  (GET "AUG-CC-PWCV5Z-RI")
+  )
+
+ARGON:"AUG-CC-PWCV(5+D)Z-RI" = (
+  (GET "AUG-CC-PWCV5Z-RI")
+  )
+
+%%%%%%%%%%%  ALIAS aug-cc-pwCV(5+d)Z-RI=> AUG-CC-PWCV(5+D)Z-RI"  %%%%%%%%%%%%%%%%%%
+
+"aug-cc-pwCV(5+d)Z-RI":puream = true
+ALUMINUM:"aug-cc-pwCV(5+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(5+D)Z-RI")
+        )
+SILICON:"aug-cc-pwCV(5+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(5+D)Z-RI")
+        )
+PHOSPHORUS:"aug-cc-pwCV(5+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(5+D)Z-RI")
+        )
+SULFUR:"aug-cc-pwCV(5+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(5+D)Z-RI")
+        )
+CHLORINE:"aug-cc-pwCV(5+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(5+D)Z-RI")
+        )
+ARGON:"aug-cc-pwCV(5+d)Z-RI" = (
+        (GET "AUG-CC-PWCV(5+D)Z-RI")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%              CORRELATION CONSISTENT DENSITY FITTING BASIS SETS
+%                         CONSISTENT WITH Q-CHEM 3.2
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PVDZ-RI-QCHEM
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from QCHEM .bas files 4 September 2009
+%  differ from EMSL CC-PVDZ-RI only for C, N, O, F, suspect old coeff spec.
+%  for H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar Ga Ge As Se Br Kr 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"CC-PVDZ-RI-QCHEM":puream = true
+ HYDROGEN:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ HELIUM:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ LITHIUM:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ BERYLLIUM:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ BORON:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+
+ CARBON:"CC-PVDZ-RI-QCHEM" = (
+  (S    (        63.5502784600           1.0000000000))
+  (S    (        13.6474328500           1.0000000000))
+  (S    (         4.9173171300           1.0000000000))
+  (S    (         1.5289130700           1.0000000000))
+  (S    (         0.7513857700           1.0000000000))
+  (S    (         0.3797389800           1.0000000000))
+  (S    (         0.1215626400           1.0000000000))
+  (P    (        21.7059995900           1.0000000000))
+  (P    (         6.2303334100           1.0000000000))
+  (P    (         1.7439976400           1.0000000000))
+  (P    (         0.7694386500           1.0000000000))
+  (P    (         0.3229033100           1.0000000000))
+  (D    (         3.8961888100           1.0000000000))
+  (D    (         0.9269467800           1.0000000000))
+  (D    (         0.4635396800           1.0000000000))
+  (D    (         0.2050654100           1.0000000000))
+  (F    (         2.9658407200           1.0000000000))
+  (F    (         0.9027941500           1.0000000000)))
+
+ NITROGEN:"CC-PVDZ-RI-QCHEM" = (
+  (S    (        87.7807438300           1.0000000000))
+  (S    (        21.0674107100           1.0000000000))
+  (S    (         7.6086769000           1.0000000000))
+  (S    (         2.0477849700           1.0000000000))
+  (S    (         1.1152448800           1.0000000000))
+  (S    (         0.5343515100           1.0000000000))
+  (S    (         0.1768263200           1.0000000000))
+  (P    (        21.2264943800           1.0000000000))
+  (P    (         4.9476626500           1.0000000000))
+  (P    (         2.3413298400           1.0000000000))
+  (P    (         0.9272815200           1.0000000000))
+  (P    (         0.4734529400           1.0000000000))
+  (D    (         5.4518430800           1.0000000000))
+  (D    (         1.3523210800           1.0000000000))
+  (D    (         0.6318275000           1.0000000000))
+  (D    (         0.2117185800           1.0000000000))
+  (F    (         3.4178121600           1.0000000000))
+  (F    (         1.3032277500           1.0000000000)))
+
+ OXYGEN:"CC-PVDZ-RI-QCHEM" = (
+  (S    (        97.4824442100           1.0000000000))
+  (S    (        25.7132650900           1.0000000000))
+  (S    (        10.2220204100           1.0000000000))
+  (S    (         3.0633675300           1.0000000000))
+  (S    (         1.3836051500           1.0000000000))
+  (S    (         0.8613034200           1.0000000000))
+  (S    (         0.3320958600           1.0000000000))
+  (P    (        25.5361376700           1.0000000000))
+  (P    (         5.3265305100           1.0000000000))
+  (P    (         2.2480426400           1.0000000000))
+  (P    (         1.1510303600           1.0000000000))
+  (P    (         0.5660892500           1.0000000000))
+  (D    (         7.0141218300           1.0000000000))
+  (D    (         1.9842550600           1.0000000000))
+  (D    (         0.7300604200           1.0000000000))
+  (D    (         0.2692600300           1.0000000000))
+  (F    (         4.1212036400           1.0000000000))
+  (F    (         1.8018237500           1.0000000000)))
+
+ FLUORINE:"CC-PVDZ-RI-QCHEM" = (
+  (S    (       107.9025450400           1.0000000000))
+  (S    (        31.4088297700           1.0000000000))
+  (S    (        11.2399736300           1.0000000000))
+  (S    (         3.6733985900           1.0000000000))
+  (S    (         1.7636348000           1.0000000000))
+  (S    (         1.0500205000           1.0000000000))
+  (S    (         0.4416711300           1.0000000000))
+  (P    (        32.6424600100           1.0000000000))
+  (P    (         6.6540946300           1.0000000000))
+  (P    (         3.0499695600           1.0000000000))
+  (P    (         1.6368946900           1.0000000000))
+  (P    (         0.7308825300           1.0000000000))
+  (D    (         9.7061624600           1.0000000000))
+  (D    (         2.7857175600           1.0000000000))
+  (D    (         1.0578890700           1.0000000000))
+  (D    (         0.4982564800           1.0000000000))
+  (F    (         4.8900037600           1.0000000000))
+  (F    (         2.3060573600           1.0000000000)))
+ 
+ NEON:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ SODIUM:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ MAGNESIUM:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ ALUMINUM:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ SILICON:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ PHOSPHORUS:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ SULFUR:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ CHLORINE:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ ARGON:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ GALLIUM:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ GERMANIUM:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ ARSENIC:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ SELENIUM:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ BROMINE:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+ KRYPTON:"CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI")
+  )
+ 
+%%%%%%%%%%%  ALIAS cc-pVDZ-RI-QCHEM=> CC-PVDZ-RI-QCHEM"  %%%%%%%%%%%%%%%%%%
+
+"cc-pVDZ-RI-QCHEM":puream = true
+ HYDROGEN:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ HELIUM:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ LITHIUM:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ BERYLLIUM:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ BORON:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ CARBON:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ NITROGEN:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ OXYGEN:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ FLUORINE:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ NEON:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ SODIUM:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ MAGNESIUM:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ ALUMINUM:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ SILICON:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ PHOSPHORUS:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ SULFUR:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ CHLORINE:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ ARGON:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ GALLIUM:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ GERMANIUM:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ ARSENIC:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ SELENIUM:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ BROMINE:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+ KRYPTON:"cc-pVDZ-RI-QCHEM" = (
+    (GET "CC-PVDZ-RI-QCHEM")
+ )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PVTZ-RI-QCHEM
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from QCHEM .bas files 4 September 2009
+%  differ from EMSL CC-PVTZ-RI only for Ne, suspect old coeff spec.
+%  for H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar Ga Ge As Se Br Kr 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"CC-PVTZ-RI-QCHEM":puream = true
+ HYDROGEN:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ HELIUM:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ LITHIUM:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ BERYLLIUM:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ BORON:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ CARBON:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ NITROGEN:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ OXYGEN:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ FLUORINE:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ NEON:"CC-PVTZ-RI-QCHEM" = (
+  (S    (       431.9618577400           1.0000000000))
+  (S    (        91.6610779530           1.0000000000))
+  (S    (        32.0078201510           1.0000000000))
+  (S    (        12.2019785630           1.0000000000))
+  (S    (         3.9059621098           1.0000000000))
+  (S    (         1.8329932238           1.0000000000))
+  (S    (         1.1099280453           1.0000000000))
+  (S    (         0.5128449053           1.0000000000))
+  (P    (        58.7095478240           1.0000000000))
+  (P    (        13.7569088960           1.0000000000))
+  (P    (         5.5987423787           1.0000000000))
+  (P    (         2.8507458948           1.0000000000))
+  (P    (         1.5459527989           1.0000000000))
+  (P    (         0.7917192491           1.0000000000))
+  (D    (        20.0567921270           1.0000000000))
+  (D    (         6.5386253356           1.0000000000))
+  (D    (         3.5112244659           1.0000000000))
+  (D    (         1.8708677212           1.0000000000))
+  (D    (         0.7338132730           1.0000000000))
+  (F    (         8.0353509043           1.0000000000))
+  (F    (         3.8857621931           1.0000000000))
+  (F    (         1.8333430283           1.0000000000))
+  (G    (         6.1116175992           1.0000000000))
+  (G    (         3.2868026157           1.0000000000)))
+ 
+ SODIUM:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ MAGNESIUM:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ ALUMINUM:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ SILICON:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ PHOSPHORUS:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ SULFUR:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ CHLORINE:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ ARGON:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ GALLIUM:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ GERMANIUM:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ ARSENIC:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ SELENIUM:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ BROMINE:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+ KRYPTON:"CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI")
+  )
+ 
+%%%%%%%%%%%  ALIAS cc-pVTZ-RI-QCHEM=> CC-PVTZ-RI-QCHEM"  %%%%%%%%%%%%%%%%%%
+
+"cc-pVTZ-RI-QCHEM":puream = true
+ HYDROGEN:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ HELIUM:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ LITHIUM:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ BERYLLIUM:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ BORON:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ CARBON:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ NITROGEN:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ OXYGEN:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ FLUORINE:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ NEON:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ SODIUM:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ MAGNESIUM:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ ALUMINUM:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ SILICON:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ PHOSPHORUS:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ SULFUR:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ CHLORINE:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ ARGON:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ GALLIUM:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ GERMANIUM:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ ARSENIC:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ SELENIUM:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ BROMINE:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+ KRYPTON:"cc-pVTZ-RI-QCHEM" = (
+    (GET "CC-PVTZ-RI-QCHEM")
+ )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       CC-PVQZ-RI-QCHEM
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from QCHEM .bas files 4 September 2009
+%  differ from EMSL CC-PVQZ-RI only for Ne, suspect old coeff spec.
+%  for H He Li Be B C N O F Ne Na Mg Al Si P S Cl Ar Ga Ge As Se Br Kr 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"CC-PVQZ-RI-QCHEM":puream = true
+ HYDROGEN:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ HELIUM:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ LITHIUM:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ BERYLLIUM:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ BORON:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ CARBON:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ NITROGEN:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ OXYGEN:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ FLUORINE:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ NEON:"CC-PVQZ-RI-QCHEM" = (
+  (S    (       429.8856900200           1.0000000000))
+  (S    (        93.3371521260           1.0000000000))
+  (S    (        27.8336336280           1.0000000000))
+  (S    (         6.4165516755           1.0000000000))
+  (S    (         3.5989888671           1.0000000000))
+  (S    (         1.8998754062           1.0000000000))
+  (S    (         0.9637935274           1.0000000000))
+  (S    (         0.4302499494           1.0000000000))
+  (P    (        80.7477297310           1.0000000000))
+  (P    (        23.4275612040           1.0000000000))
+  (P    (         6.7889480632           1.0000000000))
+  (P    (         4.3774358765           1.0000000000))
+  (P    (         2.2219779685           1.0000000000))
+  (P    (         1.0483199132           1.0000000000))
+  (P    (         0.6014595627           1.0000000000))
+  (D    (        24.7971190020           1.0000000000))
+  (D    (         7.3061991378           1.0000000000))
+  (D    (         4.4291371578           1.0000000000))
+  (D    (         2.3943226251           1.0000000000))
+  (D    (         1.2628422000           1.0000000000))
+  (D    (         0.4971295389           1.0000000000))
+  (F    (        13.7173705090           1.0000000000))
+  (F    (         6.1467543092           1.0000000000))
+  (F    (         2.9789698217           1.0000000000))
+  (F    (         1.8667804276           1.0000000000))
+  (F    (         1.0278591668           1.0000000000))
+  (G    (         7.6621650301           1.0000000000))
+  (G    (         3.8329415253           1.0000000000))
+  (G    (         1.9566298175           1.0000000000))
+  (H    (         4.4964585377           1.0000000000)))
+ 
+ SODIUM:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ MAGNESIUM:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ ALUMINUM:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ SILICON:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ PHOSPHORUS:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ SULFUR:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ CHLORINE:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ ARGON:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ GALLIUM:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ GERMANIUM:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ ARSENIC:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ SELENIUM:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ BROMINE:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+ 
+ KRYPTON:"CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI")
+  )
+
+%%%%%%%%%%%  ALIAS cc-pVQZ-RI-QCHEM=> CC-PVQZ-RI-QCHEM"  %%%%%%%%%%%%%%%%%%
+
+"cc-pVQZ-RI-QCHEM":puream = true
+ HYDROGEN:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ HELIUM:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ LITHIUM:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ BERYLLIUM:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ BORON:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ CARBON:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ NITROGEN:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ OXYGEN:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ FLUORINE:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ NEON:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ SODIUM:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ MAGNESIUM:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ ALUMINUM:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ SILICON:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ PHOSPHORUS:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ SULFUR:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ CHLORINE:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ ARGON:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ GALLIUM:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ GERMANIUM:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ ARSENIC:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ SELENIUM:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ BROMINE:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+ KRYPTON:"cc-pVQZ-RI-QCHEM" = (
+    (GET "CC-PVQZ-RI-QCHEM")
+ )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%         AUGMENTED CORRELATION CONSISTENT DENSITY FITTING BASIS SETS
+%                         CONSISTENT WITH Q-CHEM 3.2
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       AUG-CC-PVDZ-RI-QCHEM 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from QCHEM .bas files 4 September 2009
+%  differ from EMSL AUG-CC-PVDZ-RI only for C, N, O, F valence- suspect old coeff spec.
+%  for H He B C N O F Ne Al Si P S Cl Ar Ga Ge As Se Br Kr 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"AUG-CC-PVDZ-RI-QCHEM":puream = true
+HYDROGEN:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+HELIUM:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+BORON:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+CARBON:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI-QCHEM")
+  (S    (         0.0738301019           1.0000000000))
+  (P    (         0.1259525665           1.0000000000))
+  (D    (         0.1102112489           1.0000000000))
+  (F    (         0.3171462483           1.0000000000)))
+
+NITROGEN:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI-QCHEM")
+  (S    (         0.1036118281           1.0000000000))
+  (P    (         0.1696819939           1.0000000000))
+  (D    (         0.1334994156           1.0000000000))
+  (F    (         0.4197603166           1.0000000000)))
+
+OXYGEN:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI-QCHEM")
+  (S    (         0.1217920948           1.0000000000))
+  (P    (         0.2114429718           1.0000000000))
+  (D    (         0.1664479368           1.0000000000))
+  (F    (         0.5846096311           1.0000000000)))
+
+FLUORINE:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "CC-PVDZ-RI-QCHEM")
+  (S    (         0.1553387145           1.0000000000))
+  (P    (         0.2770263881           1.0000000000))
+  (D    (         0.2106442687           1.0000000000))
+  (F    (         0.8066132078           1.0000000000)))
+
+NEON:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+ALUMINUM:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+SILICON:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+PHOSPHORUS:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+SULFUR:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+CHLORINE:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+ARGON:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+GALLIUM:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+GERMANIUM:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+ARSENIC:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+SELENIUM:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+BROMINE:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+KRYPTON:"AUG-CC-PVDZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVDZ-RI")
+  )
+
+%%%%%%%%%%%  ALIAS aug-cc-pVDZ-RI-QCHEM=> AUG-CC-PVDZ-RI-QCHEM"  %%%%%%%%%%%%%%%%%%
+
+"aug-cc-pVDZ-RI-QCHEM":puream = true
+HYDROGEN:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+HELIUM:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+BORON:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+CARBON:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+NITROGEN:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+OXYGEN:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+FLUORINE:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+NEON:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+ALUMINUM:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+SILICON:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+PHOSPHORUS:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+SULFUR:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+CHLORINE:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+ARGON:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+GALLIUM:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+GERMANIUM:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+ARSENIC:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+SELENIUM:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+BROMINE:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+KRYPTON:"aug-cc-pVDZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVDZ-RI-QCHEM")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       AUG-CC-PVTZ-RI-QCHEM 
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from QCHEM .bas files 4 September 2009
+%  differ from EMSL AUG-CC-PVTZ-RI only for Ne valence- suspect old coeff spec.
+%  for H He B C N O F Ne Al Si P S Cl Ar Ga Ge As Se Br Kr
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"AUG-CC-PVTZ-RI-QCHEM":puream = true
+HYDROGEN:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+HELIUM:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+BORON:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+CARBON:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+NITROGEN:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+OXYGEN:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+FLUORINE:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+NEON:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "CC-PVTZ-RI-QCHEM")
+  (S    (         0.2553392440           1.0000000000))
+  (P    (         0.3964168991           1.0000000000))
+  (D    (         0.3325733010           1.0000000000))
+  (F    (         0.7370525083           1.0000000000))
+  (G    (         1.5785006538           1.0000000000)))
+
+ALUMINUM:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+SILICON:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+PHOSPHORUS:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+SULFUR:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+CHLORINE:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+ARGON:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+GALLIUM:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+GERMANIUM:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+ARSENIC:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+SELENIUM:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+BROMINE:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+KRYPTON:"AUG-CC-PVTZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVTZ-RI")
+  )
+
+%%%%%%%%%%%  ALIAS aug-cc-pVTZ-RI-QCHEM=> AUG-CC-PVTZ-RI-QCHEM"  %%%%%%%%%%%%%%%%%%
+
+"aug-cc-pVTZ-RI-QCHEM":puream = true
+HYDROGEN:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+HELIUM:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+BORON:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+CARBON:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+NITROGEN:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+OXYGEN:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+FLUORINE:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+NEON:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+ALUMINUM:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+SILICON:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+PHOSPHORUS:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+SULFUR:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+CHLORINE:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+ARGON:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+GALLIUM:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+GERMANIUM:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+ARSENIC:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+SELENIUM:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+BROMINE:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+KRYPTON:"aug-cc-pVTZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVTZ-RI-QCHEM")
+        )
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+%                       AUG-CC-PVQZ-RI-QCHEM
+%          
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  from QCHEM .bas files 4 September 2009
+%  differ from EMSL AUG-CC-PVQZ-RI only for Ne valence- suspect old coeff spec.
+%  for H He B C N O F Ne Al Si P S Cl Ar Ga Ge As Se Br Kr 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+"AUG-CC-PVQZ-RI-QCHEM":puream = true
+HYDROGEN:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+HELIUM:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+BORON:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+CARBON:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+NITROGEN:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+OXYGEN:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+FLUORINE:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+NEON:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "CC-PVQZ-RI-QCHEM")
+  (S    (         0.2221438477           1.0000000000))
+  (P    (         0.3332269009           1.0000000000))
+  (D    (         0.1406605015           1.0000000000))
+  (F    (         0.5115323736           1.0000000000))
+  (G    (         1.1078697479           1.0000000000))
+  (H    (         1.9158769568           1.0000000000)))
+
+ALUMINUM:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+SILICON:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+PHOSPHORUS:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+SULFUR:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+CHLORINE:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+ARGON:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+GALLIUM:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+GERMANIUM:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+ARSENIC:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+SELENIUM:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+BROMINE:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+KRYPTON:"AUG-CC-PVQZ-RI-QCHEM" = (
+  (GET "AUG-CC-PVQZ-RI")
+  )
+
+%%%%%%%%%%%  ALIAS aug-cc-pVQZ-RI-QCHEM=> AUG-CC-PVQZ-RI-QCHEM"  %%%%%%%%%%%%%%%%%%
+
+"aug-cc-pVQZ-RI-QCHEM":puream = true
+HYDROGEN:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+HELIUM:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+BORON:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+CARBON:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+NITROGEN:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+OXYGEN:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+FLUORINE:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+NEON:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+ALUMINUM:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+SILICON:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+PHOSPHORUS:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+SULFUR:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+CHLORINE:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+ARGON:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+GALLIUM:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+GERMANIUM:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+ARSENIC:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+SELENIUM:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+BROMINE:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+KRYPTON:"aug-cc-pVQZ-RI-QCHEM" = (
+        (GET "AUG-CC-PVQZ-RI-QCHEM")
+        )
+
+
 )
 %
