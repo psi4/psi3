@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cmath>
 #include <utility>
 
@@ -78,6 +79,7 @@ void MRCCSD_T::startup()
   form_V_jk_c_m(V_jK_C_m,1.0,0.0);  // = <jk|mc>
 
   if(options_get_bool("FAVG_CCSD_T")){
+    fprintf(outfile,"\n\n  Using the average Fock matrix for the all references\n");
     for(int mu = 0; mu < nrefs; ++mu){
       int unique_mu = moinfo->get_ref_number(mu,AllRefs);
       double c_mu_2 = h_eff->get_zeroth_order_eigenvector(unique_mu)

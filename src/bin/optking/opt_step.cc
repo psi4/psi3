@@ -492,7 +492,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
   fprintf(outfile,"\t   MAX  disp: %15.10lf   RMS  disp: %15.10lf\n", max_disp, rms_disp);
 
   fprintf(outfile,"\n\tConvergence Check:\n");
-  fprintf(outfile,"\t       %15s  &&  \(%9s || %10s \)\n", "MAX Force", "Delta\(E\)", "MAX disp");
+  fprintf(outfile,"\t       %15s  &&  (%9s || %10s )\n", "MAX Force", "Delta(E)", "MAX disp");
   fprintf(outfile, "\t----------------------------------------------------------\n");
   fprintf(outfile,"\tActual %15.1e%15.1e%15.1e\n", max_force, fabs(DE), max_disp);
   fprintf(outfile,"\tLimit  %15.1e%15.1e%15.1e\n", optinfo.conv_max_force, optinfo.conv_max_DE, optinfo.conv_max_disp);
