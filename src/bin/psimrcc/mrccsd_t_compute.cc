@@ -25,6 +25,9 @@ namespace psi{ namespace psimrcc{
 
 void MRCCSD_T::compute()
 {
+  fprintf(outfile,"\n\n  Computing (T) correction using the unrestricted loop algorithm.\n");
+  fflush(outfile);
+
   compute_ooo_triples();
   compute_ooO_triples();
   compute_oOO_triples();
@@ -78,20 +81,26 @@ void MRCCSD_T::compute()
         }
       }
     }
-
-    fprintf(outfile,"\n\n  Total     diagonal (T) correction: %17.12f",E4);
-    fprintf(outfile,"\n  Total off-diagonal (T) correction: %17.12f",Heff_E);
-    fprintf(outfile,"\n  Total              (T) correction: %17.12f",Heff_E + E4);
+    double total = 0.0;
+    if(options_get_bool("DIAGONAL_CCSD_T")){
+      fprintf(outfile,"\n\n  Total     diagonal (T) correction: %17.12f",E4);
+      total += E4;
+    }
+    if(options_get_bool("OFFDIAGONAL_CCSD_T")){
+      fprintf(outfile,"\n  Total off-diagonal (T) correction: %17.12f",Heff_E);
+      total += Heff_E;
+    }
+    fprintf(outfile,"\n  Total              (T) correction: %17.12f",total);
   }
 
   for(int mu = 0; mu < nrefs; ++mu){
     for(int nu = 0; nu < nrefs; ++nu){
       if(mu != nu){
-        if(options_get_bool("DIAGONAL_CCSD_T")){  // Option to add the diagonal correction
+        if(options_get_bool("OFFDIAGONAL_CCSD_T")){  // Option to add the diagonal correction
           h_eff->add_matrix(mu,nu,d_h_eff[mu][nu]);
         }
       }else{
-        if(options_get_bool("OFFDIAGONAL_CCSD_T")){  // Option to add the off-diagonal correction
+        if(options_get_bool("DIAGONAL_CCSD_T")){  // Option to add the off-diagonal correction
           h_eff->add_matrix(mu,nu,E4_ooo[mu] + E4_ooO[mu] + E4_oOO[mu] + E4_OOO[mu]);
         }
       }

@@ -112,6 +112,7 @@ void read_calculation_options()
   options_add_bool("DIIS_TRIPLES",false);
   options_add_bool("LOCK_SINGLET",false);
   options_add_bool("MP2_GUESS",true);
+  options_add_bool("FAVG_CCSD_T",false);
   options_add_bool("HEFF4",true);
   options_add_bool("OFFDIAGONAL_CCSD_T",true);
   options_add_bool("DIAGONAL_CCSD_T",true);

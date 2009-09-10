@@ -319,6 +319,11 @@ void CCMRCC::add_matrices()
 
   // Triples
   if(triples_type >= ccsd_t){
+    blas->add_Matrix("epsilon[o][o]{u}");
+    blas->add_Matrix("epsilon[O][O]{u}");
+    blas->add_Matrix("epsilon[v][v]{u}");
+    blas->add_Matrix("epsilon[V][V]{u}");
+
     blas->add_Matrix("t2[Oo][Vv]{u}");
     blas->add_Matrix("F_ME[O][V]{u}");
 

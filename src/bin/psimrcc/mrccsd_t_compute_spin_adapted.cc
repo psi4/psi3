@@ -23,9 +23,10 @@ namespace psi{ namespace psimrcc{
 
 void MRCCSD_T::compute_spin_adapted()
 {
-  compute_ooO_triples_spin_adapted();
+  fprintf(outfile,"\n\n  Computing (T) correction using the spin-adapted algorithm.\n");
+  fflush(outfile);
 
-  fprintf(outfile,"\n\n  Using spin-adapted algorithm\n");
+  compute_ooO_triples_spin_adapted();
 
   fprintf(outfile,"\n\n  Mk-MRCCSD(T) diagonal contributions to the effective Hamiltonian:\n");
   fprintf(outfile,"\n   Ref         E[4]              E_T[4]            E_ST[4]           E_DT[4]");
@@ -69,11 +70,11 @@ void MRCCSD_T::compute_spin_adapted()
   for(int mu = 0; mu < nrefs; ++mu){
     for(int nu = 0; nu < nrefs; ++nu){
       if(mu != nu){
-        if(options_get_bool("DIAGONAL_CCSD_T")){  // Option to add the diagonal correction
+        if(options_get_bool("OFFDIAGONAL_CCSD_T")){  // Option to add the diagonal correction
           h_eff->add_matrix(mu,nu,2.0 * d_h_eff[mu][nu]);
         }
       }else{
-        if(options_get_bool("OFFDIAGONAL_CCSD_T")){  // Option to add the off-diagonal correction
+        if(options_get_bool("DIAGONAL_CCSD_T")){  // Option to add the off-diagonal correction
           h_eff->add_matrix(mu,nu,2.0 * E4_ooo[mu] + 2.0 * E4_ooO[mu]);
         }
       }

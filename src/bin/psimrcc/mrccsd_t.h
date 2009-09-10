@@ -71,12 +71,14 @@ private:
   double compute_AB_oOO_contribution_to_Heff_restricted(int u_abs,int V_abs,int x_abs,int Y_abs,int i_abs,int j_abs,int k_abs,int mu,BlockMatrix* T3);
 
 
+
   void form_T2_ij_a_b(IndexMatrix* T2_ij_a_b,bool spin1,bool spin2,bool transpose);
   void form_T2_i_ab_j(IndexMatrix* T2_i_ab_j,bool spin1,bool spin2,bool transpose);
   void form_V_k_bc_e(IndexMatrix* V_k_bc_e,double direct,double exchange);
   void form_V_jk_c_m(IndexMatrix* V_jk_c_m,double direct,double exchange);
 
   void build_W_intermediates();
+  void check_intruders();
 
   int nirreps;
   int nrefs;

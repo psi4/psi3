@@ -20,13 +20,12 @@ namespace psi{ namespace psimrcc{
 void CCMRCC::compute_perturbative_triples()
 {
   Timer timer;
-  fprintf(outfile,"\n\n\n  Computing (T) correction");
-  fflush(outfile);
   
   h_eff.set_eigenvalue(current_energy);
   h_eff.set_matrix(Heff,moinfo->get_nrefs());
   h_eff.set_right_eigenvector(right_eigenvector,moinfo->get_nrefs());
   h_eff.set_left_eigenvector(left_eigenvector,moinfo->get_nrefs());
+  h_eff.set_zeroth_order_eigenvector(zeroth_order_eigenvector,moinfo->get_nrefs());
 
   MRCCSD_T mrccsd_t(&h_eff);
 

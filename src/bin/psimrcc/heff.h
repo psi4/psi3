@@ -16,6 +16,7 @@ public:
   double get_matrix(int mu,int nu)      const {return matrix[mu][nu];}
   double get_left_eigenvector(int mu)   const {return left_eigenvector[mu];}
   double get_right_eigenvector(int mu)  const {return right_eigenvector[mu];}
+  double get_zeroth_order_eigenvector(int mu)  const {return zeroth_order_eigenvector[mu];}
 
   double expectation_value();
   double diagonalize(int root = 0);
@@ -26,6 +27,7 @@ public:
 
   void set_eigenvalue(double eigenvalue_) {eigenvalue = eigenvalue_;}
   void set_matrix(double** M,int ndets);
+  void set_zeroth_order_eigenvector(double* v,int ndets);
   void set_left_eigenvector(double* v,int ndets);
   void set_right_eigenvector(double* v,int ndets);
   void print();
@@ -40,6 +42,7 @@ private:
   std::vector<std::vector<double> > matrix;
   std::vector<double> right_eigenvector;
   std::vector<double> left_eigenvector;
+  std::vector<double> zeroth_order_eigenvector;
 };
 
 }} /* End Namespaces */

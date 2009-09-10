@@ -23,6 +23,9 @@ namespace psi{ namespace psimrcc{
 
 void MRCCSD_T::compute_restricted()
 {
+  fprintf(outfile,"\n\n  Computing (T) correction using the restricted loop algorithm.\n");
+  fflush(outfile);
+
   bool closed_shell_case = false;
   double closed_shell_factor = 1.0;
   if(moinfo->get_ref_size(UniqueOpenShellRefs) == 0){
@@ -36,9 +39,6 @@ void MRCCSD_T::compute_restricted()
     compute_oOO_triples_restricted();
     compute_OOO_triples_restricted();
   }
-
-  // This line adds to the "Computing (T) correction"
-  fprintf(outfile," using the restricted loop algorithm.\n");
 
   fprintf(outfile,"\n\n  Mk-MRCCSD(T) diagonal contributions to the effective Hamiltonian:\n");
   fprintf(outfile,"\n   Ref         E[4]              E_T[4]            E_ST[4]           E_DT[4]");
@@ -88,20 +88,26 @@ void MRCCSD_T::compute_restricted()
         }
       }
     }
-
-    fprintf(outfile,"\n\n  Total     diagonal (T) correction: %17.12f",E4);
-    fprintf(outfile,"\n  Total off-diagonal (T) correction: %17.12f",Heff_E);
-    fprintf(outfile,"\n  Total              (T) correction: %17.12f",Heff_E + E4);
+    double total = 0.0;
+    if(options_get_bool("DIAGONAL_CCSD_T")){
+      fprintf(outfile,"\n\n  Total     diagonal (T) correction: %17.12f",E4);
+      total += E4;
+    }
+    if(options_get_bool("OFFDIAGONAL_CCSD_T")){
+      fprintf(outfile,"\n  Total off-diagonal (T) correction: %17.12f",Heff_E);
+      total += Heff_E;
+    }
+    fprintf(outfile,"\n  Total              (T) correction: %17.12f",total);
   }
 
   for(int mu = 0; mu < nrefs; ++mu){
     for(int nu = 0; nu < nrefs; ++nu){
       if(mu != nu){
-        if(options_get_bool("DIAGONAL_CCSD_T")){  // Option to add the diagonal correction
+        if(options_get_bool("OFFDIAGONAL_CCSD_T")){  // Option to add the diagonal correction
           h_eff->add_matrix(mu,nu,closed_shell_factor * d_h_eff[mu][nu]);
         }
       }else{
-        if(options_get_bool("OFFDIAGONAL_CCSD_T")){  // Option to add the off-diagonal correction
+        if(options_get_bool("DIAGONAL_CCSD_T")){  // Option to add the off-diagonal correction
           h_eff->add_matrix(mu,nu,closed_shell_factor * (E4_ooo[mu] + E4_ooO[mu] + E4_oOO[mu] + E4_OOO[mu]));
         }
       }

@@ -1,3 +1,6 @@
+#include <cmath>
+#include <utility>
+
 #include <libmoinfo/libmoinfo.h>
 #include <liboptions/liboptions.h>
 
@@ -7,6 +10,8 @@
 #include "matrix.h"
 #include "mrccsd_t.h"
 #include "special_matrices.h"
+
+extern FILE* outfile;
 
 namespace psi{ namespace psimrcc{
 
@@ -72,13 +77,31 @@ void MRCCSD_T::startup()
   form_V_jk_c_m(V_jK_c_M,0.0,1.0);  // = <jk|cm>
   form_V_jk_c_m(V_jK_C_m,1.0,0.0);  // = <jk|mc>
 
+  if(options_get_bool("FAVG_CCSD_T")){
+    for(int mu = 0; mu < nrefs; ++mu){
+      int unique_mu = moinfo->get_ref_number(mu,AllRefs);
+      double c_mu_2 = h_eff->get_zeroth_order_eigenvector(unique_mu)
+                    * h_eff->get_zeroth_order_eigenvector(unique_mu);
+      string factor = to_string(c_mu_2);
+      blas->solve("epsilon[o][o]{u} += " + factor + " fock[o][o]{" +  to_string(unique_mu) + "}");
+      blas->solve("epsilon[O][O]{u} += " + factor + " fock[O][O]{" +  to_string(unique_mu) + "}");
+      blas->solve("epsilon[v][v]{u} += " + factor + " fock[v][v]{" +  to_string(unique_mu) + "}");
+      blas->solve("epsilon[V][V]{u} += " + factor + " fock[V][V]{" +  to_string(unique_mu) + "}");
+    }
+  }else{
+    blas->solve("epsilon[o][o]{u} = fock[o][o]{u}");
+    blas->solve("epsilon[O][O]{u} = fock[O][O]{u}");
+    blas->solve("epsilon[v][v]{u} = fock[v][v]{u}");
+    blas->solve("epsilon[V][V]{u} = fock[V][V]{u}");
+  }
+
   for(int mu = 0; mu < nrefs; ++mu){
     int unique_mu = moinfo->get_ref_number(mu,AllRefs);
 
     //  Unique references
     if(mu == unique_mu){
       // Setup the denominators
-      double*** F_oo = blas->get_MatTmp("fock[o][o]",mu,none)->get_matrix();
+      double*** F_oo = blas->get_MatTmp("epsilon[o][o]",mu,none)->get_matrix();
       std::vector<double>  e_oo_mu;
       {
         CCIndexIterator i("[o]");
@@ -90,7 +113,7 @@ void MRCCSD_T::startup()
       }
       e_oo.push_back(e_oo_mu);
 
-      double*** F_OO = blas->get_MatTmp("fock[O][O]",mu,none)->get_matrix();
+      double*** F_OO = blas->get_MatTmp("epsilon[O][O]",mu,none)->get_matrix();
       std::vector<double>  e_OO_mu;
       {
         CCIndexIterator i("[o]");
@@ -103,7 +126,7 @@ void MRCCSD_T::startup()
       e_OO.push_back(e_OO_mu);
 
 
-      double*** F_vv = blas->get_MatTmp("fock[v][v]",mu,none)->get_matrix();
+      double*** F_vv = blas->get_MatTmp("epsilon[v][v]",mu,none)->get_matrix();
       std::vector<double>  e_vv_mu;
       {
         CCIndexIterator a("[v]");
@@ -115,7 +138,7 @@ void MRCCSD_T::startup()
       }
       e_vv.push_back(e_vv_mu);
 
-      double*** F_VV = blas->get_MatTmp("fock[V][V]",mu,none)->get_matrix();
+      double*** F_VV = blas->get_MatTmp("epsilon[V][V]",mu,none)->get_matrix();
       std::vector<double>  e_VV_mu;
       {
         CCIndexIterator a("[v]");
@@ -161,7 +184,7 @@ void MRCCSD_T::startup()
       is_bvir.push_back(moinfo->get_is_bvir(mu,AllRefs));
     }else{
       // Setup the denominators
-      double*** F_oo = blas->get_MatTmp("fock[O][O]",unique_mu,none)->get_matrix();
+      double*** F_oo = blas->get_MatTmp("epsilon[O][O]",unique_mu,none)->get_matrix();
       std::vector<double>  e_oo_mu;
       {
         CCIndexIterator i("[o]");
@@ -173,7 +196,7 @@ void MRCCSD_T::startup()
       }
       e_oo.push_back(e_oo_mu);
 
-      double*** F_OO = blas->get_MatTmp("fock[o][o]",unique_mu,none)->get_matrix();
+      double*** F_OO = blas->get_MatTmp("epsilon[o][o]",unique_mu,none)->get_matrix();
       std::vector<double>  e_OO_mu;
       {
         CCIndexIterator i("[o]");
@@ -185,7 +208,7 @@ void MRCCSD_T::startup()
       }
       e_OO.push_back(e_OO_mu);
 
-      double*** F_vv = blas->get_MatTmp("fock[V][V]",unique_mu,none)->get_matrix();
+      double*** F_vv = blas->get_MatTmp("epsilon[V][V]",unique_mu,none)->get_matrix();
       std::vector<double>  e_vv_mu;
       {
         CCIndexIterator a("[v]");
@@ -197,7 +220,7 @@ void MRCCSD_T::startup()
       }
       e_vv.push_back(e_vv_mu);
 
-      double*** F_VV = blas->get_MatTmp("fock[v][v]",unique_mu,none)->get_matrix();
+      double*** F_VV = blas->get_MatTmp("epsilon[v][v]",unique_mu,none)->get_matrix();
       std::vector<double>  e_VV_mu;
       {
         CCIndexIterator a("[v]");
@@ -337,7 +360,212 @@ void MRCCSD_T::startup()
   E4_OOO.assign(nrefs,0.0);
 }
 
+void MRCCSD_T::check_intruders()
+{
+  vector<int> occ_to_mo =  moinfo->get_occ_to_mo();
+  vector<int> vir_to_mo =  moinfo->get_vir_to_mo();
+  // Identify intruders
+  for(int mu = 0; mu < nrefs; ++mu){
+    vector<pair<double,vector<short> > > aaa_sample;
+    vector<pair<double,vector<short> > > aab_sample;
+    // Loop over ijk
+    CCIndexIterator  ijk("[ooo]");
+    for(ijk.first(); !ijk.end(); ijk.next()){
+      size_t i_abs = o->get_tuple_abs_index(ijk.ind_abs<0>());
+      size_t j_abs = o->get_tuple_abs_index(ijk.ind_abs<1>());
+      size_t k_abs = o->get_tuple_abs_index(ijk.ind_abs<2>());
+      int ijk_sym = ijk.sym();
+      // Loop over abc
+      CCIndexIterator  abc("[vvv]",ijk_sym);
+      for(abc.first(); !abc.end(); abc.next()){
+        size_t a_abs = v->get_tuple_abs_index(abc.ind_abs<0>());
+        size_t b_abs = v->get_tuple_abs_index(abc.ind_abs<1>());
+        size_t c_abs = v->get_tuple_abs_index(abc.ind_abs<2>());
 
+        // AAA Case
+        if(is_aocc[mu][i_abs] and is_aocc[mu][j_abs] and is_aocc[mu][k_abs]){
+          if(is_avir[mu][a_abs] and is_avir[mu][b_abs] and is_avir[mu][c_abs]){
+            if((i_abs < j_abs) and (j_abs < k_abs) and (a_abs < b_abs) and (b_abs < c_abs)){
+              double D_ijk = e_oo[mu][i_abs] + e_oo[mu][j_abs] + e_oo[mu][k_abs];
+              double D_abc = e_vv[mu][a_abs] + e_vv[mu][b_abs] + e_vv[mu][c_abs];
+              double denominator = D_ijk - D_abc;
+              if(abs(denominator) < 0.1){
+                vector<short> T3;
+                T3.push_back(i_abs);
+                T3.push_back(j_abs);
+                T3.push_back(k_abs);
+                T3.push_back(a_abs);
+                T3.push_back(b_abs);
+                T3.push_back(c_abs);
+                aaa_sample.push_back(make_pair(denominator,T3));
+              }
+            }
+          }
+        }
+
+        // AAB Case
+        if(is_aocc[mu][i_abs] and is_aocc[mu][j_abs] and is_bocc[mu][k_abs]){
+          if(is_avir[mu][a_abs] and is_avir[mu][b_abs] and is_bvir[mu][c_abs]){
+            if((i_abs < j_abs) and (a_abs < b_abs)){
+              double D_ijk = e_oo[mu][i_abs] + e_oo[mu][j_abs] + e_OO[mu][k_abs];
+              double D_abc = e_vv[mu][a_abs] + e_vv[mu][b_abs] + e_VV[mu][c_abs];
+              double denominator = D_ijk - D_abc;
+              if(abs(denominator) < 0.1){
+                vector<short> T3;
+                T3.push_back(i_abs);
+                T3.push_back(j_abs);
+                T3.push_back(k_abs);
+                T3.push_back(a_abs);
+                T3.push_back(b_abs);
+                T3.push_back(c_abs);
+                aab_sample.push_back(make_pair(denominator,T3));
+              }
+            }
+          }
+        }
+      }  // End loop over abc
+    }  // End loop over allowed ijk
+
+    int max_aaa = min(10,static_cast<int>(aaa_sample.size()));
+    if(max_aaa > 0){
+      fprintf(outfile,"\n\n  Intruders diagnostics for reference %d, AAA triple excitations",mu);
+      fprintf(outfile,"\n  has found the following denominators with absolute value < 0.1\n");
+      std::sort(aaa_sample.begin(),aaa_sample.end());
+      for(int n = 0; n < max_aaa; ++n){
+        fprintf(outfile,"\n  [%3d][%3d][%3d] -> [%3d][%3d][%3d] = %12.8f",
+            aaa_sample[n].second[0],aaa_sample[n].second[1],aaa_sample[n].second[2],
+            aaa_sample[n].second[3],aaa_sample[n].second[4],aaa_sample[n].second[5],
+            aaa_sample[n].first);
+      }
+      fprintf(outfile,"\n  please check your results.");
+    }
+
+    int max_aab = min(10,static_cast<int>(aab_sample.size()));
+    if(max_aab > 0){
+      fprintf(outfile,"\n\n  Intruders diagnostics for reference %d, AAB triple excitations",mu);
+      fprintf(outfile,"\n  has found the following denominators with absolute value < 0.1\n");
+
+      std::sort(aab_sample.begin(),aab_sample.end());
+      for(int n = 0; n < max_aab; ++n){
+        fprintf(outfile,"\n  [%3d][%3d][%3d] -> [%3d][%3d][%3d] = %12.8f",
+            aab_sample[n].second[0],aab_sample[n].second[1],aab_sample[n].second[2],
+            aab_sample[n].second[3],aab_sample[n].second[4],aab_sample[n].second[5],
+            aab_sample[n].first);
+      }
+      fprintf(outfile,"\n\n  please check your results.");
+    }
+    if((max_aaa + max_aab) > 0 ){
+      fprintf(outfile,"\n  Orbital labels used to describe the intruder triple excitations refer to"
+                      "\n  the occupied (docc + actv) and the virtual (actv + extr) spaces.");
+
+      fprintf(outfile,"\n\n  Printing occupied orbital energies for reference %d",mu);
+      CCIndexIterator  i("[o]");
+      fprintf(outfile,"\n   OCC   MO      e(alpha)         e(beta)");
+      for(i.first(); !i.end();i.next()){
+        fprintf(outfile,"\n  %4d %4d",i.ind_abs<0>(),occ_to_mo[i.ind_abs<0>()]);
+        if(is_aocc[mu][i.ind_abs<0>()]){
+          fprintf(outfile,"%15.9f  ",e_oo[mu][i.ind_abs<0>()]);
+        }else{
+          fprintf(outfile,"         ---   ");
+        }
+        if(is_bocc[mu][i.ind_abs<0>()]){
+          fprintf(outfile,"%15.9f",e_OO[mu][i.ind_abs<0>()]);
+        }else{
+          fprintf(outfile,"           ---");
+        }
+      }
+      fprintf(outfile,"\n\n  Printing virtual orbital energies for reference %d",mu);
+      CCIndexIterator  a("[v]");
+      fprintf(outfile,"\n   VIR   MO      e(alpha)         e(beta)");
+      for(a.first(); !a.end();a.next()){
+        fprintf(outfile,"\n  %4d %4d",a.ind_abs<0>(),vir_to_mo[a.ind_abs<0>()]);
+        if(is_avir[mu][a.ind_abs<0>()]){
+          fprintf(outfile,"%15.9f  ",e_vv[mu][a.ind_abs<0>()]);
+        }else{
+          fprintf(outfile,"         ---   ");
+        }
+        if(is_bvir[mu][a.ind_abs<0>()]){
+          fprintf(outfile,"%15.9f",e_VV[mu][a.ind_abs<0>()]);
+        }else{
+          fprintf(outfile,"           ---");
+        }
+      }
+
+
+    }
+  }
+
+  /*
+  for(int mu = 0; mu < nrefs; ++mu){
+    fprintf(outfile,"\n  @=@%d %.9f",mu,Mk_shift[mu]);
+  }
+
+  for(int mu = 0; mu < nrefs; ++mu){
+    fprintf(outfile,"\n  @@@%d ",mu);
+    // Loop over ijk
+    CCIndexIterator  ijk("[ooo]");
+    for(ijk.first(); !ijk.end(); ijk.next()){
+      size_t i_abs = o->get_tuple_abs_index(ijk.ind_abs<0>());
+      size_t j_abs = o->get_tuple_abs_index(ijk.ind_abs<1>());
+      size_t k_abs = o->get_tuple_abs_index(ijk.ind_abs<2>());
+      int ijk_sym = ijk.sym();
+      // Loop over abc
+      CCIndexIterator  abc("[vvv]",ijk_sym);
+      for(abc.first(); !abc.end(); abc.next()){
+        size_t a_abs = v->get_tuple_abs_index(abc.ind_abs<0>());
+        size_t b_abs = v->get_tuple_abs_index(abc.ind_abs<1>());
+        size_t c_abs = v->get_tuple_abs_index(abc.ind_abs<2>());
+
+        // AAA Case
+        if(is_aocc[mu][i_abs] and is_aocc[mu][j_abs] and is_aocc[mu][k_abs]){
+          if(is_avir[mu][a_abs] and is_avir[mu][b_abs] and is_avir[mu][c_abs]){
+            if((i_abs < j_abs) and (j_abs < k_abs) and (a_abs < b_abs) and (b_abs < c_abs)){
+              double D_ijk = e_oo[mu][i_abs] + e_oo[mu][j_abs] + e_oo[mu][k_abs];
+              double D_abc = e_vv[mu][a_abs] + e_vv[mu][b_abs] + e_vv[mu][c_abs];
+              double denominator = D_ijk - D_abc;
+              fprintf(outfile," %.6f",denominator);
+            }
+          }
+        }
+
+      }  // End loop over abc
+    }  // End loop over allowed ijk
+  }
+
+
+  for(int mu = 0; mu < nrefs; ++mu){
+    fprintf(outfile,"\n  @@#%d ",mu);
+    // Loop over ijk
+    CCIndexIterator  ijk("[ooo]");
+    for(ijk.first(); !ijk.end(); ijk.next()){
+      size_t i_abs = o->get_tuple_abs_index(ijk.ind_abs<0>());
+      size_t j_abs = o->get_tuple_abs_index(ijk.ind_abs<1>());
+      size_t k_abs = o->get_tuple_abs_index(ijk.ind_abs<2>());
+      int ijk_sym = ijk.sym();
+      // Loop over abc
+      CCIndexIterator  abc("[vvv]",ijk_sym);
+      for(abc.first(); !abc.end(); abc.next()){
+        size_t a_abs = v->get_tuple_abs_index(abc.ind_abs<0>());
+        size_t b_abs = v->get_tuple_abs_index(abc.ind_abs<1>());
+        size_t c_abs = v->get_tuple_abs_index(abc.ind_abs<2>());
+
+
+        // AAB Case
+        if(is_aocc[mu][i_abs] and is_aocc[mu][j_abs] and is_bocc[mu][k_abs]){
+          if(is_avir[mu][a_abs] and is_avir[mu][b_abs] and is_bvir[mu][c_abs]){
+            if((i_abs < j_abs) and (a_abs < b_abs)){
+              double D_ijk = e_oo[mu][i_abs] + e_oo[mu][j_abs] + e_OO[mu][k_abs];
+              double D_abc = e_vv[mu][a_abs] + e_vv[mu][b_abs] + e_VV[mu][c_abs];
+              double denominator = D_ijk - D_abc;
+              fprintf(outfile," %.6f",denominator);
+            }
+          }
+        }
+      }  // End loop over abc
+    }  // End loop over allowed ijk
+  }
+  */
+}
 
 void MRCCSD_T::build_W_intermediates()
 {

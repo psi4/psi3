@@ -96,6 +96,15 @@ void Hamiltonian::set_right_eigenvector(double* v,int ndets_)
   }
 }
 
+void Hamiltonian::set_zeroth_order_eigenvector(double* v,int ndets_)
+{
+  ndets = ndets_;
+  zeroth_order_eigenvector.assign(ndets,0.0);
+  for(int mu = 0; mu < ndets; ++mu){
+    zeroth_order_eigenvector[mu] = v[mu];
+  }
+}
+
 double Hamiltonian::expectation_value()
 {
   double value = 0.0;
