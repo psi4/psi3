@@ -242,54 +242,166 @@ void get_optinfo(void) {
   if (ip_exist("OPT_CONV",0)) {
     errcod = ip_string("OPT_CONV", &junk, 0);
     if (errcod != IPE_OK) {
-      fprintf(outfile,"OPT_CONV should be one of {LOOSE, NORMAL, TIGHT, VERY_TIGHT}\n");
+      fprintf(outfile,"OPT_CONV should be one of {LOOSE, NORMAL, TIGHT, VERY_TIGHT, BAKER, QCHEM, GAU_NORMAL, GAU_TIGHT, GAU_VERY_TIGHT, GENERAL}\n");
       throw("Could not read OPT_CONV from input.");
     }
     else if (!strcmp(junk,"LOOSE")) {
+      optinfo.opt_conv       = OPTInfo::LOOSE;
       optinfo.conv_max_force = power(10.0, -3);
       optinfo.conv_max_DE    = power(10.0, -6);
-      optinfo.conv_max_disp    = power(10.0, -2);
+      optinfo.conv_max_disp  = power(10.0, -2);
     }
     else if (!strcmp(junk,"NORMAL")) { // also below
+      optinfo.opt_conv       = OPTInfo::NORMAL;
       optinfo.conv_max_force = power(10.0, -4);
       optinfo.conv_max_DE    = power(10.0, -8);
-      optinfo.conv_max_disp    = power(10.0, -3);
+      optinfo.conv_max_disp  = power(10.0, -3);
     }
     else if (!strcmp(junk,"TIGHT")) {
+      optinfo.opt_conv       = OPTInfo::TIGHT;
       optinfo.conv_max_force = power(10.0, -5);
       optinfo.conv_max_DE    = power(10.0, -10);
-      optinfo.conv_max_disp    = power(10.0, -4);
+      optinfo.conv_max_disp  = power(10.0, -4);
     }
     else if (!strcmp(junk,"VERY_TIGHT")) {
+      optinfo.opt_conv       = OPTInfo::VERY_TIGHT;
       optinfo.conv_max_force = power(10.0, -6);
       optinfo.conv_max_DE    = power(10.0, -12);
-      optinfo.conv_max_disp    = power(10.0, -5);
+      optinfo.conv_max_disp  = power(10.0, -5);
+    }
+    else if (!strcmp(junk,"BAKER")) {
+      optinfo.opt_conv       = OPTInfo::BAKER;
+      optinfo.conv_max_force = 3.0e-4;
+      optinfo.conv_max_DE    = power(10.0, -6);
+      optinfo.conv_max_disp  = 3.0e-4;
+    }
+    else if (!strcmp(junk,"QCHEM")) {
+      optinfo.opt_conv       = OPTInfo::QCHEM;
+      optinfo.conv_max_force = 3.0e-4;
+      optinfo.conv_max_DE    = power(10.0, -6);
+      optinfo.conv_max_disp  = 1.2e-3;
+    }
+    else if (!strcmp(junk,"GAU_NORMAL")) {
+      optinfo.opt_conv       = OPTInfo::GAU_NORMAL;
+      optinfo.conv_max_force = 4.5e-4;
+      optinfo.conv_rms_force = 3.0e-4;
+      optinfo.conv_max_disp  = 1.8e-3;
+      optinfo.conv_rms_disp  = 1.2e-3;
+    }
+    else if (!strcmp(junk,"GAU_TIGHT")) {
+      optinfo.opt_conv       = OPTInfo::GAU_TIGHT;
+      optinfo.conv_max_force = 1.5e-5;
+      optinfo.conv_rms_force = 1.0e-5;
+      optinfo.conv_max_disp  = 6.0e-5;
+      optinfo.conv_rms_disp  = 4.0e-5;
+    }
+    else if (!strcmp(junk,"GAU_VERY_TIGHT")) {
+      optinfo.opt_conv       = OPTInfo::GAU_VERY_TIGHT;
+      optinfo.conv_max_force = 2.0e-6;
+      optinfo.conv_rms_force = 1.0e-6;
+      optinfo.conv_max_disp  = 6.0e-6;
+      optinfo.conv_rms_disp  = 4.0e-6;
+    }
+    else if (!strcmp(junk,"GENERAL")) {
+      optinfo.opt_conv       = OPTInfo::GENERAL;
+      optinfo.conv_max_force = 0.0;
+      optinfo.conv_rms_force = 0.0;
+      optinfo.conv_max_DE    = 0.0;
+      optinfo.conv_max_disp  = 0.0;
+      optinfo.conv_rms_disp  = 0.0;
     }
     else {
-      fprintf(outfile,"OPT_CONV should be one of {LOOSE, NORMAL, TIGHT, VERY_TIGHT}\n");
+      fprintf(outfile,"OPT_CONV should be one of {LOOSE, NORMAL, TIGHT, VERY_TIGHT, BAKER, QCHEM, GAU_NORMAL, GAU_TIGHT, GAU_VERY_TIGHT, GENERAL}\n");
       throw("Could not read OPT_CONV from input.");
     }
     free(junk);
   }
   else { // default NORMAL criteria
+    optinfo.opt_conv       = OPTInfo::NORMAL;
     optinfo.conv_max_force = power(10.0, -4);
     optinfo.conv_max_DE    = power(10.0, -8);
-    optinfo.conv_max_disp    = power(10.0, -3);
+    optinfo.conv_max_disp  = power(10.0, -3);
   }
 
-  if (ip_exist("CONV_MAX_FORCE",0)) {
-    ip_data("CONV_MAX_FORCE","%d",&a,0);
-    optinfo.conv_max_force = power(10.0, -1*a);
+  if ( (optinfo.opt_conv == OPTInfo::LOOSE) || (optinfo.opt_conv == OPTInfo::NORMAL) || (optinfo.opt_conv == OPTInfo::TIGHT) ||
+       (optinfo.opt_conv == OPTInfo::VERY_TIGHT) || (optinfo.opt_conv == OPTInfo::BAKER) || (optinfo.opt_conv == OPTInfo::QCHEM) ) {
+
+    if (ip_exist("CONV_MAX_FORCE",0)) {
+      errcod = ip_data("CONV_MAX_FORCE","%lf",&tval,0);
+      if (errcod == IPE_OK) optinfo.conv_max_force = tval;
+    }
+
+    if (ip_exist("CONV_MAX_DE",0)) {
+      errcod = ip_data("CONV_MAX_DE","%lf",&tval,0);
+      if (errcod == IPE_OK) optinfo.conv_max_DE = tval;
+    }
+
+    if (ip_exist("CONV_MAX_DISP",0)) {
+      errcod = ip_data("CONV_MAX_DISP","%lf",&tval,0);
+      if (errcod == IPE_OK) optinfo.conv_max_disp = tval;
+    }
   }
 
-  if (ip_exist("CONV_MAX_DE",0)) {
-    ip_data("CONV_MAX_DE","%d",&a,0);
-    optinfo.conv_max_DE = power(10.0, -1*a);
+  else if ( (optinfo.opt_conv == OPTInfo::GAU_NORMAL) || (optinfo.opt_conv == OPTInfo::GAU_TIGHT) || (optinfo.opt_conv == OPTInfo::GAU_VERY_TIGHT) ) {
+
+    if (ip_exist("CONV_MAX_FORCE",0)) {
+      errcod = ip_data("CONV_MAX_FORCE","%lf",&tval,0);
+      if (errcod == IPE_OK) optinfo.conv_max_force = tval;
+    }
+
+    if (ip_exist("CONV_RMS_FORCE",0)) {
+      errcod = ip_data("CONV_RMS_FORCE","%lf",&tval,0);
+      if (errcod == IPE_OK) optinfo.conv_rms_force = tval;
+    }
+
+    if (ip_exist("CONV_MAX_DISP",0)) {
+      errcod = ip_data("CONV_MAX_DISP","%lf",&tval,0);
+      if (errcod == IPE_OK) optinfo.conv_max_disp = tval;
+    }
+
+    if (ip_exist("CONV_RMS_DISP",0)) {
+      errcod = ip_data("CONV_RMS_DISP","%lf",&tval,0);
+      if (errcod == IPE_OK) optinfo.conv_rms_disp = tval;
+    }
   }
 
-  if (ip_exist("CONV_MAX_DISP",0)) {
-    ip_data("CONV_MAX_DISP","%d",&a,0);
-    optinfo.conv_max_disp = power(10.0, -1*a);
+  else if ( optinfo.opt_conv == OPTInfo::GENERAL ) {
+    a = 0;
+
+    if (ip_exist("CONV_MAX_FORCE",0)) {
+      errcod = ip_data("CONV_MAX_FORCE","%lf",&tval,0);
+      if (errcod == IPE_OK) optinfo.conv_max_force = tval;
+      a++;
+    }
+
+    if (ip_exist("CONV_RMS_FORCE",0)) {
+      errcod = ip_data("CONV_RMS_FORCE","%lf",&tval,0);
+      if (errcod == IPE_OK) optinfo.conv_rms_force = tval;
+      a++;
+    }
+
+    if (ip_exist("CONV_MAX_DE",0)) {
+      errcod = ip_data("CONV_MAX_DE","%lf",&tval,0);
+      if (errcod == IPE_OK) optinfo.conv_max_DE = tval;
+      a++;
+    }
+
+    if (ip_exist("CONV_MAX_DISP",0)) {
+      errcod = ip_data("CONV_MAX_DISP","%lf",&tval,0);
+      if (errcod == IPE_OK) optinfo.conv_max_disp = tval;
+      a++;
+    }
+
+    if (ip_exist("CONV_RMS_DISP",0)) {
+      errcod = ip_data("CONV_RMS_DISP","%lf",&tval,0);
+      if (errcod == IPE_OK) optinfo.conv_rms_disp = tval;
+      a++;
+    }
+
+    if (a == 0) {
+      fprintf(outfile,"OPT_CONV=GENERAL should be accompanied by at least one of {CONV_MAX_FORCE, CONV_RMS_FORCE, CONV_MAX_DE, CONV_MAX_DISP, CONV_RMS_DISP}\n");
+      throw("Could not find convergence parameters for OPT_CONV=GENERAL in input.");
+    }
   }
 
   a= 5;
@@ -406,9 +518,34 @@ void get_optinfo(void) {
     fprintf(outfile,"step_limit: %f\n",optinfo.step_limit);
     fprintf(outfile,"mix_types:     %d\n",optinfo.mix_types);
     fprintf(outfile,"delocalize:    %d\n",optinfo.delocalize);
-    fprintf(outfile,"MAX force convergence: %.1e\n",optinfo.conv_max_force);
-    fprintf(outfile,"MAX D(Energy) convergence: %.1e\n",optinfo.conv_max_DE);
-    fprintf(outfile,"MAX D(displacement) convergence: %.1e\n",optinfo.conv_max_disp);
+
+    if (optinfo.opt_conv == OPTInfo::LOOSE)
+      fprintf(outfile,"opt_conv:        loose\n");
+    else if (optinfo.opt_conv == OPTInfo::NORMAL)
+      fprintf(outfile,"opt_conv:        normal\n");
+    else if (optinfo.opt_conv == OPTInfo::TIGHT)
+      fprintf(outfile,"opt_conv:        tight\n");
+    else if (optinfo.opt_conv == OPTInfo::VERY_TIGHT)
+      fprintf(outfile,"opt_conv:        very_tight\n");
+    else if (optinfo.opt_conv == OPTInfo::BAKER)
+      fprintf(outfile,"opt_conv:        baker\n");
+    else if (optinfo.opt_conv == OPTInfo::QCHEM)
+      fprintf(outfile,"opt_conv:        qchem\n");
+    else if (optinfo.opt_conv == OPTInfo::GAU_NORMAL)
+      fprintf(outfile,"opt_conv:        gau_normal\n");
+    else if (optinfo.opt_conv == OPTInfo::GAU_TIGHT)
+      fprintf(outfile,"opt_conv:        gau_tight\n");
+    else if (optinfo.opt_conv == OPTInfo::GAU_VERY_TIGHT)
+      fprintf(outfile,"opt_conv:        gau_very_tight\n");
+    else if (optinfo.opt_conv == OPTInfo::GENERAL)
+      fprintf(outfile,"opt_conv:        general\n");
+
+    fprintf(outfile,"conv_max_force:  %.1e\n",optinfo.conv_max_force);
+    fprintf(outfile,"conv_rms_force:  %.1e\n",optinfo.conv_rms_force);
+    fprintf(outfile,"conv_max_DE:     %.1e\n",optinfo.conv_max_DE);
+    fprintf(outfile,"conv_max_disp:   %.1e\n",optinfo.conv_max_disp);
+    fprintf(outfile,"conv_rms_disp:   %.1e\n",optinfo.conv_rms_disp);
+
     fprintf(outfile,"dertype:       %d\n",optinfo.dertype);
     fprintf(outfile,"numerical dertype: %d\n",optinfo.numerical_dertype);
     fprintf(outfile,"iteration:       %d\n",optinfo.iteration);

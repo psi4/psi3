@@ -66,6 +66,7 @@ EXTERN struct OPTInfo {
   enum { NONE, BFGS, MS, POWELL, BOFILL} H_update;
   enum { FISCHER, SCHLEGEL} empirical_H;
   enum { EMPIRICAL, KEEP } nonselected_fc;
+  enum { LOOSE, NORMAL, TIGHT, VERY_TIGHT, BAKER, QCHEM, GAU_NORMAL, GAU_TIGHT, GAU_VERY_TIGHT, GENERAL } opt_conv;
 
   int H_update_use_last;
   bool rfo; // whether to use rfo step
@@ -80,7 +81,9 @@ EXTERN struct OPTInfo {
   int micro_iteration;
   double conv_max_force;  /* MAX force convergence */
   double conv_max_DE; /* MAX delta-E convergence */
-  double conv_max_disp; /* MAX delta-displacement convergence */
+  double conv_max_disp; /* MAX displacement convergence */
+  double conv_rms_force; /* RMS force convergence */
+  double conv_rms_disp; /* RMS displacement convergence */
   double ev_tol;
   double scale_connectivity;
   double disp_size;

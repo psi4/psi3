@@ -491,18 +491,57 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
   fprintf(outfile,"\n\t   MAX force: %15.10lf   RMS force: %15.10lf\n", max_force, rms_force);
   fprintf(outfile,"\t   MAX  disp: %15.10lf   RMS  disp: %15.10lf\n", max_disp, rms_disp);
 
+<<<<<<< .mine
+  fprintf(outfile, "\n\tConvergence Check Cycle %4d:\n", optinfo.iteration+1);
+  fprintf(outfile, "\t                    Actual        Tolerance     Converged?\n");
+=======
   fprintf(outfile,"\n\tConvergence Check:\n");
   fprintf(outfile,"\t       %15s  &&  (%9s || %10s )\n", "MAX Force", "Delta(E)", "MAX disp");
+>>>>>>> .r4331
   fprintf(outfile, "\t----------------------------------------------------------\n");
-  fprintf(outfile,"\tActual %15.1e%15.1e%15.1e\n", max_force, fabs(DE), max_disp);
-  fprintf(outfile,"\tLimit  %15.1e%15.1e%15.1e\n", optinfo.conv_max_force, optinfo.conv_max_DE, optinfo.conv_max_disp);
-  fprintf(outfile,"\tConv?   ");
-  fprintf(outfile,"%10s     ", (max_force < optinfo.conv_max_force) ? "Y" : "N");
-  fprintf(outfile,"%10s     ", (fabs(DE) < optinfo.conv_max_DE) ? "Y" : "N");
-  fprintf(outfile,"%10s\n", (max_disp < optinfo.conv_max_disp) ? "Y" : "N");
+  if ( fabs(optinfo.conv_max_force) < 1.0e-15 ) fprintf(outfile, "\tMAX Force        %10.1e\n", max_force);
+  else fprintf(outfile, "\tMAX Force        %10.1e %14.1e %11s\n", max_force, optinfo.conv_max_force, 
+       ((max_force < optinfo.conv_max_force) ? "yes" : "no"));
+  if ( fabs(optinfo.conv_rms_force) < 1.0e-15 ) fprintf(outfile, "\tRMS Force        %10.1e\n", rms_force);
+  else fprintf(outfile, "\tRMS Force        %10.1e %14.1e %11s\n", rms_force, optinfo.conv_rms_force, 
+       ((rms_force < optinfo.conv_rms_force) ? "yes" : "no"));
+  if ( fabs(optinfo.conv_max_DE) < 1.0e-15 ) fprintf(outfile, "\tEnergy Change    %10.1e\n", fabs(DE));
+  else fprintf(outfile, "\tEnergy Change    %10.1e %14.1e %11s\n", DE, optinfo.conv_max_DE, 
+       ((fabs(DE) < optinfo.conv_max_DE) ? "yes" : "no"));
+  if ( fabs(optinfo.conv_max_disp) < 1.0e-15 ) fprintf(outfile, "\tMAX Displacement %10.1e\n", max_disp);
+  else fprintf(outfile, "\tMAX Displacement %10.1e %14.1e %11s\n", max_disp, optinfo.conv_max_disp, 
+       ((max_disp < optinfo.conv_max_disp) ? "yes" : "no"));
+  if ( fabs(optinfo.conv_rms_disp) < 1.0e-15 ) fprintf(outfile, "\tRMS Displacement %10.1e\n", rms_disp);
+  else fprintf(outfile, "\tRMS Displacement %10.1e %14.1e %11s\n", rms_disp, optinfo.conv_rms_disp, 
+       ((rms_disp < optinfo.conv_rms_disp) ? "yes" : "no"));
   fprintf(outfile, "\t----------------------------------------------------------\n");
 
-  if ((max_force < optinfo.conv_max_force) && ((fabs(DE) < optinfo.conv_max_DE) || (max_disp < optinfo.conv_max_disp))) {
+  // mightily complex convergence check  
+  if (
+         ( 
+              ( (optinfo.opt_conv == OPTInfo::LOOSE) || (optinfo.opt_conv == OPTInfo::NORMAL) || 
+                (optinfo.opt_conv == OPTInfo::TIGHT) || (optinfo.opt_conv == OPTInfo::VERY_TIGHT) || 
+                (optinfo.opt_conv == OPTInfo::BAKER) || (optinfo.opt_conv == OPTInfo::QCHEM)              )
+           && ( (max_force < optinfo.conv_max_force) && ((fabs(DE) < optinfo.conv_max_DE) || (max_disp < optinfo.conv_max_disp)) )
+         )
+      || (   
+              ( (optinfo.opt_conv == OPTInfo::GAU_NORMAL) || (optinfo.opt_conv == OPTInfo::GAU_TIGHT) || 
+                (optinfo.opt_conv == OPTInfo::GAU_VERY_TIGHT)                                             )
+           && ( ((max_force < optinfo.conv_max_force) && (rms_force < optinfo.conv_rms_force) &&
+                 (max_disp  < optinfo.conv_max_disp)  && (rms_disp  < optinfo.conv_rms_disp)) ||
+                (rms_force * 100 < optinfo.conv_rms_force) )
+         )
+      || ( 
+              ( (optinfo.opt_conv == OPTInfo::GENERAL)                                                    )
+           && ( ((fabs(optinfo.conv_max_force) < 1.0e-15) || (max_force < optinfo.conv_max_force)) &&
+                ((fabs(optinfo.conv_rms_force) < 1.0e-15) || (rms_force < optinfo.conv_rms_force)) &&
+                ((fabs(optinfo.conv_max_DE)    < 1.0e-15) || (fabs(DE)  < optinfo.conv_max_DE)) &&
+                ((fabs(optinfo.conv_max_disp)  < 1.0e-15) || (max_disp  < optinfo.conv_max_disp)) &&
+                ((fabs(optinfo.conv_rms_disp)  < 1.0e-15) || (rms_disp  < optinfo.conv_rms_disp)) )
+         )
+     ) {
+
+//  if ((max_force < optinfo.conv_max_force) && ((fabs(DE) < optinfo.conv_max_DE) || (max_disp < optinfo.conv_max_disp))) {
     fprintf(outfile,"\nOptimization is complete.\n");
 
     ip_string("WFN", &(wfn),0);

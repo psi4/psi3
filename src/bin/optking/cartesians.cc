@@ -195,12 +195,14 @@ cartesians::cartesians() {
  *   32        fcoord (implicitly coord)             chkpt
  *   12        fatomic_symb, fcoord                  fp_out
  *   13        fatomic_symb, fcoord ANGSTROM         fp_out
+ *   23        fatomic_num, fmass, fcoord, fgrad, cart_rms_force, cart_max_force        fp_out
  * disp_label is only used for geom.dat writing ***/
 
 void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
 			 char *disp_label, int disp_num) const {
   int i,j;
   double x,y,z;
+  double crms, cmax;
   int cnt = -1;
   const char *sym;
 
@@ -325,6 +327,28 @@ void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
       sym = atomic_labels[(int) (atomic_num[i])];
       fprintf(fp_out,"  (%3s %15.10f %15.10f %15.10f )\n",sym,x,y,z);
     }
+  }
+  else if (print_flag == 23) {
+    cnt = -1;
+    for (i = 0; i < natom; ++i) {
+      x = coord[++cnt]; y = coord[++cnt]; z = coord[++cnt];
+      fprintf(fp_out,
+          "%5.1lf%15.8lf%15.10f%15.10f%15.10f\n",atomic_num[i],mass[3*i],x,y,z);
+    }
+    cmax = 0.0;
+    crms = 0.0;
+    cnt = -1;
+    for (i = 0; i < natom; ++i) {
+      x = grad[++cnt]; y = grad[++cnt]; z = grad[++cnt];
+      fprintf(fp_out,
+              "%35.10lf%15.10f%15.10f\n",x,y,z);
+      crms += x*x + y*y + z*z;
+      if (fabs(x) > cmax) cmax = fabs(x);
+      if (fabs(y) > cmax) cmax = fabs(y);
+      if (fabs(z) > cmax) cmax = fabs(z);
+    }
+    crms = sqrt(crms/((double) 3.0*natom));
+    fprintf(outfile,"\n MAX cartesian force: %15.10lf   RMS force: %15.10lf\n", cmax, crms);
   }
   return;
 }

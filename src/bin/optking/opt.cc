@@ -237,7 +237,7 @@ int main(int argc, char **argv) {
     if ((optinfo.mode == MODE_OPT_STEP) || (optinfo.mode == MODE_GRAD_SAVE)) {
       fprintf(outfile,
       "\nCartesian geometry and possibly gradient in a.u. with masses\n");
-      carts.print(3,outfile,0,disp_label,0);
+      carts.print(23,outfile,0,disp_label,0);
     }
     else if ( (optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_LOAD_REF)
            && (optinfo.mode != MODE_RESET_PREFIX) && (optinfo.mode != MODE_DISP_NUM_PLUS)
