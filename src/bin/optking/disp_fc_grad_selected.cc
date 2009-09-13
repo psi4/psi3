@@ -55,7 +55,7 @@ int disp_fc_grad_selected(const cartesians &carts, simples_class &simples, const
   psio_write_entry(PSIF_OPTKING, "OPT: Reference energy", (char *) &(energy), sizeof(double));
   close_PSIF();
 
-  displacements = block_matrix(ndisps, nsymm);
+  displacements = init_matrix(ndisps, nsymm);
   for (i=0; i<ncoord; ++i) {
     displacements[2*i  ][coord2salc[i]] = -1.0 * optinfo.disp_size;
     displacements[2*i+1][coord2salc[i]] = 1.0 * optinfo.disp_size;
@@ -66,7 +66,7 @@ int disp_fc_grad_selected(const cartesians &carts, simples_class &simples, const
   }
 
   /*** generate and store Micro_iteration cartesian geometries ***/
-  micro_geoms = block_matrix(ndisps, dim_carts);
+  micro_geoms = init_matrix(ndisps, dim_carts);
   for (i=0;i<ndisps;++i)  {
     sprintf(disp_label,"Displaced geometry %d in a.u.\n",i+1);
     success = new_geom(carts,simples,symm,displacements[i],0,
@@ -77,7 +77,7 @@ int disp_fc_grad_selected(const cartesians &carts, simples_class &simples, const
       exit(PSI_RETURN_FAILURE);
     }
   }
-  free_block(displacements);
+  free_matrix(displacements);
 
   open_PSIF();
   psio_write_entry(PSIF_OPTKING, "OPT: Displaced geometries",
@@ -94,8 +94,8 @@ int disp_fc_grad_selected(const cartesians &carts, simples_class &simples, const
       (char *) coord2salc, ncoord * sizeof(int));
 
   close_PSIF();
-  free_block(micro_geoms);
-  free(coord2salc);
+  free_matrix(micro_geoms);
+  free_int_array(coord2salc);
 
   // write zeroes for initial energy and gradients of displacements
   double *disp_e, *disp_grad;
@@ -114,7 +114,7 @@ int disp_fc_grad_selected(const cartesians &carts, simples_class &simples, const
   irrep_per_disp = init_int_array(ndisps);
   psio_write_entry(PSIF_OPTKING, "OPT: Irrep per disp",
     (char *) &(irrep_per_disp[0]), ndisps*sizeof(int));
-  free(irrep_per_disp);
+  free_int_array(irrep_per_disp);
 
   close_PSIF();
 

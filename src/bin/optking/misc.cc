@@ -7,7 +7,6 @@
 #include "globals.h"
 #undef EXTERN
 
-#include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libchkpt/chkpt.h>
 #include <libpsio/psio.h>
@@ -96,13 +95,6 @@ void scalar_div(double a, double *vect) {
   return;
 }
 
-void exit_io(void) {
-  fprintf(outfile,"\n******** OPTKING execution completed ********\n\n");
-  psio_done();
-  psi_stop(infile,outfile,psi_file_prefix);
-}
-
-
 void punt(const char *message) {
   fprintf(outfile,"\nerror: %s\n", message);
   fprintf(outfile,"         *** stopping execution ***\n");
@@ -155,6 +147,14 @@ int div_int(int big, int little) {
   }
 }
 
+// dot arrays of doubles
+void dot_array(double *a, double *b, long int n, double *value) {
+  long int i;
+  double tval = 0.0;
+  for (i=0; i < n; i++) tval += a[i]*b[i];
+  *value = tval;
+}
+
 /*** SYM_MATRIX_INVERT inverts a matrix by diagonalization
  *  **A = matrix to be inverted
  *  dim = dimension of A
@@ -165,12 +165,12 @@ double **symm_matrix_invert(double **A, int dim, int print_det, int redundant) {
   int i;
   double **A_inv, **A_vects, *A_vals, **A_temp, det=1.0;
 
-  A_inv   = block_matrix(dim,dim);
-  A_temp  = block_matrix(dim,dim);
-  A_vects = block_matrix(dim,dim);
+  A_inv   = init_matrix(dim,dim);
+  A_temp  = init_matrix(dim,dim);
+  A_vects = init_matrix(dim,dim);
   A_vals  = init_array(dim);
 
-  sq_rsp(dim,dim,A,A_vals,1,A_vects,EVAL_TOL);
+  opt_sq_rsp(dim,dim,A,A_vals,1,A_vects,EVAL_TOL);
 
   if (redundant == 0) {
     for (i=0;i<dim;++i) {
@@ -194,12 +194,12 @@ double **symm_matrix_invert(double **A, int dim, int print_det, int redundant) {
       fprintf(outfile,"Determinant: %10.6e\n",det);
   }
 
-  mmult(A_inv,0,A_vects,1,A_temp,0,dim,dim,dim,0);
-  mmult(A_vects,0,A_temp,0,A_inv,0,dim,dim,dim,0);
+  opt_mmult(A_inv,0,A_vects,1,A_temp,0,dim,dim,dim,0);
+  opt_mmult(A_vects,0,A_temp,0,A_inv,0,dim,dim,dim,0);
 
-  free(A_vals);
-  free_block(A_vects);
-  free_block(A_temp);
+  free_array(A_vals);
+  free_matrix(A_vects);
+  free_matrix(A_temp);
   return A_inv;
 } 
 
@@ -223,7 +223,7 @@ void dgeev_optking(int L, double **G, double *lambda, double **alpha) {
   double *evals_i, *work, **left_evects, tval, temp;
 
   evals_i = init_array(L); 
-  left_evects = block_matrix(L,L);
+  left_evects = init_matrix(L,L);
 
   work = init_array(20*L);
   lwork = 20*L;          
@@ -245,9 +245,9 @@ void dgeev_optking(int L, double **G, double *lambda, double **alpha) {
       alpha[j][i] = temp;
     }
 
-  free(work);
-  free(evals_i);
-  free_block(left_evects);
+  free_array(work);
+  free_array(evals_i);
+  free_matrix(left_evects);
   return;
 }
 
@@ -256,7 +256,7 @@ double **mass_mat(double *masses) {
     double **u;
 
     dim = 3*optinfo.natom;
-    u = block_matrix(dim,dim);
+    u = init_matrix(dim,dim);
 
     for (i=0; i<dim; ++i) {
       if (masses[i] == 0.0)
@@ -264,17 +264,6 @@ double **mass_mat(double *masses) {
       else
         u[i][i] = 1.0/masses[i];
     }
-    return u;
-}
-
-double **unit_mat(int dim) {
-    int i;
-    double **u;
-    u = block_matrix(dim,dim);
-
-    for (i=0; i<dim; ++i)
-        u[i][i] = 1.0;
-
     return u;
 }
 
@@ -336,6 +325,70 @@ void opt_report(FILE *of) {
   fprintf(of,"\n");
   close_PSIF();
 }
+
+void print_mat(double **a, int m, int n, FILE *out) {
+  int ii=0,jj=0,kk=0,nn,ll;
+  int i,j,k;
+
+  while (n > kk)  {
+    ii++;
+    jj++;
+    kk=10*jj;
+    nn=n;
+    if (nn > kk) nn=kk;
+    ll = 2*(nn-ii+1)+1;
+    fprintf (out,"\n");
+    for (i=ii; i <= nn; i++) fprintf(out,"       %5d",i);
+    fprintf (out,"\n");
+    for (i=0; i < m; i++) {
+      fprintf (out,"\n%5d",i+1);
+      for (j=ii-1; j < nn; j++) {
+        fprintf (out,"%12.7f",a[i][j]);
+      }
+    }
+    fprintf (out,"\n");
+    ii=kk;
+  }
+  fflush(out);
+  return;
+}
+
+void eivout(double **a, double *b, int m, int n, FILE *out) {
+  int ii=0,jj=0,kk=0,nn;
+  int i,j;
+
+  while (n > kk) {
+    ii++;
+    jj++;
+    kk=10*jj;
+    nn=n;
+    if (nn > kk) nn=kk;
+    fprintf (out,"\n");
+    for (i=ii; i <= nn; i++) fprintf(out,"       %5d",i);
+    fprintf (out,"\n");
+    for (i=0; i < m; i++) {
+      fprintf (out,"\n%5d",i+1);
+      for (j=ii-1; j < nn; j++) {
+        fprintf (out,"%12.7f",a[i][j]);
+      }
+    }
+    fprintf (out,"\n");
+    fprintf (out,"\n     ");
+    for (j=ii-1; j < nn; j++) {
+      fprintf(out,"%12.7f",b[j]);
+    }
+    fprintf (out,"\n");
+    ii=kk;
+  }
+  fflush(out);
+  return;
+}
+
+
+
+
+
+
 
 
 }} /* namespace psi::optking */

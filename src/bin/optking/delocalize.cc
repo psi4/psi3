@@ -14,8 +14,6 @@
 #include "salc.h"
 #include "opt.h"
 
-#include <libciomr/libciomr.h>
-
 namespace psi { namespace optking {
 
 void delocalize(const simples_class & simples, const cartesians & carts) {
@@ -28,88 +26,88 @@ void delocalize(const simples_class & simples, const cartesians & carts) {
   natom = optinfo.natom;
 
   // Build B matrix for simples
-  B = block_matrix(simples.get_num(),natom*3);
+  B = init_matrix(simples.get_num(),natom*3);
   count = -1;
-  for (i=0; i<simples.stre.size(); ++i) {
-    a = simples.stre[i].get_A();
-    b = simples.stre[i].get_B();
+  for (i=0; i<simples.get_num(STRE); ++i) {
+    a = simples.get_atom(STRE, i, 0);
+    b = simples.get_atom(STRE, i, 1);
     ++count;
     for (k=0;k<3;++k) {
-      B[count][3*a+k] += simples.stre[i].get_s_A(k);
-      B[count][3*b+k] += simples.stre[i].get_s_B(k);
+      B[count][3*a+k] += simples.get_s(STRE, i, 0, k);
+      B[count][3*b+k] += simples.get_s(STRE, i, 1, k);
     }
   }
-  for (i=0; i<simples.bend.size(); ++i) {
-    a = simples.bend[i].get_A();
-    b = simples.bend[i].get_B();
-    c = simples.bend[i].get_C();
+  for (i=0; i<simples.get_num(BEND); ++i) {
+    a = simples.get_atom(BEND, i, 0);
+    b = simples.get_atom(BEND, i, 1);
+    c = simples.get_atom(BEND, i, 2);
     ++count;
     for (k=0;k<3;++k) {
-      B[count][3*a+k] += simples.bend[i].get_s_A(k);
-      B[count][3*b+k] += simples.bend[i].get_s_B(k);
-      B[count][3*c+k] += simples.bend[i].get_s_C(k);
+      B[count][3*a+k] += simples.get_s(BEND, i, 0, k);
+      B[count][3*b+k] += simples.get_s(BEND, i, 1, k);
+      B[count][3*c+k] += simples.get_s(BEND, i, 2, k);
     }
   }
-  for (i=0; i<simples.tors.size(); ++i) {
-    a = simples.tors[i].get_A();
-    b = simples.tors[i].get_B();
-    c = simples.tors[i].get_C();
-    d = simples.tors[i].get_D();
+  for (i=0; i<simples.get_num(TORS); ++i) {
+    a = simples.get_atom(TORS, i, 0);
+    b = simples.get_atom(TORS, i, 1);
+    c = simples.get_atom(TORS, i, 2);
+    d = simples.get_atom(TORS, i, 3);
     ++count;
     for (k=0;k<3;++k) {
-      B[count][3*a+k] += simples.tors[i].get_s_A(k);
-      B[count][3*b+k] += simples.tors[i].get_s_B(k);
-      B[count][3*c+k] += simples.tors[i].get_s_C(k);
-      B[count][3*d+k] += simples.tors[i].get_s_D(k);
+      B[count][3*a+k] += simples.get_s(TORS, i, 0, k);
+      B[count][3*b+k] += simples.get_s(TORS, i, 1, k);
+      B[count][3*c+k] += simples.get_s(TORS, i, 2, k);
+      B[count][3*d+k] += simples.get_s(TORS, i, 3, k);
     }
   }
-  for (i=0; i<simples.out.size(); ++i) {
-    a = simples.out[i].get_A();
-    b = simples.out[i].get_B();
-    c = simples.out[i].get_C();
-    d = simples.out[i].get_D();
+  for (i=0; i<simples.get_num(OUT); ++i) {
+    a = simples.get_atom(OUT, i, 0);
+    b = simples.get_atom(OUT, i, 1);
+    c = simples.get_atom(OUT, i, 2);
+    d = simples.get_atom(OUT, i, 3);
     ++count;
     for (k=0;k<3;++k) {
-      B[count][3*a+k] += simples.out[i].get_s_A(k);
-      B[count][3*b+k] += simples.out[i].get_s_B(k);
-      B[count][3*c+k] += simples.out[i].get_s_C(k);
-      B[count][3*d+k] += simples.out[i].get_s_D(k);
+      B[count][3*a+k] += simples.get_s(OUT, i, 0, k);
+      B[count][3*b+k] += simples.get_s(OUT, i, 1, k);
+      B[count][3*c+k] += simples.get_s(OUT, i, 2, k);
+      B[count][3*d+k] += simples.get_s(OUT, i, 3, k);
     }
   }
-  for (i=0; i<simples.linb.size(); ++i) {
-    a = simples.linb[i].get_A();
-    b = simples.linb[i].get_B();
-    c = simples.linb[i].get_C();
+  for (i=0; i<simples.get_num(LINB); ++i) {
+    a = simples.get_atom(LINB, i, 0);
+    b = simples.get_atom(LINB, i, 1);
+    c = simples.get_atom(LINB, i, 2);
     ++count;
     for (k=0;k<3;++k) {
-      B[count][3*a+k] += simples.linb[i].get_s_A(k);
-      B[count][3*b+k] += simples.linb[i].get_s_B(k);
-      B[count][3*c+k] += simples.linb[i].get_s_C(k);
+      B[count][3*a+k] += simples.get_s(LINB, i, 0, k);
+      B[count][3*b+k] += simples.get_s(LINB, i, 1, k);
+      B[count][3*c+k] += simples.get_s(LINB, i, 2, k);
     }
   }
   //  print_mat2(B,simples.get_num(),natom*3,outfile);
 
-  uBt = block_matrix(3*natom, simples.get_num());
+  uBt = init_matrix(3*natom, simples.get_num());
   fmass = carts.get_fmass();
   u = mass_mat(fmass);
-  free(fmass);
+  free_array(fmass);
 
   // Form BBt matrix
-  BBt = block_matrix(simples.get_num(),simples.get_num());
+  BBt = init_matrix(simples.get_num(),simples.get_num());
   if (optinfo.mix_types) {
-    mmult(u,0,B,1,uBt,0,3*natom,3*natom,simples.get_num(),0);
+    opt_mmult(u,0,B,1,uBt,0,3*natom,3*natom,simples.get_num(),0);
 
-    mmult(B,0,uBt,0,BBt,0,simples.get_num(),3*natom,simples.get_num(),0);
+    opt_mmult(B,0,uBt,0,BBt,0,simples.get_num(),3*natom,simples.get_num(),0);
 
-    // mmult(B,0,B,1,BBt,0,simples.get_num(),natom*3,simples.get_num(),0);
+    // opt_mmult(B,0,B,1,BBt,0,simples.get_num(),natom*3,simples.get_num(),0);
   }
   else {
     // Make BBt block diagonal by multiplying only stre*stre, etc.
-    dim[0] = simples.stre.size();
-    dim[1] = simples.bend.size();
-    dim[2] = simples.tors.size();
-    dim[3] = simples.out.size();
-    dim[4] = simples.linb.size();
+    dim[0] = simples.get_num(STRE);
+    dim[1] = simples.get_num(BEND);
+    dim[2] = simples.get_num(TORS);
+    dim[3] = simples.get_num(OUT);
+    dim[4] = simples.get_num(LINB);
     row[0] = 0;
     row[1] = dim[0];
     row[2] = row[1]+dim[1];
@@ -123,24 +121,24 @@ void delocalize(const simples_class & simples, const cartesians & carts) {
       }
       if (dim[i] != 0)
 
-        mmult(u,0,&(B[row[i]]),1,uBt,0,3*natom,3*natom,dim[i],0);
-      mmult(&(B[row[i]]),0,uBt,0,ptr,0,dim[i],3*natom,dim[i],0);
+        opt_mmult(u,0,&(B[row[i]]),1,uBt,0,3*natom,3*natom,dim[i],0);
+      opt_mmult(&(B[row[i]]),0,uBt,0,ptr,0,dim[i],3*natom,dim[i],0);
 
-      //  mmult(&(B[row[i]]),0,&(B[row[i]]),1,ptr,0,dim[i],natom*3,dim[i],0);
+      //  opt_mmult(&(B[row[i]]),0,&(B[row[i]]),1,ptr,0,dim[i],natom*3,dim[i],0);
     }
     free(ptr);
   }
-  free_block(u);
-  free_block(B);
-  free_block(uBt);
+  free_matrix(u);
+  free_matrix(B);
+  free_matrix(uBt);
 
   //fprintf(outfile,"The BB^t Matrix:\n");
   //print_mat2(BBt,simples.get_num(),simples.get_num(),outfile);
 
   // Diagonalize BBt
   evals = init_array(simples.get_num());
-  evects = block_matrix(simples.get_num(),simples.get_num());
-  sq_rsp(simples.get_num(),simples.get_num(), BBt, evals, 1, evects, 1.0E-14);
+  evects = init_matrix(simples.get_num(),simples.get_num());
+  opt_sq_rsp(simples.get_num(),simples.get_num(), BBt, evals, 1, evects, 1.0E-14);
 
   /* check eigenvectors of BBt */
   if (optinfo.print_delocalize) {
@@ -148,8 +146,8 @@ void delocalize(const simples_class & simples, const cartesians & carts) {
     fprintf(outfile,"\n\nChecking eigenvectors of BBt...\n");
     eivout(evects, evals, simples.get_num(), simples.get_num(), outfile);
   }
-  temp_mat = block_matrix(simples.get_num(),simples.get_num());
-  mmult(BBt,0,evects,0,temp_mat,0,simples.get_num(),simples.get_num(),simples.get_num(),0);
+  temp_mat = init_matrix(simples.get_num(),simples.get_num());
+  opt_mmult(BBt,0,evects,0,temp_mat,0,simples.get_num(),simples.get_num(),simples.get_num(),0);
   for (j=0;j<simples.get_num();++j) {
     error = 0;
     for (i=0;i<simples.get_num();++i) {
@@ -157,8 +155,8 @@ void delocalize(const simples_class & simples, const cartesians & carts) {
       if (error == 1) { fprintf(outfile,"Error in evect %d\n",j); error = 0;}
     }
   }
-  free_block(temp_mat);
-  free_block(BBt);
+  free_matrix(temp_mat);
+  free_matrix(BBt);
 
   /* check for proper number of non-redundant coordinates (3n-6) */ 
   num_nonzero = 0;
@@ -204,7 +202,7 @@ void delocalize(const simples_class & simples, const cartesians & carts) {
   int h;
   irr = init_int_array(simples.get_num());
 
-  evectst = block_matrix(num_nonzero,simples.get_num());
+  evectst = init_matrix(num_nonzero,simples.get_num());
 
   for (i=0;i<simples.get_num();++i) {
     for (j=simples.get_num()-num_nonzero;j<simples.get_num();++j) {
@@ -216,12 +214,12 @@ void delocalize(const simples_class & simples, const cartesians & carts) {
     fprintf(outfile,"(each row is a coordinate):\n");
     print_mat(evectst,num_nonzero,simples.get_num(),outfile);
   }
-  free(evals);
-  free_block(evects);
+  free_array(evals);
+  free_matrix(evects);
 
   /* send evectst to irrep.cc to be properly symmetrized */
   evectst_symm = irrep(simples, evectst);
-  free_block(evectst);
+  free_matrix(evectst);
 
   if (optinfo.print_delocalize == 1) {
     fprintf(outfile,"\nSymmetrized evects\n");
@@ -229,7 +227,7 @@ void delocalize(const simples_class & simples, const cartesians & carts) {
   }
 
   // print out coordinates to intco.dat
-  ffile(&fp_intco, "intco.dat", 2);
+  opt_ffile(&fp_intco, "intco.dat", 2);
   count = 0;
   for( ; ; ) {
     err = fgets(aline, MAX_LINELENGTH, fp_intco);
@@ -294,7 +292,7 @@ void delocalize(const simples_class & simples, const cartesians & carts) {
   fflush(fp_intco);
   fclose(fp_intco);
 
-  free_block(evectst_symm);
+  free_matrix(evectst_symm);
   return;
 }
 
@@ -318,50 +316,50 @@ void rm_rotations(const simples_class & simples, const cartesians & carts,
       disp_coord[i] = coord[i];
 
     cnt = -1;
-    for (i=0; i<simples.stre.size(); ++i) {
-      a = simples.stre[i].get_A();
-      b = simples.stre[i].get_B();
+    for (i=0; i<simples.get_num(STRE); ++i) {
+      a = simples.get_atom(STRE, i, 0);
+      b = simples.get_atom(STRE, i, 1);
       ++cnt;
       for (k=0;k<3;++k) {
-        disp_coord[3*a+k] += scale * evects[cnt][ivect] * simples.stre[i].get_s_A(k);
-        disp_coord[3*b+k] += scale * evects[cnt][ivect] * simples.stre[i].get_s_B(k);
+        disp_coord[3*a+k] += scale * evects[cnt][ivect] * simples.get_s(STRE, i, 0, k);
+        disp_coord[3*b+k] += scale * evects[cnt][ivect] * simples.get_s(STRE, i, 1, k);
       }
     }
-    for (i=0; i<simples.bend.size(); ++i) {
-      a = simples.bend[i].get_A();
-      b = simples.bend[i].get_B();
-      c = simples.bend[i].get_C();
+    for (i=0; i<simples.get_num(BEND); ++i) {
+      a = simples.get_atom(BEND, i, 0);
+      b = simples.get_atom(BEND, i, 1);
+      c = simples.get_atom(BEND, i, 2);
       ++cnt;
       for (k=0;k<3;++k) {
-        disp_coord[3*a+k] += scale * evects[cnt][ivect] * simples.bend[i].get_s_A(k);
-        disp_coord[3*b+k] += scale * evects[cnt][ivect] * simples.bend[i].get_s_B(k);
-        disp_coord[3*c+k] += scale * evects[cnt][ivect] * simples.bend[i].get_s_C(k);
+        disp_coord[3*a+k] += scale * evects[cnt][ivect] * simples.get_s(BEND, i, 0, k);
+        disp_coord[3*b+k] += scale * evects[cnt][ivect] * simples.get_s(BEND, i, 1, k);
+        disp_coord[3*c+k] += scale * evects[cnt][ivect] * simples.get_s(BEND, i, 2, k);
       }
     }
-    for (i=0; i<simples.tors.size(); ++i) {
-      a = simples.tors[i].get_A();
-      b = simples.tors[i].get_B();
-      c = simples.tors[i].get_C();
-      d = simples.tors[i].get_D();
+    for (i=0; i<simples.get_num(TORS); ++i) {
+      a = simples.get_atom(TORS, i, 0);
+      b = simples.get_atom(TORS, i, 1);
+      c = simples.get_atom(TORS, i, 2);
+      d = simples.get_atom(TORS, i, 3);
       ++cnt;
       for (k=0;k<3;++k) {
-        disp_coord[3*a+k] += scale * evects[cnt][ivect] * simples.tors[i].get_s_A(k);
-        disp_coord[3*b+k] += scale * evects[cnt][ivect] * simples.tors[i].get_s_B(k);
-        disp_coord[3*c+k] += scale * evects[cnt][ivect] * simples.tors[i].get_s_C(k);
-        disp_coord[3*d+k] += scale * evects[cnt][ivect] * simples.tors[i].get_s_D(k);
+        disp_coord[3*a+k] += scale * evects[cnt][ivect] * simples.get_s(TORS, i, 0, k);
+        disp_coord[3*b+k] += scale * evects[cnt][ivect] * simples.get_s(TORS, i, 1, k);
+        disp_coord[3*c+k] += scale * evects[cnt][ivect] * simples.get_s(TORS, i, 2, k);
+        disp_coord[3*d+k] += scale * evects[cnt][ivect] * simples.get_s(TORS, i, 3, k);
       }
     }
-    for (i=0; i<simples.out.size(); ++i) {
-      a = simples.out[i].get_A();
-      b = simples.out[i].get_B();
-      c = simples.out[i].get_C();
-      d = simples.out[i].get_D();
+    for (i=0; i<simples.get_num(OUT); ++i) {
+      a = simples.get_atom(OUT, i, 0);
+      b = simples.get_atom(OUT, i, 1);
+      c = simples.get_atom(OUT, i, 2);
+      d = simples.get_atom(OUT, i, 3);
       ++cnt;
       for (k=0;k<3;++k) {
-        disp_coord[3*a+k] += scale * evects[cnt][ivect] * simples.out[i].get_A();
-        disp_coord[3*b+k] += scale * evects[cnt][ivect] * simples.out[i].get_B();
-        disp_coord[3*c+k] += scale * evects[cnt][ivect] * simples.out[i].get_C();
-        disp_coord[3*d+k] += scale * evects[cnt][ivect] * simples.out[i].get_D();
+        disp_coord[3*a+k] += scale * evects[cnt][ivect] * simples.get_s(OUT, i, 0, k); 
+        disp_coord[3*b+k] += scale * evects[cnt][ivect] * simples.get_s(OUT, i, 1, k);
+        disp_coord[3*c+k] += scale * evects[cnt][ivect] * simples.get_s(OUT, i, 2, k);
+        disp_coord[3*d+k] += scale * evects[cnt][ivect] * simples.get_s(OUT, i, 3, k);
       }
     }
     disp_energy = nuclear_repulsion(fatomic_num, disp_coord);
@@ -376,7 +374,7 @@ void rm_rotations(const simples_class & simples, const cartesians & carts,
       --num_nonzero;
     }
   }
-  free(coord);
+  free_array(coord);
   delete [] disp_coord;
   delete [] fatomic_num;
   return;

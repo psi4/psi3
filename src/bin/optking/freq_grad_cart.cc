@@ -11,7 +11,6 @@
 #include "salc.h"
 #include "opt.h"
 
-#include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libpsio/psio.h>
 #include <libchkpt/chkpt.h>
@@ -59,9 +58,9 @@ void freq_grad_cart(const cartesians &carts) {
   fprintf(outfile,"ndisp per irrep: "); for (h=0; h<nirreps; ++h) fprintf(outfile,"%d ",ndisp[h]);
   fprintf(outfile,"\n\n");
 
-  disp_grad = block_matrix(ndisp_all,3*natom);
+  disp_grad = init_matrix(ndisp_all,3*natom);
   if (optinfo.grad_dat) { /* read in gradients from "file11.dat" */
-    ffile(&fp_11, "file11.dat", 2);
+    opt_ffile(&fp_11, "file11.dat", 2);
     rewind(fp_11);
     line1 = new char[MAX_LINELENGTH+1];
     for (i=0;i<ndisp_all;++i) {
@@ -92,9 +91,9 @@ void freq_grad_cart(const cartesians &carts) {
 
   /**** construct full gradient list using unique ones ****/
   if (optinfo.points == 3) 
-    disp_grad_all = block_matrix(2*nsalc_all, 3*natom);
+    disp_grad_all = init_matrix(2*nsalc_all, 3*natom);
   else if (optinfo.points == 5) 
-    disp_grad_all = block_matrix(4*nsalc_all, 3*natom);
+    disp_grad_all = init_matrix(4*nsalc_all, 3*natom);
   /* just copy symmetric gradients */
   for (j=0; j<ndisp[0]; ++j) {
     for (I=0; I<3*natom; ++I)
@@ -132,7 +131,7 @@ void freq_grad_cart(const cartesians &carts) {
     }
     ndisp[h] += ndisp[h];
   }
-  free_block(disp_grad);
+  free_matrix(disp_grad);
 
   /* fix number of displacements to match full list of gradients */
   ndisp_all=0;
@@ -140,7 +139,7 @@ void freq_grad_cart(const cartesians &carts) {
     ndisp_all += ndisp[h];
   }
 
-  B = block_matrix(nsalc_all,3*natom);
+  B = init_matrix(nsalc_all,3*natom);
   psio_read_entry(PSIF_OPTKING, "OPT: Adapted cartesians",
     (char *) &(B[0][0]), nsalc_all*3*natom*sizeof(double));
   if (print) {
@@ -180,12 +179,12 @@ void freq_grad_cart(const cartesians &carts) {
    // In this case, B = c * masses^(1/2).  =>  G=I.
    // Thus, f_q = c * f_x / sqrt(masses)
     f_q = init_array(nsalc[h]);
-    grads_adapted = block_matrix(ndisp[h],3*natom);
+    grads_adapted = init_matrix(ndisp[h],3*natom);
   
     if (print) fprintf(outfile,"Gradients recomputed from internal coordinate gradients\n");
     for (k=0; k<ndisp[h]; ++k) {
 
-      mmult(&(B[start_salc]),0,&(disp_grad_all[k+start_disp]),1,&f_q,1,nsalc[h],3*natom,1,0);
+      opt_mmult(&(B[start_salc]),0,&(disp_grad_all[k+start_disp]),1,&f_q,1,nsalc[h],3*natom,1,0);
 
       if (print) fprintf(outfile,"ndisp[h]: %d, start_disp: %d\n", ndisp[h], start_disp);
   
@@ -195,9 +194,9 @@ void freq_grad_cart(const cartesians &carts) {
       /* test by transforming f_q back to cartesian forces and compare */
       if (print) {
         temp_arr = init_array(3*natom);
-        mmult(B,1,&(grads_adapted[k]),1,&temp_arr,1,3*natom,nsalc[h],1,0);
+        opt_mmult(B,1,&(grads_adapted[k]),1,&temp_arr,1,3*natom,nsalc[h],1,0);
         print_mat2(&temp_arr, 1, 3*natom, outfile);
-        free(temp_arr);
+        free_array(temp_arr);
       }
     }
     if (print) {
@@ -205,9 +204,9 @@ void freq_grad_cart(const cartesians &carts) {
       print_mat(grads_adapted,ndisp[h],3*natom,outfile);
     }
 
-    free(f_q);
+    free_array(f_q);
 
-    force_constants = block_matrix(nsalc[h],nsalc[h]);
+    force_constants = init_matrix(nsalc[h],nsalc[h]);
 
     /*** Construct force constant matrix from finite differences of forces ***/
     fprintf(outfile,"\n ** Using %d-point formula.\n",optinfo.points);
@@ -245,27 +244,27 @@ void freq_grad_cart(const cartesians &carts) {
 
     /** Find eigenvalues of force constant matrix **/
     evals  = init_array(dim);
-    evects = block_matrix(dim, dim);
+    evects = init_matrix(dim, dim);
     dgeev_optking(dim, force_constants, evals, evects);
-    free_block(force_constants);
+    free_matrix(force_constants);
     sort(evals, evects, dim);
 
-	normal = block_matrix(3*natom, dim);
-    mmult(&(B[start_irr[h]]),1,evects,0,normal,0,3*natom,dim,dim,0);
+	normal = init_matrix(3*natom, dim);
+    opt_mmult(&(B[start_irr[h]]),1,evects,0,normal,0,3*natom,dim,dim,0);
 	fprintf(outfile,"\n\tNormal coordinates for irrep %s\n",syminfo.clean_irrep_lbls[h]);
     print_evects(normal, evals, 3*natom, dim, outfile);
-	free_block(normal);
-    free_block(evects);
+	free_matrix(normal);
+    free_matrix(evects);
 
     for (i=0; i<dim; ++i) {
       ++cnt_eval;
       evals_all[cnt_eval] = evals[i];
       evals_all_irrep[cnt_eval] = h;
     } 
-    free(evals);
+    free_array(evals);
   }
-  free(masses);
-  free_block(disp_grad_all);
+  free_array(masses);
+  free_matrix(disp_grad_all);
 
   sort_evals_all(nsalc_all,evals_all, evals_all_irrep);
 
@@ -285,8 +284,8 @@ void freq_grad_cart(const cartesians &carts) {
     }
   fprintf(outfile,   "\t----------------------------\n");
   fflush(outfile);
-  free(evals_all);
-  free(evals_all_irrep);
+  free_array(evals_all);
+  free_int_array(evals_all_irrep);
 
   optinfo.disp_num = 0;
   psio_write_entry(PSIF_OPTKING, "OPT: Current disp_num",

@@ -34,13 +34,13 @@ bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &a
 
   masses = carts.get_mass();
   u = mass_mat(masses);
-  free(masses);
-//u = unit_mat(dim_carts);
+  free_array(masses);
+//u = unit_matrix(dim_carts);
 
-  A = block_matrix(dim_carts, nsalcs);
-  G = block_matrix(nsalcs, nsalcs);
-  G_inv = block_matrix(nsalcs, nsalcs);
-  temp_mat = block_matrix(dim_carts, nsalcs);
+  A = init_matrix(dim_carts, nsalcs);
+  G = init_matrix(nsalcs, nsalcs);
+  G_inv = init_matrix(nsalcs, nsalcs);
+  temp_mat = init_matrix(dim_carts, nsalcs);
 
   // Compute B matrix -- Isn't this slick?
   coord = carts.get_coord();
@@ -48,7 +48,7 @@ bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &a
   // fix configuration for torsions, sets flag for torsions > FIX_NEAR180 or < -FIX_NEAR180 
   simples.fix_near_180(); // subsequent computes will modify torsional values
   simples.compute_s(coord);
-  free(coord);
+  free_array(coord);
 
   B = compute_B(simples, all_salcs);
   q = compute_q(simples, all_salcs);
@@ -78,8 +78,8 @@ bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &a
   bmat_iter_done = 0;
   count = 0;
   do {
-    free_block(G);
-    free_block(G_inv);
+    free_matrix(G);
+    free_matrix(G_inv);
     G = compute_G(B, nsalcs, carts);
     G_inv = symm_matrix_invert(G, nsalcs, 0,optinfo.redundant);
 
@@ -91,10 +91,10 @@ bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &a
     //   }
 
     // u B^t G_inv = A
-    mmult(B,1,G_inv,0,temp_mat,0,dim_carts, nsalcs, nsalcs,0);
-    mmult(u,0,temp_mat,0,A,0,dim_carts,dim_carts, nsalcs, 0);
+    opt_mmult(B,1,G_inv,0,temp_mat,0,dim_carts, nsalcs, nsalcs,0);
+    opt_mmult(u,0,temp_mat,0,A,0,dim_carts,dim_carts, nsalcs, 0);
     // A dq = dx
-    mmult(A,0,&dq,1,&dx,1,dim_carts, nsalcs,1,0);
+    opt_mmult(A,0,&dq,1,&dx,1,dim_carts, nsalcs,1,0);
 
     /*
     fprintf(outfile,"dx increments\n");
@@ -115,11 +115,11 @@ bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &a
     simples.compute(new_x);
     // simples.print(outfile,1);
     simples.compute_s(new_x);
-    free_block(B);
+    free_matrix(B);
     B = compute_B(simples, all_salcs);
 
     // compute new internal coordinate values
-    free(new_q);
+    free_array(new_q);
     new_q = compute_q(simples, all_salcs);
 
   // fprintf(outfile,"Obtained q internal coordinates\n");
@@ -158,7 +158,7 @@ bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &a
     ++count;
   } while( (bmat_iter_done == 0) && (count < optinfo.bt_max_iter) );
 
-  free_block(B);
+  free_matrix(B);
 
   fprintf(outfile,"\t------------------------------------\n");
 
@@ -222,11 +222,11 @@ bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &a
   if (print_flag == PRINT_TO_GEOM) {
     FILE *fp_geom;
     if (restart_geom_file) {
-      ffile(&fp_geom, "geom.dat",0);
+      opt_ffile(&fp_geom, "geom.dat",0);
       fprintf(fp_geom, "geom.dat: (\n");
     }
     else
-      ffile(&fp_geom, "geom.dat",1);
+      opt_ffile(&fp_geom, "geom.dat",1);
 
     cart_temp.print(10,fp_geom,restart_geom_file,disp_label,disp_num);
     if(last_disp) fprintf(fp_geom,")\n");
@@ -237,13 +237,13 @@ bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &a
     cart_temp.print(PSIF_CHKPT,outfile,0,disp_label,disp_num);
   }
 
-  free(q); free(new_q);
-  free(x); free(dx); free(new_x);
-  free_block(A);
-  free_block(G);
-  free_block(G_inv);
-  free_block(u);
-  free_block(temp_mat);
+  free_array(q); free_array(new_q);
+  free_array(x); free_array(dx); free_array(new_x);
+  free_matrix(A);
+  free_matrix(G);
+  free_matrix(G_inv);
+  free_matrix(u);
+  free_matrix(temp_mat);
   return true;
 }
 

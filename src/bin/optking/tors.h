@@ -101,11 +101,33 @@ class tors_class {
     int  get_C(void) const { return C;}
     int  get_D(void) const { return D;}
     double get_val(void) const { return val;}
+    double get_val_A_or_rad(void) const  { 
+      return (val/180*_pi);
+    }
+
     int get_near_180(void) const { return near_180;}
     double get_s_A(int i) const { return s_A[i]; }
     double get_s_B(int i) const { return s_B[i]; }
     double get_s_C(int i) const { return s_C[i]; }
     double get_s_D(int i) const { return s_D[i]; }
+
+    int  get_atom(int a) const  {
+      if (a==0) return A;
+      else if (a==1) return B;
+      else if (a==2) return C;
+      else if (a==3) return D;
+      else throw("tors_class::get_atom : atom index must be 0, 1, 2 or 3.\n");
+    }
+
+    double get_s(int atom, int xyz) const  {
+      if ( xyz < 0 || xyz > 2) throw ("tors_class::get_s() : xyz must be 0, 1 or 2");
+      if (atom==0) return s_A[xyz];
+      else if (atom==1) return s_B[xyz];
+      else if (atom==2) return s_C[xyz];
+      else if (atom==3) return s_D[xyz];
+      else throw("tors_class::get_s() : atom index must be 0, 1, 2, or 3");
+    }
+
 
     // take geometry in au; store angle in degrees
     void compute(double *geom) {
@@ -147,7 +169,7 @@ class tors_class {
     
       cross_product(eAB,eBC,tmp);
       cross_product(eBC,eCD,tmp2);
-      dot_arr(tmp,tmp2,3,&dotprod);
+      dot_array(tmp,tmp2,3,&dotprod);
 
       if ((sin(phi_123) > optinfo.sin_phi_denominator_tol) &&
           (sin(phi_234) > optinfo.sin_phi_denominator_tol)) {
@@ -162,7 +184,7 @@ class tors_class {
         val = acos(dotprod) ;
         // determine sign of torsions
         cross_product(eBC,eCD,tmp);
-        dot_arr(eAB,tmp,3,&dotprod);
+        dot_array(eAB,tmp,3,&dotprod);
         if (dotprod < 0) val *= -1;
         val *= 180.0 / _pi;
       }
@@ -259,18 +281,13 @@ class tors_class {
     }
 
     bool operator==(const tors_class & s2) const {
-      if ( this->A == s2.A && this->B == s2.B && this->C == s2.C && this->D == s2.D) {
+      if ( this->A == s2.A && this->B == s2.B && this->C == s2.C && this->D == s2.D)
         return true;
-      }
-      // for now only require every symmetry equivalent torsion if coordinates are being
-      // delocalized
-      else if (!optinfo.delocalize) {
-        if ( this->A == s2.A && this->B == s2.C && this->C == s2.B && this->D == s2.D)
-        return true;
-      }
-      else {
+      /* allow reverse torsions ?
+      else if ( this->A == s2.D && this->B == s2.C && this->C == s2.B && this->D == s2.A)
+        return true; */
+      else
         return false;
-      }
     };
 
 };

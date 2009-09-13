@@ -58,9 +58,9 @@ void empirical_H(const simples_class & simples, const salc_set &symm, const cart
 
   // Form diagonal Hessian in simple internals first
   if (optinfo.empirical_H == OPTInfo::SCHLEGEL) {
-    for (i=0;i<simples.stre.size();++i) {
-      atomA = simples.stre[i].get_A();
-      atomB = simples.stre[i].get_B();
+    for (i=0;i<simples.get_num(STRE); ++i) {
+      atomA = simples.get_atom(STRE, i, 0);
+      atomB = simples.get_atom(STRE, i, 1);
       perA = period(carts.get_Z(atomA));
       perB = period(carts.get_Z(atomB));
       A = 1.734;
@@ -84,10 +84,10 @@ void empirical_H(const simples_class & simples, const salc_set &symm, const cart
       // fc in aJ/Ang^2
       f[++count] = tval * _hartree2aJ / SQR(_bohr2angstroms);
     }
-    for (i=0;i<simples.bend.size();++i) {
-      atomA = simples.bend[i].get_A();
-      atomB = simples.bend[i].get_B();
-      atomC = simples.bend[i].get_C();
+    for (i=0;i<simples.get_num(BEND);++i) {
+      atomA = simples.get_atom(BEND, i, 0);
+      atomB = simples.get_atom(BEND, i, 1);
+      atomC = simples.get_atom(BEND, i, 2);
       if ( ((int) (carts.get_Z(atomA) == 1)) ||
            ((int) (carts.get_Z(atomC) == 1)) )
         val = 0.160;
@@ -95,9 +95,9 @@ void empirical_H(const simples_class & simples, const salc_set &symm, const cart
         val = 0.250;
       f[++count] = val * _hartree2aJ;
     }
-    for (i=0;i<simples.tors.size();++i) {
-      atomB = simples.tors[i].get_B();
-      atomC = simples.tors[i].get_C();
+    for (i=0;i<simples.get_num(TORS); ++i) {
+      atomB = simples.get_atom(TORS, i, 1);
+      atomC = simples.get_atom(TORS, i, 2);
       A = 0.0023;
       B = 0.07;
       rBCcov = Rcov(carts.get_Z(atomB), carts.get_Z(atomC));
@@ -105,11 +105,11 @@ void empirical_H(const simples_class & simples, const salc_set &symm, const cart
       if (rBC > (rBCcov + A/B)) B = 0.0; // keep > 0
       f[++count] = (A - (B*(rBC - rBCcov))) * _hartree2aJ;
     }
-    for (i=0;i<simples.out.size();++i) {
-      atomA = simples.out[i].get_A();
-      atomB = simples.out[i].get_B();
-      atomC = simples.out[i].get_C();
-      atomD = simples.out[i].get_D();
+    for (i=0;i<simples.get_num(OUT); ++i) {
+      atomA = simples.get_atom(OUT, i, 0);
+      atomB = simples.get_atom(OUT, i, 1);
+      atomC = simples.get_atom(OUT, i, 2);
+      atomD = simples.get_atom(OUT, i, 3);
       A = 0.045;
       for (j=0;j<3;++j) {
          r1[j] = coord[3*atomA+j] - coord[3*atomB+j];
@@ -127,14 +127,14 @@ void empirical_H(const simples_class & simples, const salc_set &symm, const cart
       tval = 1 - fabs(tval);
       f[++count] = A * pow(tval,4) * _hartree2aJ;
     }
-    for (i=0;i<simples.linb.size();++i) {
+    for (i=0;i<simples.get_num(LINB); ++i) {
       f[++count] = 0.10 * _hartree2aJ;
     }
   }
   else if (optinfo.empirical_H == OPTInfo::FISCHER) {
-    for (i=0;i<simples.stre.size();++i) {
-      atomA = simples.stre[i].get_A();
-      atomB = simples.stre[i].get_B();
+    for (i=0;i<simples.get_num(STRE); ++i) {
+      atomA = simples.get_atom(STRE, i, 0);
+      atomB = simples.get_atom(STRE, i, 1);
 
       rAB   = carts.R(atomA,atomB);
       rABcov = Rcov(carts.get_Z(atomA), carts.get_Z(atomB));
@@ -144,10 +144,10 @@ void empirical_H(const simples_class & simples, const salc_set &symm, const cart
       tval = A * exp(-B*(rAB - rABcov));
       f[++count] = tval * _hartree2aJ / SQR(_bohr2angstroms);
     }
-    for (i=0;i<simples.bend.size();++i) {
-      atomA = simples.bend[i].get_A();
-      atomB = simples.bend[i].get_B();
-      atomC = simples.bend[i].get_C();
+    for (i=0;i<simples.get_num(BEND); ++i) {
+      atomA = simples.get_atom(BEND, i, 0);
+      atomB = simples.get_atom(BEND, i, 1);
+      atomC = simples.get_atom(BEND, i, 2);
 
       rABcov = Rcov(carts.get_Z(atomA), carts.get_Z(atomB));
       rBCcov = Rcov(carts.get_Z(atomB), carts.get_Z(atomC));
@@ -159,9 +159,9 @@ void empirical_H(const simples_class & simples, const salc_set &symm, const cart
       tval = A + B/(pow(rABcov*rBCcov, D)) * exp(-C*( rAB + rBC - rABcov - rBCcov));
       f[++count] = tval * _hartree2aJ;
     }
-    for (i=0;i<simples.tors.size();++i) {
-      atomB = simples.tors[i].get_B();
-      atomC = simples.tors[i].get_C();
+    for (i=0;i<simples.get_num(TORS); ++i) {
+      atomB = simples.get_atom(TORS, i, 1);
+      atomC = simples.get_atom(TORS, i, 2);
 
       rBCcov = Rcov(carts.get_Z(atomB), carts.get_Z(atomC));
       rBC = carts.R(atomB,atomC);
@@ -185,12 +185,12 @@ void empirical_H(const simples_class & simples, const salc_set &symm, const cart
       tval = A + tval * exp(-C * (rBC - rBCcov));
       f[++count] = tval * _hartree2aJ;
     }
-    for (i=0;i<simples.out.size();++i) {
-      atomA = simples.out[i].get_A();
-      atomB = simples.out[i].get_B();
-      atomC = simples.out[i].get_C();
-      atomD = simples.out[i].get_D();
-      val = simples.out[i].get_val()*_pi/180.0;
+    for (i=0;i<simples.get_num(OUT);++i) {
+      atomA = simples.get_atom(OUT, i, 0);
+      atomB = simples.get_atom(OUT, i, 1);
+      atomC = simples.get_atom(OUT, i, 2);
+      atomD = simples.get_atom(OUT, i, 3);
+      val = simples.get_val_A_or_rad(OUT, i); // in rad
 
       A = 0.0025; B = 0.0061; C = 3.00; D = 4.00; E = 0.80;
 
@@ -203,23 +203,23 @@ void empirical_H(const simples_class & simples, const salc_set &symm, const cart
       tval = A + tval * exp(-C*(rAB - rABcov));
       f[++count] = tval * _hartree2aJ;
     }
-    for (i=0;i<simples.linb.size();++i) {
+    for (i=0;i<simples.get_num(LINB);++i) {
       f[++count] = 0.10 * _hartree2aJ;
     }
   }
 
   // use same guess force constants for interfragment coordinates
   // regardless of chosen empirical_H type 
-  for (i=0;i<simples.frag.size();++i) {
-    if (simples.frag[i].get_coord_on(0)) {
+  for (i=0;i<simples.get_num(FRAG, 1); ++i) { // loop over fragment sets
+    if (simples.frag_get_coord_on(i, 0)) {
       int min_a,min_b;
       rAB = 1e6;
       // find minimum distance between two atoms, one in each fragment
-      for (a=0; a<simples.frag[i].get_A_natom(); ++a) {
-        atomA = simples.frag[i].get_A_atom(a);
-        for (b=0; b<simples.frag[i].get_B_natom(); ++b) {
-          atomB = simples.frag[i].get_B_atom(b);
-          tval = carts.R(atomA,atomB);
+      for (a=0; a<simples.get_natom(FRAG, i, FRAG_A); ++a) {
+        atomA = simples.get_atom(FRAG, i, a, FRAG_A);
+        for (b=0; b<simples.get_natom(FRAG, i, FRAG_B); ++b) {
+          atomB = simples.get_atom(FRAG, i, b, FRAG_B);
+          tval = carts.R(atomA,atomB); // distance in au
           if (tval < rAB) {
             rAB = tval;
             min_a = atomA;
@@ -281,18 +281,18 @@ void empirical_H(const simples_class & simples, const salc_set &symm, const cart
       f[++count] = 0.001;
       }
     } */
-    if (simples.frag[i].get_coord_on(1))
+    if (simples.frag_get_coord_on(i, 1))
       f[++count] = 0.001;
-    if (simples.frag[i].get_coord_on(2))
+    if (simples.frag_get_coord_on(i, 2))
       f[++count] = 0.001;
-    if (simples.frag[i].get_coord_on(3))
+    if (simples.frag_get_coord_on(i, 3))
       f[++count] = 0.0005;
-    if (simples.frag[i].get_coord_on(4))
+    if (simples.frag_get_coord_on(i, 4))
       f[++count] = 0.0005;
-    if (simples.frag[i].get_coord_on(5))
+    if (simples.frag_get_coord_on(i, 5))
       f[++count] = 0.0005;
   }
-  free(coord);
+  free_array(coord);
 
   //fprintf(outfile,"Diagonal force constants for simple internals\n");
   //print_mat(&f,1,simples.get_num(),outfile);
@@ -301,7 +301,7 @@ void empirical_H(const simples_class & simples, const salc_set &symm, const cart
   double **intcos;
   double **f_new;
 
-  intcos = block_matrix(symm.get_num(),simples.get_num());
+  intcos = init_matrix(symm.get_num(),simples.get_num());
   int id, index;
 
   for (i=0;i<symm.get_num();++i) {
@@ -316,7 +316,7 @@ void empirical_H(const simples_class & simples, const salc_set &symm, const cart
   // fprintf(outfile,"Simples to Salc matrix\n");
   // print_mat(intcos,symm.get_num(),simples.get_num(),outfile);
 
-  f_new = block_matrix(symm.get_num(),symm.get_num());
+  f_new = init_matrix(symm.get_num(),symm.get_num());
   for (i=0;i<symm.get_num();++i)
     for (j=0;j<symm.get_num();++j)
       for (k=0;k<simples.get_num();++k)
@@ -328,9 +328,9 @@ void empirical_H(const simples_class & simples, const salc_set &symm, const cart
       (char *) &(f_new[0][0]),symm.get_num()*symm.get_num()*sizeof(double));
   close_PSIF();
 
-  free(f);
-  free_block(f_new);
-  free_block(intcos);
+  free_array(f);
+  free_matrix(f_new);
+  free_matrix(intcos);
   return;
 }
 

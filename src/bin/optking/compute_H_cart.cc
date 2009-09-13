@@ -24,7 +24,7 @@ double **compute_H_cart(cartesians & carts, double **P) {
   char buffer[MAX_LINELENGTH];
 
   dim = 3*carts.get_natom();
-  H = block_matrix(dim,dim);
+  H = init_matrix(dim,dim);
 
   /*** Read in force constants from PSIF_OPTKING ***/
   open_PSIF();
@@ -52,17 +52,17 @@ double **compute_H_cart(cartesians & carts, double **P) {
   }
 
   if (optinfo.redundant) { // could add constraints later
-    temp_mat = block_matrix(dim,dim);
-    mmult(P,0,H,0,temp_mat,0,dim,dim,dim,0);
-    mmult(temp_mat,0,P,0,H,0,dim,dim,dim,0);
-    free(temp_mat);
+    temp_mat = init_matrix(dim,dim);
+    opt_mmult(P,0,H,0,temp_mat,0,dim,dim,dim,0);
+    opt_mmult(temp_mat,0,P,0,H,0,dim,dim,dim,0);
+    free_matrix(temp_mat);
 
-    temp_mat = unit_mat(dim);
+    temp_mat = unit_matrix((long int) dim);
     for (i=0;i<dim;++i)
       for (j=0;j<dim;++j) {
           H[i][j] += 1000 * (temp_mat[i][j] - P[i][j]);
       }
-    free(temp_mat);
+    free_matrix(temp_mat);
   }
 
   H_inv = symm_matrix_invert(H,dim,0,1);
@@ -72,7 +72,7 @@ double **compute_H_cart(cartesians & carts, double **P) {
   psio_write_entry(PSIF_OPTKING, "Cartesian Force Constants",
       (char *) &(H[0][0]),dim*dim*sizeof(double));
   close_PSIF();
-  free_block(H);
+  free_matrix(H);
   return H_inv;
 }
 
@@ -145,17 +145,17 @@ void H_update_cart(double **H, cartesians &carts) {
       // To make formula work for Hessian (some call it "B")
       // you have to switch DQ and DG in the equation
   
-      dot_arr(dx,dg,dim,&xg);
-      X = unit_mat(dim);
+      dot_array(dx,dg,dim,&xg);
+      X = unit_matrix((long int) dim);
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)
           X[i][j] -= (dg[i] * dx[j]) / xg ; 
   
-      temp_mat = block_matrix(dim,dim);
-      mmult(X,0,H,0,temp_mat,0,dim,dim,dim,0);
-      mmult(temp_mat,0,X,1,H,0,dim,dim,dim,0);
-      free_block(temp_mat);
-      free_block(X);
+      temp_mat = init_matrix(dim,dim);
+      opt_mmult(X,0,H,0,temp_mat,0,dim,dim,dim,0);
+      opt_mmult(temp_mat,0,X,1,H,0,dim,dim,dim,0);
+      free_matrix(temp_mat);
+      free_matrix(X);
     
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)
@@ -164,46 +164,46 @@ void H_update_cart(double **H, cartesians &carts) {
     else if (optinfo.H_update == OPTInfo::MS) {
       // Equations taken from Bofill article below
       Z = init_array(dim);
-      mmult(H,0,&dx,1,&Z,1,dim,dim,1,0);
+      opt_mmult(H,0,&dx,1,&Z,1,dim,dim,1,0);
       for (i=0;i<dim;++i)
         Z[i] = dg[i] - Z[i];
 
-      dot_arr(dx,Z,dim,&xz);
+      dot_array(dx,Z,dim,&xz);
 
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)
           H[i][j] += Z[i] * Z[j] / xz ;
 
-      free(Z);
+      free_array(Z);
     }
     else if (optinfo.H_update == OPTInfo::POWELL) {
       // Equations taken from Bofill article below
       Z = init_array(dim);
-      mmult(H,0,&dx,1,&Z,1,dim,dim,1,0);
+      opt_mmult(H,0,&dx,1,&Z,1,dim,dim,1,0);
       for (i=0;i<dim;++i)
         Z[i] = dg[i] - Z[i];
 
-      dot_arr(dx,Z,dim,&xz);
-      dot_arr(dx,dx,dim,&xx);
+      dot_array(dx,Z,dim,&xz);
+      dot_array(dx,dx,dim,&xx);
 
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)
           H[i][j] += -1.0*xz/(xx*xx)*dx[i]*dx[j] + (Z[i]*dx[j] + dx[i]*Z[j])/xx;
 
-      free(Z);
+      free_array(Z);
     }
     else if (optinfo.H_update == OPTInfo::BOFILL) {
       /* This functions performs a Bofill update on the Hessian according to
       J. M. Bofill, J. Comp. Chem., Vol. 15, pages 1-11 (1994). */
       // Bofill = (1-phi) * MS + phi * Powell
       Z = init_array(dim);
-      mmult(H,0,&dx,1,&Z,1,dim,dim,1,0);
+      opt_mmult(H,0,&dx,1,&Z,1,dim,dim,1,0);
       for (i=0;i<dim;++i)
         Z[i] = dg[i] - Z[i];
 
-      dot_arr(dx,Z,dim,&xz);
-      dot_arr(dx,dx,dim,&xx);
-      dot_arr(Z,Z,dim,&zz);
+      dot_array(dx,Z,dim,&xz);
+      dot_array(dx,dx,dim,&xx);
+      dot_array(Z,Z,dim,&zz);
 
       phi = 1.0 - xz*xz/(xx*zz);
       if (phi < 0.0) phi = 0.0;
@@ -216,16 +216,16 @@ void H_update_cart(double **H, cartesians &carts) {
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)
           H[i][j] += phi*(-1.0*xz/(xx*xx)*dx[i]*dx[j] + (Z[i]*dx[j] + dx[i]*Z[j])/xx);
-      free(Z);
+      free_array(Z);
     }
   } //end over old steps
 
-  free(f);
-  free(f_old);
-  free(dx);
-  free(dg);
-  free(x);
-  free(x_old);
+  free_array(f);
+  free_array(f_old);
+  free_array(dx);
+  free_array(dg);
+  free_array(x);
+  free_array(x_old);
   return;
 }
 
@@ -259,7 +259,7 @@ void fconst_init_cart(cartesians &carts) {
     ip_cwk_add(":FCONST");
     if (ip_exist("CART_FC",0)) {
       fprintf(outfile,"Reading force constants from FCONST: \n");
-      temp_mat = block_matrix(dim,dim);
+      temp_mat = init_matrix(dim,dim);
       ip_count("CART_FC",&i,0);
       if (i != (dim*(dim+1))/2) {
         fprintf(outfile,"fconst has wrong number of entries\n");
@@ -282,12 +282,12 @@ void fconst_init_cart(cartesians &carts) {
           (char *) &(temp_mat[0][0]),dim*dim*sizeof(double));
       close_PSIF();
   
-      free_block(temp_mat);
+      free_matrix(temp_mat);
       return;
     }
   }
 
-  temp_mat = block_matrix(dim,dim);
+  temp_mat = init_matrix(dim,dim);
   fprintf(outfile,"Making diagonal Hessian guess.\n");
   for (i=0; i<dim; ++i)
     temp_mat[i][i] = 1.0;
@@ -299,7 +299,7 @@ void fconst_init_cart(cartesians &carts) {
   psio_write_entry(PSIF_OPTKING, "Cartesian Force Constants",
       (char *) &(temp_mat[0][0]),dim*dim*sizeof(double));
   close_PSIF();
-  free_block(temp_mat);
+  free_matrix(temp_mat);
 
   delete [] buffer;
 }

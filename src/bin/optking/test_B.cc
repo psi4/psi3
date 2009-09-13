@@ -9,6 +9,7 @@
 #include "cartesians.h"
 #include "simples.h"
 #include "salc.h"
+#include "opt.h"
 
 #include <libqt/qt.h>
 
@@ -27,14 +28,14 @@ int test_B(const cartesians &carts, simples_class &simples, const salc_set &symm
   simples.compute(coord);
   simples.compute_s(coord);
   B = compute_B(simples,symm);
-  free(coord);
+  free_array(coord);
 
   if (optinfo.mode == MODE_TEST_BMAT) {
     fprintf(outfile,"\nB Matrix - Analytical, dB_i/(dr angstroms) \n");
     print_mat(B, nsalcs, ncarts, outfile );
   }
 
-  dq = block_matrix(nsalcs,ncarts);
+  dq = init_matrix(nsalcs,ncarts);
 
   for (i=0; i<nsalcs; ++i) {
     for (atom=0; atom<natom; ++atom) {
@@ -43,7 +44,10 @@ int test_B(const cartesians &carts, simples_class &simples, const salc_set &symm
 
         coord[3*atom+xyz] += disp_size;
         simples.compute(coord);
+        //simples.print(outfile, 1);
         q_plus = compute_q(simples,symm); /* q is in Ang and radians */
+        //fprintf(outfile,"q +\n");
+        //print_mat(&q_plus, 1, nsalcs, outfile);
 
         coord[3*atom+xyz] -= 2.0*disp_size;
         simples.compute(coord);
@@ -51,9 +55,9 @@ int test_B(const cartesians &carts, simples_class &simples, const salc_set &symm
  
         dq[i][3*atom+xyz] = (q_plus[i]-q_minus[i]) / (2.0*disp_size*_bohr2angstroms);
 
-        free(q_plus);
-        free(q_minus);
-        free(coord);
+        free_array(q_plus);
+        free_array(q_minus);
+        free_array(coord);
       }
     }
   }
@@ -78,8 +82,8 @@ int test_B(const cartesians &carts, simples_class &simples, const salc_set &symm
     fprintf(outfile,"  Looks great.\n");
   }
 
-  free_block(B);
-  free_block(dq);
+  free_matrix(B);
+  free_matrix(dq);
   return 0;
 }
 

@@ -32,7 +32,6 @@ Formulas for finite differences
 #include "opt.h"
 
 #include <libchkpt/chkpt.h>
-#include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libpsio/psio.h>
 
@@ -107,10 +106,10 @@ int disp_freq_energy_cart(const cartesians &carts)
       fprintf(outfile,"%15.10lf%15.10lf%15.10lf\n",coord[3*i],coord[3*i+1],coord[3*i+2]);
     fflush(outfile);
   }
-  free(com);
+  free_array(com);
 
   /**** Determine the rotational coordinates from MOI tensor ****/
-  moi = block_matrix(3,3);
+  moi = init_matrix(3,3);
   for (i=0; i<natom; ++i) {
     moi[0][0] += masses[3*i] * (SQR(coord[3*i+1]) + SQR(coord[3*i+2]));
     moi[1][1] += masses[3*i] * (SQR(coord[3*i+0]) + SQR(coord[3*i+2]));
@@ -123,17 +122,17 @@ int disp_freq_energy_cart(const cartesians &carts)
   moi[2][0] = moi[0][2];
   moi[2][1] = moi[1][2];
 
-  X = block_matrix(3,3);
+  X = init_matrix(3,3);
   evals = init_array(3);
-  sq_rsp(3,3,moi,evals,1,X,1.0E-14);
-  free_block(moi);
+  opt_sq_rsp(3,3,moi,evals,1,X,1.0E-14);
+  free_matrix(moi);
   if (print) {
     fprintf(outfile,"Eigenvectors (X) of MOI tensor\n");
     print_mat(X,3,3,outfile);
   }
 
   /**** Build matrix with COM and rotational constraints as rows ****/
-  constraints = block_matrix(6, 3*natom);
+  constraints = init_matrix(6, 3*natom);
   /* COM constraints */
   for (i=0; i<natom; ++i) {
     constraints[0][3*i]   = 1.0 * sqrt(masses[3*i]);
@@ -163,12 +162,12 @@ int disp_freq_energy_cart(const cartesians &carts)
     fprintf(outfile,"Raw COM/Rotational Constraints\n");
     print_mat(constraints,6,3*natom,outfile);
   }
-  free_block(X);
+  free_matrix(X);
 
   /* Remove NULL constraint (if present) and normalize rest of them */
   cnt = -1;
   for (i = 0; i < 6; ++i) {
-    dot_arr(constraints[i], constraints[i], 3*natom, &normval);
+    dot_array(constraints[i], constraints[i], 3*natom, &normval);
     if (normval > 1.0E-10) {
       ++cnt;
       for (j=0; j<3*natom; ++j)
@@ -178,14 +177,14 @@ int disp_freq_energy_cart(const cartesians &carts)
   nconstraints = cnt+1;
 
   /* Orthogonalize rotations and translations exactly-is this ever necessary?*/
-  constraints_ortho = block_matrix(nconstraints,3*natom);
+  constraints_ortho = init_matrix(nconstraints,3*natom);
   cnt = 0;
   for (i=0; i<nconstraints; ++i)
     cnt += schmidt_add(constraints_ortho, cnt, 3*natom, constraints[i]);
   for (i=0; i<nconstraints; ++i)
     for (j=0; j<3*natom; ++j)
       constraints[i][j] = constraints_ortho[i][j];
-  free_block(constraints_ortho);
+  free_matrix(constraints_ortho);
 
   /**** Form symmetry-adapted cartesian vectors ****/
   salc_orig = (double ***) malloc(nirreps*sizeof(double **));
@@ -193,7 +192,7 @@ int disp_freq_energy_cart(const cartesians &carts)
 
   /* loop over irrep of coordinates */
   for (irrep=0; irrep < nirreps; ++irrep) {
-    salc_orig[irrep] = block_matrix(3*natom,3*natom);
+    salc_orig[irrep] = init_matrix(3*natom,3*natom);
     cnt=-1;
 
     /* loop over unique atoms and xyz coordinates */
@@ -239,22 +238,22 @@ int disp_freq_energy_cart(const cartesians &carts)
   v = init_array(3*natom);
   nsalc_all = 0;
   for (irrep=0; irrep< nirreps; ++irrep) {
-    salc[irrep] = block_matrix(nsalc_orig[irrep],3*natom);
+    salc[irrep] = init_matrix(nsalc_orig[irrep],3*natom);
     cnt = 0;
 
     for (i=0; i<nsalc_orig[irrep]; ++i) {
-      zero_arr(v,3*natom);
+      zero_array(v,3*natom);
 
       for (I=0; I<3*natom; I++)
         v[I] = salc_orig[irrep][i][I];
  
       for (j=0; j<nconstraints; j++) {
-        dot_arr(salc_orig[irrep][i], constraints[j], 3*natom, &dotval) ;
+        dot_array(salc_orig[irrep][i], constraints[j], 3*natom, &dotval) ;
         for (I=0; I<3*natom; I++)
           v[I] -= dotval * constraints[j][I] ;
       }
 
-      dot_arr(v, v, 3*natom, &normval);
+      dot_array(v, v, 3*natom, &normval);
       if (normval > 1.0E-10) {
         for (j=0; j<3*natom; ++j)
           v[j] = v[j] / sqrt(normval) ;
@@ -266,11 +265,11 @@ int disp_freq_energy_cart(const cartesians &carts)
     nsalc_all += cnt;
   }
   for (irrep=0; irrep<nirreps; ++irrep) {
-    free_block(salc_orig[irrep]);
+    free_matrix(salc_orig[irrep]);
   }
-  free_block(constraints);
-  free(nsalc_orig);
-  free(v);
+  free_matrix(constraints);
+  free_int_array(nsalc_orig);
+  free_array(v);
 
   if (optinfo.freq_irrep != -1) {
     for (irrep=0; irrep < nirreps; ++irrep)
@@ -326,7 +325,7 @@ int disp_freq_energy_cart(const cartesians &carts)
   geoms = (double ***) malloc(nirreps*sizeof(double **));
   for (irrep=0; irrep<nirreps; ++irrep) {
 
-    geoms[irrep] = block_matrix(ndisp[irrep],3*natom);
+    geoms[irrep] = init_matrix(ndisp[irrep],3*natom);
     for (i=0; i<ndisp[irrep]; ++i)
       for (j=0; j<3*natom; ++j)
         geoms[irrep][i][j] = coord[j];
@@ -407,7 +406,7 @@ int disp_freq_energy_cart(const cartesians &carts)
       }
     }
   }
-  free(masses);
+  free_array(masses);
 
   if(optinfo.external_energies){
     int counter = 1;
@@ -441,7 +440,7 @@ int disp_freq_energy_cart(const cartesians &carts)
       ndisp_all*3*natom*sizeof(double));
   psio_write_entry(PSIF_OPTKING, "OPT: Displaced gradients", (char *) &(big_zeroes[0]),
       ndisp_all*3*natom*sizeof(double));
-  free(big_zeroes);
+  free_array(big_zeroes);
 
   next = PSIO_ZERO;
   for (irrep=0; irrep<nirreps; ++irrep) {
@@ -451,7 +450,7 @@ int disp_freq_energy_cart(const cartesians &carts)
 //fprintf(outfile,"Displaced Geometries of irrep %d.\n",irrep);
 //print_mat(geoms[irrep],ndisp[irrep],3*natom,outfile);
     }
-    free_block(geoms[irrep]);
+    free_matrix(geoms[irrep]);
   }
   free(geoms);
 
@@ -461,7 +460,7 @@ int disp_freq_energy_cart(const cartesians &carts)
       psio_write(PSIF_OPTKING, "OPT: Adapted cartesians", (char *) &(salc[irrep][0][0]),
       nsalc[irrep]*3*natom*sizeof(double), next, &next);
     }
-    free_block(salc[irrep]);
+    free_matrix(salc[irrep]);
   }
   free(salc);
 
@@ -508,11 +507,11 @@ int disp_freq_energy_cart(const cartesians &carts)
     fprintf(outfile,"Number of %s displaced geometries is %d.\n",syminfo.irrep_lbls[irrep],ndisp[irrep]);
   fprintf(outfile,"Total number of displaced geometries is %d.\n",ndisp_all);
 
-  free(nsalc);
-  free(ndisp);
-  free(coord);
-  free(disp_e);
-  free(ua2a);
+  free_int_array(nsalc);
+  free_int_array(ndisp);
+  free_array(coord);
+  free_array(disp_e);
+  free_int_array(ua2a);
   return(ndisp_all);
 }
 

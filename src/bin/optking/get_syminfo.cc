@@ -104,19 +104,19 @@ void get_syminfo(const simples_class & simples) {
   for (i=0;i<simples.get_num();++i) {
     id = simples.index_to_id(i);
     simples.locate_id(id,&intco_type,&sub_index,&sub_index2);
-    if (intco_type == STRE_TYPE) {
-      a = simples.stre[sub_index].get_A();
-      b = simples.stre[sub_index].get_B();
+    if (intco_type == STRE) {
+      a = simples.get_atom(STRE, sub_index, 0);
+      b = simples.get_atom(STRE, sub_index, 1);
       for (ops=0;ops < syminfo.nirreps;++ops) {
         aa = syminfo.ict[ops][a]-1;
         bb = syminfo.ict[ops][b]-1;
         syminfo.ict_ops[i][ops] = simples.get_id_from_atoms_stre(aa,bb);
       }
     }
-    if (intco_type == BEND_TYPE) {
-      a = simples.bend[sub_index].get_A();
-      b = simples.bend[sub_index].get_B();
-      c = simples.bend[sub_index].get_C();
+    if (intco_type == BEND) {
+      a = simples.get_atom(BEND, sub_index, 0);
+      b = simples.get_atom(BEND, sub_index, 1);
+      c = simples.get_atom(BEND, sub_index, 2);
       for (ops=0;ops < syminfo.nirreps;++ops) {
         aa = syminfo.ict[ops][a]-1;
         bb = syminfo.ict[ops][b]-1;
@@ -124,28 +124,28 @@ void get_syminfo(const simples_class & simples) {
         syminfo.ict_ops[i][ops] = simples.get_id_from_atoms_bend(aa,bb,cc);
       }
     }
-    if (intco_type == TORS_TYPE) {
-      a = simples.tors[sub_index].get_A();
-      b = simples.tors[sub_index].get_B();
-      c = simples.tors[sub_index].get_C();
-      d = simples.tors[sub_index].get_D();
-      //fprintf(outfile,"tors %d %d %d %d\n", a, b, c, d);
+    if (intco_type == TORS) {
+      a = simples.get_atom(TORS, sub_index, 0);
+      b = simples.get_atom(TORS, sub_index, 1);
+      c = simples.get_atom(TORS, sub_index, 2);
+      d = simples.get_atom(TORS, sub_index, 3);
+//fprintf(outfile,"tors %d %d %d %d\n", a, b, c, d);
       for (ops=0;ops < syminfo.nirreps;++ops) {
         aa = syminfo.ict[ops][a]-1;
         bb = syminfo.ict[ops][b]-1;
         cc = syminfo.ict[ops][c]-1;
         dd = syminfo.ict[ops][d]-1;
-        //fprintf(outfile,"transformed tors %d %d %d %d\n", aa, bb, cc, dd);
+//fprintf(outfile,"transformed tors %d %d %d %d\n", aa, bb, cc, dd);
         syminfo.ict_ops[i][ops] = simples.get_id_from_atoms_tors(aa,bb,cc,dd);
         if ( ('S' == syminfo.op_lbls[ops][0]) || ('I' == syminfo.op_lbls[ops][0]) )
           syminfo.ict_ops_sign[i][ops] = -1;
       }
     }
-    if (intco_type == OUT_TYPE) {
-      a = simples.out[sub_index].get_A();
-      b = simples.out[sub_index].get_B();
-      c = simples.out[sub_index].get_C();
-      d = simples.out[sub_index].get_D();
+    if (intco_type == OUT) {
+      a = simples.get_atom(OUT, sub_index, 0);
+      b = simples.get_atom(OUT, sub_index, 1);
+      c = simples.get_atom(OUT, sub_index, 2);
+      d = simples.get_atom(OUT, sub_index, 3);
       for (ops=0;ops < syminfo.nirreps;++ops) {
         aa = syminfo.ict[ops][a]-1;
         bb = syminfo.ict[ops][b]-1;
@@ -158,11 +158,11 @@ void get_syminfo(const simples_class & simples) {
       }
     }
     // this probably doesn't work anyway but here it is
-    if (intco_type == LINB_TYPE) {
-      a = simples.linb[sub_index].get_A();
-      b = simples.linb[sub_index].get_B();
-      c = simples.linb[sub_index].get_C();
-      linval = simples.linb[sub_index].get_linval();
+    if (intco_type == LINB) {
+      a = simples.get_atom(LINB, sub_index, 0);
+      b = simples.get_atom(LINB, sub_index, 1);
+      c = simples.get_atom(LINB, sub_index, 2);
+      linval = simples.linb_get_linval(sub_index);
       for (ops=0;ops < syminfo.nirreps;++ops) {
         aa = syminfo.ict[ops][a]-1;
         bb = syminfo.ict[ops][b]-1;

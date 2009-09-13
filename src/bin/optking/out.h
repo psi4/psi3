@@ -90,10 +90,31 @@ class out_class {
     int  get_C(void) const { return C;}
     int  get_D(void) const { return D;}
     double get_val(void) const { return val;}
+    double get_val_A_or_rad(void) const  { 
+      return (val/180*_pi);
+    }
+
     double get_s_A(int i) const { return s_A[i]; }
     double get_s_B(int i) const { return s_B[i]; }
     double get_s_C(int i) const { return s_C[i]; }
     double get_s_D(int i) const { return s_D[i]; }
+
+    int  get_atom(int a) const  {
+      if (a==0) return A;
+      else if (a==1) return B;
+      else if (a==2) return C;
+      else if (a==3) return D;
+      else throw("out_class::get_atom : atom index must be 0, 1, 2 or 3.\n");
+    }
+
+    double get_s(int atom, int xyz) const  {
+      if ( xyz < 0 || xyz > 2) throw ("out_class::get_s() : xyz must be 0, 1 or 2");
+      if (atom==0) return s_A[xyz];
+      else if (atom==1) return s_B[xyz];
+      else if (atom==2) return s_C[xyz];
+      else if (atom==3) return s_D[xyz];
+      else throw("out_class::get_s() : atom index must be 0, 1, 2, or 3");
+    }
 
     void compute(double *geom) {
       int j;
@@ -114,7 +135,7 @@ class out_class {
       scalar_div(rBC,eBC);
       scalar_div(rBD,eBD);
     
-      dot_arr(eBC,eBD,3,&phi_CBD);
+      dot_array(eBC,eBD,3,&phi_CBD);
     
       if (phi_CBD > 1.0) phi_CBD = 0.0;
       else if (phi_CBD < -1.0) phi_CBD = _pi ;
@@ -122,7 +143,7 @@ class out_class {
     
       cross_product(eBC,eBD,tmp);
     
-      dot_arr(tmp,eBA,3,&dotprod);
+      dot_array(tmp,eBA,3,&dotprod);
     
       if (sin(phi_CBD) > optinfo.sin_phi_denominator_tol) dotprod = dotprod / sin(phi_CBD) ;
       else dotprod = 0.0 ;
@@ -157,7 +178,7 @@ class out_class {
       scalar_div(rBC,eBC);
       scalar_div(rBD,eBD);
     
-      dot_arr(eBC,eBD,3,&phi_CBD);
+      dot_array(eBC,eBD,3,&phi_CBD);
     
       if (phi_CBD > 1.0) phi_CBD = 0.0;
       else if (phi_CBD < -1.0) phi_CBD = _pi;

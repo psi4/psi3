@@ -11,7 +11,6 @@
 #include "salc.h"
 #include "opt.h"
 
-#include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libpsio/psio.h>
 
@@ -79,19 +78,19 @@ void fc_grad_selected(const cartesians &carts, simples_class & simples, const sa
     temp_arr = init_array(nsymm);
     temp_arr2 = init_array(dim_carts);
 
-    mmult(u,0,&f,1,&temp_arr2,1,dim_carts,dim_carts,1,0);
-    mmult(B,0,&temp_arr2,1,&temp_arr,1,nsymm,dim_carts,1,0);
-    mmult(G_inv,0,&temp_arr,1,&(all_f_q[i]),1,nsymm,nsymm,1,0);
+    opt_mmult(u,0,&f,1,&temp_arr2,1,dim_carts,dim_carts,1,0);
+    opt_mmult(B,0,&temp_arr2,1,&temp_arr,1,nsymm,dim_carts,1,0);
+    opt_mmult(G_inv,0,&temp_arr,1,&(all_f_q[i]),1,nsymm,nsymm,1,0);
 
-    free(temp_arr);
-    free(temp_arr2);
-    free_block(u);
-    free_block(B);
-    free_block(G);
-    free_block(G_inv);
+    free_array(temp_arr);
+    free_array(temp_arr2);
+    free_matrix(u);
+    free_matrix(B);
+    free_matrix(G);
+    free_matrix(G_inv);
   }
 
-  free(f);
+  free_array(f);
 
   if (optinfo.print_hessian) {
     fprintf(outfile,"Internal coordinate forces for each displacement\n");
@@ -107,7 +106,7 @@ void fc_grad_selected(const cartesians &carts, simples_class & simples, const sa
   }
 
   fprintf(outfile,"\nApplying 3-point formula\n");
-  force_constants = block_matrix(nsymm,nsymm);
+  force_constants = init_matrix(nsymm,nsymm);
   for (i=0;i<ncoord;++i) {
     for (j=0;j<nsymm;++j) {
       ii = coord2salc[i];
@@ -117,7 +116,7 @@ void fc_grad_selected(const cartesians &carts, simples_class & simples, const sa
     }
   }
 
-  free_block(all_f_q);
+  free_matrix(all_f_q);
 
   //  fprintf(outfile,"\nForce Constants\n");
   //  print_mat(force_constants, nsymm, nsymm, outfile);
@@ -132,7 +131,7 @@ void fc_grad_selected(const cartesians &carts, simples_class & simples, const sa
     empirical_H(simples, symm, carts);
   }
 
-  double **fc_old = block_matrix(nsymm,nsymm);
+  double **fc_old = init_matrix(nsymm,nsymm);
   open_PSIF();
   fprintf(outfile,"Reading force constants from PSIF_OPTKING\n");
   psio_read_entry(PSIF_OPTKING, "Symmetric Force Constants",
@@ -152,8 +151,8 @@ void fc_grad_selected(const cartesians &carts, simples_class & simples, const sa
   fprintf(outfile,"\nMerged Force Constants\n");
   print_mat(fc_old, nsymm, nsymm, outfile); fflush(outfile);
 
-  free_block(fc_old);
-  free_block(force_constants);
+  free_matrix(fc_old);
+  free_matrix(force_constants);
 
   optinfo.disp_num = 0;
   psio_write_entry(PSIF_OPTKING, "OPT: Current disp_num",

@@ -45,6 +45,9 @@ command-line      internal specifier   what it does
 
 namespace psi { namespace optking {
 
+int opt_psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix,
+int argc, char *argv[], int overwrite_output);
+
 void intro(int argc, char **argv);
 void chkpt_restart(char *new_prefix);
 void load_ref(const cartesians &carts);
@@ -187,7 +190,7 @@ int main(int argc, char **argv) {
       }
     }
 
-    psi_start(&infile,&outfile,&psi_file_prefix,argc-parsed,argv+parsed,0);
+    opt_psi_start(&infile,&outfile,&psi_file_prefix,argc-parsed,argv+parsed,0);
     /* init_in_out() sets the value of "infile", so we need to save it */
     fp_input = infile;
     
@@ -198,7 +201,7 @@ int main(int argc, char **argv) {
     // determine if simples and salcs are present in intco.dat 
     optinfo.simples_present = 0;
     optinfo.salcs_present = 0;
-    ffile_noexit(&fp_intco, "intco.dat", 2);
+    opt_ffile_noexit(&fp_intco, "intco.dat", 2);
     if (fp_intco != NULL)
       ip_append(fp_intco, outfile) ;
     if ( ip_exist(":INTCO",0) ) {
@@ -225,7 +228,7 @@ int main(int argc, char **argv) {
     if ( optinfo.zmat_simples && !(optinfo.simples_present)) {
       zmat_to_intco();
       optinfo.simples_present = 1;
-      ffile(&fp_intco, "intco.dat", 2);
+      opt_ffile(&fp_intco, "intco.dat", 2);
       ip_append(fp_intco, outfile) ;
       ip_cwk_add(":INTCO");
     }
@@ -252,7 +255,7 @@ int main(int argc, char **argv) {
     simples_class simples(carts, optinfo.simples_present);
 
     /* read in constraints */
-    ffile_noexit(&fp_fintco, "fintco.dat", 2);
+    opt_ffile_noexit(&fp_fintco, "fintco.dat", 2);
     if (fp_fintco != NULL) ip_append(fp_fintco, outfile) ;
     if (optinfo.mode == MODE_OPT_STEP) optinfo.constraints = read_constraints(simples);
     if (fp_fintco != NULL) fclose(fp_fintco);
@@ -260,10 +263,11 @@ int main(int argc, char **argv) {
     coord = carts.get_coord();
     simples.compute(coord);
     simples.compute_s(coord);
-    //simples.print(outfile, 1);
-    //simples.print_s(outfile);
+//RAK
+//simples.print(outfile, 1);
+//simples.print_s(outfile);
 
-    free(coord);
+    free_array(coord);
     if ( (optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_LOAD_REF)
       && (optinfo.mode != MODE_RESET_PREFIX) && (optinfo.mode != MODE_DISP_NUM_PLUS)
       && (optinfo.mode != MODE_DELETE_BINARIES) ) {
@@ -273,8 +277,24 @@ int main(int argc, char **argv) {
     fflush(outfile);
 
     /* obtain symmetry info, including simple transformation matrix */
-    get_syminfo(simples);
-    fflush(outfile);
+    try {
+      get_syminfo(simples);
+    }
+    catch (const char * s) {
+      if (optinfo.zmat_simples) {
+        fprintf(outfile,"Unable to determine symmetry relationships of all internals.\n");
+        fprintf(outfile,"Proceeding anyway since coordinates taken from z-matrix.\n");
+      }
+      else {
+        fprintf(outfile,"Unable to determine symmetry relationships of internals.\n");
+        fprintf(outfile,"%s\n",s);
+        printf("Unable to determine symmetry relationships of internals.\n");
+        printf("%s\n",s);
+        free_info(simples.get_num());
+        exit_io();
+        abort();
+      }
+    }
 
     /*** If SYMM is not user given, produce SYMM containing delocalized \
      *** internal coordinates or else use redundant simples          ***/
@@ -285,7 +305,7 @@ int main(int argc, char **argv) {
       }
       else {
         fprintf(outfile,"\nPutting simple, possibly redundant, internal coordinates in intco.dat.\n");
-        ffile(&fp_intco, "intco.dat", 2);
+        opt_ffile(&fp_intco, "intco.dat", 2);
         count = 0;
         for( ; ; ) {
           err = fgets(aline, MAX_LINELENGTH, fp_intco);
@@ -317,7 +337,7 @@ int main(int argc, char **argv) {
         fclose(fp_intco);
       }
       /* Add the new intco information to the keyword tree */
-      ffile(&fp_intco, "intco.dat", 2);
+      opt_ffile(&fp_intco, "intco.dat", 2);
       if (fp_intco != NULL) {
         ip_append(fp_intco, outfile) ;
         if (ip_exist(":INTCO",0)) {
@@ -336,7 +356,7 @@ int main(int argc, char **argv) {
       fconst_init(carts, simples, symm);
       if (optinfo.print_hessian) {
         int dim = symm.get_num();
-        double **H = block_matrix(dim,dim);
+        double **H = init_matrix(dim,dim);
         open_PSIF();
         psio_read_entry(PSIF_OPTKING, "Symmetric Force Constants",
             (char *) &(H[0][0]),dim*dim*sizeof(double));
@@ -344,7 +364,7 @@ int main(int argc, char **argv) {
         fprintf(outfile,"\nThe Hessian (Second Derivative) Matrix\n");
         print_mat5(H,dim,dim,outfile);
         fprintf(outfile,"\n");
-        free_block(H);
+        free_matrix(H);
       } 
       exit_io();
       return 0;
@@ -362,10 +382,21 @@ int main(int argc, char **argv) {
         simples.compute(coord);
         simples.compute_s(coord);
       }
-      if (optinfo.cartesian)
-        a = opt_step_cart(carts);
-      else
-        a = opt_step(carts, simples, symm_salcs);
+      try {
+        if (optinfo.cartesian)
+          a = opt_step_cart(carts);
+        else
+          a = opt_step(carts, simples, symm_salcs);
+      }
+      catch (const char * s) {
+        fprintf(outfile,"%s\n",s);
+        fprintf(outfile,"MODE_OPT_STEP failed.\n");
+        printf("%s\n",s);
+        printf("MODE_OPT_STEP failed.\n");
+        free_info(simples.get_num());
+        exit_io();
+        abort();
+      }
       free_info(simples.get_num());
       //fprintf(outfile,"Returning code %d\n", a);
       exit_io();
@@ -506,7 +537,7 @@ int main(int argc, char **argv) {
       psio_read_entry(PSIF_OPTKING, "OPT: Num. of disp.",
           (char *) &(total_num_disps), sizeof(int));
 
-      micro_geoms = block_matrix(total_num_disps, dim_carts);
+      micro_geoms = init_matrix(total_num_disps, dim_carts);
       psio_read_entry(PSIF_OPTKING, "OPT: Displaced geometries",
           (char *) &(micro_geoms[0][0]), total_num_disps*dim_carts* sizeof(double));
 
@@ -517,7 +548,7 @@ int main(int argc, char **argv) {
 
       chkpt_restart( syminfo.irrep_lbls[ irrep_per_disp[optinfo.disp_num]] );
 
-      geom2D = block_matrix(carts.get_natom(),3);
+      geom2D = init_matrix(carts.get_natom(),3);
       for (i=0; i<carts.get_natom(); ++i)
         for (j=0; j<3; ++j)
           geom2D[i][j] = micro_geoms[optinfo.disp_num][3*i+j];
@@ -534,11 +565,11 @@ int main(int argc, char **argv) {
       chkpt_close();
       fprintf(outfile,"\n ** Geometry for displacement %d sent to chkpt. **\n", 
               optinfo.disp_num+1);
-      free_block(micro_geoms);
+      free_matrix(micro_geoms);
 
       print_mat(geom2D,carts.get_natom(),3,outfile);
 
-      free_block(geom2D);
+      free_matrix(geom2D);
       free_info(simples.get_num());
       exit_io();
       return(0);
@@ -726,7 +757,7 @@ void load_ref(const cartesians &carts) {
   close_PSIF();
 
   cnt = 0;
-  geom2D = block_matrix(carts.get_natom(), 3);
+  geom2D = init_matrix(carts.get_natom(), 3);
   for (i=0;i<carts.get_natom();++i)
     for (j=0;j<3;++j)
       geom2D[i][j] = geom[cnt++];

@@ -6,7 +6,6 @@
 #ifndef _psi3_bin_optking_simples_h_
 #define _psi3_bin_optking_simples_h_
 
-#include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <cov_radii.h>
 #include <exception>
@@ -38,17 +37,7 @@ class simples_class {
 
   public:
 
-   friend double **compute_B(const simples_class &, const salc_set &);
-   friend double *compute_q(const simples_class &, const salc_set &);
-   friend void empirical_H(const simples_class &, const salc_set &, const cartesians &);
-   friend void delocalize(const simples_class &, const cartesians &);
-   friend void rm_rotations(const simples_class & simples, const cartesians & carts,
-       int &num_nonzero, double **evects);
-   friend void get_syminfo(const simples_class & );
-   friend int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm);
-   friend int *read_constraints(const simples_class & simples);
-   friend void step_limit(const simples_class & simples, const salc_set &symm, double *dq);
-   friend void check_zero_angles(const simples_class & simples, const salc_set & symm, double *dq);
+   friend int opt_step(cartesians &, simples_class &, const salc_set &);
 
    // constructor in frag.cc
    // user_intcos = 1; read in simple coordinates from intco.dat
@@ -117,6 +106,26 @@ class simples_class {
      return n;
    }
 
+   // get number of simple internal coordinates
+   int get_num(Intco_type itype, int cnt_sets_as_one = 0) const {
+     int i, tot=0;
+     if (itype == STRE)      return stre.size();
+     else if (itype == BEND) return bend.size();
+     else if (itype == TORS) return tors.size();
+     else if (itype == OUT)  return out.size();
+     else if (itype == LINB) return linb.size();
+     else if (itype == FRAG) {
+       if (cnt_sets_as_one) {
+         return frag.size();
+       }
+       else {
+         for (i=0; i<frag.size(); ++i)
+           tot += frag[i].get_dim();
+         return tot;
+       }
+     }
+   }
+
    void fix_near_180(void) {
      int i;
      for (i=0; i<tors.size(); ++i)
@@ -149,6 +158,8 @@ class simples_class {
    int get_id_from_atoms_linb(int a, int b, int c, int linval) const;
    int get_id_from_atoms_frag(int a_natom, int b_natom, int *a_atom, int *b_atom) const;
 
+   int get_id(Intco_type itype, int sub_index, int sub_index2 = 0) const;
+
    //int *atom2fragment(int natom) { return frag.atom2fragment(natom); } 
 
    bool is_unique (tors_class & t1) const {
@@ -158,9 +169,38 @@ class simples_class {
      for (i=0; i<tors.size(); ++i)
        if (t1 == tors[i])
          unique = false;
+
      return unique;
    }
 
+   // returns value in angstroms or degrees
+   double get_val(Intco_type itype, int sub_index, int sub_index2=0) const;
+
+   // returns value in angstroms or radians
+   double get_val_A_or_rad(Intco_type itype, int sub_index, int sub_index2=0) const;
+
+  // itype == STRE, BEND, etc = type of intco
+  // subindex == place of coordinate within the set of coordinates of itype type
+  // int atom == place of atom within definition (i.e., for STRE 0 or 1; for BEND 0, 1, or 2)
+  // X (only applies to interfragment coodinates) == which fragment for which
+  //  atom is requested (FRAG_A or FRAG_B); if FRAG_A, then atom belongs to {0, A_natom}
+  // returns a = atom included in definition of internal (for which s-vector is non-zero)
+
+   int get_atom(Intco_type itype, int sub_index, int atom, Frag_switch X = FRAG_A) const;
+
+   // get s vector component; last 2 arguments only required for interfragment coordinates
+   double get_s(Intco_type itype, int sub_index, int atom, int xyz, int sub_index2 = 0, Frag_switch X = FRAG_A) const;
+
+   // get number of atoms in coordinate (e.g. 3 for bend), i.e. the number with nonzero s vectors
+   int get_natom(Intco_type itype, int sub_index, Frag_switch X = FRAG_A) const;
+
+   int linb_get_linval(int sub_index) const {
+     return linb[sub_index].get_linval();
+   }
+
+   int frag_get_coord_on(int sub_index, int sub_index2) const {
+     return frag[sub_index].get_coord_on(sub_index2);
+   }
 
 };
 

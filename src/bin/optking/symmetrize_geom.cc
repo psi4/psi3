@@ -8,7 +8,6 @@
 #include "def.h"
 #undef EXTERN
 
-#include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 
 namespace psi { namespace optking {
@@ -50,10 +49,10 @@ void symmetrize_geom(double *x) {
   for (i=0;i<3*natom;++i)
     x[i] = x_temp[i];
 
-  free(x_temp);
-  free(ua2a);
+  free_array(x_temp);
+  free_int_array(ua2a);
   free_int_matrix(ict);
-  free_block(cartrep);
+  free_matrix(cartrep);
   return;
 }
 

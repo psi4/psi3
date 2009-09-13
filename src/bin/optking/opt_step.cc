@@ -12,7 +12,6 @@
 #include "salc.h"
 #include "opt.h"
 
-#include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>
@@ -118,7 +117,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
     simples.compute(coord);
     simples.compute_s(coord);
     q = compute_q(simples,symm); 
-    free(coord);
+    free_array(coord);
   }
   else {
   fprintf(outfile,"\n ** Taking geometry step number %d **\n", optinfo.iteration+1);
@@ -138,7 +137,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
 
   masses = carts.get_mass();
   u = mass_mat(masses);
-  free(masses);
+  free_array(masses);
 
   f = carts.get_forces(); // in aJ/Ang //print_mat2(&f, 1, dim_carts, outfile);
 
@@ -146,9 +145,9 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
   temp_arr = init_array(dim);
   temp_arr2 = init_array(dim_carts);
 
-  mmult(u,0,&f,1,&temp_arr2,1,dim_carts,dim_carts,1,0);
-  mmult(B,0,&temp_arr2,1,&temp_arr,1,dim,dim_carts,1,0);
-  mmult(G_inv,0,&temp_arr,1,&f_q,1,dim,dim,1,0);
+  opt_mmult(u,0,&f,1,&temp_arr2,1,dim_carts,dim_carts,1,0);
+  opt_mmult(B,0,&temp_arr2,1,&temp_arr,1,dim,dim_carts,1,0);
+  opt_mmult(G_inv,0,&temp_arr,1,&f_q,1,dim,dim,1,0);
 
   // fprintf(outfile,"internal forces (G_inv B u f) in aJ/A\n");
   // print_mat2(&f_q, 1, dim, outfile);
@@ -158,25 +157,25 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
 
   // test by transforming f_q back to cartesian forces and compare
   // fprintf(outfile,"computed forces in cartesian coordinates aJ/Ang\n");
-  // mmult(B,1,&f_q,1,&temp_arr2,1,dim_carts,dim,1,0);
+  // opt_mmult(B,1,&f_q,1,&temp_arr2,1,dim_carts,dim,1,0);
   // print_mat2(&temp_arr2, 1, dim_carts, outfile);
 
-  free_block(B);
-  free(f);
-  free(temp_arr);
-  free(temp_arr2);
-  free_block(u);
+  free_matrix(B);
+  free_array(f);
+  free_array(temp_arr);
+  free_array(temp_arr2);
+  free_matrix(u);
 
   // Setup projection matrix P = G * G- for redundant internals
-  P = block_matrix(dim,dim);
-  mmult(G,0,G_inv,0,P,0,dim,dim,dim,0); 
-  free_block(G);
-  free_block(G_inv);
+  P = init_matrix(dim,dim);
+  opt_mmult(G,0,G_inv,0,P,0,dim,dim,dim,0); 
+  free_matrix(G);
+  free_matrix(G_inv);
   
   // Add constraints to projection matrix
     // C has 1's on diagonal for constraints and 0's elsewhere
   if (optinfo.constraints_present) {
-    C = block_matrix(dim,dim);
+    C = init_matrix(dim,dim);
     double i_overlap, j_overlap;
     for (b=0; b<optinfo.nconstraints; ++b) {
       constraint = simples.index_to_id(optinfo.constraints[b]);
@@ -202,31 +201,31 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
     }
 
   // P = P' - P' C (CPC)^-1 C P'
-    T = block_matrix(dim,dim);
-    T2 = block_matrix(dim,dim);
-    mmult(P,0,C,0,T,0,dim,dim,dim,0); 
-    mmult(C,0,T,0,T2,0,dim,dim,dim,0); 
+    T = init_matrix(dim,dim);
+    T2 = init_matrix(dim,dim);
+    opt_mmult(P,0,C,0,T,0,dim,dim,dim,0); 
+    opt_mmult(C,0,T,0,T2,0,dim,dim,dim,0); 
     T3 = symm_matrix_invert(T2, dim, 0, 1);
 
-    mmult(C,0,P,0,T,0,dim,dim,dim,0); 
-    mmult(T3,0,T,0,T2,0,dim,dim,dim,0); 
-    mmult(C,0,T2,0,T3,0,dim,dim,dim,0); 
-    mmult(P,0,T3,0,T2,0,dim,dim,dim,0); 
+    opt_mmult(C,0,P,0,T,0,dim,dim,dim,0); 
+    opt_mmult(T3,0,T,0,T2,0,dim,dim,dim,0); 
+    opt_mmult(C,0,T2,0,T3,0,dim,dim,dim,0); 
+    opt_mmult(P,0,T3,0,T2,0,dim,dim,dim,0); 
     for (i=0;i<dim;++i)
       for (j=0;j<dim;++j)
         P[i][j] -= T2[i][j];
-    free_block(T);
-    free_block(T2);
-    free_block(T3);
-    free_block(C);
+    free_matrix(T);
+    free_matrix(T2);
+    free_matrix(T3);
+    free_matrix(C);
   }
 
    // Project redundancies and constraints out of forces: f_q = P f_q'
    temp_arr = init_array(dim);
-   mmult(P,0,&f_q,1,&temp_arr,1,dim, dim,1,0);
+   opt_mmult(P,0,&f_q,1,&temp_arr,1,dim, dim,1,0);
    for(i=0; i<dim; ++i)
      f_q[i] = temp_arr[i];
-   free(temp_arr);
+   free_array(temp_arr);
 
   // Compute RMS and MAX forces
   rms_force = 0.0; 
@@ -246,7 +245,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
   coord = carts.get_coord();
   sprintf(value_string,"Cartesian Values %d", optinfo.iteration);
   psio_write_entry(PSIF_OPTKING, value_string, (char *) coord, dim_carts*sizeof(double));
-  free(coord);
+  free_array(coord);
   tval = carts.get_energy();
   sprintf(value_string,"Energy %d", optinfo.iteration);
   psio_write_entry(PSIF_OPTKING, value_string, (char *) &tval, sizeof(double));
@@ -261,20 +260,20 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
   fconst_init(carts, simples, symm); // makes sure some force constants are in PSIF_OPTKING
 
   H = compute_H(simples,symm,P,carts); // get updated and projected Hessian
-  free_block(P);
+  free_matrix(P);
 
   // *** standard Newton-Raphson search ***
   if (!optinfo.rfo) { // displacements from inverted, projected Hessian, H_inv f_q = dq
     dq = init_array(dim);
     H_inv = symm_matrix_invert(H,dim,0,0);
-    mmult(H_inv,0,&f_q,1,&dq,1,dim,dim,1,0);
-    free_block(H_inv);
+    opt_mmult(H_inv,0,&f_q,1,&dq,1,dim,dim,1,0);
+    free_matrix(H_inv);
 
     step_limit(simples, symm, dq);
     check_zero_angles(simples, symm, dq);
 
     // get norm |x| and unit vector in the step direction
-    dot_arr(dq, dq, dim, &tval);
+    dot_array(dq, dq, dim, &tval);
     nr_xnorm = sqrt(tval);
 
     nr_u = init_array(dim);
@@ -283,11 +282,11 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
     normalize(&nr_u, 1, dim);
     
     // get gradient and hessian in step direction
-    dot_arr(f_q, nr_u, dim, &nr_g);
+    dot_array(f_q, nr_u, dim, &nr_g);
     nr_g *= -1; // gradient not force
     nr_h = 0;
     for (i=0; i<dim; ++i) {
-      dot_arr(H[i], nr_u, dim, &tval);
+      dot_array(H[i], nr_u, dim, &tval);
       nr_h += nr_u[i] * tval;
     }
 
@@ -310,7 +309,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
   else { // take RFO step
 
     // build and diagonalize RFO matrix
-    rfo_mat = block_matrix(dim+1,dim+1);
+    rfo_mat = init_matrix(dim+1,dim+1);
     for (i=0; i<dim; ++i) {
       rfo_mat[dim][i] = - f_q[i];
       for (j=0; j<=i; ++j)
@@ -325,7 +324,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
     lambda = init_array(dim+1);
     work = init_array(3*(dim+1));
     C_DSYEV('V', 'U', dim+1 , rfo_mat[0], dim+1, lambda, work, 3*(dim+1));
-    free(work);
+    free_array(work);
     for (i=0; i<dim; ++i)
       lambda[i] /= (_hartree2J * 1.0e18); //aJ -> hartree
 
@@ -361,13 +360,13 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
 
         tval = 0;
         for (i=0; i<dim+1; ++i) {
-          dot_arr(rfo_mat[i],rfo_old_evect,dim+1,&tval2);
+          dot_array(rfo_mat[i],rfo_old_evect,dim+1,&tval2);
           if (tval2 > tval) {
             tval = tval2;
             rfo_root = i;
            }
         }
-        free(rfo_old_evect);
+        free_array(rfo_old_evect);
         fprintf(outfile,"RFO vector %d has maximal overlap with previous step\n",rfo_root+1);
         psio_write_entry(PSIF_OPTKING, "Previous RFO eigenvector",
           (char *) rfo_mat[rfo_root], (dim+1)*sizeof(double));
@@ -400,35 +399,35 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
 /* alternative algorithm (H-lambdaI)x + g = 0
     dq = init_array(dim);
     double **H_test, **H_inv_test;
-    H_test = block_matrix(dim,dim);
+    H_test = init_matrix(dim,dim);
     for (i=0; i<dim; ++i)
       for (j=0; j<dim; ++j)
         H_test[i][j] = H[i][j];
     for (i=0; i<dim; ++i)
       H_test[i][i] = H[i][i] - lambda[0];
     H_inv_test = symm_matrix_invert(H_test,dim,0,0);
-    mmult(H_inv_test,0,&f_q,1,&dq,1,dim,dim,1,0);
+    opt_mmult(H_inv_test,0,&f_q,1,&dq,1,dim,dim,1,0);
     fprintf(outfile,"dq solved by (H- lambda I) x + g = 0\n");
     print_mat2(&dq,1,dim,outfile);
-    dot_arr(f_q, dq, dim, &tval);
+    dot_array(f_q, dq, dim, &tval);
     fprintf(outfile,"g^T x = lambda ? = %15.10lf\n", - tval);
-    free(dq);
-    free_block(H_test);
-    free_block(H_inv_test);
+    free_array(dq);
+    free_matrix(H_test);
+    free_matrix(H_inv_test);
 */
 
     dq = init_array(dim);
     for (j=0; j<dim; ++j)
       dq[j] = rfo_mat[rfo_root][j];
     rfo_eval = lambda[rfo_root];
-    free(lambda);
+    free_array(lambda);
 
     // scales dq
     step_limit(simples, symm, dq);
     check_zero_angles(simples, symm, dq);
 
     // get norm |x| and unit vector in the step direction
-    dot_arr(dq, dq, dim, &tval);
+    dot_array(dq, dq, dim, &tval);
     rfo_xnorm = sqrt(tval);
 
     rfo_u = init_array(dim);
@@ -436,14 +435,14 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
       rfo_u[j] = rfo_mat[rfo_root][j];
     normalize(&rfo_u, 1, dim);
 
-    free_block(rfo_mat);
+    free_matrix(rfo_mat);
 
     // get gradient and hessian in step direction
-    dot_arr(f_q, rfo_u, dim, &rfo_g);
+    dot_array(f_q, rfo_u, dim, &rfo_g);
     rfo_g *= -1; // gradient not force
     rfo_h = 0;
     for (i=0; i<dim; ++i) {
-      dot_arr(H[i], rfo_u, dim, &tval);
+      dot_array(H[i], rfo_u, dim, &tval);
       rfo_h += rfo_u[i] * tval;
     }
 
@@ -467,7 +466,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
     psio_write_entry(PSIF_OPTKING, value_string, (char *) &rfo_h, sizeof(double));
     close_PSIF();
 
-    free(rfo_u);
+    free_array(rfo_u);
   } // end take RFO step
   } // take forward geometry step
 
@@ -488,16 +487,8 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
   }
   rms_disp = sqrt(rms_disp/((double) dim));
 
-  fprintf(outfile,"\n\t   MAX force: %15.10lf   RMS force: %15.10lf\n", max_force, rms_force);
-  fprintf(outfile,"\t   MAX  disp: %15.10lf   RMS  disp: %15.10lf\n", max_disp, rms_disp);
-
-<<<<<<< .mine
   fprintf(outfile, "\n\tConvergence Check Cycle %4d:\n", optinfo.iteration+1);
   fprintf(outfile, "\t                    Actual        Tolerance     Converged?\n");
-=======
-  fprintf(outfile,"\n\tConvergence Check:\n");
-  fprintf(outfile,"\t       %15s  &&  (%9s || %10s )\n", "MAX Force", "Delta(E)", "MAX disp");
->>>>>>> .r4331
   fprintf(outfile, "\t----------------------------------------------------------\n");
   if ( fabs(optinfo.conv_max_force) < 1.0e-15 ) fprintf(outfile, "\tMAX Force        %10.1e\n", max_force);
   else fprintf(outfile, "\tMAX Force        %10.1e %14.1e %11s\n", max_force, optinfo.conv_max_force, 
@@ -525,8 +516,8 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
            && ( (max_force < optinfo.conv_max_force) && ((fabs(DE) < optinfo.conv_max_DE) || (max_disp < optinfo.conv_max_disp)) )
          )
       || (   
-              ( (optinfo.opt_conv == OPTInfo::GAU_NORMAL) || (optinfo.opt_conv == OPTInfo::GAU_TIGHT) || 
-                (optinfo.opt_conv == OPTInfo::GAU_VERY_TIGHT)                                             )
+              ( (optinfo.opt_conv == OPTInfo::G03_NORMAL) || (optinfo.opt_conv == OPTInfo::G03_TIGHT) || 
+                (optinfo.opt_conv == OPTInfo::G03_VERY_TIGHT)                                             )
            && ( ((max_force < optinfo.conv_max_force) && (rms_force < optinfo.conv_rms_force) &&
                  (max_disp  < optinfo.conv_max_disp)  && (rms_disp  < optinfo.conv_rms_disp)) ||
                 (rms_force * 100 < optinfo.conv_rms_force) )
@@ -541,17 +532,17 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
          )
      ) {
 
-//  if ((max_force < optinfo.conv_max_force) && ((fabs(DE) < optinfo.conv_max_DE) || (max_disp < optinfo.conv_max_disp))) {
     fprintf(outfile,"\nOptimization is complete.\n");
 
     ip_string("WFN", &(wfn),0);
     fprintf(outfile,"\nFinal %s energy is %15.10lf\n", wfn, carts.get_energy());
     free(wfn);
 
-    optinfo.iteration += 1; // set for the NEXT step
-    open_PSIF();
-    psio_write_entry(PSIF_OPTKING, "Iteration", (char *) &(optinfo.iteration),sizeof(int));
+    //optinfo.iteration += 1;
     i = 0;
+    open_PSIF();
+    //psio_write_entry(PSIF_OPTKING, "Iteration", (char *) &(optinfo.iteration),sizeof(int));
+    psio_write_entry(PSIF_OPTKING, "Iteration", (char *) &(i),sizeof(int));
     psio_write_entry(PSIF_OPTKING, "Balked last time", (char *) &(i), sizeof(int));
     close_PSIF();
 
@@ -584,7 +575,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
       simple_id = symm.get_simple(isalc,0);
       simples.locate_id(simple_id, &intco_type, &sub_index, &sub_index2);
       // only execute for single (non-salc) interfragment coordinates
-      if ( (symm.get_length(isalc) != 1) || (intco_type != FRAG_TYPE) ) continue;
+      if ( (symm.get_length(isalc) != 1) || (intco_type != FRAG) ) continue;
       // only execute this code once for each fragment pair
       // assume this one time is for the distance coordinate entry
       if (sub_index2 != 0) continue;
@@ -599,7 +590,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
     // fix configuration for torsions; sets flag for torsions > FIX_NEAR_180 or < -FIX_NEAR_180 
     // so that when I calculate residual below, I get the right answer
     simples.fix_near_180();
-    free(coord);
+    free_array(coord);
 
       for (cnt=0, I=0; I<6; ++I) {
         inter_q[I] = 0;
@@ -610,7 +601,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
         }
       }
 
-      dot_arr(inter_q,inter_q,6,&tval); // check if there are any non-zero displacements
+      dot_array(inter_q,inter_q,6,&tval); // check if there are any non-zero displacements
       if (fabs(tval) < 1.0e-15) continue;
 
       for (I=0; I<6; ++I)
@@ -625,24 +616,24 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
       geom = carts.get_coord_2d();
 
       a = simples.frag[sub_index].get_A_natom();
-      geom_A = block_matrix(a,3);
+      geom_A = init_matrix(a,3);
       for (atom=0;atom<a;++atom)
         for (xyz=0;xyz<3;++xyz)
           geom_A[atom][xyz] = geom[simples.frag[sub_index].get_A_atom(atom)][xyz];
 
       b = simples.frag[sub_index].get_B_natom();
-      geom_B = block_matrix(b,3);
+      geom_B = init_matrix(b,3);
       for (atom=0;atom<b;++atom)
         for (xyz=0;xyz<3;++xyz)
           geom_B[atom][xyz] = geom[simples.frag[sub_index].get_B_atom(atom)][xyz];
 
       // get reference point information for fragments
-      weight_A = block_matrix(3,a);
+      weight_A = init_matrix(3,a);
       for (cnt=0; cnt<simples.frag[sub_index].get_A_P(); ++cnt)
         for (atom=0;atom<a;++atom)
           weight_A[cnt][atom] = simples.frag[sub_index].get_A_weight(cnt,atom);
 
-      weight_B = block_matrix(3,b);
+      weight_B = init_matrix(3,b);
       for (cnt=0; cnt<simples.frag[sub_index].get_B_P(); ++cnt)
         for (atom=0;atom<b;++atom)
           weight_B[cnt][atom] = simples.frag[sub_index].get_B_weight(cnt,atom);
@@ -659,7 +650,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
 
       symmetrize_geom(geom[0]);
       carts.set_coord_2d(geom);
-      free_block(geom);
+      free_matrix(geom);
 
       // leave any residual error in dq for back-transformation to clean up
       // put inter_q in rad/Ang and/or 1/R
@@ -677,11 +668,11 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
 //fprintf(outfile,"inter_q[%d]: %20.15lf\n", I, inter_q[I]);
           ++cnt;
         }
-        free(coord);
+        free_array(coord);
       }
 
-      free_block(geom_A); free_block(geom_B);
-      free_block(weight_A); free_block(weight_B);
+      free_matrix(geom_A); free_matrix(geom_B);
+      free_matrix(weight_A); free_matrix(weight_B);
     }
     // sprintf(disp_label,"\nNew Geometry in au after analytic fragment orientation\n");
     // carts.print(1,outfile,0,disp_label,0);
@@ -696,7 +687,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
 
   success = false;
   // check to see if all displacements are zero
-  dot_arr(dq,dq,dim,&tval);
+  dot_array(dq,dq,dim,&tval);
   if (tval < 1.0e-15) {
     success = true;
     carts.print(PSIF_CHKPT,outfile,0,NULL,0);
@@ -748,10 +739,10 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
 
   // Modify predicted energe change if displacement size was reduced
   if (retry > 0) {
-    dot_arr(f_q, dq, dim, &tval);
+    dot_array(f_q, dq, dim, &tval);
     DE_old = -tval; // g^T x
     for (i=0; i<dim; ++i) {
-      dot_arr(H[i], dq, dim, &tval);
+      dot_array(H[i], dq, dim, &tval);
       DE_old += 0.5 * dq[i] * tval; // 1/2 x^T H x
     }
     DE_old /= _hartree2J * 1.0e18;
@@ -763,9 +754,9 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
     close_PSIF();
   }
 
-  free(q); free(dq); free(f_q);
+  free_array(q); free_array(dq); free_array(f_q);
   if (!do_line_search) {
-    free(H);
+    free_matrix(H);
     optinfo.iteration += 1;
     open_PSIF();
     psio_write_entry(PSIF_OPTKING, "Iteration", (char *) &(optinfo.iteration),sizeof(int));
@@ -885,7 +876,7 @@ bool line_search(cartesians &carts, int dim, double *dq) {
   carts.set_coord(old_x);
   fprintf(outfile,"Setting cartesian coordinates to prevous step.\n");
   carts.print(5, outfile, 0, NULL, 0);
-  free(old_x);
+  free_array(old_x);
 
   // reduced step is dq = u * rho_t;
   for (i=0; i<dim; ++i)

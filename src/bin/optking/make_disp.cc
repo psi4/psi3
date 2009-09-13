@@ -76,7 +76,7 @@ int make_disp_irrep(const cartesians &carts, simples_class &simples, const salc_
   if (irrep == 0) {
     if (optinfo.points == 3) {
       ndisps = 2*nsalcs;
-      displacements = block_matrix(ndisps,all_salcs.get_num());
+      displacements = init_matrix(ndisps,all_salcs.get_num());
       cnt = 0;
       for (i=0; i<nsalcs; ++i) {
         displacements[cnt++][irrep_salcs[i]] = -1.0 * optinfo.disp_size;
@@ -85,7 +85,7 @@ int make_disp_irrep(const cartesians &carts, simples_class &simples, const salc_
     }
     else if (optinfo.points == 5) {
       ndisps = 4*nsalcs;
-      displacements = block_matrix(ndisps,all_salcs.get_num());
+      displacements = init_matrix(ndisps,all_salcs.get_num());
       cnt = 0;
       for (i=0; i<nsalcs; ++i) {
         displacements[cnt++][irrep_salcs[i]] = -2.0 * optinfo.disp_size;
@@ -98,14 +98,14 @@ int make_disp_irrep(const cartesians &carts, simples_class &simples, const salc_
   else { // non-symmetric irrep
     if (optinfo.points == 3) {
       ndisps = nsalcs;
-      displacements = block_matrix(ndisps,all_salcs.get_num());
+      displacements = init_matrix(ndisps,all_salcs.get_num());
       cnt = 0;
       for (i=0; i<nsalcs; ++i)
         displacements[cnt++][irrep_salcs[i]] = -1.0 * optinfo.disp_size;
     }
     else if (optinfo.points == 5) {
       ndisps = 2*nsalcs;
-      displacements = block_matrix(ndisps,all_salcs.get_num());
+      displacements = init_matrix(ndisps,all_salcs.get_num());
       cnt = 0;
       for (i=0; i<nsalcs; ++i) {
         displacements[cnt++][irrep_salcs[i]] = -2.0 * optinfo.disp_size;
@@ -124,7 +124,7 @@ int make_disp_irrep(const cartesians &carts, simples_class &simples, const salc_
   }
 
   /*** generate and store Micro_iteration cartesian geometries ***/
-  micro_geoms = block_matrix(ndisps, dim_carts);
+  micro_geoms = init_matrix(ndisps, dim_carts);
 /*
   if (optinfo.freeze_intrafragment) { // compute new geometry analytically
     int simple, intco_type, sub_index, sub_index2, J, simple_b, nf, disp, xyz, frag;
@@ -140,15 +140,15 @@ int make_disp_irrep(const cartesians &carts, simples_class &simples, const salc_
       }
       simple = all_salcs.get_simple(i,0);
       simples.locate_id(simple,&intco_type,&sub_index,&sub_index2);
-      if (intco_type != FRAG_TYPE) {
+      if (intco_type != FRAG) {
         printf("Only inter-fragment coordinates can be used with freeze_intrafragment\n");
         exit(PSI_RETURN_FAILURE);
       }
     }
 
     nf = optinfo.nfragment; // move to getoptinfo at some point
-    frag_atom = (int *) malloc(nf*sizeof(int));
-    frag_allatom = (int *) malloc(nf*sizeof(int));
+    frag_atom = init_int_array(nf);
+    frag_allatom = init_int_array(nf);
     frag_atom[0] = frag_allatom[0] = 0;
     for (frag=1; frag<nf; ++frag) {
       frag_atom[frag] = frag_atom[frag-1] + optinfo.natom_per_fragment[frag-1];
@@ -168,8 +168,8 @@ int make_disp_irrep(const cartesians &carts, simples_class &simples, const salc_
       for (frag=1; frag<optinfo.nfragment; ++frag) { // loop over remaining fragments
         a = optinfo.natom_per_fragment[frag-1];
         b = optinfo.natom_per_fragment[frag];
-        geom_A = block_matrix(a,3);
-        geom_B = block_matrix(b,3);
+        geom_A = init_matrix(a,3);
+        geom_B = init_matrix(b,3);
         for (xyz=0;xyz<3;++xyz) {
           for (i=0;i<a;++i)
             geom_A[i][xyz] = geom_2D[frag_atom[frag-1]+i][xyz];
@@ -208,13 +208,13 @@ int make_disp_irrep(const cartesians &carts, simples_class &simples, const salc_
           for (xyz=0; xyz<3; ++xyz)
             micro_geoms[disp][3*(frag_atom[frag]+i)+xyz] = geom_B[i][xyz];
 
-         free_block(geom_A);
-         free_block(geom_B);
+         free_matrix(geom_A);
+         free_matrix(geom_B);
       }
-      free_block(geom_2D);
+      free_matrix(geom_2D);
     }
-    free(frag_atom);
-    free(frag_allatom);
+    free_int_array(frag_atom);
+    free_int_array(frag_allatom);
   }
   else {  // do iterative back-transformation
 */
@@ -229,7 +229,7 @@ int make_disp_irrep(const cartesians &carts, simples_class &simples, const salc_
       }
     }
 //  }
-  free_block(displacements);
+  free_matrix(displacements);
 
   open_PSIF();
   psio_write_entry(PSIF_OPTKING, "OPT: Displaced geometries",
@@ -260,7 +260,7 @@ int make_disp_irrep(const cartesians &carts, simples_class &simples, const salc_
   psio_write_entry(PSIF_OPTKING, "OPT: Num. of disp.",
       (char *) &(ndisps), sizeof(int));
 
-  free_block(micro_geoms);
+  free_matrix(micro_geoms);
 
   // make room for storage of energy and gradients of displacements
   double *disp_e, *disp_grad;
@@ -276,7 +276,7 @@ int make_disp_irrep(const cartesians &carts, simples_class &simples, const salc_
   for (i=0; i<ndisps; ++i) irrep_per_disp[i] = irrep;
   psio_write_entry(PSIF_OPTKING, "OPT: Irrep per disp",
     (char *) &(irrep_per_disp[0]), ndisps*sizeof(int));
-  free(irrep_per_disp);
+  free_int_array(irrep_per_disp);
 
   close_PSIF();
 
@@ -328,7 +328,7 @@ int make_disp_nosymm(const cartesians &carts, simples_class &simples, const salc
   /*** make list of internal displacements for micro_iterations ***/
   if (optinfo.points == 3) {
     ndisps = 2*nsalcs;
-    displacements = block_matrix(ndisps, nsalcs);
+    displacements = init_matrix(ndisps, nsalcs);
     for (i=0;i<all_salcs.get_num();++i) {
       displacements[2*i][i] = -1.0 * optinfo.disp_size;
       displacements[2*i+1][i] = 1.0 * optinfo.disp_size;
@@ -336,7 +336,7 @@ int make_disp_nosymm(const cartesians &carts, simples_class &simples, const salc
   }
   else if (optinfo.points == 5) {
     ndisps = 4*nsalcs;
-    displacements = block_matrix(ndisps, nsalcs);
+    displacements = init_matrix(ndisps, nsalcs);
     for (i=0;i<all_salcs.get_num();++i) {
       displacements[4*i+0][i] = -2.0 * optinfo.disp_size;
       displacements[4*i+1][i] = -1.0 * optinfo.disp_size;
@@ -352,7 +352,7 @@ int make_disp_nosymm(const cartesians &carts, simples_class &simples, const salc
   print_mat5(displacements, ndisps, nsalcs, outfile);
 
   /*** generate and store Micro_iteration cartesian geometries ***/
-  micro_geoms = block_matrix(ndisps, dim_carts);
+  micro_geoms = init_matrix(ndisps, dim_carts);
   for (i=0;i<ndisps;++i)  {
     sprintf(disp_label,"Displaced geometry %d in a.u.\n",i+1);
     success = new_geom(carts,simples,all_salcs,displacements[i],0,
@@ -363,7 +363,7 @@ int make_disp_nosymm(const cartesians &carts, simples_class &simples, const salc
       exit(PSI_RETURN_FAILURE);
     }
   }
-  free_block(displacements);
+  free_matrix(displacements);
 
   open_PSIF();
   psio_write_entry(PSIF_OPTKING, "OPT: Displaced geometries",
@@ -377,7 +377,7 @@ int make_disp_nosymm(const cartesians &carts, simples_class &simples, const salc
       (char *) &(ndisps), sizeof(int));
 
   close_PSIF();
-  free_block(micro_geoms);
+  free_matrix(micro_geoms);
 
   // write zeroes for initial energy and gradients of displacements
   double *disp_e, *disp_grad;
@@ -413,7 +413,7 @@ int make_disp_nosymm(const cartesians &carts, simples_class &simples, const salc
 
   psio_write_entry(PSIF_OPTKING, "OPT: Irrep per disp",
     (char *) &(irrep_per_disp[0]), ndisps*sizeof(int));
-  free(irrep_per_disp);
+  free_int_array(irrep_per_disp);
 
 
   close_PSIF();

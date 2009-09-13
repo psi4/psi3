@@ -11,7 +11,6 @@
 #include "salc.h"
 #include "opt.h"
 
-#include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 
 namespace psi { namespace optking {
@@ -33,7 +32,7 @@ void disp_user(const cartesians &carts, simples_class & simples, const salc_set 
     punt("No DISPLACEMENTS vector found in input.");
   }
 
-  displacements = block_matrix(num_disps,all_salcs.get_num());
+  displacements = init_matrix(num_disps,all_salcs.get_num());
   for (i=0;i<num_disps;++i) {
     disp_length = 0;
     ip_count("DISPLACEMENTS",&disp_length,1,i);
@@ -81,7 +80,7 @@ void disp_user(const cartesians &carts, simples_class & simples, const salc_set 
       exit(PSI_RETURN_FAILURE);
     }
   }
-  free_block(displacements);
+  free_matrix(displacements);
   free(disp_label);
   free(djunk);
 }

@@ -6,9 +6,6 @@
 #ifndef _psi3_bin_optking_cartesians_h_
 #define _psi3_bin_optking_cartesians_h_
 
-#include <libciomr/libciomr.h>
-// init_array()
-
 namespace psi { namespace optking {
 
 class cartesians {
@@ -16,7 +13,7 @@ class cartesians {
     int natom;
     int nallatom;
     double *atomic_num;
-    double *coord;
+    double *coord; // cartesian geometry in au
     double *grad;
     double *mass;
     double *fatomic_num;
@@ -59,7 +56,7 @@ class cartesians {
         for (xyz=0; xyz<3; ++xyz)
           tmp_geom[cnt++] = geom_2d[i][xyz];
       set_coord(tmp_geom); 
-      free(tmp_geom);
+      free_array(tmp_geom);
     }
 
     void set_fcoord(double *geom) {
@@ -90,7 +87,7 @@ class cartesians {
     double **get_coord_2d() const {
       int i,j,cnt;
       double **copy;
-      copy = block_matrix(natom,3);
+      copy = init_matrix(natom,3);
       cnt=0;
       for (i=0; i<natom; ++i)
         for (j=0; j<3; ++j)

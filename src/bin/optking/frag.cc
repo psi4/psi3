@@ -96,21 +96,12 @@ void frag_class::print_s(FILE *fp_out) const {
 void frag_class::compute(double *geom) {
   int xyz, k, i, a, I, b;
   double **dkA, **dkB; /* location of reference points */
-  double *e12A, *e12B, *e32A, *e32B, *eRA, *eRB, *v, *v2, *v3;
   double  d12A,  d12B,  d32A,  d32B, R;
   double dot, alpha_A, alpha_B, theta_A, theta_B;
+  double e12A[3], e12B[3], e32A[3], e32B[3], eRA[3], eRB[3], v[3], v2[3], v3[3];
 
-  dkA = block_matrix(3,3);
-  dkB = block_matrix(3,3);
-  e12A = init_array(3);
-  e12B = init_array(3);
-  e32A = init_array(3);
-  e32B = init_array(3);
-  eRA = init_array(3);
-  eRB = init_array(3);
-  v = init_array(3);
-  v2 = init_array(3);
-  v3 = init_array(3);
+  dkA = init_matrix(3,3);
+  dkB = init_matrix(3,3);
 
   /* compute reference points within each fragment */
   for (k=0; k<A_P; ++k) { /* k = point 1, 2 or 3 */
@@ -150,13 +141,13 @@ void frag_class::compute(double *geom) {
   if (R    > 1E-10) scalar_mult(1/R, eRB, 3);
 
   /* compute polar and alpha angles */
-  dot_arr(e12A, eRA, 3, &dot);
+  dot_array(e12A, eRA, 3, &dot);
   theta_A = acos(dot);
-  dot_arr(e12B, eRB, 3, &dot);
+  dot_array(e12B, eRB, 3, &dot);
   theta_B = acos(dot);
-  dot_arr(e32A, e12A, 3, &dot);
+  dot_array(e32A, e12A, 3, &dot);
   alpha_A = acos(dot);
-  dot_arr(e32B, e12B, 3, &dot);
+  dot_array(e32B, e12B, 3, &dot);
   alpha_B = acos(dot);
 
   // try to compute all interfragment coordinates even if not "on"
@@ -179,7 +170,7 @@ void frag_class::compute(double *geom) {
   if ((A_P >= 2) && (B_P >= 2)) {
     cross_product(e12A,eRA,v);
     cross_product(e12B,eRA,v2);
-    dot_arr(v, v2, 3, &dot);
+    dot_array(v, v2, 3, &dot);
 
     if ((sin(theta_A) > optinfo.sin_phi_denominator_tol) &&
         (sin(theta_B) > optinfo.sin_phi_denominator_tol)) {
@@ -194,11 +185,11 @@ void frag_class::compute(double *geom) {
       val[3] = acos(dot) / _pi * 180.0;
       // determine sign
       cross_product(e12B,eRA,v);
-      dot_arr(e12A, v, 3, &dot);
+      dot_array(e12A, v, 3, &dot);
       if (dot < 0) val[3] *= -1;
       /* using the sin formula
           cross_product(e12B,eRA,v);
-          dot_arr(e12A, v, 3, &dot);
+          dot_array(e12A, v, 3, &dot);
           dot /= sin(theta_A) * sin(theta_B);
           val[3] = asin(dot)/_pi*180.0; */
     }
@@ -208,7 +199,7 @@ void frag_class::compute(double *geom) {
   if ((A_P == 3) && (B_P >= 2)) {
     cross_product(e32A,e12A,v);
     cross_product(e12A,eRA,v2);
-    dot_arr(v, v2, 3, &dot);
+    dot_array(v, v2, 3, &dot);
 
     if ((sin(theta_A) > optinfo.sin_phi_denominator_tol) &&
         (sin(alpha_A) > optinfo.sin_phi_denominator_tol)) {
@@ -223,11 +214,11 @@ void frag_class::compute(double *geom) {
       val[4] = acos(dot) / _pi * 180.0;
       // determine sign
       cross_product(eRA,e12A,v);
-      dot_arr(e32A, v, 3, &dot);
+      dot_array(e32A, v, 3, &dot);
       if (dot < 0) val[4] *= -1;
       /* using the sine formula
           cross_product(eRA,e12A,v);
-          dot_arr(e32A, v, 3, &dot);
+          dot_array(e32A, v, 3, &dot);
           dot /= sin(theta_A) * sin(alpha_A);
           val[4] = asin(dot)/_pi*180.0; */
     }
@@ -237,7 +228,7 @@ void frag_class::compute(double *geom) {
   if ((A_P >= 2) && (B_P == 3)) {
     cross_product(e32B,e12B,v);
     cross_product(e12B,eRB,v2);
-    dot_arr(v, v2, 3, &dot);
+    dot_array(v, v2, 3, &dot);
 //printf("sin(theta_B): %15.10lf\n", sin(theta_B));
 //printf("sin(alpha_B): %15.10lf\n", sin(alpha_B));
     if ((sin(theta_B) > optinfo.sin_phi_denominator_tol) &&
@@ -255,11 +246,11 @@ void frag_class::compute(double *geom) {
       val[5] = acos(dot) / _pi * 180.0;
       // determine sign
       cross_product(eRB,e12B,v);
-      dot_arr(e32B, v, 3, &dot);
+      dot_array(e32B, v, 3, &dot);
       if (dot < 0) val[5] *= -1;
       /* using the sine formula
           cross_product(eRB,e12B,v); // (e12B x eRA) = (eRB x e12B)
-          dot_arr(e32B, v, 3, &dot);
+          dot_array(e32B, v, 3, &dot);
           dot /= sin(theta_B) * sin(alpha_B);
           val[5] = asin(dot)/_pi*180.0; */
     }
@@ -276,11 +267,7 @@ void frag_class::compute(double *geom) {
    // }
   }
 
-  free(e12A); free(e12B);
-  free(e32A); free(e32B);
-  free(eRA); free(eRB);
-  free_block(dkA); free_block(dkB);
-  free(v); free(v2); free(v3);
+  free_matrix(dkA); free_matrix(dkB);
 }
 
 /** compute S vectors.  In this case, the derivative of the
@@ -290,20 +277,12 @@ void frag_class::compute(double *geom) {
 void frag_class::compute_s(double *geom) {
   int xyz, k, i, a, b;
   double **dkA, **dkB; /* location of reference points */
-  double *e12A, *e12B, *e32A, *e32B, *eRA, *eRB, *v, *v2;
   double  d12A,  d12B,  d32A,  d32B,  R, c1, c2;
   double dot, alpha_A, alpha_B, theta_A, theta_B;
+  double e12A[3], e12B[3], e32A[3], e32B[3], eRA[3], eRB[3], v[3], v2[3];
 
-  dkA = block_matrix(3,3);
-  dkB = block_matrix(3,3);
-  e12A = init_array(3);
-  e12B = init_array(3);
-  e32A = init_array(3);
-  e32B = init_array(3);
-  eRA = init_array(3);
-  eRB = init_array(3);
-  v = init_array(3);
-  v2 = init_array(3);
+  dkA = init_matrix(3,3);
+  dkB = init_matrix(3,3);
 
   /* compute reference points within each fragment */
   for (k=0; k<A_P; ++k)
@@ -339,13 +318,13 @@ void frag_class::compute_s(double *geom) {
   if (   R > 1e-10) scalar_mult(1/R , eRB, 3);
 
   /* compute polar and alpha angles */
-  dot_arr(e12A, eRA, 3, &dot);
+  dot_array(e12A, eRA, 3, &dot);
   theta_A = acos(dot);
-  dot_arr(e12B, eRA, 3, &dot);
+  dot_array(e12B, eRA, 3, &dot);
   theta_B = acos(-1*dot);
-  dot_arr(e32A, e12A, 3, &dot);
+  dot_array(e32A, e12A, 3, &dot);
   alpha_A = acos(dot);
-  dot_arr(e32B, e12B, 3, &dot);
+  dot_array(e32B, e12B, 3, &dot);
   alpha_B = acos(dot);
 
   /* comments refer to counting atoms from 1 to match equations */
@@ -468,11 +447,7 @@ void frag_class::compute_s(double *geom) {
       A_s[5][3*0+xyz] = v[xyz] / (R * SQR(sin(theta_B)));
   }
 
-  free(e12A); free(e12B);
-  free(e32A); free(e32B);
-  free(eRA); free(eRB);
-  free(v); free(v2);
-  free_block(dkA); free_block(dkB);
+  free_matrix(dkA); free_matrix(dkB);
 }
 
 

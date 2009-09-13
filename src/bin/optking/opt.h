@@ -10,7 +10,6 @@ namespace psi { namespace optking {
 
 void open_PSIF(void);
 void close_PSIF(void);
-void exit_io(void);
 void print_mat2(double **matrix, int rows, int cols, FILE *of);
 void print_mat5(double **matrix, int rows, int cols, FILE *of);
 int div_int(int big, int little);
@@ -19,7 +18,7 @@ double energy_chkpt(void);
 void dgeev_optking(int L, double **G, double *lambda, double **alpha);
 void print_evects(double **evects, double *evals, int nrow, int ncol, FILE *out);
 double **mass_mat(double *masses);
-double **unit_mat(int dim);
+double **unit_matrix(int dim);
 void symmetrize_geom(double *x);
 
 double nuclear_repulsion(double *fatomic_num, double *geom);

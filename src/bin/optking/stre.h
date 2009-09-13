@@ -68,9 +68,25 @@ class stre_class {
     int  get_id(void) const { return id;}
     int  get_A(void) const  { return A;}
     int  get_B(void) const  { return B;}
+
     double get_val(void) const { return val;}
+    double get_val_A_or_rad(void) const  { return val; }
+
     double get_s_A(int i) const { return s_A[i]; }
     double get_s_B(int i) const { return s_B[i]; }
+
+    int  get_atom(int a) const  {
+      if (a==0) return A;
+      else if (a==1) return B;
+      else throw("stre_class::get_atom() : atom index must be 0 or 1.\n");
+    }
+
+    double get_s(int atom, int xyz) const  {
+      if ( xyz < 0 || xyz > 2) throw ("stre_class::get_s() : xyz must be 0, 1 or 2");
+      if (atom==0) return s_A[xyz];
+      else if (atom==1) return s_B[xyz];
+      else throw("stre_class::get_s() : atom index must be 0 or 1.\n");
+    }
 
     // takes geometry in au; stores bond length in Angstroms
     void compute(double *geom) {

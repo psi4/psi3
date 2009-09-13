@@ -55,16 +55,16 @@ void grad_save(const cartesians &carts) {
 
   // Rotate the gradient back to the reference frame in which all geometries were generated and stores
   int natoms = carts.get_natom();
-  ggrad = block_matrix(natoms,3);
+  ggrad = init_matrix(natoms,3);
   int atomxyz=0;
   for(int atom=0; atom<natoms; atom++)
     for(int xyz=0; xyz<3; xyz++,atomxyz++)
       ggrad[atom][xyz] = grad[atomxyz];
   delete[] grad;
-  refgrad = block_matrix(carts.get_natom(),3);
-  mmult(ggrad,0,rref,0,refgrad,0,carts.get_natom(),3,3,0);
-  free_block(rref);
-  free_block(ggrad);
+  refgrad = init_matrix(carts.get_natom(),3);
+  opt_mmult(ggrad,0,rref,0,refgrad,0,carts.get_natom(),3,3,0);
+  free_matrix(rref);
+  free_matrix(ggrad);
 
   micro_e[optinfo.disp_num] = energy;
   for (i=0; i<dim_carts; ++i) {

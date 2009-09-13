@@ -242,7 +242,7 @@ void get_optinfo(void) {
   if (ip_exist("OPT_CONV",0)) {
     errcod = ip_string("OPT_CONV", &junk, 0);
     if (errcod != IPE_OK) {
-      fprintf(outfile,"OPT_CONV should be one of {LOOSE, NORMAL, TIGHT, VERY_TIGHT, BAKER, QCHEM, GAU_NORMAL, GAU_TIGHT, GAU_VERY_TIGHT, GENERAL}\n");
+      fprintf(outfile,"OPT_CONV should be one of {LOOSE, NORMAL, TIGHT, VERY_TIGHT, BAKER, QCHEM, G03_NORMAL, G03_TIGHT, G03_VERY_TIGHT, GENERAL}\n");
       throw("Could not read OPT_CONV from input.");
     }
     else if (!strcmp(junk,"LOOSE")) {
@@ -281,22 +281,22 @@ void get_optinfo(void) {
       optinfo.conv_max_DE    = power(10.0, -6);
       optinfo.conv_max_disp  = 1.2e-3;
     }
-    else if (!strcmp(junk,"GAU_NORMAL")) {
-      optinfo.opt_conv       = OPTInfo::GAU_NORMAL;
+    else if (!strcmp(junk,"G03_NORMAL")) {
+      optinfo.opt_conv       = OPTInfo::G03_NORMAL;
       optinfo.conv_max_force = 4.5e-4;
       optinfo.conv_rms_force = 3.0e-4;
       optinfo.conv_max_disp  = 1.8e-3;
       optinfo.conv_rms_disp  = 1.2e-3;
     }
-    else if (!strcmp(junk,"GAU_TIGHT")) {
-      optinfo.opt_conv       = OPTInfo::GAU_TIGHT;
+    else if (!strcmp(junk,"G03_TIGHT")) {
+      optinfo.opt_conv       = OPTInfo::G03_TIGHT;
       optinfo.conv_max_force = 1.5e-5;
       optinfo.conv_rms_force = 1.0e-5;
       optinfo.conv_max_disp  = 6.0e-5;
       optinfo.conv_rms_disp  = 4.0e-5;
     }
-    else if (!strcmp(junk,"GAU_VERY_TIGHT")) {
-      optinfo.opt_conv       = OPTInfo::GAU_VERY_TIGHT;
+    else if (!strcmp(junk,"G03_VERY_TIGHT")) {
+      optinfo.opt_conv       = OPTInfo::G03_VERY_TIGHT;
       optinfo.conv_max_force = 2.0e-6;
       optinfo.conv_rms_force = 1.0e-6;
       optinfo.conv_max_disp  = 6.0e-6;
@@ -311,7 +311,7 @@ void get_optinfo(void) {
       optinfo.conv_rms_disp  = 0.0;
     }
     else {
-      fprintf(outfile,"OPT_CONV should be one of {LOOSE, NORMAL, TIGHT, VERY_TIGHT, BAKER, QCHEM, GAU_NORMAL, GAU_TIGHT, GAU_VERY_TIGHT, GENERAL}\n");
+      fprintf(outfile,"OPT_CONV should be one of {LOOSE, NORMAL, TIGHT, VERY_TIGHT, BAKER, QCHEM, G03_NORMAL, G03_TIGHT, G03_VERY_TIGHT, GENERAL}\n");
       throw("Could not read OPT_CONV from input.");
     }
     free(junk);
@@ -342,7 +342,7 @@ void get_optinfo(void) {
     }
   }
 
-  else if ( (optinfo.opt_conv == OPTInfo::GAU_NORMAL) || (optinfo.opt_conv == OPTInfo::GAU_TIGHT) || (optinfo.opt_conv == OPTInfo::GAU_VERY_TIGHT) ) {
+  else if ( (optinfo.opt_conv == OPTInfo::G03_NORMAL) || (optinfo.opt_conv == OPTInfo::G03_TIGHT) || (optinfo.opt_conv == OPTInfo::G03_VERY_TIGHT) ) {
 
     if (ip_exist("CONV_MAX_FORCE",0)) {
       errcod = ip_data("CONV_MAX_FORCE","%lf",&tval,0);
@@ -531,12 +531,12 @@ void get_optinfo(void) {
       fprintf(outfile,"opt_conv:        baker\n");
     else if (optinfo.opt_conv == OPTInfo::QCHEM)
       fprintf(outfile,"opt_conv:        qchem\n");
-    else if (optinfo.opt_conv == OPTInfo::GAU_NORMAL)
-      fprintf(outfile,"opt_conv:        gau_normal\n");
-    else if (optinfo.opt_conv == OPTInfo::GAU_TIGHT)
-      fprintf(outfile,"opt_conv:        gau_tight\n");
-    else if (optinfo.opt_conv == OPTInfo::GAU_VERY_TIGHT)
-      fprintf(outfile,"opt_conv:        gau_very_tight\n");
+    else if (optinfo.opt_conv == OPTInfo::G03_NORMAL)
+      fprintf(outfile,"opt_conv:        g03_normal\n");
+    else if (optinfo.opt_conv == OPTInfo::G03_TIGHT)
+      fprintf(outfile,"opt_conv:        g03_tight\n");
+    else if (optinfo.opt_conv == OPTInfo::G03_VERY_TIGHT)
+      fprintf(outfile,"opt_conv:        g03_very_tight\n");
     else if (optinfo.opt_conv == OPTInfo::GENERAL)
       fprintf(outfile,"opt_conv:        general\n");
 

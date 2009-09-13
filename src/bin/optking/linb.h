@@ -96,11 +96,29 @@ class linb_class {
     int  get_C(void) const { return C;}
     int  get_linval(void) const { return linval;}
     double get_val(void) const { return val;}
+    double get_val_A_or_rad(void) const  { 
+      return (val/180*_pi);
+    }
+
     double get_s_A(int i) const { return s_A[i]; }
     double get_s_B(int i) const { return s_B[i]; }
     double get_s_C(int i) const { return s_C[i]; }
     double get_dummy(int i) const { return dummy[i]; }
 
+    int  get_atom(int a) const  {
+      if (a==0) return A;
+      else if (a==1) return B;
+      else if (a==2) return C;
+      else throw("linb_class::get_atom : atom index must be 0, 1 or 2.\n");
+    }
+
+    double get_s(int atom, int xyz) const  {
+      if ( xyz < 0 || xyz > 2) throw ("linb_class::get_s() : xyz must be 0, 1 or 2");
+      if (atom==0) return s_A[xyz];
+      else if (atom==1) return s_B[xyz];
+      else if (atom==2) return s_C[xyz];
+      else throw("linb_class::get_s() : atom index must be 0, 1, or 2");
+    }
 
     void compute(double *geom) {
       int j,rottype;
@@ -167,7 +185,7 @@ class linb_class {
       rBC = sqrt( SQR(eBC[0])+SQR(eBC[1])+SQR(eBC[2]) );
       scalar_div(rBA,eBA);
       scalar_div(rBC,eBC);
-      dot_arr(eBA,eBC,3,&dotprod);
+      dot_array(eBA,eBC,3,&dotprod);
       if (dotprod > 1.0) angle_ABD = 0.0;
       else if (dotprod < -1.0) angle_ABD = _pi;
       else angle_ABD = acos(dotprod)*180.0/_pi;
@@ -182,7 +200,7 @@ class linb_class {
       rBC = sqrt( SQR(eBC[0])+SQR(eBC[1])+SQR(eBC[2]) );
       scalar_div(rBA,eBA);
       scalar_div(rBC,eBC);
-      dot_arr(eBA,eBC,3,&dotprod);
+      dot_array(eBA,eBC,3,&dotprod);
       //fprintf(outfile,"dotprod %20.15lf\n",dotprod);
 
       if (dotprod > (1.0-MIN_LIN_COS)) angle_CBD = 0.0;

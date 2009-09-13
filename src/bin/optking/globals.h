@@ -66,7 +66,7 @@ EXTERN struct OPTInfo {
   enum { NONE, BFGS, MS, POWELL, BOFILL} H_update;
   enum { FISCHER, SCHLEGEL} empirical_H;
   enum { EMPIRICAL, KEEP } nonselected_fc;
-  enum { LOOSE, NORMAL, TIGHT, VERY_TIGHT, BAKER, QCHEM, GAU_NORMAL, GAU_TIGHT, GAU_VERY_TIGHT, GENERAL } opt_conv;
+  enum { LOOSE, NORMAL, TIGHT, VERY_TIGHT, BAKER, QCHEM, G03_NORMAL, G03_TIGHT, G03_VERY_TIGHT, GENERAL } opt_conv;
 
   int H_update_use_last;
   bool rfo; // whether to use rfo step

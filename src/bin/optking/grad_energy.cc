@@ -94,7 +94,7 @@ void grad_energy(cartesians &carts, simples_class &simples, const salc_set &symm
       f_q[i] = -1.0 * f_q[i] * _hartree2J * 1.0E18 ;
     }
   }
-  free(energies);
+  free_array(energies);
 
   // Print internal coordinate forces
 fprintf(outfile,"\nInternal coordinate forces\n");
@@ -115,14 +115,14 @@ for (i=0;i<symm.get_num();++i)
   simples.compute_s(geom);
   B = compute_B(simples, symm);
   f = new double[dim_carts];
-  mmult(B,1,&f_q,1,&f,1,dim_carts,symm.get_num(),1,0);
-  free_block(B);
+  opt_mmult(B,1,&f_q,1,&f,1,dim_carts,symm.get_num(),1,0);
+  free_matrix(B);
 
   // change forces to gradient for writing a file11 entry
   for(i=0;i<dim_carts;++i)
     f[i] = -1.0 * f[i] / _hartree2J / 1.0E18 * _bohr2angstroms;
 
-  ffile(&fp_11, "file11.dat", 1);
+  opt_ffile(&fp_11, "file11.dat", 1);
   char *wfn,*dertype;
   int errcod = ip_string("WFN", &wfn, 0);
   if (errcod != IPE_OK)
@@ -143,7 +143,7 @@ for (i=0;i<symm.get_num();++i)
 
   // write out geometry, gradient and energy to chkpt file
   cnt = -1;
-  geom2D = block_matrix(carts.get_natom(),3);
+  geom2D = init_matrix(carts.get_natom(),3);
   for (i=0; i<carts.get_natom(); ++i)
     for (j=0; j<3; ++j)
       geom2D[i][j] = geom[++cnt];
@@ -153,9 +153,9 @@ for (i=0;i<symm.get_num();++i)
   chkpt_wt_grad(f);
   chkpt_wt_etot(energy);
   chkpt_close();
-  free_block(geom2D);
-  free(f);
-  free(geom);
+  free_matrix(geom2D);
+  free_array(f);
+  free_array(geom);
 
   // recompute values of internals and s vectors -- too late!
 //  simples.compute(carts.get_coord());

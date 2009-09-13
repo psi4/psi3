@@ -30,7 +30,7 @@ double **compute_H(simples_class & simples, const salc_set &symm,
   char buffer[MAX_LINELENGTH];
 
   dim = symm.get_num();
-  H = block_matrix(dim,dim);
+  H = init_matrix(dim,dim);
 
   // Read in force constants from PSIF_OPTKING
   open_PSIF();
@@ -58,17 +58,17 @@ double **compute_H(simples_class & simples, const salc_set &symm,
   // and produce invertible Hessian
   // Form H <= PHP + 1000 (1-P)
   if ((optinfo.redundant) || (optinfo.constraints_present)) {
-    temp_mat = block_matrix(dim,dim);
-    mmult(P,0,H,0,temp_mat,0,dim,dim,dim,0);
-    mmult(temp_mat,0,P,0,H,0,dim,dim,dim,0);
-    free(temp_mat);
+    temp_mat = init_matrix(dim,dim);
+    opt_mmult(P,0,H,0,temp_mat,0,dim,dim,dim,0);
+    opt_mmult(temp_mat,0,P,0,H,0,dim,dim,dim,0);
+    free_matrix(temp_mat);
 
-    temp_mat = unit_mat(dim);
+    temp_mat = unit_matrix((long int) dim);
     for (i=0;i<dim;++i)
       for (j=0;j<dim;++j) {
           H[i][j] += 1000 * (temp_mat[i][j] - P[i][j]);
       }
-    free(temp_mat);
+    free_matrix(temp_mat);
   }
 
   /*** write new force constants H to PSIF_OPTKING ***/
@@ -107,7 +107,7 @@ void H_update(double **H, simples_class &simples, const salc_set &symm,
   dg    = init_array(dim);
   x = init_array(3*natom);
   x_old = init_array(3*natom);
-  H_new = block_matrix(dim,dim);
+  H_new = init_matrix(dim,dim);
 
   /*** read/compute current internals and forces from PSIF_OPTKING ***/
   n_previous = optinfo.iteration+1;
@@ -174,21 +174,21 @@ void H_update(double **H, simples_class &simples, const salc_set &symm,
       // To make formula work for Hessian (some call it "B")
       // you have to switch DQ and DG in the equation
   
-      dot_arr(dq,dg,dim,&qg);
+      dot_array(dq,dg,dim,&qg);
       // fprintf(outfile,"dq dot dg = %20.15lf\n", qg);
 
-      X = unit_mat(dim);
+      X = unit_matrix((long int) dim);
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)
           X[i][j] -= (dg[i] * dq[j]) / qg ; 
       //fprintf(outfile,"Xmat\n");
       //print_mat5(X,dim,dim,outfile);
   
-      temp_mat = block_matrix(dim,dim);
-      mmult(X,0,H,0,temp_mat,0,dim,dim,dim,0);
-      mmult(temp_mat,0,X,1,H_new,0,dim,dim,dim,0);
-      free_block(temp_mat);
-      free_block(X);
+      temp_mat = init_matrix(dim,dim);
+      opt_mmult(X,0,H,0,temp_mat,0,dim,dim,dim,0);
+      opt_mmult(temp_mat,0,X,1,H_new,0,dim,dim,dim,0);
+      free_matrix(temp_mat);
+      free_matrix(X);
     
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)
@@ -197,46 +197,46 @@ void H_update(double **H, simples_class &simples, const salc_set &symm,
     else if (optinfo.H_update == OPTInfo::MS) {
       // Equations taken from Bofill article below
       Z = init_array(dim);
-      mmult(H,0,&dq,1,&Z,1,dim,dim,1,0);
+      opt_mmult(H,0,&dq,1,&Z,1,dim,dim,1,0);
       for (i=0;i<dim;++i)
         Z[i] = dg[i] - Z[i];
 
-      dot_arr(dq,Z,dim,&qz);
+      dot_array(dq,Z,dim,&qz);
 
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)
           H_new[i][j] = H[i][j] + Z[i] * Z[j] / qz ;
 
-      free(Z);
+      free_array(Z);
     }
     else if (optinfo.H_update == OPTInfo::POWELL) {
       // Equations taken from Bofill article below
       Z = init_array(dim);
-      mmult(H,0,&dq,1,&Z,1,dim,dim,1,0);
+      opt_mmult(H,0,&dq,1,&Z,1,dim,dim,1,0);
       for (i=0;i<dim;++i)
         Z[i] = dg[i] - Z[i];
 
-      dot_arr(dq,Z,dim,&qz);
-      dot_arr(dq,dq,dim,&qq);
+      dot_array(dq,Z,dim,&qz);
+      dot_array(dq,dq,dim,&qq);
 
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)
           H_new[i][j] = H[i][j] -1.0*qz/(qq*qq)*dq[i]*dq[j] + (Z[i]*dq[j] + dq[i]*Z[j])/qq;
 
-      free(Z);
+      free_array(Z);
     }
     else if (optinfo.H_update == OPTInfo::BOFILL) {
       /* This functions performs a Bofill update on the Hessian according to
       J. M. Bofill, J. Comp. Chem., Vol. 15, pages 1-11 (1994). */
       // Bofill = (1-phi) * MS + phi * Powell
       Z = init_array(dim);
-      mmult(H,0,&dq,1,&Z,1,dim,dim,1,0);
+      opt_mmult(H,0,&dq,1,&Z,1,dim,dim,1,0);
       for (i=0;i<dim;++i)
         Z[i] = dg[i] - Z[i];
 
-      dot_arr(dq,Z,dim,&qz);
-      dot_arr(dq,dq,dim,&qq);
-      dot_arr(Z,Z,dim,&zz);
+      dot_array(dq,Z,dim,&qz);
+      dot_array(dq,dq,dim,&qq);
+      dot_array(Z,Z,dim,&zz);
 
       phi = 1.0 - qz*qz/(qq*zz);
       if (phi < 0.0) phi = 0.0;
@@ -249,11 +249,11 @@ void H_update(double **H, simples_class &simples, const salc_set &symm,
       for (i=0;i<dim;++i)
         for (j=0;j<dim;++j)
           H_new[i][j] += phi*(-1.0*qz/(qq*qq)*dq[i]*dq[j] + (Z[i]*dq[j] + dq[i]*Z[j])/qq);
-      free(Z);
+      free_array(Z);
     }
   } //end over old steps
 
-  free(x);
+  free_array(x);
 
   // limit allowed changes to Hessian to 0.3 or 50%
   for (i=0;i<dim;++i)
@@ -288,16 +288,16 @@ void H_update(double **H, simples_class &simples, const salc_set &symm,
   simples.compute(x);
   simples.fix_near_180();
   simples.compute_s(x);
-  free(x);
+  free_array(x);
 
-  free(q);
-  free(f);
-  free(q_old);
-  free(f_old);
-  free(dq);
-  free(dg);
-  free(x_old);
-  free_block(H_new);
+  free_array(q);
+  free_array(f);
+  free_array(q_old);
+  free_array(f_old);
+  free_array(dq);
+  free_array(dg);
+  free_array(x_old);
+  free_matrix(H_new);
   return;
 }
 
@@ -330,7 +330,7 @@ void fconst_init(const cartesians & carts, const simples_class & simples, const 
     ip_cwk_add(":FCONST");
     fprintf(outfile,"Reading force constants from FCONST: \n");
     dim = symm.get_num();
-    temp_mat = block_matrix(dim,dim);
+    temp_mat = init_matrix(dim,dim);
     ip_count("SYMM_FC",&i,0);
     if (i != (dim*(dim+1))/2) {
       fprintf(outfile,"fconst has wrong number of entries\n");
@@ -353,11 +353,11 @@ void fconst_init(const cartesians & carts, const simples_class & simples, const 
         (char *) &(temp_mat[0][0]),dim*dim*sizeof(double));
     close_PSIF();
 
-    free_block(temp_mat);
+    free_matrix(temp_mat);
     return;
   }
 
-  ffile_noexit(&fp_fconst, "fconst.dat",2);
+  opt_ffile_noexit(&fp_fconst, "fconst.dat",2);
   if (fp_fconst == NULL) { // generate empirical Hessian
     empirical_H(simples,symm,carts);
     return;
@@ -368,7 +368,7 @@ void fconst_init(const cartesians & carts, const simples_class & simples, const 
       ip_cwk_add(":FCONST");
       fprintf(outfile,"Reading force constants from FCONST: \n");
       dim = symm.get_num();
-      temp_mat = block_matrix(dim,dim);
+      temp_mat = init_matrix(dim,dim);
       ip_count("SYMM_FC",&i,0);
       if (i != (dim*(dim+1))/2) {
         fprintf(outfile,"fconst has wrong number of entries\n");
@@ -392,7 +392,7 @@ void fconst_init(const cartesians & carts, const simples_class & simples, const 
     psio_write_entry(PSIF_OPTKING, "Symmetric Force Constants",
         (char *) &(temp_mat[0][0]),dim*dim*sizeof(double));
     close_PSIF();
-    free_block(temp_mat);
+    free_matrix(temp_mat);
   }
   delete [] buffer;
 }

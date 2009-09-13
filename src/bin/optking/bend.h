@@ -78,10 +78,30 @@ class bend_class {
     int  get_A(void) const  { return A;}
     int  get_B(void) const  { return B;}
     int  get_C(void) const  { return C;}
+
     double get_val(void) const  { return val;}
+    double get_val_A_or_rad(void) const  {
+      return (val/180*_pi);
+    }
+
     double get_s_A(int i) const  { return s_A[i]; }
     double get_s_B(int i) const { return s_B[i]; }
     double get_s_C(int i) const { return s_C[i]; }
+    int  get_atom(int a) const  {
+      if (a==0) return A;
+      else if (a==1) return B;
+      else if (a==2) return C;
+      else throw("bend_class::get_atom : atom index must be 0, 1 or 2.\n");
+    }
+
+    double get_s(int atom, int xyz) const  {
+      if ( xyz < 0 || xyz > 2) throw ("bend_class::get_s() : xyz must be 0, 1 or 2");
+      if (atom==0) return s_A[xyz];
+      else if (atom==1) return s_B[xyz];
+      else if (atom==2) return s_C[xyz];
+      else throw("bend_class::get_s() : atom index must be 0, 1, or 2");
+    }
+
 
     // takes geometry in au; stores value in degrees
     void compute(double *geom) {
@@ -99,7 +119,7 @@ class bend_class {
       scalar_div(rBA,eBA);
       scalar_div(rBC,eBC);
     
-      dot_arr(eBA,eBC,3,&dotprod);
+      dot_array(eBA,eBC,3,&dotprod);
     
       if (dotprod > 1.0) val = 0.0;
       else if (dotprod < -1.0) val = 180.0;

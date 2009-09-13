@@ -1,4 +1,4 @@
-/*! \file
+/*
     \ingroup OPTKING
     \brief SIMPLES.CC member functions for simples class
 */
@@ -19,34 +19,34 @@ void simples_class :: locate_id(int id, Intco_type *itype, int *sub_index, int *
 
   for (i=0; i<stre.size(); ++i)
     if (stre[i].id == id) {
-      ++found; *itype = STRE_TYPE; *sub_index = i;
+      ++found; *itype = STRE; *sub_index = i;
     }
 
   for (i=0; i<bend.size(); ++i)
     if (bend[i].id == id) {
-      ++found; *itype = BEND_TYPE; *sub_index = i;
+      ++found; *itype = BEND; *sub_index = i;
     }
 
   for (i=0; i<tors.size(); ++i)
     if (tors[i].id == id) {
-      ++found; *itype = TORS_TYPE; *sub_index = i;
+      ++found; *itype = TORS; *sub_index = i;
     }
 
   for (i=0; i<out.size(); ++i)
     if (out[i].id == id) {
-      ++found; *itype = OUT_TYPE; *sub_index = i;
+      ++found; *itype = OUT; *sub_index = i;
     }
 
   for (i=0;i<linb.size();++i)
     if (linb[i].id == id) {
-      ++found; *itype = LINB_TYPE; *sub_index = i;
+      ++found; *itype = LINB; *sub_index = i;
     }
 
   for (i=0;i<frag.size();++i) {
     for (I=0; I<6; ++I) {
       if (frag[i].coord_on[I]) {
         if((frag[i].id + I) == id) {
-          ++found; *itype = FRAG_TYPE; *sub_index = i; *sub_index2 = I;
+          ++found; *itype = FRAG; *sub_index = i; *sub_index2 = I;
         }
       }
     }
@@ -67,7 +67,7 @@ void simples_class :: locate_id(int id, Intco_type *itype, int *sub_index, int *
 
 double ** simples_class::bond_connectivity_matrix(int natoms) const {
   int i, a, b;
-  double **B = block_matrix(natoms,natoms);
+  double **B = init_matrix(natoms,natoms);
   for (i=0; i<stre.size(); ++i) {
     a = stre[i].A;
     b = stre[i].B;
@@ -104,6 +104,22 @@ int simples_class :: index_to_id(int index) const {
   // fprintf(outfile,"index_to_id(%d): returning id = %d\n",index, id);
   return id;
 }
+
+int simples_class :: get_id(Intco_type itype, int sub_index, int sub_index2) const {
+  if (itype == STRE)
+    return stre[sub_index].id;
+  else if (itype == BEND)
+    return bend[sub_index].id;
+  else if (itype == TORS)
+    return tors[sub_index].id;
+  else if (itype == LINB)
+    return linb[sub_index].id;
+  else if (itype == OUT)
+    return out[sub_index].id;
+  else if (itype == FRAG)
+    return frag[sub_index].id + sub_index2;
+}
+
 
 // converts id number to total optking index
 // only interfragment coodinates turned on get counted in optking index
@@ -150,50 +166,41 @@ int simples_class :: id_to_index(int id) const {
 
 int simples_class::get_id_from_atoms_stre(int a, int b) const {
   int i;
-  char error[100];
 
   stre_class s1(0, a, b);
   for (i=0; i<stre.size(); ++i) {
     if (s1 == stre[i])
       return (stre[i].id);
   }
-  sprintf(error,"Could not find simple stretch for atoms %d %d", a+1, b+1);
-  throw(error);
+  throw("Could not find stretch coordinate.");
 }
 
 int simples_class::get_id_from_atoms_bend(int a, int b, int c) const {
   int i;
-  char error[100];
 
   bend_class b1(0, a, b, c);
   for (i=0; i<bend.size(); ++i) {
     if (b1 == bend[i]) 
       return (bend[i].id);
   }
-  sprintf(error,"Could not find simple bend for atoms %d %d %d", a+1, b+1, c+1);
-  throw(error);
+  throw("Could not find bend coordinate.");
 }
 
 // multiplies sign by -1 if matching torsion is D-C-B-A
 int simples_class::get_id_from_atoms_tors(int a, int b, int c, int d) const {
   int i;
-  char error[100];
-
-  //fprintf(outfile,"get_id_from_atoms_tors(%d %d %d %d)\n", a, b, c, d);
 
   tors_class t1(0, a, b, c, d);
   for (i=0; i<tors.size(); ++i) {
     if (t1 == tors[i])
       return (tors[i].id);
   }
-  sprintf(error,"Could not find simple torsion for atoms %d %d %d %d", a+1, b+1, c+1, d+1);
-  throw(error);
+  throw("Could not find torsional coordinate.");
 }
 
 // multiplies sign by -1 if matching out-of-plane coordinate has C and D reversed
 int simples_class::get_id_from_atoms_out(int a, int b, int c, int d, int *sign) const {
   int i;
-  char error[100];
 
   for (i=0; i<out.size(); ++i) {
     if ( (out[i].A == a) && (out[i].B == b) && (out[i].C == c) && (out[i].D == d)) {
@@ -204,26 +211,22 @@ int simples_class::get_id_from_atoms_out(int a, int b, int c, int d, int *sign) 
       return (out[i].id);
     }
   }
-  sprintf(error,"Could not find simple out of plane for atoms %d %d %d %d", a+1, b+1, c+1, d+1);
-  throw(error);
+  throw("Could not find out-of-plane coordinate.");
 }
 
 int simples_class::get_id_from_atoms_linb(int a, int b, int c, int linval) const {
   int i;
-  char error[100];
 
   linb_class b1(0, a, b, c, linval);
   for (i=0; i<linb.size(); ++i) {
     if (b1 == linb[i])
       return (linb[i].id);
   }
-  sprintf(error,"Could not find simple linb for atoms %d %d %d", a+1, b+1, c+1);
-  throw(error);
+  throw("Could not find linear bend coordinate.");
 }
 
 int simples_class::get_id_from_atoms_frag(int a_natom, int b_natom, int *a_atom, int *b_atom) const {
   int i, a, b, match=0;
-  char error[100];
 
   while ((match==0) && (i<frag.size())) {
     match = 1;
@@ -245,8 +248,7 @@ int simples_class::get_id_from_atoms_frag(int a_natom, int b_natom, int *a_atom,
     // lets return id number of first element of set - R(AB) for now
   }
 
-  sprintf(error,"Could not find simple fragment with natoms %d %d.\n", a_natom, b_natom);
-  throw(error);
+  throw("Could not find simple fragment coodinate.");
 }
 
 
@@ -494,7 +496,7 @@ simples_class :: simples_class(cartesians& carts, int user_intcos)
       fprintf(outfile,"\nGenerating simple internals\n"); fflush(outfile);
 
       /* Compute atomic distance matrix */
-      atom_dist = block_matrix(natom,natom);
+      atom_dist = init_matrix(natom,natom);
       for (i=0; i<natom; ++i)
         for (j=0; j<natom; ++j)
           atom_dist[i][j] = sqrt(SQR(coord_2d[i][0] - coord_2d[j][0])+
@@ -647,12 +649,12 @@ simples_class :: simples_class(cartesians& carts, int user_intcos)
 
       // add bonus torsions aa-a-b-c-cc if a-b-c is linear, etc.
       int aa, bb, cc, ia, ib, ic, ba, bc, lin_aa, lin_cc, found_aa, found_cc;
-      int *taa, *tbb, *tcc, *tdd, skip, nbonds, central;
+      int *taa, *tbb, *tcc, *tdd, nbonds, central;
       taa = new int[300]; tbb = new int[300]; tcc = new int[300]; tdd = new int[300];
 
       for(ia=0;ia<natom;++ia)
         for(ib=0;ib<natom;++ib) if ( (ia!=ib) && bonds[ia][ib] )
-          for(ic=0;ic<natom;++ic) if ( (ic!=ib) && bonds[ib][ic] ) {
+          for(ic=ia+1;ic<natom;++ic) if ( (ic!=ib) && bonds[ib][ic] ) {
 
             a = ia; b = ib; c = ic;
             tval = atom_dist[a][c] - atom_dist[a][b] - atom_dist[b][c];
@@ -660,38 +662,37 @@ simples_class :: simples_class(cartesians& carts, int user_intcos)
             // a-b-c is linear
 
           // if ib is bonded to any other atoms, then ignore this linear segment
-          for (skip=0,bb=0;bb<natom;++bb)
-            if (bb!=ia && bb!=ic && bonds[bb][ib]) skip = 1;
-          if (skip) continue; // continue to next ic
+          for (bb=0; bb<natom; ++bb)
+            if (bb!=ia && bb!=ic && bonds[bb][ib]) continue; // to next ic
 
-              fprintf(outfile," %d %d %d is colinear\n",a,b,c);
+          fprintf(outfile," %d %d %d is colinear\n",a+1,b+1,c+1);
  
-              // find aa bonded to a such that aa-a-b is not linear too
-              found_aa = 0;
-              lin_aa = a;
-              a = b; // atom adjacent to a
-              while (!found_aa) {
-              ba = a;
-              a = lin_aa;
-              for (aa=0;aa<natom;++aa) if (aa!=ba && bonds[aa][a]) {
-                c = ic;
-                tval = atom_dist[aa][ba] - atom_dist[aa][a] - atom_dist[a][ba];
-                if ( fabs(tval) > NONLINEAR_DIST ) { 
+          // find aa bonded to a such that aa-a-b is not linear too
+          found_aa = 0;
+          lin_aa = a;
+          a = b; // atom adjacent to a
+          while (!found_aa) {
+            ba = a;
+            a = lin_aa;
+            for (aa=0;aa<natom;++aa) if (aa!=ba && bonds[aa][a]) {
+              c = ic;
+              tval = atom_dist[aa][ba] - atom_dist[aa][a] - atom_dist[a][ba];
+              if ( fabs(tval) > NONLINEAR_DIST ) { 
                 // aa-a-b is not linear
-                  found_aa = 1;
-                  // fprintf(outfile,"found aa to a,b,c to %d, %d %d %d\n", aa,a,ba,c);
+                found_aa = 1;
+                // fprintf(outfile,"found aa to a,b,c to %d, %d %d %d\n", aa,a,ba,c);
 
-                  // find cc bonded to c such that b-c-cc is not linear or b-c-d-cc,etc.
-                  found_cc = 0;
-                  lin_cc = c;
-                  c = b; // atom adjacent to c
-                  while (!found_cc) {
+                // find cc bonded to c such that b-c-cc is not linear or b-c-d-cc,etc.
+                found_cc = 0;
+                lin_cc = c;
+                c = b; // atom adjacent to c
+                while (!found_cc) {
                   bc = c;
                   c = lin_cc;
                   for (cc=aa+1;cc<natom;++cc) if (cc!=bc && bonds[cc][c]) {
                     tval = atom_dist[cc][bc] - atom_dist[cc][c] - atom_dist[bc][c];
                     if ( fabs(tval) > NONLINEAR_DIST ) { 
-                    // b-c-cc is not linear
+                      // b-c-cc is not linear
                       // fprintf(outfile,"found cc to a,b,c to %d %d %d, %d\n", a,bc,c,cc);
                       found_cc = 1;
                       t1 = new tors_class(0, aa, a, c, cc);
@@ -751,10 +752,10 @@ simples_class :: simples_class(cartesians& carts, int user_intcos)
         }
       }
 
-      free_block(coord_2d);
-      free_block(atom_dist);
+      free_matrix(coord_2d);
+      free_matrix(atom_dist);
 
-      ffile(&fp_intco, "intco.dat",0);
+      opt_ffile(&fp_intco, "intco.dat",0);
       print(fp_intco,0); 
       fclose(fp_intco);
       
@@ -846,6 +847,69 @@ void simples_class :: print(FILE *fp_out, bool print_vals, bool print_frag_weigh
   if (!print_vals) fprintf(fp_out, ")\n");
   return;
 }
+
+// returns value in angstroms or radians
+double simples_class::get_val_A_or_rad(Intco_type itype, int sub_index, int sub_index2) const {
+  if (itype == STRE)      return stre[sub_index].get_val_A_or_rad();
+  else if (itype == BEND) return bend[sub_index].get_val_A_or_rad();
+  else if (itype == TORS) return tors[sub_index].get_val_A_or_rad();
+  else if (itype == LINB) return linb[sub_index].get_val_A_or_rad();
+  else if (itype == OUT)  return out[sub_index].get_val_A_or_rad();
+  else if (itype == FRAG) return frag[sub_index].get_val_A_or_rad(sub_index2);
+}
+
+// returns value in angstroms or degrees
+double simples_class::get_val(Intco_type itype, int sub_index, int sub_index2) const {
+  if (itype == STRE)      return stre[sub_index].get_val();
+  else if (itype == BEND) return bend[sub_index].get_val();
+  else if (itype == TORS) return tors[sub_index].get_val();
+  else if (itype == LINB) return linb[sub_index].get_val();
+  else if (itype == OUT)  return out[sub_index].get_val();
+  else if (itype == FRAG) return frag[sub_index].get_val(sub_index2);
+}
+
+
+// itype == STRE, BEND, etc = type of intco
+// subindex == place of coordinate within the set of coordinates of given type
+// int atom == place of atom within definition (i.e., for STRE, 0 => A, 1=>B)
+// X == which fragment atom for which atom is requested (FRAG_A or FRAG_B)
+// returns a = atom included in definition of internal (for which s-vector is non-zero)
+int simples_class::get_atom(Intco_type itype, int sub_index, int atom,
+    Frag_switch X) const {
+  int a;
+  if (itype == STRE)      a = stre[sub_index].get_atom(atom);
+  else if (itype == BEND) a = bend[sub_index].get_atom(atom);
+  else if (itype == TORS) a = tors[sub_index].get_atom(atom);
+  else if (itype == LINB) a = linb[sub_index].get_atom(atom);
+  else if (itype == OUT)  a = out[sub_index].get_atom(atom);
+  else if (itype == FRAG) a = frag[sub_index].get_atom(X, atom);
+  return a;
+}
+
+int simples_class::get_natom(Intco_type itype, int sub_index, Frag_switch X) const {
+  if (itype == STRE)      return 2;
+  else if (itype == BEND) return 3;
+  else if (itype == TORS) return 4;
+  else if (itype == LINB) return 3;
+  else if (itype == OUT)  return 4;
+  else if (itype == FRAG) {
+    if (X == FRAG_A) return frag[sub_index].get_A_natom();
+    else if (X == FRAG_B) return frag[sub_index].get_B_natom();
+  }
+}
+
+double simples_class::get_s(Intco_type itype, int sub_index, int atom,
+    int xyz, int sub_index2, Frag_switch X) const {
+  double s;
+  if (itype == STRE)      s = stre[sub_index].get_s(atom, xyz);
+  else if (itype == BEND) s = bend[sub_index].get_s(atom, xyz);
+  else if (itype == TORS) s = tors[sub_index].get_s(atom, xyz);
+  else if (itype == LINB) s = linb[sub_index].get_s(atom, xyz);
+  else if (itype == OUT)  s = out[sub_index].get_s(atom, xyz);
+  else if (itype == FRAG) s = frag[sub_index].get_s(X, sub_index2, atom, xyz);
+  return s;
+}
+
 
 }} /* namespace psi::optking */
 

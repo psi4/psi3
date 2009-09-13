@@ -17,8 +17,6 @@ significant modifications by J. Kenny June '00
 #include "cartesians.h"
 #include "simples.h"
 
-#include <libciomr/libciomr.h>
-
 namespace psi { namespace optking {
 
 static double **irrep_reduce(double **coord_mat, const simples_class &simples, int coords, int order);
@@ -42,7 +40,7 @@ double **irrep(const simples_class &simples, double **di_coord) {
 
   /* allocate some memory */
   // symm_coord = (double **) malloc(num_nonzero * sizeof(double *));
-  symm_coord = block_matrix(num_nonzero,simples.get_num());
+  symm_coord = init_matrix(num_nonzero,simples.get_num());
   spanned_arr = init_int_array(num_nonzero);
 
   /* determine order of point group */
@@ -91,8 +89,8 @@ double **irrep(const simples_class &simples, double **di_coord) {
       for (j=0; j<simples.get_num(); ++j)
         symm_coord[coord_num][j] = di_coord[coord_num][j];
     }
-    free_block(irreps_spanned);
-    free(spanned_arr);
+    free_matrix(irreps_spanned);
+    free_int_array(spanned_arr);
     return symm_coord;
   }
   else if(num_spanned > num_nonzero) {
@@ -118,13 +116,13 @@ double **irrep(const simples_class &simples, double **di_coord) {
 
         /*loop over irreps*/
         for (irrep=0;irrep<syminfo.nirreps;irrep++) {
-          zero_arr(evect_proj,simples.get_num());
+          zero_array(evect_proj,simples.get_num());
 
           /* if irrep spanned, project */
           if(irreps_spanned[coord_num][irrep] > SPANNED_IRREP_TOL) {
             /* loop over ops */
             for (ops = 0;ops<syminfo.nirreps;++ops) {
-              zero_arr(tmp_evect, simples.get_num());
+              zero_array(tmp_evect, simples.get_num());
 
               /* find effect of op on vector (Rvec) */
               for (j=0;j<simples.get_num();++j) {
@@ -152,8 +150,8 @@ double **irrep(const simples_class &simples, double **di_coord) {
       }
     }
 
-    free(evect_proj);
-    free(spanned_arr); 
+    free_array(evect_proj);
+    free_int_array(spanned_arr); 
 
     if (optinfo.print_delocalize == 1) {
       fprintf(outfile,"\n\nSymmetrized coordinates (each row is a coordinate):\n");    
@@ -161,7 +159,7 @@ double **irrep(const simples_class &simples, double **di_coord) {
     }
 
     /* check characters of projected coordinates to make sure they span only one irrep each */
-    free_block(irreps_spanned); 
+    free_matrix(irreps_spanned); 
 //    irreps_spanned = init_matrix(num_spanned_big,simples.get_num());
 
     irreps_spanned = irrep_reduce(coord_tmp, simples, num_spanned_big, order);
@@ -235,8 +233,8 @@ double **irrep(const simples_class &simples, double **di_coord) {
       offset += index;
     }
 
-    free(tmp_evect); 
-    free(irr_tmp); 
+    free_array(tmp_evect); 
+    free_int_array(irr_tmp); 
 
     /* check characters and orthogonality of orthogonalized coordinates */
 
@@ -324,16 +322,16 @@ double **irrep_reduce(double **coord_mat, const simples_class &simples, int num_
 
   chars = init_array(syminfo.nirreps);
   tmp_vec = init_array(simples.get_num());
-  coef_mat = block_matrix(num_coords,syminfo.nirreps);
+  coef_mat = init_matrix(num_coords,syminfo.nirreps);
 
   /* loop over number of coordinate vectors */
   for(coord=0;coord<num_coords;++coord) { 
 
-    zero_arr(chars,syminfo.nirreps);
+    zero_array(chars,syminfo.nirreps);
 
     /* determine the character of the vector under different operations */
     for (operations = 0;operations<syminfo.nirreps;++operations) {
-      zero_arr(tmp_vec, simples.get_num());
+      zero_array(tmp_vec, simples.get_num());
       for (i=0;i<simples.get_num();++i) {
         a = simples.id_to_index(syminfo.ict_ops[i][operations]);
         tmp_vec[a] += syminfo.ict_ops_sign[i][operations] * coord_mat[coord][i];
@@ -354,8 +352,8 @@ double **irrep_reduce(double **coord_mat, const simples_class &simples, int num_
     }
   }
 
-  free(chars); 
-  free(tmp_vec);   
+  free_array(chars); 
+  free_array(tmp_vec);   
   return coef_mat;
 }
 

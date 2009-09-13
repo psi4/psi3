@@ -27,9 +27,37 @@ void punt(const char *message);
 void swap(int *a, int *b);
 void swap_tors(int *a, int *b, int *c, int *d);
 
+void opt_ffile(FILE **fptr, const char *suffix, int code);
+void opt_ffile_noexit(FILE **fptr, const char *suffix, int code);
+void opt_mmult(double **AF, int ta, double **BF, int tb, double **CF, int tc,
+  int nr, int nl, int nc, int add);
+void opt_sq_rsp(int nm, int n, double **array, double *e_vals, int matz,
+  double **e_vecs, double toler);
+
+void exit_io(void);
+void print_mat(double **a, int m, int n, FILE *out);
+void eivout(double **a, double *b, int m, int n, FILE *out);
+void dot_array(double *a, double *b, long int n, double *value);
+
+// memory allocation functions in mem.cc
+double * init_array(long int size);
+void zero_array(double *a, long int size);
+void free_array(double *a);
+int * init_int_array(int size);
+void zero_int_array(int *a, int size);
+void free_int_array(int *a);
+double ** init_matrix(long int m, long int n);
+void zero_matrix(double **a, long int m, long int n);
+void free_matrix(double **array);
+int **init_int_matrix(int m, int n);
+void zero_int_matrix(int **a, int n, int m);
+void free_int_matrix(int **array);
+double **unit_matrix(long int m);
+
 // enumerated types
 
-enum Intco_type {STRE_TYPE, BEND_TYPE, TORS_TYPE, OUT_TYPE, LINB_TYPE, FRAG_TYPE};
+enum Intco_type {STRE, BEND, TORS, OUT, LINB, FRAG};
+enum Frag_switch {FRAG_A, FRAG_B};
 
 // macros
 #define SQR(A) ((A)*(A))

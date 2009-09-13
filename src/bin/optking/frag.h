@@ -6,7 +6,6 @@
 #ifndef _psi3_bin_optking_fragment_h_
 #define _psi3_bin_optking_fragment_h_
 
-#include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 
 namespace psi { namespace optking {
@@ -52,19 +51,19 @@ class frag_class {
       B_P = B_P_in;
       A_atom   = new int[A_natom];
       B_atom   = new int[B_natom];
-      A_weight = block_matrix(3,A_natom);
-      B_weight = block_matrix(3,B_natom);
-      A_s = block_matrix(6,A_P*3);
-      B_s = block_matrix(6,B_P*3);
+      A_weight = init_matrix(3,A_natom);
+      B_weight = init_matrix(3,B_natom);
+      A_s = init_matrix(6,A_P*3);
+      B_s = init_matrix(6,B_P*3);
     }
 
     ~frag_class() {
       delete [] A_atom;
       delete [] B_atom;
-      free_block(A_weight);
-      free_block(B_weight);
-      free_block(A_s);
-      free_block(B_s);
+      free_matrix(A_weight);
+      free_matrix(B_weight);
+      free_matrix(A_s);
+      free_matrix(B_s);
     }
 
     /* functions in frag.cc */
@@ -129,12 +128,43 @@ class frag_class {
     int get_B_P(void) const { return B_P;}
 
     int get_A_atom(int i) const {
-      if (i >= A_natom) throw("fragment.get_A_atom() : index is too large");
+      if (i < 0 || i >= A_natom) throw("fragment.get_A_atom() : bad atom index");
       return A_atom[i];
     }
     int get_B_atom(int i) const {
-      if (i >= B_natom) throw("fragment.get_B_atom() : index is too large");
+      if (i < 0 || i >= B_natom) throw("fragment.get_B_atom() : bad atom index");
       return B_atom[i];
+    }
+
+    int get_atom(Frag_switch X, int a) const  {
+      int atom;
+      if (X == FRAG_A)
+        atom = get_A_atom(a);
+      else if (X == FRAG_B)
+        atom = get_B_atom(a);
+      return atom;
+    }
+
+    double get_s(Frag_switch X, int sub_index2, int atom, int xyz) const  {
+      int K;
+      double tval = 0.0;
+      if ( xyz < 0 || xyz > 2) throw ("frag_class::get_s() : xyz must be 0, 1 or 2");
+      if ( sub_index2 < 0 || sub_index2 > 5) throw ("frag_class::get_s() : bad sub_index2 value, must be {0,5}");
+ 
+      // A_s and B_s contain s vectors on reference atoms
+      // compute correlating s vectors on fragment atoms
+
+      if (X == FRAG_A) {
+        if ( atom < 0 || atom > A_natom) throw ("frag_class::get_s() : bad atom number");
+        for (K=0; K<A_P; ++K)             // loop over reference atoms of A
+          tval += A_weight[K][atom] * A_s[sub_index2][3*K+xyz];
+      }
+      else if (X == FRAG_B) {
+        if ( atom < 0 || atom > B_natom) throw ("frag_class::get_s() : bad atom number");
+        for (K=0; K<B_P; ++K)             // loop over reference atoms of A
+          tval += B_weight[K][atom] * B_s[sub_index2][3*K+xyz];
+      }
+      return tval;
     }
 
     /* ref_atom = 0-2, frag_index 0-3*A_natom */
@@ -167,8 +197,13 @@ class frag_class {
       if (I<0 || I>5) throw("fragment.get_val() : expecting id between 0 and 5");
       return val[I];
     }
-
-
+    // returns bond lengths in normal angstroms but angles in degrees
+    double get_val_A_or_rad(int I) const {
+      if (I==0)
+        return get_val(0);
+      else 
+        return (get_val(I) * _pi / 180.0);
+    }
 
     double get_A_s(int I, int ref_atom_xyz) const {
       if (I<0 || I>5)
@@ -190,14 +225,6 @@ class frag_class {
       for (I=0; I<6; ++I) 
         if (coord_on[I]) ++dim;
       return dim;
-    }
-
-    // returns bond lengths in normal angstroms but angles in degrees
-    double get_val_A_or_rad(int I) const {
-      if (I==0)
-        return val[0];
-      else 
-        return (val[I] * _pi / 180.0);
     }
 
     // fix torsional angles by recording nearness (or not) to +180 or -180

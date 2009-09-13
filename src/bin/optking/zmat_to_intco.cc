@@ -8,7 +8,6 @@
 #include "globals.h"
 #undef EXTERN
 
-#include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 
 namespace psi { namespace optking {
@@ -32,7 +31,7 @@ void zmat_to_intco() {
    }
 */
 
-  ffile(&fp_intco,"intco.dat",0);
+  opt_ffile(&fp_intco,"intco.dat",0);
   fprintf(fp_intco,"intco: (\n");
 
   fprintf(fp_intco,"  stre = (\n");
@@ -102,7 +101,7 @@ void zmat_to_intco() {
   fprintf(fp_intco,")");
   fclose(fp_intco);
 
-  ffile(&fp_intco,"fintco.dat",0);
+  opt_ffile(&fp_intco,"fintco.dat",0);
 
   /* write out coordinates to be frozen */
   fprintf(fp_intco,"fixed_intco: (\n");

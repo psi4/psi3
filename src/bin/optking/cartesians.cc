@@ -88,9 +88,10 @@ cartesians::cartesians() {
       coord[++count] = geom[i][j];
     }
   }
-  free_block(geom);
+  free_matrix(geom);
 
-  zero_arr(fatomic_num,nallatom);
+  zero_array(fatomic_num,nallatom);
+
   for(i=0; i<natom; i++)
     fatomic_num[optinfo.to_dummy[i]] = zvals[i];
 
@@ -99,10 +100,10 @@ cartesians::cartesians() {
     for(j=0; j<3; j++)
       fcoord[++count] = fgeom[i][j];
 
-  free(zvals);
-  free_block(fgeom);
+  free_array(zvals);
+  free_matrix(fgeom);
 
-  zero_arr(fgrad, 3*nallatom);
+  zero_array(fgrad, 3*nallatom);
   count = -1;
   for(i=0; i < natom; i++)
     for(j=0; j < 3; j++)
@@ -164,7 +165,7 @@ cartesians::cartesians() {
     }
   }
 
-  zero_arr(fmass, 3*nallatom);
+  zero_array(fmass, 3*nallatom);
   for (i=0; i<natom; ++i) {
     j = optinfo.to_dummy[i];
     fmass[3*j+0] = fmass[3*j+1] = fmass[3*j+2] = mass[3*i];
@@ -309,7 +310,7 @@ void cartesians :: print(int print_flag, FILE *fp_out, int new_geom_file,
     chkpt_init(PSIO_OPEN_OLD);
     chkpt_wt_fgeom(&fcoord_tmp);
     chkpt_close();
-    free(fcoord_tmp);
+    free_array(fcoord_tmp);
 
   }
   else if (print_flag == 12) { 

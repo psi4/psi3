@@ -13,7 +13,6 @@
 #include "opt.h"
 
 #include <libipv1/ip_lib.h>
-#include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 
 namespace psi { namespace optking {
@@ -35,7 +34,7 @@ int opt_step_cart(cartesians &carts) {
 
   // masses = carts.get_mass();
   // u = mass_mat(masses);
-  // free(masses);
+  // free_array(masses);
 
   x = carts.get_coord();
   scalar_mult(_bohr2angstroms,x,dim_carts); // x holds geom in Ang
@@ -94,10 +93,10 @@ int opt_step_cart(cartesians &carts) {
       unique_zvars = init_int_array(MAX_ZVARS);
       //compute_zmat(carts, unique_zvars);
       //print_zmat(outfile, unique_zvars);
-      free(unique_zvars);
+      free_int_array(unique_zvars);
       fprintf(outfile,"\n");
     }
-    free(f);
+    free_array(f);
     return(PSI_RETURN_ENDLOOP);
   } /* end converged geometry */
 
@@ -105,12 +104,12 @@ int opt_step_cart(cartesians &carts) {
   /* Take geometry step in cartesian coordinates */
 
   // P could contain constraints later
-  P = unit_mat(dim_carts);
+  P = unit_matrix((long int) dim_carts);
   H_inv = compute_H_cart(carts, P);
 
   /* compute cartesian step */
   dx = init_array(dim_carts);
-  mmult(H_inv,0,&f,1,&dx,1,dim_carts,dim_carts,1,0);
+  opt_mmult(H_inv,0,&f,1,&dx,1,dim_carts,dim_carts,1,0);
 
   /* scale stepsize */
   scale = 1.0;
@@ -133,7 +132,7 @@ int opt_step_cart(cartesians &carts) {
   fprintf(outfile,"\nNew Cartesian Geometry in a.u.\n");
   carts.print(1, outfile,0, disp_label, 0);
 
-  free(f); free(x); free(dx);
+  free_array(f); free_array(x); free_array(dx);
 
   optinfo.iteration += 1;
   open_PSIF();

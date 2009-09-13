@@ -204,10 +204,10 @@ int *read_constraints(const simples_class & simples) {
       }
 
       if (optinfo.fix_interfragment) {
-        for (i=0; i<simples.frag.size(); ++i) {
-          id = simples.frag[i].get_id(); // executes once for each interfragment set
+        for (i=0; i<simples.get_num(FRAG,1); ++i) { // loop over interfragment sets
+          id = simples.get_id(FRAG, i, 0); // executes once for each interfragment set
           for (int I=0; I<6; ++I) {
-            if (simples.frag[i].get_coord_on(I)) {
+            if (simples.frag_get_coord_on(i,I)) {
               if (!cnt) {
                 constraints[iconstraints++] = simples.id_to_index(id) + I;
                 fprintf(outfile,"Fragment coordinate %d \n", id+I);
@@ -224,7 +224,7 @@ int *read_constraints(const simples_class & simples) {
         for (i=0; i<simples.get_num(); ++i) {
           id = simples.index_to_id(i);
           simples.locate_id(id, &intco_type, &sub_index, &sub_index2);
-          if (intco_type != FRAG_TYPE) {
+          if (intco_type != FRAG) {
             if (!cnt) {
               constraints[iconstraints++] = simples.id_to_index(id);
               if (iconstraints == 1) fprintf(outfile,"Simple coordinates:\n");

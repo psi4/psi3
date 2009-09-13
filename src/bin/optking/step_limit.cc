@@ -34,8 +34,8 @@ void step_limit(const simples_class & simples, const salc_set &symm, double *dq)
       simple = symm.get_simple(i,j);
       simples.locate_id(simple,&intco_type,&sub_index,&sub_index2);
 
-      if (intco_type != FRAG_TYPE) { // regular, intrafragment coordinates
-        if (intco_type == STRE_TYPE) dq_simple /= _bohr2angstroms;
+      if (intco_type != FRAG) { // regular, intrafragment coordinates
+        if (intco_type == STRE) dq_simple /= _bohr2angstroms;
 
         if (fabs(dq_simple) > step_limit)
           scale = step_limit / fabs(dq_simple);
@@ -52,7 +52,7 @@ void step_limit(const simples_class & simples, const salc_set &symm, double *dq)
       else {  // interfragment 1/R(A-B)
         dq_simple *= _bohr2angstroms;
         // fprintf(outfile, "dq_simple (1/au) %15.10lf\n", dq_simple);
-        R = 1.0 / simples.frag[sub_index].get_val(0) / _bohr2angstroms;
+        R = 1.0 / simples.get_val(FRAG, sub_index, 0) * _bohr2angstroms;
         // fprintf(outfile, "R in au %15.10lf\n", R);
         inv_R_min = - step_limit / (R * (R + step_limit));
         // fprintf(outfile, "1/R min in au %15.10lf\n", inv_R_min);

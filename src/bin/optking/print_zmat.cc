@@ -8,7 +8,6 @@
 #include <cstdlib>
 #include <cstring>
 #include <physconst.h>
-#include <libciomr/libciomr.h>
 #include <libchkpt/chkpt.h>
 
 #define EXTERN
