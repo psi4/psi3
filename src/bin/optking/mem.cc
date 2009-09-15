@@ -52,7 +52,7 @@ double **init_matrix(long int m, long int n) {
   double *B = NULL;
   long int i;
 
-  if(m<0 || n<0) return((double **) NULL);
+  if(m<=0 || n<=0) return((double **) NULL);
 
   A = (double **) malloc(m * (long int)sizeof(double *));
   B = (double *) malloc(m*n * (long int)sizeof(double));
