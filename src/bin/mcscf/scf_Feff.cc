@@ -7,6 +7,7 @@ namespace psi{ namespace mcscf{
 
 void SCF::construct_Feff(int cycle)
 {
+  Feff_t_old = Feff_t;
   Feff_t = Fc_t;
  
   if(options_get_bool("USE_FAVG")){
@@ -60,7 +61,6 @@ void SCF::construct_Feff(int cycle)
     }
   }
   if(reference == tcscf && (cycle > turn_on_actv)){
-    double lambda = 1.0;
     for(int I = 0 ; I < nci; ++I){
       int h = tcscf_sym[I];
       int i = tcscf_mos[I];
@@ -108,6 +108,27 @@ void SCF::construct_Feff(int cycle)
       }    	  
     }
   }
+//  // Level shift
+//  double shift = static_cast<double>(options_get_int("LEVELSHIFT")) / 1000.0;
+//  fprintf(outfile,"\n  Setting level shift to %.3f",shift);
+//  for(int h =0; h < nirreps; ++h){
+//    for(int i = docc[h] + actv[h]; i < sopi[h]; ++i){
+//      Feff_t->add(h,i,i,shift);
+//    }
+//  }
+//
+//  double dumping = static_cast<double>(options_get_int("DUMPING")) / 100.0;
+//  fprintf(outfile,"\n  Setting dumping to %.3f",dumping);
+//  // Dumping
+//  for(int h =0; h < nirreps; ++h){
+//    // Set the (virtual,open) and (open,virtual) blocks to 2 Fo
+//    for(int i = 0; i < sopi[h]; ++i){
+//      for(int j = 0; j < sopi[h]; ++j){
+//        double element = (1.0 - dumping) * Feff_t->get(h,i,j) + dumping * Feff_t_old->get(h,i,j);
+//        Feff_t->set(h,i,j,element);
+//      }
+//    }
+//  }
 }
 
 }} /* End Namespaces */

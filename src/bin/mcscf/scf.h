@@ -78,6 +78,7 @@ private:
   SBlockMatrix Ftc[maxci];  // The Fock matrix (tcscf)
   SBlockMatrix Ftc_t[maxci];// The transformed Fock matrix (tcscf)
   SBlockMatrix Feff_t;      // The transformed effective Fock matrix
+  SBlockMatrix Feff_t_old;  // The transformed effective Fock matrix
   SBlockMatrix Feff_oAO;    // The effective Fock matrix in the orthogonal AO basis
   SBlockMatrix G;           // The G matrix
   SBlockMatrix T;           // a temp matrix

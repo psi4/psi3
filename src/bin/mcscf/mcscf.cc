@@ -83,9 +83,9 @@ void add_calculation_options()
 {
 
   options_add_int("CONVERGENCE",9);
-  options_add_int("DAMPING_FACTOR",0);
+  options_add_int("LEVELSHIFT",0);
+//  options_add_int("DUMPING",0);
   options_add_int("DEBUG",0);
-  options_add_int("DENOMINATOR_SHIFT",0);
   options_add_int("MAXITER",100);
   options_add_int("NDIIS",7);
   options_add_int("ROOT",1);

@@ -87,6 +87,7 @@ void SCF::startup()
   C_T         .allocate("C_T",nirreps,sopi,sopi);
   Dc          .allocate("Dc",nirreps,sopi,sopi);
   Feff_t      .allocate("Feff_t",nirreps,sopi,sopi);
+  Feff_t_old  .allocate("Feff_t",nirreps,sopi,sopi);
   Feff_oAO    .allocate("Feff_oAO",nirreps,sopi,sopi);
   Fc          .allocate("Fc",nirreps,sopi,sopi);
   Fc_t        .allocate("Fc_t",nirreps,sopi,sopi);

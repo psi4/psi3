@@ -79,9 +79,10 @@ double SCF::energy(int cycle,double old_energy)
 
     total_energy = eigenvalues[root];
 
+    if(fabs(old_energy - total_energy) < 1.0e-5){
     for(int I = 0 ; I < nci; ++I)
       ci[I] = eigenvectors[I][root];
-
+    }
     release1(eigenvalues);
     release2(eigenvectors);
   }
