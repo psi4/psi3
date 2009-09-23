@@ -25,7 +25,10 @@ void zero_array(double *a, long int size) {
 
 // free array of doubles
 void free_array(double *a) {
-  free(a);
+  if (a != NULL) {
+    free(a);
+    a = NULL;
+  }
 }
 
 // get array of integers

@@ -150,6 +150,7 @@ double **irrep(const simples_class &simples, double **di_coord) {
       }
     }
 
+    free_array(tmp_evect);
     free_array(evect_proj);
     free_int_array(spanned_arr); 
 
@@ -233,7 +234,6 @@ double **irrep(const simples_class &simples, double **di_coord) {
       offset += index;
     }
 
-    free_array(tmp_evect); 
     free_int_array(irr_tmp); 
 
     /* check characters and orthogonality of orthogonalized coordinates */
