@@ -2,7 +2,7 @@
     \ingroup CCHBAR
     \brief Enter brief description of file here 
 */
-#include <cstring>
+#include <string>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 #include "MOInfo.h"

@@ -4,7 +4,7 @@
 */
 #include <cstdio>
 #include <cstdlib>
-#include <cstring>
+#include <string>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
 #include "MOInfo.h"

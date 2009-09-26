@@ -7,7 +7,7 @@
 
 #include <cstdio>
 #include <cstdlib>
-#include <cstring>
+#include <string>
 #include <cmath>
 #include <libdpd/dpd.h>
 #include <libqt/qt.h>
