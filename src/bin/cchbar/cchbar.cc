@@ -8,7 +8,8 @@
 
 #include <cstdio>
 #include <cstdlib>
-#include <string>
+#include <cstring>
+#include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>
 #include <libciomr/libciomr.h>
 #include <libdpd/dpd.h>
@@ -17,7 +18,7 @@
 #include "Params.h"
 #include "globals.h"
 
-namespace psi { namespace CCHBAR {
+namespace psi { namespace cchbar {
 
 void init_io(int argc, char *argv[]);
 void title(void);
@@ -50,9 +51,11 @@ void Fai_build(void);
 void reference(void);
 void norm_HET1(void);
 
-using namespace psi;
+}} // namespace psi::cchbar
 
-int cchbar(int argc, char *argv[])
+using namespace psi::cchbar;
+
+int main(int argc, char *argv[])
 {
   int **cachelist, *cachefiles;
 
@@ -139,18 +142,30 @@ int cchbar(int argc, char *argv[])
 
   cleanup(); 
   exit_io();
-  return PSI_RETURN_SUCCESS;
+  exit(PSI_RETURN_SUCCESS);
 }
 
+extern "C" {const char *gprgid() { const char *prgid = "CCHBAR"; return(prgid); }}
 
-namespace psi { namespace CCHBAR {
+namespace psi { namespace cchbar {
 
 void init_io(int argc, char *argv[])
 {
+  int i;
+  char *progid;
+
+  progid = (char *) malloc(strlen(gprgid())+2);
+  sprintf(progid, ":%s",gprgid());
+
+  psi_start(&infile,&outfile,&psi_file_prefix,argc-1,argv+1,0);
+  ip_cwk_add(progid);
+  free(progid);
   tstart(outfile);
 
+  psio_init(); psio_ipv1_config();
+
   /* Open all dpd data files */
-  for(int i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);
+  for(i=CC_MIN; i <= CC_MAX; i++) psio_open(i,1);
 }
 
 void title(void)
@@ -166,12 +181,16 @@ void title(void)
 
 void exit_io(void)
 {
+  int i;
+ 
   /* Close all dpd data files here */
-  for(int i=CC_MIN; i < CC_TMP; ++i) psio_close(i,1);
-  for(int i=CC_TMP; i <= CC_TMP11; ++i) psio_close(i,0);  /* get rid of TMP files */
-  for(int i=CC_TMP11+1; i <= CC_MAX; ++i) psio_close(i,1);
+  for(i=CC_MIN; i < CC_TMP; i++) psio_close(i,1);
+  for(i=CC_TMP; i <= CC_TMP11; i++) psio_close(i,0);  /* get rid of TMP files */
+  for(i=CC_TMP11+1; i <= CC_MAX; i++) psio_close(i,1);
 
+  psio_done();
   tstop(outfile);
+  psi_stop(infile,outfile,psi_file_prefix);
 }
 
 }} // namespace psi::chbar

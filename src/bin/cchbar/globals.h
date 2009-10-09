@@ -2,7 +2,6 @@
     \ingroup CCHBAR
     \brief Enter brief description of file here 
 */
-#include <psi4-dec.h>
 #include <ccfiles.h>
 #include <libdpd/dpd.h>
 
@@ -15,6 +14,11 @@ namespace psi { namespace cchbar {
 #else
 #define EXTERN
 #endif
+
+extern "C" {
+EXTERN FILE *infile, *outfile;
+EXTERN char *psi_file_prefix;
+}
 
 EXTERN struct MOInfo moinfo;
 EXTERN struct Params params;

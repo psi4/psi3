@@ -4,7 +4,8 @@
 */
 #include <cstdio>
 #include <cstdlib>
-#include <string>
+#include <cstring>
+#include <libipv1/ip_lib.h>
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libchkpt/chkpt.h>
@@ -26,6 +27,7 @@ namespace psi { namespace cchbar {
 void get_moinfo(void)
 {
   int i, h, errcod, nactive, nirreps;
+  char *read_eom_ref;
 
   chkpt_init(PSIO_OPEN_OLD);
   moinfo.nirreps = chkpt_rd_nirreps();
@@ -44,12 +46,11 @@ void get_moinfo(void)
 		  sizeof(int));
 
   /* allow ROHF EOM calculation after RHF energy */
- 
-  std::string read_eom_ref = get_str("EOM_REFERENCE");
-//  errcod = ip_string("EOM_REFERENCE", &(read_eom_ref),0);
-    if(read_eom_ref != "ROHF"){
-       params.ref = 1;
-    }
+  errcod = ip_string("EOM_REFERENCE", &(read_eom_ref),0);
+  if (errcod == IPE_OK) {
+    if(!strcmp(read_eom_ref, "ROHF")) params.ref = 1;
+    free(read_eom_ref);
+  }
 
   /* Get frozen and active orbital lookups from CC_INFO */
   moinfo.frdocc = init_int_array(moinfo.nirreps);
@@ -58,6 +59,7 @@ void get_moinfo(void)
 		  (char *) moinfo.frdocc, sizeof(int)*moinfo.nirreps);
   psio_read_entry(CC_INFO, "Frozen Virt Orbs Per Irrep",
 		  (char *) moinfo.fruocc, sizeof(int)*moinfo.nirreps);
+
   psio_read_entry(CC_INFO, "No. of Active Orbitals", (char *) &(nactive),
 		  sizeof(int)); 
 

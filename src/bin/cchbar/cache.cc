@@ -84,10 +84,8 @@ int **cacheprep_uhf(int level, int *cachefiles)
 
       return cachelist;
     }
-  else { 
-    throw PsiException("CCHBAR: invalid cache level!",__FILE__,__LINE__);
-    }
-  }
+  else { printf("Error: invalid cache level!\n"); exit(PSI_RETURN_FAILURE); }
+}
 
 int **cacheprep_rhf(int level, int *cachefiles)
 {
@@ -149,9 +147,7 @@ int **cacheprep_rhf(int level, int *cachefiles)
 
       return cachelist;
     }
-  else { 
-     PsiException("CCHBAR: invalid cache level!",__FILE__,__LINE__);
-  }
+  else { printf("Error: invalid cache level!\n"); exit(PSI_RETURN_FAILURE); }
 }
 
 void cache_abcd_uhf(int **cachelist)
