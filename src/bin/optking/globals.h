@@ -96,7 +96,6 @@ EXTERN struct OPTInfo {
   int *to_dummy;
   int *to_nodummy;
   int dummy_axis_1;
-  int dummy_axis_2;
   char *wfn;
   char *jobtype;
   int energy_dat;

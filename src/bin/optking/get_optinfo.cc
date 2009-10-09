@@ -231,9 +231,6 @@ void get_optinfo(void) {
   optinfo.dummy_axis_1 = 1;
   ip_data("DUMMY_AXIS_1","%d",&(optinfo.dummy_axis_1),0);
   optinfo.dummy_axis_1 -= 1;
-  optinfo.dummy_axis_2 = 2;
-  ip_data("DUMMY_AXIS_2","%d",&(optinfo.dummy_axis_2),0);
-  optinfo.dummy_axis_2 -= 1;
 
   optinfo.zmat = 0;
   if (ip_exist("ZMAT",0)) optinfo.zmat = 1;
@@ -491,7 +488,6 @@ void get_optinfo(void) {
     fprintf(outfile,"optimize:      %d\n",optinfo.optimize);
     fprintf(outfile,"zmat:          %d\n",optinfo.zmat);
     fprintf(outfile,"dummy_axis_1:    %d\n",optinfo.dummy_axis_1);
-    fprintf(outfile,"dummy_axis_2:    %d\n",optinfo.dummy_axis_2);
     fprintf(outfile,"sacc fd points:  %d\n",optinfo.points);
     fprintf(outfile,"zmat_simples:  %d\n",optinfo.zmat_simples);
     fprintf(outfile,"redundant:     %d\n",optinfo.redundant);
