@@ -263,9 +263,11 @@ int main(int argc, char **argv) {
     coord = carts.get_coord();
     simples.compute(coord);
     simples.compute_s(coord);
-//RAK
-//simples.print(outfile, 1);
-//simples.print_s(outfile);
+
+    if (optinfo.print_debug_backtransformation) {
+      simples.print(outfile, 1);
+      simples.print_s(outfile);
+    }
 
     free_array(coord);
     if ( (optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_LOAD_REF)
@@ -409,10 +411,10 @@ int main(int argc, char **argv) {
       fprintf(outfile," \n ** Executing user-given displacements vector. **\n");
       salc_set all_salcs;
       all_salcs.print();
-      disp_user(carts, simples, all_salcs);
+      a = disp_user(carts, simples, all_salcs);
       free_info(simples.get_num());
       exit_io();
-      return 0;
+      return a;
     }
 
     if (optinfo.mode == MODE_DISP_FREQ_GRAD_CART) {

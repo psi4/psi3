@@ -121,62 +121,60 @@ class linb_class {
     }
 
     void compute(double *geom) {
-      int j,rottype;
+      int j;
       double rBA,rBC,rBD,eBA[3],eBC[3],eBD[3],tmp[3],dotprod;
-      double dummy[3], angle_ABD, angle_CBD, disp_size;
+      double angle_ABD, angle_CBD, disp_size, F[3];
+      double rBF, eBF[3];
+ 
+      dummy[0] = dummy[1] = dummy[2] = 0;
 
+      // first try placing dummy atoms according to default axes
+      if (optinfo.dummy_axis_1 == 0)      dummy[0] = 1;
+      else if (optinfo.dummy_axis_1 == 1) dummy[1] = 1;
+      else if (optinfo.dummy_axis_1 == 2) dummy[2] = 1;
+
+      // determine direction B->A
+      for (j=0;j<3;++j)
+        eBA[j] = geom[3*A+j] - geom[3*B+j];
+      rBA = sqrt( SQR(eBA[0]) + SQR(eBA[1]) + SQR(eBA[2]) );
+      scalar_div(rBA, eBA);
+
+      // see if chosen dummy axis is on fragment line
+      dot_array(eBA,dummy,3,&dotprod);
+      if ((1 - fabs(dotprod)) < 1.e-5) {
+        fprintf(outfile,"linear bend fragment is pointed toward dummy atom\n");
+        fprintf(outfile,"try dummy_axis_1 = {1,2,3}\n");
+        throw("linb_class::compute atoms pointed at dummy atom\n");
+      }
+
+      // 2nd dummy atom F (for linval == 2) is at (B + eBD x eBA)
+      for (j=0;j<3;++j) {
+        eBD[j] = dummy[j] - geom[3*B+j];
+        eBA[j] = geom[3*A+j] - geom[3*B+j];
+      }
+      rBD = sqrt( SQR(eBD[0])+SQR(eBD[1])+SQR(eBD[2]) );
+      rBA = sqrt( SQR(eBA[0])+SQR(eBA[1])+SQR(eBA[2]) );
+      scalar_div(rBD,eBD);
+      scalar_div(rBA,eBA);
+      cross_product(eBD,eBA,eBF);
+
+      // move dummy atoms far,far away
       disp_size = 1.0E9;
-    
-      chkpt_init(PSIO_OPEN_OLD);
-      rottype = chkpt_rd_rottype();
-      chkpt_close();
 
-      /* set dummies along x and y axes or according to input.
-         If we zoom dummy atoms way out, then our s vectors are just
-         steps toward the dummy atom */
-     
-      if (linval == 1) {
-        if (optinfo.dummy_axis_1 == 0)
-          set_dummy(disp_size, 0.0, 0.0);
-        else if (optinfo.dummy_axis_1 == 1)
-          set_dummy(0.0, disp_size, 0.0);
-        else if (optinfo.dummy_axis_1 == 2)
-          set_dummy(0.0, 0.0, disp_size);
+      if (linval == 2) { // dummy atom = F
+        dummy[0] = geom[ 3*B+0 ] + disp_size * eBF[0];
+        dummy[1] = geom[ 3*B+1 ] + disp_size * eBF[1];
+        dummy[2] = geom[ 3*B+2 ] + disp_size * eBF[2];
       }
-      else if (linval == 2) {
-        if (optinfo.dummy_axis_2 == 0)
-          set_dummy(disp_size, 0.0, 0.0);
-        else if (optinfo.dummy_axis_2 == 1)
-          set_dummy(0.0, disp_size, 0.0);
-        else if (optinfo.dummy_axis_2 == 2)
-          set_dummy(0.0, 0.0, disp_size);
+      else { // 1st dummy atom (for linval == 1) is at (B + eBA x eBF) 
+        cross_product(eBA,eBF,eBD);
+        dummy[0] = geom[ 3*B+0 ] + disp_size * eBD[0];
+        dummy[1] = geom[ 3*B+1 ] + disp_size * eBD[1];
+        dummy[2] = geom[ 3*B+2 ] + disp_size * eBD[2];
       }
 
-  //fprintf(outfile,"dummy atom %10.5lf %10.5lf %10.5lf\n",
-  //dummy[0],dummy[1],dummy[2]);
-   /* calculate location of second dummy - this hasn't worked well so far */
-  /*
-      if (linval == 2) {
-        //positive displacement is toward eBD X eBA
-        for (j=0;j<3;++j) {
-          eBD[j] = dummy[j] - geom[3*B+j];
-          eBA[j] = geom[3*A+j] - geom[3*B+j];
-        }
-        rBD = sqrt( SQR(eBD[0])+SQR(eBD[1])+SQR(eBD[2]) );
-        rBA = sqrt( SQR(eBA[0])+SQR(eBA[1])+SQR(eBA[2]) );
-        scalar_div(rBD,eBD);
-        scalar_div(rBA,eBA);
-        cross_product(eBD,eBA,tmp);
-
-        set_dummy(i,disp_size*tmp[0],disp_size*tmp[1],disp_size*tmp[2]);
-        dummy[0] = get_dummy(i,0);
-        dummy[1] = get_dummy(i,1);
-        dummy[2] = get_dummy(i,2);
-      }
-  */
-
-      // angle = <ABD + <CBD
-      // compute val of A-B-D
+      // angle = <A-B-D/F + <C-B-D/F
+      // compute val of A-B-D/F
       for (j=0;j<3;++j) {
         eBA[j] = geom[3*A+j] - geom[3*B+j];
         eBC[j] = dummy[j] - geom[3*B+j];
@@ -189,9 +187,9 @@ class linb_class {
       if (dotprod > 1.0) angle_ABD = 0.0;
       else if (dotprod < -1.0) angle_ABD = _pi;
       else angle_ABD = acos(dotprod)*180.0/_pi;
-      //fprintf(outfile,"angleABD %20.15lf\n",angle_ABD);
+     //fprintf(outfile,"angle(A-B-D/F): %20.15lf\n",angle_ABD);
 
-      // compute val of CBD
+      // compute val of C-B-D/F
       for (j=0;j<3;++j) {
         eBA[j] = geom[3*C+j] - geom[3*B+j];
         eBC[j] = dummy[j] - geom[3*B+j];
@@ -201,12 +199,10 @@ class linb_class {
       scalar_div(rBA,eBA);
       scalar_div(rBC,eBC);
       dot_array(eBA,eBC,3,&dotprod);
-      //fprintf(outfile,"dotprod %20.15lf\n",dotprod);
-
       if (dotprod > (1.0-MIN_LIN_COS)) angle_CBD = 0.0;
       else if (dotprod < (-1.0+MIN_LIN_COS)) angle_CBD = _pi;
       else angle_CBD = acos(dotprod)*180.0/_pi;
-      //fprintf(outfile,"angleCBD %20.15lf\n",angle_CBD);
+     //fprintf(outfile,"angle(<C-B-D/F): %20.15lf\n",angle_CBD);
 
       val = angle_ABD+angle_CBD;
       return;
@@ -219,25 +215,6 @@ class linb_class {
       int j;
       double rAD, rBD, rCD, eAD[3], eBD[3], eCD[3];
 
-      /* try just using dummy atom directions for s vectors */
-      rBD = sqrt( SQR(dummy[0])+SQR(dummy[1])+SQR(dummy[2]) );
-      scalar_div(rBD,dummy);
-
-      // A and C go away from D
-      set_s_A(-dummy[0], -dummy[1], -dummy[2]);
-      set_s_C(-dummy[0], -dummy[1], -dummy[2]);
-      // B goes toward D
-      set_s_B(dummy[0], dummy[1], dummy[2]);
-
-      /* // zoom D way out along BD 
-      for (j=0;j<3;++j)
-        eBD[j] = dummy[j] - geom[3*B+j];
-
-      rBD = sqrt( SQR(eBD[0])+SQR(eBD[1])+SQR(eBD[2]) );
-      scalar_div(rBD,eBD);
-      for (j=0;j<3;++j)
-        dummy[j] += eBD[j] * 1.0E9; 
-
       for (j=0;j<3;++j) {
         eAD[j] = dummy[j] - geom[3*A+j];
         eBD[j] = dummy[j] - geom[3*B+j];
@@ -246,14 +223,16 @@ class linb_class {
       rAD = sqrt( SQR(eAD[0])+SQR(eAD[1])+SQR(eAD[2]) );
       rBD = sqrt( SQR(eBD[0])+SQR(eBD[1])+SQR(eBD[2]) );
       rCD = sqrt( SQR(eCD[0])+SQR(eCD[1])+SQR(eCD[2]) );
-      scalar_div(rAD,eAD);
-      scalar_div(rBD,eBD);
-      scalar_div(rCD,eCD);
+      scalar_div(rAD, eAD);
+      scalar_div(rBD, eBD);
+      scalar_div(rCD, eCD);
+
       // A and C go away from D
       set_s_A(-eAD[0], -eAD[1], -eAD[2]);
       set_s_C(-eCD[0], -eCD[1], -eCD[2]);
       // B goes toward D
-      set_s_B(eBD[0], eBD[1], eBD[2]); */
+      set_s_B( eBD[0],  eBD[1],  eBD[2]);
+
       return;
     }
 

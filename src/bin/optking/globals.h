@@ -50,6 +50,7 @@ EXTERN struct OPTInfo {
   int print_hessian;
   int print_cartesians;
   int print_fconst;
+  int print_debug_backtransformation;
 
 /* optimization parameters */
   bool ts;  // search for a transition state? 

@@ -46,7 +46,7 @@ double **compute_G(double **B, int num_intcos, const cartesians &carts);
 void get_optinfo(void);
 void get_syminfo(const simples_class &simples);
 
-void disp_user(const cartesians &carts, simples_class & simples, const salc_set &all_salcs);
+int disp_user(const cartesians &carts, simples_class & simples, const salc_set &all_salcs);
 
 int make_disp_irrep(const cartesians &carts, simples_class &simples, const salc_set &all_salcs);
 int make_disp_nosymm(const cartesians &carts, simples_class &simples, const salc_set &all_salcs);

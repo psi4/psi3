@@ -53,21 +53,24 @@ bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &a
   B = compute_B(simples, all_salcs);
   q = compute_q(simples, all_salcs);
 
-  // fprintf(outfile,"Current q internal coordinates\n");
-  // for (i=0;i<nsalcs;++i) fprintf(outfile,"%15.10lf",q[i]);
+  if (optinfo.print_debug_backtransformation) {
+    fprintf(outfile,"Current q internal coordinates\n");
+    for (i=0;i<nsalcs;++i) fprintf(outfile,"%15.10lf",q[i]);
+    fprintf(outfile,"\n");
+  }
 
   for (i=0;i<nsalcs;++i) {
     q[i] += dq[i];
   }
 
-  // fprintf(outfile,"Target q internal coordinates\n");
-  // for (i=0;i<nsalcs;++i) fprintf(outfile,"%15.10lf",q[i]);
+  if (optinfo.print_debug_backtransformation) {
+    fprintf(outfile,"Target q internal coordinates\n");
+    for (i=0;i<nsalcs;++i) fprintf(outfile,"%15.10lf",q[i]);
+    fprintf(outfile,"\n");
+  }
 
   x = carts.get_coord();
   scalar_mult(_bohr2angstroms,x,dim_carts); // x now holds geom in Ang
-
-  // fprintf(outfile,"Target internal coordinates\n");
-  // for (i=0;i<nsalcs;++i) fprintf(outfile,"%15.10lf\n",q[i]);
 
   fprintf(outfile,"\n\tBack-transformation to cartesian coordinates...\n");
   fprintf(outfile,"\t------------------------------------\n");
@@ -83,6 +86,14 @@ bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &a
     G = compute_G(B, nsalcs, carts);
     G_inv = symm_matrix_invert(G, nsalcs, 0,optinfo.redundant);
 
+    if (optinfo.print_debug_backtransformation) {
+      fprintf(outfile,"G matrix\n");
+      print_mat2(G,nsalcs, nsalcs,outfile);
+      fprintf(outfile,"\nG matrix inverted with redundant = %d\n", optinfo.redundant);
+      fprintf(outfile,"G_inv matrix\n");
+      print_mat2(G_inv,nsalcs, nsalcs,outfile);
+    }
+
     // BMAT computes G_inv only once like the following.
     // OPTKING recomputes G_inv at each iteration, which
     // is slower but gives better convergence.
@@ -96,21 +107,23 @@ bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &a
     // A dq = dx
     opt_mmult(A,0,&dq,1,&dx,1,dim_carts, nsalcs,1,0);
 
-    /*
-    fprintf(outfile,"dx increments\n");
-    for (i=0;i<dim_carts;++i)
-      fprintf(outfile,"%15.10lf\n",dx[i]);
-    */
+    if (optinfo.print_debug_backtransformation) {
+      fprintf(outfile,"dx increments\n");
+      for (i=0;i<dim_carts;++i)
+        fprintf(outfile,"%15.10lf\n",dx[i]);
+      fprintf(outfile,"\n");
+    }
 
     // Compute new cart coordinates in au, then B matrix
     for (i=0;i<dim_carts;++i)
       new_x[i] = (x[i] + dx[i]) / _bohr2angstroms;
 
-    /*
-    fprintf(outfile,"new x \n");
-    for (i=0;i<dim_carts;++i)
-      fprintf(outfile,"%15.10lf\n", new_x[i]);
-    */
+    if (optinfo.print_debug_backtransformation) {
+      fprintf(outfile,"new x \n");
+      for (i=0;i<dim_carts;++i)
+        fprintf(outfile,"%15.10lf\n", new_x[i]);
+      fprintf(outfile,"\n");
+    }
 
     simples.compute(new_x);
     // simples.print(outfile,1);
@@ -122,15 +135,20 @@ bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &a
     free_array(new_q);
     new_q = compute_q(simples, all_salcs);
 
-  // fprintf(outfile,"Obtained q internal coordinates\n");
-  // for (i=0;i<nsalcs;++i) fprintf(outfile,"%15.10lf",new_q[i]);
+    if (optinfo.print_debug_backtransformation) {
+      fprintf(outfile,"Obtained q internal coordinates\n");
+      for (i=0;i<nsalcs;++i) fprintf(outfile,"%15.10lf",new_q[i]);
+      fprintf(outfile,"\n");
+    }
 
     for (i=0;i< nsalcs;++i)
       dq[i] = q[i] - new_q[i];
  
-    // fprintf(outfile,"New internal coordinate errors dq\n");
-    // for (i=0;i<nsalcs;++i)
-    // fprintf(outfile,"%d, %15.10lf\n",i,dq[i]);
+    if (optinfo.print_debug_backtransformation) {
+       fprintf(outfile,"New internal coordinate errors dq\n");
+       for (i=0;i<nsalcs;++i)
+       fprintf(outfile,"%d, %15.10lf\n",i,dq[i]);
+    }
 
     // Test for convergence of iterations
     dx_sum = dq_sum = 0.0;

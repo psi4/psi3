@@ -185,10 +185,13 @@ double **symm_matrix_invert(double **A, int dim, int print_det, int redundant) {
   else {
     for (i=0;i<dim;++i) {
       det *= A_vals[i];
-      if (fabs(A_vals[i]) > REDUNDANT_EVAL_TOL)
+      if (fabs(A_vals[i]) > REDUNDANT_EVAL_TOL) {
         A_inv[i][i] = 1.0/A_vals[i];
-      else
+      }
+      else {
+fprintf(outfile,"\ndetected redundant eval - setting inverse element to 0 \n");
         A_inv[i][i] = 0.0;
+      }
     }
     if (print_det)
       fprintf(outfile,"Determinant: %10.6e\n",det);

@@ -121,13 +121,18 @@ void get_optinfo(void) {
   ip_boolean("PRINT_CARTESIANS", &(optinfo.print_cartesians),0);
   optinfo.print_fconst = 0;
   ip_boolean("PRINT_FCONST", &(optinfo.print_fconst),0);
+  optinfo.print_debug_backtransformation = 0;
+  ip_boolean("PRINT_DEBUG_BACKTRANSFORMATION", &(optinfo.print_debug_backtransformation),0);
 
   /* optimization parameters */
   optinfo.optimize = 1;
   if (ip_exist("DISPLACEMENTS",0)) {
-    optinfo.do_only_displacements = 1;
-    optinfo.mode = MODE_DISP_USER;
-    optinfo.optimize = 0;
+    if ((optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_ENERGY_SAVE)
+      && (optinfo.mode != MODE_GRAD_ENERGY)) {
+      optinfo.do_only_displacements = 1;
+      optinfo.mode = MODE_DISP_USER;
+      optinfo.optimize = 0;
+    }
   }
 
   optinfo.freq_irrep = -1;
@@ -223,10 +228,10 @@ void get_optinfo(void) {
     optinfo.step_limit = tval;
 
   /* takes values of 1,2,3 for x,y,z for location of first dummy of linear bend*/
-  optinfo.dummy_axis_1 = 2;
+  optinfo.dummy_axis_1 = 1;
   ip_data("DUMMY_AXIS_1","%d",&(optinfo.dummy_axis_1),0);
   optinfo.dummy_axis_1 -= 1;
-  optinfo.dummy_axis_2 = 3;
+  optinfo.dummy_axis_2 = 2;
   ip_data("DUMMY_AXIS_2","%d",&(optinfo.dummy_axis_2),0);
   optinfo.dummy_axis_2 -= 1;
 
