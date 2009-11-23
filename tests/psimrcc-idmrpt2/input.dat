@@ -12,7 +12,7 @@ psi: (
     F
     F 1 1.41193
   )
-  convergence     =   12
+  convergence     =   14
   freeze_core     = true
 )
 
