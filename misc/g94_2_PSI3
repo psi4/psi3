@@ -149,13 +149,13 @@ MAIN: while (<STDIN>) {
 	  print "\n  (S  ";
 	  for($i=0; $i<$num_prim; $i++) {
              ($exp[$i], $s_coeff[$i], $p_coeff[$i] ) = split " ", <STDIN>;
-             printf "  ( %20.10f   %20.10f)", $exp[$i],$s_coeff[$i];
+             printf "  ( %20s   %20s)", $exp[$i],$s_coeff[$i];
              $i != $num_prim - 1 && print "\n      ";
              } 
 	  print ")";
           print "\n  (P  ";
 	  for($i=0; $i<$num_prim2; $i++) {
-             printf "  ( %20.10f   %20.10f)", $exp[$i],$p_coeff[$i];
+             printf "  ( %20s   %20s)", $exp[$i],$p_coeff[$i];
              $i != $num_prim - 1 && print "\n      ";
 	     } 
 	  print "";
@@ -166,7 +166,7 @@ MAIN: while (<STDIN>) {
          # Read in each primitive
           for ($i=0; $i<$num_prim; $i++) {
              ($exp, $coeff) = split " ", <STDIN>;
-             printf "  ( %20.10f   %20.10f)", $exp,$coeff;
+             printf "  ( %20s   %20s)", $exp,$coeff;
              $i != $num_prim - 1 && print "\n      ";
              }    
      }
