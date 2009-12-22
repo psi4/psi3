@@ -285,7 +285,7 @@ void print_step(int npairs, int steptype)
 
   chkpt_init(PSIO_OPEN_OLD);
   if (chkpt_exist("State averaged energy")) {
-    energy = chkpt_rd_e_labeled("State averged energy");
+    energy = chkpt_rd_e_labeled("State averaged energy");
   }
   else
     energy = chkpt_rd_etot();
