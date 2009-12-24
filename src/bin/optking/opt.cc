@@ -45,21 +45,15 @@ command-line      internal specifier   what it does
 
 namespace psi { namespace optking {
 
-int opt_psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix,
-int argc, char *argv[], int overwrite_output);
+//int opt_psi_start(FILE** infile, FILE** outfile, char** psi_file_prefix,
+//int argc, char *argv[], int overwrite_output);
 
 void intro(int argc, char **argv);
 void chkpt_restart(char *new_prefix);
 void load_ref(const cartesians &carts);
 void free_info(int nsimples);
 
-}} // namespace psi::optking
-
-extern "C" { const char *gprgid() { const char *prgid = "OPTKING"; return(prgid); } }
-
-using namespace psi::optking;
-
-int main(int argc, char **argv) {
+PsiReturnType optking(Options &options, int argc, char *argv[]) {
 
     int i,j,a,b,dim,count,dim_carts,user_intcos, *constraints,xyz;
     int parsed=1, num_disps, disp_length;
@@ -190,7 +184,7 @@ int main(int argc, char **argv) {
       }
     }
 
-    opt_psi_start(&infile,&outfile,&psi_file_prefix,argc-parsed,argv+parsed,0);
+    //opt_psi_start(&infile,&outfile,&psi_file_prefix,argc-parsed,argv+parsed,0);
     /* init_in_out() sets the value of "infile", so we need to save it */
     fp_input = infile;
     
@@ -213,7 +207,6 @@ int main(int argc, char **argv) {
     if (fp_intco != NULL)
       fclose(fp_intco);
 
-    psio_init(); psio_ipv1_config();
     get_optinfo();
 
     // only print out information in PSIF_OPTKING
@@ -221,7 +214,7 @@ int main(int argc, char **argv) {
       printf("\n\tOptimization data from file 1, PSIF_OPTKING\n");
       opt_report(stdout);
       exit_io();
-      return 0;
+      return Success;
     }
 
     // generate simples from zmat
@@ -369,7 +362,7 @@ int main(int argc, char **argv) {
         free_matrix(H);
       } 
       exit_io();
-      return 0;
+      return Success;
     }
 
     // do optimization step by gradients
@@ -403,7 +396,8 @@ int main(int argc, char **argv) {
       //fprintf(outfile,"Returning code %d\n", a);
       exit_io();
       //fprintf(stdout, "Returning code %d\n", a);
-      return a;
+      //return a;
+      return Success; // return number of displacements in some other new way in psi4
     }
 
     // only execute a user-given displacements vector
@@ -414,7 +408,8 @@ int main(int argc, char **argv) {
       a = disp_user(carts, simples, all_salcs);
       free_info(simples.get_num());
       exit_io();
-      return a;
+      //return a;
+      return Success; // return number of displacements in some other new way in psi4
     }
 
     if (optinfo.mode == MODE_DISP_FREQ_GRAD_CART) {
@@ -423,7 +418,8 @@ int main(int argc, char **argv) {
       i = disp_freq_grad_cart(carts);
       free_info(simples.get_num());
       exit_io();
-      return i;
+      //return i;
+      return Success; // return number of displacements in some other new way in psi4
     }
     if (optinfo.mode == MODE_DISP_FREQ_ENERGY_CART) {
       fprintf(outfile,
@@ -431,7 +427,8 @@ int main(int argc, char **argv) {
       i = disp_freq_energy_cart(carts);
       free_info(simples.get_num());
       exit_io();
-      return i;
+      //return i;
+      return Success; // return number of displacements in some other new way in psi4
     }
 
     // displace along all or selected coordinates in an irrep
@@ -461,7 +458,8 @@ int main(int argc, char **argv) {
       }
       free_info(simples.get_num());
       exit_io();
-      return(num_disps);
+      //return(num_disps);
+      return Success; // return number of displacements in some other new way in psi4
     }
 
     if (optinfo.mode==MODE_FREQ_GRAD_IRREP) {
@@ -478,7 +476,7 @@ int main(int argc, char **argv) {
       }
       free_info(simples.get_num());
       exit_io();
-      return(0);
+      return Success;
     }
 
     // Calculate frequencies from gradients ignoring symmetry
@@ -488,7 +486,8 @@ int main(int argc, char **argv) {
       num_disps = make_disp_nosymm(carts, simples, all_salcs);
       free_info(simples.get_num());
       exit_io();
-      return(num_disps);
+      //return(num_disps);
+      return Success; // return number of displacements in some other new way in psi4
     }
 
     if (optinfo.mode==MODE_FREQ_GRAD_NOSYMM) {
@@ -498,7 +497,8 @@ int main(int argc, char **argv) {
       freq_grad_nosymm(carts, simples, all_salcs);
       free_info(simples.get_num());
       exit_io();
-      return(0);
+      //return(0);
+      return Success;
     }
 
 
@@ -507,7 +507,8 @@ int main(int argc, char **argv) {
       load_ref(carts);
       free_info(simples.get_num());
       exit_io();
-      return 0;
+      //return 0;
+      return Success;
     }
 
     // save the gradient and increment disp_num
@@ -515,7 +516,8 @@ int main(int argc, char **argv) {
       grad_save(carts);
       free_info(simples.get_num());
       exit_io();
-      return 0;
+      //return 0;
+      return Success;
     }
 
     // save the energy and increment disp_num
@@ -523,7 +525,8 @@ int main(int argc, char **argv) {
       energy_save();
       free_info(simples.get_num());
       exit_io();
-      return 0;
+      //return 0;
+      return Success;
     }
 
     int total_num_disps;
@@ -574,7 +577,8 @@ int main(int argc, char **argv) {
       free_matrix(geom2D);
       free_info(simples.get_num());
       exit_io();
-      return(0);
+      //return(0);
+      return Success; // return number of displacements in some other new way in psi4
     }
 
     if (optinfo.mode == MODE_GRAD_ENERGY) {
@@ -584,14 +588,16 @@ int main(int argc, char **argv) {
       grad_energy(carts, simples, symm_salcs);
       free_info(simples.get_num());
       exit_io();
-      return(0);
+      //return(0);
+      return Success;
     }
 
     if (optinfo.mode == MODE_FREQ_ENERGY) {
       fprintf(outfile,"\n ** frequencies by energies not yet implemented. **\n");
       free_info(simples.get_num());
       exit_io();
-      return(0);
+      //return(0);
+      return Success;
     }
 
 
@@ -600,14 +606,16 @@ int main(int argc, char **argv) {
       freq_grad_cart(carts);
       free_info(simples.get_num());
       exit_io();
-      return(0);
+      //return(0);
+      return Success;
     }
     if (optinfo.mode==MODE_FREQ_ENERGY_CART) {
       fprintf(outfile,"\n ** Calculating frequencies from energies. **\n");
       freq_energy_cart();
       free_info(simples.get_num());
       exit_io();
-      return(0);
+      //return(0);
+      return Success;
     }
 
     if (optinfo.mode == MODE_TEST_BMAT) {
@@ -616,7 +624,8 @@ int main(int argc, char **argv) {
       test_B(carts,simples,symm_salcs);
       free_info(simples.get_num());
       exit_io();
-      return (0);
+      //return (0);
+      return Success;
     }
 
     if (optinfo.mode == MODE_RESET_PREFIX) {
@@ -687,10 +696,9 @@ int main(int argc, char **argv) {
                 (char *) &(optinfo.disp_num), sizeof(int));
       close_PSIF();
     }
-    return(0);
+    //return(0);
+    return Success;
 }
-
-namespace psi { namespace optking {
 
 /***  INTRO   prints into ***/
 void intro(int argc, char **argv) {

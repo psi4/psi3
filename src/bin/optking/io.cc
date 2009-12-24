@@ -18,12 +18,12 @@ namespace psi { namespace optking {
 // code == 1 : writing/appending
 // code == 2 : reading
 void opt_ffile(FILE **fptr, const char *suffix, int code) {
-  ffile(fptr, suffix, code);
+  ffile(fptr, const_cast<char *>(suffix), code);
 }
 
 // same as above but do not abort if requested file is not present
 void opt_ffile_noexit(FILE **fptr, const char *suffix, int code) {
-  ffile_noexit(fptr, suffix, code);
+  ffile_noexit(fptr, const_cast<char *>(suffix), code);
 }
 
 // determine input and output file pointers
@@ -44,8 +44,8 @@ int opt_psi_stop(FILE* infile, FILE* outfile, char* psi_file_prefix) {
 
 void exit_io(void) {
   fprintf(outfile,"\n******** OPTKING execution completed ********\n\n");
-  psio_done();
-  opt_psi_stop(infile,outfile,psi_file_prefix);
+  //psio_done();
+  //opt_psi_stop(infile,outfile,psi_file_prefix);
 }
 
 // matrix multiplication
