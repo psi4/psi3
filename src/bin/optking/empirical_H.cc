@@ -15,7 +15,6 @@
 
 #include <cov_radii.h>
 #include <libpsio/psio.h>
-#include <physconst.h>
 
 namespace psi { namespace optking {
 

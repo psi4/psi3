@@ -120,36 +120,36 @@ salc_set :: salc_set(const char *keyword)
   strcpy(name,keyword);
 
   num=0;
-  ip_count(const_cast<char *>(keyword),&num,0);
+  ip_count(keyword,&num,0);
   for (i=0;i<num;++i) {
     label_pos = 0;
     simple_pos = 1;
     coeff_pos = 2;
     a = 0;
-    ip_count(const_cast<char *>(keyword),&a,1,i);
+    ip_count(keyword,&a,1,i);
     if (a < 4)  {
       buffer[0] = '\0';
-      if ( ip_string(const_cast<char *>(keyword),&buffer,2,i,label_pos) != 0 ) {
+      if ( ip_string(keyword,&buffer,2,i,label_pos) != 0 ) {
         --simple_pos;
         --coeff_pos;
       }
       salc_array[i].set_label(buffer);
       simple_length = 0;
-      ip_count(const_cast<char *>(keyword),&simple_length,2,i,simple_pos);
+      ip_count(keyword,&simple_length,2,i,simple_pos);
       salc_array[i].set_length(simple_length);
       for (j=0;j<simple_length;++j) {
-        ip_data(const_cast<char *>(keyword),"%d",&a,3,i,simple_pos,j);
+        ip_data(keyword,"%d",&a,3,i,simple_pos,j);
         salc_array[i].set_simple(j,a);
       }
       coeff_length = 0;
-      ip_count(const_cast<char *>(keyword),&coeff_length,2,i,coeff_pos);
+      ip_count(keyword,&coeff_length,2,i,coeff_pos);
       if (coeff_length == 0) {
         for (j=0;j<simple_length;++j)
           salc_array[i].set_coeff(j,1.0);
       }
       else if (coeff_length == simple_length) {
         for (j=0;j<coeff_length;++j) {
-          ip_data(const_cast<char *>(keyword),"%lf",&f,3,i,coeff_pos,j);
+          ip_data(keyword,"%lf",&f,3,i,coeff_pos,j);
           salc_array[i].set_coeff(j,f);
         }
       }
