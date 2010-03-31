@@ -697,7 +697,7 @@ void cleanup()
   ovlp /= num_elec;
   epot = etot-ekin;
   enpot -= ekin;
-  virial = epot/etot;
+  virial = epot/ekin;
       
   if(uhf)
     s2 = ssquare();
@@ -727,7 +727,7 @@ void cleanup()
   fprintf(outfile,"%8cnuc. attr. energy  = %20.12f\n",' ',enpot);
   fprintf(outfile,"%8celec. rep. energy  = %20.12f\n",' ',epot-enpot);
   fprintf(outfile,"%8cpotential energy   = %20.12f\n",' ',epot);
-  fprintf(outfile,"%8cvirial theorem     = %20.12f\n",' ',virial);
+  fprintf(outfile,"%8cvirial ratio (V/T) = %20.12f\n",' ',virial);
   fprintf(outfile,"%8cwavefunction norm  = %20.12f\n",' ',ovlp);
   if(uhf)
     fprintf(outfile,"%8c<S^2>              = %20.12f\n",' ',s2); 
