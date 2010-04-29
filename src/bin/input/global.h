@@ -70,6 +70,9 @@ EXTERN int expert;                  /*If expert is true - safety checks are off 
 EXTERN char *frozen_core;           /*Frozen core option*/
 EXTERN char *frozen_virt;           /*Frozen virtuals option*/
 
+EXTERN double lindep_cutoff;    /* throw away eigenvectors of the SO basis set metric
+                                   smaller than this factor times the maximum eigenvalue of the metric */
+
 /*Labels*/
 EXTERN const char *label;                 /*Label*/
 

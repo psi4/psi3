@@ -80,6 +80,7 @@ void shalf(void)
   double **shalf;
   double tol = 1.0e-20;
   double min_eval = 100000.0;
+  double max_eval = -100000.0;
   struct symm *s;
   int info, lwork, *ipiv;
   double *work, **P, **T, **X;
@@ -102,10 +103,15 @@ void shalf(void)
 
       rsp(nn,nn,ioff[nn],s->smat,eig_vals,1,eig_vecs,tol);
 
-      /*--- Find the lowest eigenvalue ---*/
-      for(ii=0; ii < nn ; ii++)
-	if (eig_vals[ii] < min_eval)
-	  min_eval = eig_vals[ii];
+      /*--- Find the lowest and highest eigenvalues ---*/
+      for(ii=0; ii < nn ; ii++) {
+        const double eval = eig_vals[ii];
+        if (eval < min_eval)
+          min_eval = eval;
+        if (eval > max_eval)
+          max_eval = eval;
+      }
+      const double eval_cutoff = lindep_cutoff * max_eval;
 
       if(print & 64) {
 	fprintf(outfile,"\noverlap eigenstuff\n");
@@ -116,7 +122,7 @@ void shalf(void)
 	the dangerously small ones ---*/
       num_mo = 0;
       for(ii=0; ii < nn ; ii++)
-	if (eig_vals[ii] >= LINDEP_CUTOFF) {
+	if (eig_vals[ii] >= eval_cutoff) {
 	  eig_vals[ii] = 1.0/sqrt(eig_vals[ii]);
 	  num_mo++;
 	}
@@ -127,8 +133,8 @@ void shalf(void)
       mxcoef2 += ioff[nn];
       nmo += num_mo;
       if (num_mo < nn)
-	fprintf(outfile,"\n  In symblk %d %d eigenvectors of S with eigenvalues < %lf are thrown away",
-		i,nn-num_mo,LINDEP_CUTOFF);
+	fprintf(outfile,"\n  In symblk %d %d eigenvectors of S with eigenvalues < %lf times max_eval=%lf are thrown away",
+		i,nn-num_mo,lindep_cutoff,max_eval);
 
       /* form 'sahalf' matrix sahalf = U*(s-1/2)  */
 
@@ -157,8 +163,10 @@ void shalf(void)
   free(eig_vals);
   free_block(eig_vecs);
 
-  fprintf(outfile,"\n  The lowest eigenvalue of the overlap matrix was %e\n\n",
+  fprintf(outfile,"\n  The lowest  eigenvalue of the overlap matrix was %e",
 	  min_eval);
+  fprintf(outfile,"\n  The highest eigenvalue of the overlap matrix was %e\n\n",
+      max_eval);
    
 }
 

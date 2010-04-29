@@ -7,6 +7,7 @@
 #include "common.h"
 #include <libipv1/ip_lib.h>
 #include <libchkpt/chkpt.h>
+#include <chkpt_params.h>
 
 namespace psi { namespace cscf {
 
@@ -185,6 +186,9 @@ void scf_input(ip_value_t* ipvalue)
    }
 
    errcod = ip_data("CONVERGENCE","%d",&scf_conv,0);
+
+   errcod = ip_data("LINDEP_CUTOFF","%f",&lindep_cutoff,0);
+   if(errcod != IPE_OK) lindep_cutoff = LINDEP_CUTOFF;
 
    if (ksdft){
        functional = (char *)determine_functional();

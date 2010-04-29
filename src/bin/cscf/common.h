@@ -269,6 +269,9 @@ EXTERN int ediff;
 EXTERN int itap30,itap34,itapS,itapT,itapV,itap33,itap92,itap93,itapDSCF;
 EXTERN double alpha1,alpha2,alpha3;  /* two configuration things */
 
+EXTERN double lindep_cutoff;    /* throw away eigenvectors of the SO basis set metric
+                                   smaller than this factor times the maximum eigenvalue of the metric */
+
 EXTERN int ioff[MAXIOFF];       /* matrix offsets */
 
 EXTERN double *alpha, *beta;    /* arrays with energy coupling coeffs */

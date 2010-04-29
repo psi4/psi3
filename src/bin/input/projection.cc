@@ -212,7 +212,7 @@ double **canon_orthog(double **S11)
   double **X;
   double **symblk, **transmat;
   double *evals, **evecs;
-  double feval, min_eval, sahalf;
+  double feval, min_eval, max_eval, sahalf;
 
   /*---------------------------------------------
     Diagonalize sym. blocks of S and find the
@@ -224,6 +224,7 @@ double **canon_orthog(double **S11)
   evecs = block_matrix(num_so,num_so);
   orbspi = init_int_array(nirreps);
   min_eval = 100000.0;
+  max_eval = -100000.0;
   so_offset = 0;
   oo_offset = 0;
   for(irrep=0;irrep<nirreps;irrep++) {
@@ -235,10 +236,12 @@ double **canon_orthog(double **S11)
 
 	  sq_rsp(blksz,blksz,symblk,evals,1,evecs,1.0E-14);
 	  if (min_eval > evals[0]) min_eval = evals[0];
+      if (max_eval < evals[blksz-1]) max_eval = evals[blksz-1];
+      const double eval_cutoff = max_eval * lindep_cutoff;
 	  /* count the number of linearly-independent orthogonal orbitals */
 	  for(oo=0;oo<blksz;oo++) {
 	      feval = fabs(evals[oo]);
-	      if (feval > LINDEP_CUTOFF)
+	      if (feval > eval_cutoff)
 		  orbspi[irrep]++;
 	  }
 	  

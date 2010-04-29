@@ -9,6 +9,7 @@
 #include <cstring>
 #include "input.h"
 #include <physconst.h>
+#include <chkpt_params.h>
 #include "global.h"
 #include "defines.h"
 
@@ -139,6 +140,9 @@ void parsing()
      errcod = ip_string("FREEZE_VIRT",&frozen_virt,0);
      if (frozen_virt == NULL)
        frozen_virt = strdup("FALSE");
+
+     errcod = ip_data("LINDEP_CUTOFF","%f",&lindep_cutoff,0);
+     if(errcod != IPE_OK) lindep_cutoff = LINDEP_CUTOFF;
 
      return;
 }
