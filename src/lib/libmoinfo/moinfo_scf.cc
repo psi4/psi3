@@ -82,6 +82,8 @@ void MOInfoSCF::read_mo_spaces()
 
     intvec docc_ref;
     intvec actv_ref;
+    docc_ref.assign(nirreps_ref,0);
+    actv_ref.assign(nirreps_ref,0);
 
     // build orbital information for current point group
     read_mo_space(nirreps_ref,ndocc,docc_ref,"DOCC");
