@@ -63,7 +63,7 @@ void PSIO::wt_toclen(unsigned int unit, ULI toclen) {
   errcod =:: write(stream, (char *) &toclen, sizeof(ULI));
   if(errcod != sizeof(ULI)) {
     fprintf(stderr, "PSIO_ERROR: Failed to write toclen to unit %d.\n", unit);
-    psio_error(unit,PSIO_ERROR_WRITE);
+    exit(_error_exit_code_);
   }
 }
 
