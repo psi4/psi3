@@ -55,6 +55,10 @@ typedef struct {
     psio_vol vol[PSIO_MAXVOL];
     ULI toclen;
     psio_tocentry *toc;
+#ifdef PSIO_STATS
+    ULI readlen;
+    ULI writlen;
+#endif
 } psio_ud;
 
 /** A convenient address initialization struct */

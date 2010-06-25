@@ -3,6 +3,7 @@
 
 #include <string>
 #include <map>
+#include <vector>
 
 #include <libpsio/config.h>
 
@@ -105,22 +106,20 @@ namespace psi {
       ///  Write the table of contents for file number 'unit'. NB: This function should NOT call psio_error because the latter calls it!
       void tocwrite(unsigned int unit);
 
+      /// removes all files managed by this object
+      void purge();
+
       /// Upon catastrophic failure, the library will exit() with this code. The default is 1, but can be overridden.
       static int _error_exit_code_;
 
     private:
       /// vector of units
-      psio_ud *psio_unit;
+      std::vector<psio_ud> psio_unit;
 
       typedef std::map<std::string,std::string> KWDMap;
       /// library configuration is described by a set of keywords
       KWDMap files_keywords_;
 
-#ifdef PSIO_STATS
-      ULI *psio_readlen;
-      ULI *psio_writlen;
-#endif
-      
       /// Library state variable
       int state_;
 

@@ -42,8 +42,8 @@ unsigned int PSIO::get_numvols(unsigned int unit) {
 
 extern "C" {
   /*!
-   ** PSIO_GET_NUMVOLS_DEFAULT(): Get the number of volumes that file 
-   ** number 'unit' is split across.
+   ** PSIO_GET_NUMVOLS_DEFAULT(): Get the default number of volumes that Psio file
+   ** is split across.
    **
    ** \ingroup PSIO
    */

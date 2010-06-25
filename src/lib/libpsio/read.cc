@@ -57,7 +57,7 @@ void PSIO::read(unsigned int unit, const char *key, char *buffer, ULI size,
   rw(unit, buffer, start_data, size, 0);
   
 #ifdef PSIO_STATS
-  psio_readlen[unit] += size;
+  psio_unit[unit].readlen += size;
 #endif  
 }
 

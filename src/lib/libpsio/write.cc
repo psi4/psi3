@@ -108,7 +108,7 @@ void PSIO::write(unsigned int unit, const char *key, char *buffer, ULI size,
   rw(unit, buffer, start_data, size, 1);
   
 #ifdef PSIO_STATS
-  psio_writlen[unit] += size;
+  psio_unit[unit].writlen += size;
 #endif
 }
 

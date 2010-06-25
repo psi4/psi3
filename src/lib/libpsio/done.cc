@@ -25,25 +25,22 @@ PSIO::~PSIO() {
   fprintf(io_out, "Run at: %s\n", ctime(&my_time));
   fprintf(io_out, "Unit      Read(kB)    Write(kB)\n");
   fprintf(io_out, "-------------------------------\n");
-  for(i=0; i < PSIO_MAXUNIT; i++) {
-    total_read += psio_readlen[i];
-    total_write += psio_writlen[i];
+  for(i=0; i < psio_unit.size(); i++) {
+    total_read += psio_unit[i].readlen;
+    total_write += psio_unit[i].writlen;
 
-    if(psio_readlen[i] || psio_writlen[i])
+    if(psio_unit[i].readlen || psio_unit[i].writlen)
     fprintf(io_out, "%3d   %10.1f   %10.1f\n",i,
-        ((double) psio_readlen[i])/((double) 1024),
-        ((double) psio_writlen[i])/((double) 1024));
+        ((double) psio_unit[i].readlen)/((double) 1024),
+        ((double) psio_unit[i].writlen)/((double) 1024));
   }
   fprintf(io_out, "-------------------------------\n");
   fprintf(io_out, "Total %10.1f   %10.1f\n",
       ((double) total_read)/((double) 1024),
       ((double) total_write)/((double) 1024));
   fclose(io_out);
-  free(psio_readlen);
-  free(psio_writlen);
 #endif
   
-  free(psio_unit);
   state_ = 0;
 }
 
