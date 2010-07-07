@@ -113,8 +113,9 @@ void get_params()
   }
   // any MCSCF-type wavefunction needs multiple transforms so don't delete
   // the AO two-electron ints
-  if ((strcmp(params.wfn,"OOCCD")==0 || strcmp(params.wfn,"DETCAS")==0 ||
-       strcmp(params.wfn,"CASSCF")==0|| strcmp(params.wfn,"RASSCF")==0))
+  if ((!strcmp(params.wfn,"OOCCD") || !strcmp(params.wfn,"DETCAS") ||
+       !strcmp(params.wfn,"CASSCF") || !strcmp(params.wfn,"RASSCF") ||
+       !strcmp(params.wfn,"BCCD") || !strcmp(params.wfn,"BCCD_T")))
     params.delete_tei = 0;
 
   errcod = ip_boolean("DELETE_TEI", &params.delete_tei, 0);
