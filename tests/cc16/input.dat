@@ -6,7 +6,6 @@ psi: (
   dertype = none
   multp = 3
   freeze_core = true
-  delete_tei = false
   basis = "cc-pVDZ"
   zmat = (
     c

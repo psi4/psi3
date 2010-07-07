@@ -7,7 +7,6 @@ psi: (
   reference = rhf
   dertype = none
   freeze_core = true
-  delete_tei = false
   basis = "6-31G**"
   zmat = (
     o
