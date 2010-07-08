@@ -1,0 +1,5215 @@
+******************************************************************************
+PSI3 started on Herbert.local at Thu Jul  8 10:26:52 2010
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF OOCCD energy computation.
+
+The following programs will be executed:
+
+ input
+ cints
+ cscf
+ REPEAT 20
+ 20
+  transqt2
+  ccsort
+  ccenergy
+  cchbar
+  cclambda
+  ccdensity
+ END
+ psiclean
+
+******************************************************************************
+INPUT tstart called on Herbert.local
+Thu Jul  8 10:26:52 2010
+
+                                --------------
+                                    INPUT
+                                --------------
+
+  LABEL       =	Default PSI label
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /Users/mactay/software/installed/oo-cc/share/psi/pbasis.dat
+
+  Parsed basis sets from basis.dat
+Coordinates after reading z-matrices
+
+           1           2           3
+
+    1   0.0000000   0.0000000   0.0000000
+    2   0.0000000   0.0000000   1.8158377
+    3   1.7568828   0.0000000  -0.4589437
+
+  -Geometry before Center-of-Mass shift (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000     0.000000000000
+    H         0.000000000000     0.000000000000     1.815837702425
+    H         1.756882821772     0.000000000000    -0.458943691659
+
+
+  -Rotational constants (cm-1) :
+    A =   27.29804  B =   14.46080  C =    9.45313
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000    -0.124217929715     0.000000000000
+    H         1.437121049208     0.985714343657    -0.000000000000
+    H        -1.437121049208     0.985714343657    -0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  7816.54000000     0.00203100)
+           (  1175.82000000     0.01543600)
+           (   273.18800000     0.07377100)
+           (    81.16960000     0.24760600)
+           (    27.18360000     0.61183200)
+           (     3.41360000     0.24120500) )
+        (S (     9.53220000     1.00000000) )
+        (S (     0.93980000     1.00000000) )
+        (S (     0.28460000     1.00000000) )
+        (P (    35.18320000     0.01958000)
+           (     7.90400000     0.12418900)
+           (     2.30510000     0.39472700)
+           (     0.71710000     0.62737500) )
+        (P (     0.21370000     1.00000000) )
+        (D (     0.90000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    19.24060000     0.03282800)
+           (     2.89920000     0.23120800)
+           (     0.65340000     0.81723800) )
+        (S (     0.17760000     1.00000000) )
+        (P (     1.00000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 13
+    Number of primitives   = 20
+    Number of AO           = 26
+    Number of SO           = 26
+
+    Irrep    Number of SO
+    -----    ------------
+      1           13
+      2            2
+      3            4
+      4            7
+
+  -Contraction Scheme:
+    Atom     All Primitives // Unique Primitives // Shells
+    ----     ---------------------------------------------
+       1      9s 5p 1d //  9s 5p 1d //  4s 2p 1d
+       2      4s 1p //  4s 1p //  2s 1p
+       3      4s 1p //  4s 1p //  2s 1p
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.124217929715
+    H        -0.000000000000     1.437121049208     0.985714343657
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.124217929715
+    H        -0.000000000000     1.437121049208     0.985714343657
+    H        -0.000000000000    -1.437121049208     0.985714343657
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.065733302323
+    H        -0.000000000000     0.760491763300     0.521617604676
+    H        -0.000000000000    -0.760491763300     0.521617604676
+
+
+  -Geometry in the reference coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.124217929715
+    H        -0.000000000000     1.437121049208     0.985714343657
+    H        -0.000000000000    -1.437121049208     0.985714343657
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.159277970843
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9609000   0.0000000
+    3   0.9609000   1.5209835   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+INPUT tstop called on Herbert.local
+Thu Jul  8 10:26:52 2010
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+cints tstart called on Herbert.local
+Thu Jul  8 10:26:52 2010
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = Default PSI label
+    Number of atoms             = 3
+    Number of atomic orbitals   = 26
+    Number of symmetry orbitals = 26
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 16014 two-electron integrals to IWL file 33
+
+******************************************************************************
+cints tstop called on Herbert.local
+Thu Jul  8 10:26:52 2010
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+SCF tstart called on Herbert.local
+Thu Jul  8 10:26:52 2010
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  wfn          = OOCCD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = NONE
+  convergence  = 12
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.1592779708427
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 140528 bytes of core
+
+  The lowest  eigenvalue of the overlap matrix was 2.165759e-02
+  The highest eigenvalue of the overlap matrix was 4.887413e+00
+
+  Using core guess to determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 7962 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -68.7832493912    7.794253e+01    0.000000e+00    0.000000e+00
+    2       -71.5409410441    2.757692e+00    1.501960e-01    1.590000e+00
+    3       -75.3799274597    3.838986e+00    1.392751e-01    8.573119e-01
+    4       -76.0168982614    6.369708e-01    8.421478e-03    3.823741e-01
+    5       -76.0459551589    2.905690e-02    2.254991e-03    9.161663e-02
+    6       -76.0462926028    3.374439e-04    4.603781e-04    1.128028e-02
+    7       -76.0463261166    3.351385e-05    1.376285e-04    3.873479e-03
+    8       -76.0463270118    8.952105e-07    1.846750e-05    3.538100e-04
+    9       -76.0463270540    4.221538e-08    5.220981e-06    1.121095e-04
+   10       -76.0463270556    1.567329e-09    1.020460e-06    1.677206e-05
+   11       -76.0463270556    3.167600e-11    1.464555e-07    2.192681e-06
+   12       -76.0463270556    1.350031e-12    3.787960e-08    5.206008e-07
+   13       -76.0463270556    5.684342e-14    1.154636e-08    1.102927e-07
+   14       -76.0463270556   -2.842171e-14    1.038227e-09    2.836287e-08
+   15       -76.0463270556   -1.421085e-14    3.195963e-10    7.414728e-09
+   16       -76.0463270556    4.263256e-14    6.652981e-11    1.024371e-09
+   17       -76.0463270556    0.000000e+00    7.030133e-12    1.143830e-10
+   18       -76.0463270556    0.000000e+00    8.354884e-13    1.422778e-11
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.557825     2A1     -1.344148     1B2     -0.709294  
+   3A1     -0.574750     1B1     -0.502409  
+
+
+  Unoccupied orbitals
+   4A1      0.222093     2B2      0.316278     5A1      0.863893  
+   2B1      0.868184     3B2      0.900200     6A1      1.123437  
+   4B2      1.142543     7A1      1.267666     1A2      1.802305  
+   8A1      1.815062     3B1      1.970075     5B2      2.374827  
+   9A1      2.614175     6B2      2.770991     4B1      2.914142  
+   2A2      2.965283    10A1      3.263452    11A1      3.616730  
+   7B2      3.803225    12A1      4.548398    13A1     45.675589  
+
+
+      * SCF total energy   =     -76.046327055642
+        kinetic energy     =      75.987455256141
+        nuc. attr. energy  =    -199.021814668470
+        elec. rep. energy  =      46.988032356687
+        potential energy   =    -152.033782311783
+        virial ratio (V/T) =      -2.000774756824
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+SCF tstop called on Herbert.local
+Thu Jul  8 10:26:52 2010
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+TRANSQT tstart called on Herbert.local
+Thu Jul  8 10:26:52 2010
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	No
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 26
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on Herbert.local
+Thu Jul  8 10:26:52 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCSORT tstart called on Herbert.local
+Thu Jul  8 10:26:52 2010
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Make unpacked (ab|cd) =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Size of irrep 0 of <ab|cd> integrals:      0.022 (MW) /      0.178 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.007 (MW) /      0.056 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.017 (MW) /      0.139 (MB)
+	Total:                                     0.052 (MW) /      0.420 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.014 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.004 (MW) /      0.032 (MB)
+	Total:                                     0.013 (MW) /      0.101 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.002 (MW) /      0.013 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.001 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.025 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
+	One-electron energy          =   -123.03435941232905
+	Two-electron (AA) energy     =     14.43658861159577
+	Two-electron (BB) energy     =     14.43658861159577
+	Two-electron (AB) energy     =     23.39216577424853
+	Two-electron energy          =     37.82875438584431
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.04632705564205
+******************************************************************************
+CCSORT tstop called on Herbert.local
+Thu Jul  8 10:26:52 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCENERGY tstart called on Herbert.local
+Thu Jul  8 10:26:52 2010
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.046327055642053
+
+	Input parameters:
+	-----------------
+	Wave function   =    OOCCD
+	Reference wfn   =     RHF
+	Memory (Mbytes) =     256.0
+	Maxiter         =     50
+	Convergence     =     1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	AO Basis        =     NONE
+	ABCD            =     NEW
+	Cache Level     =     2
+	Cache Type      =     LOW
+	Print Level     =     0
+	Num. of threads =     1
+	# Amps to Print =     10
+	Print MP2 Amps? =     No
+	Analyze T2 Amps =     No
+	Print Pair Ener =     No
+	Local CC        =     No
+	SCS             =     False
+	MP2_SCALE_OS    =     1.200000
+	MP2_SCALE_SS    =     0.333333
+	CC_SCALE_OS     =     1.270000
+	CC_SCALE_SS     =     1.130000
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.212269420221639    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.216977962384461    2.349e-02    0.000000    0.000000    0.000000
+     2        -0.220472157883769    8.326e-03    0.000000    0.000000    0.000000
+     3        -0.220658440979326    1.755e-03    0.000000    0.000000    0.000000
+     4        -0.220700574404343    4.038e-04    0.000000    0.000000    0.000000
+     5        -0.220707785766253    7.197e-05    0.000000    0.000000    0.000000
+     6        -0.220707676356840    1.421e-05    0.000000    0.000000    0.000000
+     7        -0.220707885354588    2.758e-06    0.000000    0.000000    0.000000
+     8        -0.220707862443096    4.159e-07    0.000000    0.000000    0.000000
+     9        -0.220707861181762    7.177e-08    0.000000    0.000000    0.000000
+
+	Iterations converged.
+
+
+	Largest TIjAb Amplitudes:
+	  3   3  12  12        -0.0546351544
+	  2   2   1   1        -0.0457988238
+	  4   4  15  15        -0.0377378600
+	  2   3   1  12        -0.0344237997
+	  3   2  12   1        -0.0344237997
+	  4   4  17  17        -0.0310263817
+	  4   4  15  17        -0.0282772675
+	  4   4  17  15        -0.0282772675
+	  3   4  12  15        -0.0250451924
+	  4   3  15  12        -0.0250451924
+
+	SCF energy       (chkpt)              =  -76.046327055642024
+	Reference energy (file100)            =  -76.046327055642053
+
+	Scaled_OS MP2 correlation energy      =   -0.173158047874816
+	Scaled_SS MP2 correlation energy      =   -0.016885080735048
+	SCS-MP2 correlation energy            =   -0.190043128609864
+      * SCS-MP2 total energy                  =  -76.236370184251925
+
+	Opposite-spin MP2 correlation energy  =   -0.161614178016495
+	Same-spin MP2 correlation energy      =   -0.050655242205144
+	MP2 correlation energy                =   -0.212269420221639
+      * MP2 total energy                      =  -76.258596475863698
+
+	Scaled_OS CCSD correlation energy     =   -0.223466441443057
+	Scaled_SS CCSD correlation energy     =   -0.050567537599442
+	SCS-CCSD correlation energy           =   -0.274033979042499
+      * SCS-CCSD total energy                 =  -76.320361034684552
+
+	Opposite-spin CCSD correlation energy =   -0.175957827907919
+	Same-spin CCSD correlation energy     =   -0.044750033273843
+	CCSD correlation energy               =   -0.220707861181762
+      * CCSD total energy                     =  -76.267034916823818
+
+******************************************************************************
+CCENERGY tstop called on Herbert.local
+Thu Jul  8 10:26:53 2010
+
+user time   =       0.17 seconds =       0.00 minutes
+system time =       0.15 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCHBAR tstart called on Herbert.local
+Thu Jul  8 10:26:53 2010
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+CCHBAR tstop called on Herbert.local
+Thu Jul  8 10:26:53 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCLAMBDA tstart called on Herbert.local
+Thu Jul  8 10:26:53 2010
+
+
+			**************************
+			*        CCLAMBDA        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	Reference           (chkpt)   = 0
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (CC_INFO) =  -76.046327055642053
+	OOCCD energy        (CC_INFO) =   -0.220707861181762
+	Total OOCCD energy  (CC_INFO) =  -76.267034916823818
+
+	Input parameters:
+	-----------------
+	Maxiter       =      50
+	Convergence   = 1.0e-07
+	Restart       =     Yes
+	Cache Level   =     2
+	Model III     =     No
+	DIIS          =     Yes
+	AO Basis      =     No
+	ABCD            =     NEW
+	Local CC        =     No
+	Paramaters for left-handed eigenvectors:
+	    Irr   Root  Ground-State?    EOM energy        R0
+	  1   0     0        Yes       0.0000000000   1.0000000000
+	Labels for eigenvector 1:
+	LIA 0 -1, Lia 0 -1, LIJAB 0 -1, Lijab 0 -1, LIjAb 0 -1, 2LIjAb - LIjbA 0 -1
+	Deleting old CC_LAMBDA data.
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	   0        -0.220707861181762    0.000e+00
+	   1        -0.218209263096708    1.799e-02
+	   2        -0.218690754400173    3.848e-03
+	   3        -0.218762477870464    1.475e-03
+	   4        -0.218786447634248    4.417e-04
+	   5        -0.218785755448698    1.602e-04
+	   6        -0.218784491983631    2.813e-05
+	   7        -0.218784355732621    4.932e-06
+	   8        -0.218784266650561    1.021e-06
+	   9        -0.218784237538982    1.886e-07
+	  10        -0.218784235948647    3.478e-08
+
+	Largest LIA Amplitudes:
+	          3  12         0.0086750175
+	          2   0         0.0078748992
+	          4  15         0.0052188823
+	          4  16        -0.0043564370
+	          4  19         0.0043550815
+	          1   1        -0.0039217337
+	          2   5        -0.0030771159
+	          2   1         0.0026892811
+	          1   0         0.0023770770
+	          1   8        -0.0022022668
+
+	Largest LIjAb Amplitudes:
+	  3   3  12  12        -0.0549216569
+	  2   2   1   1        -0.0455408705
+	  4   4  15  15        -0.0379436304
+	  2   3   1  12        -0.0344570795
+	  3   2  12   1        -0.0344570795
+	  4   4  17  17        -0.0306604803
+	  4   4  15  17        -0.0281456357
+	  4   4  17  15        -0.0281456357
+	  3   4  12  15        -0.0253693926
+	  4   3  15  12        -0.0253693926
+
+	Iterations converged.
+
+	Overlap <L|e^T> =        0.94213936632
+******************************************************************************
+CCLAMBDA tstop called on Herbert.local
+Thu Jul  8 10:26:54 2010
+
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.08 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCDENSITY tstart called on Herbert.local
+Thu Jul  8 10:26:54 2010
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function    =  OOCCD
+	Reference wfn    =   RHF
+	Tolerance        = 1.0e-14
+	Cache Level      = 2
+	AO Basis         = No
+	OPDM Only        = No
+	Relax OPDM       = No
+	Compute Xi       = No
+	Use Zeta         = No
+	Xi connected     = Yes
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.046327055642053
+	OOCCD energy        (CC_INFO) =   -0.220707861181762
+	Total OOCCD energy  (CC_INFO) =  -76.267034916823818
+	Number of States = 1
+
+	Ground?  State     EOM Energy       R0
+	  Yes     0A1     0.0000000000   1.00000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.232687096017913
+	IJKL energy                =    0.043285843166251
+	IJKA energy                =   -0.001390397024917
+	IJAB energy                =   -0.436663732219796
+	IBJA energy                =   -0.102598483843421
+	CIAB energy                =    0.000485657750247
+	ABCD energy                =    0.042581417078928
+	Total two-electron energy  =   -0.454299695092709
+	CCSD correlation energy    =   -0.221612599074795
+	Total CCSD energy          =  -76.267939654716841
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.987455256140905
+	Kinetic energy (corr)  =    0.153221197070456
+	Kinetic energy (total) =   76.140676453211356
+	-V/T (ref)             =    2.000774756824040
+	-V/T (corr)            =    2.440452531383588
+	-V/T (total)           =    2.001659539545726
+	Rotating orbitals.  Maximum XAI =  0.003992169955
+******************************************************************************
+CCDENSITY tstop called on Herbert.local
+Thu Jul  8 10:26:54 2010
+
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+TRANSQT tstart called on Herbert.local
+Thu Jul  8 10:26:54 2010
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	No
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 26
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on Herbert.local
+Thu Jul  8 10:26:54 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCSORT tstart called on Herbert.local
+Thu Jul  8 10:26:54 2010
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Make unpacked (ab|cd) =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Size of irrep 0 of <ab|cd> integrals:      0.022 (MW) /      0.178 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.007 (MW) /      0.056 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.017 (MW) /      0.139 (MB)
+	Total:                                     0.052 (MW) /      0.420 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.014 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.004 (MW) /      0.032 (MB)
+	Total:                                     0.013 (MW) /      0.101 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.002 (MW) /      0.013 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.001 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.025 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
+	One-electron energy          =   -123.00724384544392
+	Two-electron (AA) energy     =     14.42555449611314
+	Two-electron (BB) energy     =     14.42555449611314
+	Two-electron (AB) energy     =     23.37624483892223
+	Two-electron energy          =     37.80179933503537
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.04616653956583
+******************************************************************************
+CCSORT tstop called on Herbert.local
+Thu Jul  8 10:26:56 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+CCENERGY tstart called on Herbert.local
+Thu Jul  8 10:26:56 2010
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.046166539565831
+
+	Input parameters:
+	-----------------
+	Wave function   =    OOCCD
+	Reference wfn   =     RHF
+	Memory (Mbytes) =     256.0
+	Maxiter         =     50
+	Convergence     =     1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	AO Basis        =     NONE
+	ABCD            =     NEW
+	Cache Level     =     2
+	Cache Type      =     LOW
+	Print Level     =     0
+	Num. of threads =     1
+	# Amps to Print =     10
+	Print MP2 Amps? =     No
+	Analyze T2 Amps =     No
+	Print Pair Ener =     No
+	Local CC        =     No
+	SCS             =     False
+	MP2_SCALE_OS    =     1.200000
+	MP2_SCALE_SS    =     0.333333
+	CC_SCALE_OS     =     1.270000
+	CC_SCALE_SS     =     1.130000
+
+	Using old T1 amplitudes.
+	Using old T2 amplitudes.
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.221147713330535    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.221364182234326    1.185e-03    0.000000    0.000000    0.000000
+     2        -0.221361881286634    1.900e-04    0.000000    0.000000    0.000000
+     3        -0.221371737864527    5.061e-05    0.000000    0.000000    0.000000
+     4        -0.221373542799337    1.258e-05    0.000000    0.000000    0.000000
+     5        -0.221373757508270    2.113e-06    0.000000    0.000000    0.000000
+     6        -0.221373831599672    4.602e-07    0.000000    0.000000    0.000000
+     7        -0.221373827810080    8.950e-08    0.000000    0.000000    0.000000
+
+	Iterations converged.
+
+
+	Largest TIjAb Amplitudes:
+	  3   3  12  12        -0.0548738349
+	  2   2   1   1        -0.0458162110
+	  4   4  15  15        -0.0380594699
+	  2   3   1  12        -0.0344729187
+	  3   2  12   1        -0.0344729187
+	  4   4  17  17        -0.0310791526
+	  4   4  15  17        -0.0283947060
+	  4   4  17  15        -0.0283947060
+	  3   4  12  15        -0.0252083359
+	  4   3  15  12        -0.0252083359
+
+	SCF energy       (chkpt)              =  -76.046327055642024
+	Reference energy (file100)            =  -76.046166539565831
+
+	Scaled_OS MP2 correlation energy      =   -0.173801033599623
+	Scaled_SS MP2 correlation energy      =   -0.016944040056844
+	SCS-MP2 correlation energy            =   -0.190745073656467
+      * SCS-MP2 total energy                  =  -76.236911613222290
+
+	Opposite-spin MP2 correlation energy  =   -0.162214298026315
+	Same-spin MP2 correlation energy      =   -0.050832120170531
+	MP2 correlation energy                =   -0.213183153676933
+      * MP2 total energy                      =  -76.259349693242768
+
+	Scaled_OS CCSD correlation energy     =   -0.224217071931896
+	Scaled_SS CCSD correlation energy     =   -0.050652196068664
+	SCS-CCSD correlation energy           =   -0.274869268000560
+      * SCS-CCSD total energy                 =  -76.321035807566389
+
+	Opposite-spin CCSD correlation energy =   -0.176548875536926
+	Same-spin CCSD correlation energy     =   -0.044824952273154
+	CCSD correlation energy               =   -0.221373827810080
+      * CCSD total energy                     =  -76.267540367375915
+
+******************************************************************************
+CCENERGY tstop called on Herbert.local
+Thu Jul  8 10:26:59 2010
+
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.13 seconds =       0.00 minutes
+total time  =          3 seconds =       0.05 minutes
+******************************************************************************
+CCHBAR tstart called on Herbert.local
+Thu Jul  8 10:26:59 2010
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+CCHBAR tstop called on Herbert.local
+Thu Jul  8 10:27:00 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCLAMBDA tstart called on Herbert.local
+Thu Jul  8 10:27:00 2010
+
+
+			**************************
+			*        CCLAMBDA        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	Reference           (chkpt)   = 0
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (CC_INFO) =  -76.046166539565831
+	OOCCD energy        (CC_INFO) =   -0.221373827810080
+	Total OOCCD energy  (CC_INFO) =  -76.267540367375915
+
+	Input parameters:
+	-----------------
+	Maxiter       =      50
+	Convergence   = 1.0e-07
+	Restart       =     Yes
+	Cache Level   =     2
+	Model III     =     No
+	DIIS          =     Yes
+	AO Basis      =     No
+	ABCD            =     NEW
+	Local CC        =     No
+	Paramaters for left-handed eigenvectors:
+	    Irr   Root  Ground-State?    EOM energy        R0
+	  1   0     0        Yes       0.0000000000   1.0000000000
+	Labels for eigenvector 1:
+	LIA 0 -1, Lia 0 -1, LIJAB 0 -1, Lijab 0 -1, LIjAb 0 -1, 2LIjAb - LIjbA 0 -1
+	Deleting old CC_LAMBDA data.
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	   0        -0.221373827810080    0.000e+00
+	   1        -0.218860898659903    1.033e-02
+	   2        -0.218994565084335    2.032e-03
+	   3        -0.219006195655664    8.377e-04
+	   4        -0.219024165306773    2.567e-04
+	   5        -0.219023589725061    9.258e-05
+	   6        -0.219022756482621    1.554e-05
+	   7        -0.219022792527290    2.623e-06
+	   8        -0.219022760525148    5.579e-07
+	   9        -0.219022746824672    1.059e-07
+	  10        -0.219022746327768    1.953e-08
+
+	Largest LIA Amplitudes:
+	          2   0         0.0046507772
+	          3  12         0.0043851423
+	          4  15         0.0033508962
+	          4  19         0.0022256272
+	          4  16        -0.0020947834
+	          1   1        -0.0020444468
+	          2   1         0.0016013477
+	          2   5        -0.0015763303
+	          1   0         0.0013518719
+	          1   8        -0.0011165033
+
+	Largest LIjAb Amplitudes:
+	  3   3  12  12        -0.0549102269
+	  2   2   1   1        -0.0455035903
+	  4   4  15  15        -0.0379253412
+	  2   3   1  12        -0.0344163159
+	  3   2  12   1        -0.0344163159
+	  4   4  17  17        -0.0305930713
+	  4   4  15  17        -0.0281090476
+	  4   4  17  15        -0.0281090476
+	  3   4  12  15        -0.0253237990
+	  4   3  15  12        -0.0253237990
+
+	Iterations converged.
+
+	Overlap <L|e^T> =        0.94207732198
+******************************************************************************
+CCLAMBDA tstop called on Herbert.local
+Thu Jul  8 10:27:00 2010
+
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.07 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCDENSITY tstart called on Herbert.local
+Thu Jul  8 10:27:00 2010
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function    =  OOCCD
+	Reference wfn    =   RHF
+	Tolerance        = 1.0e-14
+	Cache Level      = 2
+	AO Basis         = No
+	OPDM Only        = No
+	Relax OPDM       = No
+	Compute Xi       = No
+	Use Zeta         = No
+	Xi connected     = Yes
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.046166539565831
+	OOCCD energy        (CC_INFO) =   -0.221373827810080
+	Total OOCCD energy  (CC_INFO) =  -76.267540367375915
+	Number of States = 1
+
+	Ground?  State     EOM Energy       R0
+	  Yes     0A1     0.0000000000   1.00000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.233025363559597
+	IJKL energy                =    0.043289084400962
+	IJKA energy                =   -0.000803021127725
+	IJAB energy                =   -0.437559024341148
+	IBJA energy                =   -0.102611684190486
+	CIAB energy                =    0.000324329572260
+	ABCD energy                =    0.042660815232810
+	Total two-electron energy  =   -0.454699500453326
+	CCSD correlation energy    =   -0.221674136893729
+	Total CCSD energy          =  -76.267840676459556
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.984219620932208
+	Kinetic energy (corr)  =    0.156823263294488
+	Kinetic energy (total) =   76.141042884226692
+	-V/T (ref)             =    2.000815260312505
+	-V/T (corr)            =    2.411613450450755
+	-V/T (total)           =    2.001661357375175
+	Rotating orbitals.  Maximum XAI =  0.001914270553
+******************************************************************************
+CCDENSITY tstop called on Herbert.local
+Thu Jul  8 10:27:01 2010
+
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+TRANSQT tstart called on Herbert.local
+Thu Jul  8 10:27:01 2010
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	No
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 26
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on Herbert.local
+Thu Jul  8 10:27:01 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCSORT tstart called on Herbert.local
+Thu Jul  8 10:27:01 2010
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Make unpacked (ab|cd) =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Size of irrep 0 of <ab|cd> integrals:      0.022 (MW) /      0.178 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.007 (MW) /      0.056 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.017 (MW) /      0.139 (MB)
+	Total:                                     0.052 (MW) /      0.420 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.014 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.004 (MW) /      0.032 (MB)
+	Total:                                     0.013 (MW) /      0.101 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.002 (MW) /      0.013 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.001 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.025 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
+	One-electron energy          =   -122.99099316340580
+	Two-electron (AA) energy     =     14.41891119958493
+	Two-electron (BB) energy     =     14.41891119958493
+	Two-electron (AB) energy     =     23.36684604846157
+	Two-electron energy          =     37.78575724804650
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.04595794451660
+******************************************************************************
+CCSORT tstop called on Herbert.local
+Thu Jul  8 10:27:02 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCENERGY tstart called on Herbert.local
+Thu Jul  8 10:27:02 2010
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045957944516601
+
+	Input parameters:
+	-----------------
+	Wave function   =    OOCCD
+	Reference wfn   =     RHF
+	Memory (Mbytes) =     256.0
+	Maxiter         =     50
+	Convergence     =     1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	AO Basis        =     NONE
+	ABCD            =     NEW
+	Cache Level     =     2
+	Cache Type      =     LOW
+	Print Level     =     0
+	Num. of threads =     1
+	# Amps to Print =     10
+	Print MP2 Amps? =     No
+	Analyze T2 Amps =     No
+	Print Pair Ener =     No
+	Local CC        =     No
+	SCS             =     False
+	MP2_SCALE_OS    =     1.200000
+	MP2_SCALE_SS    =     0.333333
+	CC_SCALE_OS     =     1.270000
+	CC_SCALE_SS     =     1.130000
+
+	Using old T1 amplitudes.
+	Using old T2 amplitudes.
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.221604874612194    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.221715061633425    6.558e-04    0.000000    0.000000    0.000000
+     2        -0.221713865093696    1.022e-04    0.000000    0.000000    0.000000
+     3        -0.221719090167047    2.740e-05    0.000000    0.000000    0.000000
+     4        -0.221720051516666    6.772e-06    0.000000    0.000000    0.000000
+     5        -0.221720164183757    1.137e-06    0.000000    0.000000    0.000000
+     6        -0.221720203937079    2.461e-07    0.000000    0.000000    0.000000
+     7        -0.221720202189357    4.882e-08    0.000000    0.000000    0.000000
+
+	Iterations converged.
+
+
+	Largest TIjAb Amplitudes:
+	  3   3  12  12        -0.0549809220
+	  2   2   1   1        -0.0458242649
+	  4   4  15  15        -0.0382482088
+	  2   3   1  12        -0.0344933846
+	  3   2  12   1        -0.0344933846
+	  4   4  17  17        -0.0310987007
+	  4   4  15  17        -0.0284533180
+	  4   4  17  15        -0.0284533180
+	  3   4  12  15        -0.0252959795
+	  4   3  15  12        -0.0252959795
+
+	SCF energy       (chkpt)              =  -76.046327055642024
+	Reference energy (file100)            =  -76.045957944516601
+
+	Scaled_OS MP2 correlation energy      =   -0.174135853557250
+	Scaled_SS MP2 correlation energy      =   -0.016973486222338
+	SCS-MP2 correlation energy            =   -0.191109339779588
+      * SCS-MP2 total energy                  =  -76.237067284296188
+
+	Opposite-spin MP2 correlation energy  =   -0.162526796653433
+	Same-spin MP2 correlation energy      =   -0.050920458667015
+	MP2 correlation energy                =   -0.213765019468016
+      * MP2 total energy                      =  -76.259722963984615
+
+	Scaled_OS CCSD correlation energy     =   -0.224610989661465
+	Scaled_SS CCSD correlation energy     =   -0.050693105389363
+	SCS-CCSD correlation energy           =   -0.275304095050828
+      * SCS-CCSD total energy                 =  -76.321262039567429
+
+	Opposite-spin CCSD correlation energy =   -0.176859046977531
+	Same-spin CCSD correlation energy     =   -0.044861155211826
+	CCSD correlation energy               =   -0.221720202189357
+      * CCSD total energy                     =  -76.267678146705961
+
+******************************************************************************
+CCENERGY tstop called on Herbert.local
+Thu Jul  8 10:27:04 2010
+
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.11 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+CCHBAR tstart called on Herbert.local
+Thu Jul  8 10:27:04 2010
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+CCHBAR tstop called on Herbert.local
+Thu Jul  8 10:27:05 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCLAMBDA tstart called on Herbert.local
+Thu Jul  8 10:27:05 2010
+
+
+			**************************
+			*        CCLAMBDA        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	Reference           (chkpt)   = 0
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (CC_INFO) =  -76.045957944516601
+	OOCCD energy        (CC_INFO) =   -0.221720202189357
+	Total OOCCD energy  (CC_INFO) =  -76.267678146705961
+
+	Input parameters:
+	-----------------
+	Maxiter       =      50
+	Convergence   = 1.0e-07
+	Restart       =     Yes
+	Cache Level   =     2
+	Model III     =     No
+	DIIS          =     Yes
+	AO Basis      =     No
+	ABCD            =     NEW
+	Local CC        =     No
+	Paramaters for left-handed eigenvectors:
+	    Irr   Root  Ground-State?    EOM energy        R0
+	  1   0     0        Yes       0.0000000000   1.0000000000
+	Labels for eigenvector 1:
+	LIA 0 -1, Lia 0 -1, LIJAB 0 -1, Lijab 0 -1, LIjAb 0 -1, 2LIjAb - LIjbA 0 -1
+	Deleting old CC_LAMBDA data.
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	   0        -0.221720202189357    0.000e+00
+	   1        -0.219199074486586    6.472e-03
+	   2        -0.219152960311194    1.139e-03
+	   3        -0.219131017776211    4.761e-04
+	   4        -0.219141777097558    1.515e-04
+	   5        -0.219141864414984    5.589e-05
+	   6        -0.219141511764011    9.742e-06
+	   7        -0.219141617810400    1.594e-06
+	   8        -0.219141624834843    3.431e-07
+	   9        -0.219141622903463    6.700e-08
+
+	Largest LIA Amplitudes:
+	          2   0         0.0027485514
+	          3  12         0.0022711743
+	          4  15         0.0020994173
+	          4  19         0.0011404399
+	          1   1        -0.0010715017
+	          4  16        -0.0010001404
+	          2   1         0.0009613182
+	          2   5        -0.0008105169
+	          1   0         0.0007711287
+	          2   2        -0.0006226136
+
+	Largest LIjAb Amplitudes:
+	  3   3  12  12        -0.0548877147
+	  2   2   1   1        -0.0454837601
+	  4   4  15  15        -0.0379150509
+	  2   3   1  12        -0.0343924920
+	  3   2  12   1        -0.0343924920
+	  4   4  17  17        -0.0305565554
+	  4   4  15  17        -0.0280911419
+	  4   4  17  15        -0.0280911419
+	  3   4  12  15        -0.0252931970
+	  4   3  15  12        -0.0252931970
+
+	Iterations converged.
+
+	Overlap <L|e^T> =        0.94204522074
+******************************************************************************
+CCLAMBDA tstop called on Herbert.local
+Thu Jul  8 10:27:05 2010
+
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.07 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCDENSITY tstart called on Herbert.local
+Thu Jul  8 10:27:05 2010
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function    =  OOCCD
+	Reference wfn    =   RHF
+	Tolerance        = 1.0e-14
+	Cache Level      = 2
+	AO Basis         = No
+	OPDM Only        = No
+	Relax OPDM       = No
+	Compute Xi       = No
+	Use Zeta         = No
+	Xi connected     = Yes
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045957944516601
+	OOCCD energy        (CC_INFO) =   -0.221720202189357
+	Total OOCCD energy  (CC_INFO) =  -76.267678146705961
+	Number of States = 1
+
+	Ground?  State     EOM Energy       R0
+	  Yes     0A1     0.0000000000   1.00000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.233072764998240
+	IJKL energy                =    0.043287539926804
+	IJKA energy                =   -0.000468941431082
+	IJAB energy                =   -0.438019011685637
+	IBJA energy                =   -0.102621212290807
+	CIAB energy                =    0.000212204273060
+	ABCD energy                =    0.042703745553536
+	Total two-electron energy  =   -0.454905675654126
+	CCSD correlation energy    =   -0.221832910655886
+	Total CCSD energy          =  -76.267790855172493
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.981473237902392
+	Kinetic energy (corr)  =    0.159355622329900
+	Kinetic energy (total) =   76.140828860232290
+	-V/T (ref)             =    2.000848689869599
+	-V/T (corr)            =    2.391354750762098
+	-V/T (total)           =    2.001665982474482
+	Rotating orbitals.  Maximum XAI =  0.000956104119
+******************************************************************************
+CCDENSITY tstop called on Herbert.local
+Thu Jul  8 10:27:06 2010
+
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+TRANSQT tstart called on Herbert.local
+Thu Jul  8 10:27:06 2010
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	No
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 26
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on Herbert.local
+Thu Jul  8 10:27:06 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCSORT tstart called on Herbert.local
+Thu Jul  8 10:27:06 2010
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Make unpacked (ab|cd) =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Size of irrep 0 of <ab|cd> integrals:      0.022 (MW) /      0.178 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.007 (MW) /      0.056 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.017 (MW) /      0.139 (MB)
+	Total:                                     0.052 (MW) /      0.420 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.014 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.004 (MW) /      0.032 (MB)
+	Total:                                     0.013 (MW) /      0.101 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.002 (MW) /      0.013 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.001 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.025 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
+	One-electron energy          =   -122.98121816540203
+	Two-electron (AA) energy     =     14.41488437947178
+	Two-electron (BB) energy     =     14.41488437947178
+	Two-electron (AB) energy     =     23.36124082889410
+	Two-electron energy          =     37.77612520836588
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.04581498619342
+******************************************************************************
+CCSORT tstop called on Herbert.local
+Thu Jul  8 10:27:06 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCENERGY tstart called on Herbert.local
+Thu Jul  8 10:27:06 2010
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045814986193420
+
+	Input parameters:
+	-----------------
+	Wave function   =    OOCCD
+	Reference wfn   =     RHF
+	Memory (Mbytes) =     256.0
+	Maxiter         =     50
+	Convergence     =     1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	AO Basis        =     NONE
+	ABCD            =     NEW
+	Cache Level     =     2
+	Cache Type      =     LOW
+	Print Level     =     0
+	Num. of threads =     1
+	# Amps to Print =     10
+	Print MP2 Amps? =     No
+	Analyze T2 Amps =     No
+	Print Pair Ener =     No
+	Local CC        =     No
+	SCS             =     False
+	MP2_SCALE_OS    =     1.200000
+	MP2_SCALE_SS    =     0.333333
+	CC_SCALE_OS     =     1.270000
+	CC_SCALE_SS     =     1.130000
+
+	Using old T1 amplitudes.
+	Using old T2 amplitudes.
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.221842971401245    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.221899205511878    3.685e-04    0.000000    0.000000    0.000000
+     2        -0.221898526713395    5.602e-05    0.000000    0.000000    0.000000
+     3        -0.221901299534857    1.498e-05    0.000000    0.000000    0.000000
+     4        -0.221901812818558    3.692e-06    0.000000    0.000000    0.000000
+     5        -0.221901873720957    6.205e-07    0.000000    0.000000    0.000000
+     6        -0.221901895312349    1.329e-07    0.000000    0.000000    0.000000
+     7        -0.221901894559876    2.693e-08    0.000000    0.000000    0.000000
+
+	Iterations converged.
+
+
+	Largest TIjAb Amplitudes:
+	  3   3  12  12        -0.0550295438
+	  2   2   1   1        -0.0458276960
+	  4   4  15  15        -0.0383581198
+	  2   3   1  12        -0.0345017756
+	  3   2  12   1        -0.0345017756
+	  4   4  17  17        -0.0311045332
+	  4   4  15  17        -0.0284824712
+	  4   4  17  15        -0.0284824712
+	  3   4  12  15        -0.0253436494
+	  4   3  15  12        -0.0253436494
+
+	SCF energy       (chkpt)              =  -76.046327055642024
+	Reference energy (file100)            =  -76.045814986193420
+
+	Scaled_OS MP2 correlation energy      =   -0.174311639439928
+	Scaled_SS MP2 correlation energy      =   -0.016988372947835
+	SCS-MP2 correlation energy            =   -0.191300012387763
+      * SCS-MP2 total energy                  =  -76.237114998581177
+
+	Opposite-spin MP2 correlation energy  =   -0.162690863477266
+	Same-spin MP2 correlation energy      =   -0.050965118843506
+	MP2 correlation energy                =   -0.214100398312050
+      * MP2 total energy                      =  -76.259915384505476
+
+	Scaled_OS CCSD correlation energy     =   -0.224819182626425
+	Scaled_SS CCSD correlation energy     =   -0.050713175208676
+	SCS-CCSD correlation energy           =   -0.275532357835101
+      * SCS-CCSD total energy                 =  -76.321347344028510
+
+	Opposite-spin CCSD correlation energy =   -0.177022978446004
+	Same-spin CCSD correlation energy     =   -0.044878916113872
+	CCSD correlation energy               =   -0.221901894559876
+      * CCSD total energy                     =  -76.267716880753298
+
+******************************************************************************
+CCENERGY tstop called on Herbert.local
+Thu Jul  8 10:27:06 2010
+
+user time   =       0.13 seconds =       0.00 minutes
+system time =       0.11 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCHBAR tstart called on Herbert.local
+Thu Jul  8 10:27:06 2010
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+CCHBAR tstop called on Herbert.local
+Thu Jul  8 10:27:07 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCLAMBDA tstart called on Herbert.local
+Thu Jul  8 10:27:07 2010
+
+
+			**************************
+			*        CCLAMBDA        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	Reference           (chkpt)   = 0
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (CC_INFO) =  -76.045814986193420
+	OOCCD energy        (CC_INFO) =   -0.221901894559876
+	Total OOCCD energy  (CC_INFO) =  -76.267716880753298
+
+	Input parameters:
+	-----------------
+	Maxiter       =      50
+	Convergence   = 1.0e-07
+	Restart       =     Yes
+	Cache Level   =     2
+	Model III     =     No
+	DIIS          =     Yes
+	AO Basis      =     No
+	ABCD            =     NEW
+	Local CC        =     No
+	Paramaters for left-handed eigenvectors:
+	    Irr   Root  Ground-State?    EOM energy        R0
+	  1   0     0        Yes       0.0000000000   1.0000000000
+	Labels for eigenvector 1:
+	LIA 0 -1, Lia 0 -1, LIJAB 0 -1, Lijab 0 -1, LIjAb 0 -1, 2LIjAb - LIjbA 0 -1
+	Deleting old CC_LAMBDA data.
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	   0        -0.221901894559876    0.000e+00
+	   1        -0.219376117140822    4.640e-03
+	   2        -0.219233016591550    7.429e-04
+	   3        -0.219197608384474    2.807e-04
+	   4        -0.219200765809857    8.731e-05
+	   5        -0.219200796504130    3.368e-05
+	   6        -0.219200759860133    7.706e-06
+	   7        -0.219200893411782    1.272e-06
+	   8        -0.219200919802805    2.741e-07
+	   9        -0.219200921965227    5.083e-08
+
+	Largest LIA Amplitudes:
+	          2   0         0.0016247924
+	          4  15         0.0012931810
+	          3  12         0.0012065668
+	          4  19         0.0005859419
+	          2   1         0.0005808699
+	          1   1        -0.0005652922
+	          4  16        -0.0004728351
+	          1   0         0.0004405392
+	          2   5        -0.0004183806
+	          2   2        -0.0003571784
+
+	Largest LIjAb Amplitudes:
+	  3   3  12  12        -0.0548698040
+	  2   2   1   1        -0.0454728391
+	  4   4  15  15        -0.0379090192
+	  2   3   1  12        -0.0343786965
+	  3   2  12   1        -0.0343786965
+	  4   4  17  17        -0.0305365149
+	  4   4  15  17        -0.0280818669
+	  4   4  17  15        -0.0280818669
+	  3   4  12  15        -0.0252741547
+	  4   3  15  12        -0.0252741547
+
+	Iterations converged.
+
+	Overlap <L|e^T> =        0.94202876775
+******************************************************************************
+CCLAMBDA tstop called on Herbert.local
+Thu Jul  8 10:27:07 2010
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.07 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCDENSITY tstart called on Herbert.local
+Thu Jul  8 10:27:07 2010
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function    =  OOCCD
+	Reference wfn    =   RHF
+	Tolerance        = 1.0e-14
+	Cache Level      = 2
+	AO Basis         = No
+	OPDM Only        = No
+	Relax OPDM       = No
+	Compute Xi       = No
+	Use Zeta         = No
+	Xi connected     = Yes
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045814986193420
+	OOCCD energy        (CC_INFO) =   -0.221901894559876
+	Total OOCCD energy  (CC_INFO) =  -76.267716880753298
+	Number of States = 1
+
+	Ground?  State     EOM Energy       R0
+	  Yes     0A1     0.0000000000   1.00000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.233061571311800
+	IJKL energy                =    0.043284648333641
+	IJKA energy                =   -0.000276401273892
+	IJAB energy                =   -0.438257026465298
+	IBJA energy                =   -0.102626751309146
+	CIAB energy                =    0.000137107716254
+	ABCD energy                =    0.042726980240146
+	Total two-electron energy  =   -0.455011442758295
+	CCSD correlation energy    =   -0.221949871446495
+	Total CCSD energy          =  -76.267764857639918
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.979261146408120
+	Kinetic energy (corr)  =    0.161167010356433
+	Kinetic energy (total) =   76.140428156764557
+	-V/T (ref)             =    2.000875947446463
+	-V/T (corr)            =    2.376844393087166
+	-V/T (total)           =    2.001671762650542
+	Rotating orbitals.  Maximum XAI =  0.000564988371
+******************************************************************************
+CCDENSITY tstop called on Herbert.local
+Thu Jul  8 10:27:07 2010
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+TRANSQT tstart called on Herbert.local
+Thu Jul  8 10:27:07 2010
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	No
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 26
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on Herbert.local
+Thu Jul  8 10:27:07 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCSORT tstart called on Herbert.local
+Thu Jul  8 10:27:07 2010
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Make unpacked (ab|cd) =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Size of irrep 0 of <ab|cd> integrals:      0.022 (MW) /      0.178 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.007 (MW) /      0.056 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.017 (MW) /      0.139 (MB)
+	Total:                                     0.052 (MW) /      0.420 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.014 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.004 (MW) /      0.032 (MB)
+	Total:                                     0.013 (MW) /      0.101 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.002 (MW) /      0.013 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.001 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.025 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
+	One-electron energy          =   -122.97531350386215
+	Two-electron (AA) energy     =     14.41243265108662
+	Two-electron (BB) energy     =     14.41243265108662
+	Two-electron (AB) energy     =     23.35787273276964
+	Two-electron energy          =     37.77030538385626
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.04573014916318
+******************************************************************************
+CCSORT tstop called on Herbert.local
+Thu Jul  8 10:27:07 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCENERGY tstart called on Herbert.local
+Thu Jul  8 10:27:07 2010
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045730149163177
+
+	Input parameters:
+	-----------------
+	Wave function   =    OOCCD
+	Reference wfn   =     RHF
+	Memory (Mbytes) =     256.0
+	Maxiter         =     50
+	Convergence     =     1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	AO Basis        =     NONE
+	ABCD            =     NEW
+	Cache Level     =     2
+	Cache Type      =     LOW
+	Print Level     =     0
+	Num. of threads =     1
+	# Amps to Print =     10
+	Print MP2 Amps? =     No
+	Analyze T2 Amps =     No
+	Print Pair Ener =     No
+	Local CC        =     No
+	SCS             =     False
+	MP2_SCALE_OS    =     1.200000
+	MP2_SCALE_SS    =     0.333333
+	CC_SCALE_OS     =     1.270000
+	CC_SCALE_SS     =     1.130000
+
+	Using old T1 amplitudes.
+	Using old T2 amplitudes.
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.221967813566581    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.221996586300679    2.095e-04    0.000000    0.000000    0.000000
+     2        -0.221996172144050    3.116e-05    0.000000    0.000000    0.000000
+     3        -0.221997647982476    8.270e-06    0.000000    0.000000    0.000000
+     4        -0.221997922606465    2.034e-06    0.000000    0.000000    0.000000
+     5        -0.221997956332900    3.427e-07    0.000000    0.000000    0.000000
+     6        -0.221997964596841    7.241e-08    0.000000    0.000000    0.000000
+
+	Iterations converged.
+
+
+	Largest TIjAb Amplitudes:
+	  3   3  12  12        -0.0550519024
+	  2   2   1   1        -0.0458289994
+	  4   4  15  15        -0.0384217955
+	  2   3   1  12        -0.0345051252
+	  3   2  12   1        -0.0345051252
+	  4   4  17  17        -0.0311051115
+	  4   4  15  17        -0.0284968970
+	  4   4  17  15        -0.0284968970
+	  3   4  12  15        -0.0253698687
+	  4   3  15  12        -0.0253698687
+
+	SCF energy       (chkpt)              =  -76.046327055642024
+	Reference energy (file100)            =  -76.045730149163177
+
+	Scaled_OS MP2 correlation energy      =   -0.174404652528849
+	Scaled_SS MP2 correlation energy      =   -0.016995987017889
+	SCS-MP2 correlation energy            =   -0.191400639546738
+      * SCS-MP2 total energy                  =  -76.237130788709919
+
+	Opposite-spin MP2 correlation energy  =   -0.162777675693592
+	Same-spin MP2 correlation energy      =   -0.050987961053667
+	MP2 correlation energy                =   -0.214286782906311
+      * MP2 total energy                      =  -76.260016932069490
+
+	Scaled_OS CCSD correlation energy     =   -0.224929962832287
+	Scaled_SS CCSD correlation energy     =   -0.050723166135781
+	SCS-CCSD correlation energy           =   -0.275653128968068
+      * SCS-CCSD total energy                 =  -76.321383278131250
+
+	Opposite-spin CCSD correlation energy =   -0.177110206954557
+	Same-spin CCSD correlation energy     =   -0.044887757642284
+	CCSD correlation energy               =   -0.221997964596841
+      * CCSD total energy                     =  -76.267728113760015
+
+******************************************************************************
+CCENERGY tstop called on Herbert.local
+Thu Jul  8 10:27:08 2010
+
+user time   =       0.11 seconds =       0.00 minutes
+system time =       0.09 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCHBAR tstart called on Herbert.local
+Thu Jul  8 10:27:08 2010
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+CCHBAR tstop called on Herbert.local
+Thu Jul  8 10:27:08 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCLAMBDA tstart called on Herbert.local
+Thu Jul  8 10:27:08 2010
+
+
+			**************************
+			*        CCLAMBDA        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	Reference           (chkpt)   = 0
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (CC_INFO) =  -76.045730149163177
+	OOCCD energy        (CC_INFO) =   -0.221997964596841
+	Total OOCCD energy  (CC_INFO) =  -76.267728113760015
+
+	Input parameters:
+	-----------------
+	Maxiter       =      50
+	Convergence   = 1.0e-07
+	Restart       =     Yes
+	Cache Level   =     2
+	Model III     =     No
+	DIIS          =     Yes
+	AO Basis      =     No
+	ABCD            =     NEW
+	Local CC        =     No
+	Paramaters for left-handed eigenvectors:
+	    Irr   Root  Ground-State?    EOM energy        R0
+	  1   0     0        Yes       0.0000000000   1.0000000000
+	Labels for eigenvector 1:
+	LIA 0 -1, Lia 0 -1, LIJAB 0 -1, Lijab 0 -1, LIjAb 0 -1, 2LIjAb - LIjbA 0 -1
+	Deleting old CC_LAMBDA data.
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	   0        -0.221997964596841    0.000e+00
+	   1        -0.219469563524727    3.851e-03
+	   2        -0.219271218714463    6.089e-04
+	   3        -0.219231665371607    1.905e-04
+	   4        -0.219231024767583    4.991e-05
+	   5        -0.219230587328942    1.775e-05
+	   6        -0.219230474982404    5.837e-06
+	   7        -0.219230565282619    1.358e-06
+	   8        -0.219230590367519    2.796e-07
+	   9        -0.219230592893745    5.033e-08
+
+	Largest LIA Amplitudes:
+	          2   0         0.0009609049
+	          4  15         0.0007873902
+	          3  12         0.0006574563
+	          2   1         0.0003528642
+	          4  19         0.0003020031
+	          1   1        -0.0003009259
+	          1   0         0.0002517952
+	          4  16        -0.0002206041
+	          2   5        -0.0002169547
+	          2   2        -0.0002053976
+
+	Largest LIjAb Amplitudes:
+	  3   3  12  12        -0.0548576430
+	  2   2   1   1        -0.0454666660
+	  4   4  15  15        -0.0379055318
+	  2   3   1  12        -0.0343706957
+	  3   2  12   1        -0.0343706957
+	  4   4  17  17        -0.0305253616
+	  4   4  15  17        -0.0280768876
+	  4   4  17  15        -0.0280768876
+	  3   4  12  15        -0.0252627712
+	  4   3  15  12        -0.0252627712
+
+	Iterations converged.
+
+	Overlap <L|e^T> =        0.94202037472
+******************************************************************************
+CCLAMBDA tstop called on Herbert.local
+Thu Jul  8 10:27:10 2010
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.07 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+CCDENSITY tstart called on Herbert.local
+Thu Jul  8 10:27:10 2010
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function    =  OOCCD
+	Reference wfn    =   RHF
+	Tolerance        = 1.0e-14
+	Cache Level      = 2
+	AO Basis         = No
+	OPDM Only        = No
+	Relax OPDM       = No
+	Compute Xi       = No
+	Use Zeta         = No
+	Xi connected     = Yes
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045730149163177
+	OOCCD energy        (CC_INFO) =   -0.221997964596841
+	Total OOCCD energy  (CC_INFO) =  -76.267728113760015
+	Number of States = 1
+
+	Ground?  State     EOM Energy       R0
+	  Yes     0A1     0.0000000000   1.00000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.233044910656364
+	IJKL energy                =    0.043281836472975
+	IJKA energy                =   -0.000164201172559
+	IJAB energy                =   -0.438381096656954
+	IBJA energy                =   -0.102629615179857
+	CIAB energy                =    0.000087805421750
+	ABCD energy                =    0.042739616962280
+	Total two-electron energy  =   -0.455065654152365
+	CCSD correlation energy    =   -0.222020743496000
+	Total CCSD energy          =  -76.267750892659180
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.977580833160673
+	Kinetic energy (corr)  =    0.162443688662438
+	Kinetic energy (total) =   76.140024521823108
+	-V/T (ref)             =    2.000896966121521
+	-V/T (corr)            =    2.366614895443294
+	-V/T (total)           =    2.001677220262784
+	Rotating orbitals.  Maximum XAI =  0.000333452278
+******************************************************************************
+CCDENSITY tstop called on Herbert.local
+Thu Jul  8 10:27:10 2010
+
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+TRANSQT tstart called on Herbert.local
+Thu Jul  8 10:27:10 2010
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	No
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 26
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on Herbert.local
+Thu Jul  8 10:27:10 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCSORT tstart called on Herbert.local
+Thu Jul  8 10:27:10 2010
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Make unpacked (ab|cd) =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Size of irrep 0 of <ab|cd> integrals:      0.022 (MW) /      0.178 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.007 (MW) /      0.056 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.017 (MW) /      0.139 (MB)
+	Total:                                     0.052 (MW) /      0.420 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.014 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.004 (MW) /      0.032 (MB)
+	Total:                                     0.013 (MW) /      0.101 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.002 (MW) /      0.013 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.001 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.025 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
+	One-electron energy          =   -122.97173265738745
+	Two-electron (AA) energy     =     14.41093521954203
+	Two-electron (BB) energy     =     14.41093521954203
+	Two-electron (AB) energy     =     23.35583716785214
+	Two-electron energy          =     37.76677238739417
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.04568229915057
+******************************************************************************
+CCSORT tstop called on Herbert.local
+Thu Jul  8 10:27:10 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCENERGY tstart called on Herbert.local
+Thu Jul  8 10:27:10 2010
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045682299150570
+
+	Input parameters:
+	-----------------
+	Wave function   =    OOCCD
+	Reference wfn   =     RHF
+	Memory (Mbytes) =     256.0
+	Maxiter         =     50
+	Convergence     =     1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	AO Basis        =     NONE
+	ABCD            =     NEW
+	Cache Level     =     2
+	Cache Type      =     LOW
+	Print Level     =     0
+	Num. of threads =     1
+	# Amps to Print =     10
+	Print MP2 Amps? =     No
+	Analyze T2 Amps =     No
+	Print Pair Ener =     No
+	Local CC        =     No
+	SCS             =     False
+	MP2_SCALE_OS    =     1.200000
+	MP2_SCALE_SS    =     0.333333
+	CC_SCALE_OS     =     1.270000
+	CC_SCALE_SS     =     1.130000
+
+	Using old T1 amplitudes.
+	Using old T2 amplitudes.
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.222033719807503    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.222048483602155    1.201e-04    0.000000    0.000000    0.000000
+     2        -0.222048219373396    1.754e-05    0.000000    0.000000    0.000000
+     3        -0.222049008737524    4.606e-06    0.000000    0.000000    0.000000
+     4        -0.222049156085324    1.132e-06    0.000000    0.000000    0.000000
+     5        -0.222049175085964    1.914e-07    0.000000    0.000000    0.000000
+     6        -0.222049179707997    3.979e-08    0.000000    0.000000    0.000000
+
+	Iterations converged.
+
+
+	Largest TIjAb Amplitudes:
+	  3   3  12  12        -0.0550623621
+	  2   2   1   1        -0.0458294091
+	  4   4  15  15        -0.0384586082
+	  2   3   1  12        -0.0345064140
+	  3   2  12   1        -0.0345064140
+	  4   4  17  17        -0.0311040039
+	  4   4  15  17        -0.0285040037
+	  4   4  17  15        -0.0285040037
+	  3   4  12  15        -0.0253844480
+	  4   3  15  12        -0.0253844480
+
+	SCF energy       (chkpt)              =  -76.046327055642024
+	Reference energy (file100)            =  -76.045682299150570
+
+	Scaled_OS MP2 correlation energy      =   -0.174454260794990
+	Scaled_SS MP2 correlation energy      =   -0.016999928056071
+	SCS-MP2 correlation energy            =   -0.191454188851061
+      * SCS-MP2 total energy                  =  -76.237136488001624
+
+	Opposite-spin MP2 correlation energy  =   -0.162823976741991
+	Same-spin MP2 correlation energy      =   -0.050999784168212
+	MP2 correlation energy                =   -0.214389088105064
+      * MP2 total energy                      =  -76.260071387255635
+
+	Scaled_OS CCSD correlation energy     =   -0.224989343117165
+	Scaled_SS CCSD correlation energy     =   -0.050728204784685
+	SCS-CCSD correlation energy           =   -0.275717547901850
+      * SCS-CCSD total energy                 =  -76.321399847052419
+
+	Opposite-spin CCSD correlation energy =   -0.177156963084382
+	Same-spin CCSD correlation energy     =   -0.044892216623615
+	CCSD correlation energy               =   -0.222049179707997
+      * CCSD total energy                     =  -76.267731478858565
+
+******************************************************************************
+CCENERGY tstop called on Herbert.local
+Thu Jul  8 10:27:12 2010
+
+user time   =       0.11 seconds =       0.00 minutes
+system time =       0.10 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+CCHBAR tstart called on Herbert.local
+Thu Jul  8 10:27:12 2010
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+CCHBAR tstop called on Herbert.local
+Thu Jul  8 10:27:12 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCLAMBDA tstart called on Herbert.local
+Thu Jul  8 10:27:12 2010
+
+
+			**************************
+			*        CCLAMBDA        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	Reference           (chkpt)   = 0
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (CC_INFO) =  -76.045682299150570
+	OOCCD energy        (CC_INFO) =   -0.222049179707997
+	Total OOCCD energy  (CC_INFO) =  -76.267731478858565
+
+	Input parameters:
+	-----------------
+	Maxiter       =      50
+	Convergence   = 1.0e-07
+	Restart       =     Yes
+	Cache Level   =     2
+	Model III     =     No
+	DIIS          =     Yes
+	AO Basis      =     No
+	ABCD            =     NEW
+	Local CC        =     No
+	Paramaters for left-handed eigenvectors:
+	    Irr   Root  Ground-State?    EOM energy        R0
+	  1   0     0        Yes       0.0000000000   1.0000000000
+	Labels for eigenvector 1:
+	LIA 0 -1, Lia 0 -1, LIJAB 0 -1, Lijab 0 -1, LIjAb 0 -1, 2LIjAb - LIjbA 0 -1
+	Deleting old CC_LAMBDA data.
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	   0        -0.222049179707997    0.000e+00
+	   1        -0.219519297388530    3.538e-03
+	   2        -0.219289016884666    5.825e-04
+	   3        -0.219247800352188    1.602e-04
+	   4        -0.219246237542776    3.724e-05
+	   5        -0.219245665470105    9.079e-06
+	   6        -0.219245488171771    2.335e-06
+	   7        -0.219245481230984    7.263e-07
+	   8        -0.219245485756959    2.458e-07
+	   9        -0.219245487026966    6.335e-08
+
+	Largest LIA Amplitudes:
+	          2   0         0.0005687326
+	          4  15         0.0004756769
+	          3  12         0.0003669940
+	          2   1         0.0002152612
+	          1   1        -0.0001623297
+	          4  19         0.0001563402
+	          1   0         0.0001437334
+	          2   2        -0.0001187460
+	          2   5        -0.0001131822
+	          4  16        -0.0001012196
+
+	Largest LIjAb Amplitudes:
+	  3   3  12  12        -0.0548498135
+	  2   2   1   1        -0.0454631059
+	  4   4  15  15        -0.0379035645
+	  2   3   1  12        -0.0343660232
+	  3   2  12   1        -0.0343660232
+	  4   4  17  17        -0.0305190721
+	  4   4  15  17        -0.0280741544
+	  4   4  17  15        -0.0280741544
+	  3   4  12  15        -0.0252560995
+	  4   3  15  12        -0.0252560995
+
+	Iterations converged.
+
+	Overlap <L|e^T> =        0.94201610806
+******************************************************************************
+CCLAMBDA tstop called on Herbert.local
+Thu Jul  8 10:27:12 2010
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.07 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCDENSITY tstart called on Herbert.local
+Thu Jul  8 10:27:12 2010
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function    =  OOCCD
+	Reference wfn    =   RHF
+	Tolerance        = 1.0e-14
+	Cache Level      = 2
+	AO Basis         = No
+	OPDM Only        = No
+	Relax OPDM       = No
+	Compute Xi       = No
+	Use Zeta         = No
+	Xi connected     = Yes
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045682299150570
+	OOCCD energy        (CC_INFO) =   -0.222049179707997
+	Total OOCCD energy  (CC_INFO) =  -76.267731478858565
+	Number of States = 1
+
+	Ground?  State     EOM Energy       R0
+	  Yes     0A1     0.0000000000   1.00000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.233032557040364
+	IJKL energy                =    0.043279563484215
+	IJKA energy                =   -0.000098195570415
+	IJAB energy                =   -0.438446271578391
+	IBJA energy                =   -0.102630953132566
+	CIAB energy                =    0.000055850237580
+	ABCD energy                =    0.042746536205946
+	Total two-electron energy  =   -0.455093470353631
+	CCSD correlation energy    =   -0.222060913313268
+	Total CCSD energy          =  -76.267743212463841
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.976361386102994
+	Kinetic energy (corr)  =    0.163325341532331
+	Kinetic energy (total) =   76.139686727635322
+	-V/T (ref)             =    2.000912401065053
+	-V/T (corr)            =    2.359551295743301
+	-V/T (total)           =    2.001681708406304
+	Rotating orbitals.  Maximum XAI =  0.000196669274
+******************************************************************************
+CCDENSITY tstop called on Herbert.local
+Thu Jul  8 10:27:12 2010
+
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+TRANSQT tstart called on Herbert.local
+Thu Jul  8 10:27:12 2010
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	No
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 26
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on Herbert.local
+Thu Jul  8 10:27:12 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCSORT tstart called on Herbert.local
+Thu Jul  8 10:27:12 2010
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Make unpacked (ab|cd) =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Size of irrep 0 of <ab|cd> integrals:      0.022 (MW) /      0.178 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.007 (MW) /      0.056 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.017 (MW) /      0.139 (MB)
+	Total:                                     0.052 (MW) /      0.420 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.014 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.004 (MW) /      0.032 (MB)
+	Total:                                     0.013 (MW) /      0.101 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.002 (MW) /      0.013 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.001 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.025 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
+	One-electron energy          =   -122.96955358190999
+	Two-electron (AA) energy     =     14.41001847021998
+	Two-electron (BB) energy     =     14.41001847021998
+	Two-electron (AB) energy     =     23.35460133293659
+	Two-electron energy          =     37.76461980315657
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.04565580791072
+******************************************************************************
+CCSORT tstop called on Herbert.local
+Thu Jul  8 10:27:12 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCENERGY tstart called on Herbert.local
+Thu Jul  8 10:27:12 2010
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045655807910720
+
+	Input parameters:
+	-----------------
+	Wave function   =    OOCCD
+	Reference wfn   =     RHF
+	Memory (Mbytes) =     256.0
+	Maxiter         =     50
+	Convergence     =     1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	AO Basis        =     NONE
+	ABCD            =     NEW
+	Cache Level     =     2
+	Cache Type      =     LOW
+	Print Level     =     0
+	Num. of threads =     1
+	# Amps to Print =     10
+	Print MP2 Amps? =     No
+	Analyze T2 Amps =     No
+	Print Pair Ener =     No
+	Local CC        =     No
+	SCS             =     False
+	MP2_SCALE_OS    =     1.200000
+	MP2_SCALE_SS    =     0.333333
+	CC_SCALE_OS     =     1.270000
+	CC_SCALE_SS     =     1.130000
+
+	Using old T1 amplitudes.
+	Using old T2 amplitudes.
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.222068770635786    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.222076367284495    6.936e-05    0.000000    0.000000    0.000000
+     2        -0.222076193676052    9.976e-06    0.000000    0.000000    0.000000
+     3        -0.222076617839131    2.585e-06    0.000000    0.000000    0.000000
+     4        -0.222076696968975    6.346e-07    0.000000    0.000000    0.000000
+     5        -0.222076707794262    1.079e-07    0.000000    0.000000    0.000000
+     6        -0.222076710405491    2.203e-08    0.000000    0.000000    0.000000
+
+	Iterations converged.
+
+
+	Largest TIjAb Amplitudes:
+	  3   3  12  12        -0.0550673614
+	  2   2   1   1        -0.0458294706
+	  4   4  15  15        -0.0384798647
+	  2   3   1  12        -0.0345068829
+	  3   2  12   1        -0.0345068829
+	  4   4  17  17        -0.0311026007
+	  4   4  15  17        -0.0285074718
+	  4   4  17  15        -0.0285074718
+	  3   4  12  15        -0.0253926345
+	  4   3  15  12        -0.0253926345
+
+	SCF energy       (chkpt)              =  -76.046327055642024
+	Reference energy (file100)            =  -76.045655807910720
+
+	Scaled_OS MP2 correlation energy      =   -0.174480938075601
+	Scaled_SS MP2 correlation energy      =   -0.017001993469102
+	SCS-MP2 correlation energy            =   -0.191482931544703
+      * SCS-MP2 total energy                  =  -76.237138739455432
+
+	Opposite-spin MP2 correlation energy  =   -0.162848875537228
+	Same-spin MP2 correlation energy      =   -0.051005980407307
+	MP2 correlation energy                =   -0.214445154277896
+      * MP2 total energy                      =  -76.260100962188616
+
+	Scaled_OS CCSD correlation energy     =   -0.225021403460928
+	Scaled_SS CCSD correlation energy     =   -0.050730788340215
+	SCS-CCSD correlation energy           =   -0.275752191801142
+      * SCS-CCSD total energy                 =  -76.321407999711866
+
+	Opposite-spin CCSD correlation energy =   -0.177182207449549
+	Same-spin CCSD correlation energy     =   -0.044894502955942
+	CCSD correlation energy               =   -0.222076710405491
+      * CCSD total energy                     =  -76.267732518316208
+
+******************************************************************************
+CCENERGY tstop called on Herbert.local
+Thu Jul  8 10:27:13 2010
+
+user time   =       0.11 seconds =       0.00 minutes
+system time =       0.09 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCHBAR tstart called on Herbert.local
+Thu Jul  8 10:27:13 2010
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+CCHBAR tstop called on Herbert.local
+Thu Jul  8 10:27:14 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCLAMBDA tstart called on Herbert.local
+Thu Jul  8 10:27:14 2010
+
+
+			**************************
+			*        CCLAMBDA        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	Reference           (chkpt)   = 0
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (CC_INFO) =  -76.045655807910720
+	OOCCD energy        (CC_INFO) =   -0.222076710405491
+	Total OOCCD energy  (CC_INFO) =  -76.267732518316208
+
+	Input parameters:
+	-----------------
+	Maxiter       =      50
+	Convergence   = 1.0e-07
+	Restart       =     Yes
+	Cache Level   =     2
+	Model III     =     No
+	DIIS          =     Yes
+	AO Basis      =     No
+	ABCD            =     NEW
+	Local CC        =     No
+	Paramaters for left-handed eigenvectors:
+	    Irr   Root  Ground-State?    EOM energy        R0
+	  1   0     0        Yes       0.0000000000   1.0000000000
+	Labels for eigenvector 1:
+	LIA 0 -1, Lia 0 -1, LIJAB 0 -1, Lijab 0 -1, LIjAb 0 -1, 2LIjAb - LIjbA 0 -1
+	Deleting old CC_LAMBDA data.
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	   0        -0.222076710405491    0.000e+00
+	   1        -0.219545992798780    3.417e-03
+	   2        -0.219297425379049    5.859e-04
+	   3        -0.219255365891275    1.550e-04
+	   4        -0.219253757298273    3.728e-05
+	   5        -0.219253170872306    8.554e-06
+	   6        -0.219253003917889    2.247e-06
+	   7        -0.219252985290373    6.478e-07
+	   8        -0.219252984451535    2.392e-07
+	   9        -0.219252984988050    5.875e-08
+
+	Largest LIA Amplitudes:
+	          2   0         0.0003371744
+	          4  15         0.0002857869
+	          3  12         0.0002093874
+	          2   1         0.0001317177
+	          1   1        -0.0000893769
+	          1   0         0.0000816329
+	          4  19         0.0000814893
+	          2   2        -0.0000693289
+	          2   5        -0.0000595651
+	          4  17         0.0000549698
+
+	Largest LIjAb Amplitudes:
+	  3   3  12  12        -0.0548448804
+	  2   2   1   1        -0.0454610104
+	  4   4  15  15        -0.0379024696
+	  2   3   1  12        -0.0343632656
+	  3   2  12   1        -0.0343632656
+	  4   4  17  17        -0.0305154825
+	  4   4  15  17        -0.0280726287
+	  4   4  17  15        -0.0280726287
+	  3   4  12  15        -0.0252522188
+	  4   3  15  12        -0.0252522188
+
+	Iterations converged.
+
+	Overlap <L|e^T> =        0.94201395047
+******************************************************************************
+CCLAMBDA tstop called on Herbert.local
+Thu Jul  8 10:27:15 2010
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.07 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCDENSITY tstart called on Herbert.local
+Thu Jul  8 10:27:15 2010
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function    =  OOCCD
+	Reference wfn    =   RHF
+	Tolerance        = 1.0e-14
+	Cache Level      = 2
+	AO Basis         = No
+	OPDM Only        = No
+	Relax OPDM       = No
+	Compute Xi       = No
+	Use Zeta         = No
+	Xi connected     = Yes
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045655807910720
+	OOCCD energy        (CC_INFO) =   -0.222076710405491
+	Total OOCCD energy  (CC_INFO) =  -76.267732518316208
+	Number of States = 1
+
+	Ground?  State     EOM Energy       R0
+	  Yes     0A1     0.0000000000   1.00000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.233024658861521
+	IJKL energy                =    0.043277877217033
+	IJKA energy                =   -0.000059048733483
+	IJAB energy                =   -0.438480778803818
+	IBJA energy                =   -0.102631486254636
+	CIAB energy                =    0.000035327241916
+	ABCD energy                =    0.042750351458043
+	Total two-electron energy  =   -0.455107757874945
+	CCSD correlation energy    =   -0.222083099013424
+	Total CCSD energy          =  -76.267738906924137
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.975505826350883
+	Kinetic energy (corr)  =    0.163922972184980
+	Kinetic energy (total) =   76.139428798535860
+	-V/T (ref)             =    2.000923323652759
+	-V/T (corr)            =    2.354762590290810
+	-V/T (total)           =    2.001685115344375
+	Rotating orbitals.  Maximum XAI =  0.000115931414
+******************************************************************************
+CCDENSITY tstop called on Herbert.local
+Thu Jul  8 10:27:15 2010
+
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+TRANSQT tstart called on Herbert.local
+Thu Jul  8 10:27:15 2010
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	No
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 26
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on Herbert.local
+Thu Jul  8 10:27:15 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCSORT tstart called on Herbert.local
+Thu Jul  8 10:27:15 2010
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Make unpacked (ab|cd) =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Size of irrep 0 of <ab|cd> integrals:      0.022 (MW) /      0.178 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.007 (MW) /      0.056 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.017 (MW) /      0.139 (MB)
+	Total:                                     0.052 (MW) /      0.420 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.014 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.004 (MW) /      0.032 (MB)
+	Total:                                     0.013 (MW) /      0.101 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.002 (MW) /      0.013 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.001 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.025 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
+	One-electron energy          =   -122.96822366929325
+	Two-electron (AA) energy     =     14.40945618124542
+	Two-electron (BB) energy     =     14.40945618124542
+	Two-electron (AB) energy     =     23.35384830548671
+	Two-electron energy          =     37.76330448673212
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.04564121171842
+******************************************************************************
+CCSORT tstop called on Herbert.local
+Thu Jul  8 10:27:16 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCENERGY tstart called on Herbert.local
+Thu Jul  8 10:27:16 2010
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045641211718419
+
+	Input parameters:
+	-----------------
+	Wave function   =    OOCCD
+	Reference wfn   =     RHF
+	Memory (Mbytes) =     256.0
+	Maxiter         =     50
+	Convergence     =     1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	AO Basis        =     NONE
+	ABCD            =     NEW
+	Cache Level     =     2
+	Cache Type      =     LOW
+	Print Level     =     0
+	Num. of threads =     1
+	# Amps to Print =     10
+	Print MP2 Amps? =     No
+	Analyze T2 Amps =     No
+	Print Pair Ener =     No
+	Local CC        =     No
+	SCS             =     False
+	MP2_SCALE_OS    =     1.200000
+	MP2_SCALE_SS    =     0.333333
+	CC_SCALE_OS     =     1.270000
+	CC_SCALE_SS     =     1.130000
+
+	Using old T1 amplitudes.
+	Using old T2 amplitudes.
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.222087552767868    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.222091473007988    4.028e-05    0.000000    0.000000    0.000000
+     2        -0.222091357970315    5.719e-06    0.000000    0.000000    0.000000
+     3        -0.222091587226799    1.462e-06    0.000000    0.000000    0.000000
+     4        -0.222091629823911    3.583e-07    0.000000    0.000000    0.000000
+     5        -0.222091634067446    6.131e-08    0.000000    0.000000    0.000000
+
+	Iterations converged.
+
+
+	Largest TIjAb Amplitudes:
+	  3   3  12  12        -0.0550698147
+	  2   2   1   1        -0.0458294187
+	  4   4  15  15        -0.0384921381
+	  2   3   1  12        -0.0345070397
+	  3   2  12   1        -0.0345070397
+	  4   4  17  17        -0.0311013775
+	  4   4  15  17        -0.0285091380
+	  4   4  17  15        -0.0285091380
+	  3   4  12  15        -0.0253972743
+	  4   3  15  12        -0.0253972743
+
+	SCF energy       (chkpt)              =  -76.046327055642024
+	Reference energy (file100)            =  -76.045641211718419
+
+	Scaled_OS MP2 correlation energy      =   -0.174495406265261
+	Scaled_SS MP2 correlation energy      =   -0.017003089888762
+	SCS-MP2 correlation energy            =   -0.191498496154023
+      * SCS-MP2 total energy                  =  -76.237139707872444
+
+	Opposite-spin MP2 correlation energy  =   -0.162862379180910
+	Same-spin MP2 correlation energy      =   -0.051009269666287
+	MP2 correlation energy                =   -0.214475993700041
+      * MP2 total energy                      =  -76.260117205418453
+
+	Scaled_OS CCSD correlation energy     =   -0.225038837950797
+	Scaled_SS CCSD correlation energy     =   -0.050732139500623
+	SCS-CCSD correlation energy           =   -0.275770977451420
+      * SCS-CCSD total energy                 =  -76.321412189169834
+
+	Opposite-spin CCSD correlation energy =   -0.177195935394328
+	Same-spin CCSD correlation energy     =   -0.044895698673118
+	CCSD correlation energy               =   -0.222091634067446
+      * CCSD total energy                     =  -76.267732845785872
+
+******************************************************************************
+CCENERGY tstop called on Herbert.local
+Thu Jul  8 10:27:17 2010
+
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.08 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCHBAR tstart called on Herbert.local
+Thu Jul  8 10:27:17 2010
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+CCHBAR tstop called on Herbert.local
+Thu Jul  8 10:27:17 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCLAMBDA tstart called on Herbert.local
+Thu Jul  8 10:27:17 2010
+
+
+			**************************
+			*        CCLAMBDA        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	Reference           (chkpt)   = 0
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (CC_INFO) =  -76.045641211718419
+	OOCCD energy        (CC_INFO) =   -0.222091634067446
+	Total OOCCD energy  (CC_INFO) =  -76.267732845785872
+
+	Input parameters:
+	-----------------
+	Maxiter       =      50
+	Convergence   = 1.0e-07
+	Restart       =     Yes
+	Cache Level   =     2
+	Model III     =     No
+	DIIS          =     Yes
+	AO Basis      =     No
+	ABCD            =     NEW
+	Local CC        =     No
+	Paramaters for left-handed eigenvectors:
+	    Irr   Root  Ground-State?    EOM energy        R0
+	  1   0     0        Yes       0.0000000000   1.0000000000
+	Labels for eigenvector 1:
+	LIA 0 -1, Lia 0 -1, LIJAB 0 -1, Lijab 0 -1, LIjAb 0 -1, 2LIjAb - LIjbA 0 -1
+	Deleting old CC_LAMBDA data.
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	   0        -0.222091634067446    0.000e+00
+	   1        -0.219560447022303    3.369e-03
+	   2        -0.219301476684243    5.937e-04
+	   3        -0.219259003945269    1.568e-04
+	   4        -0.219257483409311    3.960e-05
+	   5        -0.219256914903897    1.033e-05
+	   6        -0.219256765482928    3.440e-06
+	   7        -0.219256757258879    1.091e-06
+	   8        -0.219256764741233    3.165e-07
+	   9        -0.219256765464916    5.295e-08
+
+	Largest LIA Amplitudes:
+	          2   0         0.0002002756
+	          4  15         0.0001709692
+	          3  12         0.0001217669
+	          2   1         0.0000807301
+	          1   1        -0.0000508114
+	          1   0         0.0000458102
+	          4  19         0.0000429655
+	          2   2        -0.0000411251
+	          4  17         0.0000381307
+	          2   5        -0.0000317819
+
+	Largest LIjAb Amplitudes:
+	  3   3  12  12        -0.0548418062
+	  2   2   1   1        -0.0454597675
+	  4   4  15  15        -0.0379018686
+	  2   3   1  12        -0.0343616267
+	  3   2  12   1        -0.0343616267
+	  4   4  17  17        -0.0305134121
+	  4   4  15  17        -0.0280717674
+	  4   4  17  15        -0.0280717674
+	  3   4  12  15        -0.0252499676
+	  4   3  15  12        -0.0252499676
+
+	Iterations converged.
+
+	Overlap <L|e^T> =        0.94201287194
+******************************************************************************
+CCLAMBDA tstop called on Herbert.local
+Thu Jul  8 10:27:17 2010
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.07 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCDENSITY tstart called on Herbert.local
+Thu Jul  8 10:27:17 2010
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function    =  OOCCD
+	Reference wfn    =   RHF
+	Tolerance        = 1.0e-14
+	Cache Level      = 2
+	AO Basis         = No
+	OPDM Only        = No
+	Relax OPDM       = No
+	Compute Xi       = No
+	Use Zeta         = No
+	Xi connected     = Yes
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045641211718419
+	OOCCD energy        (CC_INFO) =   -0.222091634067446
+	Total OOCCD energy  (CC_INFO) =  -76.267732845785872
+	Number of States = 1
+
+	Ground?  State     EOM Energy       R0
+	  Yes     0A1     0.0000000000   1.00000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.233019852527229
+	IJKL energy                =    0.043276683880115
+	IJKA energy                =   -0.000035667615709
+	IJAB energy                =   -0.438499192643119
+	IBJA energy                =   -0.102631623240002
+	CIAB energy                =    0.000022236608564
+	ABCD energy                =    0.042752467571518
+	Total two-electron energy  =   -0.455115095438633
+	CCSD correlation energy    =   -0.222095242911404
+	Total CCSD energy          =  -76.267736454629826
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.974920440847214
+	Kinetic energy (corr)  =    0.164321699927439
+	Kinetic energy (total) =   76.139242140774655
+	-V/T (ref)             =    2.000930843631830
+	-V/T (corr)            =    2.351566069274581
+	-V/T (total)           =    2.001687575308061
+	Rotating orbitals.  Maximum XAI =  0.000068399328
+******************************************************************************
+CCDENSITY tstop called on Herbert.local
+Thu Jul  8 10:27:17 2010
+
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+TRANSQT tstart called on Herbert.local
+Thu Jul  8 10:27:17 2010
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	No
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 26
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on Herbert.local
+Thu Jul  8 10:27:17 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCSORT tstart called on Herbert.local
+Thu Jul  8 10:27:17 2010
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Make unpacked (ab|cd) =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Size of irrep 0 of <ab|cd> integrals:      0.022 (MW) /      0.178 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.007 (MW) /      0.056 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.017 (MW) /      0.139 (MB)
+	Total:                                     0.052 (MW) /      0.420 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.014 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.004 (MW) /      0.032 (MB)
+	Total:                                     0.013 (MW) /      0.101 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.002 (MW) /      0.013 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.001 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.025 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
+	One-electron energy          =   -122.96740998110609
+	Two-electron (AA) energy     =     14.40911075903459
+	Two-electron (BB) energy     =     14.40911075903459
+	Two-electron (AB) energy     =     23.35338809689883
+	Two-electron energy          =     37.76249885593342
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.04563315432995
+******************************************************************************
+CCSORT tstop called on Herbert.local
+Thu Jul  8 10:27:19 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+CCENERGY tstart called on Herbert.local
+Thu Jul  8 10:27:19 2010
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045633154329948
+
+	Input parameters:
+	-----------------
+	Wave function   =    OOCCD
+	Reference wfn   =     RHF
+	Memory (Mbytes) =     256.0
+	Maxiter         =     50
+	Convergence     =     1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	AO Basis        =     NONE
+	ABCD            =     NEW
+	Cache Level     =     2
+	Cache Type      =     LOW
+	Print Level     =     0
+	Num. of threads =     1
+	# Amps to Print =     10
+	Print MP2 Amps? =     No
+	Analyze T2 Amps =     No
+	Print Pair Ener =     No
+	Local CC        =     No
+	SCS             =     False
+	MP2_SCALE_OS    =     1.200000
+	MP2_SCALE_SS    =     0.333333
+	CC_SCALE_OS     =     1.270000
+	CC_SCALE_SS     =     1.130000
+
+	Using old T1 amplitudes.
+	Using old T2 amplitudes.
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.222097694750275    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.222099725852943    2.352e-05    0.000000    0.000000    0.000000
+     2        -0.222099650590128    3.307e-06    0.000000    0.000000    0.000000
+     3        -0.222099775786022    8.346e-07    0.000000    0.000000    0.000000
+     4        -0.222099798903457    2.043e-07    0.000000    0.000000    0.000000
+     5        -0.222099801363897    3.518e-08    0.000000    0.000000    0.000000
+
+	Iterations converged.
+
+
+	Largest TIjAb Amplitudes:
+	  3   3  12  12        -0.0550710657
+	  2   2   1   1        -0.0458293525
+	  4   4  15  15        -0.0384992528
+	  2   3   1  12        -0.0345070863
+	  3   2  12   1        -0.0345070863
+	  4   4  17  17        -0.0311004512
+	  4   4  15  17        -0.0285099349
+	  4   4  17  15        -0.0285099349
+	  3   4  12  15        -0.0253999297
+	  4   3  15  12        -0.0253999297
+
+	SCF energy       (chkpt)              =  -76.046327055642024
+	Reference energy (file100)            =  -76.045633154329948
+
+	Scaled_OS MP2 correlation energy      =   -0.174503322179151
+	Scaled_SS MP2 correlation energy      =   -0.017003679664475
+	SCS-MP2 correlation energy            =   -0.191507001843626
+      * SCS-MP2 total energy                  =  -76.237140156173567
+
+	Opposite-spin MP2 correlation energy  =   -0.162869767367208
+	Same-spin MP2 correlation energy      =   -0.051011038993425
+	MP2 correlation energy                =   -0.214493066948498
+      * MP2 total energy                      =  -76.260126221278441
+
+	Scaled_OS CCSD correlation energy     =   -0.225048409972392
+	Scaled_SS CCSD correlation energy     =   -0.050732851707500
+	SCS-CCSD correlation energy           =   -0.275781261679892
+      * SCS-CCSD total energy                 =  -76.321414416009830
+
+	Opposite-spin CCSD correlation energy =   -0.177203472419206
+	Same-spin CCSD correlation energy     =   -0.044896328944690
+	CCSD correlation energy               =   -0.222099801363897
+      * CCSD total energy                     =  -76.267732955693845
+
+******************************************************************************
+CCENERGY tstop called on Herbert.local
+Thu Jul  8 10:27:20 2010
+
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.08 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCHBAR tstart called on Herbert.local
+Thu Jul  8 10:27:20 2010
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+CCHBAR tstop called on Herbert.local
+Thu Jul  8 10:27:20 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCLAMBDA tstart called on Herbert.local
+Thu Jul  8 10:27:20 2010
+
+
+			**************************
+			*        CCLAMBDA        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	Reference           (chkpt)   = 0
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (CC_INFO) =  -76.045633154329948
+	OOCCD energy        (CC_INFO) =   -0.222099801363897
+	Total OOCCD energy  (CC_INFO) =  -76.267732955693845
+
+	Input parameters:
+	-----------------
+	Maxiter       =      50
+	Convergence   = 1.0e-07
+	Restart       =     Yes
+	Cache Level   =     2
+	Model III     =     No
+	DIIS          =     Yes
+	AO Basis      =     No
+	ABCD            =     NEW
+	Local CC        =     No
+	Paramaters for left-handed eigenvectors:
+	    Irr   Root  Ground-State?    EOM energy        R0
+	  1   0     0        Yes       0.0000000000   1.0000000000
+	Labels for eigenvector 1:
+	LIA 0 -1, Lia 0 -1, LIJAB 0 -1, Lijab 0 -1, LIjAb 0 -1, 2LIjAb - LIjbA 0 -1
+	Deleting old CC_LAMBDA data.
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	   0        -0.222099801363897    0.000e+00
+	   1        -0.219568346380714    3.350e-03
+	   2        -0.219303451398257    6.000e-04
+	   3        -0.219260790916594    1.594e-04
+	   4        -0.219259337383582    4.148e-05
+	   5        -0.219258793076487    1.168e-05
+	   6        -0.219258663449332    4.123e-06
+	   7        -0.219258662878183    1.246e-06
+	   8        -0.219258674173500    3.224e-07
+	   9        -0.219258674646373    5.094e-08
+
+	Largest LIA Amplitudes:
+	          2   0         0.0001192819
+	          4  15         0.0001018487
+	          3  12         0.0000719621
+	          2   1         0.0000494721
+	          1   1        -0.0000303322
+	          4  17         0.0000258982
+	          1   0         0.0000250395
+	          2   2        -0.0000250088
+	          4  19         0.0000231086
+	          2   5        -0.0000173439
+
+	Largest LIjAb Amplitudes:
+	  3   3  12  12        -0.0548399000
+	  2   2   1   1        -0.0454590211
+	  4   4  15  15        -0.0379015467
+	  2   3   1  12        -0.0343606430
+	  3   2  12   1        -0.0343606430
+	  4   4  17  17        -0.0305122073
+	  4   4  15  17        -0.0280712789
+	  4   4  17  15        -0.0280712789
+	  3   4  12  15        -0.0252486603
+	  4   3  15  12        -0.0252486603
+
+	Iterations converged.
+
+	Overlap <L|e^T> =        0.94201233438
+******************************************************************************
+CCLAMBDA tstop called on Herbert.local
+Thu Jul  8 10:27:20 2010
+
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.07 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCDENSITY tstart called on Herbert.local
+Thu Jul  8 10:27:20 2010
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function    =  OOCCD
+	Reference wfn    =   RHF
+	Tolerance        = 1.0e-14
+	Cache Level      = 2
+	AO Basis         = No
+	OPDM Only        = No
+	Relax OPDM       = No
+	Compute Xi       = No
+	Use Zeta         = No
+	Xi connected     = Yes
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045633154329948
+	OOCCD energy        (CC_INFO) =   -0.222099801363897
+	Total OOCCD energy  (CC_INFO) =  -76.267732955693845
+	Number of States = 1
+
+	Ground?  State     EOM Energy       R0
+	  Yes     0A1     0.0000000000   1.00000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.233016992953160
+	IJKL energy                =    0.043275869956046
+	IJKA energy                =   -0.000021619705296
+	IJAB energy                =   -0.438509106841459
+	IBJA energy                =   -0.102631605999400
+	CIAB energy                =    0.000013931188239
+	ABCD energy                =    0.042753653273715
+	Total two-electron energy  =   -0.455118878128154
+	CCSD correlation energy    =   -0.222101885174994
+	Total CCSD energy          =  -76.267735039504942
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.974527532667040
+	Kinetic energy (corr)  =    0.164584373415287
+	Kinetic energy (total) =   76.139111906082320
+	-V/T (ref)             =    2.000935913969749
+	-V/T (corr)            =    2.349458619643581
+	-V/T (total)           =    2.001689290121615
+	Rotating orbitals.  Maximum XAI =  0.000040390836
+******************************************************************************
+CCDENSITY tstop called on Herbert.local
+Thu Jul  8 10:27:21 2010
+
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+TRANSQT tstart called on Herbert.local
+Thu Jul  8 10:27:21 2010
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	No
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 26
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on Herbert.local
+Thu Jul  8 10:27:21 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCSORT tstart called on Herbert.local
+Thu Jul  8 10:27:21 2010
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Make unpacked (ab|cd) =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Size of irrep 0 of <ab|cd> integrals:      0.022 (MW) /      0.178 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.007 (MW) /      0.056 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.017 (MW) /      0.139 (MB)
+	Total:                                     0.052 (MW) /      0.420 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.014 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.004 (MW) /      0.032 (MB)
+	Total:                                     0.013 (MW) /      0.101 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.002 (MW) /      0.013 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.001 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.025 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
+	One-electron energy          =   -122.96691110634019
+	Two-electron (AA) energy     =     14.40889828815197
+	Two-electron (BB) energy     =     14.40889828815197
+	Two-electron (AB) energy     =     23.35310616400839
+	Two-electron energy          =     37.76200445216037
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.04562868333710
+******************************************************************************
+CCSORT tstop called on Herbert.local
+Thu Jul  8 10:27:22 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCENERGY tstart called on Herbert.local
+Thu Jul  8 10:27:22 2010
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045628683337100
+
+	Input parameters:
+	-----------------
+	Wave function   =    OOCCD
+	Reference wfn   =     RHF
+	Memory (Mbytes) =     256.0
+	Maxiter         =     50
+	Convergence     =     1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	AO Basis        =     NONE
+	ABCD            =     NEW
+	Cache Level     =     2
+	Cache Type      =     LOW
+	Print Level     =     0
+	Num. of threads =     1
+	# Amps to Print =     10
+	Print MP2 Amps? =     No
+	Analyze T2 Amps =     No
+	Print Pair Ener =     No
+	Local CC        =     No
+	SCS             =     False
+	MP2_SCALE_OS    =     1.200000
+	MP2_SCALE_SS    =     0.333333
+	CC_SCALE_OS     =     1.270000
+	CC_SCALE_SS     =     1.130000
+
+	Using old T1 amplitudes.
+	Using old T2 amplitudes.
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.222103222205268    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.222104276860396    1.380e-05    0.000000    0.000000    0.000000
+     2        -0.222104227155984    1.922e-06    0.000000    0.000000    0.000000
+     3        -0.222104295728429    4.784e-07    0.000000    0.000000    0.000000
+     4        -0.222104308262072    1.169e-07    0.000000    0.000000    0.000000
+     5        -0.222104309694727    2.028e-08    0.000000    0.000000    0.000000
+
+	Iterations converged.
+
+
+	Largest TIjAb Amplitudes:
+	  3   3  12  12        -0.0550717256
+	  2   2   1   1        -0.0458292963
+	  4   4  15  15        -0.0385033829
+	  2   3   1  12        -0.0345070971
+	  3   2  12   1        -0.0345070971
+	  4   4  17  17        -0.0310997927
+	  4   4  15  17        -0.0285103046
+	  4   4  17  15        -0.0285103046
+	  3   4  12  15        -0.0254014616
+	  4   3  15  12        -0.0254014616
+
+	SCF energy       (chkpt)              =  -76.046327055642024
+	Reference energy (file100)            =  -76.045628683337100
+
+	Scaled_OS MP2 correlation energy      =   -0.174507691861400
+	Scaled_SS MP2 correlation energy      =   -0.017004001126810
+	SCS-MP2 correlation energy            =   -0.191511692988210
+      * SCS-MP2 total energy                  =  -76.237140376325300
+
+	Opposite-spin MP2 correlation energy  =   -0.162873845737306
+	Same-spin MP2 correlation energy      =   -0.051012003380431
+	MP2 correlation energy                =   -0.214502592973829
+      * MP2 total energy                      =  -76.260131276310929
+
+	Scaled_OS CCSD correlation energy     =   -0.225053703645090
+	Scaled_SS CCSD correlation energy     =   -0.050733236003111
+	SCS-CCSD correlation energy           =   -0.275786939648201
+      * SCS-CCSD total energy                 =  -76.321415622985299
+
+	Opposite-spin CCSD correlation energy =   -0.177207640665425
+	Same-spin CCSD correlation energy     =   -0.044896669029302
+	CCSD correlation energy               =   -0.222104309694727
+      * CCSD total energy                     =  -76.267732993031828
+
+******************************************************************************
+CCENERGY tstop called on Herbert.local
+Thu Jul  8 10:27:22 2010
+
+user time   =       0.10 seconds =       0.00 minutes
+system time =       0.08 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCHBAR tstart called on Herbert.local
+Thu Jul  8 10:27:22 2010
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+CCHBAR tstop called on Herbert.local
+Thu Jul  8 10:27:22 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCLAMBDA tstart called on Herbert.local
+Thu Jul  8 10:27:22 2010
+
+
+			**************************
+			*        CCLAMBDA        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	Reference           (chkpt)   = 0
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (CC_INFO) =  -76.045628683337100
+	OOCCD energy        (CC_INFO) =   -0.222104309694727
+	Total OOCCD energy  (CC_INFO) =  -76.267732993031828
+
+	Input parameters:
+	-----------------
+	Maxiter       =      50
+	Convergence   = 1.0e-07
+	Restart       =     Yes
+	Cache Level   =     2
+	Model III     =     No
+	DIIS          =     Yes
+	AO Basis      =     No
+	ABCD            =     NEW
+	Local CC        =     No
+	Paramaters for left-handed eigenvectors:
+	    Irr   Root  Ground-State?    EOM energy        R0
+	  1   0     0        Yes       0.0000000000   1.0000000000
+	Labels for eigenvector 1:
+	LIA 0 -1, Lia 0 -1, LIJAB 0 -1, Lijab 0 -1, LIjAb 0 -1, 2LIjAb - LIjbA 0 -1
+	Deleting old CC_LAMBDA data.
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	   0        -0.222104309694727    0.000e+00
+	   1        -0.219572702553271    3.341e-03
+	   2        -0.219304416395222    6.043e-04
+	   3        -0.219261677770207    1.615e-04
+	   4        -0.219260261500973    4.272e-05
+	   5        -0.219259737580125    1.251e-05
+	   6        -0.219259622684997    4.489e-06
+	   7        -0.219259625763298    1.308e-06
+	   8        -0.219259638916889    3.226e-07
+	   9        -0.219259639185260    5.034e-08
+
+	Largest LIA Amplitudes:
+	          2   0         0.0000713009
+	          4  15         0.0000603293
+	          3  12         0.0000430993
+	          2   1         0.0000302395
+	          1   1        -0.0000194044
+	          4  17         0.0000174935
+	          2   2        -0.0000157802
+	          1   0         0.0000129289
+	          4  19         0.0000128579
+	          2   5        -0.0000098183
+
+	Largest LIjAb Amplitudes:
+	  3   3  12  12        -0.0548387211
+	  2   2   1   1        -0.0454585688
+	  4   4  15  15        -0.0379013753
+	  2   3   1  12        -0.0343600482
+	  3   2  12   1        -0.0343600482
+	  4   4  17  17        -0.0305115003
+	  4   4  15  17        -0.0280709996
+	  4   4  17  15        -0.0280709996
+	  3   4  12  15        -0.0252478987
+	  4   3  15  12        -0.0252478987
+
+	Iterations converged.
+
+	Overlap <L|e^T> =        0.94201207130
+******************************************************************************
+CCLAMBDA tstop called on Herbert.local
+Thu Jul  8 10:27:23 2010
+
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.07 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCDENSITY tstart called on Herbert.local
+Thu Jul  8 10:27:23 2010
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function    =  OOCCD
+	Reference wfn    =   RHF
+	Tolerance        = 1.0e-14
+	Cache Level      = 2
+	AO Basis         = No
+	OPDM Only        = No
+	Relax OPDM       = No
+	Compute Xi       = No
+	Use Zeta         = No
+	Xi connected     = Yes
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045628683337100
+	OOCCD energy        (CC_INFO) =   -0.222104309694727
+	Total OOCCD energy  (CC_INFO) =  -76.267732993031828
+	Number of States = 1
+
+	Ground?  State     EOM Energy       R0
+	  Yes     0A1     0.0000000000   1.00000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.233015295940240
+	IJKL energy                =    0.043275325394244
+	IJKA energy                =   -0.000013136752422
+	IJAB energy                =   -0.438514489025798
+	IBJA energy                =   -0.102631531700124
+	CIAB energy                =    0.000008683964924
+	ABCD energy                =    0.042754321635020
+	Total two-electron energy  =   -0.455120826484155
+	CCSD correlation energy    =   -0.222105530543914
+	Total CCSD energy          =  -76.267734213881013
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.974267670946645
+	Kinetic energy (corr)  =    0.164755628088681
+	Kinetic energy (total) =   76.139023299035330
+	-V/T (ref)             =    2.000939278713413
+	-V/T (corr)            =    2.348083293246754
+	-V/T (total)           =    2.001690456331322
+	Rotating orbitals.  Maximum XAI =  0.000023882523
+******************************************************************************
+CCDENSITY tstop called on Herbert.local
+Thu Jul  8 10:27:23 2010
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+TRANSQT tstart called on Herbert.local
+Thu Jul  8 10:27:23 2010
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	No
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 26
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on Herbert.local
+Thu Jul  8 10:27:23 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCSORT tstart called on Herbert.local
+Thu Jul  8 10:27:23 2010
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Make unpacked (ab|cd) =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Size of irrep 0 of <ab|cd> integrals:      0.022 (MW) /      0.178 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.007 (MW) /      0.056 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.017 (MW) /      0.139 (MB)
+	Total:                                     0.052 (MW) /      0.420 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.014 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.004 (MW) /      0.032 (MB)
+	Total:                                     0.013 (MW) /      0.101 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.002 (MW) /      0.013 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.001 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.025 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
+	One-electron energy          =   -122.96660471282350
+	Two-electron (AA) energy     =     14.40876745317947
+	Two-electron (BB) energy     =     14.40876745317947
+	Two-electron (AB) energy     =     23.35293310358226
+	Two-electron energy          =     37.76170055676172
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.04562618521905
+******************************************************************************
+CCSORT tstop called on Herbert.local
+Thu Jul  8 10:27:25 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+CCENERGY tstart called on Herbert.local
+Thu Jul  8 10:27:25 2010
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045626185219049
+
+	Input parameters:
+	-----------------
+	Wave function   =    OOCCD
+	Reference wfn   =     RHF
+	Memory (Mbytes) =     256.0
+	Maxiter         =     50
+	Convergence     =     1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	AO Basis        =     NONE
+	ABCD            =     NEW
+	Cache Level     =     2
+	Cache Type      =     LOW
+	Print Level     =     0
+	Num. of threads =     1
+	# Amps to Print =     10
+	Print MP2 Amps? =     No
+	Analyze T2 Amps =     No
+	Print Pair Ener =     No
+	Local CC        =     No
+	SCS             =     False
+	MP2_SCALE_OS    =     1.200000
+	MP2_SCALE_SS    =     0.333333
+	CC_SCALE_OS     =     1.270000
+	CC_SCALE_SS     =     1.130000
+
+	Using old T1 amplitudes.
+	Using old T2 amplitudes.
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.222106258676105    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.222106807980789    8.129e-06    0.000000    0.000000    0.000000
+     2        -0.222106775398008    1.124e-06    0.000000    0.000000    0.000000
+     3        -0.222106813222054    2.760e-07    0.000000    0.000000    0.000000
+     4        -0.222106817299040    6.725e-08    0.000000    0.000000    0.000000
+
+	Iterations converged.
+
+
+	Largest TIjAb Amplitudes:
+	  3   3  12  12        -0.0550720838
+	  2   2   1   1        -0.0458292546
+	  4   4  15  15        -0.0385057795
+	  2   3   1  12        -0.0345070981
+	  3   2  12   1        -0.0345070981
+	  4   4  17  17        -0.0310993420
+	  4   4  15  17        -0.0285104652
+	  4   4  17  15        -0.0285104652
+	  3   4  12  15        -0.0254023522
+	  4   3  15  12        -0.0254023522
+
+	SCF energy       (chkpt)              =  -76.046327055642024
+	Reference energy (file100)            =  -76.045626185219049
+
+	Scaled_OS MP2 correlation energy      =   -0.174510125635872
+	Scaled_SS MP2 correlation energy      =   -0.017004178633063
+	SCS-MP2 correlation energy            =   -0.191514304268935
+      * SCS-MP2 total energy                  =  -76.237140489487984
+
+	Opposite-spin MP2 correlation energy  =   -0.162876117260147
+	Same-spin MP2 correlation energy      =   -0.051012535899189
+	MP2 correlation energy                =   -0.214507952982898
+      * MP2 total energy                      =  -76.260134138201948
+
+	Scaled_OS CCSD correlation energy     =   -0.225056647107896
+	Scaled_SS CCSD correlation energy     =   -0.050733450609393
+	SCS-CCSD correlation energy           =   -0.275790097717289
+      * SCS-CCSD total energy                 =  -76.321416282936340
+
+	Opposite-spin CCSD correlation energy =   -0.177209958352674
+	Same-spin CCSD correlation energy     =   -0.044896858946365
+	CCSD correlation energy               =   -0.222106817299040
+      * CCSD total energy                     =  -76.267733002518085
+
+******************************************************************************
+CCENERGY tstop called on Herbert.local
+Thu Jul  8 10:27:25 2010
+
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.07 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCHBAR tstart called on Herbert.local
+Thu Jul  8 10:27:25 2010
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+CCHBAR tstop called on Herbert.local
+Thu Jul  8 10:27:26 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCLAMBDA tstart called on Herbert.local
+Thu Jul  8 10:27:26 2010
+
+
+			**************************
+			*        CCLAMBDA        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	Reference           (chkpt)   = 0
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (CC_INFO) =  -76.045626185219049
+	OOCCD energy        (CC_INFO) =   -0.222106817299040
+	Total OOCCD energy  (CC_INFO) =  -76.267733002518085
+
+	Input parameters:
+	-----------------
+	Maxiter       =      50
+	Convergence   = 1.0e-07
+	Restart       =     Yes
+	Cache Level   =     2
+	Model III     =     No
+	DIIS          =     Yes
+	AO Basis      =     No
+	ABCD            =     NEW
+	Local CC        =     No
+	Paramaters for left-handed eigenvectors:
+	    Irr   Root  Ground-State?    EOM energy        R0
+	  1   0     0        Yes       0.0000000000   1.0000000000
+	Labels for eigenvector 1:
+	LIA 0 -1, Lia 0 -1, LIJAB 0 -1, Lijab 0 -1, LIjAb 0 -1, 2LIjAb - LIjbA 0 -1
+	Deleting old CC_LAMBDA data.
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	   0        -0.222106817299040    0.000e+00
+	   1        -0.219575125907883    3.337e-03
+	   2        -0.219304885863646    6.069e-04
+	   3        -0.219262119369842    1.629e-04
+	   4        -0.219260722127059    4.349e-05
+	   5        -0.219260212777371    1.301e-05
+	   6        -0.219260107415379    4.690e-06
+	   7        -0.219260112193043    1.336e-06
+	   8        -0.219260126352531    3.223e-07
+	   9        -0.219260126483411    5.013e-08
+
+	Largest LIA Amplitudes:
+	          2   0         0.0000428300
+	          4  15         0.0000354051
+	          3  12         0.0000260999
+	          2   1         0.0000183711
+	          1   1        -0.0000135431
+	          4  17         0.0000119075
+	          2   2        -0.0000104808
+	          4  19         0.0000075580
+	          1   2        -0.0000061113
+	          2   5        -0.0000058834
+
+	Largest LIjAb Amplitudes:
+	  3   3  12  12        -0.0548379928
+	  2   2   1   1        -0.0454582930
+	  4   4  15  15        -0.0379012845
+	  2   3   1  12        -0.0343596864
+	  3   2  12   1        -0.0343596864
+	  4   4  17  17        -0.0305110824
+	  4   4  15  17        -0.0280708387
+	  4   4  17  15        -0.0280708387
+	  3   4  12  15        -0.0252474531
+	  4   3  15  12        -0.0252474531
+
+	Iterations converged.
+
+	Overlap <L|e^T> =        0.94201194768
+******************************************************************************
+CCLAMBDA tstop called on Herbert.local
+Thu Jul  8 10:27:27 2010
+
+user time   =       0.07 seconds =       0.00 minutes
+system time =       0.07 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCDENSITY tstart called on Herbert.local
+Thu Jul  8 10:27:27 2010
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function    =  OOCCD
+	Reference wfn    =   RHF
+	Tolerance        = 1.0e-14
+	Cache Level      = 2
+	AO Basis         = No
+	OPDM Only        = No
+	Relax OPDM       = No
+	Compute Xi       = No
+	Use Zeta         = No
+	Xi connected     = Yes
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045626185219049
+	OOCCD energy        (CC_INFO) =   -0.222106817299040
+	Total OOCCD energy  (CC_INFO) =  -76.267733002518085
+	Number of States = 1
+
+	Ground?  State     EOM Energy       R0
+	  Yes     0A1     0.0000000000   1.00000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.233014281825587
+	IJKL energy                =    0.043274964801585
+	IJKA energy                =   -0.000007992441894
+	IJAB energy                =   -0.438517433468573
+	IBJA energy                =   -0.102631442530147
+	CIAB energy                =    0.000005380028056
+	ABCD energy                =    0.042754699288398
+	Total two-electron energy  =   -0.455121824322575
+	CCSD correlation energy    =   -0.222107542496987
+	Total CCSD energy          =  -76.267733727716035
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.974097780634295
+	Kinetic energy (corr)  =    0.164866336862879
+	Kinetic energy (total) =   76.138964117497167
+	-V/T (ref)             =    2.000941484093583
+	-V/T (corr)            =    2.347193256824579
+	-V/T (total)           =    2.001691235053083
+	Rotating orbitals.  Maximum XAI =  0.000014142692
+******************************************************************************
+CCDENSITY tstop called on Herbert.local
+Thu Jul  8 10:27:27 2010
+
+user time   =       0.06 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+TRANSQT tstart called on Herbert.local
+Thu Jul  8 10:27:27 2010
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	No
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 26
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on Herbert.local
+Thu Jul  8 10:27:27 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCSORT tstart called on Herbert.local
+Thu Jul  8 10:27:27 2010
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	OOCCD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Make unpacked (ab|cd) =	True
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 26
+	Number of active MOs = 26
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   13	    0	    3	    0	    10	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.15927797084272
+	SCF energy          (chkpt) =    -76.04632705564202
+
+	Size of irrep 0 of <ab|cd> integrals:      0.022 (MW) /      0.178 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.007 (MW) /      0.056 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.017 (MW) /      0.139 (MB)
+	Total:                                     0.052 (MW) /      0.420 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.006 (MW) /      0.046 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.014 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.004 (MW) /      0.032 (MB)
+	Total:                                     0.013 (MW) /      0.101 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.002 (MW) /      0.013 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.001 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.025 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B <ab|cd> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	Sorting File: F <ai|bc> nbuckets = 1
+	One-electron energy          =   -122.96641626313352
+	Two-electron (AA) energy     =     14.40868681332649
+	Two-electron (BB) energy     =     14.40868681332649
+	Two-electron (AB) energy     =     23.35282670033182
+	Two-electron energy          =     37.76151351365831
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.04562477863249
+******************************************************************************
+CCSORT tstop called on Herbert.local
+Thu Jul  8 10:27:28 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCENERGY tstart called on Herbert.local
+Thu Jul  8 10:27:28 2010
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045624778632487
+
+	Input parameters:
+	-----------------
+	Wave function   =    OOCCD
+	Reference wfn   =     RHF
+	Memory (Mbytes) =     256.0
+	Maxiter         =     50
+	Convergence     =     1.0e-07
+	Restart         =     Yes
+	DIIS            =     Yes
+	AO Basis        =     NONE
+	ABCD            =     NEW
+	Cache Level     =     2
+	Cache Type      =     LOW
+	Print Level     =     0
+	Num. of threads =     1
+	# Amps to Print =     10
+	Print MP2 Amps? =     No
+	Analyze T2 Amps =     No
+	Print Pair Ener =     No
+	Local CC        =     No
+	SCS             =     False
+	MP2_SCALE_OS    =     1.200000
+	MP2_SCALE_SS    =     0.333333
+	CC_SCALE_OS     =     1.270000
+	CC_SCALE_SS     =     1.130000
+
+	Using old T1 amplitudes.
+	Using old T2 amplitudes.
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.222107937601644    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.222108226665345    4.820e-06    0.000000    0.000000    0.000000
+     2        -0.222108206351898    6.667e-07    0.000000    0.000000    0.000000
+     3        -0.222108227842336    1.629e-07    0.000000    0.000000    0.000000
+     4        -0.222108230141082    3.958e-08    0.000000    0.000000    0.000000
+
+	Iterations converged.
+
+
+	Largest TIjAb Amplitudes:
+	  3   3  12  12        -0.0550722904
+	  2   2   1   1        -0.0458292293
+	  4   4  15  15        -0.0385071902
+	  2   3   1  12        -0.0345070986
+	  3   2  12   1        -0.0345070986
+	  4   4  17  17        -0.0310990432
+	  4   4  15  17        -0.0285105374
+	  4   4  17  15        -0.0285105374
+	  3   4  12  15        -0.0254028740
+	  4   3  15  12        -0.0254028740
+
+	SCF energy       (chkpt)              =  -76.046327055642024
+	Reference energy (file100)            =  -76.045624778632487
+
+	Scaled_OS MP2 correlation energy      =   -0.174511493199446
+	Scaled_SS MP2 correlation energy      =   -0.017004277881130
+	SCS-MP2 correlation energy            =   -0.191515771080576
+      * SCS-MP2 total energy                  =  -76.237140549713061
+
+	Opposite-spin MP2 correlation energy  =   -0.162877393652816
+	Same-spin MP2 correlation energy      =   -0.051012833643391
+	MP2 correlation energy                =   -0.214510994845725
+      * MP2 total energy                      =  -76.260135773478211
+
+	Scaled_OS CCSD correlation energy     =   -0.225058310898083
+	Scaled_SS CCSD correlation energy     =   -0.050733566740656
+	SCS-CCSD correlation energy           =   -0.275791877638739
+      * SCS-CCSD total energy                 =  -76.321416656271225
+
+	Opposite-spin CCSD correlation energy =   -0.177211268423688
+	Same-spin CCSD correlation energy     =   -0.044896961717394
+	CCSD correlation energy               =   -0.222108230141082
+      * CCSD total energy                     =  -76.267733008773575
+
+******************************************************************************
+CCENERGY tstop called on Herbert.local
+Thu Jul  8 10:27:30 2010
+
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.07 seconds =       0.00 minutes
+total time  =          2 seconds =       0.03 minutes
+******************************************************************************
+CCHBAR tstart called on Herbert.local
+Thu Jul  8 10:27:30 2010
+
+
+			**************************
+			*                        *
+			*         CCHBAR         *
+			*                        *
+			**************************
+
+******************************************************************************
+CCHBAR tstop called on Herbert.local
+Thu Jul  8 10:27:30 2010
+
+user time   =       0.03 seconds =       0.00 minutes
+system time =       0.03 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCLAMBDA tstart called on Herbert.local
+Thu Jul  8 10:27:30 2010
+
+
+			**************************
+			*        CCLAMBDA        *
+			**************************
+
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	Reference           (chkpt)   = 0
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (CC_INFO) =  -76.045624778632487
+	OOCCD energy        (CC_INFO) =   -0.222108230141082
+	Total OOCCD energy  (CC_INFO) =  -76.267733008773575
+
+	Input parameters:
+	-----------------
+	Maxiter       =      50
+	Convergence   = 1.0e-07
+	Restart       =     Yes
+	Cache Level   =     2
+	Model III     =     No
+	DIIS          =     Yes
+	AO Basis      =     No
+	ABCD            =     NEW
+	Local CC        =     No
+	Paramaters for left-handed eigenvectors:
+	    Irr   Root  Ground-State?    EOM energy        R0
+	  1   0     0        Yes       0.0000000000   1.0000000000
+	Labels for eigenvector 1:
+	LIA 0 -1, Lia 0 -1, LIJAB 0 -1, Lijab 0 -1, LIjAb 0 -1, 2LIjAb - LIjbA 0 -1
+	Deleting old CC_LAMBDA data.
+	Symmetry of left-hand state: A1 
+	Symmetry of left-hand eigenvector: A1 
+
+	          Solving Lambda Equations
+	          ------------------------
+	Iter     PseudoEnergy or Norm         RMS  
+	----     ---------------------     --------
+	   0        -0.222108230141082    0.000e+00
+	   1        -0.219576488059124    3.334e-03
+	   2        -0.219305112326925    6.085e-04
+	   3        -0.219262338497353    1.638e-04
+	   4        -0.219260950741868    4.395e-05
+	   5        -0.219260451010226    1.330e-05
+	   6        -0.219260351520325    4.803e-06
+	   7        -0.219260357120886    1.351e-06
+	   8        -0.219260371855331    3.221e-07
+	   9        -0.219260371898448    5.006e-08
+
+	Largest LIA Amplitudes:
+	          2   0         0.0000259065
+	          4  15         0.0000204364
+	          3  12         0.0000159560
+	          2   1         0.0000110302
+	          1   1        -0.0000103822
+	          4  17         0.0000082728
+	          2   2        -0.0000074279
+	          4  19         0.0000048138
+	          1   3        -0.0000043029
+	          1   2        -0.0000041979
+
+	Largest LIjAb Amplitudes:
+	  3   3  12  12        -0.0548375435
+	  2   2   1   1        -0.0454581239
+	  4   4  15  15        -0.0379012370
+	  2   3   1  12        -0.0343594651
+	  3   2  12   1        -0.0343594651
+	  4   4  17  17        -0.0305108339
+	  4   4  15  17        -0.0280707455
+	  4   4  17  15        -0.0280707455
+	  3   4  12  15        -0.0252471912
+	  4   3  15  12        -0.0252471912
+
+	Iterations converged.
+
+	Overlap <L|e^T> =        0.94201188785
+******************************************************************************
+CCLAMBDA tstop called on Herbert.local
+Thu Jul  8 10:27:31 2010
+
+user time   =       0.08 seconds =       0.00 minutes
+system time =       0.07 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCDENSITY tstart called on Herbert.local
+Thu Jul  8 10:27:31 2010
+
+
+			**************************
+			*                        *
+			*        CCDENSITY       *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function    =  OOCCD
+	Reference wfn    =   RHF
+	Tolerance        = 1.0e-14
+	Cache Level      = 2
+	AO Basis         = No
+	OPDM Only        = No
+	Relax OPDM       = No
+	Compute Xi       = No
+	Use Zeta         = No
+	Xi connected     = Yes
+
+	Nuclear Rep. energy (chkpt)   =    9.159277970842716
+	SCF energy          (chkpt)   =  -76.046327055642024
+	Reference energy    (file100) =  -76.045624778632487
+	OOCCD energy        (CC_INFO) =   -0.222108230141082
+	Total OOCCD energy  (CC_INFO) =  -76.267733008773575
+	Number of States = 1
+
+	Ground?  State     EOM Energy       R0
+	  Yes     0A1     0.0000000000   1.00000000
+
+	Energies re-computed from CC density:
+	-------------------------------------
+	One-electron energy        =    0.233013683543441
+	IJKL energy                =    0.043274732280461
+	IJKA energy                =   -0.000004861690173
+	IJAB energy                =   -0.438519063064478
+	IBJA energy                =   -0.102631374196958
+	CIAB energy                =    0.000003305351226
+	ABCD energy                =    0.042754917209284
+	Total two-electron energy  =   -0.455122344110637
+	CCSD correlation energy    =   -0.222108660567196
+	Total CCSD energy          =  -76.267733439199688
+
+	Virial Theorem Data:
+	--------------------
+	Kinetic energy (ref)   =   75.973987727385150
+	Kinetic energy (corr)  =    0.164937425222815
+	Kinetic energy (total) =   76.138925152607968
+	-V/T (ref)             =    2.000942915508192
+	-V/T (corr)            =    2.346621179765807
+	-V/T (total)           =    2.001691747761180
+	Optimized orbitals converged.  Maximum XAI =  0.000008393269
+******************************************************************************
+CCDENSITY tstop called on Herbert.local
+Thu Jul  8 10:27:31 2010
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.05 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on Herbert.local at Thu Jul  8 10:27:31 2010
+
+Total PSI3 wall time         39 seconds =       0.65 minutes
+******************************************************************************

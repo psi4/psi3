@@ -1,0 +1,24 @@
+psi:(
+  wfn = ooccd
+  basis = "special"
+  jobtype = sp
+
+  zmat = (
+  O
+  H  1  0.9609
+  H  1  0.9609  2  104.64
+  )
+)
+
+BASIS: (
+HYDROGEN:"special" = (
+(GET "DZ")
+  (P (  1.0  1.0))
+)
+
+OXYGEN:"special" = (
+(GET "DZ")
+  (D (  0.9  1.0))
+)
+)
+

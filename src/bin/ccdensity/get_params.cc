@@ -63,7 +63,8 @@ void get_params()
 
   if(ip_exist("GAUGE",0)) {
     ip_string("GAUGE",&(params.gauge), 0);
-    if(strcmp(params.gauge,"LENGTH") && strcmp(params.gauge,"VELOCITY")) {
+    if(strcmp(params.gauge,"LENGTH") && strcmp(params.gauge,"VELOCITY") && 
+       strcmp(params.gauge,"BOTH")) {
       printf("Invalid choice of gauge: %s\n", params.gauge);
       exit(PSI_RETURN_FAILURE);
     }
