@@ -6,6 +6,7 @@ psi: (
   nopt = 40
   ncasiter = 20
   nbrueckner = 20
+  norbopt = 20
 
   % The basic programs
   input      = "input"
@@ -887,33 +888,17 @@ psi: (
 
   % -------------------------------- OOCCD Procedures
   % Procedures for the OOCCD energy
-  OOCCDRHFEnergy = ($ints $scf $transqt $ooccman $done)
+  OOCCDRHFEnergy = ($ints $scf repeat $norbopt $transqt $ccsort $ccenergy $cchbar $cclambda $ccdensity end $done)
   OOCCDROHFEnergy = ERROR
   OOCCDUHFEnergy = ERROR
   OOCCDTwoConEnergy = ERROR
 
-  % Procedures for the OOCCD gradient
-  OOCCDFirst =
-    ($ints $scf $transqt $ooccman $backtransqt $oeprop $deriv)
-  OOCCDRHFFirst = ($OOCCDFirst $done)
-  OOCCDROHFFirst = ERROR
-  OOCCDUHFFirst = ERROR
-  OOCCDTwoConFirst = ERROR
-
-  % Procedures for the optimizing geomtries with OOCCD gradients
-  OOCCDFirstOpt =
-    (repeat $nopt $OOCCDFirst $geomupdate end $done)
-  OOCCDRHFFirstOpt = $OOCCDFirstOpt
-  OOCCDROHFFirstOpt = ERROR
-  OOCCDUHFFirstOpt  = ERROR
-  OOCCDTwoConFirstOpt  = ERROR
-
-  % Procedures for the finite displacements of OOCCD gradients
-  OOCCDFirstDisp  = (repeat $ndisp $ugeom $OOCCDFirst $rgeom end $done)
-  OOCCDRHFFirstDisp  = $OOCCDFirstDisp
-  OOCCDUHFFirstDisp  = ERROR
-  OOCCDROHFFirstDisp  = ERROR
-  OOCCDTwoConFirstDisp  = ERROR
+  % Procedure for the OOCCD linear response calculation
+  OOCCDResponse = ($ints $scf repeat $norbopt $cctrans $ccsort $ccenergy $cchbar $cclambda $ccdensity end $propint $ccresponse $done)
+  OOCCDRHFResponse = $OOCCDResponse
+  OOCCDUHFResponse = ERROR
+  OOCCDROHFResponse = ERROR
+  OOCCDTwoConResponse = ERROR
 
   % -------------------------------- BCCD Procedures
   % Procedures for the BCCD energy

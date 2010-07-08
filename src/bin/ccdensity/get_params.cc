@@ -38,6 +38,11 @@ void get_params()
     free(junk);
   }
 
+  params.ooconv = 1e-5;
+  errcod = ip_data("OOCONV","%d",&(tol),0);
+  if(errcod == IPE_OK) params.ooconv = 1.0*pow(10.0,(double) -tol);
+
+
   /* For EOM-CCSD Zeta calcs to use ROHF refs for now */
   if(!strcmp(params.wfn,"EOM_CCSD") && params.ref==0 && params.use_zeta) params.ref = 1;
 

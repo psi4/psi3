@@ -33,7 +33,7 @@ void get_params()
      strcmp(params.wfn, "BCCD") && strcmp(params.wfn,"BCCD_T") &&
      strcmp(params.wfn, "CC2") && strcmp(params.wfn,"CC3") &&
      strcmp(params.wfn, "EOM_CC3") && strcmp(params.wfn,"EOM_CC2") &&
-     strcmp(params.wfn, "CCSD_MVD")) {
+     strcmp(params.wfn, "CCSD_MVD") && strcmp(params.wfn, "OOCCD")) {
     fprintf(outfile, "Invalid value of input keyword WFN: %s\n", params.wfn);
     exit(PSI_RETURN_FAILURE);
   }

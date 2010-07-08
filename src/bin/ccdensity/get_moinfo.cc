@@ -10,6 +10,7 @@
 #include <libciomr/libciomr.h>
 #include <libpsio/psio.h>
 #include <libchkpt/chkpt.h>
+#include <libqt/qt.h>
 #include "MOInfo.h"
 #include "Params.h"
 #include "Frozen.h"
@@ -34,6 +35,7 @@ void get_moinfo(void)
   chkpt_init(PSIO_OPEN_OLD);
   moinfo.nirreps = chkpt_rd_nirreps();
   moinfo.nmo = chkpt_rd_nmo();
+  moinfo.nso = chkpt_rd_nso();
   moinfo.iopen = chkpt_rd_iopen();
   moinfo.labels = chkpt_rd_irr_labs();
   moinfo.enuc = chkpt_rd_enuc();
@@ -125,6 +127,15 @@ void get_moinfo(void)
 		    (char *) moinfo.avir_off, sizeof(int)*moinfo.nirreps);
     psio_read_entry(CC_INFO, "Active Beta Virt Orb Offsets",
 		    (char *) moinfo.bvir_off, sizeof(int)*moinfo.nirreps);
+  }
+
+  moinfo.pitzer2qt = init_int_array(moinfo.nmo);
+  moinfo.qt2pitzer = init_int_array(moinfo.nmo);
+  reorder_qt(moinfo.clsdpi, moinfo.openpi, moinfo.frdocc, moinfo.fruocc,
+             moinfo.pitzer2qt, moinfo.orbspi, moinfo.nirreps);
+  for(i=0; i < moinfo.nmo; i++) {
+    j = moinfo.pitzer2qt[i];
+    moinfo.qt2pitzer[j] = i;
   }
 
   /* Adjust clsdpi array for frozen orbitals */
@@ -227,6 +238,13 @@ void get_moinfo(void)
                     sizeof(double));
     fprintf(outfile,  "\tCC3 energy          (CC_INFO) = %20.15f\n",moinfo.ecc);
     fprintf(outfile,  "\tTotal CC3 energy    (CC_INFO) = %20.15f\n",
+            moinfo.eref+moinfo.ecc);
+  }
+  else if(!strcmp(params.wfn,"OOCCD")) {
+    psio_read_entry(CC_INFO, "CCSD Energy", (char *) &(moinfo.ecc),
+                    sizeof(double));
+    fprintf(outfile, "\tOOCCD energy        (CC_INFO) = %20.15f\n",moinfo.ecc);
+    fprintf(outfile, "\tTotal OOCCD energy  (CC_INFO) = %20.15f\n",
             moinfo.eref+moinfo.ecc);
   }
 

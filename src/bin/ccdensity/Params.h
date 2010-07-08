@@ -40,6 +40,9 @@ struct Params {
   double overlap2; /* <L2|R2> */
   double RD_overlap; /* Rmnef <mn||ef> */
   double RZ_overlap; /* <R|zeta> */
+
+  /* Orbital Optimized Code */
+  double ooconv;
 };
 
 struct RHO_Params {

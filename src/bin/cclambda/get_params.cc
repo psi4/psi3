@@ -51,6 +51,13 @@ void get_params(void)
     fprintf(outfile,  "\tTotal CC3 energy    (CC_INFO) = %20.15f\n",
             moinfo.eref+moinfo.ecc);
   }
+  else if(!strcmp(params.wfn,"OOCCD")) {
+    psio_read_entry(CC_INFO, "CCSD Energy", (char *) &(moinfo.ecc),
+                    sizeof(double));
+    fprintf(outfile, "\tOOCCD energy        (CC_INFO) = %20.15f\n",moinfo.ecc);
+    fprintf(outfile, "\tTotal OOCCD energy  (CC_INFO) = %20.15f\n",
+            moinfo.eref+moinfo.ecc);
+  }
 
   /* read in the easy-to-understand parameters */
 
@@ -114,10 +121,12 @@ void get_params(void)
     }
     free(junk);
   }
-	else { /* DERTYPE is absent, assume 1 if jobtype=opt; 0 if jobtype=oeprop */
+	else { /* DERTYPE is absent, assume 1 if jobtype=opt; 0 if jobtype=oeprop; 
+                  0 if jobtype=sp */
     ip_string("JOBTYPE", &(junk),0);
     if(!strcmp(junk,"OEPROP")) params.dertype = 0;
     else if(!strcmp(junk,"OPT")) params.dertype = 1;
+    else if(!strcmp(junk,"SP")) params.dertype = 0;
     else {
       printf("Don't know what to do with DERTYPE missing and jobtype: %s\n", junk);
       exit(PSI_RETURN_FAILURE); 

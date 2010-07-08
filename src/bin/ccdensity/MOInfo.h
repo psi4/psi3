@@ -73,6 +73,11 @@ struct MOInfo {
   double ***L;
   double ***nabla;
   double ***dip;
+
+  int nso;               /* no. of symmetry orbitals */
+  int *pitzer2qt;     /* Pitzer -> QT translation array */
+  int *qt2pitzer;     /* QT -> Pitzer translation array */
+
 };
 
 }} // namespace psi::ccdensity

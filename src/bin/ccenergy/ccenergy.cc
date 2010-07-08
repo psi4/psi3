@@ -210,7 +210,7 @@ int main(int argc, char *argv[])
     timer_off("F build");
 #endif
 
-    t1_build();
+    if(strcmp(params.wfn,"OOCCD")) t1_build();
     if(params.print & 2) status("T1 amplitudes", outfile);
 
     if((!strcmp(params.wfn,"CC2")) || (!strcmp(params.wfn,"EOM_CC2"))) {
@@ -310,6 +310,7 @@ int main(int argc, char *argv[])
     }
     if(params.diis) diis(moinfo.iter);
     tsave();
+
     tau_build(); taut_build();
     moinfo.ecc = energy();
     moinfo.t1diag = diagnostic();

@@ -93,13 +93,15 @@ void x_oe_intermediates_rhf(struct RHO_Params rho_params);
 void x_te_intermediates_rhf(void);
 void x_xi_intermediates(void);
 void V_build(void);
+int rotate(void);
 
-}} // namespace psi::cdensity 
+}} // namespace psi::ccdensity 
 
 using namespace psi::ccdensity;
 
 int main(int argc, char *argv[])
 {
+  int orbopt_done=0;
   int i;
   int **cachelist, *cachefiles;
   struct iwlbuf OutBuf;
@@ -226,7 +228,7 @@ int main(int argc, char *argv[])
       lag(rho_params[i]); /* builds the orbital lagrangian pieces, I */
 
       /* dpd_init(1, moinfo.nirreps, params.memory, 2, frozen.occpi, frozen.occ_sym,
-	 frozen.virtpi, frozen.vir_sym); */
+         frozen.virtpi, frozen.vir_sym); */
 
       /*  if(moinfo.nfzc || moinfo.nfzv) {
           resort_gamma();
@@ -237,92 +239,96 @@ int main(int argc, char *argv[])
       build_A(); /* construct MO Hessian A */
       build_Z(); /* solves the orbital Z-vector equations */
 
-      relax_I(); /* adds orbital response contributions to Lagrangian */
+      if(!strcmp(params.wfn, "OOCCD")) orbopt_done = rotate();
+      else { 
 
-      if (params.relax_opdm) {
-        relax_D(rho_params[i]); /* adds orbital response contributions to onepdm */
+        relax_I(); /* adds orbital response contributions to Lagrangian */
+
+
+        if (params.relax_opdm) {
+          relax_D(rho_params[i]); /* adds orbital response contributions to onepdm */
+        }
+        sortone(rho_params[i]); /* builds large moinfo.opdm matrix */
+        sortI(); /* builds large lagrangian matrix I */
+        fold(rho_params[i]);
+        deanti(rho_params[i]);
       }
-      sortone(rho_params[i]); /* builds large moinfo.opdm matrix */
-      sortI(); /* builds large lagrangian matrix I */
-      fold(rho_params[i]);
-      deanti(rho_params[i]);
     }
 
-    /*  dpd_close(0); dpd_close(1); */
+    if(strcmp(params.wfn, "OOCCD")) {
+      if(params.ref == 0) { /** RHF **/
 
-    if(params.ref == 0) { /** RHF **/
+        iwl_buf_init(&OutBuf, PSIF_MO_TPDM, params.tolerance, 0, 0);
 
-      iwl_buf_init(&OutBuf, PSIF_MO_TPDM, params.tolerance, 0, 0);
+        add_core_ROHF(&OutBuf);
+        add_ref_RHF(&OutBuf);
+        dump_RHF(&OutBuf, rho_params[i]);
 
-      add_core_ROHF(&OutBuf);
-      add_ref_RHF(&OutBuf);
-      dump_RHF(&OutBuf, rho_params[i]);
+        iwl_buf_flush(&OutBuf, 1);
+        iwl_buf_close(&OutBuf, 1);
+      }
+      else if(params.ref == 1) { /** ROHF **/
 
-      iwl_buf_flush(&OutBuf, 1);
-      iwl_buf_close(&OutBuf, 1);
-    }
-    else if(params.ref == 1) { /** ROHF **/
+        iwl_buf_init(&OutBuf, PSIF_MO_TPDM, params.tolerance, 0, 0);
 
-      iwl_buf_init(&OutBuf, PSIF_MO_TPDM, params.tolerance, 0, 0);
+        add_core_ROHF(&OutBuf);
+        add_ref_ROHF(&OutBuf);
+        dump_ROHF(&OutBuf, rho_params[i]);
 
-      add_core_ROHF(&OutBuf);
-      add_ref_ROHF(&OutBuf);
-      dump_ROHF(&OutBuf, rho_params[i]);
+        iwl_buf_flush(&OutBuf, 1);
+        iwl_buf_close(&OutBuf, 1);
+      }
+      else if(params.ref == 2) { /** UHF **/
 
-      iwl_buf_flush(&OutBuf, 1);
-      iwl_buf_close(&OutBuf, 1);
-    }
-    else if(params.ref == 2) { /** UHF **/
+        iwl_buf_init(&OutBuf_AA, PSIF_MO_AA_TPDM, params.tolerance, 0, 0);
+        iwl_buf_init(&OutBuf_BB, PSIF_MO_BB_TPDM, params.tolerance, 0, 0);
+        iwl_buf_init(&OutBuf_AB, PSIF_MO_AB_TPDM, params.tolerance, 0, 0);
 
-      iwl_buf_init(&OutBuf_AA, PSIF_MO_AA_TPDM, params.tolerance, 0, 0);
-      iwl_buf_init(&OutBuf_BB, PSIF_MO_BB_TPDM, params.tolerance, 0, 0);
-      iwl_buf_init(&OutBuf_AB, PSIF_MO_AB_TPDM, params.tolerance, 0, 0);
+        /*    add_core_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB); */
+        add_ref_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB);
+        dump_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB, rho_params[i]);
 
-      /*    add_core_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB); */
-      add_ref_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB);
-      dump_UHF(&OutBuf_AA, &OutBuf_BB, &OutBuf_AB, rho_params[i]);
+        iwl_buf_flush(&OutBuf_AA, 1);
+        iwl_buf_flush(&OutBuf_BB, 1);
+        iwl_buf_flush(&OutBuf_AB, 1);
+        iwl_buf_close(&OutBuf_AA, 1);
+        iwl_buf_close(&OutBuf_BB, 1);
+        iwl_buf_close(&OutBuf_AB, 1);
+      }
+      free_block(moinfo.opdm);
 
-      iwl_buf_flush(&OutBuf_AA, 1);
-      iwl_buf_flush(&OutBuf_BB, 1);
-      iwl_buf_flush(&OutBuf_AB, 1);
-      iwl_buf_close(&OutBuf_AA, 1);
-      iwl_buf_close(&OutBuf_BB, 1);
-      iwl_buf_close(&OutBuf_AB, 1);
-    }
-    free_block(moinfo.opdm);
-
-    psio_close(CC_TMP,0);   psio_open(CC_TMP,PSIO_OPEN_NEW);
-    psio_close(EOM_TMP0,0); psio_open(EOM_TMP0,PSIO_OPEN_NEW);
-    psio_close(EOM_TMP1,0); psio_open(EOM_TMP1,PSIO_OPEN_NEW);
-    psio_close(CC_GLG,0);   psio_open(CC_GLG,PSIO_OPEN_NEW);
-    psio_close(CC_GL,0);    psio_open(CC_GL,PSIO_OPEN_NEW);
-    psio_close(CC_GR,0);    psio_open(CC_GR,PSIO_OPEN_NEW);
-    if (!params.calc_xi) {
-      psio_close(EOM_TMP,0);
-      psio_open(EOM_TMP,PSIO_OPEN_NEW);
+      psio_close(CC_TMP,0);   psio_open(CC_TMP,PSIO_OPEN_NEW);
+      psio_close(EOM_TMP0,0); psio_open(EOM_TMP0,PSIO_OPEN_NEW);
+      psio_close(EOM_TMP1,0); psio_open(EOM_TMP1,PSIO_OPEN_NEW);
+      psio_close(CC_GLG,0);   psio_open(CC_GLG,PSIO_OPEN_NEW);
+      psio_close(CC_GL,0);    psio_open(CC_GL,PSIO_OPEN_NEW);
+      psio_close(CC_GR,0);    psio_open(CC_GR,PSIO_OPEN_NEW);
+      if (!params.calc_xi) {
+        psio_close(EOM_TMP,0);
+        psio_open(EOM_TMP,PSIO_OPEN_NEW);
+      }
     }
   }
 
-/*
-  if ( params.ael && (params.nstates > 1) ) 
-    ael(rho_params);
-*/
+    /*
+    if ( params.ael && (params.nstates > 1) ) 
+      ael(rho_params);
+    */
 
-  if(params.transition) {
+    if(params.transition) {
 
-    get_td_params();
-    for(i=0; i < params.nstates; i++) {
-      td_setup(td_params[i]);
-      tdensity(td_params[i]);
-      oscillator_strength(&(td_params[i]));
-      if(params.ref == 0) {
-        rotational_strength(&(td_params[i]));
+      get_td_params();
+      for(i=0; i < params.nstates; i++) {
+        td_setup(td_params[i]);
+        tdensity(td_params[i]);
+        oscillator_strength(&(td_params[i]));
+        if(params.ref == 0) {
+          rotational_strength(&(td_params[i]));
+        }
+        td_cleanup();
       }
-      td_cleanup();
+      td_print();
     }
-    td_print();
-  }
-
   dpd_close(0);
 
   if(params.ref == 2) cachedone_uhf(cachelist);
@@ -331,7 +337,9 @@ int main(int argc, char *argv[])
 
   cleanup(); 
   exit_io();
-  exit(PSI_RETURN_SUCCESS);
+  if(orbopt_done)
+    exit(PSI_RETURN_ENDLOOP);
+  else exit(PSI_RETURN_SUCCESS);
 }
 
 extern "C" {const char *gprgid() { const char *prgid = "CCDENSITY"; return(prgid); }}
