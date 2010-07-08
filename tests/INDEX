@@ -145,3 +145,5 @@ cc51: RHF-CC3-LR 1-B1 excitation energy of H2O.
 
 cc52: RHF-CCSD-LR/cc-pVDZ ROA (dipole polarizability, optical activity (LG),
 and dipole-quadrupole tensors) at 589 nm.
+
+ooccd: RHF-OO-CCD/DZP* energy of H2O to match value from Table II of Sherrill et al., JCP 109, 4171, (1998).
