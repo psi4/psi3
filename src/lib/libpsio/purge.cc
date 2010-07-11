@@ -3,6 +3,7 @@
  \ingroup PSIO
  */
 
+#include <iostream>
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
@@ -14,6 +15,8 @@
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 #include <libpsio/workaround.hpp>
+
+#define DEBUG 0
 
 using namespace psi;
 
@@ -32,9 +35,17 @@ void PSIO::purge() {
       this->get_volpath(u, i, &vpath);
 
       // get the full filename
-      std::ostringstream oss;
-      oss << vpath << basename << "." << u;
-      const char* fname = oss.str().c_str();
+      char* fname;
+      // to avoid bugs in this statement: fname = oss.str().c_str();
+      {
+        std::ostringstream oss;
+        oss << vpath << basename << "." << u;
+        std::string fname_str = oss.str();
+        const size_t n = fname_str.size();
+        fname = new char[n + 1];
+        fname_str.copy(fname, n);
+        fname[n] = '\0';
+      }
 
       // unlink
       int errcod = unlink(fname);
@@ -51,7 +62,13 @@ void PSIO::purge() {
           }
         }
       }
+#if DEBUG
+      else {
+        std::cerr << "PSIO::purge() -- unlinked " << fname << std::endl;
+      }
+#endif
 
+      delete[] fname;
       free(vpath);
     }
 
