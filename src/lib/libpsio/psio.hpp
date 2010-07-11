@@ -87,11 +87,11 @@ namespace psi {
 
       /** Central function for all reads and writes on a PSIO unit.
        **
-       ** \params unit    = The PSI unit number.
-       ** \params buffer  = The buffer containing the bytes for the read/write event.
-       ** \params address = the PSIO global address for the start of the read/write.
-       ** \params size    = The number of bytes to read/write.
-       ** \params         = Indicates if the call is to read (0) or write (0) the input data.
+       ** \param unit    = The PSI unit number.
+       ** \param buffer  = The buffer containing the bytes for the read/write event.
+       ** \param address = the PSIO global address for the start of the read/write.
+       ** \param size    = The number of bytes to read/write.
+       ** \param         = Indicates if the call is to read (0) or write (0) the input data.
        **
        ** \ingroup PSIO
        */
@@ -107,7 +107,8 @@ namespace psi {
       void tocwrite(unsigned int unit);
 
       /// removes all files managed by this object
-      void purge();
+      /// \param all  if false, checkpoint file and all files with basename starting with '.' (i.e. local files) will be skipped. Set to true to wipe out all PSIO files.
+      void purge(bool all = false);
 
       /// Upon catastrophic failure, the library will exit() with this code. The default is 1, but can be overridden.
       static int _error_exit_code_;

@@ -12,6 +12,7 @@
 #include <string>
 #include <map>
 #include <sstream>
+#include <psifiles.h>
 #include <libpsio/psio.h>
 #include <libpsio/psio.hpp>
 #include <libpsio/workaround.hpp>
@@ -20,7 +21,7 @@
 
 using namespace psi;
 
-void PSIO::purge() {
+void PSIO::purge(bool all) {
   // for each unit
   for(int u=0; u<psio_unit.size(); ++u) {
     /* Get the number of volumes */
@@ -29,6 +30,9 @@ void PSIO::purge() {
     // get the basename
     char *basename;
     this->get_filename(u, &basename);
+
+    // purge this file?
+    if (all == false && (u == PSIF_CHKPT || basename[0] == '.')) continue;
 
     for (int i=0; i<nvol; i++) {
       char* vpath;
@@ -48,7 +52,7 @@ void PSIO::purge() {
       }
 
       // unlink
-      int errcod = unlink(fname);
+      const int errcod = unlink(fname);
       if (errcod != 0) {
         switch (errno) {
           case ENOENT: // no such file? move on
