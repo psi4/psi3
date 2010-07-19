@@ -908,6 +908,28 @@ psi: (
   BCCDUHFEnergy = ($BCCDEnergy $done)
   BCCDTwoConEnergy = ERROR
 
+  % BCCD Optimization via differences of energies
+  BCCDEnergyOpt = (repeat $nopt $BCCDEnergy $findif_disp_symm 
+    repeat NUM_DISP 
+      $findif_next $findif_input $BCCDEnergy $findif_energy_save 
+    end 
+    $findif_grad_energy $geomupdate end)
+  BCCDRHFEnergyOpt = ($BCCDEnergyOpt $done)
+  BCCDROHFEnergyOpt = ERROR
+  BCCDUHFEnergyOpt = ($BCCDEnergyOpt $done)
+  BCCDTwoConEnergyOpt = ERROR
+
+  % BCCD Freqs via differences of energies
+  BCCDEnergyFreq  = ($BCCDEnergy $findif_disp_freq_energy_cart
+    repeat NUM_DISP
+      $findif_next $findif_input $BCCDEnergy $findif_energy_save 
+    end
+     $findif_freq_energy_cart)
+  BCCDRHFEnergyFreq  = $BCCDEnergyFreq
+  BCCDROHFEnergyFreq  = ERROR
+  BCCDUHFEnergyFreq  = $BCCDEnergyFreq
+  BCCDTwoConEnergyFreq  = ERROR
+
   % -------------------------------- BCCD(T) Procedures
   % Procedures for the BCCD(T) energy
   BCCD_TEnergy = ($ints $scf repeat $nbrueckner $cctrans $ccsort $ccenergy end $cctriples)
@@ -915,6 +937,28 @@ psi: (
   BCCD_TROHFEnergy = ERROR
   BCCD_TUHFEnergy = ($BCCD_TEnergy $done)
   BCCD_TTwoConEnergy = ERROR
+
+  % BCCD(T) Optimization via differences of energies
+  BCCD_TEnergyOpt = (repeat $nopt $BCCD_TEnergy $findif_disp_symm 
+    repeat NUM_DISP 
+      $findif_next $findif_input $BCCD_TEnergy $findif_energy_save 
+    end 
+    $findif_grad_energy $geomupdate end)
+  BCCD_TRHFEnergyOpt = ($BCCD_TEnergyOpt $done)
+  BCCD_TROHFEnergyOpt = ERROR
+  BCCD_TUHFEnergyOpt = ($BCCD_TEnergyOpt $done)
+  BCCD_TTwoConEnergyOpt = ERROR
+
+  % BCCD(T) Freqs via differences of energies  
+  BCCD_TEnergyFreq  = ($BCCD_TEnergy $findif_disp_freq_energy_cart
+    repeat NUM_DISP
+      $findif_next $findif_input $BCCD_TEnergy $findif_energy_save
+    end
+     $findif_freq_energy_cart)
+  BCCD_TRHFEnergyFreq  = $BCCD_TEnergyFreq
+  BCCD_TROHFEnergyFreq  = ERROR
+  BCCD_TUHFEnergyFreq  = $BCCD_TEnergyFreq
+  BCCD_TTwoConEnergyFreq  = ERROR
 
   % -------------------------------- DETCI Procedures
   % Procedures for the DETCI energy
