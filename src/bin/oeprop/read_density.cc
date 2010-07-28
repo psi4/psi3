@@ -14,6 +14,8 @@
 
 namespace psi { namespace oeprop {
 
+void print_density_resort(double **Ptot, int dim, int *new_order, FILE *out);
+
 void read_density()
 { 
   int i,j,k,l,dim_i,count,ibf;
@@ -195,11 +197,54 @@ void read_density()
       so_offset += sopi[irrep];
     }
 
-    /*if (print_lvl >= PRINTOPDMLEVEL) {
+    if (print_lvl >= PRINTOPDMLEVEL) {
       fprintf(outfile,"  Total density matrix in SO basis :\n");
       print_mat(psq_so,nbfso,nbfso,outfile);
       fprintf(outfile,"\n");
-    }*/
+
+      // Add printing for exporting density in BF (5d/7f) basis
+      FILE *fp_rho = fopen("AO_density.dat", "w");
+      double **psq_bf = init_matrix(nbfso, nbfso);
+      tmp_mat = init_matrix(nbfso, nbfso);
+
+      mmult(psq_so, 0, usotbf, 0, tmp_mat, 0, nbfso, nbfso, nbfso, 0);
+      mmult(usotbf, 1, tmp_mat, 0, psq_bf, 0, nbfso, nbfso, nbfso,0);
+      free_matrix(tmp_mat, nbfso);
+
+      fprintf(outfile,"  Total density matrix in BF basis :\n");
+      print_mat(psq_bf, nbfso, nbfso, outfile);
+      fprintf(outfile,"\n");
+
+      int *new_order = init_int_array(nbfso);
+      int cnt=0;
+      for(i=0; i<nshell; i++) { // loop over shells
+        switch (stype[i]-1) {   // ang momentum
+          case 0:               // s functions leave alone
+            new_order[cnt++] = sloc_new[i]-1;
+            break;
+          case 1: // was (pz, px, py) ?
+            new_order[cnt++] = sloc_new[i]+2-1;
+            new_order[cnt++] = sloc_new[i]+0-1;
+            new_order[cnt++] = sloc_new[i]+1-1;
+            break;
+          case 2:
+            new_order[cnt++] = sloc_new[i]+2-1; 
+            new_order[cnt++] = sloc_new[i]+3-1; // check
+            new_order[cnt++] = sloc_new[i]+1-1;
+            new_order[cnt++] = sloc_new[i]+4-1;
+            new_order[cnt++] = sloc_new[i]+0-1;
+            break;
+          default:
+            fprintf(outfile,"Warning: f's and higher angular momentum ordering not fixed in order.\n");
+         }
+      }
+      //for (i=0; i<nbfso; ++i)
+      //printf("new_order[%d] = %d\n", i, new_order[i]);
+      print_density_resort(psq_bf, nbfso, new_order, fp_rho);
+      free(new_order);
+      free(fp_rho);
+      free_matrix(psq_bf,nbfso);
+    }
     
     free_block(onepdm);
     free_block(opdm_blk);
@@ -544,8 +589,8 @@ void read_density()
         for(i=0; i<nbfao; i++) {
           for(j=0; j<=i; j++) {
             Ptot[ioff[i]+j] = (psq_ao[i][j] + psq_ao[j][i])/2;
-	  }
-	}
+          }
+        }
       }
       /* Symmetric OPDM */
       else {
@@ -569,6 +614,27 @@ void read_density()
 
   free(id);
 
+  return;
+}
+
+// desired format:
+// 1.87556975E-01  1.03249105E-01  6.55381717E-02 -3.36671267E-02  2.38478241E-02
+// new_order maps new indices onto the old ones
+void print_density_resort(double **P, int nrow, int *new_order, FILE *out) {
+  int i, j, row, col, cnt;
+
+  cnt = 0;
+  for (i=0; i<nrow; ++i) { // loop over new indices
+    for (j=0; j<=i; ++j) {
+      row = new_order[i];
+      col = new_order[j];
+      fprintf(out,"%16.8e", P[row][col]);
+      if (++cnt == 5) {
+        cnt = 0;
+        fprintf(out,"\n");
+      }
+    }
+  }
   return;
 }
 

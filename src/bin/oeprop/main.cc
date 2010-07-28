@@ -65,6 +65,7 @@ int main(int argc, char* argv[]) {
  geom = chkpt_rd_geom();
  zvals = chkpt_rd_zvals();
  usotao = chkpt_rd_usotao();
+ usotbf = chkpt_rd_usotbf();
     
  /* Parsing */
  parsing();
