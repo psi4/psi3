@@ -204,12 +204,12 @@ void read_density()
 
       // Add printing for exporting density in BF (5d/7f) basis
       FILE *fp_rho = fopen("AO_density.dat", "w");
-      double **psq_bf = init_matrix(nbfso, nbfso);
-      tmp_mat = init_matrix(nbfso, nbfso);
+      double **psq_bf = block_matrix(nbfso, nbfso);
 
-      mmult(psq_so, 0, usotbf, 0, tmp_mat, 0, nbfso, nbfso, nbfso, 0);
-      mmult(usotbf, 1, tmp_mat, 0, psq_bf, 0, nbfso, nbfso, nbfso,0);
-      free_matrix(tmp_mat, nbfso);
+      double **tmp_mat2 = block_matrix(nbfso, nbfso);
+      mmult(psq_so, 0, usotbf, 0, tmp_mat2, 0, nbfso, nbfso, nbfso, 0);
+      mmult(usotbf, 1, tmp_mat2, 0, psq_bf, 0, nbfso, nbfso, nbfso,0);
+      free_block(tmp_mat2);
 
       fprintf(outfile,"  Total density matrix in BF basis :\n");
       print_mat(psq_bf, nbfso, nbfso, outfile);
@@ -242,8 +242,8 @@ void read_density()
       //printf("new_order[%d] = %d\n", i, new_order[i]);
       print_density_resort(psq_bf, nbfso, new_order, fp_rho);
       free(new_order);
-      free(fp_rho);
-      free_matrix(psq_bf,nbfso);
+      fclose(fp_rho);
+      free_block(psq_bf);
     }
     
     free_block(onepdm);
