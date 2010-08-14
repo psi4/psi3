@@ -43,11 +43,11 @@ int orient_fragment(int natom_A, int natom_B, int P_A, int P_B, double **geom_A,
      about collinear reference atoms and to make zmat_point() work in such cases */
   if (P_A < 3) {
       for (xyz=0; xyz<3; ++xyz)
-        ref_A[2][xyz] = (xyz+1)/_pi;
+        ref_A[2][xyz] = (xyz+1);
   }
   if (P_A < 2) {
       for (xyz=0; xyz<3; ++xyz)
-        ref_A[1][xyz] = (xyz+1)/(2*_pi);
+        ref_A[1][xyz] = (xyz+2);
   }
 
   for (pts=0; pts<P_A; ++pts)
