@@ -132,7 +132,7 @@ int opt_step_cart(cartesians &carts) {
   fprintf(outfile,"\nNew Cartesian Geometry in a.u.\n");
   carts.print(1, outfile,0, disp_label, 0);
 
-  free_array(f); free_array(x); free_array(dx);
+  free_array(f); delete [] x; free_array(dx);
 
   optinfo.iteration += 1;
   open_PSIF();

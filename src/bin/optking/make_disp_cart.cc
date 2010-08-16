@@ -33,7 +33,7 @@ int make_disp_cart(cartesians &carts)
   int op, atom2, nirreps, natom_unique, irrep, diag_ind;
   double *coord, energy, ***disp_orig, **displacements, *character, *disp_e;
   double *v, *f, *q, *masses, **constraints, normval, dotval, **constraints_ortho, *Zvals;
-  int **ict, print=0,nconstraints;
+  int print=0,nconstraints;
   int *nsalc_orig, *nsalc, *irrep_per_disp;
   double ***geoms, **moi, *v1_A, *v1_B, *big_zeroes;
   double *com, **X, *evals, tval, tval1, tval2, *disp_grad, **cartrep;
@@ -50,7 +50,7 @@ int make_disp_cart(cartesians &carts)
 
   chkpt_init(PSIO_OPEN_OLD);
   natom_unique = chkpt_rd_num_unique_atom();
-  ict = chkpt_rd_ict();
+  int **ict = chkpt_rd_ict();
   cartrep = chkpt_rd_cartrep();
   chkpt_close();
 
@@ -396,8 +396,11 @@ int make_disp_cart(cartesians &carts)
 
   free_int_array(nsalc);
   free_int_array(ndisp);
-  free_array(coord);
+  delete [] coord;
   free_array(disp_e);
+  for (irrep=0; irrep<nirreps; ++irrep)
+    free(ict[irrep]);
+  free(ict);
   return(ndisp_all);
 }
 

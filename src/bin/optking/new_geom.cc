@@ -48,7 +48,7 @@ bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &a
   // fix configuration for torsions, sets flag for torsions > FIX_NEAR180 or < -FIX_NEAR180 
   simples.fix_near_180(); // subsequent computes will modify torsional values
   simples.compute_s(coord);
-  free_array(coord);
+  delete [] coord;
 
   B = compute_B(simples, all_salcs);
   q = compute_q(simples, all_salcs);
@@ -256,7 +256,7 @@ bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &a
   }
 
   free_array(q); free_array(new_q);
-  free_array(x); free_array(dx); free_array(new_x);
+  delete [] x; free_array(dx); free_array(new_x);
   free_matrix(A);
   free_matrix(G);
   free_matrix(G_inv);

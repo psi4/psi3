@@ -289,6 +289,7 @@ int make_disp_irrep(const cartesians &carts, simples_class &simples, const salc_
 
   fprintf(outfile,"Produced a total of %d displacements.\n",ndisps);
 
+  delete [] fgeom;
   delete [] disp_label;
   delete [] irrep_salcs;
   delete [] disp_e;
@@ -426,6 +427,7 @@ int make_disp_nosymm(const cartesians &carts, simples_class &simples, const salc
       (char *) &(optinfo.micro_iteration),sizeof(int));
   close_PSIF();
 
+  delete [] fgeom;
   delete [] disp_e;
   delete [] disp_grad;
   return(ndisps);

@@ -123,7 +123,7 @@ EXTERN struct OPTInfo {
   int *natom_per_fragment;
   int *nallatom_per_fragment;
   int *nref_per_fragment;
-  double ***fragment_coeff;
+  //double ***fragment_coeff;
 } optinfo;
 
 EXTERN struct SYMInfo {

@@ -23,7 +23,7 @@ namespace psi { namespace optking {
 int disp_fc_grad_selected(const cartesians &carts, simples_class &simples, const salc_set &symm) 
 {
   int i, j, errcod, ndisps, *irrep_per_disp, cnt, success;
-  double *fgeom, energy, **micro_geoms, **displacements;
+  double energy, **micro_geoms, **displacements;
   char disp_label[MAX_LINELENGTH];
 
   int ncoord = 0;        // # of coordinates to displace
@@ -48,12 +48,13 @@ int disp_fc_grad_selected(const cartesians &carts, simples_class &simples, const
   for (i=0; i<ncoord; ++i) fprintf(outfile," %d", coord2salc[i]+1);
 
   // save reference geometry and energy
-  fgeom = carts.get_coord();
+  double *fgeom = carts.get_coord();
   energy = carts.get_energy();
   open_PSIF();
   psio_write_entry(PSIF_OPTKING, "OPT: Reference geometry", (char *) fgeom, dim_carts*sizeof(double));
   psio_write_entry(PSIF_OPTKING, "OPT: Reference energy", (char *) &(energy), sizeof(double));
   close_PSIF();
+  delete [] fgeom;
 
   displacements = init_matrix(ndisps, nsymm);
   for (i=0; i<ncoord; ++i) {

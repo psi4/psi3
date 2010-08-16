@@ -27,6 +27,7 @@ void get_optinfo(void) {
 
   optinfo.iteration = 0;
   optinfo.micro_iteration = 0;
+  optinfo.balked_last_time = 0;
   open_PSIF();
   if (psio_tocscan(PSIF_OPTKING, "Iteration") != NULL)
     psio_read_entry(PSIF_OPTKING, "Iteration", (char *) &(optinfo.iteration),sizeof(int));
@@ -447,7 +448,7 @@ void get_optinfo(void) {
     optinfo.natom_per_fragment = chkpt_rd_natom_per_fragment();
     optinfo.nallatom_per_fragment = chkpt_rd_nallatom_per_fragment();
     optinfo.nref_per_fragment = chkpt_rd_nref_per_fragment();
-    optinfo.fragment_coeff = chkpt_rd_fragment_coeff();
+    //optinfo.fragment_coeff = chkpt_rd_fragment_coeff();
   }
   chkpt_close();
 

@@ -50,11 +50,18 @@ class frag_class {
       A_P = A_P_in;
       B_P = B_P_in;
       A_atom   = new int[A_natom];
+      for (int i=0; i<A_natom; ++i) A_atom[i] = 0.0;
       B_atom   = new int[B_natom];
+      for (int i=0; i<B_natom; ++i) B_atom[i] = 0.0;
       A_weight = init_matrix(3,A_natom);
       B_weight = init_matrix(3,B_natom);
       A_s = init_matrix(6,A_P*3);
       B_s = init_matrix(6,B_P*3);
+      for (int i=0; i<6; ++i) {
+        coord_on[i] = false;
+        val[i] = 0.0;
+        near_180[i] = 0;
+      }
     }
 
     ~frag_class() {

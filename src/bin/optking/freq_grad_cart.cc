@@ -268,7 +268,7 @@ void freq_grad_cart(const cartesians &carts) {
 
   sort_evals_all(nsalc_all,evals_all, evals_all_irrep);
 
-  /* convert evals from H/(kg bohr^2) to J/(kg m^2) = 1/s^2 */
+  /* convert evals from H/(amu bohr^2) to J/(kg m^2) = 1/s^2 */
   /* v = 1/(2 pi c) sqrt( eval ) */
   fprintf(outfile, "\n\t Harmonic Vibrational Frequencies in cm^(-1)\n");
   fprintf(outfile,   "\t--------------------------------------------\n");

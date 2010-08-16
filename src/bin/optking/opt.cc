@@ -269,7 +269,7 @@ int main(int argc, char **argv) {
       simples.print_s(outfile);
     }
 
-    free_array(coord);
+    delete [] coord;
     if ( (optinfo.mode != MODE_DISP_LOAD) && (optinfo.mode != MODE_LOAD_REF)
       && (optinfo.mode != MODE_RESET_PREFIX) && (optinfo.mode != MODE_DISP_NUM_PLUS)
       && (optinfo.mode != MODE_DELETE_BINARIES) ) {
@@ -717,13 +717,12 @@ void free_info(int nsimples) {
 
  // free syminfo
   free(syminfo.symmetry);
-  free_int_matrix(syminfo.ct);
-  free_int_matrix(syminfo.ict);
-  free_int_matrix(syminfo.fict);
   for (i=0; i<syminfo.nirreps; ++i) {
+    free(syminfo.ict[i]);
     free(syminfo.irrep_lbls[i]);
     free(syminfo.clean_irrep_lbls[i]);
   }
+  free(syminfo.ict);
   free(syminfo.irrep_lbls);
   free(syminfo.clean_irrep_lbls);
   
@@ -733,11 +732,18 @@ void free_info(int nsimples) {
   // free optinfo
   free(optinfo.to_dummy);
   free(optinfo.to_nodummy);
+
+  //for (i=0; i<optinfo.nfragment; ++i) {
+    //for (j=0; j<optinfo.nref_per_fragment[i]; ++j)
+      //free(optinfo.fragment_coeff[i][j]);
+    //free(optinfo.fragment_coeff[i]);
+  //}
+  //free(optinfo.fragment_coeff);
+
   if (optinfo.nfragment > 1) {
     free(optinfo.natom_per_fragment);
     free(optinfo.nallatom_per_fragment);
     free(optinfo.nref_per_fragment);
-    free(optinfo.fragment_coeff);
   }
   return;
 }

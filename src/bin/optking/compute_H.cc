@@ -27,7 +27,6 @@ double **compute_H(simples_class & simples, const salc_set &symm,
 
   double **H, **H_inv, **H_inv_new, **H_new, **temp_mat;
   int i,j,dim, n_previous;
-  char buffer[MAX_LINELENGTH];
 
   dim = symm.get_num();
   H = init_matrix(dim,dim);
@@ -255,12 +254,14 @@ void H_update(double **H, simples_class &simples, const salc_set &symm,
 
   free_array(x);
 
+  for (i=0;i<dim;++i)
+    for (j=0;j<dim;++j)
+      H[i][j] = H_new[i][j];
   // limit allowed changes to Hessian to 0.3 or 50%
+/*
   for (i=0;i<dim;++i)
     for (j=0;j<dim;++j)
       H_new[i][j] -= H[i][j];
-   //fprintf(outfile,"H_new\n");
-   //print_mat5(H_new,dim,dim,outfile);
 
   for (i=0;i<dim;++i) {
     for (j=0;j<dim;++j) {
@@ -268,10 +269,10 @@ void H_update(double **H, simples_class &simples, const salc_set &symm,
 
       if (fabs(H_new[i][j]) < max)
         H[i][j] += H_new[i][j];
-      else
-        H[i][j] += 0.3 * H_new[i][j]/fabs(H_new[i][j]);
-    }
-  }
+//      else
+//        H[i][j] += 0.3 * H_new[i][j]/fabs(H_new[i][j]);
+//    }
+//  }
 
 
 /*
@@ -288,7 +289,7 @@ void H_update(double **H, simples_class &simples, const salc_set &symm,
   simples.compute(x);
   simples.fix_near_180();
   simples.compute_s(x);
-  free_array(x);
+  delete [] x;
 
   free_array(q);
   free_array(f);
@@ -313,9 +314,7 @@ void H_update(double **H, simples_class &simples, const salc_set &symm,
 
 void fconst_init(const cartesians & carts, const simples_class & simples, const salc_set &symm) {
   int i, j, dim, count, constants_in_PSIF, cnt;
-  char *buffer;
   double **F, **temp_mat;
-  buffer = new char[MAX_LINELENGTH];
 
   open_PSIF();
   if (psio_tocscan(PSIF_OPTKING, "Symmetric Force Constants") != NULL) {
@@ -394,7 +393,6 @@ void fconst_init(const cartesians & carts, const simples_class & simples, const 
     close_PSIF();
     free_matrix(temp_mat);
   }
-  delete [] buffer;
 }
 
 }} /* namespace psi::optking */

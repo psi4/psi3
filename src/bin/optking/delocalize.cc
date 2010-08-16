@@ -374,7 +374,7 @@ void rm_rotations(const simples_class & simples, const cartesians & carts,
       --num_nonzero;
     }
   }
-  free_array(coord);
+  delete [] coord;
   delete [] disp_coord;
   delete [] fatomic_num;
   return;

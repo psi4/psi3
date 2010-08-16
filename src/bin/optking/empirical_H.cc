@@ -44,7 +44,7 @@ void empirical_H(const simples_class & simples, const salc_set &symm, const cart
   int a, b, natom;
   double rAB, rBC, rABcov, rBCcov, rBDcov, prefactor_i;
   double A, B, C, D, E, r1[3], r2[3], r3[3], tval;
-  double *f, *Z, val, *coord, norm_r1, norm_r2, norm_r3;
+  double *f, val, *coord, norm_r1, norm_r2, norm_r3;
 
   if (optinfo.empirical_H == OPTInfo::SCHLEGEL)
     fprintf(outfile,"\nGenerating empirical Hessian (Schlegel)\n");
@@ -54,7 +54,6 @@ void empirical_H(const simples_class & simples, const salc_set &symm, const cart
   f = init_array(simples.get_num());      
   coord = carts.get_coord();
   natom = carts.get_natom();
-  Z = carts.get_fatomic_num();
 
   // Form diagonal Hessian in simple internals first
   if (optinfo.empirical_H == OPTInfo::SCHLEGEL) {
@@ -292,7 +291,7 @@ void empirical_H(const simples_class & simples, const salc_set &symm, const cart
     if (simples.frag_get_coord_on(i, 5))
       f[++count] = 0.0005;
   }
-  free_array(coord);
+  delete [] coord;
 
   //fprintf(outfile,"Diagonal force constants for simple internals\n");
   //print_mat(&f,1,simples.get_num(),outfile);

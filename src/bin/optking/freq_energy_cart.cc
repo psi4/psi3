@@ -22,7 +22,7 @@ static int iE(int *ndisp, int *nsalc, int irr, int ii, int jj, int disp_i, int d
 
 void freq_energy_cart(void) {
   int i, j, k, l, dim, natom, cnt_eval = -1, *evals_all_irrep;
-  int h, nirreps, *nsalc, *ndisp, ndisp_all, nsalc_all, **ict, *start_irr;
+  int h, nirreps, *nsalc, *ndisp, ndisp_all, nsalc_all, *start_irr;
   double **B, **force_constants, energy_ref, *energies, cm_convert, k_convert;
   double *f, tval, **evects, *evals, tmp, disp_size;
   double *disp_E, *evals_all, **cartrep, ***salc, ***disp, **normal;
@@ -36,7 +36,6 @@ void freq_energy_cart(void) {
 
   chkpt_init(PSIO_OPEN_OLD);
   cartrep = chkpt_rd_cartrep();
-  ict = chkpt_rd_ict();
   chkpt_close();
 
   ndisp = init_int_array(nirreps);

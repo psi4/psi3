@@ -509,9 +509,12 @@ int disp_freq_energy_cart(const cartesians &carts)
 
   free_int_array(nsalc);
   free_int_array(ndisp);
-  free_array(coord);
+  delete [] coord;
   free_array(disp_e);
   free_int_array(ua2a);
+  for (irrep=0; irrep<nirreps; ++irrep)
+    free(ict[irrep]);
+  free(ict);
   return(ndisp_all);
 }
 

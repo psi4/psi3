@@ -121,46 +121,71 @@ class linb_class {
     }
 
     void compute(double *geom) {
-      int j;
+      int j, xyz;
+      bool is_linear;
       double rBA,rBC,rBD,eBA[3],eBC[3],eBD[3],tmp[3],dotprod;
-      double angle_ABD, angle_CBD, disp_size, F[3];
+      double angle_ABD, angle_CBD, disp_size, eBDp[3], D[3];
       double rBF, eBF[3];
  
-      dummy[0] = dummy[1] = dummy[2] = 0;
-
-      // first try placing dummy atoms according to default axes
-      if (optinfo.dummy_axis_1 == 0)      dummy[0] = 1;
-      else if (optinfo.dummy_axis_1 == 1) dummy[1] = 1;
-      else if (optinfo.dummy_axis_1 == 2) dummy[2] = 1;
-
-      // determine direction B->A
-      for (j=0;j<3;++j)
-        eBA[j] = geom[3*A+j] - geom[3*B+j];
-      rBA = sqrt( SQR(eBA[0]) + SQR(eBA[1]) + SQR(eBA[2]) );
-      scalar_div(rBA, eBA);
-
-      // see if chosen dummy axis is on fragment line
-      dot_array(eBA,dummy,3,&dotprod);
-      if ((1 - fabs(dotprod)) < 1.e-5) {
-        fprintf(outfile,"linear bend fragment is pointed toward dummy atom\n");
-        fprintf(outfile,"try dummy_axis_1 = {1,2,3}\n");
-        throw("linb_class::compute atoms pointed at dummy atom\n");
+      // determine whether fragment A-B-C is linear or not
+      for (xyz=0; xyz<3; ++xyz) {
+        eBA[xyz] = geom[3*A+xyz] - geom[3*B+xyz];
+        eBC[xyz] = geom[3*C+xyz] - geom[3*B+xyz];
       }
-
-      // 2nd dummy atom F (for linval == 2) is at (B + eBD x eBA)
-      for (j=0;j<3;++j) {
-        eBD[j] = dummy[j] - geom[3*B+j];
-        eBA[j] = geom[3*A+j] - geom[3*B+j];
-      }
-      rBD = sqrt( SQR(eBD[0])+SQR(eBD[1])+SQR(eBD[2]) );
       rBA = sqrt( SQR(eBA[0])+SQR(eBA[1])+SQR(eBA[2]) );
-      scalar_div(rBD,eBD);
-      scalar_div(rBA,eBA);
-      cross_product(eBD,eBA,eBF);
+      rBC = sqrt( SQR(eBC[0])+SQR(eBC[1])+SQR(eBC[2]) );
+      scalar_div(rBA, eBA);
+      scalar_div(rBC, eBC);
+      dot_array(eBA, eBC, 3, &dotprod);
+      val = acos(dotprod) * 180.0 / _pi;
+      if (val > 179.9)
+        is_linear = true;
+      else 
+        is_linear = false;
 
+      // if not linear, make lin1 in plane of molecule
+      if (!is_linear) {
+        if (linval == 1) { // linval == 1 ; bending is in plane
+          for (xyz=0; xyz<3; ++xyz)
+            dummy[xyz] = (geom[3*A+xyz] + geom[3*C+xyz])/2;
+        }
+        else { // linval == 2 ; bending is out-of-plane
+          cross_product(eBA, eBC, eBF);
+          for (xyz=0; xyz<3; ++xyz)
+            dummy[xyz] = geom[3*B+xyz] + eBF[xyz];
+        }
+      }
+      else { // linear
+        // original D' on default axes
+        dummy[0] = dummy[1] = dummy[2] = 0;
+        if (optinfo.dummy_axis_1 == 0)      dummy[0] = 1;
+        else if (optinfo.dummy_axis_1 == 1) dummy[1] = 1;
+        else if (optinfo.dummy_axis_1 == 2) dummy[2] = 1;
+
+        // see if D' is unfortunately on the axis A-B-C
+        dot_array(eBA,dummy,3,&dotprod);
+        if ((1 - fabs(dotprod)) < 1.e-5) {
+          fprintf(outfile,"linear bend fragment is pointed toward dummy atom\n");
+          fprintf(outfile,"try dummy_axis_1 = {1,2,3}\n");
+          throw("linb_class::compute atoms pointed at dummy atom\n");
+        }
+        if (linval == 1) { // dummy atom is at (B + eBD' x eBA)
+          for (xyz=0; xyz<3; ++xyz)
+            eBDp[xyz] = dummy[xyz] - geom[3*B+xyz];
+          rBD = sqrt( SQR(eBDp[0])+SQR(eBDp[1])+SQR(eBDp[2]) );
+          scalar_div(rBD, eBDp);
+          cross_product(eBDp, eBA, eBF);
+          for (xyz=0; xyz<3; ++xyz)
+            dummy[xyz] = geom[3*B+xyz] + eBF[xyz];
+        }
+        else { // dummy atom is at (B + eBD (=eBA x eBF) )
+          cross_product(eBF, eBA, eBD);
+          for (xyz=0; xyz<3; ++xyz)
+            dummy[xyz] = geom[3*B+xyz] + eBD[xyz];
+        }
+      }
       // move dummy atoms far,far away
-      disp_size = 1.0E9;
-
+      disp_size = 1.0E6;
       if (linval == 2) { // dummy atom = F
         dummy[0] = geom[ 3*B+0 ] + disp_size * eBF[0];
         dummy[1] = geom[ 3*B+1 ] + disp_size * eBF[1];
@@ -172,6 +197,8 @@ class linb_class {
         dummy[1] = geom[ 3*B+1 ] + disp_size * eBD[1];
         dummy[2] = geom[ 3*B+2 ] + disp_size * eBD[2];
       }
+
+//fprintf(outfile,"dummy atom: %12.6e %12.6e %12.6e\n", dummy[0], dummy[1], dummy[2]);
 
       // angle = <A-B-D/F + <C-B-D/F
       // compute val of A-B-D/F
@@ -189,7 +216,6 @@ class linb_class {
       else angle_ABD = acos(dotprod)*180.0/_pi;
      //fprintf(outfile,"angle(A-B-D/F): %20.15lf\n",angle_ABD);
 
-      // compute val of C-B-D/F
       for (j=0;j<3;++j) {
         eBA[j] = geom[3*C+j] - geom[3*B+j];
         eBC[j] = dummy[j] - geom[3*B+j];

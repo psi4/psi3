@@ -242,6 +242,9 @@ class tors_class {
     
       phiABC = acos(phiABC);
       phiBCD = acos(phiBCD);
+
+printf("phiABC: %15.10lf\n", phiABC);
+printf("phiBCD: %15.10lf\n", phiBCD);
     
       cross_product(eAB,eBC,tmp);
       scalar_div(-1.0 * rAB * SQR(sin(phiABC)),tmp);

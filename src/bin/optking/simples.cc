@@ -403,13 +403,8 @@ simples_class :: simples_class(cartesians& carts, int user_intcos)
           ip_count("FRAG",     &na, 2, i, 2);
           ip_count("FRAG",     &nb, 2, i, 3);
 
-          // make sure 3 reference points are specified for each fragment (for now)
           ip_count("FRAG", &A_P, 2, i, 4);
           ip_count("FRAG", &B_P, 2, i, 5);
-          if ( (A_P != 3) || (B_P != 3)) {
-            sprintf(error,"Fragment %d should give weights for 3 reference points for each fragment", i+1);
-            throw(error);
-          }
 
           f1 = new frag_class(id, na, nb, A_P, B_P);
           frag.push_back(*f1);
@@ -423,12 +418,10 @@ simples_class :: simples_class(cartesians& carts, int user_intcos)
             frag[i].set_coord_on(I,a); // set coordinate on or off
             if (a) ++dim;
           }
-          // if only interfragment stretch, then use only 1 reference atom
-          ip_boolean("FRAG",&a,3,i,1,0);
-          if (a && (dim == 1)) {
-            A_P = B_P = 1;
-            frag[i].set_A_P(A_P);
-            frag[i].set_B_P(B_P);
+
+          if (dim == 6 && (A_P != 3 || B_P != 3)) {
+            sprintf(error,"To define all interfragment coordinates 3 reference points for each frag needed");
+            throw(error);
           }
 
           // read what atoms are in each fragment
@@ -716,7 +709,7 @@ simples_class :: simples_class(cartesians& carts, int user_intcos)
             } // end loop over linear a-b-c
           } // end loop over ia, ib, ic
 
-      delete taa, tbb, tcc, tdd;
+      delete [] taa; delete [] tbb, delete [] tcc, delete [] tdd;
 
       // add bonus torsions for cases like BH3 and H2CO
       // where natom = 4 but the bonds are not in a line so no torsions

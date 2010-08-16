@@ -14,7 +14,7 @@ namespace psi { namespace optking {
 
 void symmetrize_geom(double *x) {
   int ua, op, xyz, num_uniques, i;
-  int atom1, atom2, *ua2a, **ict, diag_ind, natom;
+  int atom1, atom2, *ua2a, diag_ind, natom;
   double **cartrep, *x_temp;
   int stab_order, nirreps;
 
@@ -22,7 +22,7 @@ void symmetrize_geom(double *x) {
   num_uniques = chkpt_rd_num_unique_atom();
   ua2a = chkpt_rd_ua2a();
   nirreps = chkpt_rd_nirreps();
-  ict = chkpt_rd_ict();
+  int **ict = chkpt_rd_ict();
   cartrep = chkpt_rd_cartrep();
   natom = chkpt_rd_natom();
   chkpt_close();
@@ -51,7 +51,8 @@ void symmetrize_geom(double *x) {
 
   free_array(x_temp);
   free_int_array(ua2a);
-  free_int_matrix(ict);
+  for (i=0; i<nirreps; ++i) free(ict[i]);
+  free(ict);
   free_matrix(cartrep);
   return;
 }

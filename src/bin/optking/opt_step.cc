@@ -99,6 +99,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
       open_PSIF();
       i = 1;
       psio_write_entry(PSIF_OPTKING, "Balked last time", (char *) &i, sizeof(int));
+      free(dq);
       close_PSIF();
       exit_io();
       exit(PSI_RETURN_BALK);
@@ -117,7 +118,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
     simples.compute(coord);
     simples.compute_s(coord);
     q = compute_q(simples,symm); 
-    free_array(coord);
+    delete [] coord;
   }
   else {
   fprintf(outfile,"\n ** Taking geometry step number %d **\n", optinfo.iteration+1);
@@ -245,7 +246,7 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
   coord = carts.get_coord();
   sprintf(value_string,"Cartesian Values %d", optinfo.iteration);
   psio_write_entry(PSIF_OPTKING, value_string, (char *) coord, dim_carts*sizeof(double));
-  free_array(coord);
+  delete [] coord;
   tval = carts.get_energy();
   sprintf(value_string,"Energy %d", optinfo.iteration);
   psio_write_entry(PSIF_OPTKING, value_string, (char *) &tval, sizeof(double));
@@ -582,15 +583,15 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
       // don't do analytic steps unless all reference points (and all coordinates) are present
       // because we may have to fix their values in orient_fragment even if we are not optmizing
       // with them
-      if ( (simples.frag[sub_index].get_A_P() != 3) || (simples.frag[sub_index].get_B_P() != 3) )
-        continue;
+      //if ( (simples.frag[sub_index].get_A_P() != 3) || (simples.frag[sub_index].get_B_P() != 3) )
+      //  continue; OK, now? 8-2010
 
     coord = carts.get_coord();
     simples.compute(coord);
     // fix configuration for torsions; sets flag for torsions > FIX_NEAR_180 or < -FIX_NEAR_180 
     // so that when I calculate residual below, I get the right answer
     simples.fix_near_180();
-    free_array(coord);
+    delete [] coord;
 
       for (cnt=0, I=0; I<6; ++I) {
         inter_q[I] = 0;
@@ -659,19 +660,19 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
         inter_q[0]  = 1.0 / inter_q[0]; // convert back to 1/R
       for (I=1; I<6; ++I) inter_q[I] *= _pi/180.0;
 
-      for (cnt=0, I=0; I<6; ++I) {
-        coord = carts.get_coord();
-        simples.compute(coord);
+      cnt = 0;
+      for (I=0; I<6; ++I) {
         if ( simples.frag[sub_index].get_coord_on(I) ) {
+          coord = carts.get_coord();
+          simples.compute(coord);
           dq[isalc + cnt] = simples.frag[sub_index].get_val_A_or_rad(I) - inter_q[I];
-//fprintf(outfile,"val: %20.15lf\n", simples.frag[sub_index].get_val_A_or_rad(I));
-//fprintf(outfile,"inter_q[%d]: %20.15lf\n", I, inter_q[I]);
+          delete [] coord;
           ++cnt;
         }
-        free_array(coord);
       }
 
-      free_matrix(geom_A); free_matrix(geom_B);
+      free_matrix(geom_A);
+      free_matrix(geom_B);
       free_matrix(weight_A); free_matrix(weight_B);
     }
     // sprintf(disp_label,"\nNew Geometry in au after analytic fragment orientation\n");

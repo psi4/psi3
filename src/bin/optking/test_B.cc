@@ -28,7 +28,7 @@ int test_B(const cartesians &carts, simples_class &simples, const salc_set &symm
   simples.compute(coord);
   simples.compute_s(coord);
   B = compute_B(simples,symm);
-  free_array(coord);
+  delete [] coord;
 
   if (optinfo.mode == MODE_TEST_BMAT) {
     fprintf(outfile,"\nB Matrix - Analytical, dB_i/(dr angstroms) \n");
@@ -57,7 +57,7 @@ int test_B(const cartesians &carts, simples_class &simples, const salc_set &symm
 
         free_array(q_plus);
         free_array(q_minus);
-        free_array(coord);
+        delete [] coord;
       }
     }
   }

@@ -26,7 +26,7 @@ class cartesians {
       // fprintf(stdout,"destructing cartesian\n");
       delete [] atomic_num;
       delete [] coord;
-      delete [] grad;
+      free(grad);
       delete [] mass;
       delete [] fatomic_num;
       delete [] fcoord;
@@ -78,8 +78,7 @@ class cartesians {
     }
     double *get_coord() const {
       int i;
-      double *copy;
-      copy = init_array(natom*3);
+      double *copy = new double [natom*3];
       for (i=0;i<natom*3;++i)
         copy[i] = coord[i];
       return copy;
