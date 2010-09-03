@@ -51,13 +51,13 @@ void read_integrals()
               Params.oei_erase, (Params.print_lvl>3), outfile);
   }
 
-  if (Params.print_lvl > 4) 
+  if (Params.print_lvl > 6) 
     fprintf(outfile, "\n\tTwo-electron integrals:\n");
 
   iwl_rdtwo(Params.tei_file, CalcInfo.twoel_ints, ioff, 
      CalcInfo.nmo, Params.filter_ints ? CalcInfo.num_fzc_orbs : 0, 
      Params.filter_ints ? CalcInfo.num_fzv_orbs : 0, 
-     (Params.print_lvl>4), outfile);
+     (Params.print_lvl>6), outfile);
 
 } 
 

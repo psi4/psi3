@@ -89,7 +89,7 @@ void read_integrals()
 
   iwl_rdtwo(Parameters.tei_file, CalcInfo.twoel_ints, ioff, CalcInfo.nmo,
              nfilter_core, nfilter_vir, 
-             (Parameters.print_lvl>4), outfile);
+             (Parameters.print_lvl>6), outfile);
 
    /* Determine maximum K integral for use in averaging the diagonal */
    /* Hamiltonian matrix elements over spin-coupling set */

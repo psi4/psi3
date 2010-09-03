@@ -129,7 +129,7 @@ double *rdtpdm(int nbf, int print_lvl, int tpdm_file, int erase)
  iwl_buf_rd_all(&TBuff, tpdm, ioff_lt, ioff_lt, 1, ioff,
                 (print_lvl>5), outfile);
 
-  if (print_lvl > 4) {
+  if (print_lvl > 6) {
     fprintf(outfile,"Non-symmetrized Two-Particle Density Matrix\n");
     for (p=0; p<nbf; p++) {
       for (q=0; q<nbf; q++) {
@@ -184,7 +184,7 @@ double *rdtpdm(int nbf, int print_lvl, int tpdm_file, int erase)
 
   free(tpdm);
 
-  if (print_lvl > 4) {
+  if (print_lvl > 6) {
     fprintf(outfile,"Symmetrized Two-Particle Density Matrix\n");
     for (p=0,target=0; p<nbf; p++) {
       for (q=0; q<=p; q++) {
