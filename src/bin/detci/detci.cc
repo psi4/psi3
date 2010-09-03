@@ -355,7 +355,8 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
       CIvect Cvec(CIblks.vectlen, CIblks.num_blocks, 1, Parameters.Ms0,
          CIblks.Ia_code, CIblks.Ib_code, CIblks.Ia_size, CIblks.Ib_size, 
          CIblks.offset, CIblks.num_alp_codes, CIblks.num_bet_codes,
-         CalcInfo.nirreps, AlphaG->subgr_per_irrep, 1, 0, 0,
+         CalcInfo.nirreps, AlphaG->subgr_per_irrep, 1,
+         Parameters.num_d_tmp_units, Parameters.first_d_tmp_unit, 
          CIblks.first_iablk, CIblks.last_iablk, CIblks.decode);
 
       double **H, **rsp_evecs;
@@ -466,6 +467,8 @@ void diag_h(struct stringwr **alplist, struct stringwr **betlist)
                mi_ibidx, mi_coeff, Parameters.neg_only);
             print_vec(Parameters.nprint, mi_iac, mi_ibc, mi_iaidx, mi_ibidx, 
                mi_coeff, AlphaG, BetaG, alplist, betlist, outfile);
+            // EFV 11/17/08 write out the eigenvector so that opdm and other downstream users can use it.
+            Cvec.write(i,0);
             }
 
          free(mi_iac);  free(mi_ibc);
