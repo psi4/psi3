@@ -52,10 +52,11 @@ void schmidt(double **A, int rows, int cols, FILE *outfile)
          for (I=0; I<cols; I++) tmp[I] -= dotval * A[j][I];
          }
       dot_arr(tmp, tmp, cols, &normval);
-      normval = sqrt(normval);
+      const double thresh = 1e-15;
+      normval = 1.0/sqrt(normval > thresh ? normval : thresh);
       /* fprintf(outfile,"\n norm[%d] = %20.15f\n",i, (1.0/normval));
       fflush(outfile); */
-      for (I=0; I<cols; I++) A[i][I] = tmp[I] / normval; 
+      for (I=0; I<cols; I++) A[i][I] = tmp[I] * normval;
       }
 
    free(tmp);

@@ -1156,7 +1156,12 @@ void sem_iter(CIvect &Hd, struct stringwr **alplist, struct stringwr
                      Parameters.zero_det_Iaridx, Parameters.zero_det_Ibc,
                      Parameters.zero_det_Ibridx);
          }
-         tval = sqrt(1.0 / tval);
+
+         const double thresh = 1e-15;
+         if (tval < -thresh)
+           fprintf(outfile,"Warning: Norm of "
+                   "correction (root %d) is significantly negative (%25.15lf)\n", k, tval);
+         tval = 1.0 / sqrt(tval < thresh ? thresh : tval);
          Dvec.symnorm(tval,0,0);
 
          if (print_lvl > 4) {
