@@ -273,6 +273,12 @@ void get_params()
       errcod = ip_data("CC_SCALE_SS","%lf",&(params.scscc_scale_ss),0);
   }
 
+  /* see Nooijen et al. */
+  errcod = ip_data("PCCSD_ALPHA","%lf",&(params.pccsd_alpha),0);
+  if(errcod != IPE_OK) params.pccsd_alpha = 1.0;
+  errcod = ip_data("PCCSD_BETA","%lf",&(params.pccsd_beta),0);
+  if(errcod != IPE_OK) params.pccsd_beta = 1.0;
+
   
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");

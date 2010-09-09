@@ -44,6 +44,7 @@ struct Params {
   double scsmp2_scale_ss;
   double scscc_scale_os;
   double scscc_scale_ss;
+  double pccsd_alpha, pccsd_beta; // parameters of the pCCSD method of Nooijen (alpha=beta=1 is standard CCSD)
   int newtrips;
 };
 
