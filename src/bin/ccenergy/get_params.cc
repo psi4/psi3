@@ -332,6 +332,11 @@ void get_params()
   fprintf(outfile, "\tMP2_SCALE_SS    =     %.6f\n",params.scsmp2_scale_ss);
   fprintf(outfile, "\tCC_SCALE_OS     =     %.6f\n",params.scscc_scale_os);
   fprintf(outfile, "\tCC_SCALE_SS     =     %.6f\n",params.scscc_scale_ss);
+  if(params.pccsd_alpha != 1 || params.pccsd_beta != 1)
+  {
+    fprintf(outfile, "\tPCCSD_ALPHA     =     %.6f\n",params.pccsd_alpha);
+    fprintf(outfile, "\tPCCSD_BETA      =     %.6f\n",params.pccsd_beta);
+  }
 
   fprintf(outfile, "\n");
 

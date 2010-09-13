@@ -21,13 +21,14 @@ void FT2_CC2(void);
 
 void t2_build(void)
 {
-dpdbuf4 tIjAb;
-double dotval;
+  dpdbuf4 tIjAb;
+  double dotval;
 
   DT2();
   if(params.print & 2) status("<ij||ab> -> T2", outfile);
 
-  if(strcmp(params.wfn,"CC2") || strcmp(params.wfn,"EOM_CC2")) { /* skip all this is wfn=CC2 */
+  if(strcmp(params.wfn,"CC2") || strcmp(params.wfn,"EOM_CC2"))
+  { /* skip all this if wfn=CC2 */
 
     FaetT2();
     FmitT2();
@@ -41,7 +42,8 @@ double dotval;
 #endif
     if(!strcmp(params.aobasis,"DISK") || !strcmp(params.aobasis,"DIRECT"))
       BT2_AO();
-    else BT2();
+    else
+      BT2();
     if(params.print & 2) status("<ab||cd> -> T2", outfile);
 #ifdef TIME_CCENERGY
     timer_off("BT2", outfile);
@@ -80,7 +82,8 @@ double dotval;
     timer_off("CT2", outfile);
 #endif
   }
-  else { /* For CC2, just include (FT2)c->T2 */
+  else
+  { /* For CC2, just include (FT2)c->T2 */
     FT2_CC2();
   }
 
