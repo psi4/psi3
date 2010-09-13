@@ -271,7 +271,7 @@ int main(int argc, char *argv[])
       t2_build();
       if(params.print & 2) status("T2 amplitudes", outfile);
       { // do extra work for pCCSD
-        const bool do_pccsd = !strcmp(params.wfn,"CCSD") && (params.pccsd_alpha != 1.0 || params.pccsd_beta != 1.0);
+        const bool do_pccsd = (!strcmp(params.wfn,"CCSD") || !strcmp(params.wfn,"CCSD_T")) && (params.pccsd_alpha != 1.0 || params.pccsd_beta != 1.0);
         if (do_pccsd) {
           t2_delta_pCCSD_build();
           if(params.print & 2) status("delta(T2) pCCSD amplitudes", outfile);
