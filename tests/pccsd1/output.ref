@@ -1,0 +1,586 @@
+******************************************************************************
+PSI3 started on EdBookPro.local at Mon Sep 13 18:37:40 2010
+
+    -----------------------------------------------------------------------    
+            PSI3: An Open-Source Ab Initio Electronic Structure Package 
+                                Version 3.4 Alpha
+
+    T. D. Crawford, C. D. Sherrill, E. F. Valeev, J. T. Fermann, R. A. King,
+    M. L. Leininger, S. T. Brown, C. L. Janssen, E. T. Seidl, J. P. Kenny,
+    and W. D. Allen, J. Comput. Chem. 28, 1610-1616 (2007)
+    -----------------------------------------------------------------------    
+
+PSI3 will perform a RHF CCSD energy computation.
+
+The following programs will be executed:
+
+ input
+ cints
+ cscf
+ transqt2
+ ccsort
+ ccenergy
+ psiclean
+
+******************************************************************************
+INPUT tstart called on EdBookPro.local
+Mon Sep 13 18:37:40 2010
+
+                                --------------
+                                    INPUT
+                                --------------
+
+  LABEL       =	6-31G** pCCSD(-0.5,0.5) H2O
+  SHOWNORM    =	0
+  PUREAM      =	0
+  PRINT_LVL   =	1
+
+  Parsed basis sets from /Users/evaleev/Development/workspace/psi3/lib/pbasis.dat
+Coordinates after reading z-matrices
+
+           1           2           3
+
+    1   0.0000000   0.0000000   0.0000000
+    2   0.0000000   0.0000000   1.8330342
+    3   1.7860537   0.0000000  -0.4123430
+
+  -Geometry before Center-of-Mass shift (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000     0.000000000000
+    H         0.000000000000     0.000000000000     1.833034208922
+    H         1.786053660900     0.000000000000    -0.412342977945
+
+
+  -Rotational constants (cm-1) :
+    A =   25.82761  B =   14.51273  C =    9.29167
+    It is an asymmetric top.
+
+  -Geometry after Center-of-Mass shift and reorientation (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000    -0.127705012634     0.000000000000
+    H         1.434547523692     1.013385611877    -0.000000000000
+    H        -1.434547523692     1.013385611877    -0.000000000000
+
+
+  -SYMMETRY INFORMATION:
+    Computational point group is C2v 
+    Number of irr. rep.      = 4
+    Number of atoms          = 3
+    Number of unique atoms   = 2
+
+
+  -BASIS SETS:
+
+   -Basis set on unique center 1:
+      ( (S (  5484.67166000     0.00183107)
+           (   825.23494600     0.01395017)
+           (   188.04695800     0.06844508)
+           (    52.96450000     0.23271434)
+           (    16.89757040     0.47019290)
+           (     5.79963534     0.35852085) )
+        (S (    15.53961625    -0.11077755)
+           (     3.59993359    -0.14802626)
+           (     1.01376175     1.13076701) )
+        (S (     0.27000582     1.00000000) )
+        (P (    15.53961625     0.07087427)
+           (     3.59993359     0.33975284)
+           (     1.01376175     0.72715858) )
+        (P (     0.27000582     1.00000000) )
+        (D (     0.80000000     1.00000000) )
+       )
+
+   -Basis set on unique center 2:
+      ( (S (    18.73113696     0.03349460)
+           (     2.82539437     0.23472695)
+           (     0.64012169     0.81375733) )
+        (S (     0.16127776     1.00000000) )
+        (P (     1.10000000     1.00000000) )
+       )
+
+
+  -BASIS SET INFORMATION:
+    Total number of shells = 12
+    Number of primitives   = 20
+    Number of AO           = 25
+    Number of SO           = 25
+
+    Irrep    Number of SO
+    -----    ------------
+      1           12
+      2            2
+      3            4
+      4            7
+
+  -Contraction Scheme:
+    Atom     All Primitives // Unique Primitives // Shells
+    ----     ---------------------------------------------
+       1      10s 4p 1d //  10s 1d //  3s 2p 1d
+       2      4s 1p //  4s 1p //  2s 1p
+       3      4s 1p //  4s 1p //  2s 1p
+
+
+  -Unique atoms in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.127705012634
+    H        -0.000000000000     1.434547523692     1.013385611877
+
+
+  -Geometry in the canonical coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.127705012634
+    H        -0.000000000000     1.434547523692     1.013385611877
+    H        -0.000000000000    -1.434547523692     1.013385611877
+
+
+  -Geometry in the canonical coordinate system (Angstrom):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.067578587269
+    H        -0.000000000000     0.759129912147     0.536260610269
+    H        -0.000000000000    -0.759129912147     0.536260610269
+
+
+  -Geometry in the reference coordinate system (a.u.):
+   Atom            X                  Y                   Z
+  ------   -----------------  -----------------  -----------------
+    O         0.000000000000     0.000000000000    -0.127705012634
+    H        -0.000000000000     1.434547523692     1.013385611877
+    H        -0.000000000000    -1.434547523692     1.013385611877
+
+
+  --------------------------------------------------------------------------
+
+    Nuclear Repulsion Energy (a.u.) =       9.077238846804
+
+  -The Interatomic Distances in angstroms:
+
+           1           2           3
+
+    1   0.0000000
+    2   0.9700000   0.0000000
+    3   0.9700000   1.5182598   0.0000000
+
+    Note: To print *all* bond angles, out-of-plane
+          angles, and torsion angles set print = 3
+
+
+******************************************************************************
+INPUT tstop called on EdBookPro.local
+Mon Sep 13 18:37:40 2010
+
+user time   =       0.05 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+cints tstart called on EdBookPro.local
+Mon Sep 13 18:37:40 2010
+
+                  --------------------------------------------
+                    CINTS: An integrals program written in C
+                     Justin T. Fermann and Edward F. Valeev
+                  --------------------------------------------
+
+
+  -OPTIONS:
+    Print level                 = 1
+    Integral tolerance          = 1e-15
+    Max. memory to use          = 2500000 double words
+    Number of threads           = 1
+    LIBINT's real type length   = 64 bit
+
+  -CALCULATION CONSTANTS:
+    Label                       = 6-31G** pCCSD(-0.5,0.5) H2O
+    Number of atoms             = 3
+    Number of atomic orbitals   = 25
+    Number of symmetry orbitals = 25
+    Maximum AM in the basis     = 2
+
+  -SYMMETRY INFORMATION;
+    Computational point group        = C2v
+    Number of irreps                 = 4
+
+    Wrote 13617 two-electron integrals to IWL file 33
+
+******************************************************************************
+cints tstop called on EdBookPro.local
+Mon Sep 13 18:37:40 2010
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+SCF tstart called on EdBookPro.local
+Mon Sep 13 18:37:40 2010
+
+
+             ------------------------------------------
+
+                CSCF3.0: An SCF program written in C
+
+              Written by too many people to mention here
+
+             ------------------------------------------
+
+  I think the multiplicity is 1.
+  If this is wrong, please specify the MULTP keyword
+
+  label        = 6-31G** pCCSD(-0.5,0.5) H2O
+  wfn          = CCSD
+  reference    = RHF
+  multiplicity = 1
+  charge       = 0
+  direct       = false
+  dertype      = NONE
+  convergence  = 12
+  maxiter      = 100
+  guess        = AUTO
+
+  nuclear repulsion energy        9.0772388468036
+  first run, so defaulting to core-hamiltonian guess
+
+  level shift                      = 0.100000
+
+  level shifting will stop after 10 cycles
+  diis scale factor                = 1.000000
+  iterations before extrapolation  = 0
+  6 error matrices will be kept
+
+  keeping integrals in 114320 bytes of core
+
+  The lowest  eigenvalue of the overlap matrix was 2.230864e-02
+  The highest eigenvalue of the overlap matrix was 4.811278e+00
+
+  Using core guess to determine occupations
+
+
+  Symmetry block:   A1    A2    B1    B2   
+  DOCC:              3     0     1     1   
+  SOCC:              0     0     0     0   
+
+  reading integrals in the IWL format from files 33,35,36,37
+  wrote 6516 integrals to file92
+
+  iter       total energy        delta E         delta P          diiser
+    1       -68.2945751265    7.737181e+01    0.000000e+00    0.000000e+00
+    2       -71.3448673106    3.050292e+00    1.461731e-01    1.190466e+00
+    3       -75.8740206500    4.529153e+00    1.386292e-01    8.573611e-01
+    4       -76.0127771706    1.387565e-01    3.571875e-03    1.989130e-01
+    5       -76.0218018537    9.024683e-03    1.255711e-03    4.393924e-02
+    6       -76.0219748189    1.729652e-04    1.594762e-04    1.118920e-02
+    7       -76.0219974063    2.258741e-05    7.979152e-05    3.902789e-03
+    8       -76.0219978577    4.514293e-07    1.227064e-05    2.893048e-04
+    9       -76.0219978753    1.754033e-08    3.631956e-06    6.228041e-05
+   10       -76.0219978763    1.006896e-09    9.827202e-07    1.132714e-05
+   11       -76.0219978763    2.329159e-11    1.193354e-07    1.728025e-06
+   12       -76.0219978763    2.486900e-12    5.349900e-08    5.148786e-07
+   13       -76.0219978763   -2.842171e-14    2.824306e-09    3.877380e-08
+   14       -76.0219978763    2.842171e-14    6.149917e-10    1.019689e-08
+   15       -76.0219978763    4.263256e-14    1.063461e-10    4.573084e-09
+   16       -76.0219978763   -1.421085e-14    1.439425e-11    2.909375e-10
+   17       -76.0219978763   -1.421085e-14    4.873230e-12    8.798938e-11
+   18       -76.0219978763   -5.684342e-14    7.917026e-13    1.101252e-11
+
+Orbital energies (a.u.):
+
+  Doubly occupied orbitals
+   1A1    -20.563756     2A1     -1.335128     1B2     -0.693868  
+   3A1     -0.569546     1B1     -0.496894  
+
+
+  Unoccupied orbitals
+   4A1      0.209148     2B2      0.301190     3B2      0.992987  
+   5A1      1.080901     6A1      1.131133     2B1      1.168613  
+   4B2      1.294487     7A1      1.418370     1A2      1.805555  
+   8A1      1.805556     3B1      1.919426     9A1      2.554725  
+   5B2      2.571406     6B2      2.778746     2A2      2.955797  
+   4B1      2.985114    10A1      3.349725    11A1      3.681199  
+   7B2      3.913091    12A1      4.093637  
+
+
+      * SCF total energy   =     -76.021997876298
+        kinetic energy     =      75.764070729553
+        nuc. attr. energy  =    -198.644160741464
+        elec. rep. energy  =      46.858092135612
+        potential energy   =    -151.786068605851
+        virial ratio (V/T) =      -2.003404346470
+        wavefunction norm  =       1.000000000000
+******************************************************************************
+SCF tstop called on EdBookPro.local
+Mon Sep 13 18:37:40 2010
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.00 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+TRANSQT tstart called on EdBookPro.local
+Mon Sep 13 18:37:40 2010
+
+
+	**************************************************
+	* TRANSQT2: Program to transform integrals from  *
+	*           the SO basis to the MO basis.        *
+	*                                                *
+	*            Daniel, David, & Justin             *
+	**************************************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	CCSD
+	Backtransform   =	No
+	Print Level     =	1
+	Print TEIs      =	No
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Delete TEI File =	No
+	Memory (Mbytes) =	256.0
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of SOs        = 25
+	Number of MOs        = 25
+	Number of active MOs = 25
+
+	Label	# SOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   12	    0	    3	    0	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.07723884680363
+	SCF energy          (chkpt) =    -76.02199787629834
+
+	Presorting SO-basis two-electron integrals.
+	Sorting File: SO Ints (pq,rs) nbuckets = 1
+	Frozen-core energy =    0.000000000000000
+	Starting first half-transformation.
+	Sorting half-transformed integrals.
+	Starting second half-transformation.
+	Two-electron integral transformation complete.
+******************************************************************************
+TRANSQT tstop called on EdBookPro.local
+Mon Sep 13 18:37:40 2010
+
+user time   =       0.01 seconds =       0.00 minutes
+system time =       0.01 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+******************************************************************************
+CCSORT tstart called on EdBookPro.local
+Mon Sep 13 18:37:40 2010
+
+
+			**************************
+			*                        *
+			*         CCSORT         *
+			*                        *
+			**************************
+
+
+	Input parameters:
+	-----------------
+	Wave function   =	CCSD
+	Reference wfn   =	RHF
+	Derivative      =	None
+	Memory (Mbytes) =	256.0
+	AO Basis        =	NONE
+	Make (ab|cd)    =	True
+	Make unpacked (ab|cd) =	False
+	Cache Level     =	2
+	Cache Type      =	LRU
+	Local CC        =     No
+
+
+	Chkpt Parameters:
+	--------------------
+	Number of irreps     = 4
+	Number of MOs        = 25
+	Number of active MOs = 25
+
+	Label	# MOs	# FZDC	# DOCC	# SOCC	# VIRT	# FZVR
+	-----	-----	------	------	------	------	------
+	 A1 	   12	    0	    3	    0	    9	    0
+	 A2 	   2	    0	    0	    0	    2	    0
+	 B1 	   4	    0	    1	    0	    3	    0
+	 B2 	   7	    0	    1	    0	    6	    0
+
+	Nuclear Rep. energy (chkpt) =      9.07723884680363
+	SCF energy          (chkpt) =    -76.02199787629834
+
+	Size of irrep 0 of <ab|cd> integrals:      0.017 (MW) /      0.135 (MB)
+	Size of irrep 1 of <ab|cd> integrals:      0.005 (MW) /      0.041 (MB)
+	Size of irrep 2 of <ab|cd> integrals:      0.006 (MW) /      0.049 (MB)
+	Size of irrep 3 of <ab|cd> integrals:      0.014 (MW) /      0.115 (MB)
+	Total:                                     0.043 (MW) /      0.341 (MB)
+
+	Size of irrep 0 of <ia|bc> integrals:      0.005 (MW) /      0.037 (MB)
+	Size of irrep 1 of <ia|bc> integrals:      0.001 (MW) /      0.009 (MB)
+	Size of irrep 2 of <ia|bc> integrals:      0.002 (MW) /      0.012 (MB)
+	Size of irrep 3 of <ia|bc> integrals:      0.003 (MW) /      0.028 (MB)
+	Total:                                     0.011 (MW) /      0.086 (MB)
+
+	Size of irrep 0 of tijab amplitudes:       0.001 (MW) /      0.011 (MB)
+	Size of irrep 1 of tijab amplitudes:       0.000 (MW) /      0.001 (MB)
+	Size of irrep 2 of tijab amplitudes:       0.000 (MW) /      0.004 (MB)
+	Size of irrep 3 of tijab amplitudes:       0.001 (MW) /      0.006 (MB)
+	Total:                                     0.003 (MW) /      0.022 (MB)
+
+
+	Sorting File: A <ij|kl> nbuckets = 1
+	Sorting File: B(+) <ab|cd> nbuckets = 1
+	Sorting File: C <ia|jb> nbuckets = 1
+	Sorting File: D <ij|ab> nbuckets = 1
+	Sorting File: E <ai|jk> nbuckets = 1
+	Sorting File: F <ia|bc> nbuckets = 1
+	One-electron energy          =   -122.88009001191094
+	Two-electron (AA) energy     =     14.41616333315761
+	Two-electron (BB) energy     =     14.41616333315761
+	Two-electron (AB) energy     =     23.36468995565130
+	Two-electron energy          =     37.78085328880891
+	Frozen-core energy (transqt) =      0.00000000000000
+	Reference energy             =    -76.02199787629840
+******************************************************************************
+CCSORT tstop called on EdBookPro.local
+Mon Sep 13 18:37:41 2010
+
+user time   =       0.02 seconds =       0.00 minutes
+system time =       0.02 seconds =       0.00 minutes
+total time  =          1 seconds =       0.02 minutes
+******************************************************************************
+CCENERGY tstart called on EdBookPro.local
+Mon Sep 13 18:37:41 2010
+
+			**************************
+			*                        *
+			*        CCENERGY        *
+			*                        *
+			**************************
+
+	Nuclear Rep. energy (chkpt)   =    9.077238846803628
+	SCF energy          (chkpt)   =  -76.021997876298343
+	Reference energy    (file100) =  -76.021997876298400
+
+	Input parameters:
+	-----------------
+	Wave function   =     CCSD
+	Reference wfn   =     RHF
+	Memory (Mbytes) =     256.0
+	Maxiter         =     50
+	Convergence     =     1.0e-12
+	Restart         =     Yes
+	DIIS            =     Yes
+	AO Basis        =     NONE
+	ABCD            =     NEW
+	Cache Level     =     2
+	Cache Type      =     LOW
+	Print Level     =     0
+	Num. of threads =     1
+	# Amps to Print =     10
+	Print MP2 Amps? =     No
+	Analyze T2 Amps =     No
+	Print Pair Ener =     No
+	Local CC        =     No
+	SCS             =     False
+	MP2_SCALE_OS    =     1.200000
+	MP2_SCALE_SS    =     0.333333
+	CC_SCALE_OS     =     1.270000
+	CC_SCALE_SS     =     1.130000
+	PCCSD_ALPHA     =     -0.500000
+	PCCSD_BETA      =     0.500000
+
+	            Solving CC Amplitude Equations
+	            ------------------------------
+  Iter             Energy              RMS        T1Diag      D1Diag    New D1Diag
+  ----     ---------------------    ---------   ----------  ----------  ----------
+     0        -0.200284583174498    0.000e+00    0.000000    0.000000    0.000000
+     1        -0.205956561696850    2.831e-02    0.004508    0.008904    0.008904
+     2        -0.210353145268129    1.056e-02    0.005254    0.010595    0.010595
+     3        -0.210929953605348    3.050e-03    0.005815    0.012288    0.012288
+     4        -0.210932854196812    7.663e-04    0.005876    0.012641    0.012641
+     5        -0.210951057743959    2.355e-04    0.005918    0.012852    0.012852
+     6        -0.210947224224364    7.211e-05    0.005932    0.012923    0.012923
+     7        -0.210946532853704    1.845e-05    0.005936    0.012946    0.012946
+     8        -0.210946498403437    3.682e-06    0.005937    0.012949    0.012949
+     9        -0.210946405104792    9.927e-07    0.005937    0.012950    0.012950
+    10        -0.210946429089561    2.288e-07    0.005937    0.012950    0.012950
+    11        -0.210946425180564    5.148e-08    0.005937    0.012950    0.012950
+    12        -0.210946425667104    8.352e-09    0.005937    0.012950    0.012950
+    13        -0.210946425378476    1.953e-09    0.005937    0.012950    0.012950
+    14        -0.210946425371069    3.407e-10    0.005937    0.012950    0.012950
+    15        -0.210946425370262    8.642e-11    0.005937    0.012950    0.012950
+    16        -0.210946425372085    1.714e-11    0.005937    0.012950    0.012950
+    17        -0.210946425372747    4.587e-12    0.005937    0.012950    0.012950
+    18        -0.210946425372762    9.312e-13    0.005937    0.012950    0.012950
+
+	Iterations converged.
+
+
+	Largest TIA Amplitudes:
+	          2   0         0.0113085438
+	          3  11         0.0066819153
+	          4  14        -0.0064749908
+	          4  18        -0.0054774641
+	          4  16         0.0049350575
+	          1   2        -0.0043812970
+	          2   5        -0.0041401457
+	          1   0         0.0026239008
+	          1   7         0.0023556785
+	          2   1         0.0023179611
+
+	Largest TIjAb Amplitudes:
+	  3   3  11  11        -0.0523401516
+	  4   4  14  14        -0.0403937553
+	  2   2   2   2        -0.0301628805
+	  4   4  15  15        -0.0291971288
+	  2   3   2  11        -0.0254727252
+	  3   2  11   2        -0.0254727252
+	  3   4  11  16         0.0250717408
+	  4   3  16  11         0.0250717408
+	  4   4  16  16        -0.0247884621
+	  3   4  11  14         0.0247289328
+
+	SCF energy       (chkpt)              =  -76.021997876298343
+	Reference energy (file100)            =  -76.021997876298400
+
+	Scaled_OS MP2 correlation energy      =   -0.160666032053772
+	Scaled_SS MP2 correlation energy      =   -0.016776539974770
+	SCS-MP2 correlation energy            =   -0.177442572028543
+      * SCS-MP2 total energy                  =  -76.199440448326939
+
+	Opposite-spin MP2 correlation energy  =   -0.149954963250188
+	Same-spin MP2 correlation energy      =   -0.050329619924310
+	MP2 correlation energy                =   -0.200284583174498
+      * MP2 total energy                      =  -76.222282459472893
+
+	Scaled_OS CCSD correlation energy     =   -0.211025825846753
+	Scaled_SS CCSD correlation energy     =   -0.050606324287872
+	SCS-CCSD correlation energy           =   -0.261632150134624
+      * SCS-CCSD total energy                 =  -76.283630026433016
+
+	Opposite-spin CCSD correlation energy =   -0.166162067595868
+	Same-spin CCSD correlation energy     =   -0.044784357776878
+	CCSD correlation energy               =   -0.210946425372762
+      * CCSD total energy                     =  -76.232944301671168
+
+******************************************************************************
+CCENERGY tstop called on EdBookPro.local
+Mon Sep 13 18:37:41 2010
+
+user time   =       0.30 seconds =       0.01 minutes
+system time =       0.18 seconds =       0.00 minutes
+total time  =          0 seconds =       0.00 minutes
+
+                          --------------------------
+                          PSI3 Computation Completed
+                          --------------------------
+
+PSI3 stopped on EdBookPro.local at Mon Sep 13 18:37:41 2010
+
+Total PSI3 wall time          1 seconds =       0.02 minutes
+******************************************************************************

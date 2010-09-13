@@ -1010,6 +1010,7 @@ AC_CONFIG_FILES([include/Makefile
           tests/cc51/Makefile
           tests/cc52/Makefile
           tests/ooccd/Makefile
+          tests/pccsd1/Makefile
           tests/psimrcc-sp1/Makefile
           tests/psimrcc-idmrpt2/Makefile
           tests/psimrcc-mp2-ccsd-1/Makefile
