@@ -15,7 +15,7 @@ extern "C" {
   extern const char *gprgid();
 }
 
-void PSIO::get_volpath(unsigned int unit, unsigned int volume, char **path) {
+void PSIO::get_volpath(unsigned int unit, unsigned int volume, char **path) const {
   std::string kval;
   char volumeX[20];
   sprintf(volumeX, "VOLUME%u", volume+1);

@@ -15,7 +15,7 @@ extern "C" {
   extern char *gprgid();
 }
 
-void PSIO::get_filename(unsigned int unit, char **name) {
+void PSIO::get_filename(unsigned int unit, char **name) const {
   std::string kval;
   kval = filecfg_kwd(gprgid(), "NAME", unit);
   if (!kval.empty()) {

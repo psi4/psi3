@@ -14,7 +14,7 @@ extern "C" {
   extern const char *gprgid();
 }
 
-unsigned int PSIO::get_numvols(unsigned int unit) {
+unsigned int PSIO::get_numvols(unsigned int unit) const {
   std::string charnum;
   
   charnum = filecfg_kwd(gprgid(), "NVOLUME", unit);

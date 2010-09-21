@@ -45,7 +45,7 @@ namespace psi {
                        const char* kwdval);
       /// returns the keyword value. If not defined, returns empty string.
       const std::string& filecfg_kwd(const char* kwdgrp, const char* kwd,
-                                     int unit);
+                                     int unit) const;
 
       /// open unit. status can be PSIO_OPEN_OLD (if existing file is to be opened) or PSIO_OPEN_NEW if new file should be open
       void open(unsigned int unit, int status);
@@ -110,6 +110,13 @@ namespace psi {
       /// \param all  if false, checkpoint file and all files with basename starting with '.' (i.e. local files) will be skipped. Set to true to wipe out all PSIO files.
       void purge(bool all = false);
 
+      /// grab the filename of unit and strdup into name.
+      void get_filename(unsigned int unit, char **name) const;
+      /// return the number of volumes over which unit will be striped
+      unsigned int get_numvols(unsigned int unit) const;
+      /// grab the path to volume of unit and strdup into path.
+      void get_volpath(unsigned int unit, unsigned int volume, char **path) const;
+
       /// Upon catastrophic failure, the library will exit() with this code. The default is 1, but can be overridden.
       static int _error_exit_code_;
 
@@ -124,12 +131,6 @@ namespace psi {
       /// Library state variable
       int state_;
 
-      /// grab the filename of unit and strdup into name.
-      void get_filename(unsigned int unit, char **name);
-      /// return the number of volumes over which unit will be striped
-      unsigned int get_numvols(unsigned int unit);
-      /// grab the path to volume of unit and strdup into path.
-      void get_volpath(unsigned int unit, unsigned int volume, char **path);
       /// return the last TOC entry
       psio_tocentry* toclast(unsigned int unit);
       /// Compute the length of the TOC for a given unit using the in-core TOC list.
