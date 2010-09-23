@@ -72,7 +72,6 @@ extern "C" {
      conservative estimate for its length = strlen(gprgid())+80
      */
     ip_token = (char*) malloc( (strlen(gprgid())+80)*sizeof(char));
-    name = (char*) malloc( 80 * sizeof(char));
 
     for (i=0; i<nkwds; ++i) {
       const char* kwd = kwds[i];
@@ -80,7 +79,7 @@ extern "C" {
       /* unit and program specific */
       for (unit=0; unit<PSIO_MAXUNIT; ++unit) {
         sprintf(ip_token, ":%s:FILES:FILE%u:%s", gprgid(), unit, kwd);
-        errcod = ip_data(ip_token, "%s", name, 0);
+        errcod = ip_string(ip_token, &name, 0);
         if (errcod == IPE_OK) {
           psio_obj->filecfg_kwd(gprgid(), kwd, unit, name);
         }
@@ -88,7 +87,7 @@ extern "C" {
 
       /* program specific */
       sprintf(ip_token, ":%s:FILES:DEFAULT:%s", gprgid(), kwd);
-      errcod = ip_data(ip_token, "%s", name, 0);
+      errcod = ip_string(ip_token, &name, 0);
       if (errcod == IPE_OK) {
         psio_obj->filecfg_kwd(gprgid(), kwd, -1, name);
       }
@@ -96,7 +95,7 @@ extern "C" {
       /* unit specific in PSI section */
       for (unit=0; unit<PSIO_MAXUNIT; ++unit) {
         sprintf(ip_token, ":PSI:FILES:FILE%u:%s", unit, kwd);
-        errcod = ip_data(ip_token, "%s", name, 0);
+        errcod = ip_string(ip_token, &name, 0);
         if (errcod == IPE_OK) {
           psio_obj->filecfg_kwd("PSI", kwd, unit, name);
         }
@@ -104,7 +103,7 @@ extern "C" {
 
       /* in PSI section */
       sprintf(ip_token, ":PSI:FILES:DEFAULT:%s", kwd);
-      errcod = ip_data(ip_token, "%s", name, 0);
+      errcod = ip_string(ip_token, &name, 0);
       if (errcod == IPE_OK) {
         psio_obj->filecfg_kwd("PSI", kwd, -1, name);
       }
@@ -112,7 +111,7 @@ extern "C" {
       /* unit specific in DEFAULT section */
       for (unit=0; unit<PSIO_MAXUNIT; ++unit) {
         sprintf(ip_token, ":DEFAULT:FILES:FILE%u:%s", unit, kwd);
-        errcod = ip_data(ip_token, "%s", name, 0);
+        errcod = ip_string(ip_token, &name, 0);
         if (errcod == IPE_OK) {
           psio_obj->filecfg_kwd("DEFAULT", kwd, unit, name);
         }
@@ -120,7 +119,7 @@ extern "C" {
 
       /* in DEFAULT section */
       sprintf(ip_token, ":DEFAULT:FILES:DEFAULT:%s", kwd);
-      errcod = ip_data(ip_token, "%s", name, 0);
+      errcod = ip_string(ip_token, &name, 0);
       if (errcod == IPE_OK) {
         psio_obj->filecfg_kwd("DEFAULT", kwd, -1, name);
       }
@@ -131,7 +130,6 @@ extern "C" {
     }
     free(kwds);
     free(ip_token);
-    free(name);
 
     return 0;
   }
