@@ -21,6 +21,7 @@
 #include <unistd.h>
 #include <cstring>
 #include <ctime>
+#include <sstream>
 #include <libciomr/libciomr.h>
 #include <libipv1/ip_lib.h>
 #include <psifiles.h>          /* where return values are */
@@ -50,12 +51,7 @@ struct tms total_tmstime;
 
 
 int get_ndisp(void);
-/*
-  the following must stay in scope throughout the run, else the
-  environmental variables will vanish!
-*/
 
-char tmpstr_input[200], tmpstr_output[200], tmpstr_prefix[200];
 const char *ofname = NULL;
 
 void psi3_abort(void);
@@ -828,7 +824,7 @@ int parse_cmdline(int argc, char *argv[])
     }
     else if (!strcmp(arg,"-rp") || !strcmp(arg,"--randomprefix")) {
 
-      char rand_prefix[8];
+      char rand_prefix[9];
       pid_t pid;
 
       pid = getpid();
@@ -898,11 +894,12 @@ int parse_cmdline(int argc, char *argv[])
 
   /* set the environmental variables the modules will look for */
   if (ifname != NULL) {
-#if HAVE_PUTENV
-    sprintf(tmpstr_input,"PSI_INPUT=%s",ifname);
-    putenv(tmpstr_input);
-#elif HAVE_SETENV
+#if HAVE_SETENV
     setenv("PSI_INPUT",ifname,1);
+#elif HAVE_PUTENV
+    std::ostringstream oss;
+    oss << "PSI_INPUT=" << ifname;
+    putenv(strdup(oss.str().c_str()));  // memory leak
 #else
 #error "Have neither putenv nor setenv. Something must be very broken on this system."
 #endif
@@ -917,11 +914,12 @@ int parse_cmdline(int argc, char *argv[])
     return(0);
   }
   if (ofname != NULL) {
-#if HAVE_PUTENV
-    sprintf(tmpstr_output,"PSI_OUTPUT=%s",ofname);
-    putenv(tmpstr_output);
-#elif HAVE_SETENV
+#if HAVE_SETENV
     setenv("PSI_OUTPUT",ofname,1);
+#elif HAVE_PUTENV
+    std::ostringstream oss;
+    oss << "PSI_OUTPUT=" << ofname;
+    putenv(strdup(oss.str().c_str()));  // memory leak
 #else
 #error "Have neither putenv nor setenv. Something must be very broken on this system."
 #endif
@@ -945,11 +943,12 @@ int parse_cmdline(int argc, char *argv[])
   }
 
   if (fprefix != NULL) {
-#if HAVE_PUTENV
-    sprintf(tmpstr_prefix,"PSI_PREFIX=%s",fprefix);
-    putenv(tmpstr_prefix);
-#elif HAVE_SETENV
+#if HAVE_SETENV
     setenv("PSI_PREFIX",fprefix,1);
+#elif HAVE_PUTENV
+    std::ostringstream oss;
+    oss << "PSI_PREFIX=" << fprefix;
+    putenv(strdup(oss.str().c_str()));  // memory leak
 #else
 #error "Have neither putenv nor setenv. Something must be very broken on this system."
 #endif
