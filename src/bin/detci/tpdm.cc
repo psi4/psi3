@@ -498,7 +498,8 @@ void tpdm_block(struct stringwr **alplist, struct stringwr **betlist,
    signed char *Jbsgn, *Jasgn, *Kbsgn, *Kasgn;
    unsigned int *Jbridx, *Jaridx, *Kbridx, *Karidx;
    double C1, C2, Ib_sgn, Ia_sgn, Kb_sgn, Ka_sgn, tval;
-   int i, j, k, l, ij, kl, ijkl, oij, okl, *Jboij, *Jaoij, *Kboij, *Kaoij;
+   int i, j, k, l, ij, kl, oij, okl, *Jboij, *Jaoij, *Kboij, *Kaoij;
+   size_t ijkl;
  
   /* loop over Ia in Ia_list */
   if (Ia_list == Ja_list) {

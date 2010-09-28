@@ -15,7 +15,7 @@
 namespace psi { namespace detci {
 
 /* DEFINES */
-#define MAX_EL 30
+#define MAX_EL 300
 #define MIN0(a,b) (((a)<(b)) ? (a) : (b))
 #define MAX0(a,b) (((a)>(b)) ? (a) : (b))
 

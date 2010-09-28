@@ -33,10 +33,6 @@
 
 namespace psi { namespace detci {
 
-#define MAX_B_ROWS 200
-#define MIN_F_DENOM 1.0E-3
-
-
 /*** do a little test routine
 main()
 {
