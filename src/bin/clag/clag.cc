@@ -55,7 +55,7 @@ int main(int argc, char **argv)
   double **lag;                        /* the lagrangian we are finding   */
   int i,j,ij;                          /* a simple running variable       */
   int errcod;                          /* error flag for input parsing    */ 
-  int ntri, ntri2;                     /* number of one and two e ints    */  
+  size_t ntri, ntri2;                  /* number of 1e and 2e ints        */
   int nmo;                             /* number of molecular orbitals    */
   int nfzv;                            /* number of frozen virtual orbs   */
   int npop;                            /* number of populated orbitals;
@@ -443,7 +443,7 @@ double *rdtpdm(int nbf, int print_lvl, int tpdm_file)
 {
 
  double *tpdm;
- int numslots, sqnbf;   
+ size_t numslots, sqnbf;
  int *ioff_lt, i;                    /* offsets for left (or right) indices */
  struct iwlbuf TBuff;
 
