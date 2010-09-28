@@ -96,14 +96,6 @@ void get_parameters(void)
    }
 
 
-   /* default value of Ms0 depends on iopen but is modified below 
-    * depending on value of opentype
-    */
-
-   chkpt_init(PSIO_OPEN_OLD);
-   Parameters.Ms0 = !(chkpt_rd_iopen());
-   chkpt_close();
-
    /* need to figure out wheter to filter tei's */
    errcod = ip_string("DERTYPE", &(Parameters.dertype),0); 
    if(errcod == IPE_KEY_NOT_FOUND) {
@@ -290,13 +282,6 @@ void get_parameters(void)
    Parameters.sf_restrict = 0;
    Parameters.print_sigma_overlap = 0;
 
-   tval = 1;
-   if (ip_exist("MULTP",0)) {
-     errcod = ip_data("MULTP","%d",&tval,0);
-   }
-   Parameters.S = (((double) tval) - 1.0) / 2.0;
-   errcod = ip_data("S","%lf",&(Parameters.S),0);
-
    errcod = ip_data("EX_LVL","%d",&(Parameters.ex_lvl),0);
    errcod = ip_data("CC_EX_LVL","%d",&(Parameters.cc_ex_lvl),0);
    errcod = ip_data("VAL_EX_LVL","%d",&(Parameters.val_ex_lvl),0);
@@ -311,29 +296,15 @@ void get_parameters(void)
    errcod = ip_data("ENERGY_CONVERGENCE","%d",
                &(Parameters.energy_convergence),0);
 
-   /* this handles backwards compatibility for PSI2 */
-   errcod = ip_data("OPENTYPE","%s",line1,0);
-   if (errcod == IPE_OK) {
-      if (strcmp(line1, "NONE")==0) { 
-         Parameters.opentype = PARM_OPENTYPE_NONE;
-         Parameters.Ms0 = 1;
-         }
-      else if (strcmp(line1, "HIGHSPIN")==0) {
-         Parameters.opentype = PARM_OPENTYPE_HIGHSPIN;
-         Parameters.Ms0 = 0;
-         }
-      else if (strcmp(line1, "SINGLET")==0) {
-         Parameters.opentype = PARM_OPENTYPE_SINGLET;
-         Parameters.Ms0 = 1;
-         }
-      else Parameters.opentype = PARM_OPENTYPE_UNKNOWN;
-      } 
-   else { /* this handles new PSI3 keywords */
+   tval = 1;
+   if (ip_exist("MULTP",0)) {
+     errcod = ip_data("MULTP","%d",&tval,0);
+   }
+   Parameters.S = (((double) tval) - 1.0) / 2.0;
+   errcod = ip_data("S","%lf",&(Parameters.S),0);
+
+   if (ip_exist("REFERENCE", 0)) { // set defaults for opentype and Ms0
      errcod = ip_data("REFERENCE","%s",line1,0);
-     /* fprintf(outfile, "line1 = "); 
-     for (int ij = 0; ij<3; ij++) fprintf(outfile, "%1c", line1[ij]); 
-     fprintf(outfile,"\n");
-     */
      if (errcod == IPE_OK) {
        if (strcmp(line1, "RHF")==0) {
          Parameters.opentype = PARM_OPENTYPE_NONE;
@@ -360,8 +331,15 @@ void get_parameters(void)
          exit(0);
          }
        }
-     else Parameters.opentype = PARM_OPENTYPE_UNKNOWN;
-     } /* end PSI3 parsing */
+     else
+       Parameters.opentype = PARM_OPENTYPE_UNKNOWN;
+   }
+   else { // reference keyword is missing
+     Parameters.opentype = PARM_OPENTYPE_UNKNOWN;
+     chkpt_init(PSIO_OPEN_OLD);
+     Parameters.Ms0 = !(chkpt_rd_iopen());
+     chkpt_close();
+   }
 
    errcod = ip_boolean("MS0",&(Parameters.Ms0),0);
    errcod = ip_data("REF_SYM","%d",&(Parameters.ref_sym),0);
