@@ -725,7 +725,7 @@ void cleanup()
       
   fprintf(outfile,"%8ckinetic energy     = %20.12f\n",' ',ekin);
   fprintf(outfile,"%8cnuc. attr. energy  = %20.12f\n",' ',enpot);
-  fprintf(outfile,"%8celec. rep. energy  = %20.12f\n",' ',epot-enpot);
+  fprintf(outfile,"%8celec. rep. energy  = %20.12f\n",' ',epot-enpot-repnuc);
   fprintf(outfile,"%8cpotential energy   = %20.12f\n",' ',epot);
   fprintf(outfile,"%8cvirial ratio (V/T) = %20.12f\n",' ',virial);
   fprintf(outfile,"%8cwavefunction norm  = %20.12f\n",' ',ovlp);
