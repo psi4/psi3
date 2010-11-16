@@ -333,7 +333,7 @@ AC_SUBST(HAVE_DOT)
 if test ! -z "$F77"; then
   AC_F77_LIBRARY_LDFLAGS
   dnl --- This just implicitly checks that FLIBS can co-exist with the C++ linker
-  AC_CHECK_LIB(c,exit,[],[
+  AC_CHECK_LIB(c,malloc,[],[
       FLIBS=
       AC_MSG_WARN([F77 libraries don't seem to link with C++ programs])
       ],
