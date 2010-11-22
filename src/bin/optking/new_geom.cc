@@ -196,21 +196,10 @@ bool new_geom(const cartesians &carts, simples_class &simples, const salc_set &a
 
 //print_mat(&x,1,dim_carts,outfile);
 
-  // avoid sending slightly non-symmetric geometries into chkpt file
-  /*
-  j=0;
-  for (i=0;i<dim_carts;++i) {
-    if ( fabs(x[i]) < MIN_CART_OUT) {
-      x[i] = 0.0;
-      ++j;
-    }
-  }
-  if (j>0)
-    fprintf(outfile,"Setting cartesian coodinates less than %e to zero.", MIN_CART_OUT);
-    */
-
   /* Symmetry adapt the resulting geometry */
-  if (optinfo.mode == MODE_OPT_STEP)
+  if (optinfo.mode == MODE_OPT_STEP) // taking symmetric step
+    symmetrize_geom(x);
+  else if (optinfo.mode == MODE_DISP_IRREP && optinfo.irrep == 0) // making symmetric displacements
     symmetrize_geom(x);
 
   //  carts.set_coord(x); can't change calling geometry - may be reused
