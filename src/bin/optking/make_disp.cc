@@ -15,6 +15,7 @@
 #include <libqt/qt.h>
 #include <libipv1/ip_lib.h>
 #include <libpsio/psio.h>
+#include <masses.h>
 
 namespace psi { namespace optking {
 
@@ -28,11 +29,13 @@ int make_disp_irrep(const cartesians &carts, simples_class &simples, const salc_
   double *fgeom, energy, **micro_geoms, **displacements;
   double *f, *q, tval;
   char *disp_label, **disp_irrep_lbls, *salc_lbl;
+  double *Zvals;
 
   disp_label = new char[MAX_LINELENGTH];
   dim_carts = 3*carts.get_natom();
   irrep_salcs = new int[all_salcs.get_num()];
   irrep = optinfo.irrep;
+  Zvals = carts.get_Zvals();
 
   /* count number of IRREP salcs */
   nsalcs = 0;
@@ -236,18 +239,21 @@ int make_disp_irrep(const cartesians &carts, simples_class &simples, const salc_
       (char *) &(micro_geoms[0][0]), ndisps*dim_carts*sizeof(double));
 
   if(optinfo.external_energies){
+    const char *sym;
     FILE *fp_dispcart = fopen("dispcart", "w");
     // ACS (11/06) Print the displaced and reference geometry for external programs
     // Use 1 based counting, and remember that the first "displacement" is the reference itself
     fprintf(fp_dispcart,"%d\n",1);
     for(int n = 0; n < carts.get_natom(); n++){
-      fprintf(fp_dispcart,"%16.10lf %16.10lf %16.10lf\n",fgeom[3*n],fgeom[3*n+1],fgeom[3*n+2]);
+      sym = atomic_labels[(int) (Zvals[n])];
+      fprintf(fp_dispcart,"%3s %16.10lf %16.10lf %16.10lf\n",sym,fgeom[3*n],fgeom[3*n+1],fgeom[3*n+2]);
     }
 
     for(int disp = 0; disp< ndisps; disp++){
       fprintf(fp_dispcart,"%d\n",disp+2);
       for(int n = 0; n < carts.get_natom(); n++){
-        fprintf(fp_dispcart,"%16.10lf %16.10lf %16.10lf\n",micro_geoms[disp][3*n],micro_geoms[disp][3*n+1],micro_geoms[disp][3*n+2]);
+        sym = atomic_labels[(int) (Zvals[n])];
+        fprintf(fp_dispcart,"%s %16.10lf %16.10lf %16.10lf\n",sym,micro_geoms[disp][3*n],micro_geoms[disp][3*n+1],micro_geoms[disp][3*n+2]);
       }
     }
     fclose(fp_dispcart);

@@ -34,6 +34,7 @@ Formulas for finite differences
 #include <libchkpt/chkpt.h>
 #include <libqt/qt.h>
 #include <libpsio/psio.h>
+#include <masses.h>
 
 namespace psi { namespace optking {
 
@@ -410,19 +411,22 @@ int disp_freq_energy_cart(const cartesians &carts)
 
   if(optinfo.external_energies){
     int counter = 1;
+    const char *sym;
     FILE *fp_dispcart = fopen("dispcart", "w");
     // ACS (11/06) Print the displaced and reference geometry for external programs
     // Use 1 based counting, and remember that the first "displacement" is the reference itself
     fprintf(fp_dispcart,"%d\n",counter++);
     for(int n = 0; n < carts.get_natom(); n++){
-      fprintf(fp_dispcart,"%16.10lf %16.10lf %16.10lf\n",coord[3*n],coord[3*n+1],coord[3*n+2]);
+      sym = atomic_labels[(int) (Zvals[n])];
+      fprintf(fp_dispcart,"%3s %16.10lf %16.10lf %16.10lf\n",sym,coord[3*n],coord[3*n+1],coord[3*n+2]);
     }
 
     for (irrep=0; irrep<nirreps; ++irrep) {
       for(int disp = 0; disp< ndisp[irrep]; disp++){
         fprintf(fp_dispcart,"%d\n",counter++);
         for(int n = 0; n < carts.get_natom(); n++){
-          fprintf(fp_dispcart,"%16.10lf %16.10lf %16.10lf\n",
+          sym = atomic_labels[(int) (Zvals[n])];
+          fprintf(fp_dispcart,"%3s %16.10lf %16.10lf %16.10lf\n", sym,
             geoms[irrep][disp][3*n],geoms[irrep][disp][3*n+1],geoms[irrep][disp][3*n+2]);
         }
       }
