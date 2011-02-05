@@ -218,6 +218,7 @@ void semicanonical_fock(int averaged) /* averaged==0, regular semicanonical; =1 
 
   C_DGEMM('n','n',moinfo.nso,moinfo.nmo,moinfo.nmo,1,&(moinfo.scf_vector[0][0]),moinfo.nmo,&(X[0][0]),
           moinfo.nmo,0,&(scf_vector_alpha[0][0]),moinfo.nmo);
+  canonicalize_column_phases(scf_vector_alpha, moinfo.nso, moinfo.nmo);
 
   free_block(X);
   
@@ -290,6 +291,7 @@ void semicanonical_fock(int averaged) /* averaged==0, regular semicanonical; =1 
   
     C_DGEMM('n','n',moinfo.nso,moinfo.nmo,moinfo.nmo,1,&(moinfo.scf_vector[0][0]),moinfo.nmo,&(X[0][0]),
           moinfo.nmo,0,&(scf_vector_beta[0][0]),moinfo.nmo);
+    canonicalize_column_phases(scf_vector_beta, moinfo.nso, moinfo.nmo);
 
     free_block(X);
   } 

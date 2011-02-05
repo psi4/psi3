@@ -169,6 +169,11 @@ void semicanonical_fock(void)
   free_block(fock_a);
 
   C_DGEMM('n','n',nso,nmo,nmo,1.0,C[0],nmo,X[0],nmo,0.0,C_a[0],nmo);
+  fprintf(outfile, "  -Alpha semicanonical MOs (in SO basis; before phase canonicalization");
+  print_mat(C_a, nso, nmo, outfile);
+  canonicalize_column_phases(C_a, nso, nmo);
+  fprintf(outfile, "  -Alpha semicanonical MOs (in SO basis; after phase canonicalization");
+  print_mat(C_a, nso, nmo, outfile);
 
   free_block(X);
   
@@ -235,6 +240,11 @@ void semicanonical_fock(void)
   free_block(fock_b);
   
   C_DGEMM('n','n',nso,nmo,nmo,1.0,C[0],nmo,X[0],nmo,0.0,C_b[0],nmo);
+  fprintf(outfile, "  -Beta semicanonical MOs (in SO basis; before phase canonicalization");
+  print_mat(C_b, nso, nmo, outfile);
+  canonicalize_column_phases(C_b, nso, nmo);
+  fprintf(outfile, "  -Beta semicanonical MOs (in SO basis; after phase canonicalization");
+  print_mat(C_b, nso, nmo, outfile);
 
   free_block(X);
   

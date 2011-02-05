@@ -126,6 +126,9 @@ double dot_prod(double *v1, double *v2);
 void cross_prod(double *v1, double *v2, double *out);
 void unit_vec(double *B, double *A, double *AB);
 
+void canonicalize_column_phases(double** A, int nrow, int ncol);
+void canonicalize_row_phases(double** A, int nrow, int ncol);
+
 #define MAX_RAS_SPACES 4
 
 #ifdef __cplusplus
