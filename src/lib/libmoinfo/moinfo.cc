@@ -259,16 +259,16 @@ void MOInfo::read_mo_spaces()
     ndocc = std::accumulate( docc.begin(), docc.end(), 0 );
     nactv = std::accumulate( actv.begin(), actv.end(), 0 );
 
-    read_mo_space(nirreps,nfocc,focc,"CORR_FOCC FROZEN_DOCC");
-    read_mo_space(nirreps,ndocc,docc,"CORR_DOCC RESTRICTED_DOCC");
-    read_mo_space(nirreps,nactv,actv,"CORR_ACTV ACTIVE ACTV");
-    read_mo_space(nirreps,nfvir,fvir,"CORR_FVIR FROZEN_UOCC");
+    read_mo_space(nirreps,nfocc,focc,"CORR_FOCC");
+    read_mo_space(nirreps,ndocc,docc,"CORR_DOCC");
+    read_mo_space(nirreps,nactv,actv,"CORR_ACTV");
+    read_mo_space(nirreps,nfvir,fvir,"CORR_FVIR");
     read_mo_space(nirreps,nactv_docc,actv_docc,"ACTIVE_DOCC");
   }
 
   free(keyword);
 
-  // Compute the number of external orbitals
+  // Compute the number of external orbitals per irrep
   nextr = 0;
   for(int h = 0; h < nirreps; ++h){
      extr[h]= mopi[h] - focc[h] - docc[h] - actv[h] - fvir[h];
@@ -336,6 +336,22 @@ void MOInfo::read_mo_spaces()
   // Set the mappings
   for(int i = 0; i < nall; ++i)
     mo_to_all[all_to_mo[i]]=i;
+
+//  /***************************************************************
+//    Build the array that connects the generalized occupied MOs
+//    to the non-frozen MOs (all).
+//  ****************************************************************/
+//  occ_to_all.resize(nocc);
+//  int index_occ = 0;
+//  index_all  = 0;
+//  for(int h = 0; h < nirreps; ++h){
+//    for(int i = 0; i < occ[h]; ++i){
+//      occ_to_all[index_occ] = index_all;
+//      index_all++;
+//      index_occ++;
+//    }
+//    index_all += extr[h];
+//  }
 }
 
 /**
