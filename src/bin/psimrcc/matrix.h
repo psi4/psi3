@@ -98,6 +98,8 @@ public:
   // Matrix operations
   void         add_numerical_factor(double factor);
   void         add_numerical_factor(double factor, int h);
+  void         scale(double factor);
+  void         scale(double factor, int h);
   void         zero_matrix();
   void         zero_matrix_block(int h);
   void         zero_two_diagonal();

@@ -51,6 +51,8 @@ public:
   void       zero_non_doubly_occupied(const char* cstr);
   void       zero_non_external(const char* cstr);
   void       zero(const char* cstr);
+  void       scale(const char* cstr,int reference,double value);
+  void       scale(std::string& str,int reference,double value);
   void       reduce_spaces(const char* out,const char* in);
   void       expand_spaces(const char* out,const char* in);
   void       append(const char* cstr);
@@ -82,6 +84,8 @@ public:
   double     get_scalar(std::string& str,int reference);
   void       set_scalar(const char* cstr,int reference,double value);
   void       set_scalar(std::string& str,int reference,double value);
+
+
 
   // These have to be improved
   MatrixMap& get_MatrixMap() {return(matrices);}

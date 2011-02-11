@@ -68,6 +68,26 @@ void CCBLAS::zero_non_external(const char* cstr)
   }
 }
 
+void CCBLAS::scale(const char* cstr,int reference,double value)
+{
+  string str(cstr);
+  scale(str,reference,value);
+}
+
+void CCBLAS::scale(string& str,int reference,double value)
+{
+  string matrix_str = add_reference(str,reference);
+  // Make sure that the element that we are retrieving is present
+  MatrixMap::iterator iter = matrices.find(matrix_str);
+  if(iter!=matrices.end()){
+    load(iter->second);
+    iter->second->scale(value);
+    return;
+  }
+  string err("\nCCBLAS::scale() couldn't find matrix " + matrix_str);
+  print_error(outfile,err.c_str(),__FILE__,__LINE__);
+}
+
 void CCBLAS::reduce_spaces(const char* out,const char* in)
 {
   string  in_str(in);

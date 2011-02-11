@@ -107,6 +107,21 @@ void CCMatrix::add_numerical_factor(double factor, int h)
   }
 }
 
+void CCMatrix::scale(double factor)
+{
+  for(int h=0;h<nirreps;h++)
+    scale(factor,h);
+}
+
+void CCMatrix::scale(double factor, int h)
+{
+  if(block_sizepi[h]>0){
+    double* matrix_block = &matrix[h][0][0];
+    for(size_t i=0;i!=block_sizepi[h];++i)
+      matrix_block[i] *= factor;
+  }
+}
+
 void CCMatrix::zero_matrix()
 {
   for(int h=0;h<nirreps;h++)
