@@ -16,7 +16,7 @@
 namespace psi { namespace ccsort {
 
 void idx_permute_multipass(dpdfile4 *File, int this_bucket,
-			   int **bucket_map, int **bucket_offset,
+			   long int **bucket_map, long int **bucket_offset,
 			   int p, int q, int r, int s,
 			   int perm_pr, int perm_qs, int perm_prqs,
 			   double value, FILE *outfile);
