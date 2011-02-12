@@ -12,8 +12,8 @@ namespace psi {
 
 void idx_error(const char *message, int p, int q, int r, int s, int pq, int rs,
 	       int pq_sym, int rs_sym, FILE *outfile);
-void idx_permute_presort(dpdfile4 *File, int this_bucket, int **bucket_map, 
-			 int **bucket_offset, int p, int q, int r, int s, 
+void idx_permute_presort(dpdfile4 *File, int this_bucket, long int **bucket_map,
+			 long int **bucket_offset, int p, int q, int r, int s,
 			 double value, FILE *outfile)
 {
   int p_sym, q_sym, r_sym, s_sym;
@@ -21,7 +21,7 @@ void idx_permute_presort(dpdfile4 *File, int this_bucket, int **bucket_map,
   int pq, rs, rq, ps, qp, sr, qr, sp;
   int perm_pq, perm_rs;
   dpdparams4 *Params;
-  int offset;
+  long int offset;
 
   Params = File->params;
   perm_pq = Params->perm_pq;
