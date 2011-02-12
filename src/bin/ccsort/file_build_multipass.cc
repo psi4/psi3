@@ -22,14 +22,14 @@ void idx_permute_multipass(dpdfile4 *File, int this_bucket,
 			   double value, FILE *outfile);
 
 int file_build_multipass(dpdfile4 *File, int inputfile, double tolerance,
-			 int perm_pr, int perm_qs, int perm_prqs, int keep)
+                         int perm_pr, int perm_qs, int perm_prqs, int keep)
 {
   struct iwlbuf InBuf;
   int lastbuf;
   long int memoryb, memoryd, core_left, row_length;
   int h, nirreps, n, row, nump, numq, nbuckets;
-  int **bucket_map, **bucket_offset, **bucket_rowdim;
-  int **bucket_size;
+  long int **bucket_map, **bucket_offset, **bucket_rowdim;
+  long int **bucket_size;
   Value *valptr;
   Label *lblptr;
   int idx, p, q, r, s;
@@ -47,15 +47,15 @@ int file_build_multipass(dpdfile4 *File, int inputfile, double tolerance,
     nump += File->params->ppi[h];
     numq += File->params->qpi[h];
   }
-  bucket_map = init_int_matrix(nump,numq);
+  bucket_map = init_longint_matrix(nump,numq);
 
   /* Room for one bucket to begin with */
-  bucket_offset = (int **) malloc(sizeof(int *));
-  bucket_offset[0] = init_int_array(nirreps);
-  bucket_rowdim = (int **) malloc(sizeof(int *));
-  bucket_rowdim[0] = init_int_array(nirreps);
-  bucket_size = (int **) malloc(sizeof(int *));
-  bucket_size[0] = init_int_array(nirreps);
+  bucket_offset = (long int **) malloc(sizeof(long int *));
+  bucket_offset[0] = init_longint_array(nirreps);
+  bucket_rowdim = (long int **) malloc(sizeof(long int *));
+  bucket_rowdim[0] = init_longint_array(nirreps);
+  bucket_size = (long int **) malloc(sizeof(long int *));
+  bucket_size[0] = init_longint_array(nirreps);
     
   /* Figure out how many passes we need and where each p,q goes */
   for(h=0,core_left=memoryd,nbuckets=1; h < nirreps; h++) {
@@ -74,19 +74,19 @@ int file_build_multipass(dpdfile4 *File, int inputfile, double tolerance,
 	core_left = memoryd - row_length;
 
 	/* Make room for another bucket */
-	bucket_offset = (int **) realloc((void *) bucket_offset,
-					 nbuckets * sizeof(int *));
-	bucket_offset[nbuckets-1] = init_int_array(nirreps);
+	bucket_offset = (long int **) realloc((void *) bucket_offset,
+					 nbuckets * sizeof(long int *));
+	bucket_offset[nbuckets-1] = init_longint_array(nirreps);
 	bucket_offset[nbuckets-1][h] = row;
 
-	bucket_rowdim = (int **) realloc((void *) bucket_rowdim,
-					 nbuckets * sizeof(int *));
-	bucket_rowdim[nbuckets-1] = init_int_array(nirreps);
+	bucket_rowdim = (long int **) realloc((void *) bucket_rowdim,
+					 nbuckets * sizeof(long int *));
+	bucket_rowdim[nbuckets-1] = init_longint_array(nirreps);
 	bucket_rowdim[nbuckets-1][h] = 1;
 
-	bucket_size = (int **) realloc((void *) bucket_size,
-					    nbuckets * sizeof(int *));
-	bucket_size[nbuckets-1] = init_int_array(nirreps);
+	bucket_size = (long int **) realloc((void *) bucket_size,
+					    nbuckets * sizeof(long int *));
+	bucket_size[nbuckets-1] = init_longint_array(nirreps);
 	bucket_size[nbuckets-1][h] = row_length;
       }
 
@@ -162,7 +162,7 @@ int file_build_multipass(dpdfile4 *File, int inputfile, double tolerance,
   psio_open(inputfile, PSIO_OPEN_OLD);
   psio_close(inputfile, keep);
 
-  free_int_matrix(bucket_map);
+  free_longint_matrix(bucket_map);
 
   for(n=0; n < nbuckets; n++) {
     free(bucket_offset[n]);
