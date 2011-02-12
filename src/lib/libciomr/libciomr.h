@@ -88,12 +88,15 @@ void zero_arr(double *a, int size) ;
 void zero_mat(double **a, int rows, int cols) ;
 
 /* Functions in int_array.c */
-int * init_int_array(int size) ;
-void zero_int_array(int *a, int size);
+int * init_int_array(size_t size) ;
+void zero_int_array(int *a, size_t size);
 int **init_int_matrix(int rows, int cols);
 void free_int_matrix(int **array);
 void zero_int_matrix(int **array, int rows, int cols);
 void print_int_mat(int **a, int m, int n, FILE *out);
+long int * init_longint_array(size_t size) ;
+long int **init_longint_matrix(int rows, int cols);
+void free_longint_matrix(long int **array);
 
 /* Functions in long_int_array.c */
 long int * init_long_int_array(int size) ;

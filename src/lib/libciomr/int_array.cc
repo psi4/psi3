@@ -21,9 +21,29 @@ extern "C" {
 ** init_int_array(): Allocates memory for one-D array of ints of dimension 
 ** 'size' and returns pointer to 1st element.  Zeroes all elements.
 **
-** Just modified the init_array() routine to do int's instead.
-** This will avoid the temptation to allocate 5 integers by  
-**    p = (int *) init_array(5/2), which is bad.             
+** \param size = length of array to allocate
+**
+** Returns: pointer to new array
+**
+** C. David Sherrill
+** \ingroup CIOMR
+*/
+int * init_int_array(size_t size)
+{
+  int *array;
+
+  if ((array = (int *) malloc(sizeof(int)*size))==NULL) {
+    fprintf(stderr,"init_array:  trouble allocating memory \n");
+    fprintf(stderr,"size = %ld\n",size);
+    exit(PSI_RETURN_FAILURE);
+  }
+  memset(array,'\0',sizeof(int)*size);
+  return(array);
+}
+
+/*!
+** init_longint_array(): Allocates memory for one-D array of long ints of dimension
+** 'size' and returns pointer to 1st element.  Zeroes all elements.
 **
 ** \param size = length of array to allocate
 **
@@ -32,16 +52,16 @@ extern "C" {
 ** C. David Sherrill
 ** \ingroup CIOMR
 */
-int * init_int_array(int size)
+long int * init_longint_array(size_t size)
 {
-  int *array;
+  long int *array;
 
-  if ((array = (int *) malloc(sizeof(int)*size))==NULL) {
+  if ((array = (long int *) malloc(sizeof(long int)*size))==NULL) {
     fprintf(stderr,"init_array:  trouble allocating memory \n");
-    fprintf(stderr,"size = %d\n",size);
+    fprintf(stderr,"size = %ld\n",size);
     exit(PSI_RETURN_FAILURE);
   }
-  memset(array,'\0',sizeof(int)*size);
+  memset(array,'\0',sizeof(long int)*size);
   return(array);
 }
 
@@ -57,7 +77,7 @@ int * init_int_array(int size)
 **
 ** \ingroup CIOMR
 */
-void zero_int_array(int *a, int size)
+void zero_int_array(int *a, size_t size)
 {
    memset(a,'\0',sizeof(int)*size);
 }
@@ -100,6 +120,43 @@ int **init_int_matrix(int rows, int cols)
    return array;
 }
 
+/*!
+** init_longint_matrix():
+** Function initializes (allocates and clears) a matrix of long integers with
+** dimensions 'rows' by 'cols' and returns a pointer to it (ptr to first
+** row ptr). The matrix layout is blocked, i.e. like produced by block_matrix()
+**
+** \param rows = number of rows
+** \param cols = number of columns
+**
+** Returns: pointer to first row of newly-allocated long integer block matrix
+**
+** \ingroup CIOMR
+*/
+long int **init_longint_matrix(int rows, int cols)
+{
+   long int **array=NULL;
+   int i;
+
+   if ((array = (long int **) malloc(sizeof(long int *)*rows))==NULL) {
+     fprintf(stderr,"init_longint_matrix: trouble allocating memory \n");
+     fprintf(stderr,"rows = %d\n", rows);
+     exit(PSI_RETURN_FAILURE);
+   }
+
+   if ((array[0] = (long int *) malloc (sizeof(long int)*cols*rows))==NULL) {
+     fprintf(stderr,"init_longint_matrix: trouble allocating memory \n");
+     fprintf(stderr,"rows = %d, cols = %d", rows, cols);
+     exit(PSI_RETURN_FAILURE) ;
+   }
+   for (i=1; i<rows; i++) {
+     array[i] = array[i-1] + cols;
+   }
+   memset(array[0], '\0', sizeof(long int)*cols*rows);
+
+   return array;
+}
+
 
 /*!
 ** free_int_matrix():
@@ -115,6 +172,19 @@ void free_int_matrix(int **array)
   free(array);
 }
 
+/*!
+** free_longint_matrix():
+** Free a matrix of long integers.  Pass a pointer to the matrix.
+**
+** \param array = pointer to long integer matrix
+**
+** \ingroup CIOMR
+*/
+void free_longint_matrix(long int **array)
+{
+  free(array[0]);
+  free(array);
+}
 
 /*!
 ** zero_int_matrix():
