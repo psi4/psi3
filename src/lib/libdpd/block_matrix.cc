@@ -111,9 +111,7 @@ double **dpd_block_matrix(int n, int m)
     }
   }
 
-  /*  memset((void *) B, 0, m*n*sizeof(double)); */
-  //bzero(B, m*n*sizeof(double));
-  memset(B, '\0', m*n*sizeof(double));
+  memset(B, '\0', size*sizeof(double));
 
   for (i = 0; i < n; i++) A[i] = &(B[i*m]);
 
