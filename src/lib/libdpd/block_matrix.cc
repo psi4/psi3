@@ -115,7 +115,7 @@ double **dpd_block_matrix(int n, int m)
   for (size_t row = 0, row_offset = 0; row < n; ++row, row_offset+=m) A[row] = &(B[row_offset]);
 
   /* Increment the global memory counter */
-  dpd_main.memused += n*m;
+  dpd_main.memused += size;
 
 #ifdef DPD_TIMER
   timer_off("block_mat");
