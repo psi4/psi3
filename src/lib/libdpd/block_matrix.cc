@@ -39,7 +39,6 @@ extern "C" {
 	
 double **dpd_block_matrix(int n, int m)
 {
-  int i;
   double **A, *B;
   long int size;  /* rows * cols */
 
@@ -113,7 +112,7 @@ double **dpd_block_matrix(int n, int m)
 
   memset(B, '\0', size*sizeof(double));
 
-  for (i = 0; i < n; i++) A[i] = &(B[i*m]);
+  for (size_t row = 0, row_offset = 0; row < n; ++row, row_offset+=m) A[row] = &(B[row_offset]);
 
   /* Increment the global memory counter */
   dpd_main.memused += n*m;
