@@ -4,6 +4,8 @@
  *  A multireference coupled cluster code
  ***************************************************************************/
 #include <libmoinfo/libmoinfo.h>
+#include <liboptions/liboptions.h>
+
 #include "mrcc.h"
 #include "matrix.h"
 #include "blas.h"
@@ -135,7 +137,7 @@ void CCMRCC::build_F_mi_intermediates()
   blas->append("F_mi[o][o]{c} += 1/2 fock[o][v]{c} 2@2 t1[o][v]{c}");
 
   blas->append("F_mi[o][o]{c} += #12# ([oo]:[ov]) 2@1 t1[ov]{c}");
-  blas->append("F_mi[o][o]{c} += #12# ([oo]|[ov]) 2@1 t1[ov]{c} ");
+  blas->append("F_mi[o][o]{c} += #12# ([oo]|[ov]) 2@1 t1[ov]{c}");
 
   blas->append("F_mi[o][o]{c} += 1/2  <[o]:[ovv]> 2@2 tau2[o][ovv]{c}");
   blas->append("F_mi[o][o]{c} +=      <[o]|[ovv]> 2@2 tau2[o][OvV]{c} ");
@@ -267,6 +269,18 @@ void CCMRCC::build_F_prime_ae_intermediates()
   blas->append("F'_ae[v][v]{u}  = F_ae[v][v]{u}");
   blas->append("F'_ae[v][v]{u} += #12# -1/2 t1[o][v]{u} 1@1 F_me[o][v]{u}");
 
+  if(options_get_bool("BCH")){
+    blas->append("F'_ae[v][v]{c} += 1/4 t2[v][voo]{c} 2@2 <[v]:[voo]>");
+    blas->append("F'_ae[v][v]{c} += 1/2 t2[v][VoO]{c} 2@2 <[v]|[voo]>");
+    blas->append("F'_ae[v][v]{c} += #12# -1/2 ([ov]:[vv]) 1@1 t1[ov]{c}");
+    blas->append("F'_ae[v][v]{c} += #12# -1/2 ([ov]|[vv]) 1@1 t1[ov]{c} ");
+
+    blas->append("F'_me[o][v]{c}  = #12# ([ov]:[ov]) 2@1 t1[ov]{c}");
+    blas->append("F'_me[o][v]{c} += #12# ([ov]|[ov]) 2@1 t1[ov]{c}");
+    blas->append("F'_me[ov]{c} = #12# F'_me[o][v]{c}");
+    blas->append("F'_ae[v][v]{c} += #12# 1/2 t1[o][v]{c} 1@1 F'_me[o][v]{c}");
+  }
+
   DEBUGGING(3,
     blas->print("F'_ae[v][v]{u}"););
 
@@ -307,6 +321,18 @@ void CCMRCC::build_F_prime_mi_intermediates()
   // Add the VV Fock matrix with the diagonal terms zeroed
   blas->append("F'_mi[o][o]{u}  = F_mi[o][o]{u}");
   blas->append("F'_mi[o][o]{u} += #12# 1/2 F_me[o][v]{u} 2@2 t1[o][v]{u}");
+
+  if(options_get_bool("BCH")){
+    blas->append("F'_mi[o][o]{c} += -1/4  <[o]:[ovv]> 2@2 t2[o][ovv]{c}");
+    blas->append("F'_mi[o][o]{c} += -1/2  <[o]|[ovv]> 2@2 t2[o][OvV]{c}");
+    blas->append("F'_mi[o][o]{c} += #12# -1/2 ([oo]:[ov]) 2@1 t1[ov]{c}");
+    blas->append("F'_mi[o][o]{c} += #12# -1/2 ([oo]|[ov]) 2@1 t1[ov]{c}");
+
+    blas->append("F'_me[o][v]{c}  = #12# ([ov]:[ov]) 2@1 t1[ov]{c}");
+    blas->append("F'_me[o][v]{c} += #12# ([ov]|[ov]) 2@1 t1[ov]{c}");
+    blas->append("F'_me[ov]{c} = #12# F'_me[o][v]{c}");
+    blas->append("F'_mi[o][o]{c} += #12# -1/2 F'_me[o][v]{c} 2@2 t1[o][v]{c}");
+  }
 
   DEBUGGING(3,blas->print("F'_mi[o][o]{u}"););
 

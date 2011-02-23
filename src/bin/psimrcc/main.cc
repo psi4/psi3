@@ -110,6 +110,7 @@ void read_calculation_options()
   options_add_int("TIKHONOW_MAX",5);
   options_add_int("SMALL_CUTOFF",0);    // small_cutoff = SMALL_CUTOFF / 10000
 
+  options_add_bool("BCH",false);
   options_add_bool("DIIS_TRIPLES",false);
   options_add_bool("LOCK_SINGLET",false);
   options_add_bool("MP2_GUESS",true);
@@ -131,7 +132,7 @@ void read_calculation_options()
   options_add_bool("NOSINGLES",false);
 
   options_add_str_with_choices("PT_ENERGY","SECOND_ORDER","SECOND_ORDER SCS_SECOND_ORDER PSEUDO_SECOND_ORDER SCS_PSEUDO_SECOND_ORDER");
-  options_add_str_with_choices("CORR_WFN","CCSD","PT2 CCSD MP2-CCSD CCSD_T");
+  options_add_str_with_choices("CORR_WFN","CCSD","PT2 CCSD MP2-CCSD CCSD_T CCD-BCH");
   options_add_str_with_choices("CORR_CCSD_T","STANDARD","STANDARD PITTNER");
   options_add_str_with_choices("CORR_REFERENCE","GENERAL","RHF ROHF TCSCF MCSCF GENERAL");
   options_add_str_with_choices("CORR_ANSATZ","MK","SR MK BW APBW");

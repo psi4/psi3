@@ -403,7 +403,7 @@ double CCManyBody::diagonalize_Heff(int root,int ndets, double** Heff,double*& r
   double**    right;
   double**    H;
 
-  int lwork = 6*ndets*ndets;
+  int lwork = 6 * ndets * ndets + 100;
   allocate1(double,work,lwork);
   allocate1(double,real,ndets);
   allocate1(double,imaginary,ndets);

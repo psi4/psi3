@@ -3,6 +3,7 @@
  *  frank@ccc.uga.edu   andysim@ccc.uga.edu
  *  A multireference coupled cluster code
  ***************************************************************************/
+#include <liboptions/liboptions.h>
 
 #include "blas.h"
 #include "mrcc.h"
@@ -256,6 +257,11 @@ void CCMRCC::add_matrices()
 
   blas->add_Matrix("F_me[o][v]{u}");
   blas->add_Matrix("F_me[ov]{u}");
+
+  if(options_get_bool("BCH")){
+    blas->add_Matrix("F'_me[o][v]{u}");
+    blas->add_Matrix("F'_me[ov]{u}");
+  }
 
   blas->add_Matrix("F_ME[O][V]{o}");
   blas->add_Matrix("F_ME[OV]{o}");
