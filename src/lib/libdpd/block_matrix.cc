@@ -39,8 +39,9 @@ extern "C" {
 	
 double **dpd_block_matrix(int n, int m)
 {
+  unsigned long int i;
   double **A, *B;
-  long int size;  /* rows * cols */
+  unsigned long int size;  /* rows * cols */
 
 #ifdef DPD_TIMER
   timer_on("block_mat");
@@ -48,7 +49,7 @@ double **dpd_block_matrix(int n, int m)
 
   A = NULL;  B = NULL;
 
-  size = ((long) m) * ((long) n);
+  size = ((unsigned long) m) * ((unsigned long) n);
 
   while((dpd_main.memory - dpd_main.memused - size) < 0) {
     /* Delete cache entries until there's enough memory or no more cache */
@@ -110,9 +111,14 @@ double **dpd_block_matrix(int n, int m)
     }
   }
 
-  memset(B, '\0', size*sizeof(double));
+  /*  memset((void *) B, 0, m*n*sizeof(double)); */
+  //bzero(B, m*n*sizeof(double));
+  //memset(B, '\0', size*sizeof(double));
 
-  for (size_t row = 0, row_offset = 0; row < n; ++row, row_offset+=m) A[row] = &(B[row_offset]);
+  for (i = 0; i < n; i++) {
+    A[i] = &(B[i*m]);
+    memset(A[i], '\0', m*sizeof(double));
+  }
 
   /* Increment the global memory counter */
   dpd_main.memused += size;
@@ -126,7 +132,7 @@ double **dpd_block_matrix(int n, int m)
 
 void dpd_free_block(double **array, int n, int m)
 {
-  long size;
+  unsigned long size;
   size = ((long) m) * ((long) n);
   if(array == NULL) return;
   free(array[0]);
