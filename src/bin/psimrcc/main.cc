@@ -95,6 +95,7 @@ namespace psi{ namespace psimrcc{
 
 void read_calculation_options()
 {
+  options_add_int("BCH_LEVEL",1);
   options_add_int("CORR_CHARGE",0);
   options_add_int("DEBUG",0);
   options_add_int("DAMPING_FACTOR",0);
