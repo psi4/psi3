@@ -66,7 +66,7 @@ void CCMRCC::build_F_ae_intermediates()
   blas->append("F_ae[v][v]{c} += -1/2 t1[o][v]{c} 1@1 fock[o][v]{c}");
 
   blas->append("F_ae[v][v]{c} += #12# ([ov]:[vv]) 1@1 t1[ov]{c}");
-  blas->append("F_ae[v][v]{c} += #12# ([ov]|[vv]) 1@1 t1[ov]{c} ");
+  blas->append("F_ae[v][v]{c} += #12# ([ov]|[vv]) 1@1 t1[ov]{c}");
 
   blas->append("F_ae[v][v]{c} += -1/2 tau2[v][voo]{c} 2@2 <[v]:[voo]>");
   blas->append("F_ae[v][v]{c} += - tau2[v][VoO]{c} 2@2 <[v]|[voo]>");
@@ -79,7 +79,7 @@ void CCMRCC::build_F_ae_intermediates()
   blas->append("F_ae[v][v]{o} += -1/2 t1[o][v]{o} 1@1 fock[o][v]{o}");
 
   blas->append("F_ae[v][v]{o} += #12# ([ov]:[vv]) 1@1 t1[ov]{o}");
-  blas->append("F_ae[v][v]{o} += #12# ([ov]|[vv]) 1@1 t1[OV]{o} ");
+  blas->append("F_ae[v][v]{o} += #12# ([ov]|[vv]) 1@1 t1[OV]{o}");
 
   blas->append("F_ae[v][v]{o} += -1/2 tau2[v][voo]{o} 2@2 <[v]:[voo]>");
   blas->append("F_ae[v][v]{o} += - tau2[v][VoO]{o} 2@2 <[v]|[voo]>");
@@ -140,7 +140,7 @@ void CCMRCC::build_F_mi_intermediates()
   blas->append("F_mi[o][o]{c} += #12# ([oo]|[ov]) 2@1 t1[ov]{c}");
 
   blas->append("F_mi[o][o]{c} += 1/2  <[o]:[ovv]> 2@2 tau2[o][ovv]{c}");
-  blas->append("F_mi[o][o]{c} +=      <[o]|[ovv]> 2@2 tau2[o][OvV]{c} ");
+  blas->append("F_mi[o][o]{c} +=      <[o]|[ovv]> 2@2 tau2[o][OvV]{c}");
 
   // Open-shell
   // Add the VV Fock matrix with the diagonal terms zeroed
@@ -153,7 +153,7 @@ void CCMRCC::build_F_mi_intermediates()
   blas->append("F_mi[o][o]{o} += #12# ([oo]|[ov]) 2@1 t1[OV]{o} ");
 
   blas->append("F_mi[o][o]{o} += 1/2  <[o]:[ovv]> 2@2 tau2[o][ovv]{o}");
-  blas->append("F_mi[o][o]{o} +=      <[o]|[ovv]> 2@2 tau2[o][OvV]{o} ");
+  blas->append("F_mi[o][o]{o} +=      <[o]|[ovv]> 2@2 tau2[o][OvV]{o}");
 
   DEBUGGING(3,
     blas->print("F_mi[o][o]{u}"););
@@ -183,7 +183,7 @@ void CCMRCC::build_F_MI_intermediates()
   blas->append("F_MI[O][O]{o} += #12# ([oo]|[ov]) 2@1 t1[ov]{o} ");
 
   blas->append("F_MI[O][O]{o} += 1/2  <[o]:[ovv]> 2@2 tau2[O][OVV]{o}");
-  blas->append("F_MI[O][O]{o} +=      <[o]|[ovv]> 2@2 tau2[O][oVv]{o} ");
+  blas->append("F_MI[O][O]{o} +=      <[o]|[ovv]> 2@2 tau2[O][oVv]{o}");
 
   DEBUGGING(3,blas->print("F_MI[O][O]{o}"););
 
@@ -245,7 +245,7 @@ void CCMRCC::build_F_ME_intermediates()
   blas->append("F_ME[O][V]{o} = fock[O][V]{o}");
 
   blas->append("F_ME[O][V]{o} += #12# ([ov]:[ov]) 2@1 t1[OV]{o}");
-  blas->append("F_ME[O][V]{o} += #12# ([ov]|[ov]) 2@1 t1[ov]{o} ");
+  blas->append("F_ME[O][V]{o} += #12# ([ov]|[ov]) 2@1 t1[ov]{o}");
 
   blas->append("F_ME[OV]{o} = #12# F_ME[O][V]{o}");
 
@@ -270,15 +270,29 @@ void CCMRCC::build_F_prime_ae_intermediates()
   blas->append("F'_ae[v][v]{u} += #12# -1/2 t1[o][v]{u} 1@1 F_me[o][v]{u}");
 
   if(options_get_bool("BCH")){
+    // Third-order terms
     blas->append("F'_ae[v][v]{c} += 1/4 t2[v][voo]{c} 2@2 <[v]:[voo]>");
     blas->append("F'_ae[v][v]{c} += 1/2 t2[v][VoO]{c} 2@2 <[v]|[voo]>");
-    blas->append("F'_ae[v][v]{c} += #12# -1/2 ([ov]:[vv]) 1@1 t1[ov]{c}");
-    blas->append("F'_ae[v][v]{c} += #12# -1/2 ([ov]|[vv]) 1@1 t1[ov]{c} ");
 
+    blas->append("F'_ae[v][v]{o} += 1/4 t2[v][voo]{o} 2@2 <[v]:[voo]>");
+    blas->append("F'_ae[v][v]{o} += 1/2 t2[v][VoO]{o} 2@2 <[v]|[voo]>");
+
+    // Fourth-order terms
+    blas->append("F'_ae[v][v]{c} += #12# -1/2 ([ov]:[vv]) 1@1 t1[ov]{c}");
+    blas->append("F'_ae[v][v]{c} += #12# -1/2 ([ov]|[vv]) 1@1 t1[ov]{c}");
+
+    blas->append("F'_ae[v][v]{o} += #12# -1/2 ([ov]:[vv]) 1@1 t1[ov]{o}");
+    blas->append("F'_ae[v][v]{o} += #12# -1/2 ([ov]|[vv]) 1@1 t1[OV]{o} ");
+
+    // Sixth-order terms
     blas->append("F'_me[o][v]{c}  = #12# ([ov]:[ov]) 2@1 t1[ov]{c}");
     blas->append("F'_me[o][v]{c} += #12# ([ov]|[ov]) 2@1 t1[ov]{c}");
     blas->append("F'_me[ov]{c} = #12# F'_me[o][v]{c}");
     blas->append("F'_ae[v][v]{c} += #12# 1/2 t1[o][v]{c} 1@1 F'_me[o][v]{c}");
+
+    blas->append("F'_me[o][v]{o}  = #12# ([ov]:[ov]) 2@1 t1[ov]{o}");
+    blas->append("F'_me[o][v]{o} += #12# ([ov]|[ov]) 2@1 t1[OV]{o} ");
+    blas->append("F'_ae[v][v]{o} += #12# 1/2 t1[o][v]{o} 1@1 F'_me[o][v]{o}");
   }
 
   DEBUGGING(3,
@@ -302,6 +316,21 @@ void CCMRCC::build_F_prime_AE_intermediates()
   blas->append("F'_AE[V][V]{o}  = F_AE[V][V]{o}");
   blas->append("F'_AE[V][V]{o} += #12# -1/2 t1[O][V]{o} 1@1 F_ME[O][V]{o}");
 
+  if(options_get_bool("BCH")){
+    // Third-order terms
+    blas->append("F'_AE[V][V]{o} += 1/4 t2[V][VOO]{o} 2@2 <[v]:[voo]>");
+    blas->append("F'_AE[V][V]{o} += 1/2 t2[V][vOo]{o} 2@2 <[v]|[voo]>");
+
+    // Fourth-order terms
+    blas->append("F'_AE[V][V]{o} += #12# -1/2 ([ov]:[vv]) 1@1 t1[OV]{o}");
+    blas->append("F'_AE[V][V]{o} += #12# -1/2 ([ov]|[vv]) 1@1 t1[ov]{o}");
+
+    // Sixth-order terms
+    blas->append("F'_ME[O][V]{o}  = #12# ([ov]:[ov]) 2@1 t1[OV]{o}");
+    blas->append("F'_ME[O][V]{o} += #12# ([ov]|[ov]) 2@1 t1[ov]{o}");
+    blas->append("F'_AE[V][V]{o} += #12# 1/2 t1[O][V]{o} 1@1 F'_ME[O][V]{o}");
+  }
+
   DEBUGGING(3,blas->print("F'_AE[V][V]{o}"););
   
   DEBUGGING(1,
@@ -323,15 +352,28 @@ void CCMRCC::build_F_prime_mi_intermediates()
   blas->append("F'_mi[o][o]{u} += #12# 1/2 F_me[o][v]{u} 2@2 t1[o][v]{u}");
 
   if(options_get_bool("BCH")){
+    // Third-order terms
     blas->append("F'_mi[o][o]{c} += -1/4  <[o]:[ovv]> 2@2 t2[o][ovv]{c}");
     blas->append("F'_mi[o][o]{c} += -1/2  <[o]|[ovv]> 2@2 t2[o][OvV]{c}");
+
+    blas->append("F'_mi[o][o]{o} += -1/4  <[o]:[ovv]> 2@2 t2[o][ovv]{o}");
+    blas->append("F'_mi[o][o]{o} += -1/2  <[o]|[ovv]> 2@2 t2[o][OvV]{o}");
+
+    // Fourth-order terms
     blas->append("F'_mi[o][o]{c} += #12# -1/2 ([oo]:[ov]) 2@1 t1[ov]{c}");
     blas->append("F'_mi[o][o]{c} += #12# -1/2 ([oo]|[ov]) 2@1 t1[ov]{c}");
 
+    blas->append("F'_mi[o][o]{o} += #12# -1/2 ([oo]:[ov]) 2@1 t1[ov]{o}");
+    blas->append("F'_mi[o][o]{o} += #12# -1/2 ([oo]|[ov]) 2@1 t1[OV]{o} ");
+
+    // Sixth-order terms
     blas->append("F'_me[o][v]{c}  = #12# ([ov]:[ov]) 2@1 t1[ov]{c}");
     blas->append("F'_me[o][v]{c} += #12# ([ov]|[ov]) 2@1 t1[ov]{c}");
-    blas->append("F'_me[ov]{c} = #12# F'_me[o][v]{c}");
     blas->append("F'_mi[o][o]{c} += #12# -1/2 F'_me[o][v]{c} 2@2 t1[o][v]{c}");
+
+    blas->append("F'_me[o][v]{o}  = #12# ([ov]:[ov]) 2@1 t1[ov]{o}");
+    blas->append("F'_me[o][v]{o} += #12# ([ov]|[ov]) 2@1 t1[OV]{o} ");
+    blas->append("F'_mi[o][o]{o} += #12# -1/2 F'_me[o][v]{o} 2@2 t1[o][v]{o}");
   }
 
   DEBUGGING(3,blas->print("F'_mi[o][o]{u}"););
@@ -354,6 +396,19 @@ void CCMRCC::build_F_prime_MI_intermediates()
   blas->append("F'_MI[O][O]{o}  = F_MI[O][O]{o}");
   blas->append("F'_MI[O][O]{o} += #12# 1/2 F_ME[O][V]{o} 2@2 t1[O][V]{o}");
 
+  if(options_get_bool("BCH")){
+    // Third-order terms
+    blas->append("F'_MI[O][O]{o} += -1/4  <[o]:[ovv]> 2@2 t2[O][OVV]{o}");
+    blas->append("F'_MI[O][O]{o} += -1/2  <[o]|[ovv]> 2@2 t2[O][oVv]{o}");
+
+    // Fourth-order terms
+    blas->append("F'_MI[O][O]{o} += #12# -1/2 ([oo]:[ov]) 2@1 t1[OV]{o}");
+    blas->append("F'_MI[O][O]{o} += #12# -1/2 ([oo]|[ov]) 2@1 t1[ov]{o}");
+
+    blas->append("F'_ME[O][V]{o}  = #12# ([ov]:[ov]) 2@1 t1[OV]{o}");
+    blas->append("F'_ME[O][V]{o} += #12# ([ov]|[ov]) 2@1 t1[ov]{o}");
+    blas->append("F'_MI[O][O]{o} += #12# -1/2 F'_ME[O][V]{o} 2@2 t1[O][V]{o}");
+  }
 
   DEBUGGING(3,blas->print("F'_MI[O][O]{o}"););
 

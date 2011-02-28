@@ -260,7 +260,7 @@ void CCMRCC::add_matrices()
 
   if(options_get_bool("BCH")){
     blas->add_Matrix("F'_me[o][v]{u}");
-    blas->add_Matrix("F'_me[ov]{u}");
+    blas->add_Matrix("F'_ME[O][V]{o}");
   }
 
   blas->add_Matrix("F_ME[O][V]{o}");
