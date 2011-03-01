@@ -17,8 +17,8 @@ psi: (
 
 mrcc:(
   corr_wfn         = mp2-ccsd
-  restricted_docc  = (2 0 1 1)
-  active           = (2 0 0 0)
+  corr_docc        = (2 0 1 1)
+  corr_actv        = (2 0 0 0)
   active_docc      = (1 0 0 0)
   mp2_ccsd_method  = Ia
   maxdiis          = 6
