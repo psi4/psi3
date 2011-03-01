@@ -14,4 +14,5 @@ psi: (
   docc         = (10 1)
   socc         = ( 0 2)
   convergence  = 13
+  maxiter      = 500
 )
