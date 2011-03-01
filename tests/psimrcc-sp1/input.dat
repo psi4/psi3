@@ -22,11 +22,11 @@ psi: (
 )
 
 mrcc:(
-  corr_wfn         = ccsd                   % Do Mk-MRCCSD 
-  frozen_docc      = (1 0 0 0 0 1 0 0)      % Frozen MOs
-  restricted_docc  = (2 0 0 0 0 1 1 1)      % Doubly occupied MOs
-  active           = (0 0 1 1 0 0 0 0)      % Active MOs
-  frozen_uocc      = (0 0 0 0 0 0 0 0)      % Frozen virtual MOs
-  multp            = 1                      % Select the Ms = 0 component
-  wfn_sym          = B1g                    % Select the B1g state
+  corr_wfn  = ccsd                   % Do Mk-MRCCSD 
+  corr_focc = (1 0 0 0 0 1 0 0)      % Frozen MOs
+  corr_docc = (2 0 0 0 0 1 1 1)      % Doubly occupied MOs
+  corr_actv = (0 0 1 1 0 0 0 0)      % Active MOs
+  corr_fvir = (0 0 0 0 0 0 0 0)      % Frozen virtual MOs
+  multp     = 1                      % Select the Ms = 0 component
+  wfn_sym   = B1g                    % Select the B1g state
 )
