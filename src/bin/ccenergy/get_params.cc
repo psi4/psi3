@@ -278,7 +278,8 @@ void get_params()
   if(errcod != IPE_OK) params.pccsd_alpha = 1.0;
   errcod = ip_data("PCCSD_BETA","%lf",&(params.pccsd_beta),0);
   if(errcod != IPE_OK) params.pccsd_beta = 1.0;
-
+  errcod = ip_data("PCCSD_GAMMA","%lf",&(params.pccsd_gamma),0);
+  if(errcod != IPE_OK) params.pccsd_gamma = 1.0;
   
   fprintf(outfile, "\n\tInput parameters:\n");
   fprintf(outfile, "\t-----------------\n");
@@ -332,10 +333,11 @@ void get_params()
   fprintf(outfile, "\tMP2_SCALE_SS    =     %.6f\n",params.scsmp2_scale_ss);
   fprintf(outfile, "\tCC_SCALE_OS     =     %.6f\n",params.scscc_scale_os);
   fprintf(outfile, "\tCC_SCALE_SS     =     %.6f\n",params.scscc_scale_ss);
-  if(params.pccsd_alpha != 1 || params.pccsd_beta != 1)
+  if(params.pccsd_alpha != 1 || params.pccsd_beta != 1 || params.pccsd_gamma != 1)
   {
     fprintf(outfile, "\tPCCSD_ALPHA     =     %.6f\n",params.pccsd_alpha);
     fprintf(outfile, "\tPCCSD_BETA      =     %.6f\n",params.pccsd_beta);
+    fprintf(outfile, "\tPCCSD_Gamma     =     %.6f\n",params.pccsd_gamma);
   }
 
   fprintf(outfile, "\n");

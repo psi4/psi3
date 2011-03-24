@@ -30,10 +30,11 @@ void t2_delta_pCCSD_build(void)
   dpdbuf4 Z, newtIJAB, newtijab, newtIjAb;
   dpdfile2 tIA, tia, FMIt, FAEt;
 
+
   if (params.pccsd_alpha != 1.0)
   {
     // A = -1/2 * v^{kl}_{cd}*  t2^{cd}_{jl} * t2^{ab}_{ik} + the antisymmetry permutation term  = F^k_j t2^{ab}_{ik} (refer to Nooijen pCCSD JCP paper)
-    // addition A term: (params.pccsd_alpha - 1.0)/2.0 * A
+    // additional A term: (params.pccsd_alpha - 1.0)/2.0 * A
     // the first contraction is obtained from modifying Fmi.cc by removing irrelevant terms (FMIt is reset);
     // the second contraction is obtained from modifying FmitT2.cc
 
@@ -48,7 +49,7 @@ void t2_delta_pCCSD_build(void)
 
     dpd_buf4_init(&Z, CC_TMP0, 0, 0, 5, 0, 5, 0, "Z(Ij,Ab)");
     dpd_buf4_init(&tIjAb, CC_TAMPS, 0, 0, 5, 0, 5, 0, "tIjAb");
-    dpd_file2_init(&FMIt, CC_OEI, 0, 0, 0, "FMIt");
+    //dpd_file2_init(&FMIt, CC_OEI, 0, 0, 0, "FMIt");
     dpd_contract244(&FMIt, &tIjAb, &Z, 0, 0, 0, A_coeff, 0.0); // for easy implementation, we put A_coeff here;
     dpd_file2_close(&FMIt);
     dpd_buf4_close(&tIjAb);
@@ -60,7 +61,7 @@ void t2_delta_pCCSD_build(void)
 
 
     // B = 0.25 * v^{kl}_{cd} * t2^{cd}_{ij} t2^{ab}_{kl}  = 0.25 * w^{kl}_{ij} * t2^{ab}_{kl} (for definition of B, refer to Nooijen pCCSD JCP paper)
-    // the addition B term from pCCSD is: (pccsd_alpha -1) * B
+    // the additional B term from pCCSD is: (pccsd_alpha -1) * B
     // the first contraction is obtained from modifying Wmnij.cc by removing irrelevant terms (WMnIj is reset);
     // the second step contraction is obtained from modification of WmnijT2.cc
 
@@ -89,7 +90,7 @@ void t2_delta_pCCSD_build(void)
   {
 
     // C = -0.5 * v^{kl}_{cd} * t2^{bd}_{kl} t2^{ac}_{ij} + ..  = -0.5 * w^b_c * t2^{ac}_{ij}
-    // the addition C term from pCCSD is: (pccsd_beta -1) * C
+    // the additional C term from pCCSD is: (pccsd_beta -1) * C
     // the first contraction is obtained from modifying Fae.cc by removing irrelevant terms (FAEt is reset);
     // the second step contraction is obtained from modification of FaetT2.cc
 
@@ -141,6 +142,8 @@ void t2_delta_pCCSD_build(void)
 
         /*** ABBA ***/
 
+
+        //weird
         dpd_buf4_init(&W, CC_HBAR, 0, 10, 10, 10, 10, 0, "WMbeJ");
         dpd_buf4_init(&t2, CC_TAMPS, 0, 10, 10, 10, 10, 0, "tIbjA");
         dpd_buf4_init(&D, CC_DINTS, 0, 10, 10, 10, 10, 0, "D <ij|ab> (ib,ja)");
