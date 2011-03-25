@@ -338,7 +338,7 @@ void Chkpt::wt_beta_scf_irrep(double **scf, int irrep)
 	free(mopi);
 }
 
-double **Chkpt::set_mo_phases(double **coeff, int nrows, int ncols)
+void Chkpt::set_mo_phases(double **coeff, int nrows, int ncols)
 {
 	int col, row;
 
@@ -670,9 +670,9 @@ extern "C" {
 **
 ** returns: none
 */
-	double **chkpt_set_mo_phases(double **coeff, int nrows, int ncols)
+	void chkpt_set_mo_phases(double **coeff, int nrows, int ncols)
 	{
-		return _default_chkpt_lib_->set_mo_phases(coeff, nrows, ncols);
+		_default_chkpt_lib_->set_mo_phases(coeff, nrows, ncols);
 	}
 
 /*!

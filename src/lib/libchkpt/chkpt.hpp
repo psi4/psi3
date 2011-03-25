@@ -238,7 +238,7 @@ namespace psi {
 		void wt_scf_irrep(double**, int);
 		void wt_alpha_scf_irrep(double**, int);
 		void wt_beta_scf_irrep(double**, int);
-		double** set_mo_phases(double**, int, int);
+		void set_mo_phases(double**, int, int);
 		
 		int **rd_shell_transm(const char *key2 = "");
 		void wt_shell_transm(int **, const char *key2 = "");

@@ -135,7 +135,7 @@ extern "C" {
   }
 
   int psio_ipv1_config() {
-      return psiopp_ipv1_config(_default_psio_lib_);
+      return ::psiopp_ipv1_config(_default_psio_lib_);
   }
 /*
   int psio_ipv1_config() {

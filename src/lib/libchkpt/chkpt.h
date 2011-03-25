@@ -220,7 +220,7 @@ void chkpt_wt_scf_irrep(double **, int);
 void chkpt_wt_alpha_scf_irrep(double **, int);
 void chkpt_wt_beta_scf_irrep(double **, int);
 
-double **chkpt_set_mo_phases(double **coeff, int nrows, int ncols);
+void chkpt_set_mo_phases(double **coeff, int nrows, int ncols);
 
 double **chkpt_rd_lagr(void);
 double **chkpt_rd_alpha_lagr(void);

@@ -1163,7 +1163,7 @@ int mark_dhrr_parents(int n, class *allnodes, int rent)
 
   /* handle case where it's in the parent list already */
   for(i=allnodes[n].num_parents-1; i>=allnodes[n].parents_counter; i--)
-    if(rent==allnodes[n].parents[i]) return;
+    if(rent==allnodes[n].parents[i]) return 0;
 
   /* if the parent rent is not in the list - add it to the list! */
   i = --allnodes[n].parents_counter;
@@ -1179,7 +1179,7 @@ int mark_dhrr_parents(int n, class *allnodes, int rent)
       if(allnodes[n].children[i]>0)
 	mark_dhrr_parents(allnodes[n].children[i], allnodes, n);
   }
-  return;
+  return 0;
 }
 
 
@@ -1192,7 +1192,7 @@ int mark_vrr_parents(int n, class *allnodes, int rent)
 
   /* handle case where it's in there already */
   for(i=allnodes[n].num_parents-1; i>=allnodes[n].parents_counter; i--)
-    if(rent==allnodes[n].parents[i]) return;
+    if(rent==allnodes[n].parents[i]) return 0;
 
 
   /* if the parent rent is not in the list - add it to the list! */
@@ -1210,7 +1210,7 @@ int mark_vrr_parents(int n, class *allnodes, int rent)
 	mark_vrr_parents(allnodes[n].children[i], allnodes, n);
 
   }
-  return;
+  return 0;
 }
 
 
@@ -1221,7 +1221,7 @@ int mark_parents(int n, class *allnodes, int rent)
 
   /* handle case where it's in there already */
   for(i=allnodes[n].num_parents-1; i>=allnodes[n].parents_counter; i--)
-    if(rent==allnodes[n].parents[i]) return;
+    if(rent==allnodes[n].parents[i]) return 0;
 
 
   /* if the parent rent is not in the list - add it to the list! */
@@ -1239,7 +1239,7 @@ int mark_parents(int n, class *allnodes, int rent)
 	mark_vrr_parents(allnodes[n].children[i], allnodes, n);
 
   }
-  return;
+  return 0;
 }
 
 
