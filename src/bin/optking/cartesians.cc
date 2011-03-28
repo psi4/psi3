@@ -61,6 +61,7 @@ cartesians::cartesians() {
     || (optinfo.mode == MODE_DISP_USER)
     ||(optinfo.mode == MODE_DISP_FREQ_GRAD_CART) || (optinfo.mode == MODE_FREQ_GRAD_CART)
     ||(optinfo.mode == MODE_DISP_FREQ_ENERGY_CART) || (optinfo.mode == MODE_FREQ_ENERGY_CART)
+    ||(optinfo.mode == MODE_DISP_GRAD_ENERGY_CART) || (optinfo.mode == MODE_GRAD_ENERGY_CART)
     )
 
   //ACS (11/06) Allow external programs to be used

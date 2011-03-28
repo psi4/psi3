@@ -83,8 +83,16 @@ void get_optinfo(void) {
 
   optinfo.redundant = 1; optinfo.delocalize = 0;
 
-  if ( optinfo.numerical_dertype == 1 )
-    { optinfo.redundant = 0; optinfo.delocalize =1; }
+  if ( optinfo.numerical_dertype == 1 ) {
+    if (optinfo.mode == MODE_DISP_GRAD_ENERGY_CART || optinfo.mode == MODE_GRAD_ENERGY_CART) {
+      optinfo.redundant = 1;
+      optinfo.delocalize =0;
+    }
+    else {
+      optinfo.redundant = 0;
+      optinfo.delocalize =1;
+    }
+  }
 
   /// if user selects fc, assume the ones present are redundant or OK anyway
   if ((optinfo.mode == MODE_DISP_IRREP) || (optinfo.mode == MODE_DISP_NOSYMM) ) {
@@ -187,6 +195,9 @@ void get_optinfo(void) {
   ip_data("MAX_CONSECUTIVE_LINE_SEARCHES", "%d", &i,0);
   optinfo.max_consecutive_line_searches = i;
 
+  optinfo.do_line_search = 1;
+  ip_boolean("DO_LINE_SEARCH", &(optinfo.do_line_search),0);
+
   i = 8;
   ip_data("LINE_SEARCH_MIN","%d",&i,0);
   optinfo.line_search_min = power(10.0,-1*i);
@@ -203,6 +214,11 @@ void get_optinfo(void) {
   // ACS (11/06) Are we getting our energies from outside of PSI3?
   optinfo.external_energies = 0;
   ip_boolean("EXTERNAL_ENERGIES",&(optinfo.external_energies),0);
+
+  // we may not always want to read energy.dat file in these circumstances,
+  // but lets assume it and see if anyone cares, RAK, 3-27-2011
+  if (optinfo.external_energies)
+    optinfo.energy_dat = true;
 
   optinfo.H_update_use_last = 3;
   ip_data("H_UPDATE_USE_LAST","%d",&(optinfo.H_update_use_last),0);
@@ -493,7 +509,7 @@ void get_optinfo(void) {
     fprintf(outfile,"zmat_simples:  %d\n",optinfo.zmat_simples);
     fprintf(outfile,"redundant:     %d\n",optinfo.redundant);
     fprintf(outfile,"cartesian:     %d\n",optinfo.cartesian);
-    fprintf(outfile,"searching for: %d\n", optinfo.ts ? "transition state" : "minimum");
+    fprintf(outfile,"searching for: %s\n", optinfo.ts ? "transition state" : "minimum");
 
     if (optinfo.H_update == OPTInfo::NONE)
       fprintf(outfile,"H_update:     None\n");

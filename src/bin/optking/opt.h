@@ -75,6 +75,9 @@ int disp_freq_energy_cart(const cartesians &carts);
 
 void freq_energy_cart(void);
 
+int disp_grad_energy_cart(const cartesians &carts);
+void grad_energy_cart(cartesians &carts);
+
 int test_B(const cartesians &carts, simples_class &simples, const salc_set &symm);
 
 void H_update_cart(double **H, cartesians & carts);

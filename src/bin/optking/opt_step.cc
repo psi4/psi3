@@ -88,6 +88,9 @@ int opt_step(cartesians &carts, simples_class &simples, const salc_set &symm) {
     do_line_search = true;
   }
 
+  // if user says so, NEVER do line search
+  if (!optinfo.do_line_search) do_line_search = false;
+
   // *** Bad step - step back and do line search
   if (do_line_search) {
     dq = init_array(dim);

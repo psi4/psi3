@@ -31,6 +31,8 @@ command-line      internal specifier   what it does
 --freq_energy_cart      MODE_FREQ_ENERGY_CART      use energies in chkpt to compute freqs
 --energy_dat       optinfo.energy_dat   read energy points from the file "energy.dat"
 --grad_dat         optinfo.grad_dat   read gradients from file11.dat 
+--disp_grad_energy_cart MODE_DISP_GRAD_ENERGY_CART displaces along SA cart. coordinates for forces
+--grad_energy_cart      MODE_GRAD_ENERGY_CART     use energies from cartesian displacements to compute a gradient
 */
 
 #include "globals.h"
@@ -86,6 +88,10 @@ int main(int argc, char **argv) {
         optinfo.mode = MODE_DISP_FREQ_ENERGY_CART;
         parsed++;
       }
+      else if (!strcmp(argv[i],"--disp_grad_energy_cart")) {
+        optinfo.mode = MODE_DISP_GRAD_ENERGY_CART;
+        parsed++;
+      }
       else if (!strcmp(argv[i],"--disp_irrep")) {
         optinfo.mode = MODE_DISP_IRREP;
         parsed++;
@@ -120,6 +126,10 @@ int main(int argc, char **argv) {
       }
       else if (!strcmp(argv[i],"--grad_energy")) {
         optinfo.mode = MODE_GRAD_ENERGY;
+        parsed++;
+      }
+      else if (!strcmp(argv[i],"--grad_energy_cart")) {
+        optinfo.mode = MODE_GRAD_ENERGY_CART;
         parsed++;
       }
       else if (!strcmp(argv[i],"--freq_grad_nosymm")) {
@@ -425,6 +435,14 @@ int main(int argc, char **argv) {
       exit_io();
       return i;
     }
+    if (optinfo.mode == MODE_DISP_GRAD_ENERGY_CART) {
+      fprintf(outfile,
+      "\n * Performing displacements along symmetric cartesian coordinates *\n\n");
+      i = disp_grad_energy_cart(carts);
+      free_info(simples.get_num());
+      exit_io();
+      return i;
+    }
     if (optinfo.mode == MODE_DISP_FREQ_ENERGY_CART) {
       fprintf(outfile,
       "\n * Performing displacements along symmetry adapted cartesian coordinates *\n\n");
@@ -598,6 +616,13 @@ int main(int argc, char **argv) {
     if (optinfo.mode==MODE_FREQ_GRAD_CART) {
       fprintf(outfile,"\n ** Calculating frequencies from gradients. **\n");
       freq_grad_cart(carts);
+      free_info(simples.get_num());
+      exit_io();
+      return(0);
+    }
+    if (optinfo.mode==MODE_GRAD_ENERGY_CART) {
+      fprintf(outfile,"\n ** Calculating gradients from energies. **\n");
+      grad_energy_cart(carts);
       free_info(simples.get_num());
       exit_io();
       return(0);

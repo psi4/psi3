@@ -105,6 +105,8 @@ enum Frag_switch {FRAG_A, FRAG_B};
 #define MODE_DISP_INTERFRAGMENT      (31)
 #define MODE_FREQ_GRAD_INTERFRAGMENT (32)
 #define MODE_FCONST_INIT (33)
+#define MODE_GRAD_ENERGY_CART (34)
+#define MODE_DISP_GRAD_ENERGY_CART (35)
 
 }} /* namespace psi::optking */
 

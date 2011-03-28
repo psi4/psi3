@@ -41,6 +41,7 @@ EXTERN struct OPTInfo {
   int nconstraints;
   int *constraints;
   int test_B;
+  int do_line_search;
 
 /* print options */
   int print_simples;
