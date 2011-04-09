@@ -83,6 +83,7 @@ void get_optinfo(void) {
 
   optinfo.redundant = 1; optinfo.delocalize = 0;
 
+/*
   if ( optinfo.numerical_dertype == 1 ) {
     if (optinfo.mode == MODE_DISP_GRAD_ENERGY_CART || optinfo.mode == MODE_GRAD_ENERGY_CART) {
       optinfo.redundant = 1;
@@ -93,6 +94,7 @@ void get_optinfo(void) {
       optinfo.delocalize =1;
     }
   }
+*/
 
   /// if user selects fc, assume the ones present are redundant or OK anyway
   if ((optinfo.mode == MODE_DISP_IRREP) || (optinfo.mode == MODE_DISP_NOSYMM) ) {

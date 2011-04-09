@@ -189,7 +189,6 @@ double **symm_matrix_invert(double **A, int dim, int print_det, int redundant) {
         A_inv[i][i] = 1.0/A_vals[i];
       }
       else {
-fprintf(outfile,"\ndetected redundant eval - setting inverse element to 0 \n");
         A_inv[i][i] = 0.0;
       }
     }
