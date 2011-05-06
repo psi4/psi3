@@ -19,6 +19,7 @@ struct Params {
   int cachetype;
   int ref;
   int diis;
+  int diis_nvector; // number of DIIS vectors to keep
   char *wfn;
   int print;
   int local;

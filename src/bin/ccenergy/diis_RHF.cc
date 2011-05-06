@@ -33,7 +33,7 @@ namespace psi { namespace ccenergy {
 
 void diis_RHF(int iter)
 {
-  int nvector=8;  /* Number of error vectors to keep */
+  const int nvector=params.diis_nvector;  /* Number of error vectors to keep */
   int h, nirreps;
   int row, col, word, t1_word, p, q;
   int diis_cycle;

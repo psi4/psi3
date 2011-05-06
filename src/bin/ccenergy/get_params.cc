@@ -146,6 +146,8 @@ void get_params()
 
   params.diis = 1;
   errcod = ip_boolean("DIIS", &(params.diis),0);
+  params.diis_nvector = 8;
+  errcod = ip_data("DIIS_NVECTOR", "%d", &(params.diis_nvector),0);
 
   params.t2_coupled = 0;
   errcod = ip_boolean("T2_COUPLED", &(params.t2_coupled),0);
