@@ -36,8 +36,10 @@ int **cacheprep_rhf(int level, int *cachefiles);
 int **cacheprep_uhf(int level, int *cachefiles);
 void build_A_RHF(void);
 void build_B_RHF(void);
-void invert_RPA_RHF(void);
-void trans_mu(void);
+void polar(void);
+void optrot(void);
+void roa(void);
+void transpert(const char *pert);
 
 }} // namespace psi::response
 
@@ -70,12 +72,12 @@ int main(int argc, char *argv[])
 
   if(params.ref == 0) {
 
-    /* transform mu integrals */
-    trans_mu();
     build_A_RHF();
     build_B_RHF();
-    /*    diag_RPA_RHF(); */
-    invert_RPA_RHF();
+    
+    if(!strcmp(params.prop,"POLARIZABILITY")) polar();
+    else if(!strcmp(params.prop,"ROTATION")) optrot();
+    else if(!strcmp(params.prop,"ROA")) roa();
   }
 
   dpd_close(0);
@@ -84,7 +86,7 @@ int main(int argc, char *argv[])
   exit(0);
 }
 
-extern "C" {const char *gprgid() { const char *prgid = "STABLE"; return(prgid); }}
+extern "C" {const char *gprgid() { const char *prgid = "RESPONSE"; return(prgid); }}
 
 namespace psi { namespace response {
 

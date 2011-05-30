@@ -55,6 +55,16 @@ void get_params()
     params.ref = ref;
   }
 
+  if(ip_exist("PROPERTY",0)) {
+    errcod = ip_string("PROPERTY", &(params.prop), 0);
+    if(strcmp(params.prop,"POLARIZABILITY") && strcmp(params.prop,"ROTATION")
+       && strcmp(params.prop,"ROA") && strcmp(params.prop,"ALL")) {
+      fprintf(outfile, "Invalid choice of resp. property: %s\n", params.prop);
+      exit(PSI_RETURN_FAILURE);
+    }
+  }
+  else params.prop = strdup("POLARIZABILITY");
+
   /* grab the field strength from input -- a few different units are converted to E_h */
   params.omega = 0.0; /* static polarizability by default */
   if(ip_exist("OMEGA",0)) {
@@ -84,6 +94,7 @@ void get_params()
   fprintf(outfile, "\tMemory (Mbytes) =  %5.1f\n",params.memory/1e6);
   fprintf(outfile, "\tCache Level     =    %1d\n", params.cachelev);
   fprintf(outfile, "\tPrint Level     =    %1d\n",  params.print);
+  fprintf(outfile, "\tProperty        =    %s\n",  params.prop);
   fprintf(outfile, "\tApplied field   =    %5.3f E_h\n", params.omega);
 }
 

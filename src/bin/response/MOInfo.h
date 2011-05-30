@@ -57,9 +57,10 @@ struct MOInfo {
   double **scf_alpha; /* Alpha SCF eigenvectors (UHF) */
   double **scf_beta;  /* Beta SCF eigenvectors (UHF) */
   double **usotao;    /* SO->AO transformation matrix */
-  double **MUX;       /* MO-basis x-dipole integrals (Pitzer order) */
-  double **MUY;       /* MO-basis y-dipole integrals (Pitzer order) */
-  double **MUZ;       /* MO-basis z-dipole integrals (Pitzer order) */
+  double ***MU;       /* MO-basis dipole integrals (Pitzer order) */
+  double ***L;        /* MO-basis angular momentum ints (Pitzer order) */
+  double ***P;        /* MO-basis linear momentum ints (Pitzer order) */
+  double ****Q;       /* MO-basis traceless quadrupole ints (Pitzer order) */
 };
 
 }} // namespace psi::response

@@ -115,6 +115,7 @@ void build_A_RHF(void)
     dpd_buf4_mat_irrep_wrt(&Amat, h);
     dpd_buf4_mat_irrep_close(&Amat, h);
   }
+
   dpd_buf4_close(&Amat);
 
   dpd_file2_mat_close(&fab);

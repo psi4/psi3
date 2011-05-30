@@ -11,6 +11,7 @@ struct Params {
   int cachelev;          /* cacheing level for libdpd */
   int ref;               /* reference determinant (0=RHF, 1=ROHF, 2=UHF) */
   double omega;          /* energy of applied field (a.u) for dynamic polarizabilities */
+  char *prop;            /* user-selected property */
 };
 
 }} // namespace psi::response

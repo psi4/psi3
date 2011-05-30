@@ -4,6 +4,7 @@
 */
 #include <cstdio>
 #include <cstdlib>
+#include <cmath>
 #include <libciomr/libciomr.h>
 #include <libqt/qt.h>
 #include <libdpd/dpd.h>
@@ -13,9 +14,31 @@
 #define EXTERN
 #include "globals.h"
 
+/* polar(): Compute the RHF dipole-polarizability tensor.
+
+ In build_A_RHF(), the A(ai,bj) matrix was defined as:
+
+  A(ai,bj) = delta_ij f_ab - delta_ab f_ij + 2 <ij|ab> - <ia|jb>
+
+ In build_B_RHF(), the B(ai,bj) matrix was defined as:
+
+  B(ai,bj) = 2<ij|ab> - <ij|ba>
+
+ Here we modify these in agreement with Jorgensen and Simons (1981), p.120
+
+  A(ai,bj) = 2[ delta_ij f_ab - delta_ab f_ij + 2 <ij|ab> - <ia|jb>]
+
+  and
+
+  B(ai,bj) = 2[<ij|ba> - 2<ij|ab>]
+
+*/
+
 namespace psi { namespace response {
 
-void invert_RPA_RHF(void)
+void transpert(const char *pert);
+
+void polar(void)
 {
   int h, h1, nirreps, row, col, dim;
   int Ga, Gi, i, a, ai, aa, ii;
@@ -25,8 +48,12 @@ void invert_RPA_RHF(void)
   double **C;
   double *Rx, *Ry, *Rz, *Sx, *Sy, *Sz;
   double **alpha;
+  double xnorm, ynorm, znorm;
 
   alpha = block_matrix(3,3); /* polarizability tensor */
+  transpert("Mu_X");
+  transpert("Mu_Y");
+  transpert("Mu_Z");
 
   dpd_buf4_init(&A, PSIF_MO_HESS, 0, 11, 11, 11, 11, 0, "A(AI,BJ)");
   dpd_buf4_init(&B, PSIF_MO_HESS, 0, 11, 11, 11, 11, 0, "B(AI,BJ)");
@@ -79,12 +106,12 @@ void invert_RPA_RHF(void)
 	  aa = moinfo.qt2pitzer[moinfo.qt_vir[a] + moinfo.vir_off[Ga]];
 	  for(i=0; i < moinfo.occpi[Gi]; i++,ai++) {
 	    ii = moinfo.qt2pitzer[moinfo.qt_occ[i] + moinfo.occ_off[Gi]];
-	    Rx[ai] = 2 * moinfo.MUX[aa][ii];
-	    Rx[ai+dim] = - 2 * moinfo.MUX[aa][ii];
-	    Ry[ai] = 2 * moinfo.MUY[aa][ii];
-	    Ry[ai+dim] = - 2 * moinfo.MUY[aa][ii];
-	    Rz[ai] = 2 * moinfo.MUZ[aa][ii];
-	    Rz[ai+dim] = - 2 * moinfo.MUZ[aa][ii];
+	    Rx[ai] = 2 * moinfo.MU[0][aa][ii];
+	    Rx[ai+dim] = - 2 * moinfo.MU[0][aa][ii];
+	    Ry[ai] = 2 * moinfo.MU[1][aa][ii];
+	    Ry[ai+dim] = - 2 * moinfo.MU[1][aa][ii];
+	    Rz[ai] = 2 * moinfo.MU[2][aa][ii];
+	    Rz[ai+dim] = - 2 * moinfo.MU[2][aa][ii];
 	  }
 	}
       }
@@ -96,6 +123,20 @@ void invert_RPA_RHF(void)
       C_DGEMV('n', 2*dim, 2*dim, 1, &(C[0][0]), 2*dim, &(Rx[0]), 1, 0, &(Sx[0]), 1);
       C_DGEMV('n', 2*dim, 2*dim, 1, &(C[0][0]), 2*dim, &(Ry[0]), 1, 0, &(Sy[0]), 1);
       C_DGEMV('n', 2*dim, 2*dim, 1, &(C[0][0]), 2*dim, &(Rz[0]), 1, 0, &(Sz[0]), 1);
+
+      xnorm = ynorm = znorm = 0.0;
+      for(row=0; row < 2*dim; row++) {
+       xnorm += Sx[0] * Sx[0];
+       ynorm += Sy[0] * Sy[0];
+       znorm += Sz[0] * Sz[0];
+      }
+
+      xnorm = sqrt(xnorm);
+      ynorm = sqrt(ynorm);
+      znorm = sqrt(znorm);
+      fprintf(outfile, "XNorm = %20.10f\n", xnorm);
+      fprintf(outfile, "YNorm = %20.10f\n", ynorm);
+      fprintf(outfile, "ZNorm = %20.10f\n", znorm);
 
       for(row=0; row< 2*dim; row++) {
 
