@@ -9,6 +9,8 @@
 #include <libqt/qt.h>
 #include <libdpd/dpd.h>
 #include <psifiles.h>
+#include <physconst.h>
+#include <masses.h>
 #include "MOInfo.h"
 #include "Params.h"
 #define EXTERN
@@ -22,15 +24,20 @@ void optrot(void)
 {
   int h, h1, nirreps, row, col, dim;
   int Ga, Gi, i, a, ai, aa, ii;
+  int j, k;
   int lwork, *ipiv, info;
   double *work;
   dpdbuf4 A, B;
   double **C;
-  double *Rx, *Ry, *Rz, *Sx, *Sy, *Sz, *Lx, *Ly, *Lz;
-  double **alpha;
-  double xnorm, ynorm, znorm;
+  double **L, **R, **S;
+  double **tensor_G;
+  double TrG, prefactor, rotation, nu, M, bohr2a4, m2a, hbar;
 
-  alpha = block_matrix(3,3); /* G' tensor */
+  tensor_G = block_matrix(3,3); /* G' tensor */
+
+  R = (double **) malloc(3 * sizeof(double *));
+  L = (double **) malloc(3 * sizeof(double *));
+  S = (double **) malloc(3 * sizeof(double *));
 
   dpd_buf4_init(&A, PSIF_MO_HESS, 0, 11, 11, 11, 11, 0, "A(AI,BJ)");
   dpd_buf4_init(&B, PSIF_MO_HESS, 0, 11, 11, 11, 11, 0, "B(AI,BJ)");
@@ -74,86 +81,54 @@ void optrot(void)
       free(work);
 
       transpert("Mu_X"); transpert("Mu_Y"); transpert("Mu_Z");
-
-      /* Set up the dipole vectors for this irrep */
-      Rx = init_array(2 * dim);
-      Ry = init_array(2 * dim);
-      Rz = init_array(2 * dim);
-      for(Ga=0,ai=0; Ga < moinfo.nirreps; Ga++) {
-	Gi = h^Ga;
-	for(a=0; a < moinfo.virtpi[Ga]; a++) {
-	  aa = moinfo.qt2pitzer[moinfo.qt_vir[a] + moinfo.vir_off[Ga]];
-	  for(i=0; i < moinfo.occpi[Gi]; i++,ai++) {
-	    ii = moinfo.qt2pitzer[moinfo.qt_occ[i] + moinfo.occ_off[Gi]];
-	    Rx[ai] = 2 * moinfo.MU[0][aa][ii];
-	    Rx[ai+dim] = -2 * moinfo.MU[0][aa][ii];
-	    Ry[ai] = 2 * moinfo.MU[1][aa][ii];
-	    Ry[ai+dim] = -2 * moinfo.MU[1][aa][ii];
-	    Rz[ai] = 2 * moinfo.MU[2][aa][ii];
-	    Rz[ai+dim] = -2 * moinfo.MU[2][aa][ii];
-	  }
-	}
-      }
-
-      transpert("L*_X"); transpert("L*_Y"); transpert("L*_Z");
-
-      Lx = init_array(2 * dim);
-      Ly = init_array(2 * dim);
-      Lz = init_array(2 * dim);
-      for(Ga=0,ai=0; Ga < moinfo.nirreps; Ga++) {
-        Gi = h^Ga;
-        for(a=0; a < moinfo.virtpi[Ga]; a++) {
-          aa = moinfo.qt2pitzer[moinfo.qt_vir[a] + moinfo.vir_off[Ga]];
-          for(i=0; i < moinfo.occpi[Gi]; i++,ai++) {
-            ii = moinfo.qt2pitzer[moinfo.qt_occ[i] + moinfo.occ_off[Gi]];
-            Lx[ai] = 2 * moinfo.L[0][aa][ii];
-            Lx[ai+dim] = -2 * moinfo.L[0][aa][ii];
-            Ly[ai] = 2 * moinfo.L[1][aa][ii];
-            Ly[ai+dim] = -2 * moinfo.L[1][aa][ii];
-            Lz[ai] = 2 * moinfo.L[2][aa][ii];
-            Lz[ai+dim] = -2 * moinfo.L[2][aa][ii];
+      for(k=0; k < 3; k++) {
+        R[k] = init_array(2 * dim);
+        for(Ga=0,ai=0; Ga < moinfo.nirreps; Ga++) {
+          Gi = h^Ga;
+          for(a=0; a < moinfo.virtpi[Ga]; a++) {
+            aa = moinfo.qt2pitzer[moinfo.qt_vir[a] + moinfo.vir_off[Ga]];
+            for(i=0; i < moinfo.occpi[Gi]; i++,ai++) {
+              ii = moinfo.qt2pitzer[moinfo.qt_occ[i] + moinfo.occ_off[Gi]];
+              R[k][ai] = 2 * moinfo.MU[k][aa][ii];
+              R[k][ai+dim] = -2 * moinfo.MU[k][aa][ii];
+            }
           }
         }
       }
 
-      Sx = init_array(2 * dim);
-      Sy = init_array(2 * dim);
-      Sz = init_array(2 * dim);
-
-      C_DGEMV('t', 2*dim, 2*dim, 1, &(C[0][0]), 2*dim, &(Rx[0]), 1, 0, &(Sx[0]), 1);
-      C_DGEMV('t', 2*dim, 2*dim, 1, &(C[0][0]), 2*dim, &(Ry[0]), 1, 0, &(Sy[0]), 1);
-      C_DGEMV('t', 2*dim, 2*dim, 1, &(C[0][0]), 2*dim, &(Rz[0]), 1, 0, &(Sz[0]), 1);
-
-      xnorm = ynorm = znorm = 0.0;
-      for(row=0; row < 2*dim; row++) {
-       xnorm += Sx[0] * Sx[0];
-       ynorm += Sy[0] * Sy[0];
-       znorm += Sz[0] * Sz[0];
+      transpert("L_X"); transpert("L_Y"); transpert("L_Z");
+      for(k=0; k < 3; k++) {
+        L[k] = init_array(2 * dim);
+        for(Ga=0,ai=0; Ga < moinfo.nirreps; Ga++) {
+          Gi = h^Ga;
+          for(a=0; a < moinfo.virtpi[Ga]; a++) {
+            aa = moinfo.qt2pitzer[moinfo.qt_vir[a] + moinfo.vir_off[Ga]];
+            for(i=0; i < moinfo.occpi[Gi]; i++,ai++) {
+              ii = moinfo.qt2pitzer[moinfo.qt_occ[i] + moinfo.occ_off[Gi]];
+              L[k][ai] = 2 * moinfo.L[k][aa][ii];
+              L[k][ai+dim] = 2 * moinfo.L[k][aa][ii];
+            }
+          }
+        }
       }
 
-      xnorm = sqrt(xnorm);
-      ynorm = sqrt(ynorm);
-      znorm = sqrt(znorm);
-      fprintf(outfile, "XNorm = %20.10f\n", xnorm);
-      fprintf(outfile, "YNorm = %20.10f\n", ynorm);
-      fprintf(outfile, "ZNorm = %20.10f\n", znorm);
-
-      for(row=0; row< 2*dim; row++) {
-
-	alpha[0][0] += Lx[row] * Sx[row];
-	alpha[1][0] += Ly[row] * Sx[row];
-	alpha[0][1] += Lx[row] * Sy[row];
-	alpha[0][2] += Lx[row] * Sz[row];
-	alpha[2][0] += Lz[row] * Sx[row];
-	alpha[1][1] += Ly[row] * Sy[row];
-	alpha[1][2] += Ly[row] * Sz[row];
-	alpha[2][1] += Lz[row] * Sy[row];
-	alpha[2][2] += Lz[row] * Sz[row];
+      for(k=0; k < 3; k++) {
+        S[k] = init_array(2 * dim);
+        C_DGEMV('t', 2*dim, 2*dim, 1, &(C[0][0]), 2*dim, &(R[k][0]), 1, 0, &(S[k][0]), 1);
       }
 
-      free(Sx); free(Sy); free(Sz);
-      free(Lx); free(Ly); free(Lz);
-      free(Rx); free(Ry); free(Rz);
+      for(i=0; i < 3; i++)
+        for(j=0; j < 3; j++) {
+          for(row=0; row < 2*dim; row++)
+            tensor_G[i][j] += S[i][row] * L[j][row];
+          tensor_G[i][j] /= params.omega;
+        }
+
+      for(k=0; k < 3; k++) {
+        free(S[k]);
+        free(L[k]);
+        free(R[k]);
+      }
 
       free_block(C);
 
@@ -163,10 +138,29 @@ void optrot(void)
     dpd_buf4_mat_irrep_close(&B, h);
   }
 
-  fprintf(outfile, "\n\tHartree-Fock G' Tensor  [(e^2 a0^2)/E_h]:\n");
-  fprintf(outfile, "\t-------------------------------------------\n");
-  mat_print(alpha, 3, 3, outfile);
-  free_block(alpha);
+  fprintf(outfile, "\n\tHartree-Fock G' Tensor:\n");
+  fprintf(outfile, "\t-------------------------\n");
+  mat_print(tensor_G, 3, 3, outfile);
+
+  /* compute the specific rotation */
+  for(j=0,M=0.0; j < moinfo.natom ;j++) M += an2masses[(int) moinfo.zvals[j]]; /* amu */
+  nu = params.omega; /* hartree */
+  bohr2a4 = _bohr2angstroms * _bohr2angstroms * _bohr2angstroms * _bohr2angstroms;
+  m2a = _bohr2angstroms * 1.0e-10;
+  hbar = _h/(2.0 * _pi);
+  prefactor = 1.0e-2 * hbar/(_c * 2.0 * _pi * _me * m2a * m2a);
+  prefactor *= prefactor;
+  prefactor *= 288.0e-30 * _pi * _pi * _na * bohr2a4;
+
+  TrG = -(tensor_G[0][0] + tensor_G[1][1] + tensor_G[2][2])/3.0;
+
+  rotation = prefactor * TrG * nu * nu / M;
+  fprintf(outfile, "\n   Specific rotation using length-gauge electric-dipole Rosenfeld tensor.\n");
+  fprintf(outfile, "\t[alpha]_(%5.3f) = %10.5f deg/[dm (g/cm^3)]\n", params.omega, rotation);
+
+
+
+  free_block(tensor_G);
 
   dpd_buf4_close(&A);
   dpd_buf4_close(&B);

@@ -41,6 +41,8 @@ void get_moinfo(void)
   moinfo.clsdpi = chkpt_rd_clsdpi();
   moinfo.openpi = chkpt_rd_openpi();
   moinfo.usotao = chkpt_rd_usotao();
+  moinfo.natom = chkpt_rd_natom();
+  moinfo.zvals = chkpt_rd_zvals();
   if(params.ref == 0 || params.ref == 1) moinfo.scf = chkpt_rd_scf();  /* RHF/ROHF */
   else if(params.ref == 2) {  /* UHF */
     moinfo.scf_alpha = chkpt_rd_alpha_scf();

@@ -154,9 +154,11 @@ void roa(void)
             tensor_alpha[i][j] += S[i][row] * R[j][row];
 
       for(i=0; i < 3; i++)
-        for(j=0; j < 3; j++)
+        for(j=0; j < 3; j++) {
           for(row=0; row < 2*dim; row++)
             tensor_G[i][j] += S[i][row] * L[j][row];
+          tensor_G[i][j] /= params.omega;
+        }
 
       for(k=0; k < 3; k++) {
         free(S[k]);
@@ -173,15 +175,15 @@ void roa(void)
     dpd_buf4_mat_irrep_close(&B, h);
   }
 
-  fprintf(outfile, "\n\tHartree-Fock Alpha Tensor  [(e^2 a0^2)/E_h]:\n");
+  fprintf(outfile, "\n\tHartree-Fock Alpha Tensor:\n");
   fprintf(outfile, "\t----------------------------------------------\n");
   mat_print(tensor_alpha, 3, 3, outfile);
 
-  fprintf(outfile, "\n\tHartree-Fock G' Tensor  [(e^2 a0^2)/E_h]:\n");
+  fprintf(outfile, "\n\tHartree-Fock G' Tensor:\n");
   fprintf(outfile, "\t-------------------------------------------\n");
   mat_print(tensor_G, 3, 3, outfile);
 
-  fprintf(outfile, "\n\tHartree-Fock A Tensor  [(e^2 a0^2)/E_h]:\n");
+  fprintf(outfile, "\n\tHartree-Fock A Tensor:\n");
   fprintf(outfile, "\t-------------------------------------------\n");
   for(k=0; k < 3; k++) {
     mat_print(tensor_A[k], 3, 3, outfile);
