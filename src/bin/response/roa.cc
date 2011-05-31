@@ -100,7 +100,6 @@ void roa(void)
 
       transpert("L_X"); transpert("L_Y"); transpert("L_Z");
       for(k=0; k < 3; k++) {
-        mat_print(moinfo.L[k], moinfo.nmo, moinfo.nmo, outfile);
         L[k] = init_array(2 * dim);
         for(Ga=0,ai=0; Ga < moinfo.nirreps; Ga++) {
    	  Gi = h^Ga;
@@ -109,7 +108,7 @@ void roa(void)
 	    for(i=0; i < moinfo.occpi[Gi]; i++,ai++) {
 	      ii = moinfo.qt2pitzer[moinfo.qt_occ[i] + moinfo.occ_off[Gi]];
 	      L[k][ai] = 2 * moinfo.L[k][aa][ii];
-	      L[k][ai+dim] = -2 * moinfo.L[k][aa][ii];
+	      L[k][ai+dim] = 2 * moinfo.L[k][aa][ii];
 	    }
 	  }
         }
