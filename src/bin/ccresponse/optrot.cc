@@ -132,6 +132,8 @@ void optrot(void)
 
         sprintf(pert, "L_%1s", cartcomp[alpha]);
         transpert(pert);
+        fprintf(outfile, "L integrals for alpha = %s\n", cartcomp[alpha]);
+        mat_print(moinfo.L[alpha], moinfo.nmo, moinfo.nmo, outfile);
         sort_pert(pert, moinfo.L[alpha], moinfo.l_irreps[alpha]);
         pertbar(pert, moinfo.l_irreps[alpha], 1);
 	compute_X(pert, moinfo.l_irreps[alpha], 0);

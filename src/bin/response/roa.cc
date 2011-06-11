@@ -157,7 +157,6 @@ void roa(void)
         for(j=0; j < 3; j++) {
           for(row=0; row < 2*dim; row++)
             tensor_G[i][j] += S[i][row] * L[j][row];
-          tensor_G[i][j] /= params.omega;
         }
 
       for(k=0; k < 3; k++) {

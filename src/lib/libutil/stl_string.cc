@@ -6,6 +6,8 @@
 
 #include "libutil.h"
 
+using namespace std;
+
 namespace psi {
 
 
