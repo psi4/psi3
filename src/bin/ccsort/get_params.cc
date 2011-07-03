@@ -48,13 +48,18 @@ void get_params()
   }
   else {
     if(!strcmp(junk, "RHF")) params.ref = 0;
-    else if(!strcmp(junk,"ROHF") && (!strcmp(params.wfn,"MP2") || !strcmp(params.wfn,"CCSD_T") || 
-				     !strcmp(params.wfn,"CC3") || !strcmp(params.wfn, "EOM_CC3") ||
-				     !strcmp(params.wfn,"CC2") || !strcmp(params.wfn, "EOM_CC2"))) {
-      params.ref = 2;
-      params.semicanonical = 1;
+    else if(!strcmp(junk,"ROHF")) {
+      params.ref = 1;
+      int semican_keyval = 0;
+      errcod = ip_boolean("SEMICANONICAL",&semican_keyval, 0);
+      if ((!strcmp(params.wfn,"MP2") || !strcmp(params.wfn,"CCSD_T") ||
+           !strcmp(params.wfn, "CC3") || !strcmp(params.wfn,"EOM_CC3") ||
+           !strcmp(params.wfn, "CC2") || !strcmp(params.wfn,"EOM_CC2")
+          ) || semican_keyval == 1) {
+        params.ref = 2;
+        params.semicanonical = 1;
+      }
     }
-    else if(!strcmp(junk, "ROHF")) params.ref = 1;
     else if(!strcmp(junk, "UHF")) params.ref = 2;
     else { 
       printf("Invalid value of input keyword REFERENCE: %s\n", junk);

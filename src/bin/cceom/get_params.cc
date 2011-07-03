@@ -43,11 +43,17 @@ void get_params(void)
   params.semicanonical = 0;
   errcod = ip_string("REFERENCE", &(read_ref),0);
   if(!strcmp(read_ref, "RHF")) params.ref = 0;
-  else if(!strcmp(read_ref,"ROHF") && (!strcmp(params.wfn,"EOM_CC3"))) {
-    params.ref = 2;
-    params.semicanonical = 1;
+  else if(!strcmp(read_ref,"ROHF")) {
+    params.ref = 1;
+    int semican_keyval = 0;
+    errcod = ip_boolean("SEMICANONICAL",&semican_keyval, 0);
+    if (!strcmp(params.wfn,"EOM_CC3") ||
+        !strcmp(params.wfn,"EOM_CC2")
+        || semican_keyval == 1) {
+      params.ref = 2;
+      params.semicanonical = 1;
+    }
   }
-  else if(!strcmp(read_ref, "ROHF")) params.ref = 1;
   else if(!strcmp(read_ref, "UHF")) params.ref = 2;
   else { 
     fprintf(outfile,

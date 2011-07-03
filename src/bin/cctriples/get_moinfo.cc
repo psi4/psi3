@@ -61,11 +61,15 @@ namespace psi { namespace cctriples {
   if (errcod != IPE_OK) params.ref = 0;
   else {
     if(!strcmp(junk, "RHF")) params.ref = 0;
-    else if(!strcmp(junk,"ROHF") && !strcmp(params.wfn,"CCSD_T")) {
-      params.ref = 2;
-      params.semicanonical = 1;
+    else if(!strcmp(junk,"ROHF")) {
+      params.ref = 1;
+      int semican_keyval = 0;
+      errcod = ip_boolean("SEMICANONICAL",&semican_keyval, 0);
+      if (!strcmp(params.wfn,"CCSD_T") || semican_keyval == 1) {
+        params.ref = 2;
+        params.semicanonical = 1;
+      }
     }
-    else if(!strcmp(junk, "ROHF")) params.ref = 1;
     else if(!strcmp(junk, "UHF")) params.ref = 2;
     else { 
       printf("Invalid value of input keyword REFERENCE: %s\n", junk);

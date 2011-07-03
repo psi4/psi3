@@ -964,6 +964,8 @@ AC_CONFIG_FILES([include/Makefile
           tests/cc7/Makefile
           tests/cc8/Makefile
           tests/cc8a/Makefile
+          tests/cc8b/Makefile
+          tests/cc8c/Makefile
           tests/cc9/Makefile
           tests/cc9a/Makefile
           tests/cc10/Makefile
