@@ -284,7 +284,8 @@ void optrot(void)
     sprintf(lbl1, "1/2 <<Mu;L*>>_(%5.3f)", params.omega[i]);
     sprintf(lbl2, "1/2 <<P*;L*>>_(%5.3f)", params.omega[i]);
     sprintf(lbl3, "<<P;Mu>>_(%5.3f)", params.omega[i]);
-    if(!params.restart || ((compute_rl && !psio_tocscan(CC_INFO,lbl1)) || (compute_pl && !psio_tocscan(CC_INFO,lbl2)))) {
+    if(!params.restart || ((compute_rl && !psio_tocscan(CC_INFO,lbl1)) ||
+(compute_pl && !psio_tocscan(CC_INFO,lbl2)) || (!strcmp(params.gauge,"BOTH") && !psio_tocscan(CC_INFO,lbl3)))) {
 
       /* prepare the dipole-length or dipole-velocity integrals */
       if(compute_rl) {
