@@ -41,6 +41,7 @@ void get_moinfo(void)
   moinfo.enuc = chkpt_rd_enuc();
   moinfo.escf = chkpt_rd_escf();
   moinfo.orbspi = chkpt_rd_orbspi();
+  moinfo.sopi = chkpt_rd_sopi();
   moinfo.clsdpi = chkpt_rd_clsdpi();
   moinfo.openpi = chkpt_rd_openpi();
   chkpt_close();

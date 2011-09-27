@@ -11,6 +11,7 @@ struct MOInfo {
     int nactive;        /* no. of active orbitals */
     int iopen;          /* 0=closed shell; >0=open shell */
     int *orbspi;        /* no. of MOs per irrep */
+    int *sopi;          /* no. of SOs per irrep */
     int *clsdpi;        /* no. of closed-shells per irrep excl. frdocc */
     int *openpi;        /* no. of open-shells per irrep */
     int *uoccpi;        /* no. of unoccupied orbitals per irrep excl. fruocc */

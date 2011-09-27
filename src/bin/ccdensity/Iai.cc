@@ -3,10 +3,12 @@
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>
+#include <libqt/qt.h>
 #include "MOInfo.h"
 #include "Params.h"
 #include "Frozen.h"
 #define EXTERN
+#include <cstring>
 #include "globals.h"
 
 namespace psi { namespace ccdensity {
@@ -31,6 +33,7 @@ namespace psi { namespace ccdensity {
     {
       dpdfile2 F, D, I;
       dpdbuf4 G, Eints, Dints, Cints, Fints, Bints;
+      int nirreps, Gac, Ga, Gi, Gc, a, i, A, I_abs, ac, ic;
 
       if(params.ref == 0) { /** RHF **/
 	/* I'AI <-- sum_J fAJ (DIJ + DJI) + sum_B fAB (DIB + DBI) */
@@ -1195,12 +1198,54 @@ namespace psi { namespace ccdensity {
 
 	dpd_buf4_init(&G, CC_GAMMA, 0, 10, 5, 10, 5, 0, "2 Giabc - Giacb");
 	dpd_buf4_init(&Bints, CC_BINTS, 0, 5, 5, 5, 5, 0, "B <ab|cd>");
-	dpd_contract442(&Bints, &G, &I, 0, 0, 2.0, 1.0);
-	dpd_buf4_close(&Bints);
-	dpd_buf4_close(&G);
+        if(strcmp(params.wfn, "OOCCD") || !params.ooccd_ooc)
+          dpd_contract442(&Bints, &G, &I, 0, 0, 2.0, 1.0);
+        else {
+//        replacing above contract442 by following out-of-core algorithm for large
+//        OOCCD optical rotation computations
+          fprintf(outfile, "\tRunning out-of-core Iai <-- B*G\n");
+          nirreps = G.params->nirreps;
 
-	dpd_file2_close(&I);
+          dpd_file2_mat_init(&I);
+          dpd_file2_mat_rd(&I);
+
+          for(Gac=0; Gac < nirreps; Gac++) {
+
+            for(Ga=0; Ga < nirreps; Ga++) {
+              Gi = Ga;
+              Gc = Ga^Gac;
+              Bints.matrix[Gac] = dpd_block_matrix(Bints.params->qpi[Gc], Bints.params->coltot[Gac]);
+              G.matrix[Gac] = dpd_block_matrix(G.params->qpi[Gc], G.params->coltot[Gac]);
+//              dpd_buf4_mat_irrep_init_block(&Bints, Gac, Bints.params->ppi[Ga]);
+//              dpd_buf4_mat_irrep_init_block(&G, Gac, G.params->ppi[Gi]);
+
+              for(a=0; a < Bints.params->ppi[Ga]; a++) {
+                A = Bints.params->poff[Ga] + a;
+                ac = Bints.row_offset[Gac][A];
+                dpd_buf4_mat_irrep_rd_block(&Bints, Gac, ac, Bints.params->qpi[Gc]);
+
+                for(i=0; i < G.params->ppi[Gi]; i++) {
+                  I_abs = G.params->poff[Gi] + i;
+                  ic = G.row_offset[Gac][I_abs];
+                  dpd_buf4_mat_irrep_rd_block(&G, Gac, ic, G.params->qpi[Gc]);
+                  I.matrix[Ga][a][i] += 2*C_DDOT(Bints.params->coltot[Gac]*Bints.params->qpi[Gc], Bints.matrix[Gac][0], 1, G.matrix[Gac][0], 1);
+
+                }
+              }
+              dpd_free_block(Bints.matrix[Gac], Bints.params->qpi[Gc], Bints.params->coltot[Gac]);
+              dpd_free_block(G.matrix[Gac], G.params->qpi[Gc], G.params->coltot[Gac]);
+//              dpd_buf4_mat_irrep_close_block(&Bints, Gac, Bints.params->ppi[Ga]);
+//              dpd_buf4_mat_irrep_close_block(&G, Gac, G.params->ppi[Ga]);
+            }
+          }
+          dpd_file2_mat_wrt(&I);
+          dpd_file2_mat_close(&I);
+        }
+        dpd_buf4_close(&G);
+        dpd_buf4_close(&Bints);
+        dpd_file2_close(&I);
       }
+
       else if(params.ref == 1) { /** ROHF **/
 
 	/* I'AI <-- sum_BCD <AB||CD> G(IB,CD) + 2 sum_bCd <Ab|Cd> G(Ib,Cd) */

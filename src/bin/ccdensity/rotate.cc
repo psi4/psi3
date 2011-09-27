@@ -37,9 +37,9 @@ int rotate(void)
   double **scf_orig, **scf_a_orig, **scf_b_orig;
   double max;
   double **D, **D_a, **D_b; /* SCF densities */
-  double **fock, **fock_a, **fock_b; /* Fock matrices (SO or MO basis) */
+  double **fock, **fock_a, **fock_b, **fock_new; /* Fock matrices (SO or MO basis) */
   double ***Foo, ***Fvv; /* occ-occ and vir-vir block of Fock matrix */
-  int *offset;
+  int *offset, *so_offset;
   int phase_ok=1, max_col;
 
   chkpt_init(PSIO_OPEN_OLD);
@@ -50,6 +50,9 @@ int rotate(void)
   offset = init_int_array(nirreps);
   for(h=1; h < nirreps; h++)
     offset[h] = offset[h-1] + moinfo.orbspi[h-1];
+  so_offset = init_int_array(nirreps);
+  for(h=1; h < nirreps; h++)
+    so_offset[h] = so_offset[h-1] + moinfo.sopi[h-1];
 
   /* First check to see if we've already converged the orbitals */
   max = 0.0;
@@ -120,7 +123,7 @@ int rotate(void)
 
     /* transform the overlap into the new MO basis */
     MO_S = block_matrix(nmo, nmo);
-    X = block_matrix(nso, nso);
+    X = block_matrix(nmo, nso);
     C_DGEMM('t','n',nmo, nso, nso, 1, &(scf_new[0][0]), nmo, &(SO_S[0][0]), nso,
 	    0, &(X[0][0]), nso);
     C_DGEMM('n','n',nmo, nmo, nso, 1, &(X[0][0]), nso, &(scf_new[0][0]), nmo, 
@@ -142,15 +145,15 @@ int rotate(void)
     free(evals);
     free(work);
     X = block_matrix(nmo, nmo);
-    C_DGEMM('t','n',nmo, nmo, nmo, 1, &(MO_S[0][0]), nso, &(S[0][0]), nmo,
+    C_DGEMM('t','n',nmo, nmo, nmo, 1, &(MO_S[0][0]), nmo, &(S[0][0]), nmo,
 	    0, &(X[0][0]), nmo);
-    C_DGEMM('n','n', nmo, nmo, nmo, 1, &(X[0][0]), nmo, &(MO_S[0][0]), nso, 
+    C_DGEMM('n','n', nmo, nmo, nmo, 1, &(X[0][0]), nmo, &(MO_S[0][0]), nmo, 
 	    0, &(S[0][0]), nmo);
     free_block(X);
 
     /* orthogonalize the new MO basis */
     scf = block_matrix(nso, nmo);
-    C_DGEMM('n','n',nmo,nmo,nmo,1,&(scf_new[0][0]),nmo,&(S[0][0]),nmo,
+    C_DGEMM('n','n',nso,nmo,nmo,1,&(scf_new[0][0]),nmo,&(S[0][0]),nmo,
 	    0,&(scf[0][0]),nmo);
     free_block(S);
     free_block(MO_S);
@@ -159,8 +162,8 @@ int rotate(void)
     /* build the SO-basis density for the new MOs */
     D = block_matrix(nso,nso);
     for(h=0; h < nirreps; h++)
-      for(p=offset[h]; p < offset[h]+moinfo.orbspi[h]; p++)
-	for(q=offset[h]; q < offset[h]+moinfo.orbspi[h]; q++)
+      for(p=so_offset[h]; p < so_offset[h]+moinfo.sopi[h]; p++)
+	for(q=so_offset[h]; q < so_offset[h]+moinfo.sopi[h]; q++)
 	  for(i=offset[h]; i < offset[h]+moinfo.frdocc[h]+moinfo.occpi[h]; i++)
 	    D[p][q] += scf[p][i] * scf[q][i];
 
@@ -175,11 +178,12 @@ int rotate(void)
     */
 
     /* transform the fock matrix to the new MO basis */
-    X = block_matrix(nso,nso);
+    X = block_matrix(nso,nmo);
+    fock_new = block_matrix(nmo,nmo);
     C_DGEMM('n','n',nso,nmo,nso,1.0,&(fock[0][0]),nso,&(scf[0][0]),nmo,
-	    0,&(X[0][0]),nso);
-    C_DGEMM('t','n',nmo,nmo,nso,1.0,&(scf[0][0]),nmo,&(X[0][0]),nso,
-	    0,&(fock[0][0]),nso);
+	    0,&(X[0][0]),nmo);
+    C_DGEMM('t','n',nmo,nmo,nso,1.0,&(scf[0][0]),nmo,&(X[0][0]),nmo,
+	    0,&(fock_new[0][0]),nmo);
     free_block(X);
 
     /*
@@ -201,11 +205,11 @@ int rotate(void)
 
       for(i=offset[h]+moinfo.frdocc[h],I=0; i < offset[h]+moinfo.frdocc[h]+moinfo.occpi[h]; i++,I++)
 	for(j=offset[h]+moinfo.frdocc[h],J=0; j < offset[h]+moinfo.frdocc[h]+moinfo.occpi[h]; j++,J++)
-	  Foo[h][I][J] = fock[i][j];
+	  Foo[h][I][J] = fock_new[i][j];
 
       for(a=offset[h]+moinfo.frdocc[h]+moinfo.occpi[h],A=0; a < offset[h]+moinfo.orbspi[h]; a++,A++)
 	for(b=offset[h]+moinfo.frdocc[h]+moinfo.occpi[h],B=0; b < offset[h]+moinfo.orbspi[h]; b++,B++)
-	  Fvv[h][A][B] = fock[a][b];
+	  Fvv[h][A][B] = fock_new[a][b];
 
       /*
       fprintf(outfile, "\n\tOcc-occ Fock matrix for irrep %d:\n", h);
@@ -264,6 +268,7 @@ int rotate(void)
     }
     free(Foo);
     free(Fvv);
+    free_block(fock_new);
     free_block(fock);
 
     /* semicanonicalization of the basis */

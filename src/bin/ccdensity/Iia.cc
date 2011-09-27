@@ -3,10 +3,12 @@
     \brief Enter brief description of file here 
 */
 #include <libdpd/dpd.h>
+#include <libqt/qt.h>
 #include "MOInfo.h"
 #include "Params.h"
 #include "Frozen.h"
 #define EXTERN
+#include <cstring>
 #include "globals.h"
 
 namespace psi { namespace ccdensity {
@@ -25,6 +27,8 @@ namespace psi { namespace ccdensity {
     {
       dpdfile2 F, D, I;
       dpdbuf4 G, Aints, Fints, Eints, Dints, Cints;
+      int a, i, c, ac, ic, A, II;
+      int nirreps, Gac, Ga, Gc, Gi; 
 
       if(params.ref == 0) { /** RHF **/
 	/* I'IA <-- sum_J fIJ (DAJ + DJA) + sum_B fIB (DAB + DBA) */
@@ -247,12 +251,48 @@ namespace psi { namespace ccdensity {
 
 	dpd_buf4_init(&G, CC_GAMMA, 0, 5, 5, 5, 5, 0, "2 Gabcd - Gabdc");
 	dpd_buf4_init(&Fints, CC_FINTS, 0, 10, 5, 10, 5, 0, "F <ia|bc>");
-	dpd_contract442(&Fints, &G, &I, 0, 0, 2.0, 1.0);
-	dpd_buf4_close(&Fints);
-	dpd_buf4_close(&G);
+        if(strcmp(params.wfn, "OOCCD") || !params.ooccd_ooc)
+          dpd_contract442(&Fints, &G, &I, 0, 0, 2.0, 1.0);
+        else {
+//        replacing above contract442 by following out-of-core algorithm for large
+//        OOCCD optical rotation computations
+          fprintf(outfile, "\tRunning out-of-core Iia <-- F*G\n");
+          nirreps = G.params->nirreps;
 
+          dpd_file2_mat_init(&I);
+          dpd_file2_mat_rd(&I);
 
-	dpd_file2_close(&I);
+          for(Gac=0; Gac < nirreps; Gac++) {
+
+            for(Ga=0; Ga < nirreps; Ga++) {
+              Gi = Ga;
+              Gc = Ga^Gac;              
+              Fints.matrix[Gac] = dpd_block_matrix(Fints.params->qpi[Gc], Fints.params->coltot[Gac]);
+              G.matrix[Gac] = dpd_block_matrix(G.params->qpi[Gc], G.params->coltot[Gac]);
+
+              for(i=0; i < Fints.params->ppi[Gi]; i++) {
+                II = Fints.params->poff[Gi] + i;
+                ic = Fints.row_offset[Gac][II];
+                dpd_buf4_mat_irrep_rd_block(&Fints, Gac, ic, Fints.params->qpi[Gc]);
+
+                for(a=0; a < G.params->ppi[Ga]; a++) {
+                  A = G.params->poff[Ga] + a;
+                  ac = G.row_offset[Gac][A];
+                  dpd_buf4_mat_irrep_rd_block(&G, Gac, ac, G.params->qpi[Gc]);
+                  I.matrix[Gi][i][a] += 2*C_DDOT(Fints.params->coltot[Gac]*Fints.params->qpi[Gc], Fints.matrix[Gac][0], 1, G.matrix[Gac][0], 1);
+
+                }
+              }
+              dpd_free_block(Fints.matrix[Gac], Fints.params->qpi[Gc], Fints.params->coltot[Gac]);
+              dpd_free_block(G.matrix[Gac], G.params->qpi[Gc], G.params->coltot[Gac]);
+            }
+          }
+          dpd_file2_mat_wrt(&I);
+          dpd_file2_mat_close(&I);
+        }
+        dpd_buf4_close(&G);
+        dpd_buf4_close(&Fints);
+        dpd_file2_close(&I);
       }
       else if(params.ref == 1) { /** ROHF **/
 

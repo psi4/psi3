@@ -42,6 +42,8 @@ void get_params()
   errcod = ip_data("OOCONV","%d",&(tol),0);
   if(errcod == IPE_OK) params.ooconv = 1.0*pow(10.0,(double) -tol);
 
+  params.ooccd_ooc = 1;
+  errcod = ip_boolean("OOCCD_OOC", &(params.ooccd_ooc),0);
 
   /* For EOM-CCSD Zeta calcs to use ROHF refs for now */
   if(!strcmp(params.wfn,"EOM_CCSD") && params.ref==0 && params.use_zeta) params.ref = 1;

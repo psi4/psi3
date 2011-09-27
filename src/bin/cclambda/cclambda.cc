@@ -193,8 +193,10 @@ int main(int argc, char *argv[])
       }
       else {
 	G_build(pL_params[i].irrep);
-	L1_build(pL_params[i]);
-	if(params.print & 2) status("L1 amplitudes", outfile);
+	if(strcmp(params.wfn,"OOCCD")) {
+          L1_build(pL_params[i]);
+	  if(params.print & 2) status("L1 amplitudes", outfile);
+	}
 	L2_build(pL_params[i]);
 
 	if(!strcmp(params.wfn, "CC3")) {

@@ -43,6 +43,7 @@ struct Params {
 
   /* Orbital Optimized Code */
   double ooconv;
+  int ooccd_ooc; /* use out of core algorithms? */
 };
 
 struct RHO_Params {
