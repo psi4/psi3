@@ -424,7 +424,9 @@ void scf_input(ip_value_t* ipvalue)
 
    lshift=1.0;
    errcod = ip_data("LEVELSHIFT","%lf",&lshift,0);
-   if(!iopen && fabs(lshift) > 0.0) lshift = 0.1;
+   int lshift_force = 0;
+   errcod = ip_boolean("LEVELSHIFT_FORCE",&lshift_force,0);
+   if(!iopen && fabs(lshift) > 0.0 && lshift_force == 0) lshift = 0.1;
    stop_lshift=10;
    errcod = ip_data("STOP_LEVELSHIFT","%d",&stop_lshift,0);
 
