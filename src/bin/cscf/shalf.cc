@@ -94,7 +94,28 @@ void shalf(void)
 // #endif
   mxcoef2 = 0;
   nmo = 0;
-     
+
+  /*  07/16/2012 EFV -- find the largest (and smallest) eigenvalue among all irrep blocks;
+   *  this way calculation with and without symmetry will produce the same result;
+   *  unfortunately, diagonalization is done twice (eigenvectors are computed only once) */
+  for (i=0; i < num_ir ; i++) {
+    s = &scf_info[i];
+    if (nn=s->num_so) {
+
+      /// get eigenvalues only
+      rsp(nn,nn,ioff[nn],s->smat,eig_vals,0,eig_vecs,tol);
+
+      /*--- Find the lowest and highest eigenvalues ---*/
+      for(ii=0; ii < nn ; ii++) {
+        const double eval = eig_vals[ii];
+        if (eval > max_eval)
+          max_eval = eval;
+      }
+    }
+  }
+  const double eval_cutoff = lindep_cutoff * max_eval;
+
+
   /*  diagonalize smat to get eigenvalues and eigenvectors  */
 
   for (i=0; i < num_ir ; i++) {
@@ -102,16 +123,6 @@ void shalf(void)
     if (nn=s->num_so) {
 
       rsp(nn,nn,ioff[nn],s->smat,eig_vals,1,eig_vecs,tol);
-
-      /*--- Find the lowest and highest eigenvalues ---*/
-      for(ii=0; ii < nn ; ii++) {
-        const double eval = eig_vals[ii];
-        if (eval < min_eval)
-          min_eval = eval;
-        if (eval > max_eval)
-          max_eval = eval;
-      }
-      const double eval_cutoff = lindep_cutoff * max_eval;
 
       if(print & 64) {
 	fprintf(outfile,"\noverlap eigenstuff\n");
