@@ -641,6 +641,16 @@ psi: (
   CCSD_TUHFFirstDisp  = (repeat $nopt $CCSD_TUHFFirst $geomupdate end $done)
   CCSD_TTwoConFirstDisp  = ERROR
 
+  % CCSD(T) Freqs via differences of energies
+  CCSD_TEnergyFreq  =
+    ($CCSD_TEnergy $findif_disp_freq_energy_cart repeat NUM_DISP
+     $findif_next $findif_input $CCSD_TEnergy $findif_energy_save end
+     $findif_freq_energy_cart $done)
+  CCSD_TRHFEnergyFreq  = $CCSD_TEnergyFreq
+  CCSD_TROHFEnergyFreq  = $CCSD_TEnergyFreq
+  CCSD_TUHFEnergyFreq  = $CCSD_TEnergyFreq
+  CCSD_TTwoConEnergyFreq  = ERROR
+
   % -------------------------------- CC2 Procedures
   % Procedures for the CC2 energy
   CC2Energy = ($ints $scf $cctrans $ccsort $ccenergy)
