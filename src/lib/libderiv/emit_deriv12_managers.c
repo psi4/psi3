@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <libint/libint.h>
 #include "mem_man.h"
 #include "build_libderiv.h"

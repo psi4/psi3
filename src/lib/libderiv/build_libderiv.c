@@ -7,6 +7,7 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <libint/libint.h>
 #include "build_libderiv.h"
 

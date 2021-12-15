@@ -5,6 +5,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "build_libr12.h"
 #include <libint/constants.h>
 
@@ -17,7 +18,7 @@ static void define_localv(int la, FILE *code);
 
 static char **k1;
 
-int emit_vrr_t1_build()
+int emit_vrr_t1_build(void)
 {
   int old_am = Params.old_am;
   int new_am = Params.opt_am;

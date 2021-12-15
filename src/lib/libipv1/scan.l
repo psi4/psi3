@@ -1,6 +1,7 @@
 %{
 #include <string.h>
 #include <tmpl.h>
+#include "ip_lib.h"
 #include "ip_types.h"
 #include "ip_global.h"
 #include "scan.gbl"

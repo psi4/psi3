@@ -13,6 +13,15 @@
 #define DEFAULT_OPT_AM 6
 #define DEFAULT_MAX_CLASS_SIZE 785
 
+void punt(char* str);
+int emit_vrr_r_build(void);
+void emit_vrr_t_build(void);
+int emit_grt_order(void);
+void emit_gr_order(void);
+int emit_hrr_t_build(void);
+int emit_vrr_t1_build(void);
+int emit_vrr_t2_build(void);
+
 typedef struct {
 
   /* Twice the maximum AM for which manager routines need to be generated */

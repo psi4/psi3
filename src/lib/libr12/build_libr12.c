@@ -26,6 +26,7 @@
 
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <libint/libint.h>
 #include "build_libr12.h"
 #include <libint/constants.h>
@@ -35,13 +36,6 @@
 FILE *outfile, *vrr_header, *hrr_header, *libr12_header, *init_code;
 int libr12_stack_size[MAX_AM/2+1];
 Libr12Params_t Params;
-
-void punt();
-void emit_vrr_r_build();
-void emit_vrr_t_build();
-void emit_grt_order();
-void emit_gr_order();
-void emit_hrr_t_build();
 
 int main()
 {
