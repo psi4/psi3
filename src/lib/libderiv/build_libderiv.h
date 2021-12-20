@@ -10,6 +10,7 @@
 #define EMIT_DERIV2_MANAGERS 0  /*--- whether to produce manager functions that compute
 				   second derivatives only ---*/
 
+void punt(char* str);
 
 typedef struct {
 

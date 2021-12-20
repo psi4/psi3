@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include<stdlib.h>
 #include "mem_man.h"
 #include "build_libint.h"
 #include <libint/constants.h>
@@ -51,6 +52,13 @@ typedef struct vrr_node{
   int target;
   } vrr_class;
 
+
+int mk_hrr_node(hrr_class node, hrr_class *allnodes, int new);
+int mark_hrr_parents(int n, hrr_class *allnodes, int rent);
+int alloc_mem_hrr(hrr_class *nodes);
+int mk_vrr_node(vrr_class node, vrr_class *allnodes, int new);
+int mark_vrr_parents(int n, vrr_class *allnodes, int rent);
+int alloc_mem_vrr(vrr_class *nodes);
 
 static int first_hrr_to_compute = 0; /* Number of the first class to be computed
 				    (pointer to the beginning of the linked list) */

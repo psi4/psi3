@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <libint/libint.h>
 #include "mem_man.h"
 #include "build_libr12.h"
@@ -44,6 +45,13 @@ typedef struct node{
   int target;             /* Flag indicating that this node is among targets */
   } class;
 
+int mk_hrr_node(class node, class *allnodes, int new);
+int mark_hrr_parents(int n, class *allnodes, int rent);
+int alloc_mem_hrr(class *nodes);
+int mk_vrr_node(class node, class *allnodes, int new);
+int mark_vrr_parents(int n, class *allnodes, int rent);
+int alloc_mem_vrr(class *nodes);
+
 static int first_hrr_to_compute = 0; /* Number of the first class to be computed
 				    (pointer to the beginning of the linked list) */
 static int first_vrr_to_compute = 0; /* Number of the first class to be computed
@@ -54,7 +62,7 @@ static int first_vrr_to_compute = 0; /* Number of the first class to be computed
 static int hrr_hash_table[NUMGRTTYPES][2*LMAX_AM][2*LMAX_AM][2*LMAX_AM][2*LMAX_AM];
 static int vrr_hash_table[NUMGRTTYPES][2*LMAX_AM][2*LMAX_AM][4*LMAX_AM];
 
-int emit_grt_order()
+int emit_grt_order(void)
 {
   int old_am = Params.old_am;
   int new_am = Params.new_am;

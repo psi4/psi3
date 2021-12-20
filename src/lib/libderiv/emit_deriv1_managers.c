@@ -8,6 +8,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include <libint/libint.h>
 #include "mem_man.h"
 #include "build_libderiv.h"
@@ -38,6 +39,13 @@ typedef struct node{
   int marked;             /* Flag indicating that this node has been computed */
   int target;             /* Flag indicating that this node is among targets */
   } class;
+
+int mk_dhrr_node(class node, class *allnodes, int new);
+int mark_dhrr_parents(int n, class *allnodes, int rent);
+int alloc_mem_dhrr(class *nodes);
+int mk_deriv_node(class node, class *allnodes, int new);
+int mark_parents(int n, class *allnodes, int rent);
+int alloc_mem_vrr(class *nodes);
 
 static int first_hrr_to_compute = 0; /* Number of the first class to be computed
 				    (pointer to the beginning of the linked list) */

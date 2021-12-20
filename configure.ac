@@ -7,10 +7,10 @@
 define([psi_version],[3.4.0])
 define([psi_buildid],[alpha])
 define([psi_bugreport],[psicode@users.sourceforge.net])
-AC_PREREQ(2.57)
+AC_PREREQ([2.71])
 AC_INIT([psi],[psi_version],[psi_bugreport])
 
-AC_CONFIG_HEADER(include/psiconfig.h)
+AC_CONFIG_HEADERS([include/psiconfig.h])
 
 PSI_VERSION=psi_version
 PSI_BUILDID=psi_buildid
@@ -243,7 +243,7 @@ AC_SUBST(FC_SYMBOL)
 AC_PROG_RANLIB
 AC_PROG_CPP
 AC_PROG_CXXCPP
-AC_PROG_LEX
+AC_PROG_LEX([yywrap])
 AC_PROG_YACC
 AC_PROG_INSTALL
 AC_PROG_LN_S
@@ -477,7 +477,8 @@ LIBS=$SAVE_LIBS
 # Check for libcompat.a availability
 #case $target_vendor in
 #  apple)
-#    AC_HAVE_LIBRARY(compat,CLIBS="-lcompat $CLIBS",AC_MSG_ERROR([Missing libcompat.a: See http://www.opensource.apple.com/ for more information]))
+#    AC_CHECK_LIB([compat],[main],[CLIBS="-lcompat $CLIBS"],[AC_MSG_ERROR(Missing libcompat.a: See http://www.opensource.apple.com/ for more information)],[])ac_cv_lib_compat=ac_cv_lib_compat_main
+
 #    echo "$CLIBS"
 #  ;;
 #esac
@@ -549,7 +550,7 @@ if test X$HAVE_RUBY = Xyes; then
   AC_MSG_CHECKING([for ruby_init])
   REF_LIBS=$LIBS  LIBS="$RUBYLIB $LIBS"
   REF_CPPFLAGS=$CPPFLAGS CPPFLAGS="$REF_CPPFLAGS $RUBYINC"
-  AC_LINK_IFELSE(
+  AC_LINK_IFELSE([
     AC_LANG_PROGRAM(
       [[#include <ruby.h>
       ]],
@@ -562,7 +563,7 @@ if test X$HAVE_RUBY = Xyes; then
     AC_MSG_RESULT(yes),
     HAVE_RUBY=no
     AC_MSG_RESULT(no)
-  )
+  ])
   LIBS=$REF_LIBS
   CPPFLAGS=$REF_CPPFLAGS
   fi

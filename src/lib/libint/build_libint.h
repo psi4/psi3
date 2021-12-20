@@ -7,6 +7,8 @@
 #define DEFAULT_OPT_AM 8
 #define DEFAULT_MAX_CLASS_SIZE 785
 
+void punt(char* str);
+
 typedef struct {
 
   /* Twice the maximum AM for which manager routines need to be generated */

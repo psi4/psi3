@@ -1,8 +1,20 @@
 %{
 #include <stdio.h>
 #include <tmpl.h>
+#include "ip_lib.h"
 #include "ip_types.h"
 #include "ip_read.gbl"
+int yylex(void);
+
+int
+yywrap()
+{return 1;}
+
+int
+yyerror(s)
+char *s;
+{ip_error(s);
+ return 0;}
 %}
 
 %union {
@@ -43,8 +55,7 @@ value:			array
 												{ $$ = $1; }
 			;
 
-array:			'(' values ')'
-												{ $$ = $2; }
+array:			'(' values ')' { $$ = $2; }
 			;
 
 values:			values value
@@ -59,12 +70,3 @@ scalar:			T_STRING
 
 %%
 
-int
-yywrap()
-{return 1;}
-
-int
-yyerror(s)
-char *s;
-{ip_error(s);
- return 0;}

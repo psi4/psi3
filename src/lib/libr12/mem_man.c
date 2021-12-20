@@ -3,6 +3,8 @@
     \brief Enter brief description of file here 
 */
 #include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
 #include"mem_man.h"
 #define MAXALLOC 10000
 

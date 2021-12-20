@@ -14,6 +14,7 @@
 #include "ip_global.h"
 extern "C" {
 #include "y.tab.h"
+int yyparse(void);
 };
 
 #include "ip_read.gbl"
@@ -24,6 +25,7 @@ extern "C" {
 #include "ip_alloc.gbl"
 #include "ip_cwk.gbl"
 #include "ip_data.gbl"
+
 
 extern "C" {
 

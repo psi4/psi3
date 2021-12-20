@@ -4,6 +4,7 @@
 */
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include "build_libr12.h"
 #include <libint/constants.h>
 
@@ -12,7 +13,7 @@ extern Libr12Params_t Params;
 
 extern void punt(char *);
 
-int emit_hrr_t_build()
+int emit_hrr_t_build(void)
 {
   int new_am = Params.new_am;
   int max_class_size = Params.max_class_size;
