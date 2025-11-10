@@ -242,6 +242,7 @@ int emit_vrr_r_build(void)
   }
   free(function_name);
   free(code_name);
+  return 0;
 }
 
 

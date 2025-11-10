@@ -27,7 +27,7 @@ namespace psi { namespace intder {
 extern Params gParams;
 }}
 
-bool Displacements::loadFromCheckPoint()
+void Displacements::loadFromCheckPoint()
 {
   int natom, nallatoms;
   int index, atomcount;

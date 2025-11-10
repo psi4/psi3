@@ -219,6 +219,7 @@ int emit_hrr_build_macro()
       printf("Done with %s\n",code_name);
     }
   }
+  return 0;
 }
 
 

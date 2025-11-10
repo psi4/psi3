@@ -246,6 +246,7 @@ int emit_d1hrr_build()
       printf("Done with %s\n",code_name);
     }
   }
+  return 0;
 }
 
 

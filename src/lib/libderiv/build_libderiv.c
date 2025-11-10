@@ -22,7 +22,7 @@ int libderiv2_stack_size[MAX_AM/2+1];
 int libderiv12_stack_size[MAX_AM/2+1];
 LibderivParams_t Params;
 
-void punt();
+void punt(char *);
 extern void emit_deriv1_managers();
 #if EMIT_DERIV2_MANAGERS
 extern void emit_deriv2_managers();
