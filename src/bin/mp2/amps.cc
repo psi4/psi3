@@ -10,7 +10,7 @@
 
 namespace psi{ namespace mp2{
 
-double amps(void) 
+void amps(void) 
 {
   dpdfile2 tIA, tia, fIA, fia, dIA, dia;
   dpdbuf4 tIJAB, tijab, tIjAb, D, dIJAB, dijab, dIjAb;
@@ -94,7 +94,6 @@ double amps(void)
     dpd_buf4_close(&tIJAB);
     dpd_buf4_close(&dIJAB);
   }
-  
 }
 
 }} /* End namespaces*/

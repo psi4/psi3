@@ -152,6 +152,7 @@ double pseudoenergy(struct L_Params L_params)
       return tval;
     }
   }
+  return 0.0;
 }
 
 }} // namespace psi::cclambda

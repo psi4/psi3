@@ -337,6 +337,7 @@ int parse_am(char* s)
   else {
     fprintf(outfile,"  Angular momentum %s cannot be handled yet.\n",s);
     punt("Angular momentum too high");
+    return 0;
   }
 }
 

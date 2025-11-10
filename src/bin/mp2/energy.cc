@@ -16,6 +16,7 @@ double energy(void)
 {
   if(params.ref == 0) return(rhf_energy());
   else if(params.ref == 2) return(uhf_energy());
+  return 0.0;
 }
 
 double rhf_energy(void) 

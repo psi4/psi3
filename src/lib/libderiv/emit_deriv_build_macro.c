@@ -429,7 +429,7 @@ int emit_deriv_build_macro()
       }  
       
   }
-
+  return 0;
 }
 
 

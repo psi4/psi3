@@ -55,6 +55,7 @@ extern "C" {
 
   int psio_done(void) {
     delete _default_psio_lib_;
+    return 0;
   }
 
 }

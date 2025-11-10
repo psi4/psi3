@@ -270,6 +270,7 @@ int H0block_calc(double E)
       else  return(1);
       }
 
+    return 0;
 }
 
 

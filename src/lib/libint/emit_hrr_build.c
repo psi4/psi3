@@ -338,6 +338,7 @@ int emit_hrr_build()
       printf("Done with %s\n",code_name);
     }
   }
+  return 0;
 }
 
 

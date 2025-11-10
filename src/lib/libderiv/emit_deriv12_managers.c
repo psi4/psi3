@@ -58,8 +58,8 @@ static int mk_deriv_node(class node, class *allnodes, int new);
 static int mark_dhrr_parents(int n, class *allnodes, int rent);
 static int mark_vrr_parents(int n, class *allnodes, int rent);
 static int mark_parents(int n, class *allnodes, int rent);
-static alloc_mem_dhrr(class *nodes);
-static alloc_mem_vrr(class *nodes);
+static int alloc_mem_dhrr(class *nodes);
+static int alloc_mem_vrr(class *nodes);
 
 static void get_deriv_indices(class *node,int * di, int *dj);
 

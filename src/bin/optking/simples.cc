@@ -118,6 +118,7 @@ int simples_class :: get_id(Intco_type itype, int sub_index, int sub_index2) con
     return out[sub_index].id;
   else if (itype == FRAG)
     return frag[sub_index].id + sub_index2;
+  else return -1;
 }
 
 
@@ -849,6 +850,7 @@ double simples_class::get_val_A_or_rad(Intco_type itype, int sub_index, int sub_
   else if (itype == LINB) return linb[sub_index].get_val_A_or_rad();
   else if (itype == OUT)  return out[sub_index].get_val_A_or_rad();
   else if (itype == FRAG) return frag[sub_index].get_val_A_or_rad(sub_index2);
+  else return -1;
 }
 
 // returns value in angstroms or degrees
@@ -859,6 +861,7 @@ double simples_class::get_val(Intco_type itype, int sub_index, int sub_index2) c
   else if (itype == LINB) return linb[sub_index].get_val();
   else if (itype == OUT)  return out[sub_index].get_val();
   else if (itype == FRAG) return frag[sub_index].get_val(sub_index2);
+  else return -1;
 }
 
 
@@ -888,7 +891,9 @@ int simples_class::get_natom(Intco_type itype, int sub_index, Frag_switch X) con
   else if (itype == FRAG) {
     if (X == FRAG_A) return frag[sub_index].get_A_natom();
     else if (X == FRAG_B) return frag[sub_index].get_B_natom();
+    else return -1;
   }
+  else return -1;
 }
 
 double simples_class::get_s(Intco_type itype, int sub_index, int atom,

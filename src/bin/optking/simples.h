@@ -124,6 +124,7 @@ class simples_class {
          return tot;
        }
      }
+     return 0;
    }
 
    void fix_near_180(void) {

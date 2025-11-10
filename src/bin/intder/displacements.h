@@ -16,7 +16,7 @@ class Displacements
 
 public:
   bool loadFromOptKing();
-  bool loadFromCheckPoint();
+  void loadFromCheckPoint();
   bool loadFromInput();
 
   void printGeometries();

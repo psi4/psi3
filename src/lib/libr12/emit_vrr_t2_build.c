@@ -218,6 +218,7 @@ int emit_vrr_t2_build(void)
   }
   free(function_name);
   free(code_name);
+  return 0;
 }
 
 
